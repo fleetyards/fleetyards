@@ -1,0 +1,20 @@
+h1, .navbar-brand, h2 {
+  font-family: 'Orbitron', sans-serif;
+
+  small {
+    font-family: 'Droid Sans', verdana;
+  }
+}
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+}
+
+address {
+  .name {
+    font-size: 1.2em;
+    color: #999;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: normal;
+  }
+}

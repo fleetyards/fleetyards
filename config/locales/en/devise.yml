@@ -1,0 +1,41 @@
+en:
+  errors:
+    messages:
+      expired: "ist abgelaufen, bitte neu anfordern"
+      not_found: "nicht gefunden"
+      already_confirmed: "wurde bereits bestätigt"
+      not_locked: "ist nicht gesperrt"
+      not_saved:
+        one: "Konnte %{resource} nicht speichern: ein Fehler."
+        other: "Konnte %{resource} nicht speichern: %{count} Fehler."
+
+  devise:
+    failure:
+      already_authenticated: 'Du bist bereits angemeldet.'
+      unauthenticated: 'Bitte melde Dich an.'
+      invalid: 'Ungültige Anmeldedaten.'
+      invalid_token: 'Der Anmelde-Token ist ungültig.'
+      timeout: 'Deine Sitzung ist abgelaufen, bitte melde Dich erneut an.'
+      user:
+        not_found_in_database: "Es konnte kein Account mit dieser E-Mail Adresse gefunden werden."
+    sessions:
+      signed_in: 'Erfolgreich angemeldet.'
+      signed_out: 'Erfolgreich abgemeldet.'
+    passwords:
+      send_instructions: 'Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen kannst.'
+      updated: 'Dein Passwort wurde geändert. Du bist jetzt angemeldet.'
+      updated_not_active: 'Dein Passwort wurde geändert.'
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert, erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du dein Passwort zurücksetzen kannst."
+    unlocks:
+      send_instructions: 'Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst.'
+      unlocked: 'Dein Account wurde entsperrt. Du bist jetzt angemeldet.'
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert, erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst."
+    mailer:
+      reset_password_instructions:
+        subject: 'Anleitung um Dein Passwort zurückzusetzen'
+        content: 
+          hello: 'Hallo'
+          change_link: 'Mein Passwort ändern'
+          first_text: 'Es wurde ein Link zum Ändern Deines Passwortes angefordert. Dies kannst Du tun, indem Du auf den folgenden Link klickst.'
+          second_text: 'Wenn Du diesen Link nicht angefordert hast, ignoriere bitte diese E-Mail.'
+          third_text: 'Dein Passwort wird sich nicht ändern, wenn Du diesem Link nicht folgst.'

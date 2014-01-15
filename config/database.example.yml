@@ -1,0 +1,14 @@
+production:
+  adapter: postgresql
+  database: fleetyards
+  host: localhost
+
+development:
+  adapter: postgresql
+  database: fleetyards_dev
+  host: localhost
+
+test:
+  adapter: postgresql
+  database: fleetyards_test
+  host: localhost

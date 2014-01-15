@@ -1,0 +1,50 @@
+//= require_self
+//= require lib/ladda
+//= require select2
+
+@import "bourbon";
+
+// color themes
+$footer-border-color: #ccc;
+$footer-bg-color: #ddd;
+@import "colors";
+
+@import "bootstrap";
+
+// overrides for color themes
+@import "color_overrides";
+
+@import "partials";
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Droid Sans', verdana;
+  padding: 70px 0 0;
+  min-height: 100%;
+  height: auto;
+  position: relative;
+
+  > .container {
+    min-height: 500px;
+    padding-bottom: 20px;
+  }
+}
+
+.filter-menu {
+  margin: 0 0 20px;
+  display: inline-block;
+}
+
+footer {
+  padding: 30px 0 50px;
+  border-top: 1px solid $footer-border-color;
+  background-color: $footer-bg-color;
+  opacity: .5;
+}
+
+#signup-form {
+  margin-bottom: 20px;
+}

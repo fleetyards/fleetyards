@@ -1,0 +1,30 @@
+production:
+  mailer:
+    default_from: noreply@fleetyards.net
+    host:
+    port: 587
+    user:
+    password:
+  app:
+    url: "http://fleetyards.dev"
+    domain: "fleetyards.dev"
+development:
+  mailer:
+    default_from: noreply@fleetyards.net
+    host:
+    port: 587
+    user:
+    password:
+  app:
+    url: "http://fleetyards.dev"
+    domain: "fleetyards.dev"
+test:
+  mailer:
+    default_from: noreply@fleetyards.net
+    host:
+    port: 587
+    user:
+    password:
+  app:
+    url: "http://fleetyards.dev"
+    domain: "fleetyards.dev"

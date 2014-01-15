@@ -1,0 +1,21 @@
+- content_for :title do
+  = I18n.t(:"title.password.new")
+.row
+  .col-xs-12.col-md-5.col-md-offset-2
+    %h2= I18n.t(:"headlines.forgot_password")
+
+    = form_for(resource, as: resource_name, url: user_password_path, html: { method: :post}) do |form|
+
+      .form-group{class: form_error?(resource, :email)}
+        = form.text_field :email, required: true, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
+        %small
+          = form_errors resource, :email
+
+      %br
+
+      .form-group
+        %button.btn.btn-lg.btn-primary
+          = I18n.t(:"actions.reset_password")
+
+  .col-xs-12.col-md-3
+    = render "devise/shared/links"

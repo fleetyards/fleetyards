@@ -1,0 +1,20 @@
+de:
+  helpers:
+    label:
+      user:
+        email: "E-Mail"
+        password: "Passwort"
+        password_confirmation: "Passwort-Bestätigung"
+        current_password: "aktuelles Passwort"
+        remember_me: "Angemeldet bleiben"
+    placeholder:
+      user:
+        email: "E-Mail"
+        password: "Passwort"
+        password_confirmation: "Passwort-Bestätigung"
+        current_password: "Aktuelles Passwort"
+        remember_me: "Angemeldet bleiben"
+        gravatar: "Gravatar E-Mail Adresse"
+    prompt:
+      address:
+        country: "Bitte wähle ein Land"

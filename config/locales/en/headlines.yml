@@ -1,0 +1,31 @@
+en:
+  headlines:
+    sign_in: "Anmelden"
+    forgot_password: "Passwort vergessen?"
+    change_password: "Passwort ändern"
+    account: "Meine Daten"
+
+    project:
+      new: "Neues Projekt"
+      edit: "Projekt bearbeiten"
+      index: "Projekte"
+
+    invoice:
+      new: "Neue Rechnung"
+      edit: "Rechnung bearbeiten"
+      index: "Aktuelle Rechnungen (Gesamt: %{sum})"
+
+    customer:
+      new: "Neuer Kunde"
+      edit: "Kunde bearbeiten"
+      index: "Kunden"
+
+    setting:
+      edit: "Einstellungen berbeiten"
+
+    user:
+      edit: "Account bearbeiten"
+
+    backend:
+      users:
+        index: "Users"

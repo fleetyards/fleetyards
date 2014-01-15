@@ -1,0 +1,30 @@
+de:
+  actions:
+    ok: 'OK'
+    reset: "Auf Standard zurücksetzen"
+    cancel: "Abbrechen"
+    edit: "Bearbeiten"
+    delete: "Löschen"
+    remove: "Entfernen"
+    cancel: "Abbrechen"
+    back: "Zurück"
+    save: "Speichern"
+    add: "Hinzufügen"
+    add_position: "Position hinzufügen"
+    show: "Anzeigen"
+    download: "Speichern"
+    regenerate: "Neu generieren"
+    generate: "Erstellen"
+    charge: "In Rechnung stellen"
+    pay: "Rechnung als bezahlt markieren"
+    sign_in: "Anmelden"
+    sign_out: "Abmelden"
+    sign_up: "Registrieren"
+    confirm: "Account bestätigen"
+    unlock: "Account entsperren"
+    forgot_password: "Passwort vergessen?"
+    reset_password: 'Passwort zurücksetzen'
+    save_password: 'Passwort speichern'
+    admin: 'Backend'
+    enable: "Aktivieren"
+    disable: "Deaktivieren"

@@ -1,0 +1,60 @@
+en:
+  simple_form:
+    "yes": 'Ja'
+    "no": 'Nein'
+    required:
+      text: 'plicht'
+      mark: '*'
+    error_notification:
+      default_message: "Bitte überprüfe die folgenden Fehler:"
+    labels:
+      defaults:
+        email: "E-Mail"
+        remember_me: "Angemeldet bleiben"
+      user:
+        password: "Passwort"
+        password_confirmation: "Passwort-Bestätigung"
+        current_password: "aktuelles Passwort"
+      position:
+        rate: "€/Std."
+        hours: "Stunden"
+      project:
+        rate: "Stundensatz"
+      setting:
+        tax: "Steuern"
+    prompts:
+      defaults:
+        customer_id: "Bitte wähle einen Kunden"
+        project_id: "Bitte wähle ein Projekt"
+    placeholders:
+      defaults:
+        name: "Name"
+        date: "Datum"
+        project_id: "Projekt"
+        customer_id: "Kunde"
+        description: "Beschreibung"
+        email: "E-Mail"
+        remember_me: "Angemeldet bleiben"
+      user:
+        password: "Passwort"
+        password_confirmation: "Passwort-Bestätigung"
+        current_password: "aktuelles Passwort"
+      address:
+        company: "Firma"
+        firstname: "Vorname"
+        lastname: "Nachname"
+        street: "Straße"
+        house_number: "Hausnummer"
+        zipcode: "PLZ"
+        city: "Ort"
+        country: "Land"
+        telefon: "Telefon"
+        fax: "Fax"
+        website: "Homepage"
+      setting:
+        tax_ref: "Steuernummer"
+        bank: "Bank"
+        bank_code: "BLZ"
+        bank_account: "Konto"
+        iban: "IBAN"
+        bic: "BIC"

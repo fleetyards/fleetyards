@@ -1,0 +1,12 @@
+de:
+  version: "%{version} (%{version_number})"
+  "true": Ja
+  "false": Nein
+
+  views:
+    pagination:
+      next: "&rsaquo;"
+      previous: "&lsaquo;"
+      first: "&laquo;"
+      last: "&raquo;"
+      truncate: "&hellip;"

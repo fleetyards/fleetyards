@@ -1,0 +1,19 @@
+en:
+  actions:
+    ok: "OK"
+    cancel: "Cancel"
+    edit: "Edit"
+    delete: "Delete"
+    remove: "Remove"
+    cancel: "Cancel"
+    save: "Save"
+    add: "Add"
+    add_position: "Add Position"
+    charge: "Charge"
+    pay: "Mark as paid"
+    sign_in: "Login"
+    sign_out: "Logout"
+    forgot_password: "Forgot your password?"
+    reset_password: 'Reset password'
+    save_password: 'Save password'
+    admin: 'Backend'

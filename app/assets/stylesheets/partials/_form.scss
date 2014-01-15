@@ -1,0 +1,52 @@
+form {
+  .select2.has-error {
+    small {
+      margin-top: -3px;
+      padding-top: 8px;
+    }
+  }
+
+  .select2-container {
+    width: 100%;
+
+    .select2-choice {
+      height: 34px;
+      line-height: 34px;
+
+      .select2-arrow {
+        b {
+          background-position: 0 5px;
+        }
+      }
+    }
+  }
+
+  .select2-dropdown-open .select2-choice .select2-arrow b {
+    background-position: -18px 4px !important;
+  }
+
+  .has-error {
+    input, textarea {
+      border-color: #c60f13;
+      background-color: rgba(198, 15, 19, 0.1);
+      &:focus {
+        background: #fafafa;
+        border-color: #999999;
+      }
+    }
+    small {
+      display: block;
+      padding: 0.375em 0.25em;
+      margin-top: -3px;
+      font-size: 90%;
+      font-weight: bold;
+      background: #c60f13;
+      color: white;
+      border-radius: 0 0 4px 4px
+    }
+  }
+
+  .invoice-position-value {
+    text-align: right;
+  }
+}

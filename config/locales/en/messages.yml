@@ -1,0 +1,71 @@
+en:
+  messages:
+    confirm: 
+      form: 
+        cancel: "Bist Du Dir sicher, dass Du das Formular nicht speichern willst? Ungespeicherte Änderungen gehen sonst verloren."
+      delete: "Bist Du Dir sicher, dass Du den Eintrag löschen willst?"
+    customer:
+      confirm:
+        delete: "Bist Du Dir sicher, dass Du den Kunden löschen willst? Alle zugehörigen Projekte werden ebenfalls gelöscht."
+    account:
+      change_password: "Nur ausfüllen, wenn Sie Ihr Passwort ändern wollen."
+    update:
+      default:
+        success: "%{resource} erfolgreich bearbeitet."
+        failure: "%{resource} konnte nicht bearbeitet werden."
+      invoice:
+        success: "Rechnung erfolgreich bearbeitet."
+        failure: "Rechnung konnte nicht bearbeitet werden."
+      customer:
+        success: "Kunde erfolgreich bearbeitet."
+        failure: "Kunde konnte nicht bearbeitet werden."
+      project:
+        success: "Projekt erfolgreich bearbeitet."
+        failure: "Projekt konnte nicht bearbeitet werden."
+      user:
+        success: "Benutzer erfolgreich bearbeitet."
+        failure: "Benutzer konnte nicht bearbeitet werden."
+      setting:
+        success: "Einstellungen erfolgreich bearbeitet."
+        failure: "Einstellungen konnten nicht bearbeitet werden."
+    create:
+      invoice:
+        success: "Rechnung erfolgreich erstellt."
+        failure: "Rechnung konnte nicht erstellt werden."
+      customer:
+        success: "Kunde erfolgreich erstellt."
+        failure: "Kunde konnte nicht erstellt werden."
+      project:
+        success: "Projekt erfolgreich erstellt."
+        failure: "Projekt konnte nicht erstellt werden."
+    destroy:
+      user: 
+        success: "Benutzer erfolgreich gelöscht."
+        failure: "Benutzer konnte nicht gelöscht werden."
+      invoice:
+        success: "Rechnung erfolgreich gelöscht."
+        failure: "Rechnung konnte nicht gelöscht werden."
+      customer:
+        success: "Kunde erfolgreich gelöscht."
+        failure: "Kunde konnte nicht gelöscht werden."
+        failure_dependency: "Bitte lösche zuerst alle Rechnungen für diesen Kunden"
+      project:
+        success: "Projekt erfolgreich gelöscht."
+        failure: "Projekt konnte nicht gelöscht werden."
+        failure_dependency: "Bitte lösche zuerst alle Rechnungen für dieses Projekt"
+    lock:
+      user:
+        success: "Benutzer erfolgreich gesperrt."
+        failure: "Benutzer konnte nicht gesperrt werden."
+    unlock:
+      user:
+        success: "Benutzer erfolgreich freigeschaltet."
+        failure: "Benutzer konnte nicht freigeschaltet werden."
+    pay:
+      invoice:
+        success: "Rechnung erfolgreich als bezahlt markiert."
+        failure: "Rechnung konnte nicht als bezahlt markiert werden."
+    charge:
+      invoice:
+        success: "Rechnung erfolgreich in Rechnung gestellt."
+        failure: "Rechnung konnte nicht in Rechnung gestellt werden."

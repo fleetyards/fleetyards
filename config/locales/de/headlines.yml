@@ -1,0 +1,12 @@
+de:
+  headlines:
+    sign_up: "Neuen Account erstellen"
+    sign_in: "Login"
+    forgot_password: "Passwort vergessen?"
+    change_password: "Passwort ändern"
+    unlock: "Account entsperren"
+    confirm: "Account bestätigen"
+    account: "Meine Daten"
+    impressum: "Impressum"
+    privacy: "Datenschutz"
+    welcome: "Willkommen"

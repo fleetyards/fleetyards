@@ -1,0 +1,16 @@
+de:
+  title:
+    default: "Fleetyards.net"
+    backend: "Fleetyards.net Backend"
+    sign_in: "Login"
+    sign_up: "Registrieren"
+    unlock: "Account entsperren"
+    confirm: "Account bestätigen"
+
+  default_country: "Deutschland"
+  default_country_code: "DE"
+  select2:
+    empty: "Keine Einträge gefunden"
+  nav:
+    header:
+      home: "Home"

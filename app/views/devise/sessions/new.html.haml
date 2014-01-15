@@ -1,0 +1,26 @@
+- content_for :title do
+  = I18n.t(:"title.sign_in")
+.row
+  .col-xs-12.col-md-5.col-md-offset-2
+    %h2=I18n.t(:"headlines.sign_in")
+
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+
+      .form-group
+        = f.email_field :email, required: false, autofocus: true, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
+      .form-group
+        = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
+
+      - if devise_mapping.rememberable?
+        .checkbox
+          %label{for: "user_remember_me"}
+            = f.check_box :remember_me
+            = I18n.t(:"helpers.label.user.remember_me")
+
+      %br
+      .form-group
+        %button.btn.btn-lg.btn-primary
+          = I18n.t(:"actions.sign_in")
+
+  .col-xs-12.col-md-3
+    = render "devise/shared/links"

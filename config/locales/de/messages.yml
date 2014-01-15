@@ -1,0 +1,25 @@
+de:
+  unauthorized:
+    default: "Zugriff verweigert!"
+  resources:
+    messages:
+      user_data: "Daten"
+      password: "Passwort"
+      user: "Benutzer"
+      setting: "Einstellung"
+  messages:
+    confirm:
+      form:
+        cancel: "Sind Sie sich sicher? Ungespeicherte Änderungen gehen verloren."
+      delete: "Sind Sie sich sicher, dass Sie den Eintrag löschen wollen?"
+    setting:
+      not_found: "Keinen Eintrag gefunden"
+    create:
+      success: "%{resource} erfolgreich erstellt."
+      failure: "%{resource} konnte nicht erstellt werden."
+    update:
+      success: "%{resource} erfolgreich bearbeitet."
+      failure: "%{resource} konnte nicht bearbeitet werden."
+    destroy:
+      success: "%{resource} erfolgreich gelöscht."
+      failure: "%{resource} konnte nicht gelöscht werden."

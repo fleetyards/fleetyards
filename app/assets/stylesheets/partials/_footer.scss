@@ -1,0 +1,25 @@
+footer.default-footer {
+  background-color: #333;
+  height: 85px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  #footer {
+    padding: 20px 0 10px;
+
+    .mortik-logo {
+      font-size: 18px;
+      color: #666;
+      text-decoration: none;
+
+      &:hover {
+        color: #428bca;
+      }
+    }
+
+    p.copyright {
+      color: #666;
+    }
+  }
+}

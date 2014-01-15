@@ -1,0 +1,71 @@
+en:
+  "true": Yes
+  "false": No
+  title:
+    default: "Reckoning.io"
+    backend: "Reckoning.io Backend"
+  small_business: "umsatzsteuerbefreit nach § 19 UStG"
+  nav:
+    header:
+      home: "Home"
+      new_invoice: "Neue Rechnung"
+      customers: "Kunden"
+      new_customer: "Neuer Kunde"
+      projects: "Projekte"
+      new_project: "Neues Projekt"
+      account: "Account"
+      settings: "Einstellungen"
+      toggle: "Toggle navigation"
+      backend:
+        dashboard: "Dashboard"
+        users: "Users"
+    footer:
+      contact: "Contact"
+      frontend: "Frontend"
+      impressum: "Impressum"
+      backend:
+        root: "Backend"
+
+  views:
+    pagination:
+      next: "&rsaquo;"
+      previous: "&lsaquo;"
+      first: "&laquo;"
+      last: "&raquo;"
+      truncate: "&hellip;"
+
+  meta:
+    title:
+      customer:
+        index: "Kunden"
+        new: "Neuer Kunde"
+        edit: "Kunde bearbeiten"
+      project:
+        index: "Projekte"
+        new: "Neues Projekt"
+        edit: "Projekt bearbeiten"
+      invoice:
+        new: "Neue Rechnung"
+        edit: "Rechnung bearbeiten"
+      setting:
+        edit: "Einstellungen bearbeiten"
+      user:
+        edit: "Account bearbeiten"
+
+  filter:
+    name:
+      invoice_state: "Filter"
+      invoice_year: "Jahr"
+    defaults:
+      all: "Alle"
+    invoice_state:
+      created: "Neu"
+      charged: "In Rechnung gestellt"
+      paid: "Bezahlt"
+
+  legends:
+    setting:
+      bank: "Bankinformationen"
+
+  mailto_subject:
+    contact: "Contact request"

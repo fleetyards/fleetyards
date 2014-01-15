@@ -1,0 +1,17 @@
+en:
+  pdf:
+    page: "Page"
+    page_from: "of"
+    not_generated: ~
+    invoice:
+      subject:
+        project: "Project:"
+        date: "Billingdate:"
+        delivery_date: "Deliverydate:"
+        payment_due: "Pay until:"
+        tax: "Taxnumber:"
+      headline: "Invoice"
+      tax: "USt. (%{value} %)"
+      net: "Netto"
+      gross: "Brutto"
+      sum: "Sum"

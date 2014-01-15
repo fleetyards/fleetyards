@@ -1,0 +1,68 @@
+table {
+  th {
+    &.actions {
+      &.one {
+        width: 42px;
+        min-width: 42px;
+      }
+      &.two {
+        width: 84px;
+        min-width: 84px;
+      }
+      &.three {
+        width: 111px;
+        min-width: 111px;
+      }
+      &.four {
+        width: 144px;
+        min-width: 144px;
+      }
+    }
+  }
+  td {
+    &.value, &.hours, &.rate {
+      text-align: right;
+    }
+    &.ref {
+      width: 60px;
+      min-width: 60px;
+    }
+    &.month {
+      width: 125px;
+      min-width: 125px;
+    }
+    &.value {
+      width: 130px;
+      min-width: 130px;
+    }
+    &.hours {
+      width: 100px;
+      min-width: 100px;
+    }
+
+    &.rate {
+      width: 80px;
+      min-width: 80px;
+    }
+  }
+  tr {
+    &.sum, &.step-sum, &.tax {
+      td:first-child {
+        text-align: right;
+      }
+    }
+    &.border {
+      td {
+        border-top: 1px solid #666;
+      }
+    }
+  }
+}
+
+.panel-body {
+  .table,
+  table {
+    margin-bottom: 0;
+  }
+}
+

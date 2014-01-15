@@ -1,0 +1,9 @@
+de:
+  resources:
+    user:
+      default:
+        success: "Du hast Deine Daten"
+        failure: "Deine Daten"
+      password:
+        success: "Du hast Dein Passwort"
+        failure: "Dein Passwort"
