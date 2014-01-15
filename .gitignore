@@ -1,0 +1,22 @@
+.bundle
+
+# logfiles and tempfiles.
+log/*
+tmp/*
+
+pids/*
+.ruby-version
+
+# config files
+config/database.yml
+config/resque.yml
+config/secrets.yml
+config/settings.yml
+.env
+
+# test files
+coverage/*
+
+# app files
+files/*
+
