@@ -18,5 +18,5 @@ config/settings.yml
 coverage/*
 
 # app files
-files/*
+public/uploads/*
 

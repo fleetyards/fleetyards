@@ -1,0 +1,50 @@
+de:
+  activerecord:
+    attributes:
+      user:
+        login: "Benutzername oder E-Mail"
+        enabled: "Aktiv?"
+        admin: "Admin?"
+        confirmation_token: "Token"
+        gravatar: "Gravatar E-Mail Adresse"
+        created_at: "vor %{time}"
+      setting:
+        base:
+          registration: "Registrierung aktiv?"
+        mailer:
+          default_from: "Standard Absender"
+          host: "SMTP Host"
+          port: "SMTP Port"
+          user: "SMTP Benutzer"
+          password: "SMTP Passwort oder Token"
+    errors:
+      messages:
+        record_invalid: "Ungültige Daten"
+        blank: "Bitte füllen Sie das Feld aus"
+      models:
+        user:
+          attributes:
+            username:
+              taken: "Der Benutzername ist bereits vergeben."
+            email:
+              taken: "Die E-Mail Adresse ist bereits vergeben."
+            confirmation_token:
+              invalid: "ist ungültig"
+            password:
+              too_short: "Bitte geben Sie ein Passwort mit mindestens 8 Zeichen ein."
+            password_confirmation:
+              confirmation: "Die Passwörter stimmen nicht überein."
+            current_password:
+              invalid: "Ihr Passwort ist nicht gültig."
+            reset_password_token:
+              invalid: "Der verwendete Token ist ungültig."
+        invoice:
+          attributes:
+            ref:
+              taken: "Rechnungsnummer muss eindeutig sein."
+            company_name:
+              empty: "Bitte geben Sie zumindest einen Namen oder ein Firma an"
+        position:
+          attributes:
+            hours_value:
+              empty: "Bitte geben Sie zumindest die Anzahl Stunden oder den Betrag an"

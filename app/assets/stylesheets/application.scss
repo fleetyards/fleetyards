@@ -4,14 +4,17 @@
 
 @import "bourbon";
 
-// color themes
 $footer-border-color: #ccc;
 $footer-bg-color: #ddd;
 @import "colors";
 
+$container-lg: 90%;
+$container-md: 90%;
+$container-xs: 90%;
+$container-sm: 90%;
+
 @import "bootstrap";
 
-// overrides for color themes
 @import "color_overrides";
 
 @import "partials";
@@ -47,4 +50,30 @@ footer {
 
 #signup-form {
   margin-bottom: 20px;
+}
+
+.ship-panel {
+  .profile-image {
+    background-color: #333;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .metrics {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .ship-roles {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
 }

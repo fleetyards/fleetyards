@@ -1,4 +1,6 @@
-window.Fleetyards ?= {}
+window.laddaButton ?= {}
+
+window.App ?= {}
 
 $(document).on 'click', 'a.disabled', (evt) ->
   false
@@ -19,3 +21,5 @@ $ ->
   $('.select2 select').select2
     formatNoMatches: (term) ->
       @element.attr('data-empty')
+
+  $('[data-toggle=tooltip]').tooltip()

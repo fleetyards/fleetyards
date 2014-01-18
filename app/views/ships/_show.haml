@@ -1,0 +1,47 @@
+.col-xs-12.col-sm-4.col-md-3
+  .ship-panel.panel.panel-default
+    .panel-heading
+      %h3.panel-title
+        %a{href: ship_path(ship.slug)}
+          = ship.name
+        %small.pull-right
+          = ship.manufacturer.name if ship.manufacturer.present?
+    .profile-image.text-center
+      = image_tag ship.image
+    %ul.list-group
+      %li.list-group-item.ship-roles{data: {toggle: "tooltip"}, title: ship.ship_role.name}
+        %strong
+          Aufgaben:
+        = ship.ship_role.name if ship.ship_role.present?
+      %li.list-group-item.metrics
+        .col-xs-6.col-sm-6.col-md-6
+          %strong
+            Länge:
+          %span.no-wrap
+            = number_to_human ship.length, units: :distance
+          %br
+          %strong
+            Breite:
+          %span.no-wrap
+            = number_to_human ship.beam, units: :distance
+        .col-xs-6.col-sm-6.col-md-6
+          %strong
+            Höhe:
+          %span.no-wrap
+            = number_to_human ship.height, units: :distance
+          %br
+          %strong
+            Masse:
+          %span.no-wrap
+            = number_to_human ship.mass, units: :weight
+        .clearfix
+      %li.list-group-item
+        %strong
+          Fracht:
+        = number_to_human (ship.cargo.to_i * 100), units: :weight
+      %li.list-group-item
+        %strong
+          Crew:
+        = number_to_human ship.crew, units: :people
+    %a.btn.btn-default.btn-block{href: ship_path(ship.slug)}
+      Weitere Informationen
