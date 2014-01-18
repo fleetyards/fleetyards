@@ -8,8 +8,11 @@ de:
         current_password: "aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
     placeholder:
+      name: "Name"
       user:
+        username: "Benutzername"
         email: "E-Mail"
+        login: "Benutzername oder E-Mail"
         password: "Passwort"
         password_confirmation: "Passwort-Bestätigung"
         current_password: "Aktuelles Passwort"

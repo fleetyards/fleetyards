@@ -20,6 +20,20 @@ Fleetyards::Application.routes.draw do
     delete 'logout' => 'sessions#destroy', as: :destroy_user_session
   end
 
+  resource :password, only: [:edit, :update]
+
+  resources :ships, param: :slug do
+    collection do
+      put 'reload'
+    end
+  end
+
+  resources :manufacturers, param: :slug
+
+  resources :ship_roles, param: :slug
+
+  get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
+
   get 'impressum' => 'base#impressum'
 
   root 'base#index'

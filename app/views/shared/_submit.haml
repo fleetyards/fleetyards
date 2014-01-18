@@ -1,0 +1,6 @@
+%button{class: "btn btn-primary btn-lg"}
+  = I18n.t(:"actions.save")
+
+= confirm_link_to path, data: {notyConfirm: I18n.t(:"messages.confirm.form.cancel")}, class: "btn btn-default" do
+  = I18n.t(:"actions.cancel")
+

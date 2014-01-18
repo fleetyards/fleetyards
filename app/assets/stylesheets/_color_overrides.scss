@@ -1,3 +1,17 @@
 .input-group-addon {
   color: inherit;
 }
+
+.btn.btn-default {
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    color: lighten(#428bca, 50%);
+  }
+}
+
+.panel .btn-block {
+  @include border-top-radius(0);
+  border-width: 1px 0 0 0;
+}

@@ -50,6 +50,12 @@ gem 'i18n-js', github: "fnando/i18n-js", branch: :rewrite
 gem 'thor'
 gem 'highline'
 
+gem 'carrierwave'
+gem 'mini_magick'
+
+gem 'typhoeus'
+gem 'nokogiri'
+
 group :test do
   gem 'rails-perftest'
   gem 'ruby-prof'

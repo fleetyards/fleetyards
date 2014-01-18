@@ -1,4 +1,16 @@
 de:
+  distance:
+    centi: "cm"
+    unit: "m"
+    thousand: "km"
+  weight:
+    centi: "g"
+    unit: "kg"
+    thousand: "t"
+  people:
+    unit:
+      one: "person"
+      other: "personen"
   number:
     currency:
       format:

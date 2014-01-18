@@ -1,0 +1,8 @@
+.preview-paginator{class: ('hide' unless @invoice.pdf_present_and_up_to_date?)}
+  %ul.pagination
+    %li.disabled
+      %a{href: '#', data: {type: 'prev'}}
+        = raw(t 'views.pagination.previous')
+    %li
+      %a{href: '#', data: {type: 'next'}}
+        = raw(t 'views.pagination.next')

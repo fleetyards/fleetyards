@@ -1,0 +1,38 @@
+- content_for :title do
+  = I18n.t(:"title.user.edit")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.account")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.back"), root_path, class: "btn btn-default"
+
+    = form_for user, url: user_registration_path do |form|
+      .row
+        .col-xs-12.col-md-6.form-group{class: form_error?(user, :username)}
+          = form.text_field :username, placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control', type: :username
+          %small
+            = form_errors user, :username
+        .col-xs-12.col-md-6.form-group{class: form_error?(user, :email)}
+          = form.email_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control', type: :email
+          %small
+            = form_errors user, :email
+      .row
+        .col-xs-12.col-md-6.form-group
+          = link_to I18n.t(:"actions.update_password"), edit_password_path, class: "btn btn-warning"
+      .row
+        .col-xs-12.col-md-6.form-group{class: form_error?(user, :gravatar)}
+          = form.email_field :gravatar, placeholder: I18n.t(:"helpers.placeholder.user.gravatar"), class: 'form-control'
+          %small
+            = form_errors user, :gravatar
+      %fieldset
+        %legend
+          Adressdaten
+        /= render "addresses/fields", resource: user
+
+      = render "shared/submit", path: root_path

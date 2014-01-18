@@ -1,0 +1,32 @@
+.row#ship-profile
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = ship.name
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          %a.btn.btn-default{href: ships_path}
+            = I18n.t(:"actions.back")
+
+    .row
+      .col-xs-12.col-md-6
+        = image_tag ship.image, class: "thumbnail"
+        = image_tag ship.manufacturer.logo
+      .col-xs-12.col-md-6
+        %table.table.table-striped.table-bordered
+          %thead
+            %tr
+              %th
+                Beschreibung
+              %th
+                Wert
+          %tbody
+            - %w(length beam height).each do |value|
+              %tr
+                %td
+                  = value
+                %td
+                  = ship.send(value)

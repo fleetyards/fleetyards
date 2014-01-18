@@ -6,11 +6,18 @@ de:
     sign_up: "Registrieren"
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
+    user:
+      edit: "Einstellungen bearbeiten"
 
   default_country: "Deutschland"
   default_country_code: "DE"
   select2:
     empty: "Keine Einträge gefunden"
   nav:
-    header:
-      home: "Home"
+    home: "Home"
+    settings: "Einstellungen"
+    backend: "Backend"
+    database:
+      title: "Datenbank"
+      overview: "Übersicht"
+    ships: "Schiffe"

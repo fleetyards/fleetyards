@@ -5,6 +5,7 @@ class Setup < Thor
 
   desc "admin", "Create Admin-User"
   option :email, type: :string, default: nil
+  option :username, type: :string, default: nil
   option :password, type: :string, default: nil
   option :password_confirmation, type: :string, default: nil
   def admin
@@ -12,19 +13,35 @@ class Setup < Thor
 
     if options.include?('email')
       email = options[:email]
-      password = options[:password]
-      password_confirmation = options[:password_confirmation]
     else
       email = HighLine.ask("E-Mail: ")
-      if email.blank?
-        puts "E-Mail can't be blank!"
-        exit
-      end
+    end
+
+    if options.include?('username')
+      username = options[:username]
+    else
+      username = HighLine.ask("Username: ")
+    end
+
+    if email.blank?
+      puts "E-Mail can't be blank!"
+      exit
+    end
+
+    if options.include?('password')
+      password = options[:password]
+    else
       password = HighLine.ask("Password: ") {|q| q.echo = '*'}
-      if password.blank?
-        puts "Password can't be blank!"
-        exit
-      end
+    end
+
+    if password.blank?
+      puts "Password can't be blank!"
+      exit
+    end
+
+    if options.include?('password_confirmation')
+      password_confirmation = options[:password_confirmation]
+    else
       password_confirmation = HighLine.ask("Password (again): ") {|q| q.echo = '*'}
     end
 
@@ -33,9 +50,9 @@ class Setup < Thor
       exit
     end
 
-    user = User.new(email: email, password: password, password_confirmation: password_confirmation, admin: true)
+    user = User.new(username: username, email: email, password: password, password_confirmation: password_confirmation, admin: true)
     user.skip_confirmation!
-    if user.save
+    if user.save!
       puts "Admin User created!"
     else
       puts "Could not create Admin-User!"

@@ -1,0 +1,35 @@
+.row#ships
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.ship.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          -# %a.btn.btn-default{href: manufacturers_path}
+          -#   Hersteller
+          - if can? :reload, :ships
+            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_ships_path}, class: ('loading' if @worker.running), onclick: "App.reloadShips($(this)); return false;"}
+              = I18n.t(:"actions.ship.reload")
+
+    .row
+      .col-xs-12.col-md-6
+        = render "shared/filter", resource: "ship", name: "ship_role", filters: ShipRole.all, translateable: true
+        = render "shared/filter", resource: "ship", name: "manufacturer", filters: Manufacturer.all
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @ships
+
+    .row
+      = render partial: "ships/show", collection: @ships, as: :ship
+      - if @ships.blank?
+        .col-md-12
+          .well.text-center
+            Keine Schiffe vorhanden
+
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @ships

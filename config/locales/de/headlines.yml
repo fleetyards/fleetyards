@@ -10,3 +10,5 @@ de:
     impressum: "Impressum"
     privacy: "Datenschutz"
     welcome: "Willkommen"
+    ship:
+      index: "Schiffsübersicht"

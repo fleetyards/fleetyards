@@ -1,0 +1,13 @@
+.table-responsive
+  %table.table.table-condensed.table-hover.table-bordered.table-striped
+    %thead
+      %tr
+        %th=sortable "id"
+        %th=sortable "name"
+        %th=sortable "manufacturers.name", "Hersteller"
+        %th.month=sortable "ship_roles.name", "Rolle"
+    %tbody
+      = render partial: "ships/show", collection: @ships, as: :ship
+
+      - if @ships.blank?
+        = render "layouts/tables/blank", count: 6, resource: "ship"
