@@ -12,8 +12,8 @@
 
     .collapse.navbar-collapse.navbar-ex1-collapse
       %ul.nav.navbar-nav
-        -# %li{class: get_active_nav('home')}
-        -#   = link_to I18n.t(:"nav.home"), root_path
+        %li{class: get_active_nav('home')}
+          = link_to I18n.t(:"nav.home"), root_path
         %li{class: get_active_nav('ships')}
           = link_to I18n.t(:"nav.ships"), ships_path
       = render "layouts/user_nav"

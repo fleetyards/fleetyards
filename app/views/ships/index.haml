@@ -11,7 +11,7 @@
           -# %a.btn.btn-default{href: manufacturers_path}
           -#   Hersteller
           - if can? :reload, :ships
-            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_ships_path}, class: ('loading' if @worker.running), onclick: "App.reloadShips($(this)); return false;"}
+            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_ships_path}, class: ('loading' if @worker.running), onclick: "App.Ships.reload($(this)); return false;"}
               = I18n.t(:"actions.ship.reload")
 
     .row

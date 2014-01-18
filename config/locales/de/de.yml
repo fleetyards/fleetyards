@@ -1,7 +1,7 @@
 de:
   title:
-    default: "Fleetyards.net"
-    backend: "Fleetyards.net Backend"
+    default: "FleetYards.net"
+    backend: "FleetYards.net Backend"
     sign_in: "Login"
     sign_up: "Registrieren"
     unlock: "Account entsperren"

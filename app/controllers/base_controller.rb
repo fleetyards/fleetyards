@@ -3,6 +3,5 @@ class BaseController < ApplicationController
   before_filter :authenticate_user!, only: []
 
   def index
-    redirect_to ships_path
   end
 end
