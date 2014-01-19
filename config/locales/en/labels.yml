@@ -1,20 +1,21 @@
 en:
   labels:
     actions: Actions
-    name: ~
-    description: ~
-    address: ~
-    id: ~
-    role: ~
-    email: ~
+    name: Name
+    description: Description
+    address: Address
+    id: ID
+    role: Role
+    email: E-Mail
     user:
-      current_sign_in_at: ~
-      admin: ~
-      email: ~
-      created_at: ~
+      current_sign_in_at: Last Login
+      admin: Admin?
+      email: E-Mail
+      created_at: Created at
     table:
       blank:
-        default: "No Entries present"
+        default: "No Entries could be found."
+        ship: "No Ships could be found."
       setting:
         key: Description
         value: Value

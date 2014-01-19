@@ -14,7 +14,8 @@ de:
       created_at: Erstellt
     table:
       blank:
-        default: "Keine Einträge vorhanden"
+        default: "Es konnten keine Einträge gefunden werden."
+        ship: "Es konnten keine Schiffe gefunden werden."
       setting:
         key: Beschreibung
         value: Wert
