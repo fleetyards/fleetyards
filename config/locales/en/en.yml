@@ -1,15 +1,15 @@
 en:
   title:
-    default: ~
-    backend: ~
-    sign_in: ~
-    sign_up: ~
-    unlock: ~
-    confirm: ~
+    default: FleetYards.net
+    backend: "FleetYards.net Backend"
+    sign_in: Login
+    sign_up: "Sign up"
+    unlock: "Unlock Account"
+    confirm: "Confirm Account"
     ship:
-      index: ~
+      index: Ship-Database
     user:
-      edit: ~
+      edit: "Edit Settings"
   default_country: ~
   default_country_code: ~
   select2:

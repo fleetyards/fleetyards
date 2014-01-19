@@ -9,11 +9,9 @@ class ShipsController < ApplicationController
       .order(sort_column + " " + sort_direction)
       .page(params.fetch(:page){nil})
       .per(8)
-
-    @worker = WorkerState.where(name: "ShipsWorker").first
     respond_to do |format|
       format.js {
-        render json: [@ships, @worker]
+        render json: @ships
       }
       format.html {
         # render index

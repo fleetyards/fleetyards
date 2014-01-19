@@ -2,49 +2,46 @@ en:
   activerecord:
     attributes:
       user:
-        login: ~
-        enabled: ~
-        admin: ~
-        confirmation_token: ~
-        gravatar: ~
-        created_at: ~
+        login: "Username or E-Mail"
+        enabled: Active?
+        admin: Admin?
+        confirmation_token: Token
+        gravatar: "Gravatar E-Mail Address"
+        created_at: "%{time} ago"
+      ship:
+        beam: Beam
+        cargo: Cargo
+        crew: Crew
+        height: Height
+        length: Length
+        mass: Mass
       setting:
         base:
-          registration: ~
+          registration: "Registration active?"
         mailer:
-          default_from: ~
-          host: ~
-          port: ~
-          user: ~
-          password: ~
+          default_from: "Default From"
+          host: "SMTP Host"
+          port: "SMTP Port"
+          user: "SMTP User"
+          password: "SMPT Password or Token"
     errors:
       messages:
-        record_invalid: ~
-        blank: ~
+        record_invalid: "Bad Data"
+        blank: "Please fill out the Field"
       models:
         user:
           attributes:
             username:
-              taken: ~
+              taken: "Username is already taken."
             email:
-              taken: ~
+              taken: "E-Mail is already taken."
             confirmation_token:
-              invalid: ~
+              invalid: "is invalid"
             password:
               too_short: ~
             password_confirmation:
-              confirmation: ~
+              confirmation: "Passwords do not match"
             current_password:
-              invalid: ~
+              invalid: "Password is invalid."
             reset_password_token:
-              invalid: ~
-        invoice:
-          attributes:
-            ref:
-              taken: ~
-            company_name:
-              empty: ~
-        position:
-          attributes:
-            hours_value:
-              empty: ~
+              invalid: "Token is invalid"

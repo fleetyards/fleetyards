@@ -1,0 +1,14 @@
+.table-responsive
+  %table.table.table-condensed.table-hover.table-bordered.table-striped
+    %thead
+      %tr
+        %th.id=sortable "id", I18n.t(:"table.labels.defaults.id")
+        %th=sortable "email", I18n.t(:"table.labels.defaults.email")
+        %th=sortable "current_sign_in_at", I18n.t(:"table.labels.user.current_sign_in_at")
+        %th=sortable "admin", I18n.t(:"table.labels.user.admin")
+        %th.actions.three=I18n.t(:"table.labels.defaults.actions")
+    %tbody
+      = render partial: "backend/users/show", collection: @users, as: :user
+
+      - if @users.blank?
+        = render "shared/tables/blank", count: 3, resource: "user"

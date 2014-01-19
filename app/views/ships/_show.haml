@@ -39,7 +39,7 @@
       %li.list-group-item
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.cargo")}:"
-        = number_to_human (ship.cargo.to_i * 100), units: :weight
+        = number_to_human ship.cargo, units: :weight
       %li.list-group-item
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.crew")}:"

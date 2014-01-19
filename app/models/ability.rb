@@ -7,8 +7,9 @@ class Ability
     if user.admin?
       can :check, :worker
       can :update, :locales
-      can :show, :dashboard
+      can :show, :backend
       can :reload, :ships
+      can [:create, :update, :destroy], :setting
     end
 
     can :update, User, id: user.id

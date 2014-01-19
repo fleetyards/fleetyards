@@ -5,8 +5,10 @@
 
     = favicon_link_tag 'favicon.png'
     %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
-
-    %title=content_for?(:title) ? "#{yield(:title)} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
+    - default_title = I18n.t(:"title.default")
+    - if backend?
+      - default_title = I18n.t(:"title.backend")
+    %title=content_for?(:title) ? "#{yield(:title)} | #{default_title}" : default_title
     %meta{name: "description", content: "Fleetyards.net"}
     %meta{name: "keywords", content: "Fleetyards.net"}
 
@@ -26,10 +28,7 @@
     != csrf_meta_tags
 
   %body{data: {success: notice, info: alert, error: flash[:error], warning: flash[:warning]}}
-    - if backend?
-      = render "layouts/backend/nav"
-    - else
-      = render "layouts/nav"
+    = render "layouts/header"
 
     .container
       != yield

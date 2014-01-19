@@ -10,16 +10,10 @@
       %ul.dropdown-menu.navbar-right
         %li{class: get_active_nav('users')}
           = link_to I18n.t(:"nav.settings"), edit_user_registration_path
-        - if current_user.admin?
+        - if current_user.admin? && !backend?
           %li.divider
-          - if backend?
-            %li
-              = link_to I18n.t(:"nav.frontend"), root_path
-          - else
-            %li
-              = link_to I18n.t(:"nav.backend"), backend_root_path
           %li
-            = link_to t(:'nav.update_locales'), backend_update_locales_path, method: :put
+            = link_to I18n.t(:"nav.backend"), backend_root_path
         %li.divider
         %li
           = link_to I18n.t(:"actions.sign_out"), destroy_user_session_path, method: :delete

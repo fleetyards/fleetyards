@@ -1,11 +1,11 @@
 en:
   filter:
-    all: ~
+    all: All
     ship:
       manufacturer:
-        title: ~
+        title: Manufacturer
       ship_role:
-        title: ~
+        title: Role
         exploration: ~
         interdiction: ~
         mercantile: ~

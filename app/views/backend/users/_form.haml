@@ -1,0 +1,15 @@
+= form_for [:backend, @user] do |form|
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(@user, :email)}
+      = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
+      %small
+        = form_errors @user, :email
+  .row
+    .col-xs-6.col-md-3.form-group
+      .checkbox
+        = form.label :admin do
+          = I18n.t(:"activerecord.attributes.user.admin")
+          = form.check_box :admin, placeholder: I18n.t(:"helpers.placeholder.user.admin")
+
+
+  = render "shared/submit", path: backend_users_path

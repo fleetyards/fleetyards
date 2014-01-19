@@ -3,10 +3,12 @@ module Backend
     before_filter :authenticate_user!
     before_filter :verify_admin
 
-    def dashboard
-      authorize! :show, :dashboard
-      @active_nav = 'backend_dashboard'
-      @settings = Setting.all.to_h
+    def index
+      authorize! :show, :backend
+      @active_nav = 'backend'
+      @settings = Setting.to_h
+
+      @worker = WorkerState.where(name: "ShipsWorker").first
     end
 
     private def verify_admin

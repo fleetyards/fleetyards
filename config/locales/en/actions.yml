@@ -6,7 +6,7 @@ en:
     edit: Edit
     delete: Delete
     remove: Remove
-    back: ~
+    back: Back
     save: Save
     add: Add
     show: Show
@@ -24,3 +24,6 @@ en:
     disable: Deactivate
     ship:
       reload: "Reload Ships"
+    more_info: "More Information"
+    search: Search
+    ship_database: Ship-Database

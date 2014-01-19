@@ -10,10 +10,6 @@
 
       .col-xs-12.col-md-4
         = render "search"
-        .btn-group.pull-right.resource-nav
-          - if can? :reload, :ships
-            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_ships_path}, class: ('loading' if @worker && @worker.running), onclick: "App.Ships.reload($(this)); return false;"}
-              = I18n.t(:"actions.ship.reload")
 
     .row
       .col-xs-12.col-md-6

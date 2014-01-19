@@ -1,12 +1,6 @@
 de:
   unauthorized:
     default: "Zugriff verweigert!"
-  resources:
-    messages:
-      user_data: Benutzerdaten
-      password: Passwort
-      user: Benutzer
-      setting: Einstellung
   messages:
     confirm:
       form:
@@ -23,3 +17,6 @@ de:
     destroy:
       success: "%{resource} erfolgreich gelöscht."
       failure: "%{resource} konnte nicht gelöscht werden."
+    reload:
+      success: "%{resource} erfolgreich aktualisiert."
+      failure: "%{resource} konnte nicht aktualisiert werden."

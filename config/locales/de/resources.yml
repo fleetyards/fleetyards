@@ -7,3 +7,11 @@ de:
       password:
         success: "Du hast Dein Passwort"
         failure: "Dein Passwort"
+    locale: Sprachdateien
+    ship: Schiff
+    ships: Schiffsdaten
+    messages:
+      user_data: Benutzerdaten
+      password: Passwort
+      user: Benutzer
+      setting: Einstellung

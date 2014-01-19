@@ -1,12 +1,6 @@
 en:
   unauthorized:
     default: "Access denied"
-  resources:
-    messages:
-      user_data: Userdata
-      password: Password
-      user: User
-      setting: Setting
   messages:
     confirm:
       form:
@@ -21,5 +15,8 @@ en:
       success: ~
       failure: ~
     destroy:
+      success: ~
+      failure: ~
+    reload:
       success: ~
       failure: ~

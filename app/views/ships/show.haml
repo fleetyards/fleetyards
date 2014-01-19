@@ -28,16 +28,15 @@
         .row
           .col-xs-12.col-md-12
             %table.table.table-striped.table-bordered
-              %thead
-                %tr
-                  %th
-                    Beschreibung
-                  %th
-                    Wert
               %tbody
-                - %w(length beam height).each do |value|
+                - %w(length beam height mass cargo crew).each do |value|
                   %tr
                     %td
-                      = value
+                      = I18n.t(:"activerecord.attributes.ship.#{value}")
                     %td
-                      = ship.send(value)
+                      - if %w(length beam height).include?(value)
+                        = number_to_human ship.send(value), units: :distance
+                      - elsif %w(mass cargo).include?(value)
+                        = number_to_human ship.send(value), units: :weight
+                      - else
+                        = ship.send(value)

@@ -15,13 +15,15 @@ class ShipsLoader
     ships.each do |ship_data|
       ship = Ship.find_or_create_by(rsi_name: ship_data["title"])
 
+      old_locale = I18n.locale
+      I18n.locale = :en
       ship.update(
-        description_en: ship_data["description"],
+        description: ship_data["description"],
         length: ship_data["length"],
         beam: ship_data["beam"],
         height: ship_data["height"],
         mass: ship_data["mass"],
-        cargo: ship_data["cargocapacity"],
+        cargo: ship_data["cargocapacity"].to_i * 100,
         crew: ship_data["maxcrew"],
         remote_image_url: ("#{BASE_STATIC_URL}game/ship-specs/#{ship_data["imageurl"]}" unless ship.image.present?)
       )
@@ -38,6 +40,9 @@ class ShipsLoader
       ship.enabled = true
 
       ship.save
+
+      I18n.reload!
+      I18n.locale = old_locale
     end
   end
 end

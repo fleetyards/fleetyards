@@ -15,3 +15,29 @@ de:
     table:
       blank:
         default: "Keine Einträge vorhanden"
+      setting:
+        key: Beschreibung
+        value: Wert
+      ship:
+        manufacturer: Hersteller
+        name: Name
+        updated_at: "Letzte Aktualisierung"
+      user:
+        created_at: Erstellt
+        email: E-Mail
+        username: Benutzername
+    panels:
+      latest_ships: "Aktualisierte Schiffe"
+      latest_users: "Neue Benutzer"
+      setting:
+        base: "Allgemeine Einstellungen"
+        mailer: "E-Mail Einstellungen"
+  activerecord:
+    attributes:
+      ship:
+        updated_at: "vor %{time}"
+  headlines:
+    backend:
+      dashboard: Dashboard
+  nav:
+    frontend: Frontend

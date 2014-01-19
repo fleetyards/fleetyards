@@ -1,6 +1,6 @@
 en:
   labels:
-    actions: ~
+    actions: Actions
     name: ~
     description: ~
     address: ~
@@ -14,4 +14,30 @@ en:
       created_at: ~
     table:
       blank:
-        default: ~
+        default: "No Entries present"
+      setting:
+        key: Description
+        value: Value
+      ship:
+        manufacturer: Manufacturer
+        name: Name
+        updated_at: "last reload"
+      user:
+        created_at: Created
+        email: E-Mail
+        username: Username
+    panels:
+      latest_ships: "Reloaded Ships"
+      latest_users: "New Users"
+      setting:
+        base: "Base Settings"
+        mailer: "E-Mail Settings"
+  activerecord:
+    attributes:
+      ship:
+        updated_at: "%{time} ago"
+  headlines:
+    backend:
+      dashboard: Dashboard
+  nav:
+    frontend: Frontend

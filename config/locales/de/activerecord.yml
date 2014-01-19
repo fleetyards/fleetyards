@@ -3,11 +3,18 @@ de:
     attributes:
       user:
         login: "Benutzername oder E-Mail"
-        enabled: "Aktiv?"
-        admin: "Admin?"
-        confirmation_token: "Token"
+        enabled: Aktiv?
+        admin: Admin?
+        confirmation_token: Token
         gravatar: "Gravatar E-Mail Adresse"
         created_at: "vor %{time}"
+      ship:
+        beam: Breite
+        cargo: Fracht
+        crew: Crew
+        height: Höhe
+        length: Länge
+        mass: Masse
       setting:
         base:
           registration: "Registrierung aktiv?"
@@ -38,13 +45,3 @@ de:
               invalid: "Ihr Passwort ist nicht gültig."
             reset_password_token:
               invalid: "Der verwendete Token ist ungültig."
-        invoice:
-          attributes:
-            ref:
-              taken: "Rechnungsnummer muss eindeutig sein."
-            company_name:
-              empty: "Bitte geben Sie zumindest einen Namen oder ein Firma an"
-        position:
-          attributes:
-            hours_value:
-              empty: "Bitte geben Sie zumindest die Anzahl Stunden oder den Betrag an"

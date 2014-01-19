@@ -1,0 +1,21 @@
+%nav#main-nav.navbar.navbar-default{role: "navigation"}
+  .container
+    .navbar-header
+      %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '.navbar-ex1-collapse'}}
+        %span.sr-only
+          = I18n.t(:"nav.header.toggle")
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{href: root_path, class: get_active_nav}
+        - if backend?
+          = I18n.t(:"title.backend")
+        - else
+          = I18n.t(:"title.default")
+
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      - if backend?
+        = render "layouts/backend/nav"
+      - else
+        = render "layouts/nav"
+      = render "layouts/user_nav"

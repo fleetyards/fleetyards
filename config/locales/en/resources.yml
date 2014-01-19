@@ -7,3 +7,11 @@ en:
       password:
         success: ~
         failure: ~
+    locale: ~
+    ship: ~
+    ships: ~
+    messages:
+      user_data: ~
+      password: ~
+      user: ~
+      setting: ~

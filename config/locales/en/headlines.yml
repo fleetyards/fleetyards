@@ -12,3 +12,5 @@ en:
     welcome: Welcome
     ship:
       index: "Ships Index"
+    base:
+      index: "Welcome to"

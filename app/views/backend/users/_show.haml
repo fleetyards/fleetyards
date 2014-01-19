@@ -1,0 +1,19 @@
+%tr
+  %td
+    = user.id
+  %td
+    = user.email
+  %td
+    - if user.current_sign_in_at.blank?
+      = I18n.t(:"user.current_sign_in_at.empty")
+    - else
+      = time_ago_in_words(user.current_sign_in_at)
+      = "(#{l(user.current_sign_in_at, format: :dt_default)})"
+  %td
+    = t user.admin?.to_s
+  %td
+    .btn-group
+      = link_to edit_backend_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
+        %i.glyphicon.glyphicon-edit
+      = confirm_link_to backend_user_path(user), data: {notyConfirm: I18n.t(:"messages.confirm.delete")}, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger btn-sm" do
+        %i.glyphicon.glyphicon-trash
