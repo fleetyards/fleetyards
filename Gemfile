@@ -8,6 +8,8 @@ gem 'pg', '~> 0.17.0'
 
 gem 'resque', '~> 1.25.0'
 
+gem 'globalize', '~> 4.0.0'
+
 gem 'haml', '~> 4.0.4'
 gem 'haml-rails', '~> 0.5.2'
 
@@ -55,6 +57,8 @@ gem 'mini_magick'
 
 gem 'typhoeus'
 gem 'nokogiri'
+
+gem 'web_translate_it'
 
 group :test do
   gem 'rails-perftest'

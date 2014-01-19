@@ -4,23 +4,21 @@ class ShipsController < ApplicationController
 
   def index
     authorize! :index, :ships
-    @ships = Ship.enabled.includes(:ship_role, :manufacturer)
-    ship_role = params.fetch(:ship_role){nil}
-    manufacturer = params.fetch(:manufacturer){nil}
-    if ship_role.present?
-      @ships = @ships.where("ship_roles.slug IN (?)", ship_role.split(', ')).references(:ship_role)
-      params.delete(:page)
-    end
-    if manufacturer.present?
-      @ships = @ships.where("manufacturers.slug IN (?)", manufacturer.split(', ')).references(:manufacturer)
-      params.delete(:page)
-    end
+    @ships = find_ships
     @ships = @ships
       .order(sort_column + " " + sort_direction)
       .page(params.fetch(:page){nil})
       .per(8)
 
     @worker = WorkerState.where(name: "ShipsWorker").first
+    respond_to do |format|
+      format.js {
+        render json: [@ships, @worker]
+      }
+      format.html {
+        # render index
+      }
+    end
   end
 
   def show
@@ -64,4 +62,27 @@ class ShipsController < ApplicationController
   end
   helper_method :ship
 
+  private def find_ships
+    ships = Ship.enabled.includes(:ship_role, :manufacturer)
+    ship_role = params.fetch(:ship_role){nil}
+    manufacturer = params.fetch(:manufacturer){nil}
+    if ship_role.present?
+      ships = ships.where("ship_roles.slug IN (?)", ship_role.split(', ')).references(:ship_role)
+      params.delete(:page)
+    end
+    if manufacturer.present?
+      ships = ships.where("manufacturers.slug IN (?)", manufacturer.split(', ')).references(:manufacturer)
+      params.delete(:page)
+    end
+    if search = params.fetch(:search, nil)
+      search_conditions = []
+      search_conditions << "lower(ships.name) like :search"
+      search_conditions << "lower(ships.description) like :search"
+      ships = ships.where([
+        search_conditions.join(' OR '),
+        { search: "%#{search.downcase}%" }
+      ])
+    end
+    ships
+  end
 end

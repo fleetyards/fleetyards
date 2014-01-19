@@ -9,6 +9,8 @@ de:
         remember_me: "Angemeldet bleiben"
     placeholder:
       name: "Name"
+      ship:
+        search: "Name oder Beschreibung"
       user:
         username: "Benutzername"
         email: "E-Mail"

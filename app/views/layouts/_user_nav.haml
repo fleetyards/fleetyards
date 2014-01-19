@@ -18,6 +18,8 @@
           - else
             %li
               = link_to I18n.t(:"nav.backend"), backend_root_path
+          %li
+            = link_to t(:'nav.update_locales'), backend_update_locales_path, method: :put
         %li.divider
         %li
           = link_to I18n.t(:"actions.sign_out"), destroy_user_session_path, method: :delete

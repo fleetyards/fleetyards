@@ -5,7 +5,10 @@
         %small
           Willkommen auf
         FleetYards.net
-      %br
-      %p
-        %a.btn.btn-primary.btn-lg{href: ships_path}
-          Schiffsdatenbank
+      .row
+        .col-xs-12.col-md-offset-3.col-md-6
+          = render "ships/search"
+      .row
+        .col-xs-12.col-md-12
+          %a.btn.btn-primary.btn-lg{href: ships_path}
+            Schiffsdatenbank

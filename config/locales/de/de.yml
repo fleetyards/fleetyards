@@ -1,23 +1,24 @@
 de:
   title:
-    default: "FleetYards.net"
+    default: FleetYards.net
     backend: "FleetYards.net Backend"
-    sign_in: "Login"
-    sign_up: "Registrieren"
+    sign_in: Login
+    sign_up: Registrieren
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
+    ship:
+      index: Schiffsdatenbank
     user:
       edit: "Einstellungen bearbeiten"
-
-  default_country: "Deutschland"
-  default_country_code: "DE"
+  default_country: Deutschland
+  default_country_code: DE
   select2:
     empty: "Keine Einträge gefunden"
   nav:
-    home: "Home"
-    settings: "Einstellungen"
-    backend: "Backend"
+    home: Home
+    settings: Einstellungen
+    backend: Backend
     database:
-      title: "Datenbank"
-      overview: "Übersicht"
-    ships: "Schiffe"
+      title: Datenbank
+      overview: Übersicht
+    ships: Schiffe

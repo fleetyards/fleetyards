@@ -3,10 +3,10 @@ de:
     default: "Zugriff verweigert!"
   resources:
     messages:
-      user_data: "Daten"
-      password: "Passwort"
-      user: "Benutzer"
-      setting: "Einstellung"
+      user_data: Benutzerdaten
+      password: Passwort
+      user: Benutzer
+      setting: Einstellung
   messages:
     confirm:
       form:

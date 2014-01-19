@@ -16,7 +16,7 @@ class ShipsLoader
       ship = Ship.find_or_create_by(rsi_name: ship_data["title"])
 
       ship.update(
-        description: ship_data["description"],
+        description_en: ship_data["description"],
         length: ship_data["length"],
         beam: ship_data["beam"],
         height: ship_data["height"],

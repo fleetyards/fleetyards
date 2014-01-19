@@ -1,23 +1,50 @@
 en:
   activerecord:
     attributes:
-      invoice:
-        project_id: "Projekt"
-        states:
-          created: "Erstellt"
-          charged: "Wartet auf Bezahlung"
-          cancelled: "Storniert"
-          paid: "Bezahlt"
-          archived: "Archiviert"
-      invoice_position:
-        description: "Beschreibung"
+      user:
+        login: ~
+        enabled: ~
+        admin: ~
+        confirmation_token: ~
+        gravatar: ~
+        created_at: ~
       setting:
-        tax: "Steuern"
+        base:
+          registration: ~
+        mailer:
+          default_from: ~
+          host: ~
+          port: ~
+          user: ~
+          password: ~
     errors:
       messages:
-        blank: "Bitte fülle das Feld aus"
+        record_invalid: ~
+        blank: ~
       models:
         user:
           attributes:
+            username:
+              taken: ~
+            email:
+              taken: ~
+            confirmation_token:
+              invalid: ~
             password:
-              too_short: "Bitte gib ein Passwort mit mindestens 8 Zeichen ein."
+              too_short: ~
+            password_confirmation:
+              confirmation: ~
+            current_password:
+              invalid: ~
+            reset_password_token:
+              invalid: ~
+        invoice:
+          attributes:
+            ref:
+              taken: ~
+            company_name:
+              empty: ~
+        position:
+          attributes:
+            hours_value:
+              empty: ~

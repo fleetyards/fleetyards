@@ -1,0 +1,25 @@
+en:
+  helpers:
+    label:
+      user:
+        email: ~
+        password: ~
+        password_confirmation: ~
+        current_password: ~
+        remember_me: ~
+    placeholder:
+      name: ~
+      ship:
+        search: ~
+      user:
+        username: ~
+        email: ~
+        login: ~
+        password: ~
+        password_confirmation: ~
+        current_password: ~
+        remember_me: ~
+        gravatar: ~
+    prompt:
+      address:
+        country: ~

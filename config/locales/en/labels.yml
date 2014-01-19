@@ -1,0 +1,17 @@
+en:
+  labels:
+    actions: ~
+    name: ~
+    description: ~
+    address: ~
+    id: ~
+    role: ~
+    email: ~
+    user:
+      current_sign_in_at: ~
+      admin: ~
+      email: ~
+      created_at: ~
+    table:
+      blank:
+        default: ~

@@ -1,31 +1,14 @@
 en:
   headlines:
-    sign_in: "Anmelden"
-    forgot_password: "Passwort vergessen?"
-    change_password: "Passwort ändern"
-    account: "Meine Daten"
-
-    project:
-      new: "Neues Projekt"
-      edit: "Projekt bearbeiten"
-      index: "Projekte"
-
-    invoice:
-      new: "Neue Rechnung"
-      edit: "Rechnung bearbeiten"
-      index: "Aktuelle Rechnungen (Gesamt: %{sum})"
-
-    customer:
-      new: "Neuer Kunde"
-      edit: "Kunde bearbeiten"
-      index: "Kunden"
-
-    setting:
-      edit: "Einstellungen berbeiten"
-
-    user:
-      edit: "Account bearbeiten"
-
-    backend:
-      users:
-        index: "Users"
+    sign_up: "Create new Account"
+    sign_in: Login
+    forgot_password: "Forgot your Password?"
+    change_password: "Change your Password"
+    unlock: "Unlock your Account"
+    confirm: "Confirm your Account"
+    account: "My Information"
+    impressum: Impressum
+    privacy: Privacy
+    welcome: Welcome
+    ship:
+      index: "Ships Index"

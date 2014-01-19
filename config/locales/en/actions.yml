@@ -1,19 +1,26 @@
 en:
   actions:
-    ok: "OK"
-    cancel: "Cancel"
-    edit: "Edit"
-    delete: "Delete"
-    remove: "Remove"
-    cancel: "Cancel"
-    save: "Save"
-    add: "Add"
-    add_position: "Add Position"
-    charge: "Charge"
-    pay: "Mark as paid"
-    sign_in: "Login"
-    sign_out: "Logout"
+    ok: OK
+    reset: Reset
+    cancel: Cancel
+    edit: Edit
+    delete: Delete
+    remove: Remove
+    back: ~
+    save: Save
+    add: Add
+    show: Show
+    sign_in: Login
+    sign_out: Logout
+    sign_up: "Sign up"
+    confirm: "Confirm Account"
+    unlock: "Unlock Account"
+    update_password: "Update password"
     forgot_password: "Forgot your password?"
-    reset_password: 'Reset password'
-    save_password: 'Save password'
-    admin: 'Backend'
+    reset_password: "Reset password"
+    save_password: "Save password"
+    admin: Backend
+    enable: Activate
+    disable: Deactivate
+    ship:
+      reload: "Reload Ships"

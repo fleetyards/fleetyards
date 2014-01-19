@@ -1,18 +1,17 @@
 de:
   labels:
-    actions: "Aktionen"
-    name: "Name"
-    description: "Beschreibung"
-    address: "Adresse"
-    id: "ID"
-    role: "Benutzergruppe"
-    email: "E-Mail"
+    actions: Aktionen
+    name: Name
+    description: Beschreibung
+    address: Adresse
+    id: ID
+    role: Benutzergruppe
+    email: E-Mail
     user:
       current_sign_in_at: "Letzte Aktivität vor"
-      admin: "Admin?"
-      email: "E-Mail"
-      created_at: "Erstellt"
-
+      admin: Admin?
+      email: E-Mail
+      created_at: Erstellt
     table:
       blank:
         default: "Keine Einträge vorhanden"

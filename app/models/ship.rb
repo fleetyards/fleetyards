@@ -1,4 +1,6 @@
 class Ship < ActiveRecord::Base
+  translates :description
+
   belongs_to :manufacturer
   belongs_to :ship_role
 

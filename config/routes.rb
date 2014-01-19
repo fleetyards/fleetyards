@@ -4,6 +4,8 @@ Fleetyards::Application.routes.draw do
   devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
 
   namespace :backend do
+    put '/locales/fetch' => 'locales#fetch', as: :update_locales
+
     resources :users, except: [:show]
 
     resources :settings, except: [:index, :show]

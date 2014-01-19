@@ -1,0 +1,9 @@
+en:
+  resources:
+    user:
+      default:
+        success: ~
+        failure: ~
+      password:
+        success: ~
+        failure: ~

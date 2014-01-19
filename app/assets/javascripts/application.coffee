@@ -23,5 +23,5 @@ $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
 
 $ ->
 
-  $('body > .container').css('min-height', $('body').height() - 101)
+  $('body > .container').css('min-height', $('body').height() - 175)
 

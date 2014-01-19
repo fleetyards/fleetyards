@@ -17,10 +17,10 @@ module Fleetyards
     config.time_zone = 'Berlin'
 
     # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
-    config.i18n.default_locale = :de
+    config.i18n.default_locale = :en
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**','*.{rb,yml}').to_s]
 
-    config.i18n.fallbacks = [:de]
+    config.i18n.fallbacks = [:en]
 
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       "#{html_tag}".html_safe
