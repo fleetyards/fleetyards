@@ -13,8 +13,11 @@
 
     .row
       .col-xs-12.col-md-6
-        = image_tag ship.image, class: "thumbnail"
-        = image_tag ship.manufacturer.logo
+        .text-center
+          = image_tag ship.image, class: "thumbnail ship-image"
+        .text-center
+          = image_tag ship.manufacturer.logo, class: "manufacturer-logo"
+        %br
       .col-xs-12.col-md-6
         %table.table.table-striped.table-bordered
           %thead
