@@ -25,7 +25,7 @@ de:
           thrusters: Manövrierdüsen
           primary_thrusters: Haupttriebwerke
           powerplant: Antrieb
-          additional: Zusätzliche Austattung
+          additional: "Zusätzliche Austattung"
       weapon:
         classes:
           class1: "Klasse 1"

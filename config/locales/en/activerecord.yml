@@ -22,8 +22,8 @@ en:
       equipment:
         types:
           shield: Shields
-          thrusters: Maneuvering Thrusters
-          primary_thrusters: Primary Thrusters
+          thrusters: "Maneuvering Thrusters"
+          primary_thrusters: "Primary Thrusters"
           powerplant: Powerplant
           additional: Additional Equipment
       weapon:

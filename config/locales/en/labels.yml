@@ -8,10 +8,10 @@ en:
     role: Role
     email: E-Mail
     user:
-      current_sign_in_at: Last Login
+      current_sign_in_at: "Last Login"
       admin: Admin?
       email: E-Mail
-      created_at: Created at
+      created_at: "Created at"
     table:
       blank:
         default: "No Entries could be found."
@@ -37,8 +37,8 @@ en:
         mailer: "E-Mail Settings"
     tabs:
       ship:
-        hardpoints: Hardpoints
-        default_configuration: Default Configuration
+        hardpoints: "Available Hardpoints"
+        default_configuration: "Default Configuration"
   activerecord:
     attributes:
       ship:
