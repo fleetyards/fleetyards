@@ -1,0 +1,6 @@
+%ul
+  - Weapon.order('hp_class ASC').all.each do |weapon|
+    %li
+      %strong
+        = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
+      = weapon.name

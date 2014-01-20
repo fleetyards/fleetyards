@@ -43,8 +43,15 @@
                         = number_to_human ship.send(value), units: :distance
                       - elsif %w(mass cargo).include?(value)
                         = number_to_human ship.send(value), units: :weight
+                      - elsif %w(crew).include?(value)
+                        = number_to_human ship.send(value), units: :people
                       - else
                         = ship.send(value)
+                %tr
+                  %td
+                    = I18n.t(:"activerecord.attributes.ship.max_upgrades")
+                  %td
+                    = ship.max_upgrades
 
     .row
       .col-xs-12.col-md-12

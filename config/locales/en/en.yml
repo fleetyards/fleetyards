@@ -18,7 +18,9 @@ en:
     home: Home
     settings: Settings
     backend: Backend
+    weapons: Weapons
+    equipment: Equipment
+    ships: Ships
     database:
       title: Database
       overview: Index
-    ships: Ships

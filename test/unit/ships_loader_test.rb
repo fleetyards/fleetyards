@@ -7,7 +7,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     ship = create :ship
     type = Equipment::VALID_TYPES.first
     data = {
-      "#{type}_name" => [{
+      type => [{
         name: "Warpcore",
         count: 2
       }]
@@ -23,7 +23,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     ship = create :ship
     hp_class = Weapon::VALID_CLASSES.first
     data = {
-      "#{hp_class}_name" => [{
+      hp_class => [{
         name: "Phaser",
         count: 2
       }]
@@ -33,5 +33,26 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     ship.reload
     phaser = Weapon.where(name: "Phaser").first
     assert_equal ship.weapons.to_a, [phaser, phaser]
+  end
+
+  test "should calculate the correct items" do
+    hp_class = Weapon::VALID_CLASSES.first
+    data1 = "2x2 Talon Stalker IR (underwing)"
+
+    result1 = ShipsLoader.add_item hp_class, data1
+
+    assert_equal result1, {"#{hp_class}_count" => 4, "#{hp_class}" => [{name: "Talon Stalker IR", count: 4}]}
+
+    data2 = "2x Joker Suckerpunch distortion cannon (wings)<br />1x Kruger Intergalaktische Tigerstreik T-21 (nose)"
+
+    result2 = ShipsLoader.add_item hp_class, data2
+
+    assert_equal result2, {}
+
+    data3 = "2x Behring Marksman HS Missile 8-pack<br />(4 additional available)"
+
+    result3 = ShipsLoader.add_item hp_class, data3
+
+    assert_equal result3, {}
   end
 end

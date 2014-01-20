@@ -22,10 +22,10 @@ class ShipsLoader
         length: data["length"],
         beam: data["beam"],
         height: data["height"],
-        mass: data["mass"],
-        cargo: data["cargocapacity"].to_i * 100,
+        mass: data["mass"].to_i / 100,
+        cargo: data["cargocapacity"],
         crew: data["maxcrew"],
-        max_upgrades: data[""],
+        max_upgrades: data["upgradespace"],
         remote_image_url: ("#{BASE_STATIC_URL}game/ship-specs/#{data["imageurl"]}" unless ship.image.present?),
         store_url: data["storeurl"],
         basename: data["basename"],
@@ -117,8 +117,8 @@ class ShipsLoader
   def self.create_weapons ship, data
     weapons = []
     Weapon::VALID_CLASSES.each do |hp_class|
-      unless data["#{hp_class}_name"].blank?
-        data["#{hp_class}_name"].each do |item|
+      unless data[hp_class].blank?
+        data[hp_class].each do |item|
           weapon = Weapon.find_or_create_by(name: item[:name], hp_class: hp_class)
           item[:count].to_i.times do |i|
             weapons << weapon
@@ -132,8 +132,8 @@ class ShipsLoader
 
   def self.create_equipment ship, data
     Equipment::VALID_TYPES.each do |type|
-      unless data["#{type}_name"].blank?
-        data["#{type}_name"].each do |item|
+      unless data[type].blank?
+        data[type].each do |item|
           equipment = Equipment.find_or_create_by(name: item[:name], equipment_type: type)
           item[:count].to_i.times do |i|
             ship.equipment << equipment
@@ -153,7 +153,7 @@ class ShipsLoader
       v.strip
     end
     values.delete_if do |v|
-      ['None', 'None Equipped'].include?(v)
+      ['None', 'None Equipped', 'Unknown'].include?(v)
     end
     values.each do |v|
       if v.match(/available/)
@@ -164,10 +164,13 @@ class ShipsLoader
       elsif v.match(/^\d+/) || v.downcase != 'coming soon'
         if v.match(/^\d+/)
           item_count = v.match(/^\d+/)[0].to_i
+          if v.match(/x(\d+)/)
+            item_count = item_count * v.match(/x(\d+)/)[1].to_i
+          end
         elsif v.downcase != 'coming soon'
           item_count = 1
         end
-        item_name = v.gsub(/\d+x/, '').gsub(/\(.*\)/, '').strip
+        item_name = v.gsub(/\d+x\d?/, '').gsub(/\(.*\)/, '').strip
         if item_name.present? && item_count != 0
           items << {name: item_name, count: item_count}
           count = count + item_count
@@ -177,12 +180,9 @@ class ShipsLoader
         type = match[0]
       end
     end
-    unless values.blank?
-      hash.merge!({name => values})
-      hash.merge!({"#{name}_count" => count}) unless count == 0
-      hash.merge!({"#{name}_type" => type}) unless type.nil?
-      hash.merge!({"#{name}_name" => items}) unless items.blank?
-    end
+    hash.merge!({"#{name}" => items}) unless items.blank?
+    hash.merge!({"#{name}_count" => count}) unless count == 0
+    hash.merge!({"#{name}_type" => type}) unless type.nil?
     hash
   end
 end

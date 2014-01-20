@@ -32,6 +32,9 @@ Fleetyards::Application.routes.draw do
     end
   end
 
+  resources :weapons, only: [:index]
+  resources :equipments, only: [:index]
+
   resources :manufacturers, param: :slug
 
   resources :ship_roles, param: :slug

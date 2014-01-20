@@ -3,3 +3,7 @@
     = link_to I18n.t(:"nav.home"), root_path
   %li{class: get_active_nav('ships')}
     = link_to I18n.t(:"nav.ships"), ships_path
+  %li{class: get_active_nav('weapons')}
+    = link_to I18n.t(:"nav.weapons"), weapons_path
+  %li{class: get_active_nav('equipment')}
+    = link_to I18n.t(:"nav.equipment"), equipments_path

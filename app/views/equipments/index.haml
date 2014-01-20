@@ -1,0 +1,6 @@
+%ul
+  - Equipment.order('equipment_type ASC').all.each do |equipment|
+    %li
+      %strong
+        = "#{I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")}:"
+      = equipment.name

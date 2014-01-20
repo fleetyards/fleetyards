@@ -149,9 +149,9 @@ en:
     unit: "m"
     thousand: "km"
   weight:
-    centi: "g"
-    unit: "kg"
-    thousand: "t"
+    centi: "kg"
+    unit: "t"
+    thousand: "mt"
   people:
     unit:
       one: "person"
