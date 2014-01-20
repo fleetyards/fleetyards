@@ -37,8 +37,13 @@ body {
 }
 
 .filter-menu {
-  margin: 0 0 20px;
+  margin-bottom: 10px;
   display: inline-block;
+}
+
+ul.pagination {
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 footer {

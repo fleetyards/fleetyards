@@ -152,7 +152,7 @@ $navbar-default-toggle-border-color:       darken($navbar-default-bg, 8%);
 
 // Navs
 // -------------------------
-$nav-link-hover-bg:                         lighten($body-bg, 10%);
+$nav-link-hover-bg:                         lighten($body-bg, 5%);
 
 $nav-disabled-link-color:                   $gray-light;
 $nav-disabled-link-hover-color:             $gray-light;
@@ -164,7 +164,7 @@ $nav-tabs-border-color:                     darken($gray-darker, 5%);
 
 $nav-tabs-link-hover-border-color:          darken($gray-darker, 5%);
 
-$nav-tabs-active-link-hover-bg:             lighten($body-bg, 10%);
+$nav-tabs-active-link-hover-bg:             lighten($body-bg, 5%);
 $nav-tabs-active-link-hover-color:          #fff;
 $nav-tabs-active-link-hover-border-color:   darken($gray-darker, 5%);
 

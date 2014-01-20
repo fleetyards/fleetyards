@@ -3,6 +3,10 @@ class Ship < ActiveRecord::Base
 
   belongs_to :manufacturer
   belongs_to :ship_role
+  belongs_to :base_class, class_name: Ship, foreign_key: :base
+  has_many :hardpoints
+  has_many :weapons, through: :hardpoints
+  has_and_belongs_to_many :equipment
 
   mount_uploader :image, ImageUploader
 
@@ -11,6 +15,10 @@ class Ship < ActiveRecord::Base
 
   def self.enabled
     where enabled: true
+  end
+
+  def self.base
+    where base: nil
   end
 
   private def set_name

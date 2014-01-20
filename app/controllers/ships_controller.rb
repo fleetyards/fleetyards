@@ -21,6 +21,9 @@ class ShipsController < ApplicationController
 
   def show
     authorize! :show, :ships
+    if ship.nil?
+      redirect_to ships_path, alert: I18n.t(:"messages.record_not_found")
+    end
   end
 
   def reload
@@ -28,9 +31,7 @@ class ShipsController < ApplicationController
     respond_to do |format|
       format.js {
         Resque.enqueue ShipsWorker
-        state = WorkerState.find_or_create_by(name: "ShipsWorker")
-        state.update(running: true, last_run_start: Time.now)
-        render json: state
+        render json: true
       }
       format.html {
         redirect_to root_path
@@ -56,14 +57,13 @@ class ShipsController < ApplicationController
 
   private def ship
     @ship ||= Ship.where(slug: params.fetch(:slug, nil)).first
-    @ship ||= Ship.new
   end
   helper_method :ship
 
   private def find_ships
     ships = Ship.enabled.includes(:ship_role, :manufacturer)
-    ship_role = params.fetch(:ship_role){nil}
-    manufacturer = params.fetch(:manufacturer){nil}
+    ship_role = params.fetch(:ship_role, nil)
+    manufacturer = params.fetch(:manufacturer, nil)
     if ship_role.present?
       ships = ships.where("ship_roles.slug IN (?)", ship_role.split(', ')).references(:ship_role)
       params.delete(:page)
@@ -80,6 +80,10 @@ class ShipsController < ApplicationController
         search_conditions.join(' OR '),
         { search: "%#{search.downcase}%" }
       ])
+    else
+      unless params.fetch(:variants, nil)
+        ships = ships.base
+      end
     end
     ships
   end

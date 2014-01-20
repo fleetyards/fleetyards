@@ -10,7 +10,7 @@ en:
     placeholder:
       name: Name
       ship:
-        search: "Name or Description"
+        search: "Search for Name or Description"
         beam: Beam
         cargo: Cargo
         crew: Crew

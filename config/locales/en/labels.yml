@@ -16,6 +16,8 @@ en:
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
+        weapon: "No Weapons present"
+        equipment: "No Equipment present"
       setting:
         key: Description
         value: Value
@@ -33,6 +35,10 @@ en:
       setting:
         base: "Base Settings"
         mailer: "E-Mail Settings"
+    tabs:
+      ship:
+        hardpoints: Hardpoints
+        default_configuration: Default Configuration
   activerecord:
     attributes:
       ship:

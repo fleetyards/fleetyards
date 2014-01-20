@@ -16,6 +16,8 @@ de:
       blank:
         default: "Es konnten keine Einträge gefunden werden."
         ship: "Es konnten keine Schiffe gefunden werden."
+        weapon: "Keine Waffen ausgerüstet"
+        equipment: "Kein Equipment ausgerüstet"
       setting:
         key: Beschreibung
         value: Wert
@@ -33,6 +35,10 @@ de:
       setting:
         base: "Allgemeine Einstellungen"
         mailer: "E-Mail Einstellungen"
+    tabs:
+      ship:
+        hardpoints: Hardpoints
+        default_configuration: Standard Konfiguration
   activerecord:
     attributes:
       ship:

@@ -2,6 +2,7 @@ en:
   unauthorized:
     default: "Access denied"
   messages:
+    record_not_found: "No Entry found"
     confirm:
       form:
         cancel: "Are you sure? Unsaved changes will be lost."

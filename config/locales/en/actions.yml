@@ -10,6 +10,8 @@ en:
     save: Save
     add: Add
     show: Show
+    show_variants: "Show variants"
+    hide_variants: "Hide variants"
     sign_in: Login
     sign_out: Logout
     sign_up: "Sign up"

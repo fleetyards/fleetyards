@@ -2,6 +2,7 @@ de:
   unauthorized:
     default: "Zugriff verweigert!"
   messages:
+    record_not_found: "Keinen Eintrag gefunden"
     confirm:
       form:
         cancel: "Sind Sie sich sicher? Ungespeicherte Änderungen gehen verloren."

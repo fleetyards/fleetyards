@@ -4,7 +4,5 @@ class ShipsWorker
 
   def self.perform
     ShipsLoader.run
-    state = WorkerState.where(name: "ShipsWorker").first
-    state.update(running: false, last_run_end: Time.now)
   end
 end

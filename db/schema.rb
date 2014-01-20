@@ -11,11 +11,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140119172741) do
+ActiveRecord::Schema.define(version: 20140119233511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "equipment", force: true do |t|
+    t.string   "name"
+    t.string   "equipment_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "equipment_ships", id: false, force: true do |t|
+    t.integer "equipment_id"
+    t.integer "ship_id"
+  end
+
+  create_table "equipment_translations", force: true do |t|
+    t.integer  "equipment_id", null: false
+    t.string   "locale",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "description"
+  end
+
+  add_index "equipment_translations", ["equipment_id"], name: "index_equipment_translations_on_equipment_id", using: :btree
+  add_index "equipment_translations", ["locale"], name: "index_equipment_translations_on_locale", using: :btree
+
+  create_table "hardpoint_translations", force: true do |t|
+    t.integer  "hardpoint_id", null: false
+    t.string   "locale",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "description"
+  end
+
+  add_index "hardpoint_translations", ["hardpoint_id"], name: "index_hardpoint_translations_on_hardpoint_id", using: :btree
+  add_index "hardpoint_translations", ["locale"], name: "index_hardpoint_translations_on_locale", using: :btree
+
+  create_table "hardpoints", force: true do |t|
+    t.integer  "weapon_id"
+    t.integer  "ship_id"
+    t.text     "description"
+    t.string   "hp_class"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "manufacturers", force: true do |t|
     t.string   "name"
@@ -67,9 +110,32 @@ ActiveRecord::Schema.define(version: 20140119172741) do
     t.string   "cargo"
     t.string   "crew"
     t.string   "image"
-    t.boolean  "enabled",         default: false
+    t.boolean  "enabled",                    default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "base"
+    t.string   "basename"
+    t.string   "store_url"
+    t.integer  "max_upgrades"
+    t.text     "max_equipment_raw"
+    t.text     "factory_equipment_raw"
+    t.text     "weapons_raw"
+    t.integer  "max_class1"
+    t.integer  "max_class2"
+    t.integer  "max_class3"
+    t.integer  "max_class4"
+    t.integer  "max_class5"
+    t.integer  "max_class6"
+    t.integer  "max_class7"
+    t.integer  "max_class8"
+    t.integer  "max_powerplant"
+    t.string   "max_powerplant_type"
+    t.integer  "max_thrusters"
+    t.string   "max_thrusters_type"
+    t.integer  "max_primary_thrusters"
+    t.string   "max_primary_thrusters_type"
+    t.integer  "max_shield"
+    t.string   "max_shield_type"
   end
 
   create_table "users", force: true do |t|
@@ -105,6 +171,24 @@ ActiveRecord::Schema.define(version: 20140119172741) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
+
+  create_table "weapon_translations", force: true do |t|
+    t.integer  "weapon_id",   null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "description"
+  end
+
+  add_index "weapon_translations", ["locale"], name: "index_weapon_translations_on_locale", using: :btree
+  add_index "weapon_translations", ["weapon_id"], name: "index_weapon_translations_on_weapon_id", using: :btree
+
+  create_table "weapons", force: true do |t|
+    t.string   "name"
+    t.string   "hp_class"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "worker_states", force: true do |t|
     t.string   "name"

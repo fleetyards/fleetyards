@@ -18,22 +18,20 @@
         .col-xs-6.col-sm-6.col-md-6
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.length")}:"
-          %span.no-wrap
+          %div.no-wrap
             = number_to_human ship.length, units: :distance
-          %br
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.beam")}:"
-          %span.no-wrap
+          %div.no-wrap
             = number_to_human ship.beam, units: :distance
         .col-xs-6.col-sm-6.col-md-6
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.height")}:"
-          %span.no-wrap
+          %div.no-wrap
             = number_to_human ship.height, units: :distance
-          %br
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.mass")}:"
-          %span.no-wrap
+          %div.no-wrap
             = number_to_human ship.mass, units: :weight
         .clearfix
       %li.list-group-item

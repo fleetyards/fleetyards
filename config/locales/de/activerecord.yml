@@ -15,6 +15,27 @@ de:
         height: Höhe
         length: Länge
         mass: Masse
+        manufacturer: Hersteller
+        hardpoints: Hardpoints
+        weapons: Waffen
+        equipment: Komponenten
+      equipment:
+        types:
+          shield: Schilde
+          thrusters: Manövrierdüsen
+          primary_thrusters: Haupttriebwerke
+          powerplant: Antrieb
+          additional: Zusätzliche Austattung
+      weapon:
+        classes:
+          class1: "Klasse 1"
+          class2: "Klasse 2"
+          class3: "Klasse 3"
+          class4: "Klasse 4"
+          class5: "Klasse 5"
+          class6: "Klasse 6"
+          class7: "Klasse 7"
+          class8: "Klasse 8"
       setting:
         base:
           registration: "Registrierung aktiv?"

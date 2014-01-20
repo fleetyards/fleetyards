@@ -8,7 +8,7 @@ module Backend
       @active_nav = 'backend'
       @settings = Setting.to_h
 
-      @worker = WorkerState.where(name: "ShipsWorker").first
+      @worker_running = Resque.size(ENV['SHIPS_QUEUE']) != 0 || Resque.working.map(&:queues).flatten.include?(ENV['SHIPS_QUEUE'])
     end
 
     private def verify_admin

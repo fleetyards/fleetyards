@@ -10,6 +10,8 @@ de:
     save: Speichern
     add: Hinzufügen
     show: Anzeigen
+    show_variants: "Varianten anzeigen"
+    hide_variants: "Varianten ausblenden"
     sign_in: Login
     sign_out: Logout
     sign_up: Registrieren
