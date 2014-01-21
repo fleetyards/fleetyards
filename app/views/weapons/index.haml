@@ -1,6 +1,13 @@
-%ul
-  - Weapon.order('hp_class ASC').all.each do |weapon|
-    %li
-      %strong
-        = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
-      = weapon.name
+.row
+  - Weapon::VALID_CLASSES.each_with_index do |hp_class, key|
+    - if key %3 == 0 && key != 0
+      .row.visible-md.visible-lg
+    - if key %2 == 0 && key != 0
+      .row.visible-sm
+    .col-md-4.col-sm-6.col-xs-12
+      %h3
+        = I18n.t(:"activerecord.attributes.weapon.classes.#{hp_class}")
+      %ul
+        - Weapon.where(hp_class: hp_class).all.each do |weapon|
+          %li
+            = weapon.name
