@@ -7,7 +7,7 @@ en:
     unlock: "Unlock Account"
     confirm: "Confirm Account"
     ship:
-      index: Ship-Database
+      index: Ships
     user:
       edit: "Edit Settings"
   default_country: ~

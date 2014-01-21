@@ -22,6 +22,7 @@ en:
         key: Description
         value: Value
       ship:
+        stats: Stats
         manufacturer: Manufacturer
         name: Name
         updated_at: "last reload"

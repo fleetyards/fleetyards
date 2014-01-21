@@ -45,6 +45,18 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     ship.reload
     phaser = Weapon.where(name: "Phaser").first
     assert_equal ship.weapons.to_a, [phaser, phaser]
+
+    data = {
+      hp_class => [{
+        name: "Phaser",
+        count: 2
+      }]
+    }
+    ShipsLoader.create_weapons ship, data
+
+    ship.reload
+    phaser = Weapon.where(name: "Phaser").first
+    assert_equal ship.weapons.to_a, [phaser, phaser]
   end
 
   test "should calculate the correct items" do

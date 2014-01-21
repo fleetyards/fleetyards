@@ -7,7 +7,7 @@ de:
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
     ship:
-      index: Schiffsdatenbank
+      index: Schiffe
     user:
       edit: "Einstellungen bearbeiten"
   default_country: Deutschland

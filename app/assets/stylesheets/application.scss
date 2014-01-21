@@ -4,19 +4,10 @@
 
 @import "bourbon";
 
-$footer-border-color: #ccc;
-$footer-bg-color: #ddd;
-$gravatar-shadow: 0 1px 0 #fff;
-@import "colors";
-
-$container-lg: 90%;
-$container-md: 90%;
-$container-xs: 90%;
-$container-sm: 90%;
-
+@import "colors/defaults";
+@import "colors/black";
 @import "bootstrap";
-
-@import "color_overrides";
+@import "colors/black_overrides";
 
 @import "partials";
 
@@ -46,48 +37,8 @@ ul.pagination {
   margin-bottom: 10px;
 }
 
-footer {
-  padding: 30px 0 50px;
-  border-top: 1px solid $footer-border-color;
-  background-color: $footer-bg-color;
-  opacity: .5;
-}
-
 #signup-form {
   margin-bottom: 20px;
-}
-
-.ship-panel {
-  h3 {
-    small {
-      white-space: nowrap;
-    }
-  }
-  .profile-image {
-    background-color: #333;
-
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
-
-  .metrics {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .ship-roles {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-.ship-image, .manufacturer-logo {
-  max-width: 100%;
-  max-height: 100%;
-  display: inline;
 }
 
 .no-wrap {

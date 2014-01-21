@@ -14,44 +14,43 @@
             = I18n.t(:"actions.back")
 
     .row
-      .col-xs-12.col-md-6
-        .text-center
+      .col-xs-12.col-md-8
+        %p
           = image_tag ship.image, class: "thumbnail ship-image"
-        .text-center
-          = image_tag ship.manufacturer.logo, class: "manufacturer-logo"
-        %br
-      .col-xs-12.col-md-6
-        .row
-          .col-xs-12.col-md-12
-            %p
-              = ship.description
-        .row
-          .col-xs-12.col-md-12
-            %table.table.table-striped.table-bordered
-              %tbody
-                %tr
-                  %td
-                    = I18n.t(:"activerecord.attributes.ship.manufacturer")
-                  %td
-                    = ship.manufacturer.name
-                - %w(length beam height mass cargo crew).each do |value|
-                  %tr
-                    %td
-                      = I18n.t(:"activerecord.attributes.ship.#{value}")
-                    %td
-                      - if %w(length beam height).include?(value)
-                        = number_to_human ship.send(value), units: :distance
-                      - elsif %w(mass cargo).include?(value)
-                        = number_to_human ship.send(value), units: :weight
-                      - elsif %w(crew).include?(value)
-                        = number_to_human ship.send(value), units: :people
-                      - else
-                        = ship.send(value)
-                %tr
-                  %td
-                    = I18n.t(:"activerecord.attributes.ship.max_upgrades")
-                  %td
-                    = ship.max_upgrades
+          = ship.description
+      .col-xs-12.col-md-4
+        %table.table.table-striped.table-bordered
+          %thead
+            %tr
+              %th{colspan: 2}
+                %h3= I18n.t(:"labels.table.ship.stats")
+          %tbody
+            %tr
+              %td
+                %strong
+                  = I18n.t(:"activerecord.attributes.ship.manufacturer")
+              %td
+                = ship.manufacturer.name
+            - %w(length beam height mass cargo crew).each do |value|
+              %tr
+                %td
+                  %strong
+                    = I18n.t(:"activerecord.attributes.ship.#{value}")
+                %td
+                  - if %w(length beam height).include?(value)
+                    = number_to_human ship.send(value), units: :distance
+                  - elsif %w(mass cargo).include?(value)
+                    = number_to_human ship.send(value), units: :weight
+                  - elsif %w(crew).include?(value)
+                    = number_to_human ship.send(value), units: :people
+                  - else
+                    = ship.send(value)
+            %tr
+              %td
+                %strong
+                  = I18n.t(:"activerecord.attributes.ship.max_upgrades")
+              %td
+                = ship.max_upgrades
 
     .row
       .col-xs-12.col-md-12
@@ -62,7 +61,6 @@
           %li
             %a{href: "#factory-equipment", data: {toggle: "tab"}}
               = I18n.t(:"labels.tabs.ship.default_configuration")
-        %br
     .tab-content
       .row.tab-pane.active#max-equipment
         .col-xs-12.col-md-6
@@ -104,7 +102,8 @@
               - ship.weapons.each do |weapon|
                 %tr
                   %td
-                    = I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")
+                    %strong
+                      = I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")
                   %td
                     = weapon.name
               - if ship.weapons.blank?
@@ -118,7 +117,8 @@
               - ship.equipment.each do |equipment|
                 %tr
                   %td
-                    = I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")
+                    %strong
+                      = I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")
                   %td
                     = equipment.name
               - if ship.equipment.blank?
