@@ -131,16 +131,18 @@ class ShipsLoader
   end
 
   def self.create_equipment ship, data
+    ship_equipment = []
     Equipment::VALID_TYPES.each do |type|
       unless data[type].blank?
         data[type].each do |item|
           equipment = Equipment.find_or_create_by(name: item[:name], equipment_type: type)
           item[:count].to_i.times do |i|
-            ship.equipment << equipment
+            ship_equipment << equipment
           end
         end
       end
     end
+    ship.equipment = ship_equipment
     ship.save
   end
 

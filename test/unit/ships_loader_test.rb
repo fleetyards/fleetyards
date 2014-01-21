@@ -15,8 +15,20 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     ShipsLoader.create_equipment ship, data
 
     ship.reload
-    phaser = Equipment.where(name: "Warpcore").first
-    assert_equal ship.equipment.to_a, [phaser, phaser]
+    warpcore = Equipment.where(name: "Warpcore").first
+    assert_equal ship.equipment.to_a, [warpcore, warpcore]
+
+    data = {
+      type => [{
+        name: "Warpcore",
+        count: 2
+      }]
+    }
+    ShipsLoader.create_equipment ship, data
+
+    ship.reload
+    warpcore = Equipment.where(name: "Warpcore").first
+    assert_equal ship.equipment.to_a, [warpcore, warpcore]
   end
 
   test "should create correct weapons and add them to ship" do
