@@ -64,15 +64,19 @@ class ShipsController < ApplicationController
     ships = Ship.enabled.includes(:ship_role, :manufacturer)
     ship_role = params.fetch(:ship_role, nil)
     manufacturer = params.fetch(:manufacturer, nil)
+    search = params.fetch(:search, nil)
+
     if ship_role.present?
-      ships = ships.where("ship_roles.slug IN (?)", ship_role.split(', ')).references(:ship_role)
+      ships = ships.where("ship_roles.slug = ?", ship_role).references(:ship_role)
       params.delete(:page)
     end
+
     if manufacturer.present?
-      ships = ships.where("manufacturers.slug IN (?)", manufacturer.split(', ')).references(:manufacturer)
+      ships = ships.where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
       params.delete(:page)
     end
-    if search = params.fetch(:search, nil)
+
+    if search.present?
       search_conditions = []
       search_conditions << "lower(ships.name) like :search"
       search_conditions << "lower(ships.description) like :search"
@@ -80,11 +84,14 @@ class ShipsController < ApplicationController
         search_conditions.join(' OR '),
         { search: "%#{search.downcase}%" }
       ])
-    else
+    end
+
+    if ship_role.blank? && manufacturer.blank? && search.blank?
       unless params.fetch(:variants, nil)
         ships = ships.base
       end
     end
+
     ships
   end
 end
