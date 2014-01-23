@@ -21,3 +21,6 @@ coverage/*
 # app files
 public/uploads/*
 
+# js dependencies
+vendor/assets/components/*
+

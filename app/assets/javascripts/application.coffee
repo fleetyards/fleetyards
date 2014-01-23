@@ -2,10 +2,12 @@
 #= require jquery.turbolinks
 #= require jquery_ujs
 #= require select2
-#= require lib/spin
-#= require lib/ladda
-#= require lib/jquery.noty
 #= require bootstrap
+#= require spin.js/spin
+#= require ladda/js/ladda
+#= require noty/js/noty/jquery.noty
+#= require blueimp-gallery/js/jquery.blueimp-gallery.min
+#= require blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min
 #= require dynamic_fields_for
 #= require i18n
 #= require i18n/translations
@@ -22,6 +24,6 @@ $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
   $('.navbar-collapse.in').not(@).collapse('hide')
 
 $ ->
-
+  $('#blueimp-gallery').data('useBootstrapModal', false)
   $('body > .container').css('min-height', $('body').height() - 175)
 
