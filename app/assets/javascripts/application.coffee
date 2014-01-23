@@ -5,7 +5,7 @@
 #= require bootstrap
 #= require spin.js/spin
 #= require ladda/js/ladda
-#= require noty/js/noty/jquery.noty
+#= require noty/js/noty/packaged/jquery.noty.packaged.min
 #= require blueimp-gallery/js/jquery.blueimp-gallery.min
 #= require blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min
 #= require dynamic_fields_for
