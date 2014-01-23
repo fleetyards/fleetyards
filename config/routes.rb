@@ -27,15 +27,14 @@ Fleetyards::Application.routes.draw do
   resource :password, only: [:edit, :update]
 
   resources :ships, param: :slug do
-    collection do
-      put 'reload'
-    end
+    get 'gallery', on: :member
+    put 'reload', on: :collection
   end
 
   resources :weapons, only: [:index]
   resources :equipments, only: [:index]
 
-  resources :manufacturers, param: :slug
+  resources :manufacturers, only: [:index], param: :slug
 
   resources :ship_roles, param: :slug
 

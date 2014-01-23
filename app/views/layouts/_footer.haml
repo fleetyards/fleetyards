@@ -1,8 +1,12 @@
-%footer#footer
+%footer#main
   .container
     .pull-left
-      &copy; 2014
-      = link_to "Marten Klitzke - mortik.", "mailto:info@mortik.de", target: "_blank", data: { no_turbolink: 'true'}
+      %span.copyright
+        &copy; 2014
+        = link_to "Marten Klitzke - mortik.", "mailto:info@mortik.de", target: "_blank", data: { no_turbolink: 'true'}
+      = " | "
+      %a.rsi-link{href: "https://robertsspaceindustries.com/", target: "_blank"}
+        Roberts Space Industries
     .pull-right
       .version
         = "#{Fleetyards::CODENAME} (#{Fleetyards::VERSION})"

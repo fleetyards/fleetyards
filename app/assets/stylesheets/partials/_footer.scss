@@ -1,32 +1,17 @@
-footer.default-footer {
-  background-color: #333;
-  height: 85px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+footer#main {
+  padding: 30px 0 50px;
+  border-top: 1px solid rgba($footer-border-color, .5);
+  background-color: rgba($footer-bg-color, .5);
 
-  #footer {
-    padding: 20px 0 10px;
+  .copyright, .copyright a, .version {
+    color: #666;
 
-    .mortik-logo {
-      font-size: 18px;
-      color: #666;
-      text-decoration: none;
-
-      &:hover {
-        color: #428bca;
-      }
-    }
-
-    p.copyright {
-      color: #666;
-    }
   }
 }
 
-footer {
-  padding: 30px 0 50px;
-  border-top: 1px solid $footer-border-color;
-  background-color: $footer-bg-color;
-  opacity: .5;
+.rsi-link {
+  color: lighten(#428bca, 10%);
+  &:hover {
+    color: #428bca;
+  }
 }

@@ -25,6 +25,7 @@ en:
     enable: Activate
     disable: Deactivate
     ship:
+      gallery: "Gallery"
       reload: "Reload Ships"
     more_info: "More Information"
     search: Search

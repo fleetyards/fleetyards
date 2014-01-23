@@ -1,0 +1,25 @@
+- content_for :title do
+  = "#{I18n.t(:"headlines.ship.gallery", ship: ship.name)} - #{ship.manufacturer.name}"
+.row#ship-gallery
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.ship.gallery", ship: ship.name)
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          %a.btn.btn-default{href: ship_path(ship.slug)}
+            = I18n.t(:"actions.back")
+
+    .row
+      - %w(freelancer.jpg freelancer-1.jpg freelancer-2.jpg freelancer-3.jpg freelancer.jpg freelancer-1.jpg freelancer-2.jpg freelancer-3.jpg).each_with_index do |image, key|
+        - if key %4 == 0 && key != 0
+          .row.visible-md.visible-lg
+        - if key %2 == 0 && key != 0
+          .row.visible-sm
+        .col-md-3.col-sm-6.col-xs-12
+          %a.thumbnail{href: image_path(image), title: image, data: {gallery: true}}
+            %img{src: image_path(image), alt: image}
+
+= render "shared/gallery_modal"

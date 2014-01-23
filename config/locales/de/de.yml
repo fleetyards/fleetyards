@@ -19,8 +19,8 @@ de:
     settings: Einstellungen
     backend: Backend
     ships: Schiffe
-    weapons: Waffen
-    equipment: Komponenten
-    database:
-      title: Datenbank
+    ship:
       overview: Übersicht
+    weapons: Waffen
+    manufacturers: Hersteller
+    equipment: Komponenten

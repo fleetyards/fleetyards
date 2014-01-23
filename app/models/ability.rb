@@ -5,11 +5,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
 
     if user.admin?
-      can :check, :worker
-      can :update, :locales
-      can :show, :backend
-      can :reload, :ships
-      can [:create, :update, :destroy], :setting
+      can :manage, :all
     end
 
     can :update, User, id: user.id

@@ -10,6 +10,8 @@
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
+          %a.btn.btn-primary{href: gallery_ship_path(ship.slug)}
+            = I18n.t(:"actions.ship.gallery")
           %a.btn.btn-default{href: ships_path}
             = I18n.t(:"actions.back")
 

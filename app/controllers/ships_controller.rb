@@ -39,6 +39,10 @@ class ShipsController < ApplicationController
     end
   end
 
+  def gallery
+    authorize! :gallery, :ships
+  end
+
   private def set_active_nav
     @active_nav = 'ships'
   end

@@ -11,6 +11,7 @@ en:
     privacy: Privacy
     welcome: Welcome
     ship:
+      gallery: "%{ship} Gallery"
       index: "Ships Index"
     base:
       index: "Welcome to"

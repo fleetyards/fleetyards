@@ -19,8 +19,8 @@ en:
     settings: Settings
     backend: Backend
     weapons: Weapons
+    manufacturers: Manufacturers
     equipment: Equipment
     ships: Ships
-    database:
-      title: Database
+    ship:
       overview: Index
