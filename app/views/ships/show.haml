@@ -13,7 +13,9 @@
           - unless ship.images.blank?
             %a.btn.btn-primary{href: gallery_ship_path(ship.slug, params)}
               = I18n.t(:"actions.ship.gallery")
-          %a.btn.btn-default{href: ships_path(params)}
+          - back_params = params.dup
+          - back_params.delete(:slug)
+          %a.btn.btn-default{href: ships_path(back_params)}
             = I18n.t(:"actions.back")
 
     .row
