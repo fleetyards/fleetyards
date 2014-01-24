@@ -15,3 +15,6 @@ de:
       index: Schiffsübersicht
     base:
       index: "Willkommen auf"
+    backend:
+      ship:
+        gallery: "Bilderupload für %{ship}"

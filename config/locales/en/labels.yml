@@ -12,7 +12,13 @@ en:
       admin: Admin?
       email: E-Mail
       created_at: "Created at"
+    gallery:
+      blank:
+        ship: 'No Pictures for "%{ship}" present.'
     table:
+      id: ID
+      name: Name
+      actions: Actions
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
