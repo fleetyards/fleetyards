@@ -11,7 +11,9 @@
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
           - unless ship.images.blank?
-            %a.btn.btn-primary{href: gallery_ship_path(ship.slug, params)}
+            - gallery_params = params.dup
+            - gallery_params.delete(:page)
+            %a.btn.btn-primary{href: gallery_ship_path(ship.slug, gallery_params)}
               = I18n.t(:"actions.ship.gallery")
           - back_params = params.dup
           - back_params.delete(:slug)
