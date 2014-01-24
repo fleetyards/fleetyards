@@ -10,6 +10,10 @@ de:
     impressum: Impressum
     privacy: Datenschutz
     welcome: Willkommen
+    image:
+      updates: "Neue Bilder"
+    ship:
+      updates: "Neue Schiffe"
     ship:
       gallery: "%{ship} Galerie"
       index: Schiffsübersicht

@@ -29,14 +29,14 @@ en:
           additional: Additional Equipment
       weapon:
         classes:
-          class1: "Klasse 1"
-          class2: "Klasse 2"
-          class3: "Klasse 3"
-          class4: "Klasse 4"
-          class5: "Klasse 5"
-          class6: "Klasse 6"
-          class7: "Klasse 7"
-          class8: "Klasse 8"
+          class1: "Class 1"
+          class2: "Class 2"
+          class3: "Class 3"
+          class4: "Class 4"
+          class5: "Class 5"
+          class6: "Class 6"
+          class7: "Class 7"
+          class8: "Class 8"
       setting:
         base:
           registration: "Registration active?"

@@ -10,7 +10,10 @@ en:
     impressum: Impressum
     privacy: Privacy
     welcome: Welcome
+    image:
+      updates: "New Images"
     ship:
+      updates: "Ship Updates"
       gallery: "%{ship} Gallery"
       index: "Ships Index"
     base:
