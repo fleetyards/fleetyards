@@ -2,7 +2,7 @@
   .ship-panel.panel.panel-default
     .panel-heading
       %h3.panel-title
-        %a{href: ship_path(ship.slug)}><
+        %a{href: ship_path(ship.slug, params)}><
           = ship.name
         %br
         %small
@@ -42,5 +42,5 @@
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.crew")}:"
         = number_to_human ship.crew, units: :people
-    %a.btn.btn-default.btn-block{href: ship_path(ship.slug)}
+    %a.btn.btn-default.btn-block{href: ship_path(ship.slug, params)}
       = I18n.t(:"actions.more_info")
