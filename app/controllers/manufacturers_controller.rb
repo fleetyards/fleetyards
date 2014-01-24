@@ -3,7 +3,7 @@ class ManufacturersController < ApplicationController
   before_filter :authenticate_user!, only: []
 
   def index
-    authorize! :index, :manufacturer
+    authorize! :index, :manufacturers
   end
 
   private def set_active_nav
