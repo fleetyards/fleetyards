@@ -31,7 +31,7 @@ class ShipsController < ApplicationController
     @images = ship.images
       .order("created_at asc ")
       .page(params.fetch(:page){nil})
-      .per(16)
+      .per(24)
   end
 
   private def set_active_nav
