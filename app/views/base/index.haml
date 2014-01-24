@@ -40,7 +40,7 @@
     .row
       - Image.all.limit(6).order("updated_at desc").each_with_index do |image, index|
         - if index %2 == 0 && index != 0
-          .row.visible-sm.visible-md
+          .row.hidden-xs
         .col-xs-12.col-sm-6.col-md-6
           %a.thumbnail{href: gallery_ship_path(image.gallery.slug)}
             %img{src: image.name, alt: image.name.filename}
