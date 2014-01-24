@@ -1,4 +1,7 @@
 en:
+  meta:
+    description: "FleetYards.net your Starship Database for the upcomming Space Simulation Star Citizen"
+    keywords: "Star Citizen Space Sim Chris Roberts Roberts Space Industries"
   title:
     default: FleetYards.net
     backend: "FleetYards.net Backend"
