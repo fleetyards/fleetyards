@@ -7,4 +7,4 @@
     .col-md-4.col-sm-6.col-xs-12
       .manufacturer-logo.text-center
         - unless manufacturer.logo.blank?
-          %img{src: image_path(manufacturer.logo), title: manufacturer.name, alt: manufacturer.name, data: {toggle: 'tooltip'}}
+          %img{src: manufacturer.logo.small, title: manufacturer.name, alt: manufacturer.name, data: {toggle: 'tooltip'}}

@@ -1,5 +1,5 @@
 module Backend
-  class LocalesController < ApplicationController
+  class LocalesController < BaseController
     def fetch
       authorize! :update, :locales
 

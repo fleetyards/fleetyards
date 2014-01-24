@@ -8,6 +8,17 @@
 #= require noty/js/noty/packaged/jquery.noty.packaged.min
 #= require blueimp-gallery/js/jquery.blueimp-gallery.min
 #= require blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min
+#= require blueimp-file-upload/js/vendor/jquery.ui.widget
+#= require blueimp-tmpl/js/tmpl.min
+#= require blueimp-load-image/js/load-image.min
+#= require blueimp-file-upload/js/jquery.iframe-transport
+#= require blueimp-file-upload/js/jquery.fileupload
+#= require blueimp-file-upload/js/jquery.fileupload-ui
+#= require blueimp-file-upload/js/jquery.fileupload-process
+#= require blueimp-file-upload/js/jquery.fileupload-image
+#= require blueimp-file-upload/js/jquery.fileupload-audio
+#= require blueimp-file-upload/js/jquery.fileupload-video
+#= require blueimp-file-upload/js/jquery.fileupload-validate
 #= require dynamic_fields_for
 #= require i18n
 #= require i18n/translations
@@ -26,4 +37,3 @@ $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
 $ ->
   $('#blueimp-gallery').data('useBootstrapModal', false)
   $('body > .container').css('min-height', $('body').height() - 175)
-

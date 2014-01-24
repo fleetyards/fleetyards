@@ -14,6 +14,15 @@ Fleetyards::Application.routes.draw do
       mount Resque::Server.new, :at => "/workers"
     end
 
+    resources :ships, param: :slug do
+      get 'gallery', on: :member
+      put 'reload', on: :collection
+    end
+
+    resources :images, only: [:new, :index, :create, :destroy]
+
+    get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
+
     root 'base#index'
   end
 
@@ -28,17 +37,15 @@ Fleetyards::Application.routes.draw do
 
   resources :ships, param: :slug do
     get 'gallery', on: :member
-    put 'reload', on: :collection
   end
 
   resources :weapons, only: [:index]
+
   resources :equipments, only: [:index]
 
   resources :manufacturers, only: [:index], param: :slug
 
-  resources :ship_roles, param: :slug
-
-  get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
+  # resources :ship_roles, param: :slug
 
   get 'impressum' => 'base#impressum'
 

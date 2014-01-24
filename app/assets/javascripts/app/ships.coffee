@@ -2,7 +2,7 @@ window.App.Ships ?= {}
 
 window.App.Ships.checkWorkerState = ->
   $.ajax
-    url: r(check_worker_state_path, "ShipsWorker")
+    url: r(backend_check_worker_state_path, "ShipsWorker")
     dataType: "JSON"
     success: (data) ->
       return if data
@@ -23,11 +23,12 @@ window.App.Ships.reload = ($element) ->
       App.Ships.loadInterval = setInterval App.Ships.checkWorkerState, 2000
 
 $ ->
-  button = document.querySelector('.ladda-button')
-  if button
-    window.laddaButton = Ladda.create(button)
+  if $('#backend, #ships').length
+    button = document.querySelector('.ladda-button')
+    if button
+      window.laddaButton = Ladda.create(button)
 
-  if $('.reload-ships.loading').length
-    laddaButton.start() if laddaButton
-    $('.reload-ships').removeClass('loading')
-    App.Ships.loadInterval = setInterval App.Ships.checkWorkerState, 1000
+    if $('.reload-ships.loading').length
+      laddaButton.start() if laddaButton
+      $('.reload-ships').removeClass('loading')
+      App.Ships.loadInterval = setInterval App.Ships.checkWorkerState, 1000

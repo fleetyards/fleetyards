@@ -11,15 +11,26 @@
         .btn-group.pull-right.resource-nav
           %a.btn.btn-default{href: ship_path(ship.slug)}
             = I18n.t(:"actions.back")
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @images
 
     .row
-      - %w(freelancer.jpg freelancer-1.jpg freelancer-2.jpg freelancer-3.jpg freelancer.jpg freelancer-1.jpg freelancer-2.jpg freelancer-3.jpg).each_with_index do |image, key|
+      - @images.each_with_index do |image, key|
         - if key %4 == 0 && key != 0
           .row.visible-md.visible-lg
         - if key %2 == 0 && key != 0
           .row.visible-sm
         .col-md-3.col-sm-6.col-xs-12
-          %a.thumbnail{href: image_path(image), title: image, data: {gallery: true}}
-            %img{src: image_path(image), alt: image}
-
+          %a.thumbnail{href: image.name, title: image.name.filename, data: {gallery: true}}
+            %img{src: image.name.small, alt: image.name.filename}
+      - if @images.blank?
+        .col-md-12
+          .well.text-center
+            = I18n.t(:"labels.gallery.blank.ship", ship: ship.name)
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @images
 = render "shared/gallery_modal"

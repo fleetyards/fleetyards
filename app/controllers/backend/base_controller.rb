@@ -11,6 +11,11 @@ module Backend
       @worker_running = Resque.size(ENV['SHIPS_QUEUE']) != 0 || Resque.working.map(&:queues).flatten.include?(ENV['SHIPS_QUEUE'])
     end
 
+    private def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+    helper_method :sort_direction
+
     private def verify_admin
       redirect_to root_url unless current_user.try(:admin?)
     end

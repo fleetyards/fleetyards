@@ -1,0 +1,50 @@
+$(document).bind 'dragover', (e) ->
+  dropZone = $('#dropzone')
+  timeout = window.dropZoneTimeout
+  if !timeout
+    dropZone.addClass('in')
+  else
+    clearTimeout(timeout)
+  found = false
+  node = e.target
+
+  while (node isnt null)
+    if node is dropZone[0]
+      found = true
+      break
+    node = node.parentNode
+
+  if found
+    dropZone.addClass('hover');
+  else
+    dropZone.removeClass('hover')
+  window.dropZoneTimeout = setTimeout ->
+      window.dropZoneTimeout = null;
+      dropZone.removeClass('in hover');
+  , 100
+
+$(document).bind 'drop dragover', (e) ->
+    e.preventDefault()
+
+$ ->
+  if $('#fileupload').length
+    $('#fileupload').fileupload
+      url: $('#fileupload').data('upload_path')
+      type: "POST"
+      acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
+      prependFiles: true
+      previewMaxWidth: 200
+      previewMaxHeight: 100
+      dropZone: $('#dropzone')
+
+    $('#fileupload').addClass('fileupload-processing')
+
+    $.ajax
+      url: $('#fileupload').fileupload('option', 'url')
+      dataType: 'json'
+      context: $('#fileupload')[0]
+    .always ->
+      $(@).removeClass('fileupload-processing')
+    .done (result) ->
+      $(@).fileupload('option', 'done')
+        .call(@, $.Event('done'), {result: result})

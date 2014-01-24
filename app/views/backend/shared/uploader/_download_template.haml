@@ -1,0 +1,37 @@
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+%tr.template-download.fade
+  %td.file-preview
+    %span.preview
+      {% if (file.thumbnailUrl) { %}
+      %a{href: "{%=file.url%}", title: "{%=file.name%}", download: "{%=file.name%}"}
+        %img{src: "{%=file.thumbnailUrl%}"}
+      {% } %}
+  %td
+    %p.name
+      {% if (file.url) { %}
+      %a{href: "{%=file.url%}", title: "{%=file.name%}", download: "{%=file.name%}"}
+        {%=file.name%}
+      {% } else { %}
+      %span {%=file.name%}
+      {% } %}
+    {% if (file.error) { %}
+    %div
+      %span.label.label-danger
+        Error
+      {%=file.error%}
+    {% } %}
+  %td.file-size
+    %span.size
+      {%=o.formatFileSize(file.size)%}
+  %td.actions
+    {% if (file.deleteUrl) { %}
+    %button.btn.btn-danger.delete{data: {type: "{%=file.deleteType%}", url: "{%=file.deleteUrl%}"}}
+      %i.glyphicon.glyphicon-trash
+      %span Delete
+    %input.toggle{type: "checkbox", name: "delete", value: "1"}
+    {% } else { %}
+    %button.btn.btn-warning.cancel
+      %i.glyphicon.glyphicon-ban-circle
+      %span Cancel
+    {% } %}
+{% } %}

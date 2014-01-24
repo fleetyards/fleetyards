@@ -6,7 +6,7 @@ class ShipsController < ApplicationController
     authorize! :index, :ships
     @ships = find_ships
     @ships = @ships
-      .order(sort_column + " " + sort_direction)
+      .order("name asc")
       .page(params.fetch(:page){nil})
       .per(8)
     respond_to do |format|
@@ -26,38 +26,17 @@ class ShipsController < ApplicationController
     end
   end
 
-  def reload
-    authorize! :reload, :ships
-    respond_to do |format|
-      format.js {
-        Resque.enqueue ShipsWorker
-        render json: true
-      }
-      format.html {
-        redirect_to root_path
-      }
-    end
-  end
-
   def gallery
     authorize! :gallery, :ships
+    @images = ship.images
+      .order("created_at asc ")
+      .page(params.fetch(:page){nil})
+      .per(16)
   end
 
   private def set_active_nav
     @active_nav = 'ships'
   end
-
-  private def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-  end
-  helper_method :sort_direction
-
-  private def sort_column
-    @sort_column ||= begin
-      column = (Ship.column_names + %w[ship_roles.name manufacturers.name]).include?(params[:sort]) ? params[:sort] : "ships.name"
-    end
-  end
-  helper_method :sort_column
 
   private def ship
     @ship ||= Ship.where(slug: params.fetch(:slug, nil)).first
