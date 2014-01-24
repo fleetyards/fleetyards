@@ -29,7 +29,7 @@
       = I18n.t(:"headlines.ship.updates")
     .list-group
       - Ship.all.limit(5).order("updated_at desc").each do |ship|
-        %a.list-group-item{href: ship_path(ship)}
+        %a.list-group-item{href: ship_path(ship.slug)}
           %h4.list-group-item-heading
             = ship.name
           %p.list-group-item-text
