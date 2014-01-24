@@ -1,8 +1,8 @@
 .row
-  - Manufacturer.known.all.each_with_index do |manufacturer, key|
-    - if key %3 == 0 && key != 0
+  - Manufacturer.known.all.each_with_index do |manufacturer, index|
+    - if index %3 == 0 && index != 0
       .row.visible-md.visible-lg
-    - if key %2 == 0 && key != 0
+    - if index %2 == 0 && index != 0
       .row.visible-sm
     .col-md-4.col-sm-6.col-xs-12
       .manufacturer-logo.text-center
