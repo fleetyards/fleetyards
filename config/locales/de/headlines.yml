@@ -14,11 +14,10 @@ de:
       updates: "Neue Bilder"
     ship:
       updates: "Neue Schiffe"
-    ship:
       gallery: "%{ship} Galerie"
       index: Schiffsübersicht
     base:
       index: "Willkommen auf"
-    backend:
       ship:
+        index: Schiffe
         gallery: "Bilderupload für %{ship}"

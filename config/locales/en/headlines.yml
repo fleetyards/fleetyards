@@ -13,10 +13,12 @@ en:
     image:
       updates: "New Images"
     ship:
+      updates: "Updated Ships"
       gallery: "%{ship} Gallery"
       index: "Ships Index"
     base:
       index: "Welcome to"
     backend:
       ship:
+        index: Ships
         gallery: "Imageupload for %{ship}"
