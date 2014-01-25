@@ -14,13 +14,12 @@ en:
     hide_variants: "Hide variants"
     sign_in: Login
     sign_out: Logout
-    sign_up: "Sign up"
+    sign_up: "Sign Up"
     confirm: "Confirm Account"
     unlock: "Unlock Account"
-    update_password: "Update password"
-    forgot_password: "Forgot your password?"
-    reset_password: "Reset password"
-    save_password: "Save password"
+    update_password: "Update Password"
+    reset_password: "Reset Password"
+    save_password: "Save Password"
     admin: Backend
     enable: Activate
     disable: Deactivate

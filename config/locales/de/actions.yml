@@ -12,13 +12,12 @@ de:
     show: Anzeigen
     show_variants: "Varianten anzeigen"
     hide_variants: "Varianten ausblenden"
-    sign_in: Login
-    sign_out: Logout
+    sign_in: Anmelden
+    sign_out: Abmelden
     sign_up: Registrieren
     confirm: "Account bestätigen"
     unlock: "Account entsperren"
     update_password: "Passwort ändern"
-    forgot_password: "Passwort vergessen?"
     reset_password: "Passwort zurücksetzen"
     save_password: "Passwort speichern"
     admin: Backend
