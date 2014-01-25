@@ -10,13 +10,13 @@
           = render "ships/search"
       .row
         .col-xs-12.col-md-12
-          = I18n.t(:"texts.base.index")
+          = I18n.t(:"texts.base.index").html_safe
 
 .row
   .col-xs-12.col-md-8.col-md-offset-4
     %blockquote.pull-right
       %p
-        = I18n.t(:"texts.base.index_quote")
+        = I18n.t(:"texts.base.index_quote").html_safe
       %small
         = I18n.t(:"texts.base.index_quote_source").html_safe
 .row
