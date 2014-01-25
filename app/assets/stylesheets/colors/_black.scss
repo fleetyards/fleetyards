@@ -169,7 +169,7 @@ $nav-tabs-border-color:                     darken($gray-darker, 5%);
 
 $nav-tabs-link-hover-border-color:          darken($gray-darker, 5%);
 
-$nav-tabs-active-link-hover-bg:             lighten($body-bg, 5%);
+$nav-tabs-active-link-hover-bg:             $body-bg;
 $nav-tabs-active-link-hover-color:          #fff;
 $nav-tabs-active-link-hover-border-color:   darken($gray-darker, 5%);
 
@@ -178,7 +178,7 @@ $nav-tabs-justified-active-link-border-color:     $body-bg;
 
 // Pills
 $nav-pills-border-radius:                   $border-radius-base;
-$nav-pills-active-link-hover-bg:            $component-active-bg;
+$nav-pills-active-link-hover-bg:            $btn-default-bg;//$component-active-bg;
 $nav-pills-active-link-hover-color:         $component-active-color;
 
 
