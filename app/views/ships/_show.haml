@@ -1,8 +1,10 @@
+- ship_params = params.dup
+- ship_params.delete(:slug)
 .col-xs-12.col-sm-4.col-md-3
   .ship-panel.panel.panel-default
     .panel-heading
       %h3.panel-title
-        %a{href: ship_path(ship.slug, params)}><
+        %a{href: ship_path(ship.slug, ship_params)}><
           = ship.name
         %br
         %small
@@ -42,5 +44,5 @@
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.crew")}:"
         = number_to_human ship.crew, units: :people
-    %a.btn.btn-default.btn-block{href: ship_path(ship.slug, params)}
+    %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
       = I18n.t(:"actions.more_info")

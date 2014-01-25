@@ -64,6 +64,10 @@
           %li
             %a{href: "#factory-equipment", data: {toggle: "tab"}}
               = I18n.t(:"labels.tabs.ship.default_configuration")
+          - if ship.variants.present?
+            %li
+              %a{href: "#variants", data: {toggle: "tab"}}
+                = I18n.t(:"labels.tabs.ship.variants")
     .tab-content
       .row.tab-pane.active#max-equipment
         .col-xs-12.col-md-6
@@ -126,3 +130,7 @@
                     = equipment.name
               - if ship.equipment.blank?
                 = render "shared/tables/blank", count: 2, resource: "equipment"
+
+      - if ship.variants.present?
+        .row.tab-pane#variants
+          = render partial: "ships/show", collection: ship.variants, as: :ship

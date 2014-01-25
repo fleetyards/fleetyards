@@ -4,6 +4,7 @@ class Ship < ActiveRecord::Base
   belongs_to :manufacturer
   belongs_to :ship_role
   belongs_to :base_class, class_name: Ship, foreign_key: :base
+  has_many :variants, class_name: Ship, foreign_key: :base
   has_many :hardpoints
   has_many :weapons, through: :hardpoints
   has_many :images, as: :gallery
