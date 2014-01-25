@@ -1,3 +1,5 @@
+.version
+  = "#{Fleetyards::CODENAME} (#{Fleetyards::VERSION})"
 %footer#main
   .container
     .pull-left
@@ -9,9 +11,6 @@
         Roberts Space Industries
 
     .pull-right.text-right
-      = link_to_unless_current "English", locale: "en"
-      = " | "
-      = link_to_unless_current "Deutsch", locale: "de"
-      .version
-        = "#{Fleetyards::CODENAME} (#{Fleetyards::VERSION})"
-
+      .btn-group.btn-group-xs
+        - I18n.available_locales.each do |locale|
+          = link_to I18n.t(:"locales.#{locale}"), update_locale_path(locale), method: :put, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"

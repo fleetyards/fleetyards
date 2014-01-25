@@ -17,8 +17,6 @@
           %small
             = form_errors user, :email
 
-        %hr
-
         .form-group{class: form_error?(user, :password)}
           = form.password_field :password, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
           %small

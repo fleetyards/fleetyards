@@ -30,9 +30,12 @@
           = form.email_field :gravatar, placeholder: I18n.t(:"helpers.placeholder.user.gravatar"), class: 'form-control'
           %small
             = form_errors user, :gravatar
-      %fieldset
-        %legend
-          Adressdaten
-        /= render "addresses/fields", resource: user
+        .col-xs-12.col-md-6.form-group
+          .select2
+            %select{name: "user[locale]", id: "user_locale", data: {placeholder: I18n.t(:"helpers.prompt.user.locale"), empty: I18n.t(:"select2.empty")}}
+              %option
+              - I18n.available_locales.each do |locale|
+                %option{value: locale, selected: (true if user.locale == locale.to_s)}
+                  = I18n.t(:"locales.#{locale}")
 
       = render "shared/submit", path: root_path

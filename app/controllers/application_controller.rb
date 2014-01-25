@@ -10,11 +10,13 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :unauthorized_controllers
 
   private def set_locale
-    I18n.locale = params[:locale] if params[:locale].present?
-    # current_user.locale
-    # request.subdomain
-    # request.env["HTTP_ACCEPT_LANGUAGE"]
-    # request.remote_ip
+    locale = current_user.locale if user_signed_in?
+    locale ||= params[:locale] if params[:locale].present?
+    accept_language = request.env["HTTP_ACCEPT_LANGUAGE"]
+    if match = accept_language.match(/#{I18n.available_locales.join('|')}/)
+      locale ||= match[0]
+    end
+    I18n.locale = locale
   end
 
   private def default_url_options(options = {})
