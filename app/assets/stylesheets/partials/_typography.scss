@@ -18,3 +18,15 @@ address {
     font-weight: normal;
   }
 }
+
+blockquote {
+  small {
+    a {
+      color: $blockquote-small-color;
+
+      &:hover {
+        color: $blockquote-small-color;
+      }
+    }
+  }
+}

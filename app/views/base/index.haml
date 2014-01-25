@@ -4,13 +4,13 @@
       %h2
         %small
           = I18n.t(:"headlines.base.index")
-        FleetYards.net
+        = I18n.t(:"title.default")
       .row
         .col-xs-12.col-md-offset-3.col-md-6
           = render "ships/search"
       .row
         .col-xs-12.col-md-12
-          Your Ship-Database for the upcomming Space Simulation
+          = I18n.t(:"texts.base.index")
           %i
             "Star Citizen"
 
@@ -19,10 +19,9 @@
   .col-xs-12.col-md-8.col-md-offset-4
     %blockquote.pull-right
       %p
-        “Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”
+        = I18n.t(:"texts.base.index_quote")
       %small
-        Source Unknown
-
+        = I18n.t(:"texts.base.index_quote_source").html_safe
 .row
   .col-xs-12.col-md-6
     %h3
