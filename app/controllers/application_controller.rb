@@ -1,11 +1,25 @@
 class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :authenticate_user!, :set_default_nav
+  before_filter :set_locale
 
   protect_from_forgery with: :exception
 
   add_flash_types :error, :warning
 
   check_authorization unless: :unauthorized_controllers
+
+  private def set_locale
+    I18n.locale = params[:locale] if params[:locale].present?
+    # current_user.locale
+    # request.subdomain
+    # request.env["HTTP_ACCEPT_LANGUAGE"]
+    # request.remote_ip
+  end
+
+  private def default_url_options(options = {})
+    {locale: I18n.locale}
+  end
 
   private def unauthorized_controllers
     devise_controller?
@@ -14,8 +28,6 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, warning: exception.message
   end
-
-  before_filter :authenticate_user!, :set_default_nav
 
   private def set_default_nav
     @active_nav = 'home'

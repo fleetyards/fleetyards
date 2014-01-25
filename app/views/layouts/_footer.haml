@@ -7,7 +7,11 @@
       = " | "
       %a.rsi-link{href: "https://robertsspaceindustries.com/", target: "_blank"}
         Roberts Space Industries
-    .pull-right
+
+    .pull-right.text-right
+      = link_to_unless_current "English", locale: "en"
+      = " | "
+      = link_to_unless_current "Deutsch", locale: "de"
       .version
         = "#{Fleetyards::CODENAME} (#{Fleetyards::VERSION})"
 
