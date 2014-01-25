@@ -31,6 +31,18 @@ body {
   }
 }
 
+@media (min-width: $screen-sm-min) {
+  .well {
+    &.login-box {
+      margin-top: 30%;
+    }
+
+    &.signup-box {
+      margin-top: 20%;
+    }
+  }
+}
+
 .filter-menu {
   margin-bottom: 10px;
   display: inline-block;
