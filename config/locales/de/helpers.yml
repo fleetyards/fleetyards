@@ -28,5 +28,7 @@ de:
         remember_me: "Angemeldet bleiben"
         gravatar: "Gravatar E-Mail Adresse"
     prompt:
+      user:
+        locale: "Bitte wähle eine Sprache"
       address:
         country: "Bitte wähle ein Land"

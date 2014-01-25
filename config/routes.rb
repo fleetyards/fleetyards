@@ -49,6 +49,8 @@ Fleetyards::Application.routes.draw do
     # resources :ship_roles, param: :slug
 
     get 'impressum' => 'base#impressum'
+
+    put 'update_locale/:new_locale' => 'base#update_locale', as: :update_locale
     root 'base#index'
   end
   get '*path', to: redirect("/#{I18n.default_locale}/%{path}"), constraints: lambda { |req| !req.path.starts_with? "/#{I18n.default_locale}/" }

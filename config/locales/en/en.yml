@@ -1,4 +1,7 @@
 en:
+  locales:
+    de: Deutsch
+    en: English
   meta:
     description: "FleetYards.net your Starship Database for the upcomming Space Simulation Star Citizen"
     keywords: "Star Citizen Space Sim Chris Roberts Roberts Space Industries"
