@@ -14,7 +14,7 @@ en:
       created_at: "Created at"
     gallery:
       blank:
-        ship: 'No Pictures for "%{ship}" present.'
+        ship: "No Pictures for \"%{ship}\" present."
     table:
       id: ID
       name: Name

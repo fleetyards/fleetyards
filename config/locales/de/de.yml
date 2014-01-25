@@ -32,6 +32,6 @@ de:
     equipment: Komponenten
   texts:
     base:
-      index: "Deine Datenbank für alle Informationen rund um die bald erscheinende Weltraum Simulation"
+      index: "Deine Datenbank für alle Informationen rund um das bald erscheinende <i>“Star Citizen“</i> von Chris Roberts."
       index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
-      index_quote_source: 'Verfasser unbekannt, Quelle: <a href="https://robertsspaceindustries.com">robertsspaceindustries.com</a>'
+      index_quote_source: "Verfasser unbekannt, Quelle: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"

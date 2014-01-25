@@ -26,7 +26,7 @@ en:
           thrusters: "Maneuvering Thrusters"
           primary_thrusters: "Primary Thrusters"
           powerplant: Powerplant
-          additional: Additional Equipment
+          additional: "Additional Equipment"
       weapon:
         classes:
           class1: "Class 1"

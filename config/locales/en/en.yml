@@ -24,14 +24,14 @@ en:
     home: Home
     settings: Settings
     backend: Backend
-    weapons: Weapons
-    manufacturers: Manufacturers
-    equipment: Equipment
     ships: Ships
     ship:
       overview: Index
+    weapons: Weapons
+    manufacturers: Manufacturers
+    equipment: Equipment
   texts:
     base:
-      index: "Your Database for all Information about the upcomming Space Simulation"
+      index: "Your Database for all Information about the upcoming <i>“Star Citizen“</i> from Chris Roberts."
       index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
-      index_quote_source: 'Author Unknown, Source: <a href="https://robertsspaceindustries.com">robertsspaceindustries.com</a>'
+      index_quote_source: "Author Unknown, Source: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"
