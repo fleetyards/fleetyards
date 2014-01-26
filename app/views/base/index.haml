@@ -1,4 +1,4 @@
-.row
+.row{class: ('welcome-box' unless user_signed_in?)}
   .col-md-12
     .jumbotron.text-center
       %h2
@@ -19,24 +19,26 @@
         = I18n.t(:"texts.base.index_quote").html_safe
       %small
         = I18n.t(:"texts.base.index_quote_source").html_safe
-.row
-  .col-xs-12.col-md-6
-    %h3
-      = I18n.t(:"headlines.ship.updates")
-    .list-group
-      - Ship.all.limit(5).order("updated_at desc").each do |ship|
-        %a.list-group-item{href: ship_path(ship.slug)}
-          %h4.list-group-item-heading
-            = ship.name
-          %p.list-group-item-text
-            = ship.description
-  .col-xs-12.col-md-6
-    %h3
-      = I18n.t(:"headlines.image.updates")
-    .row
-      - Image.all.limit(6).order("updated_at desc").each_with_index do |image, index|
-        - if index %2 == 0 && index != 0
-          .row.hidden-xs
-        .col-xs-12.col-sm-6.col-md-6
-          %a.thumbnail{href: gallery_ship_path(image.gallery.slug)}
-            %img{src: image.name.small, alt: image.name.filename}
+
+- if user_signed_in?
+  .row
+    .col-xs-12.col-md-6
+      %h3
+        = I18n.t(:"headlines.ship.updates")
+      .list-group
+        - Ship.enabled.limit(5).order("updated_at desc").all.each do |ship|
+          %a.list-group-item{href: ship_path(ship.slug)}
+            %h4.list-group-item-heading
+              = ship.name
+            %p.list-group-item-text
+              = ship.description
+    .col-xs-12.col-md-6
+      %h3
+        = I18n.t(:"headlines.image.updates")
+      .row
+        - Image.limit(6).order("updated_at desc").all.each_with_index do |image, index|
+          - if index %2 == 0 && index != 0
+            .row.hidden-xs
+          .col-xs-12.col-sm-6.col-md-6
+            %a.thumbnail{href: (gallery_ship_path(image.gallery.slug) unless image.gallery.blank?)}
+              %img{src: image.name.small, alt: image.name.filename}

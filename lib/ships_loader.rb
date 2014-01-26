@@ -9,8 +9,8 @@ class ShipsLoader
     ships = JSON.parse("[#{match[1]}]")
 
     ships.each do |data|
-      ship = Ship.find_or_create_by(rsi_name: data["title"], basename: data["basename"])
-      base_class = Ship.find_or_create_by(basename: data["basename"]) if data["isvariant"]
+      ship = Ship.find_or_create_by(rsi_name: data["title"], basename: data["basename"], is_base: data["hasvariants"])
+      base_class = Ship.find_or_create_by(basename: data["basename"], is_base: true) if data["isvariant"]
 
       old_locale = I18n.locale
       I18n.locale = :en

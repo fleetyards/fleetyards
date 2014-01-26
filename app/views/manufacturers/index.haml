@@ -6,5 +6,8 @@
       .row.visible-sm
     .col-md-4.col-sm-6.col-xs-12
       .manufacturer-logo.text-center
-        - unless manufacturer.logo.blank?
-          %img{src: manufacturer.logo.small, title: manufacturer.name, alt: manufacturer.name, data: {toggle: 'tooltip'}}
+        %a{href: ships_path(manufacturer: manufacturer.slug)}
+          - if manufacturer.logo.blank?
+            = manufacturer.name
+          - else
+            %img{src: manufacturer.logo.small, title: manufacturer.name, alt: manufacturer.name, data: {toggle: 'tooltip'}}
