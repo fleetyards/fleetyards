@@ -46,7 +46,6 @@ en:
       ship:
         hardpoints: "Available Hardpoints"
         default_configuration: "Default Configuration"
-        variants: Variants
   activerecord:
     attributes:
       ship:

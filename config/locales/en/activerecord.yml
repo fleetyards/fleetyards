@@ -19,6 +19,7 @@ en:
         hardpoints: Hardpoints
         weapons: Weapons
         equipment: Equipment
+        variants: Variants
         max_upgrades: Upgrades
       equipment:
         types:
