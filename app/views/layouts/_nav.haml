@@ -1,16 +1,20 @@
 %ul.nav.navbar-nav
   %li{class: get_active_nav('home')}
     = link_to I18n.t(:"nav.home"), root_path
-  %li.dropdown{class: get_active_nav('ships, manufacturers, weapons, equipment')}
-    %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-      = I18n.t(:"nav.ships")
-      %b.caret
-    %ul.dropdown-menu
-      %li{class: get_active_nav('ships')}
-        = link_to I18n.t(:"nav.ship.overview"), ships_path
-      %li{class: get_active_nav('manufacturers')}
-        = link_to I18n.t(:"nav.manufacturers"), manufacturers_path
-      %li{class: get_active_nav('weapons')}
-        = link_to I18n.t(:"nav.weapons"), weapons_path
-      %li{class: get_active_nav('equipment')}
-        = link_to I18n.t(:"nav.equipment"), equipments_path
+  - if can? :index, :equipment
+    %li.dropdown{class: get_active_nav('ships, manufacturers, weapons, equipment')}
+      %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+        = I18n.t(:"nav.ships")
+        %b.caret
+      %ul.dropdown-menu
+        %li{class: get_active_nav('ships')}
+          = link_to I18n.t(:"nav.ship.overview"), ships_path
+        - if can? :index, :manufacturers
+          %li{class: get_active_nav('manufacturers')}
+            = link_to I18n.t(:"nav.manufacturers"), manufacturers_path
+        - if can? :index, :weapons
+          %li{class: get_active_nav('weapons')}
+            = link_to I18n.t(:"nav.weapons"), weapons_path
+        - if can? :index, :equipment
+          %li{class: get_active_nav('equipment')}
+            = link_to I18n.t(:"nav.equipment"), equipments_path
