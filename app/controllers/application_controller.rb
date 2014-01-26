@@ -11,6 +11,12 @@ class ApplicationController < ActionController::Base
 
   private def set_locale
     locale = current_user.locale if user_signed_in?
+    if new_locale = params[:new_locale]
+      if user_signed_in?
+        current_user.update(locale: new_locale)
+      end
+      locale = new_locale
+    end
     locale ||= params[:locale] if params[:locale].present?
     accept_language = request.env["HTTP_ACCEPT_LANGUAGE"]
     if match = accept_language.match(/#{I18n.available_locales.join('|')}/)

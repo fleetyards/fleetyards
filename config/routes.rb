@@ -50,8 +50,6 @@ Fleetyards::Application.routes.draw do
 
     get 'impressum' => 'base#impressum'
 
-    put 'update_locale/:new_locale' => 'base#update_locale', as: :update_locale
-
     root 'base#index'
   end
 

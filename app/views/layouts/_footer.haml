@@ -13,4 +13,4 @@
     .pull-right.text-right
       .btn-group.btn-group-xs
         - I18n.available_locales.each do |locale|
-          = link_to I18n.t(:"locales.#{locale}"), update_locale_path(locale), method: :put, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
+          = link_to I18n.t(:"locales.#{locale}"), {new_locale: locale, locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
