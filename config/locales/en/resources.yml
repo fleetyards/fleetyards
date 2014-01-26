@@ -2,16 +2,16 @@ en:
   resources:
     user:
       default:
-        success: ~
-        failure: ~
+        success: Personal Information
+        failure: Personal Information
       password:
-        success: ~
-        failure: ~
-    locale: ~
-    ship: ~
-    ships: ~
+        success: Password
+        failure: Password
+    locale: Locales
+    ship: Ship
+    ships: Ships
     messages:
-      user_data: ~
-      password: ~
-      user: ~
-      setting: ~
+      user_data: Personal Information
+      password: Password
+      user: User
+      setting: Settings

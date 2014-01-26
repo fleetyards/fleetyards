@@ -13,11 +13,11 @@ en:
       success: "%{resource} creared."
       failure: "%{resource} could not be created."
     update:
-      success: ~
-      failure: ~
+      success: "%{resource} edited successfully."
+      failure: "%{resource} could not be edited."
     destroy:
-      success: ~
-      failure: ~
+      success: "%{resource} successfully deleted."
+      failure: "%{resource} could not be deleted."
     reload:
-      success: ~
-      failure: ~
+      success: "%{resource} successfully reloaded."
+      failure: "%{resource} could not be reloaded."

@@ -18,7 +18,6 @@ en:
       index: "Ships Index"
     base:
       index: "Welcome to"
-    backend:
       ship:
-        index: Ships
-        gallery: "Imageupload for %{ship}"
+        index: ~
+        gallery: ~

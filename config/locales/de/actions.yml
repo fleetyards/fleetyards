@@ -12,7 +12,7 @@ de:
     show: Anzeigen
     show_variants: "Varianten anzeigen"
     hide_variants: "Varianten ausblenden"
-    sign_in: Anmelden
+    sign_in: Login
     sign_out: Abmelden
     sign_up: Registrieren
     confirm: "Account bestätigen"
@@ -24,7 +24,7 @@ de:
     enable: Aktivieren
     disable: Deaktivieren
     ship:
-      gallery: "Galerie"
+      gallery: Galerie
       reload: "Schiffe aktualisieren"
     more_info: "Weitere Informationen"
     search: Suchen
