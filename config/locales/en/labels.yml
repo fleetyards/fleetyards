@@ -15,6 +15,9 @@ en:
     gallery:
       blank:
         ship: "No Pictures for \"%{ship}\" present."
+    blank:
+      weapon: "No Weapons present"
+      equipment: "No Equipment present"
     table:
       id: ID
       name: Name
@@ -22,8 +25,6 @@ en:
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
-        weapon: "No Weapons present"
-        equipment: "No Equipment present"
       setting:
         key: Description
         value: Value

@@ -15,6 +15,9 @@ de:
     gallery:
       blank:
         ship: 'Keine Bilder für "%{ship}" vorhanden.'
+    blank:
+      weapon: "Keine Waffen ausgerüstet"
+      equipment: "Kein Equipment ausgerüstet"
     table:
       id: ID
       name: Name
@@ -22,8 +25,6 @@ de:
       blank:
         default: "Es konnten keine Einträge gefunden werden."
         ship: "Es konnten keine Schiffe gefunden werden."
-        weapon: "Keine Waffen ausgerüstet"
-        equipment: "Kein Equipment ausgerüstet"
       setting:
         key: Beschreibung
         value: Wert
