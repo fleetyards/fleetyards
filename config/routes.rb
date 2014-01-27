@@ -1,7 +1,7 @@
 require 'resque/server'
 
 Fleetyards::Application.routes.draw do
-  scope ":locale", locale: /#{I18n.available_locales.join("|")}/ do
+  scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
 
     namespace :backend do
@@ -53,6 +53,6 @@ Fleetyards::Application.routes.draw do
     root 'base#index'
   end
 
-  get '*path', to: redirect("/#{I18n.default_locale}/%{path}"), constraints: lambda { |req| !req.path.starts_with? "/#{I18n.default_locale}/" }
+  #get '*path', to: redirect("/#{I18n.default_locale}/%{path}"), constraints: lambda { |req| !req.path.starts_with? "/#{I18n.default_locale}/" }
   get '', to: redirect("/#{I18n.default_locale}")
 end
