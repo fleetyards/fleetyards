@@ -12,6 +12,10 @@ de:
     sign_up: Registrieren
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
+    weapon:
+      index: Waffen
+    equipment:
+      index: Komponenten
     ship:
       index: Schiffe
     user:

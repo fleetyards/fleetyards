@@ -12,6 +12,10 @@ en:
     sign_up: "Sign up"
     unlock: "Unlock Account"
     confirm: "Confirm Account"
+    weapon:
+      index: Weapons
+    equipment:
+      index: Equipment
     ship:
       index: Ships
     user:
