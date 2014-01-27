@@ -103,11 +103,7 @@
           .row
             - ship.weapons.each do |weapon|
               .col-xs-12.col-sm-6.col-md-6
-                .list-group
-                  %a.list-group-item{href: "#"}
-                    %strong
-                      = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
-                    = weapon.name
+                = render "weapons/show", weapon: weapon
             - if ship.weapons.blank?
               .col-xs-12.col-sm-12.col-md-12
                 .list-group
@@ -120,11 +116,7 @@
           .row
             - ship.equipment.each do |equipment|
               .col-xs-12.col-sm-6.col-md-6
-                .list-group
-                  %a.list-group-item{href: "#"}
-                    %strong
-                      = "#{I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")}:"
-                    = equipment.name
+                = render "equipments/show", equipment: equipment
             - if ship.equipment.blank?
               .col-xs-12.col-sm-12.col-md-12
                 .list-group

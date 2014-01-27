@@ -40,9 +40,9 @@ Fleetyards::Application.routes.draw do
       get 'gallery', on: :member
     end
 
-    resources :weapons, only: [:index]
+    resources :weapons, only: [:index, :show]
 
-    resources :equipments, only: [:index]
+    resources :equipments, only: [:index, :show]
 
     resources :manufacturers, only: [:index], param: :slug
 

@@ -1,0 +1,5 @@
+.list-group
+  %a.list-group-item{href: weapon_path(weapon)}
+    %strong
+      = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
+    = weapon.name

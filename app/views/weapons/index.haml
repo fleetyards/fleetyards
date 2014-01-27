@@ -1,12 +1,29 @@
-.row
-  - Weapon.order("hp_class asc").all.each_with_index do |weapon, key|
-    - if key %3 == 0 && key != 0
-      .row.visible-md.visible-lg
-    - if key %2 == 0 && key != 0
-      .row.visible-sm
-    .col-md-4.col-sm-6.col-xs-12
-      .list-group
-        %a.list-group-item{href: "#"}
-          %strong
-            = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
-          = weapon.name
+- content_for :title do
+  = I18n.t(:"title.weapon.index")
+.row#ships
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.weapon.index")
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @weapons
+
+    .row
+      - @weapons.each_with_index do |weapon, key|
+        - if key %3 == 0 && key != 0
+          .row.visible-md.visible-lg
+        - if key %2 == 0 && key != 0
+          .row.visible-sm
+        .col-md-4.col-sm-6.col-xs-12
+          = render "show", weapon: weapon
+
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @weapons

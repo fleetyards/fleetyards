@@ -7,7 +7,7 @@ class ShipsController < ApplicationController
     @ships = find_ships
     @ships = @ships
       .order("ships.name asc")
-      .page(params.fetch(:page){nil})
+      .page(params.fetch(:page, nil))
       .per(8)
     respond_to do |format|
       format.js {
