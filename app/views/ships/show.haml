@@ -100,32 +100,30 @@
         .col-xs-12.col-md-6
           %h3
             = I18n.t(:"activerecord.attributes.ship.weapons")
-          %table.table.table-striped.table-bordered
-            %tbody
-              - ship.weapons.each do |weapon|
-                %tr
-                  %td
+          .row
+            - ship.weapons.each do |weapon|
+              .col-xs-12.col-sm-6.col-md-6
+                .list-group
+                  %a.list-group-item{href: "#"}
                     %strong
-                      = I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")
-                  %td
+                      = "#{I18n.t(:"activerecord.attributes.weapon.classes.#{weapon.hp_class}")}:"
                     = weapon.name
-              - if ship.weapons.blank?
-                = render "shared/tables/blank", count: 2, resource: "weapon"
+                - if ship.weapons.blank?
+                  = I18n.t(:"labels.blank.weapon")
 
         .col-xs-12.col-md-6
           %h3
             = I18n.t(:"activerecord.attributes.ship.equipment")
-          %table.table.table-striped.table-bordered
-            %tbody
-              - ship.equipment.each do |equipment|
-                %tr
-                  %td
+          .row
+            - ship.equipment.each do |equipment|
+              .col-xs-12.col-sm-6.col-md-6
+                .list-group
+                  %a.list-group-item{href: "#"}
                     %strong
-                      = I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")
-                  %td
+                      = "#{I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")}:"
                     = equipment.name
-              - if ship.equipment.blank?
-                = render "shared/tables/blank", count: 2, resource: "equipment"
+                - if ship.equipment.blank?
+                  = I18n.t(:"labels.blank.equipment")
 
     %br
     - if ship.variants.present?
