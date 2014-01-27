@@ -5,7 +5,7 @@ class EquipmentsController < ApplicationController
   def index
     authorize! :index, :equipment
     @equipment = Equipment
-      .order('equipment.name desc')
+      .order('equipment.equipment_type desc')
       .page(params.fetch(:page, nil))
       .per(20)
   end

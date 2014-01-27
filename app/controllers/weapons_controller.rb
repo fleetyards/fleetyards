@@ -5,7 +5,7 @@ class WeaponsController < ApplicationController
   def index
     authorize! :index, :weapons
     @weapons = Weapon
-      .order('weapons.name desc')
+      .order('weapons.hp_class asc')
       .page(params.fetch(:page, nil))
       .per(20)
   end
