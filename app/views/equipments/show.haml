@@ -14,7 +14,7 @@
         .btn-group.pull-right.resource-nav
           - back_params = params.dup
           - back_params.delete(:id)
-          %a.btn.btn-default{href: equipment_path(back_params)}
+          %a.btn.btn-default{href: equipments_path(back_params)}
             = I18n.t(:"actions.back")
 
     .row
