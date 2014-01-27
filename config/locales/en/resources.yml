@@ -2,8 +2,8 @@ en:
   resources:
     user:
       default:
-        success: Personal Information
-        failure: Personal Information
+        success: "Personal Information"
+        failure: "Personal Information"
       password:
         success: Password
         failure: Password
@@ -11,7 +11,7 @@ en:
     ship: Ship
     ships: Ships
     messages:
-      user_data: Personal Information
+      user_data: "Personal Information"
       password: Password
       user: User
       setting: Settings
