@@ -13,6 +13,10 @@ de:
     comments: Kommentare
     image:
       updates: "Neue Bilder"
+    weapon:
+      index: Waffen
+    equipment:
+      index: Komponenten
     ship:
       updates: "Neue Schiffe"
       gallery: "%{ship} Galerie"
