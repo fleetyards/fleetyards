@@ -57,12 +57,12 @@
 
     .row
       .col-xs-12.col-md-12
-        %ul.nav.nav-pills
+        %ul.nav.nav-tabs
           %li.active
-            %a{href: "#max-equipment", data: {toggle: "pill"}}
+            %a{href: "#max-equipment", data: {toggle: "tab"}}
               = I18n.t(:"labels.tabs.ship.hardpoints")
           %li
-            %a{href: "#factory-equipment", data: {toggle: "pill"}}
+            %a{href: "#factory-equipment", data: {toggle: "tab"}}
               = I18n.t(:"labels.tabs.ship.default_configuration")
     .tab-content
       .row.tab-pane.active#max-equipment
@@ -127,6 +127,7 @@
               - if ship.equipment.blank?
                 = render "shared/tables/blank", count: 2, resource: "equipment"
 
+    %br
     - if ship.variants.present?
       .row#variants
         .col-xs-12.col-md-12

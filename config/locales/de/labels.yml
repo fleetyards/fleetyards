@@ -44,7 +44,7 @@ de:
         mailer: "E-Mail Einstellungen"
     tabs:
       ship:
-        hardpoints: "Verfügbare Hardpoints"
+        hardpoints: "Hardpoints"
         default_configuration: "Standard Konfiguration"
   activerecord:
     attributes:
