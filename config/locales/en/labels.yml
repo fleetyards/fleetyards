@@ -7,6 +7,7 @@ en:
     id: ID
     role: Role
     email: E-Mail
+    source: Source
     user:
       current_sign_in_at: "Last Login"
       admin: Admin?

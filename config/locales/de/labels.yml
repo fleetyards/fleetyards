@@ -7,6 +7,7 @@ de:
     id: ID
     role: Benutzergruppe
     email: E-Mail
+    source: Quelle
     user:
       current_sign_in_at: "Letzte Aktivität vor"
       admin: Admin?
