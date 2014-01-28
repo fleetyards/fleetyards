@@ -5,3 +5,9 @@
     %h2=I18n.t(:"headlines.privacy")
 
     != @text.output
+
+    %blockquoute.pull-right
+      %small
+        = "#{I18n.t(:"labels.source")}:"
+        %a{href: "http://www.datenschutzbeauftragter-info.de"}
+          www.datenschutzbeauftragter-info.de

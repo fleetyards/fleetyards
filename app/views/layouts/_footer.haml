@@ -20,3 +20,10 @@
       .btn-group.btn-group-xs
         - I18n.available_locales.each do |locale|
           = link_to I18n.t(:"locales.#{locale}"), {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
+
+    .clearfix
+
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.text-center#disclaimer
+        %p
+          Star Citizen and all related properties (including Logos, Images and Designs) are trademarks or registered trademarks of Cloud Imperium Games Corporation. All rights reserved.

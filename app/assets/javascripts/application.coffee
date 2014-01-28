@@ -36,4 +36,4 @@ $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
 
 $ ->
   $('#blueimp-gallery').data('useBootstrapModal', false)
-  $('body > .container').css('min-height', $('body').height() - 175)
+  $('body > .container').css('min-height', $('body').height() - 245)
