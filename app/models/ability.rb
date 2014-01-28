@@ -10,8 +10,10 @@ class Ability
 
     can :update, User, id: user.id
     can [:index], :manufacturers
-    can [:index, :show], :weapons
-    can [:index, :show], :equipment
+    can [:index], :weapons
+    can :show, Weapon, enabled: true
+    can [:index], :equipment
+    can :show, Equipment, enabled: true
     can [:index, :show, :gallery], :ships
   end
 end

@@ -1,0 +1,14 @@
+.table-responsive
+  %table.table.table-condensed.table-hover.table-bordered.table-striped
+    %thead
+      %tr
+        %th.id=sortable "id", I18n.t(:"labels.table.id")
+        %th=sortable "name", I18n.t(:"labels.table.image.name")
+        %th
+          Gallery
+        %th.actions.three=I18n.t(:"labels.table.actions")
+    %tbody
+      = render partial: "backend/images/show", collection: @images, as: :image
+
+      - if @images.blank?
+        = render "shared/tables/blank", count: 3, resource: "image"

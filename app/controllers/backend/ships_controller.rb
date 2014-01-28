@@ -42,10 +42,6 @@ module Backend
     end
     helper_method :sort_column
 
-    private def set_active_nav
-      @active_nav = 'ships'
-    end
-
     private def ship
       @ship ||= Ship.where(slug: params.fetch(:slug, nil)).first
     end

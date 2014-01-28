@@ -1,16 +1,20 @@
 module Backend
   class ImagesController < BaseController
+    before_action :set_active_nav
 
     def index
       authorize! :index, :images
+      @images = Image.order('created_at desc')
       respond_to do |format|
         format.js {
-          @images = Image.order('created_at desc').all
+          @images = @images.all
           jq_images = @images.collect { |image| image.to_jq_upload }
           render json: {files: jq_images}.to_json
         }
         format.html {
-          redirect_to root_path
+          @images = @images
+            .page(params.fetch(:page, nil))
+            .per(20)
         }
       end
     end
@@ -53,6 +57,20 @@ module Backend
 
     private def image_params
       @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type)
+    end
+
+    private def sort_column
+      (Image.column_names).include?(params[:sort]) ? params[:sort] : "id"
+    end
+    helper_method :sort_column
+
+    private def image
+      @image ||= Image.where(id: params.fetch(:id, nil)).first
+    end
+    helper_method :image
+
+    private def set_active_nav
+      @active_nav = 'backend-images'
     end
   end
 end

@@ -41,6 +41,7 @@ gem 'asset_pipeline_routes', '~> 0.2.1'
 
 gem 'uglifier', '~> 2.3.3'
 
+gem 'metadown'
 gem 'redcarpet', '~> 3.0.0'
 
 gem 'puma', '~> 2.7.0'
@@ -56,7 +57,6 @@ gem 'carrierwave'
 gem 'mini_magick'
 
 gem 'typhoeus'
-gem 'nokogiri'
 
 gem 'web_translate_it'
 

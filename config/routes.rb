@@ -20,7 +20,7 @@ Fleetyards::Application.routes.draw do
         put 'reload', on: :collection
       end
 
-      resources :images, only: [:new, :index, :create, :destroy]
+      resources :images, only: [:new, :index, :new, :create, :destroy]
 
       get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
@@ -49,6 +49,7 @@ Fleetyards::Application.routes.draw do
     # resources :ship_roles, param: :slug
 
     get 'impressum' => 'base#impressum'
+    get 'privacy' => 'base#privacy'
 
     root 'base#index'
   end

@@ -7,8 +7,14 @@
         &copy; 2014
         = link_to "Marten Klitzke - mortik.", "mailto:info@mortik.de", target: "_blank", data: { no_turbolink: 'true'}
       = " | "
-      %a.rsi-link{href: "https://robertsspaceindustries.com/", target: "_blank"}
+      %a.rsi-link{href: "https://robertsspaceindustries.com/", target: "_blank"}><
         Roberts Space Industries
+      = " | "
+      %a.rsi-link{href: privacy_path}><
+        = I18n.t(:"nav.privacy")
+      = " | "
+      %a.rsi-link{href: impressum_path}><
+        = I18n.t(:"nav.impressum")
 
     .pull-right.text-right
       .btn-group.btn-group-xs
