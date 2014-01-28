@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "equipment_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",        default: false, null: false
+    t.boolean  "enabled",        default: true, null: false
   end
 
   create_table "equipment_ships", id: false, force: true do |t|
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "gallery_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",      default: false, null: false
+    t.boolean  "enabled",      default: true, null: false
   end
 
   create_table "manufacturers", force: true do |t|
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "logo"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",    default: false, null: false
+    t.boolean  "enabled",    default: true, null: false
   end
 
   create_table "settings", force: true do |t|
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "hp_class"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",    default: false, null: false
+    t.boolean  "enabled",    default: true, null: false
   end
 
   create_table "worker_states", force: true do |t|
