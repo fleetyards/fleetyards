@@ -20,14 +20,14 @@ class ShipsController < ApplicationController
   end
 
   def show
-    authorize! :show, :ships
+    authorize! :show, ship
     if ship.nil?
       redirect_to ships_path, alert: I18n.t(:"messages.record_not_found")
     end
   end
 
   def gallery
-    authorize! :gallery, :ships
+    authorize! :gallery, ship
     @images = ship.images
       .order("created_at asc ")
       .page(params.fetch(:page){nil})
