@@ -77,5 +77,5 @@ Fleetyards::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-  config.logger = GELF::Logger.new("127.0.0.1", "12201", , "WAN", { host: "fleetyards.net", facility: "fleetyards" })
+  config.logger = GELF::Logger.new("localhost", "12201", "WAN", { host: "fleetyards.net", facility: "fleetyards" })
 end
