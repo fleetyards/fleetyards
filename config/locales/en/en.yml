@@ -12,6 +12,8 @@ en:
     sign_up: "Sign up"
     unlock: "Unlock Account"
     confirm: "Confirm Account"
+    impressum: Impressum
+    privacy: Privacy policy
     weapon:
       index: Weapons
     equipment:
@@ -29,6 +31,8 @@ en:
     settings: Settings
     backend: Backend
     ships: Ships
+    impressum: Impressum
+    privacy: Privacy policy
     ship:
       overview: Index
     weapons: Weapons

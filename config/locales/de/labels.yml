@@ -28,10 +28,11 @@ de:
       setting:
         key: Beschreibung
         value: Wert
+      image:
+        name: Dateiname
       ship:
         stats: Statistiken
         manufacturer: Hersteller
-        name: Name
         updated_at: "Letzte Aktualisierung"
       user:
         created_at: Erstellt

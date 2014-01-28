@@ -29,3 +29,8 @@ de:
     more_info: "Weitere Informationen"
     search: Suchen
     ship_database: Schiffsdatenbank
+    backend:
+      ship:
+        new: "Neues Schiff anlegen"
+      image:
+        new: "Neues Bild hochladen"

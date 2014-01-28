@@ -12,6 +12,8 @@ de:
     sign_up: Registrieren
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
+    impressum: Impressum
+    privacy: Datenschutz
     weapon:
       index: Waffen
     equipment:
@@ -29,6 +31,8 @@ de:
     settings: Einstellungen
     backend: Backend
     ships: Schiffe
+    impressum: Impressum
+    privacy: Datenschutz
     ship:
       overview: Übersicht
     weapons: Waffen

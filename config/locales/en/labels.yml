@@ -28,10 +28,11 @@ en:
       setting:
         key: Description
         value: Value
+      image:
+        name: Filename
       ship:
         stats: Stats
         manufacturer: Manufacturer
-        name: Name
         updated_at: "last reload"
       user:
         created_at: Created

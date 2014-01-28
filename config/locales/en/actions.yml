@@ -29,3 +29,8 @@ en:
     more_info: "More Information"
     search: Search
     ship_database: Ship-Database
+    backend:
+      ship:
+        new: "Create new Ship"
+      image:
+        new: "Upload new Image"

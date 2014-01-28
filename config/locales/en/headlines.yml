@@ -8,7 +8,7 @@ en:
     confirm: "Confirm your Account"
     account: "My Information"
     impressum: Impressum
-    privacy: Privacy
+    privacy: Privacy policy
     welcome: Welcome
     comments: Comments
     image:
@@ -24,6 +24,14 @@ en:
     base:
       index: "Welcome to"
     backend:
+      image:
+        index: Images
+        new: Imageupload
       ship:
         index: Ships
         gallery: "Imageuplaod for %{ship}"
+
+  sublines:
+    impressum:
+      general: "General Information (according to § 5 TMG)"
+      disclaimer: Disclaimer

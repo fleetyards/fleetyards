@@ -24,6 +24,14 @@ de:
     base:
       index: "Willkommen auf"
     backend:
+      image:
+        index: Bilder
+        new: Bilderupload
       ship:
         index: Schiffe
         gallery: "Bilderupload für %{ship}"
+
+  sublines:
+    impressum:
+      general: "Allgemeine Informationen (gemäß § 5 TMG)"
+      disclaimer: Haftungsausschluss
