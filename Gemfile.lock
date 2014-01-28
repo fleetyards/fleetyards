@@ -84,6 +84,8 @@ GEM
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
+    gelf (1.4.0)
+      json
     globalize (4.0.0)
       activemodel (>= 4.0.0, < 5)
       activerecord (>= 4.0.0, < 5)
@@ -230,6 +232,7 @@ DEPENDENCIES
   dynamic_fields_for_rails (~> 0.5.0)
   factory_girl_rails
   foreman (~> 0.63.0)
+  gelf
   globalize (~> 4.0.0)
   haml (~> 4.0.4)
   haml-rails (~> 0.5.2)

@@ -60,6 +60,8 @@ gem 'typhoeus'
 
 gem 'web_translate_it'
 
+gem 'gelf'
+
 group :test do
   gem 'rails-perftest'
   gem 'ruby-prof'
