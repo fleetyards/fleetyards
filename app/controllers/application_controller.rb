@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       locale = new_locale
     end
     accept_language = request.env["HTTP_ACCEPT_LANGUAGE"]
-    if match = accept_language.match(/#{I18n.available_locales.join('|')}/)
+    if accept_language.present? && match = accept_language.match(/#{I18n.available_locales.join('|')}/)
       locale ||= match[0]
     end
     I18n.locale = locale
