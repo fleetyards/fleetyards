@@ -11,7 +11,7 @@ module Backend
       end
       I18n.locale = old_locale
 
-      redirect_to root_path, notice: I18n.t(:"messages.reload.success", resource: I18n.t(:"resources.locale"))
+      redirect_to backend_root_path, notice: I18n.t(:"messages.reload.success", resource: I18n.t(:"resources.locale"))
     end
   end
 end
