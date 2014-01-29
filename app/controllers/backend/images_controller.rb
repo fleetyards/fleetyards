@@ -35,22 +35,49 @@ module Backend
           render json: {files: result}.to_json
         }
         format.html {
-          redirect_to root_path
+          redirect_to backend_images_path
         }
       end
     end
 
     def destroy
       authorize! :destroy, :images
+      @image = Image.find(params[:id])
+      @image.destroy
+      respond_to do |format|
+        format.js {
+          render json: true
+        }
+        format.html {
+          redirect_to backend_images_path, notice: "success"
+        }
+      end
+    end
+
+    def enable
+      authorize! :enable, :images
 
       respond_to do |format|
         format.js {
-          @image = Image.find(params[:id])
-          @image.destroy
-          render :json => true
+          Image.where(id: params.fetch(:image_ids, nil)).update_all(enabled: true)
+          render json: true
         }
         format.html {
-          redirect_to root_path
+          redirect_to backend_images_path
+        }
+      end
+    end
+
+    def disable
+      authorize! :disable, :images
+
+      respond_to do |format|
+        format.js {
+          Image.where(id: params.fetch(:image_ids, nil)).update_all(enabled: false)
+          render json: true
+        }
+        format.html {
+          redirect_to backend_images_path
         }
       end
     end

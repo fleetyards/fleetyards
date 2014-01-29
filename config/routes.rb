@@ -20,7 +20,12 @@ Fleetyards::Application.routes.draw do
         put 'reload', on: :collection
       end
 
-      resources :images, only: [:new, :index, :new, :create, :destroy]
+      resources :images, only: [:new, :index, :new, :create, :destroy] do
+        collection do
+          put 'enable'
+          put 'disable'
+        end
+      end
 
       get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 

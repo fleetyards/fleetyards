@@ -1,13 +1,16 @@
 %tr
   %td
+    %input{type: "checkbox", value: image.id}
+  %td
     = image.id
   %td
     = image.name.file.filename
   %td
-    - if image.gallery.present?
-      = image.gallery.name
-    - else
-      Allgemein
+    = I18n.t(:"#{image.enabled?}")
+  %td
+    - unless image.gallery.blank?
+      %a{href: send("gallery_#{image.gallery.class.name.downcase}_path", image.gallery.slug), target: '_blank'}
+        = image.gallery.name
   %td
     .btn-group
       -# = link_to edit_backend_image_path(image), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do

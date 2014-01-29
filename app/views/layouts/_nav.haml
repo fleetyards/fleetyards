@@ -1,7 +1,7 @@
 %ul.nav.navbar-nav
   %li{class: get_active_nav('home')}
     = link_to I18n.t(:"nav.home"), root_path
-  - if can? :index, :equipment
+  - if can? :index, :ships
     %li.dropdown{class: get_active_nav('ships, manufacturers, weapons, equipment')}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         = I18n.t(:"nav.ships")

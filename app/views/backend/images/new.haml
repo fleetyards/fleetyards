@@ -1,25 +1,36 @@
-.row
-  .col-xs-12.col-md-8
-    %h2
-      = I18n.t(:"headlines.backend.image.new")
-  .col-xs-12.col-md-4
-    .btn-group.pull-right.resource-nav
-      %a.btn.btn-default{href: backend_images_path}
-        = I18n.t(:"actions.back")
+.row#backend-image-upload
+  .col-xs-12.col-md-12
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.backend.image.new")
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          %a.btn.btn-default{href: backend_images_path}
+            = I18n.t(:"actions.back")
 
-%form#fileupload{action: backend_images_path, method: "POST", enctype: "multipart/form-data", data: {upload_path: backend_images_path}}
-  %input{type: "hidden", name: "image[gallery_id]"}
-  %input{type: "hidden", name: "image[gallery_type]"}
-  = render "backend/shared/uploader/buttons"
+    %form#fileupload{action: backend_images_path, method: "POST", enctype: "multipart/form-data", data: {upload_path: backend_images_path}}
 
-  #dropzone.fade.well
-    Drop files here
+      .select2
+        %select{id: "select-image-gallery-id", data: {placeholder: I18n.t(:"helpers.prompt.image.gallery_id"), empty: I18n.t(:"select2.empty")}}
+          %option{value: ''}
+            Keine Galerie
+          - (Ship.all + Album.all).each do |gallery|
+            %option{value: gallery.id, data: {type: gallery.class}}
+              = gallery.name
 
-  %table.table.table-striped{role: "presentation"}
-    %tbody.files
+      %input{type: "hidden", name: "image[gallery_id]", id: "image-gallery-id"}
+      %input{type: "hidden", name: "image[gallery_type]", id: "image-gallery-type"}
+      = render "backend/shared/uploader/buttons"
 
-%script#template-upload{type: "text/x-tmpl"}
-  = render "backend/shared/uploader/upload_template"
+      #dropzone.fade.well
+        Drop files here
 
-%script#template-download{type: "text/x-tmpl"}
-  = render "backend/shared/uploader/download_template"
+      %table.table.table-striped{role: "presentation"}
+        %tbody.files.fileupload-no-file-list
+
+    %script#template-upload{type: "text/x-tmpl"}
+      = render "backend/shared/uploader/upload_template"
+
+    %script#template-download{type: "text/x-tmpl"}
+      = render "backend/shared/uploader/download_template"

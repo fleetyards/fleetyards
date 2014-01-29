@@ -39,12 +39,15 @@ $ ->
 
     $('#fileupload').addClass('fileupload-processing')
 
-    $.ajax
-      url: $('#fileupload').fileupload('option', 'url')
-      dataType: 'json'
-      context: $('#fileupload')[0]
-    .always ->
-      $(@).removeClass('fileupload-processing')
-    .done (result) ->
-      $(@).fileupload('option', 'done')
-        .call(@, $.Event('done'), {result: result})
+    if $('.fileupload-no-file-list').length
+      $('#fileupload').removeClass('fileupload-processing')
+    else
+      $.ajax
+        url: $('#fileupload').fileupload('option', 'url')
+        dataType: 'json'
+        context: $('#fileupload')[0]
+      .always ->
+        $(@).removeClass('fileupload-processing')
+      .done (result) ->
+        $(@).fileupload('option', 'done')
+          .call(@, $.Event('done'), {result: result})

@@ -12,8 +12,6 @@ class Ship < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
-  accepts_nested_attributes_for :images, allow_destroy: true
-
   before_create :set_name
   before_save :update_slugs
 

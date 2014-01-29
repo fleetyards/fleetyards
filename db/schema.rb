@@ -11,18 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140128165214) do
+ActiveRecord::Schema.define(version: 20140129225911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "album_translations", force: true do |t|
+    t.integer  "album_id",    null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "description"
+  end
+
+  add_index "album_translations", ["album_id"], name: "index_album_translations_on_album_id", using: :btree
+  add_index "album_translations", ["locale"], name: "index_album_translations_on_locale", using: :btree
+
+  create_table "albums", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.boolean  "enabled",    default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "equipment", force: true do |t|
     t.string   "name"
     t.string   "equipment_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",        default: true, null: false
+    t.boolean  "enabled",        default: false, null: false
   end
 
   create_table "equipment_ships", id: false, force: true do |t|
@@ -67,7 +86,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "gallery_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",      default: true, null: false
+    t.boolean  "enabled",      default: false, null: false
   end
 
   create_table "manufacturers", force: true do |t|
@@ -78,7 +97,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "logo"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",    default: true, null: false
+    t.boolean  "enabled",    default: false, null: false
   end
 
   create_table "settings", force: true do |t|
@@ -201,7 +220,7 @@ ActiveRecord::Schema.define(version: 20140128165214) do
     t.string   "hp_class"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "enabled",    default: true, null: false
+    t.boolean  "enabled",    default: false, null: false
   end
 
   create_table "worker_states", force: true do |t|
