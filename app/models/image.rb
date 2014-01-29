@@ -14,4 +14,12 @@ class Image < ActiveRecord::Base
       "deleteType" => "DELETE"
     }
   end
+
+  def self.in_gallery
+    where("gallery_id IS NOT ?", nil)
+  end
+
+  def self.enabled
+    where enabled: true
+  end
 end

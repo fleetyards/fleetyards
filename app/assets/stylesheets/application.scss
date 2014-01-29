@@ -69,3 +69,13 @@ ul.pagination {
 .no-wrap {
   white-space: nowrap;
 }
+
+.thumbnail {
+  border-color: #666;
+}
+
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: $navbar-active;
+}
