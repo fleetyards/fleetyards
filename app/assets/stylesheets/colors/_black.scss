@@ -88,7 +88,7 @@ $input-bg:                       #eee;
 $input-bg-disabled:              $gray-lighter;
 
 $input-color:                    $gray-darker;
-$input-border:                   #ccc;
+$input-border:                   #999;
 $input-border-radius:            $border-radius-base;
 $input-border-focus:             #66afe9;
 
@@ -309,7 +309,7 @@ $progress-bar-info-bg:        $brand-info;
 
 // List group
 // -------------------------
-$list-group-bg:               transparent;
+$list-group-bg:               lighten($body-bg, 3%);
 $list-group-border:           rgba(0, 0, 0, 0.6);
 $list-group-border-radius:    $border-radius-base;
 
