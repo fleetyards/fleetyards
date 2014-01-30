@@ -79,3 +79,7 @@ a.thumbnail:focus,
 a.thumbnail.active {
   border-color: $navbar-active;
 }
+
+.noty_buttons {
+  background-color: transparent !important;
+}

@@ -1,10 +1,10 @@
 GIT
-  remote: git://github.com/fnando/i18n-js.git
-  revision: 4e5c525ff6e1ec4d3449852746fa5651a0577d68
-  branch: rewrite
+  remote: git@github.com:nicolai86/rails-asset-localization.git
+  revision: 08babf372de25ce17906bf2d00784c13ee996991
+  branch: master
   specs:
-    i18n-js (3.0.0.rc5)
-      i18n
+    rails-asset-localization (0.2.1)
+      rails (>= 3.2.16, < 5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -237,7 +237,6 @@ DEPENDENCIES
   haml (~> 4.0.4)
   haml-rails (~> 0.5.2)
   highline
-  i18n-js!
   jquery-rails (~> 3.0.4)
   jquery-turbolinks (~> 2.0.1)
   kaminari (~> 0.15.0)
@@ -247,6 +246,7 @@ DEPENDENCIES
   pg (~> 0.17.0)
   puma (~> 2.7.0)
   rails (~> 4.0.2)
+  rails-asset-localization!
   rails-perftest
   redcarpet (~> 3.0.0)
   resque (~> 1.25.0)

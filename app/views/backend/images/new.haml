@@ -9,7 +9,7 @@
           %a.btn.btn-default{href: backend_images_path}
             = I18n.t(:"actions.back")
 
-    %form#fileupload{action: backend_images_path, method: "POST", enctype: "multipart/form-data", data: {upload_path: backend_images_path}}
+    %form#fileupload{action: backend_images_path, method: "POST", enctype: "multipart/form-data"}
 
       .select2
         %select{id: "select-image-gallery-id", data: {placeholder: I18n.t(:"helpers.prompt.image.gallery_id"), empty: I18n.t(:"select2.empty")}}

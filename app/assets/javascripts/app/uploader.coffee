@@ -29,7 +29,6 @@ $(document).bind 'drop dragover', (e) ->
 $ ->
   if $('#fileupload').length
     $('#fileupload').fileupload
-      url: $('#fileupload').data('upload_path')
       type: "POST"
       acceptFileTypes: /(\.|\/)(jpe?g|png)$/i
       prependFiles: true
@@ -39,11 +38,9 @@ $ ->
 
     $('#fileupload').addClass('fileupload-processing')
 
-    if $('.fileupload-no-file-list').length
-      $('#fileupload').removeClass('fileupload-processing')
-    else
+    if $('#fileupload').data('load-path') isnt undefined
       $.ajax
-        url: $('#fileupload').fileupload('option', 'url')
+        url: $('#fileupload').data('load-path')
         dataType: 'json'
         context: $('#fileupload')[0]
       .always ->
@@ -51,3 +48,5 @@ $ ->
       .done (result) ->
         $(@).fileupload('option', 'done')
           .call(@, $.Event('done'), {result: result})
+    else
+      $('#fileupload').removeClass('fileupload-processing')

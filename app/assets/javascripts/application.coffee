@@ -20,7 +20,7 @@
 #= require blueimp-file-upload/js/jquery.fileupload-video
 #= require blueimp-file-upload/js/jquery.fileupload-validate
 #= require dynamic_fields_for
-#= require i18n
+#= require i18next
 #= require i18n/translations
 #= require helper
 #= require app
@@ -35,5 +35,31 @@ $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
   $('.navbar-collapse.in').not(@).collapse('hide')
 
 $ ->
+
+  # for bundledLocale of bundledLocales
+  #   storedLocale = window.localStorage.getItem("res_#{bundledLocale}")?
+  #   unless storedLocale?
+  #     object = {}
+  #     object[bundledLocale] = bundledLocales[bundledLocale]
+  #     i18n.sync._storeLocal object
+
+  locale = "en"
+
+  i18n.init({
+    # change default interpolation from __VARIABLE__ to rails-style %{VARIABLE}
+    interpolationPrefix: '%{'
+    interpolationSuffix: '}'
+
+    # current locale to load
+    lng: locale
+
+    # rails-asset-localization path
+    resGetPath: '/locales/%{lng}.json'
+
+    # store locales for 1 day in localStorage
+    useLocalStorage: true
+    localStorageExpirationTime: 60 * 60 * 24 * 1000
+  })
+
   $('#blueimp-gallery').data('useBootstrapModal', false)
   $('body > .container').css('min-height', $('body').height() - 245)

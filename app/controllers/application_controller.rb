@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   end
 
   private def unauthorized_controllers
-    devise_controller?
+    devise_controller? || is_a?(RailsAssetLocalization::LocalesController)
   end
 
   rescue_from CanCan::AccessDenied do |exception|

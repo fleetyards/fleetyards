@@ -1,6 +1,8 @@
 require 'resque/server'
 
 Fleetyards::Application.routes.draw do
+  mount RailsAssetLocalization::Engine => "/locales"
+
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
 

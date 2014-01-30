@@ -28,9 +28,6 @@ window.App.BackendImages.stateChange = (ev) ->
 $(document).on 'change', "#select-image-gallery-id", App.BackendImages.updateGallery
 
 $ ->
-  if $('#backend-image-upload').length
-    console.log "backend-image-upload"
-
   if $('#backend-images').length
     $('#enable-images').click App.BackendImages.stateChange
     $('#disable-images').click App.BackendImages.stateChange

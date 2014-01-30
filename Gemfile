@@ -48,7 +48,7 @@ gem 'puma', '~> 2.7.0'
 
 gem 'sentry-raven'
 
-gem 'i18n-js', github: "fnando/i18n-js", branch: :rewrite
+gem 'rails-asset-localization', git: 'git@github.com:nicolai86/rails-asset-localization.git', branch: :master
 
 gem 'thor'
 gem 'highline'
