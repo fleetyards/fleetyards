@@ -49,6 +49,7 @@ $ ->
     # change default interpolation from __VARIABLE__ to rails-style %{VARIABLE}
     interpolationPrefix: '%{'
     interpolationSuffix: '}'
+    fallbackLng: "en"
 
     # current locale to load
     lng: locale
