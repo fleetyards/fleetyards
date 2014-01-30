@@ -20,6 +20,8 @@
     != stylesheet_link_tag "https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
     != stylesheet_link_tag "application"
 
+    :javascript
+      window.locale = "#{I18n.locale}";
     != javascript_include_tag "application"
 
     != csrf_meta_tags
