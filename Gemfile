@@ -49,6 +49,7 @@ gem 'puma', '~> 2.7.0'
 gem 'sentry-raven'
 
 gem 'rails-asset-localization', git: 'git@github.com:nicolai86/rails-asset-localization.git', branch: :master
+gem "bower-rails", github: '42dev/bower-rails'
 
 gem 'thor'
 gem 'highline'
@@ -72,4 +73,5 @@ end
 
 group :development do
   gem 'foreman', '~> 0.63.0'
+  gem 'quiet_assets'
 end

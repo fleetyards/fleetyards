@@ -20,13 +20,11 @@ Fleetyards::Application.routes.draw do
       resources :ships, param: :slug do
         get 'gallery', on: :member
         put 'reload', on: :collection
+        put 'toggle', on: :member
       end
 
       resources :images, only: [:new, :index, :new, :create, :destroy] do
-        collection do
-          put 'enable'
-          put 'disable'
-        end
+        put 'toggle', on: :member
       end
 
       get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state

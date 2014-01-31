@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/42dev/bower-rails.git
+  revision: 05cbc009c4be092d89c0225c93c3a27b4ae337ba
+  specs:
+    bower-rails (0.6.1)
+
+GIT
   remote: git@github.com:nicolai86/rails-asset-localization.git
   revision: 08babf372de25ce17906bf2d00784c13ee996991
   branch: master
@@ -130,6 +136,8 @@ GEM
     polyglot (0.3.3)
     puma (2.7.1)
       rack (>= 1.1, < 2.0)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-protection (1.5.1)
       rack
@@ -223,6 +231,7 @@ DEPENDENCIES
   asset_pipeline_routes (~> 0.2.1)
   bootstrap-sass (~> 3.0.3.0)
   bourbon (~> 3.1.8)
+  bower-rails!
   cache_digests (~> 0.3.1)
   cancan (~> 1.6.10)
   carrierwave
@@ -245,6 +254,7 @@ DEPENDENCIES
   mocha
   pg (~> 0.17.0)
   puma (~> 2.7.0)
+  quiet_assets
   rails (~> 4.0.2)
   rails-asset-localization!
   rails-perftest

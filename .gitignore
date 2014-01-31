@@ -22,5 +22,6 @@ coverage/*
 public/uploads/*
 
 # js dependencies
-vendor/assets/components/*
+vendor/assets/bower_components/*
+vendor/assets/.bowerrc
 
