@@ -6,7 +6,7 @@
     .well.signup-box
       %h2=I18n.t(:"headlines.sign_up")
 
-      = form_for user, url: user_registration_path do |form|
+      = form_for user, url: user_registration_path, html: {class: "form-big"} do |form|
         = form.hidden_field :plan, value: plan
         .form-group{class: form_error?(user, :username)}
           = form.text_field :username, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
