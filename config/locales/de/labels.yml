@@ -23,6 +23,7 @@ de:
       id: ID
       name: Name
       actions: Aktionen
+      enabled: Aktiv?
       blank:
         default: "Es konnten keine Einträge gefunden werden."
         ship: "Es konnten keine Schiffe gefunden werden."
@@ -31,6 +32,7 @@ de:
         value: Wert
       image:
         name: Dateiname
+        gallery_type: Galerie
       ship:
         stats: Statistiken
         manufacturer: Hersteller

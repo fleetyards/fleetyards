@@ -23,6 +23,7 @@ en:
       id: ID
       name: Name
       actions: Actions
+      enabled: Enabled?
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
@@ -31,6 +32,7 @@ en:
         value: Value
       image:
         name: Filename
+        gallery_type: Gallery
       ship:
         stats: Stats
         manufacturer: Manufacturer

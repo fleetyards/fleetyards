@@ -10,6 +10,7 @@ en:
     locale: Locales
     ship: Ship
     ships: Ships
+    image: Image
     messages:
       user_data: "Personal Information"
       password: Password

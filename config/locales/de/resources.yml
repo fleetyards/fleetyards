@@ -10,6 +10,7 @@ de:
     locale: Sprachdateien
     ship: Schiff
     ships: Schiffsdaten
+    image: Bild
     messages:
       user_data: Benutzerdaten
       password: Passwort

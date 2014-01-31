@@ -2,6 +2,8 @@ de:
   unauthorized:
     default: "Zugriff verweigert!"
   messages:
+    alert:
+      selection_required: "Bitte wählen Sie zumindest ein %{resource} aus."
     record_not_found: "Keinen Eintrag gefunden"
     confirm:
       form:
@@ -9,6 +11,10 @@ de:
       delete: "Sind Sie sich sicher, dass Sie den Eintrag löschen wollen?"
     setting:
       not_found: "Keinen Eintrag gefunden"
+    enabled:
+      success: "%{resource} aktiviert."
+    disabled:
+      success: "%{resource} deaktiviert."
     create:
       success: "%{resource} erfolgreich erstellt."
       failure: "%{resource} konnte nicht erstellt werden."
@@ -19,5 +25,7 @@ de:
       success: "%{resource} erfolgreich gelöscht."
       failure: "%{resource} konnte nicht gelöscht werden."
     reload:
+      startet: "%{resource} werden aktualisiert."
       success: "%{resource} erfolgreich aktualisiert."
       failure: "%{resource} konnte nicht aktualisiert werden."
+
