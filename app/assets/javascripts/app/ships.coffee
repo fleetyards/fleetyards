@@ -12,7 +12,7 @@ window.App.Ships.checkWorkerState = ->
       $('.reload-ships').removeClass('disabled')
       laddaButton.stop() if laddaButton
       clearInterval App.Ships.loadInterval
-      displaySuccess "Schiffe wurden erfolgreich aktualisiert."
+      displaySuccess i18n.t("messages.reload.success", resource: i18n.t("resources.ships"))
 
 window.App.Ships.reload = ($element) ->
   laddaButton.start() if laddaButton
@@ -23,7 +23,7 @@ window.App.Ships.reload = ($element) ->
     dataType: "JSON"
     success: ->
       App.Ships.workerPath = $element.data('workerpath')
-      displayAlert "Schiffe werden aktualisiert"
+      displayAlert i18n.t("messages.reload.startet", resource: i18n.t("resources.ships"))
       App.Ships.loadInterval = setInterval App.Ships.checkWorkerState, 2000
 
 $ ->

@@ -5,6 +5,8 @@
     = ship.name
   %td
     .btn-group
+      %button.btn.btn-default.btn-sm{class: ('active' if ship.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_backend_ship_path(ship.slug), resource: 'ship'}}
+        %i.glyphicon{class: "glyphicon-#{(ship.enabled? ? 'check' : 'unchecked')}"}
       = link_to gallery_backend_ship_path(ship.slug), title: I18n.t(:"actions.ship.gallery"), class: "btn btn-default btn-sm" do
         %i.glyphicon.glyphicon-picture
       = link_to edit_backend_ship_path(ship.slug), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do

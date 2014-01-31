@@ -54,27 +54,20 @@ module Backend
       end
     end
 
-    def enable
-      authorize! :enable, :images
+    def toggle
+      authorize! :toggle, :images
 
       respond_to do |format|
         format.js {
-          Image.where(id: params.fetch(:image_ids, nil)).update_all(enabled: true)
-          render json: true
-        }
-        format.html {
-          redirect_to backend_images_path
-        }
-      end
-    end
-
-    def disable
-      authorize! :disable, :images
-
-      respond_to do |format|
-        format.js {
-          Image.where(id: params.fetch(:image_ids, nil)).update_all(enabled: false)
-          render json: true
+          if image.update(image_params)
+            message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.image"))
+            if image.enabled?
+              message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.image"))
+            end
+            render json: {message: message}
+          else
+            render json: false, status: :bad_request
+          end
         }
         format.html {
           redirect_to backend_images_path
@@ -83,7 +76,7 @@ module Backend
     end
 
     private def image_params
-      @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type)
+      @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type, :enabled)
     end
 
     private def sort_column

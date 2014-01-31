@@ -2,14 +2,11 @@
   %table.table.table-condensed.table-hover.table-bordered.table-striped
     %thead
       %tr
-        %th.id
         %th.id=sortable "id", I18n.t(:"labels.table.id")
+        %th.preview
         %th=sortable "name", I18n.t(:"labels.table.image.name")
-        %th
-          Enabled
-        %th
-          Gallery
-        %th.actions.one
+        %th=sortable "gallery_type", I18n.t(:"labels.table.image.gallery_type")
+        %th.actions.two
     %tbody
       = render partial: "backend/images/show", collection: @images, as: :image
 

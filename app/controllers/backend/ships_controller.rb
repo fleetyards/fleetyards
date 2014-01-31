@@ -37,6 +37,31 @@ module Backend
       end
     end
 
+    def toggle
+      authorize! :toggle, ship
+
+      respond_to do |format|
+        format.js {
+          if ship.update(ship_params)
+            message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.ship"))
+            if ship.enabled?
+              message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.ship"))
+            end
+            render json: {message: message}
+          else
+            render json: false, status: :bad_request
+          end
+        }
+        format.html {
+          redirect_to backend_ships_path
+        }
+      end
+    end
+
+    private def ship_params
+      @ship_params ||= params.require(:ship).permit(:name, :enabled)
+    end
+
     private def sort_column
       (Ship.column_names).include?(params[:sort]) ? params[:sort] : "id"
     end

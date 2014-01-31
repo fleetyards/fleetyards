@@ -41,6 +41,9 @@ body {
       margin-top: 20%;
     }
   }
+}
+
+@media (min-width: $screen-md-min) {
   .welcome-box {
     margin-top: 10%;
   }
