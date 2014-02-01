@@ -29,11 +29,13 @@ form {
     input, textarea {
       border-color: #c60f13;
       background-color: rgba(198, 15, 19, 0.1);
+
       &:focus {
         background: #fafafa;
         border-color: #999999;
       }
     }
+
     small {
       display: block;
       padding: 0.375em 0.25em;
@@ -42,7 +44,7 @@ form {
       font-weight: bold;
       background: #c60f13;
       color: white;
-      border-radius: 0 0 4px 4px
+      border-radius: 0 0 4px 4px;
     }
   }
 
@@ -52,9 +54,45 @@ form {
 }
 
 .form-big {
-  .form-control {
-    font-size: 16px;
-    height: auto;
-    padding: 10px;
+  .form-group {
+    margin-bottom: 0;
+
+    input {
+      font-size: 16px;
+      height: auto;
+      padding: 10px;
+      border-radius: 0;
+      border-bottom: 0;
+    }
+
+    &:first-child {
+      input {
+        border-radius: 4px 4px 0 0;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 15px;
+
+      input {
+        border-radius: 0 0 4px 4px;
+        border-bottom: 1px solid #999999;
+      }
+    }
+  }
+  .has-error {
+    input, textarea {
+      border-color: #c60f13;
+      background-color: rgba(198, 15, 19, 0.1);
+
+      &:focus {
+        background: #fafafa;
+        border-color: #999999;
+      }
+    }
+
+    small {
+      border-radius: 0;
+    }
   }
 }

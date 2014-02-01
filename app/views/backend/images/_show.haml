@@ -11,7 +11,7 @@
         = image.gallery.name
   %td
     .btn-group
-      %button.btn.btn-default.btn-sm{class: ('active' if image.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_backend_image_path(image), resource: 'image'}}
+      %button.btn.btn-default.btn-sm{class: ('active' if image.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_backend_image_path(image), resource: 'image', toggle: "button"}}
         %i.glyphicon{class: "glyphicon-#{(image.enabled? ? 'check' : 'unchecked')}"}
       -# = link_to edit_backend_image_path(image), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
       -#   %i.glyphicon.glyphicon-edit

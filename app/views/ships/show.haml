@@ -27,34 +27,35 @@
             = image_tag ship.image
           = ship.description
       .col-xs-12.col-md-4
-        %table.table.table-striped.table-bordered
-          %tbody
-            %tr
-              %td
-                %strong
-                  = I18n.t(:"activerecord.attributes.ship.manufacturer")
-              %td
-                = ship.manufacturer.name
-            - %w(length beam height mass cargo crew).each do |value|
+        .panel.panel-default
+          %table.table.table-striped
+            %tbody
               %tr
                 %td
                   %strong
-                    = I18n.t(:"activerecord.attributes.ship.#{value}")
+                    = I18n.t(:"activerecord.attributes.ship.manufacturer")
                 %td
-                  - if %w(length beam height).include?(value)
-                    = number_to_human ship.send(value), units: :distance
-                  - elsif %w(mass cargo).include?(value)
-                    = number_to_human ship.send(value), units: :weight
-                  - elsif %w(crew).include?(value)
-                    = number_to_human ship.send(value), units: :people
-                  - else
-                    = ship.send(value)
-            %tr
-              %td
-                %strong
-                  = I18n.t(:"activerecord.attributes.ship.max_upgrades")
-              %td
-                = ship.max_upgrades
+                  = ship.manufacturer.name
+              - %w(length beam height mass cargo crew).each do |value|
+                %tr
+                  %td
+                    %strong
+                      = I18n.t(:"activerecord.attributes.ship.#{value}")
+                  %td
+                    - if %w(length beam height).include?(value)
+                      = number_to_human ship.send(value), units: :distance
+                    - elsif %w(mass cargo).include?(value)
+                      = number_to_human ship.send(value), units: :weight
+                    - elsif %w(crew).include?(value)
+                      = number_to_human ship.send(value), units: :people
+                    - else
+                      = ship.send(value)
+              %tr
+                %td
+                  %strong
+                    = I18n.t(:"activerecord.attributes.ship.max_upgrades")
+                %td
+                  = ship.max_upgrades
 
     .row
       .col-xs-12.col-md-12
@@ -70,33 +71,35 @@
         .col-xs-12.col-md-6
           %h3
             = I18n.t(:"activerecord.attributes.ship.weapons")
-          %table.table.table-striped.table-bordered
-            %tbody
-              - Weapon::VALID_CLASSES.each do |hp_class|
-                - if count = ship.send("max_#{hp_class}")
-                  %tr
-                    %td
-                      %strong
-                        = I18n.t(:"activerecord.attributes.weapon.classes.#{hp_class}")
-                    %td
-                      = "#{count}x"
+          .panel.panel-default
+            %table.table.table-striped
+              %tbody
+                - Weapon::VALID_CLASSES.each do |hp_class|
+                  - if count = ship.send("max_#{hp_class}")
+                    %tr
+                      %td
+                        %strong
+                          = I18n.t(:"activerecord.attributes.weapon.classes.#{hp_class}")
+                      %td
+                        = "#{count}x"
         .col-xs-12.col-md-6
           %h3
             = I18n.t(:"activerecord.attributes.ship.equipment")
-          %table.table.table-striped.table-bordered
-            %tbody
-              - Equipment::VALID_LIMITED_TYPES.each do |type|
-                - if count = ship.send("max_#{type}")
-                  %tr
-                    %td
-                      %strong
-                        = I18n.t(:"activerecord.attributes.equipment.types.#{type}")
-                    %td
-                      - if equipment_type = ship.send("max_#{type}_type")
-                        = "#{count}x"
-                        = ship.send("max_#{type}_type")
-                      - else
-                        = count
+          .panel.panel-default
+            %table.table.table-striped
+              %tbody
+                - Equipment::VALID_LIMITED_TYPES.each do |type|
+                  - if count = ship.send("max_#{type}")
+                    %tr
+                      %td
+                        %strong
+                          = I18n.t(:"activerecord.attributes.equipment.types.#{type}")
+                      %td
+                        - if equipment_type = ship.send("max_#{type}_type")
+                          = "#{count}x"
+                          = ship.send("max_#{type}_type")
+                        - else
+                          = count
       .row.tab-pane#factory-equipment
         .col-xs-12.col-md-6
           %h3

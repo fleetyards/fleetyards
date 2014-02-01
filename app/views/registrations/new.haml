@@ -6,26 +6,22 @@
     .well.signup-box
       %h2=I18n.t(:"headlines.sign_up")
 
-      = form_for user, url: user_registration_path, html: {class: "form-big"} do |form|
+      = form_for user, url: user_registration_path do |form|
         = form.hidden_field :plan, value: plan
         .form-group{class: form_error?(user, :username)}
           = form.text_field :username, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
-          %small
-            = form_errors user, :username
+          = form_errors user, :username
         .form-group{class: form_error?(user, :email)}
           = form.email_field :email, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
-          %small
-            = form_errors user, :email
+          = form_errors user, :email
 
         .form-group{class: form_error?(user, :password)}
           = form.password_field :password, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
-          %small
-            = form_errors user, :password
+          = form_errors user, :password
 
         .form-group{class: form_error?(user, :password_confirmation)}
           = form.password_field :password_confirmation, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
-          %small
-            = form_errors user, :password_confirmation
+          = form_errors user, :password_confirmation
 
         .pull-right
           %button{class: "btn btn-primary btn-lg"}

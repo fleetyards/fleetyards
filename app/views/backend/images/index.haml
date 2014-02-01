@@ -16,7 +16,8 @@
         .pull-right
           = paginate @images
 
-    = render partial: "backend/images/table", :@images => @images
+    .panel.panel-default
+      = render partial: "backend/images/table", :@images => @images
 
     .row
       .col-xs-12.col-md-6

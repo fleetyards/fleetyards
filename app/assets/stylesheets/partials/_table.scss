@@ -3,26 +3,27 @@ table {
     h3 {
       margin: 0;
     }
+  }
+  td, th {
     &.actions {
       &.one {
-        width: 42px;
-        min-width: 42px;
+        width: 45px;
+        min-width: 45px;
       }
       &.two {
-        width: 78px;
-        min-width: 78px;
+        width: 83px;
+        min-width: 83px;
       }
       &.three {
         width: 111px;
         min-width: 111px;
       }
       &.four {
-        width: 144px;
-        min-width: 144px;
+        width: 150px;
+        min-width: 150px;
       }
     }
-  }
-  td, th {
+
     &.id {
       width: 60px;
       min-width: 60px;

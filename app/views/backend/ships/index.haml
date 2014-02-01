@@ -16,7 +16,8 @@
         .pull-right
           = paginate @ships
 
-    = render partial: "backend/ships/table", :@ships => @ships
+    .panel.panel-default
+      = render partial: "backend/ships/table", :@ships => @ships
 
     .row
       .col-xs-12.col-md-6

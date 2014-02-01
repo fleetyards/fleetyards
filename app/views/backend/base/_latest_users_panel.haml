@@ -2,25 +2,23 @@
   .panel-heading
     %h3.panel-title
       = I18n.t(:"labels.panels.latest_users")
-  .panel-body
-    .table-responsive
-      %table.table.table-bordered.table-striped.table-condensed
-        %thead
-          %tr
-            %th= I18n.t(:"labels.table.user.email")
-            %th= I18n.t(:"labels.table.user.username")
-            %th= I18n.t(:"labels.table.user.created_at")
-            %th.actions.one
-        %tbody
-          - User.order('created_at DESC').each do |user|
-            %tr
-              %td
-                = user.email
-              %td
-                = user.username
-              %td
-                = I18n.t(:"activerecord.attributes.user.created_at", time: time_ago_in_words(user.created_at))
-              %td
-                .btn-group
-                  = link_to edit_backend_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
-                    %i.glyphicon.glyphicon-edit
+  %table.table.table-striped
+    %thead
+      %tr
+        %th= I18n.t(:"labels.table.user.email")
+        %th= I18n.t(:"labels.table.user.username")
+        %th= I18n.t(:"labels.table.user.created_at")
+        %th.actions.one
+    %tbody
+      - User.order('created_at DESC').each do |user|
+        %tr
+          %td
+            = user.email
+          %td
+            = user.username
+          %td
+            = I18n.t(:"activerecord.attributes.user.created_at", time: time_ago_in_words(user.created_at))
+          %td
+            .btn-group
+              = link_to edit_backend_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
+                %i.glyphicon.glyphicon-edit

@@ -1,10 +1,5 @@
 @import "bootstrap/variables";
 
-$container-lg: 90%;
-$container-md: 90%;
-$container-xs: 90%;
-$container-sm: 90%;
-
 $footer-border-color:    #111;
 $footer-bg-color:        #222;
 $gravatar-shadow:        0 1px 0 #333;
@@ -41,9 +36,9 @@ $component-active-bg:            transparent;
 // Tables
 // -------------------------
 
-$table-bg:                           lighten($body-bg, 3%); // overall background-color
-$table-bg-accent:                    lighten($table-bg, 3%); // for striping
-$table-bg-hover:                     lighten($table-bg, 12%);
+$table-bg:                           transparent;
+$table-bg-accent:                    lighten($body-bg, 6%); // for striping
+$table-bg-hover:                     lighten($body-bg, 15%);
 $table-bg-active:                    $table-bg-hover;
 
 $table-border-color:                 darken($gray-darker, 5%); // table and cell border
@@ -107,14 +102,14 @@ $input-group-addon-border-color: $btn-primary-bg;
 // Dropdowns
 // -------------------------
 
-$dropdown-bg:                    $gray-dark;
+$dropdown-bg:                    darken($gray-dark, 10%);
 $dropdown-border:                rgba(0,0,0,.15);
 $dropdown-fallback-border:       $gray-darker;
 $dropdown-divider-bg:            $gray-darker;
 
 $dropdown-link-color:            $text-color;
 $dropdown-link-hover-color:      #fff;
-$dropdown-link-hover-bg:         #272b30;
+$dropdown-link-hover-bg:         lighten(#272b30, 5%);
 
 $dropdown-link-active-color:     #fff;
 $dropdown-link-active-bg:        $gray-darker;
@@ -133,7 +128,7 @@ $navbar-padding-horizontal:        floor($grid-gutter-width / 2);
 $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2);
 
 $navbar-default-color:             $text-color;
-$navbar-default-bg:                $gray-dark;
+$navbar-default-bg:                darken($gray-dark, 10%);
 $navbar-default-border:            darken($navbar-default-bg, 6.5%);
 
 // Navbar links
@@ -184,14 +179,17 @@ $nav-pills-active-link-hover-color:         $component-active-color;
 
 // Pagination
 // -------------------------
-$pagination-bg:                        $btn-default-bg;
-$pagination-border:                    rgba(0, 0, 0, 0.6);
+$pagination-color:                     #fff;
+$pagination-bg:                        $default-btn;
+$pagination-border:                    darken($btn-default-bg, 6%);
 
-$pagination-hover-bg:                  transparent;
+$pagination-hover-color:               #fff;
+$pagination-hover-bg:                  darken($pagination-bg, 8%);
+$pagination-hover-border:              darken($pagination-border, 12%);
 
-$pagination-active-bg:                 darken($pagination-bg, 10%);
 $pagination-active-color:              #fff;
-
+$pagination-active-bg:                 darken($pagination-bg, 8%);
+$pagination-active-border:             darken($pagination-border, 12%);
 
 // Pager
 // -------------------------
@@ -201,7 +199,7 @@ $pager-disabled-color:                 $gray-light;
 // Jumbotron
 // -------------------------
 $jumbotron-color:                inherit;
-$jumbotron-bg:                   darken($body-bg, 5%);
+$jumbotron-bg:                   rgba(darken($body-bg, 5%), .8);
 $jumbotron-heading-color:        inherit;
 $jumbotron-font-size:            ceil($font-size-base * 1.5);
 
@@ -365,8 +363,8 @@ $thumbnail-caption-color:     $text-color;
 
 // Wells
 // -------------------------
-$well-bg:                     darken($body-bg, 5%);
-
+$well-bg:                     rgba(darken($body-bg, 5%), .8);
+$well-border:                 darken($well-bg, 7%);
 
 // Badges
 // -------------------------

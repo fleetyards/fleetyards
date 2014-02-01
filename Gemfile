@@ -32,7 +32,7 @@ gem 'sass-rails', '~> 4.0.1'
 gem 'coffee-rails', '~> 4.0.1'
 gem 'bourbon', '~> 3.1.8'
 
-gem 'bootstrap-sass', '~> 3.0.3.0'
+gem 'bootstrap-sass', '~> 3.1.0'
 
 gem 'jquery-rails', '~> 3.0.4'
 gem 'jquery-turbolinks', '~> 2.0.1'

@@ -9,9 +9,9 @@
 @import "bourbon";
 
 @import "colors/defaults";
-@import "colors/black";
+@import "colors/dark";
 @import "bootstrap";
-@import "colors/black_overrides";
+@import "colors/dark_overrides";
 
 @import "partials";
 
@@ -24,6 +24,10 @@ body {
   min-height: 100%;
   height: auto;
   position: relative;
+  background-image: image-url("bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 
   > .container {
     min-height: 500px;

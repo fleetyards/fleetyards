@@ -11,6 +11,5 @@ window.App.Resources.stateChange = ($element) ->
     data: data
   .done (result) ->
     displaySuccess result.message
-    $element.toggleClass('active')
     $element.find('i').toggleClass('glyphicon-unchecked')
     $element.find('i').toggleClass('glyphicon-check')
