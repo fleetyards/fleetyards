@@ -14,6 +14,7 @@ class Ability
     can :show, Weapon, enabled: true
     can :index, :equipment
     can :show, Equipment, enabled: true
+    can :index, :images
     can :index, :ships
     can [:show, :gallery], Ship, enabled: true
   end

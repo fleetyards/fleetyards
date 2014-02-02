@@ -18,3 +18,5 @@
         - if can? :index, :equipment
           %li{class: get_active_nav('equipment')}
             = link_to I18n.t(:"nav.equipment"), equipments_path
+  %li{class: get_active_nav('images')}
+    = link_to I18n.t(:"nav.images"), images_path

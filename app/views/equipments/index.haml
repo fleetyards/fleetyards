@@ -1,6 +1,6 @@
 - content_for :title do
   = I18n.t(:"title.equipment.index")
-.row#ships
+.row#equipment
   .col-xs-12.col-md-12
 
     .row
@@ -17,7 +17,8 @@
     .row
       - @equipment.each_with_index do |equipment, key|
         - if key %3 == 0 && key != 0
-          .row.visible-md.visible-lg
+          .row.visible-md
+          .row.visible-lg
         - if key %2 == 0 && key != 0
           .row.visible-sm
         .col-md-4.col-sm-6.col-xs-12

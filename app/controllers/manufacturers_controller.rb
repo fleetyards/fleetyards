@@ -4,6 +4,10 @@ class ManufacturersController < ApplicationController
 
   def index
     authorize! :index, :manufacturers
+    @manufacturers = Manufacturer.known
+      .order('manufacturers.name desc')
+      .page(params.fetch(:page, nil))
+      .per(20)
   end
 
   private def set_active_nav

@@ -45,6 +45,8 @@ Fleetyards::Application.routes.draw do
       get 'gallery', on: :member
     end
 
+    resources :images, only: [:index]
+
     resources :weapons, only: [:index, :show]
 
     resources :equipments, only: [:index, :show]

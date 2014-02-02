@@ -19,12 +19,13 @@
     .row
       - @images.each_with_index do |image, key|
         - if key %4 == 0 && key != 0
-          .row.visible-md.visible-lg
+          .row.visible-md
+          .row.visible-lg
         - if key %2 == 0 && key != 0
           .row.visible-sm
         .col-md-3.col-sm-6.col-xs-12
-          %a.thumbnail{href: image.name, title: image.name.filename, data: {gallery: true}}
-            %img{src: image.name.small, alt: image.name.filename}
+          %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
+            %img{src: image.name.small, alt: image.name.file.filename}
       - if @images.blank?
         .col-md-12
           .well.text-center
