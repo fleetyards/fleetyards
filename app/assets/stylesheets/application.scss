@@ -37,7 +37,9 @@ body {
 @media (min-width: $screen-sm-min) {
   .well {
     &.login-box {
-      margin-top: 30%;
+      margin: 0 auto;
+      margin-top: 10%;
+      width: 350px;
     }
 
     &.signup-box {
