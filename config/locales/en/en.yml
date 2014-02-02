@@ -14,6 +14,10 @@ en:
     confirm: "Confirm Account"
     impressum: Impressum
     privacy: Privacy policy
+    manufacturer:
+      index: Manufacturers
+    image:
+      index: All Images
     weapon:
       index: Weapons
     equipment:

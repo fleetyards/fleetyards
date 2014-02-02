@@ -11,8 +11,11 @@ en:
     privacy: Privacy policy
     welcome: Welcome
     comments: Comments
+    manufacturer:
+      index: Hersteller
     image:
       updates: "New Images"
+      index: All Images
     weapon:
       index: Weapons
     equipment:

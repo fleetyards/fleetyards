@@ -11,8 +11,11 @@ de:
     privacy: Datenschutz
     welcome: Willkommen
     comments: Kommentare
+    manufacturer:
+      index: Hersteller
     image:
       updates: "Neue Bilder"
+      index: Alle Bilder
     weapon:
       index: Waffen
     equipment:
