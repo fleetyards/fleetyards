@@ -24,7 +24,7 @@
           %a.btn.btn-link{href: new_password_path(resource_name)}
             = I18n.t(:"actions.reset_password")
 
-          %button.btn.btn-lg.btn-primary
+          %button.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
             = I18n.t(:"actions.sign_in")
 
         .clearfix

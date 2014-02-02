@@ -43,14 +43,16 @@ body {
     }
 
     &.signup-box {
-      margin-top: 20%;
+      margin: 0 auto;
+      margin-top: 5%;
+      width: 350px;
     }
   }
 }
 
 @media (min-width: $screen-md-min) {
   .welcome-box {
-    margin-top: 10%;
+    margin-top: 8%;
   }
 }
 

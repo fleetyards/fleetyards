@@ -43,6 +43,9 @@ $(window).on 'orientationchange', setMinHeight
 $(window).on 'resize', setMinHeight
 
 $ ->
+  $('.btn.btn-primary[data-loading-text]').click ->
+    $(@).button('loading')
+
   $('#blueimp-gallery').data('useBootstrapModal', false)
   setMinHeight()
 

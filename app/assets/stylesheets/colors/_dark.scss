@@ -322,14 +322,14 @@ $list-group-link-heading-color:  #fff;
 
 // Panels
 // -------------------------
-$panel-bg:                    lighten($body-bg, 3%);
+$panel-bg:                    transparent;//lighten($body-bg, 3%);
 $panel-inner-border:          rgba(0, 0, 0, 0.6);
 $panel-border-radius:         $border-radius-base;
 $panel-footer-bg:             lighten($body-bg, 10%);
 
 $panel-default-text:          $text-color;
 $panel-default-border:        rgba(0, 0, 0, 0.6);
-$panel-default-heading-bg:    lighten($body-bg, 10%);
+$panel-default-heading-bg:    rgba(lighten($body-bg, 10%), .8);
 
 $panel-primary-text:          #fff;
 $panel-primary-border:        $panel-default-border;
