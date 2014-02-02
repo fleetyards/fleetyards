@@ -39,9 +39,10 @@ $(document).on 'click', 'a.disabled', (evt) ->
 $(document).on 'show.bs.collapse', '.navbar-collapse', (ev) ->
   $('.navbar-collapse.in').not(@).collapse('hide')
 
+$(window).on 'orientationchange', setMinHeight
+$(window).on 'resize', setMinHeight
+
 $ ->
   $('#blueimp-gallery').data('useBootstrapModal', false)
   setMinHeight()
-  $(window).resize ->
-    setMinHeight()
 
