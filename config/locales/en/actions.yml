@@ -1,5 +1,6 @@
 en:
   actions:
+    loading: "Please wait..."
     ok: OK
     reset: Reset
     cancel: Cancel

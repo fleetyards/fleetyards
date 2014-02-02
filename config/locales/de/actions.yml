@@ -1,5 +1,6 @@
 de:
   actions:
+    loading: "Bitte warten..."
     ok: OK
     reset: "Auf Standard zurücksetzen"
     cancel: Abbrechen
