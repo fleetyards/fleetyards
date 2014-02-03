@@ -164,7 +164,7 @@ $nav-tabs-border-color:                     darken($gray-darker, 5%);
 
 $nav-tabs-link-hover-border-color:          darken($gray-darker, 5%);
 
-$nav-tabs-active-link-hover-bg:             lighten($body-bg, 5%);
+$nav-tabs-active-link-hover-bg:             rgba(lighten($body-bg, 5%), .8);
 $nav-tabs-active-link-hover-color:          #fff;
 $nav-tabs-active-link-hover-border-color:   darken($gray-darker, 5%);
 
@@ -307,7 +307,7 @@ $progress-bar-info-bg:        $brand-info;
 
 // List group
 // -------------------------
-$list-group-bg:               lighten($body-bg, 3%);
+$list-group-bg:               rgba(lighten($body-bg, 3%), .4);
 $list-group-border:           rgba(0, 0, 0, 0.6);
 $list-group-border-radius:    $border-radius-base;
 
@@ -322,14 +322,14 @@ $list-group-link-heading-color:  #fff;
 
 // Panels
 // -------------------------
-$panel-bg:                    transparent;//lighten($body-bg, 3%);
+$panel-bg:                    rgba(lighten($body-bg, 3%), .8);
 $panel-inner-border:          rgba(0, 0, 0, 0.6);
 $panel-border-radius:         $border-radius-base;
 $panel-footer-bg:             lighten($body-bg, 10%);
 
 $panel-default-text:          $text-color;
 $panel-default-border:        rgba(0, 0, 0, 0.6);
-$panel-default-heading-bg:    rgba(lighten($body-bg, 10%), .8);
+$panel-default-heading-bg:    rgba(lighten($body-bg, 10%), .4);
 
 $panel-primary-text:          #fff;
 $panel-primary-border:        $panel-default-border;
@@ -350,7 +350,6 @@ $panel-danger-heading-bg:     $state-danger-bg;
 $panel-info-text:             $state-info-text;
 $panel-info-border:           $panel-default-border;
 $panel-info-heading-bg:       $state-info-bg;
-
 
 // Thumbnails
 // -------------------------

@@ -3,6 +3,15 @@
   border-width: 0 1px 1px 1px;
   border-style: solid;
   border-color: $nav-tabs-border-color;
-  border-radius: 0 0 $border-radius-base $border-radius-base;
+  border-radius: $border-radius-base;
   padding: $padding-base-vertical $padding-base-horizontal 0;
+}
+
+ul.nav.nav-tabs {
+  border-bottom: none;
+  margin: 0 $border-radius-base;
+
+  li {
+    margin-bottom: 0;
+  }
 }
