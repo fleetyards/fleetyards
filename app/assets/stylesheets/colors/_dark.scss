@@ -311,7 +311,7 @@ $list-group-bg:               rgba(lighten($body-bg, 3%), .4);
 $list-group-border:           rgba(0, 0, 0, 0.6);
 $list-group-border-radius:    $border-radius-base;
 
-$list-group-hover-bg:         lighten($body-bg, 10%);
+$list-group-hover-bg:         rgba(lighten($body-bg, 10%), .8);
 $list-group-active-color:     $component-active-color;
 $list-group-active-bg:        lighten($body-bg, 10%);
 $list-group-active-border:    $list-group-border;
