@@ -109,10 +109,10 @@ $dropdown-divider-bg:            darken($gray-darker, 5%);
 
 $dropdown-link-color:            $text-color;
 $dropdown-link-hover-color:      #fff;
-$dropdown-link-hover-bg:         lighten(#272b30, 5%);
+$dropdown-link-hover-bg:         inherit;//lighten(#272b30, 5%);
 
 $dropdown-link-active-color:     #fff;
-$dropdown-link-active-bg:        darken($gray-darker, 5%);
+$dropdown-link-active-bg:        inherit;//darken($gray-darker, 5%);
 
 $dropdown-link-disabled-color:   $text-muted;
 
@@ -134,9 +134,10 @@ $navbar-default-border:            darken($navbar-default-bg, 6.5%);
 // Navbar links
 $navbar-default-link-color:                $text-color;
 $navbar-default-link-hover-color:          #fff;
-$navbar-default-link-hover-bg:             darken($navbar-default-bg, 8%);
+$navbar-default-link-hover-bg:             inherit;//darken($navbar-default-bg, 8%);
 $navbar-default-link-active-color:         #fff;
-$navbar-default-link-active-bg:            darken($navbar-default-bg, 12%);
+$navbar-default-link-active-bg:            inherit;
+$navbar-default-link-active-dropdown-bg:   darken($navbar-default-bg, 12%);
 $navbar-default-link-disabled-color:       #ccc;
 $navbar-default-link-disabled-bg:          transparent;
 

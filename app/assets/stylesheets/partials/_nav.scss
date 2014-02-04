@@ -3,19 +3,32 @@
     > li {
       > a {
         border-color: $navbar-default-bg;
-        transition: border-color .4s;
+        transition: border-color 1s;
       }
 
-      &.active > a {
+      &.open {
+        background-color: $navbar-default-link-active-dropdown-bg;
+      }
+
+      &.active > a, > a:hover {
         border-bottom: 3px solid $navbar-active;
         margin-bottom: -1px;
         padding-bottom: 13px;
       }
 
-      &:hover > a {
-        border-bottom: 3px solid $navbar-active;
-        margin-bottom: -1px;
-        padding-bottom: 13px;
+      .dropdown-menu {
+        li {
+          > a {
+            border-color: $navbar-default-bg;
+            transition: border-color 1s;
+          }
+          &.active > a, &:hover > a {
+            border: none;
+            border-left: 3px solid $navbar-active;
+            margin: 0;
+            padding-left: 17px;
+          }
+        }
       }
     }
   }
@@ -46,13 +59,23 @@ footer#footer {
 #main-nav, footer#footer {
   .in, .collapsing {
     .nav.navbar-nav {
-      > li.active {
-        > a {
+      > li {
+        &.active > a, > a:hover {
           border: none;
           border-left: 3px solid $navbar-active;
-          padding-top: $navbar-padding-vertical;
-          padding-bottom: $navbar-padding-vertical;
+          padding-bottom: 10px;
+          padding-left: 12px;
           margin: 0;
+        }
+        .dropdown-menu {
+          li {
+            &.active > a, &:hover > a {
+              border: none;
+              border-left: 3px solid $navbar-active;
+              margin: 0;
+              padding-left: 22px;
+            }
+          }
         }
       }
     }

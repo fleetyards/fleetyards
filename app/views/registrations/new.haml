@@ -24,7 +24,7 @@
           = form_errors user, :password_confirmation
 
         .pull-right
-          %button{class: "btn btn-primary btn-lg"}
+          %button.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
             = I18n.t(:"actions.sign_up")
 
         .clearfix
