@@ -50,7 +50,12 @@ body {
   }
 }
 
-.btn {
+.btn,
+.pagination a,
+a.list-group-item,
+footer#main a,
+a.navbar-brand,
+.nav-tabs li a {
   transition: all .5s;
 }
 
