@@ -1,10 +1,21 @@
 #main-nav {
   .nav.navbar-nav {
-    > li.active {
+    > li {
       > a {
-        border-top: 3px solid $navbar-active;
-        margin-top: -1px;
-        padding-top: 13px;
+        border-color: $navbar-default-bg;
+        transition: border-color .4s;
+      }
+
+      &.active > a {
+        border-bottom: 3px solid $navbar-active;
+        margin-bottom: -1px;
+        padding-bottom: 13px;
+      }
+
+      &:hover > a {
+        border-bottom: 3px solid $navbar-active;
+        margin-bottom: -1px;
+        padding-bottom: 13px;
       }
     }
   }
@@ -24,9 +35,9 @@ footer#footer {
   .nav.navbar-nav {
     > li.active {
       > a {
-        border-bottom: 3px solid $navbar-active;
-        margin-bottom: -1px;
-        padding-bottom: 13px;
+        border-top: 3px solid $navbar-active;
+        margin-top: -1px;
+        padding-top: 13px;
       }
     }
   }

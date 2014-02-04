@@ -105,14 +105,14 @@ $input-group-addon-border-color: $btn-primary-bg;
 $dropdown-bg:                    darken($gray-dark, 10%);
 $dropdown-border:                rgba(0,0,0,.15);
 $dropdown-fallback-border:       $gray-darker;
-$dropdown-divider-bg:            $gray-darker;
+$dropdown-divider-bg:            darken($gray-darker, 5%);
 
 $dropdown-link-color:            $text-color;
 $dropdown-link-hover-color:      #fff;
 $dropdown-link-hover-bg:         lighten(#272b30, 5%);
 
 $dropdown-link-active-color:     #fff;
-$dropdown-link-active-bg:        $gray-darker;
+$dropdown-link-active-bg:        darken($gray-darker, 5%);
 
 $dropdown-link-disabled-color:   $text-muted;
 

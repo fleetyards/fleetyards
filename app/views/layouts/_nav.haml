@@ -9,6 +9,7 @@
       %ul.dropdown-menu
         %li{class: get_active_nav('ships')}
           = link_to I18n.t(:"nav.ship.overview"), ships_path
+        %li.divider
         - if can? :index, :manufacturers
           %li{class: get_active_nav('manufacturers')}
             = link_to I18n.t(:"nav.manufacturers"), manufacturers_path
