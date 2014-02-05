@@ -19,7 +19,7 @@ de:
     confirm: "Account bestätigen"
     unlock: "Account entsperren"
     update_password: "Passwort ändern"
-    reset_password: "Passwort zurücksetzen"
+    reset_password: "Passwort vergessen?"
     save_password: "Passwort speichern"
     admin: Backend
     enable: Aktivieren

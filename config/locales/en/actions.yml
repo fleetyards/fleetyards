@@ -18,9 +18,9 @@ en:
     sign_up: "Sign Up"
     confirm: "Confirm Account"
     unlock: "Unlock Account"
-    update_password: "Update Password"
-    reset_password: "Reset Password"
-    save_password: "Save Password"
+    update_password: "Update password"
+    reset_password: "Forgot password?"
+    save_password: "Save password"
     admin: Backend
     enable: Activate
     disable: Deactivate
