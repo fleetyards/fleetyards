@@ -28,4 +28,3 @@ de:
       startet: "%{resource} werden aktualisiert."
       success: "%{resource} erfolgreich aktualisiert."
       failure: "%{resource} konnte nicht aktualisiert werden."
-

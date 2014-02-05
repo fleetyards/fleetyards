@@ -3,7 +3,7 @@ de:
     de: Deutsch
     en: English
   meta:
-    description: "FleetYards.net, Deine Datenbank für alle Informationen rund um das bald erscheinende “Star Citizen“ von Chris Roberts."
+    description: "FleetYards.net, Deine Datenbank für alle Informationen rund um das bald erscheinende „Star Citizen“ von Chris Roberts."
     keywords: "Star, Citizen, Raumschiffe, Datenbank, Squadron, 42, Star, Citizen, Deutsch, Chris, Roberts, Spiel, Online, Game, Weltraum, Simulation"
   title:
     default: FleetYards.net
@@ -17,7 +17,7 @@ de:
     manufacturer:
       index: Hersteller
     image:
-      index: Alle Bilder
+      index: "Alle Bilder"
     weapon:
       index: Waffen
     equipment:

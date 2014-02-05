@@ -8,14 +8,14 @@ en:
     confirm: "Confirm your Account"
     account: "My Information"
     impressum: Impressum
-    privacy: Privacy policy
+    privacy: "Privacy policy"
     welcome: Welcome
     comments: Comments
     manufacturer:
       index: Hersteller
     image:
       updates: "New Images"
-      index: All Images
+      index: "All Images"
     weapon:
       index: Weapons
     equipment:
@@ -33,7 +33,6 @@ en:
       ship:
         index: Ships
         gallery: "Imageuplaod for %{ship}"
-
   sublines:
     impressum:
       general: "General Information (according to § 5 TMG)"

@@ -13,11 +13,11 @@ en:
     unlock: "Unlock Account"
     confirm: "Confirm Account"
     impressum: Impressum
-    privacy: Privacy policy
+    privacy: "Privacy policy"
     manufacturer:
       index: Manufacturers
     image:
-      index: All Images
+      index: "All Images"
     weapon:
       index: Weapons
     equipment:
@@ -36,7 +36,7 @@ en:
     backend: Backend
     ships: Ships
     impressum: Impressum
-    privacy: Privacy policy
+    privacy: "Privacy policy"
     ship:
       overview: Index
     images: Images

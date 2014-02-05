@@ -1,6 +1,6 @@
 de:
   headlines:
-    sign_up: "Registrieren"
+    sign_up: Registrieren
     sign_in: Login
     forgot_password: "Passwort vergessen?"
     change_password: "Passwort ändern"
@@ -15,7 +15,7 @@ de:
       index: Hersteller
     image:
       updates: "Neue Bilder"
-      index: Alle Bilder
+      index: "Alle Bilder"
     weapon:
       index: Waffen
     equipment:
@@ -33,7 +33,6 @@ de:
       ship:
         index: Schiffe
         gallery: "Bilderupload für %{ship}"
-
   sublines:
     impressum:
       general: "Allgemeine Informationen (gemäß § 5 TMG)"
