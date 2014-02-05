@@ -2,28 +2,30 @@
   = "#{Fleetyards::CODENAME} (#{Fleetyards::VERSION})"
 %footer#main
   .container
-    .pull-left
-      %span.copyright
-        &copy; 2014
-        = link_to "Marten Klitzke - mortik.", "mailto:info@mortik.de", target: "_blank", data: { no_turbolink: 'true'}
-      = " | "
-      %a.rsi-link{href: "https://robertsspaceindustries.com/", target: "_blank"}><
-        Roberts Space Industries
-      = " | "
-      %a.rsi-link{href: privacy_path}><
-        = I18n.t(:"nav.privacy")
-      = " | "
-      %a.rsi-link{href: impressum_path}><
-        = I18n.t(:"nav.impressum")
+    .row
+      .col-xs-12.col-sm-8.col-md-8
+        %nav
+          %a{href: "https://robertsspaceindustries.com/", target: "_blank"}><
+            Roberts Space Industries
+          = " | "
+          %a{href: privacy_path}><
+            = I18n.t(:"nav.privacy")
+          = " | "
+          %a{href: impressum_path}><
+            = I18n.t(:"nav.impressum")
 
-    .pull-right.text-right
-      .btn-group.btn-group-xs
-        - I18n.available_locales.each do |locale|
-          = link_to I18n.t(:"locales.#{locale}"), {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
+      .col-xs-12.col-sm-4.col-md-4
+        .text-right
+          .btn-group.btn-group-xs
+            - I18n.available_locales.each do |locale|
+              = link_to I18n.t(:"locales.#{locale}"), {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
 
     .clearfix
 
     .row
       .col-xs-12.col-md-8.col-md-offset-2.text-center#disclaimer
+        %p.copyright
+          Copyright &copy; 2014
+          = link_to "Marten Klitzke - mortik.", "mailto:info@mortik.de", target: "_blank", data: { no_turbolink: 'true'}
         %p
           Star Citizen and all related properties (including Logos, Images and Designs) are trademarks or registered trademarks of Cloud Imperium Games Corporation. All rights reserved.

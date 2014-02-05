@@ -3,19 +3,35 @@ footer#main {
   border-top: 1px solid rgba($footer-border-color, .5);
   background-color: rgba($footer-bg-color, .5);
 
-  .copyright, .copyright a {
+  .copyright,
+  .copyright a {
     color: #666;
+  }
+
+  .copyright a {
+    &:hover {
+      color: #428bca;
+    }
   }
 
   #disclaimer {
     margin-top: 20px;
     color: #666;
   }
+  nav {
+    margin-bottom: 10px;
+
+    a {
+      color: lighten(#428bca, 10%);
+      &:hover {
+        color: #428bca;
+      }
+    }
+  }
 }
 
-.rsi-link {
-  color: lighten(#428bca, 10%);
-  &:hover {
-    color: #428bca;
-  }
+.version {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }

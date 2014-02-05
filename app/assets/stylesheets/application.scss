@@ -34,22 +34,6 @@ body {
   }
 }
 
-@media (min-width: $screen-sm-min) {
-  .well {
-    &.login-box {
-      margin: 0 auto;
-      margin-top: 10%;
-      width: 380px;
-    }
-
-    &.signup-box {
-      margin: 0 auto;
-      margin-top: 5%;
-      width: 380px;
-    }
-  }
-}
-
 .btn,
 .pagination a,
 a.list-group-item,
@@ -57,36 +41,6 @@ footer#main a,
 a.navbar-brand,
 .nav-tabs li a {
   transition: all .5s;
-}
-
-@media (min-width: $screen-md-min) {
-  .welcome-box {
-    margin-top: 6%;
-  }
-}
-
-.version {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-}
-
-.filter-menu {
-  margin-bottom: 10px;
-  display: inline-block;
-}
-
-ul.pagination {
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-#signup-form {
-  margin-bottom: 20px;
-}
-
-.no-wrap {
-  white-space: nowrap;
 }
 
 .thumbnail {

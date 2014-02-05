@@ -2,29 +2,30 @@
   = I18n.t(:"title.sign_in")
 .row
   .col-xs-12
-    .well.login-box
-      %h2=I18n.t(:"headlines.sign_in")
+    .login-box
+      .well
+        %h2=I18n.t(:"headlines.sign_in")
 
-      = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+        = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
 
-        .form-group
-          = f.text_field :login, required: false, autofocus: true, placeholder: I18n.t(:"helpers.placeholder.user.login"), class: 'form-control'
+          .form-group
+            = f.text_field :login, required: false, autofocus: true, placeholder: I18n.t(:"helpers.placeholder.user.login"), class: 'form-control'
 
-        .form-group
-          = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
+          .form-group
+            = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
 
-        - if devise_mapping.rememberable?
-          .checkbox
-            %label{for: "user_remember_me"}
-              = f.check_box :remember_me
-              = I18n.t(:"helpers.label.user.remember_me")
+          - if devise_mapping.rememberable?
+            .checkbox
+              %label{for: "user_remember_me"}
+                = f.check_box :remember_me
+                = I18n.t(:"helpers.label.user.remember_me")
 
-        .pull-right
+          .pull-right
 
-          %a.btn.btn-link{href: new_password_path(resource_name)}
-            = I18n.t(:"actions.reset_password")
+            %button.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
+              = I18n.t(:"actions.sign_in")
 
-          %button.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
-            = I18n.t(:"actions.sign_in")
-
-        .clearfix
+          .clearfix
+      .text-center
+        %a.btn.btn-link{href: new_password_path(resource_name)}
+          = I18n.t(:"actions.reset_password")

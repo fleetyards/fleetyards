@@ -1,0 +1,34 @@
+.login-box, .signup-box {
+  margin-bottom: 20px;
+
+  .well {
+    margin-bottom: 0;
+  }
+
+  a {
+    color: #666;
+    &:hover {
+      color: #428bca;
+    }
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .login-box {
+    margin: 0 auto 20px;
+    margin-top: 8%;
+    width: 350px;
+  }
+
+  .signup-box {
+    margin: 0 auto 20px;
+    margin-top: 5%;
+    width: 350px;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .welcome-box {
+    margin-top: 6%;
+  }
+}

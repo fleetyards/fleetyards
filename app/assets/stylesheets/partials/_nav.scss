@@ -1,3 +1,5 @@
+$nav-transition-speed: .3s;
+
 #main-nav .navbar-collapse {
   .nav.navbar-nav {
     max-height: 50px;
@@ -5,7 +7,7 @@
     > li {
       > a {
         border-color: $navbar-default-bg;
-        transition: all .15s;
+        transition: all $nav-transition-speed;
       }
 
       &.active > a,
@@ -19,7 +21,7 @@
         li {
           > a {
             border-color: $navbar-default-bg;
-            transition: all .15s;
+            transition: all $nav-transition-speed;
           }
           &.active > a,
           &:hover > a {
