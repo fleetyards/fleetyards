@@ -23,8 +23,9 @@
           = form.password_field :password_confirmation, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
           = form_errors user, :password_confirmation
 
-        .pull-right
-          %button.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
+        .text-right
+          %button.hidden-xs.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
             = I18n.t(:"actions.sign_up")
-
+          %button.visible-xs.btn-block.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
+            = I18n.t(:"actions.sign_up")
         .clearfix
