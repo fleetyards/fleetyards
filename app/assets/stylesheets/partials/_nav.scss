@@ -1,32 +1,57 @@
-#main-nav .nav.navbar-nav > li {
-  > a {
-    border-color: $navbar-default-bg;
-    transition: color .5s, border-color .5s;
-  }
+#main-nav .navbar-collapse {
+  .nav.navbar-nav {
+    max-height: 50px;
 
-  &.open {
-    background-color: $navbar-default-link-active-dropdown-bg;
-  }
-
-  &.active > a,
-  > a:hover {
-    border-bottom: 3px solid $navbar-active;
-    margin-bottom: -1px;
-    padding-bottom: 13px;
-  }
-
-  .dropdown-menu {
-    li {
+    > li {
       > a {
         border-color: $navbar-default-bg;
-        transition: color .5s, border-color .5s;
+        transition: all .15s;
       }
+
       &.active > a,
-      &:hover > a {
-        border: none;
-        border-left: 3px solid $navbar-active;
-        margin: 0;
-        padding-left: 17px;
+      > a:hover,
+      &.open > a {
+        border-bottom: 3px solid $navbar-active;
+        padding-bottom: 12px;
+      }
+
+      .dropdown-menu {
+        li {
+          > a {
+            border-color: $navbar-default-bg;
+            transition: all .15s;
+          }
+          &.active > a,
+          &:hover > a {
+            border-right: 3px solid $navbar-active;
+          }
+        }
+      }
+    }
+  }
+
+  &.in,
+  &.collapsing {
+    .nav.navbar-nav {
+      max-height: none;
+
+      > li {
+        &.active > a,
+        > a:hover,
+        &.open > a {
+          border: none;
+          border-right: 3px solid $navbar-active;
+          padding-bottom: 10px;
+        }
+
+        .dropdown-menu {
+          li {
+            &.active > a,
+            &:hover > a {
+              border-right: 3px solid $navbar-active;
+            }
+          }
+        }
       }
     }
   }
@@ -40,33 +65,6 @@
   max-width: 20px !important;
   max-height: 20px;
   width: 20px
-}
-
-#main-nav {
-  .in,
-  .collapsing {
-    .nav.navbar-nav > li {
-      &.active > a,
-      > a:hover {
-        border: none;
-        border-left: 3px solid $navbar-active;
-        padding-bottom: 10px;
-        padding-left: 12px;
-        margin: 0;
-      }
-      .dropdown-menu {
-        li {
-          &.active > a,
-          &:hover > a {
-            border: none;
-            border-left: 3px solid $navbar-active;
-            margin: 0;
-            padding-left: 22px;
-          }
-        }
-      }
-    }
-  }
 }
 
 .resource-nav {
