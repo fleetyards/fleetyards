@@ -1,4 +1,4 @@
-.login-box, .signup-box {
+.cbox {
   margin-bottom: 20px;
 
   .well {
@@ -14,21 +14,21 @@
 }
 
 @media (min-width: $screen-sm-min) {
-  .login-box {
+  .cbox {
+    width: 350px;
     margin: 0 auto 20px;
     margin-top: 8%;
-    width: 350px;
-  }
 
-  .signup-box {
-    margin: 0 auto 20px;
-    margin-top: 5%;
-    width: 350px;
+    &.cbox-signup {
+      margin-top: 5%;
+    }
   }
 }
 
 @media (min-width: $screen-md-min) {
-  .welcome-box {
-    margin-top: 6%;
+  .cbox {
+    &.welcome-box {
+      margin-top: 6%;
+    }
   }
 }

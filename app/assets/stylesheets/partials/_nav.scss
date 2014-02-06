@@ -13,8 +13,8 @@ $nav-transition-speed: .3s;
       &.active > a,
       > a:hover,
       &.open > a {
-        border-bottom: 3px solid $navbar-active;
-        padding-bottom: 12px;
+        border-bottom: 4px solid $navbar-active;
+        padding-bottom: 11px;
       }
 
       .dropdown-menu {
@@ -25,7 +25,7 @@ $nav-transition-speed: .3s;
           }
           &.active > a,
           &:hover > a {
-            border-right: 3px solid $navbar-active;
+            border-right: 4px solid $navbar-active;
           }
         }
       }
@@ -42,15 +42,15 @@ $nav-transition-speed: .3s;
         > a:hover,
         &.open > a {
           border: none;
-          border-right: 3px solid $navbar-active;
-          padding-bottom: 10px;
+          border-right: 4px solid $navbar-active;
+          padding-bottom: 19px;
         }
 
         .dropdown-menu {
           li {
             &.active > a,
             &:hover > a {
-              border-right: 3px solid $navbar-active;
+              border-right: 4px solid $navbar-active;
             }
           }
         }
