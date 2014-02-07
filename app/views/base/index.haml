@@ -48,4 +48,4 @@
             - if image.gallery.present?
               - path = gallery_ship_path(image.gallery.slug)
             %a.thumbnail{href: path}
-              %img{src: image.name.small, alt: image.name.file.filename}
+              %img.img-responsive{src: image.name.small, alt: image.name.file.filename}

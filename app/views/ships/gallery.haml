@@ -25,7 +25,7 @@
           .row.visible-sm
         .col-md-3.col-sm-6.col-xs-12
           %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
-            %img{src: image.name.small, alt: image.name.file.filename}
+            %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
       - if @images.blank?
         .col-md-12
           .well.text-center
