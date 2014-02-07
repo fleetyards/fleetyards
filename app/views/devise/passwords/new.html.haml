@@ -6,11 +6,11 @@
       .well
         %h2= I18n.t(:"headlines.forgot_password")
 
-        = form_for(resource, as: resource_name, url: user_password_path, html: { method: :post}) do |form|
+        = form_for(resource, as: resource_name, url: user_password_path, html: { class: "form-horizontal", method: :post}) do |form|
 
           .form-group{class: form_error?(resource, :email)}
-            = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
-            %small
+            .col-sm-12
+              = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
               = form_errors resource, :email
 
           .text-right
