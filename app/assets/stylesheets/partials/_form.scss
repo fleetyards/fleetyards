@@ -28,25 +28,35 @@ form {
   .has-error {
     input, textarea {
       border-color: #c60f13;
-      background-color: rgba(198, 15, 19, 0.1);
-
-      &:focus {
-        background: #fafafa;
-        border-color: #999999;
-      }
+      background-color: rgba(red, 0.1);
+      color: #ccc;
     }
 
-    small {
-      display: block;
-      padding: 0.375em 0.25em;
-      margin-top: -3px;
-      font-size: 90%;
-      font-weight: bold;
-      background: #c60f13;
-      color: white;
-      border-radius: 0 0 4px 4px;
+    ::-webkit-input-placeholder {
+      color: $state-danger-text;
+    }
+    :-moz-placeholder {
+      color: $state-danger-text;
+    }
+    ::-moz-placeholder {
+      color: $state-danger-text;
+    }
+    :-ms-input-placeholder {
+      color: $state-danger-text;
     }
   }
+
+  //   small {
+  //     display: block;
+  //     padding: 0.375em 0.25em;
+  //     margin-top: -3px;
+  //     font-size: 90%;
+  //     font-weight: bold;
+  //     background: #c60f13;
+  //     color: white;
+  //     border-radius: 0 0 4px 4px;
+  //   }
+  // }
 
   .invoice-position-value {
     text-align: right;

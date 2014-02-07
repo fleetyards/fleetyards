@@ -196,42 +196,6 @@ $pagination-active-border:             darken($pagination-border, 12%);
 // -------------------------
 $pager-disabled-color:                 $gray-light;
 
-
-// Jumbotron
-// -------------------------
-$jumbotron-color:                inherit;
-$jumbotron-bg:                   rgba(darken($body-bg, 5%), .8);
-$jumbotron-heading-color:        inherit;
-$jumbotron-font-size:            ceil($font-size-base * 1.5);
-
-
-// Form states and alerts
-// -------------------------
-$state-success-text:             #fff;
-$state-success-bg:               $brand-success;
-$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%);
-
-$state-info-text:                #fff;
-$state-info-bg:                  $brand-info;
-$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%);
-
-$state-warning-text:             #fff;
-$state-warning-bg:               $brand-warning;
-$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 3%);
-
-$state-danger-text:              #fff;
-$state-danger-bg:                $brand-danger;
-$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 3%);
-
-
-// Tooltips
-// -------------------------
-$tooltip-color:               #fff;
-$tooltip-bg:                  rgba(0,0,0,.9);
-
-$tooltip-arrow-color:         $tooltip-bg;
-
-
 // Popovers
 // -------------------------
 $popover-bg:                          lighten($body-bg, 3%);
