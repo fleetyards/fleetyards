@@ -4,7 +4,7 @@ class ImagesController < ApplicationController
 
   def index
     authorize! :index, :images
-    @images = Image.enabled.in_gallery
+    @images = Image.enabled
       .order('images.created_at desc')
       .page(params.fetch(:page, nil))
       .per(20)

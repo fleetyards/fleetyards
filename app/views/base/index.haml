@@ -29,7 +29,7 @@
         %a{href: ships_path}
           = I18n.t(:"headlines.ship.updates")
       .list-group
-        - Ship.enabled.limit(5).order("updated_at desc").each do |ship|
+        - @ships.each do |ship|
           %a.list-group-item{href: ship_path(ship.slug)}
             %h4.list-group-item-heading
               = ship.name
@@ -40,9 +40,12 @@
         %a{href: images_path}
           = I18n.t(:"headlines.image.updates")
       .row
-        - Image.enabled.in_gallery.limit(6).order("updated_at desc").each_with_index do |image, index|
+        - @images.each_with_index do |image, index|
           - if index %2 == 0 && index != 0
             .row.hidden-xs
           .col-xs-12.col-sm-6.col-md-6
-            %a.thumbnail{href: (gallery_ship_path(image.gallery.slug) unless image.gallery.blank?)}
+            - path = images_path
+            - if image.gallery.present?
+              - path = gallery_ship_path(image.gallery.slug)
+            %a.thumbnail{href: path}
               %img{src: image.name.small, alt: image.name.file.filename}

@@ -15,8 +15,10 @@
   #dropzone.fade.well
     Drop files here
 
-  %table.table.table-striped{role: "presentation"}
-    %tbody.files
+  .panel.panel-default
+    .table-responsive
+      %table.table.table-striped{role: "presentation"}
+        %tbody.files
 
 %script#template-upload{type: "text/x-tmpl"}
   = render "backend/shared/uploader/upload_template"

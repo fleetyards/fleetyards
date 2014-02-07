@@ -37,7 +37,7 @@ $component-active-bg:            transparent;
 // -------------------------
 
 $table-bg:                           transparent;
-$table-bg-accent:                    lighten($body-bg, 6%); // for striping
+$table-bg-accent:                    rgba(lighten($body-bg, 6%), .2); // for striping
 $table-bg-hover:                     lighten($body-bg, 15%);
 $table-bg-active:                    $table-bg-hover;
 
