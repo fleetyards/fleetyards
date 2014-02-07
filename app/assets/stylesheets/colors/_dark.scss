@@ -196,6 +196,10 @@ $pagination-active-border:             darken($pagination-border, 12%);
 // -------------------------
 $pager-disabled-color:                 $gray-light;
 
+// Jumbotron
+// -------------------------
+$jumbotron-bg:                   rgba(darken($body-bg, 5%), .8);
+
 // Popovers
 // -------------------------
 $popover-bg:                          lighten($body-bg, 3%);
@@ -208,7 +212,6 @@ $popover-arrow-color:                 $popover-bg;
 $popover-arrow-outer-width:           ($popover-arrow-width + 1);
 $popover-arrow-outer-color:           rgba(0,0,0,.25);
 $popover-arrow-outer-fallback-color:  #999;
-
 
 // Labels
 // -------------------------
