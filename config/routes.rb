@@ -58,6 +58,10 @@ Fleetyards::Application.routes.draw do
     get 'impressum' => 'base#impressum'
     get 'privacy' => 'base#privacy'
 
+    get '404' => 'errors#not_found'
+    get '422' => 'errors#server_error'
+    get '500' => 'errors#server_error'
+
     root 'base#index'
   end
 

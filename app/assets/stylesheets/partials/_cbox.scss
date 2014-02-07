@@ -5,10 +5,22 @@
     margin-bottom: 0;
   }
 
-  a {
+  a.btn-link {
     color: #666;
     &:hover {
       color: #428bca;
+    }
+  }
+
+  &.cbox-error {
+    @include box-shadow(inset 0 1px 1px rgba(red,.075));
+
+    h2 {
+      color: red;
+    }
+
+    p {
+      color: darken(red, 10%);
     }
   }
 }
@@ -21,6 +33,10 @@
 
     &.cbox-signup {
       margin-top: 5%;
+    }
+
+    &.cbox-large {
+      width: 550px;
     }
   }
 }

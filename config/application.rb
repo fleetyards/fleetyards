@@ -25,6 +25,8 @@ module Fleetyards
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       "#{html_tag}".html_safe
     }
+
+    config.exceptions_app = self.routes
   end
 end
 
