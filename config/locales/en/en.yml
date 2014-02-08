@@ -31,6 +31,7 @@ en:
   select2:
     empty: ~
   nav:
+    toggle: "Toggle navigation"
     home: Home
     settings: Settings
     backend: Backend
