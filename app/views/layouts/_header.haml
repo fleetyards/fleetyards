@@ -7,12 +7,11 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
+      - path = root_path
       - if backend?
-        %a.navbar-brand{href: backend_root_path, class: get_active_nav}
-          = I18n.t(:"title.backend")
-      - else
-        %a.navbar-brand{href: root_path, class: get_active_nav}
-          = I18n.t(:"title.default")
+        - path = backend_root_path
+      %a.navbar-brand{href: path, class: get_active_nav}
+        = default_title
 
     .collapse.navbar-collapse.navbar-ex1-collapse
       - if backend?

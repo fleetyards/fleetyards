@@ -78,3 +78,12 @@ $nav-transition-speed: .3s;
     margin-bottom: 5px;
   }
 }
+
+@media (max-width: $screen-sm-min) {
+  .navbar-brand {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 80%;
+    white-space: nowrap;
+  }
+}

@@ -44,6 +44,12 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
+  private def default_title
+    @default_title ||= I18n.t(:"title.backend") if backend?
+    @default_title ||= I18n.t(:"title.default")
+  end
+  helper_method :default_title
+
   private def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
