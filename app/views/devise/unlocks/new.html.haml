@@ -2,7 +2,7 @@
   = I18n.t(:"title.unlock")
 .row
   .col-xs-12.col-md-5.col-md-offset-2
-    %h2= I18n.t(:"headlines.unlock")
+    %h1= I18n.t(:"headlines.unlock")
 
     = form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post}) do |f|
 

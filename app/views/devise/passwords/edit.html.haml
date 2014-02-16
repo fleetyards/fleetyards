@@ -3,7 +3,7 @@
 .row
   .col-xs-12
     .cbox.cbox-password
-      %h2
+      %h1
         = I18n.t(:"headlines.change_password")
 
       = form_for(resource, as: resource_name, url: user_password_path, html: { class: "form-horizontal", method: :put }) do |form|

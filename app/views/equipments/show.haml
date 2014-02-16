@@ -5,7 +5,7 @@
 
     .row
       .col-xs-12.col-md-8
-        %h2
+        %h1
           = equipment.name
           %small
             = I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")
@@ -24,6 +24,6 @@
 
     .row#comments
       .col-xs-12.col-md-12
-        %h3
+        %h2
           = I18n.t(:"headlines.comments")
         = render "shared/disqus", title: equipment.name, url: equipment_url(equipment), category_id: 2849241

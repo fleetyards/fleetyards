@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
       end
       locale = new_locale
     end
-    accept_language = request.env["HTTP_ACCEPT_LANGUAGE"]
+    accept_language = request.env['HTTP_ACCEPT_LANGUAGE']
     if accept_language.present? && match = accept_language.match(/#{I18n.available_locales.join('|')}/)
       locale ||= match[0]
     end
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   private def default_url_options(options = {})
-    {locale: I18n.locale}
+    { locale: I18n.locale }
   end
 
   private def unauthorized_controllers
@@ -51,12 +51,12 @@ class ApplicationController < ActionController::Base
   helper_method :default_title
 
   private def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
   end
   helper_method :sort_direction
 
   private def backend?
-    self.class.to_s.split("::").first=="Backend"
+    self.class.to_s.split('::').first == 'Backend'
   end
   helper_method :backend?
 

@@ -1,4 +1,4 @@
-h1, .navbar-brand, h2 {
+h1, .navbar-brand {
   font-family: 'Orbitron', sans-serif;
 
   small {
@@ -33,4 +33,10 @@ blockquote {
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.jumbotron {
+  h1 {
+    font-size: floor(($font-size-base * 2.15));
+  }
 }

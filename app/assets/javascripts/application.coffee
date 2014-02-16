@@ -30,7 +30,7 @@
 #= require turbolinks
 
 window.setMinHeight = ->
-  offset = $('footer#main').outerHeight() + $('nav#main-nav').outerHeight() + 20
+  offset = $('footer#main-footer').outerHeight() + $('nav#main-nav').outerHeight() + 20
   $('body > .container').css('min-height', $('body').height() - offset)
 
 $(document).on 'click', 'a.disabled', (evt) ->
@@ -47,5 +47,6 @@ $ ->
     $(@).button('loading')
 
   $('#blueimp-gallery').data('useBootstrapModal', false)
+
   setMinHeight()
 

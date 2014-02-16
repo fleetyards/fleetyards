@@ -4,7 +4,7 @@
   .col-xs-12
     .cbox.cbox-login
       .well
-        %h2=I18n.t(:"headlines.sign_in")
+        %h1=I18n.t(:"headlines.sign_in")
 
         = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
 
