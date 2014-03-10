@@ -1,56 +1,60 @@
 $nav-transition-speed: .3s;
 
-#main-nav .navbar-collapse {
-  .nav.navbar-nav {
-    max-height: 50px;
+#main-nav {
+  border-radius: 0;
 
-    > li {
-      > a {
-        border-color: $navbar-default-bg;
-        transition: all $nav-transition-speed;
-      }
-
-      &.active > a,
-      > a:hover,
-      &.open > a {
-        border-bottom: 4px solid $navbar-active;
-        padding-bottom: 11px;
-      }
-
-      .dropdown-menu {
-        li {
-          > a {
-            border-color: $navbar-default-bg;
-            transition: all $nav-transition-speed;
-          }
-          &.active > a,
-          &:hover > a {
-            border-right: 4px solid $navbar-active;
-          }
-        }
-      }
-    }
-  }
-
-  &.in,
-  &.collapsing {
+  .navbar-collapse {
     .nav.navbar-nav {
-      max-height: none;
+      max-height: 50px;
 
       > li {
+        > a {
+          border-color: $navbar-default-bg;
+          transition: all $nav-transition-speed;
+        }
+
         &.active > a,
         > a:hover,
         &.open > a {
-          border: none;
-          border-right: 4px solid $navbar-active;
-          padding-bottom: 10px;
+          border-bottom: 4px solid $navbar-active;
+          padding-bottom: 11px;
         }
 
         .dropdown-menu {
           li {
+            > a {
+              border-color: $navbar-default-bg;
+              transition: all $nav-transition-speed;
+            }
             &.active > a,
             &:hover > a {
               border-right: 4px solid $navbar-active;
+            }
+          }
+        }
+      }
+    }
+
+    &.in,
+    &.collapsing {
+      .nav.navbar-nav {
+        max-height: none;
+
+        > li {
+          &.active > a,
+          > a:hover,
+          &.open > a {
+            border: none;
+            border-right: 4px solid $navbar-active;
+            padding-bottom: 10px;
+          }
+
+          .dropdown-menu {
+            li {
+              &.active > a,
+              &:hover > a {
+                border-right: 4px solid $navbar-active;
+              }
             }
           }
         }
@@ -79,7 +83,7 @@ $nav-transition-speed: .3s;
   }
 }
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: $screen-xs-min) {
   .navbar-brand {
     text-overflow: ellipsis;
     overflow: hidden;

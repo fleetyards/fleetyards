@@ -1,6 +1,4 @@
 %ul.nav.navbar-nav
-  %li
-    = link_to I18n.t(:"nav.frontend"), root_path
   %li{class: get_active_nav('backend')}
     = link_to I18n.t(:"nav.home"), backend_root_path
   %li{class: get_active_nav('backend-ships')}
