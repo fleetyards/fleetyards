@@ -77,5 +77,16 @@ Fleetyards::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-  config.logger = GELF::Logger.new("localhost", "12201", "WAN", { host: "fleetyards.net", facility: "fleetyards" })
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host: Settings.app.domain }
+  config.action_mailer.smtp_settings = {
+    address: Settings.mailer.host,
+    port: Settings.mailer.port,
+    enable_starttls_auto: true,
+    user_name: Settings.mailer.user,
+    password: Settings.mailer.password,
+    authentication: 'login',
+    domain: Settings.app.domain
+  }
 end
