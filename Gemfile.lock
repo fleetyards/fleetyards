@@ -5,7 +5,7 @@ GIT
     bower-rails (0.6.1)
 
 GIT
-  remote: git@github.com:nicolai86/rails-asset-localization.git
+  remote: git://github.com/nicolai86/rails-asset-localization.git
   revision: 08babf372de25ce17906bf2d00784c13ee996991
   branch: master
   specs:

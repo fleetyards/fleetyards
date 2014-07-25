@@ -48,7 +48,7 @@ gem 'puma', '~> 2.7.0'
 
 gem 'sentry-raven'
 
-gem 'rails-asset-localization', git: 'git@github.com:nicolai86/rails-asset-localization.git', branch: :master
+gem 'rails-asset-localization', github: 'nicolai86/rails-asset-localization', branch: :master
 gem "bower-rails", github: '42dev/bower-rails'
 
 gem 'thor'
