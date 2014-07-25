@@ -63,6 +63,8 @@ gem 'web_translate_it'
 
 gem 'gelf'
 
+gem 'rails_12factor'
+
 group :test do
   gem 'rails-perftest'
   gem 'ruby-prof'

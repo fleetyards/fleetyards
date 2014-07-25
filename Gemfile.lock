@@ -152,6 +152,11 @@ GEM
       railties (= 4.0.3)
       sprockets-rails (~> 2.0.0)
     rails-perftest (0.0.3)
+    rails_12factor (0.0.2)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.2)
+    rails_stdout_logging (0.0.3)
     railties (4.0.3)
       actionpack (= 4.0.3)
       activesupport (= 4.0.3)
@@ -258,6 +263,7 @@ DEPENDENCIES
   rails (~> 4.0.3)
   rails-asset-localization!
   rails-perftest
+  rails_12factor
   redcarpet (~> 3.0.0)
   resque (~> 1.25.0)
   ruby-prof

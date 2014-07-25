@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   helper_method :backend?
 
   private def registration_enabled?
-    Settings.base.registration
+    ENV['REGISTRATION']
   end
   helper_method :registration_enabled?
 

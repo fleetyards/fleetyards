@@ -79,14 +79,14 @@ Fleetyards::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: Settings.app.domain }
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }
   config.action_mailer.smtp_settings = {
-    address: Settings.mailer.host,
-    port: Settings.mailer.port,
+    address: ENV['MAILER_HOST'],
+    port: ENV['MAILER_PORT'],
     enable_starttls_auto: true,
-    user_name: Settings.mailer.user,
-    password: Settings.mailer.password,
+    user_name: ENV['MAILER_USER'],
+    password: ENV['MAILER_PASSWORD'],
     authentication: 'login',
-    domain: Settings.app.domain
+    domain: ENV['DOMAIN']
   }
 end
