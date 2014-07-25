@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/42dev/bower-rails.git
-  revision: 05cbc009c4be092d89c0225c93c3a27b4ae337ba
+  revision: 92a85cdc16e4e51d0c4561b6f7eb3aa63dbcf340
   specs:
-    bower-rails (0.6.1)
+    bower-rails (0.8.2)
 
 GIT
   remote: git://github.com/nicolai86/rails-asset-localization.git
