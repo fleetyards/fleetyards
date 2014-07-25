@@ -4,7 +4,7 @@ require "erb"
 # secrets_source = YAML.load(ERB.new(File.read("#{Rails.root}/config/secrets.yml")).result)
 # Secrets ||= AwesomeOpenStruct.new(secrets_source[Rails.env])
 
-settings_source = []#YAML.load(ERB.new(File.read("#{Rails.root}/config/settings.yml")).result)
+settings_source = {}#YAML.load(ERB.new(File.read("#{Rails.root}/config/settings.yml")).result)
 
 DefaultSettings ||= AwesomeOpenStruct.new(settings_source[Rails.env])
 Settings ||= AwesomeOpenStruct.new(settings_source[Rails.env])
