@@ -7,4 +7,4 @@
 -#    per_page:      number of items to fetch per page
 -#    remote:        data-remote
 %li{:class => "page#{' active' if page.current?}"}
-  = link_to page, url, {onclick: ("App.resources.reload($(this)); return false;" if remote), remote: remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
+  = link_to page, url, {onclick: ("App.reload($(this)); return false;" if remote), remote: remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}

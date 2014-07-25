@@ -2,37 +2,35 @@
   = I18n.t(:"title.sign_up")
 - plan = params[:plan] || 'free'
 .row
-  .col-xs-12.col-md-5.col-md-offset-2
-    %h2=I18n.t(:"headlines.sign_up")
+  .col-xs-12
+    .cbox.cbox-signup
+      .well
+        %h1=I18n.t(:"headlines.sign_up")
 
-    = form_for user, url: user_registration_path do |form|
-      = form.hidden_field :plan, value: plan
-      .form-group{class: form_error?(user, :username)}
-        = form.text_field :username, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
-        %small
-          = form_errors user, :username
-      .form-group{class: form_error?(user, :email)}
-        = form.email_field :email, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
-        %small
-          = form_errors user, :email
+        = form_for user, url: user_registration_path, html: {class: "form-horizontal"} do |form|
+          = form.hidden_field :plan, value: plan
+          .form-group{class: form_error?(user, :username)}
+            .col-sm-12
+              = form.text_field :username, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
+              = form_errors user, :username
+          .form-group{class: form_error?(user, :email)}
+            .col-sm-12
+              = form.email_field :email, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
+              = form_errors user, :email
 
-      %hr
+          .form-group{class: form_error?(user, :password)}
+            .col-sm-12
+              = form.password_field :password, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
+              = form_errors user, :password
 
-      .form-group{class: form_error?(user, :password)}
-        = form.password_field :password, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
-        %small
-          = form_errors user, :password
+          .form-group{class: form_error?(user, :password_confirmation)}
+            .col-sm-12
+              = form.password_field :password_confirmation, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
+              = form_errors user, :password_confirmation
 
-      .form-group{class: form_error?(user, :password_confirmation)}
-        = form.password_field :password_confirmation, autocomplete: "off", placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
-        %small
-          = form_errors user, :password_confirmation
-
-      %br
-
-      %button{class: "btn btn-primary btn-lg"}
-        = I18n.t(:"actions.sign_up")
-
-
-  .col-xs-12.col-md-3
-    = render "devise/shared/links"
+          .text-right
+            %button.hidden-xs.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
+              = I18n.t(:"actions.sign_up")
+            %button.visible-xs.btn-block.btn.btn-primary.btn-lg{data: {loading: {text: I18n.t(:"actions.loading")}}}
+              = I18n.t(:"actions.sign_up")
+          .clearfix

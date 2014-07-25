@@ -1,31 +1,39 @@
 en:
   headlines:
-    sign_in: "Anmelden"
-    forgot_password: "Passwort vergessen?"
-    change_password: "Passwort ändern"
-    account: "Meine Daten"
-
-    project:
-      new: "Neues Projekt"
-      edit: "Projekt bearbeiten"
-      index: "Projekte"
-
-    invoice:
-      new: "Neue Rechnung"
-      edit: "Rechnung bearbeiten"
-      index: "Aktuelle Rechnungen (Gesamt: %{sum})"
-
-    customer:
-      new: "Neuer Kunde"
-      edit: "Kunde bearbeiten"
-      index: "Kunden"
-
-    setting:
-      edit: "Einstellungen berbeiten"
-
-    user:
-      edit: "Account bearbeiten"
-
+    sign_up: "Sign Up"
+    sign_in: Login
+    forgot_password: "Forgot your Password?"
+    change_password: "Change your Password"
+    unlock: "Unlock your Account"
+    confirm: "Confirm your Account"
+    account: "My Information"
+    impressum: Impressum
+    privacy: "Privacy policy"
+    welcome: Welcome
+    comments: Comments
+    manufacturer:
+      index: Hersteller
+    image:
+      updates: "New Images"
+      index: "All Images"
+    weapon:
+      index: Weapons
+    equipment:
+      index: Equipment
+    ship:
+      updates: "Updated Ships"
+      gallery: "%{ship} Gallery"
+      index: "Ships Index"
+    base:
+      index: "Welcome to"
     backend:
-      users:
-        index: "Users"
+      image:
+        index: Images
+        new: Imageupload
+      ship:
+        index: Ships
+        gallery: "Imageuplaod for %{ship}"
+  sublines:
+    impressum:
+      general: "General Information (according to § 5 TMG)"
+      disclaimer: Disclaimer

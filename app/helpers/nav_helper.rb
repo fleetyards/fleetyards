@@ -1,7 +1,8 @@
 module NavHelper
 
   def get_active_nav nav = 'home'
-    if nav == @active_nav
+    nav = nav.gsub(/\s/, '').split(',')
+    if nav.include?(@active_nav)
       return "active"
     end
   end

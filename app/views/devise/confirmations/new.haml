@@ -3,7 +3,7 @@
 .row
   .col-xs-12.col-md-5.col-md-offset-2
 
-    %h2
+    %h1
       = I18n.t(:"headlines.confirm")
 
     = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post}) do |form|

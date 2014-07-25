@@ -1,30 +1,37 @@
 de:
   actions:
-    ok: 'OK'
+    loading: "Bitte warten..."
+    ok: OK
     reset: "Auf Standard zurücksetzen"
-    cancel: "Abbrechen"
-    edit: "Bearbeiten"
-    delete: "Löschen"
-    remove: "Entfernen"
-    cancel: "Abbrechen"
-    back: "Zurück"
-    save: "Speichern"
-    add: "Hinzufügen"
-    show: "Anzeigen"
-    download: "Speichern"
-    regenerate: "Neu generieren"
-    generate: "Erstellen"
-    sign_in: "Login"
-    sign_out: "Logout"
-    sign_up: "Registrieren"
+    cancel: Abbrechen
+    edit: Bearbeiten
+    delete: Löschen
+    remove: Entfernen
+    back: Zurück
+    save: Speichern
+    add: Hinzufügen
+    show: Anzeigen
+    show_variants: "Varianten anzeigen"
+    hide_variants: "Varianten ausblenden"
+    sign_in: Login
+    sign_out: Abmelden
+    sign_up: Registrieren
     confirm: "Account bestätigen"
     unlock: "Account entsperren"
     update_password: "Passwort ändern"
-    forgot_password: "Passwort vergessen?"
-    reset_password: "Passwort zurücksetzen"
+    reset_password: "Passwort vergessen?"
     save_password: "Passwort speichern"
-    admin: "Backend"
-    enable: "Aktivieren"
-    disable: "Deaktivieren"
+    admin: Backend
+    enable: Aktivieren
+    disable: Deaktivieren
     ship:
+      gallery: Galerie
       reload: "Schiffe aktualisieren"
+    more_info: "Weitere Informationen"
+    search: Suchen
+    ship_database: Schiffsdatenbank
+    backend:
+      ship:
+        new: "Neues Schiff anlegen"
+      image:
+        new: "Neues Bild hochladen"

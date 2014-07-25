@@ -1,12 +1,63 @@
-$navbar-active: #428bca;
+$nav-transition-speed: .3s;
 
 #main-nav {
-  .nav.navbar-nav {
-    > li.active {
-      > a {
-        border-top: 3px solid $navbar-active;
-        margin-top: -1px;
-        padding-top: 13px;
+  border-radius: 0;
+
+  .navbar-collapse {
+    .nav.navbar-nav {
+      max-height: 50px;
+
+      > li {
+        > a {
+          border-color: $navbar-default-bg;
+          transition: all $nav-transition-speed;
+        }
+
+        &.active > a,
+        > a:hover,
+        &.open > a {
+          border-bottom: 4px solid $navbar-active;
+          padding-bottom: 11px;
+        }
+
+        .dropdown-menu {
+          li {
+            > a {
+              border-color: $navbar-default-bg;
+              transition: all $nav-transition-speed;
+            }
+            &.active > a,
+            &:hover > a {
+              border-right: 4px solid $navbar-active;
+            }
+          }
+        }
+      }
+    }
+
+    &.in,
+    &.collapsing {
+      .nav.navbar-nav {
+        max-height: none;
+
+        > li {
+          &.active > a,
+          > a:hover,
+          &.open > a {
+            border: none;
+            border-right: 4px solid $navbar-active;
+            padding-bottom: 10px;
+          }
+
+          .dropdown-menu {
+            li {
+              &.active > a,
+              &:hover > a {
+                border-right: 4px solid $navbar-active;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -14,7 +65,7 @@ $navbar-active: #428bca;
 
 .gravatar {
   float: left;
-  box-shadow: 0 1px 0 #fff;
+  box-shadow: $gravatar-shadow;
   border-radius: 3px;
   margin: 0 5px 0 0;
   max-width: 20px !important;
@@ -22,34 +73,21 @@ $navbar-active: #428bca;
   width: 20px
 }
 
-footer#footer {
-  .nav.navbar-nav {
-    > li.active {
-      > a {
-        border-bottom: 3px solid $navbar-active;
-        margin-bottom: -1px;
-        padding-bottom: 13px;
-      }
-    }
-  }
-}
-
-#main-nav, footer#footer {
-  .in, .collapsing {
-    .nav.navbar-nav {
-      > li.active {
-        > a {
-          border: none;
-          border-left: 3px solid $navbar-active;
-          padding-top: $navbar-padding-vertical;
-          padding-bottom: $navbar-padding-vertical;
-          margin: 0;
-        }
-      }
-    }
-  }
-}
-
 .resource-nav {
   margin-bottom: 10px;
+}
+
+.nav-pills {
+  li {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: $screen-xs-min) {
+  .navbar-brand {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 80%;
+    white-space: nowrap;
+  }
 }

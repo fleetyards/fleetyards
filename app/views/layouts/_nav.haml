@@ -1,19 +1,23 @@
-%nav#main-nav.navbar.navbar-default.navbar-fixed-top{role: "navigation"}
-  .container
-    .navbar-header
-      %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '.navbar-ex1-collapse'}}
-        %span.sr-only
-          = I18n.t(:"nav.header.toggle")
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
-      %a.navbar-brand{href: root_path, class: get_active_nav}
-        = I18n.t(:"title.default")
-
-    .collapse.navbar-collapse.navbar-ex1-collapse
-      %ul.nav.navbar-nav
-        %li{class: get_active_nav('home')}
-          = link_to I18n.t(:"nav.home"), root_path
+%ul.nav.navbar-nav
+  %li{class: get_active_nav('home')}
+    = link_to I18n.t(:"nav.home"), root_path
+  - if can? :index, :ships
+    %li.dropdown{class: get_active_nav('ships, manufacturers, weapons, equipment')}
+      %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+        = I18n.t(:"nav.ships")
+        %b.caret
+      %ul.dropdown-menu
         %li{class: get_active_nav('ships')}
-          = link_to I18n.t(:"nav.ships"), ships_path
-      = render "layouts/user_nav"
+          = link_to I18n.t(:"nav.ship.overview"), ships_path
+        %li.divider
+        - if can? :index, :manufacturers
+          %li{class: get_active_nav('manufacturers')}
+            = link_to I18n.t(:"nav.manufacturers"), manufacturers_path
+        - if can? :index, :weapons
+          %li{class: get_active_nav('weapons')}
+            = link_to I18n.t(:"nav.weapons"), weapons_path
+        - if can? :index, :equipment
+          %li{class: get_active_nav('equipment')}
+            = link_to I18n.t(:"nav.equipment"), equipments_path
+  %li{class: get_active_nav('images')}
+    = link_to I18n.t(:"nav.images"), images_path

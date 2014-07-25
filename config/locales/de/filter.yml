@@ -1,14 +1,12 @@
 de:
   filter:
-    all: "Alle"
+    all: Alle
     ship:
       manufacturer:
-        title: "Hersteller"
+        title: Hersteller
       ship_role:
-        title: "Aufgabe"
-        exploration: "Erkundung"
-        interdiction: "Blockadebrecher"
-        mercantile: "Handel"
-        militia-patrol: "Militärpatrouille"
-
-
+        title: Aufgabe
+        exploration: Erkundung
+        interdiction: Blockadebrecher
+        mercantile: Handel
+        militia-patrol: Militärpatrouille

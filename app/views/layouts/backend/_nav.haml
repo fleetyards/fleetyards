@@ -1,0 +1,7 @@
+%ul.nav.navbar-nav
+  %li{class: get_active_nav('backend')}
+    = link_to I18n.t(:"nav.home"), backend_root_path
+  %li{class: get_active_nav('backend-ships')}
+    = link_to I18n.t(:"nav.ships"), backend_ships_path
+  %li{class: get_active_nav('backend-images')}
+    = link_to I18n.t(:"nav.images"), backend_images_path

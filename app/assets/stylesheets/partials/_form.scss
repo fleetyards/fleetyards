@@ -28,25 +28,105 @@ form {
   .has-error {
     input, textarea {
       border-color: #c60f13;
-      background-color: rgba(198, 15, 19, 0.1);
-      &:focus {
-        background: #fafafa;
-        border-color: #999999;
+      background-color: rgba(red, 0.1);
+      color: #ccc;
+    }
+
+    ::-webkit-input-placeholder {
+      color: $state-danger-text;
+    }
+    :-moz-placeholder {
+      color: $state-danger-text;
+    }
+    ::-moz-placeholder {
+      color: $state-danger-text;
+    }
+    :-ms-input-placeholder {
+      color: $state-danger-text;
+    }
+  }
+
+  .selectize-control {
+    height: 34px;
+
+    .selectize-input.has-items {
+      input {
+        max-width: 100px !important;
       }
     }
-    small {
-      display: block;
-      padding: 0.375em 0.25em;
-      margin-top: -3px;
-      font-size: 90%;
-      font-weight: bold;
-      background: #c60f13;
-      color: white;
-      border-radius: 0 0 4px 4px
+  }
+
+  .form-control-feedback:nth-child(2) {
+    top: 0;
+  }
+
+  .selectize {
+    .form-control-feedback {
+      top: 0;
+      right: 30px;
+      z-index: 1;
+    }
+  }
+
+  .has-error {
+    input, textarea, .selectize-control .selectize-input, .selectize-control .selectize-input.input-active {
+      border-color: #c60f13;
+      background-color: rgba(red, 0.1);
+    }
+
+    ::-webkit-input-placeholder {
+      color: $state-danger-text;
+    }
+    :-moz-placeholder {
+      color: $state-danger-text;
+    }
+    ::-moz-placeholder {
+      color: $state-danger-text;
+    }
+    :-ms-input-placeholder {
+      color: $state-danger-text;
     }
   }
 
   .invoice-position-value {
     text-align: right;
+  }
+
+  textarea {
+    max-width: 100%;
+    min-height: 150px;
+  }
+
+  .invoice-position-value {
+    text-align: right;
+  }
+}
+
+.form-big {
+  .form-group {
+    margin-bottom: 0;
+
+    input {
+      font-size: 16px;
+      height: auto;
+      padding: 10px;
+      border-radius: 0;
+      border-bottom: 0;
+    }
+
+    &:first-child {
+      input {
+        border-radius: 4px 4px 0 0;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 15px;
+
+      input {
+        border-radius: 0 0 4px 4px;
+        border-bottom: 1px solid #999999;
+      }
+    }
   }
 }

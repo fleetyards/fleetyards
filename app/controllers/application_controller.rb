@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :authenticate_user!, :set_default_nav
+  before_filter :set_locale
 
   protect_from_forgery with: :exception
 
@@ -7,15 +9,32 @@ class ApplicationController < ActionController::Base
 
   check_authorization unless: :unauthorized_controllers
 
+  private def set_locale
+    locale = current_user.locale if user_signed_in?
+    if new_locale = params[:locale]
+      if user_signed_in?
+        current_user.update(locale: new_locale)
+      end
+      locale = new_locale
+    end
+    accept_language = request.env['HTTP_ACCEPT_LANGUAGE']
+    if accept_language.present? && match = accept_language.match(/#{I18n.available_locales.join('|')}/)
+      locale ||= match[0]
+    end
+    I18n.locale = locale
+  end
+
+  private def default_url_options(options = {})
+    { locale: I18n.locale }
+  end
+
   private def unauthorized_controllers
-    devise_controller?
+    devise_controller? || is_a?(RailsAssetLocalization::LocalesController)
   end
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, warning: exception.message
   end
-
-  before_filter :authenticate_user!, :set_default_nav
 
   private def set_default_nav
     @active_nav = 'home'
@@ -25,18 +44,24 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
+  private def default_title
+    @default_title ||= I18n.t(:"title.backend") if backend?
+    @default_title ||= I18n.t(:"title.default")
+  end
+  helper_method :default_title
+
   private def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
   end
   helper_method :sort_direction
 
   private def backend?
-    self.class.to_s.split("::").first=="Backend"
+    self.class.to_s.split('::').first == 'Backend'
   end
   helper_method :backend?
 
   private def registration_enabled?
-    Settings.base.registration
+    ENV['REGISTRATION']
   end
   helper_method :registration_enabled?
 

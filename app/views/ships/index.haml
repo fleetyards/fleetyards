@@ -1,23 +1,27 @@
+- content_for :title do
+  = I18n.t(:"title.ship.index")
 .row#ships
   .col-xs-12.col-md-12
 
     .row
       .col-xs-12.col-md-8
-        %h2
+        %h1
           = I18n.t(:"headlines.ship.index")
 
       .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          -# %a.btn.btn-default{href: manufacturers_path}
-          -#   Hersteller
-          - if can? :reload, :ships
-            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_ships_path}, class: ('loading' if @worker && @worker.running), onclick: "App.Ships.reload($(this)); return false;"}
-              = I18n.t(:"actions.ship.reload")
+        = render "search"
 
     .row
       .col-xs-12.col-md-6
         = render "shared/filter", resource: "ship", name: "ship_role", filters: ShipRole.all, translateable: true
         = render "shared/filter", resource: "ship", name: "manufacturer", filters: Manufacturer.all
+        .btn-group.filter-menu
+          - if params.fetch(:variants, nil)
+            %a.btn.btn-default.active{href: plumb("variants" => nil)}
+              = I18n.t(:"actions.hide_variants")
+          - else
+            %a.btn.btn-default{href: plumb("variants" => true)}
+              = I18n.t(:"actions.show_variants")
       .col-xs-12.col-md-6
         .pull-right
           = paginate @ships
@@ -27,8 +31,7 @@
       - if @ships.blank?
         .col-md-12
           .well.text-center
-            Keine Schiffe vorhanden
-
+            = I18n.t(:"labels.table.blank.ship")
     .row
       .col-xs-12.col-md-12
         .pull-right

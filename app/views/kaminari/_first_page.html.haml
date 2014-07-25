@@ -6,4 +6,4 @@
 -#    per_page:      number of items to fetch per page
 -#    remote:        data-remote
 %li.first.arrow{class: ("disabled" if current_page.first?)}
-  = link_to raw(t 'views.pagination.first'), url, {onclick: ("App.resources.reload($(this)); return false;" if remote), remote: remote}
+  = link_to raw("&laquo;"), url, {onclick: ("App.reload($(this)); return false;" if remote), remote: remote}

@@ -1,0 +1,21 @@
+.row.fileupload-buttonbar
+  .col-lg-7
+    %span.btn.btn-success.fileinput-button
+      %i.glyphicon.glyphicon-plus
+      %span Add files...
+      %input{type: "file", name: "files[]", multiple: true}
+    %button.btn.btn-primary.start{type: "submit"}
+      %i.glyphicon.glyphicon-upload
+      %span Start upload
+    %button.btn.btn-warning.cancel{type: "reset"}
+      %i.glyphicon.glyphicon-ban-circle
+      %span Cancel upload
+    %button.btn.btn-danger.delete{type: "button"}
+      %i.glyphicon.glyphicon-trash
+      %span Delete
+    %input.toggle{type: "checkbox"}
+    %span.fileupload-process
+  .col-lg-5.fileupload-progress.fade
+    .progress.progress-striped.active{role: "progressbar", aria: {valuemin: "0", valuemax: "100"}}
+      .progress-bar.progress-bar-success{style: "width:0%;"}
+    .progress-extended &nbsp;

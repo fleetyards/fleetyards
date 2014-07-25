@@ -1,0 +1,17 @@
+.row#backend
+  .col-xs-12.col-md-12
+    .row
+      .col-xs-12.col-md-6
+        %h1
+          = I18n.t(:"headlines.backend.dashboard")
+
+      .col-xs-12.col-md-6
+        .btn-group.pull-right.resource-nav
+          = link_to t(:'nav.update_locales'), backend_update_locales_path, method: :put, class: "btn btn-primary"
+
+    .row
+      .col-md-6
+        = render "settings_panel"
+      .col-md-6
+        = render "latest_users_panel"
+        = render "latest_ships_panel"

@@ -1,0 +1,12 @@
+en:
+  filter:
+    all: All
+    ship:
+      manufacturer:
+        title: Manufacturer
+      ship_role:
+        title: Role
+        exploration: ~
+        interdiction: ~
+        mercantile: ~
+        militia-patrol: ~

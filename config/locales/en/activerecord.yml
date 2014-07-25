@@ -1,23 +1,70 @@
 en:
   activerecord:
     attributes:
-      invoice:
-        project_id: "Projekt"
-        states:
-          created: "Erstellt"
-          charged: "Wartet auf Bezahlung"
-          cancelled: "Storniert"
-          paid: "Bezahlt"
-          archived: "Archiviert"
-      invoice_position:
-        description: "Beschreibung"
+      user:
+        login: "Username or E-Mail"
+        enabled: Active?
+        admin: Admin?
+        confirmation_token: Token
+        gravatar: "Gravatar E-Mail Address"
+        created_at: "%{time} ago"
+      ship:
+        beam: Beam
+        cargo: Cargo
+        crew: Crew
+        height: Height
+        length: Length
+        mass: Mass
+        manufacturer: Manufacturer
+        hardpoints: Hardpoints
+        weapons: Weapons
+        equipment: Equipment
+        variants: Variants
+        max_upgrades: Upgrades
+      equipment:
+        types:
+          shield: Shields
+          thrusters: "Maneuvering Thrusters"
+          primary_thrusters: "Primary Thrusters"
+          powerplant: Powerplant
+          additional: "Additional Equipment"
+      weapon:
+        classes:
+          class1: "Class 1"
+          class2: "Class 2"
+          class3: "Class 3"
+          class4: "Class 4"
+          class5: "Class 5"
+          class6: "Class 6"
+          class7: "Class 7"
+          class8: "Class 8"
       setting:
-        tax: "Steuern"
+        base:
+          registration: "Registration active?"
+        mailer:
+          default_from: "Default From"
+          host: "SMTP Host"
+          port: "SMTP Port"
+          user: "SMTP User"
+          password: "SMPT Password or Token"
     errors:
       messages:
-        blank: "Bitte fülle das Feld aus"
+        record_invalid: "Bad Data"
+        blank: "Please fill out the Field"
       models:
         user:
           attributes:
+            username:
+              taken: "Username is already taken."
+            email:
+              taken: "E-Mail is already taken."
+            confirmation_token:
+              invalid: "is invalid"
             password:
-              too_short: "Bitte gib ein Passwort mit mindestens 8 Zeichen ein."
+              too_short: ~
+            password_confirmation:
+              confirmation: "Passwords do not match"
+            current_password:
+              invalid: "Password is invalid."
+            reset_password_token:
+              invalid: "Token is invalid"

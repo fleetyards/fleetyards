@@ -1,0 +1,34 @@
+en:
+  helpers:
+    label:
+      user:
+        email: E-Mail
+        password: Password
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"
+        remember_me: "Remember me"
+    placeholder:
+      name: Name
+      ship:
+        search: "Search for Name or Description"
+        beam: Beam
+        cargo: Cargo
+        crew: Crew
+        height: Height
+        length: Length
+        mass: Mass
+        role: Roles
+      user:
+        username: Username
+        email: E-Mail
+        login: "Username or E-Mail"
+        password: Password
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"
+        remember_me: "Remember me"
+        gravatar: "Gravatar E-Mail Address"
+    prompt:
+      user:
+        locale: "Please select a Language"
+      address:
+        country: "Please select a Country"

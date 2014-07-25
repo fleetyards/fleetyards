@@ -6,4 +6,4 @@
 -#    per_page:      number of items to fetch per page
 -#    remote:        data-remote
 %li.next.arrow
-  = link_to raw(t 'views.pagination.next'), url, {onclick: ("App.resources.reload($(this)); return false;" if remote), rel: 'next', remote: remote}
+  = link_to raw("&rsaquo;"), url, {onclick: ("App.reload($(this)); return false;" if remote), rel: 'next', remote: remote}

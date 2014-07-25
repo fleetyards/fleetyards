@@ -1,0 +1,18 @@
+en:
+  resources:
+    user:
+      default:
+        success: "Personal Information"
+        failure: "Personal Information"
+      password:
+        success: Password
+        failure: Password
+    locale: Locales
+    ship: Ship
+    ships: Ships
+    image: Image
+    messages:
+      user_data: "Personal Information"
+      password: Password
+      user: User
+      setting: Settings

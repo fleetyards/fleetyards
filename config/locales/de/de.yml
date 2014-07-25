@@ -1,23 +1,51 @@
 de:
+  locales:
+    de: Deutsch
+    en: English
+  meta:
+    description: "FleetYards.net, Deine Datenbank für alle Informationen rund um das bald erscheinende „Star Citizen“ von Chris Roberts."
+    keywords: "Star, Citizen, Raumschiffe, Datenbank, Squadron, 42, Star, Citizen, Deutsch, Chris, Roberts, Spiel, Online, Game, Weltraum, Simulation"
   title:
-    default: "FleetYards.net"
+    default: FleetYards.net
     backend: "FleetYards.net Backend"
-    sign_in: "Login"
-    sign_up: "Registrieren"
+    sign_in: Login
+    sign_up: Registrieren
     unlock: "Account entsperren"
     confirm: "Account bestätigen"
+    impressum: Impressum
+    privacy: Datenschutz
+    manufacturer:
+      index: Hersteller
+    image:
+      index: "Alle Bilder"
+    weapon:
+      index: Waffen
+    equipment:
+      index: Komponenten
+    ship:
+      index: Schiffe
     user:
       edit: "Einstellungen bearbeiten"
-
-  default_country: "Deutschland"
-  default_country_code: "DE"
+  default_country: Deutschland
+  default_country_code: DE
   select2:
     empty: "Keine Einträge gefunden"
   nav:
-    home: "Home"
-    settings: "Einstellungen"
-    backend: "Backend"
-    database:
-      title: "Datenbank"
-      overview: "Übersicht"
-    ships: "Schiffe"
+    toggle: "Navigation aufklappen"
+    home: Home
+    settings: Einstellungen
+    backend: Backend
+    ships: Schiffe
+    impressum: Impressum
+    privacy: Datenschutz
+    ship:
+      overview: Übersicht
+    images: Bilder
+    weapons: Waffen
+    manufacturers: Hersteller
+    equipment: Komponenten
+  texts:
+    base:
+      index: "Deine Datenbank für alle Informationen rund um das bald erscheinende „Star Citizen“ von Chris Roberts."
+      index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
+      index_quote_source: "Verfasser unbekannt, Quelle: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"

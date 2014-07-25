@@ -1,4 +1,4 @@
-h1, .navbar-brand, h2 {
+h1, .navbar-brand {
   font-family: 'Orbitron', sans-serif;
 
   small {
@@ -16,5 +16,27 @@ address {
     color: #999;
     font-family: 'Orbitron', sans-serif;
     font-weight: normal;
+  }
+}
+
+blockquote {
+  small {
+    a {
+      color: $blockquote-small-color;
+
+      &:hover {
+        color: $blockquote-small-color;
+      }
+    }
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.jumbotron {
+  h1 {
+    font-size: floor(($font-size-base * 2.15));
   }
 }

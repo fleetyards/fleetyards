@@ -1,0 +1,62 @@
+en:
+  labels:
+    actions: Actions
+    name: Name
+    description: Description
+    address: Address
+    id: ID
+    role: Role
+    email: E-Mail
+    source: Source
+    user:
+      current_sign_in_at: "Last Login"
+      admin: Admin?
+      email: E-Mail
+      created_at: "Created at"
+    gallery:
+      blank:
+        ship: "No Pictures for \"%{ship}\" present."
+    blank:
+      weapon: "No Weapons present"
+      equipment: "No Equipment present"
+    table:
+      id: ID
+      name: Name
+      actions: Actions
+      enabled: Enabled?
+      blank:
+        default: "No Entries could be found."
+        ship: "No Ships could be found."
+      setting:
+        key: Description
+        value: Value
+      image:
+        name: Filename
+        gallery_type: Gallery
+      ship:
+        stats: Stats
+        manufacturer: Manufacturer
+        updated_at: "last reload"
+      user:
+        created_at: Created
+        email: E-Mail
+        username: Username
+    panels:
+      latest_ships: "Reloaded Ships"
+      latest_users: "New Users"
+      setting:
+        base: "Base Settings"
+        mailer: "E-Mail Settings"
+    tabs:
+      ship:
+        hardpoints: Hardpoints
+        default_configuration: "Default Configuration"
+  activerecord:
+    attributes:
+      ship:
+        updated_at: "%{time} ago"
+  headlines:
+    backend:
+      dashboard: Dashboard
+  nav:
+    frontend: Frontend

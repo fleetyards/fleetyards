@@ -13,10 +13,16 @@ config/resque.yml
 config/secrets.yml
 config/settings.yml
 .env
+.wti
 
 # test files
 coverage/*
 
 # app files
 public/uploads/*
+
+# js dependencies
+vendor/assets/bower_components/*
+vendor/assets/.bowerrc
+vendor/assets/bower.json
 

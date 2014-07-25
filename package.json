@@ -1,0 +1,25 @@
+{
+  "name": "Fleetyards.net",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mortik/fleetyards-app.git"
+  },
+  "author": "Marten Klitzke <m.klitzke@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mortik/fleetyards-app/issues"
+  },
+  "homepage": "https://github.com/mortik/fleetyards-app",
+  "dependencies": {
+    "bower": "~1.2.8"
+  }
+}

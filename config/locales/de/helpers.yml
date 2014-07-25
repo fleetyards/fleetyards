@@ -2,22 +2,33 @@ de:
   helpers:
     label:
       user:
-        email: "E-Mail"
-        password: "Passwort"
-        password_confirmation: "Passwort-Bestätigung"
-        current_password: "aktuelles Passwort"
+        email: E-Mail
+        password: Passwort
+        password_confirmation: Passwort-Bestätigung
+        current_password: "Aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
     placeholder:
-      name: "Name"
+      name: Name
+      ship:
+        search: "Suche nach Name oder Beschreibung"
+        beam: Breite
+        cargo: Fracht
+        crew: Crew
+        height: Höhe
+        length: Länge
+        mass: Masse
+        role: Aufgaben
       user:
-        username: "Benutzername"
-        email: "E-Mail"
+        username: Benutzername
+        email: E-Mail
         login: "Benutzername oder E-Mail"
-        password: "Passwort"
-        password_confirmation: "Passwort-Bestätigung"
+        password: Passwort
+        password_confirmation: Passwort-Bestätigung
         current_password: "Aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
         gravatar: "Gravatar E-Mail Adresse"
     prompt:
+      user:
+        locale: "Bitte wähle eine Sprache"
       address:
         country: "Bitte wähle ein Land"

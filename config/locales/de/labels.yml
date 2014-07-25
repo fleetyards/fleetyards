@@ -1,18 +1,62 @@
 de:
   labels:
-    actions: "Aktionen"
-    name: "Name"
-    description: "Beschreibung"
-    address: "Adresse"
-    id: "ID"
-    role: "Benutzergruppe"
-    email: "E-Mail"
+    actions: Aktionen
+    name: Name
+    description: Beschreibung
+    address: Adresse
+    id: ID
+    role: Benutzergruppe
+    email: E-Mail
+    source: Quelle
     user:
       current_sign_in_at: "Letzte Aktivität vor"
-      admin: "Admin?"
-      email: "E-Mail"
-      created_at: "Erstellt"
-
-    table:
+      admin: Admin?
+      email: E-Mail
+      created_at: Erstellt
+    gallery:
       blank:
-        default: "Keine Einträge vorhanden"
+        ship: 'Keine Bilder für "%{ship}" vorhanden.'
+    blank:
+      weapon: "Keine Waffen ausgerüstet"
+      equipment: "Kein Equipment ausgerüstet"
+    table:
+      id: ID
+      name: Name
+      actions: Aktionen
+      enabled: Aktiv?
+      blank:
+        default: "Es konnten keine Einträge gefunden werden."
+        ship: "Es konnten keine Schiffe gefunden werden."
+      setting:
+        key: Beschreibung
+        value: Wert
+      image:
+        name: Dateiname
+        gallery_type: Galerie
+      ship:
+        stats: Statistiken
+        manufacturer: Hersteller
+        updated_at: "Letzte Aktualisierung"
+      user:
+        created_at: Erstellt
+        email: E-Mail
+        username: Benutzername
+    panels:
+      latest_ships: "Aktualisierte Schiffe"
+      latest_users: "Neue Benutzer"
+      setting:
+        base: "Allgemeine Einstellungen"
+        mailer: "E-Mail Einstellungen"
+    tabs:
+      ship:
+        hardpoints: "Hardpoints"
+        default_configuration: "Standard Konfiguration"
+  activerecord:
+    attributes:
+      ship:
+        updated_at: "vor %{time}"
+  headlines:
+    backend:
+      dashboard: Dashboard
+  nav:
+    frontend: Frontend

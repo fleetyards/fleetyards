@@ -3,11 +3,41 @@ de:
     attributes:
       user:
         login: "Benutzername oder E-Mail"
-        enabled: "Aktiv?"
-        admin: "Admin?"
-        confirmation_token: "Token"
+        enabled: Aktiv?
+        admin: Admin?
+        confirmation_token: Token
         gravatar: "Gravatar E-Mail Adresse"
         created_at: "vor %{time}"
+      ship:
+        beam: Breite
+        cargo: Fracht
+        crew: Crew
+        height: Höhe
+        length: Länge
+        mass: Masse
+        manufacturer: Hersteller
+        hardpoints: Hardpoints
+        weapons: Waffen
+        equipment: Komponenten
+        variants: Varianten
+        max_upgrades: Upgrades
+      equipment:
+        types:
+          shield: Schilde
+          thrusters: Manövrierdüsen
+          primary_thrusters: Haupttriebwerke
+          powerplant: Antrieb
+          additional: "Zusätzliche Austattung"
+      weapon:
+        classes:
+          class1: "Klasse 1"
+          class2: "Klasse 2"
+          class3: "Klasse 3"
+          class4: "Klasse 4"
+          class5: "Klasse 5"
+          class6: "Klasse 6"
+          class7: "Klasse 7"
+          class8: "Klasse 8"
       setting:
         base:
           registration: "Registrierung aktiv?"
@@ -38,13 +68,3 @@ de:
               invalid: "Ihr Passwort ist nicht gültig."
             reset_password_token:
               invalid: "Der verwendete Token ist ungültig."
-        invoice:
-          attributes:
-            ref:
-              taken: "Rechnungsnummer muss eindeutig sein."
-            company_name:
-              empty: "Bitte geben Sie zumindest einen Namen oder ein Firma an"
-        position:
-          attributes:
-            hours_value:
-              empty: "Bitte geben Sie zumindest die Anzahl Stunden oder den Betrag an"

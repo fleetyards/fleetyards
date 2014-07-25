@@ -1,0 +1,31 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = I18n.t(:"labels.panels.latest_ships")
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= I18n.t(:"labels.table.name")
+          %th= I18n.t(:"labels.table.ship.manufacturer")
+          %th= I18n.t(:"labels.table.ship.updated_at")
+          %th.actions.one
+      %tbody
+        - Ship.order('updated_at DESC').limit(5).each do |ship|
+          %tr
+            %td
+              = ship.name
+            %td
+              = ship.manufacturer.name if ship.manufacturer.present?
+            %td
+              = I18n.t(:"activerecord.attributes.ship.updated_at", time: time_ago_in_words(ship.created_at))
+            %td
+              .btn-group
+                -# = link_to edit_backend_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
+                -#   %i.glyphicon.glyphicon-edit
+  .panel-footer
+    .btn-group.pull-right
+      - if can? :reload, :ships
+        %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_backend_ships_path, workerPath: backend_check_worker_state_path('ShipsWorker')}, class: ('loading' if @worker_running), onclick: "App.Ships.reload($(this)); return false;"}
+          = I18n.t(:"actions.ship.reload")
+    .clearfix

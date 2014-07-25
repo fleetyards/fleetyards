@@ -1,0 +1,29 @@
+- content_for :title do
+  = equipment.name
+.row#ship-profile
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = equipment.name
+          %small
+            = I18n.t(:"activerecord.attributes.equipment.types.#{equipment.equipment_type}")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          - back_params = params.dup
+          - back_params.delete(:id)
+          %a.btn.btn-default{href: equipments_path(back_params)}
+            = I18n.t(:"actions.back")
+
+    .row
+      .col-xs-12.col-md-8
+        %p
+          = equipment.description
+
+    .row#comments
+      .col-xs-12.col-md-12
+        %h2
+          = I18n.t(:"headlines.comments")
+        = render "shared/disqus", title: equipment.name, url: equipment_url(equipment), category_id: 2849241

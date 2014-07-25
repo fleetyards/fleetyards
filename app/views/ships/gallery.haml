@@ -1,0 +1,37 @@
+- content_for :title do
+  = "#{I18n.t(:"headlines.ship.gallery", ship: ship.name)} - #{ship.manufacturer.name}"
+.row#ship-gallery
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.ship.gallery", ship: ship.name)
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          %a.btn.btn-default{href: ship_path(ship.slug, params)}
+            = I18n.t(:"actions.back")
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @images
+
+    .row
+      - @images.each_with_index do |image, key|
+        - if key %4 == 0 && key != 0
+          .row.visible-md
+          .row.visible-lg
+        - if key %2 == 0 && key != 0
+          .row.visible-sm
+        .col-md-3.col-sm-6.col-xs-12
+          %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
+            %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
+      - if @images.blank?
+        .col-md-12
+          .well.text-center
+            = I18n.t(:"labels.gallery.blank.ship", ship: ship.name)
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @images
+= render "shared/gallery_modal"

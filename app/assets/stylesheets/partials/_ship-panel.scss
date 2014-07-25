@@ -1,0 +1,38 @@
+.ship-panel {
+  h3 {
+    small {
+      white-space: nowrap;
+    }
+  }
+  .profile-image {
+    background-color: #333;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .metrics {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .ship-roles {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ship-image, .manufacturer-logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.ship-image {
+  float: left;
+  display: inline;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}

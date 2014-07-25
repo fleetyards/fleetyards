@@ -1,0 +1,33 @@
+- content_for :title do
+  = I18n.t(:"meta.title.backend.setting")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.backend.setting.edit")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          - unless @setting.new_record?
+            = link_to backend_setting_path(@setting), method: :delete, class: "btn btn-warning" do
+              = I18n.t(:"actions.reset")
+          = link_to I18n.t(:"actions.back"), backend_root_path, class: "btn btn-default"
+
+    = form_for [:backend, @setting] do |form|
+      = form.hidden_field :keypath
+      .row
+        .col-xs-12.col-md-6.form-group
+          - if [TrueClass, FalseClass].include?((@setting.value || @default_setting).class)
+            .checkbox
+              = form.label :value do
+                = I18n.t(:"activerecord.attributes.setting.#{@keypath}")
+                = form.check_box :value, placeholder: I18n.t(:"helpers.placeholder.setting.#{@keypath}")
+          - else
+            .input-group
+              = form.label :value, I18n.t(:"activerecord.attributes.setting.#{@keypath}"), class: "input-group-addon"
+              = form.text_field :value, placeholder: @default_setting, class: 'form-control'
+
+      = render "shared/submit", path: backend_root_path
+

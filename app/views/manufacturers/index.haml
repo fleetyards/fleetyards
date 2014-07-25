@@ -1,0 +1,36 @@
+- content_for :title do
+  = I18n.t(:"title.manufacturer.index")
+.row#manufacturers
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.manufacturer.index")
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @manufacturers
+
+    .row
+      - @manufacturers.each_with_index do |manufacturer, index|
+        - if index %3 == 0 && index != 0
+          .row.visible-md
+          .row.visible-lg
+        - if index %2 == 0 && index != 0
+          .row.visible-sm
+        .col-md-4.col-sm-6.col-xs-12
+          .manufacturer-logo.text-center
+            %a{href: ships_path(manufacturer: manufacturer.slug)}
+              - if manufacturer.logo.blank?
+                = manufacturer.name
+              - else
+                %img{src: manufacturer.logo.small, title: manufacturer.name, alt: manufacturer.name, data: {toggle: 'tooltip'}}
+
+    .row
+      .col-xs-12.col-md-12
+        .pull-right
+          = paginate @manufacturers
+
