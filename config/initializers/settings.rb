@@ -11,7 +11,7 @@ Settings ||= AwesomeOpenStruct.new(settings_source[Rails.env])
 
 Fleetyards::Application.config.after_initialize do
   begin
-    Settings.merge Setting.to_h
+    #Settings.merge Setting.to_h
   rescue Exception => e
     # ignore errors
   end
