@@ -1,0 +1,8 @@
+.list-group
+  %a.list-group-item{href: (component_path(hardpoint.component) if hardpoint.component.present?)}
+    %strong
+      = "#{hardpoint.name}:"
+    - if hardpoint.component.present?
+      = hardpoint.component.name
+    - else
+      Empty

@@ -24,6 +24,8 @@ de:
     admin: Backend
     enable: Aktivieren
     disable: Deaktivieren
+    manufacturer:
+      ships: Schiffe
     ship:
       gallery: Galerie
       reload: "Schiffe aktualisieren"
@@ -35,3 +37,7 @@ de:
         new: "Neues Schiff anlegen"
       image:
         new: "Neues Bild hochladen"
+      manufacturer:
+        new: "Neuer Hersteller anlegen"
+      component:
+        new: "Neue Komponente anlegen"

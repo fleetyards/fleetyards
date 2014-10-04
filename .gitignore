@@ -9,9 +9,6 @@ pids/*
 
 # config files
 config/database.yml
-config/resque.yml
-config/secrets.yml
-config/settings.yml
 .env
 .wti
 

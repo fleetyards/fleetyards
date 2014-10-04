@@ -10,7 +10,7 @@
         %small
           = ship.manufacturer.name if ship.manufacturer.present?
     .profile-image.text-center
-      = image_tag ship.image.small
+      = image_tag ship.store_image.small
     %ul.list-group
       %li.list-group-item.ship-roles{data: {toggle: "tooltip"}, title: ship.ship_role.name}
         %strong
@@ -21,28 +21,28 @@
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.length")}:"
           %div.no-wrap
-            = number_to_human ship.length, units: :distance
+            = number_to_human ship.length.to_d, units: :distance, precision: 6
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.beam")}:"
           %div.no-wrap
-            = number_to_human ship.beam, units: :distance
+            = number_to_human ship.beam, units: :distance, precision: 6
         .col-xs-6.col-sm-6.col-md-6
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.height")}:"
           %div.no-wrap
-            = number_to_human ship.height, units: :distance
+            = number_to_human ship.height, units: :distance, precision: 6
           %strong
             = "#{I18n.t(:"helpers.placeholder.ship.mass")}:"
           %div.no-wrap
-            = number_to_human ship.mass, units: :weight
+            = number_to_human ship.mass, units: :weight, precision: 6
         .clearfix
       %li.list-group-item
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.cargo")}:"
-        = number_to_human ship.cargo, units: :weight
+        = number_to_human ship.cargo, units: :weight, precision: 6
       %li.list-group-item
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.crew")}:"
-        = number_to_human ship.crew, units: :people
+        = number_to_human ship.crew, units: :people, precision: 6
     %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
       = I18n.t(:"actions.more_info")

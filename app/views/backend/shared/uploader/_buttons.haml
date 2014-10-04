@@ -1,17 +1,17 @@
-.row.fileupload-buttonbar
+.row.fileupload-buttonbar{data: {no_turbolink: true}}
   .col-lg-7
     %span.btn.btn-success.fileinput-button
-      %i.glyphicon.glyphicon-plus
+      %i.fa.fa-plus
       %span Add files...
       %input{type: "file", name: "files[]", multiple: true}
     %button.btn.btn-primary.start{type: "submit"}
-      %i.glyphicon.glyphicon-upload
+      %i.fa.fa-upload
       %span Start upload
     %button.btn.btn-warning.cancel{type: "reset"}
-      %i.glyphicon.glyphicon-ban-circle
+      %i.fa.fa-ban-circle
       %span Cancel upload
     %button.btn.btn-danger.delete{type: "button"}
-      %i.glyphicon.glyphicon-trash
+      %i.fa.fa-trash
       %span Delete
     %input.toggle{type: "checkbox"}
     %span.fileupload-process

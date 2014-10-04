@@ -1,0 +1,9 @@
+= form_for [:backend, manufacturer] do |form|
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(manufacturer, :name)}
+      = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
+      %small
+        = form_errors manufacturer, :name
+
+
+  = render "shared/submit", path: backend_manufacturers_path

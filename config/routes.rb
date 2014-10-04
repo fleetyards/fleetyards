@@ -1,7 +1,9 @@
-require 'resque/server'
+require 'sidekiq/web'
 
 Fleetyards::Application.routes.draw do
-  mount RailsAssetLocalization::Engine => "/locales"
+  concern :paginatable do
+    get '(page/:page)', :action => :index, :on => :collection, :as => ''
+  end
 
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
@@ -14,12 +16,20 @@ Fleetyards::Application.routes.draw do
       resources :settings, except: [:index, :show]
 
       authenticate :user, lambda {|u| u.admin? } do
-        mount Resque::Server.new, :at => "/workers"
+        mount Sidekiq::Web => '/workers'
       end
 
-      resources :ships, param: :slug do
+      resources :ships do
         get 'gallery', on: :member
         put 'reload', on: :collection
+        put 'toggle', on: :member
+      end
+
+      resources :manufacturers do
+        put 'toggle', on: :member
+      end
+
+      resources :components do
         put 'toggle', on: :member
       end
 
@@ -41,19 +51,22 @@ Fleetyards::Application.routes.draw do
 
     resource :password, only: [:edit, :update]
 
-    resources :ships, param: :slug do
+    resources :ships, param: :slug, concerns: :paginatable do
       get 'gallery', on: :member
     end
 
     resources :images, only: [:index]
 
-    resources :weapons, only: [:index, :show]
+    resources :components, only: [:show] do
+      collection do
+        get :propulsion
+        get :ordnance
+        get :modular
+        get :avionics
+      end
+    end
 
-    resources :equipments, only: [:index, :show]
-
-    resources :manufacturers, only: [:index], param: :slug
-
-    # resources :ship_roles, param: :slug
+    resources :manufacturers, only: [:index, :show], param: :slug
 
     get 'impressum' => 'base#impressum'
     get 'privacy' => 'base#privacy'

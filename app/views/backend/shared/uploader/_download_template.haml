@@ -26,12 +26,12 @@
   %td.actions
     {% if (file.deleteUrl) { %}
     %button.btn.btn-danger.delete{data: {type: "{%=file.deleteType%}", url: "{%=file.deleteUrl%}"}}
-      %i.glyphicon.glyphicon-trash
+      %i.fa.fa-trash
       %span Delete
     %input.toggle{type: "checkbox", name: "delete", value: "1"}
     {% } else { %}
     %button.btn.btn-warning.cancel
-      %i.glyphicon.glyphicon-ban-circle
+      %i.fa.fa-ban-circle
       %span Cancel
     {% } %}
 {% } %}

@@ -1,0 +1,15 @@
+.col-xs-12.col-sm-6.col-md-4
+  .manufacturer-panel.panel.panel-default
+    .panel-heading
+      %h2.panel-title
+        %a{href: manufacturer_path(manufacturer.slug)}
+          = manufacturer.name.html_safe
+    - if manufacturer.logo.present?
+      .profile-image.text-center
+        = image_tag manufacturer.logo.small
+    -# .panel-body
+    -#   = manufacturer.description
+    -# .panel-footer
+    -#   = manufacturer.known_for
+    %a.btn.btn-default.btn-block{href: manufacturer_path(manufacturer.slug)}
+      = I18n.t(:"actions.more_info")

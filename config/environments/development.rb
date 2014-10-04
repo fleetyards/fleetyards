@@ -27,14 +27,16 @@ Fleetyards::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.action_controller.asset_host = 'http://fleetyards.dev'
-
   config.action_mailer.perform_deliveries    = true
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: 'fleetyards.dev' }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
   config.action_mailer.smtp_settings = {
-    address: "localhost",
-    port: 1025,
-    domain: 'fleetyards.dev'
+    address: Rails.application.secrets[:mailer]["host"],
+    port: Rails.application.secrets[:mailer]["port"],
+    enable_starttls_auto: true,
+    user_name: Rails.application.secrets[:mailer]["user"],
+    password: Rails.application.secrets[:mailer]["password"],
+    authentication: 'login',
+    domain: Rails.application.secrets[:domain]
   }
 end

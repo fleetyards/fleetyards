@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140129225911) do
+ActiveRecord::Schema.define(version: 20140119154504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+  enable_extension "uuid-ossp"
 
   create_table "album_translations", force: true do |t|
-    t.integer  "album_id",    null: false
+    t.uuid     "album_id",    null: false
     t.string   "locale",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,7 +29,7 @@ ActiveRecord::Schema.define(version: 20140129225911) do
   add_index "album_translations", ["album_id"], name: "index_album_translations_on_album_id", using: :btree
   add_index "album_translations", ["locale"], name: "index_album_translations_on_locale", using: :btree
 
-  create_table "albums", force: true do |t|
+  create_table "albums", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.boolean  "enabled",    default: false, null: false
@@ -36,87 +37,124 @@ ActiveRecord::Schema.define(version: 20140129225911) do
     t.datetime "updated_at"
   end
 
-  create_table "equipment", force: true do |t|
+  create_table "component_categories", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.string "rsi_name"
+    t.string "name"
+    t.string "slug"
+  end
+
+  create_table "component_category_translations", force: true do |t|
+    t.uuid     "component_category_id", null: false
+    t.string   "locale",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
-    t.string   "equipment_type"
+  end
+
+  add_index "component_category_translations", ["component_category_id"], name: "index_component_category_translations_on_component_category_id", using: :btree
+  add_index "component_category_translations", ["locale"], name: "index_component_category_translations_on_locale", using: :btree
+
+  create_table "component_translations", force: true do |t|
+    t.uuid     "component_id",   null: false
+    t.string   "locale",         null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.string   "component_type"
+  end
+
+  add_index "component_translations", ["component_id"], name: "index_component_translations_on_component_id", using: :btree
+  add_index "component_translations", ["locale"], name: "index_component_translations_on_locale", using: :btree
+
+  create_table "components", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.string   "size"
+    t.string   "component_type"
     t.boolean  "enabled",        default: false, null: false
-  end
-
-  create_table "equipment_ships", id: false, force: true do |t|
-    t.integer "equipment_id"
-    t.integer "ship_id"
-  end
-
-  create_table "equipment_translations", force: true do |t|
-    t.integer  "equipment_id", null: false
-    t.string   "locale",       null: false
+    t.integer  "rsi_id"
+    t.uuid     "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description"
   end
-
-  add_index "equipment_translations", ["equipment_id"], name: "index_equipment_translations_on_equipment_id", using: :btree
-  add_index "equipment_translations", ["locale"], name: "index_equipment_translations_on_locale", using: :btree
 
   create_table "hardpoint_translations", force: true do |t|
-    t.integer  "hardpoint_id", null: false
+    t.uuid     "hardpoint_id", null: false
     t.string   "locale",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description"
+    t.string   "name"
   end
 
   add_index "hardpoint_translations", ["hardpoint_id"], name: "index_hardpoint_translations_on_hardpoint_id", using: :btree
   add_index "hardpoint_translations", ["locale"], name: "index_hardpoint_translations_on_locale", using: :btree
 
-  create_table "hardpoints", force: true do |t|
-    t.integer  "weapon_id"
-    t.integer  "ship_id"
-    t.text     "description"
-    t.string   "hp_class"
+  create_table "hardpoints", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.string   "name"
+    t.string   "hardpoint_class"
+    t.integer  "rating"
+    t.integer  "max_size"
+    t.integer  "quantity"
+    t.integer  "rsi_id"
+    t.uuid     "category_id"
+    t.uuid     "ship_id"
+    t.uuid     "component_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "images", force: true do |t|
+  create_table "images", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
-    t.integer  "gallery_id"
+    t.uuid     "gallery_id"
     t.string   "gallery_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean  "enabled",      default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "manufacturers", force: true do |t|
+  create_table "manufacturer_translations", force: true do |t|
+    t.uuid     "manufacturer_id", null: false
+    t.string   "locale",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "description"
+  end
+
+  add_index "manufacturer_translations", ["locale"], name: "index_manufacturer_translations_on_locale", using: :btree
+  add_index "manufacturer_translations", ["manufacturer_id"], name: "index_manufacturer_translations_on_manufacturer_id", using: :btree
+
+  create_table "manufacturers", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
-    t.string   "rsi_name"
     t.string   "slug"
-    t.string   "rsi_slug"
+    t.string   "known_for"
+    t.text     "description"
     t.string   "logo"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "enabled",    default: false, null: false
-  end
-
-  create_table "settings", force: true do |t|
-    t.string   "keypath"
-    t.string   "value"
+    t.boolean  "enabled",     default: false, null: false
+    t.integer  "rsi_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "ship_roles", force: true do |t|
+  create_table "ship_role_translations", force: true do |t|
+    t.uuid     "ship_role_id", null: false
+    t.string   "locale",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
-    t.string   "rsi_name"
+  end
+
+  add_index "ship_role_translations", ["locale"], name: "index_ship_role_translations_on_locale", using: :btree
+  add_index "ship_role_translations", ["ship_role_id"], name: "index_ship_role_translations_on_ship_role_id", using: :btree
+
+  create_table "ship_roles", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.string   "name"
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "ship_translations", force: true do |t|
-    t.integer  "ship_id",     null: false
+    t.uuid     "ship_id",     null: false
     t.string   "locale",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -126,12 +164,9 @@ ActiveRecord::Schema.define(version: 20140129225911) do
   add_index "ship_translations", ["locale"], name: "index_ship_translations_on_locale", using: :btree
   add_index "ship_translations", ["ship_id"], name: "index_ship_translations_on_ship_id", using: :btree
 
-  create_table "ships", force: true do |t|
+  create_table "ships", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
-    t.string   "rsi_name"
-    t.integer  "manufacturer_id"
-    t.integer  "ship_role_id"
     t.text     "description"
     t.string   "length"
     t.string   "beam"
@@ -140,41 +175,30 @@ ActiveRecord::Schema.define(version: 20140129225911) do
     t.string   "cargo"
     t.string   "crew"
     t.string   "image"
-    t.boolean  "enabled",                    default: false
+    t.string   "store_image"
+    t.string   "store_url"
+    t.integer  "powerplant_size"
+    t.integer  "shield_size"
+    t.string   "classification"
+    t.boolean  "enabled",         default: false, null: false
+    t.integer  "rsi_id"
+    t.uuid     "manufacturer_id"
+    t.uuid     "ship_role_id"
+    t.text     "propulsion_raw"
+    t.text     "ordnance_raw"
+    t.text     "modular_raw"
+    t.text     "avionics_raw"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "base"
-    t.string   "basename"
-    t.string   "store_url"
-    t.integer  "max_upgrades"
-    t.text     "max_equipment_raw"
-    t.text     "factory_equipment_raw"
-    t.text     "weapons_raw"
-    t.integer  "max_class1"
-    t.integer  "max_class2"
-    t.integer  "max_class3"
-    t.integer  "max_class4"
-    t.integer  "max_class5"
-    t.integer  "max_class6"
-    t.integer  "max_class7"
-    t.integer  "max_class8"
-    t.integer  "max_powerplant"
-    t.string   "max_powerplant_type"
-    t.integer  "max_thrusters"
-    t.string   "max_thrusters_type"
-    t.integer  "max_primary_thrusters"
-    t.string   "max_primary_thrusters_type"
-    t.integer  "max_shield"
-    t.string   "max_shield_type"
-    t.boolean  "is_base",                    default: false, null: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.boolean  "admin",                  default: false, null: false
     t.hstore   "profile"
     t.hstore   "settings"
     t.string   "gravatar_hash"
     t.string   "gravatar"
+    t.string   "locale"
     t.string   "username",               default: "",    null: false
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -195,7 +219,6 @@ ActiveRecord::Schema.define(version: 20140129225911) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "locale"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -204,26 +227,7 @@ ActiveRecord::Schema.define(version: 20140129225911) do
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
-  create_table "weapon_translations", force: true do |t|
-    t.integer  "weapon_id",   null: false
-    t.string   "locale",      null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "description"
-  end
-
-  add_index "weapon_translations", ["locale"], name: "index_weapon_translations_on_locale", using: :btree
-  add_index "weapon_translations", ["weapon_id"], name: "index_weapon_translations_on_weapon_id", using: :btree
-
-  create_table "weapons", force: true do |t|
-    t.string   "name"
-    t.string   "hp_class"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "enabled",    default: false, null: false
-  end
-
-  create_table "worker_states", force: true do |t|
+  create_table "worker_states", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.boolean  "running",        default: false
     t.datetime "last_run_start"

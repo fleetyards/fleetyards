@@ -10,6 +10,8 @@ de:
     locale: Sprachdateien
     ship: Schiff
     ships: Schiffsdaten
+    manufacturer: Hersteller
+    component: Komponente
     image: Bild
     messages:
       user_data: Benutzerdaten

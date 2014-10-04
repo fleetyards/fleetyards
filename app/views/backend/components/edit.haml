@@ -1,0 +1,15 @@
+- content_for :title do
+  = I18n.t(:"title.component.edit")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.backend.component.edit", component: component.name)
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.back"), backend_components_path, class: "btn btn-default"
+
+    = render "form"

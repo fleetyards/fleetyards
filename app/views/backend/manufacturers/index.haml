@@ -1,0 +1,28 @@
+- content_for :title do
+  = I18n.t(:"title.manufacturer.index")
+.row#manufacturers
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.backend.manufacturer.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.backend.manufacturer.new"), new_backend_manufacturer_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @manufacturers
+
+    .panel.panel-default
+      = render partial: "backend/manufacturers/table", :@manufacturers => @manufacturers
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @manufacturers

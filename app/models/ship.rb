@@ -3,28 +3,41 @@ class Ship < ActiveRecord::Base
 
   belongs_to :manufacturer
   belongs_to :ship_role
-  belongs_to :base_class, class_name: Ship, foreign_key: :base
-  has_many :variants, class_name: Ship, foreign_key: :base
-  has_many :hardpoints
-  has_many :weapons, through: :hardpoints
-  has_many :images, as: :gallery
-  has_and_belongs_to_many :equipment
+
+  has_many :hardpoints,
+    dependent: :destroy,
+    autosave: true
+  has_many :components,
+    through: :hardpoints
+  has_many :propulsion_hardpoints,
+    ->{ includes(:category).where(component_categories: {rsi_name: "propulsion"}) },
+    class_name: "Hardpoint"
+  has_many :ordnance_hardpoints,
+    ->{ includes(:category).where(component_categories: {rsi_name: "ordnance"}) },
+    class_name: "Hardpoint"
+  has_many :modular_hardpoints,
+    ->{ includes(:category).where(component_categories: {rsi_name: "modular"}) },
+    class_name: "Hardpoint"
+  has_many :avionics_hardpoints,
+    ->{ includes(:category).where(component_categories: {rsi_name: "avionics"}) },
+    class_name: "Hardpoint"
+
+  has_many :images,
+    as: :gallery,
+    dependent: :destroy
 
   mount_uploader :image, ImageUploader
+  mount_uploader :store_image, ImageUploader
 
-  before_create :set_name
   before_save :update_slugs
+
+  serialize :propulsion_raw, Array
+  serialize :ordnance_raw, Array
+  serialize :modular_raw, Array
+  serialize :avionics_raw, Array
 
   def self.enabled
     where enabled: true
-  end
-
-  def self.base
-    where base: nil
-  end
-
-  private def set_name
-    self.name = self.rsi_name
   end
 
   private def update_slugs

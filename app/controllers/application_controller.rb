@@ -24,12 +24,19 @@ class ApplicationController < ActionController::Base
     I18n.locale = locale
   end
 
+  def worker_running?
+    ship_queue = Sidekiq::Queue.new(ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader')
+    process = Sidekiq::ProcessSet.new
+    running_processes = process.sum{|ps| ps["busy"] }
+    !(ship_queue.size.zero? && running_processes.zero?)
+  end
+
   private def default_url_options(options = {})
     { locale: I18n.locale }
   end
 
   private def unauthorized_controllers
-    devise_controller? || is_a?(RailsAssetLocalization::LocalesController)
+    devise_controller?
   end
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -61,7 +68,7 @@ class ApplicationController < ActionController::Base
   helper_method :backend?
 
   private def registration_enabled?
-    ENV['REGISTRATION']
+    Rails.application.secrets[:base]["registration"]
   end
   helper_method :registration_enabled?
 

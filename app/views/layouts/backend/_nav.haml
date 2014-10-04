@@ -1,7 +1,18 @@
 %ul.nav.navbar-nav
   %li{class: get_active_nav('backend')}
     = link_to I18n.t(:"nav.home"), backend_root_path
-  %li{class: get_active_nav('backend-ships')}
-    = link_to I18n.t(:"nav.ships"), backend_ships_path
+    %li.dropdown{class: get_active_nav('backend-ships, backend-manufacturers, backend-components')}
+      %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+        = I18n.t(:"nav.ships")
+        %b.caret
+      %ul.dropdown-menu
+        %li{class: get_active_nav('backend-ships')}
+          = link_to I18n.t(:"nav.ship.overview"), backend_ships_path
+        %li.divider
+        %li{class: get_active_nav('backend-manufacturers')}
+          = link_to I18n.t(:"nav.manufacturers"), backend_manufacturers_path
+        %li.divider
+        %li{class: get_active_nav('backend-components')}
+          = link_to I18n.t(:"nav.components"), backend_components_path
   %li{class: get_active_nav('backend-images')}
     = link_to I18n.t(:"nav.images"), backend_images_path

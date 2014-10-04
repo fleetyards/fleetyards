@@ -31,7 +31,4 @@ module Fleetyards
 end
 
 I18n.config.enforce_available_locales = true
-
-require 'awesome_open_struct'
-require_relative 'initializers/settings'
 require_relative 'version'

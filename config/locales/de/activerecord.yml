@@ -1,6 +1,7 @@
 de:
   activerecord:
     attributes:
+      updated_at: "vor %{time}"
       user:
         login: "Benutzername oder E-Mail"
         enabled: Aktiv?
@@ -21,37 +22,15 @@ de:
         equipment: Komponenten
         variants: Varianten
         max_upgrades: Upgrades
-      equipment:
-        types:
-          shield: Schilde
-          thrusters: Manövrierdüsen
-          primary_thrusters: Haupttriebwerke
-          powerplant: Antrieb
-          additional: "Zusätzliche Austattung"
-      weapon:
-        classes:
-          class1: "Klasse 1"
-          class2: "Klasse 2"
-          class3: "Klasse 3"
-          class4: "Klasse 4"
-          class5: "Klasse 5"
-          class6: "Klasse 6"
-          class7: "Klasse 7"
-          class8: "Klasse 8"
-      setting:
-        base:
-          registration: "Registrierung aktiv?"
-        mailer:
-          default_from: "Standard Absender"
-          host: "SMTP Host"
-          port: "SMTP Port"
-          user: "SMTP Benutzer"
-          password: "SMTP Passwort oder Token"
     errors:
       messages:
         record_invalid: "Ungültige Daten"
         blank: "Bitte füllen Sie das Feld aus"
       models:
+        hardpoint:
+          attributes:
+            component_id:
+              invalid_category: "Kategorie passt nicht zu Hardpoint."
         user:
           attributes:
             username:

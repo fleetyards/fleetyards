@@ -16,10 +16,15 @@ en:
     image:
       updates: "New Images"
       index: "All Images"
-    weapon:
-      index: Weapons
-    equipment:
-      index: Equipment
+    component:
+      propulsion:
+        index: Propulsion
+      ordnance:
+        index: Ordnance
+      modular:
+        index: Modular
+      avionics:
+        index: Avionics
     ship:
       updates: "Updated Ships"
       gallery: "%{ship} Gallery"
@@ -33,6 +38,17 @@ en:
       ship:
         index: Ships
         gallery: "Imageuplaod for %{ship}"
+        edit: "Edit %{ship}"
+        new: New Ship
+      manufacturer:
+        index: Manufacturer
+        edit: "Edit %{manufacturer}"
+        new: New Manufacturer
+      component:
+        index: Component
+        edit: "Edit %{component}"
+        new: New Component
+      dashboard: Dashboard
   sublines:
     impressum:
       general: "General Information (according to § 5 TMG)"

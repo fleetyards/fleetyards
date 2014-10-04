@@ -14,12 +14,12 @@
     .btn-group
       {% if (!i && !o.options.autoUpload) { %}
       %button.btn.btn-primary.start{disabled: true}
-        %i.glyphicon.glyphicon-upload
+        %i.fa.fa-upload
         %span Start
       {% } %}
       {% if (!i) { %}
       %button.btn.btn-warning.cancel
-        %i.glyphicon.glyphicon-ban-circle
+        %i.fa.fa-ban-circle
         %span Cancel
       {% } %}
 {% } %}

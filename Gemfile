@@ -1,54 +1,56 @@
 source 'https://rubygems.org'
 
-ruby '2.1.0'
+ruby '2.1.3'
 
-gem 'rails', '~> 4.0.3'
+gem "rails", "4.1.5"
 
-gem 'pg', '~> 0.17.0'
+gem 'pg'
 
-gem 'resque', '~> 1.25.0'
+gem 'sidekiq'
+# for sidekiq web
+gem "sinatra", ">= 1.3.0", require: nil
 
-gem 'globalize', '~> 4.0.0'
+gem 'globalize'
 
-gem 'haml', '~> 4.0.4'
-gem 'haml-rails', '~> 0.5.2'
+gem 'haml'
+gem 'haml-rails'
 
-gem 'devise', '~> 3.2.2'
-gem 'cancan', '~> 1.6.10'
+gem "i18n-js", github: "fnando/i18n-js", branch: :master
 
-gem 'dalli', '~> 2.6.4'
-gem 'cache_digests', '~> 0.3.1'
-gem 'turbolinks', '~> 2.0.0'
+gem 'devise'
+gem 'cancan'
 
-gem 'url_plumber', '~> 0.1.2'
-gem 'select2-rails', '~> 3.5.2'
-gem 'kaminari', '~> 0.15.0'
+gem 'dalli'
+gem 'cache_digests'
+gem 'turbolinks'
 
-gem 'dynamic_fields_for_rails', '~> 0.5.0'
+gem 'url_plumber'
+gem 'select2-rails'
+gem 'kaminari'
 
-gem 'state_machine', '~> 1.2.0'
+gem 'dynamic_fields_for_rails'
 
-gem 'sass-rails', '~> 4.0.1'
-gem 'coffee-rails', '~> 4.0.1'
-gem 'bourbon', '~> 3.1.8'
+gem 'state_machine'
 
-gem 'bootstrap-sass', '~> 3.1.0'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'bourbon'
 
-gem 'jquery-rails', '~> 3.0.4'
-gem 'jquery-turbolinks', '~> 2.0.1'
+gem 'bootstrap-sass'
+gem 'font-awesome-sass'
 
-gem 'asset_pipeline_routes', '~> 0.2.1'
+gem 'jquery-rails'
+gem 'jquery-turbolinks'
 
-gem 'uglifier', '~> 2.3.3'
+gem 'asset_pipeline_routes'
+
+gem 'uglifier'
 
 gem 'metadown'
-gem 'redcarpet', '~> 3.0.0'
+gem 'redcarpet'
 
-gem 'puma', '~> 2.7.0'
+gem 'puma'
 
-gem 'sentry-raven'
-
-gem 'rails-asset-localization', github: 'nicolai86/rails-asset-localization', branch: :master
 gem "bower-rails", github: '42dev/bower-rails'
 
 gem 'thor'
@@ -59,21 +61,22 @@ gem 'mini_magick'
 
 gem 'typhoeus'
 
+gem "fog"
+
 gem 'web_translate_it'
 
-gem 'gelf'
-
-gem 'rails_12factor'
-
 group :test do
-  gem 'rails-perftest'
-  gem 'ruby-prof'
-  gem 'factory_girl_rails'
-  gem 'mocha', require: false
-  gem 'spring'
+  gem "rails-perftest"
+  gem "minitest-rails"
+  gem "ruby-prof"
+  gem "database_cleaner"
+  gem "mocha", require: false
+  gem "spring"
+  gem "vcr"
+  gem "webmock", require: false
 end
 
-group :development do
-  gem 'foreman', '~> 0.63.0'
-  gem 'quiet_assets'
+group :development, :test do
+  gem "foreman"
+  gem "byebug"
 end

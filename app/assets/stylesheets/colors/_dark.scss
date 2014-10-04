@@ -192,6 +192,10 @@ $pagination-active-color:              #fff;
 $pagination-active-bg:                 darken($pagination-bg, 8%);
 $pagination-active-border:             darken($pagination-border, 12%);
 
+$pagination-disabled-color:            #fff;
+$pagination-disabled-bg:               $default-btn;
+$pagination-disabled-border:           darken($btn-default-bg, 6%);
+
 // Pager
 // -------------------------
 $pager-disabled-color:                 $gray-light;
@@ -286,6 +290,7 @@ $list-group-active-border:    $list-group-border;
 
 $list-group-link-color:          $text-color;
 $list-group-link-heading-color:  #fff;
+$list-group-link-hover-color:    darken(#fff, 10%);
 
 
 // Panels

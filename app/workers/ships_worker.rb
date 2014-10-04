@@ -1,8 +1,10 @@
-class ShipsWorker
-  require "ships_loader"
-  @queue = (ENV['SHIPS_QUEUE'] || '').to_sym
+require "ships_loader"
 
-  def self.perform
-    ShipsLoader.run
+class ShipsWorker
+  include Sidekiq::Worker
+  sidekiq_options queue: (ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader').to_sym
+
+  def perform
+    ShipsLoader.new.run
   end
 end

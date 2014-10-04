@@ -1,0 +1,28 @@
+- content_for :title do
+  = I18n.t(:"title.component.index")
+.row#components
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.backend.component.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.backend.component.new"), new_backend_component_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @components
+
+    .panel.panel-default
+      = render partial: "backend/components/table", :@components => @components
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        .pull-right
+          = paginate @components

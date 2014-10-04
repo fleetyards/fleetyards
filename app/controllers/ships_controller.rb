@@ -51,12 +51,10 @@ class ShipsController < ApplicationController
 
     if ship_role.present?
       ships = ships.where("ship_roles.slug = ?", ship_role).references(:ship_role)
-      params.delete(:page)
     end
 
     if manufacturer.present?
       ships = ships.where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
-      params.delete(:page)
     end
 
     if search.present?
@@ -67,12 +65,6 @@ class ShipsController < ApplicationController
         search_conditions.join(' OR '),
         { search: "%#{search.downcase}%" }
       ])
-    end
-
-    if ship_role.blank? && manufacturer.blank? && search.blank?
-      unless params.fetch(:variants, nil)
-        ships = ships.base
-      end
     end
 
     ships

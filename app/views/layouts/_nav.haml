@@ -13,11 +13,10 @@
         - if can? :index, :manufacturers
           %li{class: get_active_nav('manufacturers')}
             = link_to I18n.t(:"nav.manufacturers"), manufacturers_path
-        - if can? :index, :weapons
-          %li{class: get_active_nav('weapons')}
-            = link_to I18n.t(:"nav.weapons"), weapons_path
-        - if can? :index, :equipment
-          %li{class: get_active_nav('equipment')}
-            = link_to I18n.t(:"nav.equipment"), equipments_path
+        %li.divider
+        - ComponentCategory.all.each do |category|
+          - if can? :index, :components
+            %li{class: get_active_nav(category.slug)}
+              = link_to I18n.t(:"nav.component.#{category.slug}"), send("#{category.slug}_components_path")
   %li{class: get_active_nav('images')}
     = link_to I18n.t(:"nav.images"), images_path

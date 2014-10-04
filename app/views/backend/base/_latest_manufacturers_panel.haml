@@ -1,0 +1,22 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = I18n.t(:"labels.panels.latest_manufacturers")
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= I18n.t(:"labels.table.name")
+          %th= I18n.t(:"labels.table.updated_at")
+          %th.actions.one
+      %tbody
+        - Manufacturer.order('updated_at DESC').limit(5).each do |manufacturer|
+          %tr
+            %td
+              = manufacturer.name
+            %td
+              = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(manufacturer.created_at))
+            %td
+              .btn-group
+                = link_to edit_backend_manufacturer_path(manufacturer), title: I18n.t(:"actions.edit"), class: "btn btn-default btn-sm" do
+                  %i.fa.fa-edit

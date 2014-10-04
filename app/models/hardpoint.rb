@@ -1,17 +1,20 @@
 class Hardpoint < ActiveRecord::Base
-  translates :description
-
-  belongs_to :weapon
-  belongs_to :ship
-
-  validates_presence_of :ship_id
-  validates_inclusion_of :hp_class, in: Weapon::VALID_CLASSES, allow_nil: true
-
-  before_validation :set_class
-
-  private def set_class
-    if weapon.present?
-      self.hp_class = weapon.hp_class
+  class ComponentCategoryValidator < ActiveModel::Validator
+    def validate hardpoint
+      if hardpoint.component.present? && hardpoint.component.category_id != hardpoint.category_id
+        hardpoint.errors[:component_id] << I18n.t(:"activerecord.errors.models.hardpoint.attributes.component_id.invalid_category")
+      end
     end
   end
+
+  translates :name
+
+  belongs_to :ship
+  belongs_to :component
+  belongs_to :category,
+    class_name: "ComponentCategory"
+
+  validates_presence_of :ship_id, :category_id
+
+  validates_with ComponentCategoryValidator
 end

@@ -16,10 +16,15 @@ de:
     image:
       updates: "Neue Bilder"
       index: "Alle Bilder"
-    weapon:
-      index: Waffen
-    equipment:
-      index: Komponenten
+    component:
+      propulsion:
+        index: Antrieb
+      ordnance:
+        index: Waffen
+      modular:
+        index: Module
+      avionics:
+        index: Avionik
     ship:
       updates: "Neue Schiffe"
       gallery: "%{ship} Galerie"
@@ -33,6 +38,17 @@ de:
       ship:
         index: Schiffe
         gallery: "Bilderupload für %{ship}"
+        edit: "%{ship} bearbeiten"
+        new: "Neues Schiff"
+      manufacturer:
+        index: Hersteller
+        edit: "%{manufacturer} bearbeiten"
+        new: "Neuer Hersteller"
+      component:
+        index: Komponenten
+        edit: "%{component} bearbeiten"
+        new: "Neue Komponente"
+      dashboard: Dashboard
   sublines:
     impressum:
       general: "Allgemeine Informationen (gemäß § 5 TMG)"

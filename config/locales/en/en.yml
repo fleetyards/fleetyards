@@ -16,14 +16,26 @@ en:
     privacy: "Privacy policy"
     manufacturer:
       index: Manufacturers
+      edit: Edit Manufacturer
+      new: New Manufacturer
     image:
       index: "All Images"
-    weapon:
-      index: Weapons
-    equipment:
-      index: Equipment
+    component:
+      index: Components
+      edit: Edit Component
+      new: New Component
+      propulsion:
+        index: Propulsion
+      ordnance:
+        index: Ordnance
+      modular:
+        index: Modular
+      avionics:
+        index: Avionics
     ship:
       index: Ships
+      edit: Edit Ship
+      new: New Ship
     user:
       edit: "Edit Settings"
   default_country: ~
@@ -41,9 +53,14 @@ en:
     ship:
       overview: Index
     images: Images
-    weapons: Weapons
+    components: Components
+    component:
+      propulsion: Propulsion
+      ordnance: Ordnance
+      modular: Modular
+      avionics: Avionics
     manufacturers: Manufacturers
-    equipment: Equipment
+    frontend: Frontend
   texts:
     base:
       index: "Your Database for all Information about the upcoming “Star Citizen“ from Chris Roberts."

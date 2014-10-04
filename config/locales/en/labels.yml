@@ -8,6 +8,8 @@ en:
     role: Role
     email: E-Mail
     source: Source
+    manufacturer:
+      known_for: "Known for "
     user:
       current_sign_in_at: "Last Login"
       admin: Admin?
@@ -17,46 +19,37 @@ en:
       blank:
         ship: "No Pictures for \"%{ship}\" present."
     blank:
-      weapon: "No Weapons present"
-      equipment: "No Equipment present"
+      propulsion: "No Propulsion present"
+      ordnance: "No Ordnance present"
+      modular: "No Modular present"
+      avionics: "No Avionics present"
     table:
       id: ID
       name: Name
       actions: Actions
       enabled: Enabled?
+      rsi_id: RSI-ID
+      updated_at: "last reload"
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
-      setting:
-        key: Description
-        value: Value
+      out_of_range:
+        ship: "No Ships could be found on this page. <a href='%{url}'>return to first page</a>"
       image:
         name: Filename
         gallery_type: Gallery
       ship:
         stats: Stats
         manufacturer: Manufacturer
-        updated_at: "last reload"
       user:
         created_at: Created
         email: E-Mail
         username: Username
+      component:
+        type: Type
+        category: Category
     panels:
       latest_ships: "Reloaded Ships"
       latest_users: "New Users"
-      setting:
-        base: "Base Settings"
-        mailer: "E-Mail Settings"
-    tabs:
-      ship:
-        hardpoints: Hardpoints
-        default_configuration: "Default Configuration"
-  activerecord:
-    attributes:
-      ship:
-        updated_at: "%{time} ago"
-  headlines:
-    backend:
-      dashboard: Dashboard
-  nav:
-    frontend: Frontend
+      latest_manufacturers: "New Manufacturers"
+      latest_components: "New Components"

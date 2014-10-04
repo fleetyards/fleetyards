@@ -15,13 +15,6 @@
       .col-xs-12.col-md-6
         = render "shared/filter", resource: "ship", name: "ship_role", filters: ShipRole.all, translateable: true
         = render "shared/filter", resource: "ship", name: "manufacturer", filters: Manufacturer.all
-        .btn-group.filter-menu
-          - if params.fetch(:variants, nil)
-            %a.btn.btn-default.active{href: plumb("variants" => nil)}
-              = I18n.t(:"actions.hide_variants")
-          - else
-            %a.btn.btn-default{href: plumb("variants" => true)}
-              = I18n.t(:"actions.show_variants")
       .col-xs-12.col-md-6
         .pull-right
           = paginate @ships
@@ -31,7 +24,10 @@
       - if @ships.blank?
         .col-md-12
           .well.text-center
-            = I18n.t(:"labels.table.blank.ship")
+            - if @ships.out_of_range?
+              = I18n.t(:"labels.table.out_of_range.ship", url: ships_path(params.merge({page: 1}))).html_safe
+            - else
+              = I18n.t(:"labels.table.blank.ship")
     .row
       .col-xs-12.col-md-12
         .pull-right

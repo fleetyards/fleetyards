@@ -16,14 +16,26 @@ de:
     privacy: Datenschutz
     manufacturer:
       index: Hersteller
+      edit: Hersteller bearbeiten
+      new: Neuer Hersteller
     image:
       index: "Alle Bilder"
-    weapon:
-      index: Waffen
-    equipment:
+    component:
       index: Komponenten
+      edit: Komponente bearbeiten
+      new: Neue Komponente
+      propulsion:
+        index: Antriebe
+      ordnance:
+        index: Waffen
+      modular:
+        index: Module
+      avionics:
+        index: Avionik
     ship:
       index: Schiffe
+      edit: Schiff bearbeiten
+      new: Neues Schiff
     user:
       edit: "Einstellungen bearbeiten"
   default_country: Deutschland
@@ -41,9 +53,14 @@ de:
     ship:
       overview: Übersicht
     images: Bilder
-    weapons: Waffen
+    components: Komponenten
+    component:
+      propulsion: Antriebe
+      ordnance: Waffen
+      modular: Module
+      avionics: Avionik
     manufacturers: Hersteller
-    equipment: Komponenten
+    frontend: Frontend
   texts:
     base:
       index: "Deine Datenbank für alle Informationen rund um das bald erscheinende „Star Citizen“ von Chris Roberts."

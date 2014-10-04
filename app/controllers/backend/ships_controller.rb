@@ -10,6 +10,43 @@ module Backend
         .per(20)
     end
 
+    def new
+      authorize! :create, :backend_ships
+      @ship = Ship.new
+    end
+
+    def create
+      authorize! :create, :backend_ships
+      @ship = Ship.new(ship_params)
+      if ship.save
+        redirect_to backend_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
+      else
+        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.ship"))
+      end
+    end
+
+    def edit
+      authorize! :update, ship
+    end
+
+    def update
+      authorize! :update, ship
+      if ship.update(ship_params)
+        redirect_to backend_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
+      else
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.ship"))
+      end
+    end
+
+    def destroy
+      authorize! :destroy, ship
+      if ship.destroy
+        redirect_to backend_ships_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.ship"))
+      else
+        redirect_to backend_ships_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.ship"))
+      end
+    end
+
     def gallery
       authorize! :gallery, :backend_ships
       respond_to do |format|
@@ -28,7 +65,7 @@ module Backend
       authorize! :reload, :backend_ships
       respond_to do |format|
         format.js {
-          Resque.enqueue ShipsWorker
+          ShipsWorker.perform_async
           render json: true
         }
         format.html {
@@ -68,7 +105,7 @@ module Backend
     helper_method :sort_column
 
     private def ship
-      @ship ||= Ship.where(slug: params.fetch(:slug, nil)).first
+      @ship ||= Ship.where(id: params.fetch(:id, nil)).first
     end
     helper_method :ship
 

@@ -24,6 +24,8 @@ en:
     admin: Backend
     enable: Activate
     disable: Deactivate
+    manufacturer:
+      ships: Ships
     ship:
       gallery: Gallery
       reload: "Reload Ships"
@@ -35,3 +37,7 @@ en:
         new: "Create new Ship"
       image:
         new: "Upload new Image"
+      manufacturer:
+        new: "Create new Manufacturer"
+      component:
+        new: "Creae new Component"

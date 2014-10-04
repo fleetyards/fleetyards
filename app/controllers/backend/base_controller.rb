@@ -6,9 +6,7 @@ module Backend
     def index
       authorize! :show, :backend
       @active_nav = 'backend'
-      @settings = Setting.to_h
-
-      @worker_running = Resque.size(ENV['SHIPS_QUEUE']) != 0 || Resque.working.map(&:queues).flatten.include?(ENV['SHIPS_QUEUE'])
+      @worker_running = worker_running?
     end
 
     private def sort_direction

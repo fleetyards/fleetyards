@@ -10,6 +10,8 @@ en:
     locale: Locales
     ship: Ship
     ships: Ships
+    manufacturer: Manufacturer
+    component: Component
     image: Image
     messages:
       user_data: "Personal Information"

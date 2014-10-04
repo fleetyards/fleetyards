@@ -10,7 +10,10 @@
 
 @import "colors/defaults";
 @import "colors/dark";
-@import "bootstrap";
+@import "bootstrap-sprockets";
+@import 'bootstrap-custom';
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import "colors/dark_overrides";
 
 @import "partials";
