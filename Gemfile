@@ -65,6 +65,8 @@ gem "fog"
 
 gem 'web_translate_it'
 
+gem "rails_12factor"
+
 group :test do
   gem "rails-perftest"
   gem "minitest-rails"

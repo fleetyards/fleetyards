@@ -190,6 +190,11 @@ GEM
       railties (= 4.1.5)
       sprockets-rails (~> 2.0)
     rails-perftest (0.0.5)
+    rails_12factor (0.0.2)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.2)
+    rails_stdout_logging (0.0.3)
     railties (4.1.5)
       actionpack (= 4.1.5)
       activesupport (= 4.1.5)
@@ -299,6 +304,7 @@ DEPENDENCIES
   puma
   rails (= 4.1.5)
   rails-perftest
+  rails_12factor
   redcarpet
   ruby-prof
   sass-rails
