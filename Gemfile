@@ -51,7 +51,7 @@ gem 'redcarpet'
 
 gem 'puma'
 
-gem "bower-rails", github: '42dev/bower-rails'
+gem "bower-rails"
 
 gem 'thor'
 gem 'highline'

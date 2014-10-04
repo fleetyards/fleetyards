@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/42dev/bower-rails.git
-  revision: 8b05c2035c1d54d08c81ca95c25e8086ade4625d
-  specs:
-    bower-rails (0.9.0)
-
-GIT
   remote: git://github.com/fnando/i18n-js.git
   revision: fc1e52ed718446810a24d1b20e7daba9d321534b
   branch: master
@@ -50,6 +44,7 @@ GEM
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
+    bower-rails (0.9.0)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -275,7 +270,7 @@ DEPENDENCIES
   asset_pipeline_routes
   bootstrap-sass
   bourbon
-  bower-rails!
+  bower-rails
   byebug
   cache_digests
   cancan
