@@ -5,9 +5,15 @@
 
     = favicon_link_tag 'favicon.png'
     %meta{name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"}
-    %title=content_for?(:title) ? "#{yield(:title)} | #{default_title}" : default_title
+    %title=content_for?(:title) ? "#{yield(:title)} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
     %meta{name: "description", content: I18n.t(:"meta.description")}
     %meta{name: "keywords", content: I18n.t(:"meta.keywords")}
+
+    %meta{name: "mobile-web-app-capable", content: "yes"}
+    = favicon_link_tag 'icon-196.png', rel: "shortcut icon", type: 'image/png'
+
+    %meta{name: "apple-mobile-web-app-capable", content: "yes"}
+    %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
 
     = favicon_link_tag 'touch-icon-iphone.png', rel: "apple-touch-icon", type: 'image/png'
     = favicon_link_tag 'touch-icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png'
@@ -23,7 +29,7 @@
 
     != csrf_meta_tags
 
-  %body{data: {success: notice, info: alert, error: flash[:error], warning: flash[:warning]}}
+  %body
 
     .container
       != yield
