@@ -21,4 +21,5 @@ public/uploads/*
 # js dependencies
 vendor/assets/.bowerrc
 vendor/assets/bower.json
-
+vendor/assets/bower_components/jquery
+vendor/assets/bower_components/bootstrap
