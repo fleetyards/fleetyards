@@ -14,6 +14,9 @@ en:
     confirm: "Confirm Account"
     impressum: Impressum
     privacy: "Privacy policy"
+    not_found: 404
+    unprocessable_entity: 422
+    server_error: 500
     manufacturer:
       index: Manufacturers
       edit: Edit Manufacturer
@@ -66,3 +69,8 @@ en:
       index: "Your Database for all Information about the upcoming “Star Citizen“ from Chris Roberts."
       index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
       index_quote_source: "Author Unknown, Source: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"
+
+  error_pages:
+    not_found: "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space."
+    unprocessable_entity: "Your Request could not be processed."
+    server_error: "The Page is currently not available. Please try again later."

@@ -11,6 +11,9 @@ de:
     privacy: Datenschutz
     welcome: Willkommen
     comments: Kommentare
+    not_found: "Navigations Fehler"
+    unprocessable_entity: "Fehlerhafte Anfrage"
+    server_error: "Server Fehler"
     manufacturer:
       index: Hersteller
     image:

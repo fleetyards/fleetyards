@@ -11,6 +11,9 @@ en:
     privacy: "Privacy policy"
     welcome: Welcome
     comments: Comments
+    not_found: "Navigation Error"
+    unprocessable_entity: "False Request"
+    server_error: "Server Error"
     manufacturer:
       index: Hersteller
     image:

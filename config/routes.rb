@@ -72,8 +72,8 @@ Fleetyards::Application.routes.draw do
     get 'privacy' => 'base#privacy'
 
     get '404' => 'errors#not_found'
-    get '422' => 'errors#server_error'
-    get '500' => 'errors#server_error'
+    get '422' => 'errors#unprocessable_entity'
+    get '500' => 'server_errors#server_error'
 
     root 'base#index'
   end

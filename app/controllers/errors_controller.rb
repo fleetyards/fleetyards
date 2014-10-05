@@ -1,9 +1,12 @@
-class ErrorsController < ActionController::Base
+class ErrorsController < ApplicationController
+  skip_authorization_check
+  before_filter :authenticate_user!, only: []
+
   def not_found
-    render status: 404, formats: [:html]
+    render "error", status: 404
   end
 
-  def server_error
-    render status: 500, formats: [:html], layout: "error"
+  def unprocessable_entity
+    render "error", status: 422
   end
 end
