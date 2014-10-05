@@ -272,7 +272,6 @@ GEM
       json (>= 1.8.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
-    vcr (2.9.3)
     warden (1.2.3)
       rack (>= 1.0)
     web_translate_it (2.3.4)
@@ -334,6 +333,5 @@ DEPENDENCIES
   typhoeus
   uglifier
   url_plumber
-  vcr
   web_translate_it
   webmock

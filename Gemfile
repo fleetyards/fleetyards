@@ -75,7 +75,6 @@ group :test do
   gem "database_cleaner"
   gem "mocha", require: false
   gem "spring"
-  gem "vcr"
   gem "webmock", require: false
 end
 
