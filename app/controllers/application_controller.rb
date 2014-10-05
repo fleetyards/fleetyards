@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
 
   check_authorization unless: :unauthorized_controllers
 
+  rescue_from ActionController::InvalidAuthenticityToken do
+    @action_name = "unprocessable_entity"
+    render "errors/error", status: 422
+  end
+
   private def set_locale
     locale = current_user.locale if user_signed_in?
     if new_locale = params[:locale]
