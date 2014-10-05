@@ -1,9 +1,13 @@
 module NavHelper
 
-  def get_active_nav nav = 'home'
-    nav = nav.gsub(/\s/, '').split(',')
-    if nav.include?(@active_nav)
-      return "active"
+  def get_active_nav navs = 'home'
+    navs = [navs] unless navs.is_a?(Array)
+    if navs.any?{|nav| active_nav?(nav)}
+      return 'active'
     end
+  end
+
+  def active_nav? nav
+    nav == @active_nav
   end
 end

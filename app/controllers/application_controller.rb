@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
 
   def scale_worker value = 0
     if Rails.env.production?
+      require "heroku-api"
       heroku = Heroku::API.new(api_key: ENV["HEROKU_API_KEY"])
       heroku.post_ps_scale(ENV["APP_NAME"], "worker", value)
     end

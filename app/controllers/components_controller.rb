@@ -46,6 +46,6 @@ class ComponentsController < ApplicationController
   helper_method :component
 
   private def set_active_nav
-    @active_nav = "#{@components_type}_component"
+    @active_nav = "#{components_type}_component"
   end
 end

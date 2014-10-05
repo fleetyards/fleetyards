@@ -1,8 +1,8 @@
 %ul.nav.navbar-nav
-  %li{class: get_active_nav('home')}
+  %li{class: get_active_nav}
     = link_to I18n.t(:"nav.home"), root_path
   - if can? :index, :ships
-    %li.dropdown{class: get_active_nav('ships, manufacturers, weapons, equipment')}
+    %li.dropdown{class: get_active_nav(%w(ships manufacturers) + ComponentCategory.all.map{|c| "#{c.slug}_component"})}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         = I18n.t(:"nav.ships")
         %b.caret
@@ -16,7 +16,7 @@
         %li.divider
         - ComponentCategory.all.each do |category|
           - if can? :index, :components
-            %li{class: get_active_nav(category.slug)}
+            %li{class: get_active_nav("#{category.slug}_component")}
               = link_to I18n.t(:"nav.component.#{category.slug}"), send("#{category.slug}_components_path")
   %li{class: get_active_nav('images')}
     = link_to I18n.t(:"nav.images"), images_path
