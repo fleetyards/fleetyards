@@ -28,7 +28,19 @@ class ApplicationController < ActionController::Base
     ship_queue = Sidekiq::Queue.new(ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader')
     process = Sidekiq::ProcessSet.new
     running_processes = process.sum{|ps| ps["busy"] }
-    !(ship_queue.size.zero? && running_processes.zero?)
+    if !(ship_queue.size.zero? && running_processes.zero?)
+      true
+    else
+      scale_worker
+      false
+    end
+  end
+
+  def scale_worker value = 0
+    if Rails.env.production?
+      heroku = Heroku::API.new(api_key: ENV["HEROKU_API_KEY"])
+      heroku.post_ps_scale(ENV["APP_NAME"], "worker", value)
+    end
   end
 
   private def default_url_options(options = {})

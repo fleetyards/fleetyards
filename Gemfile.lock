@@ -131,6 +131,15 @@ GEM
       activesupport (>= 4.0.1)
       haml (>= 3.1, < 5.0)
       railties (>= 4.0.1)
+    heroku (3.11.3)
+      heroku-api (~> 0.3.19)
+      launchy (>= 0.3.2)
+      netrc (~> 0.7.7)
+      rest-client (= 1.6.7)
+      rubyzip (= 0.9.9)
+    heroku-api (0.3.19)
+      excon (~> 0.38)
+      multi_json (~> 1.8)
     highline (1.6.21)
     hike (1.2.3)
     i18n (0.6.11)
@@ -146,6 +155,8 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    launchy (2.4.2)
+      addressable (~> 2.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -167,6 +178,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    netrc (0.7.7)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     orm_adapter (0.5.0)
@@ -205,7 +217,10 @@ GEM
     redis (3.1.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     ruby-prof (0.15.1)
+    rubyzip (0.9.9)
     safe_yaml (1.0.4)
     sass (3.2.19)
     sass-rails (4.0.3)
@@ -291,6 +306,7 @@ DEPENDENCIES
   globalize
   haml
   haml-rails
+  heroku
   highline
   i18n-js!
   jquery-rails

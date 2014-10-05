@@ -65,6 +65,7 @@ gem "fog"
 
 gem 'web_translate_it'
 
+gem "heroku"
 gem "rails_12factor"
 
 group :test do
