@@ -72,8 +72,6 @@ Fleetyards::Application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  config.active_record.raise_in_transactional_callbacks = true
-
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 
