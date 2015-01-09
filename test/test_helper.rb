@@ -1,4 +1,7 @@
 ENV["RAILS_ENV"] = "test"
+ENV["DEVISE_SECRET"] = "devise_secret"
+ENV["SECRET_KEY_BASE"] = "secret"
+
 require File.expand_path('../../config/environment', __FILE__)
 
 require "rails/test_help"
