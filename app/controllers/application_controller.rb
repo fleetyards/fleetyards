@@ -36,16 +36,7 @@ class ApplicationController < ActionController::Base
     if !(ship_queue.size.zero? && running_processes.zero?)
       true
     else
-      scale_worker
       false
-    end
-  end
-
-  def scale_worker value = 0
-    if Rails.env.production?
-      require "heroku-api"
-      heroku = Heroku::API.new(api_key: ENV["HEROKU_API_KEY"])
-      heroku.post_ps_scale(ENV["APP_NAME"], "worker", value)
     end
   end
 

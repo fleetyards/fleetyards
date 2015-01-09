@@ -65,8 +65,7 @@ gem "fog"
 
 gem 'web_translate_it'
 
-gem "heroku"
-gem "rails_12factor"
+gem "rails_12factor", group: :production
 
 group :test do
   gem "rails-perftest"

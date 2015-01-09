@@ -65,7 +65,6 @@ module Backend
       authorize! :reload, :backend_ships
       respond_to do |format|
         format.js {
-          scale_worker(1)
           ShipsWorker.perform_async
           render json: true
         }
