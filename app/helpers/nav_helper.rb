@@ -3,6 +3,6 @@ module NavHelper
     navs = [navs] unless navs.is_a?(Array)
     return unless navs.any? { |nav| nav == @active_nav }
 
-    'active'
+    "active"
   end
 end
