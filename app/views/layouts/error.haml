@@ -21,11 +21,7 @@
     = favicon_link_tag 'touch-icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png'
 
     != stylesheet_link_tag "https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
-    != stylesheet_link_tag "application"
-
-    :javascript
-      window.locale = "#{I18n.locale}";
-    != javascript_include_tag "application"
+    != stylesheet_link_tag "error"
 
     != csrf_meta_tags
 
