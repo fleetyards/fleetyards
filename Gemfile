@@ -67,8 +67,6 @@ gem 'web_translate_it'
 
 gem "rails_12factor", group: :production
 
-gem 'newrelic_rpm'
-
 group :test do
   gem "rails-perftest"
   gem "minitest-rails"
