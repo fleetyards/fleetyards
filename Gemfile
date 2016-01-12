@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.3.0'
 
 gem "rails", "4.1.8"
 
@@ -66,6 +66,10 @@ gem "fog"
 gem 'web_translate_it'
 
 gem "rails_12factor", group: :production
+
+gem 'newrelic_rpm'
+
+gem "sentry-raven"
 
 group :test do
   gem "rails-perftest"

@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   enable_extension "hstore"
   enable_extension "uuid-ossp"
 
-  create_table "album_translations", force: :cascade do |t|
+  create_table "album_translations", force: true do |t|
     t.uuid     "album_id",    null: false
     t.string   "locale",      null: false
     t.datetime "created_at"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "album_translations", ["album_id"], name: "index_album_translations_on_album_id", using: :btree
   add_index "album_translations", ["locale"], name: "index_album_translations_on_locale", using: :btree
 
-  create_table "albums", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "albums", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.boolean  "enabled",    default: false, null: false
@@ -37,13 +37,13 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "component_categories", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "component_categories", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string "rsi_name"
     t.string "name"
     t.string "slug"
   end
 
-  create_table "component_category_translations", force: :cascade do |t|
+  create_table "component_category_translations", force: true do |t|
     t.uuid     "component_category_id", null: false
     t.string   "locale",                null: false
     t.datetime "created_at"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "component_category_translations", ["component_category_id"], name: "index_component_category_translations_on_component_category_id", using: :btree
   add_index "component_category_translations", ["locale"], name: "index_component_category_translations_on_locale", using: :btree
 
-  create_table "component_translations", force: :cascade do |t|
+  create_table "component_translations", force: true do |t|
     t.uuid     "component_id",   null: false
     t.string   "locale",         null: false
     t.datetime "created_at"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "component_translations", ["component_id"], name: "index_component_translations_on_component_id", using: :btree
   add_index "component_translations", ["locale"], name: "index_component_translations_on_locale", using: :btree
 
-  create_table "components", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "components", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "size"
     t.string   "component_type"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "hardpoint_translations", force: :cascade do |t|
+  create_table "hardpoint_translations", force: true do |t|
     t.uuid     "hardpoint_id", null: false
     t.string   "locale",       null: false
     t.datetime "created_at"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "hardpoint_translations", ["hardpoint_id"], name: "index_hardpoint_translations_on_hardpoint_id", using: :btree
   add_index "hardpoint_translations", ["locale"], name: "index_hardpoint_translations_on_locale", using: :btree
 
-  create_table "hardpoints", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "hardpoints", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "hardpoint_class"
     t.integer  "rating"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "images", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "images", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.uuid     "gallery_id"
     t.string   "gallery_type"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "manufacturer_translations", force: :cascade do |t|
+  create_table "manufacturer_translations", force: true do |t|
     t.uuid     "manufacturer_id", null: false
     t.string   "locale",          null: false
     t.datetime "created_at"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "manufacturer_translations", ["locale"], name: "index_manufacturer_translations_on_locale", using: :btree
   add_index "manufacturer_translations", ["manufacturer_id"], name: "index_manufacturer_translations_on_manufacturer_id", using: :btree
 
-  create_table "manufacturers", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "manufacturers", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.string   "known_for"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "ship_role_translations", force: :cascade do |t|
+  create_table "ship_role_translations", force: true do |t|
     t.uuid     "ship_role_id", null: false
     t.string   "locale",       null: false
     t.datetime "created_at"
@@ -145,14 +145,14 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "ship_role_translations", ["locale"], name: "index_ship_role_translations_on_locale", using: :btree
   add_index "ship_role_translations", ["ship_role_id"], name: "index_ship_role_translations_on_ship_role_id", using: :btree
 
-  create_table "ship_roles", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "ship_roles", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "ship_translations", force: :cascade do |t|
+  create_table "ship_translations", force: true do |t|
     t.uuid     "ship_id",     null: false
     t.string   "locale",      null: false
     t.datetime "created_at"
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "ship_translations", ["locale"], name: "index_ship_translations_on_locale", using: :btree
   add_index "ship_translations", ["ship_id"], name: "index_ship_translations_on_ship_id", using: :btree
 
-  create_table "ships", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "ships", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.text     "description"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.datetime "updated_at"
   end
 
-  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.boolean  "admin",                  default: false, null: false
     t.hstore   "profile"
     t.hstore   "settings"
@@ -226,7 +226,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
-  create_table "worker_states", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "worker_states", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
     t.boolean  "running",        default: false
     t.datetime "last_run_start"
