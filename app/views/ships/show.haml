@@ -1,5 +1,5 @@
 - content_for :title do
-  = "#{ship.name} - #{ship.manufacturer.name}"
+  = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
 .row#ship-profile
   .col-xs-12.col-md-12
 
@@ -35,7 +35,7 @@
                   %strong
                     = I18n.t(:"activerecord.attributes.ship.manufacturer")
                 %td
-                  = ship.manufacturer.name
+                  = ship.manufacturer.name.html_safe
               - %w(length beam height mass cargo crew).each do |value|
                 %tr
                   %td

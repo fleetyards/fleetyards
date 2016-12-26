@@ -2,7 +2,7 @@
   %td
     = manufacturer.id
   %td
-    = manufacturer.name
+    = manufacturer.name.html_safe
   %td
     .btn-group
       %button.btn.btn-default.btn-sm{class: ('active' if manufacturer.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_backend_manufacturer_path(manufacturer), resource: 'manufacturer', toggle: "button"}}

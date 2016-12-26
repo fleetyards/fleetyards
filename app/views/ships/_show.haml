@@ -8,7 +8,7 @@
           = ship.name
         %br
         %small
-          = ship.manufacturer.name if ship.manufacturer.present?
+          = ship.manufacturer.name.html_safe if ship.manufacturer.present?
     .profile-image.text-center
       = image_tag ship.store_image.small
     %ul.list-group

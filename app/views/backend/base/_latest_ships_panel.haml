@@ -16,7 +16,7 @@
             %td
               = ship.name
             %td
-              = ship.manufacturer.name if ship.manufacturer.present?
+              = ship.manufacturer.name.html_safe if ship.manufacturer.present?
             %td
               = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(ship.created_at))
             %td

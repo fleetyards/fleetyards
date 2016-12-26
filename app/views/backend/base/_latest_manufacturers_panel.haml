@@ -13,7 +13,7 @@
         - Manufacturer.order('updated_at DESC').limit(5).each do |manufacturer|
           %tr
             %td
-              = manufacturer.name
+              = manufacturer.name.html_safe
             %td
               = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(manufacturer.created_at))
             %td

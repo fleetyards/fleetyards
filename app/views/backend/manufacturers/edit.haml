@@ -6,7 +6,7 @@
     .row
       .col-xs-12.col-md-8
         %h2
-          = I18n.t(:"headlines.backend.manufacturer.edit", manufacturer: manufacturer.name)
+          = I18n.t(:"headlines.backend.manufacturer.edit", manufacturer: manufacturer.name.html_safe)
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav

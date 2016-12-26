@@ -1,5 +1,5 @@
 - content_for :title do
-  = "#{I18n.t(:"headlines.ship.gallery", ship: ship.name)} - #{ship.manufacturer.name}"
+  = "#{I18n.t(:"headlines.ship.gallery", ship: ship.name)} - #{ship.manufacturer.name.html_safe}"
 .row#ship-gallery
   .col-xs-12.col-md-12
 
