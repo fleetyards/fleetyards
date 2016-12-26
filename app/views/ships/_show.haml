@@ -12,7 +12,7 @@
     .profile-image.text-center
       = image_tag ship.store_image.small
     %ul.list-group
-      %li.list-group-item.ship-roles{data: {toggle: "tooltip"}, title: ship.ship_role.name}
+      %li.list-group-item.ship-roles{data: {toggle: "tooltip"}, title: (ship.ship_role.name if ship.ship_role.present?)}
         %strong
           = "#{I18n.t(:"helpers.placeholder.ship.role")}:"
         = ship.ship_role.name if ship.ship_role.present?
