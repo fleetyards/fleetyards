@@ -27,7 +27,6 @@ body {
   min-height: 100%;
   height: auto;
   position: relative;
-  background-image: image-url("bg.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -35,6 +34,22 @@ body {
 
   > .container {
     padding-bottom: 20px;
+  }
+
+  &.bg-0 {
+    background-image: image-url("bg.jpg");
+  }
+
+  &.bg-1 {
+    background-image: image-url("bg-2.jpg");
+  }
+
+  &.bg-2 {
+    background-image: image-url("bg-bottom-earth-2560.jpg");
+  }
+
+  &.bg-3 {
+    background-image: image-url("bg-stars-2560.jpg");
   }
 }
 
@@ -49,6 +64,15 @@ a.navbar-brand,
 
 .thumbnail {
   border-color: #666;
+}
+
+.row.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
 }
 
 a.thumbnail:hover,
