@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+ruby '2.3.3'
 
 gem "rails", "4.1.8"
 
@@ -15,7 +15,7 @@ gem 'globalize'
 gem 'haml'
 gem 'haml-rails'
 
-gem "i18n-js", github: "fnando/i18n-js", branch: :master
+gem "i18n-js", git: "https://github.com/fnando/i18n-js.git", branch: :master
 
 gem 'devise'
 gem 'cancan'

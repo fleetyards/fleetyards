@@ -1,10 +1,10 @@
 GIT
-  remote: git://github.com/fnando/i18n-js.git
-  revision: d84d2533f4b0c75acc37b8abceafa10eab657b84
+  remote: https://github.com/fnando/i18n-js.git
+  revision: 6d84cc4ad891e5c88cb0f1e3859c2a3ec0df58ee
   branch: master
   specs:
-    i18n-js (3.0.0.rc8)
-      i18n (~> 0.6)
+    i18n-js (3.0.0.rc15)
+      i18n (~> 0.6, >= 0.6.6)
 
 GEM
   remote: https://rubygems.org/
@@ -224,9 +224,8 @@ GEM
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
     pg (0.18.1)
-    puma (2.10.2)
-      rack (>= 1.1, < 2.0)
-    rack (1.5.2)
+    puma (3.6.2)
+    rack (1.5.5)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -379,5 +378,8 @@ DEPENDENCIES
   web_translate_it
   webmock
 
+RUBY VERSION
+   ruby 2.3.3p222
+
 BUNDLED WITH
-   1.11.2
+   1.13.7
