@@ -4,7 +4,7 @@ class BaseController < ApplicationController
 
   def index
     @ships = Ship.enabled.limit(5).order("updated_at desc")
-    @images = Image.enabled.limit(6).order("updated_at desc")
+    @images = Image.enabled.limit(8).order("updated_at desc")
   end
 
   def impressum
