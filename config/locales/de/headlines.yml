@@ -19,6 +19,7 @@ de:
     image:
       updates: "Neue Bilder"
       index: "Alle Bilder"
+      welcome: Bilder
     component:
       propulsion:
         index: Antrieb
@@ -32,6 +33,7 @@ de:
       updates: "Neue Schiffe"
       gallery: "%{ship} Galerie"
       index: Schiffsübersicht
+      welcome: Schiffe
     base:
       index: "Willkommen auf"
     backend:

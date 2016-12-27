@@ -27,7 +27,7 @@
   .col-xs-12.col-md-6
     %h2
       %a{href: ships_path}
-        = I18n.t(:"headlines.ship.updates")
+        = I18n.t(:"headlines.ship.welcome")
     .list-group
       - @ships.each do |ship|
         %a.list-group-item{href: ship_path(ship.slug)}
@@ -35,11 +35,14 @@
             = ship.name
           %p.list-group-item-text
             = ship.description
+      %a.list-group-item{href: ships_path}
+        .text-center
+          = I18n.t("actions.more")
   .col-xs-12.col-md-6
     %h2
       %a{href: images_path}
-        = I18n.t(:"headlines.image.updates")
-        
+        = I18n.t(:"headlines.image.welcome")
+
     .row.is-flex
       - @images.each do |image|
         .col-xs-12.col-sm-6.col-md-6
@@ -48,3 +51,8 @@
             - path = gallery_ship_path(image.gallery.slug)
           %a.thumbnail{href: path}
             %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
+
+      .col-xs-12
+        %a.btn.btn-default.btn-group{href: images_path}
+          .text-center
+            = I18n.t("actions.more")

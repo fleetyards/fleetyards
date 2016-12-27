@@ -3,8 +3,8 @@ class BaseController < ApplicationController
   before_filter :authenticate_user!, only: []
 
   def index
-    @ships = Ship.enabled.limit(5).order("updated_at desc")
-    @images = Image.enabled.limit(8).order("updated_at desc")
+    @ships = Ship.enabled.order("RANDOM()").limit(10)
+    @images = Image.enabled.order("RANDOM()").limit(14)
   end
 
   def impressum
