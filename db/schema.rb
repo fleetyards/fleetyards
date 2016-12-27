@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140119154504) do
+ActiveRecord::Schema.define(version: 20161227143357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.integer  "powerplant_size"
     t.integer  "shield_size"
     t.string   "classification"
-    t.boolean  "enabled",         default: false, null: false
+    t.boolean  "enabled",          default: false, null: false
     t.integer  "rsi_id"
     t.uuid     "manufacturer_id"
     t.uuid     "ship_role_id"
@@ -189,6 +189,9 @@ ActiveRecord::Schema.define(version: 20140119154504) do
     t.text     "avionics_raw"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "production_state"
+    t.string   "production_note"
+    t.string   "focus"
   end
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|

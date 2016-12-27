@@ -13,6 +13,9 @@ class ShipsLoader < Struct.new(:base_url)
     match = body.match(/data: \[(.+)\]/)
     begin
       ships = JSON.parse("[#{match[1]}]")
+      File.open("public/ships.json", "w") do |f|
+        f.write(ships.to_json)
+      end
 
       old_locale = I18n.locale
       I18n.locale = :en
@@ -39,6 +42,18 @@ class ShipsLoader < Struct.new(:base_url)
     rescue JSON::ParserError => e
       p "ShipData could not be parsed: [#{match[1]}]"
     end
+
+    remove_duplicates
+  end
+
+  def remove_duplicates
+    Ship.find_each do |ship|
+      duplicates = Ship.where(slug: ship.slug).order(created_at: :asc).all
+      if duplicates.count > 0
+        duplicates.to_a.pop
+        duplicates.each(&:destroy)
+      end
+    end
   end
 
   private
@@ -48,6 +63,8 @@ class ShipsLoader < Struct.new(:base_url)
 
     ship.update(
       name: data["name"],
+      production_status: data["production_status"],
+      production_note: data["production_note"],
       description: data["description"],
       length: data["length"],
       beam: data["beam"],
@@ -58,6 +75,7 @@ class ShipsLoader < Struct.new(:base_url)
       powerplant_size: data["maxpowerplantsize"],
       shield_size: data["maxshieldsize"],
       classification: data["classification"],
+      focus: data["focus"],
       remote_image_url: ("#{self.base_url}#{data["media"][0]["source_url"]}" unless ship.image.present?),
       remote_store_image_url: ("#{self.base_url}#{data["media"][0]["images"]["store_hub_large"]}" unless ship.store_image.present?),
       store_url: data["url"],
