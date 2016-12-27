@@ -16,13 +16,8 @@
         .pull-right
           = paginate @images
 
-    .row
-      - @images.each_with_index do |image, key|
-        - if key %4 == 0 && key != 0
-          .row.visible-md
-          .row.visible-lg
-        - if key %2 == 0 && key != 0
-          .row.visible-sm
+    .row.is-flex
+      - @images.each do |image|
         .col-md-3.col-sm-6.col-xs-12
           %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
             %img.img-responsive{src: image.name.small, alt: image.name.file.filename}

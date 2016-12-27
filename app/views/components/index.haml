@@ -14,13 +14,8 @@
         .pull-right
           = paginate components
 
-    .row
-      - components.each_with_index do |component, key|
-        - if key %3 == 0 && key != 0
-          .row.visible-md
-          .row.visible-lg
-        - if key %2 == 0 && key != 0
-          .row.visible-sm
+    .row.is-flex
+      - components.each do |component|
         .col-md-4.col-sm-6.col-xs-12
           = render "show", component: component
 

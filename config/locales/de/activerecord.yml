@@ -22,6 +22,7 @@ de:
         equipment: Komponenten
         variants: Varianten
         max_upgrades: Upgrades
+        production_status: Produktions Status
     errors:
       messages:
         record_invalid: "Ungültige Daten"

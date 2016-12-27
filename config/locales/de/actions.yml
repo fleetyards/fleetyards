@@ -24,6 +24,7 @@ de:
     admin: Backend
     enable: Aktivieren
     disable: Deaktivieren
+    store: RSI Detail Seite
     manufacturer:
       ships: Schiffe
     ship:

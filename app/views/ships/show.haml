@@ -10,7 +10,7 @@
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          - unless ship.images.blank?
+          - unless ship.images.enabled.blank?
             - gallery_params = params.dup
             - gallery_params.delete(:page)
             %a.btn.btn-primary{href: gallery_ship_path(ship.slug, gallery_params)}
@@ -36,7 +36,7 @@
                     = I18n.t(:"activerecord.attributes.ship.manufacturer")
                 %td
                   = ship.manufacturer.name.html_safe
-              - %w(length beam height mass cargo crew).each do |value|
+              - %w(length beam height mass cargo crew production_status).each do |value|
                 %tr
                   %td
                     %strong
@@ -50,6 +50,8 @@
                       = number_to_human ship.send(value), units: :people, precision: 6
                     - else
                       = ship.send(value)
+        %a.btn.btn-primary.pull-right{target: "_blank", href: store_url(ship.store_url)}
+          = I18n.t("actions.store")
 
     - categories = ComponentCategory.all
     .row
