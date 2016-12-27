@@ -71,17 +71,33 @@ gem 'newrelic_rpm'
 
 gem "sentry-raven"
 
+group :development do
+  gem 'pry-rails'
+  gem 'rubocop', require: false
+  gem 'web-console'
+  gem 'listen', '~> 3.0.5'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
 group :test do
-  gem "rails-perftest"
-  gem "minitest-rails"
-  gem "ruby-prof"
-  gem "database_cleaner"
-  gem "mocha", require: false
-  gem "spring"
+  gem 'faker'
+  gem 'coveralls', require: false
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
+  gem 'simplecov-html', require: false
+  gem 'rails-perftest'
+  gem 'minitest-rails'
+  gem 'ruby-prof'
+  gem 'database_cleaner'
+  gem 'factory_girl'
+  gem 'mocha', require: false
   gem "webmock", require: false
+  gem 'timecop'
+  gem "codeclimate-test-reporter", require: false
 end
 
 group :development, :test do
-  gem "foreman"
-  gem "byebug"
+  gem 'bullet'
+  gem 'byebug', platform: :mri
 end

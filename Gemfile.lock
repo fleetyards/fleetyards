@@ -37,9 +37,13 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    ansi (1.5.0)
     arel (5.0.1.20140414130214)
     asset_pipeline_routes (0.3.0)
+    ast (2.3.0)
     bcrypt (3.1.9)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.1.0)
       sass (~> 3.2)
     bourbon (4.1.0)
@@ -47,6 +51,9 @@ GEM
       thor
     bower-rails (0.9.2)
     builder (3.2.2)
+    bullet (5.4.3)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.10.0)
     byebug (3.5.1)
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
@@ -62,6 +69,9 @@ GEM
       mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    codeclimate-test-reporter (1.0.3)
+      simplecov
+    coderay (1.1.1)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -71,10 +81,17 @@ GEM
     coffee-script-source (1.8.0)
     columnize (0.9.0)
     connection_pool (2.1.0)
+    coveralls (0.8.17)
+      json (>= 1.8, < 3)
+      simplecov (~> 0.12.0)
+      term-ansicolor (~> 1.3)
+      thor (~> 0.19.1)
+      tins (~> 1.6)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     dalli (2.7.2)
     database_cleaner (1.4.0)
+    debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     devise (3.4.1)
       bcrypt (~> 3.0)
@@ -83,7 +100,7 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    dotenv (1.0.2)
+    docile (1.1.5)
     dynamic_fields_for_rails (0.6.0)
       rails (>= 3.0.0, < 5.0)
     erubis (2.7.0)
@@ -91,6 +108,10 @@ GEM
       ffi (>= 1.3.0)
     excon (0.42.1)
     execjs (2.2.2)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    faker (1.7.1)
+      i18n (~> 0.5)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.6)
@@ -163,9 +184,6 @@ GEM
       nokogiri (~> 1.5, >= 1.5.11)
     font-awesome-sass (4.2.2)
       sass (~> 3.2)
-    foreman (0.77.0)
-      dotenv (~> 1.0.2)
-      thor (~> 0.19.1)
     formatador (0.2.5)
     globalize (4.0.3)
       activemodel (>= 4.0.0, < 5)
@@ -180,6 +198,7 @@ GEM
       railties (>= 4.0.1)
     highline (1.6.21)
     hike (1.2.3)
+    hirb (0.7.3)
     hitimes (1.2.2)
     hpricot (0.8.6)
     html2haml (1.0.1)
@@ -200,11 +219,15 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    listen (3.0.8)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     metaclass (0.0.4)
     metadown (1.0.1)
       redcarpet
+    method_source (0.8.2)
     mime-types (2.4.3)
     mini_magick (4.0.2)
     mini_portile (0.6.2)
@@ -223,7 +246,16 @@ GEM
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
+    parser (2.3.3.1)
+      ast (~> 2.2)
     pg (0.18.1)
+    powerpack (0.1.1)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-rails (0.3.4)
+      pry (>= 0.9.10)
     puma (3.6.2)
     rack (1.5.5)
     rack-protection (1.5.3)
@@ -251,14 +283,25 @@ GEM
       activesupport (= 4.1.8)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    rainbow (2.1.0)
     rake (10.4.2)
+    rb-fsevent (0.9.8)
+    rb-inotify (0.9.7)
+      ffi (>= 0.5.0)
     redcarpet (3.2.2)
     redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rubocop (0.46.0)
+      parser (>= 2.3.1.1, < 3.0)
+      powerpack (~> 0.1)
+      rainbow (>= 1.99.1, < 3.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-prof (0.15.2)
+    ruby-progressbar (1.8.1)
     ruby_parser (3.1.3)
       sexp_processor (~> 4.1)
     safe_yaml (1.0.4)
@@ -280,12 +323,24 @@ GEM
       json
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-console (0.3.1)
+      ansi
+      hirb
+      simplecov
+    simplecov-html (0.10.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
     slop (3.6.0)
     spring (1.2.0)
+    spring-watcher-listen (2.0.1)
+      listen (>= 2.7, < 4.0)
+      spring (>= 1.2, < 3.0)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -296,11 +351,15 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     state_machine (1.2.0)
+    term-ansicolor (1.4.0)
+      tins (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timecop (0.8.1)
     timers (4.0.1)
       hitimes
+    tins (1.13.0)
     trollop (2.1.1)
     turbolinks (2.5.3)
       coffee-rails
@@ -311,10 +370,17 @@ GEM
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicode-display_width (1.1.2)
+    uniform_notifier (1.10.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     warden (1.2.3)
       rack (>= 1.0)
+    web-console (2.3.0)
+      activemodel (>= 4.0)
+      binding_of_caller (>= 0.7.2)
+      railties (>= 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
     web_translate_it (2.3.4)
       multi_json
       multipart-post (~> 2.0)
@@ -331,18 +397,22 @@ DEPENDENCIES
   bootstrap-sass
   bourbon
   bower-rails
+  bullet
   byebug
   cache_digests
   cancan
   carrierwave
+  codeclimate-test-reporter
   coffee-rails
+  coveralls
   dalli
   database_cleaner
   devise
   dynamic_fields_for_rails
+  factory_girl
+  faker
   fog
   font-awesome-sass
-  foreman
   globalize
   haml
   haml-rails
@@ -351,30 +421,39 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   kaminari
+  listen (~> 3.0.5)
   metadown
   mini_magick
   minitest-rails
   mocha
   newrelic_rpm
   pg
+  pry-rails
   puma
   rails (= 4.1.8)
   rails-perftest
   rails_12factor
   redcarpet
+  rubocop
   ruby-prof
   sass-rails
   select2-rails
   sentry-raven
   sidekiq
+  simplecov
+  simplecov-console
+  simplecov-html
   sinatra (>= 1.3.0)
   spring
+  spring-watcher-listen (~> 2.0.0)
   state_machine
   thor
+  timecop
   turbolinks
   typhoeus
   uglifier
   url_plumber
+  web-console
   web_translate_it
   webmock
 
