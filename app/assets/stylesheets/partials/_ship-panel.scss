@@ -1,9 +1,19 @@
 .ship-panel {
+  .production-status {
+    font-size: 75%;
+    text-align: center;
+    line-height: 1;
+    color: #7A8288;
+    padding: 4px 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  }
+
   h3 {
     small {
       white-space: nowrap;
     }
   }
+
   .profile-image {
     background-color: #333;
 

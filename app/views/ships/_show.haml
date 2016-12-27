@@ -9,6 +9,8 @@
         %br
         %small
           = ship.manufacturer.name.html_safe if ship.manufacturer.present?
+    .production-status
+      = ship.production_status
     .profile-image.text-center
       = image_tag ship.store_image.small
     %ul.list-group
