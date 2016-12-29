@@ -1,20 +1,18 @@
 - content_for :title do
   = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
+- unless ship.images.enabled.blank?
+  - gallery_params = params.dup
+  - gallery_params.delete(:page)
 .row#ship-profile
   .col-xs-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-xs-12.col-md-6
         %h1
           = ship.name
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          - unless ship.images.enabled.blank?
-            - gallery_params = params.dup
-            - gallery_params.delete(:page)
-            %a.btn.btn-primary{href: gallery_ship_path(ship.slug, gallery_params)}
-              = I18n.t(:"actions.ship.gallery")
+      .col-xs-12.col-md-6
+        .pull-right.resource-nav
           - back_params = params.dup
           - back_params.delete(:slug)
           %a.btn.btn-default{href: ships_path(back_params)}
@@ -50,8 +48,14 @@
                       = number_to_human ship.send(value), units: :people, precision: 6
                     - else
                       = ship.send(value)
-        %a.btn.btn-primary.pull-right{target: "_blank", href: store_url(ship.store_url)}
-          = I18n.t("actions.store")
+
+        .btn-group.pull-right.resource-nav
+          - if user_signed_in?
+            = link_to new_my_ship_path(ship: ship.slug), class: 'btn btn-success' do
+              %i.fa.fa-plus
+              = I18n.t(:"actions.add_my_ship")
+          %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
+            = I18n.t("actions.store")
 
     - categories = ComponentCategory.all
     .row

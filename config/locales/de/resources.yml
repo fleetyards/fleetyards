@@ -9,6 +9,7 @@ de:
         failure: "Dein Passwort"
     locale: Sprachdateien
     ship: Schiff
+    my_ship: "Mein Schiff"
     ships: Schiffsdaten
     manufacturer: Hersteller
     component: Komponente

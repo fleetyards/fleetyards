@@ -3,7 +3,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable, :timeoutable, authentication_keys: [:login]
 
-  #store_accessor :settings, :tax, :tax_ref
+  has_many :user_ships
+  has_many :ships, through: :user_ships
+
   validates :username, uniqueness: { case_sensitive: false }
 
   attr_accessor :login

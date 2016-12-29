@@ -1,0 +1,19 @@
+- ship_params = params.dup
+- ship_params.delete(:slug)
+- ship = user_ship.ship
+.col-xs-12.col-sm-4.col-md-3
+  .ship-panel.panel.panel-default.hangar-panel
+    .panel-heading
+      %h2.panel-title
+        %a{href: ship_path(ship.slug, ship_params)}><
+          = user_ship.name.present? && user_ship.name || ship.name
+        %br
+        %small
+          - if user_ship.name.present?
+            = ship.name
+          - else
+            = ship.manufacturer.name.html_safe if ship.manufacturer.present?
+    .profile-image.text-center
+      = image_tag ship.store_image.small
+    = confirm_link_to my_ship_path(user_ship), method: :delete, data: {notyConfirm: I18n.t(:"messages.confirm.my_ship.delete")}, class: "btn btn-default btn-block" do
+      = I18n.t(:"actions.remove")

@@ -8,6 +8,11 @@ class Ability
       can :manage, :all
     end
 
+    if user.id.present?
+      can :index, :hangar
+      can [:add, :remove], UserShip, user_id: user.id
+    end
+
     can :update, User, id: user.id
     can :index, :manufacturers
     can :show, Manufacturer, enabled: true

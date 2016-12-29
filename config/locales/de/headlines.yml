@@ -14,6 +14,7 @@ de:
     not_found: "Navigations Fehler"
     unprocessable_entity: "Fehlerhafte Anfrage"
     server_error: "Server Fehler"
+    hangar: "Mein Hangar"
     manufacturer:
       index: Hersteller
     image:
@@ -34,6 +35,8 @@ de:
       gallery: "%{ship} Galerie"
       index: Schiffsübersicht
       welcome: Schiffe
+    my_ship:
+      add: "Meine %{ship}"
     base:
       index: "Willkommen auf"
     backend:

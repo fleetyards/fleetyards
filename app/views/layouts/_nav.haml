@@ -20,3 +20,5 @@
               = link_to I18n.t(:"nav.component.#{category.slug}"), send("#{category.slug}_components_path")
   %li{class: active_nav?("images")}
     = link_to I18n.t(:"nav.images"), images_path
+  %li{class: active_nav?("hangar")}
+    = link_to I18n.t(:"nav.hangar"), hangar_path

@@ -33,8 +33,10 @@ en:
       blank:
         default: "No Entries could be found."
         ship: "No Ships could be found."
+        my_ship: "Your Hangar is empty."
       out_of_range:
         ship: "No Ships could be found on this page. <a href='%{url}'>return to first page</a>"
+        my_ship: "Your Hangar does not yet have so many Ships :). <a href='%{url}'>return to first page</a>"
       image:
         name: Filename
         gallery_type: Gallery

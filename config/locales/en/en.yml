@@ -17,6 +17,9 @@ en:
     not_found: 404
     unprocessable_entity: 422
     server_error: 500
+    hangar: "My Hangar"
+    my_ship:
+      add: "My %{ship}"
     manufacturer:
       index: Manufacturers
       edit: Edit Manufacturer
@@ -53,6 +56,7 @@ en:
     ships: Ships
     impressum: Impressum
     privacy: "Privacy policy"
+    hangar: "My Hangar"
     ship:
       overview: Index
     images: Images

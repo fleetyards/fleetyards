@@ -1,0 +1,19 @@
+- content_for :title do
+  = I18n.t(:"title.my_ship.add", ship: ship.name)
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-12
+        %h1
+          = I18n.t(:"headlines.my_ship.add", ship: ship.name)
+
+    = form_for user_ship, url: my_ships_path do |form|
+      = form.hidden_field :ship_id
+      .row
+        .col-xs-12.col-md-6.form-group{class: form_error?(user_ship, :name)}
+          = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.user_ship.name", ship: ship.name), class: 'form-control'
+          %small
+            = form_errors user_ship, :name
+
+      = render "shared/submit", path: ship_path(ship.slug)

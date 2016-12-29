@@ -6,7 +6,7 @@ class ShipsController < ApplicationController
     authorize! :index, :ships
     @ships = find_ships
     @ships = @ships
-      .order("ships.name asc")
+      .order(name: :asc)
       .page(params.fetch(:page, nil))
       .per(8)
     respond_to do |format|

@@ -14,8 +14,11 @@ en:
     not_found: "Navigation Error"
     unprocessable_entity: "False Request"
     server_error: "Server Error"
+    hangar: "My Hangar"
+    my_ship:
+      add: "My %{ship}"
     manufacturer:
-      index: Hersteller
+      index: Manufacturers
     image:
       updates: "New Images"
       index: "All Images"

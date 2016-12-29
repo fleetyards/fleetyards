@@ -34,7 +34,7 @@
           %h4.list-group-item-heading
             = ship.name
           %p.list-group-item-text
-            = ship.description
+            = ship.description.html_safe if ship.description.present?
       %a.list-group-item{href: ships_path}
         .text-center
           = I18n.t("actions.more")

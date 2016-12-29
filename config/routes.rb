@@ -52,8 +52,13 @@ Fleetyards::Application.routes.draw do
     resource :password, only: [:edit, :update]
 
     resources :ships, param: :slug, concerns: :paginatable do
-      get 'gallery', on: :member
+      member do
+        get 'gallery'
+      end
     end
+
+    resource :hangar, only: [:show]
+    resources :my_ships, only: [:new, :create, :destroy], path_names: { new: 'add' }
 
     resources :images, only: [:index]
 

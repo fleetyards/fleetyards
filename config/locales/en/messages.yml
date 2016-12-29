@@ -9,6 +9,8 @@ en:
       form:
         cancel: "Are you sure? Unsaved changes will be lost."
       delete: "Are you sure you want to delete this entry?"
+      my_ship:
+        delete: "Are you sure you want to remove this Ship from you Hangar?"
     setting:
       not_found: "No Entry found"
     enabled:

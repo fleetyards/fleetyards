@@ -4,11 +4,11 @@
   .col-xs-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-xs-12.col-md-6
         %h1
           = I18n.t(:"headlines.ship.index")
 
-      .col-xs-12.col-md-4
+      .col-xs-12.col-md-6
         = render "search"
 
     .row
@@ -24,7 +24,7 @@
       - if @ships.blank?
         .col-md-12
           .well.text-center
-            - if @ships.out_of_range?
+            - if @ships.out_of_range? && @ships.total_pages > 1
               = I18n.t(:"labels.table.out_of_range.ship", url: ships_path(params.merge({page: 1}))).html_safe
             - else
               = I18n.t(:"labels.table.blank.ship")

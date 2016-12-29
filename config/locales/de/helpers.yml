@@ -27,6 +27,8 @@ de:
         current_password: "Aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
         gravatar: "Gravatar E-Mail Adresse"
+      user_ship:
+        name: "Name deiner %{ship}"
     prompt:
       user:
         locale: "Bitte wähle eine Sprache"
