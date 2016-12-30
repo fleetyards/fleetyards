@@ -1,32 +1,31 @@
 class HangarsController < ApplicationController
-  before_action :set_active_nav
+  before_filter :authenticate_user!, only: [:show]
 
   def show
-    authorize! :index, :hangar
-    @user_ships = current_user.user_ships
-      .order(created_at: :desc)
-      .page(params.fetch(:page, nil))
-      .per(12)
-    respond_to do |format|
-      format.js {
-        render json: @user_ships
-      }
-      format.html {
-        # render show
-      }
+    @active_nav = 'hangar'
+    authorize! :show, :hangar
+  end
+
+  def public
+    @active_nav = 'hangar-public'
+    authorize! :public, :hangar
+    unless user.present?
+      redirect_to root_path, alert: I18n.t("messages.user_not_found")
+      return
     end
   end
 
-  private def set_active_nav
-    @active_nav = 'hangar'
+  private def user
+    @user ||= User.find_by(username: params[:username])
+    @user ||= current_user
   end
+  helper_method :user
 
-  private def user_ship_params
-    @user_ship_params ||= params.permit(:name, :ship_id).merge(user_id: current_user.id)
+  private def user_ships
+    @user_ships ||= user.user_ships
+      .order(created_at: :desc)
+      .page(params.fetch(:page, nil))
+      .per(12)
   end
-
-  private def user_ship
-    @user_ship ||= UserShip.find(params[:id])
-    @user_ship ||= UserShip.new(user_ship_params)
-  end
+  helper_method :user_ships
 end

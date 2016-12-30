@@ -14,9 +14,10 @@ en:
     not_found: "Navigation Error"
     unprocessable_entity: "False Request"
     server_error: "Server Error"
-    hangar: "My Hangar"
-    my_ship:
-      add: "My %{ship}"
+    hangar:
+      show: "My Hangar"
+      public: "%{user}s Hangar"
+    my_ship: "My %{ship}"
     manufacturer:
       index: Manufacturers
     image:

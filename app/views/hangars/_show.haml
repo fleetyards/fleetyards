@@ -15,5 +15,9 @@
             = ship.manufacturer.name.html_safe if ship.manufacturer.present?
     .profile-image.text-center
       = image_tag ship.store_image.small
-    = confirm_link_to my_ship_path(user_ship), method: :delete, data: {notyConfirm: I18n.t(:"messages.confirm.my_ship.delete")}, class: "btn btn-default btn-block" do
-      = I18n.t(:"actions.remove")
+    - if user_signed_in? && user_ship.user_id == current_user.id
+      .btn-group.btn-group-flex
+        %a.btn.btn-default.btn-flex{href: edit_my_ship_path(user_ship)}
+          = I18n.t(:"actions.edit")
+        = confirm_link_to my_ship_path(user_ship), method: :delete, data: {notyConfirm: I18n.t(:"messages.confirm.my_ship.delete")}, class: "btn btn-danger" do
+          %i.fa.fa-trash

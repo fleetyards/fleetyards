@@ -23,6 +23,7 @@ class ShipsController < ApplicationController
     authorize! :show, ship
     if ship.nil?
       redirect_to ships_path, alert: I18n.t(:"messages.record_not_found")
+      return
     end
   end
 

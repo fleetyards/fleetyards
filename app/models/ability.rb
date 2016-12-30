@@ -9,9 +9,11 @@ class Ability
     end
 
     if user.id.present?
-      can :index, :hangar
+      can :show, :hangar
       can [:add, :remove], UserShip, user_id: user.id
     end
+
+    can :public, :hangar
 
     can :update, User, id: user.id
     can :index, :manufacturers

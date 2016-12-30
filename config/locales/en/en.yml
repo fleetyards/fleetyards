@@ -17,9 +17,10 @@ en:
     not_found: 404
     unprocessable_entity: 422
     server_error: 500
-    hangar: "My Hangar"
-    my_ship:
-      add: "My %{ship}"
+    hangar:
+      show: "My Hangar"
+      public: "%{user}s Hangar"
+    my_ship: "My %{ship}"
     manufacturer:
       index: Manufacturers
       edit: Edit Manufacturer

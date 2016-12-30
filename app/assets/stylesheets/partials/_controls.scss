@@ -7,3 +7,12 @@ ul.pagination {
   margin: 0;
   margin-bottom: 10px;
 }
+
+.btn-group-flex {
+  display: flex;
+  justify-content: space-between;
+
+  .btn-flex {
+    flex-grow: 1;
+  }
+}

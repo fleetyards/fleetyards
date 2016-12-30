@@ -7,6 +7,8 @@ de:
         password_confirmation: Passwort-Bestätigung
         current_password: "Aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
+      user_ship:
+        name: "Name (optional)"
     placeholder:
       name: Name
       ship:

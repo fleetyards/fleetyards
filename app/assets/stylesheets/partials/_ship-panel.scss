@@ -39,6 +39,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .btn-group {
+    &:last-child .btn {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
 }
 
 .ship-image, .manufacturer-logo {

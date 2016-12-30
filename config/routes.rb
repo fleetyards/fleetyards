@@ -57,8 +57,10 @@ Fleetyards::Application.routes.draw do
       end
     end
 
-    resource :hangar, only: [:show]
-    resources :my_ships, only: [:new, :create, :destroy], path_names: { new: 'add' }
+    resource :hangar, only: [:show] do
+      get ':username' => 'hangars#public'
+    end
+    resources :my_ships, except: [:index], path_names: { new: 'add' }
 
     resources :images, only: [:index]
 
@@ -79,6 +81,8 @@ Fleetyards::Application.routes.draw do
     get '404' => 'errors#not_found'
     get '422' => 'errors#unprocessable_entity'
     get '500' => 'server_errors#server_error'
+
+    # get ':username' => 'profile#show'
 
     root 'base#index'
   end

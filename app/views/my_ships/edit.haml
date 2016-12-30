@@ -8,7 +8,7 @@
         %h1
           = I18n.t(:"headlines.my_ship", ship: ship.name)
 
-    = form_for user_ship, url: my_ships_path do |form|
+    = form_for user_ship, url: my_ship_path(user_ship), method: :put do |form|
       = form.hidden_field :ship_id
       .row
         .col-xs-12.col-md-6.form-group{class: form_error?(user_ship, :name)}
@@ -17,4 +17,4 @@
           %small
             = form_errors user_ship, :name
 
-      = render "shared/submit", path: ship_path(ship.slug)
+      = render "shared/submit", path: hangar_path
