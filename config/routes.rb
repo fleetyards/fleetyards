@@ -4,9 +4,15 @@ Fleetyards::Application.routes.draw do
   concern :paginatable do
     get '(page/:page)', :action => :index, :on => :collection, :as => ''
   end
+  
+  devise_for :users, skip: [:session, :password, :registration], controllers: {
+    omniauth_callbacks: "users/omniauth_callbacks"
+  }
 
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
-    devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
+    devise_for :users, skip: [:sessions, :omniauth_callbacks], controllers: {
+      registrations: "registrations"
+    }
 
     namespace :backend do
       put '/locales/fetch' => 'locales#fetch', as: :update_locales

@@ -19,14 +19,22 @@
               %label{for: "user_remember_me"}
                 = f.check_box :remember_me
                 = I18n.t(:"helpers.label.user.remember_me")
-
           .text-right
-
             %button.hidden-xs.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
               = I18n.t(:"actions.sign_in")
             %button.visible-xs.btn-block.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
               = I18n.t(:"actions.sign_in")
           .clearfix
+      %br
       .text-center
+        %a.btn.btn-lg.btn-social-icon.btn-facebook{href: user_omniauth_authorize_path(:facebook)}
+          %i.fa.fa-facebook
+        %a.btn.btn-lg.btn-social-icon.btn-google{href: user_omniauth_authorize_path(:google_oauth2)}
+          %i.fa.fa-google
+        %a.btn.btn-lg.btn-social-icon.btn-twitter{href: user_omniauth_authorize_path(:twitter)}
+          %i.fa.fa-twitter
+        %a.btn.btn-lg.btn-social-icon.btn-github{href: user_omniauth_authorize_path(:github)}
+          %i.fa.fa-github
+        %br
         %a.btn.btn-link{href: new_password_path(resource_name)}
           = I18n.t(:"actions.reset_password")

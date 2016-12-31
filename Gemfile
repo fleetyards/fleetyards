@@ -18,6 +18,12 @@ gem 'haml-rails'
 gem "i18n-js", git: "https://github.com/fnando/i18n-js.git", branch: :master
 
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+
 gem 'cancan'
 
 gem 'dalli'

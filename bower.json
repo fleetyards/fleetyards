@@ -5,6 +5,7 @@
     "ladda": "~0.9.2",
     "noty": "~2.2.2",
     "blueimp-file-upload": "~9.5.3",
-    "sweetalert": "~0.1.0"
+    "sweetalert": "~0.1.0",
+    "bootstrap-social": "~5.1.1"
   }
 }

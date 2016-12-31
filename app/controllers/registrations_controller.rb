@@ -2,6 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :check_registration_setting, only: [:new, :create]
 
   def new
+    @user = build_user
     @active_nav = 'registration'
   end
 
@@ -24,9 +25,13 @@ class RegistrationsController < Devise::RegistrationsController
     @user_params ||= params.require(:user).permit(:locale, :username, :email, :gravatar, :remember_me, address_attributes: [:company, :name, :address, :country, :email, :telefon, :fax, :website])
   end
 
+  private def build_user(hash = {})
+    User.new_with_session(hash, session)
+  end
+
   private def user
     @user ||= current_user
-    @user ||= User.new
+    @user ||= build_user(user_params)
   end
   helper_method :user
 
