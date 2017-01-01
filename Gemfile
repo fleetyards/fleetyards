@@ -7,6 +7,7 @@ gem "rails", "4.1.8"
 gem 'pg'
 
 gem 'sidekiq'
+gem 'sidekiq-scheduler', '~> 2.0'
 # for sidekiq web
 gem "sinatra", ">= 1.3.0", require: nil
 

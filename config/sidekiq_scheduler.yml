@@ -1,0 +1,3 @@
+ShipsWorker:
+  every: "24h"
+  description: "Reloads Ship Data every day from rsi ShipsMatrix"
