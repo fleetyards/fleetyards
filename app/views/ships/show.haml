@@ -51,9 +51,8 @@
 
         .btn-group.pull-right.resource-nav
           - if user_signed_in?
-            = link_to new_my_ship_path(ship: ship.slug), class: 'btn btn-success' do
-              %i.fa.fa-plus
-              = I18n.t(:"actions.add_my_ship")
+            = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
+              %i.fa.fa-bookmark-o
           %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
             = I18n.t("actions.store")
 
