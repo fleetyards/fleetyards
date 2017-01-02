@@ -25,11 +25,11 @@ en:
     admin: Backend
     enable: Activate
     disable: Deactivate
-    store: RSI Detail Page
     manufacturer:
       ships: Ships
     ship:
       gallery: Gallery
+      store: RSI Detail Page
       reload: "Reload Ships"
     more_info: "More Information"
     more: "More..."

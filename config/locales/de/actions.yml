@@ -25,11 +25,11 @@ de:
     admin: Backend
     enable: Aktivieren
     disable: Deaktivieren
-    store: RSI Detail Seite
     manufacturer:
       ships: Schiffe
     ship:
       gallery: Galerie
+      store: RSI Detail Seite
       reload: "Schiffe aktualisieren"
     more_info: "Weitere Informationen"
     more: "Mehr..."
