@@ -1,8 +1,13 @@
 .list-group
   %a.list-group-item{href: (component_path(hardpoint.component) if hardpoint.component.present?)}
+    - component = hardpoint.component
     %strong
-      = "#{hardpoint.name}:"
-    - if hardpoint.component.present?
-      = hardpoint.component.name
-    - else
-      Empty
+      - if component.present?
+        = component.name
+      - else
+        Empty
+    - if component.present? && component.size.present?
+      = "(#{I18n.t("labels.component.size", size: component.size)})"
+    - if hardpoint.max_size.present?
+      .pull-right
+        = I18n.t("labels.hardpoint.max_size", size: hardpoint.max_size)

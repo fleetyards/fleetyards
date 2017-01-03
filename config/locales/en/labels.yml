@@ -8,6 +8,10 @@ en:
     role: Role
     email: E-Mail
     source: Source
+    component:
+      size: "Size: %{size}"
+    hardpoint:
+      max_size: "Max. Size: %{size}"
     manufacturer:
       known_for: "Known for "
     user:
