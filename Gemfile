@@ -17,6 +17,7 @@ gem 'haml'
 gem 'haml-rails'
 
 gem "i18n-js", git: "https://github.com/fnando/i18n-js.git", branch: :master
+gem "js_cookie_rails"
 
 gem 'devise'
 gem 'omniauth'

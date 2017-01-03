@@ -20,6 +20,7 @@
 //= require blueimp-file-upload/js/jquery.fileupload-video
 //= require blueimp-file-upload/js/jquery.fileupload-validate
 //= require dynamic_fields_for
+//= require cookies_eu
 //= require i18n
 //= require i18n/translations
 //= require helper
@@ -43,4 +44,3 @@ $(function() {
 
   $('#blueimp-gallery').data('useBootstrapModal', false);
 });
-
