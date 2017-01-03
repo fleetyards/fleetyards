@@ -42,27 +42,15 @@ class ShipsLoader < Struct.new(:base_url)
     rescue JSON::ParserError => e
       p "ShipData could not be parsed: [#{match[1]}]"
     end
-
-    remove_duplicates
-  end
-
-  def remove_duplicates
-    Ship.find_each do |ship|
-      duplicates = Ship.where(slug: ship.slug).order(created_at: :asc).all
-      if duplicates.count > 0
-        duplicates.to_a.pop
-        duplicates.each(&:destroy)
-      end
-    end
   end
 
   private
 
   def create_ship data
-    ship = Ship.find_or_create_by(rsi_id: data["id"])
+    ship = Ship.find_or_create_by(name: data["name"])
 
     ship.update(
-      name: data["name"],
+      rsi_id: data["id"],
       production_status: data["production_status"],
       production_note: data["production_note"],
       description: data["description"],
@@ -93,10 +81,10 @@ class ShipsLoader < Struct.new(:base_url)
   end
 
   def create_manufacturer manufacturer_data
-    manufacturer = Manufacturer.find_or_create_by(rsi_id: manufacturer_data["id"])
+    manufacturer = Manufacturer.find_or_create_by(name: manufacturer_data["name"])
 
     manufacturer.update(
-      name: manufacturer_data["name"],
+      rsi_id: manufacturer_data["id"],
       known_for: manufacturer_data["known_for"],
       description: manufacturer_data["description"],
       remote_logo_url: ("#{self.base_url}#{manufacturer_data["media"][0]["source_url"]}" unless manufacturer.logo.present?),
@@ -113,9 +101,7 @@ class ShipsLoader < Struct.new(:base_url)
       hardpoint = Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
-        category_id: category.id
-      )
-      hardpoint.update(
+        category_id: category.id,
         name: data["name"],
         hardpoint_class: data["type"],
         rating: data["rating"],
@@ -131,9 +117,7 @@ class ShipsLoader < Struct.new(:base_url)
       hardpoint = Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
-        category_id: category.id
-      )
-      hardpoint.update(
+        category_id: category.id,
         name: data["name"],
         hardpoint_class: data["class"],
         max_size: data["max_size"],
@@ -150,9 +134,7 @@ class ShipsLoader < Struct.new(:base_url)
       hardpoint = Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
-        category_id: category.id
-      )
-      hardpoint.update(
+        category_id: category.id,
         name: data["name"],
         max_size: data["max_size"],
         component: (create_component(data["component"], category) unless data["component"].nil?)
@@ -167,9 +149,7 @@ class ShipsLoader < Struct.new(:base_url)
       hardpoint = Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
-        category_id: category.id
-      )
-      hardpoint.update(
+        category_id: category.id,
         name: data["name"],
         component: (create_component(data["component"], category) unless data["component"].nil?)
       )
@@ -177,10 +157,10 @@ class ShipsLoader < Struct.new(:base_url)
   end
 
   def create_component component_data, category
-    component = Component.find_or_create_by(rsi_id: component_data["id"])
+    component = Component.find_or_create_by(name: component_data["name"])
 
     component.update(
-      name: component_data["name"],
+      rsi_id: component_data["id"],
       size: component_data["size"],
       component_type: component_data["type"],
       category: category,

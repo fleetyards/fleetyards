@@ -6,10 +6,14 @@
           = manufacturer.name.html_safe
     - if manufacturer.logo.present?
       .profile-image.text-center
-        = image_tag manufacturer.logo.small
-    -# .panel-body
-    -#   = manufacturer.description
-    -# .panel-footer
-    -#   = manufacturer.known_for
+        %a{href: manufacturer_path(manufacturer.slug)}
+          = image_tag manufacturer.logo.small
+    - if manufacturer.description.present?
+      .panel-body
+        = manufacturer.description
+    - if manufacturer.known_for.present?
+      .panel-footer
+        = I18n.t(:"labels.manufacturer.known_for")
+        = manufacturer.known_for
     %a.btn.btn-default.btn-block{href: manufacturer_path(manufacturer.slug)}
       = I18n.t(:"actions.more_info")

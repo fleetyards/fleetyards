@@ -1,4 +1,5 @@
 class Component < ActiveRecord::Base
+  default_scope ->{ order(name: :asc) }
   translates :name, :component_type
 
   belongs_to :category,

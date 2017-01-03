@@ -23,7 +23,6 @@ class HangarsController < ApplicationController
 
   private def user_ships
     @user_ships ||= user.user_ships
-      .order(created_at: :desc)
       .page(params.fetch(:page, nil))
       .per(12)
   end

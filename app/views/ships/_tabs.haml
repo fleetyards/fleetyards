@@ -1,20 +1,27 @@
-.row.tab-pane{class: ("active" if category_counter.zero?), id: category.slug}
-  .col-xs-12.col-md-12
-    %br
-    .row
-      - items = ship.send("#{category.slug}_hardpoints").sort_by(&:name).group_by(&:name)
-      - items.each do |name, hardpoints|
-        .col-xs-12
-          %h3
-            = name
-          %hr
-          .row
-            - hardpoints.each do |hardpoint|
-              .col-xs-12.col-sm-4
-                = render "ships/hardpoint", hardpoint: hardpoint
-          %br
-      - if items.blank?
-        .col-xs-12.col-sm-12.col-md-12
-          .list-group
-            .list-group-item
-              = I18n.t(:"labels.blank.#{category.slug}")
+.col-xs-12.col-md-6
+  %ul.nav.nav-tabs
+    %li.active
+      %a
+        = category.name
+  .tab-content
+    .row.tab-pane.active{id: category.slug}
+      .col-xs-12.col-md-12
+        %br
+        .row
+          - items = ship.send("#{category.slug}_hardpoints").sort_by(&:name).group_by(&:name)
+          - items.each do |name, hardpoints|
+            .col-xs-12
+              %h3
+                = name
+              %hr
+              .row
+                - hardpoints.each do |hardpoint|
+                  .col-xs-12.col-sm-6
+                    = render "ships/hardpoint", hardpoint: hardpoint
+              %br
+          - if items.blank?
+            .col-xs-12.col-sm-12.col-md-12
+              .list-group
+                .list-group-item
+                  = I18n.t(:"labels.blank.#{category.slug}")
+  %br

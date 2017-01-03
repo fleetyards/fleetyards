@@ -1,4 +1,6 @@
 class Ship < ActiveRecord::Base
+  default_scope ->{ order(name: :asc) }
+
   translates :description
 
   belongs_to :manufacturer

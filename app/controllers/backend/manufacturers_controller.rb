@@ -34,6 +34,7 @@ module Backend
       if manufacturer.update(manufacturer_params)
         redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
+        Rails.logger.debug manufacturer.errors.to_yaml
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
@@ -69,7 +70,7 @@ module Backend
     end
 
     private def manufacturer_params
-      @manufacturer_params ||= params.require(:manufacturer).permit(:name, :enabled)
+      @manufacturer_params ||= params.require(:manufacturer).permit(:name, :enabled, :logo)
     end
 
     private def sort_column

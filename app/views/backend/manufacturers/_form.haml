@@ -5,5 +5,9 @@
       %small
         = form_errors manufacturer, :name
 
+    .col-xs-12.col-md-6.form-group{class: form_error?(manufacturer, :logo)}
+      = form.file_field :logo, placeholder: I18n.t(:"helpers.placeholder.logo"), class: 'form-control'
+      %small
+        = form_errors manufacturer, :logo
 
   = render "shared/submit", path: backend_manufacturers_path

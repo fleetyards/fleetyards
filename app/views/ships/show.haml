@@ -59,14 +59,8 @@
               %i.fa.fa-bookmark-o
           %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
             = I18n.t("actions.ship.store")
-
-    - categories = ComponentCategory.all
     .row
-      .col-xs-12.col-md-12
-        %ul.nav.nav-tabs
-          = render partial: "ships/tabs_nav", collection: categories, as: :category
-    .tab-content
-      = render partial: "ships/tabs", collection: categories, as: :category
+      = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 
     %br
     .row#comments

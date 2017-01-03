@@ -1,4 +1,5 @@
 class Manufacturer < ActiveRecord::Base
+  default_scope ->{ order(name: :asc) }
   translates :description
 
   include SlugHelper

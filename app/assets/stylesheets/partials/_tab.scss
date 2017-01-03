@@ -20,4 +20,15 @@ ul.nav.nav-tabs {
   hr {
     margin: 10px 0;
   }
+
+  .list-group-item {
+    padding-right: 110px;
+    position: relative;
+
+    .hardpoint-max-class {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+    }
+  }
 }
