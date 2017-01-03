@@ -74,6 +74,7 @@ en:
       index: "Your Database for all Information about the upcoming “Star Citizen“ from Chris Roberts."
       index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
       index_quote_source: "Author Unknown, Source: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"
+      index_support: "Support us and get 5000 UEC starting money by using the following Recruitment Code <b>\"%{code}\"</b> when you buy Star Citizen"
 
   error_pages:
     not_found: "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space."
