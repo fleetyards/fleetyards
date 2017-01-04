@@ -29,7 +29,7 @@
 
     != csrf_meta_tags
 
-  %body{data: {success: notice, info: alert, error: flash[:error], warning: flash[:warning]}, class: "bg-#{rand(4)}"}
+  %body{data: {success: notice, info: alert, error: flash[:error], warning: flash[:warning]}, class: "bg-#{rand(5)}"}
     = render "layouts/header"
 
     = render 'cookies_eu/consent_banner'
