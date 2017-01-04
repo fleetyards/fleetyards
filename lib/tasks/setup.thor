@@ -1,4 +1,5 @@
 require 'highline/import'
+require 'sidekiq/scheduler'
 
 class Setup < Thor
   include Thor::Actions
@@ -60,6 +61,11 @@ class Setup < Thor
         puts "#{error}: #{message}"
       end
     end
+  end
+
+  desc "schedule", "Reload Sidekiq Schedule information"
+  def schedule
+    Sidekiq::Scheduler.reload_schedule!
   end
 
   desc "dev_env", "Copy files for local Dev-Enviroment"
