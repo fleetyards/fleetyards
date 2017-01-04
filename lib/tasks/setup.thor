@@ -63,11 +63,6 @@ class Setup < Thor
     end
   end
 
-  desc "schedule", "Reload Sidekiq Schedule information"
-  def schedule
-    Sidekiq::Scheduler.reload_schedule!
-  end
-
   desc "dev_env", "Copy files for local Dev-Enviroment"
   def dev_env
     app_dir = File.join(File.dirname(__FILE__), '..', '..')
