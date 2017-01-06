@@ -45,6 +45,8 @@ de:
       new: Neues Schiff
     user:
       edit: "Einstellungen bearbeiten"
+    password:
+      new: "Passwort vergessen?"
   default_country: Deutschland
   default_country_code: DE
   select2:

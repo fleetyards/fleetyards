@@ -45,6 +45,8 @@ en:
       new: New Ship
     user:
       edit: "Edit Settings"
+    password:
+      new: "Forgot your Password?"
   default_country: ~
   default_country_code: ~
   select2:

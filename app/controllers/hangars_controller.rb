@@ -29,8 +29,10 @@ class HangarsController < ApplicationController
   helper_method :user_ships
 
   private def ship_roles
-    @ship_roles ||= user_ships.map do |user_ship|
+    @ship_roles ||= user_ships.group_by do |user_ship|
       user_ship.ship.ship_role.name
+    end.map do |role, ships|
+      "#{ships.size}x #{role}"
     end
   end
   helper_method :ship_roles

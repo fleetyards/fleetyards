@@ -12,5 +12,7 @@
       .col-xs-12
         .well.well-sm
           %strong= "#{I18n.t("labels.hangar.roles")}:"
-          = ship_roles.join(' | ')
+          = ship_roles.join(" | ")
+
+
     = render "hangars/list"
