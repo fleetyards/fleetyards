@@ -12,3 +12,6 @@ en:
         militia-patrol: ~
       production_status:
         title: Status
+    image:
+      ship:
+        title: Ship

@@ -12,3 +12,6 @@ de:
         militia-patrol: Militärpatrouille
       production_status:
         title: Status
+    image:
+      ship:
+        title: Schiff

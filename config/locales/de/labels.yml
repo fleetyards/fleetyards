@@ -38,6 +38,7 @@ de:
         default: "Es konnten keine Einträge gefunden werden."
         ship: "Es konnten keine Schiffe gefunden werden."
         my_ship: "Dein Hangar ist zur Zeit noch leer."
+        image: "Es konnte kein Bild gefunden werden."
       out_of_range:
         ship: "Auf dieser Seite konnten keine Schiffe gefunden werden. <a href='%{url}'>Zurück zur Ersten Seite</a>"
         my_ship: "Dein Hangar hat noch nicht so viele Schiffe :). <a href='%{url}'>Zurück zur Ersten Seite</a>"
