@@ -16,9 +16,19 @@ de:
       unconfirmed: "Sie müssen Ihren Account bestätigen, bevor Sie fortfahren können."
     mailer:
       confirmation_instructions:
-        subject: "Anleitung zur Bestätigung Ihres Accounts"
+        subject: "Anleitung zur Bestätigung Deines Accounts"
+        content:
+          welcome: "Willkomen"
+          confirm_text: "Du kannst Deinen Account freischalten, indem Du auf den folgenden Link klickst:"
+          confirm_link: "Meinen Account freischalten"
       reset_password_instructions:
-        subject: "Anleitung für das Zurücksetzen Ihres Passworts"
+        subject: "Anleitung um Dein Passwort zurückzusetzen"
+        content:
+          hello: "Hallo"
+          change_link: "Mein Passwort ändern"
+          first_text: "Es wurde ein Link zum Ändern Deines Passwortes angefordert. Dies kannst Du tun, indem Du auf den folgenden Link klickst."
+          second_text: "Wenn Du diesen Link nicht angefordert hast, ignoriere bitte diese E-Mail."
+          third_text: "Dein Passwort wird sich nicht ändern, wenn Du diesem Link nicht folgst."
       unlock_instructions:
         subject: "Anleitung für die Account-Freischaltung"
     omniauth_callbacks:

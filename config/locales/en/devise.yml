@@ -17,8 +17,18 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
+        content:
+          welcome: "Welcome"
+          confirm_text: "To activate your Account please click on the following link:"
+          confirm_link: "Activate Account"
       reset_password_instructions:
         subject: "Reset password instructions"
+        content:
+          hello: "Hello"
+          change_link: "Change my Password"
+          first_text: "Someone has requested a link to change your password, and you can do this through the link below."
+          second_text: "If you didn't request this, please ignore this email."
+          third_text: "Your password won't change until you access the link above and create a new one."
       unlock_instructions:
         subject: "Unlock Instructions"
     omniauth_callbacks:
