@@ -54,6 +54,13 @@ en:
       component:
         type: Type
         category: Category
+    ship:
+      production_status:
+        in-production: "In Production"
+        in-concept: "In Concept"
+        ready: "Hangar Ready"
+        flight-ready: "Flight Ready"
+        announced: Announced
     panels:
       latest_ships: "Reloaded Ships"
       latest_users: "New Users"

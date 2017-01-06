@@ -9,8 +9,9 @@
         %br
         %small
           = ship.manufacturer.name.html_safe if ship.manufacturer.present?
-    .production-status
-      = ship.production_status
+    - unless ship.production_status.blank?
+      .production-status
+        = I18n.t("labels.ship.production_status.#{ship.production_status}")
     .profile-image.text-center
       %a{href: ship_path(ship.slug, ship_params)}><
         = image_tag ship.store_image.small
