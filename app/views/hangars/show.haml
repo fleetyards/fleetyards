@@ -8,4 +8,12 @@
         %h1
           = I18n.t(:"headlines.hangar.show")
 
+    .row
+      .col-xs-12
+        %h3
+          = "#{I18n.t("labels.hangar.roles")}:"
+          - ship_roles.each do |role|
+            %span.label.label-default
+              = role
+            &nbsp;
     = render "hangars/list"

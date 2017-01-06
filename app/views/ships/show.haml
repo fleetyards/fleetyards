@@ -52,7 +52,7 @@
         - unless ship.production_status.blank?
           .row
             .col-xs-12
-              %h3= I18n.t("labels.ship.production_status.#{ship.production_status}")
+              %h3.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
               %p= ship.production_note
         .btn-group.pull-right.resource-nav
           - if ship.images.enabled.present?

@@ -10,3 +10,5 @@ de:
         interdiction: Blockadebrecher
         mercantile: Handel
         militia-patrol: Militärpatrouille
+      production_status:
+        title: Status

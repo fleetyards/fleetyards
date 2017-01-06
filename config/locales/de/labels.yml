@@ -64,6 +64,8 @@ de:
         ready: "Hangar fertig"
         flight-ready: "Flug bereit"
         announced: Angekündigt
+    hangar:
+      roles: "Rollen"
     panels:
       latest_ships: "Aktualisierte Schiffe"
       latest_users: "Neue Benutzer"

@@ -10,7 +10,9 @@
     - current_value = I18n.t(:"filter.all")
     - if value = params.fetch(name, nil)
       - filters.each do |filter|
-        - if filter.slug == value
+        - if filter.is_a?(Hash)
+          - filter = OpenStruct.new filter
+        - if filter.slug.to_s == value
           - if translateable
             - current_value = I18n.t(:"filter.#{resource}.#{name}.#{filter.slug}", default: filter.name.html_safe)
           - else

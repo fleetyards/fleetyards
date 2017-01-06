@@ -27,4 +27,11 @@ class HangarsController < ApplicationController
       .per(12)
   end
   helper_method :user_ships
+
+  private def ship_roles
+    @ship_roles ||= user_ships.map do |user_ship|
+      user_ship.ship.ship_role.name
+    end
+  end
+  helper_method :ship_roles
 end

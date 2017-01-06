@@ -4,6 +4,12 @@ class ShipsController < ApplicationController
 
   def index
     authorize! :index, :ships
+    @available_production_status = I18n.t("labels.ship.production_status").map do |status|
+      {
+        name: status[1],
+        slug: status[0]
+      }
+    end
     @ships = find_ships
     @ships = @ships
       .order(name: :asc)
@@ -48,6 +54,7 @@ class ShipsController < ApplicationController
     ships = Ship.enabled.includes(:ship_role, :manufacturer)
     ship_role = params.fetch(:ship_role, nil)
     manufacturer = params.fetch(:manufacturer, nil)
+    production_status = params.fetch(:production_status, nil)
     search = params.fetch(:search, nil)
 
     if ship_role.present?
@@ -56,6 +63,10 @@ class ShipsController < ApplicationController
 
     if manufacturer.present?
       ships = ships.where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
+    end
+
+    if production_status.present?
+      ships = ships.where(production_status: production_status)
     end
 
     if search.present?

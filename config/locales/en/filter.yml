@@ -10,3 +10,5 @@ en:
         interdiction: ~
         mercantile: ~
         militia-patrol: ~
+      production_status:
+        title: Status
