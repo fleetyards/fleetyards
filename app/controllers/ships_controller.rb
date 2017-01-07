@@ -5,7 +5,6 @@ class ShipsController < ApplicationController
   before_action :authenticate_user!, only: [:reload]
 
   caches_action :index, layout: false, cache_path: Proc.new { |c| c.params }
-  caches_action :gallery, layout: false
 
   def index
     @available_production_status = I18n.t("labels.ship.production_status").map do |status|

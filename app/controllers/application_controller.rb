@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   private def set_locale
     locale = current_user.locale if user_signed_in?
     if new_locale = params[:locale]
-      if user_signed_in?
+      if user_signed_in? && locale != new_locale
         current_user.update(locale: new_locale)
       end
       locale = new_locale

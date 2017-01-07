@@ -2,7 +2,7 @@ class HangarsController < ApplicationController
   skip_authorization_check only: [:public]
   before_action :authenticate_user!, only: [:show]
 
-  caches_action :public, layout: false
+  caches_action :public, layout: false, cache_path: Proc.new { |c| c.params }
 
   def show
     @active_nav = 'hangar'
