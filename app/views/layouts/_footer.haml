@@ -18,7 +18,7 @@
         .text-right
           .btn-group.btn-group-xs
             - I18n.available_locales.each do |locale|
-              = link_to I18n.t(:"locales.#{locale}"), {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
+              = link_to locale.upcase, {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
 
     .clearfix
 
