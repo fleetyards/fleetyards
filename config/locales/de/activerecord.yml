@@ -9,6 +9,8 @@ de:
         confirmation_token: Token
         gravatar: "Gravatar E-Mail Adresse"
         created_at: "vor %{time}"
+        email: E-Mail
+        username: Benutzername
       ship:
         beam: Breite
         cargo: Fracht

@@ -11,6 +11,12 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
+  after_create :send_admin_mail
+
+  def send_admin_mail
+    UserMailer.notify_admin(self).deliver
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)

@@ -28,15 +28,6 @@ Fleetyards::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.perform_deliveries    = true
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
-  config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets[:mailer]["host"],
-    port: Rails.application.secrets[:mailer]["port"],
-    enable_starttls_auto: true,
-    user_name: Rails.application.secrets[:mailer]["user"],
-    password: Rails.application.secrets[:mailer]["password"],
-    authentication: 'login',
-    domain: Rails.application.secrets[:domain]
-  }
 end

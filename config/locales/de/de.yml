@@ -79,3 +79,9 @@ de:
     not_found: "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space."
     unprocessable_entity: "Deine Anfrage konnte nicht verarbeitet werden."
     server_error: "Die Seite ist zur Zeit nicht verfügbar. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut."
+
+  mailer:
+    user:
+      admin:
+        subject: "Neue Registrierung"
+        headline: "Neuer Benutzer"
