@@ -1,5 +1,8 @@
 class HangarsController < ApplicationController
-  before_filter :authenticate_user!, only: [:show]
+  skip_authorization_check only: [:public]
+  before_action :authenticate_user!, only: [:show]
+
+  caches_action :public, layout: false
 
   def show
     @active_nav = 'hangar'
@@ -8,7 +11,6 @@ class HangarsController < ApplicationController
 
   def public
     @active_nav = 'hangar-public'
-    authorize! :public, :hangar
     unless user.present?
       redirect_to root_path, alert: I18n.t("messages.user_not_found")
       return

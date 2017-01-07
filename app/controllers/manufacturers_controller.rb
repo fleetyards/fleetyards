@@ -1,6 +1,10 @@
 class ManufacturersController < ApplicationController
   before_action :set_active_nav
-  before_filter :authenticate_user!, only: []
+
+  skip_authorization_check
+  before_action :authenticate_user!, only: []
+
+  caches_action :index, layout: false
 
   def index
     authorize! :index, :manufacturers

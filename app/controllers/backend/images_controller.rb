@@ -48,6 +48,7 @@ module Backend
       authorize! :destroy, :images
       @image = Image.find(params[:id])
       @image.destroy
+      expire_action controller: :ships, action: :gallery
       respond_to do |format|
         format.js {
           render json: true
@@ -64,6 +65,7 @@ module Backend
       respond_to do |format|
         format.js {
           if image.update(image_params)
+            expire_action controller: :ships, action: :gallery
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.image"))
             if image.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.image"))

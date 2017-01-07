@@ -13,6 +13,7 @@ class MyShipsController < ApplicationController
   def create
     authorize! :create, user_ship
     if user_ship.save
+      expire_action controller: :hangars, action: :public, username: current_user.username
       redirect_to ship_path(ship.slug), notice: I18n.t("messages.create.success",
         resource: I18n.t("resources.my_ship")
       )
@@ -26,6 +27,7 @@ class MyShipsController < ApplicationController
   def update
     authorize! :update, user_ship
     if user_ship.update(user_ship_params)
+      expire_action controller: :hangars, action: :public, username: current_user.username
       redirect_to hangar_path, notice: I18n.t("messages.update.success",
         resource: I18n.t("resources.my_ship")
       )
@@ -39,6 +41,7 @@ class MyShipsController < ApplicationController
   def destroy
     authorize! :destroy, user_ship
     if user_ship.destroy
+      expire_action controller: :hangars, action: :public, username: current_user.username
       redirect_to :back, notice: I18n.t("messages.destroy.success",
         resource: I18n.t("resources.my_ship")
       )

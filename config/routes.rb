@@ -4,7 +4,7 @@ Fleetyards::Application.routes.draw do
   concern :paginatable do
     get '(page/:page)', :action => :index, :on => :collection, :as => ''
   end
-  
+
   devise_for :users, skip: [:session, :password, :registration], controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
@@ -64,7 +64,9 @@ Fleetyards::Application.routes.draw do
     end
 
     resource :hangar, only: [:show] do
-      get ':username' => 'hangars#public'
+      collection do
+        get ':username' => 'hangars#public'
+      end
     end
     resources :my_ships, except: [:index], path_names: { new: 'add' }
 

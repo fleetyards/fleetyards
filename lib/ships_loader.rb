@@ -1,5 +1,4 @@
 class ShipsLoader < Struct.new(:base_url)
-
   def initialize options = {}
     self.base_url ||= options[:base_url]
     self.base_url ||= "https://robertsspaceindustries.com"
@@ -42,6 +41,7 @@ class ShipsLoader < Struct.new(:base_url)
     rescue JSON::ParserError => e
       p "ShipData could not be parsed: [#{match[1]}]"
     end
+    Rails.cache.clear
   end
 
   private

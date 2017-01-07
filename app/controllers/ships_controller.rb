@@ -1,9 +1,12 @@
 class ShipsController < ApplicationController
   before_action :set_active_nav
-  before_filter :authenticate_user!, only: [:reload]
+
+  skip_authorization_check only: [:index, :show, :gallery]
+  before_action :authenticate_user!, only: [:reload]
+
+  caches_action :index, :gallery, layout: false
 
   def index
-    authorize! :index, :ships
     @available_production_status = I18n.t("labels.ship.production_status").map do |status|
       {
         name: status[1],
@@ -26,7 +29,6 @@ class ShipsController < ApplicationController
   end
 
   def show
-    authorize! :show, ship
     if ship.nil?
       redirect_to ships_path, alert: I18n.t(:"messages.record_not_found")
       return

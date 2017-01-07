@@ -79,6 +79,8 @@ gem 'newrelic_rpm'
 
 gem "sentry-raven"
 
+gem "actionpack-action_caching"
+
 group :development do
   gem 'pry-rails'
   gem 'rubocop', require: false

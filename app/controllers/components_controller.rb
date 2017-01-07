@@ -1,6 +1,10 @@
 class ComponentsController < ApplicationController
   before_action :set_active_nav
-  before_filter :authenticate_user!, only: []
+
+  skip_authorization_check
+  before_action :authenticate_user!, only: []
+
+  caches_action :propulsion, :ordnance, :modular, :avionics, layout: false
 
   def propulsion
     authorize! :index, :components

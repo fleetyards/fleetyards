@@ -19,6 +19,5 @@
     .btn-group.btn-group-flex
       %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
         = I18n.t(:"actions.more_info")
-      - if user_signed_in?
-        = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
-          %i.fa.fa-bookmark-o
+      = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
+        %i.fa.fa-bookmark-o
