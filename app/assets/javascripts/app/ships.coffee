@@ -25,7 +25,7 @@ window.App.Ships.reload = ($element) ->
       displayAlert I18n.t("messages.reload.startet", resource: I18n.t("resources.ships"))
       App.Ships.loadInterval = setInterval App.Ships.checkWorkerState, 3000
 
-$ ->
+$(document).on 'ready page:load', ->
   if $('#backend, #ships').length
     button = document.querySelector('.ladda-button')
     if button

@@ -32,6 +32,7 @@ class ComponentsController < ApplicationController
 
   private def components
     @components ||= Component
+      .enabled
       .includes(:category).where(component_categories: {slug: @components_type})
       .order('components.name asc')
       .page(params.fetch(:page, nil))
@@ -45,7 +46,7 @@ class ComponentsController < ApplicationController
   helper_method :components_type
 
   private def component
-    @component ||= Component.where(id: params.fetch(:id, nil)).first
+    @component ||= Component.enabled.where(id: params.fetch(:id, nil)).first
   end
   helper_method :component
 

@@ -1,20 +1,24 @@
-//= require_self
-//= require select2
 //= require ladda/css/ladda
 //= require blueimp-gallery/css/blueimp-gallery.min
 //= require blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.min
 //= require blueimp-file-upload/css/jquery.fileupload
 //= require blueimp-file-upload/css/jquery.fileupload-ui
 //= require bootstrap-social
+//= require nprogress
+//= require awesome-bootstrap-checkbox
+//= require selectize/dist/css/default
+//= require_self
 
 @import "bourbon";
-
-@import "colors/defaults";
-@import "colors/dark";
-@import "bootstrap-sprockets";
-@import 'bootstrap-custom';
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "bootstrap-sprockets";
+
+@import "colors/default";
+@import "colors/dark";
+
+@import 'bootstrap-custom';
+
 @import "colors/dark_overrides";
 
 @import "partials";
@@ -42,19 +46,23 @@ body {
   }
 
   &.bg-1 {
-    background-image: image-url("bg-2.jpg");
+    background-image: image-url("bg-1.jpg");
   }
 
   &.bg-2 {
-    background-image: image-url("bg-bottom-earth-2560.jpg");
+    background-image: image-url("bg-2.jpg");
   }
 
   &.bg-3 {
-    background-image: image-url("bg-stars-2560.jpg");
+    background-image: image-url("bg-3.jpg");
   }
 
   &.bg-4 {
-    background-image: image-url("bg-stanton-bar.jpg");
+    background-image: image-url("bg-4.jpg");
+  }
+
+  &.bg-5 {
+    background-image: image-url("bg-5.jpg");
   }
 }
 

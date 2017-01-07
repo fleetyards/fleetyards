@@ -1,0 +1,26 @@
+.turbolinks-progress-bar {
+  background-color: $navbar-active !important;
+}
+
+#nprogress .bar {
+  background: $navbar-active !important;
+  height: 3px !important;
+}
+
+#nprogress {
+  .spinner {
+    display: none !important;
+    top: 18px !important;
+  }
+
+  .spinner-icon {
+    border-top-color: $navbar-active !important;
+    border-left-color: $navbar-active !important;
+  }
+}
+
+@media (max-width: $screen-md-min) {
+  #nprogress .spinner {
+    right: 70px !important;
+  }
+}

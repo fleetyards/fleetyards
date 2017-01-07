@@ -15,6 +15,7 @@ gem 'globalize'
 
 gem 'haml'
 gem 'haml-rails'
+gem 'slim-rails'
 
 gem "i18n-js", git: "https://github.com/fnando/i18n-js.git", branch: :master
 gem "js_cookie_rails"
@@ -48,7 +49,6 @@ gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 
 gem 'jquery-rails'
-gem 'jquery-turbolinks'
 
 gem 'asset_pipeline_routes'
 

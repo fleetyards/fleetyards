@@ -9,6 +9,8 @@ Fleetyards::Application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  draw :api_routes
+
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     devise_for :users, skip: [:sessions, :omniauth_callbacks], controllers: {
       registrations: "registrations"

@@ -22,7 +22,9 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   private def user_params
-    @user_params ||= params.require(:user).permit(:locale, :username, :email, :gravatar, :remember_me, address_attributes: [:company, :name, :address, :country, :email, :telefon, :fax, :website])
+    @user_params ||= params.require(:user).permit(:locale, :username, :email,
+      :gravatar, :remember_me, :rsi_organization_url, :rsi_profile_url
+    )
   end
 
   private def build_user(hash = {})
@@ -34,6 +36,16 @@ class RegistrationsController < Devise::RegistrationsController
     @user ||= build_user(user_params)
   end
   helper_method :user
+
+  private def locales
+    @locales ||= I18n.available_locales.map do |locale|
+      OpenStruct.new({
+        id: locale,
+        name: I18n.t(:"locales.#{locale}")
+      })
+    end
+  end
+  helper_method :locales
 
   private def check_registration_setting
     redirect_to root_path unless registration_enabled?

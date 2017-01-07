@@ -48,7 +48,7 @@ class ShipsController < ApplicationController
   end
 
   private def ship
-    @ship ||= Ship.where(slug: params.fetch(:slug, nil)).first
+    @ship ||= Ship.enabled.where(slug: params.fetch(:slug, nil)).first
   end
   helper_method :ship
 

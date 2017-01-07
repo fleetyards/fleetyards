@@ -9,6 +9,7 @@ class ManufacturersController < ApplicationController
   def index
     authorize! :index, :manufacturers
     @manufacturers = Manufacturer
+      .enabled
       .order('manufacturers.name desc')
       .page(params.fetch(:page, nil))
       .per(20)
@@ -22,7 +23,7 @@ class ManufacturersController < ApplicationController
   end
 
   private def manufacturer
-    @manufacturer ||= Manufacturer.where(slug: params.fetch(:slug, nil)).first
+    @manufacturer ||= Manufacturer.enabled.where(slug: params.fetch(:slug, nil)).first
   end
   helper_method :manufacturer
 

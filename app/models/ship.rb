@@ -39,7 +39,7 @@ class Ship < ActiveRecord::Base
   serialize :avionics_raw, Array
 
   def self.enabled
-    where enabled: true
+    where(enabled: true)
   end
 
   private def update_slugs

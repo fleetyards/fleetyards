@@ -13,17 +13,12 @@
 
       .row
         .col-xs-12.col-md-4
-          .select2
-            %select{id: "select-image-gallery-id", data: {placeholder: I18n.t(:"helpers.prompt.image.gallery_id"), empty: I18n.t(:"select2.empty")}}
-              %option{value: ''}
-                Keine Galerie
-              - (Ship.all + Album.all).each do |gallery|
-                %option{value: gallery.id, data: {type: gallery.class}}
-                  = gallery.name
+          %select.js-gallery-selectize
+            %option{value: ''}Gallerie auswählen
       %br
 
       %input{type: "hidden", name: "image[gallery_id]", id: "image-gallery-id"}
-      %input{type: "hidden", name: "image[gallery_type]", id: "image-gallery-type"}
+      %input{type: "hidden", name: "image[gallery_type]", value: "Ship"}
       = render "backend/shared/uploader/buttons"
 
       #dropzone.fade.well

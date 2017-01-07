@@ -1,7 +1,10 @@
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
+//= require turbolinks
 //= require select2
+//= require sifter
+//= require microplugin
+//= require selectize
 //= require bootstrap
 //= require spin.js/spin
 //= require ladda/js/ladda
@@ -21,23 +24,57 @@
 //= require blueimp-file-upload/js/jquery.fileupload-validate
 //= require dynamic_fields_for
 //= require cookies_eu
+//= require nprogress
 //= require i18n
 //= require i18n/translations
 //= require helper
+//= require tabs
 //= require app
 //= require_tree ./app
 //
 //= require turbolinks
 
-$(document).on('click', 'a.disabled', function(evt) {
+$(document).on('click', 'a.disabled', function() {
   return false;
 });
 
-$(document).on('show.bs.collapse', '.navbar-collapse', function(ev) {
+$(document).on('show.bs.collapse', '.navbar-collapse', function() {
   $('.navbar-collapse.in').not(this).collapse('hide');
 });
 
-$(function() {
+$(document).on("focus", ".modal input, .modal textarea, .modal select", function() {
+  $(this)[0].scrollIntoView(true);
+});
+
+$(document).on('ready page:load', function () {
+  $('select.js-selectize').selectize();
+
+  $('select.js-gallery-selectize').selectize({
+    valueField: 'id',
+    labelField: 'name',
+    searchField: 'name',
+    sortField: 'name',
+    create: false,
+    preload: true,
+    maxOptions: 20,
+    onChange: function(value) {
+      $('#image-gallery-id').val(value)
+    },
+    load: function(query, callback) {
+      $.ajax({
+        url: '/api/v1/ships/',
+        type: 'GET',
+        datatype: 'json',
+        error: function() {
+          callback();
+        },
+        success: function(response) {
+          callback(response);
+        }
+      });
+    }
+  });
+
   $('.btn.btn-primary[data-loading-text]').click(function() {
     $(this).button('loading');
   });

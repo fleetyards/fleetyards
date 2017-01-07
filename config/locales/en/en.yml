@@ -1,4 +1,7 @@
 en:
+  locales:
+    en: English
+    de: Deutsch
   meta:
     description: "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“."
     keywords: "Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
@@ -68,6 +71,10 @@ en:
       avionics: Avionics
     manufacturers: Manufacturers
     frontend: Frontend
+    user:
+      basic: "Basic"
+      password: "Password"
+      rsi: "Star Citizen"
   texts:
     base:
       index: "Your Database for all Information about the upcoming “Star Citizen“ from Chris Roberts."

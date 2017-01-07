@@ -8,6 +8,10 @@ class Manufacturer < ActiveRecord::Base
 
   has_many :ships
 
+  def self.enabled
+    where(enabled: true)
+  end
+
   before_save :update_slugs
 
   private def update_slugs

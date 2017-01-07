@@ -6,4 +6,8 @@ class Component < ActiveRecord::Base
     class_name: "ComponentCategory"
 
   validates_presence_of :name, :component_type, :category_id
+
+  def self.enabled
+    where(enabled: true)
+  end
 end

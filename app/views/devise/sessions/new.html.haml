@@ -16,8 +16,8 @@
 
           - if devise_mapping.rememberable?
             .checkbox
+              = f.check_box :remember_me
               %label{for: "user_remember_me"}
-                = f.check_box :remember_me
                 = I18n.t(:"helpers.label.user.remember_me")
           .text-right
             %button.hidden-xs.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}

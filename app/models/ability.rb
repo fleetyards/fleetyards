@@ -13,15 +13,6 @@ class Ability
       can [:add, :remove], UserShip, user_id: user.id
     end
 
-    can :public, :hangar
-
     can :update, User, id: user.id
-    can :index, :manufacturers
-    can :show, Manufacturer, enabled: true
-    can :index, :components
-    can :show, Component, enabled: true
-    can :index, :images
-    can :index, :ships
-    can [:show, :gallery], Ship, enabled: true
   end
 end

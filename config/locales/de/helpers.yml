@@ -7,6 +7,11 @@ de:
         password_confirmation: Passwort-Bestätigung
         current_password: "Aktuelles Passwort"
         remember_me: "Angemeldet bleiben"
+        locale: "Sprache"
+        rsi_organization_url: "Organisations URL"
+        rsi_profile_url: "Profil URL"
+        rsi_organization_handle: "Organisations SID"
+        rsi_handle: "Profil"
       user_ship:
         name: "Name (optional)"
     placeholder:

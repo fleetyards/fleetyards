@@ -4,38 +4,78 @@
   .col-xs-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-xs-12
         %h1
           = I18n.t(:"headlines.account")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), root_path, class: "btn btn-default"
+    .row
+      .col-xs-12
 
-    = form_for user, url: user_registration_path do |form|
-      .row
-        .col-xs-12.col-md-6.form-group{class: form_error?(user, :username)}
-          = form.text_field :username, placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control', type: :username
-          %small
-            = form_errors user, :username
-        .col-xs-12.col-md-6.form-group{class: form_error?(user, :email)}
-          = form.email_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control', type: :email
-          %small
-            = form_errors user, :email
-      .row
-        .col-xs-12.col-md-6.form-group
-          = link_to I18n.t(:"actions.update_password"), edit_password_path, class: "btn btn-warning"
-      .row
-        .col-xs-12.col-md-6.form-group{class: form_error?(user, :gravatar)}
-          = form.email_field :gravatar, placeholder: I18n.t(:"helpers.placeholder.user.gravatar"), class: 'form-control'
-          %small
-            = form_errors user, :gravatar
-        .col-xs-12.col-md-6.form-group
-          .select2
-            %select{name: "user[locale]", id: "user_locale", data: {placeholder: I18n.t(:"helpers.prompt.user.locale"), empty: I18n.t(:"select2.empty")}}
-              %option
-              - I18n.available_locales.each do |locale|
-                %option{value: locale, selected: (true if user.locale == locale.to_s)}
-                  = I18n.t(:"locales.#{locale}")
+        %ul.nav.nav-tabs
+          %li.active
+            %a{href: "#basic", data: {toggle: "tab"}}
+              = I18n.t("nav.user.basic")
+              %i.fa.fa-user.fa-fw
+          %li
+            %a{href: edit_password_path(anchor: :password)}
+              = I18n.t("nav.user.password")
+              %i.fa.fa-lock.fa-fw
+          %li
+            %a{href: "#rsi", data: {toggle: "tab"}}
+              = I18n.t("nav.user.rsi")
+              %i.fa.fa-cog.fa-fw
 
-      = render "shared/submit", path: root_path
+        = form_for user, url: user_registration_path do |form|
+          .tab-content
+            .tab-pane.active#basic
+              .row
+                .col-xs-12.col-sm-3.col-md-1
+                  %img.gravatar.gravatar-lg{src: gravatar_path(100), alt: "avatar"}
+                .col-xs-12.col-sm-9.col-md-11
+                  .row
+                    .col-xs-12.col-md-4.form-group{class: form_error?(user, :username)}
+                      = form.label :username
+                      = form.text_field :username, class: 'form-control', type: :username
+                      %small
+                        = form_errors user, :username
+                    .col-xs-12.col-md-4.form-group{class: form_error?(user, :email)}
+                      = form.label :email
+                      = form.email_field :email, class: 'form-control', type: :email
+                      %small
+                        = form_errors user, :email
+                  .row
+                    .col-xs-12.col-md-4.form-group{class: form_error?(user, :gravatar)}
+                      = form.label :gravatar
+                      = form.email_field :gravatar, class: 'form-control'
+                      %small
+                        = form_errors user, :gravatar
+                    .col-xs-12.col-md-4.selectize.form-group
+                      = form.label :locale
+                      = form.collection_select :locale, locales, :id, :name, {include_blank: ""}, {class: "js-selectize"}
+
+            .tab-pane#rsi
+              .row
+                .col-xs-12.col-sm-3.col-md-1
+                  %img.gravatar.gravatar-lg{src: gravatar_path(100), alt: "avatar"}
+                .col-xs-12.col-sm-9.col-md-11
+                  .row
+                    .col-xs-12.col-md-6.form-group
+                      = form.label :rsi_organization_url
+                      = form.text_field :rsi_organization_url, class: 'form-control', type: :url
+                      = I18n.t("labels.user.help.rsi_organization_url")
+                    .col-xs-12.col-md-6.form-group
+                      = form.label :rsi_organization_handle
+                      %br
+                      = current_user.rsi_organization_handle
+                  .row
+                    .col-xs-12.col-md-6.form-group
+                      = form.label :rsi_profile_url
+                      = form.email_field :rsi_profile_url, class: 'form-control', type: :url
+                      %span.help-block
+                        = I18n.t("labels.user.help.rsi_profile_url")
+                    .col-xs-12.col-md-6.form-group
+                      = form.label :rsi_handle
+                      %br
+                      = current_user.rsi_handle
+
+            = render "shared/submit", path: root_path

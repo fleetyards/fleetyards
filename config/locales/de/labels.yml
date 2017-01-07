@@ -19,6 +19,9 @@ de:
       admin: Admin?
       email: E-Mail
       created_at: Erstellt
+      help:
+        rsi_profile_url: "URL im Format: „https://robertsspaceindustries.com/citizens/*your-citizen-handle*“"
+        rsi_organization_url: "URL im Format: „https://robertsspaceindustries.com/orgs/*your-org-sid*“"
     gallery:
       blank:
         ship: 'Keine Bilder für "%{ship}" vorhanden.'

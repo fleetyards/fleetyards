@@ -11,12 +11,6 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  after_create :send_admin_mail
-
-  def send_admin_mail
-    UserMailer.notify_admin(self).deliver
-  end
-
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -52,6 +46,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  after_create :send_admin_mail
+
+  def send_admin_mail
+    UserMailer.notify_admin(self).deliver
+  end
+
+  before_save :extract_rsi_information
   before_save :update_gravatar_hash
 
   def update_gravatar_hash
@@ -61,5 +62,15 @@ class User < ActiveRecord::Base
       hash = Digest::MD5.hexdigest(gravatar.downcase.strip)
     end
     self.gravatar_hash = hash
+  end
+
+  def extract_rsi_information
+    if rsi_profile_url.present?
+      self.rsi_handle = rsi_profile_url.split("/").last
+    end
+
+    if rsi_organization_url.present?
+      self.rsi_organization_handle = rsi_organization_url.split("/").last
+    end
   end
 end

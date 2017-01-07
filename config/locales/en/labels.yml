@@ -19,6 +19,9 @@ en:
       admin: Admin?
       email: E-Mail
       created_at: "Created at"
+      help:
+        rsi_profile_url: "URL like: “https://robertsspaceindustries.com/citizens/*your-citizen-handle*“"
+        rsi_organization_url: "URL like: “https://robertsspaceindustries.com/orgs/*your-org-sid*“"
     gallery:
       blank:
         ship: "No Pictures for \"%{ship}\" present."

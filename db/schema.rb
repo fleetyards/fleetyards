@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161230131913) do
+ActiveRecord::Schema.define(version: 20170107211857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,19 +203,19 @@ ActiveRecord::Schema.define(version: 20161230131913) do
   end
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.boolean  "admin",                  default: false, null: false
+    t.boolean  "admin",                   default: false, null: false
     t.hstore   "profile"
     t.hstore   "settings"
     t.string   "gravatar_hash"
     t.string   "gravatar"
     t.string   "locale"
-    t.string   "username",               default: "",    null: false
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "username",                default: "",    null: false
+    t.string   "email",                   default: "",    null: false
+    t.string   "encrypted_password",      default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",           default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -224,13 +224,18 @@ ActiveRecord::Schema.define(version: 20161230131913) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0,     null: false
+    t.integer  "failed_attempts",         default: 0,     null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "provider"
     t.string   "uid"
+    t.string   "rsi_organization_url"
+    t.string   "rsi_organization_handle"
+    t.string   "rsi_organization_name"
+    t.string   "rsi_profile_url"
+    t.string   "rsi_handle"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
