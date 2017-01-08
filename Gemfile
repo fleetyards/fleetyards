@@ -30,7 +30,7 @@ gem 'omniauth-google-oauth2'
 gem 'cancan'
 
 gem 'dalli'
-gem 'dalli-delete-matched'
+gem 'actionpack-action_caching'
 gem 'cache_digests'
 gem 'turbolinks'
 
@@ -79,8 +79,6 @@ gem "rails_12factor", group: :production
 gem 'newrelic_rpm'
 
 gem "sentry-raven"
-
-gem "actionpack-action_caching"
 
 group :development do
   gem 'pry-rails'

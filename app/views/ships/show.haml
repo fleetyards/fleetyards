@@ -1,73 +1,75 @@
-- content_for :title do
-  = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
-- unless ship.images.enabled.blank?
-  - gallery_params = params.dup
-  - gallery_params.delete(:page)
-.row#ship-profile
-  .col-xs-12.col-md-12
+- cache ship do
+  - content_for :title do
+    = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
+  - unless ship.images.enabled.blank?
+    - gallery_params = params.dup
+    - gallery_params.delete(:page)
 
-    .row
-      .col-xs-12.col-md-6
-        %h1
-          = ship.name
+  .row#ship-profile
+    .col-xs-12.col-md-12
 
-      .col-xs-12.col-md-6
-        .pull-right.resource-nav
-          - back_params = params.dup
-          - back_params.delete(:slug)
-          %a.btn.btn-default{href: ships_path(back_params)}
-            = I18n.t(:"actions.back")
+      .row
+        .col-xs-12.col-md-6
+          %h1
+            = ship.name
 
-    .row
-      .col-xs-12.col-md-8
-        %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params) if ship.images.enabled.present?)}
-          = image_tag ship.store_image
-        %blockquote.ship-description
-          %p
-            = ship.description
-      .col-xs-12.col-md-4
-        .panel.panel-default
-          %table.table.table-striped
-            %tbody
-              %tr
-                %td
-                  %strong
-                    = I18n.t(:"activerecord.attributes.ship.manufacturer")
-                %td
-                  = ship.manufacturer.name.html_safe
-              - %w(length beam height mass cargo crew).each do |value|
+        .col-xs-12.col-md-6
+          .pull-right.resource-nav
+            - back_params = params.dup
+            - back_params.delete(:slug)
+            %a.btn.btn-default{href: ships_path(back_params)}
+              = I18n.t(:"actions.back")
+
+      .row
+        .col-xs-12.col-md-8
+          %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params) if ship.images.enabled.present?)}
+            = image_tag ship.store_image
+          %blockquote.ship-description
+            %p
+              = ship.description
+        .col-xs-12.col-md-4
+          .panel.panel-default
+            %table.table.table-striped
+              %tbody
                 %tr
                   %td
                     %strong
-                      = I18n.t(:"activerecord.attributes.ship.#{value}")
+                      = I18n.t(:"activerecord.attributes.ship.manufacturer")
                   %td
-                    - if %w(length beam height).include?(value)
-                      = number_to_human ship.send(value), units: :distance, precision: 6
-                    - elsif %w(mass cargo).include?(value)
-                      = number_to_human ship.send(value), units: :weight, precision: 6
-                    - elsif %w(crew).include?(value)
-                      = number_to_human ship.send(value), units: :people, precision: 6
-                    - else
-                      = ship.send(value)
-        - unless ship.production_status.blank?
-          .row
-            .col-xs-12
-              %h3.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
-              %p= ship.production_note
-        .btn-group.pull-right.resource-nav
-          - if ship.images.enabled.present?
-            %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params)}
-              = I18n.t("actions.ship.gallery")
-          = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
-            %i.fa.fa-bookmark-o
-          %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
-            = I18n.t("actions.ship.store")
-    .row
-      = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
+                    = ship.manufacturer.name.html_safe
+                - %w(length beam height mass cargo crew).each do |value|
+                  %tr
+                    %td
+                      %strong
+                        = I18n.t(:"activerecord.attributes.ship.#{value}")
+                    %td
+                      - if %w(length beam height).include?(value)
+                        = number_to_human ship.send(value), units: :distance, precision: 6
+                      - elsif %w(mass cargo).include?(value)
+                        = number_to_human ship.send(value), units: :weight, precision: 6
+                      - elsif %w(crew).include?(value)
+                        = number_to_human ship.send(value), units: :people, precision: 6
+                      - else
+                        = ship.send(value)
+          - unless ship.production_status.blank?
+            .row
+              .col-xs-12
+                %h3.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
+                %p= ship.production_note
+          .btn-group.pull-right.resource-nav
+            - if ship.images.enabled.present?
+              %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params)}
+                = I18n.t("actions.ship.gallery")
+            = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
+              %i.fa.fa-bookmark-o
+            %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
+              = I18n.t("actions.ship.store")
+      .row
+        = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 
-    %br
-    .row#comments
-      .col-xs-12.col-md-12
-        %h3
-          = I18n.t(:"headlines.comments")
-        = render "shared/disqus", title: ship.name, url: ship_url(ship.slug), category_id: 2846386
+      %br
+      .row#comments
+        .col-xs-12.col-md-12
+          %h3
+            = I18n.t(:"headlines.comments")
+          = render "shared/disqus", title: ship.name, url: ship_url(ship.slug), category_id: 2846386

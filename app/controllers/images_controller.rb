@@ -4,10 +4,7 @@ class ImagesController < ApplicationController
   before_filter :authenticate_user!, only: []
   skip_authorization_check
 
-  caches_action :index, layout: false, cache_path: Proc.new { |c| c.params }
-
   def index
-    authorize! :index, :images
     @images = Image.enabled
       .order('images.created_at desc')
       .page(params.fetch(:page, nil))

@@ -19,7 +19,6 @@ module Backend
       authorize! :create, :backend_components
       @component = Component.new(component_params)
       if component.save
-        expire_action controller: :components, action: component.component_categories.slug
         redirect_to backend_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.component"))
@@ -33,7 +32,6 @@ module Backend
     def update
       authorize! :update, component
       if component.update(component_params)
-        expire_action controller: :components, action: component.component_categories.slug
         redirect_to backend_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
@@ -43,7 +41,6 @@ module Backend
     def destroy
       authorize! :destroy, component
       if component.destroy
-        expire_action controller: :components, action: component.component_categories.slug
         redirect_to backend_components_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.component"))
       else
         redirect_to backend_components_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.component"))
@@ -56,7 +53,6 @@ module Backend
       respond_to do |format|
         format.js {
           if component.update(component_params)
-            expire_action controller: :components, action: component.component_categories.slug
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.component"))
             if component.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.component"))

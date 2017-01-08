@@ -16,9 +16,10 @@
 
     .row.is-flex
       - @images.each do |image|
-        .col-md-3.col-sm-3.col-xs-12
-          %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
-            %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
+        - cache image do
+          .col-md-3.col-sm-3.col-xs-12
+            %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
+              %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
 
     .row
       .col-xs-12.col-md-12

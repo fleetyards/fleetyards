@@ -4,8 +4,6 @@ class ManufacturersController < ApplicationController
   skip_authorization_check
   before_action :authenticate_user!, only: []
 
-  caches_action :index, layout: false, cache_path: Proc.new { |c| c.params }
-
   def index
     authorize! :index, :manufacturers
     @manufacturers = Manufacturer

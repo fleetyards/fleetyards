@@ -1,27 +1,28 @@
-- content_for :title do
-  = manufacturer.name.html_safe
-.row#manufacturer-profile
-  .col-xs-12.col-md-12
+- cache manufacturer do
+  - content_for :title do
+    = manufacturer.name.html_safe
+  .row#manufacturer-profile
+    .col-xs-12.col-md-12
 
-    .row
-      .col-xs-12.col-md-6
-        %h1
-          = manufacturer.name.html_safe
+      .row
+        .col-xs-12.col-md-6
+          %h1
+            = manufacturer.name.html_safe
 
-      .col-xs-12.col-md-6
-        .btn-group.pull-right.resource-nav
-          %a.btn.btn-primary{href: ships_path(manufacturer: manufacturer.slug)}
-            = I18n.t(:"actions.manufacturer.ships")
-          %a.btn.btn-default{href: manufacturers_path}
-            = I18n.t(:"actions.back")
-    .row
-      .col-xs-12.col-md-8
-        = image_tag manufacturer.logo
-        %p
-          = manufacturer.description
+        .col-xs-12.col-md-6
+          .btn-group.pull-right.resource-nav
+            %a.btn.btn-primary{href: ships_path(manufacturer: manufacturer.slug)}
+              = I18n.t(:"actions.manufacturer.ships")
+            %a.btn.btn-default{href: manufacturers_path}
+              = I18n.t(:"actions.back")
+      .row
+        .col-xs-12.col-md-8
+          = image_tag manufacturer.logo
+          %p
+            = manufacturer.description
 
-      .col-xs-12.col-md-4
-        - if manufacturer.known_for.present?
-          .well.well-sm
-            = I18n.t(:"labels.manufacturer.known_for")
-            = manufacturer.known_for
+        .col-xs-12.col-md-4
+          - if manufacturer.known_for.present?
+            .well.well-sm
+              = I18n.t(:"labels.manufacturer.known_for")
+              = manufacturer.known_for

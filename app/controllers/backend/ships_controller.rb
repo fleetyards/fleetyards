@@ -19,7 +19,6 @@ module Backend
       authorize! :create, :backend_ships
       @ship = Ship.new(ship_params)
       if ship.save
-        expire_action controller: :ships, action: :index
         redirect_to backend_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.ship"))
@@ -33,7 +32,6 @@ module Backend
     def update
       authorize! :update, ship
       if ship.update(ship_params)
-        expire_action controller: :ships, action: :index
         redirect_to backend_ships_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.ship"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.ship"))
@@ -43,7 +41,6 @@ module Backend
     def destroy
       authorize! :destroy, ship
       if ship.destroy
-        expire_action controller: :ships, action: :index
         redirect_to backend_ships_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.ship"))
       else
         redirect_to backend_ships_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.ship"))
@@ -96,7 +93,6 @@ module Backend
       respond_to do |format|
         format.js {
           if ship.update(ship_params)
-            expire_action controller: :ships, action: :index
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.ship"))
             if ship.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.ship"))

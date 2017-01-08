@@ -1,23 +1,24 @@
-- ship_params = params.dup
-- ship_params.delete(:slug)
-.col-xs-12.col-sm-4.col-md-3
-  .ship-panel.panel.panel-default
-    .panel-heading
-      %h2.panel-title
+- cache ship do
+  - ship_params = params.dup
+  - ship_params.delete(:slug)
+  .col-xs-12.col-sm-4.col-md-3
+    .ship-panel.panel.panel-default
+      .panel-heading
+        %h2.panel-title
+          %a{href: ship_path(ship.slug, ship_params)}><
+            = ship.name
+          %br
+          %small
+            = ship.manufacturer.name.html_safe if ship.manufacturer.present?
+      - unless ship.production_status.blank?
+        .production-status
+          %strong.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
+      .profile-image.text-center
         %a{href: ship_path(ship.slug, ship_params)}><
-          = ship.name
-        %br
-        %small
-          = ship.manufacturer.name.html_safe if ship.manufacturer.present?
-    - unless ship.production_status.blank?
-      .production-status
-        %strong.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
-    .profile-image.text-center
-      %a{href: ship_path(ship.slug, ship_params)}><
-        = image_tag ship.store_image.small
-    = render "ships/index_data", ship: ship
-    .btn-group.btn-group-flex
-      %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
-        = I18n.t(:"actions.more_info")
-      = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
-        %i.fa.fa-bookmark-o
+          = image_tag ship.store_image.small
+      = render "ships/index_data", ship: ship
+      .btn-group.btn-group-flex
+        %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
+          = I18n.t(:"actions.more_info")
+        = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
+          %i.fa.fa-bookmark-o

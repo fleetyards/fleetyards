@@ -4,8 +4,6 @@ class ComponentsController < ApplicationController
   skip_authorization_check
   before_action :authenticate_user!, only: []
 
-  caches_action :propulsion, :ordnance, :modular, :avionics, layout: false, cache_path: Proc.new { |c| c.params }
-
   def propulsion
     authorize! :index, :components
     render :index

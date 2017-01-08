@@ -19,7 +19,6 @@ module Backend
       authorize! :create, :backend_manufacturers
       @manufacturer = Manufacturer.new(manufacturer_params)
       if manufacturer.save
-        expire_action controller: :manufacturers, action: :index
         redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.manufacturer"))
@@ -33,7 +32,6 @@ module Backend
     def update
       authorize! :update, manufacturer
       if manufacturer.update(manufacturer_params)
-        expire_action controller: :manufacturers, action: :index
         redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         Rails.logger.debug manufacturer.errors.to_yaml
@@ -44,7 +42,6 @@ module Backend
     def destroy
       authorize! :destroy, manufacturer
       if manufacturer.destroy
-        expire_action controller: :manufacturers, action: :index
         redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.manufacturer"))
       else
         redirect_to backend_manufacturers_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.manufacturer"))
@@ -57,7 +54,6 @@ module Backend
       respond_to do |format|
         format.js {
           if manufacturer.update(manufacturer_params)
-            expire_action controller: :manufacturers, action: :index
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.manufacturer"))
             if manufacturer.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.manufacturer"))

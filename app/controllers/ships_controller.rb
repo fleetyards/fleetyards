@@ -4,8 +4,6 @@ class ShipsController < ApplicationController
   skip_authorization_check only: [:index, :show, :gallery]
   before_action :authenticate_user!, only: [:reload]
 
-  caches_action :index, layout: false, cache_path: Proc.new { |c| c.params }
-
   def index
     @available_production_status = I18n.t("labels.ship.production_status").map do |status|
       {

@@ -9,7 +9,7 @@
   - if user_ships.blank?
     .col-md-12
       .well.text-center
-        - if user_ships.out_of_range? && user_ships.total_pages > 1
+        - if user_ships.out_of_range? && !user_ships.total_pages.zero?
           = I18n.t(:"labels.table.out_of_range.my_ship", url: hangar_path(params.merge({page: 1}))).html_safe
         - else
           = I18n.t(:"labels.table.blank.my_ship")

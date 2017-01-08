@@ -16,8 +16,9 @@
 
     .row.is-flex
       - components.each do |component|
-        .col-md-4.col-sm-6.col-xs-12
-          = render "show", component: component
+        - cache component do
+          .col-md-4.col-sm-6.col-xs-12
+            = render "show", component: component
 
     .row
       .col-xs-12.col-md-12
