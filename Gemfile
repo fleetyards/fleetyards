@@ -30,7 +30,6 @@ gem 'omniauth-google-oauth2'
 gem 'cancan'
 
 gem 'dalli'
-gem 'actionpack-action_caching'
 gem 'cache_digests'
 gem 'turbolinks'
 
