@@ -59,6 +59,8 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path)
 
     I18n.reload!
     I18n.locale = old_locale
+
+    Rails.cache.clear
   end
 
   def load_ships

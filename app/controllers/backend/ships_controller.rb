@@ -43,6 +43,7 @@ module Backend
     def destroy
       authorize! :destroy, ship
       if ship.destroy
+        expire_action controller: :ships, action: :index
         redirect_to backend_ships_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.ship"))
       else
         redirect_to backend_ships_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.ship"))
@@ -67,7 +68,6 @@ module Backend
       authorize! :reload, :backend_ships
       respond_to do |format|
         format.js {
-          expire_action controller: :ships, action: :index
           ShipsWorker.perform_async
           render json: true
         }
@@ -81,7 +81,6 @@ module Backend
       authorize! :reload, :backend_ships
       respond_to do |format|
         format.js {
-          expire_action controller: :ships, action: :index
           ShipWorker.perform_async(ship.name)
           render json: true
         }
