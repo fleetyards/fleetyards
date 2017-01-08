@@ -33,6 +33,7 @@ en:
     table:
       id: ID
       name: Name
+      slug: Slug
       actions: Actions
       enabled: Enabled?
       rsi_id: RSI-ID

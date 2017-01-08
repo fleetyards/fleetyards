@@ -1,52 +1,113 @@
-class ShipsLoader < Struct.new(:base_url)
-  def initialize options = {}
+class ShipsLoader < Struct.new(:base_url, :json_file_path)
+  def initialize(options = {})
     self.base_url ||= options[:base_url]
     self.base_url ||= "https://robertsspaceindustries.com"
+    self.json_file_path = "public/ships.json"
   end
 
-  def run
+  def all
+    old_locale = I18n.locale
+    I18n.locale = :en
+
+    ships = load_ships
+
+    ships.each do |data|
+      ship = create_or_update_ship(data)
+      ship.ship_role = create_or_update_ship_role(data["focus"])
+      ship.manufacturer = create_or_update_manufacturer(data["manufacturer"])
+
+      ship.hardpoints.delete_all
+
+      create_propulsion_hardpoints(ship.id, data["propulsion"])
+      create_ordnance_hardpoints(ship.id, data["ordnance"])
+      create_modular_hardpoints(ship.id, data["modular"])
+      create_avionics_hardpoints(ship.id, data["avionics"])
+
+      ship.enabled = true
+
+      ship.save!
+    end
+
+    I18n.reload!
+    I18n.locale = old_locale
+
+    Rails.cache.clear
+  end
+
+  def one(ship_name)
+    old_locale = I18n.locale
+    I18n.locale = :en
+
+    ships = load_ships
+
+    ship_data = ships.find { |ship| ship["name"] == ship_name }
+
+    ship = create_or_update_ship(ship_data)
+    ship.ship_role = create_or_update_ship_role(ship_data["focus"])
+    ship.manufacturer = create_or_update_manufacturer(ship_data["manufacturer"])
+
+    ship.hardpoints.delete_all
+
+    create_propulsion_hardpoints(ship.id, ship_data["propulsion"])
+    create_ordnance_hardpoints(ship.id, ship_data["ordnance"])
+    create_modular_hardpoints(ship.id, ship_data["modular"])
+    create_avionics_hardpoints(ship.id, ship_data["avionics"])
+
+    ship.enabled = true
+
+    ship.save!
+
+    I18n.reload!
+    I18n.locale = old_locale
+  end
+
+  def load_ships
+    if File.exists?(self.json_file_path)
+      last_updated = (Time.now - File.stat(self.json_file_path).mtime).to_i
+    else
+      last_updated = 9999
+    end
+
+    if last_updated > 1800
+      Rails.logger.debug("Loading Ships from RSI")
+      load_ships_from_rsi
+    else
+      Rails.logger.debug("Loading Ships from File")
+      load_ships_from_file
+    end
+  end
+
+  def load_ships_from_rsi
     body = Typhoeus.get(
       "#{self.base_url}/ship-specs"
     ).body
 
     match = body.match(/data: \[(.+)\]/)
     begin
-      ships = JSON.parse("[#{match[1]}]")
-      File.open("public/ships.json", "w") do |f|
-        f.write(ships.to_json)
+      ship_data = JSON.parse("[#{match[1]}]")
+      File.open(self.json_file_path, "w") do |f|
+        f.write(ship_data.to_json)
       end
-
-      old_locale = I18n.locale
-      I18n.locale = :en
-
-      ships.each do |data|
-        ship = create_ship(data)
-        ship.ship_role = create_ship_role(data["focus"])
-        ship.manufacturer = create_manufacturer(data["manufacturer"])
-
-        ship.hardpoints.delete_all
-
-        create_propulsion_hardpoints(ship.id, data["propulsion"])
-        create_ordnance_hardpoints(ship.id, data["ordnance"])
-        create_modular_hardpoints(ship.id, data["modular"])
-        create_avionics_hardpoints(ship.id, data["avionics"])
-
-        ship.enabled = true
-
-        ship.save!
-      end
-
-      I18n.reload!
-      I18n.locale = old_locale
+      ship_data
     rescue JSON::ParserError => e
-      p "ShipData could not be parsed: [#{match[1]}]"
+      Raven.capture_exception(e)
+      Rails.logger.error "ShipData could not be parsed: [#{match[1]}]"
+      []
     end
-    Rails.cache.clear
   end
 
-  private
+  def load_ships_from_file
+    begin
+      file = File.read(self.json_file_path)
+      JSON.parse(file)
+    rescue Exception => e
+      Raven.capture_exception(e)
+      Rails.logger.error "ShipData could not be loaded from File"
+      []
+    end
+  end
 
-  def create_ship data
+  private def create_or_update_ship(data)
     ship = Ship.find_or_create_by(name: data["name"])
 
     ship.update(
@@ -64,7 +125,6 @@ class ShipsLoader < Struct.new(:base_url)
       shield_size: data["maxshieldsize"],
       classification: data["classification"],
       focus: data["focus"],
-      remote_image_url: ("#{self.base_url}#{data["media"][0]["source_url"]}" unless ship.image.present?),
       remote_store_image_url: ("#{self.base_url}#{data["media"][0]["images"]["store_hub_large"]}" unless ship.store_image.present?),
       store_url: data["url"],
       propulsion_raw: data["propulsion"],
@@ -76,11 +136,11 @@ class ShipsLoader < Struct.new(:base_url)
     ship
   end
 
-  def create_ship_role ship_role
+  def create_or_update_ship_role(ship_role)
     ShipRole.find_or_create_by(name: ship_role)
   end
 
-  def create_manufacturer manufacturer_data
+  def create_or_update_manufacturer(manufacturer_data)
     manufacturer = Manufacturer.find_or_create_by(name: manufacturer_data["name"])
 
     manufacturer.update(
@@ -94,7 +154,7 @@ class ShipsLoader < Struct.new(:base_url)
     manufacturer
   end
 
-  def create_propulsion_hardpoints ship_id, propulsion_data
+  def create_propulsion_hardpoints(ship_id, propulsion_data)
     category = ComponentCategory.find_or_create_by(rsi_name: "propulsion")
 
     propulsion_data.each do |data|
@@ -105,12 +165,12 @@ class ShipsLoader < Struct.new(:base_url)
         name: data["name"],
         hardpoint_class: data["type"],
         rating: data["rating"],
-        component: (create_component(data["component"], category) unless data["component"].nil?)
+        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
     end
   end
 
-  def create_ordnance_hardpoints ship_id, ordnance_data
+  def create_ordnance_hardpoints(ship_id, ordnance_data)
     category = ComponentCategory.find_or_create_by(rsi_name: "ordnance")
 
     ordnance_data.each do |data|
@@ -122,12 +182,12 @@ class ShipsLoader < Struct.new(:base_url)
         hardpoint_class: data["class"],
         max_size: data["max_size"],
         quantity: data["quantity"],
-        component: (create_component(data["component"], category) unless data["component"].nil?)
+        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
     end
   end
 
-  def create_modular_hardpoints ship_id, modular_data
+  def create_modular_hardpoints(ship_id, modular_data)
     category = ComponentCategory.find_or_create_by(rsi_name: "modular")
 
     modular_data.each do |data|
@@ -137,12 +197,12 @@ class ShipsLoader < Struct.new(:base_url)
         category_id: category.id,
         name: data["name"],
         max_size: data["max_size"],
-        component: (create_component(data["component"], category) unless data["component"].nil?)
+        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
     end
   end
 
-  def create_avionics_hardpoints ship_id, avionics_data
+  def create_avionics_hardpoints(ship_id, avionics_data)
     category = ComponentCategory.find_or_create_by(rsi_name: "avionics")
 
     avionics_data.each do |data|
@@ -151,12 +211,12 @@ class ShipsLoader < Struct.new(:base_url)
         rsi_id: data["id"],
         category_id: category.id,
         name: data["name"],
-        component: (create_component(data["component"], category) unless data["component"].nil?)
+        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
     end
   end
 
-  def create_component component_data, category
+  def create_or_update_component(component_data, category)
     component = Component.find_or_create_by(name: component_data["name"])
 
     component.update(

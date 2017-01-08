@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107211857) do
+ActiveRecord::Schema.define(version: 20170108185635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,7 +173,6 @@ ActiveRecord::Schema.define(version: 20170107211857) do
     t.string   "mass"
     t.string   "cargo"
     t.string   "crew"
-    t.string   "image"
     t.string   "store_image"
     t.string   "store_url"
     t.integer  "powerplant_size"

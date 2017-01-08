@@ -7,7 +7,7 @@ module Backend
       @ships = Ship.all
         .order(sort_column + " " + sort_direction)
         .page(params.fetch(:page){nil})
-        .per(20)
+        .per(15)
     end
 
     def new
@@ -34,7 +34,7 @@ module Backend
       authorize! :update, ship
       if ship.update(ship_params)
         expire_action controller: :ships, action: :index
-        redirect_to backend_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
+        redirect_to backend_ships_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.ship"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.ship"))
       end
@@ -77,6 +77,20 @@ module Backend
       end
     end
 
+    def reload_one
+      authorize! :reload, :backend_ships
+      respond_to do |format|
+        format.js {
+          expire_action controller: :ships, action: :index
+          ShipWorker.perform_async(ship.name)
+          render json: true
+        }
+        format.html {
+          redirect_to root_path
+        }
+      end
+    end
+
     def toggle
       authorize! :toggle, ship
 
@@ -100,7 +114,7 @@ module Backend
     end
 
     private def ship_params
-      @ship_params ||= params.require(:ship).permit(:name, :enabled)
+      @ship_params ||= params.require(:ship).permit(:name, :enabled, :store_image, :store_image_cache, :remove_store_image)
     end
 
     private def sort_column

@@ -28,7 +28,6 @@ class Ship < ActiveRecord::Base
     as: :gallery,
     dependent: :destroy
 
-  mount_uploader :image, ImageUploader
   mount_uploader :store_image, ImageUploader
 
   before_save :update_slugs
@@ -43,6 +42,6 @@ class Ship < ActiveRecord::Base
   end
 
   private def update_slugs
-    self.slug = SlugHelper::generate_slug self.name
+    self.slug = SlugHelper::generate_slug(self.name)
   end
 end

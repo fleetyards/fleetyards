@@ -6,7 +6,7 @@
         %th=sortable "email", I18n.t(:"table.labels.defaults.email")
         %th=sortable "current_sign_in_at", I18n.t(:"table.labels.user.current_sign_in_at")
         %th=sortable "admin", I18n.t(:"table.labels.user.admin")
-        %th.actions.three=I18n.t(:"table.labels.defaults.actions")
+        %th.actions.actions-three=I18n.t(:"table.labels.defaults.actions")
     %tbody
       = render partial: "backend/users/show", collection: @users, as: :user
 

@@ -7,7 +7,7 @@
         %th=sortable "rsi_id", I18n.t(:"labels.table.rsi_id")
         %th=sortable "component_type", I18n.t(:"labels.table.component.type")
         %th=sortable "category.name", I18n.t(:"labels.table.component.category")
-        %th.actions.three=I18n.t(:"labels.table.actions")
+        %th.actions.actions-three=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "backend/components/show", collection: @components, as: :component
 

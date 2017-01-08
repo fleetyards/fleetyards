@@ -28,9 +28,12 @@ Fleetyards::Application.routes.draw do
       end
 
       resources :ships do
-        get 'gallery', on: :member
         put 'reload', on: :collection
-        put 'toggle', on: :member
+        member do
+          get 'gallery'
+          put 'reload_one'
+          put 'toggle'
+        end
       end
 
       resources :manufacturers do

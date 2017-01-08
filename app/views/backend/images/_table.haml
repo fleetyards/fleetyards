@@ -2,11 +2,11 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
-        %th.id=sortable "id", I18n.t(:"labels.table.id")
         %th.preview
+        %th.id=sortable "id", I18n.t(:"labels.table.id")
         %th=sortable "name", I18n.t(:"labels.table.image.name")
         %th=sortable "gallery_type", I18n.t(:"labels.table.image.gallery_type")
-        %th.actions.two
+        %th.actions.actions-two
     %tbody
       = render partial: "backend/images/show", collection: @images, as: :image
 

@@ -4,7 +4,7 @@
       %tr
         %th.id=sortable "id", I18n.t(:"labels.table.id")
         %th=sortable "name", I18n.t(:"labels.table.name")
-        %th.actions.three=I18n.t(:"labels.table.actions")
+        %th.actions.actions-three=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "backend/manufacturers/show", collection: @manufacturers, as: :manufacturer
 

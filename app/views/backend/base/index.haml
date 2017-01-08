@@ -8,9 +8,9 @@
       .col-xs-12.col-md-6
         .btn-group.pull-right.resource-nav
           - if can? :reload, :ships
-            %button.reload-ships.btn.btn-primary.ladda-button{data: {style: "expand-right", action: reload_backend_ships_path, workerPath: backend_check_worker_state_path('ShipsWorker')}, class: ('loading' if @worker_running), onclick: "App.Ships.reload($(this)); return false;"}
+            %button.reload-ships.btn.btn-default.ladda-button{data: {style: "expand-right", action: reload_backend_ships_path, workerPath: backend_check_worker_state_path('ShipsWorker')}, class: ('loading' if @worker_running), onclick: "App.Ships.reload($(this)); return false;"}
               = I18n.t(:"actions.ship.reload")
-          = link_to t(:'nav.update_locales'), backend_update_locales_path, method: :put, class: "btn btn-primary"
+          = link_to t(:'nav.update_locales'), backend_update_locales_path, method: :put, class: "btn btn-default"
 
     .row
       .col-md-6
