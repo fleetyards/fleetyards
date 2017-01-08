@@ -9,7 +9,7 @@ class Hardpoint < ActiveRecord::Base
 
   translates :name
 
-  belongs_to :ship
+  belongs_to :ship, touch: true
   belongs_to :component
   belongs_to :category,
     class_name: "ComponentCategory"
