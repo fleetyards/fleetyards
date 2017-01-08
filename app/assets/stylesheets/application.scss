@@ -113,6 +113,12 @@ a.thumbnail.active {
     margin: 0;
   }
 
+  @media (max-width: $screen-md-min) {
+    p {
+      margin-right: 44px;
+    }
+  }
+
   button {
     position: absolute;
     right: 20px;
