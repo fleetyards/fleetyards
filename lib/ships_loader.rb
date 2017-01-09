@@ -58,7 +58,9 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path)
     response = Typhoeus.get("#{self.base_url}#{store_url}")
 
     page = Nokogiri::HTML(response.body)
-    price = page.css('#buying-options .final-price').text
+    price = if price_element = page.css('#buying-options .final-price').last
+      price_element.text
+    end
 
     OpenStruct.new({
       price: price.present? ? price : nil,

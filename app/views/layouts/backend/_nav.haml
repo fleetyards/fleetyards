@@ -16,3 +16,6 @@
           = link_to I18n.t(:"nav.components"), backend_components_path
   %li{class: active_nav?('backend-images')}
     = link_to I18n.t(:"nav.images"), backend_images_path
+  %li
+    %a{href: backend_sidekiq_web_url, target: "_blank"}
+      = I18n.t(:"nav.workers")
