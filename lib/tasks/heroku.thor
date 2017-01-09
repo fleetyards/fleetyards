@@ -87,7 +87,7 @@ class Heroku < Thor
 
     private def download_backup
       p "Starting Download for App #{app}"
-      run "curl -o latest.dump $(heroku pg:backups public-url --app #{app})"
+      run "curl -o latest.dump $(heroku pg:backups:url --app #{app})"
       p "Download for App #{app} finished"
     end
 
