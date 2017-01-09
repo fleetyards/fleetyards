@@ -3,6 +3,7 @@ de:
     default: "Zugriff verweigert!"
   messages:
     alert:
+      user_not_found: "Der User konnte nicht gefunden werden."
       selection_required: "Bitte wählen Sie zumindest ein %{resource} aus."
     record_not_found: "Keinen Eintrag gefunden"
     confirm:

@@ -3,6 +3,7 @@ class HangarsController < ApplicationController
   before_action :authenticate_user!, only: [:show]
 
   def show
+    @user = current_user
     @active_nav = 'hangar'
     authorize! :show, :hangar
   end
@@ -16,8 +17,7 @@ class HangarsController < ApplicationController
   end
 
   private def user
-    @user ||= User.find_by(username: params[:username])
-    @user ||= current_user
+    @user ||= User.find_by("lower(username) = ?", (params[:username] || "").downcase)
   end
   helper_method :user
 

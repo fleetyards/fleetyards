@@ -3,6 +3,7 @@ en:
     default: "Access denied"
   messages:
     alert:
+      user_not_found: "The User could not be found."
       selection_required: "Please select at least one %{resource}."
     record_not_found: "No Entry found"
     confirm:
