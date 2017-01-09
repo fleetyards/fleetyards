@@ -70,7 +70,7 @@ Fleetyards::Application.routes.draw do
 
     resource :hangar, only: [:show] do
       collection do
-        get ':username' => 'hangars#public'
+        get ':username' => 'hangars#public', as: :public
       end
     end
     resources :my_ships, except: [:index], path_names: { new: 'add' }

@@ -25,6 +25,8 @@ en:
     admin: Backend
     enable: Activate
     disable: Deactivate
+    hangar:
+      public: "Public view"
     manufacturer:
       ships: Ships
     ship:

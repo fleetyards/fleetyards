@@ -25,6 +25,8 @@ de:
     admin: Backend
     enable: Aktivieren
     disable: Deaktivieren
+    hangar:
+      public: "Öffentliche Ansicht"
     manufacturer:
       ships: Schiffe
     ship:

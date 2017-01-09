@@ -4,13 +4,10 @@
   .col-xs-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-xs-12.col-sm-6
         %h1
           = I18n.t(:"headlines.image.index")
-
-    .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-xs-12.col-sm-6
         .pull-right
           = paginate @images
 
