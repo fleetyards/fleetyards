@@ -31,6 +31,7 @@ de:
       ships: Schiffe
     ship:
       gallery: Galerie
+      on_sale: "Verfügbar für: %{price}"
       store: RSI Detail Seite
       reload: "Schiffe aktualisieren"
     more_info: "Weitere Informationen"

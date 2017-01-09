@@ -31,6 +31,7 @@ en:
       ships: Ships
     ship:
       gallery: Gallery
+      on_sale: "On Sale for: %{price}"
       store: RSI Detail Page
       reload: "Reload Ships"
     more_info: "More Information"

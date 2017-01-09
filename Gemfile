@@ -68,6 +68,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 
 gem 'typhoeus'
+gem 'nokogiri'
 
 gem "fog"
 

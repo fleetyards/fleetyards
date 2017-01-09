@@ -63,6 +63,7 @@ de:
         type: Typ
         category: Kategorie
     ship:
+      on_sale: "Verfügbar für %{price}"
       production_status:
         in-production: "In Produktion"
         in-concept: "In Konzeption"

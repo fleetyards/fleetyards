@@ -12,20 +12,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path)
     ships = load_ships
 
     ships.each do |data|
-      ship = create_or_update_ship(data)
-      ship.ship_role = create_or_update_ship_role(data["focus"])
-      ship.manufacturer = create_or_update_manufacturer(data["manufacturer"])
-
-      ship.hardpoints.delete_all
-
-      create_propulsion_hardpoints(ship.id, data["propulsion"])
-      create_ordnance_hardpoints(ship.id, data["ordnance"])
-      create_modular_hardpoints(ship.id, data["modular"])
-      create_avionics_hardpoints(ship.id, data["avionics"])
-
-      ship.enabled = true
-
-      ship.save!
+      sync_ship(data)
     end
 
     I18n.reload!
@@ -39,24 +26,44 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path)
     ships = load_ships
 
     ship_data = ships.find { |ship| ship["name"] == ship_name }
+    sync_ship(ship_data) if ship_data.present?
 
-    ship = create_or_update_ship(ship_data)
-    ship.ship_role = create_or_update_ship_role(ship_data["focus"])
-    ship.manufacturer = create_or_update_manufacturer(ship_data["manufacturer"])
+    I18n.reload!
+    I18n.locale = old_locale
+  end
+
+  def sync_ship(data)
+    ship = create_or_update_ship(data)
+
+    buying_options = get_buying_options(ship.store_url)
+    ship.price = buying_options.price
+    ship.on_sale = buying_options.on_sale
+
+    ship.ship_role = create_or_update_ship_role(data["focus"])
+    ship.manufacturer = create_or_update_manufacturer(data["manufacturer"])
 
     ship.hardpoints.delete_all
 
-    create_propulsion_hardpoints(ship.id, ship_data["propulsion"])
-    create_ordnance_hardpoints(ship.id, ship_data["ordnance"])
-    create_modular_hardpoints(ship.id, ship_data["modular"])
-    create_avionics_hardpoints(ship.id, ship_data["avionics"])
+    create_propulsion_hardpoints(ship.id, data["propulsion"])
+    create_ordnance_hardpoints(ship.id, data["ordnance"])
+    create_modular_hardpoints(ship.id, data["modular"])
+    create_avionics_hardpoints(ship.id, data["avionics"])
 
     ship.enabled = true
 
     ship.save!
+  end
 
-    I18n.reload!
-    I18n.locale = old_locale
+  def get_buying_options(store_url)
+    response = Typhoeus.get("#{self.base_url}#{store_url}")
+
+    page = Nokogiri::HTML(response.body)
+    price = page.css('#buying-options .final-price').text
+
+    OpenStruct.new({
+      price: price.present? ? price : nil,
+      on_sale: price.present? ? true : false
+    })
   end
 
   def load_ships
@@ -76,11 +83,9 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path)
   end
 
   def load_ships_from_rsi
-    body = Typhoeus.get(
-      "#{self.base_url}/ship-specs"
-    ).body
+    response = Typhoeus.get("#{self.base_url}/ship-specs")
 
-    match = body.match(/data: \[(.+)\]/)
+    match = response.body.match(/data: \[(.+)\]/)
     begin
       ship_data = JSON.parse("[#{match[1]}]")
       File.open(self.json_file_path, "w") do |f|

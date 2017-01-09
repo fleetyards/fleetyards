@@ -64,7 +64,10 @@
               %i.fa.fa-bookmark-o
             %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
               = I18n.t("actions.ship.store")
-      .row
+            - if ship.on_sale?
+              %a.btn.btn-primary{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
+                = I18n.t("actions.ship.on_sale", price: ship.price)
+        .row
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 
       %br

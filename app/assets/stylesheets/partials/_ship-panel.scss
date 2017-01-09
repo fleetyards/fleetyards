@@ -3,8 +3,18 @@
     font-size: 75%;
     text-align: center;
     line-height: 1;
-    color: #7A8288;
+    color: $gray-light;
     padding: 4px 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  }
+
+  .on-sale {
+    font-size: 80%;
+    text-align: center;
+    line-height: 1;
+    color: #fff;
+    padding: 4px 6px;
+    background-color: $brand-info;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   }
 

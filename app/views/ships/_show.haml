@@ -13,6 +13,9 @@
       - unless ship.production_status.blank?
         .production-status
           %strong.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
+      - if ship.on_sale?
+        .on-sale
+          %strong= I18n.t("labels.ship.on_sale", price: ship.price)
       .profile-image.text-center
         %a{href: ship_path(ship.slug, ship_params)}><
           = image_tag ship.store_image.small

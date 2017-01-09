@@ -22,8 +22,13 @@ module ApplicationHelper
     end
   end
 
-  def store_url(path)
-    "#{Rails.application.secrets[:rsi_hostname]}#{path}"
+  def store_url(path, options = {})
+    url = "#{Rails.application.secrets[:rsi_hostname]}#{path}"
+    if options[:anchor].present?
+      "#{url}##{options[:anchor]}"
+    else
+      url
+    end
   end
 
   def gravatar_path(size = 20, hash = nil)

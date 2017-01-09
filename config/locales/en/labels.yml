@@ -60,6 +60,7 @@ en:
         type: Type
         category: Category
     ship:
+      on_sale: "On Sale for %{price}"
       production_status:
         in-production: "In Production"
         in-concept: "In Concept"
