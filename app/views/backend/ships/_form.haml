@@ -1,7 +1,8 @@
 = form_for [:backend, ship], html: { multipart: true } do |form|
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(ship, :name)}
-      = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
+      = form.label :name
+      = form.text_field :name, class: 'form-control'
       %small
         = form_errors ship, :name
 
@@ -11,6 +12,7 @@
         = form.check_box :remove_store_image
         Remove Image
       - else
+        = form.label :store_image
         = form.file_field :store_image, class: 'form-control'
         = form.hidden_field :store_image_cache
       %small

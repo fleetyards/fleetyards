@@ -5,7 +5,6 @@ class Ship < ActiveRecord::Base
 
   belongs_to :manufacturer
   belongs_to :ship_role
-  belongs_to :user_ship, touch: true
 
   has_many :hardpoints,
     dependent: :destroy,

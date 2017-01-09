@@ -1,10 +1,16 @@
-= form_for user_ship, url: my_ships_path : my_ship_path(user_ship)) do |form|
-  = form.hidden_field :ship_id
-  .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(user_ship, :name)}
-      = form.label :name
-      = form.text_field :name, class: 'form-control'
-      %small
-        = form_errors user_ship, :name
+.well
+  = form_for user_ship, url: user_ship.new_record? ? my_ships_path : my_ship_path(user_ship) do |form|
+    = form.hidden_field :ship_id
+    .row
 
-  = render "shared/submit", path: ship_path(ship.slug)
+      .col-xs-12.col-sm-3.col-md-3
+        %img.ship-image{src: ship.store_image.small, alt: "ship_image"}
+      .col-xs-12.col-sm-9.col-md-9
+        .row
+          .col-xs-12.col-md-6.form-group{class: form_error?(user_ship, :name)}
+            = form.label :name
+            = form.text_field :name, class: 'form-control'
+            %small
+              = form_errors user_ship, :name
+
+        = render "shared/submit", path: hangar_path
