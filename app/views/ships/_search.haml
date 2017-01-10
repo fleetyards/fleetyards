@@ -1,10 +1,12 @@
 %form#quicksearch{action: ships_path}
   - manufacturer = params.fetch(:manufacturer, nil)
   - ship_role = params.fetch(:ship_role, nil)
-  - variants = params.fetch(:variants, nil)
+  - production_status = params.fetch(:production_status, nil)
+  - on_sale = params.fetch(:on_sale, nil)
   = hidden_field_tag :manufacturer, manufacturer unless manufacturer.blank?
   = hidden_field_tag :ship_role, ship_role unless ship_role.blank?
-  = hidden_field_tag :variants, variants unless variants.blank?
+  = hidden_field_tag :production_status, production_status unless production_status.blank?
+  = hidden_field_tag :on_sale, on_sale unless on_sale.blank?
   .form-group
     .input-group
       - if params.fetch(:search, nil).present?
