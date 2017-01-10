@@ -25,6 +25,7 @@ en:
     admin: Backend
     enable: Activate
     disable: Deactivate
+    support_us: "Support Fleetyards.net"
     hangar:
       public: "Public view"
     manufacturer:
