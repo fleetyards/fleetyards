@@ -58,18 +58,18 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
 
   def get_buying_options(store_url)
     response = Typhoeus.get("#{self.base_url}#{store_url}")
-
     page = Nokogiri::HTML(response.body)
-    raw_price = if price_element = page.css('#buying-options .final-price').last
-      price_element.text
+
+    price = nil
+    if price_element = page.css('#buying-options .final-price').last
+      raw_price = price_element.text
+      price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
+      price_with_local_vat = price_match[1].to_f if price_match.present?
+      price = price_with_local_vat * 100 / (100 + self.vat_percent)
     end
 
-    price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-    price_with_local_vat = price_match[1].to_f if price_match.present?
-    price = price_with_local_vat * 100 / (100 + self.vat_percent)
-
     OpenStruct.new({
-      price: price.present? ? price : nil,
+      price: price.present? ? price : 0.0,
       on_sale: price.present? ? true : false
     })
   end
