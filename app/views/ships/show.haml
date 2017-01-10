@@ -68,7 +68,7 @@
           - if ship.on_sale?
             .text-right
               %a.btn.btn-primary.btn-lg{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
-                = I18n.t("actions.ship.on_sale", price: ship.price)
+                = I18n.t("actions.ship.on_sale", price: number_to_currency(ship.price, unit: "$"))
 
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 

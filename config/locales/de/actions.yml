@@ -31,7 +31,7 @@ de:
       ships: Schiffe
     ship:
       gallery: Galerie
-      on_sale: "Jetzt verfügbar für $%{price} USD ohne MwSt."
+      on_sale: "Jetzt verfügbar für %{price} USD ohne MwSt."
       store: RSI Detail Seite
       reload: "Schiffe aktualisieren"
     more_info: "Weitere Informationen"
