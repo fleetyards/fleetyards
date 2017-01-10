@@ -11,6 +11,8 @@
         .pull-right
           = paginate @images
 
+    = render "shared/google_adsense", slot: "1102443636"
+
     .row.is-flex
       - @images.each do |image|
         - cache image do

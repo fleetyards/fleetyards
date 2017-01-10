@@ -20,6 +20,8 @@
             %a.btn.btn-default{href: ships_path(back_params)}
               = I18n.t(:"actions.back")
 
+      = render "shared/google_adsense", slot: "2579176832"
+
       .row
         .col-xs-12.col-md-8
           %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params) if ship.images.enabled.present?)}
