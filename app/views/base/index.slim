@@ -26,14 +26,7 @@
       p= I18n.t("texts.base.index_quote").html_safe
       small= I18n.t("texts.base.index_quote_source").html_safe
 
-- if Rails.env.production?
-  .row
-    .col-xs-12
-      .text-center
-        script(async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
-        ins(class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7585041940894304" data-ad-slot="4893514835" data-ad-format="auto")
-        javascript:
-          (adsbygoogle = window.adsbygoogle || []).push({});
+= render "shared/adsense", slot: "4893514835"
 
 .row
   .col-xs-12.col-md-6
