@@ -1,6 +1,6 @@
 - content_for :title do
-  = component.name    
-- cache component do
+  = component.name
+- cache [I18n.locale, component] do
   .row#ship-profile
     .col-xs-12.col-md-12
 

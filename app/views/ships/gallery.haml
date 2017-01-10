@@ -18,9 +18,10 @@
 
     .row.is-flex
       - @images.each do |image|
-        .col-md-3.col-sm-6.col-xs-12
-          %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
-            %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
+        - cache image do
+          .col-md-3.col-sm-6.col-xs-12
+            %a.thumbnail{href: image.name, title: image.name.file.filename, data: {gallery: true}}
+              %img.img-responsive{src: image.name.small, alt: image.name.file.filename}
       - if @images.blank?
         .col-md-12
           .well.text-center

@@ -1,6 +1,6 @@
 - content_for :title do
   = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
-- cache ship do
+- cache [I18n.locale, ship] do
   - unless ship.images.enabled.blank?
     - gallery_params = params.dup
     - gallery_params.delete(:page)

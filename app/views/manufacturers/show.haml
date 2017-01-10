@@ -1,6 +1,6 @@
 - content_for :title do
-  = manufacturer.name.html_safe    
-- cache manufacturer do
+  = manufacturer.name.html_safe
+- cache [I18n.locale, manufacturer] do
   .row#manufacturer-profile
     .col-xs-12.col-md-12
 
