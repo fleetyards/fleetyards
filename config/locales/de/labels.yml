@@ -63,7 +63,7 @@ de:
         type: Typ
         category: Kategorie
     ship:
-      on_sale: "Verfügbar für %{price}"
+      on_sale: "Jetzt im RSI Shop"
       production_status:
         in-production: "In Produktion"
         in-concept: "In Konzeption"

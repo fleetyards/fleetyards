@@ -1,6 +1,6 @@
+- content_for :title do
+  = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
 - cache ship do
-  - content_for :title do
-    = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
   - unless ship.images.enabled.blank?
     - gallery_params = params.dup
     - gallery_params.delete(:page)
@@ -56,16 +56,18 @@
               .col-xs-12
                 %h3.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
                 %p= ship.production_note
-          .btn-group.pull-right.resource-nav
-            - if ship.images.enabled.present?
-              %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params)}
-                = I18n.t("actions.ship.gallery")
-            = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
-              %i.fa.fa-bookmark-o
-            %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
-              = I18n.t("actions.ship.store")
-            - if ship.on_sale?
-              %a.btn.btn-primary{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
+          .text-right
+            .btn-group.resource-nav
+              - if ship.images.enabled.present?
+                %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params)}
+                  = I18n.t("actions.ship.gallery")
+              = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
+                %i.fa.fa-bookmark-o
+              %a.btn.btn-default{target: "_blank", href: store_url(ship.store_url)}
+                = I18n.t("actions.ship.store")
+          - if ship.on_sale?
+            .text-right
+              %a.btn.btn-primary.btn-lg{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
                 = I18n.t("actions.ship.on_sale", price: ship.price)
         .row
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
