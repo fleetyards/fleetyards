@@ -6,10 +6,11 @@ en:
         title: Manufacturer
       ship_role:
         title: Role
-        exploration: ~
-        interdiction: ~
-        mercantile: ~
-        militia-patrol: ~
+      on_sale:
+        title: On Sale
+        items:
+          "true": "Yes"
+          "false": "No"
       production_status:
         title: Status
     image:

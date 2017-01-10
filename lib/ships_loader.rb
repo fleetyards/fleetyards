@@ -1,10 +1,10 @@
-class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
+class ShipsLoader
+  attr_accessor :json_file_path, :base_url, :vat_percent
+
   def initialize(options = {})
-    self.base_url ||= options[:base_url]
-    self.base_url ||= "https://robertsspaceindustries.com"
-    self.json_file_path = "public/ships.json"
-    self.vat_percent ||= options[:vat_percent]
-    self.vat_percent ||= 23
+    @json_file_path = "public/ships.json"
+    @base_url = options[:base_url] || "https://robertsspaceindustries.com"
+    @vat_percent = options[:vat_percent] || 23
   end
 
   def all
@@ -19,6 +19,8 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
 
     I18n.reload!
     I18n.locale = old_locale
+
+    cleanup_ship_roles
   end
 
   def one(ship_name)
@@ -32,6 +34,12 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
 
     I18n.reload!
     I18n.locale = old_locale
+
+    cleanup_ship_roles
+  end
+
+  def cleanup_ship_roles
+    ShipRole.includes(:ships).where(ships: { ship_role_id: nil }).destroy_all
   end
 
   def sync_ship(data)
@@ -57,63 +65,36 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
   end
 
   def get_buying_options(store_url)
-    response = Typhoeus.get("#{self.base_url}#{store_url}")
+    response = Typhoeus.get("#{base_url}#{store_url}")
     page = Nokogiri::HTML(response.body)
 
-    price = nil
-    if price_element = page.css('#buying-options .final-price').last
-      raw_price = price_element.text
-      price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-      price_with_local_vat = price_match[1].to_f if price_match.present?
-      price = price_with_local_vat * 100 / (100 + self.vat_percent)
-    end
+    price_element = page.css('#buying-options .final-price').last
+    price = if price_element
+              raw_price = price_element.text
+              price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
+              price_with_local_vat = price_match[1].to_f if price_match.present?
+              price_with_local_vat * 100 / (100 + vat_percent)
+            end
 
-    OpenStruct.new({
+    OpenStruct.new(
       price: price.present? ? price : 0.0,
       on_sale: price.present? ? true : false
-    })
+    )
   end
 
   def load_ships
-    if File.exists?(self.json_file_path)
-      last_updated = (Time.now - File.stat(self.json_file_path).mtime).to_i
-    else
-      last_updated = 9999
-    end
-
-    if last_updated > 1800
-      Rails.logger.debug("Loading Ships from RSI")
-      load_ships_from_rsi
-    else
-      Rails.logger.debug("Loading Ships from File")
-      load_ships_from_file
-    end
-  end
-
-  def load_ships_from_rsi
-    response = Typhoeus.get("#{self.base_url}/ship-specs")
+    response = Typhoeus.get("#{base_url}/ship-specs")
 
     match = response.body.match(/data: \[(.+)\]/)
     begin
       ship_data = JSON.parse("[#{match[1]}]")
-      File.open(self.json_file_path, "w") do |f|
+      File.open(json_file_path, "w") do |f|
         f.write(ship_data.to_json)
       end
       ship_data
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
       Rails.logger.error "ShipData could not be parsed: [#{match[1]}]"
-      []
-    end
-  end
-
-  def load_ships_from_file
-    begin
-      file = File.read(self.json_file_path)
-      JSON.parse(file)
-    rescue Exception => e
-      Raven.capture_exception(e)
-      Rails.logger.error "ShipData could not be loaded from File"
       []
     end
   end
@@ -136,7 +117,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
       shield_size: data["maxshieldsize"],
       classification: data["classification"],
       focus: data["focus"],
-      remote_store_image_url: ("#{self.base_url}#{data["media"][0]["images"]["store_hub_large"]}" unless ship.store_image.present?),
+      remote_store_image_url: ("#{base_url}#{data['media'][0]['images']['store_hub_large']}" unless ship.store_image.present?),
       store_url: data["url"],
       propulsion_raw: data["propulsion"],
       ordnance_raw: data["ordnance"],
@@ -158,7 +139,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
       rsi_id: manufacturer_data["id"],
       known_for: manufacturer_data["known_for"],
       description: manufacturer_data["description"],
-      remote_logo_url: ("#{self.base_url}#{manufacturer_data["media"][0]["source_url"]}" unless manufacturer.logo.present?),
+      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" unless manufacturer.logo.present?),
       enabled: true
     )
 
@@ -169,7 +150,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
     category = ComponentCategory.find_or_create_by(rsi_name: "propulsion")
 
     propulsion_data.each do |data|
-      hardpoint = Hardpoint.create(
+      Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -185,7 +166,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
     category = ComponentCategory.find_or_create_by(rsi_name: "ordnance")
 
     ordnance_data.each do |data|
-      hardpoint = Hardpoint.create(
+      Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -202,7 +183,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
     category = ComponentCategory.find_or_create_by(rsi_name: "modular")
 
     modular_data.each do |data|
-      hardpoint = Hardpoint.create(
+      Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -217,7 +198,7 @@ class ShipsLoader < Struct.new(:base_url, :json_file_path, :vat_percent)
     category = ComponentCategory.find_or_create_by(rsi_name: "avionics")
 
     avionics_data.each do |data|
-      hardpoint = Hardpoint.create(
+      Hardpoint.create(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,

@@ -5,80 +5,66 @@ class ShipsController < ApplicationController
   before_action :authenticate_user!, only: [:reload]
 
   def index
-    @available_production_status = I18n.t("labels.ship.production_status").map do |status|
-      {
-        name: status[1],
-        slug: status[0]
-      }
-    end
-    @ships = find_ships
-    @ships = @ships
-      .order(name: :asc)
-      .page(params.fetch(:page, nil))
-      .per(8)
+    @ships = Ship.enabled
+                 .filter(filter_params)
+                 .order(name: :asc)
+                 .page(params.fetch(:page, nil))
+                 .per(8)
     respond_to do |format|
-      format.js {
-        render json: @ships
-      }
-      format.html {
-        # render index
-      }
+      format.js { render json: @ships }
+      format.html {}
     end
   end
 
   def show
-    if ship.nil?
-      redirect_to ships_path, alert: I18n.t(:"messages.record_not_found")
-      return
-    end
+    redirect_to ships_path, alert: I18n.t(:"messages.record_not_found") if ship.nil?
   end
 
   def gallery
     authorize! :gallery, ship
-    @images = ship.images.enabled
-      .order("created_at asc ")
-      .page(params.fetch(:page){nil})
-      .per(24)
+    @images = ship.images
+                  .enabled
+                  .order("created_at asc ")
+                  .page(params.fetch(:page, nil))
+                  .per(24)
   end
 
   private def set_active_nav
     @active_nav = 'ships'
   end
 
+  private def filter_params
+    @filter_params ||= params.permit(
+      :ship_role, :manufacturer, :production_status, :on_sale, :search
+    )
+  end
+  helper_method :filter_params
+
   private def ship
     @ship ||= Ship.enabled.where(slug: params.fetch(:slug, nil)).first
   end
   helper_method :ship
 
-  private def find_ships
-    ships = Ship.enabled.includes(:ship_role, :manufacturer)
-    ship_role = params.fetch(:ship_role, nil)
-    manufacturer = params.fetch(:manufacturer, nil)
-    production_status = params.fetch(:production_status, nil)
-    search = params.fetch(:search, nil)
-
-    if ship_role.present?
-      ships = ships.where("ship_roles.slug = ?", ship_role).references(:ship_role)
+  private def filters
+    @filters ||= begin
+      filters = []
+      filters << Filter.new(resource: "ship", field: "ship_role", items: ShipRole.all, translateable: true)
+      filters << Filter.new(resource: "ship", field: "manufacturer", items: Manufacturer.all)
+      production_status_items = I18n.t("labels.ship.production_status").map do |status|
+        {
+          name: status[1],
+          slug: status[0]
+        }
+      end
+      filters << Filter.new(resource: "ship", field: "production_status", items: production_status_items)
+      on_sale_items = %w(true false).map do |item|
+        {
+          name: I18n.t("filter.ship.on_sale.items.#{item}"),
+          slug: item
+        }
+      end
+      filters << Filter.new(resource: "ship", field: "on_sale", items: on_sale_items)
     end
-
-    if manufacturer.present?
-      ships = ships.where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
-    end
-
-    if production_status.present?
-      ships = ships.where(production_status: production_status)
-    end
-
-    if search.present?
-      search_conditions = []
-      search_conditions << "lower(ships.name) like :search"
-      search_conditions << "lower(ships.description) like :search"
-      ships = ships.where([
-        search_conditions.join(' OR '),
-        { search: "%#{search.downcase}%" }
-      ])
-    end
-
-    ships
   end
+  helper_method :filters
 end

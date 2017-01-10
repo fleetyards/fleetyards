@@ -188,7 +188,7 @@ GEM
     globalize (4.0.3)
       activemodel (>= 4.0.0, < 5)
       activerecord (>= 4.0.0, < 5)
-    haml (4.1.0.beta.1)
+    haml (4.0.7)
       tilt
     haml-rails (0.6.0)
       actionpack (>= 4.0.1)

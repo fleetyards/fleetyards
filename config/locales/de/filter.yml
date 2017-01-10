@@ -6,10 +6,11 @@ de:
         title: Hersteller
       ship_role:
         title: Aufgabe
-        exploration: Erkundung
-        interdiction: Blockadebrecher
-        mercantile: Handel
-        militia-patrol: Militärpatrouille
+      on_sale:
+        title: Im Verkauf
+        items:
+          "true": "Ja"
+          "false": "Nein"
       production_status:
         title: Status
     image:

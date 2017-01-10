@@ -5,7 +5,7 @@
 
     .row
       .col-xs-12.col-md-6
-        %h1
+        h1
           = I18n.t(:"headlines.ship.index")
 
       .col-xs-12.col-md-6
@@ -13,9 +13,8 @@
 
     .row
       .col-xs-12.col-md-6
-        = render "shared/filter", resource: "ship", name: "ship_role", filters: ShipRole.all, translateable: true
-        = render "shared/filter", resource: "ship", name: "manufacturer", filters: Manufacturer.all
-        = render "shared/filter", resource: "ship", name: "production_status", filters: @available_production_status
+        - filters.each do |filter|
+          = render "shared/filter", resource: "ship", name: filter.field, filters: filter.items, translateable: filter.translateable
       .col-xs-12.col-md-6
         .pull-right
           = paginate @ships

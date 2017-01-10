@@ -1,0 +1,75 @@
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+AllCops:
+  Exclude:
+    - 'node_modules/**/*'
+    - "db/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - "bin/**/*"
+    - "log/**/*"
+
+Rails:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false # for now
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/PredicateName:
+  Enabled: false
+
+# User.all.map do |user|
+#   [user.name, user.children.map(&:names)]
+# end.flatten.map do |name|
+#   name.capitalize
+# end.join(", ")
+Style/MultilineBlockChain:
+  Enabled: false
+
+# [
+#   "foo",
+#   "bar",
+# ]
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+  Max: 120
+
+Metrics/ClassLength:
+  Enabled: false
+  Max: 500
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+# `fail` is seldom/never seen in Ruby code.
+# https://github.com/bbatsov/ruby-style-guide/issues/233
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# Would complain about `new_record?` otherwise
+Style/TrivialAccessors:
+  ExactNameMatch: true
+
+Rails/Delegate:
+  Exclude:
+    - lib/**/*
