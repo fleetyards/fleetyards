@@ -11,11 +11,15 @@
         .pull-right
           = paginate components
 
+    = render "shared/google_adsense", slot: "5253441634"
+
     .row.is-flex
       - components.each do |component|
         - cache [I18n.locale, component] do
           .col-md-4.col-sm-6.col-xs-12
             = render "show", component: component
+
+    = render "shared/google_adsense", slot: "6730174830"
 
     .row
       .col-xs-12.col-md-12

@@ -12,12 +12,12 @@
           %a.btn.btn-default{href: ship_path(ship.slug, params)}
             = I18n.t(:"actions.back")
 
-    = render "shared/google_adsense", slot: "5532643239"
-
     .row
       .col-xs-12.col-md-12
         .pull-right
           = paginate @images
+
+    = render "shared/google_adsense", slot: "5532643239"
 
     .row.is-flex
       - @images.each do |image|
@@ -29,8 +29,12 @@
         .col-md-12
           .well.text-center
             = I18n.t(:"labels.gallery.blank.ship", ship: ship.name)
+
+    = render "shared/google_adsense", slot: "5393042439"
+
     .row
       .col-xs-12.col-md-12
         .pull-right
           = paginate @images
+
 = render "shared/gallery_modal"
