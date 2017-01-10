@@ -69,7 +69,7 @@
             .text-right
               %a.btn.btn-primary.btn-lg{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
                 = I18n.t("actions.ship.on_sale", price: ship.price)
-        .row
+
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 
       %br
