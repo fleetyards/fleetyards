@@ -10,8 +10,6 @@
 
       .col-xs-12.col-md-6
         = render "search"
-    
-    = render "shared/google_adsense", slot: "2997979234"
 
     .row
       .col-xs-12.col-md-6
@@ -20,6 +18,8 @@
       .col-xs-12.col-md-6
         .pull-right
           = paginate @ships
+      
+    = render "shared/google_adsense", slot: "2997979234"
 
     .row.is-flex
       = render partial: "ships/show", collection: @ships, as: :ship
