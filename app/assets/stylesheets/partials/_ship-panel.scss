@@ -21,6 +21,25 @@
   &.hangar-panel {
     .profile-image {
       border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .label-purchased {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-top: 20px solid $brand-success;
+      border-right: 20px solid $brand-success;
+      border-bottom: 20px solid transparent;
+
+      i {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+      }
     }
   }
 

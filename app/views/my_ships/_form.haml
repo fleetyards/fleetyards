@@ -7,10 +7,13 @@
         %img.ship-image{src: ship.store_image.small, alt: "ship_image"}
       .col-xs-12.col-sm-9.col-md-9
         .row
-          .col-xs-12.col-md-6.form-group{class: form_error?(user_ship, :name)}
+          .col-xs-12.col-md-6.form-group
             = form.label :name
             = form.text_field :name, class: 'form-control'
-            %small
-              = form_errors user_ship, :name
+
+          .col-xs-12.col-md-6.form-group
+            .checkbox
+              = form.check_box :purchased
+              = form.label :purchased
 
         = render "shared/submit", path: hangar_path

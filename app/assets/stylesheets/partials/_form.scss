@@ -4,35 +4,13 @@ form {
     padding-bottom: 20px;
   }
 
-  .select2.has-error {
-    small {
-      margin-top: -3px;
-      padding-top: 8px;
-    }
+  .form-group .checkbox {
+    padding-top: 22px;
   }
 
   .ship-image {
     width: 100%;
     border-radius: 3px;
-  }
-
-  .select2-container {
-    width: 100%;
-
-    .select2-choice {
-      height: 34px;
-      line-height: 34px;
-
-      .select2-arrow {
-        b {
-          background-position: 0 5px;
-        }
-      }
-    }
-  }
-
-  .select2-dropdown-open .select2-choice .select2-arrow b {
-    background-position: -18px 4px !important;
   }
 
   .has-error {

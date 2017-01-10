@@ -8,6 +8,7 @@ en:
     role: Role
     email: E-Mail
     source: Source
+    purchased: "Purchased"
     component:
       size: "Size: %{size}"
     hardpoint:

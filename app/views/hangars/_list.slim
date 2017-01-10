@@ -1,0 +1,12 @@
+.row
+  .col-xs-12
+    .pull-right
+      = paginate user_ships
+
+.row.is-flex
+  = render partial: "hangars/show", collection: user_ships, as: :user_ship
+
+.row
+  .col-xs-12
+    .pull-right
+      = paginate user_ships

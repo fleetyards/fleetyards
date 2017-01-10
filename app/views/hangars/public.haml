@@ -8,4 +8,15 @@
         %h1
           = I18n.t(:"headlines.hangar.public", user: user.username.capitalize)
 
-    = render "hangars/list"
+    .row
+      .col-xs-12
+        .pull-right
+          = paginate purchased_user_ships
+
+    .row.is-flex
+      = render partial: "hangars/show_public", collection: purchased_user_ships, as: :user_ship
+
+    .row
+      .col-xs-12
+        .pull-right
+          = paginate purchased_user_ships

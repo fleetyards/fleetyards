@@ -14,6 +14,7 @@ de:
         rsi_handle: "Profil"
       user_ship:
         name: "Name (optional)"
+        purchased: "Gekauft"
     placeholder:
       name: Name
       ship:

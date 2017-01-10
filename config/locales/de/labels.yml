@@ -8,6 +8,7 @@ de:
     role: Benutzergruppe
     email: E-Mail
     source: Quelle
+    purchased: "Gekauft"
     component:
       size: "Größe: %{size}"
     hardpoint:

@@ -7,11 +7,14 @@ en:
         password_confirmation: "Password Confirmation"
         current_password: "Current Password"
         remember_me: "Remember me"
-        locale: "Language"
+        locale: Language
         rsi_organization_url: "Organization URL"
         rsi_profile_url: "Profile URL"
         rsi_organization_handle: "Organizations SID"
-        rsi_handle: "Profile"
+        rsi_handle: Profile
+      user_ship:
+        name: Name
+        purchased: Purchased
     placeholder:
       name: Name
       ship:

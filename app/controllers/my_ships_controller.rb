@@ -39,13 +39,9 @@ class MyShipsController < ApplicationController
   def destroy
     authorize! :destroy, user_ship
     if user_ship.destroy
-      redirect_to :back, notice: I18n.t("messages.destroy.success",
-        resource: I18n.t("resources.my_ship")
-      )
+      redirect_to :back, notice: I18n.t("messages.destroy.success", resource: I18n.t("resources.my_ship"))
     else
-      redirect_to :back, alert: I18n.t("messages.destroy.failure",
-        resource: I18n.t("resources.my_ship")
-      )
+      redirect_to :back, alert: I18n.t("messages.destroy.failure", resource: I18n.t("resources.my_ship"))
     end
   end
 
@@ -54,9 +50,12 @@ class MyShipsController < ApplicationController
   end
 
   private def user_ship_params
-    @user_ship_params ||= params.require(:user_ship).permit(:name, :ship_id).merge({
-      user_id: current_user.id
-    })
+    @user_ship_params ||= params
+                          .require(:user_ship)
+                          .permit(:name, :ship_id, :purchased)
+                          .merge(
+                            user_id: current_user.id
+                          )
   end
 
   private def ship
