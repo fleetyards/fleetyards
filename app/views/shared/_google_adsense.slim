@@ -3,7 +3,7 @@
     .col-xs-12
       .text-center
         script(async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
-        ins(class="adsbygoogle" style="display:block" data-ad-client="#{Rails.application.secret[:google_adsense]}" data-ad-slot="#{slot}" data-ad-format="auto")
+        ins(class="adsbygoogle" style="display:block" data-ad-client="#{Rails.application.secrets[:google_adsense]}" data-ad-slot="#{slot}" data-ad-format="auto")
         javascript:
           (adsbygoogle = window.adsbygoogle || []).push({});
       br
