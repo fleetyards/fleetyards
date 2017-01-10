@@ -74,12 +74,13 @@ class Ship < ActiveRecord::Base
     search_conditions = []
     search_conditions << "lower(ships.name) like :search"
     search_conditions << "lower(ships.description) like :search"
-    where(
+    search_conditions << "lower(ship_roles.name) like :search"
+    includes(:ship_role).where(
       [
         search_conditions.join(' OR '),
         { search: "%#{search_string.downcase}%" }
       ]
-    )
+    ).references(:ship_role)
   end
 
   private def update_slugs
