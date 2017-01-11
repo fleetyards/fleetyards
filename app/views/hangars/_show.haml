@@ -20,11 +20,11 @@
       %a{href: ship_path(ship.slug, ship_params)}><
         = image_tag ship.store_image.small
         - if user_signed_in? && user_ship.user_id == current_user.id && user_ship.purchased?
-          %span.label-purchased{title: I18n.t("labels.purchased")}
+          .purchased{title: I18n.t("labels.purchased")}
             %i.fa.fa-check
-      - if ship.on_sale?
-        .on-sale
-          %strong= I18n.t("labels.ship.on_sale", price: ship.price)
+        - if ship.on_sale?
+          .on-sale{title: I18n.t("labels.ship.on_sale", price: ship.price)}
+            %i.fa.fa-dollar
     - if user_signed_in? && user_ship.user_id == current_user.id
       .btn-group.btn-group-flex
         %a.btn.btn-default.btn-flex{href: edit_my_ship_path(user_ship)}

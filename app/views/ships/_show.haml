@@ -16,9 +16,9 @@
       .profile-image.text-center
         %a{href: ship_path(ship.slug, ship_params)}><
           = image_tag ship.store_image.small
-        - if ship.on_sale?
-          .on-sale
-            %strong= I18n.t("labels.ship.on_sale", price: ship.price)
+          - if ship.on_sale?
+            .on-sale{title: I18n.t("labels.ship.on_sale", price: ship.price)}
+              %i.fa.fa-dollar
       = render "ships/index_data", ship: ship
       .btn-group.btn-group-flex
         %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
