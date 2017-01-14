@@ -1,3 +1,5 @@
+# encoding: utf-8
+# frozen_string_literal: true
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
@@ -8,6 +10,7 @@ Bundler.require(:default, Rails.env)
 
 module Fleetyards
   class Application < Rails::Application
+    config.lograge.enabled = true
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -18,15 +21,16 @@ module Fleetyards
 
     # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.default_locale = :en
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**','*.{rb,yml}').to_s]
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
 
     config.i18n.fallbacks = [:en]
 
-    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
-      "#{html_tag}".html_safe
+    config.action_view.field_error_proc = proc { |html_tag, _instance|
+      # rubocop:disable Rails/OutputSafety
+      html_tag.to_s.html_safe
     }
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 end
 

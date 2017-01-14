@@ -227,6 +227,10 @@ GEM
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
+    lograge (0.4.1)
+      actionpack (>= 4, < 5.1)
+      activesupport (>= 4, < 5.1)
+      railties (>= 4, < 5.1)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     metaclass (0.0.4)
@@ -473,6 +477,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (~> 3.0.5)
+  lograge
   metadown
   mini_magick
   minitest-rails
