@@ -21,7 +21,6 @@ class ShipsController < ApplicationController
   end
 
   def gallery
-    authorize! :gallery, ship
     @images = ship.images
                   .enabled
                   .order("created_at asc ")

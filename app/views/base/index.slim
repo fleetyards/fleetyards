@@ -57,10 +57,11 @@
               - path = gallery_ship_path(image.gallery.slug)
             a.thumbnail(href=path)
               img.img-responsive(src=image.name.small alt=image.name.file.filename)
-
+    .row
       .col-xs-12
         a.btn.btn-default.btn-block(href=images_path)
           = I18n.t("actions.more")
+    
     br    
 
 = render "shared/google_adsense", slot: "9823242032"
