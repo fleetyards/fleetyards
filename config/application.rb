@@ -31,6 +31,13 @@ module Fleetyards
     }
 
     config.exceptions_app = routes
+
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins "localhost", "fleetyards.dev", "cdn.fleetyards.net", "fleetyards.net"
+        resource "*", headers: :any, methods: [:get]
+      end
+    end
   end
 end
 

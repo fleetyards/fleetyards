@@ -77,6 +77,7 @@ gem 'fog'
 gem 'web_translate_it'
 
 gem 'heroku_rails_deflate', group: :production
+gem 'rack-cors', require: 'rack/cors'
 gem 'rails_12factor', group: :production
 
 gem 'newrelic_rpm'
