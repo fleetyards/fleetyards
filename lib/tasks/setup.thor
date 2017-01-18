@@ -65,6 +65,8 @@ class Setup < Thor
 
   desc "recreate_images", "Recreate Images"
   def recreate_images
+    require "./config/environment"
+
     Image.find_each do |image|
       begin
         image.name.cache_stored_file!
