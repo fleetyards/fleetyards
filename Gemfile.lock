@@ -67,6 +67,9 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+    carrierwave-imageoptimizer (1.4.0)
+      carrierwave (>= 0.8, < 2.0)
+      image_optimizer (~> 1.6)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     codeclimate-test-reporter (1.0.3)
@@ -212,6 +215,7 @@ GEM
       hpricot (~> 0.8.6)
       ruby_parser (~> 3.1.1)
     i18n (0.7.0)
+    image_optimizer (1.7.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     jquery-rails (3.1.2)
@@ -461,6 +465,7 @@ DEPENDENCIES
   cache_digests
   cancan
   carrierwave
+  carrierwave-imageoptimizer
   codeclimate-test-reporter
   coffee-rails
   coveralls

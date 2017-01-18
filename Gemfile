@@ -67,6 +67,7 @@ gem 'highline'
 gem 'thor'
 
 gem 'carrierwave'
+gem 'carrierwave-imageoptimizer'
 gem 'mini_magick'
 
 gem 'nokogiri'

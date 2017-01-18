@@ -1,5 +1,5 @@
 class Manufacturer < ActiveRecord::Base
-  default_scope ->{ order(name: :asc) }
+  default_scope -> { order(name: :asc) }
   translates :description
 
   include SlugHelper
@@ -15,6 +15,6 @@ class Manufacturer < ActiveRecord::Base
   before_save :update_slugs
 
   private def update_slugs
-    self.slug = SlugHelper::generate_slug self.name
+    self.slug = SlugHelper.generate_slug(name)
   end
 end

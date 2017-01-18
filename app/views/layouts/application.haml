@@ -25,7 +25,7 @@
 
     :javascript
       window.locale = "#{I18n.locale}";
-    != javascript_include_tag "application"
+    != javascript_include_tag "application", async: Rails.env.production?
 
     != csrf_meta_tags
 
