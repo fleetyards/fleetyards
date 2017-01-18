@@ -13,6 +13,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   version :small do
     process resize_to_limit: [400, 200]
     process quality: 60
+    process optimize: [{ quality: 60 }]
   end
 
   def extension_white_list
