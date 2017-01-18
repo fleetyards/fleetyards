@@ -35,6 +35,8 @@ Fleetyards::Application.configure do
   # Version of your assets, change this if you want to expire all your assets.
   config.assets.version = '1.0'
 
+  config.static_cache_control = "public, max-age=31536000"
+
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
@@ -54,11 +56,11 @@ Fleetyards::Application.configure do
   # Use a different cache store in production.
   if ENV["MEMCACHEDCLOUD_SERVERS"]
     config.cache_store = :dalli_store,
-      ENV["MEMCACHEDCLOUD_SERVERS"].split(','),
-      {
-        username: ENV["MEMCACHEDCLOUD_USERNAME"],
-        password: ENV["MEMCACHEDCLOUD_PASSWORD"]
-      }
+                         ENV["MEMCACHEDCLOUD_SERVERS"].split(','),
+                         {
+                           username: ENV["MEMCACHEDCLOUD_USERNAME"],
+                           password: ENV["MEMCACHEDCLOUD_PASSWORD"]
+                         }
   end
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
@@ -66,7 +68,7 @@ Fleetyards::Application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += %w( error.css )
+  config.assets.precompile += %w(error.css)
   config.assets.precompile += Dir[Rails.root.join('vendor', 'assets', 'bower_components', '**', 'img', '*')]
 
   # Ignore bad email addresses and do not raise email delivery errors.
