@@ -32,37 +32,31 @@ body {
   min-height: 100%;
   height: auto;
   position: relative;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
   padding-bottom: 260px;
 
   > .container {
     padding-bottom: 20px;
   }
 
-  &.bg-0 {
-    background-image: image-url("bg.jpg");
-  }
+  .background {
+    position: fixed;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 
-  &.bg-1 {
-    background-image: image-url("bg-1.jpg");
-  }
-
-  &.bg-2 {
-    background-image: image-url("bg-2.jpg");
-  }
-
-  &.bg-3 {
-    background-image: image-url("bg-3.jpg");
-  }
-
-  &.bg-4 {
-    background-image: image-url("bg-4.jpg");
-  }
-
-  &.bg-5 {
-    background-image: image-url("bg-5.jpg");
+    .background-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(#000, .7)
+    }
   }
 }
 

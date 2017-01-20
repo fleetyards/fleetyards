@@ -83,6 +83,10 @@ class Ship < ActiveRecord::Base
     ).references(:ship_role)
   end
 
+  def random_image
+    images.enabled.order("RANDOM()").first
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end
