@@ -5,10 +5,8 @@ log/*
 tmp/*
 
 pids/*
-.ruby-version
 
 # config files
-config/database.yml
 .env
 .wti
 

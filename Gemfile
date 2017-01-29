@@ -9,6 +9,7 @@ gem 'rails', '4.1.8'
 gem 'pg'
 
 gem 'sidekiq'
+gem 'sidekiq-failures'
 gem 'sidekiq-scheduler', '~> 2.0'
 # for sidekiq web
 gem 'sinatra', '>= 1.3.0', require: nil
@@ -77,15 +78,19 @@ gem 'fog'
 
 gem 'web_translate_it'
 
-gem 'heroku_rails_deflate', group: :production
+# gem 'heroku_rails_deflate', group: :production
 gem 'rack-cors', require: 'rack/cors'
-gem 'rails_12factor', group: :production
+# gem 'rails_12factor', group: :production
 
 gem 'newrelic_rpm'
 
 gem 'sentry-raven'
 
 gem 'lograge'
+
+# deployment
+gem 'mina'
+gem 'mina-rbenv-addons'
 
 group :development do
   gem 'letter_opener'
