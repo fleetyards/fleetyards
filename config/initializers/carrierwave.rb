@@ -14,8 +14,8 @@ CarrierWave.configure do |config|
   if Rails.env.production?
     config.fog_credentials = {
       provider:              'AWS',
-      aws_access_key_id:     Rails.application.secrets[:aws]["key"],
-      aws_secret_access_key: Rails.application.secrets[:aws]["secret"],
+      aws_access_key_id:     Rails.application.secrets[:aws_key],
+      aws_secret_access_key: Rails.application.secrets[:aws_secret],
       region:                'eu-west-1'
     }
     config.fog_directory = 'fleetyards'

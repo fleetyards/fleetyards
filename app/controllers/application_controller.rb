@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   def worker_running?
     ship_queue = Sidekiq::Queue.new(ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader')
     process = Sidekiq::ProcessSet.new
-    running_processes = process.sum{|ps| ps["busy"] }
+    running_processes = process.sum { |ps| ps["busy"] }
     if !(ship_queue.size.zero? && running_processes.zero?)
       true
     else
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  private def default_url_options(options = {})
+  private def default_url_options(_options = {})
     { locale: I18n.locale }
   end
 
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
     @active_nav = 'home'
   end
 
-  private def after_sign_out_path_for(resource_or_scope)
+  private def after_sign_out_path_for(_resource_or_scope)
     new_user_session_path
   end
 
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   helper_method :default_title
 
   private def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    %w(asc desc).include?(params[:direction]) ? params[:direction] : 'desc'
   end
   helper_method :sort_direction
 
@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
   helper_method :backend?
 
   private def registration_enabled?
-    Rails.application.secrets[:base]["registration"]
+    Rails.application.secrets[:registration]
   end
   helper_method :registration_enabled?
 

@@ -10,7 +10,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Rails.application.secrets[:mailer]["default_from"]
+  config.mailer_sender = Rails.application.secrets[:mailer_default_from]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -227,10 +227,10 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :github, Rails.application.secrets[:github]["id"], Rails.application.secrets[:github]["secret"], scope: 'user'
-  config.omniauth :facebook, Rails.application.secrets[:facebook]["id"], Rails.application.secrets[:facebook]["secret"]
-  config.omniauth :twitter, Rails.application.secrets[:twitter]["id"], Rails.application.secrets[:twitter]["secret"]
-  config.omniauth :google_oauth2, Rails.application.secrets[:google]["id"], Rails.application.secrets[:google]["secret"]
+  config.omniauth :github, Rails.application.secrets[:github_id], Rails.application.secrets[:github_secret], scope: 'user'
+  config.omniauth :facebook, Rails.application.secrets[:facebook_id], Rails.application.secrets[:facebook_secret]
+  config.omniauth :twitter, Rails.application.secrets[:twitter_id], Rails.application.secrets[:twitter_secret]
+  config.omniauth :google_oauth2, Rails.application.secrets[:google_id], Rails.application.secrets[:google_secret]
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
