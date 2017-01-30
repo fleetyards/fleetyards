@@ -88,10 +88,6 @@ gem 'sentry-raven'
 
 gem 'lograge'
 
-# deployment
-gem 'mina'
-gem 'mina-rbenv-addons'
-
 group :development do
   gem 'letter_opener'
   gem 'listen', '~> 3.0.5'
@@ -100,6 +96,10 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console'
+
+  # deployment
+  gem 'mina'
+  gem 'mina-rbenv-addons'
 end
 
 group :test do
