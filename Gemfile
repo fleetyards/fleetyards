@@ -99,7 +99,6 @@ group :development do
 
   # deployment
   gem 'mina'
-  gem 'mina-puma', require: false
 end
 
 group :test do
