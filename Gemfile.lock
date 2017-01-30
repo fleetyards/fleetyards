@@ -245,9 +245,6 @@ GEM
     mina (1.0.6)
       open4 (~> 1.3.4)
       rake
-    mina-puma (1.0.1)
-      mina (~> 1.0.0)
-      puma (>= 2.13)
     mina-rbenv-addons (0.2)
       mina (~> 1.0.0)
     mini_magick (4.0.2)
@@ -492,7 +489,6 @@ DEPENDENCIES
   lograge
   metadown
   mina
-  mina-puma
   mina-rbenv-addons
   mini_magick
   minitest-rails
