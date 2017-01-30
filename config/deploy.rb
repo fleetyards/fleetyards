@@ -69,7 +69,7 @@ end
 
 task :phased_restart do
   invoke :'rbenv:load'
-  command 'bundle exec pumactl -P tmp/pids/puma.pid -S tmp/sockets/puma.state -F config/puma.rb phased-restart'
+  command 'bundle exec pumactl -P tmp/pids/puma.pid -S tmp/sockets/puma.state phased-restart'
   command 'sudo supervisorctl restart fleetyards:fleetyards-worker'
 end
 
