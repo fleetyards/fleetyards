@@ -6,7 +6,7 @@ threads 0, threads_count
 
 directory ENV['APP_DIR']
 pidfile "#{ENV['SHARED_DIR']}/tmp/pids/puma.pid"
-state_path "#{ENV['SHARED_DIR']}/tmp/pids/puma.state"
+state_path "#{ENV['SHARED_DIR']}/tmp/sockets/puma.state"
 
 prune_bundler
 

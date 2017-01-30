@@ -99,7 +99,7 @@ group :development do
 
   # deployment
   gem 'mina'
-  gem 'mina-rbenv-addons'
+  gem 'mina-puma', require: false
 end
 
 group :test do
