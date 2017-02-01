@@ -3,6 +3,7 @@
 # logfiles and tempfiles.
 log/*
 tmp/*
+dumps
 
 pids/*
 

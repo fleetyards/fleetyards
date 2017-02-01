@@ -98,7 +98,8 @@ group :development do
   gem 'web-console'
 
   # deployment
-  gem 'mina'
+  gem 'mina', require: false
+  gem 'mina-multistage', require: false
 end
 
 group :test do
