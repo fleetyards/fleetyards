@@ -34,7 +34,7 @@ module Fleetyards
 
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
-        origins "localhost", "fleetyards.dev", "cdn.s3.fleetyards.net", "cdn.fleetyards.net", "fleetyards.net", "d159vi9qupesbj.cloudfront.net", "fleetyards.scdn4.secure.raxcdn.com"
+        origins "localhost", "fleetyards.dev", "fleetyards.net", "d159vi9qupesbj.cloudfront.net"
         resource "*", headers: :any, methods: [:get]
       end
     end
