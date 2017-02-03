@@ -19,6 +19,6 @@ CarrierWave.configure do |config|
       region:                'eu-west-1'
     }
     config.fog_directory = 'fleetyards'
-    config.asset_host = "http://cdn.s3.fleetyards.net"
+    config.asset_host = "https://d159vi9qupesbj.cloudfront.net"
   end
 end
