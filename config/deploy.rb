@@ -10,7 +10,7 @@ set :shared_files, [
   'config/database.yml'
 ]
 
-set :stages, %w(local production)
+set :stages, %w(local live)
 set :default_stage, 'local'
 
 require 'mina/multistage'
@@ -47,6 +47,7 @@ task deploy: :environment do
     invoke :'deploy:cleanup'
 
     on :launch do
+      # invoke :'server:start'
       invoke :'server:phased_restart'
     end
   end
@@ -101,12 +102,12 @@ namespace :db do
   end
 
   task local_import: :download_backup do
-    command %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
+    system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
   end
 
   task download_backup: :backup do
     comment "Downloading latest backup..."
-    command %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
+    system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
     comment "Download finished"
   end
 end

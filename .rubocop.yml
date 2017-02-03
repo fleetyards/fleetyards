@@ -43,14 +43,15 @@ Style/TrailingCommaInLiteral:
 
 Metrics/LineLength:
   Enabled: false
-  Max: 120
 
 Metrics/ClassLength:
   Enabled: false
-  Max: 500
 
 Metrics/MethodLength:
   Max: 40
+
+Metrics/BlockLength:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
