@@ -53,9 +53,30 @@ task deploy: :environment do
   end
 end
 
+task assets_precompile: :environment do
+  in_path fetch(:current_path).to_s do
+    comment %(Precompile Assets)
+    command %(#{fetch(:rake)} assets:precompile)
+  end
+end
+
+task assets_precompile: :environment do
+  in_path fetch(:current_path).to_s do
+    comment %(Precompile Assets)
+    command %(#{fetch(:rake)} assets:precompile)
+  end
+  invoke :'server:restart'
+end
+
+task console: :environment do
+  set :execution_mode, :exec
+  in_path fetch(:current_path).to_s do
+    command %(#{fetch(:rails)} console)
+  end
+end
+
 namespace :server do
-  task :phased_restart do
-    invoke :'rbenv:load'
+  task phased_restart: :environment do
     command %(bundle exec pumactl -P tmp/pids/puma.pid -S tmp/sockets/puma.state phased-restart)
     command %(sudo supervisorctl restart fleetyards:fleetyards-worker)
   end
