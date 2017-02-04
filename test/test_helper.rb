@@ -11,6 +11,7 @@ require "webmock/minitest"
 
 require "active_record/fixtures"
 
+# rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::TestHelpers
   ActiveRecord::Migration.check_pending!

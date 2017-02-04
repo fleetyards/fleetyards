@@ -14,10 +14,12 @@ class User < ActiveRecord::Base
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+    login = conditions.delete(:login)
+    if login.present?
+      where(conditions.to_h)
+        .find_by(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }])
     elsif conditions.key?(:username) || conditions.key?(:email)
-      where(conditions.to_h).first
+      find_by(conditions.to_h)
     end
   end
 
@@ -29,18 +31,19 @@ class User < ActiveRecord::Base
       return user
     end
 
-    where(data.slice(:provider, :uid)).first_or_create do |user|
-      user.email = data[:email]
-      user.gravatar = data[:email]
-      user.password = Devise.friendly_token[0, 32]
-      user.username = data[:username]
-      user.skip_confirmation!
+    where(data.slice(:provider, :uid)).first_or_create do |found_user|
+      found_user.email = data[:email]
+      found_user.gravatar = data[:email]
+      found_user.password = Devise.friendly_token[0, 32]
+      found_user.username = data[:username]
+      found_user.skip_confirmation!
     end
   end
 
   def self.new_with_session(params, session)
     super.tap do |user|
-      if data = session["devise.oauth_data"]
+      data = session["devise.oauth_data"]
+      if data.present?
         user.email = data[:email] if user.email.blank?
         user.username = data[:username] if user.username.blank?
       end
@@ -70,8 +73,7 @@ class User < ActiveRecord::Base
       self.rsi_handle = rsi_profile_url.split("/").last
     end
 
-    if rsi_organization_url.present?
-      self.rsi_organization_handle = rsi_organization_url.split("/").last
-    end
+    return unless rsi_organization_url.present?
+    self.rsi_organization_handle = rsi_organization_url.split("/").last
   end
 end

@@ -6,8 +6,8 @@ module Backend
     def index
       authorize! :index, :images
       @images = Image.order('created_at desc')
-      if ship_slug = params[:ship].present? && params[:ship]
-        ship = Ship.find_by(slug: ship_slug)
+      if params[:ship].present?
+        ship = Ship.find_by(slug: params[:ship])
         @images = @images.where(gallery_type: "Ship", gallery_id: ship.id)
       end
       respond_to do |format|

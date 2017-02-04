@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable Style/ClassAndModuleChildren
 class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
   include SlugHelper
 

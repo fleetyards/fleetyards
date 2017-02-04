@@ -3,7 +3,7 @@
 %footer#main-footer
   .container
     .row
-      .col-xs-12.col-sm-8.col-md-8
+      .col-xs-12
         %nav
           %a{href: "https://robertsspaceindustries.com/", target: "_blank"}><
             Roberts Space Industries
@@ -13,12 +13,6 @@
           = " | "
           %a{href: impressum_path}><
             = I18n.t(:"nav.impressum")
-
-      .col-xs-12.col-sm-4.col-md-4
-        .text-right
-          .btn-group.btn-group-xs
-            - I18n.available_locales.each do |locale|
-              = link_to locale.upcase, {locale: locale}, class: "btn btn-default#{(' btn-primary' if locale == I18n.locale)}"
 
     .clearfix
 

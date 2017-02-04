@@ -2,9 +2,8 @@
 class Hardpoint < ActiveRecord::Base
   class ComponentCategoryValidator < ActiveModel::Validator
     def validate(hardpoint)
-      if hardpoint.component.present? && hardpoint.component.category_id != hardpoint.category_id
-        hardpoint.errors[:component_id] << I18n.t(:"activerecord.errors.models.hardpoint.attributes.component_id.invalid_category")
-      end
+      return unless hardpoint.component.present? && hardpoint.component.category_id != hardpoint.category_id
+      hardpoint.errors[:component_id] << I18n.t(:"activerecord.errors.models.hardpoint.attributes.component_id.invalid_category")
     end
   end
 

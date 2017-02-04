@@ -19,7 +19,7 @@ module ApplicationHelper
       title: options[:title],
       class: options[:class]
     ) do
-      elements.join('').html_safe
+      safe_join(elements)
     end
   end
 

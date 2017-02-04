@@ -16,9 +16,10 @@ class ManufacturersController < ApplicationController
 
   def show
     authorize! :show, manufacturer
-    if manufacturer.nil?
-      redirect_to manufacturers_path, alert: I18n.t(:"messages.record_not_found")
-    end
+
+    return unless manufacturer.nil?
+
+    redirect_to manufacturers_path, alert: I18n.t(:"messages.record_not_found")
   end
 
   private def manufacturer
