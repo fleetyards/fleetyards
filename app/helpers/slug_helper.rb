@@ -1,7 +1,7 @@
 # coding: utf-8
+# frozen_string_literal: true
 module SlugHelper
-
-  def self.generate_slug name
+  def self.generate_slug(name)
     unless name.blank?
       slug = name.gsub /[ö]/, 'oe'
       slug = slug.gsub /[ü]/, 'ue'
@@ -18,5 +18,4 @@ module SlugHelper
       slug.parameterize
     end
   end
-
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Api
   class BaseController < ActionController::Base
     check_authorization unless: :unauthorized_controllers

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Backend
   class ShipsControllerTest < ActionController::TestCase
     describe "without session" do

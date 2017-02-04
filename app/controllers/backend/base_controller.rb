@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 module Backend
   class BaseController < ApplicationController
-    before_filter :authenticate_user!
-    before_filter :verify_admin
+    before_action :authenticate_user!
+    before_action :verify_admin
 
     def index
       authorize! :show, :backend
@@ -10,7 +11,7 @@ module Backend
     end
 
     private def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      %w(asc desc).include?(params[:direction]) ? params[:direction] : "asc"
     end
     helper_method :sort_direction
 

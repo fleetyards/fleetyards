@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PasswordsController < ApplicationController
   before_action :set_active_nav
 

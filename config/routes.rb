@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require 'sidekiq/web'
 
 Fleetyards::Application.routes.draw do
   concern :paginatable do
-    get '(page/:page)', :action => :index, :on => :collection, :as => ''
+    get '(page/:page)', action: :index, on: :collection, as: ''
   end
 
   devise_for :users, skip: [:session, :password, :registration], controllers: {
@@ -23,7 +24,7 @@ Fleetyards::Application.routes.draw do
 
       resources :settings, except: [:index, :show]
 
-      authenticate :user, lambda {|u| u.admin? } do
+      authenticate :user, ->(u) { u.admin? } do
         mount Sidekiq::Web => '/workers'
       end
 
@@ -100,6 +101,6 @@ Fleetyards::Application.routes.draw do
     root 'base#index'
   end
 
-  #get '*path', to: redirect("/#{I18n.default_locale}/%{path}"), constraints: lambda { |req| !req.path.starts_with? "/#{I18n.default_locale}/" }
+  # get '*path', to: redirect("/#{I18n.default_locale}/%{path}"), constraints: lambda { |req| !req.path.starts_with? "/#{I18n.default_locale}/" }
   get '', to: redirect("/#{I18n.default_locale}")
 end

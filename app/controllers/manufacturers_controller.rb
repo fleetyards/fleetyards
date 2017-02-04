@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ManufacturersController < ApplicationController
   before_action :set_active_nav
 
@@ -7,10 +8,10 @@ class ManufacturersController < ApplicationController
   def index
     authorize! :index, :manufacturers
     @manufacturers = Manufacturer
-      .enabled
-      .order('manufacturers.name desc')
-      .page(params.fetch(:page, nil))
-      .per(20)
+                     .enabled
+                     .order('manufacturers.name desc')
+                     .page(params.fetch(:page, nil))
+                     .per(20)
   end
 
   def show

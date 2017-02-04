@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Backend
   class ShipsController < BaseController
     before_action :set_active_nav
@@ -5,9 +6,9 @@ module Backend
     def index
       authorize! :index, :backend_ships
       @ships = Ship.all
-        .order(sort_column + " " + sort_direction)
-        .page(params.fetch(:page){nil})
-        .per(15)
+                   .order(sort_column + " " + sort_direction)
+                   .page(params.fetch(:page) { nil })
+                   .per(15)
     end
 
     def new
@@ -50,40 +51,40 @@ module Backend
     def gallery
       authorize! :gallery, :backend_ships
       respond_to do |format|
-        format.js {
+        format.js do
           images = ship.images.order('created_at desc').all
-          jq_images = images.collect { |image| image.to_jq_upload }
-          render json: {files: jq_images}.to_json
-        }
-        format.html {
+          jq_images = images.collect(&:to_jq_upload)
+          render json: { files: jq_images }.to_json
+        end
+        format.html do
           # render upload form
-        }
+        end
       end
     end
 
     def reload
       authorize! :reload, :backend_ships
       respond_to do |format|
-        format.js {
+        format.js do
           ShipsWorker.perform_async
           render json: true
-        }
-        format.html {
+        end
+        format.html do
           redirect_to root_path
-        }
+        end
       end
     end
 
     def reload_one
       authorize! :reload, :backend_ships
       respond_to do |format|
-        format.js {
+        format.js do
           ShipWorker.perform_async(ship.name)
           render json: true
-        }
-        format.html {
+        end
+        format.html do
           redirect_to root_path
-        }
+        end
       end
     end
 
@@ -91,20 +92,20 @@ module Backend
       authorize! :toggle, ship
 
       respond_to do |format|
-        format.js {
+        format.js do
           if ship.update(ship_params)
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.ship"))
             if ship.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.ship"))
             end
-            render json: {message: message}
+            render json: { message: message }
           else
             render json: false, status: :bad_request
           end
-        }
-        format.html {
+        end
+        format.html do
           redirect_to backend_ships_path
-        }
+        end
       end
     end
 
@@ -113,7 +114,7 @@ module Backend
     end
 
     private def sort_column
-      (Ship.column_names).include?(params[:sort]) ? params[:sort] : "id"
+      Ship.column_names.include?(params[:sort]) ? params[:sort] : "id"
     end
     helper_method :sort_column
 

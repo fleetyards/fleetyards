@@ -1,7 +1,7 @@
 # encoding: utf-8
 # frozen_string_literal: true
 class UserMailer < ActionMailer::Base
-  default from: (Rails.application.secrets[:mailer_default_from]).to_s
+  default from: Rails.application.secrets[:mailer_default_from].to_s
 
   def notify_admin(user)
     user_info(user)

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 namespace :cache do
   desc "clear the rails cache"
   task clear: :environment do

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Backend
   class ManufacturersController < BaseController
     before_action :set_active_nav
@@ -5,9 +6,9 @@ module Backend
     def index
       authorize! :index, :backend_manufacturers
       @manufacturers = Manufacturer.all
-        .order(sort_column + " " + sort_direction)
-        .page(params.fetch(:page){nil})
-        .per(20)
+                                   .order(sort_column + " " + sort_direction)
+                                   .page(params.fetch(:page) { nil })
+                                   .per(20)
     end
 
     def new
@@ -52,20 +53,20 @@ module Backend
       authorize! :toggle, manufacturer
 
       respond_to do |format|
-        format.js {
+        format.js do
           if manufacturer.update(manufacturer_params)
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.manufacturer"))
             if manufacturer.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.manufacturer"))
             end
-            render json: {message: message}
+            render json: { message: message }
           else
             render json: false, status: :bad_request
           end
-        }
-        format.html {
+        end
+        format.html do
           redirect_to backend_manufacturers_path
-        }
+        end
       end
     end
 
@@ -74,7 +75,7 @@ module Backend
     end
 
     private def sort_column
-      (Manufacturer.column_names).include?(params[:sort]) ? params[:sort] : "id"
+      Manufacturer.column_names.include?(params[:sort]) ? params[:sort] : "id"
     end
     helper_method :sort_column
 

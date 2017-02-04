@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
   include SlugHelper
 
@@ -12,7 +13,7 @@ class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
 
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, :kind => "Github") if is_navigational_format?
+      set_flash_message(:notice, :success, kind: "Github") if is_navigational_format?
     else
       session["devise.oauth_data"] = oauth_data
       redirect_to new_user_registration_url
@@ -24,13 +25,13 @@ class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
       provider: request.env["omniauth.auth"][:provider],
       uid: request.env["omniauth.auth"][:uid],
       email: request.env["omniauth.auth"][:info][:email],
-      username: SlugHelper::generate_slug(request.env["omniauth.auth"][:info][:name])
+      username: SlugHelper.generate_slug(request.env["omniauth.auth"][:info][:name])
     }
     @user = User.from_omniauth(oauth_data)
 
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, :kind => "Google") if is_navigational_format?
+      set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
     else
       session["devise.oauth_data"] = oauth_data
       redirect_to new_user_registration_url
@@ -47,7 +48,7 @@ class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
 
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, :kind => "Twitter") if is_navigational_format?
+      set_flash_message(:notice, :success, kind: "Twitter") if is_navigational_format?
     else
       session["devise.oauth_data"] = oauth_data
       redirect_to new_user_registration_url
@@ -59,13 +60,13 @@ class Users::OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
       provider: request.env["omniauth.auth"][:provider],
       uid: request.env["omniauth.auth"][:uid],
       email: request.env["omniauth.auth"][:info][:email],
-      username: SlugHelper::generate_slug(request.env["omniauth.auth"][:info][:name])
+      username: SlugHelper.generate_slug(request.env["omniauth.auth"][:info][:name])
     }
     @user = User.from_omniauth(oauth_data)
 
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+      set_flash_message(:notice, :success, kind: "Facebook") if is_navigational_format?
     else
       session["devise.oauth_data"] = oauth_data
       redirect_to new_user_registration_url

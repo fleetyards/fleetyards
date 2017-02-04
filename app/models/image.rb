@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Image < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   belongs_to :gallery, polymorphic: true
@@ -6,7 +7,7 @@ class Image < ActiveRecord::Base
 
   def to_jq_upload
     {
-      "name" => read_attribute(:name),
+      "name" => self[:name],
       "size" => name.size,
       "url" => name.url,
       "thumbnailUrl" => name.small.url,

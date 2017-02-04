@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ShipRole < ActiveRecord::Base
   translates :name
 
@@ -7,9 +8,9 @@ class ShipRole < ActiveRecord::Base
 
   before_save :update_slugs
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   private def update_slugs
-    self.slug = SlugHelper::generate_slug self.name
+    self.slug = SlugHelper.generate_slug name
   end
 end

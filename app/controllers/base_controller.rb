@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class BaseController < ApplicationController
   skip_authorization_check
   before_action :authenticate_user!, only: []

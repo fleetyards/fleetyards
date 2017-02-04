@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ShipsLoader
   attr_accessor :json_file_path, :base_url, :vat_percent
 

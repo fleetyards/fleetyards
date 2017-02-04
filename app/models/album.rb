@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Album < ActiveRecord::Base
   translates :description
 
@@ -6,6 +7,6 @@ class Album < ActiveRecord::Base
   before_save :update_slugs
 
   private def update_slugs
-    self.slug = SlugHelper::generate_slug self.name
+    self.slug = SlugHelper.generate_slug name
   end
 end

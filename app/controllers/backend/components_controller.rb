@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Backend
   class ComponentsController < BaseController
     before_action :set_active_nav
@@ -5,9 +6,9 @@ module Backend
     def index
       authorize! :index, :backend_components
       @components = Component.all
-        .order(sort_column + " " + sort_direction)
-        .page(params.fetch(:page){nil})
-        .per(20)
+                             .order(sort_column + " " + sort_direction)
+                             .page(params.fetch(:page) { nil })
+                             .per(20)
     end
 
     def new
@@ -51,20 +52,20 @@ module Backend
       authorize! :toggle, component
 
       respond_to do |format|
-        format.js {
+        format.js do
           if component.update(component_params)
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.component"))
             if component.enabled?
               message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.component"))
             end
-            render json: {message: message}
+            render json: { message: message }
           else
             render json: false, status: :bad_request
           end
-        }
-        format.html {
+        end
+        format.html do
           redirect_to backend_components_path
-        }
+        end
       end
     end
 
@@ -73,7 +74,7 @@ module Backend
     end
 
     private def sort_column
-      (Component.column_names).include?(params[:sort]) ? params[:sort] : "id"
+      Component.column_names.include?(params[:sort]) ? params[:sort] : "id"
     end
     helper_method :sort_column
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class HangarsController < ApplicationController
   skip_authorization_check only: [:public]
   before_action :authenticate_user!, only: [:show]

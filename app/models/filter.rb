@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Filter
   attr_accessor :resource, :field, :items, :translateable
 

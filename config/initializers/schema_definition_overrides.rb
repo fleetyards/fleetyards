@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveRecord
   module ConnectionAdapters #:nodoc:
     class TableDefinition
@@ -11,7 +12,7 @@ module ActiveRecord
           index(polymorphic ? %w(id type).map { |t| "#{col}_#{t}" } : "#{col}_id", index_options.is_a?(Hash) ? index_options : {}) if index_options
         end
       end
-      alias :belongs_to :references
+      alias belongs_to references
     end
   end
 end

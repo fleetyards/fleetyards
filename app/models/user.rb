@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -14,8 +15,8 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+    elsif conditions.key?(:username) || conditions.key?(:email)
       where(conditions.to_h).first
     end
   end
@@ -31,7 +32,7 @@ class User < ActiveRecord::Base
     where(data.slice(:provider, :uid)).first_or_create do |user|
       user.email = data[:email]
       user.gravatar = data[:email]
-      user.password = Devise.friendly_token[0,32]
+      user.password = Devise.friendly_token[0, 32]
       user.username = data[:username]
       user.skip_confirmation!
     end
@@ -56,11 +57,11 @@ class User < ActiveRecord::Base
   before_save :update_gravatar_hash
 
   def update_gravatar_hash
-    if gravatar.blank?
-      hash = Digest::MD5.hexdigest(id.to_s)
-    else
-      hash = Digest::MD5.hexdigest(gravatar.downcase.strip)
-    end
+    hash = if gravatar.blank?
+             Digest::MD5.hexdigest(id.to_s)
+           else
+             Digest::MD5.hexdigest(gravatar.downcase.strip)
+           end
     self.gravatar_hash = hash
   end
 

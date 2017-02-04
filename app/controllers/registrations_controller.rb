@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RegistrationsController < Devise::RegistrationsController
   before_action :check_registration_setting, only: [:new, :create]
 
@@ -23,8 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   private def user_params
     @user_params ||= params.require(:user).permit(:locale, :username, :email,
-      :gravatar, :remember_me, :rsi_organization_url, :rsi_profile_url
-    )
+                                                  :gravatar, :remember_me, :rsi_organization_url, :rsi_profile_url)
   end
 
   private def build_user(hash = {})
@@ -39,10 +39,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   private def locales
     @locales ||= I18n.available_locales.map do |locale|
-      OpenStruct.new({
-        id: locale,
-        name: I18n.t(:"locales.#{locale}")
-      })
+      OpenStruct.new(id: locale,
+                     name: I18n.t(:"locales.#{locale}"))
     end
   end
   helper_method :locales

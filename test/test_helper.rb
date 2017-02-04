@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 ENV["RAILS_ENV"] = "test"
 ENV["DEVISE_SECRET"] = "devise_secret"
 ENV["SECRET_KEY_BASE"] = "secret"

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class ErrorsController < ApplicationController
   skip_authorization_check
-  before_filter :authenticate_user!, only: []
+  before_action :authenticate_user!, only: []
 
   def not_found
     @action_name = action_name

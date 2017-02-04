@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class MyShipsController < ApplicationController
   before_action :set_active_nav
 
@@ -14,12 +15,10 @@ class MyShipsController < ApplicationController
     authorize! :create, user_ship
     if user_ship.save
       redirect_to ship_path(ship.slug), notice: I18n.t("messages.create.success",
-        resource: I18n.t("resources.my_ship")
-      )
+                                                       resource: I18n.t("resources.my_ship"))
     else
       redirect_to ship_path(ship.slug), alert: I18n.t("messages.create.failure",
-        resource: I18n.t("resources.my_ship")
-      )
+                                                      resource: I18n.t("resources.my_ship"))
     end
   end
 
@@ -27,12 +26,10 @@ class MyShipsController < ApplicationController
     authorize! :update, user_ship
     if user_ship.update(user_ship_params)
       redirect_to hangar_path, notice: I18n.t("messages.update.success",
-        resource: I18n.t("resources.my_ship")
-      )
+                                              resource: I18n.t("resources.my_ship"))
     else
       redirect_to hangar_path, alert: I18n.t("messages.update.failure",
-        resource: I18n.t("resources.my_ship")
-      )
+                                             resource: I18n.t("resources.my_ship"))
     end
   end
 
