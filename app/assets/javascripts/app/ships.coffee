@@ -28,7 +28,7 @@ window.App.Ships.reload = ($element) ->
         App.Ships.checkWorkerState(laddaButton, $element)
       , 3000
 
-$(document).on 'ready page:load', ->
+$(document).on 'turbolinks:load', ->
   if $('#backend, #ships').length
     if $('.reload-ships.loading').length
       $('.reload-ships.loading').each ($element) ->

@@ -27,7 +27,7 @@ var cookiesEu = {
   }
 };
 
-(function() {
+$(document).on('turbolinks:load', function () {
   var isCalled = false;
 
   function isReady() {
@@ -47,4 +47,4 @@ var cookiesEu = {
   } else if (window.attachEvent) {
     window.attachEvent('onload', isReady);
   }
-})();
+});

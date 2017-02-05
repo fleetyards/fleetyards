@@ -43,7 +43,7 @@ window.displayError = (text, timeout = false) ->
 window.displayWarning = (text, timeout = 3000) ->
   displayNoty text, timeout, 'warning'
 
-$(document).on 'ready page:load', ->
+$(document).on 'turbolinks:load', ->
   $("[data-notyConfirm]").click (ev) ->
     displayConfirm ev, $(@)
     return false

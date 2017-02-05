@@ -26,7 +26,7 @@ $(document).bind 'dragover', (e) ->
 $(document).bind 'drop dragover', (e) ->
     e.preventDefault()
 
-$(document).on 'ready page:load', ->
+$(document).on 'turbolinks:load', ->
   if $('#fileupload').length
     $('#fileupload').fileupload
       type: "POST"

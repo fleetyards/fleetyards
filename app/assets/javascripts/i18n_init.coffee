@@ -1,4 +1,4 @@
-$(document).on 'ready page:load', ->
+$(document).on 'turbolinks:load', ->
   for bundledLocale of bundledLocales
     storedLocale = window.localStorage.getItem("res_#{bundledLocale}")?
     unless storedLocale?

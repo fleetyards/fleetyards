@@ -26,6 +26,6 @@ window.Tabs = {
   }
 };
 
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
   Tabs.openByHash();
 });

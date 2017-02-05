@@ -5,7 +5,7 @@ window.App ?= {}
 $(document).on 'click', 'a.disabled', (evt) ->
   false
 
-$(document).on 'ready page:load', ->
+$(document).on 'turbolinks:load', ->
   if success = $('body').attr('data-success')
     displaySuccess success
 

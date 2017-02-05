@@ -4,15 +4,15 @@ source 'https://rubygems.org'
 
 ruby '2.3.3'
 
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.7.1'
 
 gem 'pg'
 
 gem 'sidekiq'
 gem 'sidekiq-failures'
-gem 'sidekiq-scheduler', '~> 2.0'
+gem 'sidekiq-scheduler'
 # for sidekiq web
-gem 'sinatra', '>= 1.3.0', require: nil
+gem 'sinatra', require: nil
 
 gem 'globalize'
 
@@ -32,7 +32,6 @@ gem 'omniauth-twitter'
 
 gem 'cancan'
 
-gem 'cache_digests'
 gem 'dalli'
 gem 'turbolinks'
 
@@ -52,8 +51,7 @@ gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 
 gem 'jquery-rails'
-
-gem 'asset_pipeline_routes'
+gem 'js-routes'
 
 gem 'uglifier'
 

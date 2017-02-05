@@ -46,7 +46,7 @@ $(document).on("focus", ".modal input, .modal textarea, .modal select", function
   $(this)[0].scrollIntoView(true);
 });
 
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
   $('select.js-selectize').selectize();
 
   $('select.js-gallery-selectize').selectize({

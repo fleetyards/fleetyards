@@ -27,13 +27,13 @@
           .clearfix
       %br
       .text-center
-        %a.btn.btn-lg.btn-social-icon.btn-facebook{href: user_omniauth_authorize_path(:facebook)}
+        %a.btn.btn-lg.btn-social-icon.btn-facebook{href: user_facebook_omniauth_authorize_path}
           %i.fa.fa-facebook
-        %a.btn.btn-lg.btn-social-icon.btn-google{href: user_omniauth_authorize_path(:google_oauth2)}
+        %a.btn.btn-lg.btn-social-icon.btn-google{href: user_google_oauth2_omniauth_authorize_path}
           %i.fa.fa-google
-        %a.btn.btn-lg.btn-social-icon.btn-twitter{href: user_omniauth_authorize_path(:twitter)}
+        %a.btn.btn-lg.btn-social-icon.btn-twitter{href: user_twitter_omniauth_authorize_path}
           %i.fa.fa-twitter
-        %a.btn.btn-lg.btn-social-icon.btn-github{href: user_omniauth_authorize_path(:github)}
+        %a.btn.btn-lg.btn-social-icon.btn-github{href: user_github_omniauth_authorize_path}
           %i.fa.fa-github
         %br
         %a.btn.btn-link{href: new_password_path(resource_name)}
