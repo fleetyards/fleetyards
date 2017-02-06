@@ -23,8 +23,9 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   private def user_params
-    @user_params ||= params.require(:user).permit(:locale, :username, :email,
-                                                  :gravatar, :remember_me, :rsi_organization_url, :rsi_profile_url)
+    @user_params ||= params.require(:user).permit(
+      :username, :email, :gravatar, :remember_me, :rsi_organization_url, :rsi_profile_url
+    )
   end
 
   private def build_user(hash = {})

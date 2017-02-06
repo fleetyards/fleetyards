@@ -49,9 +49,6 @@
                       = form.email_field :gravatar, class: 'form-control'
                       %small
                         = form_errors user, :gravatar
-                    .col-xs-12.col-md-4.selectize.form-group
-                      = form.label :locale
-                      = form.collection_select :locale, locales, :id, :name, {include_blank: ""}, {class: "js-selectize"}
 
             .tab-pane#rsi
               .row

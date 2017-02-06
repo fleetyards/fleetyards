@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   private def set_locale
     return unless request.env['HTTP_ACCEPT_LANGUAGE'].present?
     match = request.env['HTTP_ACCEPT_LANGUAGE'].match(/#{I18n.available_locales.join('|')}/)
-    I18n.locale = match[0]
+    I18n.locale = match[0] unless match.nil?
   end
 
   def worker_running?
@@ -30,10 +30,6 @@ class ApplicationController < ActionController::Base
     else
       false
     end
-  end
-
-  private def default_url_options(_options = {})
-    { locale: I18n.locale }
   end
 
   private def unauthorized_controllers
