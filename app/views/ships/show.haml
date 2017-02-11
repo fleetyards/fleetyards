@@ -72,6 +72,7 @@
             .text-right
               %a.btn.btn-primary.btn-lg{target: "_blank", href: store_url(ship.store_url, anchor: "buying-options")}
                 = I18n.t("actions.ship.on_sale", price: number_to_currency(ship.price, unit: "$"))
+              %i.fa.fa-info-circle.info-badge{title: I18n.t("labels.tax_excluded"), "data-toggle" => "tooltip"}
             %br
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
 

@@ -5,6 +5,8 @@
 //= require blueimp-file-upload/css/jquery.fileupload-ui
 //= require bootstrap-social
 //= require nprogress
+//= require unpoly
+//= require unpoly-bootstrap3
 //= require awesome-bootstrap-checkbox
 //= require selectize/dist/css/default
 //= require_self
@@ -122,4 +124,8 @@ a.thumbnail.active {
 
 .label {
   display: inline-block;
+}
+
+.info-badge {
+  font-size: 120%;
 }

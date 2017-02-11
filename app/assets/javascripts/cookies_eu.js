@@ -9,7 +9,6 @@ var cookiesEu = {
       this.addListener(cookiesEuOKButton);
     }
   },
-
   addListener: function(target) {
     // Support for IE < 9
     if (target.attachEvent) {
@@ -18,16 +17,15 @@ var cookiesEu = {
       target.addEventListener('click', this.setCookie, false);
     }
   },
-
   setCookie: function() {
     Cookies.set('cookie_eu_consented', true, { path: '/', expires: 365 });
 
     var container = document.querySelector('.cookies-eu-banner');
     container.parentNode.removeChild(container);
-  }
+  },
 };
 
-$(document).on('turbolinks:load', function () {
+$(document).on('turbolinks:load', function() {
   var isCalled = false;
 
   function isReady() {

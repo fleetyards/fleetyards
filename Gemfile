@@ -52,6 +52,7 @@ gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 gem 'js-routes'
+gem 'unpoly-rails'
 
 gem 'uglifier'
 

@@ -25,6 +25,8 @@
 //= require dynamic_fields_for
 //= require cookies_eu
 //= require nprogress
+//= require unpoly
+//= require unpoly-bootstrap3
 //= require i18n
 //= require i18n/translations
 //= require helper
@@ -42,11 +44,11 @@ $(document).on('show.bs.collapse', '.navbar-collapse', function() {
   $('.navbar-collapse.in').not(this).collapse('hide');
 });
 
-$(document).on("focus", ".modal input, .modal textarea, .modal select", function() {
+$(document).on('focus', '.modal input, .modal textarea, .modal select', function() {
   $(this)[0].scrollIntoView(true);
 });
 
-$(document).on('turbolinks:load', function () {
+$(document).on('turbolinks:load', function() {
   $('select.js-selectize').selectize();
 
   $('select.js-gallery-selectize').selectize({
@@ -58,7 +60,7 @@ $(document).on('turbolinks:load', function () {
     preload: true,
     maxOptions: 20,
     onChange: function(value) {
-      $('#image-gallery-id').val(value)
+      $('#image-gallery-id').val(value);
     },
     load: function(query, callback) {
       $.ajax({
@@ -70,9 +72,9 @@ $(document).on('turbolinks:load', function () {
         },
         success: function(response) {
           callback(response);
-        }
+        },
       });
-    }
+    },
   });
 
   $('.btn.btn-primary[data-loading-text]').click(function() {

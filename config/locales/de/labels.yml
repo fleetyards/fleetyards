@@ -1,5 +1,6 @@
 de:
   labels:
+    tax_excluded: "ohne MwSt."
     actions: Aktionen
     name: Name
     description: Beschreibung

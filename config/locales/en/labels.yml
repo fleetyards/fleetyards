@@ -1,6 +1,7 @@
 en:
   labels:
     actions: Actions
+    tax_excluded: "excl. VAT"
     name: Name
     description: Description
     address: Address

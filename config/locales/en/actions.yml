@@ -32,7 +32,7 @@ en:
       ships: Ships
     ship:
       gallery: Gallery
-      on_sale: "Now on Sale for %{price} USD excl. VAT"
+      on_sale: "On Sale: %{price}"
       store: RSI Detail Page
       reload: "Reload Ships"
     more_info: "More Information"

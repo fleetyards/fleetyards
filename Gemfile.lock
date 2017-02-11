@@ -517,6 +517,8 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.3)
     uniform_notifier (1.10.0)
+    unpoly-rails (0.34.0)
+      rails (>= 3)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     warden (1.2.7)
@@ -611,6 +613,7 @@ DEPENDENCIES
   turbolinks
   typhoeus
   uglifier
+  unpoly-rails
   url_plumber
   web-console
   web_translate_it
