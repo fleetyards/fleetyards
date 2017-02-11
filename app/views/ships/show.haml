@@ -23,8 +23,6 @@
             %a.btn.btn-default{href: ships_path(back_params)}
               = I18n.t(:"actions.back")
 
-      = render "shared/google_adsense", slot: "2579176832"
-
       .row
         .col-xs-12.col-md-8
           %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params) if ship.images.enabled.present?)}
@@ -76,8 +74,6 @@
                 = I18n.t("actions.ship.on_sale", price: number_to_currency(ship.price, unit: "$"))
             %br
         = render partial: "ships/tabs", collection: ComponentCategory.all, as: :category
-
-      = render "shared/google_adsense", slot: "9962842831"
 
       %br
       .row#comments

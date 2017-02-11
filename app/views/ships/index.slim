@@ -18,8 +18,6 @@
       .col-xs-12.col-md-6
         .pull-right
           = paginate @ships
-      
-    = render "shared/google_adsense", slot: "2997979234"
 
     .row.is-flex
       = render partial: "ships/show", collection: @ships, as: :ship
@@ -30,9 +28,7 @@
               = I18n.t(:"labels.table.out_of_range.ship", url: ships_path(params.merge({page: 1}))).html_safe
             - else
               = I18n.t(:"labels.table.blank.ship")
-          
-    = render "shared/google_adsense", slot: "3916309235"
-    
+
     .row
       .col-xs-12.col-md-12
         .pull-right
