@@ -1,0 +1,12 @@
+dependencies:
+  pre:
+    - gem update --system
+test:
+  override:
+    - bundle exec rake
+    - bundle exec rubocop
+# deployment:
+#   live:
+#     branch: live
+#     commands:
+#       - bundle exec thor heroku:deploy -m true
