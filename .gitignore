@@ -11,9 +11,6 @@ pids/*
 .env
 .wti
 
-config/database.yml
-config/secrets.yml
-
 # test files
 coverage/*
 
