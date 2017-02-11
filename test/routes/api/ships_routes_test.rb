@@ -2,7 +2,7 @@
 require "test_helper"
 
 module Api
-  class ShipsRoutesTest < ActionSupport::TestCase
+  class ShipsRoutesTest < ActiveSupport::TestCase
     it "should respond to api/ships"
     it "should respond to api/ships/:id"
   end

@@ -103,7 +103,6 @@ end
 
 group :test do
   gem 'codeclimate-test-reporter', require: false
-  gem 'coveralls', require: false
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'faker'
@@ -115,6 +114,7 @@ group :test do
   gem 'simplecov-console', require: false
   gem 'simplecov-html', require: false
   gem 'timecop'
+  gem 'vcr'
   gem 'webmock', require: false
 end
 

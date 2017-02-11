@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 module Backend
   class ShipsControllerTest < ActionController::TestCase
+    tests ::Backend::ShipsController
+
+    let(:data) { users :data }
+    let(:jeanluc) { users :jeanluc }
+
     describe "without session" do
       it "should render not_found for index"
       it "should render not_found for show"
@@ -12,6 +17,10 @@ module Backend
     end
 
     describe "with session" do
+      before do
+        sign_in data
+      end
+
       it "should render not_found for index"
       it "should render not_found for show"
       it "should render not_found for new"
@@ -22,6 +31,10 @@ module Backend
     end
 
     describe "with admin session" do
+      before do
+        sign_in jeanluc
+      end
+
       it "should render index"
       it "should render show"
       it "should render new"

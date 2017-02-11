@@ -9,8 +9,8 @@ module Api
       get :index
 
       assert_response :ok
-      json = JSON.parse(response.body)
-      p json
+      # json = JSON.parse(response.body)
+      # p json
     end
   end
 end
