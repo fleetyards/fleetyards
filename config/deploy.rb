@@ -25,7 +25,7 @@ set :user, 'fleetyards'
 set :forward_agent, true
 
 set :deploy_to, '/home/fleetyards'
-set :repository, 'https://github.com/mortik/fleetyards'
+set :repository, 'https://github.com/fleetyards/app'
 set :rails_env, 'production'
 set :branch, 'master'
 

@@ -5,8 +5,8 @@ test:
   override:
     - bundle exec rake
     - bundle exec rubocop
-# deployment:
-#   live:
-#     branch: live
-#     commands:
-#       - bundle exec thor heroku:deploy -m true
+deployment:
+  live:
+    branch: master
+    commands:
+      - bundle exec mina live deploy
