@@ -1,3 +1,6 @@
-# Fleetyards App
+# Fleetyards.net Ship Database
 
-[ ![Codeship Status for mortik/fleetyards](https://codeship.com/projects/7db2ae50-8bc7-0132-c889-62764eb655de/status?branch=master)](https://codeship.com/projects/60367)
+[![CircleCI](https://circleci.com/gh/fleetyards/app/tree/master.svg?style=svg)](https://circleci.com/gh/fleetyards/app/tree/master)
+[![Code Climate](https://codeclimate.com/github/fleetyards/app/badges/gpa.svg)](https://codeclimate.com/github/fleetyards/app)
+[![Test Coverage](https://codeclimate.com/github/fleetyards/app/badges/coverage.svg)](https://codeclimate.com/github/fleetyards/app/coverage)
+[![Issue Count](https://codeclimate.com/github/fleetyards/app/badges/issue_count.svg)](https://codeclimate.com/github/fleetyards/app)
