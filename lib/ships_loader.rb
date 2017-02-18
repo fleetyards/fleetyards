@@ -69,7 +69,7 @@ class ShipsLoader
     response = Typhoeus.get("#{base_url}#{store_url}")
     page = Nokogiri::HTML(response.body)
 
-    price_element = page.css('#buying-options .final-price').last
+    price_element = page.css('#buying-options .final-price').first
     price = if price_element
               raw_price = price_element.text
               price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
