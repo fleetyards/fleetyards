@@ -21,6 +21,6 @@ class Db < Thor
     config = YAML.load(IO.read("config/database.yml"))
     database_url = config["production"]["url"]
 
-    run %(pg_dump #{database_url} -f dumps/latest.dump)
+    run %(pg_dump -Fc --no-acl --no-owner #{database_url} -f dumps/latest.dump)
   end
 end

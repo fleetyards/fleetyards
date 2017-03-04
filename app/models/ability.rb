@@ -7,6 +7,9 @@ class Ability
 
     can :manage, :all if user.admin?
 
+    can :show, :api
+    can [:index, :show], :api_ships
+
     if user.id.present?
       can :show, :hangar
       can [:add, :remove], UserShip, user_id: user.id

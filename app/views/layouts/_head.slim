@@ -1,0 +1,30 @@
+meta charset="utf-8"
+
+link rel="mask-icon" href="#{asset_url('favicon.svg')}" color="#428bca"
+link rel="shortcut icon" type="image/png" href="#{asset_url('favicon.png')}"
+
+
+title = content_for?(:title) ? "#{yield(:title)} | #{default_title}" : default_title
+meta name="description" content=I18n.t(:"meta.description")
+meta name="keywords" content=I18n.t(:"meta.keywords")
+
+meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no "
+meta name="mobile-web-app-capable" content="yes"
+= favicon_link_tag 'icon-196.png', rel: "shortcut icon", type: 'image/png'
+
+meta name="apple-mobile-web-app-capable" content="yes"
+meta name="apple-mobile-web-app-status-bar-style" content="black"
+
+= favicon_link_tag 'touch-icon-iphone.png', rel: "apple-touch-icon", type: 'image/png'
+= favicon_link_tag 'touch-icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png'
+= favicon_link_tag 'touch-icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png'
+= favicon_link_tag 'touch-icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png'
+
+== stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
+== stylesheet_link_tag "application"
+
+javascript:
+  window.locale = "#{I18n.locale}";
+== javascript_include_tag "application", async: Rails.env.production?
+
+== csrf_meta_tags

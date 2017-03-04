@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.3'
 
-gem 'rails', '4.2.7.1'
+gem 'rails', '4.2.8'
 
 gem 'pg'
 
@@ -14,7 +14,7 @@ gem 'sidekiq-scheduler'
 # for sidekiq web
 gem 'sinatra', require: nil
 
-gem 'globalize'
+gem 'globalize', '~> 5.0.0'
 
 gem 'haml'
 gem 'haml-rails'
@@ -30,7 +30,9 @@ gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 
-gem 'cancan'
+gem 'cancancan'
+
+gem 'jbuilder', '~> 2.5'
 
 gem 'dalli'
 gem 'turbolinks'
