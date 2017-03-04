@@ -4,6 +4,8 @@ constraints subdomain: "" do
   as :user do
     get 'register' => 'registrations#new', as: :new_registration
     post 'register' => 'registrations#create', as: :user_registration
+    get 'users/edit' => 'registrations#edit', as: :edit_user_registration
+    get 'users/cancel' => 'registrations#cancel', as: :cancel_user_registration
     get 'login' => 'sessions#new', as: :new_user_session
     post 'login' => 'sessions#create', as: :user_session
     delete 'logout' => 'sessions#destroy', as: :destroy_user_session
