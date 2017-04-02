@@ -72,7 +72,7 @@ gem 'carrierwave'
 gem 'carrierwave-imageoptimizer'
 gem 'mini_magick'
 
-gem 'nokogiri'
+gem 'nokogiri', '>= 1.7.1'
 gem 'typhoeus'
 
 gem 'fog'
