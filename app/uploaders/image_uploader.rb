@@ -17,6 +17,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     process optimize: [{ quality: 60 }]
   end
 
+  version :dark do
+    process darken: 50
+  end
+
   def extension_white_list
     %w(jpg jpeg png)
   end

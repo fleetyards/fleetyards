@@ -8,6 +8,15 @@ module CarrierWave
         img
       end
     end
+
+    def darken(percentage)
+      manipulate! do |img|
+        img.fill("black")
+        img.colorize("#{percentage}%")
+        img = yield(img) if block_given?
+        img
+      end
+    end
   end
 end
 

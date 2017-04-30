@@ -64,7 +64,7 @@ $(document).on('turbolinks:load', function() {
     },
     load: function(query, callback) {
       $.ajax({
-        url: '/api/v1/ships/',
+        url: 'https://api.fleetyards.net/v1/ships/',
         type: 'GET',
         datatype: 'json',
         error: function() {
