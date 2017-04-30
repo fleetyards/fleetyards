@@ -69,6 +69,13 @@ task assets_precompile: :environment do
   invoke :'server:restart'
 end
 
+task recreate_images: :environment do
+  in_path fetch(:current_path).to_s do
+    comment %(Recreate Images)
+    command %(bundle exec thor image:recreate)
+  end
+end
+
 task console: :environment do
   set :execution_mode, :exec
   in_path fetch(:current_path).to_s do

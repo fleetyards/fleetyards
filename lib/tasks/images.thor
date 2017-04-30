@@ -1,6 +1,6 @@
 require "thor"
 
-class Image < Thor
+class Images < Thor
   include Thor::Actions
 
   desc "recreate", "Recreate Versions"
