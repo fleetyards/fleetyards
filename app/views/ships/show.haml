@@ -2,7 +2,7 @@
   = "#{ship.name} - #{ship.manufacturer.name.html_safe}"
 - unless ship.random_image.blank?
   - content_for :background_image do
-    = "#{ship.random_image.name.url}"
+    = "#{ship.random_image.name.dark.url}"
 - cache [I18n.locale, ship] do
   - unless ship.images.enabled.blank?
     - gallery_params = params.dup

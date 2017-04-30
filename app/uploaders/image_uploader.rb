@@ -18,7 +18,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   version :dark do
-    process darken: 50
+    process darken: 60
   end
 
   def extension_white_list
