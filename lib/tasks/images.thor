@@ -5,6 +5,7 @@ class Images < Thor
 
   desc "recreate", "Recreate Versions"
   def recreate
+    require "./config/environment"
     Image.find_each do |image|
       begin
         image.name.cache_stored_file!

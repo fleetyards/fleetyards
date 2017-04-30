@@ -72,7 +72,7 @@ end
 task recreate_images: :environment do
   in_path fetch(:current_path).to_s do
     comment %(Recreate Images)
-    command %(bundle exec thor image:recreate)
+    command %(bundle exec thor images:recreate)
   end
 end
 
