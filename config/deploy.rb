@@ -49,7 +49,7 @@ task deploy: :environment do
 
     on :launch do
       # invoke :'server:start'
-      invoke :'server:phased_restart'
+      invoke :'server:restart'
     end
   end
 end
