@@ -35,30 +35,13 @@ body {
   height: auto;
   position: relative;
   padding-bottom: 260px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
 
   > .container {
     padding-bottom: 20px;
-  }
-
-  .background {
-    position: fixed;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-
-    .background-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(#000, .7)
-    }
   }
 }
 
