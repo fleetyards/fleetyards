@@ -84,6 +84,14 @@ class Ship < ActiveRecord::Base
     ).references(:ship_role)
   end
 
+  def ship_role_name
+    if ship_role.present?
+      ship_role.name
+    else
+      I18n.t("labels.ship.roles.unknown")
+    end
+  end
+
   def random_image
     images.enabled.order("RANDOM()").first
   end

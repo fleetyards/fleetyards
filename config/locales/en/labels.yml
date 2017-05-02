@@ -69,6 +69,8 @@ en:
         ready: "Hangar Ready"
         flight-ready: "Flight Ready"
         announced: Announced
+      roles:
+        unknown: "Unknown"
     hangar:
       roles: "Available Roles"
     panels:

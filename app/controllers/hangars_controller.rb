@@ -38,7 +38,7 @@ class HangarsController < ApplicationController
 
   private def ship_roles
     @ship_roles ||= user_ships.group_by do |user_ship|
-      user_ship.ship.ship_role.name
+      user_ship.ship.ship_role_name
     end.map do |role, ships|
       "#{ships.size}x #{role}"
     end
