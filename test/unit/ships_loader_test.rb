@@ -8,12 +8,22 @@ class ShipsLoaderTest < ActiveSupport::TestCase
 
   test "#all" do
     VCR.use_cassette("ships_loader_all") do
-      assert_difference lambda {
-        Hardpoint.count + Component.count + ComponentCategory.count +
-          Ship.count + Manufacturer.count + ShipRole.count
-      }, +2042 do
-        loader.all
-      end
+      loader.all
+      expectations = {
+        hardpoints: 0,
+        components: 1845,
+        component_categories: 4,
+        ships: 91,
+        manufacturers: 14,
+        ship_roles: 88
+      }
+      assert_equal(expectations,
+                   hardpoints: Hardpoint.count,
+                   components: Component.count,
+                   component_categories: ComponentCategory.count,
+                   ships: Ship.count,
+                   manufacturers: Manufacturer.count,
+                   ship_roles: ShipRole.count)
     end
   end
 end
