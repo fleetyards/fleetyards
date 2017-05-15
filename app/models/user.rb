@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :confirmable, :lockable, :timeoutable,
-         authentication_keys: [:login], omniauth_providers: [:github, :facebook, :twitter, :google_oauth2]
+         authentication_keys: [:login], omniauth_providers: %i[github facebook twitter google_oauth2]
 
   has_many :user_ships
   has_many :ships, through: :user_ships
@@ -73,7 +74,7 @@ class User < ActiveRecord::Base
       self.rsi_handle = rsi_profile_url.split("/").last
     end
 
-    return unless rsi_organization_url.present?
+    return if rsi_organization_url.blank?
     self.rsi_organization_handle = rsi_organization_url.split("/").last
   end
 end

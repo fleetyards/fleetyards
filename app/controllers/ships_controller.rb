@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 class ShipsController < ApplicationController
   before_action :set_active_nav
 
-  skip_authorization_check only: [:index, :show, :gallery]
+  skip_authorization_check only: %i[index show gallery]
   before_action :authenticate_user!, only: [:reload]
 
   def index
@@ -57,7 +58,7 @@ class ShipsController < ApplicationController
         }
       end
       filters << Filter.new(resource: "ship", field: "production_status", items: production_status_items)
-      on_sale_items = %w(true false).map do |item|
+      on_sale_items = %w[true false].map do |item|
         {
           name: I18n.t("filter.ship.on_sale.items.#{item}"),
           slug: item

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ShipsLoader
   attr_accessor :json_file_path, :base_url, :vat_percent
 
@@ -118,7 +119,7 @@ class ShipsLoader
       shield_size: data["maxshieldsize"],
       classification: data["classification"],
       focus: data["focus"],
-      remote_store_image_url: ("#{base_url}#{data['media'][0]['images']['store_hub_large']}" unless ship.store_image.present?),
+      remote_store_image_url: ("#{base_url}#{data['media'][0]['images']['store_hub_large']}" if ship.store_image.blank?),
       store_url: data["url"],
       propulsion_raw: data["propulsion"],
       ordnance_raw: data["ordnance"],
@@ -140,7 +141,7 @@ class ShipsLoader
       rsi_id: manufacturer_data["id"],
       known_for: manufacturer_data["known_for"],
       description: manufacturer_data["description"],
-      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" unless manufacturer.logo.present?),
+      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank?),
       enabled: true
     )
 

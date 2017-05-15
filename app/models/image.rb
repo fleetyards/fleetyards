@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Image < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   belongs_to :gallery, polymorphic: true, touch: true

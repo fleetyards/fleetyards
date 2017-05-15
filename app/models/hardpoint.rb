@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Hardpoint < ActiveRecord::Base
   class ComponentCategoryValidator < ActiveModel::Validator
     def validate(hardpoint)

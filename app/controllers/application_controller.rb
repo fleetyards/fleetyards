@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!, :set_default_nav
@@ -16,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   private def set_locale
-    return unless request.env['HTTP_ACCEPT_LANGUAGE'].present?
+    return if request.env['HTTP_ACCEPT_LANGUAGE'].blank?
     match = request.env['HTTP_ACCEPT_LANGUAGE'].match(/#{I18n.available_locales.join('|')}/)
     I18n.locale = match[0] unless match.nil?
   end
@@ -49,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   private def sort_direction
-    %w(asc desc).include?(params[:direction]) ? params[:direction] : 'desc'
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
   end
   helper_method :sort_direction
 
@@ -61,8 +62,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    added_attrs = [:username, :email, :password, :password_confirmation]
-    devise_parameter_sanitizer.permit :sign_in, keys: [:login, :password, :remember_me]
+    added_attrs = %i[username email password password_confirmation]
+    devise_parameter_sanitizer.permit :sign_in, keys: %i[login password remember_me]
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end

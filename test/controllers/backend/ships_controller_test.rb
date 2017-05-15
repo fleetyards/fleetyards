@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Backend
   class ShipsControllerTest < ActionController::TestCase
     tests ::Backend::ShipsController

@@ -1,8 +1,6 @@
 meta charset="utf-8"
 
-link rel="mask-icon" href="#{asset_url('favicon.svg')}" color="#428bca"
 link rel="shortcut icon" type="image/png" href="#{asset_url('favicon.png')}"
-
 
 title = content_for?(:title) ? "#{yield(:title)} | #{default_title}" : default_title
 meta name="description" content=I18n.t(:"meta.description")

@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'highline/import'
 require 'sidekiq/scheduler'
 
 class Setup < Thor
   include Thor::Actions
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   desc "admin", "Create Admin-User"
   option :email, type: :string, default: nil
   option :username, type: :string, default: nil
@@ -12,39 +16,39 @@ class Setup < Thor
   def admin
     require "./config/environment"
 
-    if options.include?('email')
-      email = options[:email]
-    else
-      email = HighLine.ask("E-Mail: ")
-    end
+    email = if options.include?('email')
+              options[:email]
+            else
+              HighLine.ask("E-Mail: ")
+            end
 
-    if options.include?('username')
-      username = options[:username]
-    else
-      username = HighLine.ask("Username: ")
-    end
+    username = if options.include?('username')
+                 options[:username]
+               else
+                 HighLine.ask("Username: ")
+               end
 
     if email.blank?
       puts "E-Mail can't be blank!"
       exit
     end
 
-    if options.include?('password')
-      password = options[:password]
-    else
-      password = HighLine.ask("Password: ") {|q| q.echo = '*'}
-    end
+    password = if options.include?('password')
+                 options[:password]
+               else
+                 HighLine.ask("Password: ") { |q| q.echo = '*' }
+               end
 
     if password.blank?
       puts "Password can't be blank!"
       exit
     end
 
-    if options.include?('password_confirmation')
-      password_confirmation = options[:password_confirmation]
-    else
-      password_confirmation = HighLine.ask("Password (again): ") {|q| q.echo = '*'}
-    end
+    password_confirmation = if options.include?('password_confirmation')
+                              options[:password_confirmation]
+                            else
+                              HighLine.ask("Password (again): ") { |q| q.echo = '*' }
+                            end
 
     if password_confirmation != password
       puts "Passwords dont match!"

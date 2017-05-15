@@ -1,26 +1,26 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '2.3.3'
 
-gem 'rails', '4.2.8'
+gem 'rails', '5.1.1'
 
 gem 'pg'
 
 gem 'sidekiq'
-gem 'sidekiq-failures'
 gem 'sidekiq-scheduler'
 # for sidekiq web
 gem 'sinatra', require: nil
 
-gem 'globalize', '~> 5.0.0'
+gem 'json_translate'
 
 gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
-gem 'i18n-js', git: 'https://github.com/fnando/i18n-js.git', branch: :master
+gem 'i18n-js'
 gem 'js_cookie_rails'
 
 gem 'devise'
@@ -32,7 +32,7 @@ gem 'omniauth-twitter'
 
 gem 'cancancan'
 
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder'
 
 gem 'dalli'
 gem 'turbolinks'
@@ -54,7 +54,6 @@ gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 gem 'js-routes'
-gem 'unpoly-rails'
 
 gem 'uglifier'
 
@@ -90,12 +89,11 @@ gem 'sentry-raven'
 gem 'lograge'
 
 group :development do
-  gem 'letter_opener'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
   gem 'pry-rails'
   gem 'rubocop', require: false
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
   gem 'web-console'
 
   # deployment
@@ -104,7 +102,7 @@ group :development do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", "~> 1.0.0"
+  gem 'codeclimate-test-reporter'
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'faker'

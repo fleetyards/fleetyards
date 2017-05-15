@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class MyShipsController < ApplicationController
   before_action :set_active_nav
 

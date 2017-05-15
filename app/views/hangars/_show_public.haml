@@ -6,7 +6,7 @@
     .ship-panel.panel.panel-default.hangar-panel.public-hangar-panal
       .panel-heading
         %h2.panel-title
-          %a{href: ship_path(ship.slug, ship_params)}><
+          %a{href: ship_path(ship.slug, ship_params.permit!)}><
             = user_ship.name.present? && user_ship.name || ship.name
           %br
           %small
@@ -18,7 +18,7 @@
         .production-status
           %strong.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
       .profile-image.text-center
-        %a{href: ship_path(ship.slug, ship_params)}><
+        %a{href: ship_path(ship.slug, ship_params.permit!)}><
           = image_tag ship.store_image.small
           - if ship.on_sale?
             .on-sale{title: I18n.t("labels.ship.on_sale", price: ship.price)}

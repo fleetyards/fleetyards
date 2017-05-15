@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::ImageOptimizer
   include CarrierWave::MiniMagick
@@ -22,6 +23,6 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def extension_white_list
-    %w(jpg jpeg png)
+    %w[jpg jpeg png]
   end
 end

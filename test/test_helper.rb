@@ -1,8 +1,5 @@
 # encoding: utf-8
 # frozen_string_literal: true
-ENV["RAILS_ENV"] = "test"
-ENV["DEVISE_SECRET"] = "devise_secret"
-ENV["SECRET_KEY_BASE"] = "secret"
 
 require 'simplecov'
 require 'simplecov-console'
@@ -20,19 +17,10 @@ require File.expand_path('../../config/environment', __FILE__)
 
 require "rails/test_help"
 require "minitest/rails"
-require "minitest/hell"
-require "minitest/mock"
-require 'mocha/mini_test'
-require 'vcr'
 
 require "faker"
 
 require "active_record/fixtures"
-
-VCR.configure do |config|
-  config.cassette_library_dir = "fixtures/vcr_cassettes"
-  config.hook_into :webmock # or :fakeweb
-end
 
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
@@ -40,6 +28,12 @@ Sidekiq::Testing.fake!
 # helper
 require "support/session_helper"
 require "database_cleaner"
+
+require 'vcr'
+VCR.configure do |config|
+  config.cassette_library_dir = "fixtures/vcr_cassettes"
+  config.hook_into :webmock # or :fakeweb
+end
 
 # database cleaner
 DatabaseCleaner.strategy = :transaction

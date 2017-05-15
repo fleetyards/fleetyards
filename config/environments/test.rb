@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-Fleetyards::Application.configure do
+
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
@@ -13,22 +14,22 @@ Fleetyards::Application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_files = true
-  config.static_cache_control = "public, max-age=3600"
+  # Configure public file server for tests with Cache-Control for performance.
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = {
+    'Cache-Control' => "public, max-age=#{1.hour.seconds.to_i}"
+  }
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
-
-  config.active_record.raise_in_transactional_callbacks = true
-  config.active_support.test_order = :random
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
+  config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
@@ -37,4 +38,7 @@ Fleetyards::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Raises error for missing translations
+  # config.action_view.raise_on_missing_translations = true
 end

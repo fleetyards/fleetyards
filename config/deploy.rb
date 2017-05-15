@@ -1,5 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 set :shared_dirs, [
   'public/uploads',
   'tmp/pids',
@@ -12,7 +13,7 @@ set :shared_files, [
   'config/database.yml'
 ]
 
-set :stages, %w(local live)
+set :stages, %w[local live]
 set :default_stage, 'local'
 
 require 'mina/multistage'

@@ -1,5 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 json.partial! 'api/v1/ships/base', ship: @ship
 json.manufacturer do
   json.partial! 'api/v1/ships/manufacturer', manufacturer: @ship.manufacturer if @ship.manufacturer.present?
