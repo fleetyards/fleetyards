@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class UserShip < ActiveRecord::Base
   default_scope -> { order(created_at: :desc) }
 

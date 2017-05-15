@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Backend
   class LocalesController < BaseController
     def fetch

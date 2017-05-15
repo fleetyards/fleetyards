@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 class RegistrationsController < Devise::RegistrationsController
-  before_action :check_registration_setting, only: [:new, :create]
+  before_action :check_registration_setting, only: %i[new create]
 
   def new
     @user = build_user

@@ -25,8 +25,6 @@
 //= require dynamic_fields_for
 //= require cookies_eu
 //= require nprogress
-//= require unpoly
-//= require unpoly-bootstrap3
 //= require i18n
 //= require i18n/translations
 //= require helper

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 class Component < ActiveRecord::Base
-  default_scope -> { includes(:translations).order(name: :asc).references(:translations) }
+  default_scope -> { order(name: :asc) }
   translates :name, :component_type
 
   belongs_to :category,

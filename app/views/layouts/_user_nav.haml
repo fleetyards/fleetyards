@@ -10,7 +10,7 @@
       %ul.dropdown-menu.navbar-right
         %li{class: active_nav?('users')}
           = link_to I18n.t(:"nav.settings"), edit_user_registration_path
-        - if current_user.admin? &&
+        - if current_user.admin?
           %li.divider
           - if backend?
             %li

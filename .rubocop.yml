@@ -2,11 +2,12 @@
 AllCops:
   Exclude:
     - 'node_modules/**/*'
-    - "db/**/*"
-    - "tmp/**/*"
-    - "vendor/**/*"
-    - "bin/**/*"
-    - "log/**/*"
+    - 'db/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'bin/**/*'
+    - 'log/**/*'
+    - 'Brewfile'
 
 Rails:
   Enabled: true

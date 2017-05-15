@@ -1,13 +1,14 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 namespace :backend, constraints: { subdomain: "" } do
   put '/locales/fetch' => 'locales#fetch', as: :update_locales
 
   resources :users, except: [:show]
 
-  resources :settings, except: [:index, :show]
+  resources :settings, except: %i[index show]
 
-  authenticate :user, ->(u) { u.admin? } do
+  authenticate :user, (->(u) { u.admin? }) do
     mount Sidekiq::Web => '/workers'
   end
 
@@ -28,7 +29,7 @@ namespace :backend, constraints: { subdomain: "" } do
     put 'toggle', on: :member
   end
 
-  resources :images, only: [:new, :index, :new, :create, :destroy] do
+  resources :images, only: %i[new index new create destroy] do
     put 'toggle', on: :member
   end
 

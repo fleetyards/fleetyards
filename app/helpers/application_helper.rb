@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ApplicationHelper
   def sortable(column, title = nil, _remote = true)
     title ||= column.titleize

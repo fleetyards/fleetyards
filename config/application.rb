@@ -1,16 +1,20 @@
 # encoding: utf-8
 # frozen_string_literal: true
-require File.expand_path('../boot', __FILE__)
+
+require_relative 'boot'
 
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module Fleetyards
   class Application < Rails::Application
     config.lograge.enabled = true
+
+    config.load_defaults 5.1
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -33,7 +37,7 @@ module Fleetyards
 
     config.exceptions_app = routes
 
-    config.middleware.insert_before 0, "Rack::Cors" do
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins "localhost", "fleetyards.dev", "fleetyards.net", "d159vi9qupesbj.cloudfront.net"
         resource "*", headers: :any, methods: [:get]

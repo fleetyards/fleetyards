@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class HangarsController < ApplicationController
   skip_authorization_check only: [:public]
   before_action :authenticate_user!, only: [:show]
@@ -11,7 +12,7 @@ class HangarsController < ApplicationController
 
   def public
     @active_nav = 'hangar-public'
-    redirect_to root_path, alert: I18n.t("messages.user_not_found") unless user.present?
+    redirect_to root_path, alert: I18n.t("messages.user_not_found") if user.blank?
   end
 
   private def user

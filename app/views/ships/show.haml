@@ -20,12 +20,12 @@
           .pull-right.resource-nav
             - back_params = params.dup
             - back_params.delete(:slug)
-            %a.btn.btn-default{href: ships_path(back_params)}
+            %a.btn.btn-default{href: ships_path(back_params.permit!)}
               = I18n.t(:"actions.back")
 
       .row
         .col-xs-12.col-md-8
-          %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params) if ship.images.enabled.present?)}
+          %a.thumbnail.ship-image{href: (gallery_ship_path(ship.slug, gallery_params.permit!) if ship.images.enabled.present?)}
             = image_tag ship.store_image
           %blockquote.ship-description
             %p
@@ -62,7 +62,7 @@
           .text-right
             .btn-group.resource-nav
               - if ship.images.enabled.present?
-                %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params)}
+                %a.btn.btn-default{href: gallery_ship_path(ship.slug, gallery_params.permit!)}
                   = I18n.t("actions.ship.gallery")
               = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
                 %i.fa.fa-bookmark-o

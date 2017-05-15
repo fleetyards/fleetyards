@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Backend
   class BaseController < ApplicationController
     before_action :authenticate_user!
@@ -11,7 +12,7 @@ module Backend
     end
 
     private def sort_direction
-      %w(asc desc).include?(params[:direction]) ? params[:direction] : "asc"
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
     helper_method :sort_direction
 

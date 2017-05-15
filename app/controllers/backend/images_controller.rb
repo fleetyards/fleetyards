@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Backend
   class ImagesController < BaseController
     before_action :set_active_nav

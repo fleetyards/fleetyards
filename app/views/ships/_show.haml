@@ -5,7 +5,7 @@
     .ship-panel.panel.panel-default
       .panel-heading
         %h2.panel-title
-          %a{href: ship_path(ship.slug, ship_params)}><
+          %a{href: ship_path(ship.slug, ship_params.permit!)}><
             = ship.name
           %br
           %small
@@ -14,14 +14,14 @@
         .production-status
           %strong.text-uppercase= I18n.t("labels.ship.production_status.#{ship.production_status}")
       .profile-image.text-center
-        %a{href: ship_path(ship.slug, ship_params)}><
+        %a{href: ship_path(ship.slug, ship_params.permit!)}><
           = image_tag ship.store_image.small
           - if ship.on_sale?
             .on-sale{title: I18n.t("labels.ship.on_sale", price: ship.price)}
               %i.fa.fa-dollar
       = render "ships/index_data", ship: ship
       .btn-group.btn-group-flex
-        %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params)}
+        %a.btn.btn-default.btn-block{href: ship_path(ship.slug, ship_params.permit!)}
           = I18n.t(:"actions.more_info")
         = link_to new_my_ship_path(ship: ship.slug), title: I18n.t(:"actions.add_my_ship"), class: 'btn btn-success' do
           %i.fa.fa-bookmark-o

@@ -1,5 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 constraints subdomain: "" do
   as :user do
     get 'register' => 'registrations#new', as: :new_registration
@@ -11,7 +12,7 @@ constraints subdomain: "" do
     delete 'logout' => 'sessions#destroy', as: :destroy_user_session
   end
 
-  resource :password, only: [:edit, :update]
+  resource :password, only: %i[edit update]
 
   get 'impressum' => 'base#impressum'
   get 'privacy' => 'base#privacy'
@@ -44,7 +45,7 @@ constraints subdomain: "" do
     end
   end
 
-  resources :manufacturers, only: [:index, :show], param: :slug
+  resources :manufacturers, only: %i[index show], param: :slug
 
   # get ':username' => 'profile#show'
 end

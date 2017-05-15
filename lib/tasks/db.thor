@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'highline/import'
 
 class Db < Thor

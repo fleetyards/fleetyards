@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module CarrierWave
   module MiniMagick
     def quality(percentage)

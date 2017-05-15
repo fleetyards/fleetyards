@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ServerErrorsController < ActionController::Base
   def server_error
     @action_name = action_name

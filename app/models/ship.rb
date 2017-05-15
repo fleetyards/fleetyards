@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Ship < ActiveRecord::Base
   default_scope -> { order(name: :asc) }
 
@@ -51,27 +52,27 @@ class Ship < ActiveRecord::Base
   end
 
   def self.filter_ship_role(ship_role)
-    return all if ship_role.blank? || !(ship_role =~ /\w+/)
+    return all if ship_role.blank? || ship_role !~ /\w+/
     includes(:ship_role).where("ship_roles.slug = ?", ship_role).references(:ship_role)
   end
 
   def self.filter_manufacturer(manufacturer)
-    return all if manufacturer.blank? || !(manufacturer =~ /\w+/)
+    return all if manufacturer.blank? || manufacturer !~ /\w+/
     includes(:manufacturer).where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
   end
 
   def self.filter_production_status(production_status)
-    return all if production_status.blank? || !(production_status =~ /\w+/)
+    return all if production_status.blank? || production_status !~ /\w+/
     where(production_status: production_status)
   end
 
   def self.filter_on_sale(on_sale)
-    return all if on_sale.blank? || !(on_sale =~ /^(true|false)$/)
+    return all if on_sale.blank? || on_sale !~ /^(true|false)$/
     where(on_sale: on_sale)
   end
 
   def self.search(search_string)
-    return all if search_string.blank? || !(search_string =~ /\w+/)
+    return all if search_string.blank? || search_string !~ /\w+/
     search_conditions = []
     search_conditions << "lower(ships.name) like :search"
     search_conditions << "lower(ships.description) like :search"
