@@ -3,8 +3,8 @@ dependencies:
     - gem update --system
 test:
   override:
-    - bundle exec rake
     - bundle exec rubocop
+    - bundle exec rake
     - bundle exec codeclimate-test-reporter
 deployment:
   live:
