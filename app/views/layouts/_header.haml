@@ -7,15 +7,9 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      - path = root_path
-      - if backend?
-        - path = backend_root_path
-      %a.navbar-brand{href: path}
-        = default_title
+      %a.navbar-brand{href: root_path}
+        = I18n.t(:"title.default")
 
     .collapse.navbar-collapse.navbar-ex1-collapse
-      - if backend?
-        = render "layouts/backend/nav"
-      - else
-        = render "layouts/nav"
+      = render "layouts/nav"
       = render "layouts/user_nav"

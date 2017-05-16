@@ -45,13 +45,4 @@ module ApplicationHelper
       asset_path("bg-#{rand(5)}.jpg")
     end
   end
-
-  def default_title
-    @default_title ||= I18n.t(:"title.backend") if backend?
-    @default_title ||= I18n.t(:"title.default")
-  end
-
-  def backend?
-    self.class.to_s.split('::').first == 'Backend'
-  end
 end

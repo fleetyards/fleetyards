@@ -1,0 +1,15 @@
+nav#main-nav.navbar.navbar-default role="navigation"
+  .container
+    .navbar-header
+      button.navbar-toggle type='button' data-toggle='collapse' data-target='.navbar-ex1-collapse'
+        span.sr-only
+          = I18n.t(:"nav.header.toggle")
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand{href: backend_root_path}
+        = I18n.t(:"title.backend")
+
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      = render "layouts/backend/nav"
+      = render "layouts/backend/user_nav"

@@ -11,6 +11,8 @@ module Backend
       @worker_running = worker_running?
     end
 
+    layout 'backend/application'
+
     private def sort_direction
       %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
