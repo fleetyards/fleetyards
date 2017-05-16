@@ -25,7 +25,7 @@
         .col-md-12
           .well.text-center
             - if @ships.out_of_range? && !@ships.total_pages.zero?
-              = I18n.t(:"labels.table.out_of_range.ship", url: ships_path(params.merge({page: 1}))).html_safe
+              = I18n.t(:"labels.table.out_of_range.ship", url: ships_path(params.merge({page: 1}).permit!)).html_safe
             - else
               = I18n.t(:"labels.table.blank.ship")
 
