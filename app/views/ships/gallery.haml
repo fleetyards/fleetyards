@@ -9,7 +9,7 @@
           = I18n.t(:"headlines.ship.gallery", ship: ship.name)
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          %a.btn.btn-default{href: ship_path(ship.slug, params)}
+          %a.btn.btn-default{href: ship_path(ship.slug, params.permit!)}
             = I18n.t(:"actions.back")
 
     .row

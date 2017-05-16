@@ -8,6 +8,10 @@ class Ability
 
     can :manage, :all if user.admin?
 
+    can :read, [:manufacturers, Manufacturer]
+    can :read, [:ships, Ship]
+    can :read, [:components, Component]
+
     can :show, :api
     can %i[index show], :api_ships
 

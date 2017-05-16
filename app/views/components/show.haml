@@ -9,13 +9,13 @@
           %h1
             = component.name
             %small
-              = component.component_type.capitalize
+              = component.component_type.capitalize if component.component_type.present?
 
         .col-xs-12.col-md-6
           .btn-group.pull-right.resource-nav
             - back_params = params.dup
             - back_params.delete(:id)
-            %a.btn.btn-default{href: send("#{component.category.slug}_components_path", back_params)}
+            %a.btn.btn-default{href: send("#{component.category.slug}_components_path", back_params.permit!)}
               = I18n.t(:"actions.back")
 
       .row
