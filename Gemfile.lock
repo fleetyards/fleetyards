@@ -566,7 +566,7 @@ DEPENDENCIES
   haml
   haml-rails
   highline
-  i18n-js
+  i18n-js (>= 3.0.0.rc11)
   jbuilder
   jquery-rails
   js-routes
