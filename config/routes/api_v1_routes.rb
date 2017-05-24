@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 v1_api_routes = lambda do
-  resources :ships, only: %i[index show]
+  resources :ships, param: :slug, only: %i[index show]
 end
 
 scope :v1, defaults: { format: :json }, as: :v1 do

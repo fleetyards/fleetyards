@@ -31,5 +31,7 @@ CarrierWave.configure do |config|
     }
     config.fog_directory = 'fleetyards'
     config.asset_host = "https://d159vi9qupesbj.cloudfront.net"
+  else
+    config.asset_host = "http://fleetyards.dev"
   end
 end

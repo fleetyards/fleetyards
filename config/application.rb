@@ -36,13 +36,6 @@ module Fleetyards
     config.autoload_paths << Rails.root.join("config", "routes")
 
     config.exceptions_app = routes
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins "localhost", "fleetyards.dev", "fleetyards.net", "d159vi9qupesbj.cloudfront.net"
-        resource "*", headers: :any, methods: [:get]
-      end
-    end
   end
 end
 
