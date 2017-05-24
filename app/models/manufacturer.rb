@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Manufacturer < ActiveRecord::Base
+class Manufacturer < ApplicationRecord
   default_scope -> { order(name: :asc) }
   translates :description
 

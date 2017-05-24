@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Hardpoint < ActiveRecord::Base
+class Hardpoint < ApplicationRecord
   class ComponentCategoryValidator < ActiveModel::Validator
     def validate(hardpoint)
       return unless hardpoint.component.present? && hardpoint.component.category_id != hardpoint.category_id

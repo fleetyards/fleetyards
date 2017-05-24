@@ -63,6 +63,9 @@ Metrics/PerceivedComplexity:
 Style/ParallelAssignment:
   Enabled: false
 
+Metrics/CyclomaticComplexity:
+  Max: 10
+
 # `fail` is seldom/never seen in Ruby code.
 # https://github.com/bbatsov/ruby-style-guide/issues/233
 Style/SignalException:

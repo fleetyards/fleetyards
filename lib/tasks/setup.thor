@@ -7,7 +7,6 @@ class Setup < Thor
   include Thor::Actions
 
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/CyclomaticComplexity
   desc "admin", "Create Admin-User"
   option :email, type: :string, default: nil
   option :username, type: :string, default: nil

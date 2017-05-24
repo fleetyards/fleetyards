@@ -11,7 +11,6 @@ class ShipsController < ApplicationController
                  .filter(filter_params)
                  .order(name: :asc)
                  .page(params.fetch(:page, nil))
-                 .per(8)
     respond_to do |format|
       format.js { render json: @ships }
       format.html {}

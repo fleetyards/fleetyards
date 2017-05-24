@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ShipRole < ActiveRecord::Base
+class ShipRole < ApplicationRecord
   translates :name
 
   include SlugHelper

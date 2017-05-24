@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Album < ActiveRecord::Base
+class Album < ApplicationRecord
   translates :description
 
   has_many :images, as: :gallery

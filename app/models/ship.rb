@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Ship < ActiveRecord::Base
+class Ship < ApplicationRecord
+  paginates_per 8
+
   default_scope -> { order(name: :asc) }
 
   translates :description

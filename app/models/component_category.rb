@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ComponentCategory < ActiveRecord::Base
+class ComponentCategory < ApplicationRecord
   translates :name
 
   has_many :components

@@ -24,7 +24,7 @@ class HangarsController < ApplicationController
     @purchased_user_ships ||= user.user_ships
                               .purchased
                               .page(params.fetch(:page, nil))
-                              .per(12)
+                                  .per(12)
   end
   helper_method :purchased_user_ships
 
@@ -33,7 +33,7 @@ class HangarsController < ApplicationController
                     .unscoped
                     .order(purchased: :desc, created_at: :desc)
                     .page(params.fetch(:page, nil))
-                    .per(12)
+                        .per(12)
   end
   helper_method :user_ships
 

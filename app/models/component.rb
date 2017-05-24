@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Component < ActiveRecord::Base
+class Component < ApplicationRecord
   default_scope -> { order(name: :asc) }
   translates :name, :component_type
 
