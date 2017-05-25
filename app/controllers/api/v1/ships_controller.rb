@@ -14,6 +14,11 @@ module Api
                      .per(params[:per_page])
       end
 
+      def latest
+        authorize! :index, :api_ships
+        @ships = Ship.enabled.order("RANDOM()").limit(10)
+      end
+
       def show
         authorize! :show, :api_ships
         @ship = Ship.find_by(slug: params[:slug])
