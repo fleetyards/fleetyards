@@ -14,6 +14,7 @@ class Ability
 
     can :show, :api
     can %i[index show], :api_ships
+    can %i[index], :api_images
 
     if user.id.present?
       can :show, :hangar

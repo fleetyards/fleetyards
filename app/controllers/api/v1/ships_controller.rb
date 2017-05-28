@@ -21,7 +21,12 @@ module Api
 
       def show
         authorize! :show, :api_ships
-        @ship = Ship.find_by(slug: params[:slug])
+        @ship = Ship.find_by!(slug: params[:slug])
+      end
+
+      def gallery
+        authorize! :index, :api_ships
+        @images = Ship.find_by!(slug: params[:slug]).images
       end
     end
   end

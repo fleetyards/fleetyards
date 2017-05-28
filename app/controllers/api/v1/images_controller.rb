@@ -7,8 +7,8 @@ module Api
       before_action :authenticate_user!, only: []
 
       def latest
-        authorize! :index, :api_ships
-        @images = Image.enabled.order("RANDOM()").limit(14)
+        authorize! :index, :api_images
+        @images = Image.enabled.in_gallery.order("RANDOM()").limit(14)
       end
     end
   end
