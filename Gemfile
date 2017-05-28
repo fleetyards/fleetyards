@@ -116,6 +116,6 @@ end
 
 group :development, :test do
   gem 'bullet'
-  gem 'byebug', platform: :mri
   gem 'bundler-audit'
+  gem 'byebug', platform: :mri
 end
