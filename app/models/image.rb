@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Image < ApplicationRecord
+  paginates_per 16
+
   include Rails.application.routes.url_helpers
   belongs_to :gallery, polymorphic: true, touch: true
 

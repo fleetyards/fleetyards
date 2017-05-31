@@ -2,8 +2,7 @@
 # frozen_string_literal: true
 
 json.cache! ['v1', image] do
-  json.id image.id
-  json.name image.name
+  json.partial! 'api/v1/images/base', image: image
   json.ship do
     json.partial! 'api/v1/ships/show', ship: image.gallery if image.gallery.present?
   end

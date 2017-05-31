@@ -13,7 +13,7 @@ json.cache! ['v1', ship] do
     json.array! ship.hardpoints, partial: 'api/v1/ships/hardpoint', as: :hardpoint
   end
   json.images do
-    json.array! ship.images, partial: 'api/v1/ships/image', as: :image
+    json.array! ship.images, partial: 'api/v1/images/show', as: :image
   end
   json.partial! 'api/shared/dates', record: ship
 end

@@ -12,7 +12,7 @@ class Images < Thor
       begin
         image.name.cache_stored_file!
         image.name.retrieve_from_cache!(image.name.cache_name)
-        image.name.recreate_versions!(:dark, :small)
+        image.name.recreate_versions!(:dark, :big, :small)
         image.save!
       rescue => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
