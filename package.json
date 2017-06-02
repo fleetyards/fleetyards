@@ -7,13 +7,13 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepush": "bundle exec bundle-audit update && bundle exec bundle-audit check && bundle exec rubocop && bundle exec rake"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/mortik/fleetyards-app.git"
   },
-  "author": "Marten Klitzke <m.klitzke@gmail.com>",
+  "author": "Marten Klitzke <me@mortik.xyz>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mortik/fleetyards-app/issues"
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "eslint": "^3.13.1",
-    "eslint-plugin-babel": "^4.0.0"
+    "eslint-plugin-babel": "^4.0.0",
+    "husky": "^0.13.4"
   }
 }

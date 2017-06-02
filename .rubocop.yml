@@ -8,6 +8,7 @@ AllCops:
     - 'bin/**/*'
     - 'log/**/*'
     - 'Brewfile'
+    - 'Rakefile'
 
 Rails:
   Enabled: true
