@@ -8,6 +8,10 @@ module Api
       after_action only: [:index] { pagination_header(:ships) }
       after_action only: [:gallery] { pagination_header(:images) }
 
+      rescue_from ActiveRecord::RecordNotFound do |_exception|
+        not_found(I18n.t('messages.record_not_found.ship', slug: params[:slug]))
+      end
+
       def index
         authorize! :index, :api_ships
         @ships = Ship.enabled

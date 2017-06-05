@@ -17,9 +17,12 @@ module Api
       render json: { message: exception.message }, status: :forbidden
     end
 
+    private def not_found(message = I18n.t('messages.record_not_found.base'))
+      render json: { code: "not_found", message: message }, status: :not_found
+    end
+
     def resource_message(resource, action, state)
       I18n.t(state, scope: "resources.messages.#{action}", resource: I18n.t(:"resources.#{resource}"))
     end
-    helper_method :resource_message
   end
 end

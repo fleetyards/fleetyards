@@ -17,10 +17,6 @@ constraints subdomain: "" do
   get 'impressum' => 'base#impressum'
   get 'privacy' => 'base#privacy'
 
-  get '404' => 'errors#not_found'
-  get '422' => 'errors#unprocessable_entity'
-  get '500' => 'server_errors#server_error'
-
   resources :ships, param: :slug, concerns: :paginatable do
     member do
       get 'gallery'
@@ -46,6 +42,10 @@ constraints subdomain: "" do
   end
 
   resources :manufacturers, only: %i[index show], param: :slug
+
+  match '404' => 'errors#not_found', via: :all
+  match '422' => 'errors#server_error', via: :all
+  match '500' => 'errors#server_error', via: :all
 
   # get ':username' => 'profile#show'
 end
