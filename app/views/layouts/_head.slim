@@ -1,15 +1,14 @@
 meta charset="utf-8"
 
+link rel="mask-icon" href="#{asset_url('favicon.svg')}" color="#333333"
 link rel="shortcut icon" type="image/png" href="#{asset_url('favicon.png')}"
 
 title = content_for?(:title) ? "#{yield(:title)} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
 meta name="description" content=I18n.t(:"meta.description")
 meta name="keywords" content=I18n.t(:"meta.keywords")
 
-meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no "
+meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"
 meta name="mobile-web-app-capable" content="yes"
-= favicon_link_tag 'icon-196.png', rel: "shortcut icon", type: 'image/png'
-
 meta name="apple-mobile-web-app-capable" content="yes"
 meta name="apple-mobile-web-app-status-bar-style" content="black"
 

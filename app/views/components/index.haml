@@ -11,7 +11,7 @@
         .pull-right
           = paginate components
 
-    .row.is-flex
+    .flex-row
       - components.each do |component|
         - cache [I18n.locale, component] do
           .col-md-4.col-sm-6.col-xs-12

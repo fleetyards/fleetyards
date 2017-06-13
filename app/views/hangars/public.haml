@@ -13,7 +13,7 @@
         .pull-right
           = paginate purchased_user_ships
 
-    .row.is-flex
+    .flex-row
       = render partial: "hangars/show_public", collection: purchased_user_ships, as: :user_ship
 
     .row

@@ -19,7 +19,7 @@
         .pull-right
           = paginate @ships
 
-    .row.is-flex
+    .flex-row
       = render partial: "ships/show", collection: @ships, as: :ship
       - if @ships.blank?
         .col-md-12

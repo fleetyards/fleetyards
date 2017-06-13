@@ -56,13 +56,16 @@ a.navbar-brand,
   border-color: #666;
 }
 
-.row.is-flex {
-    display: flex;
-    flex-wrap: wrap;
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
 }
-.row.is-flex > [class*='col-'] {
-    display: flex;
-    flex-direction: column;
+
+.flex-row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
 }
 
 a.thumbnail:hover,

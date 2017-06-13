@@ -46,7 +46,7 @@
   .col-xs-12.col-md-6
     h2= I18n.t("headlines.image.welcome")
 
-    .row.is-flex
+    .flex-row
       - cache("top_images", expires_in: 1.hour) do
         - @images.each do |image|
           .col-xs-12.col-sm-6.col-md-6

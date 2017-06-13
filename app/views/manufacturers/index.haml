@@ -14,7 +14,7 @@
         .pull-right
           = paginate @manufacturers
 
-    .row.is-flex
+    .flex-row
       = render partial: "manufacturers/show", collection: @manufacturers, as: :manufacturer
 
     .row

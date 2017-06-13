@@ -11,7 +11,7 @@
         .pull-right
           = paginate @images
 
-    .row.is-flex
+    .flex-row
       - @images.each do |image|
         - cache image do
           .col-md-3.col-sm-3.col-xs-12
