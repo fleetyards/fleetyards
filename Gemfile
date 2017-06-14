@@ -20,8 +20,6 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
-gem 'secure_headers'
-
 gem 'i18n-js', ">= 3.0.0.rc11"
 gem 'js_cookie_rails'
 
