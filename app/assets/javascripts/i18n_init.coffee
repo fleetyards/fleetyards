@@ -13,7 +13,7 @@ $(document).on 'turbolinks:load', ->
     fallbackLng: "en"
 
     # current locale to load
-    lng: locale
+    lng: navigator.language
 
     # rails-asset-localization path
     resGetPath: '/locales/%{lng}.json'

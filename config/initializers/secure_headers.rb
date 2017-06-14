@@ -36,11 +36,12 @@ SecureHeaders::Configuration.default do |config|
     font_src: %w['self' data: fonts.gstatic.com],
     form_action: %w['self'],
     frame_ancestors: %w['none'],
+    frame_src: %w['self' disqus.com],
     media_src: %w['self'],
-    img_src: %w['self' data: d159vi9qupesbj.cloudfront.net www.gravatar.com www.google-analytics.com stats.g.doubleclick.net],
+    img_src: %w['self' data: d159vi9qupesbj.cloudfront.net www.gravatar.com www.google-analytics.com stats.g.doubleclick.net www.google.com],
     object_src: %w['self'],
-    script_src: %w['self' 'unsafe-inline' cdn.ravenjs.com www.google-analytics.com fleetyards.disqus.com],
-    style_src: %w['self' fonts.googleapis.com],
+    script_src: %w['self' cdn.ravenjs.com www.google-analytics.com fleetyards.disqus.com c.disquscdn.com],
+    style_src: %w['self' 'unsafe-inline' fonts.googleapis.com c.disquscdn.com],
     upgrade_insecure_requests: true,
     report_uri: %w[https://mortik.report-uri.io/r/default/csp/enforce]
   }
