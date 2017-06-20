@@ -330,7 +330,7 @@ GEM
       rake
     mina-multistage (1.0.3)
       mina (~> 1.0)
-    mini_magick (4.7.0)
+    mini_magick (4.7.1)
     mini_portile2 (2.2.0)
     minitest (5.10.2)
     minitest-rails (3.0.0)
