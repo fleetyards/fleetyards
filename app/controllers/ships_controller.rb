@@ -10,7 +10,8 @@ class ShipsController < ApplicationController
     @ships = Ship.enabled
                  .filter(filter_params)
                  .order(name: :asc)
-                 .page(params.fetch(:page, nil))
+                 .page(params[:page])
+                 .per(params[:per_page])
     respond_to do |format|
       format.js { render json: @ships }
       format.html {}
@@ -25,8 +26,8 @@ class ShipsController < ApplicationController
     @images = ship.images
                   .enabled
                   .order("created_at asc ")
-                  .page(params.fetch(:page, nil))
-                  .per(24)
+                  .page(params[:page])
+                  .per(params[:per_page])
   end
 
   private def set_active_nav

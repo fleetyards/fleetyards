@@ -39,7 +39,7 @@ module Api
         @images = ship.images
                       .enabled
                       .order(created_at: :asc)
-                      .page(params.fetch(:page, nil))
+                      .page(params[:page])
                       .per(params[:per_page])
       end
     end
