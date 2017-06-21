@@ -476,7 +476,7 @@ GEM
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-console (0.4.1)
+    simplecov-console (0.4.2)
       ansi
       hirb
       simplecov
