@@ -2,7 +2,6 @@
 
 class Component < ApplicationRecord
   default_scope -> { order(name: :asc) }
-  translates :name, :component_type
 
   belongs_to :category,
              class_name: "ComponentCategory"

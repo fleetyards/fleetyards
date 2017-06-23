@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ShipRole < ApplicationRecord
-  translates :name
-
   include SlugHelper
 
   has_many :ships

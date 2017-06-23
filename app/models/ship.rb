@@ -5,8 +5,6 @@ class Ship < ApplicationRecord
 
   default_scope -> { order(name: :asc) }
 
-  translates :description
-
   belongs_to :manufacturer
   belongs_to :ship_role
 

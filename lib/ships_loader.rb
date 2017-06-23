@@ -102,7 +102,7 @@ class ShipsLoader
   end
 
   private def create_or_update_ship(data)
-    ship = Ship.find_or_create_by(name: data["name"])
+    ship = Ship.find_or_create_by!(name: data["name"])
 
     ship.update(
       rsi_id: data["id"],
@@ -131,11 +131,11 @@ class ShipsLoader
   end
 
   def create_or_update_ship_role(ship_role)
-    ShipRole.find_or_create_by(name: ship_role)
+    ShipRole.find_or_create_by!(name: ship_role)
   end
 
   def create_or_update_manufacturer(manufacturer_data)
-    manufacturer = Manufacturer.find_or_create_by(name: manufacturer_data["name"])
+    manufacturer = Manufacturer.find_or_create_by!(name: manufacturer_data["name"])
 
     manufacturer.update(
       rsi_id: manufacturer_data["id"],
@@ -149,10 +149,10 @@ class ShipsLoader
   end
 
   def create_propulsion_hardpoints(ship_id, propulsion_data)
-    category = ComponentCategory.find_or_create_by(rsi_name: "propulsion")
+    category = ComponentCategory.find_or_create_by!(rsi_name: "propulsion")
 
     propulsion_data.each do |data|
-      Hardpoint.create(
+      Hardpoint.create!(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -165,7 +165,7 @@ class ShipsLoader
   end
 
   def create_ordnance_hardpoints(ship_id, ordnance_data)
-    category = ComponentCategory.find_or_create_by(rsi_name: "ordnance")
+    category = ComponentCategory.find_or_create_by!(rsi_name: "ordnance")
 
     ordnance_data.each do |data|
       Hardpoint.create(
@@ -182,7 +182,7 @@ class ShipsLoader
   end
 
   def create_modular_hardpoints(ship_id, modular_data)
-    category = ComponentCategory.find_or_create_by(rsi_name: "modular")
+    category = ComponentCategory.find_or_create_by!(rsi_name: "modular")
 
     modular_data.each do |data|
       Hardpoint.create(
@@ -197,7 +197,7 @@ class ShipsLoader
   end
 
   def create_avionics_hardpoints(ship_id, avionics_data)
-    category = ComponentCategory.find_or_create_by(rsi_name: "avionics")
+    category = ComponentCategory.find_or_create_by!(rsi_name: "avionics")
 
     avionics_data.each do |data|
       Hardpoint.create(
@@ -211,7 +211,10 @@ class ShipsLoader
   end
 
   def create_or_update_component(component_data, category)
-    component = Component.find_or_create_by(name: component_data["name"])
+    component = Component.find_or_create_by!(name: component_data["name"]) do |c|
+      c.component_type = component_data["type"]
+      c.category = category
+    end
 
     component.update(
       rsi_id: component_data["id"],

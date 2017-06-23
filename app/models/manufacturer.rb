@@ -2,8 +2,6 @@
 
 class Manufacturer < ApplicationRecord
   default_scope -> { order(name: :asc) }
-  translates :description
-
   include SlugHelper
 
   mount_uploader :logo, LogoUploader

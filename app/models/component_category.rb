@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ComponentCategory < ApplicationRecord
-  translates :name
-
   has_many :components
 
   validates :name, presence: true

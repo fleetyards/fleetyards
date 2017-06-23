@@ -8,8 +8,6 @@ class Hardpoint < ApplicationRecord
     end
   end
 
-  translates :name
-
   belongs_to :ship, touch: true
   belongs_to :component
   belongs_to :category,
@@ -18,4 +16,8 @@ class Hardpoint < ApplicationRecord
   validates :ship_id, :category_id, presence: true
 
   validates_with ComponentCategoryValidator
+
+  def self.with_name
+    where.not(name: nil)
+  end
 end

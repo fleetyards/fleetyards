@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Album < ApplicationRecord
-  translates :description
-
   has_many :images, as: :gallery
 
   before_save :update_slugs
