@@ -37,9 +37,9 @@ class MyShipsController < ApplicationController
   def destroy
     authorize! :destroy, user_ship
     if user_ship.destroy
-      redirect_to :back, notice: I18n.t("messages.destroy.success", resource: I18n.t("resources.my_ship"))
+      redirect_to hangar_path, notice: I18n.t("messages.destroy.success", resource: I18n.t("resources.my_ship"))
     else
-      redirect_to :back, alert: I18n.t("messages.destroy.failure", resource: I18n.t("resources.my_ship"))
+      redirect_to hangar_path, alert: I18n.t("messages.destroy.failure", resource: I18n.t("resources.my_ship"))
     end
   end
 
