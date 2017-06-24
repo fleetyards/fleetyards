@@ -10,12 +10,12 @@ class ShipsLoaderTest < ActiveSupport::TestCase
     VCR.use_cassette("ships_loader_all") do
       loader.all
       expectations = {
-        hardpoints: 0,
-        components: 1845,
+        hardpoints: 1998,
+        components: 216,
         component_categories: 4,
-        ships: 91,
+        ships: 96,
         manufacturers: 14,
-        ship_roles: 88
+        ship_roles: 61
       }
       assert_equal(expectations,
                    hardpoints: Hardpoint.count,

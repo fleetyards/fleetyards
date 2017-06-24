@@ -102,7 +102,8 @@ class ShipsLoader
   end
 
   private def create_or_update_ship(data)
-    ship = Ship.find_or_create_by!(name: data["name"])
+    ship = Ship.find_or_initialize_by(name: data["name"])
+    raise ship.errors.to_yaml unless ship.save
 
     ship.update(
       rsi_id: data["id"],
@@ -131,11 +132,12 @@ class ShipsLoader
   end
 
   def create_or_update_ship_role(ship_role)
-    ShipRole.find_or_create_by!(name: ship_role)
+    ShipRole.find_or_create_by(name: ship_role)
   end
 
   def create_or_update_manufacturer(manufacturer_data)
-    manufacturer = Manufacturer.find_or_create_by!(name: manufacturer_data["name"])
+    manufacturer = Manufacturer.find_or_initialize_by(name: manufacturer_data["name"])
+    raise manufacturer.errors.to_yaml unless manufacturer.save
 
     manufacturer.update(
       rsi_id: manufacturer_data["id"],
@@ -149,10 +151,11 @@ class ShipsLoader
   end
 
   def create_propulsion_hardpoints(ship_id, propulsion_data)
-    category = ComponentCategory.find_or_create_by!(rsi_name: "propulsion")
+    category = ComponentCategory.find_or_initialize_by(rsi_name: "propulsion")
+    raise category.errors.to_yaml unless category.save
 
     propulsion_data.each do |data|
-      Hardpoint.create!(
+      hardpoint = Hardpoint.new(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -161,14 +164,16 @@ class ShipsLoader
         rating: data["rating"],
         component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
+      raise hardpoint.errors.to_yaml unless hardpoint.save
     end
   end
 
   def create_ordnance_hardpoints(ship_id, ordnance_data)
-    category = ComponentCategory.find_or_create_by!(rsi_name: "ordnance")
+    category = ComponentCategory.find_or_initialize_by(rsi_name: "ordnance")
+    raise category.errors.to_yaml unless category.save
 
     ordnance_data.each do |data|
-      Hardpoint.create(
+      hardpoint = Hardpoint.new(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -178,14 +183,16 @@ class ShipsLoader
         quantity: data["quantity"],
         component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
+      raise hardpoint.errors.to_yaml unless hardpoint.save
     end
   end
 
   def create_modular_hardpoints(ship_id, modular_data)
-    category = ComponentCategory.find_or_create_by!(rsi_name: "modular")
+    category = ComponentCategory.find_or_initialize_by(rsi_name: "modular")
+    raise category.errors.to_yaml unless category.save
 
     modular_data.each do |data|
-      Hardpoint.create(
+      hardpoint = Hardpoint.new(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
@@ -193,28 +200,32 @@ class ShipsLoader
         max_size: data["max_size"],
         component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
+      raise hardpoint.errors.to_yaml unless hardpoint.save
     end
   end
 
   def create_avionics_hardpoints(ship_id, avionics_data)
-    category = ComponentCategory.find_or_create_by!(rsi_name: "avionics")
+    category = ComponentCategory.find_or_initialize_by(rsi_name: "avionics")
+    raise category.errors.to_yaml unless category.save
 
     avionics_data.each do |data|
-      Hardpoint.create(
+      hardpoint = Hardpoint.new(
         ship_id: ship_id,
         rsi_id: data["id"],
         category_id: category.id,
         name: data["name"],
         component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
       )
+      raise hardpoint.errors.to_yaml unless hardpoint.save
     end
   end
 
   def create_or_update_component(component_data, category)
-    component = Component.find_or_create_by!(name: component_data["name"]) do |c|
+    component = Component.find_or_initialize_by(name: component_data["name"]) do |c|
       c.component_type = component_data["type"]
       c.category = category
     end
+    raise component.errors.to_yaml unless component.save
 
     component.update(
       rsi_id: component_data["id"],

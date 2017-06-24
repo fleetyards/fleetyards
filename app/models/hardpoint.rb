@@ -9,7 +9,7 @@ class Hardpoint < ApplicationRecord
   end
 
   belongs_to :ship, touch: true
-  belongs_to :component
+  belongs_to :component, required: false
   belongs_to :category,
              class_name: "ComponentCategory"
 
