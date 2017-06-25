@@ -43,9 +43,5 @@ constraints subdomain: /^(?!api)(\w+)/ do
 
   resources :manufacturers, only: %i[index show], param: :slug
 
-  match '404' => 'errors#not_found', via: :all
-  match '422' => 'errors#server_error', via: :all
-  match '500' => 'errors#server_error', via: :all
-
   # get ':username' => 'profile#show'
 end
