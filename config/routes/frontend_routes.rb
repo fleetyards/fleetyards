@@ -1,7 +1,7 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-constraints subdomain: "" do
+constraints subdomain: /^(?!api)(\w+)/ do
   as :user do
     get 'register' => 'registrations#new', as: :new_registration
     post 'register' => 'registrations#create', as: :user_registration
