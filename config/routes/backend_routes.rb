@@ -1,7 +1,7 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-namespace :backend, constraints: { subdomain: /^(?!api)(\w+)/ } do
+namespace :backend, constraints: ->(request) { request.subdomain != 'api' } do
   put '/locales/fetch' => 'locales#fetch', as: :update_locales
 
   resources :users, except: [:show]
