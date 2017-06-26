@@ -1,7 +1,7 @@
 - content_for(:title) do
-  = I18n.t(:"title.#{@action_name}")
+  = I18n.t(:"title.#{params[:action]}")
 .cbox.cbox-error.cbox-large
   .well
-    %h1= I18n.t(:"headlines.#{@action_name}")
+    %h1= I18n.t(:"headlines.#{params[:action]}")
 
-    %p= I18n.t(:"error_pages.#{@action_name}")
+    %p= I18n.t(:"error_pages.#{params[:action]}")
