@@ -90,11 +90,56 @@ $nav-transition-speed: .3s;
   }
 }
 
+.navbar-default .navbar-toggle,
+.navbar-toggle {
+  float: none;
+  position: absolute;
+  border-color: transparent;
+
+  &:hover,
+  &:focus {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  .icon-bar {
+    width: 22px;
+    transition: all 0.2s;
+  }
+
+  .top-bar {
+    transform: rotate(45deg);
+    transform-origin: 10% 10%;
+  }
+
+  .middle-bar {
+    opacity: 0;
+  }
+
+  .bottom-bar {
+    transform: rotate(-45deg);
+    transform-origin: 10% 90%;
+  }
+
+  &.collapsed {
+    .top-bar,
+    .bottom-bar {
+      transform: rotate(0);
+    }
+
+    .middle-bar {
+      opacity: 1;
+    }
+  }
+}
+
 @media (max-width: $screen-xs-min) {
   .navbar-brand {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 80%;
     white-space: nowrap;
+    text-align: center;
+    display: block;
+    float: none;
   }
 }
