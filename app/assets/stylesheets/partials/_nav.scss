@@ -80,10 +80,6 @@ $nav-transition-speed: .3s;
   }
 }
 
-.navbar-default {
-  min-width: 320px;
-}
-
 .resource-nav {
   margin-bottom: 10px;
 }
@@ -139,6 +135,10 @@ $nav-transition-speed: .3s;
 }
 
 @media (max-width: $screen-xs-min) {
+  .navbar-default {
+    min-width: 320px;
+  }
+
   .navbar-brand {
     text-overflow: ellipsis;
     overflow: hidden;
