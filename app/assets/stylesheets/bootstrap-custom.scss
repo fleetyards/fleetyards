@@ -2,6 +2,8 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
+$grid-float-breakpoint: $screen-sm-max;
+
 // Reset and dependencies
 @import "bootstrap/normalize";
 @import "bootstrap/print";

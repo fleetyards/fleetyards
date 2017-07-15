@@ -80,6 +80,10 @@ $nav-transition-speed: .3s;
   }
 }
 
+.navbar-default {
+  min-width: 320px;
+}
+
 .resource-nav {
   margin-bottom: 10px;
 }
@@ -92,8 +96,9 @@ $nav-transition-speed: .3s;
 
 .navbar-default .navbar-toggle,
 .navbar-toggle {
-  float: none;
   position: absolute;
+  left: 10px;
+  float: none;
   border-color: transparent;
 
   &:hover,
