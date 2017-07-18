@@ -10,13 +10,11 @@
 
     .row
       .col-xs-12
-        .pull-right
-          = paginate purchased_user_ships
+        = paginate purchased_user_ships
 
     .flex-row
       = render partial: "hangars/show_public", collection: purchased_user_ships, as: :user_ship
 
     .row
       .col-xs-12
-        .pull-right
-          = paginate purchased_user_ships
+        = paginate purchased_user_ships

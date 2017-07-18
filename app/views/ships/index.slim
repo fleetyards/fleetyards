@@ -16,8 +16,7 @@
         - filters.each do |filter|
           = render "shared/filter", resource: "ship", name: filter.field, filters: filter.items, translateable: filter.translateable
       .col-xs-12.col-md-6
-        .pull-right
-          = paginate @ships
+        = paginate @ships
 
     .flex-row
       = render partial: "ships/show", collection: @ships, as: :ship
@@ -31,5 +30,4 @@
 
     .row
       .col-xs-12.col-md-12
-        .pull-right
-          = paginate @ships
+        = paginate @ships

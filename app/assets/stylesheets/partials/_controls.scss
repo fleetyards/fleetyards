@@ -16,3 +16,20 @@ ul.pagination {
     flex-grow: 1;
   }
 }
+
+@media (max-width: $screen-sm-max) {
+  .pagination {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+
+    li {
+      flex: 1;
+
+      a {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}

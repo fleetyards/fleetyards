@@ -11,13 +11,11 @@
     .row
       .col-xs-12.col-md-6
       .col-xs-12.col-md-6
-        .pull-right
-          = paginate @manufacturers
+        = paginate @manufacturers
 
     .flex-row
       = render partial: "manufacturers/show", collection: @manufacturers, as: :manufacturer
 
     .row
       .col-xs-12.col-md-12
-        .pull-right
-          = paginate @manufacturers
+        = paginate @manufacturers

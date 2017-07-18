@@ -8,8 +8,7 @@
         %h1
           = I18n.t(:"headlines.image.index")
       .col-xs-12.col-sm-6
-        .pull-right
-          = paginate @images
+        = paginate @images
 
     .flex-row
       - @images.each do |image|
@@ -20,7 +19,6 @@
 
     .row
       .col-xs-12.col-md-12
-        .pull-right
-          = paginate @images
+        = paginate @images
 
 = render "shared/gallery_modal"
