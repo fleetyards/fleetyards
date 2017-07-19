@@ -10,7 +10,7 @@ gem 'rails', '5.1.2'
 gem 'pg'
 
 gem 'sidekiq'
-gem 'sidekiq-scheduler'
+gem 'sidekiq-cron'
 # for sidekiq web
 gem 'sinatra', require: nil
 

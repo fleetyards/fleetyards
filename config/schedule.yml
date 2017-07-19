@@ -1,0 +1,3 @@
+ships_worker_job:
+  cron: '0 * * * *'
+  class: 'ShipsWorker'
