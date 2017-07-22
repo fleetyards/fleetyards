@@ -77,4 +77,8 @@ class User < ApplicationRecord
     return if rsi_organization_url.blank?
     self.rsi_organization_handle = rsi_organization_url.split("/").last
   end
+
+  def avatar(size = 24)
+    "https://www.gravatar.com/avatar/#{gravatar_hash}?s=#{size}&d=https%3A%2F%2Fidenticons.github.com%2F#{gravatar_hash}.png&amp;r=x&amp;s=#{size}"
+  end
 end

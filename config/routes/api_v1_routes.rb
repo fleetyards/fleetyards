@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 v1_api_routes = lambda do
+  resource :sessions, only: %i[create destroy]
+
   resources :ships, param: :slug, only: %i[index show] do
     get 'latest', on: :collection
     get 'gallery', on: :member
@@ -9,6 +11,12 @@ v1_api_routes = lambda do
 
   resources :images, only: %i[index] do
     get 'latest', on: :collection
+  end
+
+  resources :users, only: [] do
+    collection do
+      get :current
+    end
   end
 end
 

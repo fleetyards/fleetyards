@@ -1,6 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
+require 'json_web_token'
+
 module Api
   module V1
     class SessionsController < Api::BaseController
@@ -17,7 +19,7 @@ module Api
 
         if resource.valid_password?(login_params[:password])
           sign_in(:user, resource, store: false)
-          render json: { auth_token: JsonWebToken.encode(new_auth_token(resource.id).to_jwt_payload) }
+          render json: { token: ::JsonWebToken.encode(new_auth_token(resource.id).to_jwt_payload) }
           return
         end
         invalid_login_attempt
@@ -43,7 +45,7 @@ module Api
       private def jwt_token
         @jwt_token ||= begin
           auth_params, _options = token_and_options(request)
-          JsonWebToken.decode(auth_params)
+          ::JsonWebToken.decode(auth_params)
         end
       end
 
