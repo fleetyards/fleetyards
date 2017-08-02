@@ -102,7 +102,7 @@ GEM
       tzinfo
     ethon (0.10.1)
       ffi (>= 1.3.0)
-    excon (0.55.0)
+    excon (0.58.0)
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
@@ -113,18 +113,20 @@ GEM
     ffi (1.9.18)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
-    fog (1.40.0)
+    fog (1.41.0)
       fog-aliyun (>= 0.1.0)
       fog-atmos
       fog-aws (>= 0.6.0)
       fog-brightbox (~> 0.4)
       fog-cloudatcost (~> 0.1.0)
-      fog-core (~> 1.43)
+      fog-core (~> 1.45)
       fog-digitalocean (>= 0.3.0)
       fog-dnsimple (~> 1.0)
       fog-dynect (~> 0.0.2)
       fog-ecloud (~> 0.1)
       fog-google (<= 0.1.0)
+      fog-internet-archive
+      fog-joyent
       fog-json
       fog-local
       fog-openstack
@@ -145,7 +147,7 @@ GEM
       fog-xml (~> 0.1.1)
       ipaddress (~> 0.5)
       json (>= 1.8, < 2.0)
-    fog-aliyun (0.1.0)
+    fog-aliyun (0.2.0)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       ipaddress (~> 0.8)
@@ -153,12 +155,12 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (1.3.0)
+    fog-aws (1.4.0)
       fog-core (~> 1.38)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-brightbox (0.11.0)
+    fog-brightbox (0.13.0)
       fog-core (~> 1.22)
       fog-json
       inflecto (~> 0.0.2)
@@ -167,9 +169,9 @@ GEM
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-core (1.44.2)
+    fog-core (1.45.0)
       builder
-      excon (~> 0.49)
+      excon (~> 0.58)
       formatador (~> 0.2)
     fog-digitalocean (0.3.0)
       fog-core (~> 1.42)
@@ -190,12 +192,19 @@ GEM
       fog-core
       fog-json
       fog-xml
+    fog-internet-archive (0.0.1)
+      fog-core
+      fog-json
+      fog-xml
+    fog-joyent (0.0.1)
+      fog-core (~> 1.42)
+      fog-json (>= 1.0)
     fog-json (1.0.2)
       fog-core (~> 1.0)
       multi_json (~> 1.10)
     fog-local (0.3.1)
       fog-core (~> 1.27)
-    fog-openstack (0.1.20)
+    fog-openstack (0.1.21)
       fog-core (>= 1.40)
       fog-json (>= 1.0)
       ipaddress (>= 0.8)
@@ -240,7 +249,7 @@ GEM
     fog-voxel (0.1.0)
       fog-core
       fog-xml
-    fog-vsphere (1.10.0)
+    fog-vsphere (1.11.3)
       fog-core
       rbvmomi (~> 1.9)
     fog-xenserver (0.3.0)
@@ -425,7 +434,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
-    rbvmomi (1.11.2)
+    rbvmomi (1.11.3)
       builder (~> 3.0)
       json (>= 1.8)
       nokogiri (~> 1.5)
