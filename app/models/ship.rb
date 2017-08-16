@@ -44,31 +44,40 @@ class Ship < ApplicationRecord
   end
 
   def self.filter(filter_params)
-    filter_ship_role(filter_params.fetch(:ship_role, nil))
-      .filter_manufacturer(filter_params.fetch(:manufacturer, nil))
-      .filter_production_status(filter_params.fetch(:production_status, nil))
-      .filter_on_sale(filter_params.fetch(:on_sale, nil))
+    filter = filter_params.fetch(:filter, [])
+    filter_ship_role(select_filter(filter, 'shipRole'))
+      .filter_manufacturer(select_filter(filter, 'manufacturer'))
+      .filter_production_status(select_filter(filter, 'productionStatus'))
+      .filter_on_sale(select_filter(filter, 'onSale'))
       .search(filter_params.fetch(:search, nil))
   end
 
-  def self.filter_ship_role(ship_role)
-    return all if ship_role.blank? || ship_role !~ /\w+/
-    includes(:ship_role).where("ship_roles.slug = ?", ship_role).references(:ship_role)
+  def self.filter_ship_role(ship_roles)
+    return all if ship_roles.blank?
+    includes(:ship_role).where("ship_roles.slug in (?)", ship_roles).references(:ship_role)
   end
 
-  def self.filter_manufacturer(manufacturer)
-    return all if manufacturer.blank? || manufacturer !~ /\w+/
-    includes(:manufacturer).where("manufacturers.slug = ?", manufacturer).references(:manufacturer)
+  def self.filter_manufacturer(manufacturers)
+    return all if manufacturers.blank?
+    includes(:manufacturer).where("manufacturers.slug in (?)", manufacturers).references(:manufacturer)
   end
 
   def self.filter_production_status(production_status)
-    return all if production_status.blank? || production_status !~ /\w+/
+    return all if production_status.blank?
     where(production_status: production_status)
   end
 
   def self.filter_on_sale(on_sale)
-    return all if on_sale.blank? || on_sale !~ /^(true|false)$/
+    return all if on_sale.blank?
     where(on_sale: on_sale)
+  end
+
+  def self.select_filter(filter, type)
+    filter.map do |item|
+      parts = item.split(':')
+      next if parts[0] != type
+      parts[1]
+    end.compact
   end
 
   def self.search(search_string)
@@ -77,12 +86,13 @@ class Ship < ApplicationRecord
     search_conditions << "lower(ships.name) like :search"
     search_conditions << "lower(ships.description) like :search"
     search_conditions << "lower(ship_roles.name) like :search"
-    includes(:ship_role).where(
+    search_conditions << "lower(manufacturers.name) like :search"
+    includes(%i[ship_role manufacturer]).where(
       [
         search_conditions.join(' OR '),
         { search: "%#{search_string.downcase}%" }
       ]
-    ).references(:ship_role)
+    ).references(%i[ship_role manufacturer])
   end
 
   def ship_role_name

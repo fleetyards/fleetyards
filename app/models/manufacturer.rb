@@ -12,6 +12,10 @@ class Manufacturer < ApplicationRecord
     where(enabled: true)
   end
 
+  def self.with_name
+    where.not(name: nil)
+  end
+
   before_save :update_slugs
 
   private def update_slugs

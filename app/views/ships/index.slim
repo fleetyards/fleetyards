@@ -9,12 +9,9 @@
           = I18n.t(:"headlines.ship.index")
 
       .col-xs-12.col-md-6
-        = render "search"
 
     .row
       .col-xs-12.col-md-6
-        - filters.each do |filter|
-          = render "shared/filter", resource: "ship", name: filter.field, filters: filter.items, translateable: filter.translateable
       .col-xs-12.col-md-6
         = paginate @ships
 
