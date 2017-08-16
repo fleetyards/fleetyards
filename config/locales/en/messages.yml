@@ -22,7 +22,7 @@ en:
     disabled:
       success: "%{resource} disabled."
     create:
-      success: "%{resource} creared."
+      success: "%{resource} created."
       failure: "%{resource} could not be created."
     update:
       success: "%{resource} edited successfully."

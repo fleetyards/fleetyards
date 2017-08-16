@@ -17,22 +17,22 @@ module Api
         @ships = Ship.enabled
                      .filter(filter_params)
                      .order("ships.name asc")
-                     .page(params[:page])
-                     .per(params[:per_page])
+                     .page(params.fetch(:page, nil))
+                     .per(params.fetch(:perPage, nil))
       end
 
       def filters
         authorize! :index, :api_ships
         @filters ||= begin
           filters = []
-          filters << ShipRole.with_name.order(name: :asc).all.map do |ship_role|
+          filters << ShipRole.with_name.with_ship.order(name: :asc).all.map do |ship_role|
             Filter.new(
               category: 'shipRole',
               name: ship_role.name,
               value: ship_role.slug
             )
           end
-          filters << Manufacturer.enabled.with_name.order(name: :asc).all.map do |manufacturer|
+          filters << Manufacturer.enabled.with_name.with_ship.order(name: :asc).all.map do |manufacturer|
             Filter.new(
               category: 'manufacturer',
               name: manufacturer.name,
@@ -50,11 +50,11 @@ module Api
             Filter.new(
               category: 'onSale',
               name: I18n.t("filter.ship.on_sale.items.#{item}"),
-              slug: item
+              value: item
             )
           end
           filters.flatten
-                 .sort_by(&:name)
+                 .sort_by { |filter| [filter.category, filter.name] }
         end
       end
 
@@ -77,8 +77,8 @@ module Api
         @images = ship.images
                       .enabled
                       .order(created_at: :asc)
-                      .page(params[:page])
-                      .per(params[:per_page])
+                      .page(params.fetch(:page, nil))
+                      .per(params.fetch(:perPage, nil))
       end
 
       private def filter_params

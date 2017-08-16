@@ -103,6 +103,10 @@ class Ship < ApplicationRecord
     end
   end
 
+  def in_hangar(user)
+    user.ships.exists?(id)
+  end
+
   def random_image
     images.enabled.order("RANDOM()").first
   end

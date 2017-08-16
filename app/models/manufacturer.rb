@@ -16,6 +16,10 @@ class Manufacturer < ApplicationRecord
     where.not(name: nil)
   end
 
+  def self.with_ship
+    includes(:ships).where.not(ships: { manufacturer_id: nil })
+  end
+
   before_save :update_slugs
 
   private def update_slugs

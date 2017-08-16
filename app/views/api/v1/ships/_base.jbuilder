@@ -4,6 +4,7 @@
 json.id ship.id
 json.name ship.name
 json.slug ship.slug
+json.inHangar ship.in_hangar(current_user)
 json.description ship.description
 json.length ship.length
 json.beam ship.beam

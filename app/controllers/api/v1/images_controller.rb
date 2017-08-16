@@ -12,8 +12,8 @@ module Api
         @images = Image.enabled
                        .in_gallery
                        .order("images.created_at desc")
-                       .page(params[:page])
-                       .per(params[:per_page])
+                       .page(params.fetch(:page, nil))
+                       .per(params.fetch(:perPage, nil))
       end
 
       def latest

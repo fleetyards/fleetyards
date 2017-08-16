@@ -19,6 +19,13 @@ v1_api_routes = lambda do
       get :current
     end
   end
+
+  resource :hangar, only: [:show] do
+    collection do
+      get ':username' => 'hangars#public', as: :public
+    end
+  end
+  resources :my_ships, path: 'my-ships', only: %i[create update destroy]
 end
 
 scope :v1, defaults: { format: :json }, as: :v1 do
