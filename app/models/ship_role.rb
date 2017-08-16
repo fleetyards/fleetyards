@@ -9,6 +9,10 @@ class ShipRole < ApplicationRecord
 
   validates :name, presence: true
 
+  def self.with_name
+    where.not(name: nil)
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug name
   end

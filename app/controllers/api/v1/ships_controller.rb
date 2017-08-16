@@ -15,9 +15,47 @@ module Api
       def index
         authorize! :index, :api_ships
         @ships = Ship.enabled
+                     .filter(filter_params)
                      .order("ships.name asc")
                      .page(params[:page])
                      .per(params[:per_page])
+      end
+
+      def filters
+        authorize! :index, :api_ships
+        @filters ||= begin
+          filters = []
+          filters << ShipRole.with_name.order(name: :asc).all.map do |ship_role|
+            Filter.new(
+              category: 'shipRole',
+              name: ship_role.name,
+              value: ship_role.slug
+            )
+          end
+          filters << Manufacturer.enabled.with_name.order(name: :asc).all.map do |manufacturer|
+            Filter.new(
+              category: 'manufacturer',
+              name: manufacturer.name,
+              value: manufacturer.slug
+            )
+          end
+          filters << I18n.t("labels.ship.production_status").map do |status|
+            Filter.new(
+              category: 'productionStatus',
+              name: status[1],
+              value: status[0]
+            )
+          end
+          filters << %w[true false].map do |item|
+            Filter.new(
+              category: 'onSale',
+              name: I18n.t("filter.ship.on_sale.items.#{item}"),
+              slug: item
+            )
+          end
+          filters.flatten
+                 .sort_by(&:name)
+        end
       end
 
       def latest
@@ -41,6 +79,12 @@ module Api
                       .order(created_at: :asc)
                       .page(params[:page])
                       .per(params[:per_page])
+      end
+
+      private def filter_params
+        @filter_params ||= params.permit(
+          :search, filter: []
+        )
       end
     end
   end
