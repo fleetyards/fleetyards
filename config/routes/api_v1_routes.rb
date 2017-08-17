@@ -17,6 +17,7 @@ v1_api_routes = lambda do
   resources :users, only: [] do
     collection do
       post :signup
+      post :confirm
       get :current
     end
   end

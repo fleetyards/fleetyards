@@ -20,6 +20,15 @@ module Api
         render json: ValidationError.new("signup", @user.errors), status: :bad_request
       end
 
+      def confirm
+        user = User.confirm_by_token(params[:token])
+        if user.present? && user.errors.blank?
+          render json: { code: 'confirmation', message: I18n.t('devise.confirmations.confirmed') }
+        else
+          render json: ValidationError.new("confirmation", user.errors), status: :bad_request
+        end
+      end
+
       private def user_params
         @user_params ||= params.permit(:username, :email, :password, :password_confirmation)
       end
