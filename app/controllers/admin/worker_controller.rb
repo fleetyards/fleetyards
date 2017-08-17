@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class WorkerController < BaseController
     def check_state
       authorize! :check, :worker

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class LocalesController < BaseController
     def fetch
       authorize! :update, :locales
@@ -13,7 +13,7 @@ module Backend
       end
       I18n.locale = old_locale
 
-      redirect_to backend_root_path, notice: I18n.t(:"messages.reload.success", resource: I18n.t(:"resources.locale"))
+      redirect_to admin_root_path, notice: I18n.t(:"messages.reload.success", resource: I18n.t(:"resources.locale"))
     end
   end
 end

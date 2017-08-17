@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class ComponentsController < BaseController
     before_action :set_active_nav
 

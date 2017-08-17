@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class BaseController < ApplicationController
     before_action :authenticate_user!
     before_action :verify_admin
 
     def index
-      authorize! :show, :backend
-      @active_nav = 'backend'
+      authorize! :show, :admin
+      @active_nav = 'admin'
       @worker_running = worker_running?
     end
 
-    layout 'backend/application'
+    layout 'admin/application'
 
     private def sort_direction
       %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"

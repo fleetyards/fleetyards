@@ -7,9 +7,9 @@ nav#main-nav.navbar.navbar-default role="navigation"
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand{href: backend_root_path}
-        = I18n.t(:"title.backend")
+      a.navbar-brand{href: admin_root_path}
+        = I18n.t(:"title.admin")
 
     .collapse.navbar-collapse.navbar-ex1-collapse
-      = render "layouts/backend/nav"
-      = render "layouts/backend/user_nav"
+      = render "layouts/admin/nav"
+      = render "layouts/admin/user_nav"

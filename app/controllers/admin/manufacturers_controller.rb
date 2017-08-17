@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class ManufacturersController < BaseController
     before_action :set_active_nav
 
     def index
-      authorize! :index, :backend_manufacturers
+      authorize! :index, :admin_manufacturers
       @manufacturers = Manufacturer.all
                                    .order(sort_column + " " + sort_direction)
                                    .page(params.fetch(:page) { nil })
@@ -13,15 +13,15 @@ module Backend
     end
 
     def new
-      authorize! :create, :backend_manufacturers
+      authorize! :create, :admin_manufacturers
       @manufacturer = Manufacturer.new
     end
 
     def create
-      authorize! :create, :backend_manufacturers
+      authorize! :create, :admin_manufacturers
       @manufacturer = Manufacturer.new(manufacturer_params)
       if manufacturer.save
-        redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
+        redirect_to admin_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.manufacturer"))
       end
@@ -34,7 +34,7 @@ module Backend
     def update
       authorize! :update, manufacturer
       if manufacturer.update(manufacturer_params)
-        redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
+        redirect_to admin_manufacturers_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         Rails.logger.debug manufacturer.errors.to_yaml
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.manufacturer"))
@@ -44,9 +44,9 @@ module Backend
     def destroy
       authorize! :destroy, manufacturer
       if manufacturer.destroy
-        redirect_to backend_manufacturers_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.manufacturer"))
+        redirect_to admin_manufacturers_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.manufacturer"))
       else
-        redirect_to backend_manufacturers_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.manufacturer"))
+        redirect_to admin_manufacturers_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
 
@@ -66,7 +66,7 @@ module Backend
           end
         end
         format.html do
-          redirect_to backend_manufacturers_path
+          redirect_to admin_manufacturers_path
         end
       end
     end
@@ -86,7 +86,7 @@ module Backend
     helper_method :manufacturer
 
     private def set_active_nav
-      @active_nav = 'backend-manufacturers'
+      @active_nav = 'admin-manufacturers'
     end
   end
 end

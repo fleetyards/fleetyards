@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class ShipsController < BaseController
     before_action :set_active_nav
 
     def index
-      authorize! :index, :backend_ships
+      authorize! :index, :admin_ships
       @ships = Ship.all
                    .order(sort_column + " " + sort_direction)
                    .page(params.fetch(:page) { nil })
@@ -13,15 +13,15 @@ module Backend
     end
 
     def new
-      authorize! :create, :backend_ships
+      authorize! :create, :admin_ships
       @ship = Ship.new
     end
 
     def create
-      authorize! :create, :backend_ships
+      authorize! :create, :admin_ships
       @ship = Ship.new(ship_params)
       if ship.save
-        redirect_to backend_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
+        redirect_to admin_ships_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.ship"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.ship"))
       end
@@ -34,7 +34,7 @@ module Backend
     def update
       authorize! :update, ship
       if ship.update(ship_params)
-        redirect_to backend_ships_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.ship"))
+        redirect_to admin_ships_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.ship"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.ship"))
       end
@@ -43,14 +43,14 @@ module Backend
     def destroy
       authorize! :destroy, ship
       if ship.destroy
-        redirect_to backend_ships_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.ship"))
+        redirect_to admin_ships_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.ship"))
       else
-        redirect_to backend_ships_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.ship"))
+        redirect_to admin_ships_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.ship"))
       end
     end
 
     def gallery
-      authorize! :gallery, :backend_ships
+      authorize! :gallery, :admin_ships
       respond_to do |format|
         format.js do
           images = ship.images.order('created_at desc').all
@@ -64,7 +64,7 @@ module Backend
     end
 
     def reload
-      authorize! :reload, :backend_ships
+      authorize! :reload, :admin_ships
       respond_to do |format|
         format.js do
           ShipsWorker.perform_async
@@ -77,7 +77,7 @@ module Backend
     end
 
     def reload_one
-      authorize! :reload, :backend_ships
+      authorize! :reload, :admin_ships
       respond_to do |format|
         format.js do
           ShipWorker.perform_async(ship.name)
@@ -105,7 +105,7 @@ module Backend
           end
         end
         format.html do
-          redirect_to backend_ships_path
+          redirect_to admin_ships_path
         end
       end
     end
@@ -125,7 +125,7 @@ module Backend
     helper_method :ship
 
     private def set_active_nav
-      @active_nav = 'backend-ships'
+      @active_nav = 'admin-ships'
     end
   end
 end

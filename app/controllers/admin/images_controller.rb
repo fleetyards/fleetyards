@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class ImagesController < BaseController
     before_action :set_active_nav
 
@@ -41,7 +41,7 @@ module Backend
           render json: { files: result }.to_json
         end
         format.html do
-          redirect_to backend_images_path
+          redirect_to admin_images_path
         end
       end
     end
@@ -55,7 +55,7 @@ module Backend
           render json: true
         end
         format.html do
-          redirect_to backend_images_path, notice: "success"
+          redirect_to admin_images_path, notice: "success"
         end
       end
     end
@@ -76,7 +76,7 @@ module Backend
           end
         end
         format.html do
-          redirect_to backend_images_path
+          redirect_to admin_images_path
         end
       end
     end
@@ -96,7 +96,7 @@ module Backend
     helper_method :image
 
     private def set_active_nav
-      @active_nav = 'backend-images'
+      @active_nav = 'admin-images'
     end
   end
 end
