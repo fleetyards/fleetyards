@@ -6,10 +6,10 @@
     .row
       .col-xs-12.col-md-8
         %h2
-          = I18n.t(:"headlines.backend.manufacturer.new")
+          = I18n.t(:"headlines.admin.manufacturer.new")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), backend_manufacturers_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.back"), admin_manufacturers_path, class: "btn btn-default"
 
     = render "form"

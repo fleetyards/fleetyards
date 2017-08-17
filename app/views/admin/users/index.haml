@@ -6,17 +6,17 @@
     .row
       .col-xs-12.col-md-8
         %h1
-          = I18n.t(:"headlines.backend.user.index")
+          = I18n.t(:"headlines.admin.user.index")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"nav.subnav.new_user"), new_backend_user_path, class: "btn btn-default"
+          = link_to I18n.t(:"nav.subnav.new_user"), new_admin_user_path, class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
         = paginate @users
 
-    = render partial: "backend/users/table", :@users => @users
+    = render partial: "admin/users/table", :@users => @users
 
     .row
       .col-xs-12.col-md-6

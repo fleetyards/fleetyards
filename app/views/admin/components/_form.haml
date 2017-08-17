@@ -1,4 +1,4 @@
-= form_for [:backend, component] do |form|
+= form_for [:admin, component] do |form|
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(component, :name)}
       = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
@@ -6,4 +6,4 @@
         = form_errors component, :name
 
 
-  = render "shared/submit", path: backend_components_path
+  = render "shared/submit", path: admin_components_path

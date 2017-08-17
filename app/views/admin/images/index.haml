@@ -1,14 +1,14 @@
-.row#backend-images
+.row#admin-images
   .col-xs-12.col-md-12
 
     .row
       .col-xs-12.col-md-8
         %h1
-          = I18n.t(:"headlines.backend.image.index")
+          = I18n.t(:"headlines.admin.image.index")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.backend.image.new"), new_backend_image_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.admin.image.new"), new_admin_image_path, class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
@@ -17,7 +17,7 @@
         = paginate @images
 
     .panel.panel-default
-      = render partial: "backend/images/table", :@images => @images
+      = render partial: "admin/images/table", :@images => @images
 
     .row
       .col-xs-12.col-md-6

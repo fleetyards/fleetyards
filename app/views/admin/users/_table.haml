@@ -8,7 +8,7 @@
         %th=sortable "admin", I18n.t(:"table.labels.user.admin")
         %th.actions.actions-three=I18n.t(:"table.labels.defaults.actions")
     %tbody
-      = render partial: "backend/users/show", collection: @users, as: :user
+      = render partial: "admin/users/show", collection: @users, as: :user
 
       - if @users.blank?
         = render "shared/tables/blank", count: 3, resource: "user"

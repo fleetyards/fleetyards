@@ -6,11 +6,11 @@
     .row
       .col-xs-12.col-md-8
         %h1
-          = I18n.t(:"headlines.backend.component.index")
+          = I18n.t(:"headlines.admin.component.index")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.backend.component.new"), new_backend_component_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.admin.component.new"), new_admin_component_path, class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
@@ -18,7 +18,7 @@
         = paginate @components
 
     .panel.panel-default
-      = render partial: "backend/components/table", :@components => @components
+      = render partial: "admin/components/table", :@components => @components
 
     .row
       .col-xs-12.col-md-6

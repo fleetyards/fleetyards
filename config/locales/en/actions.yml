@@ -39,7 +39,7 @@ en:
     more: "More..."
     search: Search
     ship_database: Ship-Database
-    backend:
+    admin:
       ship:
         new: "Create new Ship"
       image:

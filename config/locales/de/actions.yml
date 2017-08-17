@@ -39,7 +39,7 @@ de:
     more: "Mehr..."
     search: Suchen
     ship_database: Schiffsdatenbank
-    backend:
+    admin:
       ship:
         new: "Neues Schiff anlegen"
       image:

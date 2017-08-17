@@ -40,7 +40,7 @@ de:
       welcome: Schiffe
     base:
       index: "Willkommen auf"
-    backend:
+    admin:
       image:
         index: Bilder
         new: Bilderupload

@@ -9,7 +9,7 @@
         %th=I18n.t(:"labels.table.ship.manufacturer")
         %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
     %tbody
-      = render partial: "backend/ships/show", collection: @ships, as: :ship
+      = render partial: "admin/ships/show", collection: @ships, as: :ship
 
       - if @ships.blank?
         = render "shared/tables/blank", count: 3, resource: "ship"

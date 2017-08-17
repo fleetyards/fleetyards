@@ -7,7 +7,7 @@ de:
     keywords: "Star, Citizen, Raumschiffe, Datenbank, Squadron, 42, Star, Citizen, Deutsch, Chris, Roberts, Spiel, Online, Game, Weltraum, Simulation"
   title:
     default: FleetYards.net
-    backend: "FleetYards.net Backend"
+    admin: "FleetYards.net Backend"
     sign_in: Login
     sign_up: Registrieren
     unlock: "Account entsperren"
@@ -55,7 +55,7 @@ de:
     toggle: "Navigation aufklappen"
     home: Home
     settings: Einstellungen
-    backend: Backend
+    admin: Backend
     ships: Schiffe
     impressum: Impressum
     privacy: Datenschutz

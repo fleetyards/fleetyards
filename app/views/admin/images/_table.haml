@@ -8,7 +8,7 @@
         %th=sortable "gallery_type", I18n.t(:"labels.table.image.gallery_type")
         %th.actions.actions-two
     %tbody
-      = render partial: "backend/images/show", collection: @images, as: :image
+      = render partial: "admin/images/show", collection: @images, as: :image
 
       - if @images.blank?
         = render "shared/tables/blank", count: 3, resource: "image"

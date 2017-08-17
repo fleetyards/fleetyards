@@ -14,7 +14,7 @@ class Image < ApplicationRecord
       "size" => name.size,
       "url" => name.url,
       "thumbnailUrl" => name.small.url,
-      "deleteUrl" => backend_image_path(id: id),
+      "deleteUrl" => admin_image_path(id: id),
       "deleteType" => "DELETE"
     }
   end

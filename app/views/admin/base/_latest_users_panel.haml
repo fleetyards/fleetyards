@@ -21,5 +21,5 @@
               = I18n.t(:"activerecord.attributes.user.created_at", time: time_ago_in_words(user.created_at))
             %td
               .btn-group
-                = link_to edit_backend_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+                = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
                   %i.fa.fa-edit

@@ -6,11 +6,11 @@
     .row
       .col-xs-12.col-md-8
         %h1
-          = I18n.t(:"headlines.backend.manufacturer.index")
+          = I18n.t(:"headlines.admin.manufacturer.index")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.backend.manufacturer.new"), new_backend_manufacturer_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.admin.manufacturer.new"), new_admin_manufacturer_path, class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
@@ -18,7 +18,7 @@
         = paginate @manufacturers
 
     .panel.panel-default
-      = render partial: "backend/manufacturers/table", :@manufacturers => @manufacturers
+      = render partial: "admin/manufacturers/table", :@manufacturers => @manufacturers
 
     .row
       .col-xs-12.col-md-6

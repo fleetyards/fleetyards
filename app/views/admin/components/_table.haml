@@ -9,7 +9,7 @@
         %th=sortable "category.name", I18n.t(:"labels.table.component.category")
         %th.actions.actions-three=I18n.t(:"labels.table.actions")
     %tbody
-      = render partial: "backend/components/show", collection: @components, as: :component
+      = render partial: "admin/components/show", collection: @components, as: :component
 
       - if @components.blank?
         = render "shared/tables/blank", count: 3, resource: "component"

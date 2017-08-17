@@ -40,7 +40,7 @@ en:
       welcome: Ships
     base:
       index: "Welcome to"
-    backend:
+    admin:
       image:
         index: Images
         new: Imageupload

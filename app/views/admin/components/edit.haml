@@ -6,10 +6,10 @@
     .row
       .col-xs-12.col-md-8
         %h2
-          = I18n.t(:"headlines.backend.component.edit", component: component.name)
+          = I18n.t(:"headlines.admin.component.edit", component: component.name)
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), backend_components_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.back"), admin_components_path, class: "btn btn-default"
 
     = render "form"

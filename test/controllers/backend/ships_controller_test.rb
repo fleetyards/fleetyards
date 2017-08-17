@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Backend
+module Admin
   class ShipsControllerTest < ActionController::TestCase
-    tests ::Backend::ShipsController
+    tests ::Admin::ShipsController
 
     let(:data) { users :data }
     let(:jeanluc) { users :jeanluc }

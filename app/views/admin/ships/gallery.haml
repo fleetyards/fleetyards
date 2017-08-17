@@ -1,16 +1,16 @@
 .row
   .col-xs-12.col-md-8
     %h1
-      = I18n.t(:"headlines.backend.ship.gallery", ship: ship.name)
+      = I18n.t(:"headlines.admin.ship.gallery", ship: ship.name)
   .col-xs-12.col-md-4
     .btn-group.pull-right.resource-nav
-      %a.btn.btn-default{href: backend_ships_path}
+      %a.btn.btn-default{href: admin_ships_path}
         = I18n.t(:"actions.back")
 
-%form#fileupload{action: backend_images_path, method: "POST", enctype: "multipart/form-data", data: {load_path: gallery_backend_ship_path(ship)}}
+%form#fileupload{action: admin_images_path, method: "POST", enctype: "multipart/form-data", data: {load_path: gallery_admin_ship_path(ship)}}
   %input{type: "hidden", name: "image[gallery_id]", value: ship.id}
   %input{type: "hidden", name: "image[gallery_type]", value: "Ship"}
-  = render "backend/shared/uploader/buttons"
+  = render "admin/shared/uploader/buttons"
 
   #dropzone.fade.well
     Drop files here
@@ -24,7 +24,7 @@
         %tbody.files
 
 %script#template-upload{type: "text/x-tmpl"}
-  = render "backend/shared/uploader/upload_template"
+  = render "admin/shared/uploader/upload_template"
 
 %script#template-download{type: "text/x-tmpl"}
-  = render "backend/shared/uploader/download_template"
+  = render "admin/shared/uploader/download_template"

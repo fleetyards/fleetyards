@@ -30,7 +30,7 @@ window.App.Ships.reload = ($element) ->
 
 
 document.addEventListener 'turbolinks:load', ->
-  if $('#backend, #ships').length
+  if $('#admin, #ships').length
     if $('.reload-ships.loading').length
       $('.reload-ships.loading').each ($element) ->
         laddaButton = Ladda.create($element[0])

@@ -1,4 +1,4 @@
-= form_for [:backend, @user] do |form|
+= form_for [:admin, @user] do |form|
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(@user, :email)}
       = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
@@ -12,4 +12,4 @@
           = form.check_box :admin, placeholder: I18n.t(:"helpers.placeholder.user.admin")
 
 
-  = render "shared/submit", path: backend_users_path
+  = render "shared/submit", path: admin_users_path

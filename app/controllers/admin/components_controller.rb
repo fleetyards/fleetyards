@@ -5,7 +5,7 @@ module Admin
     before_action :set_active_nav
 
     def index
-      authorize! :index, :backend_components
+      authorize! :index, :admin_components
       @components = Component.all
                              .order(sort_column + " " + sort_direction)
                              .page(params.fetch(:page) { nil })
@@ -13,15 +13,15 @@ module Admin
     end
 
     def new
-      authorize! :create, :backend_components
+      authorize! :create, :admin_components
       @component = Component.new
     end
 
     def create
-      authorize! :create, :backend_components
+      authorize! :create, :admin_components
       @component = Component.new(component_params)
       if component.save
-        redirect_to backend_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.component"))
       end
@@ -34,7 +34,7 @@ module Admin
     def update
       authorize! :update, component
       if component.update(component_params)
-        redirect_to backend_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
       end
@@ -43,9 +43,9 @@ module Admin
     def destroy
       authorize! :destroy, component
       if component.destroy
-        redirect_to backend_components_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.component"))
       else
-        redirect_to backend_components_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.component"))
       end
     end
 
@@ -65,7 +65,7 @@ module Admin
           end
         end
         format.html do
-          redirect_to backend_components_path
+          redirect_to admin_components_path
         end
       end
     end
@@ -85,7 +85,7 @@ module Admin
     helper_method :component
 
     private def set_active_nav
-      @active_nav = 'backend-components'
+      @active_nav = 'admin-components'
     end
   end
 end
