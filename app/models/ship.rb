@@ -104,6 +104,7 @@ class Ship < ApplicationRecord
   end
 
   def in_hangar(user)
+    return if user.blank?
     user.ships.exists?(id)
   end
 
