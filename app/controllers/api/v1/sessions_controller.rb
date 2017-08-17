@@ -11,8 +11,6 @@ module Api
       skip_authorization_check
       before_action :authenticate_user!, except: [:create]
 
-      respond_to :json
-
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
         return invalid_login_attempt unless resource

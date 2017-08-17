@@ -1,0 +1,3 @@
+en:
+  validation_error:
+    signup: "Signup failed. Please resolve all Errors and try again."
