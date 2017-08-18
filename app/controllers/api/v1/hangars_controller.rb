@@ -4,7 +4,8 @@
 module Api
   module V1
     class HangarsController < ::Api::BaseController
-      before_action :authenticate_user!, only: [:show]
+      skip_authorization_check only: [:public]
+      before_action :authenticate_user!, except: [:public]
       after_action { pagination_header(:user_ships) }
 
       def show
@@ -17,7 +18,6 @@ module Api
       end
 
       def public
-        authorize! :public, :api_hangar
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
         @user_ships = user.user_ships
                           .purchased
