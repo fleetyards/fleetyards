@@ -12,7 +12,7 @@ module Api
         authorize! :show, :api_hangar
         @user_ships = current_user.user_ships
                                   .unscoped
-                                  .order(name: :asc, purchased: :desc, created_at: :desc)
+                                  .order(purchased: :desc, name: :asc, created_at: :desc)
                                   .page(params.fetch(:page, nil))
                                   .per(params.fetch(:perPage, nil))
       end
