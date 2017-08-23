@@ -10,38 +10,43 @@ class ShipsLoader
   end
 
   def all
-    old_locale = I18n.locale
-    I18n.locale = :en
-
     ships = load_ships
 
     ships.each do |data|
       sync_ship(data)
     end
 
-    I18n.reload!
-    I18n.locale = old_locale
-
     cleanup_ship_roles
   end
 
   def one(ship_name)
-    old_locale = I18n.locale
-    I18n.locale = :en
-
     ships = load_ships
 
     ship_data = ships.find { |ship| ship["name"] == ship_name }
     sync_ship(ship_data) if ship_data.present?
-
-    I18n.reload!
-    I18n.locale = old_locale
 
     cleanup_ship_roles
   end
 
   def cleanup_ship_roles
     ShipRole.includes(:ships).where(ships: { ship_role_id: nil }).destroy_all
+  end
+
+  def load_ships
+    response = Typhoeus.get("#{base_url}/ship-specs")
+
+    match = response.body.match(/data: \[(.+)\]/)
+    begin
+      ship_data = JSON.parse("[#{match[1]}]")
+      File.open(json_file_path, "w") do |f|
+        f.write(ship_data.to_json)
+      end
+      ship_data
+    rescue JSON::ParserError => e
+      Raven.capture_exception(e)
+      Rails.logger.error "ShipData could not be parsed: [#{match[1]}]"
+      []
+    end
   end
 
   def sync_ship(data)
@@ -54,12 +59,10 @@ class ShipsLoader
     ship.ship_role = create_or_update_ship_role(data["focus"])
     ship.manufacturer = create_or_update_manufacturer(data["manufacturer"])
 
-    ship.hardpoints.delete_all
-
-    create_propulsion_hardpoints(ship.id, data["propulsion"])
-    create_ordnance_hardpoints(ship.id, data["ordnance"])
-    create_modular_hardpoints(ship.id, data["modular"])
-    create_avionics_hardpoints(ship.id, data["avionics"])
+    create_or_update_propulsion_hardpoints(ship.id, data["propulsion"])
+    create_or_update_ordnance_hardpoints(ship.id, data["ordnance"])
+    create_or_update_modular_hardpoints(ship.id, data["modular"])
+    create_or_update_avionics_hardpoints(ship.id, data["avionics"])
 
     ship.enabled = true
 
@@ -82,23 +85,6 @@ class ShipsLoader
       price: price.present? ? price : 0.0,
       on_sale: price.present? ? true : false
     )
-  end
-
-  def load_ships
-    response = Typhoeus.get("#{base_url}/ship-specs")
-
-    match = response.body.match(/data: \[(.+)\]/)
-    begin
-      ship_data = JSON.parse("[#{match[1]}]")
-      File.open(json_file_path, "w") do |f|
-        f.write(ship_data.to_json)
-      end
-      ship_data
-    rescue JSON::ParserError => e
-      Raven.capture_exception(e)
-      Rails.logger.error "ShipData could not be parsed: [#{match[1]}]"
-      []
-    end
   end
 
   private def create_or_update_ship(data)
@@ -150,74 +136,73 @@ class ShipsLoader
     manufacturer
   end
 
-  def create_propulsion_hardpoints(ship_id, propulsion_data)
+  def create_or_update_propulsion_hardpoints(ship_id, propulsion_data)
     category = ComponentCategory.find_or_initialize_by(rsi_name: "propulsion")
     raise category.errors.to_yaml unless category.save
 
     propulsion_data.each do |data|
-      hardpoint = Hardpoint.new(
-        ship_id: ship_id,
-        rsi_id: data["id"],
-        category_id: category.id,
-        name: data["name"],
-        hardpoint_class: data["type"],
-        rating: data["rating"],
-        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
-      )
-      raise hardpoint.errors.to_yaml unless hardpoint.save
+      create_or_update_hardpoint(data, category, ship_id)
     end
+
+    cleanup_hardpoints(ship_id, category.id, propulsion_data)
   end
 
-  def create_ordnance_hardpoints(ship_id, ordnance_data)
+  def create_or_update_ordnance_hardpoints(ship_id, ordnance_data)
     category = ComponentCategory.find_or_initialize_by(rsi_name: "ordnance")
     raise category.errors.to_yaml unless category.save
 
     ordnance_data.each do |data|
-      hardpoint = Hardpoint.new(
-        ship_id: ship_id,
-        rsi_id: data["id"],
-        category_id: category.id,
-        name: data["name"],
-        hardpoint_class: data["class"],
-        max_size: data["max_size"],
-        quantity: data["quantity"],
-        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
-      )
-      raise hardpoint.errors.to_yaml unless hardpoint.save
+      create_or_update_hardpoint(data, category, ship_id)
     end
+
+    cleanup_hardpoints(ship_id, category.id, ordnance_data)
   end
 
-  def create_modular_hardpoints(ship_id, modular_data)
+  def create_or_update_modular_hardpoints(ship_id, modular_data)
     category = ComponentCategory.find_or_initialize_by(rsi_name: "modular")
     raise category.errors.to_yaml unless category.save
 
     modular_data.each do |data|
-      hardpoint = Hardpoint.new(
-        ship_id: ship_id,
-        rsi_id: data["id"],
-        category_id: category.id,
-        name: data["name"],
-        max_size: data["max_size"],
-        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
-      )
-      raise hardpoint.errors.to_yaml unless hardpoint.save
+      create_or_update_hardpoint(data, category, ship_id)
     end
+
+    cleanup_hardpoints(ship_id, category.id, modular_data)
   end
 
-  def create_avionics_hardpoints(ship_id, avionics_data)
+  def create_or_update_avionics_hardpoints(ship_id, avionics_data)
     category = ComponentCategory.find_or_initialize_by(rsi_name: "avionics")
     raise category.errors.to_yaml unless category.save
 
     avionics_data.each do |data|
-      hardpoint = Hardpoint.new(
-        ship_id: ship_id,
-        rsi_id: data["id"],
-        category_id: category.id,
-        name: data["name"],
-        component: (create_or_update_component(data["component"], category) unless data["component"].nil?)
-      )
-      raise hardpoint.errors.to_yaml unless hardpoint.save
+      create_or_update_hardpoint(data, category, ship_id)
     end
+
+    cleanup_hardpoints(ship_id, category.id, avionics_data)
+  end
+
+  def create_or_update_hardpoint(hardpoint_data, category, ship_id)
+    Hardpoint.find_or_create_by(
+      category_id: category.id,
+      ship_id: ship_id,
+      rsi_id: hardpoint_data["id"]
+    ) do |hardpoint|
+      hardpoint.name = hardpoint_data["name"]
+      hardpoint.max_size = hardpoint_data["max_size"]
+      hardpoint.hardpoint_class = hardpoint_data["class"]
+      hardpoint.max_size = hardpoint_data["max_size"]
+      hardpoint.quantity = hardpoint_data["quantity"]
+      hardpoint.rating = hardpoint_data["rating"]
+      unless hardpoint_data["component"].nil?
+        hardpoint.component = create_or_update_component(hardpoint_data["component"], category)
+      end
+    end
+  end
+
+  def cleanup_hardpoints(ship_id, category_id, hardpoint_data)
+    rsi_ids = hardpoint_data.map do |data|
+      data["id"].to_i
+    end
+    Hardpoint.where(ship_id: ship_id, category_id: category_id).where.not(rsi_id: rsi_ids).destroy_all
   end
 
   def create_or_update_component(component_data, category)
