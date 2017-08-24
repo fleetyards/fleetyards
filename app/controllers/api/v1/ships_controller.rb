@@ -58,6 +58,11 @@ module Api
         end
       end
 
+      def categories
+        authorize! :show, :api_ships
+        @categories = ComponentCategory.all
+      end
+
       def latest
         authorize! :index, :api_ships
         @ships = Ship.enabled
