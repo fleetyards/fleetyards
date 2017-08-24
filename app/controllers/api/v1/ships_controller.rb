@@ -61,7 +61,7 @@ module Api
       def latest
         authorize! :index, :api_ships
         @ships = Ship.enabled
-                     .order("RANDOM()")
+                     .order(updated_at: :asc)
                      .limit(10)
       end
 
