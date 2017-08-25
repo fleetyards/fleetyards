@@ -78,7 +78,7 @@ class ShipsLoader
               raw_price = price_element.text
               price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
               price_with_local_vat = price_match[1].to_f if price_match.present?
-              price_with_local_vat * 100 / (100 + vat_percent)
+              price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
             end
 
     OpenStruct.new(
