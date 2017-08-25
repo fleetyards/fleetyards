@@ -106,13 +106,13 @@ class ShipsLoader
       shield_size: data["maxshieldsize"],
       classification: data["classification"],
       focus: data["focus"],
-      remote_store_image_url: ("#{base_url}#{data['media'][0]['images']['store_hub_large']}" if ship.store_image.blank?),
-      store_url: data["url"],
-      propulsion_raw: data["propulsion"],
-      ordnance_raw: data["ordnance"],
-      modular_raw: data["modular"],
-      avionics_raw: data["avionics"]
+      store_url: data["url"]
     )
+
+    if ship.store_image.blank?
+      ship.remote_store_image_url = "#{base_url}#{data['media'][0]['images']['store_hub_large']}"
+      ship.save
+    end
 
     ship
   end

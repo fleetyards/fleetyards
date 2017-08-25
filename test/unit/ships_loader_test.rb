@@ -9,13 +9,14 @@ class ShipsLoaderTest < ActiveSupport::TestCase
   test "#all" do
     VCR.use_cassette("ships_loader_all") do
       loader.all
+
       expectations = {
-        hardpoints: 1998,
+        hardpoints: 2086,
         components: 216,
         component_categories: 4,
-        ships: 96,
-        manufacturers: 14,
-        ship_roles: 61
+        ships: 104,
+        manufacturers: 15,
+        ship_roles: 64
       }
       assert_equal(expectations,
                    hardpoints: Hardpoint.count,
@@ -24,6 +25,23 @@ class ShipsLoaderTest < ActiveSupport::TestCase
                    ships: Ship.count,
                    manufacturers: Manufacturer.count,
                    ship_roles: ShipRole.count)
+    end
+  end
+
+  test "#updates only when needed" do
+    VCR.use_cassette("ships_loader_all") do
+      Timecop.freeze(Time.zone.now) do
+        loader.one('Origin 600i Explorer')
+
+        ship = Ship.find_by(name: 'Origin 600i Explorer')
+
+        Timecop.travel(1.day)
+
+        loader.one(ship.name)
+        ship.reload
+
+        assert(ship.updated_at.day != Time.zone.now.day)
+      end
     end
   end
 end

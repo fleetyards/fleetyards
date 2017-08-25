@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605122238) do
+ActiveRecord::Schema.define(version: 20170825225042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,10 +121,6 @@ ActiveRecord::Schema.define(version: 20170605122238) do
     t.integer "rsi_id"
     t.uuid "manufacturer_id"
     t.uuid "ship_role_id"
-    t.text "propulsion_raw"
-    t.text "ordnance_raw"
-    t.text "modular_raw"
-    t.text "avionics_raw"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "production_status", limit: 255

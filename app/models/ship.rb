@@ -34,11 +34,6 @@ class Ship < ApplicationRecord
 
   before_save :update_slugs
 
-  serialize :propulsion_raw, Array
-  serialize :ordnance_raw, Array
-  serialize :modular_raw, Array
-  serialize :avionics_raw, Array
-
   def self.enabled
     where(enabled: true)
   end
