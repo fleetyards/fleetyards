@@ -14,7 +14,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
         hardpoints: 2086,
         components: 216,
         component_categories: 4,
-        ships: 104,
+        ships: 103,
         manufacturers: 15,
         ship_roles: 64
       }
