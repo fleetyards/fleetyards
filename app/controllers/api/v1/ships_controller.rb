@@ -70,6 +70,17 @@ module Api
                      .limit(10)
       end
 
+      def updated
+        authorize! :index, :api_ships
+        if updated_range.present?
+          scope = Ship.enabled
+          scope = scope.where(updated_at: updated_range)
+          @ships = scope.order(updated_at: :asc)
+        else
+          render json: [], status: :not_modified
+        end
+      end
+
       def show
         authorize! :show, :api_ships
         @ship = Ship.enabled
@@ -89,6 +100,18 @@ module Api
       private def filter_params
         @filter_params ||= params.permit(
           :search, filter: []
+        )
+      end
+
+      private def updated_range
+        return if updated_params[:from].blank?
+        to = updated_params[:to] || Time.zone.now
+        [updated_params[:from]...to]
+      end
+
+      private def updated_params
+        @updated_params ||= params.permit(
+          :from, :to
         )
       end
     end
