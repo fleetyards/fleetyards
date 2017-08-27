@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require "test_helper"
+
 module Admin
   class ShipsControllerTest < ActionController::TestCase
-    tests ::Admin::ShipsController
+    tests Admin::ShipsController
 
     let(:data) { users :data }
     let(:jeanluc) { users :jeanluc }
