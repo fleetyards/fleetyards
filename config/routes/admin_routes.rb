@@ -2,13 +2,17 @@
 # frozen_string_literal: true
 
 namespace :admin, path: "", constraints: { subdomain: "admin" } do
+  devise_for :users, skip: %i[registration]
+
+  resource :password, only: %i[edit update]
+
   put '/locales/fetch' => 'locales#fetch', as: :update_locales
 
   resources :users, except: [:show]
 
   resources :settings, except: %i[index show]
 
-  authenticate :user, (->(u) { u.admin? }) do
+  authenticate :admin_user, (->(u) { u.admin? }) do
     mount Sidekiq::Web => '/workers'
   end
 
@@ -35,5 +39,5 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
-  root 'base#index'
+  root to: 'base#index'
 end

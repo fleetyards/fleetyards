@@ -8,6 +8,8 @@ class Ship < ApplicationRecord
   belongs_to :manufacturer, required: false
   belongs_to :ship_role, required: false
 
+  has_one :addition, class_name: "VehicleAddition"
+
   has_many :hardpoints,
            dependent: :destroy,
            autosave: true

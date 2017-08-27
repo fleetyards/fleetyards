@@ -3,11 +3,9 @@
 
 module Api
   class BaseController < ActionController::Base
-    include Concerns::Pagination
-
     protect_from_forgery with: :null_session
 
-    before_action :authenticate_user!
+    before_action :authenticate_api_user!
 
     respond_to :json
 
@@ -16,6 +14,11 @@ module Api
     rescue_from CanCan::AccessDenied do |exception|
       render json: { message: exception.message }, status: :forbidden
     end
+
+    def current_user
+      current_api_user
+    end
+    helper_method :current_user
 
     private def not_found(message = I18n.t('messages.record_not_found.base'))
       render json: { code: "not_found", message: message }, status: :not_found

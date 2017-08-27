@@ -7,7 +7,7 @@
     = image.name.file.filename
   %td
     - unless image.gallery.blank?
-      %a{href: send("gallery_#{image.gallery.class.name.downcase}_path", image.gallery.slug), target: '_blank'}
+      %a{href: send("gallery_admin_#{image.gallery.class.name.downcase}_path", image.gallery.id)}
         = image.gallery.name
   %td
     .btn-group

@@ -5,16 +5,13 @@ module Api
   module V1
     class HangarsController < ::Api::BaseController
       skip_authorization_check only: [:public]
-      before_action :authenticate_user!, except: [:public]
-      after_action { pagination_header(:user_ships) }
+      before_action :authenticate_api_user!, except: [:public]
 
       def show
         authorize! :show, :api_hangar
         @user_ships = current_user.user_ships
                                   .unscoped
                                   .order(purchased: :desc, name: :asc, created_at: :desc)
-                                  .page(params.fetch(:page, nil))
-                                  .per(params.fetch(:perPage, nil))
       end
 
       def public
@@ -23,8 +20,6 @@ module Api
                           .unscoped
                           .purchased
                           .order(name: :asc, created_at: :desc)
-                          .page(params.fetch(:page, nil))
-                          .per(params.fetch(:perPage, nil))
       end
     end
   end

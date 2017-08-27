@@ -5,7 +5,7 @@
 Devise.setup do |config|
   config.warden do |manager|
     manager.strategies.add(:jwt, Devise::Strategies::JWT)
-    manager.default_strategies(scope: :user).unshift :jwt
+    manager.default_strategies(scope: :api_user).unshift :jwt
     manager.failure_app = JSONFailureApp
   end
 
@@ -237,10 +237,10 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :github, Rails.application.secrets[:github_id], Rails.application.secrets[:github_secret], scope: 'user'
-  config.omniauth :facebook, Rails.application.secrets[:facebook_id], Rails.application.secrets[:facebook_secret]
-  config.omniauth :twitter, Rails.application.secrets[:twitter_id], Rails.application.secrets[:twitter_secret]
-  config.omniauth :google_oauth2, Rails.application.secrets[:google_id], Rails.application.secrets[:google_secret]
+  # config.omniauth :github, Rails.application.secrets[:github_id], Rails.application.secrets[:github_secret], scope: 'user'
+  # config.omniauth :facebook, Rails.application.secrets[:facebook_id], Rails.application.secrets[:facebook_secret]
+  # config.omniauth :twitter, Rails.application.secrets[:twitter_id], Rails.application.secrets[:twitter_secret]
+  # config.omniauth :google_oauth2, Rails.application.secrets[:google_id], Rails.application.secrets[:google_secret]
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

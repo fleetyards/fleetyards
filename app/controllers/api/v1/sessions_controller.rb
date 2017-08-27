@@ -9,7 +9,7 @@ module Api
       include ActionController::HttpAuthentication::Token
 
       skip_authorization_check
-      before_action :authenticate_user!, except: [:create]
+      before_action :authenticate_api_user!, except: [:create]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])

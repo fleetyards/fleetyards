@@ -11,5 +11,6 @@ nav#main-nav.navbar.navbar-default.navbar-fixed-top role="navigation"
         = I18n.t(:"title.admin")
 
     .collapse.navbar-collapse.navbar-ex1-collapse
-      = render "layouts/admin/nav"
+      - if admin_user_signed_in?
+        = render "layouts/admin/nav"
       = render "layouts/admin/user_nav"

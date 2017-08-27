@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 module Admin
-  class BaseController < ApplicationController
-    before_action :authenticate_user!
-    before_action :verify_admin
+  class BaseController < ::Admin::ApplicationController
+    # before_action :verify_admin
 
     def index
       authorize! :show, :admin
@@ -19,7 +18,10 @@ module Admin
     helper_method :sort_direction
 
     private def verify_admin
-      redirect_to root_url unless current_user.try(:admin?)
+      return if current_user.try(:admin?)
+
+      sign_out
+      redirect_to root_url
     end
   end
 end

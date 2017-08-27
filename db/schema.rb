@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825225042) do
+ActiveRecord::Schema.define(version: 20170827091652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,6 +179,18 @@ ActiveRecord::Schema.define(version: 20170825225042) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "vehicle_additions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "beam"
+    t.string "length"
+    t.string "height"
+    t.string "mass"
+    t.string "cargo"
+    t.string "crew"
+    t.uuid "ship_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "worker_states", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

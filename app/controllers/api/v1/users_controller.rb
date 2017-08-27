@@ -5,7 +5,7 @@ module Api
   module V1
     class UsersController < ::Api::BaseController
       skip_authorization_check only: [:signup]
-      before_action :authenticate_user!, except: [:signup]
+      before_action :authenticate_api_user!, except: [:signup]
 
       def current
         authorize! :read, User

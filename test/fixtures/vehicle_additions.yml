@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+esperanza_addition:
+  beam: MyString
+  length: MyString
+  height: MyString
+  mass: MyString
+  cargo: MyString
+  crew: MyString
+  ship: esperanza
