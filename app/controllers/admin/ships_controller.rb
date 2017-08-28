@@ -114,8 +114,8 @@ module Admin
     private def ship_params
       @ship_params ||= params.require(:ship).permit(
         :name, :enabled, :store_image, :store_image_cache, :remove_store_image,
-        addition_attributes: [
-          :id, :beam, :length, :height, :mass, :cargo, :net_cargo, :crew, :_destroy
+        addition_attributes: %i[
+          id beam length height mass cargo net_cargo crew _destroy
         ]
       )
     end
