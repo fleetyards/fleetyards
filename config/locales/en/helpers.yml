@@ -26,6 +26,8 @@ en:
         length: Length
         mass: Mass
         role: Roles
+      video:
+        url: URL
       user:
         username: Username
         email: E-Mail
@@ -38,6 +40,8 @@ en:
       user_ship:
         name: "Name your %{ship}"
     prompt:
+      video:
+        video_type: "Please select a Video Type"
       user:
         locale: "Please select a Language"
       address:

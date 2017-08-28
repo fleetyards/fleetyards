@@ -25,5 +25,17 @@
       = form.fields_for :addition, ship.addition do |builder|
         = render 'addition_fields', fields: builder
 
+  %fieldset
+    %legend
+      Videos:
+    #videos
+      - if ship.videos.present?
+        = form.fields_for :videos, ship.videos do |builder|
+          = render 'ships/video_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :videos, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#videos" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_video")
 
   = render "shared/submit", path: admin_ships_path

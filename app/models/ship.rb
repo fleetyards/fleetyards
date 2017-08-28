@@ -39,6 +39,8 @@ class Ship < ApplicationRecord
   has_many :videos,
            dependent: :destroy
 
+  accepts_nested_attributes_for :videos, allow_destroy: true
+
   mount_uploader :store_image, ImageUploader
 
   before_save :update_slugs

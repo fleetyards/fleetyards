@@ -116,6 +116,9 @@ module Admin
         :name, :enabled, :store_image, :store_image_cache, :remove_store_image,
         addition_attributes: %i[
           id beam length height mass cargo net_cargo crew _destroy
+        ],
+        videos_attributes: %i[
+          id url video_type _destroy
         ]
       )
     end
