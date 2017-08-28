@@ -1,6 +1,7 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
+json.id hardpoint.id
 json.name hardpoint.name
 json.hardpoint_class hardpoint.hardpoint_class
 json.rating hardpoint.rating
