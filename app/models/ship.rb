@@ -101,6 +101,16 @@ class Ship < ApplicationRecord
     ).references(%i[ship_role manufacturer])
   end
 
+  %i[height beam length mass cargo crew].each do |method_name|
+    define_method method_name do
+      if addition.present? && addition.send(method_name).present?
+        addition.send(method_name)
+      else
+        self[method_name]
+      end
+    end
+  end
+
   def ship_role_name
     if ship_role.present?
       ship_role.name
