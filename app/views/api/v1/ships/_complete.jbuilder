@@ -15,5 +15,8 @@ json.cache! ['v1', ship] do
   json.images do
     json.array! ship.images, partial: 'api/v1/images/show', as: :image
   end
+  json.videos do
+    json.array! ship.videos, partial: 'api/v1/ships/video', as: :video
+  end
   json.partial! 'api/shared/dates', record: ship
 end
