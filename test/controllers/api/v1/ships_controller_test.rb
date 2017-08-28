@@ -23,6 +23,9 @@ module Api
         ship_data = json.first
         assert_equal ship.id, ship_data["id"]
         assert_equal ship.name, ship_data["name"]
+        assert_equal ship.addition.mass, ship_data["mass"]
+        assert_equal ship.addition.net_cargo, ship_data["netCargo"]
+        assert_equal ship.addition.cargo, ship_data["cargo"]
       end
 
       describe "#updated" do

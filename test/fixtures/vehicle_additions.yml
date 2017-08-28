@@ -6,5 +6,6 @@ esperanza_addition:
   height: MyString
   mass: MyString
   cargo: MyString
+  net_cargo: 4
   crew: MyString
   ship: esperanza

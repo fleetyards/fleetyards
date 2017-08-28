@@ -18,4 +18,12 @@
       %small
         = form_errors ship, :store_image
 
+  %fieldset
+    %legend
+      Additions:
+    #addition
+      = form.fields_for :addition, ship.addition do |builder|
+        = render 'addition_fields', fields: builder
+
+
   = render "shared/submit", path: admin_ships_path

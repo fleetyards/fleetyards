@@ -8,7 +8,11 @@ class Ship < ApplicationRecord
   belongs_to :manufacturer, required: false
   belongs_to :ship_role, required: false
 
-  has_one :addition, class_name: "VehicleAddition"
+  has_one :addition,
+          class_name: "VehicleAddition",
+          dependent: :destroy
+
+  accepts_nested_attributes_for :addition, allow_destroy: true
 
   has_many :hardpoints,
            dependent: :destroy,
@@ -30,6 +34,9 @@ class Ship < ApplicationRecord
 
   has_many :images,
            as: :gallery,
+           dependent: :destroy
+
+  has_many :videos,
            dependent: :destroy
 
   mount_uploader :store_image, ImageUploader
