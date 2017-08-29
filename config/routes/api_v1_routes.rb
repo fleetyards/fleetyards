@@ -24,6 +24,9 @@ v1_api_routes = lambda do
     end
   end
 
+  post 'password/request' => 'passwords#request_email'
+  post 'password/update/:reset_password_token' => 'passwords#update'
+
   resource :hangar, only: [:show] do
     collection do
       get ':username' => 'hangars#public', as: :public
