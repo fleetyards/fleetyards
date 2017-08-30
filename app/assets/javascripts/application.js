@@ -1,7 +1,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require select2
 //= require sifter
 //= require microplugin
 //= require selectize
