@@ -4,8 +4,8 @@
 module Api
   module V1
     class PasswordsController < ActionController::Base
-      # skip_authorization_check
-      # before_action :authenticate_api_user!, only: []
+      skip_authorization_check
+      before_action :authenticate_api_user!, only: []
 
       def request_email
         user = User.find_by(email: params[:email])
