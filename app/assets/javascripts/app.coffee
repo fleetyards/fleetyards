@@ -5,7 +5,7 @@ window.App ?= {}
 $(document).on 'click', 'a.disabled', (evt) ->
   false
 
-document.addEventListener 'turbolinks:before-cache', ->
+document.addEventListener 'turbolinks:load', ->
   $('select.js-selectize').selectize()
 
   $('[data-toggle=tooltip]').tooltip()

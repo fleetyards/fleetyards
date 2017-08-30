@@ -78,7 +78,15 @@ a.thumbnail.active {
 }
 
 .noty_buttons {
-  background-color: transparent !important;
+  text-align: center;
+
+  .btn {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .label {

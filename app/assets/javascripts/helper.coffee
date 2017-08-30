@@ -15,29 +15,25 @@ window.displayNoty = (text, timeout, type) ->
   }).show()
 
 window.displayConfirm = (ev, $element) ->
-  okButton =
-    addClass: 'btn btn-primary'
-    text: I18n.t('actions.ok')
-    onClick: ($noty) ->
-      $noty.close()
-      if $element.find('form').length
-        $element.find('form').submit()
-      else
-        window.location = $element.attr('href')
-      return false
-
-  cancelButton =
-    addClass: 'btn btn-danger'
-    text: I18n.t('actions.cancel')
-    onClick: ($noty) ->
-      $noty.close()
-      return false
-
-  noty
+  n = new Noty({
     text: $element.data('notyconfirm')
-    buttons: [okButton, cancelButton]
-    type: 'warning'
-    layout: 'top'
+    buttons: [
+      Noty.button(I18n.t('actions.ok'), 'btn btn-primary', ->
+        n.close()
+        if $element.find('form').length
+          $element.find('form').submit()
+        else
+          window.location = $element.attr('href')
+      , { 'data-status': 'ok' }
+      ),
+      Noty.button(I18n.t('actions.cancel'), 'btn btn-danger', ->
+        n.close()
+      )
+    ]
+    type: 'alert'
+    layout: 'bottom'
+    theme: 'metroui',
+  }).show()
 
 window.displaySuccess = (text, timeout = 2000) ->
   displayNoty text, timeout, 'success'
