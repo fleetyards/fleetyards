@@ -23,6 +23,7 @@ gem 'js_cookie_rails'
 
 gem 'cancancan'
 gem 'devise'
+gem 'jwt'
 
 gem 'ransack'
 
