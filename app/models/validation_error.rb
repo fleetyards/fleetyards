@@ -7,6 +7,6 @@ class ValidationError
   def initialize(code, errors = {}, message = nil)
     self.code = "validation_error.#{code}"
     self.message = message || I18n.t(:"validation_error.#{code}")
-    self.errors = errors if errors.present?
+    self.errors = errors.to_a if errors.present?
   end
 end
