@@ -5,8 +5,10 @@ window.App ?= {}
 $(document).on 'click', 'a.disabled', (evt) ->
   false
 
-document.addEventListener 'turbolinks:load', ->
+document.addEventListener 'turbolinks:before-cache', ->
   $('select.js-selectize').selectize()
+
+  $('[data-toggle=tooltip]').tooltip()
 
   if success = $('body').attr('data-success')
     displaySuccess success
@@ -19,5 +21,3 @@ document.addEventListener 'turbolinks:load', ->
 
   if warning = $('body').attr('data-warning')
     displayWarning warning
-
-  $('[data-toggle=tooltip]').tooltip()
