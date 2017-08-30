@@ -29,8 +29,6 @@
 //= require tabs
 //= require app
 //= require_tree ./app
-//
-//= require turbolinks
 
 $(document).on('click', 'a.disabled', function() {
   return false;

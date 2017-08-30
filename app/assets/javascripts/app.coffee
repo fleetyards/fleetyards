@@ -5,7 +5,7 @@ window.App ?= {}
 $(document).on 'click', 'a.disabled', (evt) ->
   false
 
-$(document).on 'turbolinks:load', ->
+document.addEventListener 'turbolinks:load', ->
   $('select.js-selectize').selectize()
 
   if success = $('body').attr('data-success')
