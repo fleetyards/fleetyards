@@ -12,11 +12,6 @@ module Admin
 
     layout 'admin/application'
 
-    private def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-    end
-    helper_method :sort_direction
-
     private def verify_admin
       return if current_user.try(:admin?)
 

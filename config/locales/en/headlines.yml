@@ -57,6 +57,10 @@ en:
         index: Component
         edit: "Edit %{component}"
         new: New Component
+      user:
+        index: Users
+        new: New User
+        edit: Edit %{user}
       dashboard: Dashboard
   sublines:
     impressum:

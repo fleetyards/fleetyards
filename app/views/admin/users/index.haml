@@ -10,14 +10,32 @@
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"nav.subnav.new_user"), new_admin_user_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.admin.user.new"), new_admin_user_path, class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
         = paginate @users
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/users/table", :@users => @users
 
-    = render partial: "admin/users/table", :@users => @users
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :username_cont
+            = f.search_field :username_cont, class: 'form-control'
 
+          .form-group
+            = f.label :email_cont
+            = f.search_field :email_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
     .row
       .col-xs-12.col-md-6
         = paginate @users

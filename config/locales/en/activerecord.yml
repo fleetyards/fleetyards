@@ -8,7 +8,6 @@ en:
         admin: Admin?
         confirmation_token: Token
         gravatar: "Gravatar E-Mail Address"
-        created_at: "%{time} ago"
         email: E-Mail
         username: Username
       ship:

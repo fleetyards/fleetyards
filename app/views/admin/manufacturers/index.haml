@@ -17,8 +17,23 @@
       .col-xs-12.col-md-6
         = paginate @manufacturers
 
-    .panel.panel-default
-      = render partial: "admin/manufacturers/table", :@manufacturers => @manufacturers
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/manufacturers/table", :@manufacturers => @manufacturers
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
 
     .row
       .col-xs-12.col-md-6

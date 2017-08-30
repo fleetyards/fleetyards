@@ -6,7 +6,6 @@ module Admin
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_admin_user!, :set_default_nav
-    before_action :set_locale
 
     protect_from_forgery with: :exception
 
@@ -17,12 +16,6 @@ module Admin
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = "unprocessable_entity"
       render "errors/error", status: 422
-    end
-
-    private def set_locale
-      return if request.env['HTTP_ACCEPT_LANGUAGE'].blank?
-      match = request.env['HTTP_ACCEPT_LANGUAGE'].match(/#{I18n.available_locales.join('|')}/)
-      I18n.locale = match[0] unless match.nil?
     end
 
     def worker_running?
@@ -60,16 +53,6 @@ module Admin
     def after_sign_in_path_for(_resource)
       admin_root_path
     end
-
-    private def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
-    end
-    helper_method :sort_direction
-
-    private def registration_enabled?
-      Rails.application.secrets[:registration]
-    end
-    helper_method :registration_enabled?
 
     protected
 

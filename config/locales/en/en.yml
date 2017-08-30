@@ -44,7 +44,9 @@ en:
       edit: Edit Ship
       new: New Ship
     user:
-      edit: "Edit Settings"
+      index: Users
+      new: New User
+      edit: "Edit User"
     password:
       new: "Forgot your Password?"
   default_country: ~
@@ -61,6 +63,7 @@ en:
     privacy: "Privacy policy"
     hangar: "My Hangar"
     workers: "Workers"
+    users: "Users"
     ship:
       overview: Index
     images: Images

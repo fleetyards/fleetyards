@@ -56,6 +56,7 @@ en:
         manufacturer: Manufacturer
       user:
         created_at: Created
+        last_sign_in_at: Current sign in at
         email: E-Mail
         username: Username
       component:

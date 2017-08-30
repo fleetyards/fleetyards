@@ -17,8 +17,31 @@
       .col-xs-12.col-md-6
         = paginate @components
 
-    .panel.panel-default
-      = render partial: "admin/components/table", :@components => @components
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/components/table", :@components => @components
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_cont
+            = f.search_field :name_cont, class: 'form-control'
+
+          .form-group
+            = f.label :size_eq
+            = f.search_field :size_eq, class: 'form-control'
+
+          .form-group
+            = f.label :category_id_eq
+            = f.select :category_id_eq, options_from_collection_for_select(ComponentCategory.all.order(:name), :id, :name, @q.category_id_eq), { include_blank: true }, {class: 'js-selectize'}
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
 
     .row
       .col-xs-12.col-md-6

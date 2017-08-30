@@ -1,23 +1,35 @@
+- content_for :title do
+  = I18n.t(:"title.image.index")
 .row#admin-images
   .col-xs-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-xs-12
         %h1
           = I18n.t(:"headlines.admin.image.index")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.image.new"), new_admin_image_path, class: "btn btn-default"
-
     .row
       .col-xs-12.col-md-6
-        = render "shared/filter", resource: "image", name: "ship", filters: Ship.all, translateable: true
       .col-xs-12.col-md-6
         = paginate @images
 
-    .panel.panel-default
-      = render partial: "admin/images/table", :@images => @images
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/images/table", :@images => @images
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :gallery_id_eq
+            = f.select :gallery_id_eq, options_from_collection_for_select(Ship.all.order(:name), :id, :name, @q.gallery_id_eq), { include_blank: true }, {class: 'js-selectize'}
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
 
     .row
       .col-xs-12.col-md-6

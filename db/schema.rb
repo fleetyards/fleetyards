@@ -10,12 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170828213916) do
+ActiveRecord::Schema.define(version: 20170830170349) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "uuid-ossp"
   enable_extension "plpgsql"
   enable_extension "hstore"
-  enable_extension "uuid-ossp"
+
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string "namespace"
+    t.text "body"
+    t.uuid "resource_id"
+    t.string "resource_type"
+    t.uuid "author_id"
+    t.string "author_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+  end
+
+  create_table "admin_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admin_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
 
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
@@ -23,7 +52,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb "description_translations"
   end
 
   create_table "auth_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -41,7 +69,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.string "rsi_name", limit: 255
     t.string "name", limit: 255
     t.string "slug", limit: 255
-    t.jsonb "name_translations"
   end
 
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -53,8 +80,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.uuid "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb "name_translations"
-    t.jsonb "component_type_translations"
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -69,7 +94,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.uuid "component_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb "name_translations"
   end
 
   create_table "images", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -91,7 +115,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.integer "rsi_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb "description_translations"
   end
 
   create_table "ship_roles", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -99,7 +122,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.string "slug", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb "name_translations"
   end
 
   create_table "ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -128,7 +150,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.string "focus", limit: 255
     t.boolean "on_sale", default: false
     t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
-    t.jsonb "description_translations"
   end
 
   create_table "user_ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -142,8 +163,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "admin", default: false, null: false
-    t.hstore "profile"
-    t.hstore "settings"
     t.string "gravatar_hash", limit: 255
     t.string "gravatar", limit: 255
     t.string "locale", limit: 255
@@ -167,8 +186,6 @@ ActiveRecord::Schema.define(version: 20170828213916) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "provider", limit: 255
-    t.string "uid", limit: 255
     t.string "rsi_organization_url", limit: 255
     t.string "rsi_organization_handle", limit: 255
     t.string "rsi_organization_name", limit: 255

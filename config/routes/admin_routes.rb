@@ -16,7 +16,7 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
     mount Sidekiq::Web => '/workers'
   end
 
-  resources :ships do
+  resources :ships, except: [:show] do
     put 'reload', on: :collection
     member do
       get 'gallery'
@@ -25,15 +25,15 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
     end
   end
 
-  resources :manufacturers do
+  resources :manufacturers, except: [:show] do
     put 'toggle', on: :member
   end
 
-  resources :components do
+  resources :components, except: [:show] do
     put 'toggle', on: :member
   end
 
-  resources :images, only: %i[new index new create destroy] do
+  resources :images, except: %i[show new edit update] do
     put 'toggle', on: :member
   end
 

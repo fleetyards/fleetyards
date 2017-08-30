@@ -24,33 +24,6 @@ class User < ApplicationRecord
     end
   end
 
-  def self.from_omniauth(data)
-    user = User.find_by(email: data[:email])
-    if user && user.confirmed?
-      user.provider = data[:provider]
-      user.uid = data[:uid]
-      return user
-    end
-
-    where(data.slice(:provider, :uid)).first_or_create do |found_user|
-      found_user.email = data[:email]
-      found_user.gravatar = data[:email]
-      found_user.password = Devise.friendly_token[0, 32]
-      found_user.username = data[:username]
-      found_user.skip_confirmation!
-    end
-  end
-
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      data = session["devise.oauth_data"]
-      if data.present?
-        user.email = data[:email] if user.email.blank?
-        user.username = data[:username] if user.username.blank?
-      end
-    end
-  end
-
   after_create :send_admin_mail
 
   def send_admin_mail

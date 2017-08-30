@@ -1,47 +1,111 @@
 module.exports = function (grunt) {
-	grunt.initConfig({
+  'use strict'
 
-        bump: {
-            options: {
-                files: ['package.json', 'noty.jquery.json', 'bower.json', 'js/noty/jquery.noty.js'],
-                updateConfigs: [],
-                commit: false,
-                commitMessage: 'Release v%VERSION%',
-                commitFiles: ['-a'],
-                createTag: true,
-                tagName: 'v%VERSION%',
-                tagMessage: 'Version %VERSION%',
-                push: false,
-                pushTo: 'upstream',
-                gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
-            }
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    usebanner: {
+      taskName: {
+        options: {
+          position: 'top',
+          banner: '/* \n  @package NOTY - Dependency-free notification library \n' +
+          '  @version version: <%= pkg.version %> \n' +
+          '  @contributors https://github.com/needim/noty/graphs/contributors \n' +
+          '  @documentation Examples and Documentation - http://needim.github.com/noty \n' +
+          '  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php \n*/\n',
+          linebreak: true
         },
-		concat: {
-			dist: {
-				src: ['js/noty/jquery.noty.js', 'js/noty/layouts/*.js', 'js/noty/themes/*.js'],
-				dest: 'js/noty/packaged/jquery.noty.packaged.js'
-			}
-		},
-
-		uglify: {
-            options: {
-                preserveComments: function(a) {
-                    return !!(a.start.file == 'js/noty/jquery.noty.js' && a.start.line == 11);
-                }
+        files: {
+          src: ['lib/noty.js', 'lib/noty.min.js']
+        }
+      }
+    },
+    qunit: {
+      options: {
+        inject: 'test/unit/phantom.js'
+      },
+      files: 'test/index.html'
+    },
+    connect: {
+      server: {
+        options: {
+          port: 3000,
+          base: '.'
+        }
+      }
+    },
+    'saucelabs-qunit': {
+      all: {
+        options: {
+          testname: 'Noty <%= pkg.version %>',
+          concurrency: 10,
+          maxRetries: 3,
+          maxPollRetries: 4,
+          urls: ['http://127.0.0.1:3000/test/index.html?hidepassed'],
+          browsers: [ // https://wiki.saucelabs.com/display/DOCS/Platform+Configurator
+            { // macOS
+              'browserName': 'safari',
+              'platform': 'OS X 10.11'
             },
-			minifyJS: {
-				files: {
-					'js/noty/packaged/jquery.noty.packaged.min.js': ['js/noty/jquery.noty.js', 'js/noty/layouts/*.js', 'js/noty/themes/*.js']
-				}
-			}
-		}
-	});
+            {
+              'browserName': 'chrome',
+              'platform': 'OS X 10.11',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'firefox',
+              'platform': 'OS X 10.11',
+              'version': 'latest'
+            },
+            { // windows
+              'browserName': 'MicrosoftEdge',
+              'platform': 'Windows 10',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'chrome',
+              'platform': 'Windows 10',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'firefox',
+              'platform': 'Windows 10',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'internet explorer',
+              'version': '11',
+              'platform': 'Windows 8.1'
+            },
+            {
+              'browserName': 'internet explorer',
+              'version': '10',
+              'platform': 'Windows 8'
+            },
+            { // linux
+              'browserName': 'chrome',
+              'platform': 'Linux',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'firefox',
+              'platform': 'Linux',
+              'version': 'latest'
+            },
+            {
+              'browserName': 'opera',
+              'platform': 'Linux',
+              'version': 'latest'
+            }
+          ]
+        }
+      }
+    }
+  })
 
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-bump');
+  require('load-grunt-tasks')(grunt)
 
-	grunt.registerTask('build', ['bump', 'concat', 'uglify:minifyJS']);
-	grunt.registerTask('conc', ['concat']);
-	grunt.registerTask('ugly', ['uglify:minifyJS']);
-};
+  grunt.registerTask('banner', 'usebanner')
+  grunt.registerTask('test', 'qunit')
+  grunt.registerTask('saucelabs', ['qunit', 'connect', 'saucelabs-qunit'])
+  grunt.registerTask('default', ['test'])
+}

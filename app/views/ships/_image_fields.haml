@@ -1,0 +1,15 @@
+.col-xs-12.col-md-4.fields
+  .form-group{class: form_error?(fields.object, :name)}
+    - if fields.object.name.present?
+      %img{src: fields.object.name.url(:small)}
+    - else
+      = fields.file_field :name, placeholder: I18n.t(:"helpers.placeholder.image.name"), class: 'form-control'
+    = form_errors fields.object, :name
+
+  .btn-group-responsive.form-group.pull-right
+    = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+      %i.fa.fa-trash
+
+  .clearfix
+  .col-xs-12.visible-sm.visible-xs
+    %hr

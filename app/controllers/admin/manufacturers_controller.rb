@@ -3,13 +3,14 @@
 module Admin
   class ManufacturersController < BaseController
     before_action :set_active_nav
+    after_action :save_filters, only: [:index]
 
     def index
       authorize! :index, :admin_manufacturers
-      @manufacturers = Manufacturer.all
-                                   .order(sort_column + " " + sort_direction)
-                                   .page(params.fetch(:page) { nil })
-                                   .per(20)
+      @q = Manufacturer.ransack(params[:q])
+      @manufacturers = @q.result
+                         .page(params.fetch(:page) { nil })
+                         .per(40)
     end
 
     def new
@@ -71,14 +72,22 @@ module Admin
       end
     end
 
+    private def save_filters
+      session[:manufacturers_filters] = params[:q]
+      session[:manufacturers_page] = params[:page]
+    end
+
+    private def index_back_params
+      @index_back_params ||= ActionController::Parameters.new(
+        q: session[:manufacturers_filters],
+        page: session[:manufacturers_page]
+      ).permit!.delete_if { |_k, v| v.nil? }
+    end
+    helper_method :index_back_params
+
     private def manufacturer_params
       @manufacturer_params ||= params.require(:manufacturer).permit(:name, :enabled, :logo)
     end
-
-    private def sort_column
-      Manufacturer.column_names.include?(params[:sort]) ? params[:sort] : "id"
-    end
-    helper_method :sort_column
 
     private def manufacturer
       @manufacturer ||= Manufacturer.where(id: params.fetch(:id, nil)).first

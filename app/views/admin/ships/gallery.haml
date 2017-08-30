@@ -4,7 +4,7 @@
       = I18n.t(:"headlines.admin.ship.gallery", ship: ship.name)
   .col-xs-12.col-md-4
     .btn-group.pull-right.resource-nav
-      %a.btn.btn-default{href: admin_ships_path}
+      %a.btn.btn-default{href: admin_ships_path(params: index_back_params, anchor: ship.id)}
         = I18n.t(:"actions.back")
 
 %form#fileupload{action: admin_images_path, method: "POST", enctype: "multipart/form-data", data: {load_path: gallery_admin_ship_path(ship)}}

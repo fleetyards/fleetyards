@@ -22,7 +22,7 @@
     %legend
       Additions:
     #addition
-      = form.fields_for :addition, ship.addition do |builder|
+      = form.fields_for :addition, (ship.addition || ship.build_addition) do |builder|
         = render 'addition_fields', fields: builder
 
   %fieldset

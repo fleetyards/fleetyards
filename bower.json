@@ -3,7 +3,7 @@
   "dependencies": {
     "blueimp-bootstrap-image-gallery": "~3.1.0",
     "ladda": "~0.9.2",
-    "noty": "~2.2.2",
+    "noty": "~3.1.0",
     "nprogress": "~0.2.0",
     "blueimp-file-upload": "~9.5.3",
     "sweetalert": "~0.1.0",

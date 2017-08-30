@@ -3,13 +3,14 @@
 module Admin
   class ShipsController < BaseController
     before_action :set_active_nav
+    after_action :save_filters, only: [:index]
 
     def index
       authorize! :index, :admin_ships
-      @ships = Ship.all
-                   .order(sort_column + " " + sort_direction)
-                   .page(params.fetch(:page) { nil })
-                   .per(15)
+      @q = Ship.ransack(params[:q])
+      @ships = @q.result
+                 .page(params.fetch(:page) { nil })
+                 .per(40)
     end
 
     def new
@@ -123,10 +124,18 @@ module Admin
       )
     end
 
-    private def sort_column
-      Ship.column_names.include?(params[:sort]) ? params[:sort] : "id"
+    private def save_filters
+      session[:ships_filters] = params[:q]
+      session[:ships_page] = params[:page]
     end
-    helper_method :sort_column
+
+    private def index_back_params
+      @index_back_params ||= ActionController::Parameters.new(
+        q: session[:ships_filters],
+        page: session[:ships_page]
+      ).permit!.delete_if { |_k, v| v.nil? }
+    end
+    helper_method :index_back_params
 
     private def ship
       @ship ||= Ship.where(id: params.fetch(:id, nil)).first

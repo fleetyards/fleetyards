@@ -1,14 +1,15 @@
-%tr
+%tr{id: image.id}
   %td.preview.text-center
     = image_tag image.name.small
-  %td
-    = image.id
   %td
     = image.name.file.filename
   %td
     - unless image.gallery.blank?
       %a{href: send("gallery_admin_#{image.gallery.class.name.downcase}_path", image.gallery.id)}
         = image.gallery.name
+  %td
+    = time_ago_in_words(image.created_at)
+    = "(#{l(image.created_at, format: :short)})"
   %td
     .btn-group
       %button.btn.btn-default{class: ('active' if image.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_admin_image_path(image), resource: 'image', toggle: "button"}}

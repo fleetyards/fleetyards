@@ -4,12 +4,17 @@
       = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
       %small
         = form_errors @user, :email
+    .col-xs-12.col-md-6.form-group{class: form_error?(@user, :username)}
+      = form.text_field :username, placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
+      %small
+        = form_errors @user, :username
   .row
     .col-xs-6.col-md-3.form-group
-      .checkbox
-        = form.label :admin do
-          = I18n.t(:"activerecord.attributes.user.admin")
+      - unless user.id == current_user.id
+        .checkbox
           = form.check_box :admin, placeholder: I18n.t(:"helpers.placeholder.user.admin")
+          = form.label :admin do
+            = I18n.t(:"activerecord.attributes.user.admin")
 
 
   = render "shared/submit", path: admin_users_path

@@ -3,9 +3,9 @@
     %thead
       %tr
         %th.preview
-        %th.id=sortable "id", I18n.t(:"labels.table.id")
-        %th=sortable "name", I18n.t(:"labels.table.image.name")
-        %th=sortable "gallery_type", I18n.t(:"labels.table.image.gallery_type")
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :gallery_type)
+        %th=sort_link(@q, :created_at)
         %th.actions.actions-two
     %tbody
       = render partial: "admin/images/show", collection: @images, as: :image

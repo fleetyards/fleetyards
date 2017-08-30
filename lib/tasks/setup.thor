@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'highline/import'
-require 'sidekiq/scheduler'
 
 class Setup < Thor
   include Thor::Actions

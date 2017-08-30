@@ -10,7 +10,7 @@
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), admin_ships_path, class: "btn btn-default"
+          = link_to I18n.t(:"actions.back"), admin_ships_path(params: index_back_params), class: "btn btn-default"
 
     .well
       = render "form"

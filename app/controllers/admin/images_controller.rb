@@ -6,27 +6,19 @@ module Admin
 
     def index
       authorize! :index, :images
-      @images = Image.order('created_at desc')
-      if params[:ship].present?
-        ship = Ship.find_by(slug: params[:ship])
-        @images = @images.where(gallery_type: "Ship", gallery_id: ship.id)
-      end
       respond_to do |format|
         format.js do
-          @images = @images.all
+          @images = Image.all
           jq_images = @images.collect(&:to_jq_upload)
           render json: { files: jq_images }.to_json
         end
         format.html do
-          @images = @images
-                    .page(params.fetch(:page, nil))
-                    .per(20)
+          @q = Image.ransack(params[:q])
+          @images = @q.result
+                      .page(params.fetch(:page, nil))
+                      .per(40)
         end
       end
-    end
-
-    def new
-      authorize! :new, :images
     end
 
     def create
@@ -84,11 +76,6 @@ module Admin
     private def image_params
       @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type, :enabled)
     end
-
-    private def sort_column
-      Image.column_names.include?(params[:sort]) ? params[:sort] : "id"
-    end
-    helper_method :sort_column
 
     private def image
       @image ||= Image.where(id: params.fetch(:id, nil)).first

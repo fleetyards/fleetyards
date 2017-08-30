@@ -1,10 +1,18 @@
 # Noty
 window.displayNoty = (text, timeout, type) ->
-  noty
+  new Noty({
     text: text,
-    timeout: timeout,
     type: type,
-    layout: 'bottomRight'
+    timeout: timeout,
+    layout: 'bottomRight',
+    theme: 'metroui',
+    closeWith: ['click', 'button'],
+    animation: {
+      open: 'noty_effects_open',
+      close: 'noty_effects_close',
+    },
+    progressBar: true,
+  }).show()
 
 window.displayConfirm = (ev, $element) ->
   okButton =

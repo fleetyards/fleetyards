@@ -3,6 +3,7 @@
 class Manufacturer < ApplicationRecord
   default_scope -> { order(name: :asc) }
   include SlugHelper
+  include ActionView::Helpers::OutputSafetyHelper
 
   mount_uploader :logo, LogoUploader
 
@@ -21,6 +22,11 @@ class Manufacturer < ApplicationRecord
   end
 
   before_save :update_slugs
+
+  def name_clean
+    # rubocop:disable Rails/OutputSafety
+    name.html_safe
+  end
 
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)

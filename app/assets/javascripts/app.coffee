@@ -6,6 +6,8 @@ $(document).on 'click', 'a.disabled', (evt) ->
   false
 
 $(document).on 'turbolinks:load', ->
+  $('select.js-selectize').selectize()
+
   if success = $('body').attr('data-success')
     displaySuccess success
 
@@ -17,9 +19,5 @@ $(document).on 'turbolinks:load', ->
 
   if warning = $('body').attr('data-warning')
     displayWarning warning
-
-  $('.select2 select').select2
-    formatNoMatches: (term) ->
-      @element.attr('data-empty')
 
   $('[data-toggle=tooltip]').tooltip()

@@ -1,76 +1,102 @@
-# noty - A jQuery Notification Plugin
+<p align="center">
+  <a href="http://ned.im/noty?ref=readme">
+    <img src="http://ned.im/noty/_media/noty-v3-logo.png" width=200 height=70>
+  </a>
 
-![noty v2](http://needim.github.io/noty/img/noty-v2-logo.png?v2 "noty v2")
+  <p align="center">
+    Dependency-free notification library.
+    <br>
+    <a href="http://ned.im/noty"><strong>Documentation &raquo;</strong></a>
+  </p>
 
-***
+  <p align="center">
+    <a href="https://github.com/needim/noty/releases"><img src="https://img.shields.io/github/release/needim/noty.svg" alt="GitHub release"></a>
+    <a href="https://bower.io/"><img src="https://img.shields.io/bower/v/noty.svg" alt="Bower version"></a>
+    <a href="https://www.npmjs.com/package/noty"><img src="https://img.shields.io/npm/v/noty.svg" alt="NPM version"></a>
+    <a href="https://packagist.org/packages/needim/noty"><img src="https://img.shields.io/packagist/v/needim/noty.svg" alt="Packagist version"></a>
+    <br>
+    <img src="https://img.shields.io/david/needim/noty.svg" alt="Dependencies">
+    <img src="https://img.shields.io/david/dev/needim/noty.svg" alt="Dev Dependencies">
+    <br>
+    <a href="https://travis-ci.org/needim/noty"><img src="https://img.shields.io/travis/needim/noty/master.svg" alt="Travis"></a>
+    <a href="https://www.npmjs.com/package/noty"><img src="https://img.shields.io/npm/dm/noty.svg?label=npm%20downloads" alt="NPM Downloads"></a>
+    <a href="https://github.com/needim/noty/graphs/contributors"><img src="https://img.shields.io/github/contributors/needim/noty.svg" alt="Contributors"></a>
+  </p>
+</p>
+
+<br>
+
 
 ## Hi
 
-**noty** is a jQuery plugin that makes it easy to create **alert** - **success** - **error** - **warning** - **information** - **confirmation** messages as an alternative the standard alert dialog. Each notification is added to a **queue**. (**Optional**)
+**NOTY** is a notification library that makes it easy to create **alert** - **success** - **error** - **warning** - **information** - **confirmation** messages as an alternative the standard alert dialog.
 
 The notifications can be positioned at the;
 **top** - **topLeft** - **topCenter** - **topRight** - **center** - **centerLeft** - **centerRight** - **bottom** - **bottomLeft** - **bottomCenter** - **bottomRight**
 
-There are lots of other options in the API to customise the text, animation, speed, buttons and much more.
+There are lots of other options in the API to customise the text, animation, buttons and much more.
 
 It also has various callbacks for the buttons, opening closing the notifications and queue control.
 
 ***
+### Features
+- [x] Dependency-free
+- [x] Web Push Notifications with Service Worker support
+- [x] UMD
+- [x] Named queue system
+- [x] Has 11 layouts, 5 notification styles, 5+ themes
+- [x] Custom container (inline notifications)
+- [x] Confirm notifications
+- [x] TTL
+- [x] Progress bar indicator for timed notifications
+- [x] Supports css animations, [animate.css](https://github.com/daneden/animate.css), [mojs](https://github.com/legomushroom/mojs), [bounce.js](https://github.com/tictail/bounce.js), [velocity](https://github.com/julianshapiro/velocity) and other animation libraries
+- [x] 2 close options: click, button
+- [x] API & Callbacks
+- [x] Custom templating
+- [x] Document visibility control (blur, focus)
 
 ### Documentation
-
-Documentation and examples are here: <http://needim.github.io/noty>
+Documentation and examples are here: <http://ned.im/noty>
 
 ***
 
-### Pull Requests
+##### Basic Usage
+```js
+import Noty from 'noty';
 
-1. [Fork](http://help.github.com/fork-a-repo/) the project, clone your fork,
-   and configure the remotes:
+new Noty({
+    text: 'Notification text'
+}).show();
 
-   ```bash
-   # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/noty.git
-   # Navigate to the newly cloned directory
-   cd noty
-   # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/needim/noty.git
-   ```
+// or
 
-2. If you cloned a while ago, get the latest changes from upstream:
+const Noty = require('noty');
 
-   ```bash
-   git checkout master
-   git pull upstream master
-   ```
+new Noty({
+    text: 'Notification text'
+}).show();
 
-3. Create a new topic branch (off the main project development branch)
-   to contain your feature, change, or fix:
+```
 
-   ```bash
-   git checkout -b <topic-branch-name>
-   ```
+##### Development
+```console
+$ npm run dev
+$ npm test
+$ npm run build
+$ npm run browserstack
+$ npm run serve-docs
+```
 
-4. Commit your changes in logical chunks. Please adhere to these [git commit
-   message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-   or your code is unlikely be merged into the main project. Use Git's
-   [interactive rebase](https://help.github.com/articles/interactive-rebase)
-   feature to tidy up your commits before making them public.
+##### Development environment
+- [x] Standard
+- [x] Prettier
+- [x] ES6 & Babel & Webpack
+- [x] Sass
+- [x] Autoprefixer
+- [x] QUnit
+- [x] BrowserStack
+- [x] Pre-commit tests
+- [x] Travis CI
 
-5. Locally merge (or rebase) the upstream master branch into your topic branch:
 
-   ```bash
-   git pull [--rebase] upstream master
-   ```
-
-6. Push your topic branch up to your fork:
-
-   ```bash
-   git push origin <topic-branch-name>
-   ```
-
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
-    with a clear title and description against the `master` branch.
-
-**IMPORTANT**: By submitting a patch, you agree to allow the project owners to
-license your work under the the terms of the [MIT License](LICENSE.txt).
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)

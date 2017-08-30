@@ -43,6 +43,8 @@ en:
     admin:
       ship:
         new: "Create new Ship"
+      user:
+        new: "Create new User"
       image:
         new: "Upload new Image"
       manufacturer:

@@ -6,3 +6,9 @@ child/
 
 node_modules/
 _SpecRunner.html
+/.vscode/
+yarn.lock
+.nyc_output
+coverage
+manifest.json
+service-worker.js

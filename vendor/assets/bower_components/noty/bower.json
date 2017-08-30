@@ -1,8 +1,20 @@
 {
-    "name"       : "noty",
-    "version"    : "2.2.4",
-    "authors"    : [
-        "Nedim Arabacı"
-    ],
-    "description": "noty is a jQuery plugin that makes it easy to create alert - success - error - warning - information - confirmation messages as an alternative the standard alert dialog. Each notification is added to a queue. (Optional)"
+  "name": "noty",
+  "description": "Noty - Notification library",
+  "license": "MIT",
+  "homepage": "http://ned.im/noty",
+  "main": "lib/noty.js",
+  "keywords": [
+    "noty",
+    "notification",
+    "alert",
+    "confirmation"
+  ],
+  "ignore": [
+    "node_modules",
+    "tests"
+  ],
+  "authors": [
+    "Nedim Arabacı <nedimarabaci@gmail.com>"
+  ]
 }

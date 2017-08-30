@@ -3,10 +3,9 @@
     %thead
       %tr
         %th.preview
-        %th.id=sortable "id", I18n.t(:"labels.table.id")
-        %th=sortable "name", I18n.t(:"labels.table.name")
-        %th=sortable "slug", I18n.t(:"labels.table.slug")
-        %th=I18n.t(:"labels.table.ship.manufacturer")
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :manufacturer_name, 'Manufacturer')
+        %th=sort_link(@q, :ship_role_name, 'Ship Role')
         %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/ships/show", collection: @ships, as: :ship

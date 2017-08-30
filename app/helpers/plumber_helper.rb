@@ -2,6 +2,6 @@
 
 module PlumberHelper
   def plumb(attributes)
-    url_for((@plumber ||= ::UrlPlumber::Plumber.new(params)).plumb(attributes))
+    url_for((@plumber ||= ::UrlPlumber::Plumber.new(params.permit!)).plumb(attributes))
   end
 end

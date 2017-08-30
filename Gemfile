@@ -14,8 +14,6 @@ gem 'sidekiq-cron'
 # for sidekiq web
 gem 'sinatra', require: nil
 
-gem 'json_translate'
-
 gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
@@ -23,22 +21,19 @@ gem 'slim-rails'
 gem 'i18n-js', ">= 3.0.0.rc11"
 gem 'js_cookie_rails'
 
-gem 'devise'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-github'
-gem 'omniauth-google-oauth2'
-gem 'omniauth-twitter'
-
 gem 'cancancan'
+gem 'devise'
+
+gem 'ransack'
 
 gem 'jbuilder'
+
+gem 'rails-i18n', '~> 5.0.0' # For 5.0.x and 5.1.x
 
 gem 'dalli'
 gem 'turbolinks'
 
 gem 'kaminari'
-gem 'select2-rails'
 gem 'url_plumber'
 
 gem 'dynamic_fields_for_rails'

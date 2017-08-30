@@ -7,6 +7,7 @@ en:
       password:
         success: Password
         failure: Password
+      admin: User
     locale: Locales
     ship: Ship
     ships: Ships

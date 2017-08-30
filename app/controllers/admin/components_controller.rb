@@ -3,13 +3,14 @@
 module Admin
   class ComponentsController < BaseController
     before_action :set_active_nav
+    after_action :save_filters, only: [:index]
 
     def index
       authorize! :index, :admin_components
-      @components = Component.all
-                             .order(sort_column + " " + sort_direction)
-                             .page(params.fetch(:page) { nil })
-                             .per(20)
+      @q = Component.ransack(params[:q])
+      @components = @q.result
+                      .page(params.fetch(:page) { nil })
+                      .per(40)
     end
 
     def new
@@ -70,14 +71,22 @@ module Admin
       end
     end
 
+    private def save_filters
+      session[:components_filters] = params[:q]
+      session[:components_page] = params[:page]
+    end
+
+    private def index_back_params
+      @index_back_params ||= ActionController::Parameters.new(
+        q: session[:components_filters],
+        page: session[:components_page]
+      ).permit!.delete_if { |_k, v| v.nil? }
+    end
+    helper_method :index_back_params
+
     private def component_params
       @component_params ||= params.require(:component).permit(:name, :enabled)
     end
-
-    private def sort_column
-      Component.column_names.include?(params[:sort]) ? params[:sort] : "id"
-    end
-    helper_method :sort_column
 
     private def component
       @component ||= Component.where(id: params.fetch(:id, nil)).first

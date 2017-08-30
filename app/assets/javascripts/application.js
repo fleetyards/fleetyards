@@ -8,7 +8,7 @@
 //= require bootstrap
 //= require spin.js/spin
 //= require ladda/js/ladda
-//= require noty/js/noty/packaged/jquery.noty.packaged.min
+//= require noty
 //= require blueimp-gallery/js/jquery.blueimp-gallery.min
 //= require blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min
 //= require blueimp-file-upload/js/vendor/jquery.ui.widget
