@@ -21,6 +21,29 @@ module CarrierWave
   end
 end
 
+# NullStorage provider for CarrierWave for use in tests.  Doesn't actually
+# upload or store files but allows test to pass as if files were stored and
+# the use of fixtures.
+class NullStorage
+  attr_reader :uploader
+
+  def initialize(uploader)
+    @uploader = uploader
+  end
+
+  def identifier
+    uploader.filename
+  end
+
+  def store!(_file)
+    true
+  end
+
+  def retrieve!(_identifier)
+    true
+  end
+end
+
 CarrierWave.configure do |config|
   if Rails.env.production?
     config.fog_credentials = {
@@ -31,6 +54,9 @@ CarrierWave.configure do |config|
     }
     config.fog_directory = 'fleetyards'
     config.asset_host = "https://d159vi9qupesbj.cloudfront.net"
+  elsif Rails.env.test?
+    config.storage NullStorage
+    config.enable_processing = false
   else
     config.asset_host = "http://api.fleetyards.dev"
   end
