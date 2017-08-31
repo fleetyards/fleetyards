@@ -34,30 +34,12 @@ form {
     }
   }
 
-  .selectize-control {
-    height: 34px;
-
-    .selectize-input.has-items {
-      input {
-        max-width: 100px !important;
-      }
-    }
-  }
-
   .form-control-feedback:nth-child(2) {
     top: 0;
   }
 
-  .selectize {
-    .form-control-feedback {
-      top: 0;
-      right: 30px;
-      z-index: 1;
-    }
-  }
-
   .has-error {
-    input, textarea, .selectize-control .selectize-input, .selectize-control .selectize-input.input-active {
+    input, textarea {
       border-color: #c60f13;
       background-color: rgba(red, 0.1);
     }

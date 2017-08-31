@@ -22,7 +22,7 @@
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :gallery_id_eq
-            = f.select :gallery_id_eq, options_from_collection_for_select(Ship.all.order(:name), :id, :name, @q.gallery_id_eq), { include_blank: true }, {class: 'js-selectize'}
+            = f.select :gallery_id_eq, options_from_collection_for_select(Ship.all.order(:name), :id, :name, @q.gallery_id_eq), { include_blank: true }, {class: 'form-control'}
 
           .btn-group
             %button.btn.btn-primary

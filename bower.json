@@ -8,7 +8,6 @@
     "blueimp-file-upload": "~9.5.3",
     "sweetalert": "~0.1.0",
     "bootstrap-social": "~5.1.1",
-    "awesome-bootstrap-checkbox": "~0.3.7",
-    "selectize": "~0.12.4"
+    "awesome-bootstrap-checkbox": "~0.3.7"
   }
 }

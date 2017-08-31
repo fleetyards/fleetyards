@@ -30,11 +30,11 @@
 
           .form-group
             = f.label :manufacturer_id_eq
-            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, {class: 'js-selectize'}
+            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, {class: 'form-control'}
 
           .form-group
             = f.label :ship_role_id_eq
-            = f.select :ship_role_id_eq, options_from_collection_for_select(ShipRole.all.order(:name), :id, :name, @q.ship_role_id_eq), { include_blank: true }, {class: 'js-selectize'}
+            = f.select :ship_role_id_eq, options_from_collection_for_select(ShipRole.all.order(:name), :id, :name, @q.ship_role_id_eq), { include_blank: true }, {class: 'form-control'}
 
           .btn-group
             %button.btn.btn-primary

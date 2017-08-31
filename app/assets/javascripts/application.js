@@ -3,7 +3,6 @@
 //= require turbolinks
 //= require sifter
 //= require microplugin
-//= require selectize
 //= require bootstrap
 //= require spin.js/spin
 //= require ladda/js/ladda
@@ -43,36 +42,6 @@ $(document).on('focus', '.modal input, .modal textarea, .modal select', function
 });
 
 $(document).on('turbolinks:load', function() {
-  $('select.js-selectize').selectize();
-
-  if ($('select.js-gallery-selectize')) {
-    $('select.js-gallery-selectize').selectize({
-      valueField: 'id',
-      labelField: 'name',
-      searchField: 'name',
-      sortField: 'name',
-      create: false,
-      preload: true,
-      maxOptions: 20,
-      onChange: function(value) {
-        $('#image-gallery-id').val(value);
-      },
-      load: function(query, callback) {
-        $.ajax({
-          url: 'https://api.fleetyards.net/v1/ships/',
-          type: 'GET',
-          datatype: 'json',
-          error: function() {
-            callback();
-          },
-          success: function(response) {
-            callback(response);
-          },
-        });
-      },
-    });
-  }
-
   $('.btn.btn-primary[data-loading-text]').click(function() {
     $(this).button('loading');
   });
