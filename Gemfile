@@ -9,6 +9,7 @@ gem 'rails', '5.1.3'
 
 gem 'pg'
 
+gem 'redis-namespace'
 gem 'sidekiq'
 gem 'sidekiq-cron'
 # for sidekiq web
