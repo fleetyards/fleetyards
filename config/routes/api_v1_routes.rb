@@ -21,8 +21,8 @@ v1_api_routes = lambda do
       post :signup
       post :confirm
       get :current
-      put :current
-      patch :current
+      put 'current' => 'users#update'
+      patch 'current' => 'users#update'
     end
   end
 

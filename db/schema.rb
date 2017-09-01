@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170830170349) do
+ActiveRecord::Schema.define(version: 20170901165019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -186,10 +186,6 @@ ActiveRecord::Schema.define(version: 20170830170349) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "rsi_organization_url", limit: 255
-    t.string "rsi_organization_handle", limit: 255
-    t.string "rsi_organization_name", limit: 255
-    t.string "rsi_profile_url", limit: 255
     t.string "rsi_handle", limit: 255
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

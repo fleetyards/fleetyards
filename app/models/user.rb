@@ -30,8 +30,9 @@ class User < ApplicationRecord
     UserMailer.notify_admin(self).deliver
   end
 
-  before_save :extract_rsi_information
   before_save :update_gravatar_hash
+  before_validation :clean_username
+  before_validation :clean_rsi_handle
 
   def update_gravatar_hash
     hash = if gravatar.blank?
@@ -42,13 +43,14 @@ class User < ApplicationRecord
     self.gravatar_hash = hash
   end
 
-  def extract_rsi_information
-    if rsi_profile_url.present?
-      self.rsi_handle = rsi_profile_url.split("/").last
-    end
+  def clean_username
+    return if username.blank?
+    self.username = username.strip
+  end
 
-    return if rsi_organization_url.blank?
-    self.rsi_organization_handle = rsi_organization_url.split("/").last
+  def clean_rsi_handle
+    return if rsi_handle.blank?
+    self.rsi_handle = rsi_handle.strip
   end
 
   def avatar(size = 24)
