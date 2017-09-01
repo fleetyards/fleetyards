@@ -33,6 +33,12 @@ v1_api_routes = lambda do
     end
   end
   resources :my_ships, path: 'my-ships', only: %i[create update destroy]
+
+  resource :rsi, controller: 'rsi', only: [] do
+    collection do
+      get :citizen
+    end
+  end
 end
 
 scope :v1, defaults: { format: :json }, as: :v1 do
