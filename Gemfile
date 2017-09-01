@@ -81,6 +81,8 @@ gem 'sentry-raven'
 
 gem 'lograge'
 
+gem 'rack-mini-profiler'
+
 group :development do
   gem 'listen'
   gem 'mailcatcher'
