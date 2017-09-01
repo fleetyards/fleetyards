@@ -30,6 +30,9 @@ module Api
           user.title = value.text.strip if index == 2
         end
 
+        if page.css('.profile .thumb img').present?
+          user.avatar = "https://robertsspaceindustries.com#{page.css('.profile .thumb img')[0]['src']}"
+        end
         user.citizen_record = page.css('.citizen-record .value').text.strip
 
         page.css('.profile-content > .left-col .value').each_with_index do |value, index|

@@ -5,6 +5,7 @@ json.id user.id
 json.email user.email
 json.username user.username
 json.avatar user.avatar(48)
-json.isAdmin user.admin?
+json.is_admin user.admin?
+json.rsi_handle user.rsi_handle
 json.created_at user.created_at
 json.updated_at user.updated_at

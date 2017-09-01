@@ -3,6 +3,7 @@
 
 json.username user.username
 json.handle user.handle
+json.avatar user.avatar
 json.title user.title
 json.enlisted user.enlisted
 json.citizen_record user.citizen_record
