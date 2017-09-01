@@ -4,15 +4,17 @@
 module Api
   class BaseController < ActionController::Base
     protect_from_forgery with: :null_session
-
-    before_action :authenticate_api_user!
-
     respond_to :json
 
-    check_authorization
+    before_action :authenticate_api_user!, except: [:root]
+    check_authorization except: [:root]
 
     rescue_from CanCan::AccessDenied do |exception|
       render json: { message: exception.message }, status: :forbidden
+    end
+
+    def root
+      render json: { message: 'Welcome!' }
     end
 
     def current_user

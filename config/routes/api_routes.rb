@@ -6,5 +6,5 @@ namespace :api, path: "", constraints: { subdomain: "api" } do
 
   draw :api_v1_routes
 
-  root to: "base#index"
+  root to: "base#root"
 end
