@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class PasswordsController < ActionController::Base
+    class PasswordsController < ::Api::BaseController
       skip_authorization_check except: [:update]
       before_action :authenticate_api_user!, only: [:update]
 
@@ -20,7 +20,7 @@ module Api
       def update
         authorize! :update, current_user
         user = User.find(current_user.id)
-        if user.update(change_password_params)
+        if user.update_with_password(change_password_params)
           render json: { code: 'change_pasword.success', message: I18n.t('devise.passwords.updated_not_active') }
         else
           render json: ValidationError.new("change_pasword", user.errors), status: :bad_request
