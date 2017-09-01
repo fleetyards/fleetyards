@@ -3,16 +3,16 @@
 
 workers Integer(ENV['WEB_CONCURRENCY'] || 3)
 threads_count = Integer(ENV['MAX_THREADS'] || 16)
-threads 0, threads_count
+threads threads_count, threads_count
 
-directory ENV['APP_DIR']
-if ENV['RACK_ENV'] == 'production'
-  pidfile "#{ENV['SHARED_DIR']}/tmp/pids/puma.pid"
-  state_path "#{ENV['SHARED_DIR']}/tmp/sockets/puma.state"
-end
+preload_app!
 
-prune_bundler
-
-rackup DefaultRackup
-port ENV['PORT'] || 3000
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
 environment ENV['RACK_ENV'] || 'development'
+
+on_worker_boot do
+  # Worker specific setup for Rails 4.1+
+  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
+  ActiveRecord::Base.establish_connection
+end
