@@ -21,6 +21,7 @@ v1_api_routes = lambda do
       post :signup
       post :confirm
       get :current
+      put :current
     end
   end
 
@@ -34,11 +35,7 @@ v1_api_routes = lambda do
   end
   resources :my_ships, path: 'my-ships', only: %i[create update destroy]
 
-  resource :rsi, controller: 'rsi', only: [] do
-    collection do
-      get :citizen
-    end
-  end
+  get 'rsi/citizen/:handle' => 'rsi#citizen'
 end
 
 scope :v1, defaults: { format: :json }, as: :v1 do

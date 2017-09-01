@@ -8,8 +8,17 @@ module Api
       before_action :authenticate_api_user!, except: %i[signup confirm]
 
       def current
-        authorize! :read, User
+        authorize! :read, current_user
         @user = current_user
+      end
+
+      def update
+        authorize! :update, current_user
+
+        @user = current_user
+        return if @user.update(user_params)
+
+        render json: ValidationError.new("update", @user.errors), status: :bad_request
       end
 
       def signup
@@ -30,7 +39,7 @@ module Api
       end
 
       private def user_params
-        @user_params ||= params.permit(:username, :email, :password, :password_confirmation)
+        @user_params ||= params.permit(:username, :email, :rsi_handle, :password, :password_confirmation)
       end
     end
   end

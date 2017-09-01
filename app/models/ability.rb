@@ -16,11 +16,10 @@ class Ability
     can %i[index show], :api_ships
     can %i[index], :api_images
 
-    if user.id.present?
-      can :show, :hangar
-      can %i[add remove], UserShip, user_id: user.id
-    end
+    return if user.id.blank?
 
-    can :update, User, id: user.id
+    can :show, :hangar
+    can %i[add remove], UserShip, user_id: user.id
+    can %i[read update], User, id: user.id
   end
 end
