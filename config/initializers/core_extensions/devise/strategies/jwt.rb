@@ -13,6 +13,7 @@ module Devise
       end
 
       def authenticate!
+        claims = ::JsonWebToken.decode(auth_params)
         return fail! unless claims
         return fail! unless claims.key?(:user_id)
         return fail! if claims.key?(:token) && !AuthToken.exists?(token: claims[:token])
@@ -23,12 +24,6 @@ module Devise
       protected def auth_params
         auth_params, _options = token_and_options(request)
         auth_params
-      end
-
-      protected def claims
-        ::JsonWebToken.decode(auth_params)
-      rescue
-        nil
       end
     end
   end

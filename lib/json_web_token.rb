@@ -8,13 +8,14 @@ module JsonWebToken
     payload = payload.dup
     payload[:iss] = "FleetYards.net"
 
-    JWT.encode(payload, Rails.application.secrets[:devise_jwt])
+    JWT.encode(payload, Rails.application.secrets[:devise_jwt], 'HS512')
   end
 
   def decode(token)
-    decoded_token = JWT.decode(token, Rails.application.secrets[:devise_jwt])
+    decoded_token = JWT.decode(token, Rails.application.secrets[:devise_jwt], true, algorithm: 'HS512')
     HashWithIndifferentAccess.new(decoded_token.first)
-  rescue
+  rescue => e
+    Rails.logger.error e.to_yaml
     nil
   end
 end
