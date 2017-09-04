@@ -12,9 +12,11 @@ module Api
 
       def index
         authorize! :index, :api_ships
-        @ships = Ship.enabled
-                     .filter(filter_params)
-                     .order("ships.name asc")
+        Rails.logger.debug query_params.to_yaml
+        @q = Ship.enabled
+                 .ransack(query_params)
+        @ships = @q.result
+                   .order("ships.name asc")
       end
 
       def filters
@@ -91,10 +93,13 @@ module Api
                       .order(created_at: :asc)
       end
 
-      private def filter_params
-        @filter_params ||= params.permit(
-          :search, filter: []
-        )
+      private def query_params
+        @query_params ||= begin
+          q = JSON.parse(params[:q] || '{}')
+          q.transform_keys { |key| key.to_s.underscore }
+        end
+      rescue JSON::ParserError
+        nil
       end
 
       private def updated_range
