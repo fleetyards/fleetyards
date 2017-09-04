@@ -49,8 +49,8 @@ task deploy: :environment do
     invoke :'deploy:cleanup'
 
     on :launch do
-      # invoke :'server:start'
-      invoke :'server:restart'
+      # invoke :'server:restart'
+      invoke :'server:phased_restart'
     end
   end
 end
@@ -86,7 +86,7 @@ end
 
 namespace :server do
   task phased_restart: :environment do
-    command %(bundle exec pumactl -P tmp/pids/puma.pid -S tmp/sockets/puma.state phased-restart)
+    system %(kill -s USR1 `cat /home/fleetyards/shared/tmp/pids/puma.pid`)
     command %(sudo supervisorctl restart fleetyards:fleetyards-worker)
   end
 
