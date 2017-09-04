@@ -86,7 +86,7 @@ end
 
 namespace :server do
   task phased_restart: :environment do
-    system %(kill -s USR1 `cat /home/fleetyards/shared/tmp/pids/puma.pid`)
+    command %(kill -s USR1 `cat /home/fleetyards/shared/tmp/pids/puma.pid`)
     command %(sudo supervisorctl restart fleetyards:fleetyards-worker)
   end
 
