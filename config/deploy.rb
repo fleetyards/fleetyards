@@ -49,8 +49,7 @@ task deploy: :environment do
     invoke :'deploy:cleanup'
 
     on :launch do
-      # invoke :'server:restart'
-      invoke :'server:phased_restart'
+      invoke :'server:restart'
     end
   end
 end
@@ -85,11 +84,6 @@ task console: :environment do
 end
 
 namespace :server do
-  task phased_restart: :environment do
-    command %(kill -s USR1 `cat /home/fleetyards/shared/tmp/pids/puma.pid`)
-    command %(sudo supervisorctl restart fleetyards:fleetyards-worker)
-  end
-
   task :restart do
     comment 'Restart Application'
     command %(sudo supervisorctl restart fleetyards:*)
