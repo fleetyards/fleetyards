@@ -12,8 +12,8 @@ port        ENV['PORT']     || 3000
 environment ENV['RACK_ENV'] || 'development'
 
 if ENV['RACK_ENV'] == 'production'
-  pidfile Rails.root.join('tmp', 'pids', 'puma.pid')
-  state_path Rails.root.join('tmp', 'sockets', 'puma.state')
+  pidfile '/home/fleetyards/shared/tmp/pids/puma.pid'
+  state_path '/home/fleetyards/shared/tmp/sockets/puma.state'
 end
 
 on_worker_boot do
