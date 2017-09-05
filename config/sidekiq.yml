@@ -1,3 +1,4 @@
 ---
 :queues:
   - fleetyards_ship_loader
+  - fleetyards_user_ships
