@@ -5,6 +5,8 @@ module Api
   module V1
     class ShipsController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action only: [:index] { pagination_header(:ships) }
+      after_action only: [:gallery] { pagination_header(:images) }
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t('messages.record_not_found.ship', slug: params[:slug]))
@@ -16,6 +18,8 @@ module Api
                  .ransack(query_params)
         @ships = @q.result
                    .order("ships.name asc")
+                   .page(params[:page])
+                   .per(params[:per_page])
       end
 
       def filters
@@ -90,6 +94,8 @@ module Api
         @images = ship.images
                       .enabled
                       .order(created_at: :asc)
+                      .page(params[:page])
+                      .per(params[:per_page])
       end
 
       private def updated_range

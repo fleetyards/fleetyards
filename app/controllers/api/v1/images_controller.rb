@@ -5,12 +5,15 @@ module Api
   module V1
     class ImagesController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action only: [:index] { pagination_header(:images) }
 
       def index
         authorize! :index, :api_images
         @images = Image.enabled
                        .in_gallery
                        .order("images.created_at desc")
+                       .page(params[:page])
+                       .per(params[:per_page])
       end
 
       def latest
