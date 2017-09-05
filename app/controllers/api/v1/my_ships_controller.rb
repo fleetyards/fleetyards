@@ -38,7 +38,7 @@ module Api
       private def user_ship_params
         @user_ship_params ||= params
                               .require(:user_ship)
-                              .permit(:name, :ship_id, :purchased)
+                              .permit(:name, :ship_id, :purchased, :notify)
                               .merge(
                                 user_id: current_user.id
                               )

@@ -45,7 +45,7 @@ class Ship < ApplicationRecord
 
   before_save :update_slugs
 
-  after_save :notify_users, if: :on_sale_changed?
+  after_save :notify_users, if: :saved_change_to_on_sale?
 
   def self.enabled
     where(enabled: true)
