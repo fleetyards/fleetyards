@@ -1,11 +1,7 @@
-@import "bootstrap-sprockets";
 
-@import "colors/default";
-@import "colors/dark";
-
-@import 'bootstrap-custom';
-
-@import "colors/dark_overrides";
+$primary:#428bca;
+$body-bg: #272B30;
+$text-color: #C8C8C8;
 
 html {
   height: 100%;
@@ -13,43 +9,48 @@ html {
 
 body {
   font-family: 'Droid Sans', verdana;
-  min-height: 100%;
-  min-width: 320px;
-  height: auto;
-  position: relative;
-
-  > .container {
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
 }
 
 h1 {
   font-family: 'Orbitron', sans-serif;
-  color: $text-color !important;
+  color: $text-color;
 
   small {
     font-family: 'Droid Sans', verdana;
   }
 }
 
+.content {
+  padding: 20px
+}
+
+.text-center {
+  text-align: center;
+}
+
 h1, h2, h3, h4 {
   margin-top: 0;
-  color: $text-color !important;
+  color: $text-color;
 }
 
 a {
-  color: $primary !important;
+  color: $primary;
   text-decoration: underline;
 }
 
 .well {
-  background-color: $well-bg !important;
-  color: $text-color !important;
+  background-color: rgba(darken($body-bg, 5%), .8);
+  color: $text-color;
+  border-radius: 3px;
+  padding: 12px 20px;
+
+  h2 {
+    margin-top: 10px;
+  }
 }
 
 p {
-  color: $text-color !important;
+  color: $text-color;
 }
 
 .transmission {
@@ -58,10 +59,10 @@ p {
   padding: 14px 20px;
   font-size: 120%;
   font-family: 'Orbitron', sans-serif;
-  color: darken($text-color, 20%) !important;
+  color: darken($text-color, 20%);
 }
 
 .btn-primary {
-  background-color: $btn-primary-bg !important;
-  color: $btn-primary-color !important;
+  background-color: $primary;
+  color: white;
 }

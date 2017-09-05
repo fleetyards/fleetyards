@@ -3,28 +3,32 @@
   %head
     %meta(http-equiv="Content-Type" content="text/html; charset=UTF-8")
     =stylesheet_link_tag 'email.css'
+    %link{rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900", data: {premailer: "ignore"}}
   %body
-    .container
-      %h1.text-center
-        FleetYards.net
+    %table
+      %tr
+        %td{width: '100%', height: '100%', bgcolor: '#272b30'}
+          .content
+            %h1.text-center
+              FleetYards.net
 
-      .transmission
-        = "--- incomming transmission ---"
+            .transmission
+              = "--- incomming transmission ---"
 
-      .well
-        %h2
-          = I18n.t('mailer.hello', username: @user_ship.user.username)
+            .well
+              %h2
+                = I18n.t('mailer.hello', username: @user_ship.user.username)
 
-        %p
-          = I18n.t('mailer.user_ship.on_sale.headline.part_one')
-          %a{href: "https://fleetyards.net/ships/#{@user_ship.ship.slug}", target: '_blank'}<
-            = @user_ship.ship.name
-          = I18n.t('mailer.user_ship.on_sale.headline.part_two')
+              %p
+                = I18n.t('mailer.user_ship.on_sale.headline.part_one')
+                %a{href: "https://fleetyards.net/ships/#{@user_ship.ship.slug}", target: '_blank'}<
+                  = @user_ship.ship.name
+                = I18n.t('mailer.user_ship.on_sale.headline.part_two')
 
-        %p
-          = I18n.t('mailer.user_ship.on_sale.price', price: number_to_currency(@user_ship.ship.price))
-          = I18n.t('labels.tax_excluded')
+              %p
+                = I18n.t('mailer.user_ship.on_sale.price', price: number_to_currency(@user_ship.ship.price))
+                = I18n.t('labels.tax_excluded')
 
 
-      .transmission
-        = "--- transmission end ---"
+            .transmission
+              = "--- transmission end ---"
