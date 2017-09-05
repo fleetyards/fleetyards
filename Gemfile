@@ -22,6 +22,8 @@ gem 'slim-rails'
 gem 'i18n-js', ">= 3.0.0.rc11"
 gem 'js_cookie_rails'
 
+gem 'premailer-rails'
+
 gem 'cancancan'
 gem 'devise'
 gem 'jwt'

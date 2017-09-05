@@ -1,0 +1,67 @@
+@import "bootstrap-sprockets";
+
+@import "colors/default";
+@import "colors/dark";
+
+@import 'bootstrap-custom';
+
+@import "colors/dark_overrides";
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Droid Sans', verdana;
+  min-height: 100%;
+  min-width: 320px;
+  height: auto;
+  position: relative;
+
+  > .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  color: $text-color !important;
+
+  small {
+    font-family: 'Droid Sans', verdana;
+  }
+}
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+  color: $text-color !important;
+}
+
+a {
+  color: $primary !important;
+  text-decoration: underline;
+}
+
+.well {
+  background-color: $well-bg !important;
+  color: $text-color !important;
+}
+
+p {
+  color: $text-color !important;
+}
+
+.transmission {
+  text-align: center;
+  margin: 20px;
+  padding: 14px 20px;
+  font-size: 120%;
+  font-family: 'Orbitron', sans-serif;
+  color: darken($text-color, 20%) !important;
+}
+
+.btn-primary {
+  background-color: $btn-primary-bg !important;
+  color: $btn-primary-color !important;
+}

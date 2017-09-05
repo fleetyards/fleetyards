@@ -92,7 +92,15 @@ en:
     server_error: "The Page is currently not available. Please try again later."
 
   mailer:
+    hello: "Hello %{username}!"
     user:
       admin:
         subject: "New User Registration"
         headline: "New User Registered"
+    user_ship:
+      on_sale:
+        subject: "%{ship} now on Sale!"
+        headline:
+          part_one: "The"
+          part_two: "is now on Sale!"
+        price: "Starting at %{price}"

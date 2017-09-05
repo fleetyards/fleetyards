@@ -1,6 +1,25 @@
-%p
-  = I18n.t(:"devise.mailer.confirmation_instructions.content.welcome")
-  #{@resource.email}!
-%p
-  = I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_text")
-%p= link_to I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_link"), "https://fleetyards.net/confirm/#{@token}"
+!!!
+%html
+  %head
+    %meta(http-equiv="Content-Type" content="text/html; charset=UTF-8")
+    =stylesheet_link_tag 'email.css'
+  %body
+    .container
+      %h1.text-center
+        FleetYards.net
+
+      .transmission
+        = "--- incomming transmission ---"
+
+      .well
+        %h2
+          = I18n.t(:"devise.mailer.confirmation_instructions.content.welcome")
+          #{@resource.username}!
+        %p
+          = I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_text")
+        .text-center
+          %a.btn-primary.btn{href: "https://fleetyards.net/confirm/#{@token}"}
+            = I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_link")
+
+      .transmission
+        = "--- transmission end ---"

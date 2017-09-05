@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable, :timeoutable,
+         :confirmable, :timeoutable,
          authentication_keys: [:login]
 
   has_many :user_ships
@@ -27,7 +27,7 @@ class User < ApplicationRecord
   after_create :send_admin_mail
 
   def send_admin_mail
-    UserMailer.notify_admin(self).deliver
+    UserMailer.notify_admin(self).deliver_later
   end
 
   before_save :update_gravatar_hash

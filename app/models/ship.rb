@@ -45,6 +45,8 @@ class Ship < ApplicationRecord
 
   before_save :update_slugs
 
+  after_save :notify_users, if: :on_sale_changed?
+
   def self.enabled
     where(enabled: true)
   end
@@ -126,6 +128,11 @@ class Ship < ApplicationRecord
 
   def random_image
     images.enabled.order("RANDOM()").first
+  end
+
+  private def notify_users
+    return unless on_sale?
+    UserShipsWorker.perform_async(id)
   end
 
   private def update_slugs
