@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserShip < ApplicationRecord
-  paginates_per 16
+  paginates_per 32
 
   belongs_to :ship
   belongs_to :user

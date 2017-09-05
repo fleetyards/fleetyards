@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Ship < ApplicationRecord
-  paginates_per 16
+  paginates_per 32
 
   default_scope -> { order(name: :asc) }
 
