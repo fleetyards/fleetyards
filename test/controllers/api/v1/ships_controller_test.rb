@@ -5,9 +5,14 @@ require "test_helper"
 module Api
   module V1
     class ShipsControllerTest < ActionController::TestCase
+      setup do
+        @request.headers['Accept'] = Mime[:json]
+        @request.headers['Content-Type'] = Mime[:json].to_s
+      end
+
       tests Api::V1::ShipsController
 
-      let(:ship) { ships :esperanza }
+      let(:ship) { ships :andromeda }
 
       before do
         ship
@@ -29,7 +34,7 @@ module Api
       end
 
       describe "#updated" do
-        let(:updatedShip) { ships :esperanza }
+        let(:updatedShip) { ships :andromeda }
 
         test "should return list of updated ships" do
           Timecop.freeze(Time.zone.now) do

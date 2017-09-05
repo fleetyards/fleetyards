@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UserShip < ApplicationRecord
-  default_scope -> { order(created_at: :desc) }
-
   belongs_to :ship
   belongs_to :user
 

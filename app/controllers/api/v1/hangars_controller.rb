@@ -9,15 +9,15 @@ module Api
 
       def show
         authorize! :show, :api_hangar
-        @user_ships = current_user.user_ships
-                                  .unscoped
-                                  .order(purchased: :desc, name: :asc, created_at: :desc)
+        @q = current_user.user_ships
+                         .ransack(query_params)
+        @user_ships = @q.result
+                        .order(purchased: :desc, name: :asc, created_at: :desc)
       end
 
       def public
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
         @user_ships = user.user_ships
-                          .unscoped
                           .purchased
                           .order(name: :asc, created_at: :desc)
       end

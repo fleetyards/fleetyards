@@ -4,25 +4,21 @@ DEFAULTS: &DEFAULTS
 
 data:
   email: "data@star.fleet"
-  # authentication_token: "data"
   username: "data"
   <<: *DEFAULTS
 
 will:
   email: "will@star.fleet"
-  # authentication_token: "will_riker"
   username: "willriker"
   <<: *DEFAULTS
 
 jeanluc:
   email: "jeanluc@star.fleet"
   admin: true
-  # authentication_token: "jeanluc_picard"
   username: "jeanluc"
   <<: *DEFAULTS
 
 worf:
   email: "worf@star.fleet"
-  # authentication_token: "worf"
   username: "worf"
   <<: *DEFAULTS

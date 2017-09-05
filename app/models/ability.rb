@@ -18,7 +18,7 @@ class Ability
 
     return if user.id.blank?
 
-    can :show, :hangar
+    can :show, :api_hangar
     can %i[add remove], UserShip, user_id: user.id
     can %i[read update], User, id: user.id
   end

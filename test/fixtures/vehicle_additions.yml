@@ -8,4 +8,4 @@ esperanza_addition:
   cargo: MyString
   net_cargo: 4
   crew: MyString
-  ship: esperanza
+  ship: andromeda
