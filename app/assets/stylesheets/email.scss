@@ -46,6 +46,7 @@ a {
 
   h2 {
     margin-top: 10px;
+    font-family: 'Droid Sans', verdana;
   }
 }
 
@@ -55,8 +56,8 @@ p {
 
 .transmission {
   text-align: center;
-  margin: 20px;
-  padding: 14px 20px;
+  margin: 20px 0;
+  padding: 14px 0;
   font-size: 120%;
   font-family: 'Orbitron', sans-serif;
   color: darken($text-color, 20%);
