@@ -93,6 +93,8 @@ en:
 
   mailer:
     hello: "Hello %{username}!"
+    transmission_start: "--- incomming transmission ---"
+    transmission_end: "--- incomming transmission ---"
     user:
       admin:
         subject: "New User Registration"

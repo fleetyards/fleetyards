@@ -22,6 +22,9 @@ gem 'slim-rails'
 gem 'i18n-js', ">= 3.0.0.rc11"
 gem 'js_cookie_rails'
 
+gem 'inky-rb', require: 'inky'
+# Stylesheet inlining for email **
+gem 'foundation_emails'
 gem 'premailer-rails'
 
 gem 'cancancan'
@@ -87,7 +90,6 @@ gem 'rack-mini-profiler'
 
 group :development do
   gem 'listen'
-  gem 'mailcatcher'
   gem 'pry-rails'
   gem 'rubocop', require: false
   gem 'spring'

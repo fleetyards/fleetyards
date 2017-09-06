@@ -1,0 +1,13 @@
+<h4>
+  <%= I18n.t(:"devise.mailer.confirmation_instructions.content.welcome") %>
+  <%= @resource.username %>!
+</h4>
+<p>
+  <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_text") %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="https://fleetyards.net/confirm/<%= @token %>">
+    <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_link") %>
+  </button>
+</center>

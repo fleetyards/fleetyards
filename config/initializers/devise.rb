@@ -19,7 +19,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = Rails.application.secrets[:mailer_default_from]
-
+  config.parent_mailer = 'ApplicationMailer'
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 

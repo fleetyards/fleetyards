@@ -1,70 +1,40 @@
+
+$primary-color: #428bca;
+$global-font-color: #C8C8C8;
+$body-background: #272B30;
+$container-background: #272B30;
+$body-font-family: 'Droid Sans', verdana;
+
 @import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900');
+@import "foundation-emails";
 
-$primary:#428bca;
-$body-bg: #272B30;
-$text-color: #C8C8C8;
-
-html {
-  height: 100%;
+body,
+html,
+.body {
+  background: $body-background !important;
+  padding: 20px;
 }
 
-body {
-  font-family: 'Droid Sans', verdana;
+.container.content {
+  background: darken($body-background, 5%);
+  border-radius: 2px;
+}
+
+h4 {
+  padding-top: 10px;
 }
 
 h1 {
   font-family: 'Orbitron', sans-serif;
-  color: $text-color;
+  color: $global-font-color;
 
   small {
     font-family: 'Droid Sans', verdana;
   }
 }
 
-.content {
-  padding: 20px
-}
-
-.text-center {
-  text-align: center;
-}
-
-h1, h2, h3, h4 {
-  margin-top: 0;
-  color: $text-color;
-}
-
-a {
-  color: $primary;
-  text-decoration: underline;
-}
-
-.well {
-  background-color: rgba(darken($body-bg, 5%), .8);
-  color: $text-color;
-  border-radius: 3px;
-  padding: 12px 20px;
-
-  h2 {
-    margin-top: 10px;
-    font-family: 'Droid Sans', verdana;
-  }
-}
-
-p {
-  color: $text-color;
-}
-
 .transmission {
-  text-align: center;
-  margin: 20px 0;
-  padding: 14px 0;
   font-size: 120%;
   font-family: 'Orbitron', sans-serif;
-  color: darken($text-color, 20%);
-}
-
-.btn-primary {
-  background-color: $primary;
-  color: white;
+  color: darken($global-font-color, 20%);
 }
