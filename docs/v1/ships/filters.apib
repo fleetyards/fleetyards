@@ -1,0 +1,47 @@
+## Ship Filters [/v1/ships/filters]
+
+### GET Filters [GET]
+Get all available Ship Filters with Options
+
+## Categories
+Ship Filters belong to one of 4 different Filter Categories:
+
+::: note
+- manufacturer
+- onSale
+- productionStatus
+- shipRole
+:::
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                {
+                    "name": "ARGO Astronautics",
+                    "value": "argo-astronautics",
+                    "category": "manufacturer"
+                },
+                {
+                    "name": "No",
+                    "value": "false",
+                    "category": "onSale"
+                },
+                {
+                    "name": "Announced",
+                    "value": "announced",
+                    "category": "productionStatus"
+                },
+                {
+                    "name": "Bomber",
+                    "value": "bomber",
+                    "category": "shipRole"
+                }
+            ]

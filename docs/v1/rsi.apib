@@ -1,0 +1,44 @@
+## Citizen [/v1/rsi/citizen/{handle}]
+
++ Parameters
+
+    + handle: `torlekmaru` (required, string) - The RSI handle
+
+### GET Citizen [GET]
+Get a single RSI Citizen
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "username": "TorlekMaru",
+                "handle": "torlekmaru",
+                "avatar": "https://robertsspaceindustries.com/media/ulzgag5jf9c5ir/heap_infobox/Homerst2lgxz6.jpg",
+                "title": "Freelancer",
+                "enlisted": "Nov 22, 2012",
+                "citizenRecord": "#79955",
+                "location": "Germany, Schleswig-Holstein",
+                "languages": "English, German",
+                "orgs": [{
+                    "name": "Torlek Mining Inc.",
+                    "sid": "TMI",
+                    "main": true,
+                    "rank": "Board Member",
+                    "archetype": "Corporation",
+                    "language": "German",
+                    "mainActivity": "Transport",
+                    "secondaryActivity": "Exploration",
+                    "recruiting": "Yes",
+                    "commitment": "Casual",
+                    "rpg": "Yes",
+                    "exclusive": "No",
+                    "logo": "https://robertsspaceindustries.com/media/m4f3tbpjwjkv4r/heap_infobox/TMI-Logo.png"
+                }]
+            }

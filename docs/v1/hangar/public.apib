@@ -1,0 +1,17 @@
+## Public Hangar [/v1/hangar/{username}]
+
++ Parameters
+
+    + username: `torlekmaru` (required, string) - The FleetYards.net Username
+
+### GET Public Hangar [GET]
+Get a Hangar (UserShips) by username
+
+The Response is idenntical to the Private Hangar Response ```/v1/hangar``` but only purchased Ships are returned.
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)

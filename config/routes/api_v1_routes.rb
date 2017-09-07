@@ -18,7 +18,7 @@ v1_api_routes = lambda do
   end
 
   resources :images, only: %i[index] do
-    get :latest, on: :collection
+    get :random, on: :collection
   end
 
   resources :users, only: [] do

@@ -11,6 +11,8 @@ module Api
     before_action :authenticate_api_user!, except: [:root]
     check_authorization except: [:root]
 
+    after_action :set_rate_limit_headers
+
     rescue_from CanCan::AccessDenied do |exception|
       render json: { message: exception.message }, status: :forbidden
     end
@@ -37,6 +39,16 @@ module Api
 
     private def not_found(message = I18n.t('messages.record_not_found.base'))
       render json: { code: "not_found", message: message }, status: :not_found
+    end
+
+    private def set_rate_limit_headers
+      match_data = request.env['rack.attack.throttle_data']['api']
+      return if match_data.blank?
+
+      now = Time.zone.now
+      headers['X-RateLimit-Limit'] = match_data[:limit].to_s
+      headers['X-RateLimit-Remaining'] = match_data[:count].to_s
+      headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_s
     end
 
     private def query_params

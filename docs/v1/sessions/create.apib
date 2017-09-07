@@ -1,0 +1,19 @@
+## POST Create [/v1/sessions]
+Create a new Session
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "login": "username or email",
+                "password": "*****"
+            }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "token": "JWT_TOKEN"
+            }

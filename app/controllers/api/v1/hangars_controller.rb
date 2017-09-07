@@ -16,7 +16,7 @@ module Api
         @user_ships = @q.result
                         .order(purchased: :desc, name: :asc, created_at: :desc)
                         .page(params[:page])
-                        .per(params[:per_page])
+                        .per(per_page)
       end
 
       def public
@@ -25,7 +25,7 @@ module Api
                           .purchased
                           .order(name: :asc, created_at: :desc)
                           .page(params[:page])
-                          .per(params[:per_page])
+                          .per(per_page)
       end
     end
   end

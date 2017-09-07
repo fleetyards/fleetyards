@@ -13,10 +13,10 @@ module Api
                        .in_gallery
                        .order("images.created_at desc")
                        .page(params[:page])
-                       .per(params[:per_page])
+                       .per(per_page)
       end
 
-      def latest
+      def random
         authorize! :index, :api_images
         @images = Image.enabled.in_gallery.order("RANDOM()").limit(14)
       end

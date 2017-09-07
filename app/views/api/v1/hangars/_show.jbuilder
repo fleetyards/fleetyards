@@ -9,4 +9,5 @@ json.cache! ['v1', user_ship, user_ship.ship] do
   json.ship do
     json.partial! 'api/v1/ships/show', ship: user_ship.ship
   end
+  json.partial! 'api/shared/dates', record: user_ship
 end

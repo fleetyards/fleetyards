@@ -19,7 +19,7 @@ module Api
         @ships = @q.result
                    .order("ships.name asc")
                    .page(params[:page])
-                   .per(params[:per_page])
+                   .per(per_page)
       end
 
       def filters
@@ -90,7 +90,7 @@ module Api
                       .enabled
                       .order(created_at: :asc)
                       .page(params[:page])
-                      .per(params[:per_page])
+                      .per(per_page)
       end
 
       private def updated_range
