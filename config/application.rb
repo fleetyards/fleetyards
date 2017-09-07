@@ -4,6 +4,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require 'rack/throttle'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -36,6 +37,8 @@ module Fleetyards
     config.autoload_paths << Rails.root.join("config", "routes")
 
     config.exceptions_app = routes
+
+    config.middleware.use Rack::Throttle::Hourly, max: 5000, cache: Redis.new, key_prefix: :throttle
   end
 end
 

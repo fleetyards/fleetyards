@@ -63,6 +63,7 @@ gem 'metadown'
 gem 'redcarpet'
 
 gem 'puma'
+gem 'rack-throttle'
 
 gem 'bower-rails'
 
