@@ -6,7 +6,7 @@ test:
     - bundle exec bundle-audit update && bundle exec bundle-audit check
     - bundle exec rubocop
     - bundle exec rake
-    - bundle exec codeclimate-test-reporter
+    # - bundle exec codeclimate-test-reporter
 deployment:
   live:
     branch: master
