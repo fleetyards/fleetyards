@@ -1,0 +1,76 @@
+FORMAT: 1A
+HOST: https://api.fleetyards.net/v1
+
+# Fleetyards
+TODO: Add Description
+
+# Group Misc
+
+## Ships [/ships]
+
+### Ships [GET]
+TODO: Add Description
+
++ Request (application/json)
+    + Headers
+
+            Accept:application/json
+
+
+
+
++ Response 200 (application/json)
+    + Attributes (array[ShipsResponse])
+
+
+
+
+# Data Structures
+
+## ShipsResponse (object)
+
+
+### Properties
++ `id` (string, required) 
++ `name` (string, required) 
++ `slug` (string, required) 
++ `description` (string, required) 
++ `length` (string, required) 
++ `beam` (string, required) 
++ `height` (string, required) 
++ `mass` (string, required) 
++ `cargo` (string, required) 
++ `netCargo` (string, required) 
++ `crew` (string, required) 
++ `storeImage` (string, required) 
++ `storeUrl` (string, required) 
++ `price` (string, required) 
++ `onSale` (boolean, required) 
++ `productionStatus` (string, required) 
++ `productionNote` (string, required) 
++ `powerplantSize` (number, required) 
++ `shieldSize` (number, required) 
++ `classification` (string, required) 
++ `focus` (string, required) 
++ `rsiId` (number, required) 
++ `manufacturer` (Manufacturer, required) 
++ `shipRole` (ShipRole, required) 
++ `createdAt` (string, required) 
++ `updatedAt` (string, required) 
+
+
+## Manufacturer (object)
+
+
+### Properties
++ `id` (string, required) 
++ `name` (string, required) 
+
+
+## ShipRole (object)
+
+
+### Properties
++ `id` (string, required) 
++ `name` (string, required) 
+
