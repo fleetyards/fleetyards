@@ -1,30 +1,29 @@
 {
-  "name": "Fleetyards.net",
-  "version": "0.0.0",
-  "description": "",
+  "name": "fleetyards",
+  "version": "1.0.0",
+  "description": "Ship Database for Star Citizen",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "prepush": "bundle exec bundle-audit update && bundle exec bundle-audit check && bundle exec rubocop && bundle exec rake"
+    "prepush": "bundle exec bundle-audit update && bundle exec bundle-audit check && bundle exec rubocop && bundle exec rake",
+    "docs": "aglio --theme-variables slate --theme-template triple -i v1.apib -o public/docs/v1.html",
+    "docs:watch": "aglio --theme-variables slate --theme-template triple -i v1.apib --server"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mortik/fleetyards-app.git"
+    "url": "git://github.com/fleetyards/api.git"
   },
   "author": "Marten Klitzke <me@mortik.xyz>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mortik/fleetyards-app/issues"
+    "url": "https://github.com/fleetyards/api/issues"
   },
-  "homepage": "https://github.com/mortik/fleetyards-app",
-  "dependencies": {
-    "bower": "~1.3.12"
-  },
+  "homepage": "https://github.com/fleetyards/api",
+  "dependencies": {},
   "devDependencies": {
-    "eslint": "^3.13.1",
-    "eslint-plugin-babel": "^4.0.0",
-    "husky": "^0.13.4"
+    "aglio": "^2.3.0",
+    "husky": "^0.14.3"
   }
 }

@@ -46,4 +46,6 @@ end
 
 scope :v1, defaults: { format: :json }, as: :v1 do
   scope module: :v1, &v1_api_routes
+
+  root to: "base#root"
 end
