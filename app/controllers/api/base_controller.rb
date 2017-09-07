@@ -16,7 +16,14 @@ module Api
     end
 
     def root
-      render json: { message: 'Welcome!' }
+      respond_to do |format|
+        format.html do
+          redirect_to api_v1_root_path
+        end
+        format.json do
+          render json: { message: 'FleetYards.net API root' }
+        end
+      end
     end
 
     def current_user

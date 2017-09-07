@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class ShipsController < ::Api::BaseController
+    class ShipsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
       after_action only: [:index] { pagination_header(:ships) }
       after_action only: [:gallery] { pagination_header(:images) }
@@ -57,11 +57,6 @@ module Api
           filters.flatten
                  .sort_by { |filter| [filter.category, filter.name] }
         end
-      end
-
-      def categories
-        authorize! :show, :api_ships
-        @categories = ComponentCategory.all
       end
 
       def latest

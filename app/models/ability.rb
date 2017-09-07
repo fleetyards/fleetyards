@@ -15,6 +15,7 @@ class Ability
     can :show, :api
     can %i[index show], :api_ships
     can %i[index], :api_images
+    can %i[show], :api_components
 
     return if user.id.blank?
 

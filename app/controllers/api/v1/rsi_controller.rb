@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class RsiController < ::Api::BaseController
+    class RsiController < ::Api::V1::BaseController
       skip_authorization_check
       before_action :authenticate_api_user!, only: %i[]
 

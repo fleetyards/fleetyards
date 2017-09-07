@@ -8,8 +8,8 @@
   },
   "scripts": {
     "prepush": "bundle exec bundle-audit update && bundle exec bundle-audit check && bundle exec rubocop && bundle exec rake",
-    "docs": "aglio --theme-variables slate --theme-template triple -i v1.apib -o public/docs/v1.html",
-    "docs:watch": "aglio --theme-variables slate --theme-template triple -i v1.apib --server"
+    "docs": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
+    "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class UsersController < ::Api::BaseController
+    class UsersController < ::Api::V1::BaseController
       skip_authorization_check only: %i[signup confirm]
       before_action :authenticate_api_user!, except: %i[signup confirm]
 

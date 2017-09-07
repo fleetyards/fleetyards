@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class HangarsController < ::Api::BaseController
+    class HangarsController < ::Api::V1::BaseController
       skip_authorization_check only: [:public]
       before_action :authenticate_api_user!, except: [:public]
       after_action only: [:show] { pagination_header(:user_ships) }

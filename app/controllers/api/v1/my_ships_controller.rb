@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class MyShipsController < ::Api::BaseController
+    class MyShipsController < ::Api::V1::BaseController
       def create
         authorize! :create, user_ship
         if user_ship.save

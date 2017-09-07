@@ -3,7 +3,7 @@
 
 module Api
   module V1
-    class PasswordsController < ::Api::BaseController
+    class PasswordsController < ::Api::V1::BaseController
       skip_authorization_check except: [:update]
       before_action :authenticate_api_user!, only: [:update]
 

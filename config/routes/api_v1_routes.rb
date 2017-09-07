@@ -5,15 +5,20 @@ v1_api_routes = lambda do
   resource :sessions, only: %i[create destroy]
 
   resources :ships, param: :slug, only: %i[index show] do
-    get 'latest', on: :collection
-    get 'updated', on: :collection
-    get 'filters', on: :collection
-    get 'categories', on: :collection
+    collection do
+      get :latest
+      get :updated
+      get :filters
+    end
     get 'gallery', on: :member
   end
 
+  resources :components, only: [] do
+    get :categories, on: :collection
+  end
+
   resources :images, only: %i[index] do
-    get 'latest', on: :collection
+    get :latest, on: :collection
   end
 
   resources :users, only: [] do
@@ -44,8 +49,8 @@ v1_api_routes = lambda do
   get 'rsi/citizen/:handle' => 'rsi#citizen'
 end
 
-scope :v1, defaults: { format: :json }, as: :v1 do
+scope :v1, as: :v1 do
   scope module: :v1, &v1_api_routes
 
-  root to: "base#root"
+  root to: "v1/base#root"
 end
