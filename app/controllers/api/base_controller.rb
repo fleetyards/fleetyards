@@ -42,6 +42,8 @@ module Api
     end
 
     private def set_rate_limit_headers
+      return if request.env['rack.attack.throttle_data'].blank?
+
       match_data = request.env['rack.attack.throttle_data']['api']
       return if match_data.blank?
 
