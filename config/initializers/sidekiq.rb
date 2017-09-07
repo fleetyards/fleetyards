@@ -3,17 +3,14 @@
 require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
-app_name = File.basename(Rails.root.to_s)
-sidekiq_config = { url: ENV["REDIS_URL"], namespace: "#{app_name}_#{Rails.env}" }
+sidekiq_config = { url: ENV["REDIS_URL"], namespace: "fleetyards_#{Rails.env}" }
 
 Sidekiq.configure_server do |config|
   config.redis = sidekiq_config
 
-  schedule_file = 'config/schedule.yml'
-
-  if File.exist?(schedule_file)
-    Sidekiq::Cron::Job.load_from_hash YAML.load_file(schedule_file)
-  end
+  schedule_file = Rails.root.join('config', 'schedule.yml')
+  schedule = YAML.load_file(schedule_file)[Rails.env] || {}
+  Sidekiq::Cron::Job.load_from_hash!(schedule)
 end
 
 Sidekiq.configure_client do |config|

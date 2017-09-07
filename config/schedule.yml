@@ -1,3 +1,6 @@
-ships_worker_job:
-  cron: '0 * * * *'
-  class: 'ShipsWorker'
+# see https://crontab.guru for help/explanation of cron lines
+
+production: &production
+  ships_worker_job:
+    cron: '0 * * * *'
+    class: 'ShipsWorker'
