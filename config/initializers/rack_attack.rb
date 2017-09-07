@@ -23,8 +23,13 @@ Rack::Attack.throttled_response = lambda do |env|
   headers = {
     'X-RateLimit-Limit' => match_data[:limit].to_s,
     'X-RateLimit-Remaining' => '0',
-    'X-RateLimit-Reset' => (now + (match_data[:period] - now.to_i % match_data[:period])).to_s
+    'X-RateLimit-Reset' => (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
   }
 
-  [403, headers, ["Rate Limit exceeded\n"]]
+  [403, headers, [
+    {
+      code: 'rate_limit.exceeded',
+      message: "API rate limit exceeded for #{env['rack.attack.match_discriminator']}"
+    }.to_json
+  ]]
 end
