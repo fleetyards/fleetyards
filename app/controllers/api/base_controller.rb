@@ -49,7 +49,7 @@ module Api
 
       now = Time.zone.now
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
-      headers['X-RateLimit-Remaining'] = match_data[:count].to_s
+      headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_s
     end
 

@@ -1,6 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
+Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+
 limit_proc = proc do |req|
   if req.env['warden'].authenticate?(scope: :api_user)
     5000
