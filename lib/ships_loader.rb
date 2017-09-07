@@ -33,6 +33,8 @@ class ShipsLoader
   end
 
   def load_ships
+    return JSON.parse(File.read(json_file_path)) if Rails.env.test?
+
     response = Typhoeus.get("#{base_url}/ship-specs")
 
     match = response.body.match(/data: \[(.+)\]/)
