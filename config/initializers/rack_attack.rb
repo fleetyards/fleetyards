@@ -5,15 +5,19 @@ Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
 limit_proc = proc do |req|
   if req.env['warden'].authenticate?(scope: :api_user)
-    5000
+    10_000
   else
-    100
+    5000
   end
 end
 
 Rack::Attack.throttle('api', limit: limit_proc, period: 1.hour) do |req|
-  return false unless req.host.split('.').first == 'api'
-  req.ip
+  if !req.path.match?(%r{^\/v\d+$}) &&
+     !req.path.match?(%r{^\/v\d+\/docs$}) &&
+     req.host.split('.').first == 'api' &&
+     !(req.referer || '').match?(%r{^https:\/\/fleetyards\.net})
+    req.ip
+  end
 end
 
 Rack::Attack.throttled_response = lambda do |env|
