@@ -4,3 +4,4 @@
 json.name filter.name
 json.value filter.value
 json.category filter.category
+json.icon filter.icon

@@ -37,6 +37,7 @@ module Api
             Filter.new(
               category: 'manufacturer',
               name: manufacturer.name,
+              icon: manufacturer.logo.small.url,
               value: manufacturer.slug
             )
           end
@@ -51,6 +52,13 @@ module Api
             Filter.new(
               category: 'onSale',
               name: I18n.t("filter.ship.on_sale.items.#{item}"),
+              value: item
+            )
+          end
+          filters << Ship.all.map(&:classification).uniq.compact.map do |item|
+            Filter.new(
+              category: 'classification',
+              name: item.humanize,
               value: item
             )
           end
