@@ -14,10 +14,11 @@ class ShipsLoaderTest < ActiveSupport::TestCase
         hardpoints: 2086,
         components: 216,
         component_categories: 4,
-        ships: 104,
-        manufacturers: 15,
-        ship_roles: 64
+        ships: 105,
+        manufacturers: 16,
+        ship_roles: 65
       }
+
       assert_equal(expectations,
                    hardpoints: Hardpoint.count,
                    components: Component.count,

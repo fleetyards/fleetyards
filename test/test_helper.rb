@@ -40,7 +40,6 @@ DatabaseCleaner.strategy = :transaction
 
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
-  fixtures :all
   include Devise::Test::ControllerHelpers
   include SessionHelper
   ActiveRecord::Migration.check_pending!
@@ -55,7 +54,6 @@ class ActionController::TestCase
 end
 
 class ActionView::TestCase
-  fixtures :all
   include Devise::Test::ControllerHelpers
 
   before do

@@ -5,6 +5,7 @@ require "test_helper"
 module Admin
   class ShipsControllerTest < ActionController::TestCase
     tests Admin::ShipsController
+    fixtures :users
 
     let(:data) { users :data }
     let(:jeanluc) { users :jeanluc }
