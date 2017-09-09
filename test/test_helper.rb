@@ -44,6 +44,8 @@ class ActionController::TestCase
   include SessionHelper
   ActiveRecord::Migration.check_pending!
 
+  fixtures :all
+
   before do
     DatabaseCleaner.start
   end
@@ -56,6 +58,8 @@ end
 class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
+  fixtures :all
+
   before do
     DatabaseCleaner.start
   end
@@ -67,6 +71,8 @@ end
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
+
+  fixtures :all
 
   before do
     DatabaseCleaner.start

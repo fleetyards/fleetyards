@@ -11,13 +11,8 @@ module Api
       end
 
       tests Api::V1::ShipsController
-      fixtures :ships, :manufacturers, :ship_roles
 
       let(:ship) { ships :andromeda }
-
-      before do
-        ship
-      end
 
       test "#index" do
         get :index

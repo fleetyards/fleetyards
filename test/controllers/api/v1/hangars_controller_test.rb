@@ -11,7 +11,6 @@ module Api
       end
 
       tests Api::V1::HangarsController
-      fixtures :users, :user_ships
 
       let(:data) { users :data }
       let(:enterprise) { user_ships :enterprise }
