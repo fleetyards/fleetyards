@@ -24,8 +24,8 @@ module Api
         assert_response :ok
 
         json = JSON.parse(response.body)
-        assert_equal json.size, 1
-        ship_data = json.first
+        assert_equal 2, json.size
+        ship_data = json.last
         assert_equal ship.id, ship_data["id"]
         assert_equal ship.name, ship_data["name"]
         assert_equal ship.addition.mass, ship_data["mass"]
@@ -45,8 +45,8 @@ module Api
             assert_response :ok
 
             json = JSON.parse(response.body)
-            assert_equal json.size, 1
-            ship_data = json.first
+            assert_equal 2, json.size
+            ship_data = json.last
             assert_equal ship.id, ship_data["id"]
             assert_equal ship.name, ship_data["name"]
           end
@@ -59,6 +59,32 @@ module Api
 
           json = JSON.parse(response.body)
           assert_equal(json, [])
+        end
+      end
+
+      describe "#filters" do
+        let(:manufacturer) { manufacturers :origin }
+        let(:ship) { ships :explorer }
+        let(:ship_role) { ship_roles :explorer }
+
+        before do
+          ship
+          manufacturer
+          ship_role
+        end
+
+        test "should return list of ship filters" do
+          get :filters
+
+          assert_response :ok
+
+          json = JSON.parse(response.body)
+          assert_equal 11, json.size
+          assert_equal 1, json.select { |item| item['category'] == 'manufacturer' }.size
+          assert_equal 2, json.select { |item| item['category'] == 'classification' }.size
+          assert_equal 5, json.select { |item| item['category'] == 'productionStatus' }.size
+          assert_equal 1, json.select { |item| item['category'] == 'shipRole' }.size
+          assert_equal 2, json.select { |item| item['category'] == 'onSale' }.size
         end
       end
     end

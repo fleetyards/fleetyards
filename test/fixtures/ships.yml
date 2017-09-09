@@ -1,3 +1,11 @@
 andromeda:
   name: "Andromeda"
+  classification: multi_role
   enabled: true
+
+explorer:
+  name: "600i"
+  enabled: true
+  manufacturer: origin
+  classification: explorer
+  ship_role: explorer
