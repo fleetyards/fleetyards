@@ -26,42 +26,11 @@ module Api
         authorize! :index, :api_ships
         @filters ||= begin
           filters = []
-          filters << ShipRole.with_name.with_ship.order(name: :asc).all.map do |ship_role|
-            Filter.new(
-              category: 'shipRole',
-              name: ship_role.name,
-              value: ship_role.slug
-            )
-          end
-          filters << Manufacturer.enabled.with_name.with_ship.order(name: :asc).all.map do |manufacturer|
-            Filter.new(
-              category: 'manufacturer',
-              name: manufacturer.name,
-              icon: manufacturer.logo.small.url,
-              value: manufacturer.slug
-            )
-          end
-          filters << I18n.t("labels.ship.production_status").map do |status|
-            Filter.new(
-              category: 'productionStatus',
-              name: status[1],
-              value: status[0]
-            )
-          end
-          filters << %w[true false].map do |item|
-            Filter.new(
-              category: 'onSale',
-              name: I18n.t("filter.ship.on_sale.items.#{item}"),
-              value: item
-            )
-          end
-          filters << Ship.all.map(&:classification).uniq.compact.map do |item|
-            Filter.new(
-              category: 'classification',
-              name: item.humanize,
-              value: item
-            )
-          end
+          filters << ShipRole.ship_filters
+          filters << Manufacturer.ship_filters
+          filters << Ship.production_status_filters
+          filters << Ship.on_sale_filters
+          filters << Ship.classification_filters
           filters.flatten
                  .sort_by { |filter| [filter.category, filter.name] }
         end

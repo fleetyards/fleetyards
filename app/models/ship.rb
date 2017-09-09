@@ -51,56 +51,34 @@ class Ship < ApplicationRecord
     where(enabled: true)
   end
 
-  def self.filter(filter_params)
-    filter = filter_params.fetch(:filter, [])
-    filter_ship_role(select_filter(filter, 'shipRole'))
-      .filter_manufacturer(select_filter(filter, 'manufacturer'))
-      .filter_production_status(select_filter(filter, 'productionStatus'))
-      .filter_on_sale(select_filter(filter, 'onSale'))
-      .search(filter_params.fetch(:search, nil))
+  def self.production_status_filters
+    I18n.t("labels.ship.production_status").map do |status|
+      Filter.new(
+        category: 'productionStatus',
+        name: status[1],
+        value: status[0]
+      )
+    end
   end
 
-  def self.filter_ship_role(ship_roles)
-    return all if ship_roles.blank?
-    includes(:ship_role).where("ship_roles.slug in (?)", ship_roles).references(:ship_role)
+  def self.on_sale_filters
+    %w[true false].map do |item|
+      Filter.new(
+        category: 'onSale',
+        name: I18n.t("filter.ship.on_sale.items.#{item}"),
+        value: item
+      )
+    end
   end
 
-  def self.filter_manufacturer(manufacturers)
-    return all if manufacturers.blank?
-    includes(:manufacturer).where("manufacturers.slug in (?)", manufacturers).references(:manufacturer)
-  end
-
-  def self.filter_production_status(production_status)
-    return all if production_status.blank?
-    where(production_status: production_status)
-  end
-
-  def self.filter_on_sale(on_sale)
-    return all if on_sale.blank?
-    where(on_sale: on_sale)
-  end
-
-  def self.select_filter(filter, type)
-    filter.map do |item|
-      parts = item.split(':')
-      next if parts[0] != type
-      parts[1]
-    end.compact
-  end
-
-  def self.search(search_string)
-    return all if search_string.blank? || search_string !~ /\w+/
-    search_conditions = []
-    search_conditions << "lower(ships.name) like :search"
-    search_conditions << "lower(ships.description) like :search"
-    search_conditions << "lower(ship_roles.name) like :search"
-    search_conditions << "lower(manufacturers.name) like :search"
-    includes(%i[ship_role manufacturer]).where(
-      [
-        search_conditions.join(' OR '),
-        { search: "%#{search_string.downcase}%" }
-      ]
-    ).references(%i[ship_role manufacturer])
+  def self.classification_filters
+    Ship.all.map(&:classification).uniq.compact.map do |item|
+      Filter.new(
+        category: 'classification',
+        name: item.humanize,
+        value: item
+      )
+    end
   end
 
   %i[height beam length mass cargo crew].each do |method_name|

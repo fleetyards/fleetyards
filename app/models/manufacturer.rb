@@ -21,6 +21,17 @@ class Manufacturer < ApplicationRecord
     includes(:ships).where.not(ships: { manufacturer_id: nil })
   end
 
+  def self.ship_filters
+    Manufacturer.enabled.with_name.with_ship.order(name: :asc).all.map do |manufacturer|
+      Filter.new(
+        category: 'manufacturer',
+        name: manufacturer.name,
+        icon: manufacturer.logo.small.url,
+        value: manufacturer.slug
+      )
+    end
+  end
+
   before_save :update_slugs
 
   def name_clean

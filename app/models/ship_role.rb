@@ -17,6 +17,16 @@ class ShipRole < ApplicationRecord
     includes(:ships).where.not(ships: { ship_role_id: nil })
   end
 
+  def self.ship_filters
+    ShipRole.with_name.with_ship.order(name: :asc).all.map do |ship_role|
+      Filter.new(
+        category: 'shipRole',
+        name: ship_role.name,
+        value: ship_role.slug
+      )
+    end
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug name
   end
