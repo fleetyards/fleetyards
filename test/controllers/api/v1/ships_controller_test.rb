@@ -26,7 +26,7 @@ module Api
 
         json = JSON.parse(response.body)
         assert_equal 2, json.size
-        ship_data = json.last
+        ship_data = json.find { |item| item["name"] == ship.name }
         assert_equal ship.id, ship_data["id"]
         assert_equal ship.name, ship_data["name"]
         assert_equal ship.addition.mass, ship_data["mass"]
@@ -47,7 +47,7 @@ module Api
 
             json = JSON.parse(response.body)
             assert_equal 2, json.size
-            ship_data = json.last
+            ship_data = json.find { |item| item["name"] == ship.name }
             assert_equal ship.id, ship_data["id"]
             assert_equal ship.name, ship_data["name"]
           end
