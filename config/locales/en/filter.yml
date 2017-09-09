@@ -2,17 +2,20 @@ en:
   filter:
     all: All
     ship:
-      manufacturer:
-        title: Manufacturer
-      ship_role:
-        title: Role
       on_sale:
-        title: On Sale
         items:
           "true": "Yes"
           "false": "No"
-      production_status:
-        title: Status
+      classification:
+        items:
+          vehicle: "Vehicle / Snub"
+          capital: Capital
+          bomber: Bomber
+          fighter: Fighter
+          cargo: Cargo
+          personal_transport: "Personal transport"
+          versatile: Versatile
+
     image:
       ship:
         title: Ship

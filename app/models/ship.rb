@@ -75,7 +75,7 @@ class Ship < ApplicationRecord
     Ship.all.map(&:classification).uniq.compact.map do |item|
       Filter.new(
         category: 'classification',
-        name: item.humanize,
+        name: I18n.t("filter.ship.classification.items.#{item}"),
         value: item
       )
     end
