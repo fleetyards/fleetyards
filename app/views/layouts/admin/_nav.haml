@@ -18,6 +18,8 @@
     = link_to I18n.t(:"nav.images"), admin_images_path
   %li{class: active_nav?('admin-users')}
     = link_to I18n.t(:"nav.users"), admin_users_path
+  %li{class: active_nav?('admin-user-ships')}
+    = link_to UserShip.name.humanize, admin_user_ships_path
   %li
     %a{href: admin_sidekiq_web_url, target: "_blank"}
       = I18n.t(:"nav.workers")
