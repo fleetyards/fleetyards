@@ -24,7 +24,7 @@ module Concerns
     end
 
     private def per_page
-      @per_page ||= [params[:per_page], 200].min if params[:per_page].present?
+      @per_page ||= [params[:perPage].to_i, 200].min if params[:perPage].present?
     end
   end
 end

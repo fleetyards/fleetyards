@@ -29,6 +29,15 @@ module Api
         assert_equal ship.addition.cargo, ship_data["cargo"]
       end
 
+      test "#index per_page" do
+        get :index, params: { perPage: 1 }
+
+        assert_response :ok
+
+        json = JSON.parse(response.body)
+        assert_equal 1, json.size
+      end
+
       describe "#updated" do
         let(:updatedShip) { ships :andromeda }
 

@@ -71,17 +71,17 @@ The documentation provides an example response for each API method. The example 
 
 Requests that return multiple items will be paginated to ```30``` items by default. 
 You can specify further pages with the ```?page``` parameter. 
-For some resources, you can also set a custom page size up to ```200``` with the ```?per_page``` parameter. Note that for technical reasons not all endpoints respect the ```?per_page``` parameter, see events for example.
+For some resources, you can also set a custom page size up to ```200``` with the ```?perPage``` parameter. Note that for technical reasons not all endpoints respect the ```?perPage``` parameter, see events for example.
 
-curl 'https://api.fleetyards.net/ships?page=2&per_page=200'
+curl 'https://api.fleetyards.net/ships?page=2&perPage=200'
 Note that page numbering is 1-based and that omitting the ```?page``` parameter will return the first page.
 
 <h3>Link Header</h3>
 The Link header includes pagination information:
 
 ```
-Link: <https://api.fleetyards.net/ships?page=1&per_page=100>; rel="next",
-  <https://api.fleetyards.net/ships?page=2&per_page=100>; rel="last"
+Link: <https://api.fleetyards.net/ships?page=1&perPage=200>; rel="next",
+  <https://api.fleetyards.net/ships?page=2&perPage=200>; rel="last"
 ```
 The example includes a line break for readability.
 
