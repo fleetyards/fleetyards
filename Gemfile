@@ -89,9 +89,10 @@ gem 'lograge'
 
 gem 'rack-mini-profiler'
 
+gem 'pry-rails'
+
 group :development do
   gem 'listen'
-  gem 'pry-rails'
   gem 'rubocop', require: false
   gem 'spring'
   gem 'spring-watcher-listen'
@@ -123,4 +124,5 @@ group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
   gem 'byebug', platform: :mri
+  gem 'pry-byebug'
 end
