@@ -1,10 +1,10 @@
+production:
+  adapter: redis
+  url: <%=ENV['REDIS_URL']%>
+
 development:
-  adapter: async
+  adapter: redis
+  url: <%=ENV['REDIS_URL']%>
 
 test:
   adapter: async
-
-production:
-  adapter: redis
-  url: redis://localhost:6379/1
-  channel_prefix: fleetyards_production

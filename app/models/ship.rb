@@ -110,10 +110,20 @@ class Ship < ApplicationRecord
 
   private def notify_users
     return unless on_sale?
+    ActionCable.server.broadcast "updates_ships", to_builder.target!
     UserShipsWorker.perform_async(id)
   end
 
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
+  end
+
+  def to_builder
+    Jbuilder.new do |ship|
+      ship.id id
+      ship.name name
+      ship.on_sale on_sale
+      ship.updated_at updated_at
+    end
   end
 end
