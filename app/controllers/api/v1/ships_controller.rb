@@ -39,7 +39,7 @@ module Api
       def latest
         authorize! :index, :api_ships
         @ships = Ship.enabled
-                     .order(updated_at: :asc)
+                     .order(updated_at: :desc)
                      .limit(10)
       end
 
@@ -48,7 +48,7 @@ module Api
         if updated_range.present?
           scope = Ship.enabled
           scope = scope.where(updated_at: updated_range)
-          @ships = scope.order(updated_at: :asc)
+          @ships = scope.order(updated_at: :desc)
         else
           render json: [], status: :not_modified
         end
