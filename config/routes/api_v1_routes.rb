@@ -46,7 +46,8 @@ v1_api_routes = lambda do
   end
   resources :my_ships, path: 'my-ships', only: %i[create update destroy]
 
-  get 'rsi/citizen/:handle' => 'rsi#citizen'
+  get 'rsi/citizens/:handle' => 'rsi#citizen'
+  get 'rsi/orgs/:sid' => 'rsi#org'
 end
 
 scope :v1, as: :v1 do

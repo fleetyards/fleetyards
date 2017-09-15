@@ -1,6 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
+require 'rsi_orgs_loader'
+
 module Api
   module V1
     class RsiController < ::Api::V1::BaseController
@@ -9,6 +11,17 @@ module Api
 
       def citizen
         @user = fetch_user
+      end
+
+      def org
+        org = RsiOrg.find_by(sid: sid) || RsiOrgsLoader.new.fetch(sid)
+
+        if org.blank?
+          render json: { code: 'rsi.org.not_found', message: 'Could not find Organization' }, status: :not_found
+          return
+        end
+
+        @org = org
       end
 
       private def fetch_user
@@ -45,52 +58,17 @@ module Api
           end
         end
 
-        user.orgs = fetch_orgs
+        user.orgs = RsiOrgsLoader.new.for_handle(handle)
 
         user
       end
 
-      private def fetch_orgs
-        response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}/organizations")
-        if response.code != 200
-          render json: { code: 'rsi.citizen.not_found', message: 'Could not find Citizen' }, status: :not_found
-          return
-        end
-
-        parse_orgs(Nokogiri::HTML(response.body))
-      end
-
-      # rubocop:disable Metrics/CyclomaticComplexity
-      private def parse_orgs(page)
-        orgs = []
-
-        page.css('.orgs-content .org').each_with_index do |org_box, index|
-          org = RsiOrg.new
-          org.main = index.zero?
-          org_box.css('.value').each_with_index do |value, org_index|
-            org.name = value.text.strip if org_index.zero?
-            org.sid = value.text.strip if org_index == 1
-            org.rank = value.text.strip if org_index == 2
-            org.archetype = value.text.strip if org_index == 3
-            org.language = value.text.strip if org_index == 4
-            org.main_activity = value.text.strip if org_index == 5
-            org.recruiting = value.text.strip if org_index == 6
-            org.secondary_activity = value.text.strip if org_index == 7
-            org.rpg = value.text.strip if org_index == 8
-            org.commitment = value.text.strip if org_index == 9
-            org.exclusive = value.text.strip if org_index == 10
-          end
-          if org_box.css('.thumb img').present?
-            org.logo = "https://robertsspaceindustries.com#{org_box.css('.thumb img')[0]['src']}"
-          end
-          orgs << org
-        end
-
-        orgs
-      end
-
       private def handle
         @handle ||= params[:handle].downcase
+      end
+
+      private def sid
+        @handle ||= params[:sid].downcase
       end
     end
   end

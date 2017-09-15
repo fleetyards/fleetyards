@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906120638) do
+ActiveRecord::Schema.define(version: 20170915083909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -115,6 +115,29 @@ ActiveRecord::Schema.define(version: 20170906120638) do
     t.integer "rsi_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "rsi_affiliations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "rsi_org_id"
+    t.boolean "main", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rsi_orgs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "sid"
+    t.string "archetype"
+    t.string "main_activity"
+    t.string "secondary_activity"
+    t.boolean "recruiting"
+    t.string "commitment"
+    t.boolean "rpg"
+    t.boolean "exclusive"
+    t.string "logo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ship_roles", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
