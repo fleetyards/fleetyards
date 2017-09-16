@@ -24,6 +24,16 @@ module Api
         @org = org
       end
 
+      def org_ships
+        org = RsiOrg.find_by(sid: sid)
+        if org.blank?
+          render json: { code: 'rsi.org.not_found', message: 'Could not find Organization' }, status: :not_found
+          return
+        end
+
+        @user_ships = org.user_ships
+      end
+
       private def fetch_user
         response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
         if response.code != 200

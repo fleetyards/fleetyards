@@ -47,6 +47,7 @@ v1_api_routes = lambda do
   resources :my_ships, path: 'my-ships', only: %i[create update destroy]
 
   get 'rsi/citizens/:handle' => 'rsi#citizen'
+  get 'rsi/orgs/:sid/ships' => 'rsi#org_ships'
   get 'rsi/orgs/:sid' => 'rsi#org'
 end
 

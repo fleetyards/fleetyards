@@ -12,6 +12,3 @@ json.commitment org.commitment
 json.rpg org.rpg
 json.exclusive org.exclusive
 json.logo org.logo
-json.user_ships do
-  json.array! org.user_ships, partial: 'api/v1/rsi/org_ships', as: :user_ship
-end
