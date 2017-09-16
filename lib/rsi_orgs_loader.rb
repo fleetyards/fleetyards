@@ -31,29 +31,6 @@ class RsiOrgsLoader
     orgs
   end
 
-  def for_citizen(user)
-    sids = fetch_org_sids(user.rsi_handle)
-
-    orgs_data = []
-    sids.each do |sid|
-      orgs_data << fetch_org_data(sid)
-    end
-
-    orgs = []
-    orgs_data.each do |org_data|
-      orgs << save_org(org_data)
-    end
-
-    RsiAffiliation.where(user_id: user.id).destroy_all
-    orgs.each_with_index do |org, index|
-      affiliation = RsiAffiliation.find_or_initialize_by(rsi_org_id: org.id, user_id: user.id)
-      affiliation.main = index.zero?
-      affiliation.save
-    end
-
-    orgs
-  end
-
   private def fetch_org_sids(handle)
     sids = []
 

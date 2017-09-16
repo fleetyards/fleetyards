@@ -10,8 +10,12 @@ class UserRsiOrgsWorker
     user = User.find_by(id: user_id)
     return if user.blank?
 
-    RsiOrgsLoader
-      .new
-      .for_citizen(user)
+    orgs = RsiOrgsLoader.new.for_handle(user.rsi_handle)
+
+    orgs.each_with_index do |org, index|
+      affiliation = RsiAffiliation.find_or_initialize_by(rsi_org_id: org.id, user_id: user.id)
+      affiliation.main = index.zero?
+      affiliation.save
+    end
   end
 end
