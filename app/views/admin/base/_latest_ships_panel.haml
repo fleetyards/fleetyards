@@ -11,7 +11,7 @@
           %th= I18n.t(:"labels.table.updated_at")
           %th.actions.actions-one
       %tbody
-        - Ship.unscoped.order(updated_at: :desc).limit(5).each do |ship|
+        - Ship.order(updated_at: :desc, name: :asc).limit(5).each do |ship|
           %tr
             %td
               = ship.name

@@ -17,7 +17,7 @@ module Api
         @q = Ship.enabled
                  .ransack(query_params)
         @ships = @q.result
-                   .order("ships.name asc")
+                   .order(name: :asc)
                    .page(params[:page])
                    .per(per_page)
       end
@@ -38,18 +38,17 @@ module Api
 
       def latest
         authorize! :index, :api_ships
-        @ships = Ship.unscoped
-                     .enabled
-                     .order(updated_at: :desc)
+        @ships = Ship.enabled
+                     .order(updated_at: :desc, name: :asc)
                      .limit(10)
       end
 
       def updated
         authorize! :index, :api_ships
         if updated_range.present?
-          scope = Ship.unscoped.enabled
+          scope = Ship.enabled
           scope = scope.where(updated_at: updated_range)
-          @ships = scope.order(updated_at: :desc)
+          @ships = scope.order(updated_at: :desc, name: :asc)
         else
           render json: [], status: :not_modified
         end

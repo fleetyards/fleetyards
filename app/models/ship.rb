@@ -3,8 +3,6 @@
 class Ship < ApplicationRecord
   paginates_per 30
 
-  default_scope -> { order(name: :asc) }
-
   belongs_to :manufacturer, required: false
   belongs_to :ship_role, required: false
 
