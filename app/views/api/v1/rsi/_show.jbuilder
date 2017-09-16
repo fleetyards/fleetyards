@@ -10,5 +10,5 @@ json.citizen_record user.citizen_record
 json.location user.location
 json.languages user.languages
 json.orgs do
-  json.array! user.orgs, partial: 'api/v1/rsi/org_base', as: :org
+  json.array! user.orgs, partial: 'api/v1/rsi/org', as: :org
 end
