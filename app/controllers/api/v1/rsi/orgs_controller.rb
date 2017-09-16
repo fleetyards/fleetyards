@@ -10,6 +10,8 @@ module Api
         skip_authorization_check
         before_action :authenticate_api_user!, only: %i[]
         before_action :check_org, only: %i[show ships]
+        after_action only: [:index] { pagination_header(:orgs) }
+        after_action only: [:ships] { pagination_header(:user_ships) }
 
         def index
           @q = RsiOrg.ransack(query_params)
@@ -24,7 +26,8 @@ module Api
         end
 
         def ships
-          @q = org.user_ships.ransack(query_params)
+          @q = org.user_ships
+                  .ransack(query_params)
           @user_ships = @q.result
                           .includes(:ship)
                           .order("ships.name asc")
