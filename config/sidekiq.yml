@@ -2,4 +2,5 @@
 :queues:
   - fleetyards_ship_loader
   - fleetyards_user_ships
+  - fleetyards_user_rsi_orgs_loader
   - fleetyards_rsi_orgs_loader
