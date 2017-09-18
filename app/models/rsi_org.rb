@@ -3,7 +3,9 @@
 
 class RsiOrg < ApplicationRecord
   has_many :rsi_affiliations
-  has_many :users, through: :rsi_affiliations
+  has_many :users,
+           -> { where(main: true) },
+           through: :rsi_affiliations
   has_many :user_ships,
            -> { where(purchased: true) },
            through: :users
