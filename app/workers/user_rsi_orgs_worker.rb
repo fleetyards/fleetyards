@@ -17,5 +17,6 @@ class UserRsiOrgsWorker
       affiliation.main = index.zero?
       affiliation.save
     end
+    user.rsi_affiliations.where.not(rsi_org_id: orgs.map(&:id)).destroy_all
   end
 end
