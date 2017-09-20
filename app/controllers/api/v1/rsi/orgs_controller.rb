@@ -26,8 +26,9 @@ module Api
         end
 
         def ships
-          @q = org.user_ships
-                  .ransack(query_params)
+          @q = UserShip.includes(:user)
+                       .where("users.rsi_org = ?", params[:sid])
+                       .ransack(query_params)
           @user_ships = @q.result
                           .includes(:ship)
                           .order("ships.name asc")

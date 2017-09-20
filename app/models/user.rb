@@ -8,12 +8,15 @@ class User < ApplicationRecord
 
   has_many :user_ships
   has_many :ships, through: :user_ships
-  has_many :rsi_affiliations
-  has_many :rsi_orgs, through: :rsi_affiliations
 
   validates :username, uniqueness: { case_sensitive: false }
 
   attr_accessor :login
+
+  after_create :send_admin_mail
+  before_save :update_gravatar_hash
+  before_validation :clean_username
+  before_validation :clean_rsi_handle
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -26,22 +29,9 @@ class User < ApplicationRecord
     end
   end
 
-  after_create :send_admin_mail
-  after_save :fetch_rsi_orgs
-
   def send_admin_mail
     UserMailer.notify_admin(self).deliver_later
   end
-
-  def fetch_rsi_orgs
-    return if rsi_handle.blank?
-    Rails.logger.debug 'after_save'.to_yaml
-    UserRsiOrgsWorker.perform_async(id)
-  end
-
-  before_save :update_gravatar_hash
-  before_validation :clean_username
-  before_validation :clean_rsi_handle
 
   def update_gravatar_hash
     hash = if gravatar.blank?

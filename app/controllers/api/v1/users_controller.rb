@@ -39,7 +39,10 @@ module Api
       end
 
       private def user_params
-        @user_params ||= params.permit(:username, :email, :rsi_handle, :password, :password_confirmation, :sale_notify)
+        @user_params ||= params.permit(
+          :username, :email, :rsi_handle, :rsi_org,
+          :password, :password_confirmation, :sale_notify
+        )
       end
     end
   end

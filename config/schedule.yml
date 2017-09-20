@@ -4,6 +4,9 @@ production: &production
   ships_worker_job:
     cron: '0 * * * *'
     class: 'ShipsWorker'
-  rsi_orgs_worker_job:
+  rsi_citizens_worker_job:
     cron: '30 * * * *'
+    class: 'RsiCitizensWorker'
+  rsi_orgs_worker_job:
+    cron: '0 2 * * *'
     class: 'RsiOrgsWorker'
