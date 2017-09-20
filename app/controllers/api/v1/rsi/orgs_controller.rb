@@ -26,9 +26,10 @@ module Api
         end
 
         def ships
-          @q = UserShip.purchased
-                       .includes(:user)
+          @q = UserShip.includes(:user)
                        .where("users.rsi_org = ?", params[:sid])
+                       .references(:user)
+                       .purchased
                        .ransack(query_params)
           @user_ships = @q.result
                           .includes(:ship)
