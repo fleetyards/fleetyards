@@ -5,7 +5,9 @@ module Api
   module V1
     class MyShipsController < ::Api::V1::BaseController
       def create
+        @user_ship = UserShip.new(user_ship_params)
         authorize! :create, user_ship
+
         if user_ship.save
           render status: :created
         else
@@ -30,8 +32,7 @@ module Api
       end
 
       private def user_ship
-        @user_ship ||= UserShip.find_by(id: params[:id])
-        @user_ship ||= UserShip.new(user_ship_params)
+        @user_ship ||= UserShip.find_by!(id: params[:id])
       end
       helper_method :user_ship
 
