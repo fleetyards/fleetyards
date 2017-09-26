@@ -43,7 +43,9 @@ class Ship < ApplicationRecord
 
   before_save :update_slugs
 
-  after_save :notify_users, if: :saved_change_to_on_sale?
+  after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
+  after_save :broadcast_update
+  after_create :send_new_ship_notification
 
   def self.enabled
     where(enabled: true)
@@ -106,10 +108,17 @@ class Ship < ApplicationRecord
     images.enabled.order("RANDOM()").first
   end
 
-  private def notify_users
-    return unless on_sale?
+  private def broadcast_update
+    ActionCable.server.broadcast('updates_ships', to_builder.target!)
+  end
+
+  private def send_new_ship_notification
     ShipMailer.notify_admin(self).deliver_later
-    ActionCable.server.broadcast "updates_ships", to_builder.target!
+  end
+
+  private def send_on_sale_notification
+    return unless on_sale?
+
     UserShipsWorker.perform_async(id)
   end
 
