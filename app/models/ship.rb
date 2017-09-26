@@ -108,6 +108,7 @@ class Ship < ApplicationRecord
 
   private def notify_users
     return unless on_sale?
+    ShipMailer.notify_admin(self).deliver_later
     ActionCable.server.broadcast "updates_ships", to_builder.target!
     UserShipsWorker.perform_async(id)
   end

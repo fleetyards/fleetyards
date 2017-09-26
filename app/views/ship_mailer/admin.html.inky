@@ -1,0 +1,6 @@
+<h4>
+  <%= I18n.t("mailer.ship.admin.headline") %>
+</h4>
+<p>
+  New Ship "<%= @ship.name %>"!
+</p>

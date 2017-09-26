@@ -95,6 +95,10 @@ en:
     hello: "Hello %{username}!"
     transmission_start: "--- incomming transmission ---"
     transmission_end: "--- incomming transmission ---"
+    ship:
+      admin:
+        subject: "New Ship"
+        headline: "New Ship"
     user:
       admin:
         subject: "New User Registration"
