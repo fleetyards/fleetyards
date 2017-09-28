@@ -1,6 +1,7 @@
 andromeda:
   name: "Andromeda"
   classification: multi_role
+  length: 61.2
   enabled: true
 
 explorer:

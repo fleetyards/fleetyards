@@ -11,6 +11,7 @@ class Ship < ApplicationRecord
           dependent: :destroy
 
   delegate :net_cargo, to: :addition, allow_nil: true
+  delegate :height, :length, :cargo, :crew, :mass, :beam, to: :addition, allow_nil: true, prefix: true
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
@@ -85,8 +86,9 @@ class Ship < ApplicationRecord
 
   %i[height beam length mass cargo crew].each do |method_name|
     define_method "display_#{method_name}" do
-      if addition.present? && addition.try(method_name).present?
-        addition.try(method_name)
+      display_value = try("addition_#{method_name}")
+      if display_value.present? && !display_value.zero?
+        display_value
       else
         try(method_name)
       end
