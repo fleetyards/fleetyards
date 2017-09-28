@@ -4,7 +4,7 @@ require "rsi_orgs_loader"
 
 class RsiCitizenWorker
   include Sidekiq::Worker
-  sidekiq_options queue: (ENV['RSI_CITIZENS_QUEUE'] || 'fleetyards_rsi_citizen_loader').to_sym
+  sidekiq_options retry: false, queue: (ENV['RSI_CITIZENS_QUEUE'] || 'fleetyards_rsi_citizen_loader').to_sym
 
   def perform
     User.where.not(rsi_handle: nil).find_each do |user|

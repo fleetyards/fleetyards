@@ -4,7 +4,7 @@ require "ships_loader"
 
 class ShipWorker
   include Sidekiq::Worker
-  sidekiq_options queue: (ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader').to_sym
+  sidekiq_options retry: true, queue: (ENV['SHIP_LOADER_QUEUE'] || 'fleetyards_ship_loader').to_sym
 
   def perform(ship_name)
     ShipsLoader
