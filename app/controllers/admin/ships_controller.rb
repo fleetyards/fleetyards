@@ -8,6 +8,9 @@ module Admin
     def index
       authorize! :index, :admin_ships
       @q = Ship.ransack(params[:q])
+
+      @q.sorts = 'name asc' if @q.sorts.empty?
+
       @ships = @q.result
                  .page(params.fetch(:page) { nil })
                  .per(40)

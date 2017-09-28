@@ -13,8 +13,10 @@ module Api
         authorize! :show, :api_hangar
         @q = current_user.user_ships
                          .ransack(query_params)
+
+        @q.sorts = ['purchased desc', 'name asc', 'created_at desc'] if @q.sorts.empty?
+
         @user_ships = @q.result
-                        .order(purchased: :desc, name: :asc, created_at: :desc)
                         .page(params[:page])
                         .per(per_page)
       end

@@ -16,8 +16,10 @@ module Api
         authorize! :index, :api_ships
         @q = Ship.enabled
                  .ransack(query_params)
+
+        @q.sorts = 'name asc' if @q.sorts.empty?
+
         @ships = @q.result
-                   .order(name: :asc)
                    .page(params[:page])
                    .per(per_page)
       end
