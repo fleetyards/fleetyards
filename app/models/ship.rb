@@ -82,13 +82,17 @@ class Ship < ApplicationRecord
   end
 
   %i[height beam length mass cargo crew].each do |method_name|
-    define_method method_name do
-      if addition.present? && addition.send(method_name).present?
-        addition.send(method_name)
+    define_method "display_#{method_name}" do
+      if addition.present? && addition.try(method_name).present?
+        addition.try(method_name)
       else
-        self[method_name]
+        try(method_name)
       end
     end
+  end
+
+  def net_cargo
+    addition && addition.net_cargo
   end
 
   def ship_role_name
