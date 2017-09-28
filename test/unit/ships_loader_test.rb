@@ -42,6 +42,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
         ship.reload
 
         assert(ship.updated_at.day != Time.zone.now.day)
+        assert_equal(61.5, ship.length.to_f)
       end
     end
   end
