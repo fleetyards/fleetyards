@@ -12,26 +12,26 @@ formatters = [
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
 SimpleCov.start('rails')
 
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../config/environment', __FILE__)
 
-require "rails/test_help"
-require "minitest/rails"
+require 'rails/test_help'
+require 'minitest/rails'
 
-require "faker"
+require 'faker'
 
-require "active_record/fixtures"
+require 'active_record/fixtures'
 
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
 # helper
-require "support/session_helper"
-require "database_cleaner"
+require 'support/session_helper'
+require 'database_cleaner'
 
 require 'vcr'
 VCR.configure do |config|
-  config.cassette_library_dir = "vcr_cassettes"
+  config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock # or :fakeweb
 end
 

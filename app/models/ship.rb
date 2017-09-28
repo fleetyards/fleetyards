@@ -7,8 +7,10 @@ class Ship < ApplicationRecord
   belongs_to :ship_role, required: false
 
   has_one :addition,
-          class_name: "VehicleAddition",
+          class_name: 'VehicleAddition',
           dependent: :destroy
+
+  delegate :net_cargo, to: :addition, allow_nil: true
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
@@ -18,17 +20,17 @@ class Ship < ApplicationRecord
   has_many :components,
            through: :hardpoints
   has_many :propulsion_hardpoints,
-           -> { includes(:category).where(component_categories: { rsi_name: "propulsion" }) },
-           class_name: "Hardpoint"
+           -> { includes(:category).where(component_categories: { rsi_name: 'propulsion' }) },
+           class_name: 'Hardpoint'
   has_many :ordnance_hardpoints,
-           -> { includes(:category).where(component_categories: { rsi_name: "ordnance" }) },
-           class_name: "Hardpoint"
+           -> { includes(:category).where(component_categories: { rsi_name: 'ordnance' }) },
+           class_name: 'Hardpoint'
   has_many :modular_hardpoints,
-           -> { includes(:category).where(component_categories: { rsi_name: "modular" }) },
-           class_name: "Hardpoint"
+           -> { includes(:category).where(component_categories: { rsi_name: 'modular' }) },
+           class_name: 'Hardpoint'
   has_many :avionics_hardpoints,
-           -> { includes(:category).where(component_categories: { rsi_name: "avionics" }) },
-           class_name: "Hardpoint"
+           -> { includes(:category).where(component_categories: { rsi_name: 'avionics' }) },
+           class_name: 'Hardpoint'
 
   has_many :images,
            as: :gallery,
@@ -52,7 +54,7 @@ class Ship < ApplicationRecord
   end
 
   def self.production_status_filters
-    I18n.t("labels.ship.production_status").map do |status|
+    I18n.t('labels.ship.production_status').map do |status|
       Filter.new(
         category: 'productionStatus',
         name: status[1],
@@ -91,15 +93,11 @@ class Ship < ApplicationRecord
     end
   end
 
-  def net_cargo
-    addition && addition.net_cargo
-  end
-
   def ship_role_name
     if ship_role.present?
       ship_role.name
     else
-      I18n.t("labels.ship.roles.unknown")
+      I18n.t('labels.ship.roles.unknown')
     end
   end
 
@@ -109,7 +107,7 @@ class Ship < ApplicationRecord
   end
 
   def random_image
-    images.enabled.order("RANDOM()").first
+    images.enabled.order('RANDOM()').first
   end
 
   private def broadcast_update

@@ -24,7 +24,7 @@ module Api
         ship_data = json.find { |item| item["name"] == ship.name }
         assert_equal ship.id, ship_data["id"]
         assert_equal ship.name, ship_data["name"]
-        assert_equal "1000.02", ship_data["mass"]
+        assert_equal 1000.02, ship_data["mass"]
         assert_equal ship.addition.net_cargo, ship_data["netCargo"]
         assert_equal ship.addition.cargo, ship_data["cargo"]
       end

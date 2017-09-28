@@ -7,7 +7,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
   let(:loader) { ShipsLoader.new }
 
   test "#all" do
-    VCR.use_cassette("ships_loader_all") do
+    VCR.use_cassette('ships_loader_all') do
       loader.all
 
       expectations = {
@@ -30,7 +30,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
   end
 
   test "#updates only when needed" do
-    VCR.use_cassette("ships_loader_all", record: :new_episodes) do
+    VCR.use_cassette('ships_loader_all') do
       Timecop.freeze(Time.zone.now) do
         loader.one('Origin 600i Explorer')
 
