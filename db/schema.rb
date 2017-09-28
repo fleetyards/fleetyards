@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920172724) do
+ActiveRecord::Schema.define(version: 20170928092338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -143,12 +143,6 @@ ActiveRecord::Schema.define(version: 20170920172724) do
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.text "description"
-    t.string "length", limit: 255
-    t.string "beam", limit: 255
-    t.string "height", limit: 255
-    t.string "mass", limit: 255
-    t.string "cargo", limit: 255
-    t.string "crew", limit: 255
     t.string "store_image", limit: 255
     t.string "store_url", limit: 255
     t.integer "powerplant_size"
@@ -165,6 +159,12 @@ ActiveRecord::Schema.define(version: 20170920172724) do
     t.string "focus", limit: 255
     t.boolean "on_sale", default: false
     t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "cargo", default: 0, null: false
+    t.integer "crew", default: 0, null: false
   end
 
   create_table "user_ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -213,16 +213,16 @@ ActiveRecord::Schema.define(version: 20170920172724) do
   end
 
   create_table "vehicle_additions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "beam"
-    t.string "length"
-    t.string "height"
-    t.string "mass"
-    t.string "cargo"
-    t.string "crew"
     t.uuid "ship_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "net_cargo"
+    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "cargo", default: 0, null: false
+    t.integer "crew", default: 0, null: false
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
