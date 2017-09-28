@@ -101,7 +101,7 @@ class ShipsLoader
       length: data["length"],
       beam: data["beam"],
       height: data["height"],
-      mass: data["mass"].to_i / 100,
+      mass: data["mass"],
       cargo: data["cargocapacity"],
       crew: data["maxcrew"],
       powerplant_size: data["maxpowerplantsize"],
