@@ -2,41 +2,41 @@
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :beam)}
       = fields.label :beam
-      = fields.text_field :beam, placeholder: ship.beam, class: 'form-control'
+      = fields.number_field :beam, placeholder: ship.beam, class: 'form-control'
       = form_errors fields.object, :beam
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :length)}
       = fields.label :length
-      = fields.text_field :length, placeholder: ship.length, class: 'form-control'
+      = fields.number_field :length, placeholder: ship.length, class: 'form-control'
       = form_errors fields.object, :length
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :height)}
       = fields.label :height
-      = fields.text_field :height, placeholder: ship.height, class: 'form-control'
+      = fields.number_field :height, placeholder: ship.height, class: 'form-control'
       = form_errors fields.object, :height
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :mass)}
       = fields.label :mass
-      = fields.text_field :mass, placeholder: ship.mass, class: 'form-control'
+      = fields.number_field :mass, placeholder: ship.mass, class: 'form-control'
       = form_errors fields.object, :mass
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :cargo)}
       = fields.label :cargo
-      = fields.text_field :cargo, placeholder: ship.cargo, class: 'form-control'
+      = fields.number_field :cargo, placeholder: ship.cargo, class: 'form-control'
       = form_errors fields.object, :cargo
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :net_cargo)}
       = fields.label :net_cargo
-      = fields.text_field :net_cargo, class: 'form-control'
+      = fields.number_field :net_cargo, class: 'form-control'
       = form_errors fields.object, :net_cargo
 
   .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :crew)}
       = fields.label :crew
-      = fields.text_field :crew, class: 'form-control'
+      = fields.number_field :crew, class: 'form-control'
       = form_errors fields.object, :crew
