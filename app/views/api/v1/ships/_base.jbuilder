@@ -5,10 +5,10 @@ json.id ship.id
 json.name ship.name
 json.slug ship.slug
 json.description ship.description
-json.length ship.length
-json.beam ship.beam
-json.height ship.height
-json.mass ship.mass
+json.length ship.length.to_f
+json.beam ship.beam.to_f
+json.height ship.height.to_f
+json.mass ship.mass.to_f
 json.cargo ship.cargo
 json.net_cargo ship.addition && ship.addition.net_cargo
 json.crew ship.crew
