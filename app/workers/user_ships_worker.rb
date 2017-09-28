@@ -2,7 +2,7 @@
 
 class UserShipsWorker
   include Sidekiq::Worker
-  sidekiq_options queue: (ENV['USER_SHIPS_QUEUE'] || 'fleetyards_user_ships').to_sym
+  sidekiq_options queue: (ENV['USER_SHIPS_QUEUE'] || 'fleetyards_user_ships_loader').to_sym
 
   def perform(ship_id)
     UserShip.where(ship_id: ship_id, sale_notify: true).find_each do |user_ship|

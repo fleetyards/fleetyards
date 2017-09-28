@@ -4,9 +4,12 @@ production: &production
   ships_worker_job:
     cron: '0 * * * *'
     class: 'ShipsWorker'
+    queue: fleetyards_ship_loader
   rsi_citizens_worker_job:
     cron: '30 * * * *'
     class: 'RsiCitizensWorker'
+    queue: fleetyards_rsi_citizen_loader
   rsi_orgs_worker_job:
     cron: '0 2 * * *'
     class: 'RsiOrgsWorker'
+    queue: fleetyards_rsi_orgs_loader
