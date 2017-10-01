@@ -15,6 +15,18 @@ class UserShip < ApplicationRecord
     where(purchased: true)
   end
 
+  def to_builder
+    Jbuilder.new do |user_ship|
+      user_ship.id id
+      user_ship.name name
+      user_ship.purchased purchased
+      user_ship.ship ship.to_builder.target!
+      user_ship.deleted user_ship.destroyed?
+      user_ship.created_at created_at
+      user_ship.updated_at updated_at
+    end
+  end
+
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
   end

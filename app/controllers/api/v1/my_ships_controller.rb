@@ -9,6 +9,7 @@ module Api
         authorize! :create, user_ship
 
         if user_ship.save
+          ActionCable.server.broadcast("updates_hangar_#{current_user.username}", user_ship.to_builder.target!)
           render status: :created
         else
           render json: ValidationError.new("user_ship.create", @user_ship.errors), status: :bad_request
@@ -26,9 +27,11 @@ module Api
       def destroy
         authorize! :destroy, user_ship
 
-        return if user_ship.destroy
-
-        render json: ValidationError.new("user_ship.destroy", @user_ship.errors), status: :bad_request
+        if user_ship.destroy
+          ActionCable.server.broadcast("updates_hangar_#{current_user.username}", user_ship.to_builder.target!)
+        else
+          render json: ValidationError.new("user_ship.destroy", @user_ship.errors), status: :bad_request
+        end
       end
 
       private def user_ship

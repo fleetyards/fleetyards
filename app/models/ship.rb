@@ -134,8 +134,28 @@ class Ship < ApplicationRecord
     Jbuilder.new do |ship|
       ship.id id
       ship.name name
+      ship.slug slug
+      ship.description description
+      ship.length display_length.to_f
+      ship.beam display_beam.to_f
+      ship.height display_height.to_f
+      ship.mass display_mass.to_f
+      ship.cargo display_cargo
+      ship.net_cargo net_cargo
+      ship.crew display_crew
+      ship.store_image store_image.url
+      ship.store_url "#{Rails.application.secrets[:rsi_hostname]}#{store_url}"
+      ship.price price
       ship.on_sale on_sale
+      ship.production_status production_status
+      ship.production_note production_note
+      ship.powerplant_size powerplant_size
+      ship.shield_size shield_size
+      ship.classification classification
+      ship.focus focus
+      ship.rsi_id rsi_id
       ship.updated_at updated_at
+      ship.created_at created_at
     end
   end
 end
