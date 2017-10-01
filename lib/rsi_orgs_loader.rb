@@ -73,6 +73,7 @@ class RsiOrgsLoader
   end
 
   private def save_org(org_data)
+    return if org_data.blank?
     org = RsiOrg.find_or_initialize_by(name: org_data[:name])
 
     org.sid = org_data[:sid]
