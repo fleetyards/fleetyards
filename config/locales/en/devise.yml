@@ -7,7 +7,6 @@ en:
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
-      invalid: "Invalid email or password."
       last_attempt: "You have one more attempt before your account will be locked."
       locked: "Your account is locked."
       not_found_in_database: "Invalid email or password."

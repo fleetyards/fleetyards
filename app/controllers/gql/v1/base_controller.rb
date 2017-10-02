@@ -18,6 +18,7 @@ module Gql
       private def context
         @context ||= {
           current_user: current_user,
+          user_agent: request.user_agent
         }
       end
 
