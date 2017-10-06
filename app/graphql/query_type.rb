@@ -11,6 +11,7 @@ QueryType = GraphQL::ObjectType.new.tap do |root_type|
       Queries::Manufacturers,
       Queries::Components,
       Queries::Images,
+      Queries::Rsi,
       Queries::Users
     ]
   )
