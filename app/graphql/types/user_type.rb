@@ -8,7 +8,7 @@ Types::UserType = GraphQL::ObjectType.define do
   field :email, !types.String
   field :username, !types.String
   field :avatar, types.String
-  field :isAdmin, !types.Boolean, property: :is_admin
+  field :isAdmin, !types.Boolean, property: :admin?
   field :rsiHandle, types.String, property: :rsi_handle
   field :rsiOrg, types.String, property: :rsi_org
   field :saleNotify, !types.Boolean, property: :sale_notify

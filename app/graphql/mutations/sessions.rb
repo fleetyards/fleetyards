@@ -4,11 +4,16 @@
 module Mutations
   Sessions = GraphQL::ObjectType.define do
     field :createSession do
-      type !Types::SessionType
+      type Types::SessionType
       description 'Create new Session'
       argument :login, !types.String
       argument :password, !types.String
-      resolve Resolvers::Sessions.new
+      resolve Resolvers::Session.new
+    end
+    field :destroySession do
+      type Types::ResultType
+      description 'Destroy Session'
+      resolve Resolvers::Session.new
     end
   end
 end

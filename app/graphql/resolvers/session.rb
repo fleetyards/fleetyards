@@ -2,25 +2,40 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class Sessions < Resolvers::Base
+  class Session < Resolvers::Base
     def resolve
-      user = ::User.find_for_database_authentication(login: args[:login])
+      if current_user.blank?
+        login
+      else
+        logout
+      end
+    end
 
-      result = {
-        token: nil,
-        errors: authorize(user)
-      }
+    def login
+      user = User.find_for_database_authentication(login: args[:login])
 
-      if result[:errors].blank?
-        result[:token] = ::JsonWebToken.encode(new_auth_token(user.id).to_jwt_payload)
+      result = {}
+
+      authorize(user)
+
+      if errors.blank?
+        result[:token] = JsonWebToken.encode(new_auth_token(user.id).to_jwt_payload)
       end
 
       OpenStruct.new(result)
     end
 
-    private def authorize(user)
-      errors = []
+    def logout
+      auth_token = AuthToken.find_by(user_id: current_user.id, token: jwt_token[:token])
 
+      OpenStruct.new(
+        success: auth_token && auth_token.destroy,
+        code: 'session.destroy',
+        message: I18n.t("devise.sessions.signed_out")
+      )
+    end
+
+    private def authorize(user)
       if user.blank?
         errors << { code: 'session.not_found_in_database', message: I18n.t('devise.failure.not_found_in_database') }
       else
@@ -32,8 +47,6 @@ module Resolvers
           errors << { code: 'session.invalid', message: I18n.t('devise.failure.not_found_in_database') }
         end
       end
-
-      errors
     end
 
     private def new_auth_token(user_id)

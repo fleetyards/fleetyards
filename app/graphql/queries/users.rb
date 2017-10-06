@@ -6,7 +6,8 @@ module Queries
     field :currentUser do
       type Types::UserType
       description 'The Current User'
-      resolve ->(_obj, _args, ctx) { ctx[:current_user] }
+      needs_authentication true
+      resolve Resolvers::CurrentUser.new
     end
   end
 end
