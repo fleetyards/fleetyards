@@ -12,7 +12,15 @@ module Gql
           operation_name: params[:operationName]
         )
 
-        render json: result
+        if result['errors'].present?
+          render json: result, status: :bad_request
+        else
+          render json: result
+        end
+      rescue GraphqlAuthenticationError => e
+        render json: { errors: [{ message: e.message }] }, status: :unauthorized
+      rescue GraphQL::ParseError => e
+        render json: { errors: [{ message: e.message }] }, status: :bad_request
       end
 
       private def context
