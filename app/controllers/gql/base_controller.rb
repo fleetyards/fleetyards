@@ -17,6 +17,10 @@ module Gql
     end
     helper_method :current_user
 
+    rescue_from ActiveRecord::RecordNotFound do |_exception|
+      not_found
+    end
+
     private def not_found(message = I18n.t('messages.record_not_found.base'))
       render json: { code: "not_found", message: message }, status: :not_found
     end
