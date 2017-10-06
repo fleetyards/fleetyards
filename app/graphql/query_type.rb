@@ -8,6 +8,7 @@ QueryType = GraphQL::ObjectType.new.tap do |root_type|
     [
       Queries::Vehicles,
       Queries::Manufacturers,
+      Queries::Components,
       Queries::Images,
       Queries::Users
     ]
