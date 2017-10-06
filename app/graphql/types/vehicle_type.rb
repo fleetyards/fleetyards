@@ -5,6 +5,7 @@ Types::VehicleType = GraphQL::ObjectType.define do
   name 'Vehicle'
   description 'Default Vehicle Type for Ships and Ground Vehicles'
 
+  field :id, !types.String
   field :name, !types.String
   field :slug, !types.String
   field :description, types.String
@@ -31,9 +32,9 @@ Types::VehicleType = GraphQL::ObjectType.define do
 
   field :manufacturer, Types::ManufacturerType
   field :role, Types::VehicleRoleType, property: :ship_role
-  # field :hardpoints, types[!Types::HardpointType]
+  field :hardpoints, types[!Types::HardpointType]
   field :images, types[!Types::ImageType]
-  # field :videos, types[!Types::VideoType]
+  field :videos, types[!Types::VideoType]
 
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at

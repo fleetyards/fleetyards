@@ -9,7 +9,7 @@ module Resolvers
       collection
     end
 
-    def collection
+    private def collection
       search = Ship.enabled
                    .ransack(args[:q].to_h)
 
