@@ -10,9 +10,11 @@ class RsiOrgsLoader
   def fetch(sid)
     data = fetch_org_data(sid)
 
-    return if data.blank?
-
-    save_org(data)
+    if data.blank?
+      RsiOrg.where(sid: sid).destroy_all
+    else
+      save_org(data)
+    end
   end
 
   def for_handle(handle)

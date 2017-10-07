@@ -4,8 +4,7 @@
 module Resolvers
   class Hangar < Resolvers::Base
     def resolve
-      search = user.user_ships
-                   .ransack(args[:q].to_h)
+      search = user_ships.ransack(args[:q].to_h)
 
       search.sorts = ['purchased desc', 'name asc', 'created_at desc'] if search.sorts.empty?
 
@@ -17,6 +16,12 @@ module Resolvers
     private def user
       @user ||= current_user
       @user ||= User.find_by(username: args[:username])
+    end
+
+    private def user_ships
+      user_ships = user.user_ships
+      user_ships = user_ships.purchased if args[:username]
+      user_ships
     end
   end
 end
