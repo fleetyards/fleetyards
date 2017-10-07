@@ -8,7 +8,7 @@ module Queries
       description 'Your Hangar Vehicles'
       argument :username, types.String
       argument :q, InputTypes::VehicleSearchType
-      argument :limit, types.Int, default_value: 30, prepare: ->(limit, _ctx) { [limit, 100].min }
+      argument :limit, types.Int
       argument :offset, types.Int, default_value: 0
       resolve Resolvers::Vehicles::List.new
     end
