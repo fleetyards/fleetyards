@@ -4,15 +4,15 @@
 module Resolvers
   class Images < Resolvers::Base
     def resolve
-      if args[:vehicle_slug].present?
-        vehicle_images
+      if args[:model_slug].present?
+        model_images
       else
         images
       end
     end
 
-    private def vehicle_images
-      ship = Ship.find_by!(slug: args[:vehicle_slug])
+    private def model_images
+      ship = Ship.find_by!(slug: args[:model_slug])
 
       ship.images
         .enabled

@@ -9,5 +9,5 @@ Types::ManufacturerType = GraphQL::ObjectType.define do
   field :logo, types.String do
     resolve ->(obj, _args, _ctx) { obj.logo.small.url }
   end
-  field :vehicles, types[Types::VehicleType], property: :ships
+  field :models, types[Types::ModelType], property: :ships
 end

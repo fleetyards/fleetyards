@@ -3,11 +3,11 @@
 InputTypes::VehicleSearchType = ::GraphQL::InputObjectType.define do
   name 'VehicleSearchInput'
 
-  argument :nameOrDescriptionCont, types.String, as: :name_or_description_cont
-  argument :onSaleEq, types.String, as: :on_sale_eq
-  argument :manufacturerIn, types[!types.String], as: :manufacturer_slug_in
-  argument :vehicleRoleIn, types[!types.String], as: :ship_role_slug_in
-  argument :classificationIn, types[!types.String], as: :classification_in
-  argument :productionStatusIn, types[!types.String], as: :production_status_in
-  argument :sorts, types[!types.String]
+  argument :nameCont, types.String, as: :name_cont
+  argument :modelNameOrModelDescriptionCont, types.String, as: :ship_name_or_ship_description_cont
+  argument :modelOnSaleEq, types.String, as: :ship_on_sale_eq
+  argument :modelManufacturerIn, types[!types.String], as: :ship_manufacturer_slug_in
+  argument :modelModelRoleIn, types[!types.String], as: :ship_ship_role_slug_in
+  argument :modelClassificationIn, types[!types.String], as: :ship_classification_in
+  argument :modelProductionStatusIn, types[!types.String], as: :ship_production_status_in
 end

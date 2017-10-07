@@ -2,10 +2,10 @@
 # frozen_string_literal: true
 
 module Resolvers
-  module UserVehicle
+  module Vehicles
     class Destroy < Resolvers::Base
       def resolve
-        user_ship = UserShip.find(args[:user_vehicle_id])
+        user_ship = UserShip.find(args[:vehicle_id])
 
         if user_ship.destroy
           ActionCable.server.broadcast("updates_hangar_#{current_user.username}", user_ship.to_builder.target!)

@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class Vehicles < Resolvers::Base
+  class Models < Resolvers::Base
     def resolve
       return detail if args[:slug].present?
 

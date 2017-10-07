@@ -24,7 +24,7 @@ Types::ImageType = GraphQL::ObjectType.define do
     resolve ->(obj, _args, _ctx) { obj.name.dark.url }
   end
 
-  field :vehicle, Types::VehicleType, property: :gallery, complexity: 1
+  field :model, Types::ModelType, property: :gallery
 
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at

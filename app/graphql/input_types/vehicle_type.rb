@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-InputTypes::UserVehicleType = ::GraphQL::InputObjectType.define do
-  name 'UserVehicleInput'
+InputTypes::VehicleType = ::GraphQL::InputObjectType.define do
+  name 'VehicleInput'
 
   argument :name, types.String
   argument :purchased, types.Boolean

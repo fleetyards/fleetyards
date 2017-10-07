@@ -18,11 +18,11 @@ module Queries
       resolve Resolvers::Orgs.new
     end
 
-    field :orgShips do
-      type types[!Types::UserVehicleType]
+    field :fleet do
+      type types[!Types::VehicleType]
       description 'RSI Org Ships'
       argument :sid, !types.String
-      argument :q, InputTypes::UserVehicleSearchType
+      argument :q, InputTypes::VehicleSearchType
       argument :limit, types.Int, default_value: 30, prepare: ->(limit, _ctx) { [limit, 100].min }
       argument :offset, types.Int, default_value: 0
       resolve Resolvers::OrgShips.new

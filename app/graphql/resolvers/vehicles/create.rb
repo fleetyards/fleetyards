@@ -2,12 +2,12 @@
 # frozen_string_literal: true
 
 module Resolvers
-  module UserVehicle
-    class Update < Resolvers::Base
+  module Vehicles
+    class Create < Resolvers::Base
       def resolve
-        user_ship = UserShip.find(args[:user_vehicle_id])
+        user_ship = UserShip.new(ship_id: args[:model_id], user_id: current_user.id)
 
-        if user_ship.update(args[:data])
+        if user_ship.save
           ActionCable.server.broadcast("updates_hangar_#{current_user.username}", user_ship.to_builder.target!)
         else
           add_active_record_errors(user_ship)
