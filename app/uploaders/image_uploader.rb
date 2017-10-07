@@ -13,9 +13,9 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   version :small do
-    process resize_to_limit: [300, 300]
-    process quality: 60
-    process optimize: [{ quality: 60 }] if Rails.env.production?
+    process resize_to_limit: [500, 500]
+    process quality: 80
+    process optimize: [{ quality: 80 }] if Rails.env.production?
   end
 
   version :big do
