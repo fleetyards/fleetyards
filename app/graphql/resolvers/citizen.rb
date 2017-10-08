@@ -44,7 +44,7 @@ module Resolvers
     end
 
     private def handle
-      @handle ||= args[:handle].downcase
+      args[:handle].downcase
     end
   end
 end
