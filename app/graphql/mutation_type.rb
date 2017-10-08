@@ -7,7 +7,9 @@ MutationType = GraphQL::ObjectType.new.tap do |root_type|
   root_type.fields = Utils::FieldCombiner.combine(
     [
       Mutations::Sessions,
-      Mutations::Vehicles
+      Mutations::Vehicles,
+      Mutations::Users,
+      Mutations::Passwords
     ]
   )
 end
