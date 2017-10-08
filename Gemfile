@@ -9,6 +9,8 @@ gem 'rails', '5.1.4'
 
 gem 'pg'
 
+gem 'graphql'
+
 gem 'redis-namespace'
 gem 'sidekiq'
 gem 'sidekiq-cron'
@@ -126,3 +128,5 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
 end
+
+gem 'graphiql-rails', group: :development

@@ -266,6 +266,9 @@ GEM
     foundation_emails (2.2.1.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.4.4)
+      rails
+    graphql (1.7.0)
     haml (5.0.3)
       temple (>= 0.8.0)
       tilt
@@ -579,6 +582,8 @@ DEPENDENCIES
   fog
   font-awesome-sass
   foundation_emails
+  graphiql-rails
+  graphql
   haml
   haml-rails
   highline
