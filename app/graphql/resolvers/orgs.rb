@@ -17,7 +17,7 @@ module Resolvers
       q.sorts = 'name asc' if q.sorts.empty?
 
       q.result
-       .offset(args[:offset])
+        .offset(args[:offset])
        .limit(args[:limit])
     end
 

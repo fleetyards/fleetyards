@@ -16,7 +16,7 @@ module Resolvers
       search.sorts = 'name asc' if search.sorts.empty?
 
       search.result
-            .offset(args[:offset])
+        .offset(args[:offset])
             .limit(args[:limit])
     end
 

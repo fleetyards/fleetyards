@@ -10,7 +10,7 @@ module Resolvers
         search.sorts = ['purchased desc', 'name asc', 'created_at desc'] if search.sorts.empty?
 
         result = search.result
-                        .offset(args[:offset])
+                       .offset(args[:offset])
 
         result = result.limit(limit) if limit.present?
 

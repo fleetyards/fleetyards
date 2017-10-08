@@ -18,9 +18,9 @@ describe 'vehicles query' do
     res
   end
   # rubocop:disable Style/PercentLiteralDelimiters
-  let(:query_string) { %|{ vehicles { name } }| }
+  let(:query_string) { %|{ models { name } }| }
 
   it "returns all vehicles" do
-    assert_equal(result['data']['vehicles'], [{ 'name' => '600i' }, { 'name' => 'Andromeda' }])
+    assert_equal(result['data']['models'], [{ 'name' => '600i' }, { 'name' => 'Andromeda' }])
   end
 end
