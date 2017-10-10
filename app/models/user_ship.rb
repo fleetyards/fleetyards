@@ -10,6 +10,16 @@ class UserShip < ApplicationRecord
 
   NULL_ATTRS = %w[name].freeze
   before_save :nil_if_blank
+  after_save :broadcast_save
+  after_destroy :broadcast_destroy
+
+  def broadcast_save
+    ActionCable.server.broadcast("hangar_save_#{user.username}", to_builder.target!)
+  end
+
+  def broadcast_destroy
+    ActionCable.server.broadcast("hangar_destroy_#{user.username}", to_builder.target!)
+  end
 
   def self.purchased
     where(purchased: true)
@@ -19,11 +29,8 @@ class UserShip < ApplicationRecord
     Jbuilder.new do |user_ship|
       user_ship.id id
       user_ship.name name
-      user_ship.purchased purchased
-      user_ship.ship ship.to_builder.target!
+      user_ship.vehicle ship.to_builder.target!
       user_ship.deleted user_ship.destroyed?
-      user_ship.created_at created_at
-      user_ship.updated_at updated_at
     end
   end
 

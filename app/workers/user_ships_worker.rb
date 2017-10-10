@@ -8,6 +8,7 @@ class UserShipsWorker
     UserShip.where(ship_id: ship_id, sale_notify: true).find_each do |user_ship|
       next unless user_ship.user.sale_notify?
 
+      ActionCable.server.broadcast("on_sale_#{user_ship.user.username}", user_ship.to_builder.target!)
       UserShipMailer.on_sale(user_ship).deliver_later
     end
   end
