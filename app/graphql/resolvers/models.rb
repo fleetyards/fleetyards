@@ -10,14 +10,11 @@ module Resolvers
     end
 
     private def collection
-      search = Ship.enabled
-                   .ransack(args[:q].to_h)
+      search = Ship.enabled.ransack(args[:q].to_h)
 
       search.sorts = 'name asc' if search.sorts.empty?
 
-      search.result
-        .offset(args[:offset])
-            .limit(args[:limit])
+      search.result.offset(args[:offset]).limit(args[:limit])
     end
 
     private def detail
