@@ -25,13 +25,15 @@ module Resolvers
 
       private def user
         @user ||= current_user
-        @user ||= User.find_by(username: args[:username])
+        @user ||= User.find_by!(["lower(username) = :value", { value: args[:username].downcase }])
       end
 
       private def user_ships
-        user_ships = user.user_ships
-        user_ships = user_ships.purchased if args[:username].present?
-        user_ships
+        @user_ships ||= begin
+          vehicles = user.user_ships
+          vehicles = vehicles.purchased if args[:username].present?
+          vehicles
+        end
       end
     end
   end
