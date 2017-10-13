@@ -10,7 +10,7 @@ module Resolvers
 
       private def user
         @user ||= current_user
-        @user ||= User.find_by(username: args[:username])
+        @user ||= User.find_by!(["lower(username) = :value", { value: args[:username].downcase }])
       end
     end
   end
