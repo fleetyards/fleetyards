@@ -19,7 +19,11 @@ Types::ModelType = GraphQL::ObjectType.define do
   end
   field :crew, types.String
   field :storeImage, !types.String, property: :store_image
-  field :storeURL, !types.String, property: :store_url
+  field :storeURL, !types.String do
+    resolve(lambda do |obj, _args, _ctx|
+      "#{Rails.application.secrets[:rsi_hostname]}#{obj.store_url}"
+    end)
+  end
   field :price, types.String
   field :onSale, !types.Boolean, property: :on_sale
   field :productionStatus, types.String, property: :production_status
