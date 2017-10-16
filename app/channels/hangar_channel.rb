@@ -3,6 +3,6 @@
 
 class HangarChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "hangar_#{params[:action]}_#{params[:username]}"
+    stream_from "hangar_#{params[:username]}"
   end
 end

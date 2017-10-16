@@ -14,11 +14,11 @@ class UserShip < ApplicationRecord
   after_destroy :broadcast_destroy
 
   def broadcast_save
-    ActionCable.server.broadcast("hangar_save_#{user.username}", to_builder.target!)
+    ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
   end
 
   def broadcast_destroy
-    ActionCable.server.broadcast("hangar_destroy_#{user.username}", to_builder.target!)
+    ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
   end
 
   def self.purchased
@@ -29,7 +29,10 @@ class UserShip < ApplicationRecord
     Jbuilder.new do |user_ship|
       user_ship.id id
       user_ship.name name
-      user_ship.vehicle ship.to_builder.target!
+      user_ship.model do
+        user_ship.name ship.name
+        user_ship.slug ship.slug
+      end
       user_ship.deleted user_ship.destroyed?
     end
   end
