@@ -10,14 +10,10 @@ class UserShip < ApplicationRecord
 
   NULL_ATTRS = %w[name].freeze
   before_save :nil_if_blank
-  after_save :broadcast_save
-  after_destroy :broadcast_destroy
+  after_save :broadcast_update
+  after_destroy :broadcast_update
 
-  def broadcast_save
-    ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
-  end
-
-  def broadcast_destroy
+  def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
   end
 
