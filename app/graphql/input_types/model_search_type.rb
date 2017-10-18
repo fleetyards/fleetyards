@@ -3,6 +3,7 @@
 InputTypes::ModelSearchType = ::GraphQL::InputObjectType.define do
   name 'ModelSearchInput'
 
+  argument :nameCont, types.String, as: :name_cont
   argument :nameOrDescriptionCont, types.String, as: :name_or_description_cont
   argument :onSaleEq, types.String, as: :on_sale_eq
   argument :manufacturerIn, types[!types.String], as: :manufacturer_slug_in
