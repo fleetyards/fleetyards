@@ -4,6 +4,8 @@
 module Gql
   module V1
     class BaseController < ::Gql::BaseController
+      include ActionController::HttpAuthentication::Token
+
       def execute
         result = FleetyardsSchema.execute(
           params[:query],
