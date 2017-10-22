@@ -18,7 +18,7 @@ module Resolvers
     end
 
     private def sid
-      @sid ||= args[:sid].downcase
+      @sid = args[:sid].downcase
     end
   end
 end

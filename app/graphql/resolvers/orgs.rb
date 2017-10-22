@@ -26,7 +26,7 @@ module Resolvers
     end
 
     private def sid
-      @sid ||= args[:sid].present? && args[:sid].downcase
+      @sid = args[:sid].present? && args[:sid].downcase
     end
   end
 end

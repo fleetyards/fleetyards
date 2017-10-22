@@ -18,22 +18,26 @@ module Resolvers
       end
 
       private def limit
-        return if args[:username].blank?
+        return if username.blank?
 
         [(args[:limit] || 30), 100].min
       end
 
       private def user
         @user ||= current_user
-        @user ||= User.find_by!(["lower(username) = :value", { value: args[:username].downcase }])
+        @user ||= User.find_by!(["lower(username) = :value", { value: username }])
       end
 
       private def user_ships
-        @user_ships ||= begin
+        @user_ships = begin
           vehicles = user.user_ships
-          vehicles = vehicles.purchased if args[:username].present?
+          vehicles = vehicles.purchased if username.present?
           vehicles
         end
+      end
+
+      private def username
+        args[:username] && args[:username].downcase
       end
     end
   end
