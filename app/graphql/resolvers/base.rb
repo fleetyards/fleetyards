@@ -31,6 +31,10 @@ module Resolvers
       ctx[:current_user]
     end
 
+    private def jwt_token
+      ctx[:jwt_token]
+    end
+
     private def current_ability
       Ability.new(current_user)
     end

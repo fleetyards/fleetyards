@@ -26,8 +26,17 @@ module Gql
       private def context
         @context ||= {
           current_user: current_user,
-          user_agent: request.user_agent
+          user_agent: request.user_agent,
+          jwt_token: jwt_token
         }
+      end
+
+      private def jwt_token
+        @jwt_token ||= begin
+          auth_params, _options = token_and_options(request)
+          return if auth_params.blank?
+          ::JsonWebToken.decode(auth_params)
+        end
       end
 
       private def variables
