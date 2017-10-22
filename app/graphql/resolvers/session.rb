@@ -50,14 +50,12 @@ module Resolvers
     end
 
     private def new_auth_token(user_id)
-      @new_auth_token ||= begin
-        AuthToken.create(
-          user_id: user_id,
-          user_agent: ctx[:user_agent],
-          description: args[:description],
-          expires: args[:expires]
-        )
-      end
+      @new_auth_token = AuthToken.create(
+        user_id: user_id,
+        user_agent: ctx[:user_agent],
+        description: args[:description],
+        expires: args[:expires]
+      )
     end
   end
 end
