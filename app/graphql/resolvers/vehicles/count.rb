@@ -12,7 +12,8 @@ module Resolvers
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
               count: models.where(classification: classification).count,
-              name: classification
+              name: classification,
+              label: I18n.t("filter.ship.classification.items.#{classification}")
             )
           end
         )

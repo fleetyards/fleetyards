@@ -6,4 +6,5 @@ Types::ClassificationCountType = GraphQL::ObjectType.define do
 
   field :count, !types.Int
   field :name, !types.String
+  field :label, !types.String
 end
