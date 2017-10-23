@@ -14,7 +14,7 @@ module Queries
 
     field :publicVehicles do
       type types[!Types::VehicleType]
-      description 'Your Hangar Vehicles'
+      description 'Public Hangar Vehicles'
       argument :username, types.String
       argument :q, InputTypes::VehicleSearchType
       argument :limit, types.Int
@@ -26,6 +26,13 @@ module Queries
       type Types::VehicleCountType
       description 'Your Hangar Vehicles Count'
       resolve Resolvers::Vehicles::Count.new
+    end
+
+    field :publicVehiclesCount do
+      type Types::VehicleCountType
+      description 'Public Hangar Vehicles Count'
+      argument :username, types.String
+      resolve Resolvers::Vehicles::PublicCount.new
     end
   end
 end

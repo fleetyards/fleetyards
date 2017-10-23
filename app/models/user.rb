@@ -7,7 +7,19 @@ class User < ApplicationRecord
          authentication_keys: [:login]
 
   has_many :user_ships
-  has_many :ships, through: :user_ships
+  has_many :ships,
+           through: :user_ships
+  has_many :purchased_user_ships,
+           -> { where(purchased: true) },
+           class_name: 'UserShip'
+  has_many :purchased_ships,
+           class_name: 'Ship',
+           through: :purchased_user_ships,
+           source: :ship
+  has_many :memberships,
+           class_name: 'FleetMembership'
+  has_many :fleets,
+           through: :memberships
 
   validates :username, uniqueness: { case_sensitive: false }
 
