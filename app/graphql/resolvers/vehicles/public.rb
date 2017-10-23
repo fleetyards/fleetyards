@@ -3,9 +3,10 @@
 
 module Resolvers
   module Vehicles
-    class List < Resolvers::Base
+    class Public < Resolvers::Base
       def resolve
-        search = current_user.user_ships.ransack(args[:q].to_h)
+        user = User.find_by!(["lower(username) = :value", { value: username }])
+        search = user.user_ships.purchased.ransack(args[:q].to_h)
 
         result = search.result
                        .offset(args[:offset])

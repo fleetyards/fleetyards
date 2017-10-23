@@ -125,11 +125,11 @@ namespace :db do
     end
   end
 
-  task local_import: :download_backup do
+  task :local_import do
     system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
   end
 
-  task download_backup: :backup do
+  task :download_backup do
     comment "Downloading latest backup..."
     system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
     comment "Download finished"
