@@ -13,7 +13,6 @@ module Resolvers
       end
 
       private def update_with_token
-        Rails.logger.debug args[:data].to_h
         user = User.reset_password_by_token(args[:data].to_h.symbolize_keys)
         if user.errors.blank?
           success
@@ -25,7 +24,7 @@ module Resolvers
 
       private def update
         user = current_user
-        if user.update_with_password(args[:data].to_h)
+        if user.update_with_password(args[:data].to_h.symbolize_keys)
           success
         else
           add_active_record_errors(user)
