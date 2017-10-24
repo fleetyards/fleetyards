@@ -22,7 +22,7 @@ class Fleet < ApplicationRecord
 
   before_create :fetch_rsi_org
 
-  private def fetch_rsi_org
+  def fetch_rsi_org
     org = RsiOrgsLoader.new.fetch(sid.downcase)
     self.name = org.name
     self.logo = org.logo
