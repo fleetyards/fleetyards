@@ -10,7 +10,15 @@ Types::UserType = GraphQL::ObjectType.define do
   field :avatar, types.String
   field :isAdmin, !types.Boolean, property: :admin?
   field :rsiHandle, types.String, property: :rsi_handle
-  field :rsiOrg, types.String, property: :rsi_org
+  field :fleets, types[!types.String] do
+    resolve ->(obj, _args, _ctx) { obj.fleets.map(&:sid) }
+  end
+  field :pendingFleets, types[!types.String] do
+    resolve ->(obj, _args, _ctx) { obj.pending_fleets.map(&:sid) }
+  end
+  field :adminFleets, types[!types.String] do
+    resolve ->(obj, _args, _ctx) { obj.admin_fleets.map(&:sid) }
+  end
   field :saleNotify, !types.Boolean, property: :sale_notify
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at

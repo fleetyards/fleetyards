@@ -13,7 +13,7 @@ module Gql
     end
 
     def current_user
-      warden.authenticate(scope: :api_user)
+      warden.authenticate(scope: :gql_user)
     end
     helper_method :current_user
 

@@ -10,41 +10,7 @@ class RsiOrgsLoader
   def fetch(sid)
     data = fetch_org_data(sid)
 
-    if data.blank?
-      RsiOrg.where(sid: sid).destroy_all
-    else
-      save_org(data)
-    end
-  end
-
-  def for_handle(handle)
-    sids = fetch_org_sids(handle)
-
-    orgs_data = []
-    sids.each do |sid|
-      orgs_data << fetch_org_data(sid)
-    end
-
-    orgs = []
-    orgs_data.each do |org_data|
-      orgs << save_org(org_data)
-    end
-
-    orgs
-  end
-
-  private def fetch_org_sids(handle)
-    sids = []
-
-    response = Typhoeus.get("#{base_url}/citizens/#{handle}/organizations")
-    return sids if response.code != 200
-
-    page = Nokogiri::HTML(response.body)
-    page.css('.orgs-content .org .info .entry:nth-child(2) .value').each do |sid_item|
-      sids << sid_item.text.strip
-    end
-
-    sids
+    OpenStruct.new(data) if data.present?
   end
 
   private def fetch_org_data(sid)
@@ -66,30 +32,12 @@ class RsiOrgsLoader
     org_data[:secondary_activity] = org_box.css('.heading .focus .secondary .content').text.strip
 
     org_data[:recruiting] = org_box.css('.join-us .bt-join').text.strip.present?
+    org_data[:member_count] = org_box.css('.heading .logo .count').text.strip.gsub(' members', '') || 1
 
     if org_box.css('.heading .logo img').present?
       org_data[:logo] = "https://robertsspaceindustries.com#{org_box.css('.heading .logo img')[0]['src']}"
     end
 
     org_data
-  end
-
-  private def save_org(org_data)
-    return if org_data.blank?
-    org = RsiOrg.find_or_initialize_by(name: org_data[:name])
-
-    org.sid = org_data[:sid]
-    org.archetype = org_data[:archetype]
-    org.main_activity = org_data[:main_activity]
-    org.secondary_activity = org_data[:secondary_activity]
-    org.recruiting = org_data[:recruiting]
-    org.rpg = org_data[:rpg]
-    org.exclusive = org_data[:exclusive]
-    org.commitment = org_data[:commitment]
-    org.logo = org_data[:logo]
-
-    org.save
-
-    org
   end
 end

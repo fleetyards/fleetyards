@@ -6,5 +6,5 @@ Types::ResultType = GraphQL::ObjectType.define do
 
   field :success, !types.Boolean
   field :code, !types.String
-  field :message, !types.String
+  field :message, types.String
 end

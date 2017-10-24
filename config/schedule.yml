@@ -4,3 +4,6 @@ production: &production
   ships_worker_job:
     cron: '0 * * * *'
     class: 'ShipsWorker'
+  fleets_worker_job:
+    cron: '30 * * * *'
+    class: 'FleetsWorker'

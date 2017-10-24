@@ -6,20 +6,17 @@ module Resolvers
     class Public < Resolvers::Base
       def resolve
         user = User.find_by!(["lower(username) = :value", { value: username }])
+
         search = user.user_ships.purchased.ransack(args[:q].to_h)
+
+        search.sorts = ['name asc', 'created_at desc'] if search.sorts.empty?
 
         result = search.result
                        .offset(args[:offset])
 
-        result = result.limit(limit) if limit.present?
+        result = result.limit(args[:limit]) if args[:limit].present?
 
         result
-      end
-
-      private def limit
-        return if username.blank?
-
-        [(args[:limit] || 30), 100].min
       end
 
       private def username

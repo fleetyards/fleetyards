@@ -1,8 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-require 'rsi_orgs_loader'
-
 module Resolvers
   class Citizen < Resolvers::Base
     def resolve
@@ -37,8 +35,6 @@ module Resolvers
           user.languages = value.text.strip
         end
       end
-
-      user.orgs = RsiOrgsLoader.new.for_handle(handle)
 
       user
     end

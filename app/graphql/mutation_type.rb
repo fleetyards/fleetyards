@@ -9,7 +9,8 @@ MutationType = GraphQL::ObjectType.new.tap do |root_type|
       Mutations::Sessions,
       Mutations::Vehicles,
       Mutations::Users,
-      Mutations::Passwords
+      Mutations::Passwords,
+      Mutations::Fleets
     ]
   )
 end

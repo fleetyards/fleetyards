@@ -3,7 +3,7 @@
 
 class RsiUser
   attr_accessor :username, :avatar, :handle, :title, :enlisted,
-                :citizen_record, :location, :languages, :orgs
+                :citizen_record, :location, :languages
 
   def initialize(args = {})
     self.username = args[:username]
@@ -14,6 +14,5 @@ class RsiUser
     self.citizen_record = args[:citizen_record]
     self.location = args[:location]
     self.languages = args[:languages]
-    self.orgs = args[:orgs]
   end
 end

@@ -22,3 +22,8 @@ worf:
   email: "worf@star.fleet"
   username: "worf"
   <<: *DEFAULTS
+
+troi:
+  email: "troi@star.fleet"
+  username: "troi"
+  <<: *DEFAULTS

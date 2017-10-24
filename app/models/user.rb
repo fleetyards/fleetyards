@@ -16,10 +16,23 @@ class User < ApplicationRecord
            class_name: 'Ship',
            through: :purchased_user_ships,
            source: :ship
+  has_many :pending_memberships,
+           -> { where(approved: false) },
+           class_name: 'FleetMembership'
+  has_many :pending_fleets,
+           through: :pending_memberships,
+           source: :fleet
   has_many :memberships,
+           -> { where(approved: true) },
            class_name: 'FleetMembership'
   has_many :fleets,
            through: :memberships
+  has_many :admin_memberships,
+           -> { where(admin: true, approved: true) },
+           class_name: 'FleetMembership'
+  has_many :admin_fleets,
+           through: :admin_memberships,
+           source: :fleet
 
   validates :username, uniqueness: { case_sensitive: false }
 

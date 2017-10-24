@@ -1,0 +1,20 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+data_tmi:
+  user: data
+  fleet: tmi
+  admin: true
+  approved: true
+
+worf_tmi:
+  user: worf
+  fleet: tmi
+  admin: false
+  approved: true
+
+troi_tmi:
+  user: troi
+  fleet: tmi
+  admin: false
+  approved: false
+

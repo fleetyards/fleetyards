@@ -12,7 +12,6 @@ Types::CitizenType = GraphQL::ObjectType.define do
   field :citizenRecord, !types.String, property: :citizen_record
   field :location, !types.String
   field :languages, !types.String
-  field :orgs, types[!Types::OrgType]
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at
 end

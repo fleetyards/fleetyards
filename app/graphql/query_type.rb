@@ -6,6 +6,7 @@ QueryType = GraphQL::ObjectType.new.tap do |root_type|
   root_type.interfaces = []
   root_type.fields = Utils::FieldCombiner.combine(
     [
+      Queries::Fleets,
       Queries::Vehicles,
       Queries::Models,
       Queries::Manufacturers,

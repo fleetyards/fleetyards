@@ -10,41 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928135660) do
+ActiveRecord::Schema.define(version: 20171023221715) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "uuid-ossp"
   enable_extension "plpgsql"
   enable_extension "hstore"
-  enable_extension "uuid-ossp"
-
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.uuid "resource_id"
-    t.string "resource_type"
-    t.uuid "author_id"
-    t.string "author_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-  end
-
-  create_table "admin_users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_admin_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
-  end
 
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
@@ -71,6 +42,17 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.string "slug", limit: 255
   end
 
+  create_table "component_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.integer "size"
+    t.uuid "hardpoint_category_id"
+    t.uuid "manufacturer_id"
+    t.string "rsi_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "size", limit: 255
@@ -80,6 +62,52 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.uuid "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "fleet_id"
+    t.boolean "admin", default: false, null: false
+    t.boolean "approved", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.string "sid"
+    t.string "archetype"
+    t.string "main_activity"
+    t.string "secondary_activity"
+    t.boolean "recruiting"
+    t.string "commitment"
+    t.boolean "rpg"
+    t.boolean "exclusive"
+    t.integer "member_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hardpoint_category_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hardpoint_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "size"
+    t.integer "amount", default: 1, null: false
+    t.uuid "category_id"
+    t.uuid "component_id"
+    t.uuid "vehicle_id"
+    t.string "vehicle_type"
+    t.string "rsi_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vehicle_type", "vehicle_id"], name: "index_hardpoint_v2s_on_vehicle_type_and_vehicle_id"
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -105,6 +133,17 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.datetime "updated_at"
   end
 
+  create_table "manufacturer_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "logo"
+    t.string "known_for"
+    t.text "description"
+    t.string "rsi_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "manufacturers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
@@ -117,17 +156,28 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.datetime "updated_at"
   end
 
-  create_table "rsi_orgs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "model_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
-    t.string "sid"
-    t.string "archetype"
-    t.string "main_activity"
-    t.string "secondary_activity"
-    t.boolean "recruiting"
-    t.string "commitment"
-    t.boolean "rpg"
-    t.boolean "exclusive"
-    t.string "logo"
+    t.uuid "manufacturer_id"
+    t.string "slug"
+    t.text "description"
+    t.string "store_image"
+    t.string "store_url"
+    t.string "classification"
+    t.string "role"
+    t.string "career"
+    t.string "production_status"
+    t.string "production_note"
+    t.boolean "on_sale", default: false, null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "cargo", default: 0, null: false
+    t.integer "max_crew"
+    t.integer "min_crew", default: 1, null: false
+    t.string "rsi_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -225,6 +275,16 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.integer "net_cargo", default: 0, null: false
   end
 
+  create_table "vehicle_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "model_id"
+    t.string "name"
+    t.uuid "owner_id"
+    t.boolean "purchased", default: false, null: false
+    t.boolean "sale_notify", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "url"
     t.integer "video_type"
@@ -232,15 +292,6 @@ ActiveRecord::Schema.define(version: 20170928135660) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "ship_id"
-  end
-
-  create_table "worker_states", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.boolean "running", default: false
-    t.datetime "last_run_start"
-    t.datetime "last_run_end"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end

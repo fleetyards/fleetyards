@@ -7,8 +7,9 @@ module Queries
       type types[!Types::VehicleType]
       description 'Your Hangar Vehicles'
       argument :q, InputTypes::VehicleSearchType
-      argument :limit, types.Int
+      argument :limit, types.Int, default_value: 30, prepare: ->(limit, _ctx) { [limit, 100].min }
       argument :offset, types.Int, default_value: 0
+      needs_authentication true
       resolve Resolvers::Vehicles::List.new
     end
 
@@ -17,7 +18,7 @@ module Queries
       description 'Public Hangar Vehicles'
       argument :username, types.String
       argument :q, InputTypes::VehicleSearchType
-      argument :limit, types.Int
+      argument :limit, types.Int, default_value: 30, prepare: ->(limit, _ctx) { [limit, 100].min }
       argument :offset, types.Int, default_value: 0
       resolve Resolvers::Vehicles::Public.new
     end
@@ -25,6 +26,7 @@ module Queries
     field :vehiclesCount do
       type Types::VehicleCountType
       description 'Your Hangar Vehicles Count'
+      needs_authentication true
       resolve Resolvers::Vehicles::Count.new
     end
 
