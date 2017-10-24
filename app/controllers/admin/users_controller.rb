@@ -43,7 +43,7 @@ module Admin
 
     def destroy
       authorize! :destroy, user
-      if ship.destroy
+      if user.destroy
         redirect_to admin_users_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.user.admin"))
       else
         redirect_to admin_users_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.user.admin"))

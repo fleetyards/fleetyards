@@ -29,6 +29,10 @@ module Fleetyards
 
     config.i18n.fallbacks = [:en]
 
+    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_name_prefix = 'fleetyards'
+    config.active_job.queue_name_delimiter = '_'
+
     config.action_view.field_error_proc = proc { |html_tag, _instance|
       # rubocop:disable Rails/OutputSafety
       html_tag.to_s.html_safe
