@@ -7,7 +7,17 @@ module Resolvers
       def resolve
         fleet = current_user.fleets.find_by!(sid: args[:sid])
 
-        search = fleet.models.ransack(args[:q].to_h)
+        search = fleet.models
+                      .select(
+                        %i[
+                          id name slug description length beam height mass cargo
+                          crew store_image store_url price on_sale production_status
+                          production_note powerplant_size shield_size classification
+                          focus rsi_id manufacturer_id ship_role_id created_at updated_at
+                        ]
+                      )
+                      .group(:id)
+                      .ransack(args[:q].to_h)
 
         search.sorts = 'name asc' if search.sorts.empty?
 
@@ -16,10 +26,10 @@ module Resolvers
 
         result = result.limit(args[:limit]) if args[:limit].present?
 
-        result.group_by(&:name).map do |(_, models)|
+        result.map do |model|
           OpenStruct.new(
-            count: models.size,
-            model: models.first
+            count: fleet.models.where(id: model.id).count,
+            model: model
           )
         end
       end
