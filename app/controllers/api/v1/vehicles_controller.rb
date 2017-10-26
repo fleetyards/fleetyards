@@ -44,7 +44,7 @@ module Api
 
       def public_count
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
-        models = user.ships
+        models = user.purchased_ships
 
         @count = OpenStruct.new(
           total: models.count,
