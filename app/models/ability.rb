@@ -16,10 +16,12 @@ class Ability
     can %i[index show], :api_models
     can %i[index], :api_images
     can %i[show], :api_components
+    can %i[index show join], :api_fleets
 
     return if user.id.blank?
 
-    can :show, :api_hangar
+    can :index, :api_hangar
+    can :index, :api_my_fleets
     can %i[add remove], UserShip, user_id: user.id
     can %i[read update], User, id: user.id
   end

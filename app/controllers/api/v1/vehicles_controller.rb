@@ -4,8 +4,8 @@
 module Api
   module V1
     class VehiclesController < ::Api::V1::BaseController
-      skip_authorization_check only: [:public, :public_count]
-      before_action :authenticate_api_user!, except: [:public, :public_count]
+      skip_authorization_check only: %i[public public_count]
+      before_action :authenticate_api_user!, except: %i[public public_count]
 
       def index
         authorize! :index, :api_hangar

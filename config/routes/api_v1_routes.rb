@@ -21,6 +21,31 @@ v1_api_routes = lambda do
     get :random, on: :collection
   end
 
+  resources :fleets, param: :sid, only: %i[index show create destroy] do
+    collection do
+      get :my
+    end
+    member do
+      get :models
+      get :count
+      get :members
+    end
+
+    resources :members, controller: 'fleet_members', param: :username, only: [] do
+      collection do
+        post :join
+      end
+
+      member do
+        post :accept
+        post :decline
+        post :promote
+        post :demote
+        delete :remove
+      end
+    end
+  end
+
   resources :users, only: [] do
     collection do
       post :signup
@@ -49,11 +74,7 @@ v1_api_routes = lambda do
 
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle
-    resources :orgs, only: %i[index show], param: :sid do
-      member do
-        get :ships
-      end
-    end
+    resources :orgs, only: %i[show], param: :sid
   end
 end
 

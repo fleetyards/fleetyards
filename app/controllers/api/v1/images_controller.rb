@@ -5,7 +5,6 @@ module Api
   module V1
     class ImagesController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
-      after_action only: [:index] { pagination_header(:images) }
 
       def index
         authorize! :index, :api_images

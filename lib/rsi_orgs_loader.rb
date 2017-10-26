@@ -32,7 +32,7 @@ class RsiOrgsLoader
     org_data[:secondary_activity] = org_box.css('.heading .focus .secondary .content').text.strip
 
     org_data[:recruiting] = org_box.css('.join-us .bt-join').text.strip.present?
-    org_data[:member_count] = org_box.css('.heading .logo .count').text.strip.gsub(' members', '') || 1
+    org_data[:member_count] = org_box.css('.heading .logo .count').text.strip.gsub(' member', '').gsub(' members', '') || 1
 
     if org_box.css('.heading .logo img').present?
       org_data[:logo] = "https://robertsspaceindustries.com#{org_box.css('.heading .logo img')[0]['src']}"
