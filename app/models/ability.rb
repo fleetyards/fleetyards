@@ -13,7 +13,7 @@ class Ability
     can :read, [:components, Component]
 
     can :show, :api
-    can %i[index show], :api_ships
+    can %i[index show], :api_models
     can %i[index], :api_images
     can %i[show], :api_components
 

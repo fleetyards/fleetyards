@@ -6,6 +6,8 @@ class UserShip < ApplicationRecord
   belongs_to :ship
   belongs_to :user
 
+  alias_attribute :model, :ship
+
   validates :ship_id, presence: true
 
   NULL_ATTRS = %w[name].freeze
@@ -26,8 +28,8 @@ class UserShip < ApplicationRecord
       user_ship.id id
       user_ship.name name
       user_ship.model do
-        user_ship.name ship.name
-        user_ship.slug ship.slug
+        user_ship.name model.name
+        user_ship.slug model.slug
       end
       user_ship.deleted user_ship.destroyed?
     end

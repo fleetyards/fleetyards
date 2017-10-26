@@ -20,7 +20,7 @@ class ShipRole < ApplicationRecord
   def self.ship_filters
     ShipRole.with_name.with_ship.order(name: :asc).all.map do |ship_role|
       Filter.new(
-        category: 'shipRole',
+        category: 'role',
         name: ship_role.name,
         value: ship_role.slug
       )

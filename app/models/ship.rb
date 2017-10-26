@@ -64,16 +64,6 @@ class Ship < ApplicationRecord
     end
   end
 
-  def self.on_sale_filters
-    %w[true false].map do |item|
-      Filter.new(
-        category: 'onSale',
-        name: I18n.t("filter.ship.on_sale.items.#{item}"),
-        value: item
-      )
-    end
-  end
-
   def self.classification_filters
     Ship.all.map(&:classification).uniq.compact.map do |item|
       Filter.new(
