@@ -36,7 +36,13 @@
       = form_errors fields.object, :net_cargo
 
   .col-xs-12.col-sm-6.col-md-4
-    .form-group{class: form_error?(fields.object, :crew)}
-      = fields.label :crew
-      = fields.number_field :crew, class: 'form-control'
-      = form_errors fields.object, :crew
+    .form-group{class: form_error?(fields.object, :min_crew)}
+      = fields.label :min_crew
+      = fields.number_field :min_crew, class: 'form-control'
+      = form_errors fields.object, :min_crew
+
+  .col-xs-12.col-sm-6.col-md-4
+    .form-group{class: form_error?(fields.object, :max_crew)}
+      = fields.label :max_crew
+      = fields.number_field :max_crew, class: 'form-control'
+      = form_errors fields.object, :max_crew
