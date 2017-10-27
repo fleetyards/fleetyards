@@ -61,7 +61,9 @@ class Model < ApplicationRecord
   end
 
   def self.focus_filters
-    Model.all.map(&:focus).uniq.compact.map do |item|
+    Model.all.map(&:focus).compact.uniq.select do |item|
+      item.strip.present?
+    end.map do |item|
       Filter.new(
         category: 'focus',
         name: item,
