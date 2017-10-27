@@ -9,7 +9,7 @@ module Api
 
       def index
         authorize! :index, :api_hangar
-        @q = current_user.user_ships
+        @q = current_user.vehicles
                          .ransack(query_params)
 
         @q.sorts = ['purchased desc', 'name asc'] if @q.sorts.empty?
@@ -19,7 +19,7 @@ module Api
 
       def count
         authorize! :index, :api_hangar
-        models = current_user.ships
+        models = current_user.models
 
         @count = OpenStruct.new(
           total: models.count,
@@ -27,7 +27,7 @@ module Api
             OpenStruct.new(
               count: models.where(classification: classification).count,
               name: classification,
-              label: I18n.t("filter.ship.classification.items.#{classification}")
+              label: I18n.t("filter.model.classification.items.#{classification}")
             )
           end
         )
@@ -35,7 +35,7 @@ module Api
 
       def public
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
-        @vehicles = user.user_ships
+        @vehicles = user.vehicles
                         .purchased
                         .order(name: :asc)
                         .offset(params[:offset])
@@ -44,7 +44,7 @@ module Api
 
       def public_count
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
-        models = user.purchased_ships
+        models = user.purchased_models
 
         @count = OpenStruct.new(
           total: models.count,
@@ -52,14 +52,14 @@ module Api
             OpenStruct.new(
               count: models.where(classification: classification).count,
               name: classification,
-              label: I18n.t("filter.ship.classification.items.#{classification}")
+              label: I18n.t("filter.model.classification.items.#{classification}")
             )
           end
         )
       end
 
       def create
-        @vehicle = UserShip.new(vehicle_params)
+        @vehicle = Vehicle.new(vehicle_params)
         authorize! :create, vehicle
 
         if vehicle.save
@@ -86,12 +86,12 @@ module Api
       end
 
       private def vehicle
-        @vehicle ||= UserShip.find_by!(id: params[:id])
+        @vehicle ||= Vehicle.find_by!(id: params[:id])
       end
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= params.permit(:name, :ship_id, :purchased, :sale_notify)
+        @vehicle_params ||= params.permit(:name, :model_id, :purchased, :sale_notify)
                                   .merge(
                                     user_id: current_user.id
                                   )
