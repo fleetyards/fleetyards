@@ -14,8 +14,7 @@ class User < ApplicationRecord
            class_name: 'Vehicle'
   has_many :purchased_models,
            class_name: 'Model',
-           through: :purchased_vehicles,
-           source: :ship
+           through: :purchased_vehicles
   has_many :pending_memberships,
            -> { where(approved: false) },
            class_name: 'FleetMembership'
