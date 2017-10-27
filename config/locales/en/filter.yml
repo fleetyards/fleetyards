@@ -8,13 +8,12 @@ en:
           "false": "No"
       classification:
         items:
-          vehicle: "Vehicle / Snub"
-          capital: Capital
-          bomber: Bomber
-          fighter: Fighter
-          cargo: Cargo
-          personal_transport: "Personal transport"
-          versatile: Versatile
+          combat: Combat
+          transport: Transport
+          exploration: Exploration
+          industrial: Industrial
+          support: Support
+          competition: Competition
 
     image:
       ship:
