@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Model < ApplicationRecord
-  self.table_name = 'models'
-
   belongs_to :manufacturer, required: false
 
   has_one :addition,

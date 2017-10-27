@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Manufacturer < ApplicationRecord
-  default_scope -> { order(name: :asc) }
   include SlugHelper
   include ActionView::Helpers::OutputSafetyHelper
 
