@@ -15,10 +15,10 @@ en:
         index: Manufacturer
         new: New Manufacturer
       model:
-        edit: Edit %{ship}
-        gallery: Imageuplaod for %{ship}
+        edit: Edit %{model}
+        gallery: Imageuplaod for %{model}
         index: Models
-        new: New Ship
+        new: New Model
       user:
         edit: Edit %{user}
         index: Users
