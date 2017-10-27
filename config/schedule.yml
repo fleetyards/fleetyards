@@ -2,8 +2,8 @@
 
 production: &production
   models_worker_job:
-    cron: '0 * * * *'
+    cron: '*/15 * * * *'
     class: 'ModelsWorker'
   fleets_worker_job:
-    cron: '30 * * * *'
+    cron: '0 * * * *'
     class: 'FleetsWorker'
