@@ -8,7 +8,7 @@ class ModelMailer < ApplicationMailer
     @model = model
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
-      subject: I18n.t(:"mailer.user.admin.subject"),
+      subject: I18n.t(:"mailer.model.admin.subject"),
       template_name: 'admin'
     )
   end
