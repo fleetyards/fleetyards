@@ -11,8 +11,8 @@ module Api
         @images = Image.enabled
                        .in_gallery
                        .order("images.created_at desc")
-                       .page(params[:page])
-                       .per(per_page)
+                       .offset(params[:offset])
+                       .limit(params[:limit])
       end
 
       def random
