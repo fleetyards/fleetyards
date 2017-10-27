@@ -54,9 +54,9 @@ module Api
                       .select(
                         %i[
                           id name slug description length beam height mass cargo
-                          crew store_image store_url price on_sale production_status
-                          production_note powerplant_size shield_size classification
-                          focus rsi_id manufacturer_id ship_role_id created_at updated_at
+                          min_crew max_crew scm_speed afterburner_speed store_image store_url
+                          price on_sale production_status production_note focus classification
+                          focus rsi_id manufacturer_id created_at updated_at
                         ]
                       )
                       .group(:id)
@@ -83,7 +83,7 @@ module Api
             OpenStruct.new(
               count: fleet.models.where(classification: classification).count,
               name: classification,
-              label: I18n.t("filter.ship.classification.items.#{classification}")
+              label: I18n.t("filter.model.classification.items.#{classification}")
             )
           end
         )
