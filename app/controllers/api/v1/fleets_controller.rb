@@ -53,7 +53,7 @@ module Api
         search = fleet.models
                       .select(
                         %i[
-                          id name slug description length beam height mass cargo
+                          id name slug description length beam height mass cargo size
                           min_crew max_crew scm_speed afterburner_speed store_image store_url
                           price on_sale production_status production_note focus classification
                           focus rsi_id manufacturer_id created_at updated_at
