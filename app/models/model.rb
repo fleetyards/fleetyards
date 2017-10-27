@@ -64,7 +64,7 @@ class Model < ApplicationRecord
     Model.all.map(&:focus).uniq.compact.map do |item|
       Filter.new(
         category: 'focus',
-        name: I18n.t("filter.model.focus.items.#{item}"),
+        name: item,
         value: item
       )
     end
