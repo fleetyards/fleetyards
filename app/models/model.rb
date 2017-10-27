@@ -60,6 +60,16 @@ class Model < ApplicationRecord
     end
   end
 
+  def self.focus_filters
+    Model.all.map(&:focus).uniq.compact.map do |item|
+      Filter.new(
+        category: 'focus',
+        name: I18n.t("filter.model.focus.items.#{item}"),
+        value: item
+      )
+    end
+  end
+
   %i[height beam length mass cargo min_crew max_crew scm_speed afterburner_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("addition_#{method_name}")
