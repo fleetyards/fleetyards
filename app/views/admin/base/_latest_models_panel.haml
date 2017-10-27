@@ -1,0 +1,25 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = I18n.t(:"labels.panels.latest_models")
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= I18n.t(:"labels.table.name")
+          %th= I18n.t(:"labels.table.model.manufacturer")
+          %th= I18n.t(:"labels.table.updated_at")
+          %th.actions.actions-one
+      %tbody
+        - Model.order(updated_at: :desc, name: :asc).limit(5).each do |model|
+          %tr
+            %td
+              = model.name
+            %td
+              = model.manufacturer.name.html_safe if model.manufacturer.present?
+            %td
+              = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(model.updated_at))
+            %td
+              .btn-group
+                = link_to edit_admin_model_path(model), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+                  %i.fa.fa-edit

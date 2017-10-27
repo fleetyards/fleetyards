@@ -1,112 +1,69 @@
+---
 en:
-  locales:
-    en: English
-    de: Deutsch
-  meta:
-    description: "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“."
-    keywords: "Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
-  title:
-    default: FleetYards.net
-    admin: "FleetYards.net Backend"
-    sign_in: Login
-    sign_up: "Sign up"
-    unlock: "Unlock Account"
-    confirm: "Confirm Account"
-    impressum: Impressum
-    privacy: "Privacy policy"
-    not_found: 404
-    unprocessable_entity: 422
-    server_error: 500
-    hangar:
-      show: "My Hangar"
-      public: "%{user}s Hangar"
-    my_ship: "My %{ship}"
-    manufacturer:
-      index: Manufacturers
-      edit: Edit Manufacturer
-      new: New Manufacturer
-    image:
-      index: "All Images"
-    component:
-      index: Components
-      edit: Edit Component
-      new: New Component
-      propulsion:
-        index: Propulsion
-      ordnance:
-        index: Ordnance
-      modular:
-        index: Modular
-      avionics:
-        index: Avionics
-    ship:
-      index: Ships
-      edit: Edit Ship
-      new: New Ship
+  error_pages:
+    not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
+    server_error: The Page is currently not available. Please try again later.
+    unprocessable_entity: Your Request could not be processed.
+  mailer:
+    hello: Hello %{username}!
+    model:
+      admin:
+        headline: New Model
+    transmission_end: "--- incomming transmission ---"
+    transmission_start: "--- incomming transmission ---"
     user:
+      admin:
+        headline: New User Registered
+        subject: New User Registration
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: is now on Sale!
+        price: Starting at %{price}
+        subject: "%{model} now on Sale!"
+  meta:
+    description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
+    keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
+  nav:
+    components: Components
+    home: Home
+    images: Images
+    manufacturers: Manufacturers
+    model:
+      overview: Index
+    models: Models
+    users: Users
+    workers: Workers
+  title:
+    admin: FleetYards.net Backend
+    component:
+      edit: Edit Component
+      index: Components
+      new: New Component
+    confirm: Confirm Account
+    default: FleetYards.net
+    image:
+      index: All Images
+    impressum: Impressum
+    manufacturer:
+      edit: Edit Manufacturer
+      index: Manufacturers
+      new: New Manufacturer
+    model:
+      edit: Edit Model
+      index: Models
+      new: New Model
+    not_found: 404
+    password:
+      new: Forgot your Password?
+    privacy: Privacy policy
+    server_error: 500
+    sign_in: Login
+    sign_up: Sign up
+    unlock: Unlock Account
+    unprocessable_entity: 422
+    user:
+      edit: Edit User
       index: Users
       new: New User
-      edit: "Edit User"
-    password:
-      new: "Forgot your Password?"
-  default_country: ~
-  default_country_code: ~
-  select2:
-    empty: ~
-  nav:
-    toggle: "Toggle navigation"
-    home: Home
-    settings: Settings
-    admin: Backend
-    ships: Ships
-    impressum: Impressum
-    privacy: "Privacy policy"
-    hangar: "My Hangar"
-    workers: "Workers"
-    users: "Users"
-    ship:
-      overview: Index
-    images: Images
-    components: Components
-    component:
-      propulsion: Propulsion
-      ordnance: Ordnance
-      modular: Modular
-      avionics: Avionics
-    manufacturers: Manufacturers
-    frontend: Frontend
-    user:
-      basic: "Basic"
-      password: "Password"
-      rsi: "Star Citizen"
-  texts:
-    base:
-      index: "Your Database for all Information about the upcoming “Star Citizen“ from Chris Roberts."
-      index_quote: "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”"
-      index_quote_source: "Author Unknown, Source: <a href=\"https://robertsspaceindustries.com\">robertsspaceindustries.com</a>"
-      index_support: "Support us and get 5000 UEC starting money by using the following Recruitment Code <b>\"%{code}\"</b> when you buy Star Citizen"
-
-  error_pages:
-    not_found: "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space."
-    unprocessable_entity: "Your Request could not be processed."
-    server_error: "The Page is currently not available. Please try again later."
-
-  mailer:
-    hello: "Hello %{username}!"
-    transmission_start: "--- incomming transmission ---"
-    transmission_end: "--- incomming transmission ---"
-    ship:
-      admin:
-        subject: "New Ship"
-        headline: "New Ship"
-    user:
-      admin:
-        subject: "New User Registration"
-        headline: "New User Registered"
-    user_ship:
-      on_sale:
-        subject: "%{ship} now on Sale!"
-        headline:
-          part_one: "The"
-          part_two: "is now on Sale!"
-        price: "Starting at %{price}"

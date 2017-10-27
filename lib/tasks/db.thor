@@ -5,11 +5,10 @@ require 'highline/import'
 class Db < Thor
   include Thor::Actions
 
-  desc "reset_ships", "Reset Ships"
-  def reset_ships
+  desc "reset_models", "Reset Models"
+  def reset_models
     require "./config/environment"
-    ActiveRecord::Base.connection.execute("TRUNCATE ships;")
-    ActiveRecord::Base.connection.execute("TRUNCATE ship_roles;")
+    ActiveRecord::Base.connection.execute("TRUNCATE models;")
     ActiveRecord::Base.connection.execute("TRUNCATE manufacturers;")
     ActiveRecord::Base.connection.execute("TRUNCATE component_categories;")
     ActiveRecord::Base.connection.execute("TRUNCATE components;")

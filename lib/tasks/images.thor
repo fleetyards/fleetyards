@@ -19,12 +19,12 @@ class Images < Thor
       end
     end
 
-    Ship.find_each do |ship|
+    Model.find_each do |model|
       begin
-        ship.store_image.cache_stored_file!
-        ship.store_image.retrieve_from_cache!(ship.store_image.cache_name)
-        ship.store_image.recreate_versions!(:dark, :big, :small)
-        ship.save!
+        model.store_image.cache_stored_file!
+        model.store_image.retrieve_from_cache!(model.store_image.cache_name)
+        model.store_image.recreate_versions!(:dark, :big, :small)
+        model.save!
       rescue => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
       end

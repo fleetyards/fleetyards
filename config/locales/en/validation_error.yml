@@ -1,6 +1,7 @@
+---
 en:
   validation_error:
-    signup: "Signup failed. Please resolve all Errors and try again."
-    confirmation: "Confirmation failed."
-    request_password: "Request Password failed."
-    change_pasword: "Password Change failed."
+    change_pasword: Password Change failed.
+    confirmation: Confirmation failed.
+    request_password: Request Password failed.
+    signup: Signup failed. Please resolve all Errors and try again.

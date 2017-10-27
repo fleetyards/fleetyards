@@ -8,12 +8,12 @@ class Hardpoint < ApplicationRecord
     end
   end
 
-  belongs_to :ship, touch: true
+  belongs_to :model, touch: true
   belongs_to :component, required: false
   belongs_to :category,
              class_name: "ComponentCategory"
 
-  validates :ship_id, :category_id, presence: true
+  validates :model_id, :category_id, presence: true
 
   validates_with ComponentCategoryValidator
 

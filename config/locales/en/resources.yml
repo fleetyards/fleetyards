@@ -1,22 +1,13 @@
+---
 en:
   resources:
-    user:
-      default:
-        success: "Personal Information"
-        failure: "Personal Information"
-      password:
-        success: Password
-        failure: Password
-      admin: User
-    locale: Locales
-    ship: Ship
-    ships: Ships
-    my_ship: "My Ship"
-    manufacturer: Manufacturer
     component: Component
     image: Image
+    locale: Locales
+    manufacturer: Manufacturer
     messages:
-      user_data: "Personal Information"
       password: Password
-      user: User
-      setting: Settings
+    model: Model
+    models: Models
+    user:
+      admin: User

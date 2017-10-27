@@ -7,7 +7,7 @@ class Manufacturer < ApplicationRecord
 
   mount_uploader :logo, LogoUploader
 
-  has_many :ships
+  has_many :models
 
   def self.enabled
     where(enabled: true)
@@ -17,12 +17,12 @@ class Manufacturer < ApplicationRecord
     where.not(name: nil)
   end
 
-  def self.with_ship
-    includes(:ships).where.not(ships: { manufacturer_id: nil })
+  def self.with_model
+    includes(:models).where.not(models: { manufacturer_id: nil })
   end
 
-  def self.ship_filters
-    Manufacturer.enabled.with_name.with_ship.order(name: :asc).all.map do |manufacturer|
+  def self.model_filters
+    Manufacturer.enabled.with_name.with_model.order(name: :asc).all.map do |manufacturer|
       Filter.new(
         category: 'manufacturer',
         name: manufacturer.name,

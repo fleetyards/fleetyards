@@ -1,0 +1,41 @@
+= form_for [:admin, model], html: { multipart: true } do |form|
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(model, :name)}
+      = form.label :name
+      = form.text_field :name, class: 'form-control'
+      %small
+        = form_errors model, :name
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(model, :store_image)}
+      - if model.store_image?
+        = image_tag(model.store_image.small)
+        = form.check_box :remove_store_image
+        Remove Image
+      - else
+        = form.label :store_image
+        = form.file_field :store_image, class: 'form-control'
+        = form.hidden_field :store_image_cache
+      %small
+        = form_errors model, :store_image
+
+  %fieldset
+    %legend
+      Additions:
+    #addition
+      = form.fields_for :addition, (model.addition || model.build_addition) do |builder|
+        = render 'addition_fields', fields: builder
+
+  %fieldset
+    %legend
+      Videos:
+    #videos
+      - if model.videos.present?
+        = form.fields_for :videos, model.videos do |builder|
+          = render 'models/video_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :videos, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#videos" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_video")
+
+  = render "shared/submit", path: admin_models_path

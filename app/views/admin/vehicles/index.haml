@@ -1,0 +1,33 @@
+- content_for :title do
+  = Vehicle.name.humanize
+.row#vehicles
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12
+        %h1
+          = Vehicle.name.humanize
+
+    .row
+      .col-xs-12.col-md-6
+        = paginate @vehicles
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/vehicles/table", :@vehicles => @vehicles
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_cont
+            = f.search_field :name_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+    .row
+      .col-xs-12.col-md-6
+        = paginate @vehicles

@@ -1,53 +1,30 @@
+---
 en:
   actions:
-    loading: "Please wait..."
-    ok: OK
-    reset: Reset
-    cancel: Cancel
-    edit: Edit
-    delete: Delete
-    remove: Remove
-    back: Back
-    save: Save
     add: Add
-    add_my_ship: In my Hangar
     add_video: Add Video
-    show: Show
-    show_variants: "Show variants"
-    hide_variants: "Hide variants"
+    admin:
+      component:
+        new: Creae new Component
+      manufacturer:
+        new: Create new Manufacturer
+      model:
+        new: Create new Model
+      user:
+        new: Create new User
+    back: Back
+    cancel: Cancel
+    confirm: Confirm Account
+    delete: Delete
+    edit: Edit
+    loading: Please wait...
+    model:
+      gallery: Gallery
+      reload: Reload Models
+    ok: OK
+    reset_password: Forgot password?
+    save: Save
+    save_password: Save password
     sign_in: Login
     sign_out: Logout
-    sign_up: "Sign Up"
-    confirm: "Confirm Account"
-    unlock: "Unlock Account"
-    update_password: "Update password"
-    reset_password: "Forgot password?"
-    save_password: "Save password"
-    admin: Backend
-    enable: Activate
-    disable: Deactivate
-    support_us: "Support Fleetyards.net"
-    hangar:
-      public: "Public view"
-    manufacturer:
-      ships: Ships
-    ship:
-      gallery: Gallery
-      on_sale: "On Sale: %{price}"
-      store: RSI Detail Page
-      reload: "Reload Ships"
-    more_info: "More Information"
-    more: "More..."
-    search: Search
-    ship_database: Ship-Database
-    admin:
-      ship:
-        new: "Create new Ship"
-      user:
-        new: "Create new User"
-      image:
-        new: "Upload new Image"
-      manufacturer:
-        new: "Create new Manufacturer"
-      component:
-        new: "Creae new Component"
+    unlock: Unlock Account

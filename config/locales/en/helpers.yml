@@ -1,48 +1,19 @@
+---
 en:
   helpers:
     label:
       user:
-        email: E-Mail
-        password: Password
-        password_confirmation: "Password Confirmation"
-        current_password: "Current Password"
-        remember_me: "Remember me"
-        locale: Language
-        rsi_organization_url: "Organization URL"
-        rsi_profile_url: "Profile URL"
-        rsi_organization_handle: "Organizations SID"
-        rsi_handle: Profile
-      user_ship:
-        name: Name
-        purchased: Purchased
+        remember_me: Remember me
     placeholder:
       name: Name
-      ship:
-        search: "Search for Name or Description"
-        beam: Beam
-        cargo: Cargo
-        crew: Crew
-        height: Height
-        length: Length
-        mass: Mass
-        role: Roles
+      user:
+        email: E-Mail
+        login: Username or E-Mail
+        password: Password
+        password_confirmation: Password Confirmation
+        username: Username
       video:
         url: URL
-      user:
-        username: Username
-        email: E-Mail
-        login: "Username or E-Mail"
-        password: Password
-        password_confirmation: "Password Confirmation"
-        current_password: "Current Password"
-        remember_me: "Remember me"
-        gravatar: "Gravatar E-Mail Address"
-      user_ship:
-        name: "Name your %{ship}"
     prompt:
       video:
-        video_type: "Please select a Video Type"
-      user:
-        locale: "Please select a Language"
-      address:
-        country: "Please select a Country"
+        video_type: Please select a Video Type

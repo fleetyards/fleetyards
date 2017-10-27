@@ -1,73 +1,74 @@
+---
 en:
   activerecord:
     attributes:
-      updated_at: "%{time} ago"
-      user:
-        login: "Username or E-Mail"
-        enabled: Active?
-        admin: Admin?
-        confirmation_token: Token
-        gravatar: "Gravatar E-Mail Address"
-        email: E-Mail
-        username: Username
-      ship:
+      equipment:
+        types:
+          additional: Additional Equipment
+          powerplant: Powerplant
+          primary_thrusters: Primary Thrusters
+          shield: Shields
+          thrusters: Maneuvering Thrusters
+      model:
         beam: Beam
         cargo: Cargo
         crew: Crew
+        equipment: Equipment
+        hardpoints: Hardpoints
         height: Height
         length: Length
-        mass: Mass
         manufacturer: Manufacturer
-        hardpoints: Hardpoints
-        weapons: Weapons
-        equipment: Equipment
-        variants: Variants
+        mass: Mass
         max_upgrades: Upgrades
         production_status: Production Status
-      equipment:
-        types:
-          shield: Shields
-          thrusters: "Maneuvering Thrusters"
-          primary_thrusters: "Primary Thrusters"
-          powerplant: Powerplant
-          additional: "Additional Equipment"
-      weapon:
-        classes:
-          class1: "Class 1"
-          class2: "Class 2"
-          class3: "Class 3"
-          class4: "Class 4"
-          class5: "Class 5"
-          class6: "Class 6"
-          class7: "Class 7"
-          class8: "Class 8"
+        variants: Variants
+        weapons: Weapons
       setting:
         base:
-          registration: "Registration active?"
+          registration: Registration active?
         mailer:
-          default_from: "Default From"
-          host: "SMTP Host"
-          port: "SMTP Port"
-          user: "SMTP User"
-          password: "SMPT Password or Token"
+          default_from: Default From
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      updated_at: "%{time} ago"
+      user:
+        admin: Admin?
+        confirmation_token: Token
+        email: E-Mail
+        enabled: Active?
+        gravatar: Gravatar E-Mail Address
+        login: Username or E-Mail
+        username: Username
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
     errors:
       messages:
-        record_invalid: "Bad Data"
-        blank: "Please fill out the Field"
+        blank: Please fill out the Field
+        record_invalid: Bad Data
       models:
         user:
           attributes:
-            username:
-              taken: "Username is already taken."
-            email:
-              taken: "E-Mail is already taken."
             confirmation_token:
-              invalid: "is invalid"
-            password:
-              too_short: ~
-            password_confirmation:
-              confirmation: "Passwords do not match"
+              invalid: is invalid
             current_password:
-              invalid: "Password is invalid."
+              invalid: Password is invalid.
+            email:
+              taken: E-Mail is already taken.
+            password:
+              too_short: 
+            password_confirmation:
+              confirmation: Passwords do not match
             reset_password_token:
-              invalid: "Token is invalid"
+              invalid: Token is invalid
+            username:
+              taken: Username is already taken.

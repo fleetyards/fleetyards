@@ -94,6 +94,7 @@ gem 'rack-mini-profiler'
 gem 'pry-rails'
 
 group :development do
+  gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'
   gem 'rubocop', require: false
   gem 'spring'

@@ -6,15 +6,15 @@ class User < ApplicationRecord
          :confirmable, :timeoutable,
          authentication_keys: [:login]
 
-  has_many :user_ships
-  has_many :ships,
-           through: :user_ships
-  has_many :purchased_user_ships,
+  has_many :vehicles
+  has_many :models,
+           through: :vehicles
+  has_many :purchased_vehicles,
            -> { where(purchased: true) },
-           class_name: 'UserShip'
-  has_many :purchased_ships,
-           class_name: 'Ship',
-           through: :purchased_user_ships,
+           class_name: 'Vehicle'
+  has_many :purchased_models,
+           class_name: 'Model',
+           through: :purchased_vehicles,
            source: :ship
   has_many :pending_memberships,
            -> { where(approved: false) },

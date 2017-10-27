@@ -1,81 +1,33 @@
+---
 en:
   labels:
     actions: Actions
-    tax_excluded: "excl. VAT"
-    name: Name
-    description: Description
-    address: Address
-    id: ID
-    role: Role
-    email: E-Mail
-    source: Source
-    purchased: "Purchased"
-    component:
-      size: "Size: %{size}"
-    hardpoint:
-      max_size: "Max. Size: %{size}"
-    manufacturer:
-      known_for: "Known for "
-    user:
-      current_sign_in_at: "Last Login"
-      admin: Admin?
-      email: E-Mail
-      created_at: "Created at"
-      help:
-        rsi_profile_url: "URL like: “https://robertsspaceindustries.com/citizens/*your-citizen-handle*“"
-        rsi_organization_url: "URL like: “https://robertsspaceindustries.com/orgs/*your-org-sid*“"
-    gallery:
-      blank:
-        ship: "No Pictures for \"%{ship}\" present."
-    blank:
-      propulsion: "No Propulsion present"
-      ordnance: "No Ordnance present"
-      modular: "No Modular present"
-      avionics: "No Avionics present"
-    table:
-      id: ID
-      name: Name
-      slug: Slug
-      actions: Actions
-      enabled: Enabled?
-      rsi_id: RSI-ID
-      updated_at: "last reload"
-      blank:
-        default: "No Entries could be found."
-        ship: "No Ships could be found."
-        my_ship: "Your Hangar is empty."
-        image: "No Image could be found."
-      out_of_range:
-        ship: "No Ships could be found on this page. <a href='%{url}'>return to first page</a>"
-        my_ship: "Your Hangar does not yet have so many Ships :). <a href='%{url}'>return to first page</a>"
-      image:
-        name: Filename
-        gallery_type: Gallery
-      ship:
-        stats: Stats
-        manufacturer: Manufacturer
-      user:
-        created_at: Created
-        last_sign_in_at: Current sign in at
-        email: E-Mail
-        username: Username
-      component:
-        type: Type
-        category: Category
-    ship:
-      on_sale: "Currently on Sale"
+    model:
       production_status:
-        in-production: "In Production"
-        in-concept: "In Concept"
-        ready: "Hangar Ready"
-        flight-ready: "Flight Ready"
         announced: Announced
-      roles:
-        unknown: "Unknown"
-    hangar:
-      roles: "Available Roles"
+        flight-ready: Flight Ready
+        in-concept: In Concept
+        in-production: In Production
+        ready: Hangar Ready
     panels:
-      latest_ships: "Reloaded Ships"
-      latest_users: "New Users"
-      latest_manufacturers: "New Manufacturers"
-      latest_components: "New Components"
+      latest_components: New Components
+      latest_manufacturers: New Manufacturers
+      latest_models: Reloaded Models
+      latest_users: New Users
+    table:
+      actions: Actions
+      blank:
+        default: No Entries could be found.
+        image: No Image could be found.
+        ship: No Models could be found.
+      component:
+        category: Category
+      model:
+        manufacturer: Manufacturer
+      name: Name
+      updated_at: last reload
+      user:
+        email: E-Mail
+        last_sign_in_at: Current sign in at
+        username: Username
+    tax_excluded: excl. VAT

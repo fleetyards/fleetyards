@@ -1,0 +1,6 @@
+<h4>
+  <%= I18n.t("mailer.model.admin.headline") %>
+</h4>
+<p>
+  New Model "<%= @model.name %>"!
+</p>

@@ -1,0 +1,5 @@
+enterprise:
+  name: "Enterprise"
+  model: andromeda
+  user: data
+  purchased: true

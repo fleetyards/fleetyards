@@ -12,8 +12,8 @@ module Api
 
       def index
         authorize! :index, :api_models
-        @q = Ship.enabled
-                 .ransack(query_params)
+        @q = Model.enabled
+                  .ransack(query_params)
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
@@ -24,9 +24,9 @@ module Api
         authorize! :index, :api_models
         @filters ||= begin
           filters = []
-          filters << Manufacturer.ship_filters
-          filters << Ship.production_status_filters
-          filters << Ship.classification_filters
+          filters << Manufacturer.model_filters
+          filters << Model.production_status_filters
+          filters << Model.classification_filters
           filters.flatten
                  .sort_by { |filter| [filter.category, filter.name] }
         end
@@ -34,15 +34,15 @@ module Api
 
       def latest
         authorize! :index, :api_models
-        @models = Ship.enabled
-                      .order(updated_at: :desc, name: :asc)
-                      .limit(20)
+        @models = Model.enabled
+                       .order(updated_at: :desc, name: :asc)
+                       .limit(20)
       end
 
       def updated
         authorize! :index, :api_models
         if updated_range.present?
-          scope = Ship.enabled
+          scope = Model.enabled
           scope = scope.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
         else
@@ -52,13 +52,13 @@ module Api
 
       def show
         authorize! :show, :api_models
-        @model = Ship.enabled
-                     .find_by!(slug: params[:slug])
+        @model = Model.enabled
+                      .find_by!(slug: params[:slug])
       end
 
       def gallery
         authorize! :index, :api_models
-        model = Ship.find_by!(slug: params[:slug])
+        model = Model.find_by!(slug: params[:slug])
         @images = model.images
                        .enabled
                        .order(created_at: :asc)

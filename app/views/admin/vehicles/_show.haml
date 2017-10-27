@@ -1,0 +1,17 @@
+%tr{id: vehicle.id}
+  %td
+    = vehicle.name
+  %td
+    = vehicle.model.name
+  %td
+    - if vehicle.purchased?
+      %i.fa.fa-check
+    - else
+      %i.fa.fa-square-o
+  %td
+    = time_ago_in_words(vehicle.updated_at)
+    = "(#{l(vehicle.updated_at, format: :short)})"
+  %td
+    = time_ago_in_words(vehicle.created_at)
+    = "(#{l(vehicle.created_at, format: :short)})"
+  %td

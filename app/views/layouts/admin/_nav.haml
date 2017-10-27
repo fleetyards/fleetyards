@@ -1,13 +1,13 @@
 %ul.nav.navbar-nav
   %li{class: active_nav?('admin')}
     = link_to I18n.t(:"nav.home"), admin_root_path
-    %li.dropdown{class: active_nav?(%w(admin-ships admin-manufacturers admin-components))}
+    %li.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components))}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-        = I18n.t(:"nav.ships")
+        = I18n.t(:"nav.models")
         %b.caret
       %ul.dropdown-menu
-        %li{class: active_nav?('admin-ships')}
-          = link_to I18n.t(:"nav.ship.overview"), admin_ships_path
+        %li{class: active_nav?('admin-models')}
+          = link_to I18n.t(:"nav.model.overview"), admin_models_path
         %li.divider
         %li{class: active_nav?('admin-manufacturers')}
           = link_to I18n.t(:"nav.manufacturers"), admin_manufacturers_path
@@ -18,8 +18,8 @@
     = link_to I18n.t(:"nav.images"), admin_images_path
   %li{class: active_nav?('admin-users')}
     = link_to I18n.t(:"nav.users"), admin_users_path
-  %li{class: active_nav?('admin-user-ships')}
-    = link_to UserShip.name.humanize, admin_user_ships_path
+  %li{class: active_nav?('admin-vehicles')}
+    = link_to Vehicle.name.humanize, admin_vehicles_path
   %li
     %a{href: admin_sidekiq_web_url, target: "_blank"}
       = I18n.t(:"nav.workers")

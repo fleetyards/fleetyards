@@ -9,7 +9,7 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
   put '/locales/fetch' => 'locales#fetch', as: :update_locales
 
   resources :users, except: [:show]
-  resources :user_ships, only: [:index]
+  resources :vehicles, only: [:index]
 
   resources :settings, except: %i[index show]
 
@@ -17,7 +17,7 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
     mount Sidekiq::Web => '/workers'
   end
 
-  resources :ships, except: [:show] do
+  resources :models, except: [:show] do
     put 'reload', on: :collection
     member do
       get 'gallery'

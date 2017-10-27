@@ -1,9 +1,9 @@
 # see https://crontab.guru for help/explanation of cron lines
 
 production: &production
-  ships_worker_job:
+  models_worker_job:
     cron: '0 * * * *'
-    class: 'ShipsWorker'
+    class: 'ModelsWorker'
   fleets_worker_job:
     cron: '30 * * * *'
     class: 'FleetsWorker'

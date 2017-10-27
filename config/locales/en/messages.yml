@@ -1,40 +1,25 @@
+---
 en:
-  unauthorized:
-    default: "Access denied"
   messages:
-    alert:
-      user_not_found: "The User could not be found."
-      selection_required: "Please select at least one %{resource}."
-    record_not_found:
-      base: "No Entry found"
-      ship: "No Ship for \"%{slug}\" could be found"
-      manufacturer: "No Manufacturer for \"%{slug}\" could be found"
     confirm:
-      form:
-        cancel: "Are you sure? Unsaved changes will be lost."
-      delete: "Are you sure you want to delete this entry?"
-      my_ship:
-        delete: "Are you sure you want to remove this Ship from you Hangar?"
-    fleet:
-      join:
-        success: "Fleet Join Request received."
-        failure: Could not create a Join Request!""
-    setting:
-      not_found: "No Entry found"
-    enabled:
-      success: "%{resource} enabled."
-    disabled:
-      success: "%{resource} disabled."
+      delete: Are you sure you want to delete this entry?
     create:
-      success: "%{resource} created."
       failure: "%{resource} could not be created."
-    update:
-      success: "%{resource} edited successfully."
-      failure: "%{resource} could not be edited."
+      success: "%{resource} created."
     destroy:
       success: "%{resource} successfully deleted."
-      failure: "%{resource} could not be deleted."
+    disabled:
+      success: "%{resource} disabled."
+    enabled:
+      success: "%{resource} enabled."
+    fleet:
+      join:
+        success: Fleet Join Request received.
+    record_not_found:
+      base: No Entry found
     reload:
       startet: "%{resource} reload startet."
       success: "%{resource} successfully reloaded."
-      failure: "%{resource} could not be reloaded."
+    update:
+      failure: "%{resource} could not be edited."
+      success: "%{resource} edited successfully."

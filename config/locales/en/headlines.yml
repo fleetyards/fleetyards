@@ -1,68 +1,38 @@
+---
 en:
   headlines:
-    sign_up: "Sign Up"
-    sign_in: Login
-    forgot_password: "Forgot your Password?"
-    change_password: "Change your Password"
-    unlock: "Unlock your Account"
-    confirm: "Confirm your Account"
-    account: "My Information"
-    impressum: Impressum
-    privacy: "Privacy policy"
-    welcome: Welcome
-    comments: Comments
-    not_found: "Navigation Error"
-    unprocessable_entity: "False Request"
-    server_error: "Server Error"
-    hangar:
-      show: "My Hangar"
-      public: "%{user}s Hangar"
-    my_ship: "My %{ship}"
-    manufacturer:
-      index: Manufacturers
-    image:
-      updates: "New Images"
-      index: "All Images"
-      welcome: Images
-    component:
-      propulsion:
-        index: Propulsion
-      ordnance:
-        index: Ordnance
-      modular:
-        index: Modular
-      avionics:
-        index: Avionics
-    ship:
-      updates: "Updated Ships"
-      gallery: "%{ship} Gallery"
-      index: "Ships Index"
-      welcome: Ships
-    base:
-      index: "Welcome to"
+    account: My Information
     admin:
+      component:
+        edit: Edit %{component}
+        index: Component
+        new: New Component
+      dashboard: Dashboard
       image:
         index: Images
-        new: Imageupload
-      ship:
-        index: Ships
-        gallery: "Imageuplaod for %{ship}"
-        edit: "Edit %{ship}"
-        new: New Ship
       manufacturer:
+        edit: Edit %{manufacturer}
         index: Manufacturer
-        edit: "Edit %{manufacturer}"
         new: New Manufacturer
-      component:
-        index: Component
-        edit: "Edit %{component}"
-        new: New Component
+      model:
+        edit: Edit %{ship}
+        gallery: Imageuplaod for %{ship}
+        index: Models
+        new: New Ship
       user:
+        edit: Edit %{user}
         index: Users
         new: New User
-        edit: Edit %{user}
-      dashboard: Dashboard
-  sublines:
-    impressum:
-      general: "General Information (according to § 5 TMG)"
-      disclaimer: Disclaimer
+    change_password: Change your Password
+    comments: Comments
+    confirm: Confirm your Account
+    forgot_password: Forgot your Password?
+    impressum: Impressum
+    not_found: Navigation Error
+    privacy: Privacy policy
+    server_error: Server Error
+    sign_in: Login
+    sign_up: Sign Up
+    unlock: Unlock your Account
+    unprocessable_entity: False Request
+    welcome: Welcome

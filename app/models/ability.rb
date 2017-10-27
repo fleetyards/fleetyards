@@ -9,7 +9,7 @@ class Ability
     can :manage, :all if user.admin?
 
     can :read, [:manufacturers, Manufacturer]
-    can :read, [:ships, Ship]
+    can :read, [:models, Model]
     can :read, [:components, Component]
 
     can :show, :api
@@ -22,7 +22,7 @@ class Ability
 
     can :index, :api_hangar
     can :index, :api_my_fleets
-    can %i[add remove], UserShip, user_id: user.id
+    can %i[add remove], Vehicle, user_id: user.id
     can %i[read update], User, id: user.id
   end
 end

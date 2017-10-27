@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027003105) do
+ActiveRecord::Schema.define(version: 20171027085930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -40,17 +40,6 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.string "rsi_name", limit: 255
     t.string "name", limit: 255
     t.string "slug", limit: 255
-  end
-
-  create_table "component_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.integer "size"
-    t.uuid "hardpoint_category_id"
-    t.uuid "manufacturer_id"
-    t.string "rsi_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -89,27 +78,6 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hardpoint_category_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "hardpoint_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.integer "size"
-    t.integer "amount", default: 1, null: false
-    t.uuid "category_id"
-    t.uuid "component_id"
-    t.uuid "vehicle_id"
-    t.string "vehicle_type"
-    t.string "rsi_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["vehicle_type", "vehicle_id"], name: "index_hardpoint_v2s_on_vehicle_type_and_vehicle_id"
-  end
-
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "hardpoint_class", limit: 255
@@ -118,7 +86,7 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.integer "quantity"
     t.integer "rsi_id"
     t.uuid "category_id"
-    t.uuid "ship_id"
+    t.uuid "model_id"
     t.uuid "component_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -133,17 +101,6 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.datetime "updated_at"
   end
 
-  create_table "manufacturer_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "logo"
-    t.string "known_for"
-    t.text "description"
-    t.string "rsi_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "manufacturers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
@@ -156,40 +113,24 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.datetime "updated_at"
   end
 
-  create_table "model_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "manufacturer_id"
-    t.string "slug"
-    t.text "description"
-    t.string "store_image"
-    t.string "store_url"
-    t.string "classification"
-    t.string "role"
-    t.string "career"
-    t.string "production_status"
-    t.string "production_note"
-    t.boolean "on_sale", default: false, null: false
-    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
-    t.integer "cargo", default: 0, null: false
-    t.integer "max_crew"
-    t.integer "min_crew", default: 1, null: false
-    t.string "rsi_id"
+  create_table "model_additions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
+    t.integer "cargo", default: 0, null: false
+    t.integer "net_cargo", default: 0, null: false
+    t.integer "scm_speed", default: 0, null: false
+    t.integer "afterburner_speed", default: 0, null: false
+    t.integer "cruise_speed", default: 0, null: false
+    t.integer "min_crew", default: 0, null: false
+    t.integer "max_crew", default: 0, null: false
   end
 
-  create_table "ship_roles", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "slug", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "models", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.text "description"
@@ -218,16 +159,6 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.integer "cruise_speed", default: 0, null: false
     t.integer "min_crew", default: 0, null: false
     t.integer "max_crew", default: 0, null: false
-  end
-
-  create_table "user_ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "ship_id"
-    t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean "purchased", default: false
-    t.boolean "sale_notify", default: true
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -265,31 +196,14 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "vehicle_additions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "ship_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.integer "cargo", default: 0, null: false
-    t.integer "net_cargo", default: 0, null: false
-    t.integer "scm_speed", default: 0, null: false
-    t.integer "afterburner_speed", default: 0, null: false
-    t.integer "cruise_speed", default: 0, null: false
-    t.integer "min_crew", default: 0, null: false
-    t.integer "max_crew", default: 0, null: false
-  end
-
-  create_table "vehicle_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "vehicles", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id"
     t.uuid "model_id"
-    t.string "name"
-    t.uuid "owner_id"
-    t.boolean "purchased", default: false, null: false
-    t.boolean "sale_notify", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean "purchased", default: false
+    t.boolean "sale_notify", default: true
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -298,7 +212,7 @@ ActiveRecord::Schema.define(version: 20171027003105) do
     t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "ship_id"
+    t.uuid "model_id"
   end
 
 end

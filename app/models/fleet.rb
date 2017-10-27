@@ -12,10 +12,10 @@ class Fleet < ApplicationRecord
            class_name: 'FleetMembership',
            dependent: :destroy
   has_many :users, through: :members
-  has_many :purchased_ships,
+  has_many :purchased_models,
            through: :users
 
-  alias_attribute :models, :purchased_ships
+  alias_attribute :models, :purchased_models
 
   validates :sid, uniqueness: true
   validates :sid, presence: true

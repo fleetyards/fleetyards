@@ -1,22 +1,18 @@
+---
 en:
   filter:
     all: All
-    ship:
-      on_sale:
-        items:
-          "true": "Yes"
-          "false": "No"
+    image:
+      model:
+        title: Model
+    model:
       classification:
         items:
           combat: Combat
-          transport: Transport
-          exploration: Exploration
-          industrial: Industrial
-          support: Support
           competition: Competition
-          multi: Multi
+          exploration: Exploration
           ground: Ground
-
-    image:
-      ship:
-        title: Ship
+          industrial: Industrial
+          multi: Multi
+          support: Support
+          transport: Transport
