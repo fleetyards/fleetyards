@@ -6,7 +6,7 @@ json.name vehicle.name
 json.purchased vehicle.purchased
 json.sale_notify vehicle.sale_notify
 json.model do
-  json.partial! 'api/v1/models/minimal', model: vehicle.ship
+  json.partial! 'api/v1/models/minimal', model: vehicle.model
 end
 json.user do
   json.partial! 'api/v1/users/base', user: vehicle.user
