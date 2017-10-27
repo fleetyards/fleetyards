@@ -11,7 +11,7 @@ class Ship < ApplicationRecord
           dependent: :destroy
 
   delegate :net_cargo, to: :addition, allow_nil: true
-  delegate :height, :length, :cargo, :crew, :mass, :beam, to: :addition, allow_nil: true, prefix: true
+  delegate :height, :length, :cargo, :max_crew, :min_crew, :scm_speed, :afterburner_speed, :mass, :beam, to: :addition, allow_nil: true, prefix: true
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
@@ -74,7 +74,7 @@ class Ship < ApplicationRecord
     end
   end
 
-  %i[height beam length mass cargo crew].each do |method_name|
+  %i[height beam length mass cargo min_crew max_crew scm_speed afterburner_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("addition_#{method_name}")
       if display_value.present? && !display_value.zero?
@@ -82,14 +82,6 @@ class Ship < ApplicationRecord
       else
         try(method_name)
       end
-    end
-  end
-
-  def ship_role_name
-    if ship_role.present?
-      ship_role.name
-    else
-      I18n.t('labels.ship.roles.unknown')
     end
   end
 

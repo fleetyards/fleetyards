@@ -6,7 +6,7 @@
   %td
     = ship.manufacturer.name.html_safe if ship.manufacturer.present?
   %td
-    = ship.ship_role.name.html_safe if ship.ship_role.present? && ship.ship_role.name.present?
+    = ship.focus
   %td.text-right
     .btn-group
       %button.reload-ships.btn.btn-default.ladda-button{data: {style: "expand-right", action: reload_one_admin_ship_path(ship), workerPath: admin_check_worker_state_path('ShipsWorker')}, onclick: "App.Ships.reload($(this)); return false;"}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023221715) do
+ActiveRecord::Schema.define(version: 20171027003105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -195,8 +195,6 @@ ActiveRecord::Schema.define(version: 20171023221715) do
     t.text "description"
     t.string "store_image", limit: 255
     t.string "store_url", limit: 255
-    t.integer "powerplant_size"
-    t.integer "shield_size"
     t.string "classification", limit: 255
     t.boolean "enabled", default: false, null: false
     t.integer "rsi_id"
@@ -209,12 +207,17 @@ ActiveRecord::Schema.define(version: 20171023221715) do
     t.string "focus", limit: 255
     t.boolean "on_sale", default: false
     t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "cargo", default: 0, null: false
-    t.integer "crew", default: 0, null: false
+    t.string "size"
+    t.integer "scm_speed", default: 0, null: false
+    t.integer "afterburner_speed", default: 0, null: false
+    t.integer "cruise_speed", default: 0, null: false
+    t.integer "min_crew", default: 0, null: false
+    t.integer "max_crew", default: 0, null: false
   end
 
   create_table "user_ships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -266,13 +269,17 @@ ActiveRecord::Schema.define(version: 20171023221715) do
     t.uuid "ship_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "beam", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "length", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "height", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "mass", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "cargo", default: 0, null: false
-    t.integer "crew", default: 0, null: false
     t.integer "net_cargo", default: 0, null: false
+    t.integer "scm_speed", default: 0, null: false
+    t.integer "afterburner_speed", default: 0, null: false
+    t.integer "cruise_speed", default: 0, null: false
+    t.integer "min_crew", default: 0, null: false
+    t.integer "max_crew", default: 0, null: false
   end
 
   create_table "vehicle_v2s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

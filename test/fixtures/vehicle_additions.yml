@@ -6,5 +6,6 @@ esperanza_addition:
   mass: 1000.02
   cargo: 10
   net_cargo: 4
-  crew: 3
+  min_crew: 1
+  max_crew: 3
   ship: andromeda

@@ -7,16 +7,15 @@ class ShipsLoaderTest < ActiveSupport::TestCase
   let(:loader) { ShipsLoader.new }
 
   test "#all" do
-    VCR.use_cassette('ships_loader_all') do
+    VCR.use_cassette('ships_loader_all', record: :new_episodes) do
       loader.all
 
       expectations = {
-        hardpoints: 2086,
-        components: 216,
-        component_categories: 4,
-        ships: 105,
-        manufacturers: 16,
-        ship_roles: 65
+        hardpoints: 0,
+        components: 0,
+        component_categories: 0,
+        ships: 108,
+        manufacturers: 16
       }
 
       assert_equal(expectations,
@@ -24,17 +23,16 @@ class ShipsLoaderTest < ActiveSupport::TestCase
                    components: Component.count,
                    component_categories: ComponentCategory.count,
                    ships: Ship.count,
-                   manufacturers: Manufacturer.count,
-                   ship_roles: ShipRole.count)
+                   manufacturers: Manufacturer.count)
     end
   end
 
   test "#updates only when needed" do
-    VCR.use_cassette('ships_loader_all') do
+    VCR.use_cassette('ships_loader_all', record: :new_episodes) do
       Timecop.freeze(Time.zone.now) do
-        loader.one('Origin 600i Explorer')
+        loader.one('600i Explorer')
 
-        ship = Ship.find_by(name: 'Origin 600i Explorer')
+        ship = Ship.find_by(name: '600i Explorer')
 
         Timecop.travel(1.day)
 
@@ -42,7 +40,7 @@ class ShipsLoaderTest < ActiveSupport::TestCase
         ship.reload
 
         assert(ship.updated_at.day != Time.zone.now.day)
-        assert_equal(61.5, ship.length.to_f)
+        assert_equal(91.5, ship.length.to_f)
       end
     end
   end

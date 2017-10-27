@@ -24,7 +24,6 @@ module Api
         authorize! :index, :api_models
         @filters ||= begin
           filters = []
-          filters << ShipRole.ship_filters
           filters << Manufacturer.ship_filters
           filters << Ship.production_status_filters
           filters << Ship.classification_filters

@@ -15,8 +15,6 @@ class ShipsLoader
     ships.each do |data|
       sync_ship(data)
     end
-
-    cleanup_ship_roles
   end
 
   def one(ship_name)
@@ -24,26 +22,21 @@ class ShipsLoader
 
     ship_data = ships.find { |ship| ship["name"] == ship_name }
     sync_ship(ship_data) if ship_data.present?
-
-    cleanup_ship_roles
-  end
-
-  def cleanup_ship_roles
-    ShipRole.includes(:ships).where(ships: { ship_role_id: nil }).destroy_all
   end
 
   def load_ships
-    return JSON.parse(File.read(json_file_path)) if Rails.env.test?
+    if Rails.env.test? && File.exist?(json_file_path)
+      return JSON.parse(File.read(json_file_path))['data']
+    end
 
-    response = Typhoeus.get("#{base_url}/ship-specs")
+    response = Typhoeus.get("#{base_url}/ship-matrix/index")
 
-    match = response.body.match(/data: \[(.+)\]/)
     begin
-      ship_data = JSON.parse("[#{match[1]}]")
+      ship_data = JSON.parse(response.body)
       File.open(json_file_path, "w") do |f|
         f.write(ship_data.to_json)
       end
-      ship_data
+      ship_data['data']
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
       Rails.logger.error "ShipData could not be parsed: [#{match[1]}]"
@@ -58,13 +51,12 @@ class ShipsLoader
     ship.price = buying_options.price
     ship.on_sale = buying_options.on_sale
 
-    ship.ship_role = create_or_update_ship_role(data["focus"])
     ship.manufacturer = create_or_update_manufacturer(data["manufacturer"])
 
-    create_or_update_propulsion_hardpoints(ship.id, data["propulsion"])
-    create_or_update_ordnance_hardpoints(ship.id, data["ordnance"])
-    create_or_update_modular_hardpoints(ship.id, data["modular"])
-    create_or_update_avionics_hardpoints(ship.id, data["avionics"])
+    # create_or_update_propulsion_hardpoints(ship.id, data["propulsion"])
+    # create_or_update_ordnance_hardpoints(ship.id, data["ordnance"])
+    # create_or_update_modular_hardpoints(ship.id, data["modular"])
+    # create_or_update_avionics_hardpoints(ship.id, data["avionics"])
 
     ship.enabled = true
 
@@ -90,11 +82,11 @@ class ShipsLoader
   end
 
   private def create_or_update_ship(data)
-    ship = Ship.find_or_initialize_by(name: data["name"])
+    ship = Ship.find_or_initialize_by(rsi_id: data["id"])
     raise ship.errors.to_yaml unless ship.save
 
     ship.update(
-      rsi_id: data["id"],
+      name: data["name"],
       production_status: data["production_status"],
       production_note: data["production_note"],
       description: data["description"],
@@ -102,11 +94,13 @@ class ShipsLoader
       beam: data["beam"].to_f,
       height: data["height"].to_f,
       mass: data["mass"].to_f,
+      size: data["size"],
       cargo: data["cargocapacity"].to_i,
-      crew: data["maxcrew"].to_i,
-      powerplant_size: data["maxpowerplantsize"],
-      shield_size: data["maxshieldsize"],
-      classification: data["classification"],
+      max_crew: data["max_crew"].to_i,
+      min_crew: data["min_crew"].to_i,
+      scm_speed: data["scm_speed"].to_i,
+      afterburner_speed: data["afterburner_speed"].to_i,
+      classification: data["type"],
       focus: data["focus"],
       store_url: data["url"]
     )
@@ -124,11 +118,11 @@ class ShipsLoader
   end
 
   def create_or_update_manufacturer(manufacturer_data)
-    manufacturer = Manufacturer.find_or_initialize_by(name: manufacturer_data["name"])
+    manufacturer = Manufacturer.find_or_initialize_by(rsi_id: manufacturer_data["id"])
     raise manufacturer.errors.to_yaml unless manufacturer.save
 
     manufacturer.update(
-      rsi_id: manufacturer_data["id"],
+      name: manufacturer_data["name"],
       known_for: manufacturer_data["known_for"],
       description: manufacturer_data["description"],
       remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank?),

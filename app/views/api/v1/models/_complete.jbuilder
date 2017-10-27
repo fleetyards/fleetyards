@@ -6,9 +6,6 @@ json.cache! ['v1', model] do
   json.manufacturer do
     json.partial! 'api/v1/models/manufacturer', manufacturer: model.manufacturer if model.manufacturer.present?
   end
-  json.role do
-    json.partial! 'api/v1/models/role', role: model.ship_role if model.ship_role.present?
-  end
   json.hardpoints do
     json.array! model.hardpoints, partial: 'api/v1/models/hardpoint', as: :hardpoint
   end
