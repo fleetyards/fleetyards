@@ -33,8 +33,8 @@
             = f.search_field :size_eq, class: 'form-control'
 
           .form-group
-            = f.label :category_id_eq
-            -# = f.select :category_id_eq, options_from_collection_for_select(ComponentCategory.all.order(:name), :id, :name, @q.category_id_eq), { include_blank: true }, {class: 'form-control'}
+            = f.label :component_class_eq
+            = f.select :component_class_eq, options_from_collection_for_select(Component.class_filters, :value, :name, @q.component_class_eq), { include_blank: true }, {class: 'form-control'}
 
           .btn-group
             %button.btn.btn-primary

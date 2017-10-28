@@ -16,3 +16,8 @@ en:
           multi: Multi
           support: Support
           transport: Transport
+    component:
+      class:
+        items:
+          rsimodular: "System"
+          rsiweapon: "Weapon"

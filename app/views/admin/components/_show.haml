@@ -1,12 +1,12 @@
 %tr{id: component.id}
   %td
-    = component.name || 'Unknown'
+    = component.name
   %td
     = component.size
   %td
-    = component.component_type.capitalize if component.component_type.present?
+    = component.manufacturer.name
   %td
-    = component.category.name
+    = I18n.t("filter.component.class.items.#{component.component_class.downcase}")
   %td
     .btn-group
       = link_to edit_admin_component_path(component), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

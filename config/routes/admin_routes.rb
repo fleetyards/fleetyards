@@ -22,17 +22,12 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
     member do
       get 'gallery'
       put 'reload_one'
-      put 'toggle'
     end
   end
 
-  resources :manufacturers, except: [:show] do
-    put 'toggle', on: :member
-  end
+  resources :manufacturers, except: [:show]
 
-  resources :components, except: [:show] do
-    put 'toggle', on: :member
-  end
+  resources :components, except: [:show]
 
   resources :images, except: %i[show new edit update] do
     put 'toggle', on: :member

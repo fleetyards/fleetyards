@@ -13,10 +13,6 @@ v1_api_routes = lambda do
     get 'gallery', on: :member
   end
 
-  resources :components, only: [] do
-    get :categories, on: :collection
-  end
-
   resources :images, only: %i[index] do
     get :random, on: :collection
   end

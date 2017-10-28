@@ -131,7 +131,7 @@ class RsiModelsLoader
       code: (manufacturer_data['code'] if manufacturer_data['code'].present?),
       known_for: (manufacturer_data['known_for'] if manufacturer_data['known_for'].present?),
       description: (manufacturer_data['description'] if manufacturer_data['description'].present?),
-      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank? && manufacturer_data['media'].present?),
+      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank? && manufacturer_data['media'].present?)
     )
 
     manufacturer

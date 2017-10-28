@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 20171027232944) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "uuid-ossp"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
   enable_extension "hstore"
 
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20171027232944) do
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name", limit: 255
     t.integer "quantity"
     t.uuid "model_id"
     t.uuid "component_id"

@@ -10,9 +10,4 @@
       %small
         = form_errors component, :size
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(component, :component_type)}
-      = form.text_field :component_type, placeholder: I18n.t(:"helpers.placeholder.component_type"), class: 'form-control'
-      %small
-        = form_errors component, :component_type
-
   = render "shared/submit", path: admin_components_path
