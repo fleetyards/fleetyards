@@ -29,7 +29,7 @@ class Manufacturer < ApplicationRecord
     Manufacturer.with_name.with_component.order(name: :asc).all.map(&:to_filter)
   end
 
-  private def to_filter
+  def to_filter
     Filter.new(
       category: 'manufacturer',
       name: name,
