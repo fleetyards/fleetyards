@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class Component < ApplicationRecord
-  default_scope -> { order(name: :asc) }
+  include SlugHelper
 
-  belongs_to :category,
-             class_name: "ComponentCategory"
+  belongs_to :manufacturer, required: false
 
-  validates :name, :component_type, :category_id, presence: true
+  validates :name, presence: true
 
-  def self.enabled
-    where(enabled: true)
+  before_save :update_slugs
+
+  private def update_slugs
+    self.slug = SlugHelper.generate_slug(name)
   end
 end

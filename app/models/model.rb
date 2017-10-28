@@ -36,10 +36,6 @@ class Model < ApplicationRecord
   after_save :broadcast_update
   after_create :send_new_model_notification
 
-  def self.enabled
-    where(enabled: true)
-  end
-
   def self.production_status_filters
     I18n.t('labels.model.production_status').map do |status|
       Filter.new(

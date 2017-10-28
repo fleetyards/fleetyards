@@ -51,27 +51,6 @@ module Admin
       end
     end
 
-    def toggle
-      authorize! :toggle, manufacturer
-
-      respond_to do |format|
-        format.js do
-          if manufacturer.update(manufacturer_params)
-            message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.manufacturer"))
-            if manufacturer.enabled?
-              message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.manufacturer"))
-            end
-            render json: { message: message }
-          else
-            render json: false, status: :bad_request
-          end
-        end
-        format.html do
-          redirect_to admin_manufacturers_path
-        end
-      end
-    end
-
     private def save_filters
       session[:manufacturers_filters] = params[:q]
       session[:manufacturers_page] = params[:page]
@@ -86,7 +65,7 @@ module Admin
     helper_method :index_back_params
 
     private def manufacturer_params
-      @manufacturer_params ||= params.require(:manufacturer).permit(:name, :enabled, :logo)
+      @manufacturer_params ||= params.require(:manufacturer).permit(:name, :logo)
     end
 
     private def manufacturer

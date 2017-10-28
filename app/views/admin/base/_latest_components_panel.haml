@@ -7,7 +7,6 @@
       %thead
         %tr
           %th= I18n.t(:"labels.table.name")
-          %th= I18n.t(:"labels.table.component.category")
           %th= I18n.t(:"labels.table.updated_at")
           %th.actions.actions-one
       %tbody
@@ -15,8 +14,6 @@
           %tr
             %td
               = component.name
-            %td
-              = component.category.name
             %td
               = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(component.updated_at))
             %td

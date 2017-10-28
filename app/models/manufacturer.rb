@@ -8,10 +8,6 @@ class Manufacturer < ApplicationRecord
 
   has_many :models
 
-  def self.enabled
-    where(enabled: true)
-  end
-
   def self.with_name
     where.not(name: nil)
   end
@@ -21,7 +17,7 @@ class Manufacturer < ApplicationRecord
   end
 
   def self.model_filters
-    Manufacturer.enabled.with_name.with_model.order(name: :asc).all.map do |manufacturer|
+    Manufacturer.with_name.with_model.order(name: :asc).all.map do |manufacturer|
       Filter.new(
         category: 'manufacturer',
         name: manufacturer.name,

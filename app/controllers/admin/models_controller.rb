@@ -94,30 +94,9 @@ module Admin
       end
     end
 
-    def toggle
-      authorize! :toggle, model
-
-      respond_to do |format|
-        format.js do
-          if model.update(model_params)
-            message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.model"))
-            if model.enabled?
-              message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.model"))
-            end
-            render json: { message: message }
-          else
-            render json: false, status: :bad_request
-          end
-        end
-        format.html do
-          redirect_to admin_models_path
-        end
-      end
-    end
-
     private def model_params
       @model_params ||= params.require(:model).permit(
-        :name, :enabled, :store_image, :store_image_cache, :remove_store_image,
+        :name, :store_image, :store_image_cache, :remove_store_image,
         addition_attributes: %i[
           id beam length height mass cargo net_cargo crew _destroy
         ],

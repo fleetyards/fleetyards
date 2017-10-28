@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027085930) do
+ActiveRecord::Schema.define(version: 20171027232944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -36,21 +36,14 @@ ActiveRecord::Schema.define(version: 20171027085930) do
     t.index ["token"], name: "index_auth_tokens_on_token"
   end
 
-  create_table "component_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "rsi_name", limit: 255
-    t.string "name", limit: 255
-    t.string "slug", limit: 255
-  end
-
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "size", limit: 255
-    t.string "component_type", limit: 255
-    t.boolean "enabled", default: false, null: false
-    t.integer "rsi_id"
-    t.uuid "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.uuid "manufacturer_id"
+    t.string "component_class"
+    t.string "slug"
   end
 
   create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -79,17 +72,17 @@ ActiveRecord::Schema.define(version: 20171027085930) do
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "hardpoint_class", limit: 255
-    t.integer "rating"
-    t.integer "max_size"
     t.integer "quantity"
-    t.integer "rsi_id"
-    t.uuid "category_id"
     t.uuid "model_id"
     t.uuid "component_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "component_class"
+    t.string "hardpoint_type"
+    t.integer "mounts"
+    t.string "size"
+    t.string "details"
+    t.string "category"
   end
 
   create_table "images", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -107,10 +100,10 @@ ActiveRecord::Schema.define(version: 20171027085930) do
     t.string "known_for", limit: 255
     t.text "description"
     t.string "logo", limit: 255
-    t.boolean "enabled", default: false, null: false
     t.integer "rsi_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "code"
   end
 
   create_table "model_additions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -137,7 +130,6 @@ ActiveRecord::Schema.define(version: 20171027085930) do
     t.string "store_image", limit: 255
     t.string "store_url", limit: 255
     t.string "classification", limit: 255
-    t.boolean "enabled", default: false, null: false
     t.integer "rsi_id"
     t.uuid "manufacturer_id"
     t.uuid "ship_role_id"
@@ -152,13 +144,19 @@ ActiveRecord::Schema.define(version: 20171027085930) do
     t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.integer "cargo", default: 0, null: false
+    t.decimal "cargo", precision: 15, scale: 2, default: "0.0", null: false
     t.string "size"
-    t.integer "scm_speed", default: 0, null: false
-    t.integer "afterburner_speed", default: 0, null: false
-    t.integer "cruise_speed", default: 0, null: false
+    t.decimal "scm_speed", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "afterburner_speed", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "cruise_speed", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "min_crew", default: 0, null: false
     t.integer "max_crew", default: 0, null: false
+    t.decimal "pitch_max", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "yaw_max", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "roll_max", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "xaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "yaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "zaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -209,7 +207,6 @@ ActiveRecord::Schema.define(version: 20171027085930) do
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "url"
     t.integer "video_type"
-    t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "model_id"

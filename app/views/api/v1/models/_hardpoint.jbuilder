@@ -2,13 +2,13 @@
 # frozen_string_literal: true
 
 json.id hardpoint.id
-json.name hardpoint.name
-json.class hardpoint.hardpoint_class
-json.rating hardpoint.rating
-json.max_size hardpoint.max_size
+json.type hardpoint.hardpoint_type
+json.class hardpoint.component_class
+json.size hardpoint.size
 json.quantity hardpoint.quantity
-json.categoryName hardpoint.category.name
-json.categorySlug hardpoint.category.slug
+json.mounts hardpoint.mounts
+json.details hardpoint.details
+json.category hardpoint.category
 json.component do
   json.partial! 'api/v1/models/component', component: hardpoint.component if hardpoint.component.present?
 end

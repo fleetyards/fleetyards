@@ -53,12 +53,17 @@ class RsiModelsLoader
 
     model.manufacturer = create_or_update_manufacturer(data["manufacturer"])
 
-    # create_or_update_propulsion_hardpoints(model.id, data["propulsion"])
-    # create_or_update_ordnance_hardpoints(model.id, data["ordnance"])
-    # create_or_update_modular_hardpoints(model.id, data["modular"])
-    # create_or_update_avionics_hardpoints(model.id, data["avionics"])
+    model.hardpoints.destroy_all
 
-    model.enabled = true
+    components = data['compiled']
+    components.keys.each do |component_class|
+      types = components[component_class]
+      types.keys.each do |type|
+        types[type].each do |hardpoint_data|
+          create_or_update_hardpoint(hardpoint_data, model.id)
+        end
+      end
+    end
 
     model.save!
   end
@@ -82,26 +87,32 @@ class RsiModelsLoader
   end
 
   private def create_or_update_model(data)
-    model = Model.find_or_create_by!(rsi_id: data["id"])
+    model = Model.find_or_create_by!(rsi_id: data['id'])
 
     model.update(
-      name: data["name"],
-      production_status: data["production_status"],
-      production_note: data["production_note"],
-      description: data["description"],
-      length: data["length"].to_f,
-      beam: data["beam"].to_f,
-      height: data["height"].to_f,
-      mass: data["mass"].to_f,
-      size: data["size"],
-      cargo: data["cargocapacity"].to_i,
-      max_crew: data["max_crew"].to_i,
-      min_crew: data["min_crew"].to_i,
-      scm_speed: data["scm_speed"].to_i,
-      afterburner_speed: data["afterburner_speed"].to_i,
-      classification: data["type"],
-      focus: data["focus"],
-      store_url: data["url"]
+      name: data['name'],
+      production_status: data['production_status'],
+      production_note: data['production_note'],
+      description: data['description'],
+      length: data['length'].to_f,
+      beam: data['beam'].to_f,
+      height: data['height'].to_f,
+      mass: data['mass'].to_f,
+      size: data['size'],
+      cargo: data['cargocapacity'].to_f,
+      max_crew: data['max_crew'].to_i,
+      min_crew: data['min_crew'].to_i,
+      scm_speed: data['scm_speed'].to_f,
+      afterburner_speed: data['afterburner_speed'].to_f,
+      pitch_max: data['pitch_max'].to_f,
+      yaw_max: data['yaw_max'].to_f,
+      roll_max: data['roll_max'].to_f,
+      xaxis_acceleration: data['xaxis_acceleration'].to_f,
+      yaxis_acceleration: data['yaxis_acceleration'].to_f,
+      zaxis_acceleration: data['zaxis_acceleration'].to_f,
+      classification: data['type'],
+      focus: data['focus'],
+      store_url: data['url']
     )
 
     if model.store_image.blank?
@@ -113,102 +124,48 @@ class RsiModelsLoader
   end
 
   def create_or_update_manufacturer(manufacturer_data)
-    manufacturer = Manufacturer.find_or_initialize_by(rsi_id: manufacturer_data["id"])
-    raise manufacturer.errors.to_yaml unless manufacturer.save
+    manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data["id"])
 
     manufacturer.update(
-      name: manufacturer_data["name"],
-      known_for: manufacturer_data["known_for"],
-      description: manufacturer_data["description"],
-      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank?),
-      enabled: true
+      name: manufacturer_data['name'],
+      code: (manufacturer_data['code'] if manufacturer_data['code'].present?),
+      known_for: (manufacturer_data['known_for'] if manufacturer_data['known_for'].present?),
+      description: (manufacturer_data['description'] if manufacturer_data['description'].present?),
+      remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank? && manufacturer_data['media'].present?),
     )
 
     manufacturer
   end
 
-  def create_or_update_propulsion_hardpoints(model_id, propulsion_data)
-    category = ComponentCategory.find_or_initialize_by(rsi_name: "propulsion")
-    raise category.errors.to_yaml unless category.save
-
-    propulsion_data.each do |data|
-      create_or_update_hardpoint(data, category, model_id)
-    end
-
-    cleanup_hardpoints(model_id, category.id, propulsion_data)
-  end
-
-  def create_or_update_ordnance_hardpoints(model_id, ordnance_data)
-    category = ComponentCategory.find_or_initialize_by(rsi_name: "ordnance")
-    raise category.errors.to_yaml unless category.save
-
-    ordnance_data.each do |data|
-      create_or_update_hardpoint(data, category, model_id)
-    end
-
-    cleanup_hardpoints(model_id, category.id, ordnance_data)
-  end
-
-  def create_or_update_modular_hardpoints(model_id, modular_data)
-    category = ComponentCategory.find_or_initialize_by(rsi_name: "modular")
-    raise category.errors.to_yaml unless category.save
-
-    modular_data.each do |data|
-      create_or_update_hardpoint(data, category, model_id)
-    end
-
-    cleanup_hardpoints(model_id, category.id, modular_data)
-  end
-
-  def create_or_update_avionics_hardpoints(model_id, avionics_data)
-    category = ComponentCategory.find_or_initialize_by(rsi_name: "avionics")
-    raise category.errors.to_yaml unless category.save
-
-    avionics_data.each do |data|
-      create_or_update_hardpoint(data, category, model_id)
-    end
-
-    cleanup_hardpoints(model_id, category.id, avionics_data)
-  end
-
-  def create_or_update_hardpoint(hardpoint_data, category, model_id)
-    Hardpoint.find_or_create_by(
-      category_id: category.id,
+  def create_or_update_hardpoint(hardpoint_data, model_id)
+    hardpoint = Hardpoint.create!(
       model_id: model_id,
-      rsi_id: hardpoint_data["id"]
-    ) do |hardpoint|
-      hardpoint.name = hardpoint_data["name"]
-      hardpoint.max_size = hardpoint_data["max_size"]
-      hardpoint.hardpoint_class = hardpoint_data["class"]
-      hardpoint.max_size = hardpoint_data["max_size"]
-      hardpoint.quantity = hardpoint_data["quantity"]
-      hardpoint.rating = hardpoint_data["rating"]
-      unless hardpoint_data["component"].nil?
-        hardpoint.component = create_or_update_component(hardpoint_data["component"], category)
-      end
-    end
+      hardpoint_type: hardpoint_data['type'],
+      size: hardpoint_data['size'],
+      details: hardpoint_data['details'],
+      quantity: hardpoint_data['quantity'].to_i,
+      mounts: hardpoint_data['mounts'].to_i,
+      category: hardpoint_data['category'],
+      component_class: hardpoint_data['component_class']
+    )
+
+    hardpoint.component = create_or_update_component(hardpoint_data)
+    hardpoint.save
+
+    hardpoint
   end
 
-  def cleanup_hardpoints(model_id, category_id, hardpoint_data)
-    rsi_ids = hardpoint_data.map do |data|
-      data["id"].to_i
-    end
-    Hardpoint.where(model_id: model_id, category_id: category_id).where.not(rsi_id: rsi_ids).destroy_all
-  end
+  def create_or_update_component(hardpoint_data)
+    return if hardpoint_data['manufacturer'].blank? || hardpoint_data['manufacturer'] == 'TBD'
 
-  def create_or_update_component(component_data, category)
-    component = Component.find_or_initialize_by(name: component_data["name"]) do |c|
-      c.component_type = component_data["type"]
-      c.category = category
-    end
-    raise component.errors.to_yaml unless component.save
+    manufacturer = Manufacturer.find_or_create_by!(name: hardpoint_data['manufacturer'].strip)
+
+    component = Component.find_or_create_by!(name: hardpoint_data['name'])
 
     component.update(
-      rsi_id: component_data["id"],
-      size: component_data["size"],
-      component_type: component_data["type"],
-      category: category,
-      enabled: true
+      manufacturer_id: (manufacturer.id if manufacturer.present?),
+      size: hardpoint_data['component_size'],
+      component_class: hardpoint_data['component_class']
     )
 
     component

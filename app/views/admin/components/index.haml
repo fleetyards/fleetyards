@@ -34,7 +34,7 @@
 
           .form-group
             = f.label :category_id_eq
-            = f.select :category_id_eq, options_from_collection_for_select(ComponentCategory.all.order(:name), :id, :name, @q.category_id_eq), { include_blank: true }, {class: 'form-control'}
+            -# = f.select :category_id_eq, options_from_collection_for_select(ComponentCategory.all.order(:name), :id, :name, @q.category_id_eq), { include_blank: true }, {class: 'form-control'}
 
           .btn-group
             %button.btn.btn-primary

@@ -3,8 +3,6 @@
     = manufacturer.name.html_safe
   %td
     .btn-group
-      %button.btn.btn-default{class: ('active' if manufacturer.enabled?), type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: toggle_admin_manufacturer_path(manufacturer), resource: 'manufacturer', toggle: "button"}}
-        %i.fa{class: "fa-#{(manufacturer.enabled? ? 'check' : 'square-o')}"}
       = link_to edit_admin_manufacturer_path(manufacturer), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
         %i.fa.fa-edit
       = confirm_link_to admin_manufacturer_path(manufacturer), data: {notyConfirm: I18n.t(:"messages.confirm.delete")}, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do

@@ -12,8 +12,7 @@ module Api
 
       def index
         authorize! :index, :api_models
-        @q = Model.enabled
-                  .ransack(query_params)
+        @q = Model.ransack(query_params)
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
@@ -35,16 +34,14 @@ module Api
 
       def latest
         authorize! :index, :api_models
-        @models = Model.enabled
-                       .order(updated_at: :desc, name: :asc)
+        @models = Model.order(updated_at: :desc, name: :asc)
                        .limit(20)
       end
 
       def updated
         authorize! :index, :api_models
         if updated_range.present?
-          scope = Model.enabled
-          scope = scope.where(updated_at: updated_range)
+          scope = Model.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
         else
           render json: [], status: :not_modified
@@ -53,8 +50,7 @@ module Api
 
       def show
         authorize! :show, :api_models
-        @model = Model.enabled
-                      .find_by!(slug: params[:slug])
+        @model = Model.find_by!(slug: params[:slug])
       end
 
       def gallery

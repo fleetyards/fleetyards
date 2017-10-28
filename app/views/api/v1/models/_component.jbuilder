@@ -3,5 +3,9 @@
 
 json.id component.id
 json.name component.name
+json.slug component.slug
 json.size component.size
-json.type component.component_type
+json.class component.component_class
+json.manufacturer do
+  json.partial! 'api/v1/models/manufacturer', manufacturer: component.manufacturer if component.manufacturer.present?
+end
