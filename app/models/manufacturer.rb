@@ -7,6 +7,7 @@ class Manufacturer < ApplicationRecord
   mount_uploader :logo, LogoUploader
 
   has_many :models
+  has_many :components
 
   def self.with_name
     where.not(name: nil)
@@ -16,15 +17,25 @@ class Manufacturer < ApplicationRecord
     includes(:models).where.not(models: { manufacturer_id: nil })
   end
 
+  def self.with_component
+    includes(:components).where.not(components: { manufacturer_id: nil })
+  end
+
   def self.model_filters
-    Manufacturer.with_name.with_model.order(name: :asc).all.map do |manufacturer|
-      Filter.new(
-        category: 'manufacturer',
-        name: manufacturer.name,
-        icon: manufacturer.logo.small.url,
-        value: manufacturer.slug
-      )
-    end
+    Manufacturer.with_name.with_model.order(name: :asc).all.map(&:to_filter)
+  end
+
+  def self.component_filters
+    Manufacturer.with_name.with_component.order(name: :asc).all.map(&:to_filter)
+  end
+
+  private def to_filter
+    Filter.new(
+      category: 'manufacturer',
+      name: name,
+      icon: (logo.small.url if logo.present?),
+      value: slug
+    )
   end
 
   before_save :update_slugs
