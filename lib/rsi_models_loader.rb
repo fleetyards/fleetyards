@@ -150,7 +150,7 @@ class RsiModelsLoader
       default_empty: hardpoint_data['name'].blank?
     )
 
-    if hardpoint_data['name'].present?
+    if hardpoint_data['name'].present? && hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
       hardpoint.component = create_or_update_component(hardpoint_data)
       hardpoint.save
     end
@@ -167,7 +167,7 @@ class RsiModelsLoader
       component_type: hardpoint_data['type']
     )
 
-    if hardpoint_data['manufacturer'].blank? || hardpoint_data['manufacturer'] == 'TBD'
+    if hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
       component.manufacturer = Manufacturer.find_or_create_by!(name: hardpoint_data['manufacturer'].strip)
       component.save
     end
