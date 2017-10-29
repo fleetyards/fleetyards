@@ -15,6 +15,12 @@ json.min_crew model.display_min_crew
 json.max_crew model.display_max_crew
 json.scm_speed model.display_scm_speed
 json.afterburner_speed model.display_afterburner_speed
+json.pitch_max model.pitch_max
+json.yaw_max model.yaw_max
+json.roll_max model.roll_max
+json.xaxis_acceleration model.xaxis_acceleration
+json.yaxis_acceleration model.yaxis_acceleration
+json.zaxis_acceleration model.zaxis_acceleration
 json.size model.size
 json.store_image model.store_image.url
 json.store_url store_url(model.store_url)
