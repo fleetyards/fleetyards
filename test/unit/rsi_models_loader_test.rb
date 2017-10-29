@@ -28,9 +28,9 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   test "#updates only when needed" do
     VCR.use_cassette('rsi_models_loader_all', record: :new_episodes) do
       Timecop.freeze(Time.zone.now) do
-        loader.one('Constellation Andromeda')
+        loader.one('300i')
 
-        model = Model.find_by(name: 'Constellation Andromeda')
+        model = Model.find_by(name: '300i')
 
         Timecop.travel(1.day)
 

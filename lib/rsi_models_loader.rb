@@ -146,27 +146,31 @@ class RsiModelsLoader
       quantity: hardpoint_data['quantity'].to_i,
       mounts: hardpoint_data['mounts'].to_i,
       category: hardpoint_data['category'],
-      component_class: hardpoint_data['component_class']
+      component_class: hardpoint_data['component_class'],
+      default_empty: hardpoint_data['name'].blank?
     )
 
-    hardpoint.component = create_or_update_component(hardpoint_data)
-    hardpoint.save
+    if hardpoint_data['name'].present?
+      hardpoint.component = create_or_update_component(hardpoint_data)
+      hardpoint.save
+    end
 
     hardpoint
   end
 
   def create_or_update_component(hardpoint_data)
-    return if hardpoint_data['manufacturer'].blank? || hardpoint_data['manufacturer'] == 'TBD'
-
-    manufacturer = Manufacturer.find_or_create_by!(name: hardpoint_data['manufacturer'].strip)
-
     component = Component.find_or_create_by!(name: hardpoint_data['name'])
 
     component.update(
-      manufacturer_id: (manufacturer.id if manufacturer.present?),
       size: hardpoint_data['component_size'],
-      component_class: hardpoint_data['component_class']
+      component_class: hardpoint_data['component_class'],
+      component_type: hardpoint_data['type']
     )
+
+    if hardpoint_data['manufacturer'].blank? || hardpoint_data['manufacturer'] == 'TBD'
+      component.manufacturer = Manufacturer.find_or_create_by!(name: hardpoint_data['manufacturer'].strip)
+      component.save
+    end
 
     component
   end
