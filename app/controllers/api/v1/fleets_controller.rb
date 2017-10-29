@@ -56,7 +56,8 @@ module Api
                           id name slug description length beam height mass cargo size
                           min_crew max_crew scm_speed afterburner_speed store_image store_url
                           price on_sale production_status production_note focus classification
-                          focus rsi_id manufacturer_id created_at updated_at
+                          focus rsi_id manufacturer_id created_at updated_at pitch_max yaw_max
+                          roll_max xaxis_acceleration yaxis_acceleration zaxis_acceleration
                         ]
                       )
                       .group(:id)
