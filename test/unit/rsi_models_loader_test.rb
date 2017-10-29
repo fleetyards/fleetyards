@@ -38,7 +38,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         model.reload
 
         assert(model.updated_at.day != Time.zone.now.day)
-        assert_equal(61.0, model.length.to_f)
+        assert_equal(23.0, model.length.to_f)
       end
     end
   end
