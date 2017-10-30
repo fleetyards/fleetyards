@@ -56,9 +56,9 @@ class RsiModelsLoader
     model.hardpoints.destroy_all
 
     components = data['compiled']
-    components.keys.each do |component_class|
+    components.each_key do |component_class|
       types = components[component_class]
-      types.keys.each do |type|
+      types.each_key do |type|
         types[type].each do |hardpoint_data|
           create_or_update_hardpoint(hardpoint_data, model.id)
         end

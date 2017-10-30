@@ -6,8 +6,8 @@ class Manufacturer < ApplicationRecord
 
   mount_uploader :logo, LogoUploader
 
-  has_many :models
-  has_many :components
+  has_many :models, dependent: :nullify
+  has_many :components, dependent: :nullify
 
   def self.with_name
     where.not(name: nil)

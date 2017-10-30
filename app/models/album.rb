@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Album < ApplicationRecord
-  has_many :images, as: :gallery
+  has_many :images, as: :gallery, dependent: :nullify
 
   before_save :update_slugs
 

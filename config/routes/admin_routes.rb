@@ -1,4 +1,3 @@
-# encoding: utf-8
 # frozen_string_literal: true
 
 namespace :admin, path: "", constraints: { subdomain: "admin" } do

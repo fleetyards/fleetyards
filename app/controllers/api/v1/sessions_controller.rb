@@ -1,4 +1,3 @@
-# encoding: utf-8
 # frozen_string_literal: true
 
 require 'json_web_token'
@@ -25,7 +24,7 @@ module Api
 
       def destroy
         auth_token = AuthToken.find_by(user_id: current_user.id, token: jwt_token[:token])
-        auth_token && auth_token.destroy
+        auth_token&.destroy
         render json: { code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out") }
       end
 

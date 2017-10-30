@@ -1,4 +1,3 @@
-# encoding: utf-8
 # frozen_string_literal: true
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, logger: -> { Rails.logger } do

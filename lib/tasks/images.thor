@@ -14,9 +14,11 @@ class Images < Thor
         image.name.retrieve_from_cache!(image.name.cache_name)
         image.name.recreate_versions!(:dark, :big, :small)
         image.save!
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
       end
+      # rubocop:enable Lint/RescueWithoutErrorClass
     end
 
     Model.find_each do |model|
@@ -25,9 +27,11 @@ class Images < Thor
         model.store_image.retrieve_from_cache!(model.store_image.cache_name)
         model.store_image.recreate_versions!(:dark, :big, :small)
         model.save!
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
       end
+      # rubocop:enable Lint/RescueWithoutErrorClass
     end
   end
 end

@@ -6,7 +6,8 @@ class User < ApplicationRecord
          :confirmable, :timeoutable,
          authentication_keys: [:login]
 
-  has_many :vehicles
+  has_many :vehicles,
+           dependent: :destroy
   has_many :models,
            through: :vehicles
   has_many :purchased_vehicles,
@@ -18,13 +19,15 @@ class User < ApplicationRecord
            source: :model
   has_many :pending_memberships,
            -> { where(approved: false) },
-           class_name: 'FleetMembership'
+           class_name: 'FleetMembership',
+           dependent: :destroy
   has_many :pending_fleets,
            through: :pending_memberships,
            source: :fleet
   has_many :memberships,
            -> { where(approved: true) },
-           class_name: 'FleetMembership'
+           class_name: 'FleetMembership',
+           dependent: :destroy
   has_many :fleets,
            through: :memberships
   has_many :admin_memberships,
