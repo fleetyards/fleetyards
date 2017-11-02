@@ -23,11 +23,11 @@ class Vehicle < ApplicationRecord
     Jbuilder.new do |vehicle|
       vehicle.id id
       vehicle.name name
+      vehicle.deleted destroyed?
       vehicle.model do
         vehicle.name model.name
         vehicle.slug model.slug
       end
-      vehicle.deleted vehicle.destroyed?
     end
   end
 
