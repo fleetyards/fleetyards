@@ -32,14 +32,13 @@ end
 
 desc "Deploys the current version to the server."
 task :deploy do
-  # rubocop:disable Rails/Output
   deploy do
     invoke :'git:clone'
-    puts "-----> Install Latest Ruby Version"
+    comment 'Install Latest Ruby Version'
     command %(rbenv install -s)
-    puts "-----> Update Rubygems"
+    comment 'Update Rubygems'
     command %(gem update --system)
-    puts "-----> Update/Install Bundler"
+    comment 'Update/Install Bundler'
     command %(gem install bundler --conservative --silent)
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
