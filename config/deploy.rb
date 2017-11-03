@@ -12,10 +12,6 @@ set :shared_files, [
   'config/database.yml'
 ]
 
-set :stages, %w[local live]
-set :default_stage, 'local'
-
-require 'mina/multistage'
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
@@ -24,22 +20,23 @@ require 'mina/rbenv'
 set :user, 'fleetyards'
 set :forward_agent, true
 
+set :domain, 'erebor.mortik.xyz'
 set :deploy_to, '/home/fleetyards'
 set :repository, 'https://github.com/fleetyards/api'
 set :rails_env, 'production'
 set :branch, 'master'
 
-task :environment do
+task :remote_environment do
   invoke :'rbenv:load'
 end
 
 desc "Deploys the current version to the server."
-task deploy: :environment do
+task :deploy do
   deploy do
     invoke :'git:clone'
     command %(rbenv install -s)
     command %(gem update --system)
-    command %(gem install bundler --silent)
+    command %(gem install bundler --conservative --silent)
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
 
@@ -53,14 +50,14 @@ task deploy: :environment do
   end
 end
 
-task assets_precompile: :environment do
+task assets_precompile: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Precompile Assets)
     command %(#{fetch(:rake)} assets:precompile)
   end
 end
 
-task assets_precompile: :environment do
+task assets_precompile: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Precompile Assets)
     command %(#{fetch(:rake)} assets:precompile)
@@ -68,14 +65,14 @@ task assets_precompile: :environment do
   invoke :'server:restart'
 end
 
-task recreate_images: :environment do
+task recreate_images: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Recreate Images)
     command %(bundle exec thor images:recreate)
   end
 end
 
-task console: :environment do
+task console: :remote_environment do
   set :execution_mode, :exec
   in_path fetch(:current_path).to_s do
     command %(#{fetch(:rails)} console)
@@ -100,7 +97,7 @@ namespace :server do
 end
 
 namespace :db do
-  task load_schema: :environment do
+  task load_schema: :remote_environment do
     in_path fetch(:current_path).to_s do
       invoke :'server:stop'
       comment %(Loading Schema for database)
@@ -109,14 +106,14 @@ namespace :db do
     end
   end
 
-  task migrate: :environment do
+  task migrate: :remote_environment do
     in_path fetch(:current_path).to_s do
       comment %(Migrating database)
       command %(#{fetch(:rake)} db:migrate)
     end
   end
 
-  task backup: :environment do
+  task backup: :remote_environment do
     in_path fetch(:current_path).to_s do
       comment "Creating DB Backup..."
       command %(bundle exec thor db:dump)

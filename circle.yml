@@ -11,4 +11,4 @@ deployment:
   live:
     branch: master
     commands:
-      - bundle exec mina live deploy
+      - bundle exec mina deploy

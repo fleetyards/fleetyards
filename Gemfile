@@ -100,7 +100,6 @@ group :development do
 
   # deployment
   gem 'mina', require: false
-  gem 'mina-multistage', require: false
 end
 
 group :test do
