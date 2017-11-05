@@ -39,7 +39,7 @@ class RsiModelsLoader
       model_data['data']
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
-      Rails.logger.error "Model Data could not be parsed: [#{match[1]}]"
+      Rails.logger.error "Model Data could not be parsed: #{response.body}"
       []
     end
   end
