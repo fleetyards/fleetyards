@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171029094659) do
+ActiveRecord::Schema.define(version: 20171113135159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -116,13 +116,13 @@ ActiveRecord::Schema.define(version: 20171029094659) do
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.integer "cargo", default: 0, null: false
-    t.integer "net_cargo", default: 0, null: false
-    t.integer "scm_speed", default: 0, null: false
-    t.integer "afterburner_speed", default: 0, null: false
-    t.integer "cruise_speed", default: 0, null: false
-    t.integer "min_crew", default: 0, null: false
-    t.integer "max_crew", default: 0, null: false
+    t.decimal "cargo", precision: 15, scale: 2
+    t.decimal "net_cargo", precision: 15, scale: 2
+    t.decimal "scm_speed", precision: 15, scale: 2
+    t.decimal "afterburner_speed", precision: 15, scale: 2
+    t.decimal "cruise_speed", precision: 15, scale: 2
+    t.integer "min_crew"
+    t.integer "max_crew"
   end
 
   create_table "models", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -141,24 +141,24 @@ ActiveRecord::Schema.define(version: 20171029094659) do
     t.string "production_note", limit: 255
     t.string "focus", limit: 255
     t.boolean "on_sale", default: false
-    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "price", precision: 15, scale: 2
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "cargo", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "cargo", precision: 15, scale: 2
     t.string "size"
-    t.decimal "scm_speed", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "afterburner_speed", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "cruise_speed", precision: 15, scale: 2, default: "0.0", null: false
-    t.integer "min_crew", default: 0, null: false
-    t.integer "max_crew", default: 0, null: false
-    t.decimal "pitch_max", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "yaw_max", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "roll_max", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "xaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "yaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
-    t.decimal "zaxis_acceleration", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "scm_speed", precision: 15, scale: 2
+    t.decimal "afterburner_speed", precision: 15, scale: 2
+    t.decimal "cruise_speed", precision: 15, scale: 2
+    t.integer "min_crew"
+    t.integer "max_crew"
+    t.decimal "pitch_max", precision: 15, scale: 2
+    t.decimal "yaw_max", precision: 15, scale: 2
+    t.decimal "roll_max", precision: 15, scale: 2
+    t.decimal "xaxis_acceleration", precision: 15, scale: 2
+    t.decimal "yaxis_acceleration", precision: 15, scale: 2
+    t.decimal "zaxis_acceleration", precision: 15, scale: 2
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
