@@ -99,17 +99,17 @@ class RsiModelsLoader
       height: data['height'].to_f,
       mass: data['mass'].to_f,
       size: data['size'],
-      cargo: data['cargocapacity'].to_f,
-      max_crew: data['max_crew'].to_i,
-      min_crew: data['min_crew'].to_i,
-      scm_speed: data['scm_speed'].to_f,
-      afterburner_speed: data['afterburner_speed'].to_f,
-      pitch_max: data['pitch_max'].to_f,
-      yaw_max: data['yaw_max'].to_f,
-      roll_max: data['roll_max'].to_f,
-      xaxis_acceleration: data['xaxis_acceleration'].to_f,
-      yaxis_acceleration: data['yaxis_acceleration'].to_f,
-      zaxis_acceleration: data['zaxis_acceleration'].to_f,
+      cargo: nil_or_float(data['cargocapacity']),
+      max_crew: nil_or_int(data['max_crew']),
+      min_crew: nil_or_int(data['min_crew']),
+      scm_speed: nil_or_float(data['scm_speed']),
+      afterburner_speed: nil_or_float(data['afterburner_speed']),
+      pitch_max: nil_or_float(data['pitch_max']),
+      yaw_max: nil_or_float(data['yaw_max']),
+      roll_max: nil_or_float(data['roll_max']),
+      xaxis_acceleration: nil_or_float(data['xaxis_acceleration']),
+      yaxis_acceleration: nil_or_float(data['yaxis_acceleration']),
+      zaxis_acceleration: nil_or_float(data['zaxis_acceleration']),
       classification: data['type'],
       focus: data['focus'],
       store_url: data['url']
@@ -173,5 +173,15 @@ class RsiModelsLoader
     end
 
     component
+  end
+
+  private def nil_or_float(value)
+    return if value.blank?
+    value.to_f
+  end
+
+  private def nil_or_int(value)
+    return if value.blank?
+    value.to_i
   end
 end
