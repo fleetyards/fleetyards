@@ -410,7 +410,7 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    public_suffix (3.0.0)
+    public_suffix (3.0.1)
     puma (3.10.0)
     rack (2.0.3)
     rack-attack (5.0.1)
@@ -589,7 +589,7 @@ GEM
       multi_json
       multipart-post (~> 2.0)
       trollop (~> 2.0)
-    webmock (3.1.0)
+    webmock (3.1.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
