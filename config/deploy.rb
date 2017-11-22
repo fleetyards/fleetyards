@@ -41,7 +41,10 @@ task :deploy do
     comment 'Update/Install Bundler'
     command %(gem install bundler --conservative --silent)
     invoke :'deploy:link_shared_paths'
+
     invoke :'bundle:install'
+    comment 'bundle clean'
+    command %(bundle clean)
 
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
