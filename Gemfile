@@ -127,5 +127,3 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
 end
-
-gem 'graphiql-rails', group: :development
