@@ -656,6 +656,7 @@ DEPENDENCIES
   rails-perftest
   ransack
   redcarpet
+  redis (~> 3.0)
   redis-namespace
   rubocop
   ruby-prof
@@ -686,4 +687,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
