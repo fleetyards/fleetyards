@@ -32,7 +32,7 @@ class Model < ApplicationRecord
 
   before_save :update_slugs
 
-  after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
+  # after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_create :send_new_model_notification
 
