@@ -32,7 +32,7 @@ class Model < ApplicationRecord
 
   before_save :update_slugs
 
-  # after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
+  after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_create :send_new_model_notification
 
@@ -99,13 +99,13 @@ class Model < ApplicationRecord
   private def send_new_model_notification
     ModelMailer.notify_admin(self).deliver_later
 
-    return unless on_sale_with_price?
+    return unless on_sale?
 
     ActionCable.server.broadcast('on_sale', to_builder.target!)
   end
 
   private def send_on_sale_notification
-    return unless on_sale_with_price?
+    return unless on_sale?
 
     VehiclesWorker.perform_async(id)
   end

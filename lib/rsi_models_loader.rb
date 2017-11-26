@@ -48,8 +48,10 @@ class RsiModelsLoader
     model = create_or_update_model(data)
 
     buying_options = get_buying_options(model.store_url)
-    model.price = buying_options.price
-    model.on_sale = buying_options.on_sale
+    if buying_options.present?
+      model.price = buying_options.price
+      model.on_sale = buying_options.on_sale
+    end
 
     model.manufacturer = create_or_update_manufacturer(data["manufacturer"])
 
@@ -70,6 +72,9 @@ class RsiModelsLoader
 
   def get_buying_options(store_url)
     response = Typhoeus.get("#{base_url}#{store_url}")
+
+    return unless response.success?
+
     page = Nokogiri::HTML(response.body)
 
     price_element = page.css('#buying-options .final-price').first
@@ -81,8 +86,8 @@ class RsiModelsLoader
             end
 
     OpenStruct.new(
-      price: price.present? ? price : 0.0,
-      on_sale: price.present? ? true : false
+      price: price,
+      on_sale: price.present?
     )
   end
 
