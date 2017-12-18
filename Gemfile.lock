@@ -415,7 +415,7 @@ GEM
     rack-attack (5.0.1)
       rack
     rack-cors (1.0.2)
-    rack-mini-profiler (0.10.6)
+    rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
     rack-protection (2.0.0)
       rack
