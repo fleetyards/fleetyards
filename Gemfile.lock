@@ -576,7 +576,7 @@ GEM
     uniform_notifier (1.10.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
-    vcr (3.0.3)
+    vcr (4.0.0)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.5.1)
