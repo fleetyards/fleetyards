@@ -1,9 +1,9 @@
 window.App.Resources ?= {}
 
-window.App.Resources.stateChange = ($element) ->
+window.App.Resources.stateChange = ($element, attr) ->
   $i = $element.find('i')
   data = {}
-  data[$element.data('resource')] = {enabled: $i.hasClass('fa-square-o')}
+  data[$element.data('resource')] = {"#{attr}": $i.hasClass('fa-square-o')}
   $.ajax
     url: $element.data('action')
     dataType: 'json'

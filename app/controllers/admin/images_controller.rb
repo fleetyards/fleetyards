@@ -73,8 +73,29 @@ module Admin
       end
     end
 
+    def toggle_background
+      authorize! :toggle, :images
+
+      respond_to do |format|
+        format.js do
+          if image.update(image_params)
+            message = I18n.t(:"messages.background_disabled.success", resource: I18n.t(:"resources.image"))
+            if image.enabled?
+              message = I18n.t(:"messages.background_enabled.success", resource: I18n.t(:"resources.image"))
+            end
+            render json: { message: message }
+          else
+            render json: false, status: :bad_request
+          end
+        end
+        format.html do
+          redirect_to admin_images_path
+        end
+      end
+    end
+
     private def image_params
-      @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type, :enabled)
+      @image_params ||= params.require(:image).permit(:name, :gallery_id, :gallery_type, :enabled, :background)
     end
 
     private def image

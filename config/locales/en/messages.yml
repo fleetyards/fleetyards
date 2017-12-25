@@ -12,6 +12,10 @@ en:
       success: "%{resource} disabled."
     enabled:
       success: "%{resource} enabled."
+    background_disabled:
+      success: "%{resource} not used for Background."
+    background_enabled:
+      success: "%{resource} used for Background."
     fleet:
       join:
         success: Fleet Join Request received.

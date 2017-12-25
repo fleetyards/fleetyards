@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113135159) do
+ActiveRecord::Schema.define(version: 20171225190345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20171113135159) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "background", default: true
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

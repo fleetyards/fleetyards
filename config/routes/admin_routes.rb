@@ -30,6 +30,7 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
 
   resources :images, except: %i[show new edit update] do
     put 'toggle', on: :member
+    put 'toggle_background', on: :member
   end
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state

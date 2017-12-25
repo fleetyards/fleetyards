@@ -25,11 +25,18 @@
       {%=o.formatFileSize(file.size)%}
   %td.actions
     .btn-group
-      {% if (file.enabled) { %}
-      %button.btn.btn-default.active{type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
+      {% if (file.background) { %}
+      %button.btn.btn-default.active{type: "button", onclick: "App.Resources.stateChange($(this), 'background'); return false;", data: {action: "{%=file.toggleBackgroundUrl%}", resource: "image", toggle: "button"}}
         %i.fa.fa-check
       {% } else { %}
-      %button.btn.btn-default{type: "button", onclick: "App.Resources.stateChange($(this)); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
+      %button.btn.btn-default{type: "button", onclick: "App.Resources.stateChange($(this), 'background'); return false;", data: {action: "{%=file.toggleBackgroundUrl%}", resource: "image", toggle: "button"}}
+        %i.fa.fa-square-o
+      {% } %}
+      {% if (file.enabled) { %}
+      %button.btn.btn-default.active{type: "button", onclick: "App.Resources.stateChange($(this), 'enabled'); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
+        %i.fa.fa-check
+      {% } else { %}
+      %button.btn.btn-default{type: "button", onclick: "App.Resources.stateChange($(this), 'enabled'); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
         %i.fa.fa-square-o
       {% } %}
       {% if (file.deleteUrl) { %}
