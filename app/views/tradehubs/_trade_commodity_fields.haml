@@ -1,7 +1,7 @@
 .row.fields
   .col-xs-12.col-md-5
     .form-group{class: form_error?(fields.object, :commodity_id)}
-      - commodties = Commodity.all.map { |c| [c.name, c.id] }
+      - commodties = Commodity.all.order(name: :asc).map { |c| [c.name, c.id] }
       = fields.select :commodity_id, commodties, { include_blank: I18n.t(:"helpers.prompt.trade_commodity.commodity") }, class: 'form-control'
       = form_errors fields.object, :commodity_id
 
