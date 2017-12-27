@@ -16,7 +16,8 @@
         = form_errors trade_hub, :planet
 
     .col-xs-12.col-md-6.form-group{class: form_error?(trade_hub, :station_type)}
-      = form.text_field :station_type, placeholder: I18n.t(:"helpers.placeholder.trade_hub.station_type"), class: 'form-control'
+      - station_types = TradeHub.station_types.keys.map { |w| [w.humanize, w] }
+      = form.select :station_type, station_types, { include_blank: I18n.t(:"helpers.prompt.trade_hub.station_type") }, class: 'form-control'
       %small
         = form_errors trade_hub, :station_type
 

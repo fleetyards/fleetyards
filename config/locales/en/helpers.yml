@@ -24,5 +24,7 @@ en:
     prompt:
       video:
         video_type: Please select a Video Type
+      trade_hub:
+        station_type: Please select a Station Type
       trade_commodity:
         commodity: Commodity
