@@ -33,6 +33,9 @@ namespace :admin, path: "", constraints: { subdomain: "admin" } do
     put 'toggle_background', on: :member
   end
 
+  resources :trade_hubs, except: [:show]
+  resources :commodities, except: [:show]
+
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
   root to: 'base#index'

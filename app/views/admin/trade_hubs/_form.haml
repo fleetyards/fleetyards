@@ -1,0 +1,36 @@
+= form_for [:admin, trade_hub] do |form|
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(trade_hub, :name)}
+      = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
+      %small
+        = form_errors trade_hub, :name
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(trade_hub, :system)}
+      = form.text_field :system, placeholder: I18n.t(:"helpers.placeholder.trade_hub.system"), class: 'form-control'
+      %small
+        = form_errors trade_hub, :system
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(trade_hub, :planet)}
+      = form.text_field :planet, placeholder: I18n.t(:"helpers.placeholder.trade_hub.planet"), class: 'form-control'
+      %small
+        = form_errors trade_hub, :planet
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(trade_hub, :station_type)}
+      = form.text_field :station_type, placeholder: I18n.t(:"helpers.placeholder.trade_hub.station_type"), class: 'form-control'
+      %small
+        = form_errors trade_hub, :station_type
+
+  %fieldset
+    %legend
+      Commodities:
+    #trade-commodities
+      - if trade_hub.trade_commodities.present?
+        = form.fields_for :trade_commodities, trade_hub.trade_commodities do |builder|
+          = render 'tradehubs/trade_commodity_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :trade_commodities, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#trade-commodities" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_trade_commodity")
+
+  = render "shared/submit", path: admin_trade_hubs_path

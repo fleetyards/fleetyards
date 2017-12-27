@@ -67,6 +67,9 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :trade_hubs, path: 'trade-hubs', only: [:index]
+  resources :commodities, only: [:index]
+
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle
     resources :orgs, only: %i[show], param: :sid

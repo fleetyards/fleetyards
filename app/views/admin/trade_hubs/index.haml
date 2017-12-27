@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.trade_hub.index")
+.row#trade-hubs
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.trade_hub.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.trade_hub.new"), new_admin_trade_hub_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @trade_hubs
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/trade_hubs/table", :@trade_hubs => @trade_hubs
+
+      -# .col-xs-12.col-md-3
+      -#   = search_form_for [:admin, @q] do |f|
+      -#     .form-group
+      -#       = f.label :name_cont
+      -#       = f.search_field :name_cont, class: 'form-control'
+
+      -#     .form-group
+      -#       = f.label :size_eq
+      -#       = f.search_field :size_eq, class: 'form-control'
+
+      -#     .form-group
+      -#       = f.label :component_class_eq
+      -#       = f.select :component_class_eq, options_from_collection_for_select(Component.class_filters, :value, :name, @q.component_class_eq), { include_blank: true }, {class: 'form-control'}
+
+      -#     .btn-group
+      -#       %button.btn.btn-primary
+      -#         Filter
+      -#       - if params[:q].present?
+      -#         %a.btn.btn-default{href: request.path, title: "Clear Search"}
+      -#           %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @trade_hubs

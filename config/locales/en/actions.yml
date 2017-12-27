@@ -3,6 +3,7 @@ en:
   actions:
     add: Add
     add_video: Add Video
+    add_trade_commodity: Add Commodity
     admin:
       component:
         new: Creae new Component
@@ -12,6 +13,10 @@ en:
         new: Create new Model
       user:
         new: Create new User
+      trade_hub:
+        new: Create new Trade Hub
+      commodity:
+        new: Create new Commodity
     back: Back
     cancel: Cancel
     confirm: Confirm Account

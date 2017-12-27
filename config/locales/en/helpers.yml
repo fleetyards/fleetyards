@@ -6,6 +6,13 @@ en:
         remember_me: Remember me
     placeholder:
       name: Name
+      trade_hub:
+        system: System
+        station_type: Type
+        planet: Planet
+      trade_commodity:
+        sell: Sale?
+        buy: Buy?
       user:
         email: E-Mail
         login: Username or E-Mail
@@ -17,3 +24,5 @@ en:
     prompt:
       video:
         video_type: Please select a Video Type
+      trade_commodity:
+        commodity: Commodity

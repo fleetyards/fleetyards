@@ -51,6 +51,9 @@ en:
           class6: Class 6
           class7: Class 7
           class8: Class 8
+      trade_commodity:
+        sell: Sale?
+        buy: Buy?
     errors:
       messages:
         blank: Please fill out the Field
@@ -65,7 +68,7 @@ en:
             email:
               taken: E-Mail is already taken.
             password:
-              too_short: 
+              too_short:
             password_confirmation:
               confirmation: Passwords do not match
             reset_password_token:

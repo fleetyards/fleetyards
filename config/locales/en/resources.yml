@@ -11,3 +11,5 @@ en:
     models: Models
     user:
       admin: User
+    trade_hub: Trade Hub
+    commodity: Commodity

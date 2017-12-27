@@ -23,6 +23,14 @@ en:
         edit: Edit %{user}
         index: Users
         new: New User
+      trade_hub:
+        edit: Trade Hub %{trade_hub}
+        index: Trade Hubs
+        new: New Trade Hub
+      commodity:
+        edit: Commodity %{commodity}
+        index: Commodities
+        new: New Commodity
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

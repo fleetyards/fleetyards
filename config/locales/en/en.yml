@@ -36,6 +36,8 @@ en:
     models: Models
     users: Users
     workers: Workers
+    trade_hubs: Trade Hubs
+    commodities: Commodities
   title:
     admin: FleetYards.net Backend
     component:
@@ -55,6 +57,14 @@ en:
       edit: Edit Model
       index: Models
       new: New Model
+    trade_hub:
+      edit: Edit Trade Hub
+      index: Trade Hubs
+      new: New Trade Hub
+    commodity:
+      edit: Edit Commodity
+      index: Commodities
+      new: New Commodity
     not_found: 404
     password:
       new: Forgot your Password?

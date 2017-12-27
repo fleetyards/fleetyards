@@ -1,0 +1,8 @@
+= form_for [:admin, commodity] do |form|
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(commodity, :name)}
+      = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
+      %small
+        = form_errors commodity, :name
+
+  = render "shared/submit", path: admin_commodities_path
