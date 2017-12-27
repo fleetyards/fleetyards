@@ -6,7 +6,7 @@
   %td
     = trade_hub.system
   %td
-    = trade_hub.station_type.humanize
+    = trade_hub.station_type.humanize if trade_hub.station_type.present?
   %td
     .btn-group
       = link_to edit_admin_trade_hub_path(trade_hub), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
