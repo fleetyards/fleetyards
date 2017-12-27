@@ -67,7 +67,7 @@ module Admin
       @trade_hub_params ||= params.require(:trade_hub).permit(
         :name, :planet, :system, :station_type,
         trade_commodities_attributes: %i[
-          id commodity_id sale_price buy_price buy sell _destroy
+          id commodity_id sell_price buy_price buy sell _destroy
         ]
       )
     end
