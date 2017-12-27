@@ -107,7 +107,6 @@ end
 group :test do
   gem 'codeclimate-test-reporter'
   gem 'database_cleaner'
-  gem 'factory_girl'
   gem 'faker'
   gem 'minitest-rails'
   gem 'mocha', require: false
