@@ -6,7 +6,7 @@ class Commodity < ApplicationRecord
   has_many :trade_hubs,
            through: :trade_commodities
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   before_save :update_slugs
 

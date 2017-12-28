@@ -17,8 +17,7 @@ class Fleet < ApplicationRecord
 
   alias_attribute :models, :purchased_models
 
-  validates :sid, uniqueness: true
-  validates :sid, presence: true
+  validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org
 

@@ -69,6 +69,7 @@ v1_api_routes = lambda do
 
   resources :trade_hubs, path: 'trade-hubs', only: [:index]
   resources :commodities, only: [:index]
+  resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
 
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle
