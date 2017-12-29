@@ -23,8 +23,6 @@ class Ability
 
     return if user.id.blank?
 
-    Rails.logger.debug user.id.to_yaml
-
     can :index, :api_hangar
     can :index, :api_my_fleets
     can %i[create destroy], Vehicle, user_id: user.id

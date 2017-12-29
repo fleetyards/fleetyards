@@ -92,7 +92,6 @@ module Api
       end
 
       private def admin_fleet
-        Rails.logger.debug params.to_yaml
         @admin_fleet ||= current_user.admin_fleets.find_by!(sid: params[:fleet_sid])
       end
     end
