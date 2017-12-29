@@ -5,25 +5,25 @@
       = fields.select :commodity_id, commodties, { include_blank: I18n.t(:"helpers.prompt.trade_commodity.commodity") }, class: 'form-control'
       = form_errors fields.object, :commodity_id
 
-  .col-xs-12.col-md-2
-    .form-group
-      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control'
-
-  .col-xs-12.col-md-2
-    .form-group
-      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell_price"), class: 'form-control'
-
   .col-xs-12.col-md-1
     .checkbox
       = fields.check_box :buy, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy")
       = fields.label :buy do
         = I18n.t(:"activerecord.attributes.trade_commodity.buy")
 
+  .col-xs-12.col-md-2
+    .form-group
+      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control'
+
   .col-xs-12.col-md-1
     .checkbox
       = fields.check_box :sell, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell")
       = fields.label :sell do
         = I18n.t(:"activerecord.attributes.trade_commodity.sell")
+
+  .col-xs-12.col-md-2
+    .form-group
+      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell_price"), class: 'form-control'
 
   .col-xs-12.col-md-1
     .btn-group-responsive.form-group.pull-right
