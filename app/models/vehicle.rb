@@ -10,7 +10,6 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   after_save :set_flagship
   after_commit :broadcast_update
-  after_destroy :broadcast_update
 
   def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
