@@ -3,7 +3,7 @@
     %thead
       %tr
         %th=sort_link(@q, :name)
-        %th.actions.actions-three=I18n.t(:"labels.table.actions")
+        %th.actions.actions-two
     %tbody
       = render partial: "admin/manufacturers/show", collection: @manufacturers, as: :manufacturer
 

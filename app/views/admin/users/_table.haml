@@ -7,7 +7,7 @@
         %th=sort_link(@q, :current_sign_in_at)
         %th=sort_link(@q, :admin)
         %th=sort_link(@q, :created_at)
-        %th.actions.actions-two=I18n.t(:"labels.table.actions")
+        %th.actions.actions-two
     %tbody
       = render partial: "admin/users/show", collection: @users, as: :user
 

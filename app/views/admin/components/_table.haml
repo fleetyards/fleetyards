@@ -6,7 +6,7 @@
         %th=sort_link(@q, :size)
         %th=sort_link(@q, :manufacturer_name, 'Manufacturer')
         %th=sort_link(@q, :component_class, 'Class')
-        %th.actions.actions-three=I18n.t(:"labels.table.actions")
+        %th.actions.actions-two
     %tbody
       = render partial: "admin/components/show", collection: @components, as: :component
 

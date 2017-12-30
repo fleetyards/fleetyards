@@ -5,8 +5,8 @@
         %th=sort_link(@q, :name)
         %th=sort_link(@q, :model_name, 'Model')
         %th=sort_link(@q, :purchased)
+        %th=sort_link(@q, :user_username, 'User')
         %th=sort_link(@q, :updated_at)
         %th=sort_link(@q, :created_at)
-        %th.actions.actions-two=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/vehicles/show", collection: @vehicles, as: :vehicle

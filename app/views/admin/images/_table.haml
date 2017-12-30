@@ -6,7 +6,7 @@
         %th=sort_link(@q, :name)
         %th=sort_link(@q, :gallery_type)
         %th=sort_link(@q, :created_at)
-        %th.actions.actions-two
+        %th.actions.actions-three
     %tbody
       = render partial: "admin/images/show", collection: @images, as: :image
 
