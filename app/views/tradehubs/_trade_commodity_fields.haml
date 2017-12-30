@@ -13,7 +13,7 @@
 
   .col-xs-12.col-md-2
     .form-group
-      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control'
+      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-1
     .checkbox
@@ -23,7 +23,7 @@
 
   .col-xs-12.col-md-2
     .form-group
-      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell_price"), class: 'form-control'
+      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell_price"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-1
     .btn-group-responsive.form-group.pull-right
