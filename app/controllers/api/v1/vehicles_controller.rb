@@ -11,7 +11,7 @@ module Api
         @q = current_user.vehicles
                          .ransack(query_params)
 
-        @q.sorts = ['flagship desc', 'purchased desc', 'name asc'] if @q.sorts.empty?
+        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
         @vehicles = @q.result.offset(params[:offset]).limit(params[:limit])
       end

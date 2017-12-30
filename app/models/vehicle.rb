@@ -31,6 +31,8 @@ class Vehicle < ApplicationRecord
     Jbuilder.new do |vehicle|
       vehicle.id id
       vehicle.name name
+      vehicle.purchased purchased
+      vehicle.flagship flagship
       vehicle.deleted destroyed?
       vehicle.model do
         vehicle.name model.name
