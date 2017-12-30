@@ -34,11 +34,13 @@ module Api
 
       def public
         user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
-        @vehicles = user.vehicles
-                        .purchased
-                        .order(name: :asc)
-                        .offset(params[:offset])
-                        .limit(params[:limit])
+        @q = user.vehicles
+                 .purchased
+                 .ransack(query_params)
+
+        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
+
+        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit])
       end
 
       def public_count
