@@ -8,7 +8,8 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name].freeze
   before_save :nil_if_blank
-  after_save :broadcast_update
+  after_save :set_flagship
+  after_commit :broadcast_update
   after_destroy :broadcast_update
 
   def broadcast_update
@@ -17,6 +18,13 @@ class Vehicle < ApplicationRecord
 
   def self.purchased
     where(purchased: true)
+  end
+
+  def set_flagship
+    return unless flagship?
+    # rubocop:disable SkipsModelValidations
+    Vehicle.where.not(id: id).update_all(flagship: false)
+    # rubocop:enable SkipsModelValidations
   end
 
   def to_builder
