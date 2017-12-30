@@ -58,6 +58,6 @@ CarrierWave.configure do |config|
     config.storage NullStorage
     config.enable_processing = false
   else
-    config.asset_host = "http://api.fleetyards.dev"
+    config.asset_host = "http://api.fleetyards.test"
   end
 end
