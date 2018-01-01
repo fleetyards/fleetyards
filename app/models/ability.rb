@@ -25,7 +25,7 @@ class Ability
 
     can :index, :api_hangar
     can :index, :api_my_fleets
-    can %i[create destroy], Vehicle, user_id: user.id
+    can %i[create update destroy], Vehicle, user_id: user.id
     can %i[read update], User, id: user.id
   end
 end
