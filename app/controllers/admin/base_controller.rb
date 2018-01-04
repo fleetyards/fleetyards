@@ -14,7 +14,6 @@ module Admin
 
     private def verify_admin
       return if current_user.try(:admin?)
-
       sign_out
       redirect_to root_url
     end

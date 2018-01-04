@@ -75,8 +75,7 @@ class Setup < Thor
         image.name.retrieve_from_cache!(image.name.cache_name)
         image.name.recreate_versions!
         image.save!
-      # rubocop:disable Lint/RescueWithoutErrorClass
-      rescue => e
+      rescue StandardError => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
       end
       # rubocop:enable Lint/RescueWithoutErrorClass
@@ -88,8 +87,7 @@ class Setup < Thor
         manufacturer.logo.retrieve_from_cache!(manufacturer.logo.cache_name)
         manufacturer.logo.recreate_versions!
         manufacturer.save!
-      # rubocop:disable Lint/RescueWithoutErrorClass
-      rescue => e
+      rescue StandardError => e
         puts "ERROR: YourModel: #{ym.id} -> #{e}"
       end
       # rubocop:enable Lint/RescueWithoutErrorClass

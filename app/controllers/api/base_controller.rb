@@ -42,10 +42,8 @@ module Api
 
     private def set_rate_limit_headers
       return if request.env['rack.attack.throttle_data'].blank?
-
       match_data = request.env['rack.attack.throttle_data']['api']
       return if match_data.blank?
-
       now = Time.zone.now
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s

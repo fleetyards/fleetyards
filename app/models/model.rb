@@ -98,15 +98,12 @@ class Model < ApplicationRecord
 
   private def send_new_model_notification
     ModelMailer.notify_admin(self).deliver_later
-
     return unless on_sale?
-
     ActionCable.server.broadcast('on_sale', to_builder.target!)
   end
 
   private def send_on_sale_notification
     return unless on_sale?
-
     VehiclesWorker.perform_async(id)
   end
 

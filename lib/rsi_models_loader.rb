@@ -93,7 +93,6 @@ class RsiModelsLoader
 
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
-
     model.update(
       name: data['name'],
       production_status: data['production_status'],
@@ -119,12 +118,10 @@ class RsiModelsLoader
       focus: data['focus'],
       store_url: data['url']
     )
-
     if model.store_image.blank?
       model.remote_store_image_url = "#{base_url}#{data['media'][0]['images']['store_hub_large']}"
       model.save
     end
-
     model
   end
 
@@ -133,9 +130,9 @@ class RsiModelsLoader
 
     manufacturer.update(
       name: manufacturer_data['name'],
-      code: (manufacturer_data['code'] if manufacturer_data['code'].present?),
-      known_for: (manufacturer_data['known_for'] if manufacturer_data['known_for'].present?),
-      description: (manufacturer_data['description'] if manufacturer_data['description'].present?),
+      code: manufacturer_data['code'].presence,
+      known_for: manufacturer_data['known_for'].presence,
+      description: manufacturer_data['description'].presence,
       remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank? && manufacturer_data['media'].present?)
     )
 

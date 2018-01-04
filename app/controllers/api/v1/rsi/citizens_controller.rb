@@ -19,24 +19,20 @@ module Api
             render json: { code: 'rsi.citizen.not_found', message: 'Could not find Citizen' }, status: :not_found
             return
           end
-
           parse_user(Nokogiri::HTML(response.body))
         end
 
         private def parse_user(page)
           user = RsiUser.new
-
           page.css('.info .value').each_with_index do |value, index|
             user.username = value.text.strip if index.zero?
             user.handle = value.text.strip if index == 1
             user.title = value.text.strip if index == 2
           end
-
           if page.css('.profile .thumb img').present?
             user.avatar = "https://robertsspaceindustries.com#{page.css('.profile .thumb img')[0]['src']}"
           end
           user.citizen_record = page.css('.citizen-record .value').text.strip
-
           page.css('.profile-content > .left-col .value').each_with_index do |value, index|
             if index.zero?
               user.enlisted = value.text.strip
@@ -46,7 +42,6 @@ module Api
               user.languages = value.text.strip
             end
           end
-
           user
         end
 
