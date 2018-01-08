@@ -12,6 +12,8 @@ class Ability
     can :read, [:models, Model]
     can :read, [:components, Component]
 
+    can :check, :users
+
     can :show, :api
     can %i[index show], :api_models
     can %i[index], :api_images

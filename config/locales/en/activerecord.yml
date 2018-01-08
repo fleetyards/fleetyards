@@ -41,6 +41,7 @@ en:
         gravatar: Gravatar E-Mail Address
         login: Username or E-Mail
         username: Username
+        current_password: Password
       weapon:
         classes:
           class1: Class 1
@@ -64,9 +65,9 @@ en:
             confirmation_token:
               invalid: is invalid
             current_password:
-              invalid: Password is invalid.
+              invalid: is invalid.
             email:
-              taken: E-Mail is already taken.
+              taken: is already taken.
             password:
               too_short:
             password_confirmation:
@@ -74,4 +75,4 @@ en:
             reset_password_token:
               invalid: Token is invalid
             username:
-              taken: Username is already taken.
+              taken: is already taken.

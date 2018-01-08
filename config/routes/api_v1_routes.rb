@@ -48,6 +48,8 @@ v1_api_routes = lambda do
       get :current
       put 'current' => 'users#update'
       patch 'current' => 'users#update'
+      post 'check-email'
+      post 'check-username'
     end
   end
 

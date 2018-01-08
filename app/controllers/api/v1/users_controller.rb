@@ -4,7 +4,7 @@ module Api
   module V1
     class UsersController < ::Api::V1::BaseController
       skip_authorization_check only: %i[signup confirm]
-      before_action :authenticate_api_user!, except: %i[signup confirm]
+      before_action :authenticate_api_user!, except: %i[signup confirm check_email check_username]
 
       def current
         authorize! :read, current_user
@@ -25,7 +25,7 @@ module Api
 
         return if @user.save
 
-        render json: ValidationError.new("signup", @user.errors), status: :bad_request
+        render json: ValidationError.new("signup", @user.errors.messages), status: :bad_request
       end
 
       def confirm
@@ -35,6 +35,16 @@ module Api
         else
           render json: ValidationError.new("confirmation", user.errors), status: :bad_request
         end
+      end
+
+      def check_email
+        authorize! :check, :users
+        render json: { emailTaken: User.exists?(["lower(email) = :value", { value: (user_params[:email] || "").downcase }]) }
+      end
+
+      def check_username
+        authorize! :check, :users
+        render json: { usernameTaken: User.exists?(["lower(username) = :value", { value: (user_params[:username] || "").downcase }]) }
       end
 
       private def user_params
