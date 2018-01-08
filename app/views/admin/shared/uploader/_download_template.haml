@@ -27,10 +27,10 @@
     .btn-group
       {% if (file.background) { %}
       %button.btn.btn-default.active{type: "button", onclick: "App.Resources.stateChange($(this), 'background'); return false;", data: {action: "{%=file.toggleBackgroundUrl%}", resource: "image", toggle: "button"}}
-        %i.fa.fa-check
+        %i.fa.fa-eye
       {% } else { %}
       %button.btn.btn-default{type: "button", onclick: "App.Resources.stateChange($(this), 'background'); return false;", data: {action: "{%=file.toggleBackgroundUrl%}", resource: "image", toggle: "button"}}
-        %i.fa.fa-square-o
+        %i.fa.fa-eye-slash
       {% } %}
       {% if (file.enabled) { %}
       %button.btn.btn-default.active{type: "button", onclick: "App.Resources.stateChange($(this), 'enabled'); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
