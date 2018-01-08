@@ -2,20 +2,12 @@
 
 module Admin
   class BaseController < ::Admin::ApplicationController
-    # before_action :verify_admin
+    layout 'admin/application'
 
     def index
       authorize! :show, :admin
       @active_nav = 'admin'
       @worker_running = worker_running?
-    end
-
-    layout 'admin/application'
-
-    private def verify_admin
-      return if current_user.try(:admin?)
-      sign_out
-      redirect_to root_url
     end
   end
 end

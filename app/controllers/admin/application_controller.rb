@@ -34,7 +34,8 @@ module Admin
     end
 
     rescue_from CanCan::AccessDenied do |exception|
-      redirect_to root_url, warning: exception.message
+      sign_out
+      redirect_to new_admin_user_session_path, warning: exception.message
     end
 
     private def set_default_nav
