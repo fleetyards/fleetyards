@@ -6,11 +6,13 @@ class Fleet < ApplicationRecord
   has_many :members,
            -> { where(approved: true) },
            class_name: 'FleetMembership',
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :fleet
   has_many :pending_members,
            -> { where(approved: false) },
            class_name: 'FleetMembership',
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :fleet
   has_many :users, through: :members
   has_many :purchased_models,
            through: :users

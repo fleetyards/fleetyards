@@ -10,3 +10,4 @@ class ActionDispatch::Routing::Mapper
     get name => "templates#show"
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren

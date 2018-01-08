@@ -103,3 +103,4 @@ class Setup < Thor
     run "cp #{app_dir}/config/settings.example.yml #{app_dir}/config/settings.yml"
   end
 end
+# rubocop:enable Metrics/MethodLength

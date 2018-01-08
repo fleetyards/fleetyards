@@ -53,7 +53,9 @@ class ActionController::TestCase
     DatabaseCleaner.clean
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren
 
+# rubocop:disable Style/ClassAndModuleChildren
 class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
@@ -67,7 +69,9 @@ class ActionView::TestCase
     DatabaseCleaner.clean
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren
 
+# rubocop:disable Style/ClassAndModuleChildren
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
 
@@ -85,3 +89,4 @@ class ActiveSupport::TestCase
     Sidekiq::Worker.clear_all
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren

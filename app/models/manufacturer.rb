@@ -6,8 +6,10 @@ class Manufacturer < ApplicationRecord
 
   mount_uploader :logo, LogoUploader
 
-  has_many :models, dependent: :nullify
-  has_many :components, dependent: :nullify
+  has_many :models,
+           dependent: :nullify
+  has_many :components,
+           dependent: :nullify
 
   def self.with_name
     where.not(name: nil)
@@ -43,6 +45,7 @@ class Manufacturer < ApplicationRecord
   def name_clean
     # rubocop:disable Rails/OutputSafety
     name.html_safe
+    # rubocop:enable Rails/OutputSafety
   end
 
   private def update_slugs

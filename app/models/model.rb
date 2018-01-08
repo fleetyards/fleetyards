@@ -5,7 +5,8 @@ class Model < ApplicationRecord
 
   has_one :addition,
           class_name: 'ModelAddition',
-          dependent: :destroy
+          dependent: :destroy,
+          inverse_of: :model
 
   delegate :net_cargo, to: :addition, allow_nil: true
   delegate :height, :length, :cargo, :max_crew, :min_crew,
@@ -21,7 +22,8 @@ class Model < ApplicationRecord
 
   has_many :images,
            as: :gallery,
-           dependent: :destroy
+           dependent: :destroy,
+           inverse_of: :gallery
 
   has_many :videos,
            dependent: :destroy
