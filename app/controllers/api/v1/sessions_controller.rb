@@ -12,14 +12,24 @@ module Api
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
-        return invalid_login_attempt unless resource
 
-        if resource.valid_password?(login_params[:password])
-          sign_in(:user, resource, store: false)
-          render json: { token: ::JsonWebToken.encode(new_auth_token(resource.id).to_jwt_payload) }
+        if resource.blank?
+          render json: { code: "session.create.not_found_in_database", message: I18n.t('devise.failure.not_found_in_database') }, status: :bad_request
           return
+        else
+          unless resource.confirmed?
+            render json: { code: "session.create.unconfirmed", message: I18n.t('devise.failure.unconfirmed') }, status: :bad_request
+            return
+          end
+
+          unless resource.valid_password?(login_params[:password])
+            render json: { code: "session.create.invalid", message: I18n.t('devise.failure.not_found_in_database') }, status: :bad_request
+            return
+          end
         end
-        invalid_login_attempt
+
+        sign_in(:user, resource, store: false)
+        render json: { token: ::JsonWebToken.encode(new_auth_token(resource.id).to_jwt_payload) }
       end
 
       def destroy
