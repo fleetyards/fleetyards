@@ -70,26 +70,24 @@ class Setup < Thor
     require "./config/environment"
 
     Image.find_each do |image|
-      begin
-        image.name.cache_stored_file!
-        image.name.retrieve_from_cache!(image.name.cache_name)
-        image.name.recreate_versions!
-        image.save!
-      rescue StandardError => e
-        puts "ERROR: YourModel: #{ym.id} -> #{e}"
-      end
+      image.name.cache_stored_file!
+      image.name.retrieve_from_cache!(image.name.cache_name)
+      image.name.recreate_versions!
+      image.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+
       # rubocop:enable Lint/RescueWithoutErrorClass
     end
 
     Manufacturer.find_each do |manufacturer|
-      begin
-        manufacturer.logo.cache_stored_file!
-        manufacturer.logo.retrieve_from_cache!(manufacturer.logo.cache_name)
-        manufacturer.logo.recreate_versions!
-        manufacturer.save!
-      rescue StandardError => e
-        puts "ERROR: YourModel: #{ym.id} -> #{e}"
-      end
+      manufacturer.logo.cache_stored_file!
+      manufacturer.logo.retrieve_from_cache!(manufacturer.logo.cache_name)
+      manufacturer.logo.recreate_versions!
+      manufacturer.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+
       # rubocop:enable Lint/RescueWithoutErrorClass
     end
   end
