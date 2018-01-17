@@ -9,7 +9,8 @@
   "scripts": {
     "prepush": "bundle exec bundle-audit update && bundle exec bundle-audit check && bundle exec rubocop && bundle exec rake",
     "docs": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
-    "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server"
+    "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
+    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
   "homepage": "https://github.com/fleetyards/api",
   "dependencies": {},
   "devDependencies": {
+    "@commitlint/cli": "^6.0.2",
+    "@commitlint/config-conventional": "^6.0.2",
     "aglio": "^2.3.0",
     "husky": "^0.14.3"
   }
