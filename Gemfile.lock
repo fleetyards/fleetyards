@@ -467,7 +467,7 @@ GEM
       nokogiri (~> 1.5)
       trollop (~> 2.1)
     redcarpet (3.4.0)
-    redis (4.0.1)
+    redis (3.3.5)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
     request_store (1.4.0)
@@ -652,7 +652,7 @@ DEPENDENCIES
   rails-perftest
   ransack
   redcarpet
-  redis
+  redis (~> 3.0)
   redis-namespace
   rubocop
   ruby-prof

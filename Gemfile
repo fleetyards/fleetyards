@@ -8,7 +8,7 @@ gem 'rails', '5.1.4'
 
 gem 'pg', '~> 0.18'
 
-gem 'redis'
+gem 'redis', '~> 3.0'
 gem 'redis-namespace'
 
 gem 'sidekiq'
