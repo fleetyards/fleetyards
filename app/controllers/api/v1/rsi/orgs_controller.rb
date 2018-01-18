@@ -11,6 +11,10 @@ module Api
 
         def show
           @org = RsiOrgsLoader.new.fetch(params[:sid].downcase)
+
+          return if @org.present?
+
+          render json: { code: 'rsi.org.not_found', message: 'Could not find Org' }, status: :not_found
         end
       end
     end
