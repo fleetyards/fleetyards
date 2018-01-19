@@ -25,6 +25,7 @@ class Fleet < ApplicationRecord
 
   def fetch_rsi_org
     org = RsiOrgsLoader.new.fetch(sid.downcase)
+    return if org.blank?
     self.name = org.name
     self.logo = org.logo
     self.archetype = org.archetype
