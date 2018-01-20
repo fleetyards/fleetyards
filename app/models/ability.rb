@@ -19,6 +19,7 @@ class Ability
     can %i[index], :api_images
     can %i[index], :api_trade_hubs
     can %i[index], :api_commodities
+    can %i[index], :api_hangar_groups
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
     can %i[index show join], :api_fleets
@@ -28,6 +29,7 @@ class Ability
     can :index, :api_hangar
     can :index, :api_my_fleets
     can %i[create update destroy], Vehicle, user_id: user.id
+    can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update], User, id: user.id
   end
 end

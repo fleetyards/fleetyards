@@ -13,7 +13,7 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit])
+        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit]).uniq
       end
 
       def count
@@ -92,7 +92,7 @@ module Api
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= params.permit(:name, :model_id, :purchased, :sale_notify, :flagship)
+        @vehicle_params ||= params.permit(:name, :model_id, :purchased, :sale_notify, :flagship, hangar_group_ids: [])
                                   .merge(
                                     user_id: current_user.id
                                   )

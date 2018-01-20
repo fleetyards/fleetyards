@@ -5,3 +5,7 @@ en:
     confirmation: Confirmation failed.
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    hangar_group:
+      create: Group could not be created
+      destroy: Group could not be destroyed
+      update: Group could not be updated

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171230182140) do
+ActiveRecord::Schema.define(version: 20180120215414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -82,6 +82,15 @@ ActiveRecord::Schema.define(version: 20171230182140) do
     t.boolean "rpg"
     t.boolean "exclusive"
     t.integer "member_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hangar_groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "color"
+    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -174,6 +183,13 @@ ActiveRecord::Schema.define(version: 20171230182140) do
     t.decimal "xaxis_acceleration", precision: 15, scale: 2
     t.decimal "yaxis_acceleration", precision: 15, scale: 2
     t.decimal "zaxis_acceleration", precision: 15, scale: 2
+  end
+
+  create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "vehicle_id"
+    t.uuid "hangar_group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trade_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

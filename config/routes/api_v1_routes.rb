@@ -69,6 +69,8 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :hangar_groups, path: 'hangar-groups', only: %i[index create update destroy]
+
   resources :trade_hubs, path: 'trade-hubs', only: [:index]
   resources :commodities, only: [:index]
   resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
