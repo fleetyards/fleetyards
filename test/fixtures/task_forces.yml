@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hangar_group_id: 
+  vehicle_id: 
+
+two:
+  hangar_group_id: 
+  vehicle_id: 
