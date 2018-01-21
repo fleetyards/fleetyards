@@ -6,7 +6,7 @@ class RsiModelsLoader
   def initialize(options = {})
     @json_file_path = "public/models.json"
     @base_url = options[:base_url] || "https://robertsspaceindustries.com"
-    @vat_percent = options[:vat_percent] || 19
+    @vat_percent = options[:vat_percent] || 23
   end
 
   def all
