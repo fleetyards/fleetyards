@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180121110912) do
+ActiveRecord::Schema.define(version: 20180121145709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20180121110912) do
     t.decimal "cruise_speed", precision: 15, scale: 2
     t.integer "min_crew"
     t.integer "max_crew"
+    t.decimal "price", precision: 15, scale: 2
   end
 
   create_table "models", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

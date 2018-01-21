@@ -24,6 +24,7 @@ json.size model.size
 json.store_image model.store_image.url
 json.store_url store_url(model.store_url)
 json.price model.price
+json.last_price model.addition_price
 json.on_sale model.on_sale
 json.production_status model.production_status
 json.production_note model.production_note

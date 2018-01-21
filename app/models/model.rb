@@ -10,7 +10,7 @@ class Model < ApplicationRecord
 
   delegate :net_cargo, to: :addition, allow_nil: true
   delegate :height, :length, :cargo, :max_crew, :min_crew,
-           :scm_speed, :afterburner_speed, :mass, :beam, to: :addition, allow_nil: true, prefix: true
+           :scm_speed, :afterburner_speed, :mass, :beam, :price, to: :addition, allow_nil: true, prefix: true
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 

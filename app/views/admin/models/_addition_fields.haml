@@ -1,5 +1,11 @@
 .row.fields
   .col-xs-12.col-sm-6.col-md-4
+    .form-group{class: form_error?(fields.object, :price)}
+      = fields.label :price
+      = fields.number_field :price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+      = form_errors fields.object, :price
+
+  .col-xs-12.col-sm-6.col-md-4
     .form-group{class: form_error?(fields.object, :beam)}
       = fields.label :beam
       = fields.number_field :beam, step: '0.01', placeholder: model.beam, class: 'form-control'
