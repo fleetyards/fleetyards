@@ -25,7 +25,7 @@ module Admin
       authorize! :create, :admin_models
       @model = Model.new(model_params)
       if model.save
-        redirect_to admin_models_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model"))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model"))
       end
@@ -39,7 +39,7 @@ module Admin
     def update
       authorize! :update, model
       if model.update(model_params)
-        redirect_to admin_models_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
       else
         render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
       end
@@ -48,9 +48,9 @@ module Admin
     def destroy
       authorize! :destroy, model
       if model.destroy
-        redirect_to admin_models_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model"))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model"))
       else
-        redirect_to admin_models_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model"))
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model"))
       end
     end
 
