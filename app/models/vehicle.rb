@@ -3,9 +3,7 @@
 class Vehicle < ApplicationRecord
   belongs_to :model
   belongs_to :user
-
-  has_many :task_forces, dependent: :destroy
-  has_many :hangar_groups, through: :task_forces
+  belongs_to :hangar_group
 
   validates :model_id, presence: true
 

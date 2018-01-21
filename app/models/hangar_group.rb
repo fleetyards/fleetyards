@@ -5,8 +5,7 @@ class HangarGroup < ApplicationRecord
 
   belongs_to :user
 
-  has_many :task_forces, dependent: :destroy
-  has_many :vehicles, through: :task_forces
+  has_many :vehicles, dependent: :nullify
 
   validates :user_id, :name, :color, presence: true
 
