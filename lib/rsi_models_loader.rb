@@ -77,17 +77,22 @@ class RsiModelsLoader
 
     page = Nokogiri::HTML(response.body)
 
-    price_element = page.css('#buying-options .final-price').first
-    price = if price_element
-              raw_price = price_element.text
-              price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-              price_with_local_vat = price_match[1].to_f if price_match.present?
-              price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
-            end
+    prices = []
+    (page.css('#buying-options .final-price') || []).each do |price_element|
+      prices << begin
+        raw_price = price_element.text
+        price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
+        price_with_local_vat = price_match[1].to_f if price_match.present?
+        price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+      end
+    end
+
+    prices.sort!
 
     OpenStruct.new(
-      price: price,
-      on_sale: price.present?
+      price: prices.first,
+      on_sale: prices.present?,
+      prices: prices
     )
   end
 
