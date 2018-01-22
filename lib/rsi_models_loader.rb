@@ -31,6 +31,8 @@ class RsiModelsLoader
 
     response = Typhoeus.get("#{base_url}/ship-matrix/index")
 
+    return [] unless response.success?
+
     begin
       model_data = JSON.parse(response.body)
       File.open(json_file_path, "w") do |f|
