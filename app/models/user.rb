@@ -80,7 +80,7 @@ class User < ApplicationRecord
     return if rsi_verification_token.present?
 
     loop do
-      verification_token = Devise.friendly_token
+      verification_token = SecureRandom.urlsafe_base64(10, false)
       next if User.find_by(id: id, rsi_verification_token: verification_token)
       self.rsi_verification_token = verification_token
       save
@@ -92,6 +92,7 @@ class User < ApplicationRecord
     return unless rsi_handle_changed?
 
     self.rsi_verified = false
+    self.rsi_verification_token = nil
   end
 
   def clean_username

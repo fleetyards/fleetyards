@@ -36,11 +36,17 @@ class RsiOrgsLoader
         next unless json_data['data']
         members_raw = Nokogiri::HTML(json_data['data']['html'])
         members_raw.css('.member-item').each do |member_item|
-          members << {
+          member = {
             name: member_item.css('.name').text.strip,
             handle: member_item.css('.nick').text.strip,
             rank: member_item.css('.rank').text.strip
           }
+
+          if member_item.css('.thumb img').present?
+            member[:avatar] = "https://robertsspaceindustries.com#{member_item.css('.thumb img')[0]['src']}"
+          end
+
+          members << member
         end
       rescue JSON::ParserError
         Rails.logger.error "Model Data could not be parsed: #{response.body}"
