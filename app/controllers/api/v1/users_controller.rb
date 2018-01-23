@@ -50,7 +50,7 @@ module Api
 
         citizen = RsiOrgsLoader.new.fetch_citizen(current_user.rsi_handle)
 
-        if citizen.bio.include?(current_user.rsi_verification_token)
+        if (citizen&.bio || '').include?(current_user.rsi_verification_token)
           current_user.update(rsi_verified: true, rsi_verification_token: nil)
           render json: { code: 'rsi_verification.success', message: I18n.t('messages.rsi_verification.success') }
         else
