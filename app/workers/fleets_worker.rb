@@ -7,7 +7,7 @@ class FleetsWorker
   def perform
     Fleet.find_each do |fleet|
       fleet.fetch_rsi_org
-      fleet.fetch_members3
+      fleet.fetch_members
       fleet.save
     end
   end
