@@ -30,6 +30,6 @@ class Ability
     can :index, :api_my_fleets
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
-    can %i[read update], User, id: user.id
+    can %i[read update rsi_verify], User, id: user.id
   end
 end

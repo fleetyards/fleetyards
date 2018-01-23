@@ -7,6 +7,9 @@ json.cache! ['v1', fleet] do
   json.members do
     json.array! fleet.members, partial: 'api/v1/fleets/member', as: :member
   end
+  json.rsi_members do
+    json.array! fleet.rsi_members, partial: 'api/v1/fleets/rsi_member', as: :rsi_member
+  end
   json.archetype fleet.archetype
   json.main_activity fleet.main_activity
   json.secondary_activity fleet.secondary_activity

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180121145709) do
+ActiveRecord::Schema.define(version: 20180123145315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(version: 20180121145709) do
     t.integer "member_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.hstore "rsi_members", default: [], null: false, array: true
+    t.index ["rsi_members"], name: "index_fleets_on_rsi_members", using: :gin
   end
 
   create_table "hangar_groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -242,6 +244,8 @@ ActiveRecord::Schema.define(version: 20180121145709) do
     t.string "rsi_handle", limit: 255
     t.boolean "sale_notify", default: true
     t.string "rsi_org"
+    t.boolean "rsi_verified", default: false
+    t.string "rsi_verification_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

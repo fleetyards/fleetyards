@@ -48,6 +48,7 @@ class User < ApplicationRecord
 
   after_create :send_admin_mail
   before_save :update_gravatar_hash
+  before_save :check_rsi_verification
   before_validation :clean_username
   before_validation :clean_rsi_handle
 
@@ -73,6 +74,24 @@ class User < ApplicationRecord
              Digest::MD5.hexdigest(gravatar.downcase.strip)
            end
     self.gravatar_hash = hash
+  end
+
+  def generate_rsi_verification_token
+    return if rsi_verification_token.present?
+
+    loop do
+      verification_token = Devise.friendly_token
+      next if User.find_by(id: id, rsi_verification_token: verification_token)
+      self.rsi_verification_token = verification_token
+      save
+      break
+    end
+  end
+
+  def check_rsi_verification
+    return unless rsi_handle_changed?
+
+    self.rsi_verified = false
   end
 
   def clean_username

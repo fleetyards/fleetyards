@@ -22,6 +22,7 @@ class Fleet < ApplicationRecord
   validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org
+  after_create :fetch_members
 
   def fetch_rsi_org
     org = RsiOrgsLoader.new.fetch(sid.downcase)
@@ -36,5 +37,9 @@ class Fleet < ApplicationRecord
     self.rpg = org.rpg
     self.exclusive = org.exclusive
     self.member_count = org.member_count
+  end
+
+  def fetch_members
+    FleetMembersWorker.perform_async(id)
   end
 end

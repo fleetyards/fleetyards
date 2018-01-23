@@ -50,6 +50,8 @@ v1_api_routes = lambda do
       patch 'current' => 'users#update'
       post 'check-email'
       post 'check-username'
+      post 'start-rsi-verification'
+      post 'finish-rsi-verification'
     end
   end
 
