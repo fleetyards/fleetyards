@@ -36,17 +36,12 @@ class RsiOrgsLoader
         next unless json_data['data']
         members_raw = Nokogiri::HTML(json_data['data']['html'])
         members_raw.css('.member-item').each do |member_item|
-          member = {
+          members << {
             name: member_item.css('.name').text.strip,
             handle: member_item.css('.nick').text.strip,
-            rank: member_item.css('.rank').text.strip
+            rank: member_item.css('.rank').text.strip,
+            avatar: parse_image(member_item.css('.thumb img'))
           }
-
-          if member_item.css('.thumb img').present?
-            member[:avatar] = "https://robertsspaceindustries.com#{member_item.css('.thumb img')[0]['src']}"
-          end
-
-          members << member
         end
       rescue JSON::ParserError
         Rails.logger.error "Model Data could not be parsed: #{response.body}"
@@ -73,9 +68,7 @@ class RsiOrgsLoader
       user.handle = value.text.strip if index == 1
       user.title = value.text.strip if index == 2
     end
-    if page.css('.profile .thumb img').present?
-      user.avatar = "https://robertsspaceindustries.com#{page.css('.profile .thumb img')[0]['src']}"
-    end
+    user.avatar = parse_image(page.css('.profile .thumb img'))
     if page.css('.profile-content .bio').present?
       user.bio = page.css('.profile-content .bio').text.strip
     end
@@ -97,20 +90,24 @@ class RsiOrgsLoader
     return if response.code != 200
     page = Nokogiri::HTML(response.body)
     org_box = page.css('#organization')
-    org_data = {}
-    org_data[:name] = org_box.css('.heading h1').text.delete('/').gsub(sid.upcase, '').strip
-    org_data[:sid] = sid.downcase
-    org_data[:archetype] = org_box.css('.heading .tags .model').text.strip
-    org_data[:commitment] = org_box.css('.heading .tags .commitment').text.strip
-    org_data[:rpg] = org_box.css('.heading .tags .roleplay').text.strip.present?
-    org_data[:exclusive] = org_box.css('.heading .tags .exclusive').text.strip.present?
-    org_data[:main_activity] = org_box.css('.heading .focus .primary .content').text.strip
-    org_data[:secondary_activity] = org_box.css('.heading .focus .secondary .content').text.strip
-    org_data[:recruiting] = org_box.css('.join-us .bt-join').text.strip.present?
-    org_data[:member_count] = org_box.css('.heading .logo .count').text.strip.gsub(' members', '').gsub(' member', '').to_i || 1
-    if org_box.css('.heading .logo img').present?
-      org_data[:logo] = "https://robertsspaceindustries.com#{org_box.css('.heading .logo img')[0]['src']}"
-    end
-    org_data
+    {
+      name: org_box.css('.heading h1').text.delete('/').gsub(sid.upcase, '').strip,
+      sid: sid.downcase,
+      archetype: org_box.css('.heading .tags .model').text.strip,
+      commitment: org_box.css('.heading .tags .commitment').text.strip,
+      rpg: org_box.css('.heading .tags .roleplay').text.strip.present?,
+      exclusive: org_box.css('.heading .tags .exclusive').text.strip.present?,
+      main_activity: org_box.css('.heading .focus .primary .content').text.strip,
+      secondary_activity: org_box.css('.heading .focus .secondary .content').text.strip,
+      recruiting: org_box.css('.join-us .bt-join').text.strip.present?,
+      member_count: org_box.css('.heading .logo .count').text.strip.gsub(' members', '').gsub(' member', '').to_i || 1,
+      logo: parse_image(org_box.css('.heading .logo img'))
+    }
+  end
+
+  private def parse_image(element)
+    img = element&.first || {}
+    return if img.blank? || img.to_h.fetch('src', nil).blank?
+    "https://robertsspaceindustries.com#{img.to_h.fetch('src', nil)}"
   end
 end
