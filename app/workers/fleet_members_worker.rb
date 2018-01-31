@@ -11,6 +11,6 @@ class FleetMembersWorker
 
     members = RsiOrgsLoader.new.fetch_members(fleet.sid.downcase, fleet.member_count.to_i)
 
-    fleet.update(rsi_members: members)
+    fleet.update(rsi_members: members) if members.present?
   end
 end
