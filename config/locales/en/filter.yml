@@ -16,6 +16,7 @@ en:
           multi: Multi
           support: Support
           transport: Transport
+          multi_role: Multi Role
     component:
       class:
         items:

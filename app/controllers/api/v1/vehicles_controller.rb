@@ -18,13 +18,16 @@ module Api
 
       def count
         authorize! :index, :api_hangar
-        models = current_user.models
+        @q = current_user.vehicles
+                         .ransack(query_params)
+
+        vehicles = @q.result.uniq
 
         @count = OpenStruct.new(
-          total: models.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
+          total: vehicles.count,
+          classifications: vehicles.map(&:model).map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              count: models.where(classification: classification).count,
+              count: vehicles.map(&:model).select { |model| model.classification == classification }.count,
               name: classification,
               label: I18n.t("filter.model.classification.items.#{classification}")
             )

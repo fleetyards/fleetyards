@@ -1,9 +1,11 @@
 andromeda:
   name: "Andromeda"
+  slug: "andromeda"
   classification: multi_role
   length: 61.2
 
 explorer:
   name: "600i"
+  slug: "600i"
   manufacturer: origin
   classification: explorer
