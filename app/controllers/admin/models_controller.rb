@@ -97,6 +97,7 @@ module Admin
     private def model_params
       @model_params ||= params.require(:model).permit(
         :name, :store_image, :store_image_cache, :remove_store_image,
+        :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
         addition_attributes: %i[
           id beam length height mass cargo net_cargo price crew _destroy
         ],
