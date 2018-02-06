@@ -112,6 +112,8 @@ group :test do
   gem 'mocha', require: false
   gem 'rails-perftest'
   gem 'ruby-prof'
+  gem 'shoulda', '~> 3.5'
+  gem 'shoulda-matchers', '~> 2.0'
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
   gem 'simplecov-html', require: false

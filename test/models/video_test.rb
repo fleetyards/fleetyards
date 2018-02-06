@@ -3,7 +3,9 @@
 require 'test_helper'
 
 class VideoTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  should belong_to(:model)
+  should define_enum_for(:video_type).with([:youtube])
+
+  should validate_presence_of(:url)
+  should validate_presence_of(:video_type)
 end
