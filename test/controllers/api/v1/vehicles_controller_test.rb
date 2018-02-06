@@ -73,6 +73,7 @@ module Api
                 'zaxisAcceleration' => nil,
                 'size' => nil,
                 'storeImage' => nil,
+                'fleetchartImage' => nil,
                 'storeUrl' => 'https://robertsspaceindustries.com',
                 'price' => nil,
                 'lastPrice' => nil,
