@@ -6,29 +6,33 @@
       %small
         = form_errors model, :name
 
+    .col-xs-12.col-md-6.form-group
+      .checkbox
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.model.hidden")
+
     .col-xs-12.col-md-6.form-group{class: form_error?(model, :store_image)}
+      = form.label :store_image
+      = form.file_field :store_image, class: 'form-control'
+      = form.hidden_field :store_image_cache
+      %br
       - if model.store_image?
         = image_tag(model.store_image.small)
         = form.check_box :remove_store_image
         Remove Image
-      %br
-      %br
-      = form.label :store_image
-      = form.file_field :store_image, class: 'form-control'
-      = form.hidden_field :store_image_cache
       %small
         = form_errors model, :store_image
 
     .col-xs-12.col-md-6.form-group{class: form_error?(model, :fleetchart_image)}
+      = form.label :fleetchart_image
+      = form.file_field :fleetchart_image, class: 'form-control'
+      = form.hidden_field :fleetchart_image_cache
+      %br
       - if model.fleetchart_image?
         = image_tag(model.fleetchart_image)
         = form.check_box :remove_fleetchart_image
         Remove Image
-      %br
-      %br
-      = form.label :fleetchart_image
-      = form.file_field :fleetchart_image, class: 'form-control'
-      = form.hidden_field :fleetchart_image_cache
       %small
         = form_errors model, :fleetchart_image
 

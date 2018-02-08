@@ -23,6 +23,7 @@ en:
         production_status: Production Status
         variants: Variants
         weapons: Weapons
+        hidden: hidden?
       setting:
         base:
           registration: Registration active?

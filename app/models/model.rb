@@ -71,6 +71,10 @@ class Model < ApplicationRecord
     end
   end
 
+  def self.visible
+    where(hidden: false)
+  end
+
   %i[height beam length mass cargo min_crew max_crew scm_speed afterburner_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("addition_#{method_name}")

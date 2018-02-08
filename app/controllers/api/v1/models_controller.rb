@@ -11,7 +11,7 @@ module Api
 
       def index
         authorize! :index, :api_models
-        @q = Model.ransack(query_params)
+        @q = Model.visible.ransack(query_params)
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 

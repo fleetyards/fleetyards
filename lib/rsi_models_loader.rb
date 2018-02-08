@@ -125,7 +125,11 @@ class RsiModelsLoader
       focus: data['focus'],
       store_url: data['url']
     )
-    if model.store_image.blank?
+    # rubocop:disable Style/RescueModifier
+    store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
+    # rubocop:enable Style/RescueModifier
+    if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
+      model.store_images_updated_at = data['media'][0]['time_modified']
       model.remote_store_image_url = "#{base_url}#{data['media'][0]['images']['store_hub_large']}"
       model.save
     end
