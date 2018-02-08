@@ -79,6 +79,7 @@ gem 'nokogiri', '>= 1.7.1'
 gem 'typhoeus'
 
 gem 'fog'
+gem 'fog-aws'
 
 gem 'web_translate_it'
 

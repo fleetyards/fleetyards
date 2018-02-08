@@ -46,6 +46,7 @@ end
 
 CarrierWave.configure do |config|
   if Rails.env.production?
+    config.fog_provider = 'fog/aws'
     config.fog_credentials = {
       provider:              'AWS',
       aws_access_key_id:     Rails.application.secrets[:aws_key],
@@ -53,6 +54,8 @@ CarrierWave.configure do |config|
       region:                'eu-west-1'
     }
     config.fog_directory = 'fleetyards'
+    config.fog_public = true
+    config.asset_host = "https://d159vi9qupesbj.cloudfront.net"
   elsif Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
