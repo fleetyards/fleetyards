@@ -13,7 +13,7 @@ class StoreImageUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{super.chomp(File.extname(super))}-#{Time.zone.now.to_i}#{File.extname(super)}" if original_filename.present?
+    "#{super.chomp(File.extname(super))}-#{model.store_images_updated_at.to_i}#{File.extname(super)}" if original_filename.present?
   end
 
   version :small do

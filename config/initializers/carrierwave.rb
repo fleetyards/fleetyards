@@ -53,6 +53,7 @@ CarrierWave.configure do |config|
       region:                'eu-west-1'
     }
     config.fog_directory = 'fleetyards'
+    config.asset_host = "https://d159vi9qupesbj.cloudfront.net"
   elsif Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
