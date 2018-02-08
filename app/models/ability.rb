@@ -27,7 +27,7 @@ class Ability
     return if user.id.blank?
 
     can :index, :api_hangar
-    can :index, :api_my_fleets
+    can %i[index accept decline promote demote remove], :api_my_fleets
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update rsi_verify], User, id: user.id
