@@ -11,10 +11,11 @@
         = image_tag(model.store_image.small)
         = form.check_box :remove_store_image
         Remove Image
-      - else
-        = form.label :store_image
-        = form.file_field :store_image, class: 'form-control'
-        = form.hidden_field :store_image_cache
+      %br
+      %br
+      = form.label :store_image
+      = form.file_field :store_image, class: 'form-control'
+      = form.hidden_field :store_image_cache
       %small
         = form_errors model, :store_image
 
@@ -23,10 +24,11 @@
         = image_tag(model.fleetchart_image)
         = form.check_box :remove_fleetchart_image
         Remove Image
-      - else
-        = form.label :fleetchart_image
-        = form.file_field :fleetchart_image, class: 'form-control'
-        = form.hidden_field :fleetchart_image_cache
+      %br
+      %br
+      = form.label :fleetchart_image
+      = form.file_field :fleetchart_image, class: 'form-control'
+      = form.hidden_field :fleetchart_image_cache
       %small
         = form_errors model, :fleetchart_image
 
