@@ -30,7 +30,7 @@ class Model < ApplicationRecord
 
   accepts_nested_attributes_for :videos, allow_destroy: true
 
-  mount_uploader :store_image, ImageUploader
+  mount_uploader :store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
 
   before_save :update_slugs
