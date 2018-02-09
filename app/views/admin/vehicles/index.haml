@@ -10,6 +10,11 @@
 
     .row
       .col-xs-12.col-md-6
+        %p
+          = @vehicles.count
+          of
+          = @vehicles.total_count
+      .col-xs-12.col-md-6
         = paginate @vehicles
     .row
       .col-xs-12.col-md-9
@@ -29,5 +34,6 @@
               %a.btn.btn-default{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
     .row
+      .col-xs-12.col-md-6
       .col-xs-12.col-md-6
         = paginate @vehicles

@@ -14,6 +14,10 @@
 
     .row
       .col-xs-12.col-md-6
+        %p
+          = @models.count
+          of
+          = @models.total_count
       .col-xs-12.col-md-6
         = paginate @models
 
