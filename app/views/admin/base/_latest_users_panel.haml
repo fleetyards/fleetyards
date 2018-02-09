@@ -9,9 +9,10 @@
           %th= I18n.t(:"labels.table.user.email")
           %th= I18n.t(:"labels.table.user.username")
           %th= I18n.t(:"labels.table.user.last_sign_in_at")
+          %th= I18n.t(:"labels.table.user.created_at")
           %th.actions.actions-one
       %tbody
-        - User.unscoped.order(current_sign_in_at: :desc, created_at: :desc).limit(5).each do |user|
+        - User.unscoped.order(created_at: :desc).limit(10).each do |user|
           %tr
             %td
               = user.email
@@ -20,7 +21,10 @@
             %td
               - if user.current_sign_in_at.present?
                 = time_ago_in_words(user.current_sign_in_at)
-                = "(#{l(user.current_sign_in_at, format: :short)})"
+            %td
+              = time_ago_in_words(user.created_at)
+              %br
+              = "(#{l(user.created_at, format: :short)})"
             %td
               .btn-group
                 = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

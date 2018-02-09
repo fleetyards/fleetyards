@@ -30,6 +30,7 @@ en:
       updated_at: last reload
       user:
         email: E-Mail
-        last_sign_in_at: Current sign in at
+        created_at: Created at
+        last_sign_in_at: Last sign in
         username: Username
     tax_excluded: excl. VAT
