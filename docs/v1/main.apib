@@ -5,7 +5,7 @@ HOST: https://api.fleetyards.net
 
 > “Strap into one of dozens of ships and embark on a life within the Star Citizen universe. Unbound by profession or skill sets, you choose the path of your own life.”
 
-This API provides basic Information about All Ships / Components / Manufacturers form the upcomming Space Simulation Star Citizen.
+This API provides basic Information about All Ships / Components / Manufacturers for the upcomming Space Simulation Star Citizen.
 
 NOTE: This document is a **work in progress**.
 
@@ -67,34 +67,13 @@ The documentation provides an example response for each API method. The example 
 
 <br>
  
-## Pagination
+## Limits and Offset
 
-Requests that return multiple items will be paginated to ```30``` items by default. 
-You can specify further pages with the ```?page``` parameter. 
-For some resources, you can also set a custom page size up to ```200``` with the ```?perPage``` parameter. Note that for technical reasons not all endpoints respect the ```?perPage``` parameter, see events for example.
+Requests that return multiple items will be limited to ```30``` items by default. 
+You can specify further items by increasing the limit or setting the ```offset``` parameter. 
+For some resources, you can also set a custom limit up to ```1000```. Note that for technical reasons not all endpoints respect the ```limit``` parameter.
 
-curl 'https://api.fleetyards.net/ships?page=2&perPage=200'
-Note that page numbering is 1-based and that omitting the ```?page``` parameter will return the first page.
-
-<h3>Link Header</h3>
-The Link header includes pagination information:
-
-```
-Link: <https://api.fleetyards.net/ships?page=1&perPage=200>; rel="next",
-  <https://api.fleetyards.net/ships?page=2&perPage=200>; rel="last"
-```
-The example includes a line break for readability.
-
-This Link response header contains one or more Hypermedia link relations, some of which may require expansion as URI templates.
-
-The possible ```rel``` values are:
-
-Name | Description                                                  
-----:| ------------------------------------------------------------
-next | The link relation for the immediate next page of results.    
-last | The link relation for the last page of results.              
-first| The link relation for the first page of results.             
-prev | The link relation for the immediate previous page of results.
+curl 'https://api.fleetyards.net/ships?limit=200&offset=200'
 
 <br>
  

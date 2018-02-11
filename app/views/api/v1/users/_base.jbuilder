@@ -8,8 +8,6 @@ json.is_admin user.admin?
 json.rsi_handle user.rsi_handle
 json.sale_notify user.sale_notify
 json.fleets user.fleets.map(&:sid)
-json.pending_fleets user.pending_fleets.map(&:sid)
-json.admin_fleets user.admin_fleets.map(&:sid)
 json.rsi_verified user.rsi_verified
 json.created_at user.created_at
 json.updated_at user.updated_at

@@ -8,6 +8,9 @@ class User < ApplicationRecord
 
   has_many :vehicles,
            dependent: :destroy
+  has_many :fleet_memberships,
+           dependent: :destroy
+  has_many :fleets, through: :fleet_memberships
   has_many :models,
            through: :vehicles
   has_many :purchased_vehicles,
@@ -19,28 +22,6 @@ class User < ApplicationRecord
            through: :purchased_vehicles,
            source: :model,
            inverse_of: false
-  has_many :pending_memberships,
-           -> { where(approved: false) },
-           class_name: 'FleetMembership',
-           dependent: :destroy,
-           inverse_of: false
-  has_many :pending_fleets,
-           through: :pending_memberships,
-           source: :fleet
-  has_many :memberships,
-           -> { where(approved: true) },
-           class_name: 'FleetMembership',
-           dependent: :destroy,
-           inverse_of: false
-  has_many :fleets,
-           through: :memberships
-  has_many :admin_memberships,
-           -> { where(admin: true, approved: true) },
-           class_name: 'FleetMembership',
-           inverse_of: false
-  has_many :admin_fleets,
-           through: :admin_memberships,
-           source: :fleet
 
   validates :username, uniqueness: { case_sensitive: false }
 

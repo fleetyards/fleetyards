@@ -4,12 +4,6 @@ require 'rsi_orgs_loader'
 
 class Fleet < ApplicationRecord
   has_many :members,
-           -> { where(approved: true) },
-           class_name: 'FleetMembership',
-           dependent: :destroy,
-           inverse_of: :fleet
-  has_many :pending_members,
-           -> { where(approved: false) },
            class_name: 'FleetMembership',
            dependent: :destroy,
            inverse_of: :fleet
@@ -41,5 +35,19 @@ class Fleet < ApplicationRecord
 
   def fetch_members
     FleetMembersWorker.perform_async(id)
+  end
+
+  def add_members(rsi_members)
+    rsi_member_ids = []
+    rsi_members.each do |member|
+      membership = FleetMembership.where(fleet_id: id, handle: member[:handle]).first_or_create do |m|
+        m.rank = member[:rank]
+        m.avatar = member[:avatar]
+        m.name = member[:name]
+      end
+      membership.update(user_id: User.find_by(rsi_verified: true, rsi_handle: member[:handle])&.id)
+      rsi_member_ids << membership.id
+    end
+    FleetMembership.where(id: (rsi_member_ids - member_ids)).destroy_all
   end
 end

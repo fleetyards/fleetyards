@@ -9,8 +9,6 @@ class FleetMembersWorker
   def perform(id)
     fleet = Fleet.find(id)
 
-    members = RsiOrgsLoader.new.fetch_members(fleet.sid.downcase, fleet.member_count.to_i)
-
-    fleet.update(rsi_members: members) if members.present?
+    fleet.add_members(RsiOrgsLoader.new.fetch_members(fleet.sid.downcase, fleet.member_count.to_i))
   end
 end

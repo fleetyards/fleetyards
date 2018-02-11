@@ -31,19 +31,15 @@ module Api
         authorize! :create, :api_fleets
         @fleet = Fleet.new(sid: params[:sid])
 
-        if @fleet.save
-          @fleet.members.create(user_id: current_user.id, admin: true, approved: true)
-        else
-          render json: ValidationError.new("fleet.create", @fleet.errors), status: :bad_request
-        end
+        return if @fleet.save
+
+        render json: ValidationError.new("fleet.create", @fleet.errors), status: :bad_request
       end
 
       def members
         authorize! :index, :api_my_fleets
 
-        @fleet = current_user.admin_fleets.find_by!(sid: params[:sid])
-
-        @members = (@fleet.members + @fleet.pending_members)
+        @members = fleet.members
       end
 
       def models

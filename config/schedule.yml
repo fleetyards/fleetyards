@@ -5,5 +5,5 @@ production: &production
     cron: '*/15 * * * *'
     class: 'ModelsWorker'
   fleets_worker_job:
-    cron: '0 * * * *'
+    cron: '0 */2 * * *'
     class: 'FleetsWorker'
