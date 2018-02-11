@@ -52,6 +52,18 @@ module Api
         @model = Model.find_by!(slug: params[:slug])
       end
 
+      def store_image
+        authorize! :show, :api_models
+        model = Model.find_by!(slug: params[:slug])
+        redirect_to model.store_image.url
+      end
+
+      def fleetchart_image
+        authorize! :show, :api_models
+        model = Model.find_by!(slug: params[:slug])
+        redirect_to model.fleetchart_image.url
+      end
+
       def gallery
         authorize! :index, :api_models
         model = Model.find_by!(slug: params[:slug])
