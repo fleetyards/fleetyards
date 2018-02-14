@@ -29,20 +29,6 @@ v1_api_routes = lambda do
       get :count
       get :members
     end
-
-    resources :members, controller: 'fleet_members', param: :username, only: [] do
-      collection do
-        post :join
-      end
-
-      member do
-        post :accept
-        post :decline
-        post :promote
-        post :demote
-        delete :remove
-      end
-    end
   end
 
   resources :users, only: [] do
