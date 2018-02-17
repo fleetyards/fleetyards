@@ -34,6 +34,7 @@ class Model < ApplicationRecord
   mount_uploader :fleetchart_image, FleetchartImageUploader
 
   before_save :update_slugs
+  before_create :set_last_updated_at
 
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
@@ -124,6 +125,11 @@ class Model < ApplicationRecord
 
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
+  end
+
+  private def set_last_updated_at
+    return if last_updated_at.present?
+    self.last_updated_at = Time.zone.now
   end
 
   def to_builder

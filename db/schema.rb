@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180217124630) do
+ActiveRecord::Schema.define(version: 20180217174824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 20180217124630) do
     t.string "fleetchart_image"
     t.datetime "store_images_updated_at"
     t.boolean "hidden", default: false
+    t.datetime "last_updated_at"
   end
 
   create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

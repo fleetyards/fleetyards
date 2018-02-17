@@ -34,7 +34,7 @@ module Api
 
       def latest
         authorize! :index, :api_models
-        @models = Model.order(updated_at: :desc, name: :asc)
+        @models = Model.order(last_updated_at: :desc, name: :asc)
                        .limit(8)
       end
 

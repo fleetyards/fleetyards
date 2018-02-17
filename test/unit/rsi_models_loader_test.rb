@@ -6,6 +6,14 @@ require 'rsi_models_loader'
 class RsiModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { RsiModelsLoader.new }
 
+  before do
+    Timecop.freeze('2018-01-01 14:00:00')
+  end
+
+  after do
+    Timecop.return
+  end
+
   test "#all" do
     VCR.use_cassette('rsi_models_loader_all') do
       loader.all
@@ -27,33 +35,39 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   test "#updates only when needed" do
     VCR.use_cassette('rsi_models_loader_all') do
-      Timecop.freeze(Time.zone.now) do
-        loader.one('300i')
+      loader.one('300i')
 
-        model = Model.find_by(name: '300i')
+      model = Model.find_by(name: '300i')
 
-        Timecop.travel(1.day)
+      Timecop.travel(1.day)
 
-        loader.one(model.name)
-        model.reload
+      loader.one(model.name)
+      model.reload
 
-        assert(model.updated_at.day != Time.zone.now.day)
-        assert_equal(23.0, model.length.to_f)
-      end
+      assert(model.updated_at.day != Time.zone.now.day)
+      assert_equal(23.0, model.length.to_f)
     end
   end
 
   test "#overides present data" do
     VCR.use_cassette('rsi_models_loader_all') do
-      Timecop.freeze(Time.zone.now) do
-        model_600i = Model.find_by(slug: '600i')
+      model_polaris = Model.create(
+        name: 'Polaris',
+        rsi_id: 116,
+        length: 20.0
+      )
 
-        assert_equal(20.0, model_600i.length.to_f)
+      assert_equal(20.0, model_polaris.length.to_f)
+      assert_equal(model_polaris.last_updated_at.iso8601, model_polaris.created_at.iso8601)
 
-        loader.one('600i Explorer')
+      Timecop.travel(1.day)
 
-        assert_equal(91.5, model_600i.reload.length.to_f)
-      end
+      loader.one('Polaris')
+
+      model_polaris.reload
+
+      assert_equal(155.0, model_polaris.length.to_f)
+      assert_equal('2017-10-24T14:38:57+02:00', model_polaris.last_updated_at.iso8601)
     end
   end
 end

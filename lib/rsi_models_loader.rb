@@ -124,7 +124,8 @@ class RsiModelsLoader
       zaxis_acceleration: nil_or_float(data['zaxis_acceleration']),
       classification: data['type'],
       focus: data['focus'],
-      store_url: data['url']
+      store_url: data['url'],
+      last_updated_at: data['time_modified.unfiltered']
     )
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
