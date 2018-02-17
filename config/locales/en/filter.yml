@@ -5,18 +5,6 @@ en:
     image:
       model:
         title: Model
-    model:
-      classification:
-        items:
-          combat: Combat
-          competition: Competition
-          exploration: Exploration
-          ground: Ground
-          industrial: Industrial
-          multi: Multi
-          support: Support
-          transport: Transport
-          multi_role: Multi Role
     component:
       class:
         items:

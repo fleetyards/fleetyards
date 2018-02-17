@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180211224935) do
+ActiveRecord::Schema.define(version: 20180217124630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "uuid-ossp"
@@ -163,7 +163,6 @@ ActiveRecord::Schema.define(version: 20180211224935) do
     t.string "classification", limit: 255
     t.integer "rsi_id"
     t.uuid "manufacturer_id"
-    t.uuid "ship_role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "production_status", limit: 255

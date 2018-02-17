@@ -40,32 +40,40 @@ class Model < ApplicationRecord
   after_create :send_new_model_notification
 
   def self.production_status_filters
-    I18n.t('labels.model.production_status').map do |status|
+    Model.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'productionStatus',
-        name: I18n.t("labels.model.production_status.#{status[0]}"),
-        value: status[0]
+        name: item.humanize,
+        value: item
       )
     end
   end
 
   def self.classification_filters
-    Model.all.map(&:classification).uniq.compact.map do |item|
+    Model.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'classification',
-        name: I18n.t("filter.model.classification.items.#{item}"),
+        name: item.humanize,
         value: item
       )
     end
   end
 
   def self.focus_filters
-    Model.all.map(&:focus).compact.uniq.select do |item|
-      item.strip.present?
-    end.map do |item|
+    Model.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'focus',
-        name: item,
+        name: item.humanize,
+        value: item
+      )
+    end
+  end
+
+  def self.size_filters
+    Model.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+      Filter.new(
+        category: 'size',
+        name: item.humanize,
         value: item
       )
     end

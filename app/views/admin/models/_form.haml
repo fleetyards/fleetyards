@@ -5,25 +5,150 @@
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors model, :name
+    .col-xs-12.col-md-6.form-group{class: form_error?(model, :description)}
+      = form.label :description
+      = form.text_area :description, class: 'form-control'
+      %small
+        = form_errors model, :description
 
-    .col-xs-12.col-md-6.form-group
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
+      = form.label :focus
+      = form.select :focus, options_from_collection_for_select(Model.focus_filters, :value, :name, model.focus), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :focus
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :classification)}
+      = form.label :classification
+      = form.select :classification, options_from_collection_for_select(Model.classification_filters, :value, :name, model.classification), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :classification
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :manufacturer_id)}
+      = form.label :manufacturer_id
+      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, model.manufacturer_id), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :manufacturer_id
+
+  .row
+    .col-xs-12.col-md-6.form-group{class: form_error?(model, :production_status)}
+      = form.label :production_status
+      = form.select :production_status, options_from_collection_for_select(Model.production_status_filters, :value, :name, model.production_status), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :production_status
+    .col-xs-12.col-md-6.form-group{class: form_error?(model, :production_note)}
+      = form.label :production_note
+      = form.text_field :production_note, class: 'form-control'
+      %small
+        = form_errors model, :production_note
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :price)}
+      = form.label :price
+      = form.text_field :price, class: 'form-control'
+      %small
+        = form_errors model, :price
+    .col-xs-12.col-sm-6.col-md-4.form-group
       .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.model.hidden")
+        = form.check_box :on_sale, placeholder: I18n.t(:"helpers.placeholder.model.on_sale")
+        = form.label :on_sale do
+          = I18n.t(:"activerecord.attributes.model.on_sale")
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :store_url)}
+      = form.label :store_url
+      = form.text_field :store_url, class: 'form-control'
+      %small
+        = form_errors model, :store_url
 
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :beam)}
+      = form.label :beam
+      = form.text_field :beam, class: 'form-control'
+      %small
+        = form_errors model, :beam
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :length)}
+      = form.label :length
+      = form.text_field :length, class: 'form-control'
+      %small
+        = form_errors model, :length
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
+      = form.label :height
+      = form.text_field :height, class: 'form-control'
+      %small
+        = form_errors model, :height
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :size)}
+      = form.label :size
+      = form.select :size, options_from_collection_for_select(Model.size_filters, :value, :name, model.size), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :size
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :mass)}
+      = form.label :mass
+      = form.text_field :mass, class: 'form-control'
+      %small
+        = form_errors model, :mass
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :cargo)}
+      = form.label :cargo
+      = form.text_field :cargo, class: 'form-control'
+      %small
+        = form_errors model, :cargo
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :scm_speed)}
+      = form.label :scm_speed
+      = form.text_field :scm_speed, class: 'form-control'
+      %small
+        = form_errors model, :scm_speed
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_speed)}
+      = form.label :afterburner_speed
+      = form.text_field :afterburner_speed, class: 'form-control'
+      %small
+        = form_errors model, :afterburner_speed
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :cruise_speed)}
+      = form.label :cruise_speed
+      = form.text_field :cruise_speed, class: 'form-control'
+      %small
+        = form_errors model, :cruise_speed
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :pitch_max)}
+      = form.label :pitch_max
+      = form.text_field :pitch_max, class: 'form-control'
+      %small
+        = form_errors model, :pitch_max
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :yaw_max)}
+      = form.label :yaw_max
+      = form.text_field :yaw_max, class: 'form-control'
+      %small
+        = form_errors model, :yaw_max
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :roll_max)}
+      = form.label :roll_max
+      = form.text_field :roll_max, class: 'form-control'
+      %small
+        = form_errors model, :roll_max
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :min_crew)}
+      = form.label :min_crew
+      = form.text_field :min_crew, class: 'form-control'
+      %small
+        = form_errors model, :min_crew
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :max_crew)}
+      = form.label :max_crew
+      = form.text_field :max_crew, class: 'form-control'
+      %small
+        = form_errors model, :max_crew
+
+  .row
     .col-xs-12.col-md-6.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
       %br
       - if model.store_image?
-        = image_tag(model.store_image.small)
+        = image_tag(model.store_image)
         = form.check_box :remove_store_image
         Remove Image
       %small
         = form_errors model, :store_image
-
     .col-xs-12.col-md-6.form-group{class: form_error?(model, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
@@ -35,6 +160,13 @@
         Remove Image
       %small
         = form_errors model, :fleetchart_image
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group
+      .checkbox
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.model.hidden")
 
   %fieldset
     %legend

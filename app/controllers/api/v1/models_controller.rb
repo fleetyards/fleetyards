@@ -26,6 +26,7 @@ module Api
           filters << Model.production_status_filters
           filters << Model.classification_filters
           filters << Model.focus_filters
+          filters << Model.size_filters
           filters.flatten
                  .sort_by { |filter| [filter.category, filter.name] }
         end

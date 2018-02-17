@@ -2,13 +2,6 @@
 en:
   labels:
     actions: Actions
-    model:
-      production_status:
-        announced: Announced
-        flight-ready: Flight Ready
-        in-concept: In Concept
-        in-production: In Production
-        ready: Hangar Ready
     panels:
       latest_components: New Components
       latest_manufacturers: New Manufacturers

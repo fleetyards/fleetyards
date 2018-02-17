@@ -98,6 +98,11 @@ module Admin
       @model_params ||= params.require(:model).permit(
         :name, :hidden, :store_image, :store_image_cache, :remove_store_image,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
+
+        :beam, :length, :height, :mass, :cargo, :price, :on_sale, :manufacturer_id, :focus,
+        :classification, :description, :production_status, :production_note, :size,
+        :scm_speed, :afterburner_speed, :cruise_speed, :pitch_max, :yaw_max, :roll_max,
+        :max_crew, :min_crew,
         addition_attributes: %i[
           id beam length height mass cargo net_cargo price crew _destroy
         ],
