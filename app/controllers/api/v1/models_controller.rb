@@ -54,7 +54,7 @@ module Api
 
       def store_image
         authorize! :show, :api_models
-        model = Model.find_by!(slug: params[:slug])
+        model = Model.find_by(slug: params[:slug]) || Model.new
         redirect_to model.store_image.url
       end
 

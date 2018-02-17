@@ -8,6 +8,10 @@ class StoreImageUploader < CarrierWave::Uploader::Base
 
   process :optimize if Rails.env.production?
 
+  def default_url(*_args)
+    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.jpg"].compact.join('_'))
+  end
+
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
