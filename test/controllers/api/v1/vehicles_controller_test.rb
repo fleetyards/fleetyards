@@ -72,7 +72,7 @@ module Api
                 'yaxisAcceleration' => nil,
                 'zaxisAcceleration' => nil,
                 'size' => nil,
-                'storeImage' => nil,
+                'storeImage' => data.vehicles.first.model.store_image.url,
                 'fleetchartImage' => nil,
                 'storeUrl' => 'https://robertsspaceindustries.com',
                 'price' => nil,
