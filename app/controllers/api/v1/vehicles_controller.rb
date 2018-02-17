@@ -29,7 +29,7 @@ module Api
             OpenStruct.new(
               count: vehicles.map(&:model).select { |model| model.classification == classification }.count,
               name: classification,
-              label: I18n.t("filter.model.classification.items.#{classification}")
+              label: classification.humanize
             )
           end
         )
@@ -56,7 +56,7 @@ module Api
             OpenStruct.new(
               count: models.where(classification: classification).count,
               name: classification,
-              label: I18n.t("filter.model.classification.items.#{classification}")
+              label: classification.humanize
             )
           end
         )

@@ -7,5 +7,7 @@ andromeda:
 explorer:
   name: "600i"
   slug: "600i"
+  rsi_id: 141
   manufacturer: origin
   classification: explorer
+  length: 20

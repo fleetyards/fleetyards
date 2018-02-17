@@ -79,7 +79,7 @@ module Api
             OpenStruct.new(
               count: fleet.models.where(classification: classification).count,
               name: classification,
-              label: I18n.t("filter.model.classification.items.#{classification}")
+              label: classification.humanize
             )
           end
         )

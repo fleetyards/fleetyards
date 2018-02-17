@@ -103,7 +103,7 @@ module Api
               'total' => 1,
               'classifications' => [{
                 'name' => 'multi_role',
-                'label' => 'Multi Role',
+                'label' => 'Multi role',
                 'count' => 1
               }]
             }

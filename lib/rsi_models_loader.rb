@@ -21,6 +21,7 @@ class RsiModelsLoader
     models = load_models
 
     model_data = models.find { |model| model["name"] == model_name }
+
     sync_model(model_data) if model_data.present?
   end
 
