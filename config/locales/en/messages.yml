@@ -21,6 +21,7 @@ en:
         success: Fleet Join Request received.
     record_not_found:
       base: No Entry found
+      model: No Model found
     reload:
       startet: "%{resource} reload startet."
       success: "%{resource} successfully reloaded."
