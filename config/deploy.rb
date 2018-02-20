@@ -25,6 +25,7 @@ set :deploy_to, '/home/fleetyards'
 set :repository, 'https://github.com/fleetyards/api'
 set :rails_env, 'production'
 set :branch, 'master'
+set :version_scheme, :datetime
 
 task :remote_environment do
   invoke :'rbenv:load'
