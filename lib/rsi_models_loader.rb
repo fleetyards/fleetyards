@@ -17,10 +17,10 @@ class RsiModelsLoader
     end
   end
 
-  def one(model_name)
+  def one(rsi_id)
     models = load_models
 
-    model_data = models.find { |model| model["name"] == model_name }
+    model_data = models.find { |model| model['id'] == rsi_id.to_s }
 
     sync_model(model_data) if model_data.present?
   end
@@ -52,7 +52,7 @@ class RsiModelsLoader
 
     buying_options = get_buying_options(model.store_url)
     if buying_options.present?
-      model.price = buying_options.price
+      model.price = buying_options.price if buying_options.price.present?
       model.on_sale = buying_options.on_sale
     end
 

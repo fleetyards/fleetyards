@@ -35,13 +35,13 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
   test "#updates only when needed" do
     VCR.use_cassette('rsi_models_loader_all') do
-      loader.one('300i')
+      loader.one(7)
 
       model = Model.find_by(name: '300i')
 
       Timecop.travel(1.day)
 
-      loader.one(model.name)
+      loader.one(model.rsi_id)
       model.reload
 
       assert(model.updated_at.day != Time.zone.now.day)
@@ -62,7 +62,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       Timecop.travel(1.day)
 
-      loader.one('Polaris')
+      loader.one(116)
 
       model_polaris.reload
 

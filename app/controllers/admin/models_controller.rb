@@ -85,7 +85,7 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          ModelWorker.perform_async(model.name)
+          ModelWorker.perform_async(model.rsi_id)
           render json: true
         end
         format.html do

@@ -71,8 +71,8 @@ module Api
         @images = model.images
                        .enabled
                        .order(created_at: :asc)
-                       .page(params[:page])
-                       .per(per_page)
+                       .offset(params[:offset])
+                       .limit(params[:limit])
       end
 
       private def updated_range

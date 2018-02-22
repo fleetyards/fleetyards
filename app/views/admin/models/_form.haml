@@ -167,6 +167,11 @@
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.model.hidden")
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :rsi_id)}
+      = form.label :rsi_id
+      = form.text_field :rsi_id, class: 'form-control'
+      %small
+        = form_errors model, :rsi_id
 
   %fieldset
     %legend
