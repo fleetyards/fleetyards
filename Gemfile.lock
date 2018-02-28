@@ -588,7 +588,7 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    web_translate_it (2.4.5)
+    web_translate_it (2.4.6)
       multi_json
       multipart-post (~> 2.0)
       trollop (~> 2.0)
