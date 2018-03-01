@@ -4,7 +4,7 @@ class StoreImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::ImageOptimizer
   include CarrierWave::MiniMagick
 
-  storage Rails.env.production? ? :fog : :file
+  storage :file
 
   process :optimize if Rails.env.production?
 
