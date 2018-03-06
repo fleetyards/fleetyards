@@ -11,6 +11,10 @@ gem 'pg', '~> 0.21'
 gem 'redis', '~> 3.0'
 gem 'redis-namespace'
 
+gem 'graphiql-rails'
+gem 'graphql'
+gem 'graphql-batch'
+
 gem 'sidekiq'
 gem 'sidekiq-cron'
 # for sidekiq web

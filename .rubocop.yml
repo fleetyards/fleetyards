@@ -16,6 +16,9 @@ Rails:
 Style/Documentation:
   Enabled: false # for now
 
+Style/Lambda:
+  Enabled: false
+
 Style/RaiseArgs:
   Enabled: false
 
