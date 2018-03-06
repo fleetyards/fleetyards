@@ -11,7 +11,10 @@ module Api
 
       def index
         authorize! :index, :api_models
-        @q = Model.visible.ransack(query_params)
+        scope = Model.visible
+        scope = scope.where(price: price_range) if price_range
+
+        @q = scope.ransack(query_params)
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
@@ -73,6 +76,24 @@ module Api
                        .order(created_at: :asc)
                        .offset(params[:offset])
                        .limit(params[:limit])
+      end
+
+      private def price_range
+        return if query_params[:price_in].blank?
+        query_params.delete(:price_in).map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price..lt_price)
+        end
       end
 
       private def updated_range
