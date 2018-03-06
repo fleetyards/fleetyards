@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180217174824) do
+ActiveRecord::Schema.define(version: 20180225193332) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "uuid-ossp"
   enable_extension "plpgsql"
   enable_extension "hstore"
+  enable_extension "uuid-ossp"
 
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
@@ -191,6 +191,17 @@ ActiveRecord::Schema.define(version: 20180217174824) do
     t.datetime "store_images_updated_at"
     t.boolean "hidden", default: false
     t.datetime "last_updated_at"
+    t.decimal "fallback_beam", precision: 15, scale: 2
+    t.decimal "fallback_length", precision: 15, scale: 2
+    t.decimal "fallback_height", precision: 15, scale: 2
+    t.decimal "fallback_mass", precision: 15, scale: 2
+    t.decimal "fallback_cargo", precision: 15, scale: 2
+    t.decimal "fallback_scm_speed", precision: 15, scale: 2
+    t.decimal "fallback_afterburner_speed", precision: 15, scale: 2
+    t.decimal "fallback_cruise_speed", precision: 15, scale: 2
+    t.integer "fallback_min_crew"
+    t.integer "fallback_max_crew"
+    t.decimal "fallback_price", precision: 15, scale: 2
   end
 
   create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
