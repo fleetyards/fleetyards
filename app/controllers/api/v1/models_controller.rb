@@ -12,7 +12,10 @@ module Api
       def index
         authorize! :index, :api_models
         scope = Model.visible
-        scope = scope.where(price: price_range) if price_range
+        if price_range.present?
+          query_params['sorts'] = 'fallback_price asc'
+          scope = scope.where(fallback_price: price_range)
+        end
 
         @q = scope.ransack(query_params)
 
@@ -79,20 +82,21 @@ module Api
       end
 
       private def price_range
-        return if query_params[:price_in].blank?
-        query_params.delete(:price_in).map do |prices|
-          gt_price, lt_price = prices.split('-')
-          gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
-          lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
-          (gt_price..lt_price)
+        @price_range ||= begin
+          (query_params.delete('price_in') || []).map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
         end
       end
 

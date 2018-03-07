@@ -9,7 +9,6 @@ json.beam model.display_beam.to_f
 json.height model.display_height.to_f
 json.mass model.display_mass.to_f
 json.cargo model.display_cargo
-json.net_cargo model.net_cargo
 json.min_crew model.display_min_crew
 json.max_crew model.display_max_crew
 json.scm_speed model.display_scm_speed
@@ -25,7 +24,7 @@ json.store_image model.store_image.url
 json.fleetchart_image model.fleetchart_image.url
 json.store_url store_url(model.store_url)
 json.price model.price
-json.last_price model.addition_price
+json.last_price model.fallback_price
 json.on_sale model.on_sale
 json.production_status model.production_status
 json.production_note model.production_note

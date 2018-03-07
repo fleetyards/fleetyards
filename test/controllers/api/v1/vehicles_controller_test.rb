@@ -60,7 +60,6 @@ module Api
                 'height' => 10.2,
                 'mass' => 1000.02,
                 'cargo' => '10.0',
-                'netCargo' => '4.0',
                 'minCrew' => 1,
                 'maxCrew' => 3,
                 'scmSpeed' => nil,

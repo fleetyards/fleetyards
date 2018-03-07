@@ -177,8 +177,54 @@
     %legend
       Additions:
     #addition
-      = form.fields_for :addition, (model.addition || model.build_addition) do |builder|
-        = render 'addition_fields', fields: builder
+      .row.fields
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_price)}
+            = form.label :fallback_price
+            = form.number_field :fallback_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :fallback_price
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_beam)}
+            = form.label :fallback_beam
+            = form.number_field :fallback_beam, step: '0.01', placeholder: model.beam, class: 'form-control'
+            = form_errors model, :fallback_beam
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_length)}
+            = form.label :fallback_length
+            = form.number_field :fallback_length, step: '0.01', placeholder: model.length, class: 'form-control'
+            = form_errors model, :fallback_length
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_height)}
+            = form.label :fallback_height
+            = form.number_field :fallback_height, step: '0.01', placeholder: model.height, class: 'form-control'
+            = form_errors model, :fallback_height
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_mass)}
+            = form.label :fallback_mass
+            = form.number_field :fallback_mass, step: '0.01', placeholder: model.mass, class: 'form-control'
+            = form_errors model, :fallback_mass
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_cargo)}
+            = form.label :fallback_cargo
+            = form.number_field :fallback_cargo, placeholder: model.cargo, class: 'form-control'
+            = form_errors model, :fallback_cargo
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_min_crew)}
+            = form.label :fallback_min_crew
+            = form.number_field :fallback_min_crew, class: 'form-control'
+            = form_errors model, :fallback_min_crew
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_max_crew)}
+            = form.label :fallback_max_crew
+            = form.number_field :fallback_max_crew, class: 'form-control'
+            = form_errors model, :fallback_max_crew
 
   %fieldset
     %legend

@@ -3,6 +3,12 @@ andromeda:
   slug: "andromeda"
   classification: multi_role
   length: 61.2
+  fallback_beam: 10.2
+  fallback_height: 10.2
+  fallback_mass: 1000.02
+  fallback_cargo: 10
+  fallback_min_crew: 1
+  fallback_max_crew: 3
 
 explorer:
   name: "600i"
