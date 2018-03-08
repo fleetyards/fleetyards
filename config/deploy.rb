@@ -20,7 +20,7 @@ require 'mina/rbenv'
 set :user, 'fleetyards'
 set :forward_agent, true
 
-set :domain, 'erebor.mortik.xyz'
+set :domain, 'erelas.mortik.xyz'
 set :deploy_to, '/home/fleetyards'
 set :repository, 'https://github.com/fleetyards/api'
 set :rails_env, 'production'
@@ -131,6 +131,8 @@ namespace :db do
   task :local_import do
     system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
   end
+
+  # pg_restore --verbose --clean --no-acl --no-owner -h 127.0.0.1 -U fleetyards -d fleetyards dumps/latest.dump
 
   task :download_backup do
     comment "Downloading latest backup..."

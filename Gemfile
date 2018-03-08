@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.5.0'
 
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.5'
 
 gem 'pg', '~> 0.21'
 
@@ -81,8 +81,6 @@ gem 'mini_magick'
 
 gem 'nokogiri', '>= 1.7.1'
 gem 'typhoeus'
-
-gem 'fog'
 
 gem 'web_translate_it'
 
