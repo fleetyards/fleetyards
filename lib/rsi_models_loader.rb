@@ -140,7 +140,7 @@ class RsiModelsLoader
   end
 
   def strip_name(name)
-    name.gsub(/^\s*(?:Aegis|Anvil|Banu|Drake|Esperia|Kruger|MISC|Origin|RSI|Tumbril|Vanduul|Xi'an)[^a-zA-Z0-9]+/, '')
+    name.gsub(/^\s*(?:AEGIS|ANVIL|BANU|DRAKE|ESPERIA|KRUGER|MISC|ORIGIN|RSI|TUMBRIL|VANDUUL|Xi'an)[^a-zA-Z0-9]+/, '')
   end
 
   def create_or_update_manufacturer(manufacturer_data)
