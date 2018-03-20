@@ -2,7 +2,9 @@
 
 json.id model.id
 json.name model.name
+json.rsiName model.rsi_name
 json.slug model.slug
+json.rsiSlug model.rsi_slug
 json.description model.description
 json.length model.display_length.to_f
 json.beam model.display_beam.to_f

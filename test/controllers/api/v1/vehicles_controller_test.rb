@@ -53,7 +53,9 @@ module Api
               'model' => {
                 'id' => data.vehicles.first.model.id,
                 'name' => 'Andromeda',
+                'rsiName' => nil,
                 'slug' => 'andromeda',
+                'rsiSlug' => nil,
                 'description' => nil,
                 'length' => 61.2,
                 'beam' => 10.2,
