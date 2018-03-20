@@ -102,7 +102,8 @@ class RsiModelsLoader
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
     model.update(
-      name: data['name'],
+      name: strip_name(data['name']),
+      rsi_name: data['name'],
       production_status: data['production_status'],
       production_note: data['production_note'],
       description: data['description'],
@@ -136,6 +137,10 @@ class RsiModelsLoader
       model.save
     end
     model
+  end
+
+  def strip_name(name)
+    name.gsub(/^\s*(?:Aegis|Anvil|Banu|Drake|Esperia|Kruger|MISC|Origin|RSI|Tumbril|Vanduul|Xi'an)[^a-zA-Z0-9]+/, '')
   end
 
   def create_or_update_manufacturer(manufacturer_data)

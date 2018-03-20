@@ -125,6 +125,7 @@ class Model < ApplicationRecord
 
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
+    self.rsi_slug = SlugHelper.generate_slug(rsi_name)
   end
 
   private def set_last_updated_at

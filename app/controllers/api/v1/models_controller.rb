@@ -56,24 +56,24 @@ module Api
 
       def show
         authorize! :show, :api_models
-        @model = Model.find_by!(slug: params[:slug])
+        @model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def store_image
         authorize! :show, :api_models
-        model = Model.find_by(slug: params[:slug]) || Model.new
+        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
         redirect_to model.store_image.url
       end
 
       def fleetchart_image
         authorize! :show, :api_models
-        model = Model.find_by!(slug: params[:slug])
+        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         redirect_to model.fleetchart_image.url
       end
 
       def gallery
         authorize! :index, :api_models
-        model = Model.find_by!(slug: params[:slug])
+        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @images = model.images
                        .enabled
                        .order(created_at: :asc)
