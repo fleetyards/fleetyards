@@ -4,9 +4,13 @@ production:
 development:
   database: fleetyards_dev
   adapter: postgresql
-  host: localhost
+  host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
+  user: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
 
 test:
   database: fleetyards_test
   adapter: postgresql
-  host: localhost
+  host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
+  user: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
