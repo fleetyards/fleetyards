@@ -64,7 +64,7 @@ unit_tests:
 deploy:
   <<: *deploy_template
   script:
-    - "bundle exec mina live deploy"
+    - "bundle exec mina deploy"
   stage: deploy
   environment: Live
   only:
