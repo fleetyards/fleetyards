@@ -17,6 +17,8 @@ class Model < ApplicationRecord
   has_many :hardpoints,
            dependent: :destroy,
            autosave: true
+  has_many :vehicles,
+           dependent: :destroy
   has_many :components,
            through: :hardpoints
 

@@ -102,7 +102,7 @@ module Admin
         :classification, :description, :production_status, :production_note, :size,
         :scm_speed, :afterburner_speed, :cruise_speed, :pitch_max, :yaw_max, :roll_max,
         :max_crew, :min_crew, :fallback_beam, :fallback_length, :fallback_height, :fallback_mass,
-        :fallback_cargo, :fallback_price, :fallback_min_crew, :fallback_max_crew,
+        :fallback_cargo, :fallback_price, :fallback_min_crew, :fallback_max_crew, :rsi_id,
         videos_attributes: %i[
           id url video_type _destroy
         ]
