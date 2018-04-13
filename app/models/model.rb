@@ -34,6 +34,7 @@ class Model < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
+  mount_uploader :brochure, BrochureUploader
 
   before_save :update_slugs
   before_create :set_last_updated_at

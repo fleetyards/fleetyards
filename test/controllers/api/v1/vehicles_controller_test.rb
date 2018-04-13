@@ -75,6 +75,7 @@ module Api
                 'size' => nil,
                 'storeImage' => data.vehicles.first.model.store_image.url,
                 'fleetchartImage' => nil,
+                'brochure' => nil,
                 'storeUrl' => 'https://robertsspaceindustries.com',
                 'price' => nil,
                 'lastPrice' => nil,

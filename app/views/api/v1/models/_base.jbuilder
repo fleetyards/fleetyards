@@ -24,6 +24,7 @@ json.zaxis_acceleration model.zaxis_acceleration
 json.size model.size
 json.store_image model.store_image.url
 json.fleetchart_image model.fleetchart_image.url
+json.brochure model.brochure.url
 json.store_url store_url(model.store_url)
 json.price model.price
 json.last_price model.fallback_price
