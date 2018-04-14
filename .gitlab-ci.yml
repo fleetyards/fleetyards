@@ -67,5 +67,9 @@ deploy:
     - "bundle exec mina deploy"
   stage: deploy
   environment: Live
+  except:
+    - schedules
   only:
     - master
+  when: manual
+
