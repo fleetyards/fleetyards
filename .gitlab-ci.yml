@@ -12,7 +12,7 @@ variables:
   DATABASE_HOST: postgres
   POSTGRES_DB: fleetyards_test
   POSTGRES_USER: $DATABASE_USER
-  POSTGRES_PASSWORD: ""
+  POSTGRES_PASSWORD: ''
   LC_ALL: C.UTF-8
 
 stages:
@@ -22,26 +22,26 @@ stages:
 
 .default_template: &default_template
   before_script:
-    - "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3"
+    - 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3'
 
 audit:
   <<: *default_template
   script:
-    - "bundle exec bundle-audit update"
-    - "bundle exec bundle-audit check"
+    - 'bundle exec bundle-audit update'
+    - 'bundle exec bundle-audit check'
   stage: checks
 
 rubocop:
   <<: *default_template
   script:
-    - "bundle exec rubocop --format progress"
+    - 'bundle exec rubocop --format progress'
   stage: checks
 
 .test_template: &test_template
   before_script:
-    - "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3"
-    - "bundle exec thor setup:dev_env"
-    - "bundle exec rails db:schema:load"
+    - 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3'
+    - 'bundle exec thor setup:dev_env'
+    - 'bundle exec rails db:schema:load'
   services:
     - postgres:latest
   stage: test
@@ -49,22 +49,22 @@ rubocop:
 unit_tests:
   <<: *test_template
   script:
-    - "bundle exec rails test"
+    - 'bundle exec rails test'
   stage: tests
 
 .deploy_template: &deploy_template
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - 'eval $(ssh-agent -s)'
-    - 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+    - 'ssh-add <(echo '$SSH_PRIVATE_KEY')'
     - 'mkdir -p ~/.ssh'
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3"
+    - '[[ -f /.dockerenv ]] && echo -e 'Host *\n\tStrictHostKeyChecking no\n\n' > ~/.ssh/config'
+    - 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=$(nproc) --retry=3'
 
 deploy:
   <<: *deploy_template
   script:
-    - "bundle exec mina deploy"
+    - 'bundle exec mina deploy'
   stage: deploy
   environment: Live
   except:
