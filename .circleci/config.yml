@@ -128,7 +128,7 @@ jobs:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
           name: Deploy
-          command: mina deploy
+          command: bundle exec mina deploy
 
 workflows:
   version: 2
