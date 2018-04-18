@@ -110,6 +110,7 @@ group :test do
   gem 'codeclimate-test-reporter'
   gem 'database_cleaner'
   gem 'faker'
+  gem 'minitest-ci'
   gem 'minitest-rails'
   gem 'mocha', require: false
   gem 'rails-perftest'

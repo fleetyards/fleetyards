@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+      - image: circleci/postgres:9.4
+
+    working_directory: ~/api
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      # Database setup
+      - run: bundle exec thor setup:dev_env
+      - run: bundle exec rails db:create
+      - run: bundle exec rails db:schema:load
+
+      # run tests!
+      - run:
+          name: unit tests
+          command: bundle exec rails test
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/reports
+
+      - store_artifacts:
+          path: /tmp/reports
+          destination: reports

@@ -221,6 +221,8 @@ GEM
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    minitest-ci (3.4.0)
+      minitest (>= 5.0.6)
     minitest-rails (3.0.0)
       minitest (~> 5.8)
       railties (~> 5.0)
@@ -479,6 +481,7 @@ DEPENDENCIES
   metadown
   mina
   mini_magick
+  minitest-ci
   minitest-rails
   mocha
   nokogiri (>= 1.7.1)
