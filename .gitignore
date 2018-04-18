@@ -13,6 +13,7 @@ pids/*
 
 # test files
 coverage/*
+test/reports/*
 
 # app files
 public/uploads/*
@@ -25,3 +26,4 @@ vendor/assets/bower_components/bootstrap
 vendor/assets/bower_components/sweetalert
 
 .byebug_history
+

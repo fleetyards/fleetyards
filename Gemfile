@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-gem 'rails', '5.1.5'
+gem 'rails', '5.2.0'
 
 gem 'pg', '~> 0.21'
 
@@ -110,6 +110,7 @@ group :test do
   gem 'codeclimate-test-reporter'
   gem 'database_cleaner'
   gem 'faker'
+  gem 'minitest-ci'
   gem 'minitest-rails'
   gem 'mocha', require: false
   gem 'rails-perftest'
