@@ -101,9 +101,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
-
-  # deployment
-  gem 'mina', require: false
 end
 
 group :test do
@@ -130,4 +127,8 @@ group :development, :test do
   gem 'bundler-audit'
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
+
+  # deployment
+  gem 'mina', require: false
+  gem 'mina-multistage', require: false
 end

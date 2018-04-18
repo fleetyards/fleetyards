@@ -3,7 +3,7 @@ version: 2.0
 defaults: &defaults
   working_directory: ~/api
   docker:
-    - image: circleci/ruby:2.5.1-node-browsers
+    - image: fleetyards/api:2.5.1
       environment:
         RAILS_ENV: test
         DATABASE_HOST: 127.0.0.1
@@ -18,6 +18,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - persist_to_workspace:
+          root: ~/api
+          paths:
+            - ./
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -26,14 +30,17 @@ jobs:
   bundle_dependencies:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - attach_workspace:
+          at: ~/api
       - restore_cache:
           keys:
             - v1-bundle-{{ checksum "Gemfile.lock" }}
             - v1-bundle-
       - run: bundle install --path vendor/bundle
+      - persist_to_workspace:
+          root: ~/api
+          paths:
+            - vendor/bundle
       - save_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
           paths:
@@ -42,12 +49,8 @@ jobs:
   audit:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - attach_workspace:
+          at: ~/api
       - run: bundle --path vendor/bundle
       - run:
           name: Update Audit DB
@@ -55,38 +58,22 @@ jobs:
       - run:
           name: Check Audit DB
           command: bundle exec bundle-audit check
-      - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/api/public/assets
 
   rubocop:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - attach_workspace:
+          at: ~/api
       - run: bundle --path vendor/bundle
       - run:
           name: rubocoptering
           command: bundle exec rubocop --format progress
-      - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/api/public/assets
 
   unit_tests:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - attach_workspace:
+          at: ~/api
       - run: bundle --path vendor/bundle
       - run: bundle exec rake db:create db:schema:load
       - run:
@@ -98,14 +85,18 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-            - v1-bundle-{{ checksum "Gemfile.lock" }}
+            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-assets-
+      - attach_workspace:
+          at: ~/api
       - run: bundle --path vendor/bundle
       - run:
           name: Precompile assets
           command: bundle exec rake assets:precompile
+      - persist_to_workspace:
+          root: ~/api
+          paths:
+            - public/assets
       - save_cache:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:
@@ -114,21 +105,21 @@ jobs:
   deploy:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-            - v1-bundle-{{ checksum "Gemfile.lock" }}
-      - restore_cache:
-          keys:
-            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+      - attach_workspace:
+          at: ~/api
+      - run: bundle --path vendor/bundle
       - add_ssh_keys:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
+          name: Keyscan Erelas (HACK)
+          command: ssh-keyscan -H erelas.mortik.xyz >> ~/.ssh/known_hosts
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run:
           name: Deploy
-          command: bundle exec mina deploy
+          command: bundle exec mina live deploy
 
 workflows:
   version: 2

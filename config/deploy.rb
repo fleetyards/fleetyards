@@ -12,6 +12,10 @@ set :shared_files, [
   'config/database.yml'
 ]
 
+set :stages, %w[local live]
+set :default_stage, 'local'
+
+require 'mina/multistage'
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
@@ -22,7 +26,7 @@ set :forward_agent, true
 
 set :domain, 'erelas.mortik.xyz'
 set :deploy_to, '/home/fleetyards'
-set :repository, 'git@gitlab.com:fleetyards/api.git'
+set :repository, 'https://github.com/fleetyards/api.git'
 set :rails_env, 'production'
 set :branch, 'master'
 set :version_scheme, :datetime
