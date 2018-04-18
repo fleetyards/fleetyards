@@ -78,7 +78,7 @@ jobs:
           paths:
             - ~/api/public/assets
 
-  unit_test:
+  unit_tests:
     <<: *defaults
     steps:
       - restore_cache:
@@ -111,31 +111,25 @@ jobs:
           paths:
             - ~/api/public/assets
 
-  # deploy:
-  #   machine:
-  #       enabled: true
-  #   working_directory: ~/circleci-demo-workflows
-  #   environment:
-  #     - HEROKU_APP: still-shelf-38337
-  #   steps:
-  #     - restore_cache:
-  #         keys:
-  #           - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-  #     - restore_cache:
-  #         keys:
-  #           - v1-bundle-{{ checksum "Gemfile.lock" }}
-  #     - restore_cache:
-  #         keys:
-  #           - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-  #     - run:
-  #         name: Setup Heroku
-  #         command: bash .circleci/setup-heroku.sh
-  #     - run:
-  #         command: |
-  #           git push heroku fan-in-fan-out:master
-  #           heroku run rake db:migrate
-  #           sleep 5 # sleep for 5 seconds to wait for dynos
-  #           heroku restart
+  deploy:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - restore_cache:
+          keys:
+            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+      - add_ssh_keys:
+          fingerprints:
+            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+      - run:
+          name: Deploy
+          command: mina deploy
+
 workflows:
   version: 2
   ci:
@@ -150,13 +144,18 @@ workflows:
       - rubocop:
           requires:
             - bundle_dependencies
-      - unit_test:
+      - unit_tests:
           requires:
             - bundle_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
-      # - deploy:
-      #     requires:
-      #       - rake_test
-      #       - precompile_assets
+      - deploy:
+          requires:
+            - audit
+            - rubocop
+            - unit_tests
+            - precompile_assets
+          filters:
+            branches:
+              only: master
