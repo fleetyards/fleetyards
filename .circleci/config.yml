@@ -123,6 +123,30 @@ jobs:
 
 workflows:
   version: 2
+  check:
+    triggers:
+      - schedule:
+          cron: "0 20 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - checkout_code
+      - bundle_dependencies:
+          requires:
+            - checkout_code
+      - audit:
+          requires:
+            - bundle_dependencies
+      - rubocop:
+          requires:
+            - bundle_dependencies
+      - unit_tests:
+          requires:
+            - bundle_dependencies
+      - precompile_assets:
+          requires:
+            - bundle_dependencies
   ci:
     jobs:
       - checkout_code
