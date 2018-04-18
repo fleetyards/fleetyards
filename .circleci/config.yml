@@ -1,46 +1,162 @@
-version: 2
+version: 2.0
+
+defaults: &defaults
+  working_directory: ~/api
+  docker:
+    - image: circleci/ruby:2.5.1-node-browsers
+      environment:
+        RAILS_ENV: test
+        DATABASE_HOST: 127.0.0.1
+        DATABASE_USER: root
+    - image: circleci/postgres:9.6.2-alpine
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_DB: fleetyards_test
+
 jobs:
-  build:
-    docker:
-      - image: circleci/ruby:2.5.1-node-browsers
-      - image: circleci/postgres:9.4
-
-    working_directory: ~/api
-
+  checkout_code:
+    <<: *defaults
     steps:
       - checkout
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/api
 
-      # Download and cache dependencies
+  bundle_dependencies:
+    <<: *defaults
+    steps:
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+            - v1-bundle-
+      - run: bundle install --path vendor/bundle
       - save_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
           paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+            - ~/api/vendor/bundle
 
-      # Database setup
-      - run: bundle exec thor setup:dev_env
-      - run: bundle exec rails db:create
-      - run: bundle exec rails db:schema:load
-
-      # run tests!
+  audit:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: bundle --path vendor/bundle
       - run:
-          name: unit tests
+          name: Update Audit DB
+          command: bundle exec bundle-audit update
+      - run:
+          name: Check Audit DB
+          command: bundle exec bundle-audit check
+      - save_cache:
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/api/public/assets
+
+  rubocop:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: bundle --path vendor/bundle
+      - run:
+          name: rubocoptering
+          command: bundle exec rubocop --format progress
+      - save_cache:
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/api/public/assets
+
+  unit_test:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: bundle --path vendor/bundle
+      - run: bundle exec rake db:create db:schema:load
+      - run:
+          name: Run Unit Tests
           command: bundle exec rails test
 
-      # collect reports
-      - store_test_results:
-          path: /tmp/reports
+  precompile_assets:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-bundle-{{ checksum "Gemfile.lock" }}
+      - run: bundle --path vendor/bundle
+      - run:
+          name: Precompile assets
+          command: bundle exec rake assets:precompile
+      - save_cache:
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/api/public/assets
 
-      - store_artifacts:
-          path: /tmp/reports
-          destination: reports
+  # deploy:
+  #   machine:
+  #       enabled: true
+  #   working_directory: ~/circleci-demo-workflows
+  #   environment:
+  #     - HEROKU_APP: still-shelf-38337
+  #   steps:
+  #     - restore_cache:
+  #         keys:
+  #           - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+  #     - restore_cache:
+  #         keys:
+  #           - v1-bundle-{{ checksum "Gemfile.lock" }}
+  #     - restore_cache:
+  #         keys:
+  #           - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+  #     - run:
+  #         name: Setup Heroku
+  #         command: bash .circleci/setup-heroku.sh
+  #     - run:
+  #         command: |
+  #           git push heroku fan-in-fan-out:master
+  #           heroku run rake db:migrate
+  #           sleep 5 # sleep for 5 seconds to wait for dynos
+  #           heroku restart
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - checkout_code
+      - bundle_dependencies:
+          requires:
+            - checkout_code
+      - audit:
+          requires:
+            - bundle_dependencies
+      - rubocop:
+          requires:
+            - bundle_dependencies
+      - unit_test:
+          requires:
+            - bundle_dependencies
+      - precompile_assets:
+          requires:
+            - bundle_dependencies
+      # - deploy:
+      #     requires:
+      #       - rake_test
+      #       - precompile_assets
