@@ -2,4 +2,4 @@
 
 A Ship Database for Star Citizen
 
-[![pipeline status](https://gitlab.com/fleetyards/api/badges/master/pipeline.svg)](https://gitlab.com/fleetyards/api/commits/master)
+[![CircleCI](https://circleci.com/gh/fleetyards/api/tree/master.svg?style=svg)](https://circleci.com/gh/fleetyards/api/tree/master)
