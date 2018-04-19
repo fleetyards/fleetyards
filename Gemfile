@@ -8,8 +8,6 @@ gem 'rails', '5.2.0'
 
 gem 'pg', '~> 0.21'
 
-gem 'redis', '~> 3.0'
-
 gem 'graphiql-rails'
 gem 'graphql'
 gem 'graphql-batch'
