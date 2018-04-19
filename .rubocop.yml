@@ -40,7 +40,10 @@ Style/MultilineBlockChain:
 #   "foo",
 #   "bar",
 # ]
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Enabled: false
 
 Metrics/LineLength:

@@ -76,8 +76,6 @@ class Setup < Thor
       image.save!
     rescue StandardError => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
-
-      # rubocop:enable Lint/RescueWithoutErrorClass
     end
 
     Manufacturer.find_each do |manufacturer|
@@ -87,8 +85,6 @@ class Setup < Thor
       manufacturer.save!
     rescue StandardError => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
-
-      # rubocop:enable Lint/RescueWithoutErrorClass
     end
   end
 end

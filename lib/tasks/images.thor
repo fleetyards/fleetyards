@@ -15,8 +15,6 @@ class Images < Thor
       image.save!
     rescue StandardError => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
-
-      # rubocop:enable Lint/RescueWithoutErrorClass
     end
 
     Model.find_each do |model|
@@ -26,8 +24,6 @@ class Images < Thor
       model.save!
     rescue StandardError => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
-
-      # rubocop:enable Lint/RescueWithoutErrorClass
     end
   end
 end

@@ -17,5 +17,4 @@ module JsonWebToken
     Rails.logger.error e.to_yaml
     nil
   end
-  # rubocop:enable Lint/RescueWithoutErrorClass
 end
