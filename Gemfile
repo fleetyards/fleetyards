@@ -9,7 +9,6 @@ gem 'rails', '5.2.0'
 gem 'pg', '~> 0.21'
 
 gem 'redis', '~> 3.0'
-gem 'redis-namespace'
 
 gem 'graphiql-rails'
 gem 'graphql'
