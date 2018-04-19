@@ -144,7 +144,7 @@
       = form.hidden_field :store_image_cache
       %br
       - if model.store_image?
-        = image_tag(model.store_image)
+        = image_tag(model.store_image.url)
         = form.check_box :remove_store_image
         Remove Image
       %small
@@ -167,7 +167,7 @@
       = form.hidden_field :fleetchart_image_cache
       %br
       - if model.fleetchart_image?
-        = image_tag(model.fleetchart_image)
+        = image_tag(model.fleetchart_image.url)
         = form.check_box :remove_fleetchart_image
         Remove Image
       %small
