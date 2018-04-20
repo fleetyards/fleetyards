@@ -15,7 +15,7 @@ module Admin
 
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = "unprocessable_entity"
-      render "errors/error", status: 422
+      render "errors/error", status: :unprocessable_entity
     end
 
     def worker_running?
