@@ -18,6 +18,7 @@ en:
       user:
         email: E-Mail
         login: Username or E-Mail
+        otp_token: 2FA-Token
         password: Password
         password_confirmation: Password Confirmation
         username: Username

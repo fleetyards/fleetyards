@@ -35,9 +35,16 @@ gem 'foundation_emails'
 gem 'premailer-rails'
 
 gem 'cancancan'
+
 gem 'devise'
 gem 'devise-async'
+gem 'devise-two-factor'
+
 gem 'redis-session-store'
+
+gem 'jwt'
+gem 'rqrcode-rails3'
+
 gem 'useragent'
 
 gem 'ransack'

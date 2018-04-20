@@ -13,6 +13,10 @@
         .form-group
           = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.admin_user.password"), class: 'form-control'
 
+        .form-group
+          = f.text_field :otp_attempt, autocomplete: :off, autofocus: true, value: '', placeholder: I18n.t("helpers.placeholder.user.otp_token"), class: 'form-control'
+
+
         - if devise_mapping.rememberable?
           .form-group
             = f.check_box :remember_me, class: 'checkbox'

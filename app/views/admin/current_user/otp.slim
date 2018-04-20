@@ -1,0 +1,62 @@
+- content_for :title do
+  = I18n.t("title.devise.otp")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12
+        h2= I18n.t(:title, scope: 'devise.otp')
+
+    .row
+      .col-xs-12
+        p
+          == I18n.t(:explain, scope: 'devise.otp',
+                    google_auth_link: 'https://support.google.com/accounts/answer/1066447?hl=de',
+                    one_password_link: 'https://agilebits.com/onepassword',
+                    authy_link: 'https://www.authy.com/')
+
+        - if current_user.reload.otp_required_for_login?
+          - if @codes.present?
+            p
+              = I18n.t(:backup_explain, scope: 'devise.otp')
+            .row
+              .col-xs-12.col-md-4
+                pre
+                  == @codes.join("<br>")
+          - else
+            p
+              = link_to I18n.t(:backup_codes, scope: 'devise.otp'), otp_backup_codes_admin_me_path, method: :post, class: "btn btn-warning"
+
+          hr
+
+          = form_for(current_user, url: [:disable_otp_admin, "me"], html: { method: :post }) do |f|
+            p
+              = I18n.t(:disable_explain, scope: 'devise.otp')
+            .row
+              .col-xs-12.col-md-4
+                = f.text_field :otp_attempt, autocomplete: :off, placeholder: I18n.t(:otp_token, scope: 'devise.otp'), class: "form-control"
+
+            hr
+              .btn-group-responsive
+                button.btn.btn-primary.btn-lg
+                  = I18n.t(:disable, scope: 'devise.otp')
+        - else
+          = form_for(current_user, url: [:enable_otp_admin, "me"], html: { method: :post }) do |f|
+            p
+              = I18n.t(:enable_explain, scope: 'devise.otp')
+            .row
+              .col-xs-12.col-md-6
+                pre
+                  = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.application.secrets[:devise_otp_issuer])
+                pre
+                  center
+                    = image_tag otp_qrcode_admin_me_url, class: "otp-qrcode"
+            br
+            .row
+              .col-xs-12.col-md-4
+                = f.text_field :otp_attempt, autocomplete: :off, placeholder: I18n.t(:otp_token, scope: 'devise.otp'), class: "form-control"
+
+            hr
+              .btn-group-responsive
+                button.btn.btn-primary.btn-lg
+                  = I18n.t(:enable, scope: 'devise.otp')

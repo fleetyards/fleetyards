@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  devise :database_authenticatable, :async,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :timeoutable,
+  devise :two_factor_authenticatable, :two_factor_backupable, :async, :recoverable,
+         :rememberable, :trackable, :validatable, :confirmable, :timeoutable,
+         otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
+         otp_backup_code_length: 32, otp_number_of_backup_codes: 10,
          authentication_keys: [:login]
 
   has_many :vehicles, dependent: :destroy
@@ -42,6 +43,8 @@ class User < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
+  before_create :setup_otp_secret
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
@@ -51,6 +54,10 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
+  end
+
+  def setup_otp_secret
+    self.otp_secret = User.generate_otp_secret
   end
 
   def clean_username

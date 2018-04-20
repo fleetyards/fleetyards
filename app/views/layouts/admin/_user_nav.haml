@@ -6,8 +6,9 @@
           = current_user.username
         %b.caret
       .dropdown-menu.dropdown-menu-right
+        = link_to I18n.t(:"nav.otp"), otp_admin_me_path
         -# = link_to I18n.t(:"nav.settings"), edit_user_registration_path, class: "dropdown-item #{active_nav?('users')}"
-        -# .dropdown-divider
+        .dropdown-divider
         = link_to I18n.t(:"actions.sign_out"), destroy_admin_user_session_path, method: :delete, class: "dropdown-item"
   - else
     %li{class: active_nav?(%w(sessions users))}

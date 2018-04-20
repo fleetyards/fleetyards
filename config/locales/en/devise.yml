@@ -1,6 +1,25 @@
 ---
 en:
   devise:
+    otp:
+      title: '2-Factor-Authentication'
+      explain: 'To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>, <a href="%{one_password_link}" target="_blank">1Password</a> or <a href="%{authy_link}" target="_blank">Authy</a>.'
+      enable_explain: 'Scan the QR-Code and enter a generated Token.'
+      disable_explain: 'To disable 2-Factor-Auth just enter a valid Token.'
+      backup_explain: 'Copy the Backup Codes and keep them save and secure.'
+      backup_codes: 'Generate Backup Codes'
+      enable: 'Enable'
+      disable: 'Disable'
+      otp_token: 'Token'
+      otp_enabled: '2-Factor-Authentication enabled?'
+      messages:
+        backup_codes: "Backup Codes generated."
+        enable:
+          failure: "Please enter a valid Token."
+          success: "2-Factor-Authentication is now enabled."
+        disable:
+          failure: "Please enter a valid Token."
+          success: "2-Factor-Authentication is now disabled."
     confirmations:
       confirmed: Your account was successfully confirmed.
       send_instructions: You will receive an email with instructions about how to confirm your account in a few minutes.

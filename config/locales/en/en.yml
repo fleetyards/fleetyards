@@ -124,6 +124,9 @@ en:
       password_change: Change Password
     admin: FleetYards.net Command
     admin_short: FltYrd Command
+    otp: 2-Factor-Auth
+    devise:
+      otp: 2-Factor-Authentication
     component:
       edit: Edit Component
       index: Components
