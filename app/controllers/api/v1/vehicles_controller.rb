@@ -21,6 +21,8 @@ module Api
         @q = current_user.vehicles
                          .ransack(query_params)
 
+        @q.sorts = ['model_classification asc']
+
         vehicles = @q.result.uniq
 
         @count = OpenStruct.new(
