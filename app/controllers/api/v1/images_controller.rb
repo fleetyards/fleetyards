@@ -9,6 +9,7 @@ module Api
         authorize! :index, :api_images
         @images = Image.enabled
                        .in_gallery
+                       .with_uniq_name
                        .order("images.created_at desc")
                        .offset(params[:offset])
                        .limit(params[:limit])
@@ -16,7 +17,11 @@ module Api
 
       def random
         authorize! :index, :api_images
-        @images = Image.enabled.in_gallery.order("RANDOM()").limit(14)
+        @images = Image.enabled
+                       .in_gallery
+                       .with_uniq_name
+                       .order('RANDOM()')
+                       .first(14)
       end
     end
   end
