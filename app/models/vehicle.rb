@@ -25,7 +25,9 @@ class Vehicle < ApplicationRecord
   def set_flagship
     return unless flagship?
     # rubocop:disable SkipsModelValidations
-    Vehicle.where.not(id: id).update_all(flagship: false)
+    Vehicle.where(user_id: user_id, flagship: true)
+           .where.not(id: id)
+           .update_all(flagship: false)
     # rubocop:enable SkipsModelValidations
   end
 
