@@ -175,7 +175,7 @@ GEM
     js-routes (1.4.3)
       railties (>= 3.2)
       sprockets-rails
-    js_cookie_rails (2.1.4)
+    js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.1.0)
     jwt (2.1.0)
@@ -264,7 +264,7 @@ GEM
       pry (>= 0.10.4)
     public_suffix (3.0.2)
     puma (3.11.4)
-    rack (2.0.4)
+    rack (2.0.5)
     rack-attack (5.2.0)
       rack
     rack-cors (1.0.2)
