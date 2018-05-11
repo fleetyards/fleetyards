@@ -12,4 +12,9 @@ class Video < ApplicationRecord
 
     "https://www.youtube.com/embed/#{url}?loop=1&playlist=#{url}"
   end
+
+  def video_id
+    return unless youtube?
+    url
+  end
 end
