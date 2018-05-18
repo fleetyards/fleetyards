@@ -86,6 +86,10 @@ module Api
               'classification' => 'multi_role',
               'focus' => nil,
               'rsiId' => nil,
+              'manufacturer' => {
+                'name' => 'RSI',
+                'slug' => 'rsi'
+              },
               'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
               'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
             },

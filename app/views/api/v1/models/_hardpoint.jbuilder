@@ -12,3 +12,4 @@ json.default_empty hardpoint.default_empty
 json.component do
   json.partial! 'api/v1/models/component', component: hardpoint.component if hardpoint.component.present?
 end
+json.component nil if hardpoint.component.blank?

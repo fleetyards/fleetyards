@@ -9,3 +9,4 @@ json.type component.component_type
 json.manufacturer do
   json.partial! 'api/v1/models/manufacturer', manufacturer: component.manufacturer if component.manufacturer.present?
 end
+json.manufacturer nil if component.manufacturer.blank?

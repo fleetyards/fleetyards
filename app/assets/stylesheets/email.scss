@@ -3,9 +3,9 @@ $primary-color: #428bca;
 $global-font-color: #C8C8C8;
 $body-background: #272B30;
 $container-background: #272B30;
-$body-font-family: 'Droid Sans', verdana;
+$body-font-family: 'Open Sans', sans-serif;
 
-@import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900');
+@import "partials/email-fonts";
 @import "foundation-emails";
 
 body,
@@ -27,11 +27,11 @@ h4 {
 
 h1 {
   font-size: 1.7em;
-  font-family: 'Orbitron', tahoma, sans-serif;
+  font-family: 'Orbitron', sans-serif;
   color: $global-font-color;
 
   small {
-    font-family: 'Droid Sans', verdana;
+    font-family: 'Open Sans', sans-serif;
   }
 }
 
@@ -41,7 +41,7 @@ p {
 
 .transmission {
   font-size: 0.9em;
-  font-family: 'Orbitron', tahoma, sans-serif;
+  font-family: 'Orbitron', sans-serif;
   color: darken($global-font-color, 20%);
 }
 

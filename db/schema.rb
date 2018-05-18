@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_101537) do
+ActiveRecord::Schema.define(version: 2018_05_29_152140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -59,6 +59,16 @@ ActiveRecord::Schema.define(version: 2018_05_25_101537) do
     t.string "component_class"
     t.string "slug"
     t.string "component_type"
+  end
+
+  create_table "docks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "dock_type"
+    t.uuid "station_id"
+    t.string "name"
+    t.integer "max_ship_size"
+    t.integer "min_ship_size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -212,12 +222,20 @@ ActiveRecord::Schema.define(version: 2018_05_25_101537) do
   create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
-    t.uuid "system_id"
+    t.uuid "starsystem_id"
+    t.uuid "planet_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "starsystems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.datetime "created_at", null: false
@@ -235,16 +253,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_101537) do
     t.string "name"
     t.string "slug"
     t.uuid "planet_id"
-    t.integer "max_ship_size"
-    t.integer "min_ship_size"
-    t.string "station_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "systems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
+    t.integer "station_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
