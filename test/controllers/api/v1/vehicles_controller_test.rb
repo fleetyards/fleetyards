@@ -66,6 +66,8 @@ module Api
                 'maxCrew' => 3,
                 'scmSpeed' => nil,
                 'afterburnerSpeed' => nil,
+                'groundSpeed' => nil,
+                'afterburnerGroundSpeed' => nil,
                 'pitchMax' => nil,
                 'yawMax' => nil,
                 'rollMax' => nil,

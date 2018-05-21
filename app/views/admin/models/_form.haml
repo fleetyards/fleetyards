@@ -107,7 +107,16 @@
       = form.text_field :cruise_speed, class: 'form-control'
       %small
         = form_errors model, :cruise_speed
-
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :ground_speed)}
+      = form.label :ground_speed
+      = form.text_field :ground_speed, class: 'form-control'
+      %small
+        = form_errors model, :ground_speed
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_ground_speed)}
+      = form.label :afterburner_ground_speed
+      = form.text_field :afterburner_ground_speed, class: 'form-control'
+      %small
+        = form_errors model, :afterburner_ground_speed
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :pitch_max)}
       = form.label :pitch_max
