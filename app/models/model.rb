@@ -87,7 +87,7 @@ class Model < ApplicationRecord
     where(hidden: false)
   end
 
-  %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed].each do |method_name|
+  %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed ground_speed afterburner_ground_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("fallback_#{method_name}")
       if display_value.present? && !display_value.zero?
