@@ -179,7 +179,12 @@ class RsiModelsLoader
   end
 
   def create_or_update_component(hardpoint_data)
-    component = Component.find_or_create_by!(name: hardpoint_data['name'])
+    component = Component.find_or_create_by!(
+      name: hardpoint_data['name'],
+      size: hardpoint_data['component_size'],
+      component_class: hardpoint_data['component_class'],
+      component_type: hardpoint_data['type']
+    )
 
     component.update(
       size: hardpoint_data['component_size'],
