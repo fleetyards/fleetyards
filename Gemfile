@@ -37,7 +37,7 @@ gem 'ransack'
 
 gem 'jbuilder'
 
-gem 'rails-i18n', '~> 5.0.0' # For 5.0.x and 5.1.x
+gem 'rails-i18n', '~> 5.0' # For 5.0.x and 5.1.x
 
 gem 'dalli'
 gem 'turbolinks'
@@ -101,7 +101,6 @@ group :development do
 end
 
 group :test do
-  gem 'codeclimate-test-reporter'
   gem 'database_cleaner'
   gem 'faker'
   gem 'minitest-ci'
