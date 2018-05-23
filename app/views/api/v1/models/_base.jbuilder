@@ -15,6 +15,8 @@ json.min_crew model.display_min_crew
 json.max_crew model.display_max_crew
 json.scm_speed model.display_scm_speed
 json.afterburner_speed model.display_afterburner_speed
+json.ground_speed model.display_ground_speed
+json.afterburner_ground_speed model.display_afterburner_ground_speed
 json.pitch_max model.pitch_max
 json.yaw_max model.yaw_max
 json.roll_max model.roll_max

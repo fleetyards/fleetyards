@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_06_191907) do
+ActiveRecord::Schema.define(version: 2018_05_21_203451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -205,6 +205,48 @@ ActiveRecord::Schema.define(version: 2018_05_06_191907) do
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"
+    t.decimal "ground_speed", precision: 15, scale: 2
+    t.decimal "afterburner_ground_speed", precision: 15, scale: 2
+  end
+
+  create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.uuid "system_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "station_shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "station_id"
+    t.uuid "shop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.uuid "planet_id"
+    t.integer "max_ship_size"
+    t.integer "min_ship_size"
+    t.string "station_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "systems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
