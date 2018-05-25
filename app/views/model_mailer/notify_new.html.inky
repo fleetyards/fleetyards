@@ -1,0 +1,8 @@
+<h4>
+  <%= I18n.t("mailer.model.new.headline") %>
+</h4>
+<p>
+  <%= I18n.t("mailer.model.new.body") %>
+  <%= @model.manufacturer.name %>
+  <a href="https://www.fleetyards.net/ships/<%= @model.slug %>" target="_blank"><%= @model.name %></a>!
+</p>
