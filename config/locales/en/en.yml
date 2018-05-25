@@ -7,9 +7,10 @@ en:
   mailer:
     hello: Hello %{username}!
     model:
-      admin:
-        subject: New Model
-        headline: New Model
+      new:
+        subject: New Ship/Vehicle added
+        headline: New Ship/Vehicle added
+        body: "Allow me to introduce: The"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
     user:
