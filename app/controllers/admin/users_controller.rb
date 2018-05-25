@@ -22,9 +22,9 @@ module Admin
       authorize! :create, :admin_users
       @user = User.new(user_params)
       if user.save
-        redirect_to admin_users_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.user.admin"))
+        redirect_to admin_users_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.user"))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.user.admin"))
+        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.user"))
       end
     end
 
@@ -35,18 +35,18 @@ module Admin
     def update
       authorize! :update, user
       if user.update(user_params)
-        redirect_to admin_users_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.user.admin"))
+        redirect_to admin_users_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.user"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.user.admin"))
+        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.user"))
       end
     end
 
     def destroy
       authorize! :destroy, user
       if user.destroy
-        redirect_to admin_users_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.user.admin"))
+        redirect_to admin_users_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.user"))
       else
-        redirect_to admin_users_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.user.admin"))
+        redirect_to admin_users_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.user"))
       end
     end
 

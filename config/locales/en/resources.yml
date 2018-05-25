@@ -9,7 +9,6 @@ en:
       password: Password
     model: Model
     models: Models
-    user:
-      admin: User
+    user: User
     trade_hub: Trade Hub
     commodity: Commodity

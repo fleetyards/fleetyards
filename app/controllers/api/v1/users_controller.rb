@@ -68,6 +68,16 @@ module Api
         render json: { usernameTaken: User.exists?(["lower(username) = :value", { value: (user_params[:username] || "").downcase }]) }
       end
 
+      def destroy
+        authorize! :destroy, current_user
+
+        if current_user.destroy
+          render json: { code: 'current_user.destroyed', message: I18n.t('messages.destroy.success', resource: I18n.t('resources.user')) }
+        else
+          render json: ValidationError.new("current_user.destroy", @current_user.errors), status: :bad_request
+        end
+      end
+
       private def user_params
         @user_params ||= params.permit(
           :username, :email, :rsi_handle, :rsi_org,
