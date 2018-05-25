@@ -38,6 +38,7 @@ v1_api_routes = lambda do
       get :current
       put 'current' => 'users#update'
       patch 'current' => 'users#update'
+      delete 'current' => 'users#destroy'
       post 'check-email'
       post 'check-username'
       post 'start-rsi-verification'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_21_203451) do
+ActiveRecord::Schema.define(version: 2018_05_25_101537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -303,7 +303,7 @@ ActiveRecord::Schema.define(version: 2018_05_21_203451) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "rsi_handle", limit: 255
-    t.boolean "sale_notify", default: true
+    t.boolean "sale_notify", default: false
     t.string "rsi_org"
     t.boolean "rsi_verified", default: false
     t.string "rsi_verification_token"
@@ -321,7 +321,7 @@ ActiveRecord::Schema.define(version: 2018_05_21_203451) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "purchased", default: false
-    t.boolean "sale_notify", default: true
+    t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
   end
 

@@ -37,95 +37,93 @@ module Api
           sign_in data
         end
 
-        describe "without session" do
-          it "should return list for index" do
-            get :index
+        it "should return list for index" do
+          get :index
 
-            assert_response :ok
-            json = JSON.parse response.body
+          assert_response :ok
+          json = JSON.parse response.body
 
-            expected = [{
-              'id' => data.vehicles.first.id,
-              'name' => 'Enterprise',
-              'purchased' => true,
-              'flagship' => false,
-              'saleNotify' => true,
-              'model' => {
-                'id' => data.vehicles.first.model.id,
-                'name' => 'Andromeda',
-                'rsiName' => nil,
-                'slug' => 'andromeda',
-                'rsiSlug' => nil,
-                'description' => nil,
-                'length' => 61.2,
-                'beam' => 10.2,
-                'height' => 10.2,
-                'mass' => 1000.02,
-                'cargo' => '10.0',
-                'minCrew' => 1,
-                'maxCrew' => 3,
-                'scmSpeed' => nil,
-                'afterburnerSpeed' => nil,
-                'groundSpeed' => nil,
-                'afterburnerGroundSpeed' => nil,
-                'pitchMax' => nil,
-                'yawMax' => nil,
-                'rollMax' => nil,
-                'xaxisAcceleration' => nil,
-                'yaxisAcceleration' => nil,
-                'zaxisAcceleration' => nil,
-                'size' => nil,
-                'storeImage' => data.vehicles.first.model.store_image.url,
-                'fleetchartImage' => nil,
-                'brochure' => nil,
-                'storeUrl' => 'https://robertsspaceindustries.com',
-                'price' => nil,
-                'lastPrice' => nil,
-                'onSale' => false,
-                'productionStatus' => nil,
-                'productionNote' => nil,
-                'classification' => 'multi_role',
-                'focus' => nil,
-                'rsiId' => nil,
-                'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
-                'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
-              },
-              'hangarGroupIds' => [],
-              'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
-              'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
+          expected = [{
+            'id' => data.vehicles.first.id,
+            'name' => 'Enterprise',
+            'purchased' => true,
+            'flagship' => false,
+            'saleNotify' => false,
+            'model' => {
+              'id' => data.vehicles.first.model.id,
+              'name' => 'Andromeda',
+              'rsiName' => nil,
+              'slug' => 'andromeda',
+              'rsiSlug' => nil,
+              'description' => nil,
+              'length' => 61.2,
+              'beam' => 10.2,
+              'height' => 10.2,
+              'mass' => 1000.02,
+              'cargo' => '10.0',
+              'minCrew' => 1,
+              'maxCrew' => 3,
+              'scmSpeed' => nil,
+              'afterburnerSpeed' => nil,
+              'groundSpeed' => nil,
+              'afterburnerGroundSpeed' => nil,
+              'pitchMax' => nil,
+              'yawMax' => nil,
+              'rollMax' => nil,
+              'xaxisAcceleration' => nil,
+              'yaxisAcceleration' => nil,
+              'zaxisAcceleration' => nil,
+              'size' => nil,
+              'storeImage' => data.vehicles.first.model.store_image.url,
+              'fleetchartImage' => nil,
+              'brochure' => nil,
+              'storeUrl' => 'https://robertsspaceindustries.com',
+              'price' => nil,
+              'lastPrice' => nil,
+              'onSale' => false,
+              'productionStatus' => nil,
+              'productionNote' => nil,
+              'classification' => 'multi_role',
+              'focus' => nil,
+              'rsiId' => nil,
+              'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
+              'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+            },
+            'hangarGroupIds' => [],
+            'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
+          }]
+          assert_equal expected, json
+        end
+
+        it "should return counts for count" do
+          get :count
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          expected = {
+            'total' => 1,
+            'classifications' => [{
+              'name' => 'multi_role',
+              'label' => 'Multi role',
+              'count' => 1
             }]
-            assert_equal expected, json
-          end
+          }
+          assert_equal expected, json
+        end
 
-          it "should return counts for count" do
-            get :count
+        it "should return counts for count" do
+          get :count, params: { q: '{ "model_classification_in": ["combat"] }' }
 
-            assert_response :ok
-            json = JSON.parse response.body
+          assert_response :ok
+          json = JSON.parse response.body
 
-            expected = {
-              'total' => 1,
-              'classifications' => [{
-                'name' => 'multi_role',
-                'label' => 'Multi role',
-                'count' => 1
-              }]
-            }
-            assert_equal expected, json
-          end
-
-          it "should return counts for count" do
-            get :count, params: { q: '{ "model_classification_in": ["combat"] }' }
-
-            assert_response :ok
-            json = JSON.parse response.body
-
-            expected = {
-              'total' => 0,
-              'classifications' => []
-            }
-            assert_equal expected, json
-          end
+          expected = {
+            'total' => 0,
+            'classifications' => []
+          }
+          assert_equal expected, json
         end
       end
     end
