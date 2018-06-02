@@ -1,2 +1,7 @@
 origin:
   name: "Origin"
+  slug: "origin"
+
+rsi:
+  name: "RSI"
+  slug: "rsi"

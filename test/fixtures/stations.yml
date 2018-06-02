@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+portolisar:
+  name: Port Olisar
+  slug: port-olisar
+  planet: crusader
+  station_type: 0
+
+corvolex:
+  name: Corvolex Shipping Hub
+  slug: corvolex
+  planet: daymar
+  station_type: 3

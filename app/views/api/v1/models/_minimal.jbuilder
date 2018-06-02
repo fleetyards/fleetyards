@@ -5,5 +5,6 @@ json.cache! ['v1', model] do
   json.manufacturer do
     json.partial! 'api/v1/models/manufacturer', manufacturer: model.manufacturer if model.manufacturer.present?
   end
+  json.manufacturer nil if model.manufacturer.blank?
   json.partial! 'api/shared/dates', record: model
 end

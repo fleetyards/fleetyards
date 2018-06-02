@@ -22,7 +22,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         hardpoints: 1698,
         components: 120,
         models: 109,
-        manufacturers: 42
+        manufacturers: 43
       }
 
       assert_equal(expectations,

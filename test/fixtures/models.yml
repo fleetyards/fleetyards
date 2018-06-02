@@ -2,6 +2,7 @@ andromeda:
   name: "Andromeda"
   slug: "andromeda"
   classification: multi_role
+  manufacturer: rsi
   length: 61.2
   fallback_beam: 10.2
   fallback_height: 10.2
