@@ -21,6 +21,12 @@ en:
         username: Username
       video:
         url: URL
+      station:
+        hidden: hidden?
+      dock:
+        name: Name
+        min_ship_size: Min. Ship Size?
+        max_ship_size: Max. Ship Size?
     prompt:
       video:
         video_type: Please select a Video Type
@@ -28,3 +34,10 @@ en:
         station_type: Please select a Station Type
       trade_commodity:
         commodity: Commodity
+      docks:
+        dock_type: Please select a Dock Type
+      stations:
+        station_type: Please select a Station Type
+        planet: Please select a Planet
+      station_shops:
+        shop: Please select a Shop

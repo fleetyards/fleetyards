@@ -15,6 +15,7 @@ en:
         ship: No Models could be found.
         commodity: No Commodities could be found.
         trade_hub: No Trade could be found.
+        station: No Stations could be found.
       component:
         category: Category
       model:

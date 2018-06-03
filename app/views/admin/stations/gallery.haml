@@ -1,0 +1,35 @@
+.row
+  .col-xs-12.col-md-8
+    %h1
+      = I18n.t(:"headlines.admin.station.gallery", station: station.name)
+  .col-xs-12.col-md-4
+    .btn-group.pull-right.resource-nav
+      %a.btn.btn-default{href: admin_stations_path(params: index_back_params, anchor: station.id)}
+        = I18n.t(:"actions.back")
+
+%form#fileupload{action: admin_images_path, method: "POST", enctype: "multipart/form-data", data: {load_path: gallery_admin_station_path(station)}}
+  %input{type: "hidden", name: "image[gallery_id]", value: station.id}
+  %input{type: "hidden", name: "image[gallery_type]", value: "Station"}
+  = render "admin/shared/uploader/buttons"
+
+  #dropzone.fade.well
+    Drop files here
+
+  .panel.panel-default
+    .table-responsive
+      %table.table.table-hover.table-striped{role: "presentation"}
+        %thead
+          %tr
+            %th.preview
+            %th
+              Name
+            %th
+              File size
+            %th
+        %tbody.files
+
+%script#template-upload{type: "text/x-tmpl"}
+  = render "admin/shared/uploader/upload_template"
+
+%script#template-download{type: "text/x-tmpl"}
+  = render "admin/shared/uploader/download_template"

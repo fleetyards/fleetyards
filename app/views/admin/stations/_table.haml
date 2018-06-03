@@ -1,0 +1,14 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th.preview
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :station_type)
+        %th=sort_link(@q, :planet_name, 'Location')
+        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
+    %tbody
+      = render partial: "admin/stations/show", collection: @stations, as: :station
+
+      - if @stations.blank?
+        = render "shared/tables/blank", count: 3, resource: "station"

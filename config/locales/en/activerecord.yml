@@ -58,6 +58,7 @@ en:
         sell: Sale?
         buy: Buy?
       station:
+        hidden: hidden?
         station_types:
           hub: Hub
           truckstop: Truckstop
