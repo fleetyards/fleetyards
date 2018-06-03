@@ -1,0 +1,18 @@
+%tr{id: station.id}
+  %td.preview.text-center
+    = image_tag station.store_image.url
+  %td
+    = station.name
+  %td
+    = station.station_type_label
+  %td
+    = station.planet.name if station.planet.present?
+    = "(#{station.starsystem.name} System)" if station.starsystem.present?
+  %td.text-right
+    .btn-group
+      = link_to gallery_admin_station_path(station), title: I18n.t(:"actions.station.gallery"), class: "btn btn-default" do
+        %i.fa.fa-image
+      = link_to edit_admin_station_path(station), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+        %i.fa.fa-edit
+      = confirm_link_to admin_station_path(station), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
+        %i.fa.fa-trash

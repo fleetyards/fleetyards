@@ -7,7 +7,8 @@ module Api
 
       def index
         authorize! :index, :api_stations
-        @q = Station.ransack(query_params)
+        @q = Station.visible
+                    .ransack(query_params)
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 

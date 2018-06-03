@@ -4,6 +4,8 @@ en:
     add: Add
     add_video: Add Video
     add_trade_commodity: Add Commodity
+    add_dock: Add Dock
+    add_shop: Add Shop
     admin:
       component:
         new: Creae new Component
@@ -17,6 +19,8 @@ en:
         new: Create new Trade Hub
       commodity:
         new: Create new Commodity
+      station:
+        new: Create new Station
     back: Back
     cancel: Cancel
     confirm: Confirm Account

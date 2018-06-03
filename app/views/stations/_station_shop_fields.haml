@@ -1,0 +1,10 @@
+.row.fields
+  .col-xs-12.col-md-4
+    .form-group{class: form_error?(fields.object, :shop_id)}
+      - shops = Shop.all.order(name: :asc).map { |c| [c.name, c.id] }
+      = fields.select :shop_id, shops, { include_blank: I18n.t(:"helpers.prompt.station_shops.shop") }, class: 'form-control'
+      = form_errors fields.object, :shop_id
+
+  .clearfix
+  .col-xs-12.visible-sm.visible-xs
+    %hr

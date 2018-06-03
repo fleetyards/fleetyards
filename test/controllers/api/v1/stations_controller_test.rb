@@ -25,17 +25,23 @@ module Api
             'name' => 'Corvolex Shipping Hub',
             'slug' => 'corvolex',
             'type' => 'Cargo Station',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Daymar',
               'slug' => 'daymar',
             },
             'starsystem' => nil,
+            'shipCounts' => [{
+              'size' => 1,
+              'count' => 1
+            }],
             'createdAt' => Station.first.created_at.to_time.iso8601,
             'updatedAt' => Station.first.updated_at.to_time.iso8601
           }, {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
@@ -44,6 +50,13 @@ module Api
               'name' => 'Stanton',
               'slug' => 'stanton'
             },
+            'shipCounts' => [{
+              'size' => 3,
+              'count' => 1
+            }, {
+              'size' => 1,
+              'count' => 1
+            }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
           }]
@@ -61,6 +74,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
@@ -71,14 +85,21 @@ module Api
             },
             'docks' => [{
               'name' => 'Landingpad One',
-              'type' => 'dockingport',
+              'type' => 'Dockingport',
               'maxShipSize' => 3,
               'minShipSize' => 1
             }, {
               'name' => 'Dockingport One',
-              'type' => 'hangar',
+              'type' => 'Hangar',
               'maxShipSize' => 1,
               'minShipSize' => 1
+            }],
+            'shipCounts' => [{
+              'size' => 3,
+              'count' => 1
+            }, {
+              'size' => 1,
+              'count' => 1
             }],
             'shops' => [],
             'images' => [],
@@ -107,17 +128,23 @@ module Api
             'name' => 'Corvolex Shipping Hub',
             'slug' => 'corvolex',
             'type' => 'Cargo Station',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Daymar',
               'slug' => 'daymar',
             },
             'starsystem' => nil,
+            'shipCounts' => [{
+              'size' => 1,
+              'count' => 1
+            }],
             'createdAt' => Station.first.created_at.to_time.iso8601,
             'updatedAt' => Station.first.updated_at.to_time.iso8601
           }, {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
@@ -126,6 +153,13 @@ module Api
               'name' => 'Stanton',
               'slug' => 'stanton'
             },
+            'shipCounts' => [{
+              'size' => 3,
+              'count' => 1
+            }, {
+              'size' => 1,
+              'count' => 1
+            }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
           }]
@@ -143,6 +177,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
+            'storeImage' => '/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
@@ -151,14 +186,21 @@ module Api
               'name' => 'Stanton',
               'slug' => 'stanton'
             },
+            'shipCounts' => [{
+              'size' => 3,
+              'count' => 1
+            }, {
+              'size' => 1,
+              'count' => 1
+            }],
             'docks' => [{
               'name' => 'Landingpad One',
-              'type' => 'dockingport',
+              'type' => 'Dockingport',
               'maxShipSize' => 3,
               'minShipSize' => 1
             }, {
               'name' => 'Dockingport One',
-              'type' => 'hangar',
+              'type' => 'Hangar',
               'maxShipSize' => 1,
               'minShipSize' => 1
             }],
