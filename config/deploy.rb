@@ -117,6 +117,13 @@ namespace :db do
     end
   end
 
+  task seed: :remote_environment do
+    in_path fetch(:current_path).to_s do
+      comment %(Seeding database)
+      command %(#{fetch(:rake)} db:seed)
+    end
+  end
+
   task migrate: :remote_environment do
     in_path fetch(:current_path).to_s do
       comment %(Migrating database)
