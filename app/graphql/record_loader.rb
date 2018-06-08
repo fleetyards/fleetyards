@@ -19,9 +19,7 @@ class RecordLoader < GraphQL::Batch::Loader
     keys.each { |key| fulfill(key, nil) unless fulfilled?(key) }
   end
 
-  private
-
-  def query(keys)
+  private def query(keys)
     scope = @model
     scope = scope.where(@where) if @where
     scope.where(@column => keys)
