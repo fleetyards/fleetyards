@@ -21,15 +21,15 @@ module Admin
       @station = Station.new
     end
 
-    # def create
-    #   authorize! :create, :admin_stations
-    #   @station = Station.new(station_params)
-    #   if station.save
-    #     redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.station"))
-    #   else
-    #     render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.station"))
-    #   end
-    # end
+    def create
+      authorize! :create, :admin_stations
+      @station = Station.new(station_params)
+      if station.save
+        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.station"))
+      else
+        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.station"))
+      end
+    end
 
     def edit
       authorize! :update, station
