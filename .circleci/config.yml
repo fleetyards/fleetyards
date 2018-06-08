@@ -183,6 +183,7 @@ workflows:
           requires:
             - audit
             - rubocop
+            - seeds
             - unit_tests
             - precompile_assets
           filters:
