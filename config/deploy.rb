@@ -52,7 +52,6 @@ task :deploy do
     command %(bundle clean)
 
     invoke :'rails:db_migrate'
-    invoke :'db:seed'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
