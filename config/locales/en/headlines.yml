@@ -31,6 +31,11 @@ en:
         edit: Commodity %{commodity}
         index: Commodities
         new: New Commodity
+      station:
+        edit: Station %{station}
+        gallery: Imageuplaod for %{station}
+        index: Stations
+        new: New Station
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

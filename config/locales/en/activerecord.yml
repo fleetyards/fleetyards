@@ -57,6 +57,17 @@ en:
       trade_commodity:
         sell: Sale?
         buy: Buy?
+      station:
+        hidden: hidden?
+        station_types:
+          hub: Hub
+          truckstop: Truckstop
+          cargo-station: Cargo Station
+          mining-station: Mining Station
+          asteroid-station: Asteriod Station
+          outpost: Outpost
+          refinery: Refinery
+
     errors:
       messages:
         blank: Please fill out the Field

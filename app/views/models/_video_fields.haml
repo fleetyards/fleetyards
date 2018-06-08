@@ -6,8 +6,7 @@
 
   .col-xs-12.col-md-4
     .form-group{class: form_error?(fields.object, :video_type)}
-      - video_types = Video.video_types.keys.map { |w| [w.humanize, w] }
-      = fields.select :video_type, video_types, { include_blank: I18n.t(:"helpers.prompt.video.video_type") }, class: 'form-control'
+      = fields.select :video_type, Video.video_types.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.video.video_type") }, class: 'form-control'
       = form_errors fields.object, :video_type
 
   .col-xs-12.col-md-1

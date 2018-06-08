@@ -68,6 +68,8 @@ v1_api_routes = lambda do
   resources :commodities, only: [:index]
   resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
 
+  resources :stations, param: :slug, only: %i[index show]
+
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle
     resources :orgs, only: %i[show], param: :sid

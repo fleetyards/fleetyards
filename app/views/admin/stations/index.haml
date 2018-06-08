@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.station.index")
+.row#stations
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.station.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.station.new"), new_admin_station_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @stations.count
+          of
+          = @stations.total_count
+      .col-xs-12.col-md-6
+        = paginate @stations
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/stations/table", :@stations => @stations
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .form-group
+            = f.label :station_type_eq
+            = f.select :station_type_eq, Station.station_types.keys.map { |w| [Station.human_enum_name(:station_type, w), w] }, { include_blank: true }, { class: 'form-control' }
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @stations

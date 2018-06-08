@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+portolisar-pad-one:
+  dock_type: 1
+  station: portolisar
+  name: Landingpad One
+  max_ship_size: 3
+  min_ship_size: 1
+
+portolisar-dock-one:
+  dock_type: 2
+  station: portolisar
+  name: Dockingport One
+  max_ship_size: 1
+  min_ship_size: 1
+
+corvolex-dock-one:
+  dock_type: 2
+  station: corvolex
+  name: Dockingport one
+  max_ship_size: 1
+  min_ship_size: 1

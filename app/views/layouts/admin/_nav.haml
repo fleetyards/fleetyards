@@ -14,12 +14,14 @@
         %li.divider
         %li{class: active_nav?('admin-components')}
           = link_to I18n.t(:"nav.components"), admin_components_path
+  %li{class: active_nav?('admin-stations')}
+    = link_to Station.name.humanize.pluralize, admin_stations_path
   %li{class: active_nav?('admin-images')}
     = link_to I18n.t(:"nav.images"), admin_images_path
   %li{class: active_nav?('admin-users')}
     = link_to I18n.t(:"nav.users"), admin_users_path
   %li{class: active_nav?('admin-vehicles')}
-    = link_to Vehicle.name.humanize, admin_vehicles_path
+    = link_to Vehicle.name.humanize.pluralize, admin_vehicles_path
   %li{class: active_nav?('admin-trade-hubs')}
     = link_to I18n.t(:"nav.trade_hubs"), admin_trade_hubs_path
   %li{class: active_nav?('admin-commodities')}

@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.station.edit")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.station.edit", station: station.name)
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.back"), admin_stations_path(params: index_back_params, anchor: station.id), class: "btn btn-default"
+
+    .well
+      = render "form"

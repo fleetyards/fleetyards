@@ -58,6 +58,10 @@ en:
       edit: Edit Model
       index: Models
       new: New Model
+    station:
+      edit: Edit Station
+      index: Stations
+      new: New Station
     trade_hub:
       edit: Edit Trade Hub
       index: Trade Hubs

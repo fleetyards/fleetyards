@@ -13,7 +13,7 @@ class UserMailer < ApplicationMailer
   end
 
   def user_info(user)
-    @user_info ||= %w[email username].map do |field|
+    @user_info ||= %w[username].map do |field|
       "#{I18n.t("activerecord.attributes.user.#{field}")}: #{user.send(field)}"
     end
   end
