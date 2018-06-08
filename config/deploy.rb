@@ -52,6 +52,7 @@ task :deploy do
     command %(bundle clean)
 
     invoke :'rails:db_migrate'
+    invoke :'db:seed'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
@@ -114,6 +115,13 @@ namespace :db do
       comment %(Loading Schema for database)
       command %(#{fetch(:rake)} db:schema:load)
       invoke :'server:start'
+    end
+  end
+
+  task seed: :remote_environment do
+    in_path fetch(:current_path).to_s do
+      comment %(Seeding database)
+      command %(#{fetch(:rake)} db:seed)
     end
   end
 
