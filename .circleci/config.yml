@@ -170,7 +170,7 @@ workflows:
       - rubocop:
           requires:
             - bundle_dependencies
-      - seed:
+      - seeds:
           requires:
             - bundle_dependencies
       - unit_tests:
