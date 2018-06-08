@@ -69,6 +69,17 @@ jobs:
           name: rubocoptering
           command: bundle exec rubocop --format progress
 
+  seeds:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/api
+      - run: bundle --path vendor/bundle
+      - run: bundle exec rails db:create db:schema:load
+      - run:
+          name: Run Seeds
+          command: bundle exec rails db:seed
+
   unit_tests:
     <<: *defaults
     steps:
@@ -141,6 +152,9 @@ workflows:
       - rubocop:
           requires:
             - bundle_dependencies
+      - seeds:
+          requires:
+            - bundle_dependencies
       - unit_tests:
           requires:
             - bundle_dependencies
@@ -159,6 +173,9 @@ workflows:
       - rubocop:
           requires:
             - bundle_dependencies
+      - seeds:
+          requires:
+            - bundle_dependencies
       - unit_tests:
           requires:
             - bundle_dependencies
@@ -169,6 +186,7 @@ workflows:
           requires:
             - audit
             - rubocop
+            - seeds
             - unit_tests
             - precompile_assets
           filters:
