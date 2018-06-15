@@ -41,7 +41,7 @@ class Model < ApplicationRecord
 
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
-  after_commit :send_new_model_notification, on: :create
+  after_save :send_new_model_notification
 
   def self.production_status_filters
     Model.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
@@ -116,14 +116,14 @@ class Model < ApplicationRecord
   end
 
   private def send_new_model_notification
+    return if notified? || hidden?
     ModelNotificationWorker.perform_async(id)
-    return unless on_sale?
-    ActionCable.server.broadcast('on_sale', to_builder.target!)
   end
 
   private def send_on_sale_notification
     return unless on_sale?
     VehiclesWorker.perform_async(id)
+    ActionCable.server.broadcast('on_sale', to_builder.target!)
   end
 
   private def update_slugs
