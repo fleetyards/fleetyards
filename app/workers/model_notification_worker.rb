@@ -9,5 +9,6 @@ class ModelNotificationWorker
     User.where(sale_notify: true).find_each do |user|
       ModelMailer.notify_new(user.email, model).deliver_later
     end
+    model.update(notified: true)
   end
 end
