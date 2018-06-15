@@ -70,6 +70,8 @@ class RsiModelsLoader
       end
     end
 
+    model.hidden = false
+
     model.save!
   end
 
