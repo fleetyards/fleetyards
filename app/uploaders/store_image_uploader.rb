@@ -9,7 +9,7 @@ class StoreImageUploader < CarrierWave::Uploader::Base
   process :optimize if Rails.env.production?
 
   def default_url(*_args)
-    ActionController::Base.helpers.asset_url('fallback/store_image.jpg')
+    ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: "https://api.fleetyards.net")
   end
 
   def store_dir
