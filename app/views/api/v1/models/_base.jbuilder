@@ -34,5 +34,6 @@ json.on_sale model.on_sale
 json.production_status model.production_status
 json.production_note model.production_note
 json.classification model.classification
+json.classification_label model.classification&.humanize
 json.focus model.focus
 json.rsi_id model.rsi_id

@@ -84,6 +84,7 @@ module Api
               'productionStatus' => nil,
               'productionNote' => nil,
               'classification' => 'multi_role',
+              'classificationLabel' => 'Multi role',
               'focus' => nil,
               'rsiId' => nil,
               'manufacturer' => {
