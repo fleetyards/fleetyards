@@ -48,6 +48,7 @@ module Api
             'name' => 'Enterprise',
             'purchased' => true,
             'flagship' => false,
+            'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
               'id' => data.vehicles.first.model.id,
