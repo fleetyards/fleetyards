@@ -1,0 +1,71 @@
+<template>
+  <footer class="app-footer">
+    <div class="app-footer-border app-footer-border-top">
+      <div class="app-footer-border-left" />
+      <div class="app-footer-border-right" />
+    </div>
+    <div class="app-footer-inner">
+      <div class="app-footer-inner-border app-footer-inner-border-top">
+        <div class="app-footer-inner-border-bg" />
+      </div>
+      <div class="app-footer-item">
+        <a
+          v-tooltip="'Roberts Space Industries'"
+          href="https://robertsspaceindustries.com/"
+          target="_blank"
+        >
+          RSI
+        </a>
+        |
+        <router-link :to="{ name: 'privacy-policy' }">{{ t('nav.privacyPolicy') }}</router-link>
+        |
+        <router-link :to="{ name: 'impressum' }">{{ t('nav.impressum') }}</router-link>
+        <span class="hidden-xs">|</span>
+        <br class="visible-xs">
+        <a
+          v-tooltip="'Twitter'"
+          href="https://twitter.com/FleetYardsNet"
+          target="_blank"
+        >
+          <i class="fab fa-twitter" />
+        </a>
+        |
+        <a
+          v-tooltip="'Github'"
+          href="https://github.com/fleetyards"
+          target="_blank"
+        >
+          <i class="fab fa-github" />
+        </a>
+        |
+        <a
+          href="https://api.fleetyards.net"
+          target="_blank"
+        >
+          {{ t('nav.api') }}
+        </a>
+      </div>
+      <div class="app-footer-item">
+        Copyright &copy; {{ new Date().getFullYear() }}
+        <a
+          href="mailto:info@mortik.de"
+          target="_blank">Marten Klitzke - mortik.</a>
+      </div>
+      <div class="app-version">
+        RSI (1.0.0)
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+import I18n from 'frontend/mixins/I18n'
+
+export default {
+  mixins: [I18n],
+}
+</script>
+
+<style lang="scss" scoped>
+  @import "./styles/index";
+</style>

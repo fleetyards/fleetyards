@@ -1,0 +1,318 @@
+@import "~stylesheets/variables";
+
+nav.navbar {
+  border-radius: 0;
+
+  .navbar-brand {
+    font-size: 20px;
+    line-height: 25px;
+  }
+
+  .navbar-collapse {
+    display: flex !important;
+
+    .navbar-wrapper {
+      display: flex;
+      width: 100%;
+    }
+
+    .nav.navbar-nav {
+      > li {
+        > a {
+          cursor: pointer;
+
+          &::after {
+            transition: all ease $transition-base-speed;
+            opacity: 0;
+            bottom: -1px;
+            left: 50%;
+            content: "";
+            position: absolute;
+            width: 50px;
+            margin-left: -25px;
+            height: 4px;
+          }
+        }
+
+        &.active > a,
+        > a:hover,
+        &.open > a {
+          background-color: transparent;
+
+          &::after {
+            opacity: 1;
+            background: $primary;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            box-shadow: 0 -4px 10px rgba(darken($primary, 20%), 0.9), 4px 0 10px rgba(darken($primary, 20%), 0.9), -4px 0 10px rgba(darken($primary, 20%), 0.9);
+          }
+        }
+
+        &:focus > a,
+        a:focus {
+          background-color: transparent;
+        }
+
+        .dropdown-menu {
+          .divider {
+            margin: 5px 0;
+            background-color: transparent;
+            position: relative;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              height: 1px;
+              background-image: -webkit-linear-gradient(left, transparent 0, rgba(0, 0, 0, 0.07) 15%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.07) 85%, transparent 100%);
+              background-image: -moz-linear-gradient(left, transparent 0, rgba(0, 0, 0, 0.07) 15%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.07) 85%, transparent 100%);
+              background-image: -ms-linear-gradient(left, transparent 0, rgba(0, 0, 0, 0.07) 15%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.07) 85%, transparent 100%);
+              background-image: linear-gradient(to right, transparent 0, rgba(0, 0, 0, 0.07) 15%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.07) 85%, transparent 100%);
+            }
+          }
+
+          li {
+            > a {
+              padding: 8px 20px;
+              position: relative;
+              cursor: pointer;
+
+              &::after {
+                transition: all ease $transition-base-speed;
+                opacity: 0;
+                width: 3px;
+                height: 80%;
+                content: "";
+                position: absolute;
+                top: 10%;
+                right: 0;
+              }
+            }
+
+            &.active > a,
+            &:hover > a {
+              background-color: transparent;
+
+              &::after {
+                opacity: 1;
+                background: $primary;
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+                box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+              }
+            }
+
+            &:focus > a,
+            a:focus {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.avatar {
+  border-radius: 16px;
+  margin: -6px 0 -6px 0;
+}
+
+span.avatar {
+  padding: 6px 9px 5px 8px;
+}
+
+img.avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.username {
+  display: none;
+}
+
+.navbar-right {
+  margin-right: 0;
+}
+
+.navbar-toggle {
+  position: absolute;
+  left: 10px;
+  float: none;
+  border-color: transparent !important;
+  background-color: transparent !important;
+
+  .icon-bar {
+    width: 22px;
+    transition: all ease 0.2s;
+  }
+
+  .top-bar {
+    transform: rotate(45deg);
+    transform-origin: 10% 10%;
+  }
+
+  .middle-bar {
+    opacity: 0;
+  }
+
+  .bottom-bar {
+    transform: rotate(-45deg);
+    transform-origin: 10% 90%;
+  }
+
+  &.collapsed {
+    .top-bar,
+    .bottom-bar {
+      transform: rotate(0);
+    }
+
+    .middle-bar {
+      opacity: 1;
+    }
+  }
+}
+
+.verified {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  display: block;
+  bottom: 8px;
+  right: 10px;
+  background-color: $success;
+  border-radius: 100%;
+  text-align: center;
+
+  i {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 15%;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .navbar-default {
+    min-width: 320px;
+  }
+
+  .username {
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  .verified {
+    left: 20px;
+    right: auto;
+  }
+
+  .navbar-brand {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 65px;
+    margin-right: 65px;
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+    float: none;
+  }
+
+  nav.navbar {
+    transition: left ease 0.5s, right ease 0.5s;
+
+    .navbar-right {
+      margin-right: -8px;
+    }
+
+    .navbar-form {
+      flex-grow: 0;
+    }
+
+    .navbar-form-placeholder {
+      display: none;
+    }
+
+    .navbar-nav > li.user-menu {
+      background-color: transparent;
+    }
+
+    .navbar-collapse {
+      transition: left ease 0.5s;
+      position: fixed;
+      margin-right: 0;
+      margin-left: 0;
+      background-color: rgba(#2c3339, 0.9);
+      border-right: 1px solid rgba(30, 34, 38, 0.9);
+      border-top: none;
+      width: 80vw;
+      top: 0;
+      bottom: 0;
+      left: -80vw;
+      right: auto;
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      padding: 0;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+
+      .navbar-wrapper {
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-left: 15px;
+        padding-right: 15px;
+        display: block;
+      }
+
+      .nav.navbar-nav {
+        max-height: none;
+
+        > li {
+          > a {
+            padding: 10px 15px 8px 25px;
+            height: 42px;
+
+            &::after {
+              width: 3px;
+              transition: none;
+              opacity: 0;
+              height: 80%;
+              content: "";
+              position: absolute;
+              border-top-left-radius: 2px;
+              border-bottom-left-radius: 2px;
+              top: 10%;
+              right: 0;
+              left: auto;
+            }
+          }
+
+          &.active > a {
+            border: none;
+            padding-bottom: 10px;
+            position: relative;
+
+            &::after {
+              opacity: 1;
+              background: $primary;
+              box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            }
+          }
+        }
+      }
+    }
+
+    &.navbar-visble {
+      left: 80vw;
+      right: -80vw;
+
+      .navbar-collapse {
+        left: 0;
+      }
+    }
+  }
+}

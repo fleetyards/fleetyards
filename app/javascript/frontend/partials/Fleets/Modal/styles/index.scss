@@ -1,0 +1,34 @@
+.fleet-modal-loader .loader {
+  top: 0;
+}
+
+.fleet-preview {
+  min-height: 80px;
+
+  .panel-fleet {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+  }
+}
+
+.form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+
+  &:focus {
+    z-index: 2;
+  }
+}
+
+.has-feedback {
+  .form-control-feedback {
+    &:nth-child(3) {
+      top: 0;
+    }
+  }
+}

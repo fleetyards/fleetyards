@@ -1,0 +1,39 @@
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  &.flex-center {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.flex-row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+  transition: width ease $transition-base-speed;
+}
+
+.input-group-flex {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  > input,
+  > button,
+  > div {
+    margin-right: 5px;
+    margin-bottom: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

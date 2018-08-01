@@ -3,6 +3,8 @@
 require 'uglifier'
 
 Rails.application.configure do
+  # Verifies that versions and hashed value of the package contents in the project's package.json
+  config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -53,7 +55,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -126,6 +128,8 @@ Rails.application.configure do
 
   config.action_cable.mount_path = '/cable'
   config.action_cable.allowed_request_origins = ['https://fleetyards.net', 'https://www.fleetyards.net']
+
+  ActionCable.server.config.logger = Logger.new(nil)
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
