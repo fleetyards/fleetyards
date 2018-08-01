@@ -1,0 +1,33 @@
+@import "~stylesheets/variables";
+
+.fleetchart-wrapper {
+  max-width: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.fleetchart {
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+
+  .fleetchart-item {
+    margin: 10px;
+    display: inline-block;
+    text-align: center;
+  }
+}
+
+.hangar-metrics {
+  margin-bottom: 15px;
+}
+
+.fleetchart-slider {
+  margin-bottom: 20px;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart {
+    justify-content: center;
+  }
+}

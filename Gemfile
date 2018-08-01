@@ -22,7 +22,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
-gem 'i18n-js', ">= 3.0.0.rc11"
+gem 'i18n-js'
 gem 'js_cookie_rails'
 
 gem 'inky-rb', require: 'inky'
@@ -53,6 +53,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
+gem 'webpacker'
 
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
@@ -91,6 +92,8 @@ gem 'lograge'
 gem 'rack-mini-profiler'
 
 gem 'pry-rails'
+
+gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development do
   gem 'i18n-tasks', '~> 0.9.18'

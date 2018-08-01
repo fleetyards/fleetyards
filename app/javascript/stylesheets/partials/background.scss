@@ -1,0 +1,16 @@
+.background-image {
+  display: block;
+  position: fixed;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition: background-image ease 0.5s;
+  background-color: black;
+}

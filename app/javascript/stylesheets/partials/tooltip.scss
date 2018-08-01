@@ -1,0 +1,28 @@
+.tooltip {
+  display: block !important;
+  padding: 4px;
+  z-index: 10000;
+
+  .tooltip-inner {
+    background: $gray-darker;
+    color: $text-color;
+    border-radius: $border-radius-base;
+    padding: 5px 10px 4px;
+  }
+
+  .tooltip-arrow {
+    display: none;
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity ease 0.15s, visibility ease 0.15s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity ease 0.15s;
+  }
+}
