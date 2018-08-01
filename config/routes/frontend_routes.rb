@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: "", constraints: { subdomain: "www" } do
+namespace :frontend, path: '', constraints: { subdomain: 'stage' } do
   get 'embed' => 'base#embed'
 
   resources :ships, param: :slug, only: %i[index show]
