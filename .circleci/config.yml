@@ -8,6 +8,9 @@ defaults: &defaults
         RAILS_ENV: test
         DATABASE_HOST: 127.0.0.1
         DATABASE_USER: root
+        LC_ALL: C.UTF-8
+        LANG: en_US.UTF-8
+        LANGUAGE: en_US.UTF-8
     - image: circleci/postgres:9.6.2-alpine
       environment:
         POSTGRES_USER: root
@@ -90,6 +93,8 @@ jobs:
       - run:
           name: Run Unit Tests
           command: bundle exec rails test
+      - store_test_results:
+          path: test/reports
 
   precompile_assets:
     <<: *defaults
