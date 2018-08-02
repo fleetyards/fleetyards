@@ -1,0 +1,60 @@
+.input-group-addon {
+  color: inherit;
+}
+
+.btn.btn-default {
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    color: lighten($primary, 50%);
+  }
+}
+
+.panel .btn-block {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-width: 1px 0 0;
+}
+
+.label {
+  font-weight: normal;
+}
+
+.modal-content {
+  border-radius: $border-radius-base;
+}
+
+@media (min-width: 1800px) {
+  .container {
+    width: $container-xlg;
+  }
+
+  .col-xlg-1 {
+    width: 8.333333333%;
+  }
+
+  .col-xlg-2 {
+    width: 16.666666667%;
+  }
+
+  .col-xlg-3 {
+    width: 25%;
+  }
+
+  .col-xlg-4 {
+    width: 33.33333%;
+  }
+
+  .col-xlg-5 {
+    width: 41.666666667%;
+  }
+
+  .col-xlg-6 {
+    width: 50%;
+  }
+
+  .col-xlg-10 {
+    width: 83.333333333%;
+  }
+}

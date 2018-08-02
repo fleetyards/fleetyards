@@ -1,0 +1,272 @@
+<template>
+  <form @submit.prevent="submit">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{ t('headlines.settings') }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div
+          :class="{'has-error has-feedback': errors.has('username')}"
+          class="form-group"
+        >
+          <label for="username">{{ t('labels.username') }}</label>
+          <input
+            v-tooltip.bottom-end="errors.first('username')"
+            v-validate="'required|alpha_dash'"
+            id="username"
+            v-model="form.username"
+            :data-vv-as="t('labels.username')"
+            :placeholder="t('labels.username')"
+            name="username"
+            type="text"
+            class="form-control"
+          >
+          <span
+            v-show="errors.has('username')"
+            class="form-control-feedback"
+          >
+            <i
+              :title="errors.first('username')"
+              class="fal fa-exclamation-triangle"
+            />
+          </span>
+        </div>
+        <div
+          :class="{'has-error has-feedback': errors.has('email')}"
+          class="form-group"
+        >
+          <label for="email">{{ t('labels.email') }}</label>
+          <input
+            v-tooltip.bottom-end="errors.first('email')"
+            v-validate="'required|email'"
+            id="email"
+            v-model="form.email"
+            :data-vv-as="t('labels.email')"
+            name="email"
+            type="email"
+            class="form-control"
+          >
+          <span
+            v-show="errors.has('email')"
+            class="form-control-feedback"
+          >
+            <i
+              :title="errors.first('email')"
+              class="fal fa-exclamation-triangle"
+            />
+          </span>
+        </div>
+        <Checkbox
+          id="saleNotify"
+          v-model="form.saleNotify"
+          :label="t('labels.user.saleNotify')"
+        />
+        <div
+          :class="{'has-error has-feedback': errors.has('rsiHandle')}"
+          class="form-group"
+        >
+          <label for="rsi-handle">{{ t('labels.rsiHandle') }}</label>
+          <div class="input-group">
+            <span class="input-group-addon">https://robertsspaceindustries.com/citizens/</span>
+            <input
+              v-tooltip.bottom-end="errors.first('rsiHandle')"
+              v-validate="'alpha_dash'"
+              id="rsi-handle"
+              v-model="form.rsiHandle"
+              :data-vv-as="t('labels.rsiHandle')"
+              name="rsiHandle"
+              type="text"
+              class="form-control"
+              @input="changeHandle"
+            >
+          </div>
+          <span
+            v-show="errors.has('rsiHandle')"
+            class="form-control-feedback"
+          >
+            <i
+              :title="errors.first('handle')"
+              class="fal fa-exclamation-triangle"
+            />
+          </span>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <Loader v-if="loading" />
+        <transition name="fade">
+          <Panel v-if="rsiCitizen">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.username') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.username }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.handle') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.handle }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.title') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.title }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.citizenRecord') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.citizenRecord }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.enlisted') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.enlisted }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.languages') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.languages }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{{ t('user.rsi.location') }}</strong>
+                  </td>
+                  <td>{{ rsiCitizen.location }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Panel>
+          <Panel v-else-if="!loading">
+            <div class="empty-citizen">
+              {{ t('labels.blank.rsiCitizen') }}
+            </div>
+          </Panel>
+        </transition>
+      </div>
+    </div>
+    <br>
+    <SubmitButton :loading="submitting">
+      {{ t('actions.save') }}
+    </SubmitButton>
+  </form>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Btn from 'frontend/components/Btn'
+import SubmitButton from 'frontend/components/SubmitButton'
+import Checkbox from 'frontend/components/Form/Checkbox'
+import { success } from 'frontend/lib/Noty'
+import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
+
+export default {
+  components: {
+    SubmitButton,
+    Checkbox,
+    Btn,
+    Loader,
+    Panel,
+  },
+  mixins: [I18n, MetaInfo],
+  data() {
+    return {
+      form: {
+        rsiHandle: null,
+        username: null,
+        email: null,
+        saleNotify: false,
+      },
+      loading: false,
+      rsiCitizen: null,
+      rsiFetchTimeout: null,
+      submitting: false,
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'currentUser',
+      'citizen',
+    ]),
+  },
+  watch: {
+    currentUser: 'setupForm',
+    citizen() {
+      this.rsiCitizen = this.citizen
+    },
+  },
+  created() {
+    if (this.currentUser) {
+      this.setupForm()
+    }
+    if (this.citizen) {
+      this.rsiCitizen = this.citizen
+    }
+  },
+  methods: {
+    changeHandle() {
+      if (this.rsiFetchTimeout) {
+        clearTimeout(this.rsiFetchTimeout)
+      }
+      this.rsiFetchTimeout = setTimeout(() => {
+        this.fetchCitizen()
+      }, 300)
+    },
+    setupForm() {
+      this.form.rsiHandle = this.currentUser.rsiHandle
+      this.form.username = this.currentUser.username
+      this.form.email = this.currentUser.email
+      this.form.saleNotify = !!this.currentUser.saleNotify
+    },
+    submit() {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          return
+        }
+        this.submitting = true
+        this.$api.put('users/current', this.form, (args) => {
+          this.submitting = false
+          if (!args.error) {
+            this.$comlink.$emit('userUpdate')
+            success(this.t('messages.updateProfile.success'))
+          }
+        })
+      })
+    },
+    fetchCitizen() {
+      this.rsiCitizen = null
+
+      if (!this.form.rsiHandle) {
+        return
+      }
+
+      this.loading = true
+      this.$api.get(`rsi/citizens/${this.form.rsiHandle}`, {}, (args) => {
+        this.loading = false
+        if (!args.error) {
+          this.rsiCitizen = args.data
+        }
+      })
+    },
+  },
+  metaInfo() {
+    return this.getMetaInfo({
+      title: this.t('title.settings')
+    })
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+  @import "./styles/index";
+</style>
