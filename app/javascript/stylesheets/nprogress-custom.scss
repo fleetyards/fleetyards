@@ -1,0 +1,24 @@
+@import 'vendor/nprogress';
+
+#nprogress .bar {
+  background: $primary !important;
+  height: 3px !important;
+}
+
+#nprogress {
+  .spinner {
+    display: none !important;
+    top: 18px !important;
+  }
+
+  .spinner-icon {
+    border-top-color: $primary !important;
+    border-left-color: $primary !important;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  #nprogress .spinner {
+    right: 70px !important;
+  }
+}

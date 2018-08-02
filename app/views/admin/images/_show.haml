@@ -15,6 +15,6 @@
       %button.btn.btn-default{class: ('active' if image.background?), type: "button", onclick: "App.Resources.stateChange($(this), 'background'); return false;", data: {action: toggle_background_admin_image_path(image), resource: 'image', toggle: "button"}}
         %i.fa{class: "fa-#{(image.background? ? 'eye' : 'eye-slash')}"}
       %button.btn.btn-default{class: ('active' if image.enabled?), type: "button", onclick: "App.Resources.stateChange($(this), 'enabled'); return false;", data: {action: toggle_admin_image_path(image), resource: 'image', toggle: "button"}}
-        %i.fa{class: "fa-#{(image.enabled? ? 'check' : 'square-o')}"}
+        %i.fa{class: "fa-#{(image.enabled? ? 'check' : 'square')}"}
       = confirm_link_to admin_image_path(image), data: {notyConfirm: I18n.t(:"messages.confirm.delete")}, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
         %i.fa.fa-trash

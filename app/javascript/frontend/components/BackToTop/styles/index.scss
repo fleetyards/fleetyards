@@ -1,0 +1,22 @@
+@import "~stylesheets/variables";
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  font-size: 160%;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all ease 0.5s;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .back-to-top {
+    bottom: 0;
+    right: 10px;
+  }
+}

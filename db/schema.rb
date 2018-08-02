@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_02_190827) do
+ActiveRecord::Schema.define(version: 2018_07_23_205500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 2018_06_02_190827) do
     t.decimal "zaxis_acceleration", precision: 15, scale: 2
     t.string "fleetchart_image"
     t.datetime "store_images_updated_at"
-    t.boolean "hidden", default: false
+    t.boolean "hidden", default: true
     t.datetime "last_updated_at"
     t.decimal "fallback_beam", precision: 15, scale: 2
     t.decimal "fallback_length", precision: 15, scale: 2
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2018_06_02_190827) do
     t.string "brochure"
     t.decimal "ground_speed", precision: 15, scale: 2
     t.decimal "afterburner_ground_speed", precision: 15, scale: 2
+    t.boolean "notified", default: false
   end
 
   create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -334,6 +335,7 @@ ActiveRecord::Schema.define(version: 2018_06_02_190827) do
     t.boolean "purchased", default: false
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
+    t.boolean "name_visible", default: false
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
