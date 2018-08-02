@@ -139,7 +139,7 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     hashdiff (0.3.7)
-    highline (1.7.10)
+    highline (2.0.0)
     hirb (0.7.3)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
