@@ -127,7 +127,7 @@ Rails.application.configure do
   end
 
   config.action_cable.mount_path = '/cable'
-  config.action_cable.allowed_request_origins = ['https://fleetyards.net', 'https://www.fleetyards.net']
+  config.action_cable.allowed_request_origins = ['https://fleetyards.net', 'https://www.fleetyards.net', 'https://stage.fleetyards.net']
 
   ActionCable.server.config.logger = Logger.new(nil)
 
