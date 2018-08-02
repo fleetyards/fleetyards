@@ -1,0 +1,27 @@
+$text-color: #c8c8c8;
+$primary: #428bca;
+$success: #5cb85c;
+$danger: lighten(red, 10%);
+
+$gray: #52575c;
+$gray-dark: #3a3f44;
+$gray-light: #7a8288;
+$gray-darker: #272b30;
+$gray-lighter: #999;
+
+$input-bg: $gray-dark;
+$input-border: $gray-darker;
+$input-color: $text-color;
+
+$tablet-breakpoint: 768px;
+$desktop-breakpoint: 992px;
+
+$border-radius-base: 4px;
+
+$panel-bg: rgba(#2c3339, 0.9);
+$panel-outer-border: lighten(#555, 10%);
+$panel-inner-border: rgba(#c8c8c8, 0.9);
+
+$transition-base-speed: 0.5s;
+
+$font-size-base: 15px;

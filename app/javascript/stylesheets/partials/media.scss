@@ -1,0 +1,76 @@
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: lighten($gray-dark, 20%);
+}
+
+.thumbnail {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $gray-dark;
+  border-radius: 6px;
+  padding: 2px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: border 0.2s ease-in-out;
+
+  img {
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  img[lazy=loaded] {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+  }
+
+  &:not(.no-link) {
+    cursor: pointer;
+  }
+}
+
+.embed-responsive {
+  overflow: hidden;
+  border: 2px solid $gray-dark;
+  transition: border 0.2s ease-in-out;
+  background-color: #272b30;
+  border-radius: 6px;
+
+  &:hover {
+    border-color: lighten($gray-dark, 20%);
+  }
+}
+
+.embed-copy {
+  position: absolute;
+  bottom: 25px;
+  right: 5px;
+  z-index: 1000;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

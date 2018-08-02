@@ -40,6 +40,19 @@ en:
     trade_hubs: Trade Hubs
     commodities: Commodities
   title:
+    frontend:
+      home: Home
+      images: Images
+      cargo: Cargo
+      commodities: Commodities
+      fleets: Fleets
+      hangar: My Hangar
+      public_hangar: "%{user} Hangar"
+      impressum: Impressum
+      privacy: Privacy Policy
+      login: Login
+      sign_up: Sign Up
+      password_request: Request Password
     admin: FleetYards.net Backend
     component:
       edit: Edit Component
@@ -49,7 +62,6 @@ en:
     default: FleetYards.net
     image:
       index: All Images
-    impressum: Impressum
     manufacturer:
       edit: Edit Manufacturer
       index: Manufacturers
@@ -71,12 +83,11 @@ en:
       index: Commodities
       new: New Commodity
     not_found: 404
-    password:
-      new: Forgot your Password?
-    privacy: Privacy policy
-    server_error: 500
     sign_in: Login
-    sign_up: Sign up
+    password:
+      edit: Change Password
+      new: Forgot your Password?
+    server_error: 500
     unlock: Unlock Account
     unprocessable_entity: 422
     user:

@@ -1,0 +1,95 @@
+@import "~stylesheets/variables";
+
+$innerBorderWidth: 3px;
+$outerBorderWidth: 2px;
+
+.app-footer {
+  text-align: center;
+  position: relative;
+  padding-top: ($outerBorderWidth * 2);
+
+  .app-footer-border {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  .app-footer-border-left,
+  .app-footer-border-right {
+    position: absolute;
+    display: block;
+    width: 80px;
+    height: outerBorderWidth;
+  }
+
+  .app-footer-border-left {
+    left: 0;
+  }
+
+  .app-footer-border-right {
+    right: 0;
+  }
+
+  .app-footer-border-top {
+    top: 0;
+
+    .app-footer-border-left,
+    .app-footer-border-right {
+      top: 0;
+      border-top: $outerBorderWidth solid $panel-outer-border;
+    }
+  }
+
+  .app-footer-inner {
+    position: relative;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    border-top: $innerBorderWidth solid $panel-inner-border;
+    background-color: rgba(#2c3339, 0.9);
+
+    .app-footer-inner-border {
+      width: 100%;
+      height: $innerBorderWidth;
+      position: absolute;
+      padding-left: 40px;
+      padding-right: 40px;
+
+      .app-footer-inner-border-bg {
+        background: #444;
+        width: 100%;
+        height: $innerBorderWidth;
+      }
+    }
+
+    .app-footer-inner-border-top {
+      top: -$innerBorderWidth;
+    }
+  }
+
+  a {
+    color: $text-color;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .app-footer-item {
+    margin-bottom: 5px;
+  }
+
+  .app-version {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .app-footer {
+    .app-version {
+      bottom: 5px;
+      left: 10px;
+    }
+  }
+}

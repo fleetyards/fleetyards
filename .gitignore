@@ -17,6 +17,9 @@ test/reports/*
 
 # app files
 public/uploads/*
+public/assets
+public/packs
+public/packs-test
 
 # js dependencies
 vendor/assets/.bowerrc
@@ -27,3 +30,12 @@ vendor/assets/bower_components/sweetalert
 
 .byebug_history
 
+/node_modules
+yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity

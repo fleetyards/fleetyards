@@ -1,0 +1,76 @@
+$innerBorderWidth: 2px;
+
+.labels {
+  margin-bottom: 15px;
+
+  .label-title {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .label {
+    margin-bottom: 5px;
+    margin-right: 10px;
+    border-radius: 6px;
+    user-select: none;
+    display: inline-block;
+    padding: 2px;
+    cursor: default;
+    font-size: 100%;
+    position: relative;
+    color: $text-color;
+    border: $innerBorderWidth solid $panel-inner-border;
+    background-color: $panel-bg;
+
+    .label-inner {
+      border-radius: 3px;
+      padding: 3px 6px;
+      display: block;
+    }
+
+    .label-color {
+      border-radius: 100%;
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .label-inner-border {
+      width: 100%;
+      display: block;
+      left: 0;
+      height: $innerBorderWidth;
+      position: absolute;
+      padding-left: 10px;
+      padding-right: 10px;
+
+      .label-inner-border-bg {
+        background: #444;
+        display: block;
+        width: 100%;
+        height: $innerBorderWidth;
+      }
+    }
+
+    .label-inner-border-top {
+      top: -$innerBorderWidth;
+    }
+
+    .label-inner-border-bottom {
+      bottom: -$innerBorderWidth;
+    }
+
+    &.label-link {
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        .label-inner {
+          color: invert($text-color);
+          background-color: $panel-inner-border;
+        }
+      }
+    }
+  }
+}

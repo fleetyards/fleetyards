@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_15_202637) do
+ActiveRecord::Schema.define(version: 2018_07_23_205500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -335,6 +335,7 @@ ActiveRecord::Schema.define(version: 2018_06_15_202637) do
     t.boolean "purchased", default: false
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
+    t.boolean "name_visible", default: false
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

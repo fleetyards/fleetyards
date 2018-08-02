@@ -1,0 +1,97 @@
+@import "~stylesheets/variables";
+
+.hardpoint-icon {
+  position: relative;
+  width: 50px;
+  height: 60px;
+  display: inline-block;
+  margin-right: 10px;
+
+  &.hardpoint-with-component {
+    cursor: pointer;
+  }
+
+  &.hardpoint-empty {
+    svg {
+      .hardpoint-icon-bg {
+        opacity: 0.25;
+      }
+
+      .hardpoint-icon-empty-bg {
+        polygon {
+          opacity: 0.05;
+        }
+
+        path {
+          opacity: 0.25;
+        }
+      }
+    }
+  }
+
+  svg {
+    .hardpoint-icon-part {
+      fill: $primary;
+      stroke: $primary;
+    }
+
+    .hardpoint-icon-bg {
+      fill: darken($primary, 40%);
+      stroke: $primary;
+    }
+
+    .hardpoint-icon-quantity {
+      polygon.hardpoint-icon-part {
+        opacity: 0.25;
+      }
+    }
+  }
+
+  .hardpoint-label {
+    color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+  }
+
+  .hardpoint-size-label {
+    width: 50px;
+    height: 60px;
+    font-size: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: $primary;
+
+    &.hardpoint-size-label-small {
+      top: 25px;
+      height: 35px;
+      font-size: 18px;
+    }
+  }
+
+  .hardpoint-category-label {
+    top: 1px;
+    left: 4px;
+  }
+
+  .hardpoint-quantity-label {
+    top: 4px;
+    right: 0;
+    left: 0;
+    font-size: 12px;
+    width: 50px;
+    height: 26px;
+    color: $primary;
+  }
+
+  .hardpoint-mounts-label {
+    top: 1px;
+    right: 4px;
+  }
+}

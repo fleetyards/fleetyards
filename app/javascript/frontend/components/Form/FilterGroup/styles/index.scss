@@ -1,0 +1,149 @@
+@import "~stylesheets/variables";
+
+.filter-list {
+  margin-bottom: 15px;
+
+  .filter-list-title {
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    background: rgba($input-bg, 0.9);
+    padding: 10px 40px 10px 10px;
+    border-radius: $border-radius-base;
+    border: 1px solid $input-border;
+    transition: all 0.5s ease;
+
+    i {
+      transition: all 0.5s ease;
+      position: absolute;
+      right: 15px;
+      top: 13px;
+    }
+
+    &:hover {
+      background: $input-bg;
+      color: white;
+    }
+
+    &.active {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      i {
+        transform: rotate(90deg);
+      }
+    }
+
+    &.selected {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .filter-list-items {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgba($gray-darker, 0.8);
+    border-bottom-left-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
+  }
+
+  .filter-list-item {
+    position: relative;
+    padding: 10px 36px 10px 6px;
+    border-bottom: 1px solid $input-border;
+    cursor: pointer;
+    color: $input-color;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    display: flex;
+    align-items: center;
+
+    .filter-list-item-icon {
+      margin-right: 10px;
+      width: 30px;
+      height: 21px;
+      text-align: center;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    i {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      transition: all 0.5s ease;
+    }
+
+    &::before,
+    &::after {
+      width: 3px;
+      height: 26px;
+      content: "";
+      position: absolute;
+      top: 50%;
+      margin-top: -13px;
+      transition: all ease 0.3s;
+      opacity: 0;
+    }
+
+    &::before {
+      left: -4px;
+    }
+
+    &::after {
+      right: -4px;
+    }
+
+    &:hover {
+      &::before,
+      &::after {
+        background: $primary;
+        opacity: 1;
+      }
+
+      &::before {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        box-shadow: 3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+      }
+
+      &::after {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+      }
+    }
+
+    &.active {
+      color: $primary;
+      animation-name: flash;
+      animation-duration: 0.5s;
+
+      i {
+        transform: rotate(45deg);
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+}
