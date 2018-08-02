@@ -1,0 +1,26 @@
+.commodity {
+  padding: 20px;
+
+  h2 {
+    font-family: 'Orbitron', tahoma, sans-serif;
+  }
+
+  input {
+    text-align: right;
+  }
+
+  .input-group {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.trade-hubs-blank {
+  text-align: center;
+  font-size: 120%;
+  line-height: 2;
+  padding: 20px;
+}

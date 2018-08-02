@@ -1,0 +1,49 @@
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-active {
+  transition-delay: 0.5s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
+.fade-slow-enter-active,
+.fade-slow-leave-active {
+  transition: opacity 1.5s;
+}
+
+.fade-slow-enter-active {
+  transition-delay: 1.5s;
+}
+
+.fade-slow-enter,
+.fade-slow-leave-active {
+  opacity: 0;
+}
+
+.fade-list-item {
+  transition: all 0.5s;
+}
+
+.fade-list-enter,
+.fade-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-list-leave-active {
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 70vh;
+  position: absolute;
+  opacity: 0;
+}
+
+.fade-list-enter-active {
+  transition-delay: 0.5s;
+}

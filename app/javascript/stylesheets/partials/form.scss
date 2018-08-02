@@ -1,0 +1,73 @@
+.input-group-addon {
+  color: $gray-lighter;
+  max-width: 60vw;
+  font-size: 16px;
+}
+
+.input-lg,
+.input-group-lg > .form-control,
+.input-group-lg > .input-group-addon,
+.input-group-lg > .input-group-btn > .btn {
+  height: 51px;
+}
+
+.label {
+  display: inline-block;
+}
+
+.form-group {
+  position: relative;
+}
+
+input.disabled-clean[disabled=disabled] {
+  cursor: copy;
+}
+
+.btn-clear {
+  position: absolute;
+  right: 0;
+  top: 28px;
+}
+
+.form-horizontal {
+  label {
+    padding-top: 7px;
+  }
+
+  .btn-clear {
+    top: 1px;
+  }
+}
+
+.navbar-form {
+  flex-grow: 1;
+
+  .btn-clear {
+    top: 5px;
+  }
+
+  .form-group {
+    display: block;
+  }
+
+  .form-control {
+    display: block;
+    width: 100%;
+  }
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: $gray-dark;
+  opacity: 1;
+}
+
+input,
+input.form-control {
+  font-size: 16px;
+}
+
+.page-options {
+  margin-bottom: 15px;
+}

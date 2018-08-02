@@ -97,10 +97,10 @@ module Api
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= params.permit(:name, :model_id, :purchased, :sale_notify, :flagship, hangar_group_ids: [])
-                                  .merge(
-                                    user_id: current_user.id
-                                  )
+        @vehicle_params ||= params.permit(
+          :name, :model_id, :purchased, :name_visible,
+          :sale_notify, :flagship, hangar_group_ids: []
+        ).merge(user_id: current_user.id)
       end
     end
   end

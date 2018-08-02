@@ -45,4 +45,32 @@ module ApplicationHelper
       asset_path("bg-#{rand(5)}.jpg")
     end
   end
+
+  def title
+    @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
+  end
+
+  def description
+    @description || I18n.t(:"meta.description")
+  end
+
+  def keywords
+    @keywords || I18n.t(:"meta.keywords")
+  end
+
+  def og_title
+    title
+  end
+
+  def og_type
+    @og_type || 'website'
+  end
+
+  def og_url
+    @og_url || request.original_url
+  end
+
+  def og_image
+    @og_image
+  end
 end

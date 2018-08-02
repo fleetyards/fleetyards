@@ -1,0 +1,42 @@
+@import "~stylesheets/variables";
+
+.hangar-guide {
+  padding: 15px;
+}
+
+.hangar-guide-topic {
+  .hangar-guide-gif {
+    max-width: 50%;
+    border-radius: 3px;
+    margin-left: 20px;
+    float: right;
+  }
+
+  .hangar-guide-highlight {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 3px;
+    background-color: $gray-dark;
+    text-align: center;
+
+    i {
+      margin-left: 10px;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .hangar-guide-topic {
+    .hangar-guide-gif {
+      float: none;
+      max-width: 100%;
+      display: block;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .hangar-guide-highlight {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+}
+
+address {
+  .name {
+    font-size: 1.2em;
+    color: #999;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: normal;
+  }
+}
+
+blockquote {
+  small {
+    a {
+      color: $gray-light;
+
+      &:hover {
+        color: $gray-light;
+      }
+    }
+  }
+}
+
+h1,
+.navbar-brand {
+  font-family: 'Orbitron', sans-serif;
+
+  small {
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
+.app-title {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.price-info {
+  font-size: 70%;
+}
+
+h1.back-button {
+  padding-left: 40px;
+  position: relative;
+
+  .btn {
+    position: absolute;
+    left: 0;
+    top: -5px;
+
+    i,
+    svg {
+      font-size: 150%;
+    }
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+.panel-title {
+  font-size: 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: normal;
+
+  small {
+    font-size: 15px;
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+

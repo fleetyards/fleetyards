@@ -1,0 +1,348 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
+$grid-float-breakpoint: $screen-sm-max;
+
+$footer-border-color:    #111;
+$footer-bg-color:        #222;
+$border-radius-base:     3px;
+$gravatar-shadow:        0 1px 0 #333;
+$gray-darker:            #272b30;
+$default-btn:            #3a3f44;
+$gray-dark:              #3a3f44;
+$gray:                   #52575c;
+$gray-light:             #7a8288;
+$gray-lighter:           #999;
+
+// Brand colors
+// -------------------------
+$brand-primary:         $gray-light;
+$brand-success:         #5cb85c;
+$brand-warning:         #f0ad4e;
+$brand-danger:          #d9534f;
+$brand-info:            #5bc0de;
+
+// Scaffolding
+// -------------------------
+$body-bg:               $gray-darker;
+$text-color:            #c8c8c8;
+
+// Links
+// -------------------------
+$link-color:            #fff;
+$link-hover-color:      #fff;
+
+// Components
+// -------------------------
+$component-active-color:         #fff;
+$component-active-bg:            transparent;
+
+// Tables
+// -------------------------
+
+$table-bg:                           transparent;
+$table-bg-accent:                    rgba(lighten($body-bg, 6%), 0.2); // for striping
+$table-bg-hover:                     lighten($body-bg, 15%);
+$table-bg-active:                    $table-bg-hover;
+
+$table-border-color:                 darken($gray-darker, 5%); // table and cell border
+
+// Buttons
+// -------------------------
+
+$btn-font-weight:                normal;
+
+$btn-default-color:              #fff;
+$btn-default-bg:                 $default-btn;
+$btn-default-border:             darken($btn-default-bg, 6%);
+
+$btn-primary-color:              #fff;
+$btn-primary-bg:                 $primary;
+$btn-primary-border:             darken($btn-primary-bg, 6%);
+
+$btn-success-color:              $btn-default-color;
+$btn-success-bg:                 $brand-success;
+$btn-success-border:             darken($btn-success-bg, 6%);
+
+$btn-warning-color:              $btn-default-color;
+$btn-warning-bg:                 $brand-warning;
+$btn-warning-border:             darken($btn-warning-bg, 6%);
+
+$btn-danger-color:               $btn-default-color;
+$btn-danger-bg:                  $brand-danger;
+$btn-danger-border:              darken($btn-danger-bg, 6%);
+
+$btn-info-color:                 $btn-default-color;
+$btn-info-bg:                    $brand-info;
+$btn-info-border:                darken($btn-info-bg, 6%);
+
+$btn-link-disabled-color:        $gray-light;
+
+// Forms
+// -------------------------
+
+$input-bg:                       $gray-dark;
+$input-bg-disabled:              $gray-lighter;
+
+$input-color:                    $text-color;
+$input-border:                   $gray-darker;
+$input-border-radius:            $border-radius-base;
+$input-border-focus:             $gray-darker;
+
+$input-color-placeholder:      #757575;
+
+$input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 7);
+$input-height-large:             (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 2) + 7);
+$input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 7);
+
+$legend-color:                   $text-color;
+$legend-border-color:            darken($gray-darker, 5%);
+
+$input-group-addon-bg:           darken($default-btn, 5%);
+$input-group-addon-border-color: $gray-darker;
+
+// Dropdowns
+// -------------------------
+
+$dropdown-bg:                    rgba(darken($gray-dark, 10%), 0.9);
+$dropdown-border:                rgba(0, 0, 0, 0.15);
+$dropdown-fallback-border:       $gray-darker;
+$dropdown-divider-bg:            darken($gray-darker, 5%);
+
+$dropdown-link-color:            $text-color;
+$dropdown-link-hover-color:      #fff;
+$dropdown-link-hover-bg:         darken($gray-darker, 5%);
+
+$dropdown-link-active-color:     #fff;
+$dropdown-link-active-bg:        darken($gray-darker, 5%);
+
+$dropdown-link-disabled-color:   $text-muted;
+
+$dropdown-header-color:          $text-muted;
+
+// Navbar
+// -------------------------
+
+// Basics of a navbar
+$navbar-margin-bottom:             $line-height-computed;
+$navbar-border-radius:             $border-radius-base;
+$navbar-padding-horizontal:        floor($grid-gutter-width / 2);
+$navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2);
+
+$navbar-default-color:             $text-color;
+$navbar-default-bg:                rgba(#2c3339, 0.9);
+$navbar-default-border:            darken($navbar-default-bg, 6.5%);
+
+// Navbar links
+$navbar-default-link-color:                $text-color;
+$navbar-default-link-hover-color:          #fff;
+$navbar-default-link-hover-bg:             darken($navbar-default-bg, 5%);
+$navbar-default-link-active-color:         #fff;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 5%);
+$navbar-default-link-active-dropdown-bg:   darken($navbar-default-bg, 12%);
+$navbar-default-link-disabled-color:       #ccc;
+$navbar-default-link-disabled-bg:          transparent;
+
+// Navbar brand label
+$navbar-default-brand-color:               $navbar-default-link-color;
+$navbar-default-brand-hover-color:         #fff;
+$navbar-default-brand-hover-bg:            none;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           darken($navbar-default-bg, 8%);
+$navbar-default-toggle-icon-bar-bg:        $text-color;
+$navbar-default-toggle-border-color:       darken($navbar-default-bg, 8%);
+
+// Navs
+// -------------------------
+$nav-link-hover-bg:                         lighten($body-bg, 5%);
+
+$nav-disabled-link-color:                   $gray-light;
+$nav-disabled-link-hover-color:             $gray-light;
+
+$nav-open-link-hover-color:                 #fff;
+
+// Tabs
+$nav-tabs-border-color:                     darken($gray-darker, 5%);
+
+$nav-tabs-link-hover-border-color:          darken($gray-darker, 5%);
+
+$nav-tabs-active-link-hover-bg:             rgba(lighten($body-bg, 5%), 0.8);
+$nav-tabs-active-link-hover-color:          #fff;
+$nav-tabs-active-link-hover-border-color:   darken($gray-darker, 5%);
+
+$nav-tabs-justified-link-border-color:            $nav-tabs-border-color;
+$nav-tabs-justified-active-link-border-color:     $body-bg;
+
+// Pills
+$nav-pills-border-radius:                   $border-radius-base;
+$nav-pills-active-link-hover-bg:            $btn-default-bg;//$component-active-bg;
+$nav-pills-active-link-hover-color:         $component-active-color;
+
+// Pagination
+// -------------------------
+$pagination-color:                     #fff;
+$pagination-bg:                        $default-btn;
+$pagination-border:                    darken($btn-default-bg, 6%);
+
+$pagination-hover-color:               #fff;
+$pagination-hover-bg:                  darken($pagination-bg, 8%);
+$pagination-hover-border:              darken($pagination-border, 12%);
+
+$pagination-active-color:              #fff;
+$pagination-active-bg:                 darken($pagination-bg, 8%);
+$pagination-active-border:             darken($pagination-border, 12%);
+
+$pagination-disabled-color:            #fff;
+$pagination-disabled-bg:               $default-btn;
+$pagination-disabled-border:           darken($btn-default-bg, 6%);
+
+// Pager
+// -------------------------
+$pager-disabled-color:                 $gray-light;
+
+// Jumbotron
+// -------------------------
+$jumbotron-bg:                   rgba(darken($body-bg, 5%), 0.8);
+
+// Popovers
+// -------------------------
+$popover-bg:                          lighten($body-bg, 3%);
+$popover-border-color:                rgba(0, 0, 0, 0.2);
+$popover-fallback-border-color:       #999;
+
+$popover-title-bg:                    $popover-bg;
+$popover-arrow-color:                 $popover-bg;
+
+$popover-arrow-outer-width:           ($popover-arrow-width + 1);
+$popover-arrow-outer-color:           rgba(0, 0, 0, 0.25);
+$popover-arrow-outer-fallback-color:  #999;
+
+// Labels
+// -------------------------
+$label-default-bg:            rgba($btn-default-bg, 0.8);
+$label-primary-bg:            rgba($primary, 0.8);
+$label-success-bg:            rgba($brand-success, 0.8);
+$label-info-bg:               rgba($brand-info, 0.8);
+$label-warning-bg:            rgba($brand-warning, 0.8);
+$label-danger-bg:             rgba($brand-danger, 0.8);
+
+$label-color:                 #fff;
+$label-link-hover-color:      #fff;
+
+// Modals
+// -------------------------
+$modal-title-line-height:     $line-height-base;
+
+$modal-content-bg:                             lighten($body-bg, 3%);
+$modal-content-border-color:                   rgba(0, 0, 0, 0.2);
+$modal-content-fallback-border-color:          #999;
+
+$modal-backdrop-bg:           #000;
+$modal-header-border-color:   darken($gray-darker, 5%);
+$modal-footer-border-color:   $modal-header-border-color;
+
+// Alerts
+// -------------------------
+$alert-border-radius:         $border-radius-base;
+$alert-link-font-weight:      bold;
+
+$alert-success-bg:            $state-success-bg;
+$alert-success-text:          $state-success-text;
+$alert-success-border:        $state-success-border;
+
+$alert-info-bg:               $state-info-bg;
+$alert-info-text:             $state-info-text;
+$alert-info-border:           $state-info-border;
+
+$alert-warning-bg:            $state-warning-bg;
+$alert-warning-text:          $state-warning-text;
+$alert-warning-border:        $state-warning-border;
+
+$alert-danger-bg:             $state-danger-bg;
+$alert-danger-text:           $state-danger-text;
+$alert-danger-border:         $state-danger-border;
+
+// Progress bars
+// -------------------------
+$progress-bg:                 darken($body-bg, 5%);
+$progress-bar-color:          #fff;
+
+$progress-bar-bg:             $brand-primary;
+$progress-bar-success-bg:     $brand-success;
+$progress-bar-warning-bg:     $brand-warning;
+$progress-bar-danger-bg:      $brand-danger;
+$progress-bar-info-bg:        $brand-info;
+
+// List group
+// -------------------------
+$list-group-bg:               rgba(lighten($body-bg, 3%), 0.4);
+$list-group-border:           rgba(0, 0, 0, 0.6);
+$list-group-border-radius:    $border-radius-base;
+
+$list-group-hover-bg:         rgba(lighten($body-bg, 10%), 0.8);
+$list-group-active-color:     $component-active-color;
+$list-group-active-bg:        lighten($body-bg, 10%);
+$list-group-active-border:    $list-group-border;
+
+$list-group-link-color:          $text-color;
+$list-group-link-heading-color:  #fff;
+$list-group-link-hover-color:    darken(#fff, 10%);
+
+// Thumbnails
+// -------------------------
+$thumbnail-bg:                $body-bg;
+$thumbnail-border:            #ddd;
+$thumbnail-border-radius:     $border-radius-base;
+
+$thumbnail-caption-color:     $text-color;
+
+// Wells
+// -------------------------
+$well-bg:                     rgba(darken($body-bg, 5%), 0.8);
+$well-border:                 darken($well-bg, 7%);
+
+// Badges
+// -------------------------
+$badge-color:                 #fff;
+$badge-link-hover-color:      #fff;
+$badge-bg:                    $gray-light;
+
+$badge-active-color:          $link-color;
+$badge-active-bg:             $gray-light;
+
+$badge-font-weight:           bold;
+
+// Breadcrumbs
+// -------------------------
+$breadcrumb-bg:               transparent;
+$breadcrumb-color:            #ccc;
+$breadcrumb-active-color:     $gray-light;
+$breadcrumb-separator:        "/";
+
+// Code
+// ------------------------
+$code-color:                  #c7254e;
+$code-bg:                     #f9f2f4;
+
+$pre-bg:                      #f5f5f5;
+$pre-color:                   $gray-dark;
+$pre-border-color:            #ccc;
+$pre-scrollable-max-height:   340px;
+
+// Type
+// ------------------------
+$text-muted:                  $gray-light;
+$abbr-border-color:           $gray-light;
+$headings-small-color:        $gray-light;
+$blockquote-small-color:      $gray-light;
+$blockquote-border-color:     $gray-light;
+$page-header-border-color:    darken($gray-darker, 5%);
+
+// Miscellaneous
+// -------------------------
+
+// Hr border color
+$hr-border:                   darken($gray-darker, 5%);
+
+// Horizontal forms & lists
+$component-offset-horizontal: 180px;

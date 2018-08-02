@@ -1,0 +1,40 @@
+@import "~stylesheets/variables";
+
+h2.hardpoint-category-label {
+  text-transform: uppercase;
+  font-size: 20px;
+  font-family: 'Orbitron', tahoma, sans-serif;
+}
+
+.hardpoint-category {
+  padding: 20px 20px 10px;
+}
+
+.hardpoint-type {
+  padding-left: 200px;
+  position: relative;
+  border-bottom: 1px solid rgba($gray-darker, 0.7);
+  margin-bottom: 5px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .hardpoint-type-label {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 200px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-right: 20px;
+    color: darken($text-color, 20%);
+
+    .hardpoint-type-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+  }
+}

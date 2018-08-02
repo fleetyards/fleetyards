@@ -1,0 +1,51 @@
+@import "~stylesheets/variables";
+
+.cargo-route {
+  margin-bottom: 40px;
+
+  h2 {
+    font-family: 'Orbitron', tahoma, sans-serif;
+  }
+
+  .cargo-route-point {
+    text-align: center;
+    padding: 10px;
+
+    h3 {
+      font-size: 140%;
+      font-family: 'Orbitron', tahoma, sans-serif;
+    }
+  }
+
+  .cargo-route-center {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .profit {
+      margin-top: 10px;
+      font-size: 120%;
+      color: $primary;
+    }
+
+    i {
+      font-size: 200%;
+    }
+  }
+}
+
+.cargo-routes-blank {
+  text-align: center;
+  font-size: 120%;
+  line-height: 2;
+  padding: 20px;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .cargo-route-center {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
