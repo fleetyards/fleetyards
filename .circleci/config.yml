@@ -93,6 +93,8 @@ jobs:
       - run:
           name: Run Unit Tests
           command: bundle exec rails test
+      - store_test_results:
+          path: test/reports
 
   precompile_assets:
     <<: *defaults
