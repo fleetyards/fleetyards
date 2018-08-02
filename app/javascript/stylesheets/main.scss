@@ -1,0 +1,112 @@
+@import "~noty/lib/noty";
+@import "vendor/blueimp-gallery";
+@import "variables";
+@import "colors/default";
+@import "bootstrap-custom";
+@import "colors/dark_overrides";
+@import "nprogress-custom";
+@import "partials/typography";
+@import "partials/transitions";
+@import "partials/background";
+@import "partials/flex";
+@import "partials/media";
+@import "partials/noty";
+@import "partials/form";
+@import "partials/buttons";
+@import "partials/tooltip";
+@import "partials/loader";
+@import "partials/metrics";
+@import "partials/labels";
+@import "partials/tabs";
+
+html {
+  height: 100%;
+}
+
+.no-scroll {
+  overflow: hidden !important;
+  position: relative !important;
+  -webkit-overflow-scrolling: auto;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  height: auto;
+  position: relative;
+  min-width: 320px;
+  background-color: black;
+  min-height: 100%;
+
+  > .container {
+    padding-bottom: 20px;
+    overflow-y: scroll;
+  }
+}
+
+.row > [class*='col-'] {
+  transition: width ease $transition-base-speed;
+}
+
+.app-body {
+  display: flex;
+  padding-top: 70px;
+  min-height: 100vh;
+  flex-direction: column;
+
+  .main {
+    margin-bottom: 50px;
+    flex: 1;
+  }
+
+  &.navbar-visible {
+    .main {
+      left: 80vw;
+      right: -80vw;
+    }
+
+    .app-footer {
+      left: 80vw;
+      right: -80vw;
+    }
+  }
+}
+
+.app-intro {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-flow: column;
+  margin-top: -70px;
+  margin-bottom: -50px;
+  height: 100vh;
+}
+
+.infinite-loading-container {
+  min-height: 64px;
+}
+
+a,
+input[type=button],
+button {
+  outline: 0 none !important;
+}
+
+.list-group a {
+  border: none;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .app-body {
+    .main {
+      left: 0;
+      position: relative;
+      transition: left ease 0.5s, right ease 0.5s;
+      min-width: 100vw;
+    }
+  }
+}

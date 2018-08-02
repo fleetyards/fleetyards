@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <title><%= title %></title>
+
+    <meta content="<%= description %>" name="description" data-vue-meta="true">
+    <meta content="<%= keywords %>" name="keywords" data-vue-meta="true">
+
+    <meta property="og:site_name" content="<%= I18n.t(:"title.default") %>" data-vue-meta="true">
+    <meta property="og:title" content="<%= og_title %>" data-vue-meta="true">
+    <meta property="og:type" content="<%= og_type %>" data-vue-meta="true">
+    <meta property="og:url" content="<%= og_url %>" data-vue-meta="true">
+    <% if og_image.present? %>
+    <meta property="og:image" content="<%= og_image %>" data-vue-meta="true">
+    <% end %>
+
+    <link rel="mask-icon" href="<%= asset_url('favicon.svg') %>" color="#333333">
+    <link rel="shortcut icon" type="image/png" href="<%= asset_url('favicon.png') %>">
+
+    <meta name="application-name" content="FleetYards.net">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="manifest" href="/manifest.json" />
+
+    <%= favicon_link_tag 'touch-icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
+    <%= favicon_link_tag 'touch-icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
+    <%= favicon_link_tag 'touch-icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
+    <%= favicon_link_tag 'touch-icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
+    <%= favicon_link_tag 'touch-icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-oi8o31xSQq8S0RpBcb4FaLB8LJi9AT8oIdmS1QldR8Ui7KUQjNAnDlJjp55Ba8FG" crossorigin="anonymous">
+    <link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900">
+
+    <%= stylesheet_pack_tag 'frontend' %>
+  </head>
+  <body>
+    <div id="app">
+      <div class="app-intro">
+        <h1>
+          FleetYards.net
+        </h1>
+        <div>
+          <div class="loader">
+            <div class="cube1 cube"></div>
+            <div class="cube2 cube"></div>
+            <div class="cube4 cube"></div>
+            <div class="cube3 cube"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= yield %>
+
+    <div id="fleetyards-view"></div>
+    <script>
+        var fleetyards_config = function() {
+            this.ships = ['300i', '600i', '890-jump'];  // Replace [] with a javascript array of the Shipnames you want to display
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'http://www.fleetyards.test/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view your custom Fleet powered by FleetYards.net.</a></noscript>
+  </body>
+</html>

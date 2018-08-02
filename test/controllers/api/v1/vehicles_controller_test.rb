@@ -48,6 +48,7 @@ module Api
             'name' => 'Enterprise',
             'purchased' => true,
             'flagship' => false,
+            'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
               'id' => data.vehicles.first.model.id,
@@ -84,6 +85,7 @@ module Api
               'productionStatus' => nil,
               'productionNote' => nil,
               'classification' => 'multi_role',
+              'classificationLabel' => 'Multi role',
               'focus' => nil,
               'rsiId' => nil,
               'manufacturer' => {

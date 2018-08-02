@@ -37,7 +37,7 @@
         %i.fa.fa-check
       {% } else { %}
       %button.btn.btn-default{type: "button", onclick: "App.Resources.stateChange($(this), 'enabled'); return false;", data: {action: "{%=file.toggleUrl%}", resource: "image", toggle: "button"}}
-        %i.fa.fa-square-o
+        %i.fa.fa-square
       {% } %}
       {% if (file.deleteUrl) { %}
       %button.btn.btn-danger.delete{data: {type: "{%=file.deleteType%}", url: "{%=file.deleteUrl%}"}}

@@ -1,0 +1,18 @@
+.metrics-title {
+  font-size: 18px;
+  font-family: 'Orbitron', tahoma, sans-serif;
+  text-transform: uppercase;
+}
+
+.metrics-block {
+  margin-top: -6px;
+}
+
+.metrics-label {
+  margin-top: 6px;
+  color: darken($text-color, 20%);
+}
+
+.metrics-value {
+  font-weight: bold;
+}

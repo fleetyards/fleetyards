@@ -55,9 +55,7 @@ module Admin
       admin_root_path
     end
 
-    protected
-
-    def configure_permitted_parameters
+    protected def configure_permitted_parameters
       added_attrs = %i[username email password password_confirmation]
       devise_parameter_sanitizer.permit :sign_in, keys: %i[login password remember_me]
       devise_parameter_sanitizer.permit :sign_up, keys: added_attrs

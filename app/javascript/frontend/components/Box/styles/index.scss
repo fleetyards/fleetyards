@@ -1,0 +1,29 @@
+@import "~stylesheets/variables";
+
+.box {
+  margin-bottom: 20px;
+
+  .box-inner {
+    padding: 15px;
+  }
+
+  a.btn-link {
+    color: #666;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+@media (min-width: $tablet-breakpoint) {
+  .box {
+    width: 350px;
+    margin: 0 auto 20px;
+    margin-top: 6%;
+
+    &.box-large {
+      width: 600px;
+    }
+  }
+}

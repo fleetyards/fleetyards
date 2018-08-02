@@ -1,0 +1,27 @@
+@import "~stylesheets/variables";
+
+.to-fleetyards {
+  position: absolute;
+  top: -40px;
+  color: $text-color;
+  transition: all ease 0.5s;
+
+  .brand {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+.fleetchart-slider {
+  margin-bottom: 20px;
+}
+
+.fleetchart {
+  justify-content: space-around;
+  align-items: center;
+
+  .fleetchart-item {
+    margin: 10px;
+    display: inline-block;
+    text-align: center;
+  }
+}
