@@ -22,7 +22,7 @@ module Frontend
     end
 
     def fleet
-      @fleet = Fleet.find_by(sid: params[:sid])
+      @fleet = Fleet.find_by(["lower(sid) = :value", { value: params[:sid].downcase }])
       if @fleet.present?
         @title = @fleet.name
         @og_type = 'article'
@@ -32,7 +32,7 @@ module Frontend
     end
 
     def hangar
-      @user = User.find_by(username: params[:username])
+      @user = User.find_by(["lower(username) = :value", { value: params[:username].downcase }])
       if @user.present?
         vehicle = @user.vehicles.purchased.includes(:model).order(flagship: :desc, name: :asc).order('models.name asc').first
         @title = I18n.t('title.frontend.public_hangar', user: username(@user.username))
@@ -43,7 +43,7 @@ module Frontend
     end
 
     def model
-      @model = Model.find_by(slug: params[:slug])
+      @model = Model.find_by(["lower(slug) = :value", { value: params[:slug].downcase }])
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
