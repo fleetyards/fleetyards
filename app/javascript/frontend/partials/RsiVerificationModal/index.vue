@@ -22,6 +22,7 @@
             <i class="fa fa-copy" />
           </Btn>
         </div>
+        <p v-html="t('texts.rsiVerification.subline')" />
       </div>
     </div>
     <Loader

@@ -34,7 +34,7 @@ module Frontend
     def hangar
       @user = User.find_by(username: params[:username])
       if @user.present?
-        vehicle = @user.vehicles.includes(:model).order(flagship: :desc, purchased: :desc, name: :asc).order('models.name asc').first
+        vehicle = @user.vehicles.purchased.includes(:model).order(flagship: :desc, name: :asc).order('models.name asc').first
         @title = I18n.t('title.frontend.public_hangar', user: username(@user.username))
         @og_type = 'article'
         @og_image = vehicle.model.store_image.url if vehicle.present?
