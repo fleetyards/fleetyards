@@ -83,7 +83,7 @@ class User < ApplicationRecord
 
   def clean_rsi_handle
     return if rsi_handle.blank?
-    self.rsi_handle = rsi_handle.strip
+    self.rsi_handle = rsi_handle.strip.downcase
   end
 
   def avatar(size = 24)
