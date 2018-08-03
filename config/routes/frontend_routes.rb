@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '', constraints: { subdomain: /^www|stage$/ } do
+namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'ships' => 'base#index'
   get 'ships/:slug' => 'base#model'
 
