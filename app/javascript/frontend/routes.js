@@ -122,13 +122,6 @@ export const routes = [
     },
     children: SettingsRoutes,
   }, {
-    path: '/password/update',
-    name: 'change-user-password',
-    component: ChangePassword,
-    meta: {
-      needsAuthentication: true,
-    },
-  }, {
     path: '/sign-up',
     name: 'signup',
     component: Signup,

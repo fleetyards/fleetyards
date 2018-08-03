@@ -7,7 +7,7 @@
         %h1
           = I18n.t(:"headlines.change_password")
 
-        = form_for(resource, as: resource_name, url: user_password_path, html: { class: "form-horizontal", method: :put }) do |form|
+        = form_for(resource, as: resource_name, url: admin_user_password_path, html: { class: "form-horizontal", method: :put }) do |form|
 
           = form.hidden_field :reset_password_token
 
@@ -18,7 +18,8 @@
               = form_errors resource, :password
 
           .form-group
-            = form.password_field :password_confirmation, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
+            .col-sm-12
+              = form.password_field :password_confirmation, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
 
           .text-right
             %button.hidden-xs.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}

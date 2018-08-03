@@ -2,11 +2,11 @@
   = I18n.t(:"title.password.new")
 .row
   .col-xs-12
-    .cbox.cbox-password
+    .cbox.cbox-login
       .well
         %h1= I18n.t(:"headlines.forgot_password")
 
-        = form_for(resource, as: resource_name, url: user_password_path, html: { class: "form-horizontal", method: :post}) do |form|
+        = form_for(resource, as: resource_name, url: admin_user_password_path, html: { class: "form-horizontal", method: :post}) do |form|
 
           .form-group{class: form_error?(resource, :email)}
             .col-sm-12

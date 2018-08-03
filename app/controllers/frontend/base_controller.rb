@@ -3,16 +3,16 @@
 module Frontend
   class BaseController < ApplicationController
     def index
+      route = request.fullpath.sub(%r{^\/}, '').tr('/', '_')
+      route = 'home' if route.blank?
+
+      @title = I18n.t("title.frontend.#{route}")
+
       render 'frontend/index'
     end
 
-    def home
-      @title = I18n.t('title.frontend.home')
-      render 'frontend/index'
-    end
-
-    def cargo
-      @title = I18n.t('title.frontend.cargo')
+    def password
+      @title = I18n.t('title.frontend.password_change')
       render 'frontend/index'
     end
 
@@ -21,38 +21,58 @@ module Frontend
       render 'frontend/index'
     end
 
-    def impressum
-      @title = I18n.t('title.frontend.impressum')
+    def fleet
+      @fleet = Fleet.find_by(sid: params[:sid])
+      if @fleet.present?
+        @title = @fleet.name
+        @og_type = 'article'
+        @og_image = @fleet.logo
+      end
       render 'frontend/index'
     end
 
-    def privacy
-      @title = I18n.t('title.frontend.privacy')
+    def hangar
+      @user = User.find_by(username: params[:username])
+      if @user.present?
+        vehicle = @user.vehicles.includes(:model).order(flagship: :desc, purchased: :desc, name: :asc).order('models.name asc').first
+        @title = I18n.t('title.frontend.public_hangar', user: username(@user.username))
+        @og_type = 'article'
+        @og_image = vehicle.model.store_image.url if vehicle.present?
+      end
       render 'frontend/index'
     end
 
-    def login
-      @title = I18n.t('title.frontend.login')
+    def model
+      @model = Model.find_by(slug: params[:slug])
+      if @model.present?
+        @title = "#{@model.name} - #{@model.manufacturer.name}"
+        @description = @model.description
+        @og_type = 'article'
+        @og_image = @model.store_image.url
+      end
       render 'frontend/index'
     end
 
-    def signup
-      @title = I18n.t('title.frontend.sign_up')
-      render 'frontend/index'
-    end
-
-    def password_request
-      @title = I18n.t('title.frontend.password_request')
-      render 'frontend/index'
-    end
-
-    def images
-      @title = I18n.t('title.frontend.images')
-      render 'frontend/index'
+    def not_found
+      respond_to do |format|
+        format.html do
+          render 'frontend/index', status: :not_found
+        end
+        format.json do
+          render json: { code: "not_found", message: "Not Found" }, status: :not_found
+        end
+      end
     end
 
     def embed
       redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.js'))
+    end
+
+    private def username(name)
+      if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
+        return name
+      end
+      "#{name}'s"
     end
   end
 end

@@ -26,7 +26,7 @@
     <meta name="apple-mobile-web-app-title" content="FleetYards.net">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="<%= asset_url('manifest.json') %>" />
 
     <%= favicon_link_tag 'touch-icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
     <%= favicon_link_tag 'touch-icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
@@ -57,19 +57,5 @@
     </div>
 
     <%= yield %>
-
-    <div id="fleetyards-view"></div>
-    <script>
-        var fleetyards_config = function() {
-            this.ships = ['300i', '600i', '890-jump'];  // Replace [] with a javascript array of the Shipnames you want to display
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-            s.src = 'http://www.fleetyards.test/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view your custom Fleet powered by FleetYards.net.</a></noscript>
   </body>
 </html>

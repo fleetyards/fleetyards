@@ -89,11 +89,6 @@ Vue.config.productionTip = false
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
-if ('serviceWorker' in navigator) {
-  // eslint-disable-next-line compat/compat
-  navigator.serviceWorker.register('/service-worker.js')
-}
-
 // eslint-disable-next-line no-new
 new Vue({
   el: '#app',
