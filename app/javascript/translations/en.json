@@ -359,7 +359,8 @@
     "empty": "We could not find any records.",
     "rsiVerification": {
       "instructions": "To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href=\"https://robertsspaceindustries.com/account/profile\" target=\"_blank\">https://robertsspaceindustries.com/account/profile</a>:",
-      "verificationText": "https://www.fleetyards.net/hangar/%{username}#%{token}"
+      "verificationText": "https://www.fleetyards.net/hangar/%{username}#%{token}",
+      "subline": "PS: When your Verification is done you can remove the Link from your Profile again if you don't like it."
     },
     "hangarGuide": {
       "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
