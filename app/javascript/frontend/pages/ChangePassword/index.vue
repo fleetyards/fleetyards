@@ -181,7 +181,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.requestPassword'),
+      title: this.t('title.changePassword'),
     })
   },
 }

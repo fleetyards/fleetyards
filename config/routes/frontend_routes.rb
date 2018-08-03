@@ -1,24 +1,42 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '', constraints: { subdomain: 'stage' } do
+namespace :frontend, path: '', constraints: { subdomain: /^www|stage$/ } do
+  get 'ships' => 'base#index'
+  get 'ships/:slug' => 'base#model'
+
+  get 'fleets' => 'base#index'
+  get 'fleets/:sid' => 'base#fleet'
+
+  get 'hangar' => 'base#index'
+  get 'hangar/:username' => 'base#hangar'
+
+  get 'compare/ships' => 'base#index'
+
+  get 'cargo' => 'base#index'
+
+  get 'commodities' => 'base#index'
+  get 'commodities/:id' => 'base#commodities'
+
+  get 'images' => 'base#index'
+
+  get 'impressum' => 'base#index'
+  get 'privacy-policy' => 'base#index'
+
+  get 'sign-up' => 'base#index'
+  get 'login' => 'base#index'
+
+  get 'settings' => 'base#index'
+  get 'settings/profile' => 'base#index'
+  get 'settings/account' => 'base#index'
+  get 'settings/change-password' => 'base#index'
+
+  get 'password/request' => 'base#index'
+  get 'password/update/:token' => 'base#password'
+  get 'confirm/:token' => 'base#confirm'
+
   get 'embed' => 'base#embed'
 
-  resources :ships, param: :slug, only: %i[index show]
-  resources :fleets, param: :sid, only: %i[index show]
+  match '404' => 'base#not_found', via: :all
 
-  get 'hangar' => 'hangar#show'
-  get 'hangar/:username' => 'hangar#public'
-
-  get 'cargo' => 'base#cargo'
-  get 'commodities' => 'base#commodities'
-  get 'images' => 'base#images'
-  get 'impressum' => 'base#impressum'
-  get 'privacy-policy' => 'base#privacy'
-  get 'sign-up' => 'base#signup'
-  get 'login' => 'base#login'
-  get 'password/request' => 'base#password_request'
-
-  get '/*path', to: 'base#index', format: false
-
-  root to: 'base#home'
+  root to: 'base#index'
 end
