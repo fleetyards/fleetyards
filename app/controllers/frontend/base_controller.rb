@@ -3,7 +3,7 @@
 module Frontend
   class BaseController < ApplicationController
     def index
-      route = request.fullpath.sub(/^\//, '').tr('/', '_')
+      route = request.fullpath.sub(%r{^\/}, '').tr('/', '_')
       route = 'home' if route.blank?
 
       @title = I18n.t("title.frontend.#{route}")
