@@ -48,6 +48,6 @@ class Fleet < ApplicationRecord
       membership.update(user_id: User.find_by(rsi_verified: true, rsi_handle: handle)&.id)
       rsi_member_ids << membership.id
     end
-    FleetMembership.where(id: (rsi_member_ids - member_ids)).destroy_all
+    FleetMembership.where(id: (member_ids - rsi_member_ids)).destroy_all
   end
 end
