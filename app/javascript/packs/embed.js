@@ -8,7 +8,7 @@ import 'frontend/lib/LazyLoad'
 
 const d = document
 const styles = d.createElement('link')
-styles.href = `http://www.fleetyards.test/embed-styles.css#${+new Date()}`
+styles.href = `https://www.fleetyards.net/embed-styles.css#${+new Date()}`
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
