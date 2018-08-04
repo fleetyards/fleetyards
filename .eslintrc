@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:vue/recommended",
+    "plugin:jest/recommended"
+  ],
+  "plugins": [
+    "compat",
+    "jest"
+  ],
+  "settings": {
+    "html/indent": "tab",
+    "polyfills": ["promises"]
+  },
+  "rules": {
+    "compat/compat": "error",
+    "no-bitwise": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "no-underscore-dangle": "off",
+    "semi": ["error", "never"],
+    "no-console": [
+      "error", { "allow": ["info", "warn", "error"] }
+    ],
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_"
+    }],
+    "no-useless-escape": 0,
+    "space-before-function-paren": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "jest": true,
+    "process": true,
+    "env": true,
+    "fixture": true,
+    "self": true,
+    "clients": true
+  },
+  "overrides": [{
+    "files": ["**/*+(spec|test).?(f|functional).js"],
+    "globals": {
+      "test": true,
+      "mountVM": true
+    }
+  }, {
+    "files": ["**/*+(spec|test).js"],
+    "rules": {
+      "no-unused-expressions": "off"
+    },
+    "globals": {
+      "mountVM": true,
+      "jest": true
+    },
+    "env": {
+      "jest": true,
+      "mocha": true
+    }
+  }]
+}
