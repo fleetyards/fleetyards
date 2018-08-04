@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <title>Embed Test</title>
+  </head>
+  <body>
+    <%= yield %>
+
+    <h1>Test H1</h1>
+    <h2>Test H2</h2>
+    <h3>Test H3</h3>
+    <p>Text</p>
+
+    <div id="fleetyards-view"></div>
+    <script>
+        var fleetyards_config = function () {
+            return {
+              details: true,
+              grouped: true,
+              fleetchart: false,
+              ships: ['300i', '300i', '600i-touring', '890-jump', 'nox']  // Replace [] with a javascript array of the Shipnames you want to display
+            }
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'http://www.fleetyards.test/embed.js#'+ +new Date();
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.</a></noscript>
+  </body>
+</html>

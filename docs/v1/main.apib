@@ -79,15 +79,20 @@ curl 'https://api.fleetyards.net/ships?limit=200&offset=200'
  
 ## Rate Limiting
 
+<br>
+
+# Group Embed Fleetview
+
+<!-- include(embed.apib) -->
 
 <br>
- 
+
 # Group Models
 
 <!-- include(models/index.apib) -->
-<!-- include(models/show.apib) -->
 <!-- include(models/updates.apib) -->
 <!-- include(models/filters.apib) -->
+<!-- include(models/show.apib) -->
 
 # Group Components
 
@@ -118,22 +123,3 @@ curl 'https://api.fleetyards.net/ships?limit=200&offset=200'
 # Group RSI
 
 <!-- include(rsi.apib) -->
-
-
-# Embed Fleetview or Hangar
-
-```
-<div id="fleetyards-view"></div>
-<script>
-    var fleetyards_config = function () {
-        this.ships = ['300i', '600i', '890-jump'];  // Replace [] with a javascript array of the Shipnames you want to display
-    };
-    (function() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://www.fleetyards.net/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view your custom Fleet powered by FleetYards.net.</a></noscript>
-```

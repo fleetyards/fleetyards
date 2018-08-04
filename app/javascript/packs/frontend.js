@@ -4,7 +4,6 @@ import Vue from 'vue'
 import Raven from 'raven-js'
 import RavenVue from 'raven-js/plugins/vue'
 import VeeValidate, { Validator } from 'vee-validate'
-import VueLazyload from 'vue-lazyload'
 import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'
 import VueClipboard from 'vue-clipboard2'
@@ -13,6 +12,7 @@ import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import ActionCable from 'actioncable'
 import 'frontend/lib/ApiClient'
+import 'frontend/lib/LazyLoad'
 import BootstrapVue from 'bootstrap-vue'
 import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
@@ -72,10 +72,6 @@ Vue.component = function bootstrapFix(name, definition) {
 }
 Vue.use(BootstrapVue)
 
-Vue.use(VueLazyload, {
-  preLoad: 2,
-})
-
 Vue.use(VueClipboard)
 
 sync(store, router)
@@ -89,21 +85,23 @@ Vue.config.productionTip = false
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
-// eslint-disable-next-line no-new
-new Vue({
-  el: '#app',
-  router,
-  store,
-  created() {
-    this.checkStoreVersion()
-  },
-  methods: {
-    checkStoreVersion() {
-      if (this.$store.state.version !== process.env.STORE_VERSION) {
-        this.$store.commit('reset')
-        this.$store.commit('setStoreVersion', process.env.STORE_VERSION)
-      }
+document.addEventListener('DOMContentLoaded', () => {
+  // eslint-disable-next-line no-new
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    created() {
+      this.checkStoreVersion()
     },
-  },
-  render: h => h(App),
+    methods: {
+      checkStoreVersion() {
+        if (this.$store.state.version !== process.env.STORE_VERSION) {
+          this.$store.commit('reset')
+          this.$store.commit('setStoreVersion', process.env.STORE_VERSION)
+        }
+      },
+    },
+    render: h => h(App),
+  })
 })

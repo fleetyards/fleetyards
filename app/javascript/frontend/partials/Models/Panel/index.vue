@@ -48,11 +48,10 @@
         </h2>
       </div>
       <div class="panel-image text-center">
-        <router-link :to="{ name: 'model', params: { slug: model.slug }}">
-          <img
-            v-lazy="model.storeImage"
-            alt="model Image"
-          >
+        <router-link
+          v-lazy:background-image="model.storeImage"
+          :to="{ name: 'model', params: { slug: model.slug }}"
+        >
           <div
             v-tooltip="t('labels.model.purchased')"
             v-if="isMyShip"
@@ -87,47 +86,8 @@
         v-if="details"
         class="list-group"
       >
-        <li class="list-group-item main-metrics">
-          <div class="row metrics-block">
-            <div
-              v-if="model.focus"
-              class="col-xs-6 col-sm-4"
-            >
-              <div class="metrics-label">{{ t('model.focus') }}:</div>
-              <div
-                v-tooltip="model.focus"
-                class="metrics-value"
-              >
-                {{ model.focus }}
-              </div>
-            </div>
-            <div
-              v-if="model.minCrew || model.maxCrew"
-              class="col-xs-6 col-sm-4"
-            >
-              <div class="metrics-label">{{ t('model.crew') }}:</div>
-              <div class="metrics-value">
-                <template v-if="model.minCrew === model.maxCrew">
-                  {{ toNumber(model.minCrew, 'people') }}
-                </template>
-                <template v-else>
-                  {{ toNumber(crew, 'people') }}
-                </template>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="metrics-label">{{ t('model.speed') }}:</div>
-              <div class="metrics-value">
-                <template v-if="groundSpeeds || isGroundVehicle">
-                  {{ toNumber(groundSpeeds, 'speed') }}
-                  <br>
-                </template>
-                <template v-if="!isGroundVehicle">
-                  {{ toNumber(speeds, 'speed') }}
-                </template>
-              </div>
-            </div>
-          </div>
+        <li class="list-group-item">
+          <ModelTopMetrics :model="model" />
         </li>
         <li class="list-group-item">
           <ModelBaseMetrics :model="model" />
@@ -148,6 +108,7 @@ import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import AddToHangar from 'frontend/components/AddToHangar'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
+import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
@@ -155,6 +116,7 @@ export default {
     Panel,
     VehicleModal,
     AddToHangar,
+    ModelTopMetrics,
     ModelBaseMetrics,
   },
   mixins: [I18n],
@@ -197,9 +159,6 @@ export default {
       }
       return `${this.count}x `
     },
-    isGroundVehicle() {
-      return this.model.classification === 'ground'
-    },
     flagshipTooltip() {
       if (!this.vehicle) {
         return ''
@@ -211,45 +170,6 @@ export default {
     },
     isMyShip() {
       return this.vehicle && this.$route.name === 'hangar'
-    },
-    crew() {
-      let { minCrew, maxCrew } = this.model
-
-      if (minCrew && minCrew <= 0) {
-        minCrew = null
-      }
-
-      if (maxCrew && maxCrew <= 0) {
-        maxCrew = null
-      }
-
-      return [minCrew, maxCrew].filter(item => item).join(' - ')
-    },
-    speeds() {
-      let { scmSpeed, afterburnerSpeed } = this.model
-
-      if (scmSpeed && scmSpeed <= 0) {
-        scmSpeed = null
-      }
-
-      if (afterburnerSpeed && afterburnerSpeed <= 0) {
-        afterburnerSpeed = null
-      }
-
-      return [scmSpeed, afterburnerSpeed].filter(item => item).join(' - ')
-    },
-    groundSpeeds() {
-      let { groundSpeed, afterburnerGroundSpeed } = this.model
-
-      if (groundSpeed && groundSpeed <= 0) {
-        groundSpeed = null
-      }
-
-      if (afterburnerGroundSpeed && afterburnerGroundSpeed <= 0) {
-        afterburnerGroundSpeed = null
-      }
-
-      return [groundSpeed, afterburnerGroundSpeed].filter(item => item).join(' - ')
     },
   },
   methods: {

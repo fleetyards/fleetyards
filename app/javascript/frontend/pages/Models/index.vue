@@ -103,10 +103,6 @@ export default {
       }, (args) => {
         this.loading = false
 
-        if (this.$refs.infiniteLoading) {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
-        }
-
         if (!args.error) {
           this.models = args.data
         }
@@ -115,7 +111,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.models')
+      title: this.t('title.models'),
     })
   },
 }
