@@ -468,7 +468,7 @@
     "pitchMax": "Pitch Max",
     "yawMax": "Yaw Max",
     "rollMax": "Roll Max",
-    "lastPrice": "Last Price",
+    "price": "Price",
     "xaxisAcceleration": "X-Axis",
     "yaxisAcceleration": "Y-Axis",
     "zaxisAcceleration": "Z-Axis",

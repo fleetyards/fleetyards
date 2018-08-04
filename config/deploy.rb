@@ -110,6 +110,26 @@ namespace :server do
   end
 end
 
+namespace :uploads do
+  task backup: :remote_environment do
+    in_path fetch(:current_path).to_s do
+      comment "Creating Uploads Backup..."
+      command %(tar -zcvf dumps/uploads.tar.gz /home/fleetyards/shared/public/uploads)
+      comment "Uploads Backup finished"
+    end
+  end
+
+  task :local_import do
+    system %(tar -xvzf dumps/uploads.tar.gz /home/fleetyards/shared/public -C tmp-uploads/)
+  end
+
+  task :download do
+    comment "Downloading latest Uploads backup..."
+    system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz dumps/)
+    comment "Download finished"
+  end
+end
+
 namespace :db do
   task load_schema: :remote_environment do
     in_path fetch(:current_path).to_s do

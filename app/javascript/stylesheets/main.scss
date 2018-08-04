@@ -18,6 +18,8 @@
 @import "partials/metrics";
 @import "partials/labels";
 @import "partials/tabs";
+@import "partials/panel";
+@import "partials/fleetchart";
 
 html {
   height: 100%;
@@ -81,10 +83,6 @@ body {
   height: 100vh;
 }
 
-.infinite-loading-container {
-  min-height: 64px;
-}
-
 a,
 input[type=button],
 button {
@@ -106,7 +104,7 @@ button {
       left: 0;
       position: relative;
       transition: left ease 0.5s, right ease 0.5s;
-      min-width: 100vw;
+      width: 100%;
     }
   }
 }

@@ -20,32 +20,67 @@
       <div class="row">
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">{{ t('model.length') }}:</div>
-          <div class="metrics-value">{{ toNumber(model.length, 'distance') }}</div>
+          <div
+            v-tooltip="toNumber(model.length, 'distance')"
+            class="metrics-value"
+          >
+            {{ toNumber(model.length, 'distance') }}
+          </div>
           <div class="metrics-label">{{ t('model.beam') }}:</div>
-          <div class="metrics-value">{{ toNumber(model.beam, 'distance') }}</div>
+          <div
+            v-tooltip="toNumber(model.beam, 'distance')"
+            class="metrics-value"
+          >
+            {{ toNumber(model.beam, 'distance') }}
+          </div>
           <template v-if="detailed">
             <div class="metrics-label">{{ t('model.classification') }}:</div>
-            <div class="metrics-value">{{ model.classificationLabel }}</div>
+            <div
+              v-tooltip="model.classificationLabel"
+              class="metrics-value"
+            >
+              {{ model.classificationLabel }}
+            </div>
           </template>
         </div>
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">{{ t('model.height') }}:</div>
-          <div class="metrics-value">{{ toNumber(model.height, 'distance') }}</div>
+          <div
+            v-tooltip="toNumber(model.height, 'distance')"
+            class="metrics-value"
+          >
+            {{ toNumber(model.height, 'distance') }}
+          </div>
           <div class="metrics-label">{{ t('model.mass') }}:</div>
-          <div class="metrics-value">{{ toNumber(model.mass, 'weight') }}</div>
+          <div
+            v-tooltip="toNumber(model.mass, 'weight')"
+            class="metrics-value"
+          >
+            {{ toNumber(model.mass, 'weight') }}
+          </div>
         </div>
         <div class="col-xs-12 col-md-4">
           <div class="row">
             <div class="col-xs-6 col-md-12">
               <div class="metrics-label">{{ t('model.cargo') }}:</div>
-              <div class="metrics-value">{{ toNumber(model.cargo, 'cargo') }}</div>
+              <div
+                v-tooltip="toNumber(model.cargo, 'cargo')"
+                class="metrics-value"
+              >
+                {{ toNumber(model.cargo, 'cargo') }}
+              </div>
             </div>
             <div
               v-if="model.lastPrice"
               class="col-xs-6 col-md-12"
             >
-              <div class="metrics-label">{{ t('model.lastPrice') }}:</div>
-              <div class="metrics-value">{{ toDollar(model.lastPrice) }}</div>
+              <div class="metrics-label">{{ t('model.price') }}:</div>
+              <div
+                v-tooltip="toDollar(model.lastPrice)"
+                class="metrics-value"
+              >
+                {{ toDollar(model.lastPrice) }}
+              </div>
             </div>
           </div>
         </div>
@@ -75,3 +110,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import "./styles/index";
+</style>

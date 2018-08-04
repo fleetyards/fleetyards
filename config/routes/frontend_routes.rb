@@ -35,6 +35,8 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'confirm/:token' => 'base#confirm'
 
   get 'embed' => 'base#embed'
+  get 'embed-styles' => 'base#embed_styles'
+  get 'embed-test' => 'base#embed_test' if Rails.env.development?
 
   match '404' => 'base#not_found', via: :all
 

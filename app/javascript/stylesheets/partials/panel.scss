@@ -1,5 +1,3 @@
-@import "~stylesheets/variables";
-
 $outerBorderWidth: 2px;
 $outerBorderRadius: 24px;
 $innerBorderWidth: 3px;
@@ -127,16 +125,19 @@ $contentBorderRadius: 16px;
   }
 
   .panel-image {
+    height: 180px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    img[lazy=loaded] {
+    & > a {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
       -webkit-animation-duration: 1s;
       animation-duration: 1s;
       -webkit-animation-fill-mode: both;
@@ -145,11 +146,8 @@ $contentBorderRadius: 16px;
       animation-name: fadeIn;
     }
 
-    & > a {
-      display: flex;
-      min-height: 100px;
-      align-items: center;
-      justify-content: center;
+    & > a[lazy=loading] {
+      background-size: 50px;
     }
 
     &:last-child {

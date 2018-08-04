@@ -68,6 +68,14 @@ module Frontend
       redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.js'))
     end
 
+    def embed_styles
+      redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.css'))
+    end
+
+    def embed_test
+      render 'frontend/embed_test', layout: 'embed_test'
+    end
+
     private def username(name)
       if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
         return name
