@@ -131,6 +131,7 @@ $contentBorderRadius: 16px;
     overflow: hidden;
 
     & > a {
+      position: relative;
       display: block;
       height: 100%;
       width: 100%;
@@ -144,10 +145,24 @@ $contentBorderRadius: 16px;
       animation-fill-mode: both;
       -webkit-animation-name: fadeIn;
       animation-name: fadeIn;
-    }
 
-    & > a[lazy=loading] {
-      background-size: 50px;
+      &[lazy=loading]::before {
+        content: "";
+        background-image: url('~images/blueimp-gallery/loading.gif');
+        background-size: 100%;
+        background-position: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+        width: 50px;
+        height: 50px;
+      }
+
+      &[lazy=error] {
+        background-image: url('~images/store_image.jpg') !important;
+      }
     }
 
     &:last-child {

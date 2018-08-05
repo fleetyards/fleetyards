@@ -120,7 +120,7 @@ namespace :uploads do
   end
 
   task :local_import do
-    system %(tar -xvzf dumps/uploads.tar.gz /home/fleetyards/shared/public -C tmp-uploads/)
+    system %(tar --strip-components=5 -xvzf dumps/uploads.tar.gz -C public/uploads/ home/fleetyards/shared/public/uploads)
   end
 
   task :download do
