@@ -123,6 +123,7 @@
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
               id="password"
+              ref="password"
               v-model="form.password"
               :placeholder="t('labels.password')"
               :data-vv-as="t('labels.password')"
@@ -250,7 +251,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.signUp')
+      title: this.t('title.signUp'),
     })
   },
 }
