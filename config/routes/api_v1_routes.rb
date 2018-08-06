@@ -8,6 +8,7 @@ v1_api_routes = lambda do
       get :latest
       get :updated
       get :filters
+      post :embed
     end
     member do
       get :gallery

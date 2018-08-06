@@ -44,6 +44,14 @@ module Api
                        .limit(8)
       end
 
+      def embed
+        authorize! :index, :api_models
+
+        @models = Model.where(slug: params[:models]).order(name: :asc)
+
+        render 'api/v1/models/index'
+      end
+
       def updated
         authorize! :index, :api_models
         if updated_range.present?
