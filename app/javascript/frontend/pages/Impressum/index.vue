@@ -84,7 +84,7 @@ export default {
   mixins: [I18n, MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.impressum')
+      title: this.t('title.impressum'),
     })
   },
 }

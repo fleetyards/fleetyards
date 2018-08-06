@@ -60,7 +60,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.account')
+      title: this.t('title.account'),
     })
   },
 }

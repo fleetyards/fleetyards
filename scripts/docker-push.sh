@@ -8,13 +8,13 @@ echo
 echo "Build Container..."
 echo
 
-docker build -t fleetyards/api:2.5.1 .
+docker build -t fleetyards/app:2.5.1 .
 
 echo
 echo "Push Container..."
 echo
 
-docker push fleetyards/api:2.5.1
+docker push fleetyards/app:2.5.1
 
 echo
 echo "...Done"

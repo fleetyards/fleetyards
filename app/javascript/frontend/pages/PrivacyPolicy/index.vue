@@ -218,7 +218,7 @@ export default {
   mixins: [I18n, MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.privacyPolicy')
+      title: this.t('title.privacyPolicy'),
     })
   },
 }
