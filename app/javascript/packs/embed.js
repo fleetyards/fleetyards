@@ -8,7 +8,7 @@ import 'frontend/lib/LazyLoad'
 
 const d = document
 const styles = d.createElement('link')
-styles.href = `https://www.fleetyards.net/embed-styles.css#${+new Date()}`
+styles.href = `${process.env.FRONTEND_HOST}/embed-styles.css#${+new Date()}`
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
@@ -34,10 +34,14 @@ setTimeout(() => {
   new Vue({
     el: '#fleetyards-view',
     data: {
-      ships: config.ships,
-      details: config.details,
-      grouped: config.grouped,
-      fleetchart: config.fleetchart,
+      ships: config.ships || [],
+      details: config.details || true,
+      grouped: config.grouped || true,
+      fleetchart: config.fleetchart || false,
+      fleetchartScale: config.fleetchartScale || 1,
+      fleetchartGrouped: config.fleetchartGrouped || false,
+      fleetchartSlider: config.fleetchartSlider || false,
+      frontendHost: process.env.FRONTEND_HOST,
     },
     render: h => h(FleetyardsView),
   })

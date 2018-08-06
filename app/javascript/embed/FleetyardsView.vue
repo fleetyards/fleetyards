@@ -25,6 +25,22 @@
           </div>
         </div>
         <div
+          v-if="fleetchart && slider"
+          class="row"
+        >
+          <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+            <vue-slider
+              ref="slider"
+              v-model="scale"
+              :min="scaleMin"
+              :max="scaleMax"
+              :interval="scaleInterval"
+              formatter="{value}x"
+              tooltip="hover"
+            />
+          </div>
+        </div>
+        <div
           v-if="fleetchart"
           class="row"
         >
@@ -39,7 +55,7 @@
               <a
                 v-for="(model, index) in fleetchartModels"
                 :key="`${index}-${model.slug}`"
-                :href="`https://www.fleetyards.net/ships/${model.slug}`"
+                :href="`${$root.frontendHost}/ships/${model.slug}`"
                 class="fleetchart-item fade-list-item"
                 target="_blank"
                 rel="noopener"
@@ -56,6 +72,7 @@
                   <i class="fal fa-question-circle" />
                   <p>{{ model.name }}</p>
                 </span>
+                <span class="sr-only">{{ model.name }}</span>
               </a>
             </transition-group>
           </div>
@@ -93,6 +110,7 @@ import ModelPanel from 'embed/partials/Models/Panel'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import I18n from 'frontend/mixins/I18n'
+import vueSlider from 'vue-slider-component'
 
 export default {
   name: 'FleetyardsView',
@@ -100,6 +118,7 @@ export default {
     ModelPanel,
     Loader,
     Btn,
+    vueSlider,
   },
   mixins: [I18n],
   data() {
@@ -110,9 +129,10 @@ export default {
       grouped: true,
       loading: false,
       fleetchart: false,
+      slider: false,
       scale: 1,
       scaleMax: 4,
-      scaleMin: 0.5,
+      scaleMin: 0.1,
       scaleInterval: 0.1,
     }
   },
@@ -123,14 +143,41 @@ export default {
       }
       return this.t('actions.showDetails')
     },
+    ungroupedModels() {
+      return this.ships.map(slug => ({
+        slug,
+        model: this.models.find(model => model.slug === slug),
+      }))
+        .map((item) => {
+          if (!item.model) {
+            return {
+              name: this.t('labels.unknownModel', { slug: item.slug }),
+              slug: item.slug,
+              manufacturer: {
+                name: this.t('labels.unknown'),
+              },
+            }
+          }
+          return item.model
+        })
+        .sort((a, b) => {
+          if (a.name < b.name) {
+            return -1
+          }
+          if (a.name > b.name) {
+            return 1
+          }
+          return 0
+        })
+    },
     displayModels() {
       if (!this.models) {
         return []
       }
-      if (this.grouped) {
-        return this.models
+      if (!this.grouped || (!this.fleetchartGrouped && this.fleetchart)) {
+        return this.ungroupedModels
       }
-      return this.ships.map(slug => this.models.find(model => model.slug === slug))
+      return this.models
     },
     fleetchartModels() {
       const fleetchartModels = this.displayModels.concat()
@@ -153,6 +200,9 @@ export default {
     this.details = this.$root.details
     this.grouped = this.$root.grouped
     this.fleetchart = this.$root.fleetchart
+    this.scale = this.$root.fleetchartScale
+    this.fleetchartGrouped = this.$root.fleetchartGrouped
+    this.slider = this.$root.fleetchartSlider
     this.fetch()
   },
   methods: {
@@ -168,13 +218,10 @@ export default {
       }
       return this.ships.filter(item => item === slug).length
     },
-    uniq(list) {
-      return list.filter((v, i, a) => a.indexOf(v) === i)
-    },
     fetch() {
       this.loading = true
       this.$api.post('models/embed', {
-        models: this.uniq(this.ships),
+        models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
       }, (args) => {
         this.loading = false
 
