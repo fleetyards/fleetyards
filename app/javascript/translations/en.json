@@ -114,6 +114,8 @@
     "truncate": "&hellip;"
   },
   "labels": {
+    "unknown": "Unknown",
+    "unknownModel": "%{slug} Unknown",
     "not-available": "N/A",
     "receiveSaleNotifications": "",
     "rsiVerified": "Verified RSI Account",

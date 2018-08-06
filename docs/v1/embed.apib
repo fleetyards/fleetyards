@@ -7,9 +7,12 @@ To get a custom Ship List on your Website you can just paste the example code on
 <script>
     var fleetyards_config = function () {
         return {
-            details: true, // Set this to false if you want to display a minimal version of the Ship Panel
-            grouped: true, // Set this to false if you want to display the same Ships multiple times in your Fleetview.
-            fleetchart: false, // Set this to true if you want to display a Fleetchart instead of the normal Ship Panels.
+            details: true, // Set to false if you want to display a minimal version of the Ship Panel
+            grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
+            fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
+            fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
+            fleetchartScale: 1, // Initial Scale of the Fleetchart
+            fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
             ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
         }
     };
@@ -45,6 +48,30 @@ Group duplicated Ships and Show a count on each Ship Panel.
 ```fleetchart```: `true|false` (boolean) default is `false` 
 
 Display the Fleetview as a Fleetchart with correct Ship Dimensions.
+
+<br>
+
+### Grouped View for Fleetchart
+
+```fleetchartGrouped```: `true|false` (boolean) default is `false` 
+
+Group duplicated Ships in the Fleetchart
+
+<br>
+
+### Initial Fleetchart Scale
+
+```fleetchartScale```: `1` (int) default is `1` 
+
+Set the initial Scale of the Fleetchart
+
+<br>
+
+### Show Fleetchart Slider
+
+```fleetchartSlider```: `true|false` (boolean) default is `false` 
+
+Display a slider to allow users to scale the Fleetchart.
 
 <br>
 
