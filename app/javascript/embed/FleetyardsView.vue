@@ -166,12 +166,13 @@ export default {
       }
       return this.ships.filter(item => item === slug).length
     },
+    uniq(list) {
+      return list.filter((v, i, a) => a.indexOf(v) === i)
+    },
     fetch() {
       this.loading = true
-      this.$api.get('models', {
-        q: {
-          slugIn: this.ships,
-        },
+      this.$api.post('models/embed', {
+        models: this.uniq(this.ships),
       }, (args) => {
         this.loading = false
 
