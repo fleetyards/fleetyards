@@ -1,4 +1,4 @@
-# FleetYards.net API v1
+# FleetYards.net API v1 and VueJS Frontend via Webpacker
 
 A Ship Database for Star Citizen
 
