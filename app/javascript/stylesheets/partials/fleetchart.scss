@@ -10,9 +10,31 @@
   align-content: center;
 
   .fleetchart-item {
-    margin: 10px;
+    margin: 30px 20px;
     display: inline-block;
     text-align: center;
+    position: relative;
+
+    a {
+      display: block;
+
+      .fleetchart-item-label {
+        opacity: 0;
+        position: absolute;
+        bottom: -35px;
+        left: 0;
+        right: 0;
+        color: $text-color;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transition: opacity $transition-base-speed ease;
+      }
+
+      .fleetchart-item-image {
+        transform: rotate(180deg);
+      }
+    }
+
   }
 }
 

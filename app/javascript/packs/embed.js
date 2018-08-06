@@ -3,6 +3,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
+import store from 'embed/lib/Store'
 import 'frontend/lib/ApiClient'
 import 'frontend/lib/LazyLoad'
 
@@ -33,13 +34,10 @@ setTimeout(() => {
   // eslint-disable-next-line no-new
   new Vue({
     el: '#fleetyards-view',
+    store,
     data: {
       ships: config.ships || [],
-      details: config.details || true,
-      grouped: config.grouped || true,
-      fleetchart: config.fleetchart || false,
-      fleetchartScale: config.fleetchartScale || 1,
-      fleetchartGrouped: config.fleetchartGrouped || false,
+      groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendHost: process.env.FRONTEND_HOST,
     },

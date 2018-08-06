@@ -2,6 +2,7 @@ import createPersistedState from 'vuex-persistedstate'
 
 export default function getStorePlugins() {
   return [createPersistedState({
+    key: 'FleetYards',
     paths: [
       'route',
       'lastRoute',

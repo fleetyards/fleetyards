@@ -6,6 +6,22 @@
           <div class="col-xs-12">
             <div class="page-actions">
               <Btn
+                v-show="!fleetchart && groupedButton"
+                small
+                @click.native="toggleGrouping"
+              >
+                <template v-if="grouping">{{ t('actions.disableGrouping') }}</template>
+                <template v-else>{{ t('actions.enableGrouping') }}</template>
+              </Btn>
+              <Btn
+                v-show="fleetchart && groupedButton"
+                small
+                @click.native="toggleFleetchartGrouping"
+              >
+                <template v-if="fleetchartGrouping">{{ t('actions.disableGrouping') }}</template>
+                <template v-else>{{ t('actions.enableGrouping') }}</template>
+              </Btn>
+              <Btn
                 v-show="!fleetchart"
                 :active="details"
                 small
@@ -52,28 +68,12 @@
               tag="div"
               appear
             >
-              <a
+              <FleetchartItem
                 v-for="(model, index) in fleetchartModels"
                 :key="`${index}-${model.slug}`"
-                :href="`${$root.frontendHost}/ships/${model.slug}`"
-                class="fleetchart-item fade-list-item"
-                target="_blank"
-                rel="noopener"
-              >
-                <img
-                  v-if="model.fleetchartImage"
-                  :style="{
-                    height: `${model.length * lengthMultiplicator}px`,
-                  }"
-                  :src="model.fleetchartImage"
-                  :alt="model.slug"
-                >
-                <span v-else>
-                  <i class="fal fa-question-circle" />
-                  <p>{{ model.name }}</p>
-                </span>
-                <span class="sr-only">{{ model.name }}</span>
-              </a>
+                :model="model"
+                :scale="scale"
+              />
             </transition-group>
           </div>
         </div>
@@ -107,15 +107,18 @@
 
 <script>
 import ModelPanel from 'embed/partials/Models/Panel'
+import FleetchartItem from 'embed/partials/Models/FleetchartItem'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import I18n from 'frontend/mixins/I18n'
 import vueSlider from 'vue-slider-component'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'FleetyardsView',
   components: {
     ModelPanel,
+    FleetchartItem,
     Loader,
     Btn,
     vueSlider,
@@ -125,20 +128,24 @@ export default {
     return {
       ships: [],
       models: null,
-      details: true,
-      grouped: true,
       loading: false,
-      fleetchart: false,
       slider: false,
-      scale: 1,
+      scale: this.$store.state.scale,
       scaleMax: 4,
       scaleMin: 0.1,
       scaleInterval: 0.1,
+      groupedButton: false,
     }
   },
   computed: {
+    ...mapGetters([
+      'details',
+      'grouping',
+      'fleetchartGrouping',
+      'fleetchart',
+    ]),
     toggleDetailsTooltip() {
-      if (this.hangarDetails) {
+      if (this.details) {
         return this.t('actions.hideDetails')
       }
       return this.t('actions.showDetails')
@@ -174,7 +181,7 @@ export default {
       if (!this.models) {
         return []
       }
-      if (!this.grouped || (!this.fleetchartGrouped && this.fleetchart)) {
+      if (!this.grouping || (!this.fleetchartGrouping && this.fleetchart)) {
         return this.ungroupedModels
       }
       return this.models
@@ -191,29 +198,33 @@ export default {
         return 0
       })
     },
-    lengthMultiplicator() {
-      return this.scale * 4
+  },
+  watch: {
+    scale(value) {
+      this.$store.commit('setScale', value)
     },
   },
   mounted() {
     this.ships = this.$root.ships
-    this.details = this.$root.details
-    this.grouped = this.$root.grouped
-    this.fleetchart = this.$root.fleetchart
-    this.scale = this.$root.fleetchartScale
-    this.fleetchartGrouped = this.$root.fleetchartGrouped
     this.slider = this.$root.fleetchartSlider
+    this.groupedButton = this.$root.groupedButton
     this.fetch()
   },
   methods: {
     toggleDetails() {
-      this.details = !this.details
+      this.$store.commit('toggleDetails')
     },
     toggleFleetchart() {
-      this.fleetchart = !this.fleetchart
+      this.$store.commit('toggleFleetchart')
+    },
+    toggleGrouping() {
+      this.$store.commit('toggleGrouping')
+    },
+    toggleFleetchartGrouping() {
+      this.$store.commit('toggleFleetchartGrouping')
     },
     count(slug) {
-      if (!this.grouped) {
+      if (!this.grouping) {
         return null
       }
       return this.ships.filter(item => item === slug).length
