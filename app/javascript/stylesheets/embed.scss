@@ -8,11 +8,13 @@
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/print";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+  @import "~bootstrap-sass/assets/stylesheets/bootstrap/type";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/grid";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/list-group";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
   @import "~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
   @import "colors/dark_overrides";
+  @import "partials/responsive";
   @import "partials/typography";
   @import "partials/transitions";
   @import "partials/flex";
