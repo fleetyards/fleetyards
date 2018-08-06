@@ -21,7 +21,7 @@ export default {
   mixins: [I18n, MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.notFound')
+      title: this.t('title.notFound'),
     })
   },
 }
