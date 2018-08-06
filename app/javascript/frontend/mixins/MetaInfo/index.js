@@ -13,7 +13,7 @@ export default {
           this.getMetaOgTitle(tags.title),
           this.getMetaOgUrl(tags.url),
           this.getMetaOgImage(tags.ogImage),
-        ]
+        ],
       }
     },
     getMetaTitle(title) {

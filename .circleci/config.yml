@@ -1,9 +1,9 @@
 version: 2.0
 
 defaults: &defaults
-  working_directory: ~/api
+  working_directory: ~/app
   docker:
-    - image: fleetyards/api:2.5.1
+    - image: fleetyards/app:2.5.1
       environment:
         RAILS_ENV: test
         DATABASE_HOST: 127.0.0.1
@@ -22,38 +22,57 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          root: ~/api
+          root: ~/app
           paths:
             - ./
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - ~/api
+            - ~/app
 
   bundle_dependencies:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - restore_cache:
           keys:
             - v1-bundle-{{ checksum "Gemfile.lock" }}
             - v1-bundle-
       - run: bundle install --path vendor/bundle
       - persist_to_workspace:
-          root: ~/api
+          root: ~/app
           paths:
             - vendor/bundle
       - save_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/api/vendor/bundle
+            - ~/app/vendor/bundle
+
+  yarn_dependencies:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ checksum "yarn.lock" }}
+            - v1-yarn-
+      - run: yarn install
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - node_modules
+      - save_cache:
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/app/node_modules
 
   audit:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - run:
           name: Update Audit DB
@@ -66,17 +85,26 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - run:
           name: rubocoptering
           command: bundle exec rubocop --format progress
 
+  eslint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: eslint
+          command: yarn run lint
+
   seeds:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - run: bundle exec rails db:create db:schema:load
       - run:
@@ -87,7 +115,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - run: bundle exec rails db:create db:schema:load
       - run:
@@ -95,6 +123,16 @@ jobs:
           command: bundle exec rails test
       - store_test_results:
           path: test/reports
+
+  javascript_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: yarn install
+      - run:
+          name: Run Javascript Tests
+          command: yarn test
 
   precompile_assets:
     <<: *defaults
@@ -104,25 +142,25 @@ jobs:
             - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
             - v1-assets-
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - run:
           name: Precompile assets
           command: bundle exec rails assets:precompile
       - persist_to_workspace:
-          root: ~/api
+          root: ~/app
           paths:
             - public/assets
       - save_cache:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - ~/api/public/assets
+            - ~/app/public/assets
 
   deploy:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/api
+          at: ~/app
       - run: bundle --path vendor/bundle
       - add_ssh_keys:
           fingerprints:
@@ -151,18 +189,27 @@ workflows:
       - bundle_dependencies:
           requires:
             - checkout_code
+      - yarn_dependencies:
+          requires:
+            - checkout_code
       - audit:
           requires:
             - bundle_dependencies
       - rubocop:
           requires:
             - bundle_dependencies
+      - eslint:
+          requires:
+            - yarn_dependencies
       - seeds:
           requires:
             - bundle_dependencies
       - unit_tests:
           requires:
             - bundle_dependencies
+      - javascript_tests:
+          requires:
+            - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
@@ -172,18 +219,27 @@ workflows:
       - bundle_dependencies:
           requires:
             - checkout_code
+      - yarn_dependencies:
+          requires:
+            - checkout_code
       - audit:
           requires:
             - bundle_dependencies
       - rubocop:
           requires:
             - bundle_dependencies
+      - eslint:
+          requires:
+            - yarn_dependencies
       - seeds:
           requires:
             - bundle_dependencies
       - unit_tests:
           requires:
             - bundle_dependencies
+      - javascript_tests:
+          requires:
+            - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
@@ -191,8 +247,10 @@ workflows:
           requires:
             - audit
             - rubocop
+            - eslint
             - seeds
             - unit_tests
+            - javascript_tests
             - precompile_assets
           filters:
             branches:

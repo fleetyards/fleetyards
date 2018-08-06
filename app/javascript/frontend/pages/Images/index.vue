@@ -128,7 +128,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.images')
+      title: this.t('title.images'),
     })
   },
 }

@@ -261,7 +261,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.settings')
+      title: this.t('title.settings'),
     })
   },
 }
