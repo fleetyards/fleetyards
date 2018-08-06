@@ -41,6 +41,8 @@
                 :key="`${index}-${model.slug}`"
                 :href="`https://www.fleetyards.net/ships/${model.slug}`"
                 class="fleetchart-item fade-list-item"
+                target="_blank"
+                rel="noopener"
               >
                 <img
                   v-if="model.fleetchartImage"

@@ -14,7 +14,7 @@
             {{ countLabel }}{{ model.name }}
           </a>
           <br >
-          <small>{{ model.manufacturer.name }}</small>
+          <small v-html="model.manufacturer.name" />
         </h2>
       </div>
       <div class="panel-image text-center">
