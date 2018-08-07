@@ -1,5 +1,5 @@
 {
-  "presets": ["es2015",
+  "presets": [
     ["env", {
       "modules": false,
       "targets": {
@@ -14,5 +14,13 @@
     "syntax-dynamic-import",
     "transform-object-rest-spread",
     ["transform-class-properties", { "spec": true }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "babel-plugin-dynamic-import-node"
+      ],
+      "presets": ["env"]
+    }
+  }
 }
