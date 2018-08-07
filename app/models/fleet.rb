@@ -31,23 +31,24 @@ class Fleet < ApplicationRecord
     self.rpg = org.rpg
     self.exclusive = org.exclusive
     self.member_count = org.member_count
+    save
   end
 
   def fetch_members
     FleetMembersWorker.perform_async(id)
   end
 
-  def add_members(rsi_members)
-    rsi_member_ids = []
-    rsi_members.each do |member|
+  def add_members(fetched_members)
+    fetched_member_ids = []
+    fetched_members.each do |member|
       handle = member[:handle].strip.downcase
       membership = FleetMembership.where(fleet_id: id, handle: handle).first_or_create do |m|
         m.rank = member[:rank]
         m.avatar = member[:avatar]
       end
       membership.update(user_id: User.find_by(rsi_verified: true, rsi_handle: handle)&.id)
-      rsi_member_ids << membership.id
+      fetched_member_ids << membership.id
     end
-    FleetMembership.where(id: (member_ids - rsi_member_ids)).destroy_all
+    FleetMembership.where(id: (member_ids - fetched_member_ids)).destroy_all
   end
 end
