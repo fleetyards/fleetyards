@@ -29,6 +29,10 @@
 
   font-family: 'Open Sans', sans-serif;
   color: $text-color;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 
   .row > [class*='col-'] {
     transition: width ease $transition-base-speed;
