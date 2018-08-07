@@ -294,6 +294,8 @@
     "images": "Images"
   },
   "actions": {
+    "disableGrouping": "Disable Grouping",
+    "enableGrouping": "Enable Grouping",
     "destroyAccount": "Destroy Account",
     "startRsiVerification": "Verify your RSI Account",
     "saveScreenshot": "Save as PNG",

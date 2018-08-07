@@ -155,30 +155,12 @@
                   tag="div"
                   appear
                 >
-                  <router-link
+                  <FleetchartItem
                     v-for="vehicle in fleetchartVehicles"
                     :key="vehicle.id"
-                    :to="{
-                      name: 'model',
-                      params: {
-                        slug: vehicle.model.slug,
-                      },
-                    }"
-                    class="fleetchart-item fade-list-item"
-                  >
-                    <img
-                      v-if="vehicle.model.fleetchartImage"
-                      :style="{
-                        height: `${vehicle.model.length * lengthMultiplicator}px`,
-                      }"
-                      :src="vehicle.model.fleetchartImage"
-                      :alt="vehicle.model.slug"
-                    >
-                    <span v-else>
-                      <i class="fal fa-question-circle" />
-                      <p>{{ vehicle.model.name }}</p>
-                    </span>
-                  </router-link>
+                    :model="vehicle.model"
+                    :scale="scale"
+                  />
                 </transition-group>
               </div>
             </div>
@@ -243,6 +225,7 @@ import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
 import ModelPanel from 'frontend/partials/Models/Panel'
+import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import VehiclesFilterModal from 'frontend/partials/Vehicles/FilterModal'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
@@ -257,6 +240,7 @@ import download from 'downloadjs'
 
 export default {
   components: {
+    FleetchartItem,
     EmptyBox,
     HangarGuideBox,
     ModelPanel,
@@ -343,9 +327,6 @@ export default {
         }
         return 0
       })
-    },
-    lengthMultiplicator() {
-      return this.scale * 4
     },
   },
   watch: {

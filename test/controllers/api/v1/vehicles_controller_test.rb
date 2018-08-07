@@ -90,7 +90,8 @@ module Api
               'rsiId' => nil,
               'manufacturer' => {
                 'name' => 'RSI',
-                'slug' => 'rsi'
+                'slug' => 'rsi',
+                'code' => nil
               },
               'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
               'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
