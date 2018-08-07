@@ -435,6 +435,11 @@
         "success": "Your new <b>%{model}</b> will be delivered to your Hangar"
       }
     },
+    "fleet": {
+      "create": {
+        "failure": "We could not create your Fleet."
+      }
+    },
     "model": {
       "onSale": "%{model} now on Sale!"
     },
