@@ -19,15 +19,7 @@
       display: block;
 
       .fleetchart-item-label {
-        opacity: 0;
-        position: absolute;
-        bottom: -35px;
-        left: 0;
-        right: 0;
-        color: $text-color;
-        text-transform: uppercase;
-        white-space: nowrap;
-        transition: opacity $transition-base-speed ease;
+        display: none;
       }
 
       .fleetchart-item-image {
