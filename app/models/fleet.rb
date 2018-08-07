@@ -16,7 +16,6 @@ class Fleet < ApplicationRecord
   validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org
-  after_create :fetch_members
 
   def fetch_rsi_org
     org = RsiOrgsLoader.new.fetch(sid.downcase)
@@ -31,24 +30,29 @@ class Fleet < ApplicationRecord
     self.rpg = org.rpg
     self.exclusive = org.exclusive
     self.member_count = org.member_count
-    save
-  end
-
-  def fetch_members
-    FleetMembersWorker.perform_async(id)
   end
 
   def add_members(fetched_members)
     fetched_member_ids = []
+
     fetched_members.each do |member|
       handle = member[:handle].strip.downcase
-      membership = FleetMembership.where(fleet_id: id, handle: handle).first_or_create do |m|
-        m.rank = member[:rank]
-        m.avatar = member[:avatar]
-      end
-      membership.update(user_id: User.find_by(rsi_verified: true, rsi_handle: handle)&.id)
+      user = User.find_by(rsi_verified: true, rsi_handle: handle)
+
+      next if user.blank?
+
+      membership = FleetMembership.where(fleet_id: id, user_id: user.id).first_or_create
+
+      membership.update(
+        handle: member[:handle],
+        rank: member[:rank],
+        name: member[:name],
+        avatar: member[:avatar]
+      )
+
       fetched_member_ids << membership.id
     end
+
     FleetMembership.where(id: (member_ids - fetched_member_ids)).destroy_all
   end
 end
