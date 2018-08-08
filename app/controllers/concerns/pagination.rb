@@ -3,10 +3,10 @@
 module Concerns
   module Pagination
     def pagination_header(name)
-      headers["Link"] = pagination_links(instance_variable_get("@#{name}")).map do |k, v|
+      headers['Link'] = pagination_links(instance_variable_get("@#{name}")).map do |k, v|
         next if v.blank?
         "<#{v}>; rel=\"#{k}\""
-      end.compact.join(", ")
+      end.compact.join(', ')
     end
 
     private def pagination_links(scope)

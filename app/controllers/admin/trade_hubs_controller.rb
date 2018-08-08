@@ -37,7 +37,7 @@ module Admin
       if trade_hub.update(trade_hub_params)
         redirect_to edit_admin_trade_hub_path(trade_hub), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.trade_hub"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.trade_hub"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.trade_hub"))
       end
     end
 

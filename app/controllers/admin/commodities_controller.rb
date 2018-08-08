@@ -37,7 +37,7 @@ module Admin
       if commodity.update(commodity_params)
         redirect_to admin_commodities_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.commodity"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.commodity"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.commodity"))
       end
     end
 

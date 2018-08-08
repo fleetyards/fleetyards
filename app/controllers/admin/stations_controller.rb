@@ -40,7 +40,7 @@ module Admin
       if station.update(station_params)
         redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.station"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.station"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.station"))
       end
     end
 

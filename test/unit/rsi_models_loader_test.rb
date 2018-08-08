@@ -14,7 +14,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     Timecop.return
   end
 
-  test "#all" do
+  test '#all' do
     VCR.use_cassette('rsi_models_loader_all') do
       loader.all
 
@@ -33,7 +33,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     end
   end
 
-  test "#updates only when needed" do
+  test '#updates only when needed' do
     VCR.use_cassette('rsi_models_loader_all') do
       loader.one(7)
 
@@ -49,7 +49,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     end
   end
 
-  test "#overides present data" do
+  test '#overides present data' do
     VCR.use_cassette('rsi_models_loader_all') do
       model_polaris = Model.create(
         name: 'Polaris',

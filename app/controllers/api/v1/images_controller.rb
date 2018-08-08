@@ -10,7 +10,7 @@ module Api
         @images = Image.enabled
                        .in_gallery
                        .with_uniq_name
-                       .order("images.created_at desc")
+                       .order('images.created_at desc')
                        .offset(params[:offset])
                        .limit(params[:limit])
       end

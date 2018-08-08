@@ -17,7 +17,7 @@ module Api
         @user = current_user
         return if @user.update(user_params)
 
-        render json: ValidationError.new("update", @user.errors), status: :bad_request
+        render json: ValidationError.new('update', @user.errors), status: :bad_request
       end
 
       def signup
@@ -25,7 +25,7 @@ module Api
 
         return if @user.save
 
-        render json: ValidationError.new("signup", @user.errors.messages), status: :bad_request
+        render json: ValidationError.new('signup', @user.errors.messages), status: :bad_request
       end
 
       def confirm
@@ -33,7 +33,7 @@ module Api
         if user.present? && user.errors.blank?
           render json: { code: 'confirmation', message: I18n.t('devise.confirmations.confirmed') }
         else
-          render json: ValidationError.new("confirmation", user.errors), status: :bad_request
+          render json: ValidationError.new('confirmation', user.errors), status: :bad_request
         end
       end
 
@@ -51,7 +51,7 @@ module Api
         citizen = RsiOrgsLoader.new.fetch_citizen(current_user.rsi_handle)
 
         if (citizen&.bio || '').include?(current_user.rsi_verification_token)
-          current_user.update(rsi_verified: true, rsi_verification_token: nil)
+          current_user.update(rsi_verified: true, rsi_verification_token: nil, rsi_orgs: citizen.orgs)
           render json: { code: 'rsi_verification.success', message: I18n.t('messages.rsi_verification.success') }
         else
           render json: { code: 'rsi_verification.failure', message: I18n.t('messages.rsi_verification.failure') }, status: :bad_request
@@ -60,12 +60,12 @@ module Api
 
       def check_email
         authorize! :check, :users
-        render json: { emailTaken: User.exists?(["lower(email) = :value", { value: (user_params[:email] || "").downcase }]) }
+        render json: { emailTaken: User.exists?(['lower(email) = :value', { value: (user_params[:email] || '').downcase }]) }
       end
 
       def check_username
         authorize! :check, :users
-        render json: { usernameTaken: User.exists?(["lower(username) = :value", { value: (user_params[:username] || "").downcase }]) }
+        render json: { usernameTaken: User.exists?(['lower(username) = :value', { value: (user_params[:username] || '').downcase }]) }
       end
 
       def destroy
@@ -74,7 +74,7 @@ module Api
         if current_user.destroy
           render json: { code: 'current_user.destroyed', message: I18n.t('messages.destroy.success', resource: I18n.t('resources.user')) }
         else
-          render json: ValidationError.new("current_user.destroy", @current_user.errors), status: :bad_request
+          render json: ValidationError.new('current_user.destroy', @current_user.errors), status: :bad_request
         end
       end
 

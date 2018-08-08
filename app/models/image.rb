@@ -9,7 +9,7 @@ class Image < ApplicationRecord
   mount_uploader :name, ImageUploader
 
   def self.in_gallery
-    where("gallery_id IS NOT ?", nil)
+    where('gallery_id IS NOT ?', nil)
   end
 
   def self.with_uniq_name
@@ -22,16 +22,16 @@ class Image < ApplicationRecord
 
   def to_jq_upload
     {
-      "name" => self[:name],
-      "size" => name.size,
-      "url" => name.url,
-      "enabled" => enabled,
-      "background" => background,
-      "thumbnailUrl" => name.small.url,
-      "toggleUrl" => toggle_admin_image_path(id: id),
-      "toggleBackgroundUrl" => toggle_background_admin_image_path(id: id),
-      "deleteUrl" => admin_image_path(id: id),
-      "deleteType" => "DELETE"
+      'name' => self[:name],
+      'size' => name.size,
+      'url' => name.url,
+      'enabled' => enabled,
+      'background' => background,
+      'thumbnailUrl' => name.small.url,
+      'toggleUrl' => toggle_admin_image_path(id: id),
+      'toggleBackgroundUrl' => toggle_background_admin_image_path(id: id),
+      'deleteUrl' => admin_image_path(id: id),
+      'deleteType' => 'DELETE'
     }
   end
 end

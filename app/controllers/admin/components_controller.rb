@@ -37,7 +37,7 @@ module Admin
       if component.update(component_params)
         redirect_to admin_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
       end
     end
 

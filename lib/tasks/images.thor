@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "thor"
+require 'thor'
 
 class Images < Thor
   include Thor::Actions
 
-  desc "recreate", "Recreate Versions"
+  desc 'recreate', 'Recreate Versions'
   def recreate
-    require "./config/environment"
+    require './config/environment'
     Image.find_each do |image|
       image.name.cache_stored_file!
       image.name.retrieve_from_cache!(image.name.cache_name)

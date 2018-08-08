@@ -28,7 +28,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Daymar',
-              'slug' => 'daymar',
+              'slug' => 'daymar'
             },
             'starsystem' => nil,
             'shipCounts' => [{
@@ -44,7 +44,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader',
+              'slug' => 'crusader'
             },
             'starsystem' => {
               'name' => 'Stanton',
@@ -77,7 +77,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader',
+              'slug' => 'crusader'
             },
             'starsystem' => {
               'name' => 'Stanton',
@@ -131,7 +131,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Daymar',
-              'slug' => 'daymar',
+              'slug' => 'daymar'
             },
             'starsystem' => nil,
             'shipCounts' => [{
@@ -147,7 +147,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader',
+              'slug' => 'crusader'
             },
             'starsystem' => {
               'name' => 'Stanton',
@@ -180,7 +180,7 @@ module Api
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader',
+              'slug' => 'crusader'
             },
             'starsystem' => {
               'name' => 'Stanton',

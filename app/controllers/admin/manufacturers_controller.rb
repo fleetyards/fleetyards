@@ -38,7 +38,7 @@ module Admin
         redirect_to admin_manufacturers_path(params: index_back_params, anchor: manufacturer.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.manufacturer"))
       else
         Rails.logger.debug manufacturer.errors.to_yaml
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.manufacturer"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.manufacturer"))
       end
     end
 

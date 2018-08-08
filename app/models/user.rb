@@ -38,7 +38,7 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
     if login.present?
       where(conditions.to_h)
-        .find_by(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }])
+        .find_by(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }])
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end

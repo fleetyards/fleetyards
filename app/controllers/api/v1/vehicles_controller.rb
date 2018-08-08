@@ -38,7 +38,7 @@ module Api
       end
 
       def public
-        user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
+        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
         @q = user.vehicles
                  .purchased
                  .ransack(query_params)
@@ -49,7 +49,7 @@ module Api
       end
 
       def public_count
-        user = User.find_by!("lower(username) = ?", params.fetch(:username, '').downcase)
+        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
         models = user.purchased_models
 
         @count = OpenStruct.new(
@@ -71,7 +71,7 @@ module Api
         if vehicle.save
           render status: :created
         else
-          render json: ValidationError.new("vehicle.create", @vehicle.errors), status: :bad_request
+          render json: ValidationError.new('vehicle.create', @vehicle.errors), status: :bad_request
         end
       end
 
@@ -80,7 +80,7 @@ module Api
 
         return if vehicle.update(vehicle_params)
 
-        render json: ValidationError.new("vehicle.update", @vehicle.errors), status: :bad_request
+        render json: ValidationError.new('vehicle.update', @vehicle.errors), status: :bad_request
       end
 
       def destroy
@@ -88,7 +88,7 @@ module Api
 
         return if vehicle.destroy
 
-        render json: ValidationError.new("vehicle.destroy", @vehicle.errors), status: :bad_request
+        render json: ValidationError.new('vehicle.destroy', @vehicle.errors), status: :bad_request
       end
 
       private def vehicle

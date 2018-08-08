@@ -4,7 +4,7 @@ class RsiOrgsLoader
   attr_accessor :base_url
 
   def initialize(options = {})
-    @base_url = options[:base_url] || "https://robertsspaceindustries.com"
+    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
   end
 
   def fetch(sid)

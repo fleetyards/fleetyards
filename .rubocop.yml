@@ -22,9 +22,6 @@ Style/Lambda:
 Style/RaiseArgs:
   Enabled: false
 
-Style/StringLiterals:
-  Enabled: false
-
 Naming/FileName:
   Enabled: false
 

@@ -13,7 +13,7 @@ module Api
     after_action :set_rate_limit_headers
 
     rescue_from CanCan::AccessDenied do |exception|
-      render json: { message: exception.message }, status: :forbidden
+      render json: { code: 'forbidden', message: exception.message }, status: :forbidden
     end
 
     def root
@@ -37,7 +37,7 @@ module Api
     end
 
     private def not_found(message = I18n.t('messages.record_not_found.base'))
-      render json: { code: "not_found", message: message }, status: :not_found
+      render json: { code: 'not_found', message: message }, status: :not_found
     end
 
     private def set_rate_limit_headers

@@ -4,8 +4,8 @@ class RsiModelsLoader
   attr_accessor :json_file_path, :base_url, :vat_percent
 
   def initialize(options = {})
-    @json_file_path = "public/models.json"
-    @base_url = options[:base_url] || "https://robertsspaceindustries.com"
+    @json_file_path = 'public/models.json'
+    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
     @vat_percent = options[:vat_percent] || 23
   end
 
@@ -36,7 +36,7 @@ class RsiModelsLoader
 
     begin
       model_data = JSON.parse(response.body)
-      File.open(json_file_path, "w") do |f|
+      File.open(json_file_path, 'w') do |f|
         f.write(model_data.to_json)
       end
       model_data['data']
@@ -56,7 +56,7 @@ class RsiModelsLoader
       model.on_sale = buying_options.on_sale
     end
 
-    model.manufacturer = create_or_update_manufacturer(data["manufacturer"])
+    model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
 
     model.hardpoints.destroy_all
 
@@ -146,7 +146,7 @@ class RsiModelsLoader
   end
 
   def create_or_update_manufacturer(manufacturer_data)
-    manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data["id"])
+    manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
 
     manufacturer.update(
       name: manufacturer_data['name'],

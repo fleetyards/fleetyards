@@ -65,12 +65,12 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  if ENV["MEMCACHEDCLOUD_SERVERS"]
+  if ENV['MEMCACHEDCLOUD_SERVERS']
     config.cache_store = :dalli_store,
-                         ENV["MEMCACHED_URL"].split(','),
+                         ENV['MEMCACHED_URL'].split(','),
                          {
-                           username: ENV["MEMCACHED_USERNAME"],
-                           password: ENV["MEMCACHED_PASSWORD"]
+                           username: ENV['MEMCACHED_USERNAME'],
+                           password: ENV['MEMCACHED_PASSWORD']
                          }
   end
   # config.cache_store = :mem_cache_store
@@ -120,7 +120,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
