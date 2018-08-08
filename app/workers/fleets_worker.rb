@@ -8,7 +8,6 @@ class FleetsWorker
     Fleet.find_each do |fleet|
       fleet.fetch_rsi_org
       fleet.save
-      FleetMembersWorker.new.perform(fleet.id)
     end
   end
 end

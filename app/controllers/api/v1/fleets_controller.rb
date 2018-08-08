@@ -3,22 +3,26 @@
 module Api
   module V1
     class FleetsController < ::Api::V1::BaseController
-      before_action :authenticate_api_user!, only: %i[my models]
+      before_action :authenticate_api_user!, only: %i[my create models count]
 
       def index
         authorize! :index, :api_fleets
 
-        @fleets = if current_user.present?
-                    Fleet.where.not(id: current_user.fleet_ids).order(name: :asc)
+        @fleets = if current_user.present? && current_user.rsi_verified?
+                    Fleet.where.not(sid: current_user.rsi_orgs.map(&:downcase)).order(name: :asc)
                   else
                     Fleet.all.order(name: :asc)
                   end
       end
 
       def my
-        authorize! :index, :api_my_fleets
+        authorize! :my, :api_fleets
 
-        @fleets = current_user.fleets.order(name: :asc)
+        @fleets = if current_user.rsi_verified?
+                    Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).order(name: :asc).all
+                  else
+                    []
+                  end
       end
 
       def show
@@ -29,65 +33,59 @@ module Api
 
       def create
         authorize! :create, :api_fleets
-        @fleet = Fleet.new(sid: params[:sid])
 
+        @fleet = Fleet.new(sid: params[:sid])
         return if @fleet.save
 
-        render json: ValidationError.new("fleet.create", @fleet.errors), status: :bad_request
-      end
-
-      def members
-        authorize! :index, :api_my_fleets
-
-        @members = fleet.members
+        render json: ValidationError.new('fleet.create', @fleet.errors), status: :bad_request
       end
 
       def models
-        authorize! :index, :api_my_fleets
+        authorize! :models, fleet
+        @q = fleet_models.ransack(query_params)
 
-        search = fleet.models
-                      .select(
-                        %i[
-                          id name slug description length beam height mass cargo size
-                          min_crew max_crew scm_speed afterburner_speed store_image store_url
-                          price on_sale production_status production_note focus classification
-                          focus rsi_id rsi_name rsi_slug manufacturer_id created_at updated_at
-                          pitch_max yaw_max roll_max xaxis_acceleration yaxis_acceleration
-                          zaxis_acceleration fallback_price
-                        ]
-                      )
-                      .group(:id)
-                      .ransack(query_params)
+        @q.sorts = 'name asc' if @q.sorts.empty?
 
-        search.sorts = 'name asc' if search.sorts.empty?
-
-        result = search.result.offset(params[:offset]).limit(params[:limit])
-
-        @models = result.map do |model|
-          OpenStruct.new(
-            count: fleet.models.where(id: model.id).count,
-            model: model
-          )
-        end
+        @models = @q.result.offset(params[:offset]).limit(params[:limit])
       end
 
       def count
-        authorize! :index, :api_my_fleets
+        authorize! :count, fleet
+
+        grouped_vehicles = {}
+        fleet_vehicles.includes(:model).order('models.slug asc').group_by(&:model_id).each do |_model_id, vehicles|
+          grouped_vehicles[vehicles.first.model.slug] = vehicles.count
+        end
 
         @count = OpenStruct.new(
-          total: fleet.models.count,
-          classifications: fleet.models.map(&:classification).uniq.compact.map do |classification|
+          total: fleet_vehicles.count,
+          classifications: fleet_models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              count: fleet.models.where(classification: classification).count,
+              count: fleet_models.where(classification: classification).count,
               name: classification,
               label: classification.humanize
             )
-          end
+          end,
+          models: grouped_vehicles
         )
       end
 
       private def fleet
-        @fleet = current_user.fleets.find_by!(sid: params[:sid])
+        @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).find_by(sid: params[:sid])
+      end
+
+      private def fleet_vehicles
+        @fleet_vehicles ||= begin
+          member_ids = User.where(rsi_verified: true).where('lower(rsi_orgs) like ?', "% #{fleet&.sid}\n%").map(&:id)
+          Vehicle.where(user_id: member_ids)
+        end
+      end
+
+      private def fleet_models
+        @fleet_models ||= begin
+          model_slugs = fleet_vehicles.map { |vehicle| vehicle.model.slug }
+          Model.where(slug: model_slugs)
+        end
       end
     end
   end

@@ -8,9 +8,6 @@ class User < ApplicationRecord
 
   has_many :vehicles,
            dependent: :destroy
-  has_many :fleet_memberships,
-           dependent: :destroy
-  has_many :fleets, through: :fleet_memberships
   has_many :models,
            through: :vehicles
   has_many :purchased_vehicles,
@@ -22,6 +19,8 @@ class User < ApplicationRecord
            through: :purchased_vehicles,
            source: :model,
            inverse_of: false
+
+  serialize :rsi_orgs, Array
 
   validates :username, uniqueness: { case_sensitive: false }
 

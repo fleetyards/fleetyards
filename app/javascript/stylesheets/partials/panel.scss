@@ -112,6 +112,10 @@ $contentBorderRadius: 16px;
 
     .panel-title {
       margin-bottom: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 30px;
 
       small {
         color: $text-color;
