@@ -37,7 +37,7 @@ module Admin
       if user.update(user_params)
         redirect_to admin_users_path, notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.user"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.user"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.user"))
       end
     end
 

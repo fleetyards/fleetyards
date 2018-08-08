@@ -80,5 +80,5 @@ end
 scope :v1, as: :v1 do
   scope module: :v1, &v1_api_routes
 
-  root to: "v1/base#root"
+  root to: 'v1/base#root'
 end

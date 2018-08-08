@@ -78,7 +78,7 @@
             >
               <div
                 v-for="fleetModel in fleetModels"
-                :key="fleetModel.model.id"
+                :key="fleetModel.slug"
                 :class="{
                   'col-sm-6 col-md-4 col-lg-3 col-xlg-2': !myFleet,
                   'col-sm-6 col-lg-4 col-xlg-3': myFleet,
@@ -86,24 +86,11 @@
                 class="fade-list-item col-xs-12"
               >
                 <ModelPanel
-                  :model="fleetModel.model"
-                  :count="fleetModel.count"
+                  :model="fleetModel"
+                  :count="count(fleetModel.slug)"
                 />
               </div>
             </transition-group>
-            <InfiniteLoading
-              v-if="fleetModels && fleetModels.length >= limit"
-              ref="infiniteLoading"
-              :distance="500"
-              @infinite="fetchMore"
-            >
-              <span slot="no-more" />
-              <span slot="spinner">
-                <Loader
-                  v-if="loading"
-                  static />
-              </span>
-            </InfiniteLoading>
             <Loader
               v-if="loading"
               fixed
@@ -116,6 +103,7 @@
             <ModelsFilterForm />
           </div>
           <ModelsFilterModal
+            v-if="myFleet"
             ref="filterModal"
           />
         </div>
@@ -134,7 +122,6 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelsFilterModal from 'frontend/partials/Models/FilterModal'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   components: {
@@ -143,15 +130,12 @@ export default {
     ModelsFilterForm,
     ModelsFilterModal,
     ModelClassLabels,
-    InfiniteLoading,
     Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {
     return {
       loading: false,
-      limit: 30,
-      offset: 0,
       fleetCount: null,
       fleet: null,
       fleetModels: [],
@@ -186,7 +170,7 @@ export default {
       if (!this.currentUser) {
         return false
       }
-      return (this.currentUser.fleets || []).includes(this.$route.params.sid)
+      return (this.currentUser.fleets || []).includes(this.$route.params.sid.toUpperCase())
     },
   },
   watch: {
@@ -208,6 +192,12 @@ export default {
     }
   },
   methods: {
+    count(slug) {
+      if (!this.fleetCount) {
+        return null
+      }
+      return this.fleetCount.models[slug]
+    },
     fetch() {
       this.$api.get(`fleets/${this.$route.params.sid}`, {}, (args) => {
         this.loading = false
@@ -220,38 +210,11 @@ export default {
       this.loading = true
       this.$api.get(`fleets/${this.$route.params.sid}/models`, {
         q: this.$route.query.q,
-        limit: this.limit,
       }, (args) => {
         this.loading = false
-
-        this.offset = 0
-        if (this.$refs.infiniteLoading) {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
-        }
 
         if (!args.error) {
           this.fleetModels = args.data
-        }
-      })
-    },
-    fetchMore($state) {
-      this.loading = true
-      this.offset += this.limit
-      this.$api.get(`fleets/${this.$route.params.sid}/models`, {
-        q: this.$route.query.q,
-        limit: this.limit,
-        offset: this.offset,
-      }, (args) => {
-        this.loading = false
-        $state.loaded()
-        if (!args.error) {
-          if (args.data.length === 0 || args.data.length < this.limit) {
-            $state.complete()
-          }
-
-          args.data.forEach((model) => {
-            this.fleetModels.push(model)
-          })
         }
       })
     },

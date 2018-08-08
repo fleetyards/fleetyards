@@ -63,7 +63,7 @@ Types::QueryType = GraphQL::ObjectType.define do
       scope = Image.enabled
 
       scope = if args[:random]
-                scope.order("RANDOM()")
+                scope.order('RANDOM()')
               else
                 scope.order('images.created_at desc')
               end

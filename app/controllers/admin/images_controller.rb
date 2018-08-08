@@ -47,7 +47,7 @@ module Admin
           render json: true
         end
         format.html do
-          redirect_to admin_images_path, notice: "success"
+          redirect_to admin_images_path, notice: 'success'
         end
       end
     end

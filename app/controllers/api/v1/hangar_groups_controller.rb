@@ -17,7 +17,7 @@ module Api
         if hangar_group.save
           render status: :created
         else
-          render json: ValidationError.new("hangar_group.create", @hangar_group.errors), status: :bad_request
+          render json: ValidationError.new('hangar_group.create', @hangar_group.errors), status: :bad_request
         end
       end
 
@@ -26,7 +26,7 @@ module Api
 
         return if hangar_group.update(hangar_group_params)
 
-        render json: ValidationError.new("vehicle.update", @hangar_group.errors), status: :bad_request
+        render json: ValidationError.new('vehicle.update', @hangar_group.errors), status: :bad_request
       end
 
       def destroy
@@ -34,7 +34,7 @@ module Api
 
         return if hangar_group.destroy
 
-        render json: ValidationError.new("hangar_group.destroy", @hangar_group.errors), status: :bad_request
+        render json: ValidationError.new('hangar_group.destroy', @hangar_group.errors), status: :bad_request
       end
 
       private def hangar_group

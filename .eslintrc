@@ -10,7 +10,8 @@
   ],
   "plugins": [
     "compat",
-    "jest"
+    "jest",
+    "import"
   ],
   "settings": {
     "html/indent": "tab",

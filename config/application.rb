@@ -37,7 +37,7 @@ module Fleetyards
       html_tag.to_s.html_safe
       # rubocop:enable Rails/OutputSafety
     }
-    config.autoload_paths << Rails.root.join("config", "routes")
+    config.autoload_paths << Rails.root.join('config', 'routes')
 
     config.exceptions_app = routes
 

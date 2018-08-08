@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rsi_models_loader"
+require 'rsi_models_loader'
 
 class ModelWorker
   include Sidekiq::Worker

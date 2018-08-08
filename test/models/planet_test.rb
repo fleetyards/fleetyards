@@ -13,27 +13,27 @@ class PlanetTest < ActiveSupport::TestCase
   let(:hurston) { planets :hurston }
   let(:uriel) { planets :uriel }
 
-  test "custom validations" do
+  test 'custom validations' do
     planet = Planet.new(name: 'Earth')
     assert_equal planet.valid?, false
   end
 
-  test "custom validations with system" do
+  test 'custom validations with system' do
     planet = Planet.new(name: 'Earth', starsystem: stanton)
     assert_equal planet.valid?, true
   end
 
-  test "custom validations with planet" do
+  test 'custom validations with planet' do
     planet = Planet.new(name: 'Earth', planet: hurston)
     assert_equal planet.valid?, true
   end
 
-  test "before save callback for system" do
+  test 'before save callback for system' do
     planet = Planet.create(name: 'Earth', planet: hurston)
     assert_equal planet.starsystem_id, hurston.starsystem_id
   end
 
-  test "before save callback for system on update" do
+  test 'before save callback for system on update' do
     planet = Planet.create(name: 'Earth', planet: hurston)
 
     planet.update(planet: uriel)

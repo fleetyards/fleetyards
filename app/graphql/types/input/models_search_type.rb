@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Types::Input::ModelsSearchType = GraphQL::InputObjectType.define do
-  name "ModelsSearchInput"
+  name 'ModelsSearchInput'
 
   argument :nameOrDescriptionCont, types.String, as: :name_or_description_cont
   argument :onSaleEq, types.String, as: :on_sale_eq

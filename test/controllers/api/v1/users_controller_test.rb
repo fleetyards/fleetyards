@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 module Api
   module V1
@@ -12,24 +12,24 @@ module Api
 
       tests Api::V1::UsersController
 
-      describe "without session" do
-        it "should render 403 for destroy" do
+      describe 'without session' do
+        it 'should render 401 for destroy' do
           get :destroy
 
           assert_response :unauthorized
           json = JSON.parse response.body
-          assert_equal "unauthorized", json["code"]
+          assert_equal 'unauthorized', json['code']
         end
       end
 
-      describe "with session" do
+      describe 'with session' do
         let(:data) { users :data }
 
         before do
           sign_in data
         end
 
-        it "should delete the current user" do
+        it 'should delete the current user' do
           get :destroy
 
           assert_response :ok

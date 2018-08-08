@@ -38,7 +38,7 @@ task :remote_environment do
   invoke :'rbenv:load'
 end
 
-desc "Deploys the current version to the server."
+desc 'Deploys the current version to the server.'
 task :deploy do
   deploy do
     invoke :'git:clone'
@@ -113,9 +113,9 @@ end
 namespace :uploads do
   task backup: :remote_environment do
     in_path fetch(:current_path).to_s do
-      comment "Creating Uploads Backup..."
+      comment 'Creating Uploads Backup...'
       command %(tar -zcvf dumps/uploads.tar.gz /home/fleetyards/shared/public/uploads)
-      comment "Uploads Backup finished"
+      comment 'Uploads Backup finished'
     end
   end
 
@@ -124,9 +124,9 @@ namespace :uploads do
   end
 
   task :download do
-    comment "Downloading latest Uploads backup..."
+    comment 'Downloading latest Uploads backup...'
     system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz dumps/)
-    comment "Download finished"
+    comment 'Download finished'
   end
 end
 
@@ -156,9 +156,9 @@ namespace :db do
 
   task backup: :remote_environment do
     in_path fetch(:current_path).to_s do
-      comment "Creating DB Backup..."
+      comment 'Creating DB Backup...'
       command %(bundle exec thor db:dump)
-      comment "DB Backup finished"
+      comment 'DB Backup finished'
     end
   end
 
@@ -169,8 +169,8 @@ namespace :db do
   # pg_restore --verbose --clean --no-acl --no-owner -h 127.0.0.1 -U fleetyards -d fleetyards dumps/latest.dump
 
   task :download_backup do
-    comment "Downloading latest backup..."
+    comment 'Downloading latest backup...'
     system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
-    comment "Download finished"
+    comment 'Download finished'
   end
 end

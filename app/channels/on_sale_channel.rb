@@ -2,6 +2,6 @@
 
 class OnSaleChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "on_sale"
+    stream_from 'on_sale'
   end
 end

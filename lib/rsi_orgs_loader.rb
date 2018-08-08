@@ -4,7 +4,7 @@ class RsiOrgsLoader
   attr_accessor :base_url
 
   def initialize(options = {})
-    @base_url = options[:base_url] || "https://robertsspaceindustries.com"
+    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
   end
 
   def fetch(sid)
@@ -55,10 +55,20 @@ class RsiOrgsLoader
 
   def fetch_citizen(handle)
     response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
-
     return unless response.success?
 
-    parse_citizen(Nokogiri::HTML(response.body))
+    citizen = parse_citizen(Nokogiri::HTML(response.body))
+
+    citizen.orgs = fetch_orgs_for_citizen(handle)
+
+    citizen
+  end
+
+  def fetch_orgs_for_citizen(handle)
+    response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}/organizations")
+    return [] unless response.success?
+
+    parse_citizen_orgs(Nokogiri::HTML(response.body))
   end
 
   private def parse_citizen(page)
@@ -82,7 +92,18 @@ class RsiOrgsLoader
         user.languages = value.text.strip
       end
     end
+
     user
+  end
+
+  private def parse_citizen_orgs(page)
+    orgs = []
+    page.css('.orgs-content .org').each do |org_box|
+      org_box.css('.info .entry .value').each_with_index do |value, index|
+        orgs << value.text.strip if index == 1
+      end
+    end
+    orgs
   end
 
   private def fetch_org_data(sid)

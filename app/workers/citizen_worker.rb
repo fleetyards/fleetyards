@@ -2,13 +2,14 @@
 
 require 'rsi_orgs_loader'
 
-class FleetMembersWorker
+class CitizenWorker
   include Sidekiq::Worker
   sidekiq_options retry: true, queue: (ENV['FLEETS_LOADER_QUEUE'] || 'fleetyards_fleets_loader').to_sym
 
-  def perform(id)
-    fleet = Fleet.find(id)
-
-    fleet.add_members(RsiOrgsLoader.new.fetch_members(fleet.sid.downcase, fleet.member_count.to_i))
+  def perform
+    User.find_each do |user|
+      citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
+      user.update(rsi_orgs: citizen&.orgs || [])
+    end
   end
 end

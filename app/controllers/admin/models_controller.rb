@@ -41,7 +41,7 @@ module Admin
       if model.update(model_params)
         redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
       else
-        render "edit", error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
+        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
       end
     end
 

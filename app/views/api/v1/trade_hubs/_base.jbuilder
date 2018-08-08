@@ -8,7 +8,7 @@ json.cache! ['v1', trade_hub] do
   json.system trade_hub.system
   json.type trade_hub.station_type
   json.trade_commodities do
-    json.array! trade_hub.trade_commodities.includes(:commodity).order("commodities.name ASC"), partial: 'api/v1/trade_hubs/trade_commodity', as: :trade_commodity
+    json.array! trade_hub.trade_commodities.includes(:commodity).order('commodities.name ASC'), partial: 'api/v1/trade_hubs/trade_commodity', as: :trade_commodity
   end
   json.partial! 'api/shared/dates', record: trade_hub
 end

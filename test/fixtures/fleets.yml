@@ -3,3 +3,7 @@
 tmi:
   name: TMI
   sid: tmi
+
+rsi:
+  name: RSI
+  sid: rsi

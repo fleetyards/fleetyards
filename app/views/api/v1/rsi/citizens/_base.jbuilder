@@ -8,3 +8,4 @@ json.enlisted citizen.enlisted
 json.citizen_record citizen.citizen_record
 json.location citizen.location
 json.languages citizen.languages
+json.orgs citizen.orgs

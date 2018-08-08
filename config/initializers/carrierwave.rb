@@ -12,7 +12,7 @@ module CarrierWave
 
     def darken(percentage)
       manipulate! do |img|
-        img.fill("black")
+        img.fill('black')
         img.colorize("#{percentage}%")
         img = yield(img) if block_given?
         img
@@ -46,11 +46,11 @@ end
 
 CarrierWave.configure do |config|
   if Rails.env.production?
-    config.asset_host = "https://api.fleetyards.net"
+    config.asset_host = 'https://api.fleetyards.net'
   elsif Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
   else
-    config.asset_host = "http://api.fleetyards.test"
+    config.asset_host = 'http://api.fleetyards.test'
   end
 end
