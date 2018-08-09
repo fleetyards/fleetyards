@@ -25,8 +25,8 @@
 	"dependencies": {
 	},
 	"devDependencies": {
-		"grunt": "~1.0.0",
-		"grunt-contrib-uglify": "~1.0.1",
+		"grunt": "~1.0.3",
+		"grunt-contrib-uglify": "~3.4.0",
 		"grunt-contrib-concat": "~1.0.1",
 		"grunt-bump": "0.8.0",
 		"grunt-wrap": "^0.3.0"

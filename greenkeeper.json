@@ -1,0 +1,16 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "vendor/assets/bower_components/awesome-bootstrap-checkbox/package.json",
+        "vendor/assets/bower_components/bootstrap-social/package.json",
+        "vendor/assets/bower_components/ladda/package.json",
+        "vendor/assets/bower_components/microplugin/package.json",
+        "vendor/assets/bower_components/noty/docs/v2/vendor/noty-2.4.1/package.json",
+        "vendor/assets/bower_components/noty/package.json",
+        "vendor/assets/bower_components/sifter/package.json"
+      ]
+    }
+  }
+}
