@@ -48,9 +48,9 @@ module Api
       def finish_rsi_verification
         authorize! :rsi_verify, current_user
 
-        citizen = RsiOrgsLoader.new.fetch_citizen(current_user.rsi_handle)
+        success, citizen = RsiOrgsLoader.new.fetch_citizen(current_user.rsi_handle)
 
-        if (citizen&.bio || '').include?(current_user.rsi_verification_token)
+        if success && (citizen.bio || '').include?(current_user.rsi_verification_token)
           current_user.update(rsi_verified: true, rsi_verification_token: nil, rsi_orgs: citizen.orgs)
           render json: { code: 'rsi_verification.success', message: I18n.t('messages.rsi_verification.success') }
         else

@@ -10,9 +10,9 @@ module Api
         before_action :authenticate_api_user!, only: %i[]
 
         def show
-          @citizen = RsiOrgsLoader.new.fetch_citizen(handle)
+          success, @citizen = RsiOrgsLoader.new.fetch_citizen(handle)
 
-          return if @citizen.present?
+          return if success
 
           render json: { code: 'rsi.citizen.not_found', message: 'Could not find Citizen' }, status: :not_found
         end

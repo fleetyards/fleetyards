@@ -10,9 +10,9 @@ module Api
         before_action :authenticate_api_user!, only: %i[]
 
         def show
-          @org = RsiOrgsLoader.new.fetch(params[:sid].downcase)
+          success, @org = RsiOrgsLoader.new.fetch(params[:sid].downcase)
 
-          return if @org.present?
+          return if success
 
           render json: { code: 'rsi.org.not_found', message: 'Could not find Org' }, status: :not_found
         end
