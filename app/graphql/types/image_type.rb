@@ -30,11 +30,6 @@ Types::ImageType = GraphQL::ObjectType.define do
       obj.name.big.url
     end
   end
-  field :darkURL, types.String do
-    resolve ->(obj, _args, _ctx) do
-      obj.name.dark.url
-    end
-  end
   field :model, Types::ModelType do
     resolve ->(obj, _args, _ctx) do
       obj.gallery if obj.gallery_type == 'Model'

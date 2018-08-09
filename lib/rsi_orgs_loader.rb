@@ -84,8 +84,17 @@ class RsiOrgsLoader
       secondary_activity: org_box.css('.heading .focus .secondary .content').text.strip,
       recruiting: org_box.css('.join-us .bt-join').text.strip.present?,
       member_count: org_box.css('.heading .logo .count').text.strip.gsub(' members', '').gsub(' member', '').to_i || 1,
-      logo: parse_image(org_box.css('.heading .logo img'))
+      logo: parse_image(org_box.css('.heading .logo img')),
+      background: parse_background_image(page.css('#post-background')),
+      banner: parse_image(org_box.css('.heading .banner img')),
     }
+  end
+
+  private def parse_background_image(element)
+    div = element&.first || {}
+    return if div.blank? || div.to_h.fetch('style', nil).blank?
+    background_url = div.to_h.fetch('style', '').scan(/background-image:url\('(.*)'\);/).last&.first
+    "https://robertsspaceindustries.com#{background_url}"
   end
 
   private def parse_image(element)

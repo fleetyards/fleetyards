@@ -14,10 +14,12 @@
     "changePassword": "Change Password",
     "fleets": "Fleets",
     "settings": "Settings",
+    "verify": "Verify your RSI Handle",
     "account": "Account",
     "compare": {
       "models": "Compare Ships"
     },
+    "notFound": "404",
     "cargo": "Cargo",
     "commodities": "Commodities",
     "impressum": "Impressum",
@@ -42,6 +44,7 @@
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "settings": "Profile Settings",
+    "verify": "Verify your RSI Handle",
     "account": "Account",
     "settingsRsiVerification": "RSI Verification",
     "filterModels": "Filter Ships",
@@ -294,6 +297,7 @@
     "images": "Images"
   },
   "actions": {
+    "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
     "enableGrouping": "Enable Grouping",
     "destroyAccount": "Destroy Account",

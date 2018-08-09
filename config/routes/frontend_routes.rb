@@ -29,6 +29,7 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'settings/profile' => 'base#index'
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
+  get 'settings/verify' => 'base#index'
 
   get 'password/request' => 'base#index'
   get 'password/update/:token' => 'base#password'
