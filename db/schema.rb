@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_07_185912) do
+ActiveRecord::Schema.define(version: 2018_08_09_112404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -71,17 +71,6 @@ ActiveRecord::Schema.define(version: 2018_08_07_185912) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "fleet_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "avatar"
-    t.string "handle"
-    t.string "rank"
-    t.string "name"
-  end
-
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "logo"
@@ -97,6 +86,8 @@ ActiveRecord::Schema.define(version: 2018_08_07_185912) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.hstore "rsi_members", default: [], null: false, array: true
+    t.string "banner"
+    t.string "background"
   end
 
   create_table "hangar_groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

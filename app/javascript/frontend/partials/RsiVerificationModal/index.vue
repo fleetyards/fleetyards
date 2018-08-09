@@ -6,7 +6,7 @@
     :on-close="onClose"
   >
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-8">
         <br>
         <p v-html="t('texts.rsiVerification.instructions')" />
         <div class="input-group-flex">

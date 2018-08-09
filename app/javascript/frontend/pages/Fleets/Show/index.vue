@@ -64,12 +64,33 @@
           />
         </div>
         <div class="row">
-          <div
-            :class="{
-              'col-md-9 col-xlg-10': myFleet,
-            }"
-            class="col-xs-12"
-          >
+          <div class="col-xs-12">
+            <Box
+              v-if="!isMember && myFleet && fleet"
+              class="row"
+              large
+            >
+              You seem to be a Member of {{ fleet.name }}.
+              To be able to view Ships of this Fleet you need to verify your RSI Handle
+
+              <div
+                slot="footer"
+                class="pull-right"
+              >
+                <InternalLink
+                  :route="{name: 'settings-verify'}"
+                >
+                  Verify your RSI-Handle
+                </InternalLink>
+              </div>
+            </Box>
+          </div>
+        </div>
+        <div
+          v-if="isMember"
+          class="row"
+        >
+          <div class="col-md-9 col-xlg-10">
             <transition-group
               name="fade-list"
               class="flex-row"
@@ -79,11 +100,7 @@
               <div
                 v-for="fleetModel in fleetModels"
                 :key="fleetModel.slug"
-                :class="{
-                  'col-sm-6 col-md-4 col-lg-3 col-xlg-2': !myFleet,
-                  'col-sm-6 col-lg-4 col-xlg-3': myFleet,
-                }"
-                class="fade-list-item col-xs-12"
+                class="fade-list-item col-xs-12 col-sm-6 col-lg-4 col-xlg-3"
               >
                 <ModelPanel
                   :model="fleetModel"
@@ -96,16 +113,10 @@
               fixed
             />
           </div>
-          <div
-            v-if="myFleet"
-            class="hidden-xs hidden-sm col-md-3 col-xlg-2"
-          >
+          <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
             <ModelsFilterForm />
           </div>
-          <ModelsFilterModal
-            v-if="myFleet"
-            ref="filterModal"
-          />
+          <ModelsFilterModal ref="filterModal" />
         </div>
       </div>
     </div>
@@ -115,7 +126,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
+import InternalLink from 'frontend/components/InternalLink'
+import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -130,7 +142,8 @@ export default {
     ModelsFilterForm,
     ModelsFilterModal,
     ModelClassLabels,
-    Btn,
+    InternalLink,
+    Box,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -172,13 +185,20 @@ export default {
       }
       return (this.currentUser.fleets || []).includes(this.$route.params.sid.toUpperCase())
     },
+    isMember() {
+      if (!this.currentUser) {
+        return false
+      }
+
+      return this.myFleet && this.currentUser.rsiVerified
+    },
   },
   watch: {
     $route() {
       this.fetchModels()
     },
     currentUser() {
-      if (this.myFleet) {
+      if (this.isMember) {
         this.fetchModels()
         this.fetchCount()
       }
@@ -186,7 +206,7 @@ export default {
   },
   created() {
     this.fetch()
-    if (this.myFleet) {
+    if (this.isMember) {
       this.fetchModels()
       this.fetchCount()
     }
@@ -203,6 +223,9 @@ export default {
         this.loading = false
         if (!args.error) {
           this.fleet = args.data
+          if (args.data.background) {
+            this.$store.commit('setBackgroundImage', args.data.background)
+          }
         }
       })
     },

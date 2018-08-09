@@ -11,3 +11,5 @@ json.member_count org.member_count
 json.rpg org.rpg
 json.exclusive org.exclusive
 json.logo org.logo
+json.banner org.banner
+json.background org.background
