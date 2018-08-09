@@ -8,8 +8,8 @@ class Fleet < ApplicationRecord
   before_create :fetch_rsi_org
 
   def fetch_rsi_org
-    org = RsiOrgsLoader.new.fetch(sid.downcase)
-    return if org.blank?
+    success, org = RsiOrgsLoader.new.fetch(sid.downcase)
+    return unless success
     self.name = org.name
     self.logo = org.logo
     self.archetype = org.archetype

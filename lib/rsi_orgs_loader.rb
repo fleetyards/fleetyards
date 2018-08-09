@@ -9,26 +9,28 @@ class RsiOrgsLoader
 
   def fetch(sid)
     data = fetch_org_data(sid)
+    return false, nil if data.blank?
 
-    OpenStruct.new(data) if data.present?
+    [true, OpenStruct.new(data)]
   end
 
   def fetch_citizen(handle)
     response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
-    return unless response.success?
+    return false, nil unless response.success?
 
     citizen = parse_citizen(Nokogiri::HTML(response.body))
 
-    citizen.orgs = fetch_orgs_for_citizen(handle)
+    success, orgs = fetch_orgs_for_citizen(handle)
+    citizen.orgs = orgs if success
 
-    citizen
+    [true, citizen]
   end
 
   def fetch_orgs_for_citizen(handle)
     response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}/organizations")
-    return [] unless response.success?
+    return false, nil unless response.success?
 
-    parse_citizen_orgs(Nokogiri::HTML(response.body))
+    [true, parse_citizen_orgs(Nokogiri::HTML(response.body))]
   end
 
   private def parse_citizen(page)
@@ -47,9 +49,9 @@ class RsiOrgsLoader
       if index.zero?
         user.enlisted = value.text.strip
       elsif index == 1
-        user.location = value.text.strip
+        user.location = value.text.squish.strip
       elsif index == 2
-        user.languages = value.text.strip
+        user.languages = value.text.squish.strip
       end
     end
 

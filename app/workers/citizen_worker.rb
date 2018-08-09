@@ -8,8 +8,9 @@ class CitizenWorker
 
   def perform
     User.find_each do |user|
-      citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
-      user.update(rsi_orgs: citizen&.orgs || [])
+      success, citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
+      next unless success
+      user.update(rsi_orgs: citizen.orgs)
     end
   end
 end
