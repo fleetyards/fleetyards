@@ -1,0 +1,130 @@
+<%
+pack_images = [
+  'bg-0.jpg',
+  'bg-2.jpg',
+  'bg-5.jpg',
+  'bg-404.jpg',
+  'favicon.png',
+  'store_image.jpg',
+  'org-icons/bountyhunting.png',
+  'org-icons/engineering.png',
+  'org-icons/exploration.png',
+  'org-icons/freelancing.png',
+  'org-icons/infiltration.png',
+  'org-icons/piracy.png',
+  'org-icons/resources.png',
+  'org-icons/scouting.png',
+  'org-icons/security.png',
+  'org-icons/smuggling.png',
+  'org-icons/social.png',
+  'org-icons/trade.png',
+  'org-icons/transport.png',
+  'blueimp-gallery/error.png',
+  'blueimp-gallery/error.svg',
+  'blueimp-gallery/loading.gif',
+  'blueimp-gallery/play-pause.png',
+  'blueimp-gallery/play-pause.svg',
+  'blueimp-gallery/video-play.png',
+  'blueimp-gallery/video-play.svg',
+  'hangar-guide/add.gif',
+  'hangar-guide/edit.gif',
+  'hangar-guide/fleetchart.gif',
+  'hangar-guide/groups.gif',
+  'hangar-guide/public.gif',
+  'hardpoints/computers.svg',
+  'hardpoints/coolers.svg',
+  'hardpoints/fuel_intakes.svg',
+  'hardpoints/fuel_tanks.svg',
+  'hardpoints/jump_modules.svg',
+  'hardpoints/legend.png',
+  'hardpoints/main_thrusters.svg',
+  'hardpoints/maneuvering_thrusters.svg',
+  'hardpoints/missiles.svg',
+  'hardpoints/power_plants.svg',
+  'hardpoints/quantum_drives.svg',
+  'hardpoints/quantum_fuel_tanks.svg',
+  'hardpoints/radar.svg',
+  'hardpoints/shield_generators.svg',
+  'hardpoints/turrets.svg',
+  'hardpoints/utility_items.svg',
+  'hardpoints/weapons.svg'
+]
+
+asset_images = [
+  'favicon.png',
+  'favicon.svg',
+  'icon-48.png',
+  'icon-96.png',
+  'icon-128.png',
+  'icon-192.png',
+  'icon-196.png',
+  'icon-256.png',
+  'icon-384.png',
+  'icon-512.png',
+  'logo.png',
+  'touch-icon-ipad-retina.png',
+  'touch-icon-ipad.png',
+  'touch-icon-iphone-retina.png',
+  'touch-icon-iphone.png'
+]
+%>
+var CACHE_VERSION = 'v1';
+var CACHE_NAME = CACHE_VERSION + ':sw-cache-';
+
+function onInstall(event) {
+  console.log('[Serviceworker]', "Installing!", event);
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function prefill(cache) {
+      return cache.addAll([
+        '/',
+        '<%= asset_path(Webpacker.manifest.lookup!("frontend.css")) %>',
+        '<%= asset_path(Webpacker.manifest.lookup!("frontend.js")) %>',
+        <% pack_images.each do |image| %>'<%= asset_path(Webpacker.manifest.lookup!("images/#{image}")) %>',<% end %>
+        <% asset_images.each do |image| %>'<%= asset_path image %>',<% end %>
+      ]);
+    })
+  );
+}
+
+function onActivate(event) {
+  console.log('[Serviceworker]', "Activating!", event);
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+          return cacheName.indexOf(CACHE_VERSION) !== 0;
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+}
+
+// Borrowed from https://github.com/TalAter/UpUp
+function onFetch(event) {
+  event.respondWith(
+    // try to return untouched request from network first
+    fetch(event.request).catch(function() {
+      // if it fails, try to return request from the cache
+      return caches.match(event.request).then(function(response) {
+        if (response) {
+          return response;
+        }
+        // if not found in cache, return default offline content for navigate requests
+        if (event.request.mode === 'navigate' ||
+          (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
+          console.log('[Serviceworker]', "Fetching offline content", event);
+          return caches.match('/offline.html');
+        }
+      })
+    })
+  );
+}
+
+self.addEventListener('install', onInstall);
+self.addEventListener('activate', onActivate);
+self.addEventListener('fetch', onFetch);

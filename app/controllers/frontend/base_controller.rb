@@ -76,6 +76,10 @@ module Frontend
       render 'frontend/embed_test', layout: 'embed_test'
     end
 
+    def service_worker
+      redirect_to ActionController::Base.helpers.asset_url('service-worker.js')
+    end
+
     private def username(name)
       if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
         return name
