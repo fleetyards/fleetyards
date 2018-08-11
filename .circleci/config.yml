@@ -237,12 +237,14 @@ workflows:
       - unit_tests:
           requires:
             - bundle_dependencies
+            - yarn_dependencies
       - javascript_tests:
           requires:
             - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
+            - yarn_dependencies
       - deploy:
           requires:
             - audit
