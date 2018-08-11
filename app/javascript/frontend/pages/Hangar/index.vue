@@ -8,6 +8,7 @@
           </div>
           <div class="col-xs-12 col-md-4 text-right">
             <button
+              :aria-label="toggleFiltersTooltip"
               class="btn btn-link btn-filter hidden-md hidden-lg"
               @click="openFilter"
             >
@@ -80,6 +81,7 @@
                 v-tooltip="t('actions.saveScreenshot')"
                 v-show="hangarFleetchart"
                 :disabled="downloading"
+                :aria-label="t('actions.saveScreenshot')"
                 small
                 @click.native="download"
               >
@@ -89,6 +91,7 @@
                 v-tooltip="toggleDetailsTooltip"
                 v-show="!hangarFleetchart"
                 :active="hangarDetails"
+                :aria-label="toggleDetailsTooltip"
                 small
                 @click.native="toggleDetails"
               >
@@ -97,6 +100,7 @@
               <Btn
                 v-tooltip="toggleFiltersTooltip"
                 :active="hangarFilterVisible"
+                :aria-label="toggleFiltersTooltip"
                 class="hidden-xs hidden-sm"
                 small
                 @click.native="toggleFilter"

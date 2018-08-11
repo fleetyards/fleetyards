@@ -22,6 +22,26 @@ $innerBorderWidth: 2px;
     border: $innerBorderWidth solid $panel-inner-border;
     background-color: $panel-bg;
 
+    &::before {
+      content: "";
+      height: $innerBorderWidth;
+      background-color: #444;
+      position: absolute;
+      top: -$innerBorderWidth;
+      left: 10px;
+      right: 10px;
+    }
+
+    &::after {
+      content: "";
+      height: $innerBorderWidth;
+      background-color: #444;
+      position: absolute;
+      bottom: -$innerBorderWidth;
+      left: 10px;
+      right: 10px;
+    }
+
     .label-inner {
       border-radius: 3px;
       padding: 3px 6px;
@@ -34,31 +54,6 @@ $innerBorderWidth: 2px;
       height: 15px;
       display: inline-block;
       vertical-align: top;
-    }
-
-    .label-inner-border {
-      width: 100%;
-      display: block;
-      left: 0;
-      height: $innerBorderWidth;
-      position: absolute;
-      padding-left: 10px;
-      padding-right: 10px;
-
-      .label-inner-border-bg {
-        background: #444;
-        display: block;
-        width: 100%;
-        height: $innerBorderWidth;
-      }
-    }
-
-    .label-inner-border-top {
-      top: -$innerBorderWidth;
-    }
-
-    .label-inner-border-bottom {
-      bottom: -$innerBorderWidth;
     }
 
     &.label-link {

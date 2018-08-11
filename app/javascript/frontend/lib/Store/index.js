@@ -26,6 +26,8 @@ const initialState = {
   hangarFilterVisible: true,
   navbarCollapsed: true,
   overlayVisible: false,
+  modelDetails: false,
+  modelFilterVisible: false,
 }
 
 const store = new Vuex.Store({
@@ -69,6 +71,12 @@ const store = new Vuex.Store({
     },
     overlayVisible(state) {
       return state.overlayVisible
+    },
+    modelDetails(state) {
+      return state.modelDetails
+    },
+    modelFilterVisible(state) {
+      return state.modelFilterVisible
     },
   },
   /* eslint-disable no-param-reassign */
@@ -163,6 +171,12 @@ const store = new Vuex.Store({
     },
     closeNavbar(state) {
       state.navbarCollapsed = true
+    },
+    toggleModelDetails(state) {
+      state.modelDetails = !state.modelDetails
+    },
+    toggleModelFilter(state) {
+      state.modelFilterVisible = !state.modelFilterVisible
     },
   },
   /* eslint-enable no-param-reassign */

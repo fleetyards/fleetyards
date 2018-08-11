@@ -5,9 +5,8 @@ $innerBorderRadius: 20px;
 $contentBorderRadius: 16px;
 
 .panel-wrapper {
-  border-left: $outerBorderWidth solid $panel-outer-border;
-  border-right: $outerBorderWidth solid $panel-outer-border;
-  padding: ($outerBorderWidth * 2) $outerBorderWidth;
+  border: $outerBorderWidth solid $panel-outer-border;
+  padding: $outerBorderWidth;
   border-radius: $outerBorderRadius;
   position: relative;
   box-sizing: border-box;
@@ -16,64 +15,24 @@ $contentBorderRadius: 16px;
     margin-bottom: 21px;
   }
 
-  .panel-outer-border {
+  &::before {
+    content: "";
+    height: $outerBorderWidth;
+    background-color: #444;
     position: absolute;
-    left: -$outerBorderWidth;
-    right: -$outerBorderWidth;
+    top: -$outerBorderWidth;
+    left: 80px;
+    right: 80px;
   }
 
-  .panel-outer-border-left,
-  .panel-outer-border-right {
+  &::after {
+    content: "";
+    height: $outerBorderWidth;
+    background-color: #444;
     position: absolute;
-    display: block;
-    width: 80px;
-    height: $outerBorderRadius;
-  }
-
-  .panel-outer-border-left {
-    left: 0;
-    border-left: $outerBorderWidth solid $panel-outer-border;
-  }
-
-  .panel-outer-border-right {
-    right: 0;
-    border-right: $outerBorderWidth solid $panel-outer-border;
-  }
-
-  .panel-outer-border-top {
-    top: 0;
-
-    .panel-outer-border-left,
-    .panel-outer-border-right {
-      top: 0;
-      border-top: $outerBorderWidth solid $panel-outer-border;
-    }
-
-    .panel-outer-border-left {
-      border-top-left-radius: $outerBorderRadius;
-    }
-
-    .panel-outer-border-right {
-      border-top-right-radius: $outerBorderRadius;
-    }
-  }
-
-  .panel-outer-border-bottom {
-    bottom: 0;
-
-    .panel-outer-border-left,
-    .panel-outer-border-right {
-      bottom: 0;
-      border-bottom: $outerBorderWidth solid $panel-outer-border;
-    }
-
-    .panel-outer-border-left {
-      border-bottom-left-radius: $outerBorderRadius;
-    }
-
-    .panel-outer-border-right {
-      border-bottom-right-radius: $outerBorderRadius;
-    }
+    bottom: -$outerBorderWidth;
+    left: 80px;
+    right: 80px;
   }
 }
 
@@ -85,26 +44,24 @@ $contentBorderRadius: 16px;
   min-height: $innerBorderRadius * 2;
   position: relative;
 
-  .panel-inner-border {
-    width: 100%;
+  &::before {
+    content: "";
     height: $innerBorderWidth;
+    background-color: #444;
     position: absolute;
-    padding-left: 40px;
-    padding-right: 40px;
-
-    .panel-inner-border-bg {
-      background: #444;
-      width: 100%;
-      height: $innerBorderWidth;
-    }
-  }
-
-  .panel-inner-border-top {
     top: -$innerBorderWidth;
+    left: 40px;
+    right: 40px;
   }
 
-  .panel-inner-border-bottom {
+  &::after {
+    content: "";
+    height: $innerBorderWidth;
+    background-color: #444;
+    position: absolute;
     bottom: -$innerBorderWidth;
+    left: 40px;
+    right: 40px;
   }
 
   .panel-heading {

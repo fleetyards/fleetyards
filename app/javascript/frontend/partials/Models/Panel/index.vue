@@ -33,6 +33,7 @@
           <a
             v-if="isMyShip"
             :title="t('actions.edit')"
+            :aria-label="t('actions.edit')"
             class="btn btn-link panel-edit-button"
             @click="showEditModal"
           >
@@ -51,6 +52,7 @@
         <router-link
           v-lazy:background-image="model.storeImage"
           :to="{ name: 'model', params: { slug: model.slug }}"
+          :aria-label="model.name"
         >
           <div
             v-tooltip="t('labels.model.purchased')"

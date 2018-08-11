@@ -87,27 +87,24 @@ $panel-content-border-radius: 6px;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
 
-  .panel-btn-border {
-    width: 100%;
+  &::before {
+    content: "";
     height: $panel-border-width;
-    margin-left: -2px;
+    background-color: #444;
     position: absolute;
-    padding-left: 14px;
-    padding-right: 14px;
-
-    .panel-btn-border-bg {
-      width: 100%;
-      height: $panel-border-width;
-      background: #444;
-    }
-  }
-
-  .panel-btn-border-top {
     top: -$panel-border-width;
+    left: 14px;
+    right: 14px;
   }
 
-  .panel-btn-border-bottom {
+  &::after {
+    content: "";
+    height: $panel-border-width;
+    background-color: #444;
+    position: absolute;
     bottom: -$panel-border-width;
+    left: 14px;
+    right: 14px;
   }
 
   .panel-btn-inner {
@@ -127,14 +124,6 @@ $panel-content-border-radius: 6px;
   &.panel-btn-clean {
     background: transparent;
     border: none;
-
-    .panel-btn-border {
-      border: none;
-
-      .panel-btn-border-bg {
-        background: transparent;
-      }
-    }
 
     &:hover {
       background: transparent;

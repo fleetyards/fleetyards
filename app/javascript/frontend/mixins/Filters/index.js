@@ -9,6 +9,13 @@ export default {
     },
   },
   methods: {
+    idFor(name) {
+      const parts = name.split('-')
+      if (this.prefix) {
+        parts.unshift(this.prefix)
+      }
+      return parts.join('-')
+    },
     reset() {
       this.$router.replace({
         name: this.$route.name,

@@ -1,11 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label for="filter-user-vehicle-name">
+      <label :for="idFor('user-vehicle-name')">
         {{ t('labels.filters.vehicles.name') }}
       </label>
       <input
-        id="filter-user-vehicle-name"
+        :id="idFor('user-vehicle-name')"
         v-model="form.nameCont"
         :placeholder="t('placeholders.filters.vehicles.name')"
         type="text"
@@ -18,11 +18,11 @@
         v-html="'&times;'"/>
     </div>
     <div class="form-group">
-      <label for="filter-model-name-or-description">
+      <label :for="idFor('model-name-or-description')">
         {{ t('labels.filters.models.nameOrDescription') }}
       </label>
       <input
-        id="filter-model-name-or-description"
+        :id="idFor('model-name-or-description')"
         v-model="form.modelNameOrModelDescriptionCont"
         :placeholder="t('placeholders.filters.models.nameOrDescription')"
         type="text"
@@ -39,6 +39,7 @@
       :options="manufacturerOptions"
       v-model="form.modelManufacturerSlugIn"
       :label="t('labels.filters.models.manufacturer')"
+      :name="`${prefix}-manufacturer`"
       multiple
     />
     <FilterGroup
@@ -46,6 +47,7 @@
       :options="productionStatusOptions"
       v-model="form.modelProductionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
+      :name="`${prefix}-production-status`"
       multiple
     />
     <FilterGroup
@@ -53,6 +55,7 @@
       :options="classificationOptions"
       v-model="form.modelClassificationIn"
       :label="t('labels.filters.models.classification')"
+      :name="`${prefix}-classification`"
       multiple
     />
     <FilterGroup
@@ -60,6 +63,7 @@
       :options="focusOptions"
       v-model="form.modelFocusIn"
       :label="t('labels.filters.models.focus')"
+      :name="`${prefix}-focus`"
       multiple
     />
     <FilterGroup
@@ -72,6 +76,7 @@
       })"
       v-model="form.hangarGroupsSlugIn"
       :label="t('labels.filters.vehicles.group')"
+      :name="`${prefix}-hangar-group`"
       multiple
     />
     <RadioList
@@ -80,14 +85,14 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.purchasedEq"
-      name="purchasedEq"
+      :name="`${prefix}-purchased`"
     />
     <RadioList
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.modelOnSaleEq"
-      name="vehicleOnSaleEq"
+      :name="`${prefix}-sale`"
     />
     <Btn
       v-if="!hideButtons"
@@ -128,6 +133,10 @@ export default {
       default() {
         return []
       },
+    },
+    prefix: {
+      type: String,
+      default: 'filter',
     },
   },
   data() {

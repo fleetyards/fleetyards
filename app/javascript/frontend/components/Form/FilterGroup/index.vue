@@ -13,7 +13,7 @@
     </div>
     <b-collapse
       :visible="selectedOptions.length > 0 && !visible"
-      :id="selectedId"
+      :id="`${groupID}-${selectedId}`"
       class="filter-list-items"
     >
       <a
@@ -21,7 +21,7 @@
         :class="{
           active: selected(option.value),
         }"
-        :key="`${selectedId}-${option.value}-${index}`"
+        :key="`${groupID}-${selectedId}-${option.value}-${index}`"
         class="filter-list-item fade-list-item"
         @click="select(option.value)"
       >
@@ -39,7 +39,7 @@
     </b-collapse>
     <b-collapse
       :visible="visible"
-      :id="id"
+      :id="`${groupID}-${id}`"
       class="filter-list-items"
     >
       <a
@@ -47,7 +47,7 @@
         :class="{
           active: selected(option.value),
         }"
-        :key="`${id}-${option.value}-${index}`"
+        :key="`${groupID}-${id}-${option.value}-${index}`"
         class="filter-list-item fade-list-item"
         @click="select(option.value)"
       >
@@ -69,6 +69,10 @@
 <script>
 export default {
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     options: {
       type: Array,
       required: true,
@@ -100,6 +104,10 @@ export default {
     }
   },
   computed: {
+    groupID() {
+      // eslint-disable-next-line no-underscore-dangle
+      return `${this.name}-${this._uid.toString()}`
+    },
     selectedOptions() {
       if (this.multiple) {
         return this.options.filter(item => this.value.includes(item.value))

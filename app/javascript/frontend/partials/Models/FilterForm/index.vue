@@ -1,11 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label for="filter-model-name-or-description">
+      <label :for="idFor('model-name-or-description')">
         {{ t('labels.filters.models.nameOrDescription') }}
       </label>
       <input
-        id="filter-model-name-or-description"
+        :id="idFor('model-name-or-description')"
         v-model="form.nameOrDescriptionCont"
         :placeholder="t('placeholders.filters.models.nameOrDescription')"
         type="text"
@@ -23,6 +23,7 @@
       :options="manufacturerOptions"
       v-model="form.manufacturerSlugIn"
       :label="t('labels.filters.models.manufacturer')"
+      :name="`${prefix}-manufacturer`"
       multiple
     />
     <FilterGroup
@@ -30,6 +31,7 @@
       :options="productionStatusOptions"
       v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
+      :name="`${prefix}-production-status`"
       multiple
     />
     <FilterGroup
@@ -37,6 +39,7 @@
       :options="classificationOptions"
       v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
+      :name="`${prefix}-classification`"
       multiple
     />
     <FilterGroup
@@ -44,6 +47,7 @@
       :options="focusOptions"
       v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
+      :name="`${prefix}-focus`"
       multiple
     />
     <FilterGroup
@@ -51,12 +55,14 @@
       :options="sizeOptions"
       v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
+      :name="`${prefix}-size`"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
       v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
+      :name="`${prefix}-price`"
       multiple
     />
     <RadioList
@@ -64,7 +70,7 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.onSaleEq"
-      name="onSaleEq"
+      :name="`${prefix}-sale`"
     />
     <Btn
       v-if="!hideButtons"
@@ -99,6 +105,10 @@ export default {
     hideButtons: {
       type: Boolean,
       default: false,
+    },
+    prefix: {
+      type: String,
+      default: 'filter',
     },
   },
   data() {
