@@ -23,6 +23,7 @@
                           >
                           <Btn
                             large
+                            aria-label="Search"
                             @click.native="search"
                           >
                             <i class="fal fa-search" />

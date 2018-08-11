@@ -16,6 +16,7 @@
               <a
                 :href="`https://robertsspaceindustries.com/orgs/${fleet.sid}`"
                 target="_blank"
+                rel="noopener"
               >
                 {{ fleetTitle }}
               </a>

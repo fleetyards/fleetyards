@@ -98,6 +98,7 @@
               <a
                 href="https://www.hetzner.com/"
                 target="_blank"
+                rel="noopener"
               >
                 Hetzner.com
               </a>
@@ -112,6 +113,7 @@
               <a
                 href="https://sentry.io/"
                 target="_blank"
+                rel="noopener"
               >
                 Sentry.io
               </a>
@@ -127,6 +129,7 @@
               <a
                 href="https://www.mailgun.com/"
                 target="_blank"
+                rel="noopener"
               >
                 Mailgun.com
               </a>
@@ -143,6 +146,7 @@
               <a
                 href="https://aws.amazon.com/"
                 target="_blank"
+                rel="noopener"
               >
                 AWS (Amazon Web Services)
               </a>

@@ -10,6 +10,7 @@
     }"
     :href="url"
     target="_blank"
+    rel="noopener"
     class="panel-btn"
   >
     <div class="panel-btn-border panel-btn-border-top">
