@@ -10,6 +10,7 @@
         <slot />
       </div>
     </Panel>
+    <slot name="footer" />
   </div>
 </template>
 

@@ -29,6 +29,7 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'settings/profile' => 'base#index'
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
+  get 'settings/verify' => 'base#index'
 
   get 'password/request' => 'base#index'
   get 'password/update/:token' => 'base#password'
@@ -37,6 +38,8 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'embed' => 'base#embed'
   get 'embed-styles' => 'base#embed_styles'
   get 'embed-test' => 'base#embed_test' if Rails.env.development?
+
+  get 'service-worker' => 'base#service_worker'
 
   match '404' => 'base#not_found', via: :all
 

@@ -24,10 +24,6 @@ class ImageUploader < CarrierWave::Uploader::Base
     process optimize: [{ quality: 90 }] if Rails.env.production?
   end
 
-  version :dark do
-    process darken: 60
-  end
-
   def extension_white_list
     %w[jpg jpeg png]
   end

@@ -4,6 +4,8 @@ json.cache! ['v1', fleet] do
   json.name fleet.name
   json.sid fleet.sid
   json.logo fleet.logo
+  json.banner fleet.banner
+  json.background fleet.background
   json.archetype fleet.archetype
   json.main_activity fleet.main_activity
   json.secondary_activity fleet.secondary_activity

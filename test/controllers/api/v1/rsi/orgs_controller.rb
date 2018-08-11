@@ -31,7 +31,9 @@ module Api
               'memberCount' => 5262,
               'rpg' => false,
               'exclusive' => false,
-              'logo' => 'https://robertsspaceindustries.com/media/91scp32ik2k2ur/logo/OPPF-Logo.png'
+              'logo' => 'https://robertsspaceindustries.com/media/91scp32ik2k2ur/logo/OPPF-Logo.png',
+              'banner' => 'https://robertsspaceindustries.com/media/x16e9fszu4o20r/banner/OPPF-Banner.png',
+              'background' => 'https://robertsspaceindustries.com/media/bg4u5prbw8n2kr/background_blur/OPPF-Background.jpg'
             }
 
             assert_equal expected, json
