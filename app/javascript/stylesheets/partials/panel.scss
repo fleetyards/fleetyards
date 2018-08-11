@@ -46,7 +46,9 @@ $contentBorderRadius: 16px;
 
   &::before {
     content: "";
-    height: $innerBorderWidth;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    height: ($innerBorderWidth + 1);
     background-color: #444;
     position: absolute;
     top: -$innerBorderWidth;
@@ -56,7 +58,9 @@ $contentBorderRadius: 16px;
 
   &::after {
     content: "";
-    height: $innerBorderWidth;
+    border-top-right-radius: 1px;
+    border-top-left-radius: 1px;
+    height: ($innerBorderWidth + 1);
     background-color: #444;
     position: absolute;
     bottom: -$innerBorderWidth;
