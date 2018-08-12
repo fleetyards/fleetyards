@@ -27,7 +27,7 @@ const initialState = {
   navbarCollapsed: true,
   overlayVisible: false,
   modelDetails: false,
-  modelFilterVisible: false,
+  modelFilterVisible: true,
 }
 
 const store = new Vuex.Store({

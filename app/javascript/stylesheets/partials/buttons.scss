@@ -125,6 +125,14 @@ $panel-content-border-radius: 6px;
     background: transparent;
     border: none;
 
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      display: none;
+    }
+
     &:hover {
       background: transparent;
       border: none;
