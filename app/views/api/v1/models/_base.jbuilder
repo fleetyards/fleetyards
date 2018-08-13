@@ -10,7 +10,7 @@ json.length model.display_length.to_f
 json.beam model.display_beam.to_f
 json.height model.display_height.to_f
 json.mass model.display_mass.to_f
-json.cargo model.display_cargo
+json.cargo((model.display_cargo.to_f if model.display_cargo.present?))
 json.min_crew model.display_min_crew
 json.max_crew model.display_max_crew
 json.scm_speed model.display_scm_speed
@@ -28,8 +28,8 @@ json.store_image model.store_image.url
 json.fleetchart_image model.fleetchart_image.url
 json.brochure model.brochure.url
 json.store_url store_url(model.store_url)
-json.price model.price
-json.last_price model.fallback_price
+json.price((model.price.to_f if model.price.present?))
+json.last_price((model.fallback_price.to_f if model.fallback_price.present?))
 json.on_sale model.on_sale
 json.production_status model.production_status
 json.production_note model.production_note

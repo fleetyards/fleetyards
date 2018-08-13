@@ -7,9 +7,10 @@ andromeda:
   fallback_beam: 10.2
   fallback_height: 10.2
   fallback_mass: 1000.02
-  fallback_cargo: 10
-  fallback_min_crew: 1
-  fallback_max_crew: 3
+  fallback_cargo: 90
+  fallback_min_crew: 3
+  fallback_max_crew: 5
+  fallback_price: 225
 
 explorer:
   name: "600i"
@@ -18,3 +19,7 @@ explorer:
   manufacturer: origin
   classification: explorer
   length: 20
+  fallback_cargo: 40
+  fallback_min_crew: 2
+  fallback_max_crew: 5
+  fallback_price: 225

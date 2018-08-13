@@ -28,6 +28,23 @@ module Api
           json = JSON.parse response.body
           assert_equal 'unauthorized', json['code']
         end
+
+        it 'should render 200 for public count' do
+          get :public_count, params: { username: 'data' }
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          expected = {
+            'total' => 1,
+            'classifications' => [{
+              'name' => 'multi_role',
+              'label' => 'Multi role',
+              'count' => 1
+            }]
+          }
+          assert_equal expected, json
+        end
       end
 
       describe 'with session' do
@@ -61,9 +78,9 @@ module Api
               'beam' => 10.2,
               'height' => 10.2,
               'mass' => 1000.02,
-              'cargo' => '10.0',
-              'minCrew' => 1,
-              'maxCrew' => 3,
+              'cargo' => 90.0,
+              'minCrew' => 3,
+              'maxCrew' => 5,
               'scmSpeed' => nil,
               'afterburnerSpeed' => nil,
               'groundSpeed' => nil,
@@ -80,7 +97,7 @@ module Api
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
-              'lastPrice' => nil,
+              'lastPrice' => 225.0,
               'onSale' => false,
               'productionStatus' => nil,
               'productionNote' => nil,
@@ -115,7 +132,13 @@ module Api
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
-            }]
+            }],
+            'metrics' => {
+              'totalMoney' => 225,
+              'totalMinCrew' => 3,
+              'totalMaxCrew' => 5,
+              'totalCargo' => 90
+            }
           }
           assert_equal expected, json
         end
@@ -128,7 +151,13 @@ module Api
 
           expected = {
             'total' => 0,
-            'classifications' => []
+            'classifications' => [],
+            'metrics' => {
+              'totalMoney' => 0,
+              'totalMinCrew' => 0,
+              'totalMaxCrew' => 0,
+              'totalCargo' => 0
+            }
           }
           assert_equal expected, json
         end
