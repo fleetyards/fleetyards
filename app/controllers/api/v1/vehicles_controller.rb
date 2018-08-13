@@ -37,16 +37,23 @@ module Api
         @q.sorts = ['model_classification asc']
 
         vehicles = @q.result
+        models = vehicles.map(&:model)
 
         @count = OpenStruct.new(
           total: vehicles.count,
-          classifications: vehicles.map(&:model).map(&:classification).uniq.compact.map do |classification|
+          classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              count: vehicles.map(&:model).select { |model| model.classification == classification }.count,
+              count: models.select { |model| model.classification == classification }.count,
               name: classification,
               label: classification.humanize
             )
-          end
+          end,
+          metrics: {
+            total_money: models.map(&:fallback_price).sum(&:to_i),
+            total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
+            total_cargo: models.map(&:display_cargo).sum(&:to_i)
+          }
         )
       end
 
