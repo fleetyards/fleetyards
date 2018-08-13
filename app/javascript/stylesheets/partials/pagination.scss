@@ -1,0 +1,97 @@
+$innerBorderWidth: 2px;
+
+.pagination {
+  display: inline-flex;
+  list-style-type: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 20px;
+
+  &.pagination-centered {
+    justify-content: center;
+  }
+
+  li {
+    min-width: 40px;
+    margin-right: 6px;
+    position: relative;
+    border-radius: 6px;
+    user-select: none;
+    padding: 2px;
+    color: $text-color;
+    border: $innerBorderWidth solid $panel-inner-border;
+    background-color: $panel-bg;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &::before {
+      content: "";
+      height: $innerBorderWidth;
+      background-color: #444;
+      position: absolute;
+      top: -$innerBorderWidth;
+      left: 10px;
+      right: 10px;
+    }
+
+    &::after {
+      content: "";
+      height: $innerBorderWidth;
+      background-color: #444;
+      position: absolute;
+      bottom: -$innerBorderWidth;
+      left: 10px;
+      right: 10px;
+    }
+
+    a {
+      cursor: pointer;
+      text-align: center;
+      border-radius: 3px;
+      padding: 3px 6px;
+      display: block;
+    }
+
+    &:hover,
+    &.active {
+      a {
+        color: invert($text-color);
+        background-color: $panel-inner-border;
+      }
+    }
+
+    &.gap,
+    &.arrow {
+      margin-right: 11px;
+      margin-left: 5px;
+      width: 30px;
+      min-width: auto;
+      height: 30px;
+      font-size: 85%;
+
+      a {
+        padding: 2px 4px;
+      }
+    }
+
+    &.disabled {
+      opacity: 0.5;
+
+      a {
+        cursor: default;
+        color: $text-color;
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .pagination {
+    justify-content: center;
+  }
+}

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Vehicle < ApplicationRecord
+  paginates_per 18
+
   belongs_to :model
   belongs_to :user
 

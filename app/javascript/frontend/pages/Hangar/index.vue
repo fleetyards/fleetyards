@@ -55,7 +55,7 @@
           v-if="vehicles.length > 0"
           class="row"
         >
-          <div class="col-xs-12 col-sm-6 col-md-9 hangar-metrics metrics-block">
+          <div class="col-xs-12 hangar-metrics metrics-block">
             <div class="row">
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
@@ -75,7 +75,16 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-6 col-md-3">
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <Paginator
+              v-if="!hangarFleetchart && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+          <div class="col-xs-12 col-md-6">
             <div class="page-actions">
               <Btn
                 v-tooltip="t('actions.saveScreenshot')"
@@ -211,6 +220,15 @@
             </div>
           </transition>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="!hangarFleetchart && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
         <VehiclesFilterModal
           ref="filterModal"
           :vehicles-count="vehiclesCount"
@@ -225,6 +243,7 @@
 import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
@@ -257,12 +276,13 @@ export default {
     GroupLabels,
     vueSlider,
   },
-  mixins: [I18n, MetaInfo, Filters],
+  mixins: [I18n, MetaInfo, Filters, Pagination],
   data() {
     return {
       loading: false,
       downloading: false,
       vehicles: [],
+      fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
       tooltipTrigger: 'click',
@@ -320,22 +340,14 @@ export default {
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
-    fleetchartVehicles() {
-      const fleetchartVehicles = this.vehicles.concat()
-      return fleetchartVehicles.sort((a, b) => {
-        if (a.model.length > b.model.length) {
-          return -1
-        }
-        if (a.model.length < b.model.length) {
-          return 1
-        }
-        return 0
-      })
-    },
   },
   watch: {
     $route() {
-      this.fetch()
+      if (this.hangarFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetch()
+      }
     },
     scale(value) {
       this.$store.commit('setHangarFleetchartScale', value)
@@ -343,6 +355,13 @@ export default {
     currentUser() {
       if (this.currentUser) {
         this.setupUpdates()
+      }
+    },
+    hangarFleetchart() {
+      if (this.hangarFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetch()
       }
     },
   },
@@ -384,16 +403,13 @@ export default {
 
       this.$api.get('vehicles', {
         q: this.$route.query.q,
+        page: this.$route.query.page,
       }, (args) => {
         this.loading = false
-
-        if (this.$refs.infiniteLoading) {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
-        }
-
         if (!args.error) {
           this.vehicles = args.data
         }
+        this.setPages(args.meta)
       })
     },
     fetchCount() {
@@ -402,6 +418,17 @@ export default {
       }, (args) => {
         if (!args.error) {
           this.vehiclesCount = args.data
+        }
+      })
+    },
+    fetchFleetchart() {
+      this.loading = true
+      this.$api.get('vehicles/fleetchart', {
+        q: this.$route.query.q,
+      }, (args) => {
+        this.loading = false
+        if (!args.error) {
+          this.fleetchartVehicles = args.data
         }
       })
     },
