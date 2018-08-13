@@ -59,19 +59,25 @@
             <div class="row">
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
-                <div class="metrics-value">{{ toDollar(moneyValue) }}</div>
+                <div class="metrics-value">{{ toDollar(vehiclesCount.metrics.totalMoney) }}</div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMinCrew') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalMinCrew, 'people') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
+                </div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMaxCrew') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalMaxCrew, 'people') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
+                </div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalCargo') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalCargo, 'cargo') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
+                </div>
               </div>
             </div>
           </div>
@@ -311,22 +317,6 @@ export default {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
-    },
-    moneyValue() {
-      return this.vehicles.map(item => item.model.lastPrice)
-        .reduce((a, b) => (+a) + (+b), 0.0)
-    },
-    totalMinCrew() {
-      return this.vehicles.map(item => item.model.minCrew)
-        .reduce((a, b) => (+a) + (+b), 0)
-    },
-    totalMaxCrew() {
-      return this.vehicles.map(item => item.model.maxCrew)
-        .reduce((a, b) => (+a) + (+b), 0)
-    },
-    totalCargo() {
-      return this.vehicles.map(item => item.model.cargo)
-        .reduce((a, b) => (+a) + (+b), 0.0)
     },
     publicUrl() {
       if (!this.currentUser) {
