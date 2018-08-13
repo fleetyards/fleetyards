@@ -17,13 +17,14 @@
                         <div class="input-group-flex">
                           <input
                             v-model="searchQuery"
+                            :aria-label="t('labels.searchInput')"
                             name="search"
                             class="form-control input-lg"
                             autofocus
                           >
                           <Btn
+                            :aria-label="t('labels.search')"
                             large
-                            aria-label="Search"
                             @click.native="search"
                           >
                             <i class="fal fa-search" />
@@ -68,6 +69,7 @@
                 <a
                   href="https://robertsspaceindustries.com"
                   target="_blank"
+                  rel="noopener"
                 >
                   robertsspaceindustries.com
                 </a>

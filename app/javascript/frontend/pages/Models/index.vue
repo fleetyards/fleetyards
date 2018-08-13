@@ -23,7 +23,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-12 col-md-6">
+            <Paginator
+              v-if="models.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+          <div class="col-xs-12 col-md-6">
             <div class="page-actions">
               <Btn
                 v-tooltip="toggleDetailsTooltip"
@@ -100,6 +107,15 @@
             </div>
           </transition>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="models.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
         <ModelsFilterModal
           ref="filterModal"
         />
@@ -111,6 +127,7 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Pagination from 'frontend/mixins/Pagination'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
@@ -129,7 +146,7 @@ export default {
     EmptyBox,
     Btn,
   },
-  mixins: [I18n, MetaInfo, Filters],
+  mixins: [I18n, MetaInfo, Filters, Pagination],
   data() {
     return {
       loading: false,
@@ -176,12 +193,14 @@ export default {
       this.loading = true
       this.$api.get('models', {
         q: this.$route.query.q,
+        page: this.$route.query.page,
       }, (args) => {
         this.loading = false
 
         if (!args.error) {
           this.models = args.data
         }
+        this.setPages(args.meta)
       })
     },
   },

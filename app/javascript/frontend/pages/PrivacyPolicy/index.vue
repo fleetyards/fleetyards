@@ -27,6 +27,7 @@
               the experience on Fleetyards.net. We use the Third Party Service <a
                 href="https://sentry.io/"
                 target="_blank"
+                rel="noopener"
               >Sentry.io</a> to collect and group those Errors.
             </p>
             <br>
@@ -63,9 +64,11 @@
                   To Verify your Account with <a
                     href="https://robertsspaceindustries.com"
                     target="_blank"
+                    rel="noopener"
                   >robertsspaceindustries.com</a> and to gather Additional Information from <a
                     href="https://robertsspaceindustries.com"
                     target="_blank"
+                    rel="noopener"
                   >robertsspaceindustries.com</a> like:
                 </p>
                 <ul>
@@ -81,6 +84,7 @@
                 These Informations are only gathered from <a
                   href="https://robertsspaceindustries.com"
                   target="_blank"
+                  rel="noopener"
                 >robertsspaceindustries.com</a> when you provide us with your RSI-Handle and are not
                 saved in any form on our Systems and are also not shared with any Third Parties.
               </dd>

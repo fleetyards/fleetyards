@@ -204,20 +204,6 @@ export default {
     clearOnSale() {
       this.form.onSaleEq = null
     },
-    filter() {
-      const query = JSON.parse(JSON.stringify(this.form))
-
-      Object.keys(query)
-        .filter(key => !query[key] || query[key].length === 0)
-        .forEach(key => delete query[key])
-
-      this.$router.replace({
-        name: this.$route.name,
-        query: {
-          q: query,
-        },
-      })
-    },
     fetch() {
       this.loading = true
       this.$api.get('models/filters', {}, (args) => {

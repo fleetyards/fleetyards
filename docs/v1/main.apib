@@ -67,16 +67,37 @@ The documentation provides an example response for each API method. The example 
 
 <br>
  
-## Limits and Offset
+## Pagination
 
-Requests that return multiple items will be limited to ```30``` items by default. 
-You can specify further items by increasing the limit or setting the ```offset``` parameter. 
-For some resources, you can also set a custom limit up to ```1000```. Note that for technical reasons not all endpoints respect the ```limit``` parameter.
+Requests that return multiple items will be paginated to ```30``` items by default. 
+You can specify further pages with the ```?page``` parameter. 
+For some resources, you can also set a custom page size up to ```200``` with the ```?perPage``` parameter. Note that for technical reasons not all endpoints respect the ```?perPage``` parameter, see events for example.
 
-curl 'https://api.fleetyards.net/ships?limit=200&offset=200'
+curl 'https://api.fleetyards.net/models?page=2&perPage=200'
+Note that page numbering is 1-based and that omitting the ```?page``` parameter will return the first page.
+
+<h3>Link Header</h3>
+The Link header includes pagination information:
+
+```
+Link: <https://api.fleetyards.net/models?page=1&perPage=200>; rel="next",
+  <https://api.fleetyards.net/models?page=2&perPage=200>; rel="last"
+```
+The example includes a line break for readability.
+
+This Link response header contains one or more Hypermedia link relations, some of which may require expansion as URI templates.
+
+The possible ```rel``` values are:
+
+Name | Description                                                  
+----:| ------------------------------------------------------------
+next | The link relation for the immediate next page of results.    
+last | The link relation for the last page of results.              
+first| The link relation for the first page of results.             
+prev | The link relation for the immediate previous page of results.
 
 <br>
- 
+
 ## Rate Limiting
 
 <br>

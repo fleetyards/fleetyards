@@ -5,6 +5,7 @@ module Api
     class VehiclesController < ::Api::V1::BaseController
       skip_authorization_check only: %i[public public_count]
       before_action :authenticate_api_user!, except: %i[public public_count]
+      after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
         authorize! :index, :api_hangar
@@ -13,7 +14,19 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit]).uniq
+        @vehicles = @q.result
+                      .page(params[:page])
+                      .per(params[:per_page])
+      end
+
+      def fleetchart
+        authorize! :index, :api_hangar
+        @q = current_user.vehicles
+                         .ransack(query_params)
+
+        @q.sorts = ['model_length desc', 'model_name asc']
+
+        @vehicles = @q.result.uniq
       end
 
       def count
@@ -23,7 +36,7 @@ module Api
 
         @q.sorts = ['model_classification asc']
 
-        vehicles = @q.result.uniq
+        vehicles = @q.result
 
         @count = OpenStruct.new(
           total: vehicles.count,
@@ -45,7 +58,9 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit])
+        @vehicles = @q.result
+                      .page(params[:page])
+                      .per(params[:per_page])
       end
 
       def public_count

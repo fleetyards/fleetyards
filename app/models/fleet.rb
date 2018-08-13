@@ -3,6 +3,8 @@
 require 'rsi_orgs_loader'
 
 class Fleet < ApplicationRecord
+  paginates_per 18
+
   validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org

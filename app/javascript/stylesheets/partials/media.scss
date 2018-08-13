@@ -31,6 +31,10 @@ a.thumbnail.active {
     animation-name: fadeIn;
   }
 
+  img[lazy=loading] {
+    height: 200px;
+  }
+
   &:not(.no-link) {
     cursor: pointer;
   }

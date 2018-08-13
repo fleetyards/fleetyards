@@ -47,6 +47,8 @@ export default {
     return {
       acitivtyIcons: {
         /* eslint-disable global-require */
+        BountyHunting: require('images/org-icons/bountyhunting.png'),
+        Freelancing: require('images/org-icons/freelancing.png'),
         Trading: require('images/org-icons/trade.png'),
         Social: require('images/org-icons/social.png'),
         Engineering: require('images/org-icons/engineering.png'),

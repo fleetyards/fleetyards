@@ -8,6 +8,15 @@
           </div>
           <div class="col-xs-12 col-md-4 text-right"/>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="images.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
         <transition-group
           v-if="images"
           name="fade-list"
@@ -34,20 +43,15 @@
             </a>
           </div>
         </transition-group>
-        <InfiniteLoading
-          v-if="images && images.length >= limit"
-          ref="infiniteLoading"
-          :distance="500"
-          @infinite="fetchMore"
-        >
-          <span slot="no-more" />
-          <span slot="spinner">
-            <Loader
-              v-if="loading"
-              static
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="images.length"
+              :page="currentPage"
+              :total="totalPages"
             />
-          </span>
-        </InfiniteLoading>
+          </div>
+        </div>
         <Loader v-if="loading" />
       </div>
     </div>
@@ -61,23 +65,20 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Pagination from 'frontend/mixins/Pagination'
 import Gallery from 'frontend/components/Gallery'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
-import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   components: {
     Gallery,
     Loader,
-    InfiniteLoading,
     Panel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
-      limit: 30,
-      offset: 0,
       images: [],
       loading: false,
     }
@@ -97,32 +98,13 @@ export default {
     fetch() {
       this.loading = true
       this.$api.get('images', {
-        limit: this.limit,
+        page: this.$route.query.page,
       }, (args) => {
         this.loading = false
         if (!args.error) {
           this.images = args.data
         }
-      })
-    },
-    fetchMore($state) {
-      this.loading = true
-      this.offset += this.limit
-      this.$api.get('images', {
-        limit: this.limit,
-        offset: this.offset,
-      }, (args) => {
-        this.loading = false
-        $state.loaded()
-        if (!args.error) {
-          if (args.data.length === 0 || args.data.length < this.limit) {
-            $state.complete()
-          }
-
-          args.data.forEach((image) => {
-            this.images.push(image)
-          })
-        }
+        this.setPages(args.meta)
       })
     },
   },

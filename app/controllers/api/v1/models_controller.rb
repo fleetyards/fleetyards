@@ -4,6 +4,7 @@ module Api
   module V1
     class ModelsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:models) }, only: [:index]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t('messages.record_not_found.model', slug: params[:slug]))
@@ -21,7 +22,9 @@ module Api
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
-        @models = @q.result.offset(params[:offset]).limit(params[:limit])
+        @models = @q.result
+                    .page(params[:page])
+                    .per(params[:per_page])
       end
 
       def filters

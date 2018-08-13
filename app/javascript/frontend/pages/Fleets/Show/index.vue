@@ -87,6 +87,15 @@
             </Box>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="fleetModels.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
         <div
           v-if="isMember"
           class="row"
@@ -119,6 +128,15 @@
           </div>
           <ModelsFilterModal ref="filterModal" />
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="fleetModels.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -131,6 +149,7 @@ import InternalLink from 'frontend/components/InternalLink'
 import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
+import Pagination from 'frontend/mixins/Pagination'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelsFilterModal from 'frontend/partials/Models/FilterModal'
@@ -146,7 +165,7 @@ export default {
     InternalLink,
     Box,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
       loading: false,
@@ -222,12 +241,12 @@ export default {
       return this.fleetCount.models[slug]
     },
     fetch() {
-      this.$api.get(`fleets/${this.$route.params.sid}`, {}, (args) => {
+      this.$api.get(`fleets/${this.$route.params.sid}`, {}, (response) => {
         this.loading = false
-        if (!args.error) {
-          this.fleet = args.data
-          if (args.data.background) {
-            this.$store.commit('setBackgroundImage', args.data.background)
+        if (!response.error) {
+          this.fleet = response.data
+          if (response.data.background) {
+            this.$store.commit('setBackgroundImage', response.data.background)
           }
         }
       })
@@ -236,18 +255,20 @@ export default {
       this.loading = true
       this.$api.get(`fleets/${this.$route.params.sid}/models`, {
         q: this.$route.query.q,
-      }, (args) => {
+        page: this.$route.query.page,
+      }, (response) => {
         this.loading = false
 
-        if (!args.error) {
-          this.fleetModels = args.data
+        if (!response.error) {
+          this.fleetModels = response.data
         }
+        this.setPages(response.meta)
       })
     },
     fetchCount() {
-      this.$api.get(`fleets/${this.$route.params.sid}/count`, {}, (args) => {
-        if (!args.error) {
-          this.fleetCount = args.data
+      this.$api.get(`fleets/${this.$route.params.sid}/count`, {}, (response) => {
+        if (!response.error) {
+          this.fleetCount = response.data
         }
       })
     },
