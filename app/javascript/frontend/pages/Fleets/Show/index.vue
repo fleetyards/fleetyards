@@ -16,6 +16,7 @@
               <a
                 :href="`https://robertsspaceindustries.com/orgs/${fleet.sid}`"
                 target="_blank"
+                rel="noopener"
               >
                 {{ fleetTitle }}
               </a>
@@ -64,12 +65,42 @@
           />
         </div>
         <div class="row">
-          <div
-            :class="{
-              'col-md-9 col-xlg-10': myFleet,
-            }"
-            class="col-xs-12"
-          >
+          <div class="col-xs-12">
+            <Box
+              v-if="!isMember && myFleet && fleet"
+              class="row"
+              large
+            >
+              You seem to be a Member of {{ fleet.name }}.
+              To be able to view Ships of this Fleet you need to verify your RSI Handle
+
+              <div
+                slot="footer"
+                class="pull-right"
+              >
+                <InternalLink
+                  :route="{name: 'settings-verify'}"
+                >
+                  Verify your RSI-Handle
+                </InternalLink>
+              </div>
+            </Box>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="fleetModels.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
+        <div
+          v-if="isMember"
+          class="row"
+        >
+          <div class="col-md-9 col-xlg-10">
             <transition-group
               name="fade-list"
               class="flex-row"
@@ -79,11 +110,7 @@
               <div
                 v-for="fleetModel in fleetModels"
                 :key="fleetModel.slug"
-                :class="{
-                  'col-sm-6 col-md-4 col-lg-3 col-xlg-2': !myFleet,
-                  'col-sm-6 col-lg-4 col-xlg-3': myFleet,
-                }"
-                class="fade-list-item col-xs-12"
+                class="fade-list-item col-xs-12 col-sm-6 col-lg-4 col-xlg-3"
               >
                 <ModelPanel
                   :model="fleetModel"
@@ -96,16 +123,19 @@
               fixed
             />
           </div>
-          <div
-            v-if="myFleet"
-            class="hidden-xs hidden-sm col-md-3 col-xlg-2"
-          >
+          <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
             <ModelsFilterForm />
           </div>
-          <ModelsFilterModal
-            v-if="myFleet"
-            ref="filterModal"
-          />
+          <ModelsFilterModal ref="filterModal" />
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="fleetModels.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -115,9 +145,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
+import InternalLink from 'frontend/components/InternalLink'
+import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
+import Pagination from 'frontend/mixins/Pagination'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelsFilterModal from 'frontend/partials/Models/FilterModal'
@@ -130,9 +162,10 @@ export default {
     ModelsFilterForm,
     ModelsFilterModal,
     ModelClassLabels,
-    Btn,
+    InternalLink,
+    Box,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
       loading: false,
@@ -141,6 +174,8 @@ export default {
       fleetModels: [],
       acitivtyIcons: {
         /* eslint-disable global-require */
+        BountyHunting: require('images/org-icons/bountyhunting.png'),
+        Freelancing: require('images/org-icons/freelancing.png'),
         Trading: require('images/org-icons/trade.png'),
         Social: require('images/org-icons/social.png'),
         Engineering: require('images/org-icons/engineering.png'),
@@ -172,13 +207,20 @@ export default {
       }
       return (this.currentUser.fleets || []).includes(this.$route.params.sid.toUpperCase())
     },
+    isMember() {
+      if (!this.currentUser) {
+        return false
+      }
+
+      return this.myFleet && this.currentUser.rsiVerified
+    },
   },
   watch: {
     $route() {
       this.fetchModels()
     },
     currentUser() {
-      if (this.myFleet) {
+      if (this.isMember) {
         this.fetchModels()
         this.fetchCount()
       }
@@ -186,7 +228,7 @@ export default {
   },
   created() {
     this.fetch()
-    if (this.myFleet) {
+    if (this.isMember) {
       this.fetchModels()
       this.fetchCount()
     }
@@ -199,10 +241,13 @@ export default {
       return this.fleetCount.models[slug]
     },
     fetch() {
-      this.$api.get(`fleets/${this.$route.params.sid}`, {}, (args) => {
+      this.$api.get(`fleets/${this.$route.params.sid}`, {}, (response) => {
         this.loading = false
-        if (!args.error) {
-          this.fleet = args.data
+        if (!response.error) {
+          this.fleet = response.data
+          if (response.data.background) {
+            this.$store.commit('setBackgroundImage', response.data.background)
+          }
         }
       })
     },
@@ -210,18 +255,20 @@ export default {
       this.loading = true
       this.$api.get(`fleets/${this.$route.params.sid}/models`, {
         q: this.$route.query.q,
-      }, (args) => {
+        page: this.$route.query.page,
+      }, (response) => {
         this.loading = false
 
-        if (!args.error) {
-          this.fleetModels = args.data
+        if (!response.error) {
+          this.fleetModels = response.data
         }
+        this.setPages(response.meta)
       })
     },
     fetchCount() {
-      this.$api.get(`fleets/${this.$route.params.sid}/count`, {}, (args) => {
-        if (!args.error) {
-          this.fleetCount = args.data
+      this.$api.get(`fleets/${this.$route.params.sid}/count`, {}, (response) => {
+        if (!response.error) {
+          this.fleetCount = response.data
         }
       })
     },

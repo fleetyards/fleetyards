@@ -51,6 +51,7 @@ en:
       settings: Settings
       settings_account: Account
       settings_profile: Settings
+      settings_verify: Verify your RSI Handle
       settings_change-password: Change Password
       fleets: Fleets
       hangar: My Hangar

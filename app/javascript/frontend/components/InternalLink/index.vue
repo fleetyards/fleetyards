@@ -9,16 +9,11 @@
       'panel-btn-mobile-block': mobileBlock,
     }"
     :to="route"
+    :exact="exact"
     class="panel-btn"
   >
-    <div class="panel-btn-border panel-btn-border-top">
-      <div class="panel-btn-border-bg" />
-    </div>
     <div class="panel-btn-inner">
       <slot />
-    </div>
-    <div class="panel-btn-border panel-btn-border-bottom">
-      <div class="panel-btn-border-bg" />
     </div>
   </router-link>
 </template>
@@ -39,6 +34,10 @@ export default {
       default: false,
     },
     large: {
+      type: Boolean,
+      default: false,
+    },
+    exact: {
       type: Boolean,
       default: false,
     },

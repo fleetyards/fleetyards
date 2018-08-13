@@ -20,14 +20,8 @@
         class="label fade-list-item"
         @click="filter(classification.name)"
       >
-        <span class="label-inner-border label-inner-border-top">
-          <span class="label-inner-border-bg" />
-        </span>
         <span class="label-inner">
           {{ classification.label }}: {{ classification.count }}
-        </span>
-        <span class="label-inner-border label-inner-border-bottom">
-          <span class="label-inner-border-bg" />
         </span>
       </a>
     </transition-group>

@@ -293,7 +293,7 @@ export default {
       if (images.length > 0) {
         const bgNumber = Math.round(Math.random() * ((images.length - 1) - 0)) + 0
         const image = images[bgNumber]
-        this.$store.commit('setBackgroundImage', image.darkUrl)
+        this.$store.commit('setBackgroundImage', image.url)
       }
     },
     fetch() {

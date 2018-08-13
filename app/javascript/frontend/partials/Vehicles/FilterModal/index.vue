@@ -18,6 +18,7 @@
     <VehiclesFilterForm
       ref="filterForm"
       :hangar-groups-options="hangarGroupsOptions"
+      prefix="filter-modal"
       hide-buttons
     />
     <div slot="footer">

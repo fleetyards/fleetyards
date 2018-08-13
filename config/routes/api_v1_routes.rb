@@ -58,6 +58,7 @@ v1_api_routes = lambda do
   resources :vehicles, except: [:show] do
     collection do
       get :count
+      get :fleetchart
       get ':username' => 'vehicles#public', as: :public
       get ':username/count' => 'vehicles#public_count', as: :public_count
     end

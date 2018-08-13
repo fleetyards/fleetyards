@@ -3,6 +3,8 @@
 require 'rsi_orgs_loader'
 
 class Fleet < ApplicationRecord
+  paginates_per 18
+
   validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org
@@ -12,6 +14,8 @@ class Fleet < ApplicationRecord
     return unless success
     self.name = org.name
     self.logo = org.logo
+    self.banner = org.banner
+    self.background = org.background
     self.archetype = org.archetype
     self.main_activity = org.main_activity
     self.secondary_activity = org.secondary_activity
