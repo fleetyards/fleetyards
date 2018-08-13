@@ -12,11 +12,11 @@ export default {
   },
   methods: {
     fetchModels() {
-      this.$api.get('models', {}, (args) => {
+      this.$api.get('models/cargo-options', {}, (args) => {
         if (!args.error) {
-          this.modelOptions = args.data.filter(item => item.cargo > 0).map(item => ({
+          this.modelOptions = args.data.map(item => ({
             name: `${item.name} (${this.toNumber(item.cargo, 'cargo')})`,
-            value: item.slug,
+            value: item.value,
             cargo: item.cargo,
           }))
         }
