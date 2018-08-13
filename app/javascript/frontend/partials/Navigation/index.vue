@@ -14,9 +14,10 @@
           }"
           class="navbar-toggle"
           type="button"
+          aria-label="Toggle Navigation"
           @click.stop.prevent="toggle"
         >
-          <span class="sr-only" />
+          <span class="sr-only">Toggle Navigation</span>
           <span class="icon-bar top-bar" />
           <span class="icon-bar middle-bar" />
           <span class="icon-bar bottom-bar" />
@@ -164,6 +165,7 @@
                   <a
                     :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
                     target="_blank"
+                    rel="noopener"
                   >
                     {{ t('nav.rsiProfile') }}
                   </a>

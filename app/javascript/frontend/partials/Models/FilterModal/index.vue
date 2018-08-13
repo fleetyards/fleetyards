@@ -6,6 +6,7 @@
   >
     <ModelsFilterForm
       ref="filterForm"
+      prefix="filter-modal"
       hide-buttons
     />
     <div slot="footer">

@@ -24,6 +24,8 @@ export default function getStorePlugins() {
       'hangarPublicFleetchart',
       'hangarPublicFleetchartScale',
       'hangarFilterVisible',
+      'modelDetails',
+      'modelFilterVisible',
     ],
   })]
 }

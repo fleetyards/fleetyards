@@ -88,7 +88,9 @@ Vue.use(VTooltip)
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach(registration => registration.unregister())
+    })
   }
 
   // eslint-disable-next-line no-new

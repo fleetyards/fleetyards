@@ -4,15 +4,20 @@ module Api
   module V1
     class FleetsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: %i[my create models count]
+      after_action -> { pagination_header(:fleets) }, only: [:index]
+      after_action -> { pagination_header(:models) }, only: [:models]
 
       def index
         authorize! :index, :api_fleets
 
-        @fleets = if current_user.present? && current_user.rsi_verified?
-                    Fleet.where.not(sid: current_user.rsi_orgs.map(&:downcase)).order(name: :asc)
-                  else
-                    Fleet.all.order(name: :asc)
-                  end
+        scope = Fleet
+        if current_user.present? && current_user.rsi_verified?
+          scope = scope.where.not(sid: current_user.rsi_orgs.map(&:downcase))
+        end
+
+        @fleets = scope.order(name: :asc)
+                       .page(params[:page])
+                       .per(params[:per_page])
       end
 
       def my
@@ -46,7 +51,9 @@ module Api
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
-        @models = @q.result.offset(params[:offset]).limit(params[:limit])
+        @models = @q.result
+                    .page(params[:page])
+                    .per(params[:per_page] || 18)
       end
 
       def count

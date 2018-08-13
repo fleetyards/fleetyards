@@ -10,16 +10,11 @@
     }"
     :href="url"
     target="_blank"
+    rel="noopener"
     class="panel-btn"
   >
-    <div class="panel-btn-border panel-btn-border-top">
-      <div class="panel-btn-border-bg" />
-    </div>
     <div class="panel-btn-inner">
       <slot />
-    </div>
-    <div class="panel-btn-border panel-btn-border-bottom">
-      <div class="panel-btn-border-bg" />
     </div>
   </a>
 </template>
