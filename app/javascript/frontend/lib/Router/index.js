@@ -13,16 +13,17 @@ const router = new Router({
   scrollBehavior (to, from, savedPosition) {
     return new Promise((resolve, _reject) => {
       setTimeout(() => {
-        if (savedPosition) {
-          resolve(savedPosition)
-        } else if (to.hash) {
+        if (to.hash) {
           resolve({
             selector: `[id='${to.hash.slice(1)}']`,
-            offset: { x: 0, y: -20 },
+            offset: { x: 0, y: 100 },
           })
+        } else if (savedPosition) {
+          resolve(savedPosition)
+        } else {
+          resolve({ x: 0, y: 0 })
         }
-        resolve({ x: 0, y: 0 })
-      }, 1000)
+      }, 2000)
     })
   },
   parseQuery(query) {
