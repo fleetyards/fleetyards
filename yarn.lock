@@ -1868,9 +1868,13 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, can
   version "1.0.30000865"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000865.tgz#70026616e8afe6e1442f8bb4e1092987d81a2f25"
 
-caniuse-lite@^1.0.30000865, caniuse-lite@^1.0.30000872, caniuse-lite@^1.0.30000874:
+caniuse-lite@^1.0.30000865, caniuse-lite@^1.0.30000872:
   version "1.0.30000874"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000874.tgz#a641b1f1c420d58d9b132920ef6ba87bbdcd2223"
+
+caniuse-lite@^1.0.30000876:
+  version "1.0.30000876"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000876.tgz#69fc1b696a35fd91089061aa916f677ee7057ada"
 
 capture-exit@^1.2.0:
   version "1.2.0"
