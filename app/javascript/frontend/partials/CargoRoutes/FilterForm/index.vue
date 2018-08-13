@@ -4,18 +4,21 @@
       v-model="form.sortBy"
       :options="sortOptions"
       :label="t('labels.filters.cargoRoutes.sortBy')"
+      :name="`${prefix}-sort`"
     />
     <FilterGroup
       v-if="modelOptions.length > 0"
       v-model="form.cargoShip"
       :options="modelOptions"
       :label="t('labels.filters.cargoRoutes.cargoShip')"
+      :name="`${prefix}-models`"
     />
     <FilterGroup
       v-if="tradeHubOptions.length > 0"
       :options="tradeHubOptions"
       v-model="form.tradeHubIn"
       :label="t('labels.filters.cargoRoutes.tradeHub')"
+      :name="`${prefix}-tradehubs`"
       multiple
     />
     <FilterGroup
@@ -23,12 +26,14 @@
       v-model="form.commodityIn"
       :options="commodityOptions"
       :label="t('labels.filters.cargoRoutes.commodity')"
+      :name="`${prefix}-commodities`"
       multiple
     />
     <FilterGroup
       v-if="planetOptions.length > 0"
       :options="planetOptions"
       v-model="form.planetIn"
+      :name="`${prefix}-planets`"
       :label="t('labels.filters.cargoRoutes.planet')"
       multiple
     />
@@ -61,6 +66,10 @@ export default {
     hideButtons: {
       type: Boolean,
       default: false,
+    },
+    prefix: {
+      type: String,
+      default: 'filter',
     },
   },
   data() {

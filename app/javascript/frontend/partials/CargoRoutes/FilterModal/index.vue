@@ -7,6 +7,7 @@
     <FilterForm
       ref="filterForm"
       hide-buttons
+      prefix="filter-modal"
     />
     <div slot="footer">
       <Btn

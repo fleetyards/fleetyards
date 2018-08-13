@@ -41,6 +41,12 @@ module Api
         end
       end
 
+      def cargo_options
+        authorize! :index, :api_models
+
+        @models = Model.where('cargo > 0').all
+      end
+
       def latest
         authorize! :index, :api_models
         @models = Model.order(last_updated_at: :desc, name: :asc)
