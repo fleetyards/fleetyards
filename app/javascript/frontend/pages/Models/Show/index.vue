@@ -248,7 +248,7 @@ export default {
       if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
         return this.previousRoute
       }
-      return 'models'
+      return { name: 'models' }
     },
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }

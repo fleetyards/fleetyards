@@ -22,59 +22,38 @@
         <i class="fa fa-chevron-left" />
       </a>
     </li>
-    <li :class="{active: page == 1}">
-      <router-link :to="{ query: { page: 1, q }}">1</router-link>
-    </li>
-    <Gap v-if="showStartEndGap" />
-    <li
-      v-if="total > 2 && !showStartEndGap"
-      :class="{active: page == 2}"
-    >
-      <router-link :to="{ query: { page: 2, q }}">2</router-link>
-    </li>
-    <li
-      v-if="total > 3 && !showStartEndGap && !compact"
-      :class="{active: page == 3}"
-    >
-      <router-link :to="{ query: { page: 3, q }}">3</router-link>
-    </li>
-    <Gap v-if="showCenterGap" />
-    <li v-if="showStartEndGap && !compact">
-      <router-link :to="{ query: { page: page - 1, q }}">
-        {{ page - 1 }}
+    <li v-if="page > 1">
+      <router-link :to="{ query: { page: 1, q }}">
+        1
       </router-link>
     </li>
+    <Gap v-if="showLeftGap" />
     <li
-      v-if="showStartEndGap"
-      class="active"
+      v-for="n in leftPagesCount"
+      :key="`left-${n}`"
     >
+      <router-link :to="{ query: { page: page + (n - (leftPagesCount + 1)), q }}">
+        {{ page + (n - (leftPagesCount + 1)) }}
+      </router-link>
+    </li>
+    <li class="active">
       <router-link :to="{ query: { page, q }}">
         {{ page }}
       </router-link>
     </li>
-    <li v-if="showStartEndGap && !compact">
-      <router-link :to="{ query: { page: page + 1, q }}">
-        {{ page + 1 }}
+    <li
+      v-for="n in rightPagesCount"
+      :key="`right-${n}`"
+    >
+      <router-link :to="{ query: { page: page + n, q }}">
+        {{ page + n }}
       </router-link>
     </li>
-    <li
-      v-if="total > 4 && !showStartEndGap && !compact"
-      :class="{active: page == total - 2}"
-    >
-      <router-link :to="{ query: { page: total - 2, q }}">{{ total - 2 }}</router-link>
-    </li>
-    <li
-      v-if="total > 5 && !showStartEndGap"
-      :class="{active: page == total - 1}"
-    >
-      <router-link :to="{ query: { page: total - 1, q }}">{{ total - 1 }}</router-link>
-    </li>
-    <Gap v-if="showStartEndGap" />
-    <li
-      v-if="total > 1"
-      :class="{active: total == page}"
-    >
-      <router-link :to="{ query: { page: total, q }}">{{ total }}</router-link>
+    <Gap v-if="showRightGap" />
+    <li v-if="page < total">
+      <router-link :to="{ query: { page: total, q }}">
+        {{ total }}
+      </router-link>
     </li>
     <li
       :class="{disabled: page + 1 > total}"
@@ -116,7 +95,7 @@ export default {
       type: Number,
       default: null,
     },
-    totalVisible: {
+    visible: {
       type: Number,
       default: 7,
     },
@@ -132,20 +111,64 @@ export default {
     compact() {
       return document.documentElement.clientWidth < 992
     },
+    totalVisible() {
+      if (this.compact) {
+        return 5
+      }
+      return Math.max(5, this.visible)
+    },
+    leftPagesCount() {
+      let leftPagesCount = this.totalVisible - 2
+      if (this.page < this.total - 2) {
+        leftPagesCount = Math.floor(leftPagesCount / 2)
+      }
+      if (this.showLeftGap) {
+        leftPagesCount -= 1
+      }
+      if (this.page < 4) {
+        leftPagesCount = 1
+      }
+      if (this.page < 3) {
+        leftPagesCount = 0
+      }
+      if (this.page === this.total - 1) {
+        leftPagesCount -= 1
+      }
+      if (this.page === this.total - 2) {
+        leftPagesCount -= 2
+      }
+      return Math.max(leftPagesCount, 0)
+    },
+    rightPagesCount() {
+      let rightPagesCount = this.totalVisible - 2
+      if (this.page > 3) {
+        rightPagesCount = Math.floor(rightPagesCount / 2)
+      }
+      if (this.showRightGap) {
+        rightPagesCount -= 1
+      }
+      if (this.page > this.total - 3) {
+        rightPagesCount = 1
+      }
+      if (this.page > this.total - 2) {
+        rightPagesCount = 0
+      }
+      if (this.page === 2) {
+        rightPagesCount -= 1
+      }
+      if (this.page === 3) {
+        rightPagesCount -= 2
+      }
+      return Math.max(rightPagesCount, 0)
+    },
     showGap() {
-      return this.total >= this.totalVisible
+      return this.total > this.totalVisible
     },
-    showStartEndGap() {
-      if (this.compact) {
-        return this.showGap && this.page > 2 && this.page < this.total - 1
-      }
-      return this.showGap && this.page > 3 && this.page < this.total - 2
+    showLeftGap() {
+      return this.showGap && this.page > 4
     },
-    showCenterGap() {
-      if (this.compact) {
-        return this.showGap && (this.page <= 2 || this.page >= this.total - 1)
-      }
-      return this.showGap && (this.page <= 3 || this.page >= this.total - 2)
+    showRightGap() {
+      return this.showGap && this.page < this.total - 3
     },
   },
 }
