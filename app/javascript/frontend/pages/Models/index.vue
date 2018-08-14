@@ -199,6 +199,7 @@ export default {
 
         if (!args.error) {
           this.models = args.data
+          this.$comlink.$emit('fetched')
         }
         this.setPages(args.meta)
       })

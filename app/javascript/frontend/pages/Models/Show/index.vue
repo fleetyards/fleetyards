@@ -22,7 +22,7 @@
                 :to="{
                   name: backRoute.name,
                   hash: `#${model.slug}`,
-                  query: backRoute.query
+                  query: backRoute.query,
                 }"
                 class="btn btn-link"
               >

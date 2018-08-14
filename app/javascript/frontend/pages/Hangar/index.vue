@@ -398,6 +398,7 @@ export default {
         this.loading = false
         if (!args.error) {
           this.vehicles = args.data
+          this.$comlink.$emit('fetched')
         }
         this.setPages(args.meta)
       })
