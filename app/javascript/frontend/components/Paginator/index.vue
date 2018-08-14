@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import I18n from 'frontend/mixins/I18n'
 import Gap from 'frontend/components/Paginator/Gap'
 
@@ -105,14 +106,14 @@ export default {
     },
   },
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
     q() {
       return this.$route.query.q
     },
-    compact() {
-      return document.documentElement.clientWidth < 992
-    },
     totalVisible() {
-      if (this.compact) {
+      if (this.mobile) {
         return 5
       }
       return Math.max(5, this.visible)
