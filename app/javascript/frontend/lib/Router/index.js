@@ -10,22 +10,20 @@ const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
-  scrollBehavior (to, from, savedPosition) {
-    return new Promise((resolve, _reject) => {
-      setTimeout(() => {
-        if (to.hash) {
-          resolve({
-            selector: `[id='${to.hash.slice(1)}']`,
-            offset: { x: 0, y: 100 },
-          })
-        } else if (savedPosition) {
-          resolve(savedPosition)
-        } else {
-          resolve({ x: 0, y: 0 })
-        }
-      }, 2000)
-    })
-  },
+  scrollBehavior: (to, from, savedPosition) => new Promise((resolve) => {
+    if (to.hash) {
+      this.a.app.$comlink.$on('fetched', () => {
+        resolve({
+          selector: `[id='${to.hash.slice(1)}']`,
+          offset: { x: 0, y: 100 },
+        })
+      })
+    } else if (savedPosition) {
+      resolve(savedPosition)
+    } else {
+      resolve({ x: 0, y: 0 })
+    }
+  }),
   parseQuery(query) {
     return qs.parse(query)
   },

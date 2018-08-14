@@ -52,7 +52,7 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0"
+          v-if="vehiclesCount && vehiclesCount.metrics"
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
@@ -398,6 +398,7 @@ export default {
         this.loading = false
         if (!args.error) {
           this.vehicles = args.data
+          this.$comlink.$emit('fetched')
         }
         this.setPages(args.meta)
       })
