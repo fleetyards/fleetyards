@@ -250,6 +250,7 @@ import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
@@ -282,7 +283,7 @@ export default {
     GroupLabels,
     vueSlider,
   },
-  mixins: [I18n, MetaInfo, Filters, Pagination],
+  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
@@ -356,7 +357,11 @@ export default {
     },
   },
   created() {
-    this.fetch()
+    if (this.hangarFleetchart) {
+      this.fetchFleetchart()
+    } else {
+      this.fetch()
+    }
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -398,7 +403,7 @@ export default {
         this.loading = false
         if (!args.error) {
           this.vehicles = args.data
-          this.$comlink.$emit('fetched')
+          this.scrollToAnchor()
         }
         this.setPages(args.meta)
       })

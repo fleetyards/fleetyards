@@ -128,6 +128,7 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
@@ -146,7 +147,7 @@ export default {
     EmptyBox,
     Btn,
   },
-  mixins: [I18n, MetaInfo, Filters, Pagination],
+  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
@@ -199,7 +200,7 @@ export default {
 
         if (!args.error) {
           this.models = args.data
-          this.$comlink.$emit('fetched')
+          this.scrollToAnchor()
         }
         this.setPages(args.meta)
       })

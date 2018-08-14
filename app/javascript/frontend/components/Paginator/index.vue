@@ -165,10 +165,10 @@ export default {
       return this.total > this.totalVisible
     },
     showLeftGap() {
-      return this.showGap && this.page > 4
+      return this.showGap && this.page > Math.round(this.totalVisible / 2)
     },
     showRightGap() {
-      return this.showGap && this.page < this.total - 3
+      return this.showGap && this.page < this.total - (Math.round(this.totalVisible / 2) - 1)
     },
   },
 }
