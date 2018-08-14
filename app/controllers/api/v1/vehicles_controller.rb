@@ -86,6 +86,12 @@ module Api
         )
       end
 
+      def hangar_items
+        authorize! :index, :api_hangar
+        model_ids = current_user.vehicles.pluck(:model_id)
+        @models = Model.where(id: model_ids).pluck(:slug)
+      end
+
       def create
         @vehicle = Vehicle.new(vehicle_params)
         authorize! :create, vehicle
