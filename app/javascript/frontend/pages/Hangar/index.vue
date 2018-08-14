@@ -52,7 +52,7 @@
           </div>
         </div>
         <div
-          v-if="vehiclesCount && vehiclesCount.metrics"
+          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics"
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
@@ -94,7 +94,7 @@
             <div class="page-actions">
               <Btn
                 v-tooltip="t('actions.saveScreenshot')"
-                v-show="hangarFleetchart"
+                v-show="hangarFleetchart && fleetchartVehicles.length > 0"
                 :disabled="downloading"
                 :aria-label="t('actions.saveScreenshot')"
                 small
@@ -104,7 +104,7 @@
               </Btn>
               <Btn
                 v-tooltip="toggleDetailsTooltip"
-                v-show="!hangarFleetchart"
+                v-show="!hangarFleetchart && vehicles.length > 0"
                 :active="hangarDetails"
                 :aria-label="toggleDetailsTooltip"
                 small
@@ -147,7 +147,7 @@
             class="col-xs-12"
           >
             <div
-              v-if="hangarFleetchart"
+              v-if="hangarFleetchart && fleetchartVehicles.length > 0"
               class="row"
             >
               <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
