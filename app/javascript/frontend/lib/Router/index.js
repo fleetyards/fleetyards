@@ -18,6 +18,12 @@ const router = new Router({
           offset: { x: 0, y: 100 },
         })
       })
+      setTimeout(() => {
+        resolve({
+          selector: `[id='${to.hash.slice(1)}']`,
+          offset: { x: 0, y: 100 },
+        })
+      }, 600)
     } else if (savedPosition) {
       resolve(savedPosition)
     } else {
