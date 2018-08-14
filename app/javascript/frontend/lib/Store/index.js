@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const initialState = {
   locale: 'en-US',
+  mobile: false,
   authToken: null,
   backgroundImage: null,
   hangar: [],
@@ -35,6 +36,9 @@ const store = new Vuex.Store({
   getters: {
     isAuthenticated(state) {
       return state.authToken !== null
+    },
+    mobile(state) {
+      return state.mobile
     },
     hangar(state) {
       return state.hangar
@@ -93,6 +97,9 @@ const store = new Vuex.Store({
     },
     setLocale(state, locale) {
       state.locale = locale
+    },
+    setMobile(state, payload) {
+      state.mobile = payload
     },
     setOnlineStatus(state, payload) {
       state.online = payload
