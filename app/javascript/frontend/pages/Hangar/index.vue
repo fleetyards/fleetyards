@@ -52,7 +52,7 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0"
+          v-if="vehiclesCount && vehiclesCount.metrics"
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
