@@ -334,11 +334,7 @@ export default {
   },
   watch: {
     $route() {
-      if (this.hangarFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+      this.fetch()
     },
     scale(value) {
       this.$store.commit('setHangarFleetchartScale', value)
@@ -349,19 +345,11 @@ export default {
       }
     },
     hangarFleetchart() {
-      if (this.hangarFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+      this.fetch()
     },
   },
   created() {
-    if (this.hangarFleetchart) {
-      this.fetchFleetchart()
-    } else {
-      this.fetch()
-    }
+    this.fetch()
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -391,10 +379,16 @@ export default {
       this.$refs.filterModal.open()
     },
     fetch() {
-      this.loading = true
-
+      if (this.hangarFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetchVehicles()
+      }
       this.fetchGroups()
       this.fetchCount()
+    },
+    fetchVehicles() {
+      this.loading = true
 
       this.$api.get('vehicles', {
         q: this.$route.query.q,
