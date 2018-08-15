@@ -25,9 +25,18 @@
               :count-data="vehiclesCount"
             />
           </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <Paginator
+              v-if="!hangarPublicFleetchart && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
           <div
             v-if="vehicles.length > 0"
-            class="col-xs-12 col-md-3"
+            class="col-xs-12 col-md-6"
           >
             <div class="page-actions">
               <Btn
@@ -121,6 +130,15 @@
         />
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <Paginator
+          v-if="!hangarPublicFleetchart && vehicles.length"
+          :page="currentPage"
+          :total="totalPages"
+        />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -129,6 +147,7 @@ import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Pagination from 'frontend/mixins/Pagination'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import vueSlider from 'vue-slider-component'
 import Btn from 'frontend/components/Btn'
@@ -144,12 +163,13 @@ export default {
     vueSlider,
     ModelClassLabels,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
       loading: false,
       downloading: false,
       vehicles: [],
+      fleetchartVehicles: [],
       vehiclesCount: null,
       scale: this.$store.state.hangarPublicFleetchartScale,
       scaleMax: 4,
@@ -176,28 +196,24 @@ export default {
     user() {
       return this.username[0].toUpperCase() + this.username.slice(1)
     },
-    fleetchartVehicles() {
-      const fleetchartVehicles = this.vehicles.concat()
-      return fleetchartVehicles.sort((a, b) => {
-        if (a.model.length > b.model.length) {
-          return -1
-        }
-        if (a.model.length < b.model.length) {
-          return 1
-        }
-        return 0
-      })
-    },
   },
   watch: {
     $route() {
-      this.fetch()
+      if (this.hangarPublicFleetchart) {
+        this.fetch()
+      } else {
+        this.fetchFleetchart()
+      }
     },
     scale(value) {
       this.$store.commit('setHangarPublicFleetchartScale', value)
     },
     hangarPublicFleetchart() {
-      this.fetch()
+      if (this.hangarPublicFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetch()
+      }
     },
   },
   created() {
@@ -222,22 +238,32 @@ export default {
 
       this.fetchCount()
 
-      this.$api.get(`vehicles/${this.username}`, {}, (args) => {
+      this.$api.get(`vehicles/${this.username}`, {
+        page: this.$route.query.page,
+      }, (args) => {
         this.loading = false
-
-        if (this.$refs.infiniteLoading) {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
-        }
 
         if (!args.error) {
           this.vehicles = args.data
         }
+        this.setPages(args.meta)
       })
     },
     fetchCount() {
       this.$api.get(`vehicles/${this.username}/count`, {}, (args) => {
         if (!args.error) {
           this.vehiclesCount = args.data
+        }
+      })
+    },
+    fetchFleetchart() {
+      this.loading = true
+      this.$api.get('vehicles/fleetchart', {
+        q: this.$route.query.q,
+      }, (args) => {
+        this.loading = false
+        if (!args.error) {
+          this.fleetchartVehicles = args.data
         }
       })
     },

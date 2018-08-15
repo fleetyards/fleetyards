@@ -8,6 +8,7 @@
           </div>
           <div class="col-xs-12 col-md-4 text-right">
             <button
+              :aria-label="toggleFiltersTooltip"
               class="btn btn-link btn-filter hidden-md hidden-lg"
               @click="openFilter"
             >
@@ -51,35 +52,51 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0"
+          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics"
           class="row"
         >
-          <div class="col-xs-12 col-sm-6 col-md-9 hangar-metrics metrics-block">
+          <div class="col-xs-12 hangar-metrics metrics-block">
             <div class="row">
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
-                <div class="metrics-value">{{ toDollar(moneyValue) }}</div>
+                <div class="metrics-value">{{ toDollar(vehiclesCount.metrics.totalMoney) }}</div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMinCrew') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalMinCrew, 'people') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
+                </div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalMaxCrew') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalMaxCrew, 'people') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
+                </div>
               </div>
               <div class="col-xs-6 col-md-3">
                 <div class="metrics-label">{{ t('labels.hangarMetrics.totalCargo') }}:</div>
-                <div class="metrics-value">{{ toNumber(totalCargo, 'cargo') }}</div>
+                <div class="metrics-value">
+                  {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-6 col-md-3">
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <Paginator
+              v-if="!hangarFleetchart && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+          <div class="col-xs-12 col-md-6">
             <div class="page-actions">
               <Btn
                 v-tooltip="t('actions.saveScreenshot')"
-                v-show="hangarFleetchart"
+                v-show="hangarFleetchart && fleetchartVehicles.length > 0"
                 :disabled="downloading"
+                :aria-label="t('actions.saveScreenshot')"
                 small
                 @click.native="download"
               >
@@ -87,8 +104,9 @@
               </Btn>
               <Btn
                 v-tooltip="toggleDetailsTooltip"
-                v-show="!hangarFleetchart"
+                v-show="!hangarFleetchart && vehicles.length > 0"
                 :active="hangarDetails"
+                :aria-label="toggleDetailsTooltip"
                 small
                 @click.native="toggleDetails"
               >
@@ -97,6 +115,7 @@
               <Btn
                 v-tooltip="toggleFiltersTooltip"
                 :active="hangarFilterVisible"
+                :aria-label="toggleFiltersTooltip"
                 class="hidden-xs hidden-sm"
                 small
                 @click.native="toggleFilter"
@@ -128,7 +147,7 @@
             class="col-xs-12"
           >
             <div
-              v-if="hangarFleetchart"
+              v-if="hangarFleetchart && fleetchartVehicles.length > 0"
               class="row"
             >
               <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -207,6 +226,15 @@
             </div>
           </transition>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="!hangarFleetchart && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
+          </div>
+        </div>
         <VehiclesFilterModal
           ref="filterModal"
           :vehicles-count="vehiclesCount"
@@ -221,6 +249,8 @@
 import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
@@ -253,12 +283,13 @@ export default {
     GroupLabels,
     vueSlider,
   },
-  mixins: [I18n, MetaInfo, Filters],
+  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
       downloading: false,
       vehicles: [],
+      fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
       tooltipTrigger: 'click',
@@ -288,22 +319,6 @@ export default {
       }
       return this.t('actions.showFilter')
     },
-    moneyValue() {
-      return this.vehicles.map(item => item.model.lastPrice)
-        .reduce((a, b) => (+a) + (+b), 0.0)
-    },
-    totalMinCrew() {
-      return this.vehicles.map(item => item.model.minCrew)
-        .reduce((a, b) => (+a) + (+b), 0)
-    },
-    totalMaxCrew() {
-      return this.vehicles.map(item => item.model.maxCrew)
-        .reduce((a, b) => (+a) + (+b), 0)
-    },
-    totalCargo() {
-      return this.vehicles.map(item => item.model.cargo)
-        .reduce((a, b) => (+a) + (+b), 0.0)
-    },
     publicUrl() {
       if (!this.currentUser) {
         return ''
@@ -315,18 +330,6 @@ export default {
       const data = { source: 'FleetYards', type: 'matrix', s: shipList }
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
-    },
-    fleetchartVehicles() {
-      const fleetchartVehicles = this.vehicles.concat()
-      return fleetchartVehicles.sort((a, b) => {
-        if (a.model.length > b.model.length) {
-          return -1
-        }
-        if (a.model.length < b.model.length) {
-          return 1
-        }
-        return 0
-      })
     },
   },
   watch: {
@@ -340,6 +343,9 @@ export default {
       if (this.currentUser) {
         this.setupUpdates()
       }
+    },
+    hangarFleetchart() {
+      this.fetch()
     },
   },
   created() {
@@ -373,23 +379,27 @@ export default {
       this.$refs.filterModal.open()
     },
     fetch() {
-      this.loading = true
-
+      if (this.hangarFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetchVehicles()
+      }
       this.fetchGroups()
       this.fetchCount()
+    },
+    fetchVehicles() {
+      this.loading = true
 
       this.$api.get('vehicles', {
         q: this.$route.query.q,
+        page: this.$route.query.page,
       }, (args) => {
         this.loading = false
-
-        if (this.$refs.infiniteLoading) {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
-        }
-
         if (!args.error) {
           this.vehicles = args.data
+          this.scrollToAnchor()
         }
+        this.setPages(args.meta)
       })
     },
     fetchCount() {
@@ -398,6 +408,17 @@ export default {
       }, (args) => {
         if (!args.error) {
           this.vehiclesCount = args.data
+        }
+      })
+    },
+    fetchFleetchart() {
+      this.loading = true
+      this.$api.get('vehicles/fleetchart', {
+        q: this.$route.query.q,
+      }, (args) => {
+        this.loading = false
+        if (!args.error) {
+          this.fleetchartVehicles = args.data
         }
       })
     },

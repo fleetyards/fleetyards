@@ -8,10 +8,6 @@ gem 'rails', '5.2.0'
 
 gem 'pg', '~> 1.0'
 
-gem 'graphiql-rails'
-gem 'graphql'
-gem 'graphql-batch'
-
 gem 'rufus-scheduler', '~> 3.4.0' # fix for sidekiq-cron not working with rufus 3.5.0
 gem 'sidekiq'
 gem 'sidekiq-cron'

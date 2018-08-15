@@ -4,6 +4,7 @@ import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
 import { alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/lib/I18n'
+import linkHeaderParser from 'parse-link-header'
 
 const client = axios.create({
   baseURL: process.env.API_URL,
@@ -20,14 +21,31 @@ client.interceptors.request.use((config) => {
   return clientConfig
 }, error => Promise.reject(error))
 
+const extractMetaInfo = function extractMetaInfo(headers, params) {
+  const links = linkHeaderParser(headers.link)
+  let meta = null
+  if (links) {
+    meta = {
+      currentPage: parseInt(params.page || 1, 10),
+      totalPages: parseInt((links.last && links.last.page) || params.page || 1, 10),
+    }
+  }
+  return meta
+}
+
 const handleResponse = function handleResponse(response, callback, params) {
+  const meta = extractMetaInfo(response.headers, params)
   nprogress.done()
 
   if (callback) {
-    callback({ data: response.data, error: null, params })
+    callback({
+      data: response.data, error: null, meta, params,
+    })
   }
 
-  return { data: response.data, error: null, params }
+  return {
+    data: response.data, error: null, meta, params,
+  }
 }
 
 const handleError = function handleError(error, callback) {

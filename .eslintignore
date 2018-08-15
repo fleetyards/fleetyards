@@ -1,3 +1,4 @@
 /app/assets
 /node_modules
 /vendor
+service_worker.js.erb

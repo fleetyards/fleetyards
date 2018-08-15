@@ -19,9 +19,6 @@
         @click="filter(group.slug)"
         @click.right.prevent="edit(group)"
       >
-        <span class="label-inner-border label-inner-border-top">
-          <span class="label-inner-border-bg" />
-        </span>
         <span class="label-inner">
           <span
             :style="{
@@ -31,9 +28,6 @@
           />
           {{ group.name }}: {{ group.vehiclesCount }}
         </span>
-        <span class="label-inner-border label-inner-border-bottom">
-          <span class="label-inner-border-bg" />
-        </span>
       </a>
       <a
         v-tooltip="t('actions.addGroup')"
@@ -41,14 +35,8 @@
         class="label label-link fade-list-item"
         @click="add"
       >
-        <span class="label-inner-border label-inner-border-top">
-          <span class="label-inner-border-bg" />
-        </span>
         <span class="label-inner">
           <i class="far fa-plus" />
-        </span>
-        <span class="label-inner-border label-inner-border-bottom">
-          <span class="label-inner-border-bg" />
         </span>
       </a>
     </transition-group>

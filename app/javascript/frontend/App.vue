@@ -72,21 +72,32 @@ export default {
     this.setNoScroll()
     this.setBackground()
     this.redirectToLastRoute()
+    this.checkMobile()
 
     if (this.isAuthenticated) {
       requestPermission()
       this.fetchHangar()
     }
 
-    window.addEventListener('online', () => {
-      this.$store.commit('setOnlineStatus', true)
-    })
-
-    window.addEventListener('offline', () => {
-      this.$store.commit('setOnlineStatus', false)
-    })
+    window.addEventListener('online', this.online)
+    window.addEventListener('offline', this.offline)
+    window.addEventListener('resize', this.checkMobile)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkMobile)
+    window.removeEventListener('online', this.online)
+    window.removeEventListener('offline', this.offline)
   },
   methods: {
+    offline() {
+      this.$store.commit('setOnlineStatus', false)
+    },
+    online() {
+      this.$store.commit('setOnlineStatus', true)
+    },
+    checkMobile() {
+      this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
+    },
     setNoScroll() {
       if (!this.navbarCollapsed || this.overlayVisible) {
         document.documentElement.classList.add('no-scroll')
@@ -113,9 +124,9 @@ export default {
       }
     },
     fetchHangar() {
-      this.$api.get('vehicles', {}, (args) => {
+      this.$api.get('vehicles/hangar-items', {}, (args) => {
         if (!args.error) {
-          this.$store.commit('setHangar', args.data.map(item => item.model.slug))
+          this.$store.commit('setHangar', args.data)
         }
       })
     },
