@@ -8,6 +8,8 @@ class Shop < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  mount_uploader :store_image, StoreImageUploader
+
   before_save :update_slugs
 
   private def update_slugs

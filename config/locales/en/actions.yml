@@ -21,6 +21,8 @@ en:
         new: Create new Commodity
       station:
         new: Create new Station
+      shop:
+        new: Create new Shop
     back: Back
     cancel: Cancel
     confirm: Confirm Account

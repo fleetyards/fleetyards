@@ -1,21 +1,30 @@
 %ul.nav.navbar-nav
   %li{class: active_nav?('admin')}
     = link_to I18n.t(:"nav.home"), admin_root_path
-    %li.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components))}
-      %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-        = I18n.t(:"nav.models")
-        %b.caret
-      %ul.dropdown-menu
-        %li{class: active_nav?('admin-models')}
-          = link_to I18n.t(:"nav.model.overview"), admin_models_path
-        %li.divider
-        %li{class: active_nav?('admin-manufacturers')}
-          = link_to I18n.t(:"nav.manufacturers"), admin_manufacturers_path
-        %li.divider
-        %li{class: active_nav?('admin-components')}
-          = link_to I18n.t(:"nav.components"), admin_components_path
-  %li{class: active_nav?('admin-stations')}
-    = link_to Station.name.humanize.pluralize, admin_stations_path
+  %li.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components))}
+    %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+      = Model.name.humanize.pluralize
+      %b.caret
+    %ul.dropdown-menu
+      %li{class: active_nav?('admin-models')}
+        = link_to Model.name.humanize.pluralize, admin_models_path
+      %li.divider
+      %li{class: active_nav?('admin-manufacturers')}
+        = link_to Manufacturer.name.humanize.pluralize, admin_manufacturers_path
+      %li.divider
+      %li{class: active_nav?('admin-components')}
+        = link_to Component.name.humanize.pluralize, admin_components_path
+
+  %li.dropdown{class: active_nav?(%w(admin-stations admin-shops))}
+    %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+      = Station.name.humanize.pluralize
+      %b.caret
+    %ul.dropdown-menu
+      %li{class: active_nav?('admin-stations')}
+        = link_to Station.name.humanize.pluralize, admin_stations_path
+      %li.divider
+      %li{class: active_nav?('admin-shops')}
+        = link_to Shop.name.humanize.pluralize, admin_shops_path
   %li{class: active_nav?('admin-images')}
     = link_to I18n.t(:"nav.images"), admin_images_path
   %li{class: active_nav?('admin-users')}

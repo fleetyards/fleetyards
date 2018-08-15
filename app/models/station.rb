@@ -39,8 +39,10 @@ class Station < ApplicationRecord
 
   def ship_counts
     docks.to_a.group_by(&:max_ship_size).map do |size, docks|
-      OpenStruct.new(size: size, count: docks.size)
-    end
+      docks.group_by(&:dock_type).map do |dock_type, docks|
+        OpenStruct.new(size: size, dock_type: dock_type, count: docks.size)
+      end
+    end.flatten
   end
 
   def station_type_label
