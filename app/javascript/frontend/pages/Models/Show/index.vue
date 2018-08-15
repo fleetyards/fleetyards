@@ -20,11 +20,9 @@
               </small>
               <router-link
                 :to="{
-                  name: backRoute,
+                  name: backRoute.name,
                   hash: `#${model.slug}`,
-                  query: {
-                    q: this.$store.state.filters[backRoute]
-                  }
+                  query: backRoute.query,
                 }"
                 class="btn btn-link"
               >
@@ -248,9 +246,9 @@ export default {
     },
     backRoute() {
       if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
-        return this.previousRoute.name
+        return this.previousRoute
       }
-      return 'models'
+      return { name: 'models' }
     },
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }

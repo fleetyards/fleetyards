@@ -25,7 +25,7 @@ module Api
             'name' => 'Corvolex Shipping Hub',
             'slug' => 'corvolex',
             'type' => 'Cargo Station',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Daymar',
               'slug' => 'daymar'
@@ -41,7 +41,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader'
@@ -74,7 +74,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader'
@@ -128,7 +128,7 @@ module Api
             'name' => 'Corvolex Shipping Hub',
             'slug' => 'corvolex',
             'type' => 'Cargo Station',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Daymar',
               'slug' => 'daymar'
@@ -144,7 +144,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader'
@@ -177,7 +177,7 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-bf65f9de12f56b673a873891aee1c786b638956e2eab7fd0c611538cc3338919.jpg',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
             'planet' => {
               'name' => 'Crusader',
               'slug' => 'crusader'

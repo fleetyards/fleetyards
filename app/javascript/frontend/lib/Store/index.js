@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const initialState = {
   locale: 'en-US',
+  mobile: false,
   authToken: null,
   backgroundImage: null,
   hangar: [],
@@ -26,6 +27,8 @@ const initialState = {
   hangarFilterVisible: true,
   navbarCollapsed: true,
   overlayVisible: false,
+  modelDetails: false,
+  modelFilterVisible: true,
 }
 
 const store = new Vuex.Store({
@@ -33,6 +36,9 @@ const store = new Vuex.Store({
   getters: {
     isAuthenticated(state) {
       return state.authToken !== null
+    },
+    mobile(state) {
+      return state.mobile
     },
     hangar(state) {
       return state.hangar
@@ -70,6 +76,12 @@ const store = new Vuex.Store({
     overlayVisible(state) {
       return state.overlayVisible
     },
+    modelDetails(state) {
+      return state.modelDetails
+    },
+    modelFilterVisible(state) {
+      return state.modelFilterVisible
+    },
   },
   /* eslint-disable no-param-reassign */
   mutations: {
@@ -85,6 +97,9 @@ const store = new Vuex.Store({
     },
     setLocale(state, locale) {
       state.locale = locale
+    },
+    setMobile(state, payload) {
+      state.mobile = payload
     },
     setOnlineStatus(state, payload) {
       state.online = payload
@@ -163,6 +178,12 @@ const store = new Vuex.Store({
     },
     closeNavbar(state) {
       state.navbarCollapsed = true
+    },
+    toggleModelDetails(state) {
+      state.modelDetails = !state.modelDetails
+    },
+    toggleModelFilter(state) {
+      state.modelFilterVisible = !state.modelFilterVisible
     },
   },
   /* eslint-enable no-param-reassign */

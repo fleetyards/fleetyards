@@ -86,6 +86,13 @@ VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
 document.addEventListener('DOMContentLoaded', () => {
+  if ('serviceWorker' in navigator) {
+    // eslint-disable-next-line compat/compat
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach(registration => registration.unregister())
+    })
+  }
+
   // eslint-disable-next-line no-new
   new Vue({
     el: '#app',

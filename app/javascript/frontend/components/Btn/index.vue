@@ -13,9 +13,6 @@
     }"
     class="panel-btn"
   >
-    <div class="panel-btn-border panel-btn-border-top">
-      <div class="panel-btn-border-bg" />
-    </div>
     <div class="panel-btn-inner">
       <template v-if="loading">
         {{ t('actions.loading') }}
@@ -23,9 +20,6 @@
       <template v-else>
         <slot />
       </template>
-    </div>
-    <div class="panel-btn-border panel-btn-border-bottom">
-      <div class="panel-btn-border-bg" />
     </div>
   </button>
 </template>

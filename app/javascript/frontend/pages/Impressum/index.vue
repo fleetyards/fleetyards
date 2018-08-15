@@ -44,6 +44,7 @@
               <a
                 href="https://redd.it/8k18sm"
                 target="_blank"
+                rel="noopener"
               >
                 https://redd.it/8k18sm
               </a>

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Model < ApplicationRecord
+  paginates_per 20
   belongs_to :manufacturer, required: false
 
   has_one :addition,

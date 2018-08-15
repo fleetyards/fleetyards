@@ -2,8 +2,9 @@
 
 module Frontend
   class BaseController < ApplicationController
+    protect_from_forgery except: :service_worker
     def index
-      route = request.fullpath.sub(%r{^\/}, '').tr('/', '_')
+      route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
       route = 'home' if route.blank?
 
       @title = I18n.t("title.frontend.#{route}")
@@ -74,6 +75,14 @@ module Frontend
 
     def embed_test
       render 'frontend/embed_test', layout: 'embed_test'
+    end
+
+    def service_worker
+      respond_to do |format|
+        format.js do
+          render 'frontend/service_worker', layout: false
+        end
+      end
     end
 
     private def username(name)

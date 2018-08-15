@@ -39,6 +39,8 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'embed-styles' => 'base#embed_styles'
   get 'embed-test' => 'base#embed_test' if Rails.env.development?
 
+  get 'service-worker' => 'base#service_worker'
+
   match '404' => 'base#not_found', via: :all
 
   root to: 'base#index'

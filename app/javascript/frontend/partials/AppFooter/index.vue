@@ -13,6 +13,7 @@
           v-tooltip="'Roberts Space Industries'"
           href="https://robertsspaceindustries.com/"
           target="_blank"
+          rel="noopener"
         >
           RSI
         </a>
@@ -26,6 +27,8 @@
           v-tooltip="'Twitter'"
           href="https://twitter.com/FleetYardsNet"
           target="_blank"
+          rel="noopener"
+          aria-label="Twitter"
         >
           <i class="fab fa-twitter" />
         </a>
@@ -34,6 +37,8 @@
           v-tooltip="'Github'"
           href="https://github.com/fleetyards"
           target="_blank"
+          rel="noopener"
+          aria-label="Github"
         >
           <i class="fab fa-github" />
         </a>
@@ -41,6 +46,7 @@
         <a
           href="https://api.fleetyards.net"
           target="_blank"
+          rel="noopener"
         >
           {{ t('nav.api') }}
         </a>
@@ -49,7 +55,11 @@
         Copyright &copy; {{ new Date().getFullYear() }}
         <a
           href="mailto:info@mortik.de"
-          target="_blank">Marten Klitzke - mortik.</a>
+          target="_blank"
+          rel="noopener"
+        >
+          Marten Klitzke - mortik.
+        </a>
       </div>
       <div class="app-version">
         RSI (1.0.0)

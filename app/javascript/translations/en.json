@@ -110,14 +110,14 @@
     "rsiVerification": "RSI Verification"
   },
   "pagination": {
-    "first": "&laquo;",
-    "last": "&raquo;",
-    "previous": "&lsaquo;",
-    "next": "&rsaquo;",
-    "truncate": "&hellip;"
+    "previous": "Previous Page",
+    "next": "Next Page",
+    "gap": "&hellip;"
   },
   "labels": {
     "unknown": "Unknown",
+    "searchInput": "Search Input",
+    "search": "Search",
     "unknownModel": "%{slug} Unknown",
     "not-available": "N/A",
     "receiveSaleNotifications": "",
@@ -342,6 +342,9 @@
     "requestPassword": "Request Password E-Mail",
     "changePassword": "Change Password",
     "addGroup": "Add Group",
+    "empty": {
+      "reset": "Reset Filters/Pages"
+    },
     "fleet": {
       "create": "Create a new Fleet",
       "join": "Join %{sid} now!",
@@ -362,11 +365,14 @@
     "index": "Your database for all information about the upcoming “Star Citizen“ from Chris Roberts.",
     "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
     "indexQuoteSource": "Author Unknown, Source:",
-    "indexSupport": "Support us and get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\"><b>\"%{code}\"</b></a> when you buy Star Citizen or:",
+    "indexSupport": "Support us and get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or:",
     "error": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
-    "empty": "We could not find any records.",
+    "empty": {
+      "info": "We could not find any Records.",
+      "query": "It seems like you have some Filters active or visited a Page without any Records."
+    },
     "rsiVerification": {
-      "instructions": "To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href=\"https://robertsspaceindustries.com/account/profile\" target=\"_blank\">https://robertsspaceindustries.com/account/profile</a>:",
+      "instructions": "To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href=\"https://robertsspaceindustries.com/account/profile\" target=\"_blank\" rel=\"noopener\">https://robertsspaceindustries.com/account/profile</a>:",
       "verificationText": "https://www.fleetyards.net/hangar/%{username}#%{token}",
       "subline": "PS: When your Verification is done you can remove the Link from your Profile again if you don't like it."
     },
@@ -382,7 +388,7 @@
       "icon": "Lookout for this icon:"
     },
     "impressum": {
-      "ytShipImages": "The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href=\"https://twitter.com/WhyTeeZero\">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.",
+      "ytShipImages": "The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href=\"https://twitter.com/WhyTeeZero\" target=\"_blank\" rel=\"noopener\">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.",
       "copyright": "The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.",
       "liabilityInternal": {
         "paragraphOne": "The content of out site has been compiled with meticulous care and to the best of our knowledge. However, We cannot assume any liability for the up-to-dateness, completeness or accuracy of any of the pages.",

@@ -5,6 +5,7 @@ module Api
     class VehiclesController < ::Api::V1::BaseController
       skip_authorization_check only: %i[public public_count]
       before_action :authenticate_api_user!, except: %i[public public_count]
+      after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
         authorize! :index, :api_hangar
@@ -13,7 +14,19 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit]).uniq
+        @vehicles = @q.result
+                      .page(params[:page])
+                      .per(params[:per_page])
+      end
+
+      def fleetchart
+        authorize! :index, :api_hangar
+        @q = current_user.vehicles
+                         .ransack(query_params)
+
+        @q.sorts = ['model_length desc', 'model_name asc']
+
+        @vehicles = @q.result.uniq
       end
 
       def count
@@ -23,17 +36,24 @@ module Api
 
         @q.sorts = ['model_classification asc']
 
-        vehicles = @q.result.uniq
+        vehicles = @q.result
+        models = vehicles.map(&:model)
 
         @count = OpenStruct.new(
           total: vehicles.count,
-          classifications: vehicles.map(&:model).map(&:classification).uniq.compact.map do |classification|
+          classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              count: vehicles.map(&:model).select { |model| model.classification == classification }.count,
+              count: models.select { |model| model.classification == classification }.count,
               name: classification,
               label: classification.humanize
             )
-          end
+          end,
+          metrics: {
+            total_money: models.map(&:fallback_price).sum(&:to_i),
+            total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
+            total_cargo: models.map(&:display_cargo).sum(&:to_i)
+          }
         )
       end
 
@@ -45,7 +65,9 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result.offset(params[:offset]).limit(params[:limit])
+        @vehicles = @q.result
+                      .page(params[:page])
+                      .per(params[:per_page])
       end
 
       def public_count
@@ -62,6 +84,12 @@ module Api
             )
           end
         )
+      end
+
+      def hangar_items
+        authorize! :index, :api_hangar
+        model_ids = current_user.vehicles.pluck(:model_id)
+        @models = Model.where(id: model_ids).pluck(:slug)
       end
 
       def create

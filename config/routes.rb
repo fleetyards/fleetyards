@@ -4,7 +4,6 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   draw :api_routes
-  draw :gql_routes
   draw :admin_routes
   draw :frontend_routes
 
