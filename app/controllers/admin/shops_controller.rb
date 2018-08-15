@@ -12,8 +12,8 @@ module Admin
       @q.sorts = 'name asc' if @q.sorts.empty?
 
       @shops = @q.result
-                    .page(params.fetch(:page) { nil })
-                    .per(40)
+                 .page(params.fetch(:page) { nil })
+                 .per(40)
     end
 
     def new

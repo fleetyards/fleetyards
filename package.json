@@ -2,7 +2,7 @@
   "name": "fleetyards",
   "private": true,
   "scripts": {
-    "prepush": "bundle exec rubocop -a && npm run lint",
+    "prepush": "bundle exec rubocop && npm run lint",
     "docs": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
     "commitmsg": "commitlint -E GIT_PARAMS",
