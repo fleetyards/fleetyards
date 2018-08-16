@@ -1,0 +1,45 @@
+- content_for :title do
+  = I18n.t(:"title.shop.index")
+.row#shops
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.shop.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.shop.new"), new_admin_shop_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @shops.count
+          of
+          = @shops.total_count
+      .col-xs-12.col-md-6
+        = paginate @shops
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/shops/table", :@shops => @shops
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @shops

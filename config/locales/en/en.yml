@@ -83,6 +83,10 @@ en:
       edit: Edit Station
       index: Stations
       new: New Station
+    shop:
+      edit: Edit Shop
+      index: Shops
+      new: New Shop
     trade_hub:
       edit: Edit Trade Hub
       index: Trade Hubs

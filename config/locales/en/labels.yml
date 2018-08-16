@@ -16,6 +16,7 @@ en:
         commodity: No Commodities could be found.
         trade_hub: No Trade could be found.
         station: No Stations could be found.
+        shop: No Shops could be found.
       component:
         category: Category
       model:
