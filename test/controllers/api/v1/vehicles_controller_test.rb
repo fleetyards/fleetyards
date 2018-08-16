@@ -45,6 +45,14 @@ module Api
           }
           assert_equal expected, json
         end
+
+        it 'should render 403 for hangar-items' do
+          get :hangar_items
+
+          assert_response :unauthorized
+          json = JSON.parse response.body
+          assert_equal 'unauthorized', json['code']
+        end
       end
 
       describe 'with session' do
@@ -159,6 +167,18 @@ module Api
               'totalCargo' => 0
             }
           }
+          assert_equal expected, json
+        end
+
+        it 'should render 200 for hangar-items' do
+          get :hangar_items
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          expected = [
+            'andromeda'
+          ]
           assert_equal expected, json
         end
       end

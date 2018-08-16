@@ -56,13 +56,12 @@ $innerBorderWidth: 2px;
       display: block;
     }
 
-    &:hover,
-    &.active {
-      a {
-        color: invert($text-color);
-        background-color: $panel-inner-border;
-      }
+    &.active a,
+    a:hover {
+      color: invert($text-color);
+      background-color: $panel-inner-border;
     }
+
 
     &.gap,
     &.arrow {

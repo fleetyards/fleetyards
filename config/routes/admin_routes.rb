@@ -38,6 +38,7 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
   resources :stations, except: [:show] do
     get 'gallery', on: :member
   end
+  resources :shops, except: [:show]
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 

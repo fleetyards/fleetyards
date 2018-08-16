@@ -52,7 +52,7 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0"
+          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics"
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
@@ -94,7 +94,7 @@
             <div class="page-actions">
               <Btn
                 v-tooltip="t('actions.saveScreenshot')"
-                v-show="hangarFleetchart"
+                v-show="hangarFleetchart && fleetchartVehicles.length > 0"
                 :disabled="downloading"
                 :aria-label="t('actions.saveScreenshot')"
                 small
@@ -104,7 +104,7 @@
               </Btn>
               <Btn
                 v-tooltip="toggleDetailsTooltip"
-                v-show="!hangarFleetchart"
+                v-show="!hangarFleetchart && vehicles.length > 0"
                 :active="hangarDetails"
                 :aria-label="toggleDetailsTooltip"
                 small
@@ -147,7 +147,7 @@
             class="col-xs-12"
           >
             <div
-              v-if="hangarFleetchart"
+              v-if="hangarFleetchart && fleetchartVehicles.length > 0"
               class="row"
             >
               <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -250,6 +250,7 @@ import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
@@ -282,7 +283,7 @@ export default {
     GroupLabels,
     vueSlider,
   },
-  mixins: [I18n, MetaInfo, Filters, Pagination],
+  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
@@ -333,11 +334,7 @@ export default {
   },
   watch: {
     $route() {
-      if (this.hangarFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+      this.fetch()
     },
     scale(value) {
       this.$store.commit('setHangarFleetchartScale', value)
@@ -348,11 +345,7 @@ export default {
       }
     },
     hangarFleetchart() {
-      if (this.hangarFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+      this.fetch()
     },
   },
   created() {
@@ -386,10 +379,16 @@ export default {
       this.$refs.filterModal.open()
     },
     fetch() {
-      this.loading = true
-
+      if (this.hangarFleetchart) {
+        this.fetchFleetchart()
+      } else {
+        this.fetchVehicles()
+      }
       this.fetchGroups()
       this.fetchCount()
+    },
+    fetchVehicles() {
+      this.loading = true
 
       this.$api.get('vehicles', {
         q: this.$route.query.q,
@@ -398,6 +397,7 @@ export default {
         this.loading = false
         if (!args.error) {
           this.vehicles = args.data
+          this.scrollToAnchor()
         }
         this.setPages(args.meta)
       })

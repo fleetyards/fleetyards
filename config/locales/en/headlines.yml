@@ -36,6 +36,10 @@ en:
         gallery: Imageuplaod for %{station}
         index: Stations
         new: New Station
+      shop:
+        edit: Shop %{shop}
+        index: Shops
+        new: New Shop
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account
