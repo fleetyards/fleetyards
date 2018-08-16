@@ -33,7 +33,8 @@ module Api
             'starsystem' => nil,
             'shipCounts' => [{
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'createdAt' => Station.first.created_at.to_time.iso8601,
             'updatedAt' => Station.first.updated_at.to_time.iso8601
@@ -52,10 +53,20 @@ module Api
             },
             'shipCounts' => [{
               'size' => 3,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 3,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }, {
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
@@ -96,10 +107,20 @@ module Api
             }],
             'shipCounts' => [{
               'size' => 3,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 3,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }, {
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'shops' => [],
             'images' => [],
@@ -136,7 +157,8 @@ module Api
             'starsystem' => nil,
             'shipCounts' => [{
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'createdAt' => Station.first.created_at.to_time.iso8601,
             'updatedAt' => Station.first.updated_at.to_time.iso8601
@@ -155,10 +177,20 @@ module Api
             },
             'shipCounts' => [{
               'size' => 3,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 3,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }, {
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
@@ -188,10 +220,20 @@ module Api
             },
             'shipCounts' => [{
               'size' => 3,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 3,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }, {
               'size' => 1,
-              'count' => 1
+              'count' => 1,
+              'dockType' =>  'Dockingport'
+            }, {
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
             }],
             'docks' => [{
               'name' => 'Landingpad One',
