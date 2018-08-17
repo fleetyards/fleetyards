@@ -168,50 +168,46 @@ export default {
         this.deleting = false
       })
     },
-    destroy() {
-      this.$api.destroy(`hangar-groups/${this.group.id}`, (args) => {
-        if (!args.error) {
-          this.$refs.modal.close()
-          this.$comlink.$emit('hangarGroupDelete', args.data)
-        } else {
-          this.deleting = false
-        }
-      })
+    async destroy() {
+      const response = await this.$api.destroy(`hangar-groups/${this.group.id}`)
+      if (!response.error) {
+        this.$refs.modal.close()
+        this.$comlink.$emit('hangarGroupDelete', response.data)
+      } else {
+        this.deleting = false
+      }
     },
-    save() {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          return
-        }
-        this.submitting = true
-        if (this.group.id) {
-          this.update()
-        } else {
-          this.create()
-        }
-      })
+    async save() {
+      const result = await this.$validator.validateAll()
+      if (!result) {
+        return
+      }
+      this.submitting = true
+      if (this.group.id) {
+        this.update()
+      } else {
+        this.create()
+      }
     },
-    update() {
-      this.$api.put(`hangar-groups/${this.group.id}`, this.form, (args) => {
-        this.submitting = false
-        if (!args.error) {
-          this.$refs.modal.close()
-          this.$comlink.$emit('hangarGroupSave', args.data)
-        } else {
-          alert(args.error.response.data.message)
-        }
-      })
+    async update() {
+      const response = await this.$api.put(`hangar-groups/${this.group.id}`, this.form)
+      this.submitting = false
+      if (!response.error) {
+        this.$refs.modal.close()
+        this.$comlink.$emit('hangarGroupSave', response.data)
+      } else {
+        alert(response.error.response.data.message)
+      }
     },
-    create() {
-      this.$api.post('hangar-groups', this.form, (args) => {
-        this.submitting = false
-        if (!args.error) {
-          this.$refs.modal.close()
-          this.$comlink.$emit('hangarGroupSave', args.data)
-        } else {
-          alert(args.error.response.data.message)
-        }
-      })
+    async create() {
+      const response = await this.$api.post('hangar-groups', this.form)
+      this.submitting = false
+      if (!response.error) {
+        this.$refs.modal.close()
+        this.$comlink.$emit('hangarGroupSave', response.data)
+      } else {
+        alert(response.error.response.data.message)
+      }
     },
   },
 }

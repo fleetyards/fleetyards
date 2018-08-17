@@ -222,7 +222,10 @@
               v-show="hangarFilterVisible"
               class="hidden-xs hidden-sm col-md-3 col-xlg-2"
             >
-              <VehiclesFilterForm :hangar-groups-options="hangarGroups" />
+              <VehiclesFilterForm
+                :filters="filters"
+                :hangar-groups-options="hangarGroups"
+              />
             </div>
           </transition>
         </div>
@@ -237,6 +240,7 @@
         </div>
         <VehiclesFilterModal
           ref="filterModal"
+          :filters="filters"
           :vehicles-count="vehiclesCount"
           :hangar-groups-options="hangarGroups"
         />
@@ -289,6 +293,7 @@ export default {
       loading: false,
       downloading: false,
       vehicles: [],
+      filters: [],
       fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
@@ -350,6 +355,7 @@ export default {
   },
   created() {
     this.fetch()
+    this.fetchFilters()
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -387,40 +393,36 @@ export default {
       this.fetchGroups()
       this.fetchCount()
     },
-    fetchVehicles() {
+    async fetchVehicles() {
       this.loading = true
-
-      this.$api.get('vehicles', {
+      const response = await this.$api.get('vehicles', {
         q: this.$route.query.q,
         page: this.$route.query.page,
-      }, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.vehicles = args.data
-          this.scrollToAnchor()
-        }
-        this.setPages(args.meta)
       })
+      this.loading = false
+      if (!response.error) {
+        this.vehicles = response.data
+        this.scrollToAnchor()
+      }
+      this.setPages(response.meta)
     },
-    fetchCount() {
-      this.$api.get('vehicles/count', {
+    async fetchCount() {
+      const response = await this.$api.get('vehicles/count', {
         q: this.$route.query.q,
-      }, (args) => {
-        if (!args.error) {
-          this.vehiclesCount = args.data
-        }
       })
+      if (!response.error) {
+        this.vehiclesCount = response.data
+      }
     },
-    fetchFleetchart() {
+    async fetchFleetchart() {
       this.loading = true
-      this.$api.get('vehicles/fleetchart', {
+      const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
-      }, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.fleetchartVehicles = args.data
-        }
       })
+      this.loading = false
+      if (!response.error) {
+        this.fleetchartVehicles = response.data
+      }
     },
     setupUpdates() {
       this.vehiclesChannel = this.$cable.subscriptions.create({
@@ -436,12 +438,17 @@ export default {
         this.fetch()
       }
     },
-    fetchGroups() {
-      this.$api.get('hangar-groups', {}, (args) => {
-        if (!args.error) {
-          this.hangarGroups = args.data
-        }
-      })
+    async fetchGroups() {
+      const response = await this.$api.get('hangar-groups', {})
+      if (!response.error) {
+        this.hangarGroups = response.data
+      }
+    },
+    async fetchFilters() {
+      const response = await this.$api.get('models/filters', {})
+      if (!response.error) {
+        this.filters = response.data
+      }
     },
   },
   metaInfo() {

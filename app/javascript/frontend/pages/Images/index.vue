@@ -95,17 +95,16 @@ export default {
     openGallery(event) {
       this.$refs.gallery.open(event.currentTarget.getAttribute('data-index'))
     },
-    fetch() {
+    async fetch() {
       this.loading = true
-      this.$api.get('images', {
+      const response = await this.$api.get('images', {
         page: this.$route.query.page,
-      }, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.images = args.data
-        }
-        this.setPages(args.meta)
       })
+      this.loading = false
+      if (!response.error) {
+        this.images = response.data
+      }
+      this.setPages(response.meta)
     },
   },
   metaInfo() {

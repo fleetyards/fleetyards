@@ -82,18 +82,16 @@ export default {
     }
   },
   methods: {
-    requestPassword() {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          return
-        }
-        this.submitting = true
-        this.$api.post('password/request', this.form, () => {
-          this.submitting = false
-          success(this.t('messages.requestPasswordChange.success'))
-          this.$router.push('/')
-        })
-      })
+    async requestPassword() {
+      const result = await this.$validator.validateAll()
+      if (!result) {
+        return
+      }
+      this.submitting = true
+      await this.$api.post('password/request')
+      this.submitting = false
+      success(this.t('messages.requestPasswordChange.success'))
+      this.$router.push('/')
     },
   },
   metaInfo() {

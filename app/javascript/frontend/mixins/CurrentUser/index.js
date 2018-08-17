@@ -9,33 +9,31 @@ export default {
     ]),
   },
   methods: {
-    fetchCurrentUser() {
+    async fetchCurrentUser() {
       if (!this.isAuthenticated) {
         return
       }
-      this.$api.get('users/current', {}, (args) => {
-        if (!args.error) {
-          this.$store.commit('setCurrentUser', args.data)
-          if (this.currentUser.rsiHandle) {
-            this.fetchCitizen()
-          } else {
-            this.$store.commit('resetCitizen')
-          }
+      const response = await this.$api.get('users/current', {})
+      if (!response.error) {
+        this.$store.commit('setCurrentUser', response.data)
+        if (this.currentUser.rsiHandle) {
+          this.fetchCitizen()
+        } else {
+          this.$store.commit('resetCitizen')
         }
-      })
+      }
     },
-    fetchCitizen() {
+    async fetchCitizen() {
       if (!this.currentUser.rsiHandle) {
         return
       }
 
-      this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`, {}, (args) => {
-        if (!args.error) {
-          this.$store.commit('setCitizen', args.data)
-        } else {
-          this.$store.commit('resetCitizen')
-        }
-      })
+      const response = await this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`, {})
+      if (!response.error) {
+        this.$store.commit('setCitizen', response.data)
+      } else {
+        this.$store.commit('resetCitizen')
+      }
     },
   },
   watch: {

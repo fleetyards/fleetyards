@@ -116,31 +116,28 @@ export default {
         this.fetchOrg()
       }, 300)
     },
-    fetchOrg() {
+    async fetchOrg() {
       this.loading = true
-      this.$api.get(`rsi/orgs/${this.sid}`, {}, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.org = args.data
-        }
-      })
+      const response = await this.$api.get(`rsi/orgs/${this.sid}`, {})
+      this.loading = false
+      if (!response.error) {
+        this.org = response.data
+      }
     },
-    submit() {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          return
-        }
-        this.submitting = true
-        this.$api.post('fleets', { sid: this.sid }, (args) => {
-          this.submitting = false
-          if (!args.error) {
-            this.callback()
-            this.$refs.modal.close()
-          } else {
-            alert(this.t('messages.fleet.create.failure'))
-          }
-        })
-      })
+    async submit() {
+      const result = await this.$validator.validateAll()
+      if (!result) {
+        return
+      }
+      this.submitting = true
+      const response = await this.$api.post('fleets', { sid: this.sid })
+      this.submitting = false
+      if (!response.error) {
+        this.callback()
+        this.$refs.modal.close()
+      } else {
+        alert(this.t('messages.fleet.create.failure'))
+      }
     },
   },
 }

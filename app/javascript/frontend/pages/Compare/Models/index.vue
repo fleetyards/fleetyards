@@ -409,19 +409,17 @@ export default {
         }
       })
     },
-    fetchModels() {
-      this.$api.get('models', {}, (args) => {
-        if (!args.error) {
-          this.models = args.data
-        }
-      })
+    async fetchModels() {
+      const response = await this.$api.get('models', {})
+      if (!response.error) {
+        this.models = response.data
+      }
     },
-    fetchModel(slug, callback) {
-      this.$api.get(`models/${slug}`, {}, (args) => {
-        if (!args.error) {
-          callback(args.data)
-        }
-      })
+    async fetchModel(slug, callback) {
+      const response = await this.$api.get(`models/${slug}`, {})
+      if (!response.error) {
+        callback(response.data)
+      }
     },
   },
   metaInfo() {

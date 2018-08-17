@@ -103,7 +103,6 @@
       <i class="fal fa-times" />
       {{ t('actions.resetFilter') }}
     </Btn>
-    <Loader v-if="loading" />
   </form>
 </template>
 
@@ -112,18 +111,22 @@ import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
-import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     RadioList,
     FilterGroup,
-    Loader,
     Btn,
   },
   mixins: [I18n, Filters],
   props: {
+    filters: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
     hideButtons: {
       type: Boolean,
       default: false,
@@ -160,11 +163,21 @@ export default {
         name: 'Yes',
         value: 'true',
       }],
-      manufacturerOptions: [],
-      classificationOptions: [],
-      focusOptions: [],
-      productionStatusOptions: [],
     }
+  },
+  computed: {
+    manufacturerOptions() {
+      return this.filters.filter(item => item.category === 'manufacturer')
+    },
+    classificationOptions() {
+      return this.filters.filter(item => item.category === 'classification')
+    },
+    focusOptions() {
+      return this.filters.filter(item => item.category === 'focus')
+    },
+    productionStatusOptions() {
+      return this.filters.filter(item => item.category === 'productionStatus')
+    },
   },
   watch: {
     $route() {
@@ -189,27 +202,12 @@ export default {
       deep: true,
     },
   },
-  created() {
-    this.fetch()
-  },
   methods: {
     clearName() {
       this.form.nameCont = null
     },
     clearModelNameOrDescription() {
       this.form.modelNameOrModelDescriptionCont = null
-    },
-    fetch() {
-      this.loading = true
-      this.$api.get('models/filters', {}, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.manufacturerOptions = args.data.filter(item => item.category === 'manufacturer')
-          this.classificationOptions = args.data.filter(item => item.category === 'classification')
-          this.focusOptions = args.data.filter(item => item.category === 'focus')
-          this.productionStatusOptions = args.data.filter(item => item.category === 'productionStatus')
-        }
-      })
     },
   },
 }

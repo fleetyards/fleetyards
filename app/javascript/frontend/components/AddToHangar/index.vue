@@ -50,13 +50,12 @@ export default {
     },
   },
   methods: {
-    add() {
-      this.$api.post('vehicles', { modelId: this.model.id }, (args) => {
-        if (!args.error) {
-          this.$store.commit('addToHangar', this.model.slug)
-          success(this.t('messages.vehicle.add.success', { model: this.model.name }))
-        }
-      })
+    async add() {
+      const response = await this.$api.post('vehicles', { modelId: this.model.id })
+      if (!response.error) {
+        this.$store.commit('addToHangar', this.model.slug)
+        success(this.t('messages.vehicle.add.success', { model: this.model.name }))
+      }
     },
   },
 }

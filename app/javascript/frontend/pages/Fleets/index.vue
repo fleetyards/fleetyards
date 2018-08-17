@@ -148,24 +148,22 @@ export default {
     create() {
       this.$refs.fleetModal.open()
     },
-    fetch() {
+    async fetch() {
       this.loading = true
-      this.$api.get('fleets', {
+      const response = await this.$api.get('fleets', {
         page: this.$route.query.page,
-      }, (response) => {
-        this.loading = false
-        if (!response.error) {
-          this.fleets = response.data
-        }
-        this.setPages(response.meta)
       })
+      this.loading = false
+      if (!response.error) {
+        this.fleets = response.data
+      }
+      this.setPages(response.meta)
     },
-    fetchMyFleets() {
-      this.$api.get('fleets/my', {}, (response) => {
-        if (!response.error) {
-          this.myFleets = response.data
-        }
-      })
+    async fetchMyFleets() {
+      const response = await this.$api.get('fleets/my', {})
+      if (!response.error) {
+        this.myFleets = response.data
+      }
     },
   },
   metaInfo() {

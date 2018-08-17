@@ -294,16 +294,15 @@ export default {
         this.$store.commit('setBackgroundImage', image.url)
       }
     },
-    fetch() {
+    async fetch() {
       this.loading = true
-      this.$api.get(`models/${this.$route.params.slug}`, {}, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.model = args.data
-        } else if (args.error.response.status === 404) {
-          this.$router.replace({ name: '404' })
-        }
-      })
+      const response = await this.$api.get(`models/${this.$route.params.slug}`, {})
+      this.loading = false
+      if (!response.error) {
+        this.model = response.data
+      } else if (response.error.response.status === 404) {
+        this.$router.replace({ name: '404' })
+      }
     },
   },
   metaInfo() {

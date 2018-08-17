@@ -17,6 +17,7 @@
     />
     <VehiclesFilterForm
       ref="filterForm"
+      :filters="filters"
       :hangar-groups-options="hangarGroupsOptions"
       prefix="filter-modal"
       hide-buttons
@@ -53,6 +54,12 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
+    filters: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
     visible: {
       type: Boolean,
       default: false,

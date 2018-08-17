@@ -124,9 +124,12 @@
             />
           </div>
           <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
-            <ModelsFilterForm />
+            <ModelsFilterForm :filters="filters" />
           </div>
-          <ModelsFilterModal ref="filterModal" />
+          <ModelsFilterModal
+            ref="filterModal"
+            :filters="filters"
+          />
         </div>
         <div class="row">
           <div class="col-xs-12">
@@ -172,6 +175,7 @@ export default {
       fleetCount: null,
       fleet: null,
       fleetModels: [],
+      filters: [],
       acitivtyIcons: {
         /* eslint-disable global-require */
         BountyHunting: require('images/org-icons/bountyhunting.png'),
@@ -222,6 +226,7 @@ export default {
     currentUser() {
       if (this.isMember) {
         this.fetchModels()
+        this.fetchFilters()
         this.fetchCount()
       }
     },
@@ -230,6 +235,7 @@ export default {
     this.fetch()
     if (this.isMember) {
       this.fetchModels()
+      this.fetchFilters()
       this.fetchCount()
     }
   },
@@ -240,37 +246,39 @@ export default {
       }
       return this.fleetCount.models[slug]
     },
-    fetch() {
-      this.$api.get(`fleets/${this.$route.params.sid}`, {}, (response) => {
-        this.loading = false
-        if (!response.error) {
-          this.fleet = response.data
-          if (response.data.background) {
-            this.$store.commit('setBackgroundImage', response.data.background)
-          }
+    async fetch() {
+      const response = await this.$api.get(`fleets/${this.$route.params.sid}`, {})
+      this.loading = false
+      if (!response.error) {
+        this.fleet = response.data
+        if (response.data.background) {
+          this.$store.commit('setBackgroundImage', response.data.background)
         }
-      })
+      }
     },
-    fetchModels() {
+    async fetchModels() {
       this.loading = true
-      this.$api.get(`fleets/${this.$route.params.sid}/models`, {
+      const response = await this.$api.get(`fleets/${this.$route.params.sid}/models`, {
         q: this.$route.query.q,
         page: this.$route.query.page,
-      }, (response) => {
-        this.loading = false
-
-        if (!response.error) {
-          this.fleetModels = response.data
-        }
-        this.setPages(response.meta)
       })
+      this.loading = false
+      if (!response.error) {
+        this.fleetModels = response.data
+      }
+      this.setPages(response.meta)
     },
-    fetchCount() {
-      this.$api.get(`fleets/${this.$route.params.sid}/count`, {}, (response) => {
-        if (!response.error) {
-          this.fleetCount = response.data
-        }
-      })
+    async fetchCount() {
+      const response = await this.$api.get(`fleets/${this.$route.params.sid}/count`, {})
+      if (!response.error) {
+        this.fleetCount = response.data
+      }
+    },
+    async fetchFilters() {
+      const response = await this.$api.get('models/filters', {})
+      if (!response.error) {
+        this.filters = response.data
+      }
     },
   },
   metaInfo() {

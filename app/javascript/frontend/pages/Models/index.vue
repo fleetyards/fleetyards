@@ -103,7 +103,7 @@
               v-show="modelFilterVisible"
               class="hidden-xs hidden-sm col-md-3 col-xlg-2"
             >
-              <ModelsFilterForm />
+              <ModelsFilterForm :filters="filters" />
             </div>
           </transition>
         </div>
@@ -118,6 +118,7 @@
         </div>
         <ModelsFilterModal
           ref="filterModal"
+          :filters="filters"
         />
       </div>
     </div>
@@ -152,6 +153,7 @@ export default {
     return {
       loading: false,
       models: [],
+      filters: [],
     }
   },
   computed: {
@@ -179,6 +181,7 @@ export default {
   },
   created() {
     this.fetch()
+    this.fetchFilters()
   },
   methods: {
     toggleFilter() {
@@ -190,20 +193,24 @@ export default {
     openFilter() {
       this.$refs.filterModal.open()
     },
-    fetch() {
+    async fetch() {
       this.loading = true
-      this.$api.get('models', {
+      const response = await this.$api.get('models', {
         q: this.$route.query.q,
         page: this.$route.query.page,
-      }, (args) => {
-        this.loading = false
-
-        if (!args.error) {
-          this.models = args.data
-          this.scrollToAnchor()
-        }
-        this.setPages(args.meta)
       })
+      this.loading = false
+      if (!response.error) {
+        this.models = response.data
+        this.scrollToAnchor()
+      }
+      this.setPages(response.meta)
+    },
+    async fetchFilters() {
+      const response = await this.$api.get('models/filters', {})
+      if (!response.error) {
+        this.filters = response.data
+      }
     },
   },
   metaInfo() {

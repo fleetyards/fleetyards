@@ -212,23 +212,21 @@ export default {
         },
       })
     },
-    fetchModels() {
+    async fetchModels() {
       this.modelsLoading = true
-      this.$api.get('models/latest', {}, (args) => {
-        this.modelsLoading = false
-        if (!args.error) {
-          this.models = args.data
-        }
-      })
+      const response = this.$api.get('models/latest', {})
+      this.modelsLoading = false
+      if (!response.error) {
+        this.models = response.data
+      }
     },
-    fetchImages() {
+    async fetchImages() {
       this.imagesLoading = true
-      this.$api.get('images/random', {}, (args) => {
-        this.imagesLoading = false
-        if (!args.error) {
-          this.images = args.data
-        }
-      })
+      const response = await this.$api.get('images/random', {})
+      this.imagesLoading = false
+      if (!response.error) {
+        this.images = response.data
+      }
     },
     scrollDown() {
       this.$scrollTo('.ships')

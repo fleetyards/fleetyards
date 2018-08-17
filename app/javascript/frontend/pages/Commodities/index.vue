@@ -194,14 +194,16 @@ export default {
   },
   created() {
     if (this.$route.params.id) {
-      this.$api.get(`commodity-prices/${this.$route.params.id}`, {}, (args) => {
-        if (!args.error) {
-          this.$store.commit('setTradeHubPrices', args.data.data)
-        }
-      })
+      this.fetch()
     }
   },
   methods: {
+    async fetch() {
+      const response = await this.$api.get(`commodity-prices/${this.$route.params.id}`, {})
+      if (!response.error) {
+        this.$store.commit('setTradeHubPrices', response.data.data)
+      }
+    },
     openFilter() {
       this.$refs.filterModal.open()
     },
@@ -233,23 +235,22 @@ export default {
         },
       })
     },
-    save() {
-      this.$api.post('commodity-prices', {
+    async save() {
+      const response = await this.$api.post('commodity-prices', {
         data: JSON.stringify(this.tradeHubPrices),
-      }, (args) => {
-        if (!args.error) {
-          this.$store.commit('setTradeHubPricesID', args.data.id)
-          this.$router.replace({
-            name: 'commoditiesSaved',
-            params: {
-              id: args.data.id,
-            },
-            query: {
-              q: this.$route.query.q,
-            },
-          })
-        }
       })
+      if (!response.error) {
+        this.$store.commit('setTradeHubPricesID', response.data.id)
+        this.$router.replace({
+          name: 'commoditiesSaved',
+          params: {
+            id: response.data.id,
+          },
+          query: {
+            q: this.$route.query.q,
+          },
+        })
+      }
     },
   },
   metaInfo() {

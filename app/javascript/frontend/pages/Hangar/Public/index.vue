@@ -233,39 +233,36 @@ export default {
         download(canvas.toDataURL(), 'fleetchart.png')
       })
     },
-    fetch() {
+    async fetch() {
       this.loading = true
 
       this.fetchCount()
 
-      this.$api.get(`vehicles/${this.username}`, {
+      const response = await this.$api.get(`vehicles/${this.username}`, {
         page: this.$route.query.page,
-      }, (args) => {
-        this.loading = false
+      })
+      this.loading = false
 
-        if (!args.error) {
-          this.vehicles = args.data
-        }
-        this.setPages(args.meta)
-      })
+      if (!response.error) {
+        this.vehicles = response.data
+      }
+      this.setPages(response.meta)
     },
-    fetchCount() {
-      this.$api.get(`vehicles/${this.username}/count`, {}, (args) => {
-        if (!args.error) {
-          this.vehiclesCount = args.data
-        }
-      })
+    async fetchCount() {
+      const response = await this.$api.get(`vehicles/${this.username}/count`, {})
+      if (!response.error) {
+        this.vehiclesCount = response.data
+      }
     },
-    fetchFleetchart() {
+    async fetchFleetchart() {
       this.loading = true
-      this.$api.get('vehicles/fleetchart', {
+      const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
-      }, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.fleetchartVehicles = args.data
-        }
       })
+      this.loading = false
+      if (!response.error) {
+        this.fleetchartVehicles = response.data
+      }
     },
   },
   metaInfo() {

@@ -161,22 +161,20 @@ export default {
     }
   },
   methods: {
-    changePassword() {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          return
-        }
-        this.submitting = true
-        this.$api.post(`password/update/${this.$route.params.token}`, this.form, (args) => {
-          this.submitting = false
-          if (!args.error) {
-            success(this.t('messages.changePassword.success'))
-            this.$router.push('/')
-          } else {
-            alert(this.t('messages.changePassword.failure'))
-          }
-        })
-      })
+    async changePassword() {
+      const result = await this.$validator.validateAll()
+      if (!result) {
+        return
+      }
+      this.submitting = true
+      const response = await this.$api.post(`password/update/${this.$route.params.token}`, this.form)
+      this.submitting = false
+      if (!response.error) {
+        success(this.t('messages.changePassword.success'))
+        this.$router.push('/')
+      } else {
+        alert(this.t('messages.changePassword.failure'))
+      }
     },
   },
   metaInfo() {

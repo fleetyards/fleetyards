@@ -11,44 +11,41 @@ export default {
     }
   },
   methods: {
-    fetchModels() {
-      this.$api.get('models/cargo-options', {}, (args) => {
-        if (!args.error) {
-          this.modelOptions = args.data.map(item => ({
-            name: `${item.name} (${this.toNumber(item.cargo, 'cargo')})`,
-            value: item.value,
-            cargo: item.cargo,
-          }))
-        }
-      })
+    async fetchModels() {
+      const response = await this.$api.get('models/cargo-options', {})
+      if (!response.error) {
+        this.modelOptions = response.data.map(item => ({
+          name: `${item.name} (${this.toNumber(item.cargo, 'cargo')})`,
+          value: item.value,
+          cargo: item.cargo,
+        }))
+      }
     },
-    fetchTradeHubs() {
+    async fetchTradeHubs() {
       this.tradeHubsLoading = true
-      this.$api.get('trade-hubs', {}, (args) => {
-        this.tradeHubsLoading = false
-        if (!args.error) {
-          this.tradeHubs = args.data
-          this.tradeHubs.forEach((hub) => {
-            hub.tradeCommodities.forEach((tc) => {
-              if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] && tc.sell) {
-                this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] = tc.sellPrice
-              }
-              if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] && tc.buy) {
-                this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] = tc.buyPrice
-              }
-            })
+      const response = await this.$api.get('trade-hubs', {})
+      this.tradeHubsLoading = false
+      if (!response.error) {
+        this.tradeHubs = response.data
+        this.tradeHubs.forEach((hub) => {
+          hub.tradeCommodities.forEach((tc) => {
+            if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] && tc.sell) {
+              this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] = tc.sellPrice
+            }
+            if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] && tc.buy) {
+              this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] = tc.buyPrice
+            }
           })
-        }
-      })
+        })
+      }
     },
-    fetchCommodities() {
+    async fetchCommodities() {
       this.commoditiesLoading = true
-      this.$api.get('commodities', {}, (args) => {
-        this.commoditiesLoading = false
-        if (!args.error) {
-          this.commodities = args.data
-        }
-      })
+      const response = await this.$api.get('commodities', {})
+      this.commoditiesLoading = false
+      if (!response.error) {
+        this.commodities = response.data
+      }
     },
     stationTypeLabel(type) {
       if (['asteroid_station'].includes(type)) {

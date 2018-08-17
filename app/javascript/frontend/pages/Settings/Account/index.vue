@@ -42,17 +42,16 @@ export default {
   methods: {
     destroy() {
       this.deleting = true
-      confirm(this.t('confirm.account.destroy'), () => {
-        this.$api.destroy('users/current', (args) => {
-          if (!args.error) {
-            success(this.t('messages.account.destroy.success'))
-            this.$store.commit('logout')
-            this.$router.push({ name: 'home' })
-          } else {
-            alert(this.t('messages.account.destroy.error'))
-            this.deleting = false
-          }
-        })
+      confirm(this.t('confirm.account.destroy'), async () => {
+        const response = await this.$api.destroy('users/current')
+        if (!response.error) {
+          success(this.t('messages.account.destroy.success'))
+          this.$store.commit('logout')
+          this.$router.push({ name: 'home' })
+        } else {
+          alert(this.t('messages.account.destroy.error'))
+          this.deleting = false
+        }
       }, () => {
         this.deleting = false
       })

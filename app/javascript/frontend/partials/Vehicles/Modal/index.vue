@@ -161,15 +161,14 @@ export default {
         this.deleting = false
       })
     },
-    destroy() {
-      this.$api.destroy(`vehicles/${this.vehicle.id}`, (args) => {
-        if (!args.error) {
-          this.$refs.modal.close()
-          this.$comlink.$emit('vehicleDelete', args.data)
-        } else {
-          this.deleting = false
-        }
-      })
+    async destroy() {
+      const response = await this.$api.destroy(`vehicles/${this.vehicle.id}`)
+      if (!response.error) {
+        this.$refs.modal.close()
+        this.$comlink.$emit('vehicleDelete', response.data)
+      } else {
+        this.deleting = false
+      }
     },
     changeGroup(group) {
       if (this.form.hangarGroupIds.includes(group.id)) {
@@ -181,15 +180,14 @@ export default {
         this.form.hangarGroupIds.push(group.id)
       }
     },
-    save() {
+    async save() {
       this.submitting = true
-      this.$api.put(`vehicles/${this.vehicle.id}`, this.form, (args) => {
-        this.submitting = false
-        if (!args.error) {
-          this.$refs.modal.close()
-          this.$comlink.$emit('vehicleSave', args.data)
-        }
-      })
+      const response = await this.$api.put(`vehicles/${this.vehicle.id}`, this.form)
+      this.submitting = false
+      if (!response.error) {
+        this.$refs.modal.close()
+        this.$comlink.$emit('vehicleSave', response.data)
+      }
     },
   },
 }

@@ -81,21 +81,20 @@ export default {
     }
   },
   methods: {
-    login() {
+    async login() {
       this.submitting = true
-      this.$api.post('sessions', this.form, (args) => {
-        this.submitting = false
-        if (!args.error) {
-          this.$store.commit('login', args.data.token)
-          if (this.$route.params.redirectToRoute) {
-            this.$router.replace({ name: this.$route.params.redirectToRoute })
-          } else {
-            this.$router.push('/')
-          }
+      const response = await this.$api.post('sessions', this.form)
+      this.submitting = false
+      if (!response.error) {
+        this.$store.commit('login', response.data.token)
+        if (this.$route.params.redirectToRoute) {
+          this.$router.replace({ name: this.$route.params.redirectToRoute })
         } else {
-          alert(args.error.response.data.message)
+          this.$router.push('/')
         }
-      })
+      } else {
+        alert(response.error.response.data.message)
+      }
     },
   },
   metaInfo() {

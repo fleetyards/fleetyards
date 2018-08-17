@@ -99,27 +99,25 @@ export default {
         alert(this.t('messages.copy.failure'))
       })
     },
-    submit() {
+    async submit() {
       this.submitting = true
-      this.$api.post('users/finish-rsi-verification', {}, (args) => {
-        this.submitting = false
-        if (!args.error) {
-          success(this.t('messages.rsiVerification.success'))
-          this.$comlink.$emit('userUpdate')
-          this.$router.push({ name: 'settings-profile' })
-        } else {
-          alert(this.t('messages.rsiVerification.failure'))
-        }
-      })
+      const response = await this.$api.post('users/finish-rsi-verification')
+      this.submitting = false
+      if (!response.error) {
+        success(this.t('messages.rsiVerification.success'))
+        this.$comlink.$emit('userUpdate')
+        this.$router.push({ name: 'settings-profile' })
+      } else {
+        alert(this.t('messages.rsiVerification.failure'))
+      }
     },
-    startRsiVerification() {
+    async startRsiVerification() {
       this.fetchRsiVerificationToken = true
-      this.$api.post('users/start-rsi-verification', {}, ({ error, data }) => {
-        this.fetchRsiVerificationToken = false
-        if (!error) {
-          this.rsiVerificationToken = data.token
-        }
-      })
+      const response = await this.$api.post('users/start-rsi-verification', {})
+      this.fetchRsiVerificationToken = false
+      if (!response.error) {
+        this.rsiVerificationToken = response.data.token
+      }
     },
   },
   metaInfo() {

@@ -123,12 +123,11 @@ export default {
         this.$router.replace(this.$store.state.lastRoute)
       }
     },
-    fetchHangar() {
-      this.$api.get('vehicles/hangar-items', {}, (args) => {
-        if (!args.error) {
-          this.$store.commit('setHangar', args.data)
-        }
-      })
+    async fetchHangar() {
+      const response = await this.$api.get('vehicles/hangar-items', {})
+      if (!response.error) {
+        this.$store.commit('setHangar', response.data)
+      }
     },
   },
 }

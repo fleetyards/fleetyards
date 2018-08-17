@@ -229,17 +229,16 @@ export default {
       }
       return this.ships.filter(item => item === slug).length
     },
-    fetch() {
+    async fetch() {
       this.loading = true
-      this.$api.post('models/embed', {
+      const response = await this.$api.post('models/embed', {
         models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
-      }, (args) => {
-        this.loading = false
-
-        if (!args.error) {
-          this.models = args.data
-        }
       })
+      this.loading = false
+
+      if (!response.error) {
+        this.models = response.data
+      }
     },
   },
 }

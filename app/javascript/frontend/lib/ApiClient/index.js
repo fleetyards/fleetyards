@@ -33,22 +33,7 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   return meta
 }
 
-const handleResponse = function handleResponse(response, callback, params) {
-  const meta = extractMetaInfo(response.headers, params)
-  nprogress.done()
-
-  if (callback) {
-    callback({
-      data: response.data, error: null, meta, params,
-    })
-  }
-
-  return {
-    data: response.data, error: null, meta, params,
-  }
-}
-
-const handleError = function handleError(error, callback) {
+const handleError = function handleError(error) {
   nprogress.done()
 
   if (!error.response || !error.response.data || !error.response.data.message) {
@@ -59,39 +44,58 @@ const handleError = function handleError(error, callback) {
     Store.commit('logout')
   }
 
-  if (callback) {
-    callback({ data: null, meta: null, error })
+  return {
+    data: null,
+    meta: null,
+    error,
   }
-
-  return { data: null, meta: null, error }
 }
 
-export function get(path, params = {}, callback) {
-  nprogress.start()
-  return client.get(path, { params })
-    .then(response => handleResponse(response, callback, params))
-    .catch(error => handleError(error, callback))
+const handleResponse = function handleResponse(response, params) {
+  nprogress.done()
+
+  const meta = extractMetaInfo(response.headers, params)
+
+  return {
+    data: response.data,
+    error: null,
+    meta,
+    params,
+  }
 }
 
-export function post(path, body = {}, callback) {
+export async function get(path, params = {}) {
   nprogress.start()
-  return client.post(path, body)
-    .then(response => handleResponse(response, callback, body))
-    .catch(error => handleError(error, callback))
+  try {
+    return handleResponse(await client.get(path, { params }), params)
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
-export function put(path, body = {}, callback) {
+export async function post(path, body = {}) {
   nprogress.start()
-  return client.put(path, body)
-    .then(response => handleResponse(response, callback, body))
-    .catch(error => handleError(error, callback))
+  try {
+    return handleResponse(await client.post(path, body), body)
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export async function put(path, body = {}) {
+  nprogress.start()
+  try {
+    return handleResponse(await client.put(path, body), body)
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
 export function destroy(path, callback) {
   nprogress.start()
   return client.delete(path)
     .then(response => handleResponse(response, callback))
-    .catch(error => handleError(error, callback))
+    // .catch(error => handleError(error, callback))
 }
 
 Vue.prototype.$api = {

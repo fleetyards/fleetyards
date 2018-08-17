@@ -228,22 +228,20 @@ export default {
       this.form.email = this.currentUser.email
       this.form.saleNotify = !!this.currentUser.saleNotify
     },
-    submit() {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          return
-        }
-        this.submitting = true
-        this.$api.put('users/current', this.form, (args) => {
-          this.submitting = false
-          if (!args.error) {
-            this.$comlink.$emit('userUpdate')
-            success(this.t('messages.updateProfile.success'))
-          }
-        })
-      })
+    async submit() {
+      const result = await this.$validator.validateAll()
+      if (!result) {
+        return
+      }
+      this.submitting = true
+      const response = await this.$api.put('users/current', this.form)
+      this.submitting = false
+      if (!response.error) {
+        this.$comlink.$emit('userUpdate')
+        success(this.t('messages.updateProfile.success'))
+      }
     },
-    fetchCitizen() {
+    async fetchCitizen() {
       this.rsiCitizen = null
 
       if (!this.form.rsiHandle) {
@@ -251,12 +249,11 @@ export default {
       }
 
       this.loading = true
-      this.$api.get(`rsi/citizens/${this.form.rsiHandle}`, {}, (args) => {
-        this.loading = false
-        if (!args.error) {
-          this.rsiCitizen = args.data
-        }
-      })
+      const response = await this.$api.get(`rsi/citizens/${this.form.rsiHandle}`, {})
+      this.loading = false
+      if (!response.error) {
+        this.rsiCitizen = response.data
+      }
     },
   },
   metaInfo() {
