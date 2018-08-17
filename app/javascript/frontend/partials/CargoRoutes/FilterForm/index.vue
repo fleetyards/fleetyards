@@ -53,7 +53,6 @@
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
-import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Btn from 'frontend/components/Btn'
 
 export default {
@@ -61,8 +60,26 @@ export default {
     FilterGroup,
     Btn,
   },
-  mixins: [I18n, CargoRoutes, Filters],
+  mixins: [I18n, Filters],
   props: {
+    tradeHubs: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    commodities: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    modelOptions: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
     hideButtons: {
       type: Boolean,
       default: false,

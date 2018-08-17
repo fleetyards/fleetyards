@@ -6,6 +6,9 @@
   >
     <FilterForm
       ref="filterForm"
+      :trade-hubs="tradeHubs"
+      :commodities="commodities"
+      :model-options="modelOptions"
       hide-buttons
       prefix="filter-modal"
     />
@@ -37,6 +40,24 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
+    tradeHubs: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    commodities: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    modelOptions: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
     visible: {
       type: Boolean,
       default: false,

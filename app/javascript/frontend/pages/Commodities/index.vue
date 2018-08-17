@@ -134,11 +134,18 @@
         </div>
       </div>
       <div class="hidden-xs hidden-sm col-md-3">
-        <FilterForm />
+        <FilterForm
+          :trade-hubs="tradeHubs"
+          :commodities="commodities"
+          :model-options="modelOptions"
+        />
       </div>
     </div>
     <FilterModal
       ref="filterModal"
+      :trade-hubs="tradeHubs"
+      :commodities="commodities"
+      :model-options="modelOptions"
       :title="t('headlines.filterCommodities')"
     />
   </section>
