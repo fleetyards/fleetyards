@@ -44,7 +44,9 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        @models = Model.where('cargo > 0').all
+        @models = Model.where('cargo > 0')
+                       .order(name: :asc)
+                       .all
       end
 
       def latest
