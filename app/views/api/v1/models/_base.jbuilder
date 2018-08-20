@@ -27,7 +27,7 @@ json.size model.size
 json.store_image model.store_image.url
 json.fleetchart_image model.fleetchart_image.url
 json.brochure model.brochure.url
-json.store_url store_url(model.store_url)
+json.store_url rsi_store_url(model.store_url)
 json.price((model.price.to_f if model.price.present?))
 json.last_price((model.fallback_price.to_f if model.fallback_price.present?))
 json.on_sale model.on_sale
