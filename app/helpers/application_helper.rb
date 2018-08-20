@@ -62,6 +62,10 @@ module ApplicationHelper
   end
 
   def og_image
-    @og_image
+    @og_image || asset_url('icon-512.png')
+  end
+
+  def og_description
+    description
   end
 end
