@@ -92,7 +92,7 @@ class RsiModelsLoader
       end
     end
 
-    prices.sort!
+    prices.compact.sort!
 
     OpenStruct.new(
       price: prices.first,
