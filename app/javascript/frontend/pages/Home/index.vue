@@ -214,7 +214,7 @@ export default {
     },
     async fetchModels() {
       this.modelsLoading = true
-      const response = this.$api.get('models/latest', {})
+      const response = await this.$api.get('models/latest', {})
       this.modelsLoading = false
       if (!response.error) {
         this.models = response.data

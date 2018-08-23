@@ -31,6 +31,8 @@
   },
   "headlines": {
     "welcome": "Welcome to",
+    "welcomeShips": "Latest Ships",
+    "welcomeImages": "Random Images",
     "models": "Ships Index",
     "images": "Images Index",
     "error": "Navigation Error",
