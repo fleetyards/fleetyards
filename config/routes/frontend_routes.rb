@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 namespace :frontend, path: '', constraints: { subdomain: 'www' } do
+  get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
+
   get 'ships' => 'base#index'
   get 'ships/:slug' => 'base#model'
 
