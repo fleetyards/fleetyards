@@ -147,7 +147,7 @@
             class="col-xs-12"
           >
             <div
-              v-if="hangarFleetchart && fleetchartVehicles.length > 0"
+              v-if="hangarFleetchart && fleetchartVehicles.length"
               class="row"
             >
               <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -208,7 +208,7 @@
               </div>
             </transition-group>
             <EmptyBox v-if="!loading && !vehicles.length && isFilterSelected" />
-            <HangarGuideBox v-if="!loading && !vehicles.length && !isFilterSelected" />
+            <HangarGuideBox v-if="guideVisible" />
             <Loader
               v-if="loading"
               fixed
@@ -312,6 +312,10 @@ export default {
       'hangarFleetchart',
       'hangarFilterVisible',
     ]),
+    guideVisible() {
+      return !this.loading && !this.vehicles.length && !this.isFilterSelected
+        && !this.fleetchartVehicles.length
+    },
     toggleDetailsTooltip() {
       if (this.hangarDetails) {
         return this.t('actions.hideDetails')

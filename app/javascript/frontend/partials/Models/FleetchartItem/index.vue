@@ -12,7 +12,6 @@
       }"
     >
       <FleetchartItemImage
-        v-if="model.fleetchartImage"
         :model="model"
         :scale="scale"
       />
