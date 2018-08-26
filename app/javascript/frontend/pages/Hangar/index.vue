@@ -152,11 +152,11 @@
             >
               <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
                 <vue-slider
-                  ref="slider"
+                  ref="scaleSlider"
                   v-model="scale"
-                  :min="scaleMin"
-                  :max="scaleMax"
-                  :interval="scaleInterval"
+                  :min="0.5"
+                  :max="4"
+                  :interval="0.1"
                   formatter="{value}x"
                   tooltip="hover"
                 />
@@ -299,9 +299,6 @@ export default {
       vehiclesCount: null,
       tooltipTrigger: 'click',
       scale: this.$store.state.hangarFleetchartScale,
-      scaleMax: 4,
-      scaleMin: 0.5,
-      scaleInterval: 0.1,
     }
   },
   computed: {
@@ -424,6 +421,9 @@ export default {
         q: this.$route.query.q,
       })
       this.loading = false
+      this.$nextTick(() => {
+        setTimeout(this.$refs.scaleSlider.refresh, 500)
+      })
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
