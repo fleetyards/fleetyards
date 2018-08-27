@@ -114,9 +114,9 @@ export default {
     },
     totalVisible() {
       if (this.mobile) {
-        return 5
+        return Math.min(5, this.total)
       }
-      return Math.max(5, this.visible)
+      return Math.min(Math.max(5, this.visible), this.total)
     },
     leftPagesCount() {
       let leftPagesCount = this.totalVisible - 2
@@ -132,10 +132,10 @@ export default {
       if (this.page < 3) {
         leftPagesCount = 0
       }
-      if (this.page === this.total - 1) {
+      if (this.page === this.total - 1 && this.total !== 4) {
         leftPagesCount -= 1
       }
-      if (this.page === this.total - 2) {
+      if (this.page === this.total - 2 && this.total !== 5) {
         leftPagesCount -= 2
       }
       return Math.max(leftPagesCount, 0)
@@ -154,10 +154,10 @@ export default {
       if (this.page > this.total - 2) {
         rightPagesCount = 0
       }
-      if (this.page === 2) {
+      if (this.page === 2 && this.total !== 4) {
         rightPagesCount -= 1
       }
-      if (this.page === 3) {
+      if (this.page === 3 && this.total !== 5) {
         rightPagesCount -= 2
       }
       return Math.max(rightPagesCount, 0)

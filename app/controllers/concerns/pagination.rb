@@ -21,9 +21,5 @@ module Concerns
     private def page_link(page)
       url_for(controller: controller_name, action: action_name, page: page)
     end
-
-    private def per_page
-      @per_page ||= [params[:perPage].to_i, 200].min if params[:perPage].present?
-    end
   end
 end

@@ -207,7 +207,7 @@
                 />
               </div>
             </transition-group>
-            <EmptyBox v-if="!loading && !vehicles.length && isFilterSelected" />
+            <EmptyBox v-if="emptyBoxVisible" />
             <HangarGuideBox v-if="guideVisible" />
             <Loader
               v-if="loading"
@@ -309,6 +309,10 @@ export default {
       'hangarFleetchart',
       'hangarFilterVisible',
     ]),
+    emptyBoxVisible() {
+      return !this.loading && !this.vehicles.length && (this.isFilterSelected
+        || this.$route.query.page)
+    },
     guideVisible() {
       return !this.loading && !this.vehicles.length && !this.isFilterSelected
         && !this.fleetchartVehicles.length

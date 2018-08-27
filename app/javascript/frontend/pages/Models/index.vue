@@ -89,7 +89,7 @@
                 />
               </div>
             </transition-group>
-            <EmptyBox v-if="!loading && !models.length && isFilterSelected" />
+            <EmptyBox v-if="emptyBoxVisible" />
             <Loader
               v-if="loading"
               fixed
@@ -161,6 +161,10 @@ export default {
       'modelDetails',
       'modelFilterVisible',
     ]),
+    emptyBoxVisible() {
+      return !this.loading && !this.models.length && (this.isFilterSelected
+        || this.$route.query.page)
+    },
     toggleDetailsTooltip() {
       if (this.hangarDetails) {
         return this.t('actions.hideDetails')
