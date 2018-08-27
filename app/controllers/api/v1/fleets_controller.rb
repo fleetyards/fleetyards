@@ -17,7 +17,7 @@ module Api
 
         @fleets = scope.order(name: :asc)
                        .page(params[:page])
-                       .per(params[:per_page])
+                       .per([(params[:per_page] || Fleet.default_per_page), Fleet.default_per_page * 4].min)
       end
 
       def my

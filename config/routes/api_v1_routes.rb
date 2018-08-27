@@ -12,7 +12,6 @@ v1_api_routes = lambda do
       post :embed
     end
     member do
-      get :gallery
       get :store_image, path: 'store-image'
       get :fleetchart_image, path: 'fleetchart-image'
     end

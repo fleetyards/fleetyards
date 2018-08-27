@@ -24,7 +24,7 @@ module Api
 
         @models = @q.result
                     .page(params[:page])
-                    .per(params[:per_page])
+                    .per([(params[:per_page] || Model.default_per_page), Model.default_per_page * 4].min)
       end
 
       def filters
@@ -88,16 +88,6 @@ module Api
         authorize! :show, :api_models
         model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         redirect_to model.fleetchart_image.url
-      end
-
-      def gallery
-        authorize! :index, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
-        @images = model.images
-                       .enabled
-                       .order(created_at: :asc)
-                       .offset(params[:offset])
-                       .limit(params[:limit])
       end
 
       private def price_range

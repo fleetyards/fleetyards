@@ -3,7 +3,7 @@
 require 'rsi_orgs_loader'
 
 class Fleet < ApplicationRecord
-  paginates_per 18
+  paginates_per 30
 
   validates :sid, presence: true, uniqueness: true
 

@@ -16,7 +16,7 @@ module Api
 
         @vehicles = @q.result
                       .page(params[:page])
-                      .per(params[:per_page])
+                      .per([(params[:per_page] || Vehicle.default_per_page), Vehicle.default_per_page * 4].min)
       end
 
       def fleetchart
@@ -67,7 +67,7 @@ module Api
 
         @vehicles = @q.result
                       .page(params[:page])
-                      .per(params[:per_page])
+                      .per([(params[:per_page] || Vehicle.default_per_page), Vehicle.default_per_page * 4].min)
       end
 
       def public_count

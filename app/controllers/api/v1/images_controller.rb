@@ -13,7 +13,7 @@ module Api
                        .with_uniq_name
                        .order('images.created_at desc')
                        .page(params[:page])
-                       .per(params[:per_page])
+                       .per([(params[:per_page] || Image.default_per_page), Image.default_per_page * 4].min)
       end
 
       def random

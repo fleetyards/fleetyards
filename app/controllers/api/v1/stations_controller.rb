@@ -12,7 +12,9 @@ module Api
 
         @q.sorts = 'name asc' if @q.sorts.empty?
 
-        @stations = @q.result.offset(params[:offset]).limit(params[:limit])
+        @stations = @q.result
+                      .page(params[:page])
+                      .per([(params[:per_page] || Station.default_per_page), Station.default_per_page * 4].min)
       end
 
       def show
