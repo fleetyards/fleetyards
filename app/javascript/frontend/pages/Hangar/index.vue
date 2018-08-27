@@ -426,7 +426,9 @@ export default {
       })
       this.loading = false
       this.$nextTick(() => {
-        setTimeout(this.$refs.scaleSlider.refresh, 500)
+        if (this.$refs.scaleSlider) {
+          setTimeout(this.$refs.scaleSlider.refresh, 500)
+        }
       })
       if (!response.error) {
         this.fleetchartVehicles = response.data
