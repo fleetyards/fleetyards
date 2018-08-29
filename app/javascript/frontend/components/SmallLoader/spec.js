@@ -1,9 +1,14 @@
-import Loader from 'frontend/components/Loader'
+import SmallLoader from 'frontend/components/SmallLoader'
 
-describe('Loader', () => {
-  it('renders centered loader', () => {
-    const cmp = mountVM(Loader)
-    expect(cmp.vm.$el.className).toBe('text-center')
-    expect(cmp.vm.$el.querySelector('.loader')).not.toBeNull()
+describe('SmallLoader', () => {
+  it('does not render Smallloader default', () => {
+    const cmp = mountVM(SmallLoader)
+    expect(cmp.vm.$el.innerHTML).toBeUndefined()
+  })
+
+  it('renders Smallloader', () => {
+    const cmp = mountVM(SmallLoader, { loading: true })
+    // cmp.loading = true
+    expect(cmp.vm.$el).not.toBeNull()
   })
 })
