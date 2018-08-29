@@ -86,7 +86,8 @@ module Api
               'beam' => 10.2,
               'height' => 10.2,
               'mass' => 1000.02,
-              'cargo' => 90.0,
+              'cargo' => 90,
+              'cargoLabel' => 'Andromeda (90 SCU)',
               'minCrew' => 3,
               'maxCrew' => 5,
               'scmSpeed' => nil,
@@ -116,7 +117,8 @@ module Api
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
-                'code' => nil
+                'code' => nil,
+                'logo' => nil
               },
               'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
               'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
