@@ -50,7 +50,7 @@
           />
         </transition>
         <Loader
-          v-if="loading"
+          :loading="loading"
           class="fleet-modal-loader"
         />
       </div>

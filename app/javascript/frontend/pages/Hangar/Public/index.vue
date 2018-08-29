@@ -125,7 +125,7 @@
           </div>
         </transition-group>
         <Loader
-          v-if="loading"
+          :loading="loading"
           fixed
         />
       </div>

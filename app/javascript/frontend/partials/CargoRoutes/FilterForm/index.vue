@@ -12,6 +12,7 @@
       :options="modelOptions"
       :label="t('labels.filters.cargoRoutes.cargoShip')"
       :name="`${prefix}-models`"
+      searchable
     />
     <FilterGroup
       v-if="tradeHubOptions.length > 0"
@@ -19,6 +20,7 @@
       v-model="form.tradeHubIn"
       :label="t('labels.filters.cargoRoutes.tradeHub')"
       :name="`${prefix}-tradehubs`"
+      searchable
       multiple
     />
     <FilterGroup
@@ -27,6 +29,7 @@
       :options="commodityOptions"
       :label="t('labels.filters.cargoRoutes.commodity')"
       :name="`${prefix}-commodities`"
+      searchable
       multiple
     />
     <FilterGroup
@@ -35,6 +38,7 @@
       v-model="form.planetIn"
       :name="`${prefix}-planets`"
       :label="t('labels.filters.cargoRoutes.planet')"
+      searchable
       multiple
     />
     <Btn

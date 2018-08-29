@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { apiClient } from 'frontend/lib/ApiClient'
 import getStorePlugins from './plugins'
 
 Vue.use(Vuex)
@@ -83,6 +84,26 @@ const store = new Vuex.Store({
       return state.modelFilterVisible
     },
   },
+  actions: {
+    async logout(context) {
+      context.commit('setAuthToken', null)
+      context.commit('setHangar', [])
+      context.commit('setCurrentUser', null)
+      context.commit('setCitizen', null)
+
+      try {
+        await apiClient.destroy('sessions')
+      } catch (_error) {
+        // ignoring logout error
+      }
+    },
+    login(context, authToken) {
+      context.commit('setAuthToken', authToken)
+    },
+    renewToken(context, token) {
+      context.commit('setAuthToken', token)
+    },
+  },
   /* eslint-disable no-param-reassign */
   mutations: {
     reset(state) {
@@ -104,7 +125,7 @@ const store = new Vuex.Store({
     setOnlineStatus(state, payload) {
       state.online = payload
     },
-    login(state, payload) {
+    setAuthToken(state, payload) {
       state.authToken = payload
     },
     logout(state) {

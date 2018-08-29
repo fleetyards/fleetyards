@@ -10,7 +10,8 @@ json.length model.display_length.to_f
 json.beam model.display_beam.to_f
 json.height model.display_height.to_f
 json.mass model.display_mass.to_f
-json.cargo((model.display_cargo.to_f if model.display_cargo.present?))
+json.cargo model.human_display_cargo
+json.cargoLabel model.cargo_label
 json.min_crew model.display_min_crew
 json.max_crew model.display_max_crew
 json.scm_speed model.display_scm_speed

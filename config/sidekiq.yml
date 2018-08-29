@@ -5,3 +5,4 @@
   - fleetyards_fleets_loader
   - fleetyards_mailers
   - fleetyards_model_notification
+  - fleetyards_cleanup_auth_tokens

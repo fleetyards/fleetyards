@@ -14,13 +14,14 @@
             <div class="row">
               <div class="hidden-xs hidden-sm col-md-2 text-center"/>
               <div class="col-xs-12 col-md-4">
-                <Multiselect
+                <FilterGroup
                   v-model="selectA"
-                  :options-limit="100"
-                  :placeholder="t('actions.findModel')"
-                  :options="models"
-                  label="name"
-                  track-by="slug"
+                  :label="t('labels.compare.selectModel')"
+                  :name="`model-a`"
+                  :search-label="t('actions.findModel')"
+                  :fetch="fetchModels"
+                  value-attr="slug"
+                  paginated
                   searchable
                 />
                 <router-link
@@ -30,18 +31,20 @@
                 >
                   <img
                     v-lazy="modelA.storeImage"
+                    :key="modelA.storeImage"
                     alt="model Image"
                   >
                 </router-link>
               </div>
               <div class="col-xs-12 col-md-4">
-                <Multiselect
+                <FilterGroup
                   v-model="selectB"
-                  :options-limit="100"
-                  :placeholder="t('actions.findModel')"
-                  :options="models"
-                  label="name"
-                  track-by="slug"
+                  :label="t('labels.compare.selectModel')"
+                  :search-label="t('actions.findModel')"
+                  :name="`model-b`"
+                  :fetch="fetchModels"
+                  value-attr="slug"
+                  paginated
                   searchable
                 />
                 <router-link
@@ -51,6 +54,7 @@
                 >
                   <img
                     v-lazy="modelB.storeImage"
+                    :key="modelB.storeImage"
                     alt="model Image"
                   >
                 </router-link>
@@ -326,11 +330,13 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import FilterGroup from 'frontend/components/Form/FilterGroup'
 import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
 
 export default {
   components: {
     HardpointIcon,
+    FilterGroup,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -341,37 +347,57 @@ export default {
       selectB: null,
       modelB: null,
       loadingB: false,
-      models: [],
       modelFields: [
         'productionStatus', 'length', 'beam', 'height',
         'mass', 'cargo', 'netCargo', 'crew',
       ],
     }
   },
+  computed: {
+    sortedModels() {
+      const { models } = this
+      return models.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1
+        }
+        if (a.name > b.name) {
+          return 1
+        }
+        return 0
+      })
+    },
+  },
   watch: {
     selectA(value) {
-      const newQuery = {
-        shipA: value.slug,
+      let query = JSON.parse(JSON.stringify(this.$route.query))
+      if (value) {
+        query = Object.assign({}, query, { shipA: value })
+        this.setModelA(value)
+      } else {
+        delete query.shipA
+        this.modelA = null
       }
       this.$router.replace({
         name: this.$route.name,
-        query: Object.assign({}, this.$route.query, newQuery),
+        query,
       })
-      this.setModelA(value.slug)
     },
     selectB(value) {
-      const newQuery = {
-        shipB: value.slug,
+      let query = JSON.parse(JSON.stringify(this.$route.query))
+      if (value) {
+        query = Object.assign({}, query, { shipB: value })
+        this.setModelB(value)
+      } else {
+        delete query.shipB
+        this.modelB = null
       }
       this.$router.replace({
         name: this.$route.name,
-        query: Object.assign({}, this.$route.query, newQuery),
+        query,
       })
-      this.setModelB(value.slug)
     },
   },
   created() {
-    this.fetchModels()
     if (this.$route.query.shipA) {
       this.setModelA(this.$route.query.shipA)
     }
@@ -395,7 +421,7 @@ export default {
         this.loadingA = false
         this.modelA = model
         if (!this.selectA) {
-          this.selectA = model
+          this.selectA = model.slug
         }
       })
     },
@@ -405,18 +431,23 @@ export default {
         this.loadingB = false
         this.modelB = model
         if (!this.selectB) {
-          this.selectB = model
+          this.selectB = model.slug
         }
       })
     },
-    async fetchModels() {
-      const response = await this.$api.get('models', {})
-      if (!response.error) {
-        this.models = response.data
+    fetchModels({ page, search }) {
+      const query = {
+        q: {},
       }
+      if (search) {
+        query.q.nameOrSlugCont = search
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('models', query)
     },
     async fetchModel(slug, callback) {
-      const response = await this.$api.get(`models/${slug}`, {})
+      const response = await this.$api.get(`models/${slug}`)
       if (!response.error) {
         callback(response.data)
       }

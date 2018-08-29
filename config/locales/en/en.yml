@@ -46,8 +46,7 @@ en:
       cargo: Cargo
       ships: Ships
       commodities: Commodities
-      compare:
-        models: Compare Ships
+      compare_ships: Compare Ships
       settings: Settings
       settings_account: Account
       settings_profile: Settings

@@ -5,8 +5,6 @@ require 'json_web_token'
 module Api
   module V1
     class SessionsController < ::Api::V1::BaseController
-      include ActionController::HttpAuthentication::Token
-
       skip_authorization_check
       before_action :authenticate_api_user!, except: [:create]
 
@@ -39,25 +37,18 @@ module Api
       end
 
       private def new_auth_token(user_id)
+        user_agent = UserAgent.parse(request.user_agent)
         @new_auth_token ||= begin
-          AuthToken.create(
+          AuthToken.find_or_create_by(
             user_id: user_id,
-            user_agent: request.user_agent,
-            description: login_params[:description],
-            expires: login_params[:expires]
+            expires: (params[:remember_me].present? ? 30.days.to_i : 2.hours.to_i),
+            key: Digest::SHA512.hexdigest("#{user_agent.browser}-#{user_agent.platform}")
           )
         end
       end
 
-      private def jwt_token
-        @jwt_token ||= begin
-          auth_params, _options = token_and_options(request)
-          ::JsonWebToken.decode(auth_params)
-        end
-      end
-
       private def login_params
-        @login_params ||= params.permit(:login, :password, :description, :expires)
+        @login_params ||= params.permit(:login, :password, :remember_me)
       end
 
       private def invalid_login_attempt

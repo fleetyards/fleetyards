@@ -30,7 +30,7 @@
         </div>
       </div>
       <Loader
-        v-if="submitting"
+        :loading="submitting"
         fixed
       />
     </div>

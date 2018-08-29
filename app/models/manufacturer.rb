@@ -4,6 +4,8 @@ class Manufacturer < ApplicationRecord
   include SlugHelper
   include ActionView::Helpers::OutputSafetyHelper
 
+  paginates_per 30
+
   mount_uploader :logo, LogoUploader
 
   has_many :models,

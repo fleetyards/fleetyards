@@ -139,6 +139,9 @@
       "totalMaxCrew": "Max. Crew",
       "totalCargo": "Total Cargo"
     },
+    "compare": {
+      "selectModel": "Select a Model"
+    },
     "cargoRoutes": "Cargo routes",
     "uecPerUnit": "UEC / Unit",
     "uec": "UEC",
@@ -307,6 +310,7 @@
     "saveScreenshot": "Save as PNG",
     "verify": "Verify",
     "findModel": "Type to find a Ship",
+    "find": "Type to search",
     "selectModel": "Select a Cargoship",
     "sortBy": "Sort by",
     "back": "Back",

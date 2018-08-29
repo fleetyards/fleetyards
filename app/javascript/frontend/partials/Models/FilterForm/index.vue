@@ -19,43 +19,44 @@
       />
     </div>
     <FilterGroup
-      v-if="manufacturerOptions.length > 0"
-      :options="manufacturerOptions"
       v-model="form.manufacturerSlugIn"
       :label="t('labels.filters.models.manufacturer')"
       :name="`${prefix}-manufacturer`"
+      :fetch="fetchManufacturers"
+      value-attr="slug"
+      icon-attr="logo"
+      paginated
+      searchable
       multiple
     />
     <FilterGroup
-      v-if="productionStatusOptions.length > 0"
-      :options="productionStatusOptions"
       v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
       :name="`${prefix}-production-status`"
+      :fetch="fetchProductionStatus"
       multiple
     />
     <FilterGroup
-      v-if="classificationOptions.length > 0"
-      :options="classificationOptions"
       v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
       :name="`${prefix}-classification`"
+      :fetch="fetchClassifications"
+      searchable
       multiple
     />
     <FilterGroup
-      v-if="focusOptions.length > 0"
-      :options="focusOptions"
       v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
       :name="`${prefix}-focus`"
+      :fetch="fetchFocus"
+      searchable
       multiple
     />
     <FilterGroup
-      v-if="sizeOptions.length > 0"
-      :options="sizeOptions"
       v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
       :name="`${prefix}-size`"
+      :fetch="fetchSize"
       multiple
     />
     <FilterGroup
@@ -99,12 +100,6 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
-    filters: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
     hideButtons: {
       type: Boolean,
       default: false,
@@ -128,64 +123,7 @@ export default {
         priceIn: query.priceIn || [],
         sizeIn: query.sizeIn || [],
       },
-      booleanOptions: [{
-        name: 'No',
-        value: 'false',
-      }, {
-        name: 'Yes',
-        value: 'true',
-      }],
-      priceOptions: [
-        {
-          value: '-25',
-          name: '< $25',
-        }, {
-          value: '25-50',
-          name: '$25 - $49',
-        }, {
-          value: '50-75',
-          name: '$50 - $74',
-        }, {
-          value: '75-100',
-          name: '$75 - $99',
-        }, {
-          value: '100-150',
-          name: '$100 - $149',
-        }, {
-          value: '150-200',
-          name: '$150 - $199',
-        }, {
-          value: '200-350',
-          name: '$200 - $349',
-        }, {
-          value: '350-500',
-          name: '$350 - $499',
-        }, {
-          value: '500-1000',
-          name: '$500 - $999',
-        }, {
-          value: '1000-',
-          name: '> $1000',
-        },
-      ],
     }
-  },
-  computed: {
-    manufacturerOptions() {
-      return this.filters.filter(item => item.category === 'manufacturer')
-    },
-    classificationOptions() {
-      return this.filters.filter(item => item.category === 'classification')
-    },
-    focusOptions() {
-      return this.filters.filter(item => item.category === 'focus')
-    },
-    productionStatusOptions() {
-      return this.filters.filter(item => item.category === 'productionStatus')
-    },
-    sizeOptions() {
-      return this.filters.filter(item => item.category === 'size')
-    },
   },
   watch: {
     $route() {

@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import axios from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
@@ -33,7 +32,14 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   return meta
 }
 
-const handleError = function handleError(error) {
+const renewToken = function renewToken(headers) {
+  const newToken = headers['x-renew-jwt']
+  if (newToken) {
+    Store.dispatch('renewToken', newToken)
+  }
+}
+
+const handleError = async function handleError(error) {
   nprogress.done()
 
   if (!error.response || !error.response.data || !error.response.data.message) {
@@ -41,7 +47,7 @@ const handleError = function handleError(error) {
   }
 
   if (error.response && error.response.status === 401 && Store.getters.isAuthenticated) {
-    Store.commit('logout')
+    Store.dispatch('logout')
   }
 
   return {
@@ -53,6 +59,8 @@ const handleError = function handleError(error) {
 
 const handleResponse = function handleResponse(response, params) {
   nprogress.done()
+
+  renewToken(response.headers)
 
   const meta = extractMetaInfo(response.headers, params)
 
@@ -98,6 +106,6 @@ export function destroy(path, callback) {
     // .catch(error => handleError(error, callback))
 }
 
-Vue.prototype.$api = {
+export const apiClient = {
   get, post, put, destroy, client,
 }

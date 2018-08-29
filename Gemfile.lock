@@ -418,6 +418,7 @@ GEM
     uniform_notifier (1.11.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
+    useragent (0.16.10)
     vcr (4.0.0)
     warden (1.2.7)
       rack (>= 1.0)
@@ -521,6 +522,7 @@ DEPENDENCIES
   typhoeus
   uglifier
   url_plumber
+  useragent
   vcr
   web-console
   web_translate_it
@@ -531,4 +533,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3

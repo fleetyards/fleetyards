@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Model < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
+
   paginates_per 30
 
   belongs_to :manufacturer, required: false
@@ -111,6 +113,21 @@ class Model < ApplicationRecord
 
   def random_image
     images.enabled.order('RANDOM()').first
+  end
+
+  def human_display_cargo
+    return if display_cargo.blank? || display_cargo.zero?
+    number_with_precision(display_cargo, precision: 2, strip_insignificant_zeros: true)
+  end
+
+  def cargo_label
+    return if display_cargo.blank? || display_cargo.zero?
+    human_cargo = number_with_precision(
+      display_cargo,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+    "#{name} (#{human_cargo} SCU)"
   end
 
   private def broadcast_update

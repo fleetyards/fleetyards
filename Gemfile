@@ -27,6 +27,7 @@ gem 'premailer-rails'
 gem 'cancancan'
 gem 'devise'
 gem 'jwt'
+gem 'useragent'
 
 gem 'ransack'
 

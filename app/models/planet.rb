@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Planet < ApplicationRecord
+  paginates_per 30
+
   has_many :stations,
            dependent: :nullify
   has_many :moons,

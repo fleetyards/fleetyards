@@ -25,6 +25,11 @@
               type="password"
               class="form-control">
           </div>
+          <Checkbox
+            id="rememberMe"
+            v-model="form.rememberMe"
+            :label="t('labels.rememberMe')"
+          />
           <submit-button
             :loading="submitting"
             class="btn-block"
@@ -63,11 +68,13 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import { alert } from 'frontend/lib/Noty'
 import SubmitButton from 'frontend/components/SubmitButton'
 import InternalLink from 'frontend/components/InternalLink'
+import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
   components: {
     SubmitButton,
     InternalLink,
+    Checkbox,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -86,7 +93,7 @@ export default {
       const response = await this.$api.post('sessions', this.form)
       this.submitting = false
       if (!response.error) {
-        this.$store.commit('login', response.data.token)
+        this.$store.dispatch('login', response.data.token)
         if (this.$route.params.redirectToRoute) {
           this.$router.replace({ name: this.$route.params.redirectToRoute })
         } else {

@@ -171,7 +171,7 @@
           </div>
         </div>
       </div>
-      <Loader v-if="loading" />
+      <Loader :loading="loading" />
     </div>
     <gallery
       ref="gallery"

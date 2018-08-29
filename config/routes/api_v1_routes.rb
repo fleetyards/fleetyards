@@ -8,6 +8,10 @@ v1_api_routes = lambda do
       get :latest
       get :updated
       get :filters
+      get :classifications
+      get 'production-states' => 'models#production_states'
+      get :focus
+      get :sizes
       get 'cargo-options' => 'models#cargo_options'
       post :embed
     end
@@ -16,6 +20,8 @@ v1_api_routes = lambda do
       get :fleetchart_image, path: 'fleetchart-image'
     end
   end
+
+  resources :manufacturers, param: :slug, only: %i[index]
 
   resources :images, only: %i[index] do
     get :random, on: :collection
@@ -71,6 +77,7 @@ v1_api_routes = lambda do
   resources :commodities, only: [:index]
   resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
 
+  resources :planets, param: :slug, only: %i[index]
   resources :stations, param: :slug, only: %i[index show]
 
   namespace :rsi do

@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class="col-md-12 col-lg-6">
-        <Loader v-if="loading" />
+        <Loader :loading="loading" />
         <transition name="fade">
           <Panel v-if="rsiCitizen">
             <table class="table table-striped">

@@ -3,6 +3,26 @@
 .filter-list {
   margin-bottom: 15px;
 
+  .filter-list-search {
+    position: relative;
+
+    input {
+      width: 100%;
+      // background-color: rgba($gray-darker, 0.8);
+      border-radius: 0;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .btn-clear {
+      top: 4px;
+      right: 3px;
+    }
+  }
+
   .filter-list-title {
     font-weight: bold;
     position: relative;

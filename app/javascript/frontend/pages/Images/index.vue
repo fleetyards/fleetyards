@@ -52,7 +52,7 @@
             />
           </div>
         </div>
-        <Loader v-if="loading" />
+        <Loader :loading="loading" />
       </div>
     </div>
     <Gallery

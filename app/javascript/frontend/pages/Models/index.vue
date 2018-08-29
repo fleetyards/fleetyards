@@ -91,7 +91,7 @@
             </transition-group>
             <EmptyBox v-if="emptyBoxVisible" />
             <Loader
-              v-if="loading"
+              :loading="loading"
               fixed
             />
           </div>
@@ -103,7 +103,7 @@
               v-show="modelFilterVisible"
               class="hidden-xs hidden-sm col-md-3 col-xlg-2"
             >
-              <ModelsFilterForm :filters="filters" />
+              <ModelsFilterForm v-if="!mobile" />
             </div>
           </transition>
         </div>
@@ -117,8 +117,8 @@
           </div>
         </div>
         <ModelsFilterModal
+          v-if="mobile"
           ref="filterModal"
-          :filters="filters"
         />
       </div>
     </div>
@@ -160,6 +160,7 @@ export default {
     ...mapGetters([
       'modelDetails',
       'modelFilterVisible',
+      'mobile',
     ]),
     emptyBoxVisible() {
       return !this.loading && !this.models.length && (this.isFilterSelected
@@ -185,7 +186,6 @@ export default {
   },
   created() {
     this.fetch()
-    this.fetchFilters()
   },
   methods: {
     toggleFilter() {
@@ -209,12 +209,6 @@ export default {
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
-    },
-    async fetchFilters() {
-      const response = await this.$api.get('models/filters', {})
-      if (!response.error) {
-        this.filters = response.data
-      }
     },
   },
   metaInfo() {

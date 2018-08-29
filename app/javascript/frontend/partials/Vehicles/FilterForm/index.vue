@@ -35,35 +35,51 @@
         v-html="'&times;'"/>
     </div>
     <FilterGroup
-      v-if="manufacturerOptions.length > 0"
-      :options="manufacturerOptions"
       v-model="form.modelManufacturerSlugIn"
       :label="t('labels.filters.models.manufacturer')"
       :name="`${prefix}-manufacturer`"
+      :fetch="fetchManufacturers"
+      value-attr="slug"
+      icon-attr="logo"
+      paginated
+      searchable
       multiple
     />
     <FilterGroup
-      v-if="productionStatusOptions.length > 0"
-      :options="productionStatusOptions"
       v-model="form.modelProductionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
       :name="`${prefix}-production-status`"
+      :fetch="fetchProductionStatus"
       multiple
     />
     <FilterGroup
-      v-if="classificationOptions.length > 0"
-      :options="classificationOptions"
       v-model="form.modelClassificationIn"
       :label="t('labels.filters.models.classification')"
       :name="`${prefix}-classification`"
+      :fetch="fetchClassifications"
+      searchable
       multiple
     />
     <FilterGroup
-      v-if="focusOptions.length > 0"
-      :options="focusOptions"
       v-model="form.modelFocusIn"
       :label="t('labels.filters.models.focus')"
       :name="`${prefix}-focus`"
+      :fetch="fetchFocus"
+      searchable
+      multiple
+    />
+    <FilterGroup
+      v-model="form.modelSizeIn"
+      :label="t('labels.filters.models.size')"
+      :name="`${prefix}-size`"
+      :fetch="fetchSize"
+      multiple
+    />
+    <FilterGroup
+      :options="priceOptions"
+      v-model="form.modelPriceIn"
+      :label="t('labels.filters.models.price')"
+      :name="`${prefix}-price`"
       multiple
     />
     <FilterGroup
@@ -121,12 +137,6 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
-    filters: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
     hideButtons: {
       type: Boolean,
       default: false,
@@ -153,31 +163,12 @@ export default {
         modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
         modelClassificationIn: query.modelClassificationIn || [],
         modelFocusIn: query.modelFocusIn || [],
+        modelSizeIn: query.modelSizeIn || [],
+        modelPriceIn: query.modelPriceIn || [],
         modelProductionStatusIn: query.modelProductionStatusIn || [],
         hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
       },
-      booleanOptions: [{
-        name: 'No',
-        value: 'false',
-      }, {
-        name: 'Yes',
-        value: 'true',
-      }],
     }
-  },
-  computed: {
-    manufacturerOptions() {
-      return this.filters.filter(item => item.category === 'manufacturer')
-    },
-    classificationOptions() {
-      return this.filters.filter(item => item.category === 'classification')
-    },
-    focusOptions() {
-      return this.filters.filter(item => item.category === 'focus')
-    },
-    productionStatusOptions() {
-      return this.filters.filter(item => item.category === 'productionStatus')
-    },
   },
   watch: {
     $route() {
@@ -190,6 +181,8 @@ export default {
         modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
         modelClassificationIn: query.modelClassificationIn || [],
         modelFocusIn: query.modelFocusIn || [],
+        modelSizeIn: query.modelSizeIn || [],
+        modelPriceIn: query.modelPriceIn || [],
         modelProductionStatusIn: query.modelProductionStatusIn || [],
         hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
       }

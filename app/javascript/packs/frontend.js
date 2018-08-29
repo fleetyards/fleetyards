@@ -11,7 +11,7 @@ import App from 'frontend/App'
 import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import ActionCable from 'actioncable'
-import 'frontend/lib/ApiClient'
+import { apiClient } from 'frontend/lib/ApiClient'
 import 'frontend/lib/LazyLoad'
 import BootstrapVue from 'bootstrap-vue'
 import VueScrollTo from 'vue-scrollto'
@@ -38,6 +38,7 @@ TWITTER: https://twitter.com/FleetYardsNet
 
 `)
 
+Vue.prototype.$api = apiClient
 Vue.prototype.$cable = ActionCable.createConsumer(process.env.CABLE_URL)
 
 Vue.use(Comlink)

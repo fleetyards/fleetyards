@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
-    <div class="text-center">
+    <div
+      v-if="loading"
+      class="text-center"
+    >
       <div
         :class="{
           'fixed': fixed,
@@ -19,6 +22,10 @@
 <script>
 export default {
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     fixed: {
       type: Boolean,
       default: false,

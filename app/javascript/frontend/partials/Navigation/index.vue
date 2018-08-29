@@ -238,11 +238,8 @@ export default {
       this.userRouteActive = path.includes('settings')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
-    logout() {
-      this.$store.commit('logout')
-      if (this.$route.meta.needsAuthentication) {
-        this.$router.push('/')
-      }
+    async logout() {
+      await this.$store.dispatch('logout')
     },
     reload() {
       this.close()

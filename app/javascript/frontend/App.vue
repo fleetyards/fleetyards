@@ -65,6 +65,8 @@ export default {
       if (this.isAuthenticated) {
         requestPermission()
         this.fetchHangar()
+      } else if (this.$route.meta.needsAuthentication) {
+        this.$router.push({ name: 'login' })
       }
     },
   },

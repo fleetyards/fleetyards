@@ -16,12 +16,14 @@
 @import "partials/buttons";
 @import "partials/tooltip";
 @import "partials/loader";
+@import "partials/small-loader";
 @import "partials/metrics";
 @import "partials/labels";
 @import "partials/tabs";
 @import "partials/panel";
 @import "partials/fleetchart";
 @import "partials/pagination";
+@import "partials/v-select-overrides";
 
 html {
   height: 100%;

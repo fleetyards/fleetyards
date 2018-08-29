@@ -210,7 +210,7 @@
             <EmptyBox v-if="emptyBoxVisible" />
             <HangarGuideBox v-if="guideVisible" />
             <Loader
-              v-if="loading"
+              :loading="loading"
               fixed
             />
           </div>
@@ -223,7 +223,7 @@
               class="hidden-xs hidden-sm col-md-3 col-xlg-2"
             >
               <VehiclesFilterForm
-                :filters="filters"
+                v-if="!mobile"
                 :hangar-groups-options="hangarGroups"
               />
             </div>
@@ -239,8 +239,8 @@
           </div>
         </div>
         <VehiclesFilterModal
+          v-if="mobile"
           ref="filterModal"
-          :filters="filters"
           :vehicles-count="vehiclesCount"
           :hangar-groups-options="hangarGroups"
         />
@@ -308,6 +308,7 @@ export default {
       'hangarDetails',
       'hangarFleetchart',
       'hangarFilterVisible',
+      'mobile',
     ]),
     emptyBoxVisible() {
       return !this.loading && !this.vehicles.length && (this.isFilterSelected
@@ -360,7 +361,6 @@ export default {
   },
   created() {
     this.fetch()
-    this.fetchFilters()
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -452,12 +452,6 @@ export default {
       const response = await this.$api.get('hangar-groups', {})
       if (!response.error) {
         this.hangarGroups = response.data
-      }
-    },
-    async fetchFilters() {
-      const response = await this.$api.get('models/filters', {})
-      if (!response.error) {
-        this.filters = response.data
       }
     },
   },

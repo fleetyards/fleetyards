@@ -9,8 +9,14 @@ module Api
 
       def index
         authorize! :index, :api_hangar
-        @q = current_user.vehicles
-                         .ransack(query_params)
+        scope = current_user.vehicles
+
+        if price_range.present?
+          query_params['sorts'] = 'fallback_price asc'
+          scope = scope.includes(:model).where(models: { fallback_price: price_range })
+        end
+
+        @q = scope.ransack(query_params)
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
@@ -129,6 +135,25 @@ module Api
           :name, :model_id, :purchased, :name_visible,
           :sale_notify, :flagship, hangar_group_ids: []
         ).merge(user_id: current_user.id)
+      end
+
+      private def price_range
+        @price_range ||= begin
+          (query_params.delete('model_price_in') || []).map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
+        end
       end
     end
   end

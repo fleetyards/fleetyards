@@ -40,13 +40,13 @@ export default {
     }
   },
   methods: {
-    destroy() {
+    async destroy() {
       this.deleting = true
       confirm(this.t('confirm.account.destroy'), async () => {
         const response = await this.$api.destroy('users/current')
         if (!response.error) {
           success(this.t('messages.account.destroy.success'))
-          this.$store.commit('logout')
+          await this.$store.dispatch('logout')
           this.$router.push({ name: 'home' })
         } else {
           alert(this.t('messages.account.destroy.error'))

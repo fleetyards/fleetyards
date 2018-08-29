@@ -124,7 +124,7 @@
             </div>
           </transition-group>
           <Loader
-            v-if="modelsLoading"
+            :loading="modelsLoading"
             fixed
           />
         </div>
@@ -155,7 +155,7 @@
                   </router-link>
                 </div>
               </transition-group>
-              <Loader v-if="imagesLoading" />
+              <Loader :loading="imagesLoading" />
             </div>
           </Panel>
         </div>

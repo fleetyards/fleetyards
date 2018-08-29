@@ -4,8 +4,10 @@ import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
 import store from 'embed/lib/Store'
-import 'frontend/lib/ApiClient'
+import { apiClient } from 'frontend/lib/ApiClient'
 import 'frontend/lib/LazyLoad'
+
+Vue.prototype.$api = apiClient
 
 const d = document
 const styles = d.createElement('link')

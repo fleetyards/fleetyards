@@ -5,7 +5,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, lo
     origins '*'
     resource '*', headers: :any,
                   methods: %i[get post delete put patch delete options head],
-                  expose: ['Link'],
+                  expose: ['Link', 'X-Renew-JWT', 'X-RateLimit-Limit', 'X-RateLimit-Remaining', 'X-RateLimit-Reset'],
                   max_age: 0
   end
 end
