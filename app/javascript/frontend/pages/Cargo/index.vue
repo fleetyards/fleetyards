@@ -10,7 +10,7 @@
             <div class="text-right hidden-md hidden-lg">
               <button
                 class="btn btn-link btn-filter"
-                @click="openFilter"
+                @click="toggleFilter"
               >
                 <span v-show="isFilterSelected">
                   <i class="fas fa-filter" />
@@ -37,6 +37,21 @@
       </div>
     </div>
     <div class="row">
+      <transition
+        name="fade"
+        appear
+      >
+        <div
+          v-show="!mobile || filterVisible"
+          class="col-sm-12 col-md-3"
+        >
+          <FilterForm
+            :trade-hubs="tradeHubs"
+            :commodities="commodities"
+            :model-options="modelOptions"
+          />
+        </div>
+      </transition>
       <div class="col-sm-12 col-md-9">
         <transition-group
           name="fade-list"
@@ -106,21 +121,7 @@
           </div>
         </div>
       </div>
-      <div class="hidden-xs hidden-sm col-md-3">
-        <FilterForm
-          :trade-hubs="tradeHubs"
-          :commodities="commodities"
-          :model-options="modelOptions"
-        />
-      </div>
     </div>
-    <FilterModal
-      ref="filterModal"
-      :trade-hubs="tradeHubs"
-      :commodities="commodities"
-      :model-options="modelOptions"
-      :title="t('headlines.filterCargoRoutes')"
-    />
   </section>
 </template>
 
@@ -131,9 +132,9 @@ import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/components/Btn'
 import InternalLink from 'frontend/components/InternalLink'
 import Panel from 'frontend/components/Panel'
-import FilterModal from 'frontend/partials/CargoRoutes/FilterModal'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -141,10 +142,17 @@ export default {
     InternalLink,
     Panel,
     FilterForm,
-    FilterModal,
   },
   mixins: [I18n, MetaInfo, CargoRoutes, Filters],
+  data() {
+    return {
+      filterVisible: false,
+    }
+  },
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
     cargoShip() {
       const query = this.$route.query.q || {}
       return this.modelOptions.find(item => item.value === query.cargoShip)
@@ -192,6 +200,9 @@ export default {
     },
   },
   methods: {
+    toggleFilter() {
+      this.filterVisible = !this.filterVisible
+    },
     sortByProfitPercent(a, b) {
       if (a.profitPercent > b.profitPercent) {
         return -1

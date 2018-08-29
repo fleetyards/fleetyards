@@ -20,15 +20,15 @@ const initialState = {
   tradeHubPrices: {},
   tradeHubPricesID: null,
   filters: {},
-  hangarDetails: false,
-  hangarFleetchart: false,
+  hangarDetailsVisible: false,
+  hangarFleetchartVisible: false,
   hangarFleetchartScale: 1,
-  hangarPublicFleetchart: false,
+  hangarPublicFleetchartVisible: false,
   hangarPublicFleetchartScale: 1,
   hangarFilterVisible: true,
   navbarCollapsed: true,
   overlayVisible: false,
-  modelDetails: false,
+  modelDetailsVisible: false,
   modelFilterVisible: true,
 }
 
@@ -59,14 +59,14 @@ const store = new Vuex.Store({
     tradeHubPricesID(state) {
       return state.tradeHubPricesID
     },
-    hangarDetails(state) {
-      return state.hangarDetails
+    hangarDetailsVisible(state) {
+      return state.hangarDetailsVisible
     },
-    hangarFleetchart(state) {
-      return state.hangarFleetchart
+    hangarFleetchartVisible(state) {
+      return state.hangarFleetchartVisible
     },
-    hangarPublicFleetchart(state) {
-      return state.hangarPublicFleetchart
+    hangarPublicFleetchartVisible(state) {
+      return state.hangarPublicFleetchartVisible
     },
     hangarFilterVisible(state) {
       return state.hangarFilterVisible
@@ -77,19 +77,19 @@ const store = new Vuex.Store({
     overlayVisible(state) {
       return state.overlayVisible
     },
-    modelDetails(state) {
-      return state.modelDetails
+    modelDetailsVisible(state) {
+      return state.modelDetailsVisible
     },
     modelFilterVisible(state) {
       return state.modelFilterVisible
     },
   },
   actions: {
-    async logout(context) {
-      context.commit('setAuthToken', null)
-      context.commit('setHangar', [])
-      context.commit('setCurrentUser', null)
-      context.commit('setCitizen', null)
+    async logout({ commit }) {
+      commit('setAuthToken', null)
+      commit('setHangar', [])
+      commit('setCurrentUser', null)
+      commit('setCitizen', null)
 
       try {
         await apiClient.destroy('sessions')
@@ -97,11 +97,29 @@ const store = new Vuex.Store({
         // ignoring logout error
       }
     },
-    login(context, authToken) {
-      context.commit('setAuthToken', authToken)
+    login({ commit }, authToken) {
+      commit('setAuthToken', authToken)
     },
-    renewToken(context, token) {
-      context.commit('setAuthToken', token)
+    renewToken({ commit }, token) {
+      commit('setAuthToken', token)
+    },
+    toggleModelFilter({ commit, state }) {
+      commit('setModelFilterVisible', !state.modelFilterVisible)
+    },
+    toggleModelDetails({ commit, state }) {
+      commit('setModelDetailsVisible', !state.modelDetailsVisible)
+    },
+    toggleHangarDetails({ commit, state }) {
+      commit('setHangarDetailsVisible', !state.hangarDetailsVisible)
+    },
+    toggleHangarFleetchart({ commit, state }) {
+      commit('setHangarFleetchartVisible', !state.hangarFleetchartVisible)
+    },
+    toggleHangarPublicFleetchart({ commit, state }) {
+      commit('setHangarPublicFleetchartVisible', !state.hangarPublicFleetchartVisible)
+    },
+    toggleHangarFilter({ commit, state }) {
+      commit('setHangarFilterVisible', !state.hangarFilterVisible)
     },
   },
   /* eslint-disable no-param-reassign */
@@ -170,17 +188,17 @@ const store = new Vuex.Store({
     setFilters(state, payload) {
       state.filters = Object.assign({}, state.filters, payload)
     },
-    toggleHangarDetails(state) {
-      state.hangarDetails = !state.hangarDetails
+    setHangarDetailsVisible(state, payload) {
+      state.hangarDetailsVisible = payload
     },
-    toggleHangarFleetchart(state) {
-      state.hangarFleetchart = !state.hangarFleetchart
+    setHangarFleetchartVisible(state, payload) {
+      state.hangarFleetchartVisible = payload
     },
-    toggleHangarPublicFleetchart(state) {
-      state.hangarPublicFleetchart = !state.hangarPublicFleetchart
+    setHangarPublicFleetchartVisible(state, payload) {
+      state.hangarPublicFleetchartVisible = payload
     },
-    toggleHangarFilter(state) {
-      state.hangarFilterVisible = !state.hangarFilterVisible
+    setHangarFilterVisible(state, payload) {
+      state.hangarFilterVisible = payload
     },
     setHangarFleetchartScale(state, payload) {
       state.hangarFleetchartScale = payload
@@ -200,11 +218,11 @@ const store = new Vuex.Store({
     closeNavbar(state) {
       state.navbarCollapsed = true
     },
-    toggleModelDetails(state) {
-      state.modelDetails = !state.modelDetails
+    setModelFilterVisible(state, payload) {
+      state.modelFilterVisible = payload
     },
-    toggleModelFilter(state) {
-      state.modelFilterVisible = !state.modelFilterVisible
+    setModelDetailsVisible(state, payload) {
+      state.modelDetailsVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

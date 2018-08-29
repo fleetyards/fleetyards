@@ -75,12 +75,6 @@ export default {
         query: {},
       })
     },
-    openFilter() {
-      if (!this.$refs.filterModal) {
-        return
-      }
-      this.$refs.filterModal.open()
-    },
     filter() {
       const query = {
         q: JSON.parse(JSON.stringify(this.q)),

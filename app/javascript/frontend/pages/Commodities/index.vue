@@ -10,7 +10,7 @@
             <div class="text-right hidden-md hidden-lg">
               <button
                 class="btn btn-link btn-filter"
-                @click="openFilter"
+                @click="toggleFilter"
               >
                 <span v-show="isFilterSelected">
                   <i class="fas fa-filter" />
@@ -47,6 +47,21 @@
       </div>
     </div>
     <div class="row">
+      <transition
+        name="fade"
+        appear
+      >
+        <div
+          v-show="!mobile || filterVisible"
+          class="col-sm-12 col-md-3"
+        >
+          <FilterForm
+            :trade-hubs="tradeHubs"
+            :commodities="commodities"
+            :model-options="modelOptions"
+          />
+        </div>
+      </transition>
       <div class="col-xs-12 col-md-9">
         <transition-group
           name="fade-list"
@@ -133,21 +148,7 @@
           </div>
         </div>
       </div>
-      <div class="hidden-xs hidden-sm col-md-3">
-        <FilterForm
-          :trade-hubs="tradeHubs"
-          :commodities="commodities"
-          :model-options="modelOptions"
-        />
-      </div>
     </div>
-    <FilterModal
-      ref="filterModal"
-      :trade-hubs="tradeHubs"
-      :commodities="commodities"
-      :model-options="modelOptions"
-      :title="t('headlines.filterCommodities')"
-    />
   </section>
 </template>
 
@@ -159,9 +160,9 @@ import InternalLink from 'frontend/components/InternalLink'
 import Panel from 'frontend/components/Panel'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Filters from 'frontend/mixins/Filters'
-import FilterModal from 'frontend/partials/CargoRoutes/FilterModal'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
 import { confirm } from 'frontend/lib/Noty'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -169,15 +170,18 @@ export default {
     InternalLink,
     Panel,
     FilterForm,
-    FilterModal,
   },
   mixins: [I18n, MetaInfo, CargoRoutes, Filters],
   data() {
     return {
       profitRate: 77.4,
+      filterVisible: false,
     }
   },
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
     filteredTradeHubs() {
       const query = this.$route.query.q || {}
       return this.tradeHubs.filter((hub) => {
@@ -205,14 +209,14 @@ export default {
     }
   },
   methods: {
+    toggleFilter() {
+      this.filterVisible = !this.filterVisible
+    },
     async fetch() {
       const response = await this.$api.get(`commodity-prices/${this.$route.params.id}`, {})
       if (!response.error) {
         this.$store.commit('setTradeHubPrices', response.data.data)
       }
-    },
-    openFilter() {
-      this.$refs.filterModal.open()
     },
     resetPrices() {
       confirm(this.t('confirm.tradeRoutes.reset'), () => {

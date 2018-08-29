@@ -3,38 +3,16 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-xs-12">
             <h1 class="sr-only">{{ t('headlines.ships') }}</h1>
-          </div>
-          <div class="col-xs-12 col-md-4 text-right">
-            <button
-              class="btn btn-link btn-filter hidden-md hidden-lg"
-              @click="openFilter"
-            >
-              <i
-                v-if="isFilterSelected"
-                class="fas fa-filter"
-              />
-              <i
-                v-else
-                class="fal fa-filter"
-              />
-            </button>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-6">
-            <Paginator
-              v-if="models.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-          <div class="col-xs-12 col-md-6">
-            <div class="page-actions">
+            <div class="page-actions page-actions-left">
               <Btn
                 v-tooltip="toggleDetailsTooltip"
-                :active="modelDetails"
+                :active="modelDetailsVisible"
                 :aria-label="toggleDetailsTooltip"
                 small
                 @click.native="toggleDetails"
@@ -45,7 +23,6 @@
                 v-tooltip="toggleFiltersTooltip"
                 :active="modelFilterVisible"
                 :aria-label="toggleFiltersTooltip"
-                class="hidden-xs hidden-sm"
                 small
                 @click.native="toggleFilter"
               >
@@ -60,11 +37,33 @@
               </Btn>
             </div>
           </div>
+          <div class="col-xs-12 col-md-6">
+            <div class="pull-right">
+              <Paginator
+                v-if="models.length"
+                :page="currentPage"
+                :total="totalPages"
+              />
+            </div>
+          </div>
         </div>
         <div class="row">
+          <transition
+            name="fade"
+            appear
+            @before-enter="toggleFullscreen"
+            @after-leave="toggleFullscreen"
+          >
+            <div
+              v-show="modelFilterVisible"
+              class="col-xs-12 col-md-3 col-xlg-2"
+            >
+              <ModelsFilterForm />
+            </div>
+          </transition>
           <div
             :class="{
-              'col-md-9 col-xlg-10': modelFilterVisible,
+              'col-md-9 col-xlg-10': !fullscreen,
             }"
             class="col-xs-12"
           >
@@ -78,14 +77,14 @@
                 v-for="model in models"
                 :key="model.slug"
                 :class="{
-                  'col-lg-4 col-xlg-3 col-xxlg-2': !modelFilterVisible,
-                  'col-xlg-4 col-xxlg-3': modelFilterVisible,
+                  'col-lg-4 col-xlg-3 col-xxlg-2': fullscreen,
+                  'col-xlg-4 col-xxlg-3': !fullscreen,
                 }"
                 class="col-xs-12 col-sm-6 fade-list-item"
               >
                 <ModelPanel
                   :model="model"
-                  :details="modelDetails"
+                  :details="modelDetailsVisible"
                 />
               </div>
             </transition-group>
@@ -95,31 +94,18 @@
               fixed
             />
           </div>
-          <transition
-            name="fade"
-            appear
-          >
-            <div
-              v-show="modelFilterVisible"
-              class="hidden-xs hidden-sm col-md-3 col-xlg-2"
-            >
-              <ModelsFilterForm v-if="!mobile" />
-            </div>
-          </transition>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <Paginator
-              v-if="models.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
+            <div class="pull-right">
+              <Paginator
+                v-if="models.length"
+                :page="currentPage"
+                :total="totalPages"
+              />
+            </div>
           </div>
         </div>
-        <ModelsFilterModal
-          v-if="mobile"
-          ref="filterModal"
-        />
       </div>
     </div>
   </section>
@@ -135,14 +121,12 @@ import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
 import Filters from 'frontend/mixins/Filters'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import ModelsFilterModal from 'frontend/partials/Models/FilterModal'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ModelPanel,
-    ModelsFilterModal,
     ModelsFilterForm,
     Loader,
     EmptyBox,
@@ -154,11 +138,12 @@ export default {
       loading: false,
       models: [],
       filters: [],
+      fullscreen: false,
     }
   },
   computed: {
     ...mapGetters([
-      'modelDetails',
+      'modelDetailsVisible',
       'modelFilterVisible',
       'mobile',
     ]),
@@ -186,16 +171,20 @@ export default {
   },
   created() {
     this.fetch()
+    if (this.mobile) {
+      this.$store.commit('setModelFilterVisible', false)
+    }
+    this.toggleFullscreen()
   },
   methods: {
+    toggleFullscreen() {
+      this.fullscreen = !this.modelFilterVisible
+    },
     toggleFilter() {
-      this.$store.commit('toggleModelFilter')
+      this.$store.dispatch('toggleModelFilter')
     },
     toggleDetails() {
-      this.$store.commit('toggleModelDetails')
-    },
-    openFilter() {
-      this.$refs.filterModal.open()
+      this.$store.dispatch('toggleModelDetails')
     },
     async fetch() {
       this.loading = true

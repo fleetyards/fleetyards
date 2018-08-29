@@ -89,17 +89,22 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <Paginator
-              v-if="fleetModels.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
+            <div class="pull-right">
+              <Paginator
+                v-if="fleetModels.length"
+                :page="currentPage"
+                :total="totalPages"
+              />
+            </div>
           </div>
         </div>
         <div
           v-if="isMember"
           class="row"
         >
+          <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
+            <ModelsFilterForm :filters="filters" />
+          </div>
           <div class="col-md-9 col-xlg-10">
             <transition-group
               name="fade-list"
@@ -123,21 +128,16 @@
               fixed
             />
           </div>
-          <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
-            <ModelsFilterForm :filters="filters" />
-          </div>
-          <ModelsFilterModal
-            ref="filterModal"
-            :filters="filters"
-          />
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <Paginator
-              v-if="fleetModels.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
+            <div class="pull-right">
+              <Paginator
+                v-if="fleetModels.length"
+                :page="currentPage"
+                :total="totalPages"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +155,6 @@ import I18n from 'frontend/mixins/I18n'
 import Pagination from 'frontend/mixins/Pagination'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
-import ModelsFilterModal from 'frontend/partials/Models/FilterModal'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 
 export default {
@@ -163,7 +162,6 @@ export default {
     ModelPanel,
     Loader,
     ModelsFilterForm,
-    ModelsFilterModal,
     ModelClassLabels,
     InternalLink,
     Box,

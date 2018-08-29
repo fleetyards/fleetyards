@@ -49,10 +49,6 @@ body {
   }
 }
 
-.row > [class*='col-'] {
-  transition: width ease $transition-base-speed;
-}
-
 .app-body {
   display: flex;
   padding-top: 70px;

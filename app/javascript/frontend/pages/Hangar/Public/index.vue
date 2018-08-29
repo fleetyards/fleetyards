@@ -29,7 +29,7 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <Paginator
-              v-if="!hangarPublicFleetchart && vehicles.length"
+              v-if="!hangarPublicFleetchartVisible && vehicles.length"
               :page="currentPage"
               :total="totalPages"
             />
@@ -40,7 +40,7 @@
           >
             <div class="page-actions">
               <Btn
-                v-if="hangarPublicFleetchart"
+                v-if="hangarPublicFleetchartVisible"
                 :disabled="downloading"
                 small
                 @click.native="download"
@@ -51,14 +51,16 @@
                 small
                 @click.native="toggleFleetchart"
               >
-                <template v-if="hangarPublicFleetchart">{{ t('actions.hideFleetchart') }}</template>
+                <template v-if="hangarPublicFleetchartVisible">
+                  {{ t('actions.hideFleetchart') }}
+                </template>
                 <template v-else>{{ t('actions.showFleetchart') }}</template>
               </Btn>
             </div>
           </div>
         </div>
         <div
-          v-if="hangarPublicFleetchart && vehicles.length > 0"
+          v-if="hangarPublicFleetchartVisible && vehicles.length > 0"
           class="row"
         >
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -74,7 +76,7 @@
           </div>
         </div>
         <transition-group
-          v-if="hangarPublicFleetchart"
+          v-if="hangarPublicFleetchartVisible"
           id="fleetchart"
           name="fade-list"
           class="flex-row fleetchart"
@@ -133,7 +135,7 @@
     <div class="row">
       <div class="col-xs-12">
         <Paginator
-          v-if="!hangarPublicFleetchart && vehicles.length"
+          v-if="!hangarPublicFleetchartVisible && vehicles.length"
           :page="currentPage"
           :total="totalPages"
         />
@@ -179,7 +181,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'hangarPublicFleetchart',
+      'hangarPublicFleetchartVisible',
     ]),
     lengthMultiplicator() {
       return this.scale * 4
