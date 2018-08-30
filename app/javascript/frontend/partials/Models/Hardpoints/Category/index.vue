@@ -1,7 +1,10 @@
 <template>
   <div class="row">
     <div class="col-xs-12">
-      <h2 class="hardpoint-category-label">
+      <h2
+        v-if="!withoutTitle"
+        class="hardpoint-category-label"
+      >
         {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
       </h2>
       <Panel>
@@ -87,6 +90,10 @@ export default {
     category: {
       type: String,
       required: true,
+    },
+    withoutTitle: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

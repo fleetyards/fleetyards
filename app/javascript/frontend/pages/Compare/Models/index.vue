@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container compare">
     <div class="row">
       <div class="col-xs-12">
         <div class="row">
@@ -60,262 +60,180 @@
                 </router-link>
               </div>
             </div>
-            <div class="row visible-xs visible-sm">
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <strong>{{ modelA.name }}</strong>
+            <div class="row compare-row visible-xs visible-sm">
+              <div class="col-xs-6 col-md-4 text-center">
+                <strong v-if="modelA">{{ modelA.name }}</strong>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <strong>{{ modelB.name }}</strong>
+              <div class="col-xs-6 col-md-4 text-center">
+                <strong v-if="modelB">{{ modelB.name }}</strong>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.productionStatus') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.focus') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ modelA.focus }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ modelA.focus }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ modelB.focus }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ modelB.focus }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.minCrew') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.minCrew, 'people') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.minCrew, 'people') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.minCrew, 'people') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.minCrew, 'people') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.maxCrew') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.maxCrew, 'people') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.maxCrew, 'people') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.maxCrew, 'people') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.maxCrew, 'people') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.length') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.length, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.length, 'distance') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.length, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.length, 'distance') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.beam') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.beam, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.beam, 'distance') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.beam, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.beam, 'distance') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.height') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.height, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.height, 'distance') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.height, 'distance') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.height, 'distance') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.mass') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.mass, 'weight') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.mass, 'weight') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.mass, 'weight') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.mass, 'weight') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div class="row compare-row">
               <div class="col-xs-12 col-md-2 text-right compare-label">
                 {{ t('model.cargo') }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelA.cargo, 'cargo') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelA">
+                  {{ toNumber(modelA.cargo, 'cargo') }}
+                </span>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                {{ toNumber(modelB.cargo, 'cargo') }}
+              <div class="col-xs-6 col-md-4 text-center">
+                <span v-if="modelB">
+                  {{ toNumber(modelB.cargo, 'cargo') }}
+                </span>
               </div>
             </div>
-            <div class="row">
+            <div
+              v-for="category in categories"
+              :key="category"
+              class="row compare-row"
+            >
               <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.propulsion') }}
+                {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
               </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in propulsionHardpoints(modelA)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="propulsion"
+              <div class="col-xs-12 col-md-4 text-center">
+                <div
+                  v-if="modelA"
+                  class="well"
+                >
+                  <HardpointCategory
+                    v-if="hardpointsForCategory(category, modelA.hardpoints).length > 0"
+                    :category="category"
+                    :hardpoints="hardpointsForCategory(category, modelA.hardpoints)"
+                    without-title
                   />
                 </div>
               </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in propulsionHardpoints(modelB)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="propulsion"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.ordnance') }}
-              </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in ordnanceHardpoints(modelA)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="ordnance"
-                  />
-                </div>
-              </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in ordnanceHardpoints(modelB)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="ordnance"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.modular') }}
-              </div>
-              <div
-                v-if="modelA"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in modularHardpoints(modelA)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="modular"
-                  />
-                </div>
-              </div>
-              <div
-                v-if="modelB"
-                class="col-xs-6 col-md-4 text-center"
-              >
-                <div class="well">
-                  <HardpointIcon
-                    v-for="hardpoint in modularHardpoints(modelB)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                    category="modular"
+              <div class="col-xs-12 col-md-4 text-center">
+                <div
+                  v-if="modelB"
+                  class="well"
+                >
+                  <HardpointCategory
+                    v-if="hardpointsForCategory(category, modelB.hardpoints).length > 0"
+                    :category="category"
+                    :hardpoints="hardpointsForCategory(category, modelB.hardpoints)"
+                    without-title
                   />
                 </div>
               </div>
@@ -332,11 +250,13 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
+import HardpointCategory from 'frontend/partials/Models/Hardpoints/Category'
 
 export default {
   components: {
     HardpointIcon,
     FilterGroup,
+    HardpointCategory,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -351,6 +271,7 @@ export default {
         'productionStatus', 'length', 'beam', 'height',
         'mass', 'cargo', 'netCargo', 'crew',
       ],
+      categories: ['RSIAvionic', 'RSIModular', 'RSIPropulsion', 'RSIThruster', 'RSIWeapon'],
     }
   },
   computed: {
@@ -435,12 +356,14 @@ export default {
         }
       })
     },
-    fetchModels({ page, search }) {
+    fetchModels({ page, search, missingValue }) {
       const query = {
         q: {},
       }
       if (search) {
         query.q.nameOrSlugCont = search
+      } else if (missingValue) {
+        query.q.nameOrSlugCont = missingValue
       } else if (page) {
         query.page = page
       }
@@ -452,6 +375,9 @@ export default {
         callback(response.data)
       }
     },
+    hardpointsForCategory(category, hardpoints) {
+      return hardpoints.filter(hardpoint => hardpoint.class === category)
+    },
   },
   metaInfo() {
     return this.getMetaInfo({
@@ -462,14 +388,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .thumbnail img {
-    max-height: 300px;
-    min-height: 120px;
-  }
-
-  @media (max-width: 767px) {
-    .compare-label {
-      text-align: center;
-    }
-  }
+  @import 'styles/index.scss';
 </style>
