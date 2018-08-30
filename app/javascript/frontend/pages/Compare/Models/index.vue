@@ -92,6 +92,27 @@
             >
               <div class="row compare-row">
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.manufacturer') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ modelA.manufacturer.name }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ modelB.manufacturer.name }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.productionStatus') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -255,6 +276,27 @@
                     class="metrics-value"
                   >
                     {{ toNumber(modelB.cargo, 'cargo') }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.price') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toDollar(modelA.lastPrice) }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toDollar(modelB.lastPrice) }}
                   </span>
                 </div>
               </div>

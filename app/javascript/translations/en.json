@@ -351,6 +351,9 @@
     "requestPassword": "Request Password E-Mail",
     "changePassword": "Change Password",
     "addGroup": "Add Group",
+    "compare": {
+      "models": "Compare"
+    },
     "empty": {
       "reset": "Reset Filters/Pages"
     },

@@ -18,6 +18,7 @@ test/reports/*
 # app files
 public/uploads/*
 public/assets
+public/compare/*
 public/packs
 public/packs-test
 

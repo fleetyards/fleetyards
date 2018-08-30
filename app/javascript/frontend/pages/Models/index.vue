@@ -35,6 +35,12 @@
                   class="fal fa-filter"
                 />
               </Btn>
+              <InternalLink
+                :route="{name: 'compare-models'}"
+                small
+              >
+                {{ t('actions.compare.models') }}
+              </InternalLink>
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
@@ -118,6 +124,7 @@ import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import Btn from 'frontend/components/Btn'
+import InternalLink from 'frontend/components/InternalLink'
 import Loader from 'frontend/components/Loader'
 import Filters from 'frontend/mixins/Filters'
 import EmptyBox from 'frontend/partials/EmptyBox'
@@ -131,6 +138,7 @@ export default {
     Loader,
     EmptyBox,
     Btn,
+    InternalLink,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
