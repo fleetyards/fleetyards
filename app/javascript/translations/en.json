@@ -17,10 +17,7 @@
     "verify": "Verify your RSI Handle",
     "account": "Account",
     "compare": {
-      "models": {
-        "default": "Compare Ships",
-        "vs": "Compare %{modelA} vs. %{modelB}"
-      }
+      "models": "Compare Ships"
     },
     "notFound": "404",
     "cargo": "Cargo",
@@ -143,7 +140,7 @@
       "totalCargo": "Total Cargo"
     },
     "compare": {
-      "selectModel": "Select a Model"
+      "selectModel": "Select a Ship"
     },
     "cargoRoutes": "Cargo routes",
     "uecPerUnit": "UEC / Unit",

@@ -27,6 +27,10 @@ en:
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
+    compare_ships:
+      description:
+        default: "Compare your favorite Ships."
+        vs: "Compare %{model_a} vs. %{model_b}."
   nav:
     components: Components
     home: Home
@@ -47,7 +51,6 @@ en:
       ships: Ships
       commodities: Commodities
       compare_ships: Compare Ships
-      compare_ships_vs: "Compare %{model_a} vs. %{model_b}"
       settings: Settings
       settings_account: Account
       settings_profile: Settings

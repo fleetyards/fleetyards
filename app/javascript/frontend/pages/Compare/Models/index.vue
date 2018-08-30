@@ -676,7 +676,6 @@ export default {
   mixins: [I18n, MetaInfo],
   data() {
     return {
-      title: this.t('title.compare.models.default'),
       selectA: null,
       modelA: null,
       loadingA: false,
@@ -741,12 +740,6 @@ export default {
         query,
       })
     },
-    modelA() {
-      this.setTitle()
-    },
-    modelB() {
-      this.setTitle()
-    },
   },
   created() {
     if (this.$route.query.shipA) {
@@ -757,14 +750,6 @@ export default {
     }
   },
   methods: {
-    setTitle() {
-      if (this.modelB && this.modelA) {
-        this.title = this.t('title.compare.models.vs', {
-          modelA: `${this.modelA.manufacturer.code} ${this.modelA.name}`,
-          modelB: `${this.modelB.manufacturer.code} ${this.modelB.name}`,
-        })
-      }
-    },
     modularHardpoints(model) {
       return model.hardpoints.filter(item => item.categorySlug === 'modular')
     },
@@ -825,7 +810,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.title,
+      title: this.t('title.compare.models'),
     })
   },
 }
