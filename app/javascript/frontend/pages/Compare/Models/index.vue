@@ -54,8 +54,8 @@
                   <router-link
                     v-lazy:background-image="modelB.storeImage"
                     :key="modelB.storeImage"
-                    :to="{ name: 'model', params: { slug: modelA.slug }}"
-                    :aria-label="modelA.name"
+                    :to="{ name: 'model', params: { slug: modelB.slug }}"
+                    :aria-label="modelB.name"
                   />
                 </div>
               </div>

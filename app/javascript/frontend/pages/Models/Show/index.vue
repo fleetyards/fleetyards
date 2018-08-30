@@ -216,8 +216,6 @@ export default {
   data() {
     return {
       title: null,
-      description: null,
-      ogImage: null,
       loading: false,
       show3d: false,
       color3d: false,
@@ -268,8 +266,6 @@ export default {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })
-      this.description = this.model.description
-      this.ogImage = this.model.storeImage
       this.setBackground()
     },
   },
@@ -308,9 +304,6 @@ export default {
   metaInfo() {
     return this.getMetaInfo({
       title: this.title,
-      description: this.description,
-      ogType: 'article',
-      ogImage: this.ogImage,
     })
   },
 }

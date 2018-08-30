@@ -254,8 +254,6 @@ export default {
   metaInfo() {
     return this.getMetaInfo({
       title: this.t('title.cargo'),
-      description: this.t('meta.cargo.description'),
-      keywords: this.t('meta.cargo.keywords'),
     })
   },
 }

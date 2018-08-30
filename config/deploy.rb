@@ -3,6 +3,7 @@
 set :shared_dirs, [
   'public/uploads',
   'public/packs',
+  'public/compare',
   'tmp/pids',
   'tmp/sockets',
   'dumps'

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mini_magick'
+
 module Frontend
   class BaseController < ApplicationController
     protect_from_forgery except: :service_worker
@@ -63,8 +65,9 @@ module Frontend
           model_a: "#{@model_a.manufacturer.code} #{@model_a.name}",
           model_b: "#{@model_b.manufacturer.code} #{@model_b.name}"
         )
+        @description = @title
         @og_type = 'article'
-        @og_image = @model_a.store_image.url
+        @og_image = compare_image(@model_a, @model_b)
       end
       render 'frontend/index'
     end
@@ -105,6 +108,35 @@ module Frontend
         return name
       end
       "#{name}'s"
+    end
+
+    private def compare_image(model_a, model_b)
+      filename = "#{model_a.slug}-#{model_b.slug}.jpg"
+      path = Rails.root.join('public', 'compare', filename)
+      return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
+
+      FileUtils.cp(model_a.store_image.file.path, "/tmp/#{model_a.slug}")
+      FileUtils.cp(model_a.store_image.file.path, "/tmp/#{model_a.slug}-#{model_b.slug}-base")
+      FileUtils.cp(model_b.store_image.file.path, "/tmp/#{model_b.slug}")
+      base_image = MiniMagick::Image.new("/tmp/#{model_a.slug}-#{model_b.slug}-base")
+      first_image = MiniMagick::Image.new("/tmp/#{model_a.slug}")
+      second_image = MiniMagick::Image.new("/tmp/#{model_b.slug}")
+
+      first_image.crop "#{first_image.width / 2}x#{first_image.height}+#{(first_image.width / 2) / 2}+0"
+      second_image.crop "#{second_image.width / 2}x#{second_image.height}+#{(second_image.width / 2) / 2}+0"
+
+      composite = base_image.composite(first_image) do |c|
+        c.compose 'Over'
+        c.geometry '+0+0'
+      end
+      composite = composite.composite(second_image) do |c|
+        c.compose 'Over'
+        c.geometry "+#{base_image.width / 2}+0"
+      end
+
+      composite.write(path)
+
+      "https://api.fleetyards.net/compare/#{filename}"
     end
   end
 end
