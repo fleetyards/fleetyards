@@ -136,6 +136,8 @@ module Frontend
 
       composite.write(path)
 
+      File.chmod(0o644, path)
+
       "https://api.fleetyards.net/compare/#{filename}"
     end
   end
