@@ -54,6 +54,21 @@ module Frontend
       render 'frontend/index'
     end
 
+    def compare_models
+      @model_a = Model.find_by(['lower(slug) = :value', { value: (params[:shipA] || '').downcase }])
+      @model_b = Model.find_by(['lower(slug) = :value', { value: (params[:shipB] || '').downcase }])
+      if @model_a.present? && @model_b.present?
+        @title = I18n.t(
+          'title.frontend.compare_ships_vs',
+          model_a: "#{@model_a.manufacturer.code} #{@model_a.name}",
+          model_b: "#{@model_b.manufacturer.code} #{@model_b.name}"
+        )
+        @og_type = 'article'
+        @og_image = @model_a.store_image.url
+      end
+      render 'frontend/index'
+    end
+
     def not_found
       respond_to do |format|
         format.html do

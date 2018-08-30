@@ -4,7 +4,7 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="back-button">
+            <h1 class="sr-only">
               {{ t('headlines.compare.models') }}
             </h1>
           </div>
@@ -12,8 +12,8 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="row">
-              <div class="hidden-xs hidden-sm col-md-2 text-center"/>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-ms-12 col-md-2 text-center"/>
+              <div class="col-xs-12 col-ms-6 col-md-4">
                 <FilterGroup
                   v-model="selectA"
                   :label="t('labels.compare.selectModel')"
@@ -24,19 +24,19 @@
                   paginated
                   searchable
                 />
-                <router-link
+                <div
                   v-if="modelA"
-                  :to="{ name: 'model', params: { slug: modelA.slug }}"
-                  class="thumbnail"
+                  class="compare-image"
                 >
-                  <img
-                    v-lazy="modelA.storeImage"
+                  <router-link
+                    v-lazy:background-image="modelA.storeImage"
                     :key="modelA.storeImage"
-                    alt="model Image"
-                  >
-                </router-link>
+                    :to="{ name: 'model', params: { slug: modelA.slug }}"
+                    :aria-label="modelA.name"
+                  />
+                </div>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-ms-6 col-md-4">
                 <FilterGroup
                   v-model="selectB"
                   :label="t('labels.compare.selectModel')"
@@ -47,19 +47,20 @@
                   paginated
                   searchable
                 />
-                <router-link
+                <div
                   v-if="modelB"
-                  :to="{ name: 'model', params: { slug: modelB.slug }}"
-                  class="thumbnail"
+                  class="compare-image"
                 >
-                  <img
-                    v-lazy="modelB.storeImage"
+                  <router-link
+                    v-lazy:background-image="modelB.storeImage"
                     :key="modelB.storeImage"
-                    alt="model Image"
-                  >
-                </router-link>
+                    :to="{ name: 'model', params: { slug: modelA.slug }}"
+                    :aria-label="modelA.name"
+                  />
+                </div>
               </div>
             </div>
+
             <div class="row compare-row visible-xs visible-sm">
               <div class="col-xs-6 col-md-4 text-center">
                 <strong v-if="modelA">{{ modelA.name }}</strong>
@@ -68,175 +69,547 @@
                 <strong v-if="modelB">{{ modelB.name }}</strong>
               </div>
             </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.productionStatus') }}
+
+            <div class="row compare-row compare-section">
+              <div class="col-xs-12 col-md-2">
+                <div
+                  :class="{
+                    active: baseVisible
+                  }"
+                  class="text-right metrics-title"
+                  @click="toggle('base')"
+                >
+                  {{ t('labels.metrics.base') }}
+                  <i class="fa fa-chevron-right" />
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
-                </span>
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
-                </span>
-              </div>
+              <div class="col-xs-6 col-md-4" />
+              <div class="col-xs-6 col-md-4" />
             </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.focus') }}
+            <b-collapse
+              id="base"
+              :visible="baseVisible"
+            >
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.productionStatus') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ modelA.focus }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.focus') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ modelA.focus }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ modelB.focus }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ modelB.focus }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.classification') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ modelA.classificationLabel }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ modelB.classificationLabel }}
+                  </span>
+                </div>
               </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.length') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.length, 'distance') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.length, 'distance') }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.beam') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.beam, 'distance') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.beam, 'distance') }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.height') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.height, 'distance') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.height, 'distance') }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.mass') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.mass, 'weight') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.mass, 'weight') }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.cargo') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.cargo, 'cargo') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.cargo, 'cargo') }}
+                  </span>
+                </div>
+              </div>
+            </b-collapse>
+
+            <div class="row compare-row compare-section">
+              <div class="col-xs-12 col-md-2">
+                <div
+                  :class="{
+                    active: crewVisible
+                  }"
+                  class="text-right metrics-title"
+                  @click="toggle('crew')"
+                >
+                  {{ t('labels.metrics.crew') }}
+                  <i class="fa fa-chevron-right" />
+                </div>
+              </div>
+              <div class="col-xs-6 col-md-4" />
+              <div class="col-xs-6 col-md-4" />
             </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.minCrew') }}
+            <b-collapse
+              id="crew"
+              :visible="crewVisible"
+            >
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.minCrew') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.minCrew, 'people') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.minCrew, 'people') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.minCrew, 'people') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.maxCrew') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.maxCrew, 'people') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.maxCrew, 'people') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.minCrew, 'people') }}
-                </span>
+            </b-collapse>
+
+            <div class="row compare-row compare-section">
+              <div class="col-xs-12 col-md-2">
+                <div
+                  :class="{
+                    active: speedVisible
+                  }"
+                  class="text-right metrics-title"
+                  @click="toggle('speed')"
+                >
+                  {{ t('labels.metrics.speed') }}
+                  <i class="fa fa-chevron-right" />
+                </div>
               </div>
+              <div class="col-xs-6 col-md-4" />
+              <div class="col-xs-6 col-md-4" />
             </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.maxCrew') }}
+            <b-collapse
+              id="speed"
+              :visible="speedVisible"
+            >
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.scmSpeed') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.scmSpeed, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.scmSpeed, 'speed') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.maxCrew, 'people') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.afterburnerSpeed') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.afterburnerSpeed, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.afterburnerSpeed, 'speed') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.maxCrew, 'people') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.groundSpeed') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.groundSpeed, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.groundSpeed, 'speed') }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.length') }}
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.afterburnerGroundSpeed') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.afterburnerGroundSpeed, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.afterburnerGroundSpeed, 'speed') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.length, 'distance') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.pitchMax') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.pitchMax, 'rotation') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.pitchMax, 'rotation') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.length, 'distance') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.yawMax') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.yawMax, 'rotation') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.yawMax, 'rotation') }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.beam') }}
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.rollMax') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.rollMax, 'rotation') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.rollMax, 'rotation') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.beam, 'distance') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.xaxisAcceleration') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.xaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.xaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.beam, 'distance') }}
-                </span>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.yaxisAcceleration') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.yaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.yaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.height') }}
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.zaxisAcceleration') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelA.zaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toNumber(modelB.zaxisAcceleration, 'speed') }}
+                  </span>
+                </div>
               </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.height, 'distance') }}
-                </span>
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.height, 'distance') }}
-                </span>
-              </div>
-            </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.mass') }}
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.mass, 'weight') }}
-                </span>
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.mass, 'weight') }}
-                </span>
-              </div>
-            </div>
-            <div class="row compare-row">
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t('model.cargo') }}
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelA">
-                  {{ toNumber(modelA.cargo, 'cargo') }}
-                </span>
-              </div>
-              <div class="col-xs-6 col-md-4 text-center">
-                <span v-if="modelB">
-                  {{ toNumber(modelB.cargo, 'cargo') }}
-                </span>
-              </div>
-            </div>
+            </b-collapse>
+
             <div
               v-for="category in categories"
               :key="category"
-              class="row compare-row"
             >
-              <div class="col-xs-12 col-md-2 text-right compare-label">
-                {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
-              </div>
-              <div class="col-xs-12 col-md-4 text-center">
-                <div
-                  v-if="modelA"
-                  class="well"
-                >
-                  <HardpointCategory
-                    v-if="hardpointsForCategory(category, modelA.hardpoints).length > 0"
-                    :category="category"
-                    :hardpoints="hardpointsForCategory(category, modelA.hardpoints)"
-                    without-title
-                  />
+              <div class="row compare-row compare-section">
+                <div class="col-xs-12 col-md-2">
+                  <div
+                    :class="{
+                      active: isVisible(category.toLowerCase())
+                    }"
+                    class="text-right metrics-title"
+                    @click="toggle(category.toLowerCase())"
+                  >
+                    {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
+                    <i class="fa fa-chevron-right" />
+                  </div>
                 </div>
+                <div class="col-xs-6 col-md-4" />
+                <div class="col-xs-6 col-md-4" />
               </div>
-              <div class="col-xs-12 col-md-4 text-center">
-                <div
-                  v-if="modelB"
-                  class="well"
-                >
-                  <HardpointCategory
-                    v-if="hardpointsForCategory(category, modelB.hardpoints).length > 0"
-                    :category="category"
-                    :hardpoints="hardpointsForCategory(category, modelB.hardpoints)"
-                    without-title
-                  />
+              <b-collapse
+                :id="category"
+                :visible="isVisible(category.toLowerCase())"
+              >
+                <div class="row compare-row">
+                  <div class="col-xs-12 col-ms-12 col-md-2"/>
+                  <div class="col-xs-12 col-ms-6 col-md-4 text-center">
+                    <div
+                      v-if="modelA"
+                      class="well"
+                    >
+                      <HardpointCategory
+                        v-if="hardpointsForCategory(category, modelA.hardpoints).length > 0"
+                        :category="category"
+                        :hardpoints="hardpointsForCategory(category, modelA.hardpoints)"
+                        without-title
+                      />
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-ms-6 col-md-4 text-center">
+                    <div
+                      v-if="modelB"
+                      class="well"
+                    >
+                      <HardpointCategory
+                        v-if="hardpointsForCategory(category, modelB.hardpoints).length > 0"
+                        :category="category"
+                        :hardpoints="hardpointsForCategory(category, modelB.hardpoints)"
+                        without-title
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </b-collapse>
             </div>
           </div>
         </div>
@@ -261,12 +634,21 @@ export default {
   mixins: [I18n, MetaInfo],
   data() {
     return {
+      title: this.t('title.compare.models.default'),
       selectA: null,
       modelA: null,
       loadingA: false,
       selectB: null,
       modelB: null,
       loadingB: false,
+      baseVisible: true,
+      crewVisible: true,
+      speedVisible: true,
+      rsiavionicVisible: true,
+      rsimodularVisible: true,
+      rsipropulsionVisible: true,
+      rsithrusterVisible: true,
+      rsiweaponVisible: true,
       modelFields: [
         'productionStatus', 'length', 'beam', 'height',
         'mass', 'cargo', 'netCargo', 'crew',
@@ -317,6 +699,12 @@ export default {
         query,
       })
     },
+    modelA() {
+      this.setTitle()
+    },
+    modelB() {
+      this.setTitle()
+    },
   },
   created() {
     if (this.$route.query.shipA) {
@@ -327,6 +715,14 @@ export default {
     }
   },
   methods: {
+    setTitle() {
+      if (this.modelB && this.modelA) {
+        this.title = this.t('title.compare.models.vs', {
+          modelA: `${this.modelA.manufacturer.code} ${this.modelA.name}`,
+          modelB: `${this.modelB.manufacturer.code} ${this.modelB.name}`,
+        })
+      }
+    },
     modularHardpoints(model) {
       return model.hardpoints.filter(item => item.categorySlug === 'modular')
     },
@@ -378,10 +774,16 @@ export default {
     hardpointsForCategory(category, hardpoints) {
       return hardpoints.filter(hardpoint => hardpoint.class === category)
     },
+    isVisible(type) {
+      return this[`${type}Visible`]
+    },
+    toggle(type) {
+      this[`${type}Visible`] = !this[`${type}Visible`]
+    },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.compare.models'),
+      title: this.title,
     })
   },
 }

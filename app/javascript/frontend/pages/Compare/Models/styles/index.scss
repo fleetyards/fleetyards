@@ -1,24 +1,93 @@
-.compare {
-  .thumbnail img {
-    max-height: 300px;
-    min-height: 120px;
-  }
+@import "~stylesheets/variables";
 
-  .compare-label {
-    text-transform: uppercase;
-    font-size: 20px;
-    font-family: 'Orbitron', tahoma, sans-serif;
+.compare {
+  .compare-image {
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+
+    & > a {
+      position: relative;
+      border-radius: $border-radius-base;
+      display: block;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      -webkit-animation-duration: 1s;
+      animation-duration: 1s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation-name: fadeIn;
+      animation-name: fadeIn;
+
+      &[lazy=loading]::before {
+        content: "";
+        background-image: url('~images/blueimp-gallery/loading.gif');
+        background-size: 100%;
+        background-position: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+        width: 50px;
+        height: 50px;
+      }
+
+      &[lazy=error] {
+        background-image: url('~images/store_image.jpg') !important;
+      }
+    }
   }
 
   .compare-row {
     margin-bottom: 10px;
   }
+
+  .compare-section {
+    margin-top: 30px;
+  }
+
+  .compare-section {
+    .metrics-title {
+      position: relative;
+      padding-right: 25px;
+      cursor: pointer;
+
+      i {
+        transition: all 0.5s ease;
+        position: absolute;
+        right: 0;
+        top: 2px;
+      }
+
+      &.active {
+        i {
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 992px) {
   .compare {
-    .compare-label {
+    .metrics-label,
+    .metrics-title {
       text-align: center;
+    }
+
+    .compare-section {
+      .metrics-title {
+        padding-right: 0;
+
+        i {
+          right: 15px;
+        }
+      }
     }
   }
 }

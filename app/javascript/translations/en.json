@@ -17,7 +17,10 @@
     "verify": "Verify your RSI Handle",
     "account": "Account",
     "compare": {
-      "models": "Compare Ships"
+      "models": {
+        "default": "Compare Ships",
+        "vs": "Compare %{modelA} vs. %{modelB}"
+      }
     },
     "notFound": "404",
     "cargo": "Cargo",

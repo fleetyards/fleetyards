@@ -12,7 +12,7 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'hangar' => 'base#index'
   get 'hangar/:username' => 'base#hangar'
 
-  get 'compare/ships' => 'base#index'
+  get 'compare/ships' => 'base#compare_models'
 
   get 'cargo' => 'base#index'
 
