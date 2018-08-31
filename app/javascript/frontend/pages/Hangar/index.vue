@@ -369,7 +369,7 @@ export default {
       this.$store.dispatch('toggleHangarFilter')
     },
     toggleDetails() {
-      this.$store.dispatch('togglehangarDetails')
+      this.$store.dispatch('toggleHangarDetails')
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleHangarFleetchart')

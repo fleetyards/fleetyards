@@ -115,6 +115,7 @@ $panel-content-border-radius: 6px;
     font-size: 110%;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
   }
 
   &.panel-btn-clear {
@@ -170,10 +171,6 @@ $panel-content-border-radius: 6px;
 
   &.panel-btn-block {
     width: 100%;
-
-    .panel-btn-inner {
-      text-align: center;
-    }
   }
 
   &[disabled] {
@@ -222,10 +219,6 @@ $panel-content-border-radius: 6px;
     &.panel-btn-mobile-block {
       margin-right: 0;
       clear: both;
-
-      .panel-btn-inner {
-        text-align: center;
-      }
     }
   }
 

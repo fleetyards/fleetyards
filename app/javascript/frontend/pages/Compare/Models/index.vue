@@ -12,8 +12,7 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="row">
-              <div class="col-ms-12 col-md-2 text-center"/>
-              <div class="col-xs-12 col-ms-6 col-md-4">
+              <div class="col-xs-12 col-ms-6 col-md-4 col-md-offset-2">
                 <FilterGroup
                   v-model="selectA"
                   :label="t('labels.compare.selectModel')"
