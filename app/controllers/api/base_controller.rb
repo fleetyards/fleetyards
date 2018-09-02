@@ -76,7 +76,7 @@ module Api
 
     private def query_params
       @query_params ||= begin
-        q = JSON.parse(params[:q] || '{}')
+        q = JSON.parse(params[:q].to_s || '{}')
         q.transform_keys { |key| key.to_s.underscore }
       end
     rescue JSON::ParserError
