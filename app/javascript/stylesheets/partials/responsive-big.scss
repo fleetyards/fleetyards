@@ -1,0 +1,185 @@
+
+
+.col-xlg-1,
+.col-xlg-2,
+.col-xlg-3,
+.col-xlg-4,
+.col-xlg-5,
+.col-xlg-6,
+.col-xlg-7,
+.col-xlg-8,
+.col-xlg-9,
+.col-xlg-10,
+.col-xlg-11,
+.col-xlg-12 {
+  position: relative;
+  // Prevent columns from collapsing when empty
+  min-height: 1px;
+  // Inner gutter via padding
+  padding-left:  ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width / 2);
+}
+
+// ----- col-xlg breakpoints and related classes -----
+
+@media (min-width: 1800px) {
+  .container {
+    width: $container-xlg;
+  }
+
+  .col-xlg-1,
+  .col-xlg-2,
+  .col-xlg-3,
+  .col-xlg-4,
+  .col-xlg-5,
+  .col-xlg-6,
+  .col-xlg-7,
+  .col-xlg-8,
+  .col-xlg-9,
+  .col-xlg-10,
+  .col-xlg-11 {
+    float: left;
+  }
+  .col-xlg-1  { width: percentage((1 / $grid-columns)); }
+  .col-xlg-2  { width: percentage((2 / $grid-columns)); }
+  .col-xlg-3  { width: percentage((3 / $grid-columns)); }
+  .col-xlg-4  { width: percentage((4 / $grid-columns)); }
+  .col-xlg-5  { width: percentage((5 / $grid-columns)); }
+  .col-xlg-6  { width: percentage((6 / $grid-columns)); }
+  .col-xlg-7  { width: percentage((7 / $grid-columns)); }
+  .col-xlg-8  { width: percentage((8 / $grid-columns)); }
+  .col-xlg-9  { width: percentage((9 / $grid-columns)); }
+  .col-xlg-10 { width: percentage((10/ $grid-columns)); }
+  .col-xlg-11 { width: percentage((11/ $grid-columns)); }
+  .col-xlg-12 { width: 100%; }
+
+  // Push and pull columns for source order changes
+  .col-xlg-push-1  { left: percentage((1 / $grid-columns)); }
+  .col-xlg-push-2  { left: percentage((2 / $grid-columns)); }
+  .col-xlg-push-3  { left: percentage((3 / $grid-columns)); }
+  .col-xlg-push-4  { left: percentage((4 / $grid-columns)); }
+  .col-xlg-push-5  { left: percentage((5 / $grid-columns)); }
+  .col-xlg-push-6  { left: percentage((6 / $grid-columns)); }
+  .col-xlg-push-7  { left: percentage((7 / $grid-columns)); }
+  .col-xlg-push-8  { left: percentage((8 / $grid-columns)); }
+  .col-xlg-push-9  { left: percentage((9 / $grid-columns)); }
+  .col-xlg-push-10 { left: percentage((10/ $grid-columns)); }
+  .col-xlg-push-11 { left: percentage((11/ $grid-columns)); }
+
+  .col-xlg-pull-1  { right: percentage((1 / $grid-columns)); }
+  .col-xlg-pull-2  { right: percentage((2 / $grid-columns)); }
+  .col-xlg-pull-3  { right: percentage((3 / $grid-columns)); }
+  .col-xlg-pull-4  { right: percentage((4 / $grid-columns)); }
+  .col-xlg-pull-5  { right: percentage((5 / $grid-columns)); }
+  .col-xlg-pull-6  { right: percentage((6 / $grid-columns)); }
+  .col-xlg-pull-7  { right: percentage((7 / $grid-columns)); }
+  .col-xlg-pull-8  { right: percentage((8 / $grid-columns)); }
+  .col-xlg-pull-9  { right: percentage((9 / $grid-columns)); }
+  .col-xlg-pull-10 { right: percentage((10/ $grid-columns)); }
+  .col-xlg-pull-11 { right: percentage((11/ $grid-columns)); }
+
+  // Offsets
+  .col-xlg-offset-1  { margin-left: percentage((1 / $grid-columns)); }
+  .col-xlg-offset-2  { margin-left: percentage((2 / $grid-columns)); }
+  .col-xlg-offset-3  { margin-left: percentage((3 / $grid-columns)); }
+  .col-xlg-offset-4  { margin-left: percentage((4 / $grid-columns)); }
+  .col-xlg-offset-5  { margin-left: percentage((5 / $grid-columns)); }
+  .col-xlg-offset-6  { margin-left: percentage((6 / $grid-columns)); }
+  .col-xlg-offset-7  { margin-left: percentage((7 / $grid-columns)); }
+  .col-xlg-offset-8  { margin-left: percentage((8 / $grid-columns)); }
+  .col-xlg-offset-9  { margin-left: percentage((9 / $grid-columns)); }
+  .col-xlg-offset-10 { margin-left: percentage((10/ $grid-columns)); }
+  .col-xlg-offset-11 { margin-left: percentage((11/ $grid-columns)); }
+}
+
+.col-xxlg-1,
+.col-xxlg-2,
+.col-xxlg-3,
+.col-xxlg-4,
+.col-xxlg-5,
+.col-xxlg-6,
+.col-xxlg-7,
+.col-xxlg-8,
+.col-xxlg-9,
+.col-xxlg-10,
+.col-xxlg-11,
+.col-xxlg-12 {
+  position: relative;
+  // Prevent columns from collapsing when empty
+  min-height: 1px;
+  // Inner gutter via padding
+  padding-left:  ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width / 2);
+}
+
+// ----- col-xxlg breakpoints and related classes -----
+
+@media (min-width: 2800px) {
+  .container {
+    width: $container-xxlg;
+  }
+
+  .col-xxlg-1,
+  .col-xxlg-2,
+  .col-xxlg-3,
+  .col-xxlg-4,
+  .col-xxlg-5,
+  .col-xxlg-6,
+  .col-xxlg-7,
+  .col-xxlg-8,
+  .col-xxlg-9,
+  .col-xxlg-10,
+  .col-xxlg-11 {
+    float: left;
+  }
+  .col-xxlg-1  { width: percentage((1 / $grid-columns)); }
+  .col-xxlg-2  { width: percentage((2 / $grid-columns)); }
+  .col-xxlg-3  { width: percentage((3 / $grid-columns)); }
+  .col-xxlg-4  { width: percentage((4 / $grid-columns)); }
+  .col-xxlg-5  { width: percentage((5 / $grid-columns)); }
+  .col-xxlg-6  { width: percentage((6 / $grid-columns)); }
+  .col-xxlg-7  { width: percentage((7 / $grid-columns)); }
+  .col-xxlg-8  { width: percentage((8 / $grid-columns)); }
+  .col-xxlg-9  { width: percentage((9 / $grid-columns)); }
+  .col-xxlg-10 { width: percentage((10/ $grid-columns)); }
+  .col-xxlg-11 { width: percentage((11/ $grid-columns)); }
+  .col-xxlg-12 { width: 100%; }
+
+  // Push and pull columns for source order changes
+  .col-xxlg-push-1  { left: percentage((1 / $grid-columns)); }
+  .col-xxlg-push-2  { left: percentage((2 / $grid-columns)); }
+  .col-xxlg-push-3  { left: percentage((3 / $grid-columns)); }
+  .col-xxlg-push-4  { left: percentage((4 / $grid-columns)); }
+  .col-xxlg-push-5  { left: percentage((5 / $grid-columns)); }
+  .col-xxlg-push-6  { left: percentage((6 / $grid-columns)); }
+  .col-xxlg-push-7  { left: percentage((7 / $grid-columns)); }
+  .col-xxlg-push-8  { left: percentage((8 / $grid-columns)); }
+  .col-xxlg-push-9  { left: percentage((9 / $grid-columns)); }
+  .col-xxlg-push-10 { left: percentage((10/ $grid-columns)); }
+  .col-xxlg-push-11 { left: percentage((11/ $grid-columns)); }
+
+  .col-xxlg-pull-1  { right: percentage((1 / $grid-columns)); }
+  .col-xxlg-pull-2  { right: percentage((2 / $grid-columns)); }
+  .col-xxlg-pull-3  { right: percentage((3 / $grid-columns)); }
+  .col-xxlg-pull-4  { right: percentage((4 / $grid-columns)); }
+  .col-xxlg-pull-5  { right: percentage((5 / $grid-columns)); }
+  .col-xxlg-pull-6  { right: percentage((6 / $grid-columns)); }
+  .col-xxlg-pull-7  { right: percentage((7 / $grid-columns)); }
+  .col-xxlg-pull-8  { right: percentage((8 / $grid-columns)); }
+  .col-xxlg-pull-9  { right: percentage((9 / $grid-columns)); }
+  .col-xxlg-pull-10 { right: percentage((10/ $grid-columns)); }
+  .col-xxlg-pull-11 { right: percentage((11/ $grid-columns)); }
+
+  // Offsets
+  .col-xxlg-offset-1  { margin-left: percentage((1 / $grid-columns)); }
+  .col-xxlg-offset-2  { margin-left: percentage((2 / $grid-columns)); }
+  .col-xxlg-offset-3  { margin-left: percentage((3 / $grid-columns)); }
+  .col-xxlg-offset-4  { margin-left: percentage((4 / $grid-columns)); }
+  .col-xxlg-offset-5  { margin-left: percentage((5 / $grid-columns)); }
+  .col-xxlg-offset-6  { margin-left: percentage((6 / $grid-columns)); }
+  .col-xxlg-offset-7  { margin-left: percentage((7 / $grid-columns)); }
+  .col-xxlg-offset-8  { margin-left: percentage((8 / $grid-columns)); }
+  .col-xxlg-offset-9  { margin-left: percentage((9 / $grid-columns)); }
+  .col-xxlg-offset-10 { margin-left: percentage((10/ $grid-columns)); }
+  .col-xxlg-offset-11 { margin-left: percentage((11/ $grid-columns)); }
+}
