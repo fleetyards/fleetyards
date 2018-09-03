@@ -58,6 +58,15 @@
           >
             {{ toNumber(model.mass, 'weight') }}
           </div>
+          <template v-if="detailed">
+            <div class="metrics-label">{{ t('model.size') }}:</div>
+            <div
+              v-tooltip="model.sizeLabel"
+              class="metrics-value"
+            >
+              {{ model.sizeLabel }}
+            </div>
+          </template>
         </div>
         <div class="col-xs-12 col-md-4">
           <div class="row">

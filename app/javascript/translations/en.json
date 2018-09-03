@@ -482,6 +482,7 @@
   "model": {
     "focus": "Focus",
     "classification": "Classification",
+    "size": "Size",
     "beam": "Beam",
     "cargo": "Cargo",
     "netCargo": "Cargo with Rover/Snub",

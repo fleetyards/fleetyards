@@ -175,6 +175,27 @@
               </div>
               <div class="row compare-row">
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.size') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ modelA.sizeLabel }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ modelB.sizeLabel }}
+                  </span>
+                </div>
+              </div>
+              <div class="row compare-row">
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.length') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
