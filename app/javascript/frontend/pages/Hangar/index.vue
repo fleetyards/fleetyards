@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="hidden-xs hidden-sm col-md-9 col-xlg-10">
+          <div class="col-sm-12 col-md-9 col-xlg-10">
             <ModelClassLabels
               v-if="vehiclesCount"
               :label="t('labels.hangar')"
@@ -16,7 +16,7 @@
               filter-key="modelClassificationIn"
             />
             <GroupLabels
-              v-if="vehicles.length || (!vehicles.length && isFilterSelected)"
+              v-if="!mobile && (vehicles.length || (!vehicles.length && isFilterSelected))"
               :hangar-groups="hangarGroups"
               :label="t('labels.groups')"
             />
