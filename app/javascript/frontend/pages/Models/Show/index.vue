@@ -21,6 +21,7 @@
               <router-link
                 :to="{
                   name: backRoute.name,
+                  params: backRoute.params,
                   hash: `#${model.slug}`,
                   query: backRoute.query,
                 }"

@@ -40,7 +40,7 @@
     %legend
       Docks:
     #docks
-      - if station.docks.present?
+      - if station.docks.any?
         = form.fields_for :docks, station.docks do |builder|
           = render 'stations/dock_fields', fields: builder
 
@@ -53,7 +53,7 @@
     %legend
       Shops:
     #station_shops
-      - if station.station_shops.present?
+      - if station.station_shops.any?
         = form.fields_for :station_shops, station.station_shops do |builder|
           = render 'stations/station_shop_fields', fields: builder
 

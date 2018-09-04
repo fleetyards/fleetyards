@@ -251,7 +251,7 @@
     %legend
       Videos:
     #videos
-      - if model.videos.present?
+      - if model.videos.any?
         = form.fields_for :videos, model.videos do |builder|
           = render 'models/video_fields', fields: builder
 

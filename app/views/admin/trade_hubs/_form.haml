@@ -25,7 +25,7 @@
     %legend
       Commodities:
     #trade-commodities
-      - if trade_hub.trade_commodities.present?
+      - if trade_hub.trade_commodities.any?
         = form.fields_for :trade_commodities, trade_hub.trade_commodities do |builder|
           = render 'tradehubs/trade_commodity_fields', fields: builder
 
