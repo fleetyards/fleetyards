@@ -198,13 +198,13 @@ export default {
       'currentUser',
     ]),
     fleetTitle() {
-      if (!this.fleet) {
+      if (!this.fleet || !this.fleet.sid) {
         return ''
       }
       return `${this.fleet.name} (${this.fleet.sid.toUpperCase()})`
     },
     myFleet() {
-      if (!this.currentUser) {
+      if (!this.currentUser || !this.$route.params.sid) {
         return false
       }
       return (this.currentUser.fleets || []).includes(this.$route.params.sid.toUpperCase())
