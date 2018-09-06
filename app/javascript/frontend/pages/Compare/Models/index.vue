@@ -69,6 +69,20 @@
               </div>
             </div>
 
+            <div
+              v-if="!modelA && !modelB"
+              class="row compare-row"
+            >
+              <div class="col-xs-12">
+                <Box
+                  class="info"
+                  large
+                >
+                  <h1>{{ t('headlines.compare.models') }}</h1>
+                  <p>{{ t('texts.compare.models.info') }}</p>
+                </Box>
+              </div>
+            </div>
             <div class="row compare-row compare-section">
               <div class="col-xs-12 col-md-2">
                 <div
@@ -89,7 +103,10 @@
               id="base"
               :visible="baseVisible"
             >
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.manufacturer') }}
                 </div>
@@ -97,20 +114,21 @@
                   <span
                     v-if="modelA"
                     class="metrics-value"
-                  >
-                    {{ modelA.manufacturer.name }}
-                  </span>
+                    v-html="modelA.manufacturer.name"
+                  />
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelB"
                     class="metrics-value"
-                  >
-                    {{ modelB.manufacturer.name }}
-                  </span>
+                    v-html="modelB.manufacturer.name"
+                  />
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.productionStatus') }}
                 </div>
@@ -131,7 +149,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.focus') }}
                 </div>
@@ -152,7 +173,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.classification') }}
                 </div>
@@ -173,7 +197,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.size') }}
                 </div>
@@ -194,7 +221,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.length') }}
                 </div>
@@ -215,7 +245,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.beam') }}
                 </div>
@@ -236,7 +269,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.height') }}
                 </div>
@@ -257,7 +293,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.mass') }}
                 </div>
@@ -278,7 +317,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.cargo') }}
                 </div>
@@ -299,7 +341,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.price') }}
                 </div>
@@ -342,7 +387,10 @@
               id="crew"
               :visible="crewVisible"
             >
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.minCrew') }}
                 </div>
@@ -363,7 +411,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.maxCrew') }}
                 </div>
@@ -406,7 +457,10 @@
               id="speed"
               :visible="speedVisible"
             >
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.scmSpeed') }}
                 </div>
@@ -427,7 +481,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.afterburnerSpeed') }}
                 </div>
@@ -448,7 +505,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.groundSpeed') }}
                 </div>
@@ -469,7 +529,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.afterburnerGroundSpeed') }}
                 </div>
@@ -490,7 +553,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.pitchMax') }}
                 </div>
@@ -511,7 +577,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.yawMax') }}
                 </div>
@@ -532,7 +601,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.rollMax') }}
                 </div>
@@ -553,7 +625,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.xaxisAcceleration') }}
                 </div>
@@ -574,7 +649,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.yaxisAcceleration') }}
                 </div>
@@ -595,7 +673,10 @@
                   </span>
                 </div>
               </div>
-              <div class="row compare-row">
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
                   {{ t('model.zaxisAcceleration') }}
                 </div>
@@ -642,7 +723,10 @@
                 :id="category"
                 :visible="isVisible(category.toLowerCase())"
               >
-                <div class="row compare-row">
+                <div
+                  v-if="modelA || modelB"
+                  class="row compare-row"
+                >
                   <div class="col-xs-12 col-ms-12 col-md-2"/>
                   <div class="col-xs-12 col-ms-6 col-md-4 text-center">
                     <div
@@ -686,12 +770,14 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
 import HardpointCategory from 'frontend/partials/Models/Hardpoints/Category'
+import Box from 'frontend/components/Box'
 
 export default {
   components: {
     HardpointIcon,
     FilterGroup,
     HardpointCategory,
+    Box,
   },
   mixins: [I18n, MetaInfo],
   data() {

@@ -380,6 +380,11 @@
       "info": "We could not find any Records.",
       "query": "It seems like you have some Filters active or visited a Page without any Records."
     },
+    "compare": {
+      "models": {
+        "info": "To start select two Ships you want to compare."
+      }
+    },
     "rsiVerification": {
       "instructions": "To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href=\"https://robertsspaceindustries.com/account/profile\" target=\"_blank\" rel=\"noopener\">https://robertsspaceindustries.com/account/profile</a>:",
       "verificationText": "https://www.fleetyards.net/hangar/%{username}#%{token}",
