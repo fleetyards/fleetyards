@@ -39,11 +39,10 @@
             <a
               v-lazy:background-image="image.smallUrl"
               :key="image.smallUrl"
-              :data-index="index"
               :title="image.name"
               :href="image.url"
               class="image"
-              @click="openGallery"
+              @click="openGallery(index, $event)"
             />
           </div>
         </transition-group>
@@ -105,9 +104,9 @@ export default {
     this.fetch()
   },
   methods: {
-    openGallery(event) {
+    openGallery(index, event) {
       event.preventDefault()
-      this.$refs.gallery.open(event.currentTarget.getAttribute('data-index'))
+      this.$refs.gallery.open(index)
     },
     async fetch() {
       this.loading = true

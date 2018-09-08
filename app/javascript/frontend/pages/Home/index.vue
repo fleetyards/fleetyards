@@ -131,11 +131,11 @@
         <div class="col-xs-12 col-md-6 relative home-images">
           <Panel>
             <h2 class="sr-only">{{ t('headlines.welcomeImages') }}</h2>
-            <div class="panel-body">
+            <div class="panel-body images">
               <transition-group
                 v-if="images"
                 name="fade"
-                class="flex-row flex-center images"
+                class="flex-row flex-center"
                 tag="div"
                 appear
               >
