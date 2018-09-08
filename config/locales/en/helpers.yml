@@ -20,7 +20,7 @@ en:
         password_confirmation: Password Confirmation
         username: Username
       video:
-        url: URL
+        url: URL or YouTube ID
       station:
         hidden: hidden?
       dock:
