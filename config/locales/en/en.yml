@@ -31,6 +31,10 @@ en:
       description:
         default: "Compare your favorite Ships."
         vs: "Compare %{model_a} vs. %{model_b}."
+    ship_images:
+      description: "%{model} Images"
+    ship_videos:
+      description: "%{model} Videos"
   nav:
     components: Components
     home: Home
@@ -49,6 +53,8 @@ en:
       images: Images
       cargo: Cargo
       ships: Ships
+      ship_images: "%{model} Images"
+      ship_videos: "%{model} Videos"
       commodities: Commodities
       compare_ships: Compare Ships
       settings: Settings

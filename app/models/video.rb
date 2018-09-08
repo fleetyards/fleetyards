@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Video < ApplicationRecord
+  paginates_per 8
+
   belongs_to :model, required: true
 
   enum video_type: %i[youtube]
@@ -10,7 +12,7 @@ class Video < ApplicationRecord
   def video_url
     return url unless youtube?
 
-    "https://www.youtube.com/embed/#{url}?loop=1&playlist=#{url}"
+    "https://www.youtube.com/embed/#{url}"
   end
 
   def video_id

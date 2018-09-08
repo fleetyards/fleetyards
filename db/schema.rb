@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_113614) do
+ActiveRecord::Schema.define(version: 2018_09_08_172610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 2018_08_29_113614) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "background", default: true
+    t.integer "width"
+    t.integer "height"
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

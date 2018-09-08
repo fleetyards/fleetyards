@@ -1,8 +1,12 @@
 @import "~stylesheets/variables";
 
-.ships,
-.images {
+.home-ships,
+.home-images {
   min-height: 300px;
+}
+
+.home-images .images {
+  margin-bottom: 0;
 }
 
 .home-screen-intro {

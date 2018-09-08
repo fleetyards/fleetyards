@@ -21,8 +21,8 @@ module Api
         @images = Image.enabled
                        .in_gallery
                        .with_uniq_name
-                       .order('RANDOM()')
-                       .first(14)
+                       .order(Arel.sql('RANDOM()'))
+                       .first(16)
       end
     end
   end

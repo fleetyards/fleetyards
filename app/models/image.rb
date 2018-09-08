@@ -17,7 +17,11 @@ class Image < ApplicationRecord
   end
 
   def self.enabled
-    where enabled: true
+    where(enabled: true)
+  end
+
+  def self.background
+    where(background: true)
   end
 
   def to_jq_upload

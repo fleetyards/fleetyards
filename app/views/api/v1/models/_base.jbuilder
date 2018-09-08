@@ -28,6 +28,7 @@ json.size model.size
 json.size_label model.size&.humanize
 json.store_image model.store_image.url
 json.fleetchart_image model.fleetchart_image.url
+json.background_image model.random_image&.name&.url
 json.brochure model.brochure.url
 json.store_url rsi_store_url(model.store_url)
 json.price((model.price.to_f if model.price.present?))
@@ -39,3 +40,5 @@ json.classification model.classification
 json.classification_label model.classification&.humanize
 json.focus model.focus
 json.rsi_id model.rsi_id
+json.has_images model.images.count.positive?
+json.has_videos model.videos.count.positive?

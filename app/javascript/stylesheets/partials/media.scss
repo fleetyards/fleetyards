@@ -1,55 +1,48 @@
-a.thumbnail:hover,
-a.thumbnail:focus,
-a.thumbnail.active {
-  border-color: lighten($gray-dark, 20%);
+.images {
+  margin-bottom: 20px;
+
+  .image {
+    height: 220px;
+    background-size: cover;
+    background-color: black;
+    background-position: center;
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: $border-radius-base;
+
+    &[lazy=loading]::before {
+      content: "";
+      background-image: url('~images/loading.gif');
+      background-size: 100%;
+      background-position: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -25px;
+      margin-top: -25px;
+      width: 50px;
+      height: 50px;
+    }
+
+    &[lazy=error] {
+      background-image: url('~images/store_image.jpg') !important;
+    }
+  }
 }
 
-.thumbnail {
-  display: flex;
-  width: 100%;
-  min-height: 40px;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid $gray-dark;
-  border-radius: 6px;
-  padding: 2px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  transition: border 0.2s ease-in-out;
+.videos {
+  margin-bottom: 20px;
 
-  img {
-    width: 100%;
-    border-radius: 4px;
-  }
-
-  img[lazy=loaded] {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    -webkit-animation-name: fadeIn;
-    animation-name: fadeIn;
-  }
-
-  img[lazy=loading] {
-    height: 200px;
-  }
-
-  &:not(.no-link) {
-    cursor: pointer;
+  .video {
+    margin-bottom: 20px;
   }
 }
 
 .embed-responsive {
   overflow: hidden;
-  border: 2px solid $gray-dark;
-  transition: border 0.2s ease-in-out;
+  border: none;
   background-color: #272b30;
   border-radius: 6px;
-
-  &:hover {
-    border-color: lighten($gray-dark, 20%);
-  }
 }
 
 .embed-copy {

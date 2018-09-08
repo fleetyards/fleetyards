@@ -5,6 +5,8 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
 
   get 'ships' => 'base#index'
   get 'ships/:slug' => 'base#model'
+  get 'ships/:slug/images' => 'base#model_images'
+  get 'ships/:slug/videos' => 'base#model_videos'
 
   get 'fleets' => 'base#index'
   get 'fleets/:sid' => 'base#fleet'

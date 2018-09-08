@@ -112,7 +112,7 @@ class Model < ApplicationRecord
   end
 
   def random_image
-    images.enabled.order('RANDOM()').first
+    images.enabled.background.order(Arel.sql('RANDOM()')).first
   end
 
   def human_display_cargo

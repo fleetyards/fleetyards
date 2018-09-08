@@ -288,14 +288,6 @@ $list-group-link-color:          $text-color;
 $list-group-link-heading-color:  #fff;
 $list-group-link-hover-color:    darken(#fff, 10%);
 
-// Thumbnails
-// -------------------------
-$thumbnail-bg:                $body-bg;
-$thumbnail-border:            #ddd;
-$thumbnail-border-radius:     $border-radius-base;
-
-$thumbnail-caption-color:     $text-color;
-
 // Wells
 // -------------------------
 $well-bg:                     rgba(darken($body-bg, 5%), 0.8);

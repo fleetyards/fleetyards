@@ -1,79 +1,143 @@
 <template>
   <div
-    id="blueimp-gallery"
-    class="blueimp-gallery blueimp-gallery-controls"
+    class="pswp"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
   >
-    <div class="slides" />
-    <a class="prev">‹</a>
-    <a class="next">›</a>
-    <a class="close">×</a>
-    <a class="play-pause" />
-    <div class="indicator-wrapper">
-      <ol class="indicator" />
+    <div class="pswp__bg" />
+    <div class="pswp__scroll-wrap">
+      <div class="pswp__container">
+        <div class="pswp__item" />
+        <div class="pswp__item" />
+        <div class="pswp__item" />
+      </div>
+      <div class="pswp__ui pswp__ui--hidden">
+        <div class="pswp__top-bar">
+          <div class="pswp__counter" />
+          <button
+            class="pswp__button pswp__button--close"
+            title="Close (Esc)"
+          />
+          <button
+            class="pswp__button pswp__button--share"
+            title="Share"
+          />
+          <button
+            class="pswp__button pswp__button--fs"
+            title="Toggle fullscreen"
+          />
+          <button
+            class="pswp__button pswp__button--zoom"
+            title="Zoom in/out"
+          />
+          <div class="pswp__preloader">
+            <div class="pswp__preloader__icn">
+              <div class="pswp__preloader__cut">
+                <div class="pswp__preloader__donut" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+          <div class="pswp__share-tooltip" />
+        </div>
+        <button
+          class="pswp__button pswp__button--arrow--left"
+          title="Previous (arrow left)"
+        />
+        <button
+          class="pswp__button pswp__button--arrow--right"
+          title="Next (arrow right)"
+        />
+        <div class="pswp__caption">
+          <div class="pswp__caption__center" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import BlueimpGallery from 'blueimp-gallery/js/blueimp-gallery.min'
-import VueScrollTo from 'vue-scrollto'
+import PhotoSwipe from 'photoswipe'
+// eslint-disable-next-line camelcase
+import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default'
 
 export default {
   props: {
-    images: {
-      type: Array,
-      default() { return [] },
-    },
-    videos: {
+    items: {
       type: Array,
       default() { return [] },
     },
   },
+  data() {
+    return {
+      gallery: null,
+      index: 0,
+    }
+  },
   computed: {
-    galleryImages() {
-      return this.images.map(image => ({
-        href: image.url,
-        type: image.type,
-        thumbnail: image.smallUrl,
+    galleryItems() {
+      return this.items.map(item => ({
+        src: item.url,
+        w: item.width,
+        h: item.height,
+        msrc: item.smallUrl,
+        el: document.querySelector(`[href="${item.url}"]`),
       }))
     },
-    galleryVideos() {
-      return this.videos.map(video => ({
-        href: `https://www.youtube.com/watch?v=${video.videoId}`,
-        type: 'text/html',
-        youtube: video.videoId,
-        poster: `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`,
-        thumbnail: `https://img.youtube.com/vi/${video.videoId}/default.jpg`,
-      }))
+    shareButtons() {
+      return [
+        { id: 'twitter', label: 'Tweet', url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}' },
+        { id: 'pinterest', label: 'Pin it', url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}' },
+        {
+          id: 'download', label: 'Download image', url: '{{raw_image_url}}', download: true,
+        },
+      ]
+    },
+    options() {
+      return {
+        getThumbBoundsFn: this.getThumbBounds,
+        index: this.index,
+        showHideOpacity: true,
+        loop: false,
+        history: false,
+        counterEl: false,
+        shareButtons: this.shareButtons,
+      }
     },
   },
   methods: {
-    open(index) {
-      this.$store.commit('showOverlay')
-      const options = {
-        slidesContainer: '.slides',
-        onslide: this.onSlide,
-        onclosed: this.onClose,
-        youTubeClickToPlay: false,
-        index,
+    getThumbBounds(index) {
+      if (!this.galleryItems[index].el) {
+        return { x: 0, y: 0, w: 0 }
       }
-      const links = this.galleryVideos.concat(this.galleryImages)
-      BlueimpGallery(links, options)
+
+      const pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+      const rect = this.galleryItems[index].el.getBoundingClientRect()
+
+      return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
+    },
+    open(index = 0) {
+      this.index = parseInt(index, 10)
+      this.$store.commit('showOverlay')
+      this.setup()
+      this.gallery.init()
     },
     onClose() {
       this.$store.commit('hideOverlay')
     },
-    onSlide(_index, _slide) {
-      const activeSlide = document.querySelectorAll('.indicator li.active')[0]
+    setup() {
+      const pswpElement = document.querySelectorAll('.pswp')[0]
 
-      VueScrollTo.scrollTo(activeSlide, 300, {
-        container: '.indicator',
-        easing: 'ease-in-out',
-        offset: -60,
-        x: true,
-        y: false,
-      })
+      this.gallery = new PhotoSwipe(
+        pswpElement,
+        PhotoSwipeUI_Default,
+        this.galleryItems,
+        this.options,
+      )
+
+      this.gallery.listen('close', this.onClose)
     },
   },
 }
