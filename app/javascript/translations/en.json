@@ -5,6 +5,8 @@
     "home": "Home",
     "models": "Ships",
     "model": "%{name} - %{manufacturer}",
+    "modelImages": "%{name} Images",
+    "modelVideos": "%{name} Videos",
     "images": "Images",
     "login": "Login",
     "signUp": "Sign Up",

@@ -4,7 +4,15 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="sr-only">{{ t('headlines.images') }}</h1>
+            <h1 class="back-button">
+              {{ title }}
+              <router-link
+                :to="{ name: 'model', param: { slug: $route.params.slug }}"
+                class="btn btn-link"
+              >
+                <i class="fal fa-chevron-left" />
+              </router-link>
+            </h1>
           </div>
         </div>
         <div class="row">
@@ -75,7 +83,9 @@ export default {
   mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
+      title: null,
       images: [],
+      model: null,
       loading: false,
     }
   },
@@ -83,8 +93,15 @@ export default {
     $route() {
       this.fetch()
     },
+    model() {
+      this.title = this.t('title.modelImages', {
+        name: this.model.name,
+      })
+      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
+    },
   },
   created() {
+    this.fetchModel()
     this.fetch()
   },
   methods: {
@@ -94,7 +111,7 @@ export default {
     },
     async fetch() {
       this.loading = true
-      const response = await this.$api.get('images', {
+      const response = await this.$api.get(`models/${this.$route.params.slug}/images`, {
         page: this.$route.query.page,
       })
       this.loading = false
@@ -103,10 +120,21 @@ export default {
       }
       this.setPages(response.meta)
     },
+    async fetchModel() {
+      const response = await this.$api.get(`models/${this.$route.params.slug}`, {
+        without_images: true,
+        without_videos: true,
+      })
+      if (!response.error) {
+        this.model = response.data
+      } else if (response.error.response.status === 404) {
+        this.$router.replace({ name: '404' })
+      }
+    },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.images'),
+      title: this.title,
     })
   },
 }

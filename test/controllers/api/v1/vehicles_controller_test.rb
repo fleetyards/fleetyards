@@ -104,6 +104,7 @@ module Api
               'sizeLabel' => nil,
               'storeImage' => data.vehicles.first.model.store_image.url,
               'fleetchartImage' => nil,
+              'backgroundImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
@@ -115,6 +116,8 @@ module Api
               'classificationLabel' => 'Multi role',
               'focus' => nil,
               'rsiId' => nil,
+              'hasImages' => false,
+              'hasVideos' => false,
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',

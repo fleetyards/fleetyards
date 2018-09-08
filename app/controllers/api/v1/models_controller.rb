@@ -72,7 +72,7 @@ module Api
       def latest
         authorize! :index, :api_models
         @models = Model.order(last_updated_at: :desc, name: :asc)
-                       .limit(8)
+                       .limit(9)
       end
 
       def embed
@@ -96,6 +96,25 @@ module Api
       def show
         authorize! :show, :api_models
         @model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+      end
+
+      def images
+        authorize! :show, :api_models
+        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @images = model.images
+                       .enabled
+                       .order('images.created_at desc')
+                       .page(params[:page])
+                       .per([(params[:per_page] || Image.default_per_page), Image.default_per_page * 4].min)
+      end
+
+      def videos
+        authorize! :show, :api_models
+        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @videos = model.videos
+                       .order('videos.created_at desc')
+                       .page(params[:page])
+                       .per([(params[:per_page] || Video.default_per_page), Video.default_per_page * 4].min)
       end
 
       def store_image

@@ -90,7 +90,7 @@
     </div>
     <section class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 relative ships">
+        <div class="col-xs-12 col-md-6 relative home-ships">
           <h2 class="sr-only">{{ t('headlines.welcomeShips') }}</h2>
           <transition-group
             name="fade-list"
@@ -128,31 +128,30 @@
             fixed
           />
         </div>
-        <div class="col-xs-12 col-md-6 relative images">
+        <div class="col-xs-12 col-md-6 relative home-images">
           <Panel>
             <h2 class="sr-only">{{ t('headlines.welcomeImages') }}</h2>
             <div class="panel-body">
               <transition-group
                 v-if="images"
                 name="fade"
+                class="flex-row flex-center images"
                 tag="div"
-                class="flex-row flex-center"
+                appear
               >
                 <div
                   v-for="(image, index) in images"
-                  :key="index"
+                  :key="image.id"
                   class="col-xs-12 col-sm-6 col-md-6"
                 >
                   <router-link
+                    v-lazy:background-image="image.smallUrl"
+                    :data-index="index"
+                    :title="image.name"
+                    :key="image.smallUrl"
                     :to="{name: 'model', params: { slug: image.model.slug }}"
-                    class="thumbnail"
-                  >
-                    <img
-                      v-lazy="image.smallUrl"
-                      class="img-responsive"
-                      alt="Image"
-                    >
-                  </router-link>
+                    class="image"
+                  />
                 </div>
               </transition-group>
               <Loader :loading="imagesLoading" />

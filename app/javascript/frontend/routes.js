@@ -3,6 +3,8 @@ import Impressum from 'frontend/pages/Impressum'
 import PrivacyPolicy from 'frontend/pages/PrivacyPolicy'
 import Models from 'frontend/pages/Models'
 import Model from 'frontend/pages/Models/Show'
+import ModelImages from 'frontend/pages/Models/Show/Images'
+import ModelVideos from 'frontend/pages/Models/Show/Videos'
 import CompareModels from 'frontend/pages/Compare/Models'
 import NotFound from 'frontend/pages/NotFound'
 import Images from 'frontend/pages/Images'
@@ -49,6 +51,14 @@ export const routes = [
     path: '/ships/:slug',
     name: 'model',
     component: Model,
+  }, {
+    path: '/ships/:slug/images',
+    name: 'model-images',
+    component: ModelImages,
+  }, {
+    path: '/ships/:slug/videos',
+    name: 'model-videos',
+    component: ModelVideos,
   }, {
     path: '/images',
     name: 'images',

@@ -90,7 +90,7 @@ $contentBorderRadius: 16px;
   }
 
   .panel-image {
-    height: 180px;
+    height: 200px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
@@ -113,7 +113,7 @@ $contentBorderRadius: 16px;
 
       &[lazy=loading]::before {
         content: "";
-        background-image: url('~images/blueimp-gallery/loading.gif');
+        background-image: url('~images/loading.gif');
         background-size: 100%;
         background-position: center;
         position: absolute;

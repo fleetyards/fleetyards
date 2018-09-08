@@ -75,7 +75,7 @@
           >
             <transition-group
               name="fade-list"
-              class="flex-row"
+              class="flex-row flex-center"
               tag="div"
               appear
             >

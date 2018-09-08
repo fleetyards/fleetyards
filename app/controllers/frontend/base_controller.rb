@@ -46,12 +46,34 @@ module Frontend
     end
 
     def model
-      @model = Model.find_by(['lower(slug) = :value', { value: params[:slug].downcase }])
+      @model = model_record
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
         @og_type = 'article'
         @og_image = @model.store_image.url
+      end
+      render 'frontend/index'
+    end
+
+    def model_images
+      @model = model_record
+      if @model.present?
+        @title = I18n.t('title.frontend.ship_images', model: @model.name)
+        @description = I18n.t('meta.ship_images.description', model: @model.name)
+        @og_type = 'article'
+        @og_image = @model.random_image&.name&.url
+      end
+      render 'frontend/index'
+    end
+
+    def model_videos
+      @model = model_record
+      if @model.present?
+        @title = I18n.t('title.frontend.ship_videos', model: @model.name)
+        @description = I18n.t('meta.ship_videos.description', model: @model.name)
+        @og_type = 'article'
+        @og_image = @model.random_image&.name&.url
       end
       render 'frontend/index'
     end
@@ -140,6 +162,10 @@ module Frontend
       File.chmod(0o644, path)
 
       "https://api.fleetyards.net/compare/#{filename}"
+    end
+
+    private def model_record(slug = params[:slug])
+      Model.find_by(['lower(slug) = :value', { value: (slug || '').downcase }])
     end
   end
 end

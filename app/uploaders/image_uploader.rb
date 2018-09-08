@@ -7,6 +7,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   storage :file
 
   process :optimize if Rails.env.production?
+  process :store_dimensions
 
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
@@ -26,5 +27,10 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   def extension_white_list
     %w[jpg jpeg png]
+  end
+
+  private def store_dimensions
+    return unless file || model
+    model.width, model.height = ::MiniMagick::Image.open(file.file)[:dimensions]
   end
 end

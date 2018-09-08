@@ -61,25 +61,11 @@
                 frameborder="0"
               />
             </div>
-            <a
-              v-else-if="model.images.length > 0"
-              class="thumbnail image"
-              @click="openGallery"
+            <img
+              :src="model.storeImage"
+              class="image"
+              alt="model image"
             >
-              <img
-                :src="model.storeImage"
-                alt="model image"
-              >
-            </a>
-            <a
-              v-else
-              class="thumbnail no-link image"
-            >
-              <img
-                :src="model.storeImage"
-                alt="model image"
-              >
-            </a>
             <div class="row production-status">
               <div class="col-xs-6">
                 <template v-if="model.productionStatus">
@@ -136,6 +122,18 @@
             </Panel>
             <div class="text-right">
               <div class="page-actions">
+                <InternalLink
+                  v-if="model.hasImages"
+                  :route="{ name: 'model-images', params: { slug: model.slug }}"
+                >
+                  <i class="fa fa-image" />
+                </InternalLink>
+                <InternalLink
+                  v-if="model.hasVideos"
+                  :route="{ name: 'model-videos', params: { slug: model.slug }}"
+                >
+                  <i class="fal fa-video" />
+                </InternalLink>
                 <ExternalLink
                   v-if="model.brochure"
                   :url="model.brochure"
@@ -174,11 +172,6 @@
       </div>
       <Loader :loading="loading" />
     </div>
-    <gallery
-      ref="gallery"
-      :images="galleryImages"
-      :videos="galleryVideos"
-    />
   </section>
 </template>
 
@@ -186,7 +179,6 @@
 import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Gallery from 'frontend/components/Gallery'
 import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/components/AddToHangar'
 import Panel from 'frontend/components/Panel'
@@ -211,7 +203,6 @@ export default {
     ModelBaseMetrics,
     ModelCrewMetrics,
     ModelSpeedMetrics,
-    Gallery,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -231,18 +222,6 @@ export default {
       'previousRoute',
       'overlayVisible',
     ]),
-    galleryImages() {
-      if (!this.model) {
-        return []
-      }
-      return this.model.images
-    },
-    galleryVideos() {
-      if (!this.model) {
-        return []
-      }
-      return this.model.videos.filter(item => item.type === 'youtube')
-    },
     backRoute() {
       if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
         return this.previousRoute
@@ -267,33 +246,25 @@ export default {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })
-      this.setBackground()
+      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
     },
   },
   created() {
     this.fetch()
   },
   methods: {
-    openGallery() {
-      this.$refs.gallery.open()
-    },
     toggle3d() {
       this.show3d = !this.show3d
     },
     toggle3dColor() {
       this.color3d = !this.color3d
     },
-    setBackground () {
-      const images = this.model.images.filter(item => item.background)
-      if (images.length > 0) {
-        const bgNumber = Math.round(Math.random() * ((images.length - 1) - 0)) + 0
-        const image = images[bgNumber]
-        this.$store.commit('setBackgroundImage', image.url)
-      }
-    },
     async fetch() {
       this.loading = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}`, {})
+      const response = await this.$api.get(`models/${this.$route.params.slug}`, {
+        without_images: true,
+        without_videos: true,
+      })
       this.loading = false
       if (!response.error) {
         this.model = response.data
