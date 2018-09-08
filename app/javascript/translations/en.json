@@ -369,7 +369,7 @@
     "model": {
       "gallery": "Gallery",
       "onSale": "On Sale: %{price}",
-      "store": "RSI Detail Page"
+      "store": "RSI Page"
     }
   },
   "texts": {
