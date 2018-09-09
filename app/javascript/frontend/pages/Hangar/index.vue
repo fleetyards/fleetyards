@@ -193,7 +193,7 @@
               <div
                 v-for="vehicle in vehicles"
                 :class="{
-                  'col-lg-4 col-xlg-3 col-xxlg-2': fullscreen,
+                  'col-lg-4 col-xlg-3 col-xxlg-2-4': fullscreen,
                   'col-xlg-4 col-xxlg-3': !fullscreen,
                 }"
                 :key="vehicle.id"

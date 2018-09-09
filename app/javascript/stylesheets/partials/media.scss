@@ -9,6 +9,7 @@
     position: relative;
     margin-bottom: 20px;
     border-radius: $border-radius-base;
+    box-shadow: 0 0 5px black;
 
     &[lazy=loading]::before {
       content: "";
@@ -43,6 +44,7 @@
   border: none;
   background-color: #272b30;
   border-radius: 6px;
+  box-shadow: 0 0 5px black;
 }
 
 .embed-copy {
