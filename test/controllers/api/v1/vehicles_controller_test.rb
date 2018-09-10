@@ -36,7 +36,7 @@ module Api
           json = JSON.parse response.body
 
           expected = {
-            'total' => 1,
+            'total' => 2,
             'classifications' => [{
               'name' => 'multi_role',
               'label' => 'Multi role',
