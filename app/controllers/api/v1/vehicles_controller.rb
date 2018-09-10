@@ -97,7 +97,7 @@ module Api
       def hangar_items
         authorize! :index, :api_hangar
         model_ids = current_user.vehicles.pluck(:model_id)
-        @models = Model.where(id: model_ids).pluck(:slug)
+        @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
       end
 
       def create
