@@ -22,4 +22,4 @@ explorer:
   fallback_cargo: 40
   fallback_min_crew: 2
   fallback_max_crew: 5
-  fallback_price: 225
+  fallback_price: 400

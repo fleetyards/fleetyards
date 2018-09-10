@@ -20,7 +20,9 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
                       .page(params[:page])
                       .per([(params[:per_page] || Vehicle.default_per_page), Vehicle.default_per_page * 4].min)
       end

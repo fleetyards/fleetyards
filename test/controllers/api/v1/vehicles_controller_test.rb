@@ -70,13 +70,75 @@ module Api
 
           expected = [{
             'id' => data.vehicles.first.id,
+            'name' => '',
+            'purchased' => true,
+            'flagship' => false,
+            'nameVisible' => false,
+            'saleNotify' => false,
+            'model' => {
+              'id' => data.vehicles.first.model_id,
+              'name' => '600i',
+              'rsiName' => nil,
+              'slug' => '600i',
+              'rsiSlug' => nil,
+              'description' => nil,
+              'length' => 20.0,
+              'beam' => 0.0,
+              'height' => 0.0,
+              'mass' => 0.0,
+              'cargo' => 40.0,
+              'cargoLabel' => '600i (40 SCU)',
+              'minCrew' => 2,
+              'maxCrew' => 5,
+              'scmSpeed' => nil,
+              'afterburnerSpeed' => nil,
+              'groundSpeed' => nil,
+              'afterburnerGroundSpeed' => nil,
+              'pitchMax' => nil,
+              'yawMax' => nil,
+              'rollMax' => nil,
+              'xaxisAcceleration' => nil,
+              'yaxisAcceleration' => nil,
+              'zaxisAcceleration' => nil,
+              'size' => nil,
+              'sizeLabel' => nil,
+              'storeImage' => data.vehicles.first.model.store_image.url,
+              'fleetchartImage' => nil,
+              'backgroundImage' => nil,
+              'brochure' => nil,
+              'storeUrl' => 'https://robertsspaceindustries.com',
+              'price' => nil,
+              'lastPrice' => 400.0,
+              'onSale' => false,
+              'productionStatus' => nil,
+              'productionNote' => nil,
+              'classification' => 'explorer',
+              'classificationLabel' => 'Explorer',
+              'focus' => nil,
+              'rsiId' => 141,
+              'hasImages' => false,
+              'hasVideos' => false,
+              'manufacturer' => {
+                'name' => 'Origin',
+                'slug' => 'origin',
+                'code' => nil,
+                'logo' => nil
+              },
+              'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
+              'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+            },
+            'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
+            'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
+          }, {
+            'id' => data.vehicles.last.id,
             'name' => 'Enterprise',
             'purchased' => true,
             'flagship' => false,
             'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
-              'id' => data.vehicles.first.model.id,
+              'id' => data.vehicles.last.model.id,
               'name' => 'Andromeda',
               'rsiName' => nil,
               'slug' => 'andromeda',
@@ -102,7 +164,7 @@ module Api
               'zaxisAcceleration' => nil,
               'size' => nil,
               'sizeLabel' => nil,
-              'storeImage' => data.vehicles.first.model.store_image.url,
+              'storeImage' => data.vehicles.last.model.store_image.url,
               'fleetchartImage' => nil,
               'backgroundImage' => nil,
               'brochure' => nil,
@@ -124,12 +186,87 @@ module Api
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
-              'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+              'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
+              'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
             },
-            'hangarGroupIds' => [],
-            'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
+            'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
+            'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
+          }]
+          assert_equal expected, json
+        end
+
+        it 'should return list for index when filtered' do
+          query_params = {
+            hangarGroupsSlugIn: data.vehicles.last.hangar_groups.map(&:slug)
+          }
+          get :index, params: { q: query_params.to_json }
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          expected = [{
+            'id' => data.vehicles.last.id,
+            'name' => 'Enterprise',
+            'purchased' => true,
+            'flagship' => false,
+            'nameVisible' => false,
+            'saleNotify' => false,
+            'model' => {
+              'id' => data.vehicles.last.model.id,
+              'name' => 'Andromeda',
+              'rsiName' => nil,
+              'slug' => 'andromeda',
+              'rsiSlug' => nil,
+              'description' => nil,
+              'length' => 61.2,
+              'beam' => 10.2,
+              'height' => 10.2,
+              'mass' => 1000.02,
+              'cargo' => 90,
+              'cargoLabel' => 'Andromeda (90 SCU)',
+              'minCrew' => 3,
+              'maxCrew' => 5,
+              'scmSpeed' => nil,
+              'afterburnerSpeed' => nil,
+              'groundSpeed' => nil,
+              'afterburnerGroundSpeed' => nil,
+              'pitchMax' => nil,
+              'yawMax' => nil,
+              'rollMax' => nil,
+              'xaxisAcceleration' => nil,
+              'yaxisAcceleration' => nil,
+              'zaxisAcceleration' => nil,
+              'size' => nil,
+              'sizeLabel' => nil,
+              'storeImage' => data.vehicles.last.model.store_image.url,
+              'fleetchartImage' => nil,
+              'backgroundImage' => nil,
+              'brochure' => nil,
+              'storeUrl' => 'https://robertsspaceindustries.com',
+              'price' => nil,
+              'lastPrice' => 225.0,
+              'onSale' => false,
+              'productionStatus' => nil,
+              'productionNote' => nil,
+              'classification' => 'multi_role',
+              'classificationLabel' => 'Multi role',
+              'focus' => nil,
+              'rsiId' => nil,
+              'hasImages' => false,
+              'hasVideos' => false,
+              'manufacturer' => {
+                'name' => 'RSI',
+                'slug' => 'rsi',
+                'code' => nil,
+                'logo' => nil
+              },
+              'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
+              'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
+            },
+            'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
+            'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
           }]
           assert_equal expected, json
         end

@@ -1,5 +1,11 @@
 enterprise:
-  name: "Enterprise"
+  name: 'Enterprise'
   model: andromeda
+  user: data
+  purchased: true
+
+raven:
+  name: ''
+  model: explorer
   user: data
   purchased: true
