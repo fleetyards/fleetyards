@@ -282,17 +282,21 @@ module Api
           json = JSON.parse response.body
 
           expected = {
-            'total' => 1,
+            'total' => 2,
             'classifications' => [{
+              'name' => 'explorer',
+              'label' => 'Explorer',
+              'count' => 1
+            }, {
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
             }],
             'metrics' => {
-              'totalMoney' => 225,
-              'totalMinCrew' => 3,
-              'totalMaxCrew' => 5,
-              'totalCargo' => 90
+              'totalMoney' => 625,
+              'totalMinCrew' => 5,
+              'totalMaxCrew' => 10,
+              'totalCargo' => 130
             }
           }
           assert_equal expected, json
@@ -324,8 +328,8 @@ module Api
           json = JSON.parse response.body
 
           expected = %w[
-            andromeda
             600i
+            andromeda
           ]
           assert_equal expected, json
         end
