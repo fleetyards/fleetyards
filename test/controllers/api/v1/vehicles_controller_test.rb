@@ -41,6 +41,10 @@ module Api
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
+            }, {
+              'name' => 'explorer',
+              'label' => 'Explorer',
+              'count' => 1
             }]
           }
           assert_equal expected, json
@@ -319,8 +323,9 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = [
-            'andromeda'
+          expected = %w[
+            andromeda
+            600i
           ]
           assert_equal expected, json
         end
