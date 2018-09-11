@@ -12,7 +12,6 @@ module Api
     check_authorization except: [:root]
 
     after_action :set_rate_limit_headers
-    after_action :set_renew_jwt_header
 
     rescue_from CanCan::AccessDenied do |exception|
       render json: { code: 'forbidden', message: exception.message }, status: :forbidden
@@ -50,28 +49,6 @@ module Api
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
-    end
-
-    private def set_renew_jwt_header
-      return if jwt_token.blank?
-
-      auth_token = AuthToken.find_by(
-        key: jwt_token[:key],
-        user_id: jwt_token[:user_id],
-        token: jwt_token[:token]
-      )
-
-      return if auth_token.blank?
-
-      headers['X-Renew-JWT'] = ::JsonWebToken.encode(auth_token.to_jwt_payload)
-    end
-
-    private def jwt_token
-      return if current_user.blank?
-      @jwt_token ||= begin
-        auth_params, _options = token_and_options(request)
-        ::JsonWebToken.decode(auth_params)
-      end
     end
 
     private def query_params

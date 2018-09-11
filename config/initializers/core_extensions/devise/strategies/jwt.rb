@@ -15,15 +15,14 @@ module Devise
       def authenticate!
         claims = ::JsonWebToken.decode(auth_params)
         return fail! unless claims
-        return fail! unless claims.key?(:user_id)
-        return fail! if claims.key?(:token) && !AuthToken.exists?(token: claims[:token], key: key)
+        return fail! unless claims.key?(:user)
+        return fail! unless AuthToken.exists?(user_id: claims[:user], user_agent: "#{user_agent.browser}-#{user_agent.platform}")
 
-        success!(User.find(claims[:user_id]))
+        success!(User.find(claims[:user]))
       end
 
-      protected def key
-        user_agent = UserAgent.parse(request.user_agent)
-        Digest::SHA512.hexdigest("#{user_agent.browser}-#{user_agent.platform}")
+      protected def user_agent
+        UserAgent.parse(request.user_agent)
       end
 
       protected def auth_params

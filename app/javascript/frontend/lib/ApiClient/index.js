@@ -32,13 +32,6 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   return meta
 }
 
-const renewToken = function renewToken(headers) {
-  const newToken = headers['x-renew-jwt']
-  if (newToken) {
-    Store.dispatch('renewToken', newToken)
-  }
-}
-
 const handleError = async function handleError(error) {
   nprogress.done()
 
@@ -59,8 +52,6 @@ const handleError = async function handleError(error) {
 
 const handleResponse = function handleResponse(response, params) {
   nprogress.done()
-
-  renewToken(response.headers)
 
   const meta = extractMetaInfo(response.headers, params)
 

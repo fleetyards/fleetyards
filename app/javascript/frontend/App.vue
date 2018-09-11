@@ -50,6 +50,11 @@ export default {
     BackToTop,
   },
   mixins: [Updates, CurrentUser],
+  data() {
+    return {
+      sessionRenewInterval: null,
+    }
+  },
   computed: {
     ...mapGetters([
       'isAuthenticated',
@@ -63,6 +68,7 @@ export default {
     overlayVisible: 'setNoScroll',
     isAuthenticated() {
       if (this.isAuthenticated) {
+        this.setupSessionRenewInterval()
         requestPermission()
         this.fetchHangar()
       } else if (this.$route.meta.needsAuthentication) {
@@ -77,6 +83,7 @@ export default {
     this.checkMobile()
 
     if (this.isAuthenticated) {
+      this.setupSessionRenewInterval()
       requestPermission()
       this.fetchHangar()
     }
@@ -84,11 +91,16 @@ export default {
     window.addEventListener('online', this.online)
     window.addEventListener('offline', this.offline)
     window.addEventListener('resize', this.checkMobile)
+    window.addEventListener('resize', this.checkMobile)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.checkMobile)
     window.removeEventListener('online', this.online)
     window.removeEventListener('offline', this.offline)
+
+    if (this.sessionRenewInterval) {
+      clearInterval(this.sessionRenewInterval)
+    }
   },
   methods: {
     offline() {
@@ -129,6 +141,21 @@ export default {
       const response = await this.$api.get('vehicles/hangar-items', {})
       if (!response.error) {
         this.$store.commit('setHangar', response.data)
+      }
+    },
+    setupSessionRenewInterval() {
+      if (this.sessionRenewInterval) {
+        return
+      }
+
+      this.sessionRenewInterval = setInterval(() => {
+        this.renewSession()
+      }, 300000)
+    },
+    async renewSession() {
+      const response = await this.$api.put('sessions/renew')
+      if (!response.error) {
+        this.$store.dispatch('login', response.data.token)
       }
     },
   },

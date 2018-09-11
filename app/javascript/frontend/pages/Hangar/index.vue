@@ -7,8 +7,8 @@
             <h1 class="sr-only">{{ t('headlines.hangar') }}</h1>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-12 col-md-9 col-xlg-10">
+        <div class="hangar-header">
+          <div>
             <ModelClassLabels
               v-if="vehiclesCount"
               :label="t('labels.hangar')"
@@ -21,18 +21,16 @@
               :label="t('labels.groups')"
             />
           </div>
-          <div class="col-sm-12 col-md-3 col-xlg-2">
-            <div class="page-actions">
-              <ExternalLink
-                v-tooltip="t('labels.poweredByStarship42')"
-                :url="starship42Url"
-              >
-                {{ t('labels.3dView') }}
-              </ExternalLink>
-              <ExternalLink :url="publicUrl">
-                {{ t('labels.publicUrl') }}
-              </ExternalLink>
-            </div>
+          <div class="page-actions">
+            <ExternalLink
+              v-tooltip="t('labels.poweredByStarship42')"
+              :url="starship42Url"
+            >
+              {{ t('labels.3dView') }}
+            </ExternalLink>
+            <ExternalLink :url="publicUrl">
+              {{ t('labels.publicUrl') }}
+            </ExternalLink>
           </div>
         </div>
         <div
@@ -40,28 +38,26 @@
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
-            <div class="row">
-              <div class="col-xs-6 col-md-3">
-                <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
-                <div class="metrics-value">{{ toDollar(vehiclesCount.metrics.totalMoney) }}</div>
+            <div class="metrics-item">
+              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
+              <div class="metrics-value">{{ toDollar(vehiclesCount.metrics.totalMoney) }}</div>
+            </div>
+            <div class="metrics-item">
+              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMinCrew') }}:</div>
+              <div class="metrics-value">
+                {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
               </div>
-              <div class="col-xs-6 col-md-3">
-                <div class="metrics-label">{{ t('labels.hangarMetrics.totalMinCrew') }}:</div>
-                <div class="metrics-value">
-                  {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
-                </div>
+            </div>
+            <div class="metrics-item">
+              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMaxCrew') }}:</div>
+              <div class="metrics-value">
+                {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
               </div>
-              <div class="col-xs-6 col-md-3">
-                <div class="metrics-label">{{ t('labels.hangarMetrics.totalMaxCrew') }}:</div>
-                <div class="metrics-value">
-                  {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
-                </div>
-              </div>
-              <div class="col-xs-6 col-md-3">
-                <div class="metrics-label">{{ t('labels.hangarMetrics.totalCargo') }}:</div>
-                <div class="metrics-value">
-                  {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
-                </div>
+            </div>
+            <div class="metrics-item">
+              <div class="metrics-label">{{ t('labels.hangarMetrics.totalCargo') }}:</div>
+              <div class="metrics-value">
+                {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
               </div>
             </div>
           </div>

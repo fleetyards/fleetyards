@@ -5,6 +5,6 @@ class CleanupAuthTokensWorker
   sidekiq_options retry: true, queue: (ENV['CLEANUP_AUTH_TOKENS_QUEUE'] || 'fleetyards_cleanup_auth_tokens').to_sym
 
   def perform
-    AuthToken.cleanup
+    AuthToken.expired.destroy_all
   end
 end

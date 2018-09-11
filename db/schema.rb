@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_08_172610) do
+ActiveRecord::Schema.define(version: 2018_09_11_125832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -27,12 +27,11 @@ ActiveRecord::Schema.define(version: 2018_09_08_172610) do
 
   create_table "auth_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "key"
-    t.integer "expires"
-    t.index ["token"], name: "index_auth_tokens_on_token"
+    t.datetime "expires_at"
+    t.boolean "remember_me", default: false
+    t.string "user_agent"
   end
 
   create_table "commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

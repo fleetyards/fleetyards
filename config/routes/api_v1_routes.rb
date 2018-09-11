@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 v1_api_routes = lambda do
-  resource :sessions, only: %i[create destroy]
+  resource :sessions, only: %i[create destroy] do
+    collection do
+      put :renew
+      delete 'destroy=all' => 'sessions#destroy_all'
+    end
+  end
 
   resources :models, param: :slug, only: %i[index show] do
     collection do

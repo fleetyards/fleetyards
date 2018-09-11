@@ -1,3 +1,41 @@
+@import "~stylesheets/variables";
+
+.hangar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .page-actions {
+    white-space: nowrap;
+  }
+}
+
 .hangar-metrics {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .metrics-label,
+  .metrics-value {
+    display: inline-block;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .hangar-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .hangar-metrics {
+    flex-wrap: wrap;
+
+    .metrics-item {
+      padding-right: 8px;
+    }
+  }
 }
