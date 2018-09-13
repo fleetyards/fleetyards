@@ -77,9 +77,16 @@ Vue.use(VueClipboard)
 
 sync(store, router)
 
-Raven.config(process.env.RAVEN_DSN)
-  .addPlugin(RavenVue, Vue)
-  .install()
+Raven.config(
+  process.env.RAVEN_DSN,
+  {
+    release: window.APP_VERSION,
+    tags: {
+      appVersion: window.APP_VERSION,
+      appCodename: window.APP_CODENAME,
+    },
+  },
+).addPlugin(RavenVue, Vue).install()
 
 Vue.config.productionTip = false
 
@@ -104,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     methods: {
       checkStoreVersion() {
-        if (this.$store.state.version !== process.env.STORE_VERSION) {
+        if (this.$store.state.storeVersion !== process.env.STORE_VERSION) {
           this.$store.commit('reset')
           this.$store.commit('setStoreVersion', process.env.STORE_VERSION)
         }

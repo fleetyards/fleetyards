@@ -40,7 +40,7 @@ const handleError = async function handleError(error) {
   }
 
   if (error.response && error.response.status === 401 && Store.getters.isAuthenticated) {
-    Store.dispatch('logout')
+    Store.dispatch('logout', true)
   }
 
   return {

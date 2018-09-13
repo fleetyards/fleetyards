@@ -84,6 +84,7 @@ export default {
         rememberMe: false,
         password: null,
         login: null,
+        clientKey: this.$store.getters.clientKey,
       },
     }
   },
@@ -93,7 +94,7 @@ export default {
       const response = await this.$api.post('sessions', this.form)
       this.submitting = false
       if (!response.error) {
-        this.$store.dispatch('login', response.data.token)
+        this.$store.dispatch('login', response.data)
         if (this.$route.params.redirectToRoute) {
           this.$router.replace({ name: this.$route.params.redirectToRoute })
         } else {

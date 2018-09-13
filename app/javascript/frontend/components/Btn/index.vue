@@ -7,7 +7,8 @@
       'panel-btn-small': small,
       'panel-btn-large': large,
       'panel-btn-block': block,
-      'panel-btn-danger': danger,
+      'panel-btn-inline': inline,
+      'panel-btn-primary': primary,
       'panel-btn-mobile-block': mobileBlock,
       'active': active,
     }"
@@ -67,6 +68,14 @@ export default {
       default: false,
     },
     active: {
+      type: Boolean,
+      default: false,
+    },
+    primary: {
+      type: Boolean,
+      default: false,
+    },
+    inline: {
       type: Boolean,
       default: false,
     },

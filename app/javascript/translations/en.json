@@ -304,6 +304,7 @@
     "images": "Images"
   },
   "actions": {
+    "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
     "enableGrouping": "Enable Grouping",

@@ -91,6 +91,8 @@ v1_api_routes = lambda do
     resources :citizens, only: [:show], param: :handle
     resources :orgs, only: %i[show], param: :sid
   end
+
+  get 'version' => 'base#version'
 end
 
 scope :v1, as: :v1 do

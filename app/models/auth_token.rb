@@ -14,7 +14,7 @@ class AuthToken < ApplicationRecord
   end
 
   def set_expires_at
-    self.expires_at = Time.zone.now + (remember_me? ? 30.days : 2.hours)
+    self.expires_at = Time.zone.now + (permanent? ? 30.days : 30.minutes)
   end
 
   def renew
@@ -25,8 +25,8 @@ class AuthToken < ApplicationRecord
   def to_jwt_payload
     {
       user: user_id,
-      exp: expires_at.to_i,
-      user_agent: user_agent
+      client_key: client_key,
+      exp: expires_at.to_i
     }.compact
   end
 end

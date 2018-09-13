@@ -26,19 +26,20 @@ module Api
           end
         end
 
-        sign_in(:user, resource, store: false)
-        render json: { token: ::JsonWebToken.encode(new_auth_token(resource.id).to_jwt_payload) }
+        auth_token = AuthToken.create(auth_token_params(resource.id))
+
+        render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
       end
 
       def renew
-        auth_token = AuthToken.find_by!(user_id: current_user.id, user_agent: "#{user_agent.browser}-#{user_agent.platform}")
+        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: params[:client_key])
         auth_token.renew
         auth_token.reload
-        render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload) }
+        render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
       end
 
       def destroy
-        auth_token = AuthToken.find_by(user_id: current_user.id, user_agent: "#{user_agent.browser}-#{user_agent.platform}")
+        auth_token = AuthToken.find_by(user_id: current_user.id, client_key: params[:client_key])
         auth_token&.destroy
         render json: { code: 'sessions.destroy', message: I18n.t('devise.sessions.signed_out') }
       end
@@ -51,23 +52,21 @@ module Api
         end
       end
 
-      private def new_auth_token(user_id)
-        @new_auth_token ||= begin
-          AuthToken.find_or_create_by(
-            user_id: user_id,
-            user_agent: "#{user_agent.browser}-#{user_agent.platform}"
-          ) do |auth_token|
-            auth_token.remember_me = params[:remember_me]
-          end
-        end
-      end
-
       private def user_agent
         @user_agent ||= UserAgent.parse(request.user_agent)
       end
 
+      private def auth_token_params(user_id)
+        params.permit(:client_key).merge(
+          user_id: user_id,
+          browser: user_agent.browser,
+          platform: user_agent.platform,
+          permanent: params[:remember_me]
+        )
+      end
+
       private def login_params
-        @login_params ||= params.permit(:login, :password, :remember_me)
+        @login_params ||= params.permit(:login, :password)
       end
 
       private def invalid_login_attempt

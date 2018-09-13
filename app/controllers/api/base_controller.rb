@@ -8,8 +8,8 @@ module Api
     protect_from_forgery with: :null_session
     respond_to :json
 
-    before_action :authenticate_api_user!, except: [:root]
-    check_authorization except: [:root]
+    before_action :authenticate_api_user!, except: %i[root version]
+    check_authorization except: %i[root version]
 
     after_action :set_rate_limit_headers
 
@@ -26,6 +26,10 @@ module Api
           render json: { message: 'FleetYards.net API root' }
         end
       end
+    end
+
+    def version
+      render json: { version: Fleetyards::VERSION, codename: Fleetyards::CODENAME }
     end
 
     def current_user
