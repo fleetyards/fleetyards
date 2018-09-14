@@ -22,6 +22,8 @@ export default {
   },
   created() {
     if (this.isAuthenticated) {
+      this.$store.dispatch('renewSession')
+
       this.setupSessionRenewInterval()
     }
   },
@@ -38,7 +40,7 @@ export default {
 
       this.sessionRenewInterval = setInterval(() => {
         this.$store.dispatch('renewSession')
-      }, 120000)
+      }, 60 * 1000)
     },
   },
 }

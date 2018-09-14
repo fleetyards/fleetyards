@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { apiClient } from 'frontend/lib/ApiClient'
-import { differenceInMinutes, isBefore, subMinutes } from 'date-fns'
+import {
+  format, parse, differenceInMinutes, isBefore, subMinutes,
+} from 'date-fns'
 import getStorePlugins from './plugins'
 
 Vue.use(Vuex)
@@ -11,8 +13,8 @@ const generateUuid = () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
   c => (((c ^ crypto.getRandomValues(new Uint8Array(1))[0]) & 15) >> c / 4).toString(16),
 )
 
-const getLeeway = (expiresAt, now) => {
-  const leewayAmount = differenceInMinutes(expiresAt, now) / 3
+const getLeeway = (expiresAt) => {
+  const leewayAmount = differenceInMinutes(expiresAt, new Date()) / 3
   return subMinutes(expiresAt, Math.max(leewayAmount, 10))
 }
 
@@ -25,7 +27,7 @@ const initialState = {
   storeVersion: null,
   clientKey: null,
   authToken: null,
-  authTokenExpiresAt: null,
+  authTokenRenewAt: null,
   backgroundImage: null,
   hangar: [],
   currentUser: null,
@@ -134,17 +136,14 @@ const store = new Vuex.Store({
         // console.error(error)
         }
       }
-      commit('setAuthTokenExpiresAt', null)
+      commit('setAuthTokenRenewAt', null)
       commit('setAuthToken', null)
       commit('setHangar', [])
       commit('setCurrentUser', null)
       commit('setCitizen', null)
     },
     async renewSession({ dispatch, state }) {
-      const now = new Date()
-      const leeway = getLeeway(new Date(state.authTokenExpiresAt), now)
-
-      if (state.authTokenExpiresAt && isBefore(now, leeway)) {
+      if (state.authTokenRenewAt && isBefore(new Date(), parse(state.authTokenRenewAt))) {
         return
       }
 
@@ -161,7 +160,8 @@ const store = new Vuex.Store({
     },
     login({ commit }, payload) {
       commit('setAuthToken', payload.token)
-      commit('setAuthTokenExpiresAt', payload.expires)
+      const renewAt = getLeeway(parse(payload.expires))
+      commit('setAuthTokenRenewAt', format(renewAt))
     },
     renewToken({ commit }, token) {
       commit('setAuthToken', token)
@@ -221,8 +221,8 @@ const store = new Vuex.Store({
     setAuthToken(state, payload) {
       state.authToken = payload
     },
-    setAuthTokenExpiresAt(state, payload) {
-      state.authTokenExpiresAt = payload
+    setAuthTokenRenewAt(state, payload) {
+      state.authTokenRenewAt = payload
     },
     logout(state) {
       state.authToken = null

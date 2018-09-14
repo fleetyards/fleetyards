@@ -11,7 +11,6 @@ export default function getStorePlugins() {
       'lastRoute',
       'previousRoute',
       'clientKey',
-      'authTokenExpiresAt',
       'authToken',
       'backgroundImage',
       'currentUser',
