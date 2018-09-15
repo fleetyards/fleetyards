@@ -59,7 +59,6 @@ task :deploy do
 
     on :launch do
       invoke :'server:restart'
-      invoke :broadcast_version
     end
   end
 end
@@ -68,13 +67,6 @@ task assets_precompile: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Precompile Assets)
     command %(#{fetch(:rake)} assets:precompile)
-  end
-end
-
-task broadcast_version: :remote_environment do
-  in_path fetch(:current_path).to_s do
-    comment %(Broadcast Version)
-    command 'RAILS_ENV=production bundle exec thor broadcast:version'
   end
 end
 

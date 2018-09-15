@@ -216,65 +216,35 @@ workflows:
   main:
     jobs:
       - checkout_code:
-          filters:
-            tags:
-              only: /.*/
       - bundle_dependencies:
           requires:
             - checkout_code
-          filters:
-            tags:
-              only: /.*/
       - yarn_dependencies:
           requires:
             - checkout_code
-          filters:
-            tags:
-              only: /.*/
       - audit:
           requires:
             - bundle_dependencies
-          filters:
-            tags:
-              only: /.*/
       - rubocop:
           requires:
             - bundle_dependencies
-          filters:
-            tags:
-              only: /.*/
       - eslint:
           requires:
             - yarn_dependencies
-          filters:
-            tags:
-              only: /.*/
       - seeds:
           requires:
             - bundle_dependencies
-          filters:
-            tags:
-              only: /.*/
       - unit_tests:
           requires:
             - bundle_dependencies
             - yarn_dependencies
-          filters:
-            tags:
-              only: /.*/
       - javascript_tests:
           requires:
             - yarn_dependencies
-          filters:
-            tags:
-              only: /.*/
       - precompile_assets:
           requires:
             - bundle_dependencies
             - yarn_dependencies
-          filters:
-            tags:
-              only: /.*/
       - deploy:
           requires:
             - audit
@@ -285,7 +255,5 @@ workflows:
             - javascript_tests
             - precompile_assets
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: master
