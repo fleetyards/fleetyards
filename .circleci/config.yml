@@ -215,36 +215,66 @@ workflows:
             - bundle_dependencies
   main:
     jobs:
-      - checkout_code
+      - checkout_code:
+          filters:
+            tags:
+              only: /^v.*/
       - bundle_dependencies:
           requires:
             - checkout_code
+          filters:
+            tags:
+              only: /^v.*/
       - yarn_dependencies:
           requires:
             - checkout_code
+          filters:
+            tags:
+              only: /^v.*/
       - audit:
           requires:
             - bundle_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - rubocop:
           requires:
             - bundle_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - eslint:
           requires:
             - yarn_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - seeds:
           requires:
             - bundle_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - unit_tests:
           requires:
             - bundle_dependencies
             - yarn_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - javascript_tests:
           requires:
             - yarn_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - precompile_assets:
           requires:
             - bundle_dependencies
             - yarn_dependencies
+          filters:
+            tags:
+              only: /^v.*/
       - deploy:
           requires:
             - audit
