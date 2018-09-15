@@ -90,6 +90,11 @@ Vue.config.productionTip = false
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
+
+console.info(`APP Version: ${window.APP_VERSION} (${window.APP_CODENAME})`)
+console.info(`Store Version: ${process.env.STORE_VERSION}`)
+console.info(`API Endpoint: ${process.env.API_URL}`)
+
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
@@ -109,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     methods: {
       checkStoreVersion() {
         if (this.$store.state.storeVersion !== process.env.STORE_VERSION) {
+          console.info('Updating Store Version and resetting Store')
           this.$store.commit('reset')
           this.$store.commit('setStoreVersion', process.env.STORE_VERSION)
         }
