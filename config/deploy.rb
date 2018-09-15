@@ -59,7 +59,15 @@ task :deploy do
 
     on :launch do
       invoke :'server:restart'
+      invoke :broadcast_version
     end
+  end
+end
+
+task broadcast_version: :remote_environment do
+  in_path fetch(:current_path).to_s do
+    comment %(Broadcast Version)
+    command %(bundle exec thor broadcast:version)
   end
 end
 
