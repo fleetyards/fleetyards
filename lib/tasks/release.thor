@@ -18,7 +18,7 @@ class Release < Thor
 
     bump_version(type, name)
 
-    invoke :push if options[:push]
+    run('thor release:push') if options[:push]
   end
 
   desc 'push', 'Push new Version'
