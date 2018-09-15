@@ -19,12 +19,8 @@
                 >
               </small>
               <router-link
-                :to="{
-                  name: backRoute.name,
-                  params: backRoute.params,
-                  hash: `#${model.slug}`,
-                  query: backRoute.query,
-                }"
+                v-if="modelBackRoute"
+                :to="modelBackRoute"
                 class="btn btn-link"
               >
                 <i class="fal fa-chevron-left" />
@@ -221,13 +217,8 @@ export default {
     ...mapGetters([
       'previousRoute',
       'overlayVisible',
+      'modelBackRoute',
     ]),
-    backRoute() {
-      if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
-        return this.previousRoute
-      }
-      return { name: 'models' }
-    },
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
       if (this.color3d) {
@@ -242,6 +233,8 @@ export default {
       this.fetch()
     },
     model() {
+      this.setBackRoute()
+
       this.title = this.t('title.model', {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
@@ -253,6 +246,25 @@ export default {
     this.fetch()
   },
   methods: {
+    setBackRoute() {
+      if (this.modelBackRoute && this.previousRoute
+        && ['model-images', 'model-videos'].includes(this.previousRoute.name)) {
+        return
+      }
+
+      const route = {
+        name: 'models',
+        hash: `#${this.model.slug}`,
+      }
+
+      if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
+        route.name = this.previousRoute.name
+        route.params = this.previousRoute.params
+        route.query = this.previousRoute.query
+      }
+
+      this.$store.commit('setModelBackRoute', route)
+    },
     toggle3d() {
       this.show3d = !this.show3d
     },

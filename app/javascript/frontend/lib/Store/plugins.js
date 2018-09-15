@@ -9,7 +9,6 @@ export default function getStorePlugins() {
       'updateAvailable',
       'route',
       'lastRoute',
-      'previousRoute',
       'clientKey',
       'authToken',
       'backgroundImage',

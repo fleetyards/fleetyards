@@ -48,6 +48,7 @@ const initialState = {
   overlayVisible: false,
   modelDetailsVisible: false,
   modelFilterVisible: true,
+  modelBackRoute: null,
 }
 
 const store = new Vuex.Store({
@@ -112,6 +113,9 @@ const store = new Vuex.Store({
     },
     modelFilterVisible(state) {
       return state.modelFilterVisible
+    },
+    modelBackRoute(state) {
+      return state.modelBackRoute
     },
   },
   actions: {
@@ -301,6 +305,9 @@ const store = new Vuex.Store({
     },
     setModelDetailsVisible(state, payload) {
       state.modelDetailsVisible = payload
+    },
+    setModelBackRoute(state, payload) {
+      state.modelBackRoute = payload
     },
   },
   /* eslint-enable no-param-reassign */

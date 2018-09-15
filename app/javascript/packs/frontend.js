@@ -4,7 +4,6 @@ import Vue from 'vue'
 import Raven from 'raven-js'
 import RavenVue from 'raven-js/plugins/vue'
 import VeeValidate, { Validator } from 'vee-validate'
-import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'
 import VueClipboard from 'vue-clipboard2'
 import App from 'frontend/App'
@@ -74,8 +73,6 @@ Vue.component = function bootstrapFix(name, definition) {
 Vue.use(BootstrapVue)
 
 Vue.use(VueClipboard)
-
-sync(store, router)
 
 Raven.config(
   process.env.RAVEN_DSN,
