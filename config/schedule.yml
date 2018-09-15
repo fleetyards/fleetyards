@@ -4,9 +4,6 @@ production: &production
   models_worker_job:
     cron: '*/10 * * * *'
     class: 'ModelsWorker'
-  app_version_worker_job:
-    cron: '*/10 * * * *'
-    class: 'AppVersionNotificationWorker'
   citizen_worker_job:
     cron: '0 */2 * * *'
     class: 'CitizenWorker'

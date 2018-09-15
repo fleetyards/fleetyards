@@ -11,7 +11,8 @@ set :shared_dirs, [
 
 set :shared_files, [
   'config/secrets.yml',
-  'config/database.yml'
+  'config/database.yml',
+  '.rbenv-vars'
 ]
 
 set :stages, %w[local live]
@@ -67,7 +68,7 @@ end
 task broadcast_version: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Broadcast Version)
-    command %(RAILS_ENV=production bundle exec thor broadcast:version)
+    command %(bundle exec thor broadcast:version)
   end
 end
 
@@ -89,7 +90,7 @@ end
 task recreate_images: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Recreate Images)
-    command %(RAILS_ENV=production bundle exec thor images:recreate)
+    command %(bundle exec thor images:recreate)
   end
 end
 
@@ -164,7 +165,7 @@ namespace :db do
   task backup: :remote_environment do
     in_path fetch(:current_path).to_s do
       comment 'Creating DB Backup...'
-      command %(RAILS_ENV=production bundle exec thor db:dump)
+      command %(bundle exec thor db:dump)
       comment 'DB Backup finished'
     end
   end

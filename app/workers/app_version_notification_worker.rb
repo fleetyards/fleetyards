@@ -2,7 +2,7 @@
 
 class AppVersionNotificationWorker
   include Sidekiq::Worker
-  sidekiq_options retry: true, queue: (ENV['APP_VERSION_NOTIFICATION_QUEUE'] || 'fleetyards_app_version_notifications').to_sym
+  sidekiq_options retry: false, queue: (ENV['APP_VERSION_NOTIFICATION_QUEUE'] || 'fleetyards_app_version_notifications').to_sym
 
   def perform
     ActionCable.server.broadcast('app_version', {
