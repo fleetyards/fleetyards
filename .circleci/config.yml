@@ -215,7 +215,7 @@ workflows:
             - bundle_dependencies
   main:
     jobs:
-      - checkout_code:
+      - checkout_code
       - bundle_dependencies:
           requires:
             - checkout_code
