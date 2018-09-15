@@ -62,7 +62,7 @@
         </a>
       </div>
       <div class="app-version">
-        RSI (1.0.0)
+        {{ appCodename }} ({{ appVersion }})
       </div>
     </div>
   </footer>
@@ -70,9 +70,16 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [I18n],
+  computed: {
+    ...mapGetters([
+      'appVersion',
+      'appCodename',
+    ]),
+  },
 }
 </script>
 

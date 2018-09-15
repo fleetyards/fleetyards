@@ -10,12 +10,16 @@ export default {
       onSaleHangarChannel: null,
       onSaleChannel: null,
       vehiclesChannel: null,
+      appVersionChannel: null,
     }
   },
   computed: {
     ...mapGetters([
       'currentUser',
     ]),
+  },
+  created() {
+    this.setupAppVersionUpdates()
   },
   watch: {
     currentUser() {
@@ -27,6 +31,16 @@ export default {
     },
   },
   methods: {
+    setupAppVersionUpdates() {
+      this.appVersionChannel = this.$cable.subscriptions.create({
+        channel: 'AppVersionChannel',
+      }, {
+        received: this.updateAppVersion,
+      })
+    },
+    updateAppVersion(data) {
+      this.$store.dispatch('updateAppVersion', JSON.parse(data))
+    },
     setupHangarUpdates() {
       this.vehiclesChannel = this.$cable.subscriptions.create({
         channel: 'HangarChannel',

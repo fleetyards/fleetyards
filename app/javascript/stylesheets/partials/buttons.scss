@@ -169,6 +169,16 @@ $panel-content-border-radius: 6px;
     }
   }
 
+  &.panel-btn-primary {
+    .panel-btn-inner {
+      color: $primary;
+    }
+  }
+
+  &.panel-btn-inline {
+    margin-bottom: 0;
+  }
+
   &.panel-btn-block {
     width: 100%;
   }

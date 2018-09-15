@@ -61,6 +61,7 @@ task :deploy do
 
     on :launch do
       invoke :'server:restart'
+      command 'bundle exec thor broadcast:version'
     end
   end
 end

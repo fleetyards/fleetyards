@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class ModelsChannel < ApplicationCable::Channel
+class AppVersionChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'models'
+    stream_from 'app_version'
   end
 
   def unsubscribed

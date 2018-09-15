@@ -38,15 +38,16 @@
       >
         <div class="navbar-wrapper">
           <div
-            v-if="standalone"
+            v-if="mobile"
             class="navbar-form"
           >
-            <a
-              class="btn btn-default btn-block"
-              @click="reload"
+            <Btn
+              small
+              inline
+              @click.native="reload"
             >
               {{ t('actions.reload') }}
-            </a>
+            </Btn>
           </div>
           <ul class="nav navbar-nav">
             <router-link
@@ -94,8 +95,33 @@
             </router-link>
           </ul>
           <div
-            class="navbar-form navbar-form-placeholder"
-          />
+            :class="{
+              'navbar-form-placeholder': !updateAvailable
+            }"
+            class="navbar-form"
+          >
+            <transition
+              name="fade"
+              mode="out-in"
+              appear
+            >
+              <div
+                v-if="updateAvailable"
+                class="text-right"
+              >
+                <Btn
+                  class="update"
+                  primary
+                  inline
+                  small
+                  @click.native="upgrade"
+                >
+                  <i class="fal fa-sync" />
+                  {{ t('actions.upgrade') }}
+                </Btn>
+              </div>
+            </transition>
+          </div>
           <ul
             v-if="!isAuthenticated"
             class="nav navbar-nav navbar-right"
@@ -185,9 +211,13 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
+import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
+  components: {
+    Btn,
+  },
   mixins: [I18n],
   data() {
     return {
@@ -204,10 +234,9 @@ export default {
       'citizen',
       'isAuthenticated',
       'navbarCollapsed',
+      'updateAvailable',
+      'mobile',
     ]),
-    standalone() {
-      return navigator.standalone
-    },
   },
   watch: {
     $route() {
@@ -241,14 +270,13 @@ export default {
     async logout() {
       await this.$store.dispatch('logout')
     },
+    upgrade() {
+      this.$store.commit('setUpdateAvailable', false)
+      this.reload()
+    },
     reload() {
       this.close()
-      this.$router.go({
-        path: this.$route.path,
-        query: {
-          t: new Date(),
-        },
-      })
+      window.location.reload(true)
     },
   },
 }

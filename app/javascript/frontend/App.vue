@@ -37,6 +37,8 @@
 import BackToTop from 'frontend/components/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
+import CheckAppVersion from 'frontend/mixins/CheckAppVersion'
+import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import { mapGetters } from 'vuex'
@@ -49,12 +51,7 @@ export default {
     AppFooter,
     BackToTop,
   },
-  mixins: [Updates, CurrentUser],
-  data() {
-    return {
-      sessionRenewInterval: null,
-    }
-  },
+  mixins: [Updates, CurrentUser, CheckAppVersion, RenewSession],
   computed: {
     ...mapGetters([
       'isAuthenticated',
@@ -68,7 +65,6 @@ export default {
     overlayVisible: 'setNoScroll',
     isAuthenticated() {
       if (this.isAuthenticated) {
-        this.setupSessionRenewInterval()
         requestPermission()
         this.fetchHangar()
       } else if (this.$route.meta.needsAuthentication) {
@@ -77,13 +73,14 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch('generateClientKey')
+
     this.setNoScroll()
     this.setBackground()
     this.redirectToLastRoute()
     this.checkMobile()
 
     if (this.isAuthenticated) {
-      this.setupSessionRenewInterval()
       requestPermission()
       this.fetchHangar()
     }
@@ -97,10 +94,6 @@ export default {
     window.removeEventListener('resize', this.checkMobile)
     window.removeEventListener('online', this.online)
     window.removeEventListener('offline', this.offline)
-
-    if (this.sessionRenewInterval) {
-      clearInterval(this.sessionRenewInterval)
-    }
   },
   methods: {
     offline() {
@@ -138,24 +131,9 @@ export default {
       }
     },
     async fetchHangar() {
-      const response = await this.$api.get('vehicles/hangar-items', {})
+      const response = await this.$api.get('vehicles/hangar-items')
       if (!response.error) {
         this.$store.commit('setHangar', response.data)
-      }
-    },
-    setupSessionRenewInterval() {
-      if (this.sessionRenewInterval) {
-        return
-      }
-
-      this.sessionRenewInterval = setInterval(() => {
-        this.renewSession()
-      }, 300000)
-    },
-    async renewSession() {
-      const response = await this.$api.put('sessions/renew')
-      if (!response.error) {
-        this.$store.dispatch('login', response.data.token)
       }
     },
   },

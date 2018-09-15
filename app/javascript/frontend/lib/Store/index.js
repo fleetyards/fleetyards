@@ -1,21 +1,39 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { apiClient } from 'frontend/lib/ApiClient'
+import {
+  format, parse, differenceInMinutes, isBefore, subMinutes,
+} from 'date-fns'
 import getStorePlugins from './plugins'
 
 Vue.use(Vuex)
 
+const generateUuid = () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
+  /[018]/g,
+  c => (((c ^ crypto.getRandomValues(new Uint8Array(1))[0]) & 15) >> c / 4).toString(16),
+)
+
+const getLeeway = (expiresAt) => {
+  const leewayAmount = differenceInMinutes(expiresAt, new Date()) / 3
+  return subMinutes(expiresAt, Math.max(leewayAmount, 10))
+}
+
 const initialState = {
   locale: 'en-US',
   mobile: false,
+  updateAvailable: false,
+  appVersion: window.APP_VERSION,
+  appCodename: window.APP_CODENAME,
+  storeVersion: null,
+  clientKey: null,
   authToken: null,
+  authTokenRenewAt: null,
   backgroundImage: null,
   hangar: [],
   currentUser: null,
   citizen: null,
   lastRoute: null,
   previousRoute: null,
-  version: null,
   online: true,
   tradeHubPrices: {},
   tradeHubPricesID: null,
@@ -35,6 +53,18 @@ const initialState = {
 const store = new Vuex.Store({
   state: initialState,
   getters: {
+    appVersion(state) {
+      return state.appVersion
+    },
+    appCodename(state) {
+      return state.appCodename
+    },
+    updateAvailable(state) {
+      return state.updateAvailable
+    },
+    clientKey(state) {
+      return state.clientKey
+    },
     isAuthenticated(state) {
       return state.authToken !== null
     },
@@ -85,20 +115,53 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    async logout({ commit }) {
+    updateAppVersion({ state, commit }, payload = {}) {
+      if (payload.version && state.appVersion !== payload.version) {
+        commit('setAppVersion', payload.version)
+        commit('setAppCodename', payload.codename)
+        commit('setUpdateAvailable', true)
+      }
+    },
+    generateClientKey({ state, commit }) {
+      if (state.clientKey) {
+        return
+      }
+      commit('setClientKey', generateUuid())
+    },
+    async logout({ commit }, fromError = false) {
+      if (!fromError) {
+        try {
+          await apiClient.destroy('sessions')
+        } catch (error) {
+        // console.error(error)
+        }
+      }
+      commit('setAuthTokenRenewAt', null)
       commit('setAuthToken', null)
       commit('setHangar', [])
       commit('setCurrentUser', null)
       commit('setCitizen', null)
+    },
+    async renewSession({ dispatch, state }) {
+      if (state.authTokenRenewAt && isBefore(new Date(), parse(state.authTokenRenewAt))) {
+        return
+      }
 
       try {
-        await apiClient.destroy('sessions')
-      } catch (_error) {
-        // ignoring logout error
+        const response = await apiClient.put('sessions/renew', {
+          clientKey: state.clientKey,
+        })
+        if (!response.error) {
+          dispatch('login', response.data)
+        }
+      } catch (error) {
+        // console.error(error)
       }
     },
-    login({ commit }, authToken) {
-      commit('setAuthToken', authToken)
+    login({ commit }, payload) {
+      commit('setAuthToken', payload.token)
+      const renewAt = getLeeway(parse(payload.expires))
+      commit('setAuthTokenRenewAt', format(renewAt))
     },
     renewToken({ commit }, token) {
       commit('setAuthToken', token)
@@ -124,6 +187,18 @@ const store = new Vuex.Store({
   },
   /* eslint-disable no-param-reassign */
   mutations: {
+    setAppVersion(state, payload) {
+      state.appVersion = payload
+    },
+    setAppCodename(state, payload) {
+      state.appCodename = payload
+    },
+    setUpdateAvailable(state, payload) {
+      state.updateAvailable = !!payload
+    },
+    setClientKey(state, payload) {
+      state.clientKey = payload
+    },
     reset(state) {
       Object.assign(state, initialState)
     },
@@ -132,7 +207,7 @@ const store = new Vuex.Store({
       state.tradeHubPricesID = initialState.tradeHubPricesID
     },
     setStoreVersion(state, payload) {
-      state.version = payload
+      state.storeVersion = payload
     },
     setLocale(state, locale) {
       state.locale = locale
@@ -145,6 +220,9 @@ const store = new Vuex.Store({
     },
     setAuthToken(state, payload) {
       state.authToken = payload
+    },
+    setAuthTokenRenewAt(state, payload) {
+      state.authTokenRenewAt = payload
     },
     logout(state) {
       state.authToken = null

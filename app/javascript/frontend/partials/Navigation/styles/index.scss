@@ -175,6 +175,10 @@ img.avatar {
   }
 }
 
+.update {
+  margin-top: 2px;
+}
+
 .verified {
   width: 12px;
   height: 12px;
@@ -224,7 +228,7 @@ img.avatar {
     transition: left ease 0.5s, right ease 0.5s;
 
     .navbar-right {
-      margin-right: -8px;
+      margin-right: -14px;
     }
 
     .navbar-form {
@@ -265,7 +269,7 @@ img.avatar {
         overflow-x: hidden;
         padding-left: 15px;
         padding-right: 15px;
-        display: block;
+        flex-direction: column-reverse;
       }
 
       .nav.navbar-nav {
