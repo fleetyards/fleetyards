@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = 'Pyro'
-  VERSION = 'v1.0.1'
+  VERSION = 'v1.0.2'
 end

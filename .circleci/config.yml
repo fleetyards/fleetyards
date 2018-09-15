@@ -213,7 +213,7 @@ workflows:
       - precompile_assets:
           requires:
             - bundle_dependencies
-  ci:
+  main:
     jobs:
       - checkout_code
       - bundle_dependencies:
@@ -255,5 +255,5 @@ workflows:
             - javascript_tests
             - precompile_assets
           filters:
-            branches:
-              only: master
+            tags:
+              only: /^v.*/
