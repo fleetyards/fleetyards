@@ -67,7 +67,7 @@ end
 task broadcast_version: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Broadcast Version)
-    command %(bundle exec thor broadcast:version)
+    command %(RAILS_ENV=production bundle exec thor broadcast:version)
   end
 end
 
@@ -89,7 +89,7 @@ end
 task recreate_images: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Recreate Images)
-    command %(bundle exec thor images:recreate)
+    command %(RAILS_ENV=production bundle exec thor images:recreate)
   end
 end
 
@@ -164,7 +164,7 @@ namespace :db do
   task backup: :remote_environment do
     in_path fetch(:current_path).to_s do
       comment 'Creating DB Backup...'
-      command %(bundle exec thor db:dump)
+      command %(RAILS_ENV=production bundle exec thor db:dump)
       comment 'DB Backup finished'
     end
   end
