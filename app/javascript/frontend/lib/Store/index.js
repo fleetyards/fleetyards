@@ -21,7 +21,6 @@ const getLeeway = (expiresAt) => {
 const initialState = {
   locale: 'en-US',
   mobile: false,
-  updateAvailable: false,
   appVersion: window.APP_VERSION,
   appCodename: window.APP_CODENAME,
   storeVersion: null,
@@ -59,9 +58,6 @@ const store = new Vuex.Store({
     },
     appCodename(state) {
       return state.appCodename
-    },
-    updateAvailable(state) {
-      return state.updateAvailable
     },
     clientKey(state) {
       return state.clientKey
@@ -123,7 +119,6 @@ const store = new Vuex.Store({
       if (payload.version && state.appVersion !== payload.version) {
         commit('setAppVersion', payload.version)
         commit('setAppCodename', payload.codename)
-        commit('setUpdateAvailable', true)
       }
     },
     generateClientKey({ state, commit }) {
@@ -196,9 +191,6 @@ const store = new Vuex.Store({
     },
     setAppCodename(state, payload) {
       state.appCodename = payload
-    },
-    setUpdateAvailable(state, payload) {
-      state.updateAvailable = !!payload
     },
     setClientKey(state, payload) {
       state.clientKey = payload

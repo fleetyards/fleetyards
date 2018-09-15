@@ -114,7 +114,7 @@
                   primary
                   inline
                   small
-                  @click.native="upgrade"
+                  @click.native="reload"
                 >
                   <i class="fal fa-sync" />
                   {{ t('actions.upgrade') }}
@@ -234,9 +234,12 @@ export default {
       'citizen',
       'isAuthenticated',
       'navbarCollapsed',
-      'updateAvailable',
       'mobile',
+      'appVersion',
     ]),
+    updateAvailable() {
+      return this.appVersion !== window.APP_VERSION
+    },
   },
   watch: {
     $route() {
@@ -269,10 +272,6 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('logout')
-    },
-    upgrade() {
-      this.$store.commit('setUpdateAvailable', false)
-      this.reload()
     },
     reload() {
       this.close()

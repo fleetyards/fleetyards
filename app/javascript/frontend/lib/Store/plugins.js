@@ -6,7 +6,6 @@ export default function getStorePlugins() {
     paths: [
       'appVersion',
       'appCodename',
-      'updateAvailable',
       'route',
       'lastRoute',
       'clientKey',
