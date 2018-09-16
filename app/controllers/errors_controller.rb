@@ -9,6 +9,9 @@ class ErrorsController < ActionController::Base
       format.json do
         render json: { code: 'not_found', message: 'Not Found' }, status: :not_found
       end
+      format.all do
+        redirect_to '/404'
+      end
     end
   end
 
