@@ -103,23 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  if (store.state.storeVersion !== process.env.STORE_VERSION) {
+    console.info('Updating Store Version and resetting Store')
+    store.commit('reset')
+    store.commit('setStoreVersion', process.env.STORE_VERSION)
+  }
+
   // eslint-disable-next-line no-new
   new Vue({
     el: '#app',
     router,
     store,
-    created() {
-      this.checkStoreVersion()
-    },
-    methods: {
-      checkStoreVersion() {
-        if (this.$store.state.storeVersion !== process.env.STORE_VERSION) {
-          console.info('Updating Store Version and resetting Store')
-          this.$store.commit('reset')
-          this.$store.commit('setStoreVersion', process.env.STORE_VERSION)
-        }
-      },
-    },
     render: h => h(App),
   })
 })
