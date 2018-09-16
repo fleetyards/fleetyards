@@ -81,6 +81,7 @@ Raven.config(
     tags: {
       appVersion: window.APP_VERSION,
       appCodename: window.APP_CODENAME,
+      storeVersion: process.env.STORE_VERSION,
     },
   },
 ).addPlugin(RavenVue, Vue).install()

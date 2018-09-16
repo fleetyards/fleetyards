@@ -8,13 +8,14 @@ class AuthToken < ApplicationRecord
   validates :user_id, presence: true
 
   before_create :set_expires_at
+  before_create :generate_client_key
 
   def self.expired
     where('expires_at < ?', Time.zone.now)
   end
 
   def set_expires_at
-    self.expires_at = Time.zone.now + (permanent? ? 30.days : 30.minutes)
+    self.expires_at = Time.zone.now + (permanent? ? 14.days : 30.minutes)
   end
 
   def renew
@@ -23,10 +24,15 @@ class AuthToken < ApplicationRecord
   end
 
   def to_jwt_payload
+    reload
     {
       user: user_id,
       client_key: client_key,
       exp: expires_at.to_i
     }.compact
+  end
+
+  private def generate_client_key
+    self.client_key = SecureRandom.hex(64)
   end
 end

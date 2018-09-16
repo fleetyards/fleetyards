@@ -8,11 +8,6 @@ import getStorePlugins from './plugins'
 
 Vue.use(Vuex)
 
-const generateUuid = () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
-  /[018]/g,
-  c => (((c ^ crypto.getRandomValues(new Uint8Array(1))[0]) & 15) >> c / 4).toString(16),
-)
-
 const getLeeway = (expiresAt) => {
   const leewayAmount = differenceInMinutes(expiresAt, new Date()) / 3
   return subMinutes(expiresAt, Math.max(leewayAmount, 10))
@@ -24,7 +19,6 @@ const initialState = {
   appVersion: window.APP_VERSION,
   appCodename: window.APP_CODENAME,
   storeVersion: null,
-  clientKey: null,
   authToken: null,
   authTokenRenewAt: null,
   backgroundImage: null,
@@ -58,9 +52,6 @@ const store = new Vuex.Store({
     },
     appCodename(state) {
       return state.appCodename
-    },
-    clientKey(state) {
-      return state.clientKey
     },
     isAuthenticated(state) {
       return state.authToken !== null
@@ -121,12 +112,6 @@ const store = new Vuex.Store({
         commit('setAppCodename', payload.codename)
       }
     },
-    generateClientKey({ state, commit }) {
-      if (state.clientKey) {
-        return
-      }
-      commit('setClientKey', generateUuid())
-    },
     async logout({ commit }, fromError = false) {
       if (!fromError) {
         try {
@@ -147,9 +132,7 @@ const store = new Vuex.Store({
       }
 
       try {
-        const response = await apiClient.put('sessions/renew', {
-          clientKey: state.clientKey,
-        })
+        const response = await apiClient.put('sessions/renew')
         if (!response.error) {
           dispatch('login', response.data)
         }
@@ -161,9 +144,6 @@ const store = new Vuex.Store({
       commit('setAuthToken', payload.token)
       const renewAt = getLeeway(parse(payload.expires))
       commit('setAuthTokenRenewAt', format(renewAt))
-    },
-    renewToken({ commit }, token) {
-      commit('setAuthToken', token)
     },
     toggleModelFilter({ commit, state }) {
       commit('setModelFilterVisible', !state.modelFilterVisible)
@@ -191,9 +171,6 @@ const store = new Vuex.Store({
     },
     setAppCodename(state, payload) {
       state.appCodename = payload
-    },
-    setClientKey(state, payload) {
-      state.clientKey = payload
     },
     reset(state) {
       Object.assign(state, initialState)

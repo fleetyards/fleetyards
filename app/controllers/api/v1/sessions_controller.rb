@@ -26,21 +26,25 @@ module Api
           end
         end
 
-        auth_token = AuthToken.create(auth_token_params(resource.id))
+        auth_token = AuthToken.create(
+          user_id: resource.id,
+          browser: user_agent.browser,
+          platform: user_agent.platform,
+          permanent: params[:remember_me]
+        )
 
         render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
       end
 
       def renew
-        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: params[:client_key])
+        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
         auth_token.renew
-        auth_token.reload
         render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
       end
 
       def destroy
-        auth_token = AuthToken.find_by(user_id: current_user.id, client_key: params[:client_key])
-        auth_token&.destroy
+        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
+        auth_token.destroy
         render json: { code: 'sessions.destroy', message: I18n.t('devise.sessions.signed_out') }
       end
 
@@ -52,17 +56,13 @@ module Api
         end
       end
 
-      private def user_agent
-        @user_agent ||= UserAgent.parse(request.user_agent)
+      private def authentication_claim
+        auth_params, _options = ActionController::HttpAuthentication::Token.token_and_options(request)
+        ::JsonWebToken.decode(auth_params)
       end
 
-      private def auth_token_params(user_id)
-        params.permit(:client_key).merge(
-          user_id: user_id,
-          browser: user_agent.browser,
-          platform: user_agent.platform,
-          permanent: params[:remember_me]
-        )
+      private def user_agent
+        @user_agent ||= UserAgent.parse(request.user_agent)
       end
 
       private def login_params

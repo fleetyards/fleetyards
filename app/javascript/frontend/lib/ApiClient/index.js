@@ -90,11 +90,13 @@ export async function put(path, body = {}) {
   }
 }
 
-export function destroy(path, callback) {
+export async function destroy(path, data = {}) {
   nprogress.start()
-  return client.delete(path)
-    .then(response => handleResponse(response, callback))
-    // .catch(error => handleError(error, callback))
+  try {
+    return handleResponse(await client.delete(path, { data }))
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
 export const apiClient = {

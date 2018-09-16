@@ -84,7 +84,6 @@ export default {
         rememberMe: false,
         password: null,
         login: null,
-        clientKey: this.$store.getters.clientKey,
       },
     }
   },

@@ -73,8 +73,6 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('generateClientKey')
-
     this.setNoScroll()
     this.setBackground()
     this.redirectToLastRoute()

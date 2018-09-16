@@ -8,7 +8,6 @@ export default function getStorePlugins() {
       'appCodename',
       'route',
       'lastRoute',
-      'clientKey',
       'authToken',
       'backgroundImage',
       'currentUser',
