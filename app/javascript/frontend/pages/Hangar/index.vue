@@ -166,7 +166,7 @@
                 <transition-group
                   id="fleetchart"
                   name="fade-list"
-                  class="flex-row fleetchart"
+                  class="flex-row flex-center fleetchart"
                   tag="div"
                   appear
                 >
@@ -182,7 +182,7 @@
             <transition-group
               v-else
               name="fade-list"
-              class="flex-row"
+              class="flex-row flex-center"
               tag="div"
               appear
             >
