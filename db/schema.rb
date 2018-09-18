@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_18_073345) do
+ActiveRecord::Schema.define(version: 2018_09_18_123418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2018_09_18_073345) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.bigint "visit_id"
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.string "name"
     t.jsonb "properties"
     t.datetime "time"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2018_09_18_073345) do
   create_table "ahoy_visits", force: :cascade do |t|
     t.string "visit_token"
     t.string "visitor_token"
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.string "ip"
     t.text "user_agent"
     t.text "referrer"
