@@ -8,6 +8,8 @@ module Api
     protect_from_forgery with: :null_session
     respond_to :json
 
+    skip_before_action :track_ahoy_visit
+
     before_action :authenticate_api_user!, except: %i[root version]
     check_authorization except: %i[root version]
 

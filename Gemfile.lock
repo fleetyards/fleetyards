@@ -44,6 +44,16 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    ahoy_matey (2.1.0)
+      addressable
+      browser (~> 2.0)
+      device_detector
+      geocoder (>= 1.4.5)
+      railties (>= 4.2)
+      referer-parser (>= 0.3)
+      request_store
+      safely_block (>= 0.2.1)
+      user_agent_parser
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
@@ -60,6 +70,7 @@ GEM
       sass (~> 3.4)
       thor (~> 0.19)
     bower-rails (0.11.0)
+    browser (2.5.3)
     builder (3.2.3)
     bullet (5.7.6)
       activesupport (>= 3.0.0)
@@ -94,6 +105,7 @@ GEM
     dalli (2.7.8)
     database_cleaner (1.7.0)
     deepl-rb (2.1.0)
+    device_detector (1.0.1)
     devise (4.4.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -106,6 +118,7 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
+    errbase (0.1.0)
     erubi (1.7.1)
     erubis (2.7.0)
     et-orbi (1.1.4)
@@ -124,6 +137,7 @@ GEM
     fugit (1.1.5)
       et-orbi (~> 1.1, >= 1.1.3)
       raabro (~> 1.1)
+    geocoder (1.5.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     haml (5.0.4)
@@ -314,6 +328,7 @@ GEM
       ffi (>= 0.5.0, < 2)
     redcarpet (3.4.0)
     redis (4.0.2)
+    referer-parser (0.3.0)
     request_store (1.4.1)
       rack (>= 1.4)
     responders (2.4.0)
@@ -335,6 +350,8 @@ GEM
     rufus-scheduler (3.4.2)
       et-orbi (~> 1.0)
     safe_yaml (1.0.4)
+    safely_block (0.2.1)
+      errbase
     sass (3.5.7)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -416,6 +433,7 @@ GEM
     uniform_notifier (1.11.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
+    user_agent_parser (2.4.1)
     useragent (0.16.10)
     vcr (4.0.0)
     warden (1.2.7)
@@ -445,6 +463,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ahoy_matey
   bootsnap (>= 1.1.0)
   bootstrap-sass
   bourbon

@@ -20,6 +20,13 @@ import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
 import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
+import ahoy from 'ahoy.js'
+
+ahoy.configure({
+  cookies: false,
+})
+
+ahoy.trackAll()
 
 console.info(`
 

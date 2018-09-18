@@ -486,6 +486,12 @@ aglio@^2.3.0:
     socket.io "^1.3.7"
     yargs "^3.31.0"
 
+ahoy.js@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/ahoy.js/-/ahoy.js-0.3.3.tgz#ca9332dcd59d999393f487ab0f06e0a02c216491"
+  dependencies:
+    object-to-formdata "^1.3.0"
+
 ajv-keywords@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
@@ -6670,6 +6676,10 @@ object-copy@^0.1.0:
 object-keys@^1.0.11, object-keys@^1.0.12:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.12.tgz#09c53855377575310cca62f55bb334abff7b3ed2"
+
+object-to-formdata@^1.3.0:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/object-to-formdata/-/object-to-formdata-1.5.2.tgz#1494cb6970ae17017f390534885af3a32068e34f"
 
 object-visit@^1.0.0:
   version "1.0.1"
