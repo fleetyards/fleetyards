@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_18_123418) do
+ActiveRecord::Schema.define(version: 2018_09_18_214248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -41,14 +41,6 @@ ActiveRecord::Schema.define(version: 2018_09_18_123418) do
     t.string "browser"
     t.string "os"
     t.string "device_type"
-    t.string "country"
-    t.string "region"
-    t.string "city"
-    t.string "utm_source"
-    t.string "utm_medium"
-    t.string "utm_term"
-    t.string "utm_content"
-    t.string "utm_campaign"
     t.datetime "started_at"
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
@@ -351,6 +343,7 @@ ActiveRecord::Schema.define(version: 2018_09_18_123418) do
     t.boolean "rsi_verified", default: false
     t.string "rsi_verification_token"
     t.string "rsi_orgs"
+    t.boolean "tracking", default: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

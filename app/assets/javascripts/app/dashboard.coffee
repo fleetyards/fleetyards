@@ -19,4 +19,4 @@ document.addEventListener 'turbolinks:load', ->
 
     App.Dashboard.quickStatsInterval = setInterval ->
       App.Dashboard.checkQuickStats()
-    , 60 * 1000
+    , 30 * 1000
