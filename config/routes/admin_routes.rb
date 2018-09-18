@@ -42,5 +42,7 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 
+  get 'quick-stats' => 'base#quick_stats'
+
   root to: 'base#index'
 end

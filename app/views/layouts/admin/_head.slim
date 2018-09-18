@@ -18,8 +18,8 @@ meta name="apple-mobile-web-app-status-bar-style" content="black"
 = favicon_link_tag 'touch-icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png'
 
 == stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
-== stylesheet_link_tag "application"
+== stylesheet_link_tag 'application'
 
-== javascript_include_tag "application", async: Rails.env.production?
+== javascript_include_tag 'application'
 
 == csrf_meta_tags
