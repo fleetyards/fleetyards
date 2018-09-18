@@ -1,5 +1,5 @@
 .row
-  .col-xs-12.col-md-7
+  .col-xs-12.col-md-8
     .panel.panel-default
       .panel-heading
         %h2.panel-title
@@ -17,7 +17,7 @@
           }
         = column_chart(@registrations_per_month, chart_options)
 
-  .col-xs-12.col-md-5
+  .col-xs-12.col-md-4
     .panel.panel-default
       .panel-heading
         %h2.panel-title
@@ -29,9 +29,8 @@
               %th= I18n.t(:"labels.table.user.username")
               %th= I18n.t(:"labels.table.user.last_sign_in_at")
               %th= I18n.t(:"labels.table.user.created_at")
-              %th.actions.actions-one
           %tbody
-            - User.unscoped.order(created_at: :desc).limit(6).each do |user|
+            - @latest_users.each do |user|
               %tr
                 %td
                   = user.username
@@ -39,10 +38,8 @@
                   - if user.current_sign_in_at.present?
                     = time_ago_in_words(user.current_sign_in_at)
                 %td
-                  = time_ago_in_words(user.created_at)
-                  %br
-                  = "(#{l(user.created_at, format: :short)})"
-                %td
-                  .btn-group
-                    = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
-                      %i.fa.fa-edit
+                  = I18n.l(user.created_at, format: :short)
+      .panel-footer.text-right
+        = link_to admin_users_path do
+          = I18n.t('actions.more')
+          %i.fa.fa-angle-right

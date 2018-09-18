@@ -7,6 +7,10 @@ module Admin
     def index
       authorize! :show, :admin
       @active_nav = 'admin'
+      @latest_users = User.unscoped.order(created_at: :desc).limit(8)
+      @latest_models = Model.order(updated_at: :desc, name: :asc).limit(10)
+      @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(10)
+      @latest_components = Component.unscoped.order(updated_at: :desc).limit(10)
       @worker_running = worker_running?
       @visits_per_day = transform_chart_for_day(Ahoy::Visit.group_by_day(:started_at).count)
       @visits_per_month = transform_chart_for_month(Ahoy::Visit.group_by_month(:started_at).count)
