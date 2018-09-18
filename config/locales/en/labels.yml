@@ -13,6 +13,7 @@ en:
       online_count: Users Online
       ships_count_year: New Ships in %{year}
       ships_count_total: Total Ships
+      users_count_total: Total Users
     table:
       actions: Actions
       blank:

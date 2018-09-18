@@ -9,6 +9,7 @@ window.App.Dashboard.checkQuickStats = ->
       $('#online-count').text(data.online_count)
       $('#ships-count-year').text(data.ships_count_year)
       $('#ships-count-total').text(data.ships_count_total)
+      $('#users-count-total').text(data.users_count_total)
 
 document.addEventListener 'turbolinks:load', ->
   if $('#admin').length

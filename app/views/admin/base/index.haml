@@ -11,12 +11,15 @@
             %button.reload-models.btn.btn-default.ladda-button{data: {style: "expand-right", action: reload_admin_models_path, workerPath: admin_check_worker_state_path('ModelsWorker')}, class: ('loading' if @worker_running), onclick: "App.Models.reload($(this)); return false;"}
               = I18n.t(:"actions.model.reload")
           = link_to t(:'nav.update_locales'), admin_update_locales_path, method: :put, class: "btn btn-default"
-
-    = render 'visits_panel'
-    = render 'users_panel'
     .row
-      .col-md-6
-        = render 'latest_manufacturers_panel'
-        = render 'latest_components_panel'
-      .col-md-6
-        = render 'latest_models_panel'
+      .col-xs-12.col-lg-2
+        = render 'quick_stats'
+      .col-xs-12.col-lg-10
+        = render 'visits_panel'
+        = render 'users_panel'
+        .row
+          .col-md-6
+            = render 'latest_manufacturers_panel'
+            = render 'latest_components_panel'
+          .col-md-6
+            = render 'latest_models_panel'
