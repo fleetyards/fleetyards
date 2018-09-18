@@ -87,6 +87,7 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
+    chartkick (3.0.1)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -140,6 +141,8 @@ GEM
     geocoder (1.5.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    groupdate (4.0.1)
+      activesupport (>= 4.2)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -474,6 +477,7 @@ DEPENDENCIES
   cancancan
   carrierwave
   carrierwave-imageoptimizer
+  chartkick
   coffee-rails
   dalli
   database_cleaner
@@ -482,6 +486,7 @@ DEPENDENCIES
   faker
   font-awesome-sass
   foundation_emails
+  groupdate
   haml
   haml-rails
   highline

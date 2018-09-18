@@ -1,5 +1,5 @@
 .row#admin
-  .col-xs-12.col-md-12
+  .col-xs-12
     .row
       .col-xs-12.col-md-6
         %h1
@@ -12,10 +12,11 @@
               = I18n.t(:"actions.model.reload")
           = link_to t(:'nav.update_locales'), admin_update_locales_path, method: :put, class: "btn btn-default"
 
+    = render 'visits_panel'
+    = render 'users_panel'
     .row
       .col-md-6
-        = render "latest_manufacturers_panel"
-        = render "latest_components_panel"
+        = render 'latest_manufacturers_panel'
+        = render 'latest_components_panel'
       .col-md-6
-        = render "latest_models_panel"
-        = render "latest_users_panel"
+        = render 'latest_models_panel'

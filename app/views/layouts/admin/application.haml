@@ -4,7 +4,7 @@
   %body{data: {success: notice, info: alert, error: flash[:error], warning: flash[:warning]}, style: "background-image: url(#{current_background_image})"}
     = render "layouts/admin/header"
 
-    .container
+    .container-fluid
       != yield
 
     = render "layouts/admin/footer"

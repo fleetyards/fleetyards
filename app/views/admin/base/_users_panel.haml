@@ -1,0 +1,48 @@
+.row
+  .col-xs-12.col-md-8
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.registrations")
+      .panel-body
+        :ruby
+          chart_options = {
+            height: '350px',
+            refresh: 300,
+            library: {
+              yAxis: {
+                allowDecimals: false
+              }
+            }
+          }
+        = column_chart(User.where('created_at > ?', Time.zone.now - 1.year).group_by_month(:created_at).count, chart_options)
+
+  .col-xs-12.col-md-4
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.latest_users")
+      .table-responsive
+        %table.table.table-striped
+          %thead
+            %tr
+              %th= I18n.t(:"labels.table.user.username")
+              %th= I18n.t(:"labels.table.user.last_sign_in_at")
+              %th= I18n.t(:"labels.table.user.created_at")
+              %th.actions.actions-one
+          %tbody
+            - User.unscoped.order(created_at: :desc).limit(6).each do |user|
+              %tr
+                %td
+                  = user.username
+                %td
+                  - if user.current_sign_in_at.present?
+                    = time_ago_in_words(user.current_sign_in_at)
+                %td
+                  = time_ago_in_words(user.created_at)
+                  %br
+                  = "(#{l(user.created_at, format: :short)})"
+                %td
+                  .btn-group
+                    = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+                      %i.fa.fa-edit

@@ -87,6 +87,10 @@ class Model < ApplicationRecord
     end
   end
 
+  def self.year(year)
+    where('created_at <= ? AND created_at >= ?', "#{year}-12-31", "#{year}-01-01")
+  end
+
   def self.visible
     where(hidden: false)
   end

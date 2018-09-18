@@ -1,5 +1,5 @@
 class RecreateAhoy < ActiveRecord::Migration[5.2]
-  def change
+  def up
     create_table :ahoy_visits do |t|
       t.string :visit_token
       t.string :visitor_token
@@ -47,5 +47,10 @@ class RecreateAhoy < ActiveRecord::Migration[5.2]
 
     add_index :ahoy_events, [:name, :time]
     add_index :ahoy_events, "properties jsonb_path_ops", using: "gin"
+  end
+
+  def down
+    drop_table :ahoy_visits
+    drop_table :ahoy_events
   end
 end

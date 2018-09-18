@@ -1,0 +1,18 @@
+.row
+  .col-xs-12.col-lg-2
+    = render 'quick_stats'
+
+  .col-xs-12.col-md-6.col-lg-5
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.visits_per_day")
+      .panel-body
+        = line_chart Ahoy::Visit.group_by_day(:started_at).count, refresh: 60, library: { yAxis: { allowDecimals: false } }
+  .col-xs-12.col-md-6.col-lg-5
+    .panel.panel-default
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.visits_per_month")
+      .panel-body
+        = column_chart Ahoy::Visit.group_by_month(:started_at).count, refresh: 60, library: { yAxis: { allowDecimals: false } }

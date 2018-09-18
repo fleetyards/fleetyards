@@ -7,6 +7,12 @@ en:
       latest_manufacturers: New Manufacturers
       latest_models: Reloaded Models
       latest_users: New Users
+      visits_per_day: Visits per Day
+      visits_per_month: Visits per Month
+      registrations: Registrations per Month
+      current_online_count: Users Online
+      ships_current_year: New Ships in %{year}
+      total_ships: Total Ships
     table:
       actions: Actions
       blank:

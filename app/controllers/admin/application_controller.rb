@@ -9,6 +9,8 @@ module Admin
 
     protect_from_forgery with: :exception
 
+    skip_before_action :track_ahoy_visit
+
     add_flash_types :error, :warning
 
     check_authorization unless: :unauthorized_controllers
