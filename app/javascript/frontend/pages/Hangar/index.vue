@@ -420,14 +420,8 @@ export default {
         channel: 'HangarChannel',
         username: this.currentUser.username,
       }, {
-        received: this.update,
+        received: this.fetch,
       })
-    },
-    update(data) {
-      const vehicle = JSON.parse(data)
-      if (!vehicle.deleted) {
-        this.fetch()
-      }
     },
     async fetchGroups() {
       const response = await this.$api.get('hangar-groups', {})
