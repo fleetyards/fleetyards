@@ -7,7 +7,7 @@
             %i.fa.fa-users.fa-5x
           .col-xs-9.text-right
             .text-huge#online-count
-              = Ahoy::Event.select(:visit_id).distinct.where('time > ?', 15.minutes.ago).count
+              = online_count
             %div
               = I18n.t('labels.panels.online_count')
 

@@ -8,7 +8,7 @@ module Ahoy
     belongs_to :user, optional: true
 
     def self.without_users(user_ids)
-      where.not(user_id: user_ids)
+      where.not(user_id: user_ids).or(where(user_id: nil))
     end
 
     def self.one_month
