@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/ClassAndModuleChildren
 class Ahoy::Store < Ahoy::DatabaseStore
 end
+# rubocop:enable Style/ClassAndModuleChildren
 
 Ahoy.mask_ips = true
 Ahoy.cookies = false
