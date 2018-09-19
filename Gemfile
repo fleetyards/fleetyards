@@ -17,7 +17,6 @@ gem 'haml-rails'
 gem 'slim-rails'
 
 gem 'ahoy_matey'
-gem 'chartkick'
 gem 'groupdate'
 
 gem 'i18n-js'

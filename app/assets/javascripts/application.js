@@ -22,9 +22,9 @@
 //= require blueimp-file-upload/js/jquery.fileupload-validate
 //= require dynamic_fields_for
 //= require nprogress
+//= require vendor/date_fns.min
 //= require vendor/highcharts
 //= require vendor/highcharts-theme
-//= require chartkick
 //= require i18n
 //= require i18n/translations
 //= require helper

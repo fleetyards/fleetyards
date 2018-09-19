@@ -87,7 +87,6 @@ GEM
     carrierwave-imageoptimizer (1.4.0)
       carrierwave (>= 0.8, < 2.0)
       image_optimizer (~> 1.6)
-    chartkick (3.0.1)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -477,7 +476,6 @@ DEPENDENCIES
   cancancan
   carrierwave
   carrierwave-imageoptimizer
-  chartkick
   coffee-rails
   dalli
   database_cleaner

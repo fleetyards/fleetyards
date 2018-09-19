@@ -1,0 +1,22 @@
+.row
+  .col-xs-12.col-md-6
+    .panel.panel-default
+      .panel-heading
+        h2.panel-title
+          = I18n.t(:"labels.panels.visits_per_day")
+      .panel-body
+        javascript:
+          window.App.Dashboard.visitsPerDayData = #{{visits_per_day.to_json}};
+
+        #visits-per-day-chart
+
+  .col-xs-12.col-md-6
+    .panel.panel-default
+      .panel-heading
+        h2.panel-title
+          = I18n.t(:"labels.panels.visits_per_month")
+      .panel-body
+        javascript:
+          window.App.Dashboard.visitsPerMonthData = #{{visits_per_month.to_json}};
+
+        #visits-per-month-chart

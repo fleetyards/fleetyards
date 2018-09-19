@@ -1,0 +1,9 @@
+.panel.panel-default
+  .panel-heading
+    h2.panel-title
+      = I18n.t(:"labels.panels.models_by_manufacturer")
+  .panel-body
+    javascript:
+      window.App.Dashboard.modelsByManufacturerData = #{{models_by_manufacturer.to_json}};
+
+    #models-by-manufacturer-chart

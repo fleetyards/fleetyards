@@ -8,23 +8,10 @@ module Admin
       authorize! :show, :admin
       @active_nav = 'admin'
       @latest_users = User.unscoped.order(created_at: :desc).limit(8)
-      @latest_models = Model.order(updated_at: :desc, name: :asc).limit(10)
-      @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(10)
-      @latest_components = Component.unscoped.order(updated_at: :desc).limit(10)
+      @latest_models = Model.order(updated_at: :desc, name: :asc).limit(8)
+      @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(8)
+      @latest_components = Component.unscoped.order(updated_at: :desc).limit(8)
       @worker_running = worker_running?
-      @visits_per_day = transform_chart_for_day(Ahoy::Visit.without_users(tracking_blacklist).one_month.group_by_day(:started_at).count)
-      @visits_per_month = transform_chart_for_month(Ahoy::Visit.without_users(tracking_blacklist).one_year.group_by_month(:started_at).count)
-      @registrations_per_month = transform_chart_for_month(
-        User.where('created_at > ?', Time.zone.now - 1.year)
-            .group_by_month(:created_at)
-            .count
-      )
-      @models_by_classification = humanize_label(Model.group(:classification).count).sort_by do |_label, count|
-        count
-      end.reverse
-      @models_by_manufacturer = Manufacturer.with_model.map do |manufacturer|
-        { manufacturer.name => manufacturer.models.count }
-      end.reduce(:merge).sort_by { |_label, count| count }.reverse
     end
 
     def quick_stats
@@ -44,21 +31,63 @@ module Admin
       end
     end
 
-    private def transform_chart_for_month(data)
-      data.map do |day, count|
-        { I18n.l(day.to_date, format: :month_year_short) => count }
-      end.reduce(:merge)
+    private def visits_per_day
+      Ahoy::Visit.without_users(tracking_blacklist).one_month
+                 .group_by_day(:started_at).count
+                 .map do |created_at, count|
+                   {
+                     label: I18n.l(created_at.to_date, format: :day_month_short),
+                     count: count,
+                     tooltip: I18n.l(created_at.to_date, format: :day_month)
+                   }
+                 end
     end
+    helper_method :visits_per_day
 
-    private def transform_chart_for_day(data)
-      data.map do |day, count|
-        { I18n.l(day.to_date, format: :short) => count }
-      end.reduce(:merge)
+    private def visits_per_month
+      Ahoy::Visit.without_users(tracking_blacklist).one_year
+                 .group_by_month(:started_at).count
+                 .map do |started_at, count|
+        {
+          label: I18n.l(started_at.to_date, format: :month_year_short),
+          count: count,
+          tooltip: I18n.l(started_at.to_date, format: :month_year)
+        }
+      end
     end
+    helper_method :visits_per_month
 
-    private def humanize_label(data)
-      data.map { |label, value| { label.humanize => value } }.reduce(:merge)
+    private def registrations_per_month
+      User.where('created_at > ?', Time.zone.now - 1.year)
+          .group_by_month(:created_at)
+          .count
+          .map do |created_at, count|
+            {
+              label: I18n.l(created_at.to_date, format: :month_year_short),
+              count: count,
+              tooltip: I18n.l(created_at.to_date, format: :month_year)
+            }
+          end
     end
+    helper_method :registrations_per_month
+
+    private def models_by_manufacturer
+      transform_for_chart(
+        Manufacturer.with_model
+                    .map { |m| { m.name => m.models.count } }
+                    .reduce(:merge)
+      )
+    end
+    helper_method :models_by_manufacturer
+
+    private def models_by_classification
+      transform_for_chart(
+        Model.group(:classification).count
+             .map { |label, count| { label.humanize => count } }
+             .reduce(:merge)
+      )
+    end
+    helper_method :models_by_classification
 
     private def online_count
       Ahoy::Event.without_users(tracking_blacklist)
@@ -71,5 +100,20 @@ module Admin
       @tracking_blacklist ||= User.where(tracking: false).pluck(:id)
     end
     helper_method :tracking_blacklist
+
+    private def transform_for_chart(data)
+      data.sort_by { |_label, count| count }.reverse
+          .each_with_index.map do |(label, count), index|
+            point = {
+              name: label,
+              y: count
+            }
+            if index.zero?
+              point[:selected] = true
+              point[:sliced] = true
+            end
+            point
+          end
+    end
   end
 end

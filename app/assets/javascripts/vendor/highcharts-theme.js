@@ -19,7 +19,8 @@ Highcharts.theme = {
             color: '#E0E0E3',
             textTransform: 'uppercase',
             fontSize: '20px'
-        }
+        },
+        text: null
     },
     subtitle: {
         style: {
@@ -31,6 +32,7 @@ Highcharts.theme = {
         gridLineColor: '#707073',
         labels: {
             style: {
+                fontSize: '12px',
                 color: '#E0E0E3'
             }
         },
@@ -38,9 +40,9 @@ Highcharts.theme = {
         minorGridLineColor: '#505053',
         tickColor: '#707073',
         title: {
+            text: null,
             style: {
                 color: '#A0A0A3'
-
             }
         }
     },
@@ -48,6 +50,7 @@ Highcharts.theme = {
         gridLineColor: '#707073',
         labels: {
             style: {
+                fontSize: '12px',
                 color: '#E0E0E3'
             }
         },
@@ -56,6 +59,7 @@ Highcharts.theme = {
         tickColor: '#707073',
         tickWidth: 1,
         title: {
+            text: null,
             style: {
                 color: '#A0A0A3'
             }
@@ -64,17 +68,28 @@ Highcharts.theme = {
     tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
         style: {
+            fontSize: '12px',
             color: '#F0F0F0'
         }
     },
     plotOptions: {
+        area: {
+            fillColor: {
+                linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1
+                },
+            }
+        },
         series: {
             dataLabels: {
                 color: '#B0B0B3'
             },
             marker: {
                 lineColor: '#333'
-            }
+            },
         },
         boxplot: {
             fillColor: '#505053'
@@ -84,9 +99,24 @@ Highcharts.theme = {
         },
         errorbar: {
             color: 'white'
+        },
+        column: {
+            borderColor: '#333'
+        },
+        pie: {
+            borderColor: '#333',
+            innerSize: "50%",
+            cursor: 'pointer',
+            dataLabels: {
+            enabled: false
+            },
+            allowPointSelect: true,
+            showInLegend: true
         }
     },
     legend: {
+        borderWidth: 0,
+        itemMarginBottom: 3,
         itemStyle: {
             color: '#E0E0E3'
         },
@@ -98,16 +128,13 @@ Highcharts.theme = {
         }
     },
     credits: {
-        style: {
-            color: '#666'
-        }
+        enabled: false
     },
     labels: {
         style: {
             color: '#707073'
         }
     },
-
     drilldown: {
         activeAxisLabelStyle: {
             color: '#F0F0F3'
@@ -116,7 +143,6 @@ Highcharts.theme = {
             color: '#F0F0F3'
         }
     },
-
     navigation: {
         buttonOptions: {
             symbolStroke: '#DDDDDD',
@@ -125,7 +151,6 @@ Highcharts.theme = {
             }
         }
     },
-
     // scroll charts
     rangeSelector: {
         buttonTheme: {

@@ -34,11 +34,14 @@ en:
     - Saturday
     formats:
       default: ! '%Y-%m-%d'
-      long: ! '%B %d, %Y'
-      short: ! '%b %d'
+      long: ! '%A, %B %e, %Y'
+      short: ! '%b. %d'
       month: ! '%B'
-      month_short: ! '%b'
-      month_year_short: ! '%b %Y'
+      month_short: ! '%b.'
+      month_year_short: ! '%b. %y'
+      month_year: ! '%B %Y'
+      day_month_short: ! '%b. %e'
+      day_month: ! '%A, %B %e'
     month_names:
     -
     - January

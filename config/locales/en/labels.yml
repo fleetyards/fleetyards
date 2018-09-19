@@ -2,6 +2,16 @@
 en:
   labels:
     actions: Actions
+    charts:
+      ship:
+        one: "%{label}:<br><b>%{count}</b> Ship"
+        other: "%{label}:<br><b>%{count}</b> Ships"
+      ship_pie:
+        one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      user:
+        one: "%{label}:<br><b>%{count}</b> User"
+        other: "%{label}:<br><b>%{count}</b> Users"
     panels:
       latest_components: New Components
       latest_manufacturers: New Manufacturers
