@@ -18,8 +18,15 @@
         = render 'visits_panel'
         = render 'users_panel'
         .row
-          .col-md-6
-            = render 'latest_manufacturers_panel'
-            = render 'latest_components_panel'
-          .col-md-6
+          .col-xs-12.col-md-6
             = render 'latest_models_panel'
+          .col-xs-12.col-md-6
+            = render 'classification_panel'
+        .row
+          .col-xs-12.col-md-6
+            = render 'manufacturers_panel'
+          .col-xs-12.col-md-6
+            = render 'latest_manufacturers_panel'
+        .row
+          .col-xs-12.col-md-6
+            = render 'latest_components_panel'

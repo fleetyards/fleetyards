@@ -14,6 +14,8 @@ en:
       ships_count_year: New Ships in %{year}
       ships_count_total: Total Ships
       users_count_total: Total Users
+      models_by_classification: Models by Classification
+      models_by_manufacturer: Models by Manufacturer
     table:
       actions: Actions
       blank:

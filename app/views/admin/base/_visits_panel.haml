@@ -12,4 +12,4 @@
         %h2.panel-title
           = I18n.t(:"labels.panels.visits_per_month")
       .panel-body
-        = column_chart(@visits_per_month, refresh: 60, library: { yAxis: { allowDecimals: false } })
+        = column_chart(@visits_per_month, library: { yAxis: { allowDecimals: false } })

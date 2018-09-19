@@ -10,7 +10,7 @@ Highcharts.theme = {
     chart: {
         backgroundColor: 'transparent',
         style: {
-            fontFamily: '\'Unica One\', sans-serif'
+            fontSize: '11px'
         },
         plotBorderColor: '#606063'
     },

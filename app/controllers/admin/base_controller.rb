@@ -19,6 +19,12 @@ module Admin
             .group_by_month(:created_at)
             .count
       )
+      @models_by_classification = humanize_label(Model.group(:classification).count).sort_by do |_label, count|
+        count
+      end.reverse
+      @models_by_manufacturer = Manufacturer.with_model.map do |manufacturer|
+        { manufacturer.name => manufacturer.models.count }
+      end.reduce(:merge).sort_by { |_label, count| count }.reverse
     end
 
     def quick_stats
@@ -48,6 +54,10 @@ module Admin
       data.map do |day, count|
         { I18n.l(day.to_date, format: :short) => count }
       end.reduce(:merge)
+    end
+
+    private def humanize_label(data)
+      data.map { |label, value| { label.humanize => value } }.reduce(:merge)
     end
 
     private def online_count

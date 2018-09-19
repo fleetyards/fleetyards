@@ -1,0 +1,23 @@
+.panel.panel-default
+  .panel-heading
+    %h2.panel-title
+      = I18n.t(:"labels.panels.models_by_manufacturer")
+  .panel-body
+    :ruby
+      chart_options = {
+        height: '400px',
+        donut: true,
+        library: {
+          plotOptions: {
+            pie: {
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: false
+              },
+              allowPointSelect: true,
+              showInLegend: true
+            }
+          },
+        }
+      }
+    = pie_chart(@models_by_manufacturer, chart_options)
