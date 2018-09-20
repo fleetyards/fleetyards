@@ -58,6 +58,7 @@
               />
             </div>
             <img
+              v-else
               :src="model.storeImage"
               class="image"
               alt="model image"
