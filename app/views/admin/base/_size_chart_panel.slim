@@ -1,0 +1,9 @@
+.panel.panel-default
+  .panel-heading
+    h2.panel-title
+      = I18n.t(:"labels.panels.models_by_size")
+  .panel-body
+    javascript:
+      window.App.Dashboard.modelsBySizeData = #{{models_by_size.to_json}};
+
+    #models-by-size-chart

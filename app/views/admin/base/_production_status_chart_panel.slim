@@ -1,0 +1,9 @@
+.panel.panel-default
+  .panel-heading
+    h2.panel-title
+      = I18n.t(:"labels.panels.models_by_production_status")
+  .panel-body
+    javascript:
+      window.App.Dashboard.modelsByProductionStatusData = #{{models_by_production_status.to_json}};
+
+    #models-by-production-status-chart

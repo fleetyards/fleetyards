@@ -12,11 +12,74 @@ window.App.Dashboard.checkQuickStats = ->
       $('#users-count-total').text(data.users_count_total)
 
 window.App.Dashboard.initCharts = ->
+  @initComponentsByClassChart()
+  @initModelsBySizeChart()
+  @initModelsByProductionStatusChart()
   @initModelsByManufacturerChart()
   @initModelsByClassificationChart()
   @initRegistrationsPerMonth()
   @initVisitsPerMonth()
   @initVisitsPerDay()
+
+window.App.Dashboard.initComponentsByClassChart = ->
+  Highcharts.chart('components-by-class-chart', {
+    chart: {
+      type: 'pie',
+      height: '456px'
+    },
+    tooltip: {
+      formatter: ->
+        I18n.t('labels.charts.component_pie', {
+          label: this.key,
+          count: this.y,
+          percentage: Math.round(this.percentage)
+        })
+      ,
+    }
+    series: [{
+      data: @componentsByClassData
+    }]
+  })
+
+window.App.Dashboard.initModelsBySizeChart = ->
+  Highcharts.chart('models-by-size-chart', {
+    chart: {
+      type: 'pie',
+      height: '456px'
+    },
+    tooltip: {
+      formatter: ->
+        I18n.t('labels.charts.ship_pie', {
+          label: this.key,
+          count: this.y,
+          percentage: Math.round(this.percentage)
+        })
+      ,
+    }
+    series: [{
+      data: @modelsBySizeData
+    }]
+  })
+
+window.App.Dashboard.initModelsByProductionStatusChart = ->
+  Highcharts.chart('models-by-production-status-chart', {
+    chart: {
+      type: 'pie',
+      height: '456px'
+    },
+    tooltip: {
+      formatter: ->
+        I18n.t('labels.charts.ship_pie', {
+          label: this.key,
+          count: this.y,
+          percentage: Math.round(this.percentage)
+        })
+      ,
+    }
+    series: [{
+      data: @modelsByProductionStatusData
+    }]
+  })
 
 window.App.Dashboard.initModelsByManufacturerChart = ->
   Highcharts.chart('models-by-manufacturer-chart', {
@@ -98,7 +161,7 @@ window.App.Dashboard.initVisitsPerMonth = ->
     },
     tooltip: {
       formatter: ->
-        I18n.t('labels.charts.user', {
+        I18n.t('labels.charts.visit', {
           label: this.key,
           count: this.y,
         })
@@ -124,7 +187,7 @@ window.App.Dashboard.initVisitsPerDay = ->
     },
     tooltip: {
       formatter: ->
-        I18n.t('labels.charts.user', {
+        I18n.t('labels.charts.visit', {
           label: this.key,
           count: this.y,
         })

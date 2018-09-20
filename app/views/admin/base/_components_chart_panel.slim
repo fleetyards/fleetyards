@@ -1,0 +1,9 @@
+.panel.panel-default
+  .panel-heading
+    h2.panel-title
+      = I18n.t(:"labels.panels.components_by_class")
+  .panel-body
+    javascript:
+      window.App.Dashboard.componentsByClassData = #{{components_by_class.to_json}};
+
+    #components-by-class-chart

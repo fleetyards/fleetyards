@@ -71,6 +71,33 @@ module Admin
     end
     helper_method :registrations_per_month
 
+    private def components_by_class
+      transform_for_chart(
+        Component.group(:component_class).count
+             .map { |label, count| { (label.present? ? I18n.t("filter.component.class.items.#{label.downcase}") : I18n.t('labels.unknown')) => count } }
+             .reduce(:merge)
+      )
+    end
+    helper_method :components_by_class
+
+    private def models_by_size
+      transform_for_chart(
+        Model.group(:size).count
+             .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+             .reduce(:merge)
+      )
+    end
+    helper_method :models_by_size
+
+    private def models_by_production_status
+      transform_for_chart(
+        Model.group(:production_status).count
+             .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+             .reduce(:merge)
+      )
+    end
+    helper_method :models_by_production_status
+
     private def models_by_manufacturer
       transform_for_chart(
         Manufacturer.with_model
@@ -83,7 +110,7 @@ module Admin
     private def models_by_classification
       transform_for_chart(
         Model.group(:classification).count
-             .map { |label, count| { label.humanize => count } }
+             .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
              .reduce(:merge)
       )
     end

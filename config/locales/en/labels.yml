@@ -2,6 +2,7 @@
 en:
   labels:
     actions: Actions
+    unknown: Unknown
     charts:
       ship:
         one: "%{label}:<br><b>%{count}</b> Ship"
@@ -9,9 +10,15 @@ en:
       ship_pie:
         one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
         other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      component_pie:
+        one: "%{label}:<br><b>%{count}</b> Component (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
       user:
         one: "%{label}:<br><b>%{count}</b> User"
         other: "%{label}:<br><b>%{count}</b> Users"
+      visit:
+        one: "%{label}:<br><b>%{count}</b> Visit"
+        other: "%{label}:<br><b>%{count}</b> Visits"
     panels:
       latest_components: New Components
       latest_manufacturers: New Manufacturers
@@ -26,6 +33,9 @@ en:
       users_count_total: Total Users
       models_by_classification: Models by Classification
       models_by_manufacturer: Models by Manufacturer
+      models_by_production_status: Models by Production Status
+      models_by_size: Models by Size
+      components_by_class: Components by Class
     table:
       actions: Actions
       blank:

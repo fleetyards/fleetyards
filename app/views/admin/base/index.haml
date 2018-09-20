@@ -19,14 +19,20 @@
         = render 'users_panel'
         .row
           .col-xs-12.col-md-6
+            = render 'classification_chart_panel'
+          .col-xs-12.col-md-6
             = render 'latest_models_panel'
           .col-xs-12.col-md-6
-            = render 'classification_panel'
+            = render 'production_status_chart_panel'
+          .col-xs-12.col-md-6
+            = render 'size_chart_panel'
         .row
           .col-xs-12.col-md-6
-            = render 'manufacturers_panel'
+            = render 'manufacturers_chart_panel'
           .col-xs-12.col-md-6
             = render 'latest_manufacturers_panel'
         .row
           .col-xs-12.col-md-6
             = render 'latest_components_panel'
+          .col-xs-12.col-md-6
+            = render 'components_chart_panel'

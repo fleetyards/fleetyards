@@ -19,6 +19,10 @@ class Component < ApplicationRecord
     end
   end
 
+  def component_class_label
+    I18n.t("filter.component.class.items.#{component_class.downcase}")
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end
