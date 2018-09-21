@@ -112,7 +112,7 @@ module Api
         authorize! :show, :api_models
         model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @videos = model.videos
-                       .order('videos.created_at asc')
+                       .order('videos.created_at desc')
                        .page(params[:page])
                        .per([(params[:per_page] || Video.default_per_page), Video.default_per_page * 4].min)
       end

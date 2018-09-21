@@ -4,6 +4,9 @@ en:
     actions: Actions
     unknown: Unknown
     charts:
+      view:
+        one: "%{label}:<br><b>%{count}</b> View"
+        other: "%{label}:<br><b>%{count}</b> Views"
       ship:
         one: "%{label}:<br><b>%{count}</b> Ship"
         other: "%{label}:<br><b>%{count}</b> Ships"
@@ -36,6 +39,8 @@ en:
       models_by_production_status: Models by Production Status
       models_by_size: Models by Size
       components_by_class: Components by Class
+      models_per_month: Models per Month
+      most_viewed_pages: Most viewed Pages
     table:
       actions: Actions
       blank:
@@ -52,6 +57,9 @@ en:
         manufacturer: Manufacturer
       name: Name
       updated_at: last reload
+      page:
+        path: Path
+        count: Count
       user:
         email: E-Mail
         created_at: Created at

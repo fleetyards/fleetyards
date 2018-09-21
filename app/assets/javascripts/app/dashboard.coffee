@@ -34,7 +34,7 @@ window.App.Dashboard.reloadChart = (chartId) ->
   chart = @findChart(chartId)
   @loadChartData chart.url, (data) =>
     series = chart.instance.series[0]
-    if chart.type in ['line', 'column']
+    if chart.type in ['line', 'column', 'bar', 'area']
       series.setData(data.map (item) -> [item.tooltip, item.count])
       chart.instance.xAxis[0].setCategories(data.map (item) -> item.label)
     else if chart.type is 'pie'
@@ -48,6 +48,7 @@ window.App.Dashboard.setupChart = (chart) ->
       when 'line' then @initLineChart(data, chart)
       when 'pie' then @initPieChart(data, chart)
       when 'column' then @initColumnChart(data, chart)
+      when 'bar' then @initBarChart(data, chart)
       when 'area' then @initAreaChart(data, chart)
       else null
 
@@ -71,6 +72,32 @@ window.App.Dashboard.initPieChart = (data, chart) ->
     }
     series: [{
       data: data
+    }]
+  })
+
+window.App.Dashboard.initBarChart = (data, chart) ->
+  chart.instance = Highcharts.chart(chart.id, {
+    chart: {
+      type: 'bar',
+      height: chart.height
+    },
+    xAxis: {
+      categories: data.map (item) -> item.label
+    },
+    yAxis: {
+      allowDecimals: false
+    },
+    tooltip: {
+      formatter: ->
+        I18n.t("labels.charts.#{chart.tooltip}", {
+          label: this.key,
+          count: this.y,
+        })
+      ,
+    }
+    legend: false,
+    series: [{
+      data: data.map (item) -> [item.tooltip, item.count]
     }]
   })
 
@@ -164,5 +191,6 @@ document.addEventListener 'turbolinks:load', ->
       App.Dashboard.checkQuickStats()
       App.Dashboard.reloadChart('visits-per-day-chart')
       App.Dashboard.reloadChart('visits-per-month-chart')
-    , 60 * 1000
+      App.Dashboard.reloadChart('most-viewed-pages-chart')
+    , 10 * 1000
 
