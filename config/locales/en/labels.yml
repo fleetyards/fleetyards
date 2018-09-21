@@ -7,10 +7,10 @@ en:
       ship:
         one: "%{label}:<br><b>%{count}</b> Ship"
         other: "%{label}:<br><b>%{count}</b> Ships"
-      ship_pie:
+      ship-pie:
         one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
         other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
-      component_pie:
+      component-pie:
         one: "%{label}:<br><b>%{count}</b> Component (%{percentage} %)"
         other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
       user:

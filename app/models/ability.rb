@@ -15,6 +15,7 @@ class Ability
     can :check, :users
 
     can :show, :api
+    can :read, :api_stats
     can %i[index show], :api_models
     can %i[index], :api_manufacturers
     can %i[index show], :api_stations

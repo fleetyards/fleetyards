@@ -6,9 +6,15 @@
           = I18n.t(:"labels.panels.visits_per_day")
       .panel-body
         javascript:
-          window.App.Dashboard.visitsPerDayData = #{{visits_per_day.to_json}};
+          window.App.Dashboard.addChart({
+            id: 'visits-per-day-chart',
+            url: '/stats/visits-per-day',
+            type: 'line',
+            height: '344px',
+            tooltip: 'visit',
+          });
 
-        #visits-per-day-chart
+        #visits-per-day-chart.chart(style="height: 344px;")
 
   .col-xs-12.col-md-6
     .panel.panel-default
@@ -17,6 +23,12 @@
           = I18n.t(:"labels.panels.visits_per_month")
       .panel-body
         javascript:
-          window.App.Dashboard.visitsPerMonthData = #{{visits_per_month.to_json}};
+          window.App.Dashboard.addChart({
+            id: 'visits-per-month-chart',
+            url: '/stats/visits-per-month',
+            type: 'column',
+            height: '344px',
+            tooltip: 'visit',
+          });
 
-        #visits-per-month-chart
+        #visits-per-month-chart.chart(style="height: 344px;")

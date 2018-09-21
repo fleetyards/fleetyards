@@ -110,3 +110,21 @@ a.thumbnail.active {
     border-bottom-right-radius: 4px;
   }
 }
+
+.chart {
+  position: relative;
+
+  &.loading::before {
+    content: "";
+    background-image: image-url('loading.gif');
+    background-size: 100%;
+    background-position: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    width: 50px;
+    height: 50px;
+  }
+}

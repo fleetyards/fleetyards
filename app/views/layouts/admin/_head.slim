@@ -20,6 +20,10 @@ meta name="apple-mobile-web-app-status-bar-style" content="black"
 == stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
 == stylesheet_link_tag 'application'
 
+- if defined?(jwt_token)
+  javascript:
+    window.JWT_TOKEN = '#{jwt_token}'
+
 == javascript_include_tag 'application'
 
 == csrf_meta_tags

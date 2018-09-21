@@ -4,6 +4,12 @@
       = I18n.t(:"labels.panels.models_by_manufacturer")
   .panel-body
     javascript:
-      window.App.Dashboard.modelsByManufacturerData = #{{models_by_manufacturer.to_json}};
+      window.App.Dashboard.addChart({
+        id: 'models-by-manufacturer-chart',
+        url: '#{models_by_manufacturer_api_v1_stats_url}',
+        type: 'pie',
+        height: '456px',
+        tooltip: 'ship-pie',
+      });
 
-    #models-by-manufacturer-chart
+    #models-by-manufacturer-chart.chart(style="height: 456px;")

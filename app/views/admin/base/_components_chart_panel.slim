@@ -4,6 +4,12 @@
       = I18n.t(:"labels.panels.components_by_class")
   .panel-body
     javascript:
-      window.App.Dashboard.componentsByClassData = #{{components_by_class.to_json}};
+      window.App.Dashboard.addChart({
+        id: 'components-by-class-chart',
+        url: '#{components_by_class_api_v1_stats_url}',
+        type: 'pie',
+        height: '456px',
+        tooltip: 'component-pie',
+      });
 
-    #components-by-class-chart
+    #components-by-class-chart.chart(style="height: 456px;")

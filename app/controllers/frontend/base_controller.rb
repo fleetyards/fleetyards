@@ -5,6 +5,7 @@ require 'mini_magick'
 module Frontend
   class BaseController < ApplicationController
     protect_from_forgery except: :service_worker
+
     def index
       route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
       route = 'home' if route.blank?

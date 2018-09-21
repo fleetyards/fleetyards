@@ -1,8 +1,10 @@
 window.App.Dashboard ?= {}
 
-window.App.Dashboard.checkQuickStats = ->
+window.App.Dashboard.checkQuickStats = (callback) ->
   $.ajax
-    url: '/quick-stats'
+    beforeSend: (request) ->
+      request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
+    url: '/stats/quick-stats'
     dataType: "JSON"
     success: (data) ->
       return unless data
@@ -11,25 +13,55 @@ window.App.Dashboard.checkQuickStats = ->
       $('#ships-count-total').text(data.ships_count_total)
       $('#users-count-total').text(data.users_count_total)
 
+window.App.Dashboard.charts = []
+
+window.App.Dashboard.addChart = (chart) ->
+  @charts.push(chart)
+
+window.App.Dashboard.findChart = (chartId) ->
+  @charts.find((chart) -> chart.id is chartId)
+
+window.App.Dashboard.loadChartData = (url, callback) ->
+  $.ajax
+    beforeSend: (request) ->
+      request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
+    url: url
+    dataType: "JSON"
+    success: (data) ->
+      callback(data)
+
+window.App.Dashboard.reloadChart = (chartId) ->
+  chart = @findChart(chartId)
+  @loadChartData chart.url, (data) =>
+    series = chart.instance.series[0]
+    if chart.type in ['line', 'column']
+      series.setData(data.map (item) -> [item.tooltip, item.count])
+      chart.instance.xAxis[0].setCategories(data.map (item) -> item.label)
+    else if chart.type is 'pie'
+      series.setData(data)
+
+window.App.Dashboard.setupChart = (chart) ->
+  $("##{chart.id}").addClass('loading')
+  @loadChartData chart.url, (data) =>
+    $("##{chart.id}").removeClass('loading')
+    switch chart.type
+      when 'line' then @initLineChart(data, chart)
+      when 'pie' then @initPieChart(data, chart)
+      when 'column' then @initColumnChart(data, chart)
+      else null
+
 window.App.Dashboard.initCharts = ->
-  @initComponentsByClassChart()
-  @initModelsBySizeChart()
-  @initModelsByProductionStatusChart()
-  @initModelsByManufacturerChart()
-  @initModelsByClassificationChart()
-  @initRegistrationsPerMonth()
-  @initVisitsPerMonth()
-  @initVisitsPerDay()
+  @charts.forEach (chart) => @setupChart(chart)
 
-window.App.Dashboard.initComponentsByClassChart = ->
-  Highcharts.chart('components-by-class-chart', {
+window.App.Dashboard.initPieChart = (data, chart) ->
+  chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: 'pie',
-      height: '456px'
+      type: chart.type,
+      height: chart.height,
     },
     tooltip: {
       formatter: ->
-        I18n.t('labels.charts.component_pie', {
+        I18n.t("labels.charts.#{chart.tooltip}", {
           label: this.key,
           count: this.y,
           percentage: Math.round(this.percentage)
@@ -37,105 +69,25 @@ window.App.Dashboard.initComponentsByClassChart = ->
       ,
     }
     series: [{
-      data: @componentsByClassData
+      data: data
     }]
   })
 
-window.App.Dashboard.initModelsBySizeChart = ->
-  Highcharts.chart('models-by-size-chart', {
+window.App.Dashboard.initColumnChart = (data, chart) ->
+  chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: 'pie',
-      height: '456px'
-    },
-    tooltip: {
-      formatter: ->
-        I18n.t('labels.charts.ship_pie', {
-          label: this.key,
-          count: this.y,
-          percentage: Math.round(this.percentage)
-        })
-      ,
-    }
-    series: [{
-      data: @modelsBySizeData
-    }]
-  })
-
-window.App.Dashboard.initModelsByProductionStatusChart = ->
-  Highcharts.chart('models-by-production-status-chart', {
-    chart: {
-      type: 'pie',
-      height: '456px'
-    },
-    tooltip: {
-      formatter: ->
-        I18n.t('labels.charts.ship_pie', {
-          label: this.key,
-          count: this.y,
-          percentage: Math.round(this.percentage)
-        })
-      ,
-    }
-    series: [{
-      data: @modelsByProductionStatusData
-    }]
-  })
-
-window.App.Dashboard.initModelsByManufacturerChart = ->
-  Highcharts.chart('models-by-manufacturer-chart', {
-    chart: {
-      type: 'pie',
-      height: '456px'
-    },
-    tooltip: {
-      formatter: ->
-        I18n.t('labels.charts.ship_pie', {
-          label: this.key,
-          count: this.y,
-          percentage: Math.round(this.percentage)
-        })
-      ,
-    }
-    series: [{
-      data: @modelsByManufacturerData
-    }]
-  })
-
-window.App.Dashboard.initModelsByClassificationChart = ->
-  Highcharts.chart('models-by-classification-chart', {
-    chart: {
-      type: 'pie',
-      height: '456px'
-    },
-    tooltip: {
-      formatter: ->
-        I18n.t('labels.charts.ship_pie', {
-          label: this.key,
-          count: this.y,
-          percentage: Math.round(this.percentage)
-        })
-      ,
-    }
-    series: [{
-      data: @modelsByClassificationData
-    }]
-  })
-
-window.App.Dashboard.initRegistrationsPerMonth = ->
-  Highcharts.chart('registrations-per-month-chart', {
-    chart: {
-      type: 'column',
-      height: '344px'
+      type: chart.type,
+      height: chart.height
     },
     xAxis: {
-      categories: @registrationsPerMonthData.map (item) -> item.label
+      categories: data.map (item) -> item.label
     },
     yAxis: {
       allowDecimals: false
     },
     tooltip: {
       formatter: ->
-        I18n.t('labels.charts.user', {
+        I18n.t("labels.charts.#{chart.tooltip}", {
           label: this.key,
           count: this.y,
         })
@@ -143,59 +95,33 @@ window.App.Dashboard.initRegistrationsPerMonth = ->
     }
     legend: false,
     series: [{
-      data: @registrationsPerMonthData.map (item) -> [item.tooltip, item.count]
+      data: data.map (item) -> [item.tooltip, item.count]
     }]
   })
 
-window.App.Dashboard.initVisitsPerMonth = ->
-  Highcharts.chart('visits-per-month-chart', {
+window.App.Dashboard.initLineChart = (data, chart) ->
+  chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: 'column',
-      height: '344px'
+      type: chart.type,
+      height: chart.height
     },
     xAxis: {
-      categories: @visitsPerMonthData.map (item) -> item.label
+      categories: data.map (item) -> item.label
     },
     yAxis: {
       allowDecimals: false
     },
     tooltip: {
       formatter: ->
-        I18n.t('labels.charts.visit', {
+        I18n.t("labels.charts.#{chart.tooltip}", {
           label: this.key,
           count: this.y,
         })
       ,
-    }
+    },
     legend: false,
     series: [{
-      data: @visitsPerMonthData.map (item) -> [item.tooltip, item.count]
-    }]
-  })
-
-window.App.Dashboard.initVisitsPerDay = ->
-  Highcharts.chart('visits-per-day-chart', {
-    chart: {
-      type: 'line',
-      height: '344px'
-    },
-    xAxis: {
-      categories: @visitsPerDayData.map (item) -> item.label
-    },
-    yAxis: {
-      allowDecimals: false
-    },
-    tooltip: {
-      formatter: ->
-        I18n.t('labels.charts.visit', {
-          label: this.key,
-          count: this.y,
-        })
-      ,
-    }
-    legend: false,
-    series: [{
-      data: @visitsPerDayData.map (item) -> [item.tooltip, item.count]
+      data: data.map (item) -> [item.tooltip, item.count]
     }]
   })
 
@@ -209,6 +135,7 @@ document.addEventListener 'turbolinks:load', ->
 
     App.Dashboard.quickStatsInterval = setInterval ->
       App.Dashboard.checkQuickStats()
-      App.Dashboard.initVisitsPerDay()
-    , 30 * 1000
+      App.Dashboard.reloadChart('visits-per-day-chart')
+      App.Dashboard.reloadChart('visits-per-month-chart')
+    , 60 * 1000
 

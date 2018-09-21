@@ -92,6 +92,15 @@ v1_api_routes = lambda do
     resources :orgs, only: %i[show], param: :sid
   end
 
+  resource :stats, only: [] do
+    get 'models-per-month' => 'stats#models_per_month'
+    get 'models-by-size' => 'stats#models_by_size'
+    get 'models-by-production-status' => 'stats#models_by_production_status'
+    get 'models-by-manufacturer' => 'stats#models_by_manufacturer'
+    get 'models-by-classification' => 'stats#models_by_classification'
+    get 'components-by-class' => 'stats#components_by_class'
+  end
+
   get 'version' => 'base#version'
 end
 

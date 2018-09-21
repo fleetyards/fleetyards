@@ -14,6 +14,10 @@ class AuthToken < ApplicationRecord
     where('expires_at < ?', Time.zone.now)
   end
 
+  def self.valid
+    where('expires_at > ?', Time.zone.now)
+  end
+
   def set_expires_at
     self.expires_at = Time.zone.now + (permanent? ? 14.days : 30.minutes)
   end

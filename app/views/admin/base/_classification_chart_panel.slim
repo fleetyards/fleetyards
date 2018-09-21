@@ -4,6 +4,12 @@
       = I18n.t(:"labels.panels.models_by_classification")
   .panel-body
     javascript:
-      window.App.Dashboard.modelsByClassificationData = #{{models_by_classification.to_json}};
+      window.App.Dashboard.addChart({
+        id: 'models-by-classification-chart',
+        url: '#{models_by_classification_api_v1_stats_url}',
+        type: 'pie',
+        height: '456px',
+        tooltip: 'ship-pie',
+      });
 
-    #models-by-classification-chart
+    #models-by-classification-chart.chart(style="height: 456px;")

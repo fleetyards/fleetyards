@@ -4,6 +4,12 @@
       = I18n.t(:"labels.panels.models_by_size")
   .panel-body
     javascript:
-      window.App.Dashboard.modelsBySizeData = #{{models_by_size.to_json}};
+      window.App.Dashboard.addChart({
+        id: 'models-by-size-chart',
+        url: '#{models_by_size_api_v1_stats_url}',
+        type: 'pie',
+        height: '456px',
+        tooltip: 'ship-pie',
+      });
 
-    #models-by-size-chart
+    #models-by-size-chart.chart(style="height: 456px;")

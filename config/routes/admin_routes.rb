@@ -44,5 +44,12 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
 
   get 'quick-stats' => 'base#quick_stats'
 
+  resource :stats, only: [] do
+    get 'quick-stats' => 'stats#quick_stats'
+    get 'visits-per-day' => 'stats#visits_per_day'
+    get 'visits-per-month' => 'stats#visits_per_month'
+    get 'registrations-per-month' => 'stats#registrations_per_month'
+  end
+
   root to: 'base#index'
 end

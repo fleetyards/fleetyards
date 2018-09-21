@@ -4,6 +4,12 @@
       = I18n.t(:"labels.panels.models_by_production_status")
   .panel-body
     javascript:
-      window.App.Dashboard.modelsByProductionStatusData = #{{models_by_production_status.to_json}};
+      window.App.Dashboard.addChart({
+        id: 'models-by-production-status-chart',
+        url: '#{models_by_production_status_api_v1_stats_url}',
+        type: 'pie',
+        height: '456px',
+        tooltip: 'ship-pie',
+      });
 
-    #models-by-production-status-chart
+    #models-by-production-status-chart.chart(style="height: 456px;")

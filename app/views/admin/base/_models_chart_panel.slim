@@ -1,0 +1,16 @@
+
+.panel.panel-default
+  .panel-heading
+    h2.panel-title
+      = I18n.t(:"labels.panels.models-per-month")
+  .panel-body
+    javascript:
+      window.App.Dashboard.addChart({
+        id: 'models-per-month-chart',
+        url: '#{models_per_month_api_v1_stats_url}',
+        type: 'column',
+        height: '344px',
+        tooltip: 'ship',
+      })
+
+    #models-per-month-chart(style="height: 344px;")
