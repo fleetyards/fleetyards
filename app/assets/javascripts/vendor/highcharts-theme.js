@@ -74,14 +74,7 @@ Highcharts.theme = {
     },
     plotOptions: {
         area: {
-            fillColor: {
-                linearGradient: {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1
-                },
-            }
+            fillColor: 'rgba(66, 139, 202, 0.3)'
         },
         series: {
             dataLabels: {

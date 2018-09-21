@@ -48,6 +48,7 @@ window.App.Dashboard.setupChart = (chart) ->
       when 'line' then @initLineChart(data, chart)
       when 'pie' then @initPieChart(data, chart)
       when 'column' then @initColumnChart(data, chart)
+      when 'area' then @initAreaChart(data, chart)
       else null
 
 window.App.Dashboard.initCharts = ->
@@ -56,7 +57,7 @@ window.App.Dashboard.initCharts = ->
 window.App.Dashboard.initPieChart = (data, chart) ->
   chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: chart.type,
+      type: 'pie',
       height: chart.height,
     },
     tooltip: {
@@ -76,7 +77,7 @@ window.App.Dashboard.initPieChart = (data, chart) ->
 window.App.Dashboard.initColumnChart = (data, chart) ->
   chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: chart.type,
+      type: 'column',
       height: chart.height
     },
     xAxis: {
@@ -99,10 +100,36 @@ window.App.Dashboard.initColumnChart = (data, chart) ->
     }]
   })
 
+window.App.Dashboard.initAreaChart = (data, chart) ->
+  chart.instance = Highcharts.chart(chart.id, {
+    chart: {
+      type: 'area',
+      height: chart.height
+    },
+    xAxis: {
+      categories: data.map (item) -> item.label
+    },
+    yAxis: {
+      allowDecimals: false
+    },
+    tooltip: {
+      formatter: ->
+        I18n.t("labels.charts.#{chart.tooltip}", {
+          label: this.key,
+          count: this.y,
+        })
+      ,
+    },
+    legend: false,
+    series: [{
+      data: data.map (item) -> [item.tooltip, item.count]
+    }]
+  })
+
 window.App.Dashboard.initLineChart = (data, chart) ->
   chart.instance = Highcharts.chart(chart.id, {
     chart: {
-      type: chart.type,
+      type: 'line',
       height: chart.height
     },
     xAxis: {
