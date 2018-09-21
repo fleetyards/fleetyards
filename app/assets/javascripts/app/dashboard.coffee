@@ -192,5 +192,5 @@ document.addEventListener 'turbolinks:load', ->
       App.Dashboard.reloadChart('visits-per-day-chart')
       App.Dashboard.reloadChart('visits-per-month-chart')
       App.Dashboard.reloadChart('most-viewed-pages-chart')
-    , 10 * 1000
+    , 30 * 1000
 
