@@ -53,6 +53,8 @@
             v-if="selectedHardpoint.type === 'missiles'"
             class="col-xs-6"
           >
+            <div class="metrics-label">{{ t('labels.hardpoint.rackSize') }}:</div>
+            <div class="metrics-value">{{ selectedHardpoint.size }}</div>
             <div class="metrics-label">{{ t('labels.metrics.missileOptions') }}:</div>
             <template v-for="n in parseInt(selectedHardpoint.size, 10)">
               <div

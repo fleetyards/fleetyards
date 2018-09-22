@@ -188,6 +188,12 @@
       "size": "Size: %{size}"
     },
     "hardpoint": {
+      "mounts": "Total Mounts",
+      "quantity": "Per Mount",
+      "size": "Size",
+      "rackSize": "Rack Size",
+      "category": "Category",
+      "categoryOrRackSize": "Category / Rack Size",
       "categories": {
         "rsiavionic": "Avionics",
         "rsimodular": "Systems",
