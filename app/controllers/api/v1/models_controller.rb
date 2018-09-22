@@ -131,7 +131,7 @@ module Api
 
       private def price_range
         @price_range ||= begin
-          (query_params.delete('price_in') || []).map do |prices|
+          price_in.map do |prices|
             gt_price, lt_price = prices.split('-')
             gt_price = if gt_price.blank?
                          0
@@ -146,6 +146,12 @@ module Api
             (gt_price...lt_price)
           end
         end
+      end
+
+      private def price_in
+        price_in = query_params.delete('price_in')
+        price_in = price_in.to_s.split unless price_in.is_a?(Array)
+        price_in
       end
 
       private def updated_range

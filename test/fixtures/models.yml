@@ -11,6 +11,7 @@ andromeda:
   fallback_min_crew: 3
   fallback_max_crew: 5
   fallback_price: 225
+  hidden: false
 
 explorer:
   name: "600i"
@@ -23,3 +24,4 @@ explorer:
   fallback_min_crew: 2
   fallback_max_crew: 5
   fallback_price: 400
+  hidden: false
