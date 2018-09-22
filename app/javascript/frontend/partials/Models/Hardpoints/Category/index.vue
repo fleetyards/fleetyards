@@ -55,15 +55,6 @@
           >
             <div class="metrics-label">{{ t('labels.hardpoint.rackSize') }}:</div>
             <div class="metrics-value">{{ selectedHardpoint.size }}</div>
-            <div class="metrics-label">{{ t('labels.metrics.missileOptions') }}:</div>
-            <template v-for="n in parseInt(selectedHardpoint.size, 10)">
-              <div
-                :key="n"
-                class="metrics-value"
-              >
-                {{ quantity(n) }} x {{ t('component.size') }} {{ n }}
-              </div>
-            </template>
           </div>
         </div>
       </div>
@@ -129,24 +120,6 @@ export default {
     },
   },
   methods: {
-    quantity(size) {
-      if (!this.selectedHardpoint || !this.selectedHardpoint.component) {
-        return null
-      }
-
-      let baseQuantity = this.selectedHardpoint.quantity
-      if (this.selectedHardpoint.size !== this.selectedHardpoint.component.size) {
-        baseQuantity = this.selectedHardpoint.quantity
-          / ((this.selectedHardpoint.size - this.selectedHardpoint.component.size) * 2)
-      }
-
-      if (parseInt(this.selectedHardpoint.size, 10) === size) {
-        return Math.floor(baseQuantity * this.selectedHardpoint.mounts)
-      }
-
-      return Math.floor(baseQuantity * ((this.selectedHardpoint.size - size) * 2)
-        * this.selectedHardpoint.mounts)
-    },
     groupByType(hardpoints) {
       return hardpoints.reduce((rv, x) => {
         const value = JSON.parse(JSON.stringify(rv))
