@@ -219,13 +219,18 @@ module Api
           json = JSON.parse response.body
 
           expected = {
-            'total' => 1,
+            'total' => 2,
             'classifications' => [{
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
+            }, {
+              'name' => 'explorer',
+              'label' => 'Explorer',
+              'count' => 1
             }],
             'models' => {
+              '600i' => 1,
               'andromeda' => 1
             }
           }
@@ -241,18 +246,19 @@ module Api
 
           expected = [{
             'id' => data.vehicles.first.model.id,
-            'name' => 'Andromeda',
+            'name' => '600i',
             'rsiName' => nil,
-            'slug' => 'andromeda',
+            'slug' => '600i',
             'rsiSlug' => nil,
             'description' => nil,
-            'length' => 61.2,
-            'beam' => 10.2,
-            'height' => 10.2,
-            'mass' => 1000.02,
-            'cargo' => '10.0',
-            'minCrew' => 1,
-            'maxCrew' => 3,
+            'length' => 20.0,
+            'beam' => 0.0,
+            'height' => 0.0,
+            'mass' => 0.0,
+            'cargo' => 40.0,
+            'cargoLabel' => '600i (40 SCU)',
+            'minCrew' => 2,
+            'maxCrew' => 5,
             'scmSpeed' => nil,
             'afterburnerSpeed' => nil,
             'groundSpeed' => nil,
@@ -264,12 +270,65 @@ module Api
             'yaxisAcceleration' => nil,
             'zaxisAcceleration' => nil,
             'size' => nil,
+            'sizeLabel' => nil,
             'storeImage' => data.vehicles.first.model.store_image.url,
             'fleetchartImage' => nil,
+            'backgroundImage' => nil,
             'brochure' => nil,
             'storeUrl' => 'https://robertsspaceindustries.com',
             'price' => nil,
-            'lastPrice' => nil,
+            'lastPrice' => 400.0,
+            'onSale' => false,
+            'productionStatus' => nil,
+            'productionNote' => nil,
+            'classification' => 'explorer',
+            'classificationLabel' => 'Explorer',
+            'focus' => nil,
+            'rsiId' => 141,
+            'hasImages' => false,
+            'hasVideos' => false,
+            'manufacturer' => {
+              'name' => 'Origin',
+              'slug' => 'origin',
+              'code' => nil,
+              'logo' => nil
+            },
+            'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+          }, {
+            'id' => data.vehicles.last.model.id,
+            'name' => 'Andromeda',
+            'rsiName' => nil,
+            'slug' => 'andromeda',
+            'rsiSlug' => nil,
+            'description' => nil,
+            'length' => 61.2,
+            'beam' => 10.2,
+            'height' => 10.2,
+            'mass' => 1000.02,
+            'cargo' => 90.0,
+            'cargoLabel' => 'Andromeda (90 SCU)',
+            'minCrew' => 3,
+            'maxCrew' => 5,
+            'scmSpeed' => nil,
+            'afterburnerSpeed' => nil,
+            'groundSpeed' => nil,
+            'afterburnerGroundSpeed' => nil,
+            'pitchMax' => nil,
+            'yawMax' => nil,
+            'rollMax' => nil,
+            'xaxisAcceleration' => nil,
+            'yaxisAcceleration' => nil,
+            'zaxisAcceleration' => nil,
+            'size' => nil,
+            'sizeLabel' => nil,
+            'storeImage' => data.vehicles.last.model.store_image.url,
+            'fleetchartImage' => nil,
+            'backgroundImage' => nil,
+            'brochure' => nil,
+            'storeUrl' => 'https://robertsspaceindustries.com',
+            'price' => nil,
+            'lastPrice' => 225.0,
             'onSale' => false,
             'productionStatus' => nil,
             'productionNote' => nil,
@@ -277,13 +336,16 @@ module Api
             'classificationLabel' => 'Multi role',
             'focus' => nil,
             'rsiId' => nil,
+            'hasImages' => false,
+            'hasVideos' => false,
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',
-              'code' => nil
+              'code' => nil,
+              'logo' => nil
             },
-            'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+            'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
+            'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
           }]
 
           assert_equal expected, json
