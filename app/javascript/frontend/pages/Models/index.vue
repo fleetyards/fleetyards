@@ -55,7 +55,7 @@
         </div>
         <div class="row">
           <transition
-            name="fade"
+            name="slide"
             appear
             @before-enter="toggleFullscreen"
             @after-leave="toggleFullscreen"

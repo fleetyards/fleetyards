@@ -3,7 +3,7 @@
     <label :for="radioID">
       {{ label }}
     </label>
-    <div>
+    <div class="radio-list">
       <div
         v-if="resetLabel"
         :class="{ 'radio-inline': inline }"
