@@ -140,7 +140,7 @@
             :class="{
               'col-md-9 col-xlg-10': !fullscreen,
             }"
-            class="col-xs-12"
+            class="col-xs-12 col-animated"
           >
             <div
               v-if="hangarFleetchartVisible && fleetchartVehicles.length"
