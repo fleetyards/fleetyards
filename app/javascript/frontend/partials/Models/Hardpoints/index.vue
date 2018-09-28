@@ -38,7 +38,6 @@
                     key="testHardpoint"
                     :hardpoint="testHardpoint"
                     style="float: left;"
-                    @click.native="openComponentModal(testHardpoint)"
                   />
                   <div
                     style="float: left;"
@@ -58,7 +57,6 @@
                     key="testHardpointEmpty"
                     :hardpoint="testHardpointEmpty"
                     style="float: left;"
-                    @click.native="openComponentModal(testHardpointEmpty)"
                   />
                   <div
                     style="float: left;"
