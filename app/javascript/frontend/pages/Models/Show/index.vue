@@ -240,7 +240,9 @@ export default {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })
-      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
+      if (this.model.backgroundImage) {
+        this.$store.commit('setBackgroundImage', this.model.backgroundImage)
+      }
     },
   },
   created() {
