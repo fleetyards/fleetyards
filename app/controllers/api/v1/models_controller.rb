@@ -12,7 +12,7 @@ module Api
 
       def index
         authorize! :index, :api_models
-        scope = Model.visible
+        scope = Model.visible.active
         if price_range.present?
           query_params['sorts'] = 'fallback_price asc'
           scope = scope.where(fallback_price: price_range)
@@ -64,21 +64,25 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        @models = Model.where('cargo > 0')
+        @models = Model.visible
+                       .active
+                       .where('cargo > 0')
                        .order(name: :asc)
                        .all
       end
 
       def latest
         authorize! :index, :api_models
-        @models = Model.order(last_updated_at: :desc, name: :asc)
+        @models = Model.visible
+                       .active
+                       .order(last_updated_at: :desc, name: :asc)
                        .limit(9)
       end
 
       def embed
         authorize! :index, :api_models
 
-        @models = Model.where(slug: params[:models]).order(name: :asc)
+        @models = Model.visible.active.where(slug: params[:models]).order(name: :asc)
 
         render 'api/v1/models/index'
       end
@@ -86,7 +90,7 @@ module Api
       def updated
         authorize! :index, :api_models
         if updated_range.present?
-          scope = Model.where(updated_at: updated_range)
+          scope = Model.visible.active.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
         else
           render json: [], status: :not_modified
@@ -95,12 +99,12 @@ module Api
 
       def show
         authorize! :show, :api_models
-        @model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def images
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @images = model.images
                        .enabled
                        .order('images.created_at desc')
@@ -110,7 +114,7 @@ module Api
 
       def videos
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @videos = model.videos
                        .order('videos.created_at desc')
                        .page(params[:page])
@@ -119,13 +123,13 @@ module Api
 
       def store_image
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
         redirect_to model.store_image.url
       end
 
       def fleetchart_image
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         redirect_to model.fleetchart_image.url
       end
 
@@ -156,6 +160,7 @@ module Api
 
       private def updated_range
         return if updated_params[:from].blank?
+
         to = updated_params[:to] || Time.zone.now
         [updated_params[:from]...to]
       end

@@ -12,6 +12,19 @@
         = form_errors model, :description
 
   .row
+    .col-xs-12.col-sm-6.col-md-4.form-group
+      .checkbox
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.model.hidden")
+
+    .col-xs-12.col-sm-6.col-md-4.form-group
+      .checkbox
+        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
+        = form.label :active do
+          = I18n.t(:"activerecord.attributes.model.active")
+
+  .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
       = form.label :focus
       = form.select :focus, options_from_collection_for_select(Model.focus_filters, :value, :name, model.focus), { include_blank: true }, {class: 'form-control'}
@@ -183,11 +196,6 @@
         = form_errors model, :fleetchart_image
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.model.hidden")
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :rsi_id)}
       = form.label :rsi_id
       = form.text_field :rsi_id, class: 'form-control'

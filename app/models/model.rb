@@ -48,7 +48,7 @@ class Model < ApplicationRecord
   after_save :send_new_model_notification
 
   def self.production_status_filters
-    Model.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'productionStatus',
         name: item.humanize,
@@ -58,7 +58,7 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'classification',
         name: item.humanize,
@@ -68,7 +68,7 @@ class Model < ApplicationRecord
   end
 
   def self.focus_filters
-    Model.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'focus',
         name: item.humanize,
@@ -78,7 +78,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    Model.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,
@@ -95,6 +95,10 @@ class Model < ApplicationRecord
     where(hidden: false)
   end
 
+  def self.active
+    where(active: true)
+  end
+
   %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed ground_speed afterburner_ground_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("fallback_#{method_name}")
@@ -108,6 +112,7 @@ class Model < ApplicationRecord
 
   def in_hangar(user)
     return if user.blank?
+
     user.models.exists?(id)
   end
 
@@ -121,11 +126,13 @@ class Model < ApplicationRecord
 
   def human_display_cargo
     return if display_cargo.blank? || display_cargo.zero?
+
     number_with_precision(display_cargo, precision: 2, strip_insignificant_zeros: true)
   end
 
   def cargo_label
     return if display_cargo.blank? || display_cargo.zero?
+
     human_cargo = number_with_precision(
       display_cargo,
       precision: 2,
@@ -140,11 +147,13 @@ class Model < ApplicationRecord
 
   private def send_new_model_notification
     return if notified? || hidden?
+
     ModelNotificationWorker.perform_async(id)
   end
 
   private def send_on_sale_notification
     return unless on_sale?
+
     VehiclesWorker.perform_async(id)
     ActionCable.server.broadcast('on_sale', to_builder.target!)
   end
@@ -156,6 +165,7 @@ class Model < ApplicationRecord
 
   private def set_last_updated_at
     return if last_updated_at.present?
+
     self.last_updated_at = Time.zone.now
   end
 

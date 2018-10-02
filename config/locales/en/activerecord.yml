@@ -25,6 +25,7 @@ en:
         variants: Variants
         weapons: Weapons
         hidden: hidden?
+        active: active?
       setting:
         base:
           registration: Registration active?
