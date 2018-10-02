@@ -60,7 +60,10 @@ export default {
     ]),
   },
   watch: {
-    $route: 'setBackground',
+    $route() {
+      this.setBackground()
+      this.fetchHangar()
+    },
     navbarCollapsed: 'setNoScroll',
     overlayVisible: 'setNoScroll',
     isAuthenticated() {
