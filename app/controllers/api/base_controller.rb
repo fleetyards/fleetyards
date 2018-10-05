@@ -59,8 +59,6 @@ module Api
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
     end
-
-    # rubocop:disable Layout/RescueEnsureAlignment
     private def query_params
       @query_params ||= begin
         q = JSON.parse(params[:q].to_s || '{}')
@@ -69,7 +67,6 @@ module Api
     rescue JSON::ParserError
       {}
     end
-    # rubocop:enable Layout/RescueEnsureAlignment
 
     private def per_page(model)
       per_page_param = params[:perPage].to_i if params[:perPage].present?

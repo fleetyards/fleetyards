@@ -62,6 +62,7 @@ class User < ApplicationRecord
     loop do
       verification_token = SecureRandom.urlsafe_base64(10, false)
       next if User.find_by(id: id, rsi_verification_token: verification_token)
+
       self.rsi_verification_token = verification_token
       save
       break
@@ -77,11 +78,13 @@ class User < ApplicationRecord
 
   def clean_username
     return if username.blank?
+
     self.username = username.strip
   end
 
   def clean_rsi_handle
     return if rsi_handle.blank?
+
     self.rsi_handle = rsi_handle.strip.downcase
   end
 

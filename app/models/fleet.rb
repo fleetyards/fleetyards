@@ -12,6 +12,7 @@ class Fleet < ApplicationRecord
   def fetch_rsi_org
     success, org = RsiOrgsLoader.new.fetch(sid.downcase)
     return unless success
+
     self.name = org.name
     self.logo = org.logo
     self.banner = org.banner

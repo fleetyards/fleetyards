@@ -31,6 +31,7 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   private def store_dimensions
     return unless file || model
+
     model.width, model.height = ::MiniMagick::Image.open(file.file)[:dimensions]
   end
 end

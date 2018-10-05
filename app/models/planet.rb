@@ -21,6 +21,7 @@ class Planet < ApplicationRecord
 
   private def update_starsystem
     return if starsystem.present? && !will_save_change_to_planet_id?
+
     self.starsystem = planet.starsystem
   end
 

@@ -32,6 +32,7 @@ module Api
 
       private def key
         return if price_params[:data].blank?
+
         @key = Digest::SHA512.hexdigest(price_params[:data])
       end
     end

@@ -17,6 +17,7 @@ class Video < ApplicationRecord
 
   def video_id
     return unless youtube?
+
     url
   end
 end

@@ -204,11 +204,13 @@ class RsiModelsLoader
 
   private def nil_or_float(value)
     return if value.blank?
+
     value.to_f
   end
 
   private def nil_or_int(value)
     return if value.blank?
+
     value.to_i
   end
 end

@@ -134,6 +134,7 @@ module Frontend
       if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
         return name
       end
+
       "#{name}'s"
     end
 

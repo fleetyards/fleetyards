@@ -79,6 +79,7 @@ module Api
 
       private def fleet
         return unless current_user.rsi_verified?
+
         @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).find_by(sid: params[:sid])
       end
 
