@@ -43,6 +43,9 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
 
+Layout/RescueEnsureAlignment:
+  Enabled: false
+
 Style/AccessModifierDeclarations:
   EnforcedStyle: inline
 
