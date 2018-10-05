@@ -23,11 +23,7 @@ module Api
 
         @manufacturers = @q.result
                            .page(params[:page])
-                           .per(per_page)
-      end
-
-      private def per_page
-        [(params[:per_page] || Manufacturer.default_per_page), Manufacturer.default_per_page * 4].min
+                           .per(per_page(Manufacturer))
       end
     end
   end

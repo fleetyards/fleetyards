@@ -303,7 +303,7 @@ module Api
         end
 
         it 'should return counts for count' do
-          get :count, params: { q: '{ "model_classification_in": ["combat"] }' }
+          get :count, params: { q: '{ "modelClassificationIn": ["combat"] }' }
 
           assert_response :ok
           json = JSON.parse response.body

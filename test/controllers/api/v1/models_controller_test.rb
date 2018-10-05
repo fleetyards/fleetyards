@@ -123,6 +123,25 @@ module Api
         }]
         assert_equal expected, json
       end
+
+      it 'should be able to filter the list' do
+        get :index, params: { q: '{ "nameCont": "Andromeda" }' }
+
+        assert_response :ok
+        json = JSON.parse response.body
+
+        assert_equal 1, json.count
+        assert_equal 'Andromeda', json.first['name']
+      end
+
+      it 'should be able to reduce per page size' do
+        get :index, params: { perPage: '1' }
+
+        assert_response :ok
+        json = JSON.parse response.body
+
+        assert_equal 1, json.count
+      end
     end
   end
 end

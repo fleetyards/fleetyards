@@ -14,7 +14,7 @@ module Api
 
         @planets = @q.result
                      .page(params[:page])
-                     .per([(params[:per_page] || Planet.default_per_page), Planet.default_per_page * 4].min)
+                     .per(per_page(Planet))
       end
     end
   end

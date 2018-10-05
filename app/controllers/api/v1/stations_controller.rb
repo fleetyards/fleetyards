@@ -14,7 +14,7 @@ module Api
 
         @stations = @q.result
                       .page(params[:page])
-                      .per([(params[:per_page] || Station.default_per_page), Station.default_per_page * 4].min)
+                      .per(per_page(Station))
       end
 
       def show

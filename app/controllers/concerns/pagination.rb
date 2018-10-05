@@ -5,6 +5,7 @@ module Concerns
     def pagination_header(name)
       headers['Link'] = pagination_links(instance_variable_get("@#{name}")).map do |k, v|
         next if v.blank?
+
         "<#{v}>; rel=\"#{k}\""
       end.compact.join(', ')
     end

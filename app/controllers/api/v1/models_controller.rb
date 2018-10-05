@@ -24,7 +24,7 @@ module Api
 
         @models = @q.result
                     .page(params[:page])
-                    .per([(params[:per_page] || Model.default_per_page), Model.default_per_page * 4].min)
+                    .per(per_page(Model))
       end
 
       def production_states
@@ -109,7 +109,7 @@ module Api
                        .enabled
                        .order('images.created_at desc')
                        .page(params[:page])
-                       .per([(params[:per_page] || Image.default_per_page), Image.default_per_page * 4].min)
+                       .per(per_page(Image))
       end
 
       def videos
@@ -118,7 +118,7 @@ module Api
         @videos = model.videos
                        .order('videos.created_at desc')
                        .page(params[:page])
-                       .per([(params[:per_page] || Video.default_per_page), Video.default_per_page * 4].min)
+                       .per(per_page(Video))
       end
 
       def store_image
