@@ -133,10 +133,13 @@ module Api
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= params.permit(
-          :name, :model_id, :purchased, :name_visible,
-          :sale_notify, :flagship, hangar_group_ids: []
-        ).merge(user_id: current_user.id)
+        @vehicle_params ||= begin
+          params.transform_keys(&:underscore)
+            .permit(
+              :name, :model_id, :purchased, :name_visible,
+              :sale_notify, :flagship, hangar_group_ids: []
+            ).merge(user_id: current_user.id)
+        end
       end
 
       private def price_range
