@@ -66,7 +66,7 @@ module Api
       end
 
       def models_per_month
-        authorize! :stats, :admin
+        authorize! :read, :api_stats
 
         models_per_month = Model.where('created_at > ?', Time.zone.now - 1.year)
                                 .group_by_month(:created_at)

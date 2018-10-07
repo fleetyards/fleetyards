@@ -5072,6 +5072,11 @@ he@^1.1.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
   integrity sha1-k0EP0hsAlzUVH4howvJx80J+I/0=
 
+highcharts@^6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.1.4.tgz#753b6d4b99a279ade28276e1b4dc5a53346c7601"
+  integrity sha512-m7uK2dvDmop4wAgB7RQjODS894HqNrxRUJh+Px7n1PsNyb7+aO22cRxx2rhvjmy1R8Q3Tf5I03AbjN5oAYyWSw==
+
 highlight-es@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/highlight-es/-/highlight-es-1.0.3.tgz#12abc300a27e686f6f18010134e3a5c6d2fe6930"

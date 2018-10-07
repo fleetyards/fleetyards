@@ -8,6 +8,7 @@ import ModelVideos from 'frontend/pages/Models/Show/Videos'
 import CompareModels from 'frontend/pages/Compare/Models'
 import NotFound from 'frontend/pages/NotFound'
 import Images from 'frontend/pages/Images'
+import Stats from 'frontend/pages/Stats'
 import Hangar from 'frontend/pages/Hangar'
 import PublicHangar from 'frontend/pages/Hangar/Public'
 import Fleets from 'frontend/pages/Fleets'
@@ -59,6 +60,10 @@ export const routes = [
     path: '/ships/:slug/videos',
     name: 'model-videos',
     component: ModelVideos,
+  }, {
+    path: '/stats',
+    name: 'stats',
+    component: Stats,
   }, {
     path: '/images',
     name: 'images',

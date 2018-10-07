@@ -23,6 +23,8 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
 
   get 'images' => 'base#index'
 
+  get 'stats' => 'base#index'
+
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'
 
