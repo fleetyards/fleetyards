@@ -23,6 +23,7 @@
     "css-loader": "^1.0.0",
     "date-fns": "1.29.0",
     "downloadjs": "1.4.7",
+    "highcharts": "^6.1.4",
     "html2canvas": "1.0.0-alpha.12",
     "i18n-js": "3.0.11",
     "lodash.debounce": "^4.0.8",

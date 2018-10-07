@@ -93,6 +93,12 @@
             >
               <a>{{ t('nav.cargo') }}</a>
             </router-link>
+            <router-link
+              :to="{ name: 'stats' }"
+              tag="li"
+            >
+              <a>{{ t('nav.stats') }}</a>
+            </router-link>
           </ul>
           <div
             :class="{

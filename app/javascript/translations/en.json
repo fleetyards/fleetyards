@@ -8,6 +8,7 @@
     "modelImages": "%{name} Images",
     "modelVideos": "%{name} Videos",
     "images": "Images",
+    "stats": "Stats",
     "login": "Login",
     "signUp": "Sign Up",
     "hangar": "My Hangar",
@@ -37,6 +38,7 @@
     "welcomeImages": "Random Images",
     "models": "Ships Index",
     "images": "Images Index",
+    "stats": "Stats",
     "error": "Navigation Error",
     "comments": "Comments",
     "login": "Login",
@@ -109,6 +111,7 @@
     "rsiProfile": "RSI Profile",
     "cargo": "Cargo",
     "api": "API Docs",
+    "stats": "Stats",
     "profile": "Profile",
     "account": "Account",
     "rsiVerification": "RSI Verification"
@@ -119,6 +122,38 @@
     "gap": "&hellip;"
   },
   "labels": {
+    "stats": {
+      "modelsByClassification": "Models by Classification",
+      "modelsBySize": "Models by Size",
+      "modelsPerMonth": "Models per Month",
+      "modelsByManufacturer": "Models by Manufacturer"
+    },
+    "charts": {
+      "view": {
+        "one": "%{label}:<br><b>%{count}</b> View",
+        "other": "%{label}:<br><b>%{count}</b> Views"
+      },
+      "ship": {
+        "one": "%{label}:<br><b>%{count}</b> Ship",
+        "other": "%{label}:<br><b>%{count}</b> Ships"
+      },
+      "ship-pie": {
+        "one": "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)",
+        "other": "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      },
+      "component-pie": {
+        "one": "%{label}:<br><b>%{count}</b> Component (%{percentage} %)",
+        "other": "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+      },
+      "user": {
+        "one": "%{label}:<br><b>%{count}</b> User",
+        "other": "%{label}:<br><b>%{count}</b> Users"
+      },
+      "visit": {
+        "one": "%{label}:<br><b>%{count}</b> Visit",
+        "other": "%{label}:<br><b>%{count}</b> Visits"
+      }
+    },
     "unknown": "Unknown",
     "searchInput": "Search Input",
     "search": "Search",
