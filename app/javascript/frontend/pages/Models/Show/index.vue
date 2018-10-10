@@ -283,7 +283,7 @@ export default {
       this.loading = false
       if (!response.error) {
         this.model = response.data
-      } else if (response.error.response.status === 404) {
+      } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
     },
