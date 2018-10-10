@@ -37,7 +37,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     VCR.use_cassette('rsi_models_loader_all') do
       loader.one(7)
 
-      model = Model.find_by(name: 'mustang-alpha-vindicator')
+      model = Model.find_by(name: '300i')
 
       Timecop.travel(1.day)
 
