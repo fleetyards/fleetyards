@@ -19,10 +19,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 1698,
-        components: 120,
-        models: 109,
-        manufacturers: 43
+        hardpoints: 1987,
+        components: 124,
+        models: 129,
+        manufacturers: 44
       }
 
       assert_equal(expectations,
@@ -37,7 +37,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     VCR.use_cassette('rsi_models_loader_all') do
       loader.one(7)
 
-      model = Model.find_by(name: '300i')
+      model = Model.find_by(name: 'mustang-alpha-vindicator')
 
       Timecop.travel(1.day)
 

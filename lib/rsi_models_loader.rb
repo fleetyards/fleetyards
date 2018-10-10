@@ -136,9 +136,9 @@ class RsiModelsLoader
     if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
       model.store_images_updated_at = data['media'][0]['time_modified']
       store_image_url = data['media'][0]['images']['store_hub_large']
-      store_image_url = "#{base_url}#{store_image_url}" if store_image_url.starts_with?('https')
+      store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
       if store_image_url.present?
-        model.remote_store_image_url = "#{base_url}#{data['media'][0]['images']['store_hub_large']}"
+        model.remote_store_image_url = store_image_url
         model.save
       end
     end
