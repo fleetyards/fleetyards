@@ -36,7 +36,20 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-12 col-md-4">
+            <Panel>
+              <div class="panel-heading">
+                <h2 class="panel-title">{{ t('labels.stats.modelsByProductionStatus') }}</h2>
+              </div>
+              <Chart
+                key="models-by-production-status"
+                :load-data="loadModelsByProductionStatus"
+                tooltip-type="ship-pie"
+                type="pie"
+              />
+            </Panel>
+          </div>
+          <div class="col-xs-12 col-md-8">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">{{ t('labels.stats.modelsPerMonth') }}</h2>
@@ -44,7 +57,6 @@
               <Chart
                 key="models-per-month"
                 :load-data="loadModelsPerMonth"
-                :height="350"
                 tooltip-type="ship"
                 type="column"
               />
@@ -112,6 +124,13 @@ export default {
     },
     async loadModelsByManufacturer() {
       const response = await this.$api.get('stats/models-by-manufacturer')
+      if (!response.error) {
+        return response.data
+      }
+      return []
+    },
+    async loadModelsByProductionStatus() {
+      const response = await this.$api.get('stats/models-by-production-status')
       if (!response.error) {
         return response.data
       }

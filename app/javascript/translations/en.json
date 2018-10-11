@@ -126,7 +126,8 @@
       "modelsByClassification": "Models by Classification",
       "modelsBySize": "Models by Size",
       "modelsPerMonth": "Models per Month",
-      "modelsByManufacturer": "Models by Manufacturer"
+      "modelsByManufacturer": "Models by Manufacturer",
+      "modelsByProductionStatus": "Models by Production Status"
     },
     "charts": {
       "view": {
