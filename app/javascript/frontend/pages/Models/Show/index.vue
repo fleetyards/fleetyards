@@ -154,7 +154,7 @@
                 class="sale-button"
                 large
               >
-                {{ t('actions.model.onSale', { price: toDollar(model.price) }) }}
+                {{ t('actions.model.onSale', { price: toDollar(model.pledgePrice) }) }}
                 <small class="price-info">{{ t('labels.taxExcluded') }}</small>
               </ExternalLink>
             </div>

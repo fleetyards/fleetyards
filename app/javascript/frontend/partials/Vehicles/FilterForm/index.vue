@@ -76,6 +76,13 @@
       multiple
     />
     <FilterGroup
+      :options="pledgePriceOptions"
+      v-model="form.modelPledgePriceIn"
+      :label="t('labels.filters.models.pledgePrice')"
+      :name="`${prefix}-pledge-price`"
+      multiple
+    />
+    <FilterGroup
       :options="priceOptions"
       v-model="form.modelPriceIn"
       :label="t('labels.filters.models.price')"
@@ -165,6 +172,7 @@ export default {
         modelFocusIn: query.modelFocusIn || [],
         modelSizeIn: query.modelSizeIn || [],
         modelPriceIn: query.modelPriceIn || [],
+        modelPledgePriceIn: query.modelPledgePriceIn || [],
         modelProductionStatusIn: query.modelProductionStatusIn || [],
         hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
       },
@@ -183,6 +191,7 @@ export default {
         modelFocusIn: query.modelFocusIn || [],
         modelSizeIn: query.modelSizeIn || [],
         modelPriceIn: query.modelPriceIn || [],
+        modelPledgePriceIn: query.modelPledgePriceIn || [],
         modelProductionStatusIn: query.modelProductionStatusIn || [],
         hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
       }

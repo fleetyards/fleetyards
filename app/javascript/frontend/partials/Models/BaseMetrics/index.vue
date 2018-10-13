@@ -80,15 +80,27 @@
               </div>
             </div>
             <div
-              v-if="model.lastPrice"
+              v-if="model.price"
               class="col-xs-6 col-md-12"
             >
               <div class="metrics-label">{{ t('model.price') }}:</div>
               <div
-                v-tooltip="toDollar(model.lastPrice)"
+                v-tooltip="toUEC(model.price)"
                 class="metrics-value"
               >
-                {{ toDollar(model.lastPrice) }}
+                {{ toUEC(model.price) }}
+              </div>
+            </div>
+            <div
+              v-if="detailed && model.lastPledgePrice"
+              class="col-xs-6 col-md-12"
+            >
+              <div class="metrics-label">{{ t('model.pledgePrice') }}:</div>
+              <div
+                v-tooltip="toDollar(model.lastPledgePrice)"
+                class="metrics-value"
+              >
+                {{ toDollar(model.lastPledgePrice) }}
               </div>
             </div>
           </div>

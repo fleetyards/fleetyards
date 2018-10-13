@@ -208,10 +208,16 @@
     #addition
       .row.fields
         .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_price)}
-            = form.label :fallback_price
-            = form.number_field :fallback_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
-            = form_errors model, :fallback_price
+          .form-group{class: form_error?(model, :price)}
+            = form.label :price
+            = form.number_field :price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :price
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_pledge_price)}
+            = form.label :fallback_pledge_price
+            = form.number_field :fallback_pledge_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :fallback_pledge_price
 
         .col-xs-12.col-sm-6.col-md-4
           .form-group{class: form_error?(model, :fallback_beam)}

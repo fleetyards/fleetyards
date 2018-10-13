@@ -10,6 +10,39 @@ export default {
       }],
       priceOptions: [
         {
+          value: '-200000',
+          name: `< 200K ${this.t('labels.uec')}`,
+        }, {
+          value: '200000-500000',
+          name: `200K ${this.t('labels.uec')} - 500K ${this.t('labels.uec')}`,
+        }, {
+          value: '500000-2000000',
+          name: `500K ${this.t('labels.uec')} - 2M ${this.t('labels.uec')}`,
+        }, {
+          value: '2000000-10000000',
+          name: `2M ${this.t('labels.uec')} - 10M ${this.t('labels.uec')}`,
+        }, {
+          value: '10000000-25000000',
+          name: `10M ${this.t('labels.uec')} - 25M ${this.t('labels.uec')}`,
+        }, {
+          value: '25000000-50000000',
+          name: `25M ${this.t('labels.uec')} - 50M ${this.t('labels.uec')}`,
+        }, {
+          value: '50000000-100000000',
+          name: `50M ${this.t('labels.uec')} - 100M ${this.t('labels.uec')}`,
+        }, {
+          value: '100000000-250000000',
+          name: `100M ${this.t('labels.uec')} - 250M ${this.t('labels.uec')}`,
+        }, {
+          value: '250000000-500000000',
+          name: `250M ${this.t('labels.uec')} - 500M ${this.t('labels.uec')}`,
+        }, {
+          value: '500000000-1000000000',
+          name: `500M ${this.t('labels.uec')} - 1B ${this.t('labels.uec')}`,
+        },
+      ],
+      pledgePriceOptions: [
+        {
           value: '-25',
           name: '< $25',
         }, {

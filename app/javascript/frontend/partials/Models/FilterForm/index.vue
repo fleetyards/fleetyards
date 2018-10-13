@@ -60,6 +60,13 @@
       multiple
     />
     <FilterGroup
+      :options="pledgePriceOptions"
+      v-model="form.pledgePriceIn"
+      :label="t('labels.filters.models.pledgePrice')"
+      :name="`${prefix}-pldege-price`"
+      multiple
+    />
+    <FilterGroup
       :options="priceOptions"
       v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
@@ -121,6 +128,7 @@ export default {
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
         priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       },
     }
@@ -136,6 +144,7 @@ export default {
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
         priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })

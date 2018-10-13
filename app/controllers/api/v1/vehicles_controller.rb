@@ -12,8 +12,13 @@ module Api
         scope = current_user.vehicles
 
         if price_range.present?
-          query_params['sorts'] = 'fallback_price asc'
-          scope = scope.includes(:model).where(models: { fallback_price: price_range })
+          query_params['sorts'] = 'price asc'
+          scope = scope.includes(:model).where(models: { price: price_range })
+        end
+
+        if pledge_price_range.present?
+          query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.includes(:model).where(models: { fallback_pledge_price: pledge_price_range })
         end
 
         @q = scope.ransack(query_params)
@@ -57,7 +62,7 @@ module Api
             )
           end,
           metrics: {
-            total_money: models.map(&:fallback_price).sum(&:to_i),
+            total_money: models.map(&:fallback_pledge_price).sum(&:to_i),
             total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
             total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
             total_cargo: models.map(&:display_cargo).sum(&:to_i)
@@ -144,7 +149,7 @@ module Api
 
       private def price_range
         @price_range ||= begin
-          (query_params.delete('model_price_in') || []).map do |prices|
+          price_in.map do |prices|
             gt_price, lt_price = prices.split('-')
             gt_price = if gt_price.blank?
                          0
@@ -159,6 +164,37 @@ module Api
             (gt_price...lt_price)
           end
         end
+      end
+
+      private def pledge_price_range
+        @pledge_price_range ||= begin
+          pledge_price_in.map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
+        end
+      end
+
+      private def pledge_price_in
+        pledge_price_in = query_params.delete('model_pledge_price_in')
+        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
+        pledge_price_in
+      end
+
+      private def price_in
+        price_in = query_params.delete('model_price_in')
+        price_in = price_in.to_s.split unless price_in.is_a?(Array)
+        price_in
       end
     end
   end

@@ -28,7 +28,13 @@ export default {
       return I18n.toCurrency(value, {
         precision: 2,
         unit: '$',
-        sign_first: true,
+      })
+    },
+    toUEC(value) {
+      return I18n.toCurrency(value, {
+        precision: 2,
+        unit: I18n.t('labels.uec'),
+        format: '%n %u',
       })
     },
   },

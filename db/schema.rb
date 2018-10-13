@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_103845) do
+ActiveRecord::Schema.define(version: 2018_10_13_115739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_103845) do
     t.string "production_note", limit: 255
     t.string "focus", limit: 255
     t.boolean "on_sale", default: false
-    t.decimal "price", precision: 15, scale: 2
+    t.decimal "pledge_price", precision: 15, scale: 2
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
@@ -233,7 +233,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_103845) do
     t.decimal "fallback_cruise_speed", precision: 15, scale: 2
     t.integer "fallback_min_crew"
     t.integer "fallback_max_crew"
-    t.decimal "fallback_price", precision: 15, scale: 2
+    t.decimal "fallback_pledge_price", precision: 15, scale: 2
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"
@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_103845) do
     t.decimal "afterburner_ground_speed", precision: 15, scale: 2
     t.boolean "notified", default: false
     t.boolean "active", default: true
+    t.decimal "price", precision: 15, scale: 2
   end
 
   create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

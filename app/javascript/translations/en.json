@@ -181,8 +181,8 @@
       "selectModel": "Select a Ship"
     },
     "cargoRoutes": "Cargo routes",
-    "uecPerUnit": "UEC / Unit",
-    "uec": "UEC",
+    "uecPerUnit": "aUEC / Unit",
+    "uec": "aUEC",
     "sell": "Sell",
     "buy": "Buy",
     "yourFlagship": "Your Flagship",
@@ -316,6 +316,7 @@
         "onSale": "On Sale",
         "size": "Size",
         "price": "Price",
+        "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
       }
     }
@@ -548,6 +549,7 @@
     "yawMax": "Yaw Max",
     "rollMax": "Roll Max",
     "price": "Price",
+    "pledgePrice": "Pledge Price",
     "xaxisAcceleration": "X-Axis",
     "yaxisAcceleration": "Y-Axis",
     "zaxisAcceleration": "Z-Axis",

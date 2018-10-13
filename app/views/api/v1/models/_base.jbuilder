@@ -32,7 +32,8 @@ json.background_image model.random_image&.name&.url
 json.brochure model.brochure.url
 json.store_url rsi_store_url(model.store_url)
 json.price((model.price.to_f if model.price.present?))
-json.last_price((model.fallback_price.to_f if model.fallback_price.present?))
+json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
+json.last_pledge_price((model.fallback_pledge_price.to_f if model.fallback_pledge_price.present?))
 json.on_sale model.on_sale
 json.production_status model.production_status
 json.production_note model.production_note
