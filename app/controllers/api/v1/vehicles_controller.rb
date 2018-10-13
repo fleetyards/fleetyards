@@ -3,8 +3,8 @@
 module Api
   module V1
     class VehiclesController < ::Api::V1::BaseController
-      skip_authorization_check only: %i[public public_count]
-      before_action :authenticate_api_user!, except: %i[public public_count]
+      skip_authorization_check only: %i[public public_count public_fleetchart]
+      before_action :authenticate_api_user!, except: %i[public public_count public_fleetchart]
       after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
@@ -39,7 +39,9 @@ module Api
 
         @q.sorts = ['model_length desc', 'model_name asc']
 
-        @vehicles = @q.result.uniq
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
       end
 
       def count
@@ -78,9 +80,25 @@ module Api
 
         @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
-        @vehicles = @q.result
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
                       .page(params[:page])
                       .per(per_page(Vehicle))
+      end
+
+      def public_fleetchart
+        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        @q = user.vehicles
+                 .purchased
+                 .ransack(query_params)
+
+        @q.sorts = ['model_length desc', 'model_name asc']
+
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
       end
 
       def public_count

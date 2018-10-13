@@ -60,7 +60,7 @@
           </div>
         </div>
         <div
-          v-if="hangarPublicFleetchartVisible && vehicles.length > 0"
+          v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
           class="row"
         >
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -201,21 +201,13 @@ export default {
   },
   watch: {
     $route() {
-      if (this.hangarPublicFleetchart) {
-        this.fetch()
-      } else {
-        this.fetchFleetchart()
-      }
+      this.fetch()
     },
     scale(value) {
       this.$store.commit('setHangarPublicFleetchartScale', value)
     },
-    hangarPublicFleetchart() {
-      if (this.hangarPublicFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+    hangarPublicFleetchartVisible() {
+      this.fetch()
     },
   },
   created() {
@@ -223,7 +215,7 @@ export default {
   },
   methods: {
     toggleFleetchart() {
-      this.$store.commit('toggleHangarPublicFleetchart')
+      this.$store.dispatch('toggleHangarPublicFleetchart')
     },
     download() {
       this.downloading = true
@@ -235,7 +227,14 @@ export default {
         download(canvas.toDataURL(), 'fleetchart.png')
       })
     },
-    async fetch() {
+    fetch() {
+      if (this.hangarPublicFleetchartVisible) {
+        this.fetchFleetchart()
+      } else {
+        this.fetchVehicles()
+      }
+    },
+    async fetchVehicles() {
       this.loading = true
 
       this.fetchCount()
@@ -258,7 +257,7 @@ export default {
     },
     async fetchFleetchart() {
       this.loading = true
-      const response = await this.$api.get('vehicles/fleetchart', {
+      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`, {
         q: this.$route.query.q,
       })
       this.loading = false
