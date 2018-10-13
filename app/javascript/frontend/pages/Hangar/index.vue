@@ -289,7 +289,8 @@ export default {
       'mobile',
     ]),
     emptyBoxVisible() {
-      return !this.loading && !this.vehicles.length && !this.fleetchartVehicles.length
+      return !this.loading && ((!this.vehicles.length && !this.hangarFleetchartVisible)
+      || (!this.fleetchartVehicles.length && this.hangarFleetchartVisible))
       && (this.isFilterSelected || this.$route.query.page)
     },
     guideVisible() {
