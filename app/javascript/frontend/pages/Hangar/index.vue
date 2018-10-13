@@ -16,7 +16,8 @@
               filter-key="modelClassificationIn"
             />
             <GroupLabels
-              v-if="!mobile && (vehicles.length || (!vehicles.length && isFilterSelected))"
+              v-if="!mobile && (vehicles.length || fleetchartVehicles.length
+              || (!vehicles.length && !fleetchartVehicles.length && isFilterSelected))"
               :hangar-groups="hangarGroups"
               :label="t('labels.groups')"
             />

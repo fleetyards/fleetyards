@@ -52,7 +52,7 @@ class RsiModelsLoader
 
     buying_options = get_buying_options(model.store_url)
     if buying_options.present?
-      model.pledgePrice = buying_options.price if buying_options.price.present?
+      model.pledge_price = buying_options.price if buying_options.price.present?
       model.on_sale = buying_options.on_sale
     end
 
