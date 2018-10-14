@@ -75,39 +75,27 @@
             />
           </div>
         </div>
-        <transition-group
+        <div
           v-if="hangarPublicFleetchartVisible"
-          id="fleetchart"
-          name="fade-list"
-          class="flex-row fleetchart"
-          tag="div"
-          appear
+          class="row"
         >
-          <router-link
-            v-for="vehicle in fleetchartVehicles"
-            :key="vehicle.id"
-            :to="{
-              name: 'model',
-              params: {
-                slug: vehicle.model.slug,
-              },
-            }"
-            class="fleetchart-item fade-list-item"
-          >
-            <img
-              v-if="vehicle.model.fleetchartImage"
-              :style="{
-                height: `${vehicle.model.length * lengthMultiplicator}px`,
-              }"
-              :src="vehicle.model.fleetchartImage"
-              :alt="vehicle.model.slug"
+          <div class="col-xs-12 fleetchart-wrapper">
+            <transition-group
+              id="fleetchart"
+              name="fade-list"
+              class="flex-row fleetchart"
+              tag="div"
+              appear
             >
-            <span v-else>
-              <i class="fal fa-question-circle" />
-              <p>{{ vehicle.model.name }}</p>
-            </span>
-          </router-link>
-        </transition-group>
+              <FleetchartItem
+                v-for="vehicle in fleetchartVehicles"
+                :key="vehicle.id"
+                :model="vehicle.model"
+                :scale="scale"
+              />
+            </transition-group>
+          </div>
+        </div>
         <transition-group
           v-else
           name="fade-list"
@@ -147,6 +135,7 @@
 <script>
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/partials/Models/Panel'
+import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
@@ -164,6 +153,7 @@ export default {
     Btn,
     vueSlider,
     ModelClassLabels,
+    FleetchartItem,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {
