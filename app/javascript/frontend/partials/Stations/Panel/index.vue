@@ -1,0 +1,47 @@
+<template>
+  <Panel
+    :id="item.slug"
+    class="station-item"
+  >
+    <div class="panel-image text-center">
+      <router-link
+        v-lazy:background-image="item.storeImage"
+        :key="item.storeImage"
+        :to="route"
+        :aria-label="item.name"
+      />
+    </div>
+    <h2 class="panel-title">
+      <router-link
+        :to="route"
+        :aria-label="item.name"
+      >
+        {{ item.name }}
+      </router-link>
+    </h2>
+  </Panel>
+</template>
+
+<script>
+import Panel from 'frontend/components/Panel'
+
+export default {
+  components: {
+    Panel,
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+    route: {
+      type: Object,
+      required: true,
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+  @import './styles/index.scss';
+</style>

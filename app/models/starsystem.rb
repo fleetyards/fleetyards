@@ -6,6 +6,8 @@ class Starsystem < ApplicationRecord
 
   before_save :update_slugs
 
+  mount_uploader :store_image, StoreImageUploader
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end

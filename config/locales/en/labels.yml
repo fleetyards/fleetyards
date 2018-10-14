@@ -51,6 +51,8 @@ en:
         trade_hub: No Trade could be found.
         station: No Stations could be found.
         shop: No Shops could be found.
+        planet: No Planets could be found.
+        starsystem: No Starsystems could be found.
       component:
         category: Category
       model:

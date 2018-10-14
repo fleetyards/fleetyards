@@ -10,12 +10,17 @@ module Api
 
         query_params['sorts'] = sort_by_name
 
-        @q = Planet.visible
+        @q = Planet.main
                    .ransack(query_params)
 
         @planets = @q.result
                      .page(params[:page])
                      .per(per_page(Planet))
+      end
+
+      def show
+        authorize! :show, :api_planets
+        @planet = Planet.find_by!(slug: params[:slug])
       end
     end
   end

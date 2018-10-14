@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.planet.index")
+.row#planets
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.planet.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.planet.new"), new_admin_planet_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @planets.count
+          of
+          = @planets.total_count
+      .col-xs-12.col-md-6
+        = paginate @planets
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/planets/table", :@planets => @planets
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .form-group
+            = f.label :starsystem_id_eq
+            = f.select :starsystem_id_eq, Starsystem.all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @planets

@@ -12,6 +12,11 @@
     "login": "Login",
     "signUp": "Sign Up",
     "hangar": "My Hangar",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "planet": "%{planet} in the %{starsystem} System",
+    "station": "%{station} near %{planet}",
+    "shop": "%{shop} - %{station}",
     "hangarPublic": "%{user} Hangar",
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
@@ -69,6 +74,15 @@
       "models": "Compare Ships"
     },
     "cargo": "Cargo",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "planets": "Planets",
+    "planet": "%{planet} in the %{starsystem} System",
+    "stations": "Stations",
+    "station": "%{station} near %{planet}",
+    "shops": "Shops",
+    "shop": "%{shop} on %{station}",
+    "moons": "Moons",
     "commodities": "Commodities",
     "rsiVerification": "Verify your RSI-Account",
     "hangarGuide": "Not much to see here?"
@@ -156,6 +170,7 @@
       }
     },
     "unknown": "Unknown",
+    "none": "-",
     "searchInput": "Search Input",
     "search": "Search",
     "unknownModel": "%{slug} Unknown",
@@ -319,6 +334,12 @@
         "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
       }
+    },
+    "stations": {
+      "docks": "Docks",
+      "location": "Location",
+      "type": "Type",
+      "habitation": "Habitation"
     }
   },
   "placeholders": {

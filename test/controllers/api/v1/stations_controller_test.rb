@@ -24,33 +24,70 @@ module Api
           expected = [{
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
-            'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'location' => nil,
+            'type' => 'hub',
+            'typeLabel' => 'Hub',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader'
+              'slug' => 'crusader',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
             'starsystem' => {
               'name' => 'Stanton',
-              'slug' => 'stanton'
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
-            'shipCounts' => [{
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
+            'shops' => [{
+              'name' => 'Dumpers Depot',
+              'slug' => 'dumpers-depot',
+              'shopType' => 'components',
+              'shopTypeLabel' => 'Components',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
+            'docks' => [{
+              'size' => 'Large',
+              'count' => 1,
+              'type' => 'landingpad',
+              'typeLabel' => 'Landingpad'
+            }, {
+              'size' => 'Medium',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
+            }],
+            'habitations' => [{
+              'count' => 1,
+              'type' => 'container',
+              'typeLabel' => 'Container'
+            }],
+            'createdAt' => Station.first.created_at.to_time.iso8601,
+            'updatedAt' => Station.first.updated_at.to_time.iso8601
+          }, {
+            'name' => 'Corvolex Shipping Hub',
+            'slug' => 'corvolex',
+            'location' => nil,
+            'type' => 'cargo-station',
+            'typeLabel' => 'Cargo Station',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+            'planet' => {
+              'name' => 'Daymar',
+              'slug' => 'daymar',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+            },
+            'starsystem' => {
+              'name' => 'Stanton',
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+            },
+            'shops' => [],
+            'docks' => [{
+              'size' => 'Small',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
+            }],
+            'habitations' => [],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
           }, {
@@ -84,45 +121,43 @@ module Api
           expected = {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
-            'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'location' => nil,
+            'type' => 'hub',
+            'typeLabel' => 'Hub',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader'
+              'slug' => 'crusader',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
             'starsystem' => {
               'name' => 'Stanton',
-              'slug' => 'stanton'
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
+            'shops' => [{
+              'name' => 'Dumpers Depot',
+              'slug' => 'dumpers-depot',
+              'shopType' => 'components',
+              'shopTypeLabel' => 'Components',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+            }],
             'docks' => [{
-              'name' => 'Landingpad One',
-              'type' => 'Dockingport',
-              'maxShipSize' => 3,
-              'minShipSize' => 1
+              'size' => 'Large',
+              'count' => 1,
+              'type' => 'landingpad',
+              'typeLabel' => 'Landingpad'
             }, {
-              'name' => 'Dockingport One',
-              'type' => 'Hangar',
-              'maxShipSize' => 1,
-              'minShipSize' => 1
+              'size' => 'Medium',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
             }],
-            'shipCounts' => [{
-              'size' => 3,
+            'habitations' => [{
               'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
+              'type' => 'container',
+              'typeLabel' => 'Container'
             }],
-            'shops' => [],
             'images' => [],
             'createdAt' => portolisar.created_at.to_time.iso8601,
             'updatedAt' => portolisar.updated_at.to_time.iso8601
@@ -148,33 +183,70 @@ module Api
           expected = [{
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
-            'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'location' => nil,
+            'type' => 'hub',
+            'typeLabel' => 'Hub',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader'
+              'slug' => 'crusader',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
             'starsystem' => {
               'name' => 'Stanton',
-              'slug' => 'stanton'
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
-            'shipCounts' => [{
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
+            'shops' => [{
+              'name' => 'Dumpers Depot',
+              'slug' => 'dumpers-depot',
+              'shopType' => 'components',
+              'shopTypeLabel' => 'Components',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
+            'docks' => [{
+              'size' => 'Large',
+              'count' => 1,
+              'type' => 'landingpad',
+              'typeLabel' => 'Landingpad'
+            }, {
+              'size' => 'Medium',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
+            }],
+            'habitations' => [{
+              'count' => 1,
+              'type' => 'container',
+              'typeLabel' => 'Container'
+            }],
+            'createdAt' => Station.first.created_at.to_time.iso8601,
+            'updatedAt' => Station.first.updated_at.to_time.iso8601
+          }, {
+            'name' => 'Corvolex Shipping Hub',
+            'slug' => 'corvolex',
+            'location' => nil,
+            'type' => 'cargo-station',
+            'typeLabel' => 'Cargo Station',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+            'planet' => {
+              'name' => 'Daymar',
+              'slug' => 'daymar',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+            },
+            'starsystem' => {
+              'name' => 'Stanton',
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+            },
+            'shops' => [],
+            'docks' => [{
+              'size' => 'Small',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
+            }],
+            'habitations' => [],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
           }, {
@@ -208,45 +280,43 @@ module Api
           expected = {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
-            'type' => 'Hub',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'location' => nil,
+            'type' => 'hub',
+            'typeLabel' => 'Hub',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
             'planet' => {
               'name' => 'Crusader',
-              'slug' => 'crusader'
+              'slug' => 'crusader',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
             'starsystem' => {
               'name' => 'Stanton',
-              'slug' => 'stanton'
+              'slug' => 'stanton',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             },
-            'shipCounts' => [{
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 3,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Dockingport'
-            }, {
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
+            'shops' => [{
+              'name' => 'Dumpers Depot',
+              'slug' => 'dumpers-depot',
+              'shopType' => 'components',
+              'shopTypeLabel' => 'Components',
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
-              'name' => 'Landingpad One',
-              'type' => 'Dockingport',
-              'maxShipSize' => 3,
-              'minShipSize' => 1
+              'size' => 'Large',
+              'count' => 1,
+              'type' => 'landingpad',
+              'typeLabel' => 'Landingpad'
             }, {
-              'name' => 'Dockingport One',
-              'type' => 'Hangar',
-              'maxShipSize' => 1,
-              'minShipSize' => 1
+              'size' => 'Medium',
+              'count' => 1,
+              'type' => 'dockingport',
+              'typeLabel' => 'Dockingport'
             }],
-            'shops' => [],
+            'habitations' => [{
+              'count' => 1,
+              'type' => 'container',
+              'typeLabel' => 'Container'
+            }],
             'images' => [],
             'createdAt' => portolisar.created_at.to_time.iso8601,
             'updatedAt' => portolisar.updated_at.to_time.iso8601

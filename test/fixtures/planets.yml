@@ -12,11 +12,13 @@ yela:
   name: Yela
   slug: yela
   planet: crusader
+  starsystem: stanton
 
 daymar:
   name: Daymar
   slug: daymar
   planet: crusader
+  starsystem: stanton
 
 uriel:
   name: Uriel

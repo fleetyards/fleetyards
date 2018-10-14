@@ -47,12 +47,19 @@ en:
     workers: Workers
     trade_hubs: Trade Hubs
     commodities: Commodities
+    planets: Planets
+    starsystems: Starsystems
   title:
     frontend:
       home: Home
       images: Images
       cargo: Cargo
       ships: Ships
+      starsystems: Starsystems
+      starsystem: "%{starsystem} Starsystem"
+      planet: "%{planet} in the %{starsystem} System"
+      station: "%{station} near %{planet}"
+      shop: "%{shop} - %{station}"
       ship_images: "%{model} Images"
       ship_videos: "%{model} Videos"
       commodities: Commodities
@@ -105,6 +112,14 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    planet:
+      edit: Edit Planet
+      index: Planets
+      new: New Planet
+    starsystem:
+      edit: Edit Starsystem
+      index: Starsystems
+      new: New Starsystem
     not_found: 404
     sign_in: Login
     password:

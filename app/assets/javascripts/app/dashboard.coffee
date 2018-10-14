@@ -181,7 +181,6 @@ window.App.Dashboard.initLineChart = (data, chart) ->
 
 document.addEventListener 'turbolinks:load', ->
   if $('#admin').length
-
     if App.Dashboard.quickStatsInterval
       clearInterval App.Dashboard.quickStatsInterval
 
@@ -194,3 +193,7 @@ document.addEventListener 'turbolinks:load', ->
       App.Dashboard.reloadChart('most-viewed-pages-chart')
     , 30 * 1000
 
+
+addEventListener 'turbolinks:before-render', ->
+  if App.Dashboard.quickStatsInterval
+    clearInterval App.Dashboard.quickStatsInterval

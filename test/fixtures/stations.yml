@@ -4,10 +4,10 @@ portolisar:
   name: Port Olisar
   slug: port-olisar
   planet: crusader
-  station_type: 0
+  station_type: 1
 
 corvolex:
   name: Corvolex Shipping Hub
   slug: corvolex
   planet: daymar
-  station_type: 3
+  station_type: 4

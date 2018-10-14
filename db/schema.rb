@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "client_key"
     t.string "browser"
     t.string "platform"
+    t.index ["user_id"], name: "index_auth_tokens_on_user_id"
   end
 
   create_table "commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "component_class"
     t.string "slug"
     t.string "component_type"
+    t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
   create_table "docks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -98,6 +100,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.integer "min_ship_size"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ship_size"
+    t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -119,6 +123,15 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "background"
   end
 
+  create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "habitation_type"
+    t.uuid "station_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["station_id"], name: "index_habitations_on_station_id"
+  end
+
   create_table "hangar_groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -127,6 +140,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sort"
+    t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -142,6 +156,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "details"
     t.string "category"
     t.boolean "default_empty", default: false
+    t.index ["component_id"], name: "index_hardpoints_on_component_id"
+    t.index ["model_id"], name: "index_hardpoints_on_model_id"
   end
 
   create_table "images", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -154,6 +170,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.boolean "background", default: true
     t.integer "width"
     t.integer "height"
+    t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
   create_table "manufacturers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -184,6 +201,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.integer "min_crew"
     t.integer "max_crew"
     t.decimal "price", precision: 15, scale: 2
+    t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
   create_table "models", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -253,6 +271,10 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.uuid "planet_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "map"
+    t.string "store_image"
+    t.index ["planet_id"], name: "index_planets_on_planet_id"
+    t.index ["starsystem_id"], name: "index_planets_on_starsystem_id"
   end
 
   create_table "shop_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -266,7 +288,9 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.uuid "commodity_item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["commodity_item_id"], name: "index_shop_commodities_on_commodity_item_id"
     t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
+    t.index ["shop_id"], name: "index_shop_commodities_on_shop_id"
   end
 
   create_table "shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -276,6 +300,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "updated_at", null: false
     t.string "store_image"
     t.uuid "station_id"
+    t.integer "shop_type"
+    t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
   create_table "starsystems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -283,6 +309,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "map"
+    t.string "store_image"
   end
 
   create_table "stations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -295,6 +323,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.boolean "hidden", default: false
     t.string "store_image"
     t.string "location"
+    t.string "map"
+    t.index ["planet_id"], name: "index_stations_on_planet_id"
   end
 
   create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -302,6 +332,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.uuid "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
+    t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
 
   create_table "trade_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -313,6 +345,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.boolean "sell"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["trade_hub_id"], name: "index_trade_commodities_on_trade_hub_id"
   end
 
   create_table "trade_hubs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -374,6 +407,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
+    t.index ["model_id"], name: "index_vehicles_on_model_id"
+    t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -382,6 +417,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "model_id"
+    t.index ["model_id"], name: "index_videos_on_model_id"
   end
 
 end

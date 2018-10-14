@@ -19,6 +19,13 @@ class Planet < ApplicationRecord
   before_save :update_starsystem
   before_save :update_slugs
 
+  mount_uploader :store_image, StoreImageUploader
+  mount_uploader :map, ImageUploader
+
+  def self.main
+    where(planet_id: nil)
+  end
+
   private def update_starsystem
     return if starsystem.present? && !will_save_change_to_planet_id?
 

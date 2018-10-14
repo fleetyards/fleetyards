@@ -5,6 +5,7 @@ class Station < ApplicationRecord
 
   has_many :shops, dependent: :destroy
   has_many :docks, dependent: :destroy
+  has_many :habitations, dependent: :destroy
 
   has_many :images,
            as: :gallery,
@@ -13,7 +14,7 @@ class Station < ApplicationRecord
 
   belongs_to :planet
 
-  enum station_type: %i[spaceport hub truckstop refinery cargo-station mining-station asteroid-station outpost]
+  enum station_type: %i[spaceport hub rest_stop station cargo-station mining-station asteroid-station refinery district outpost aid_shelter]
 
   validates :name, :station_type, :location, :planet, presence: true
   validates :name, uniqueness: true
@@ -21,10 +22,11 @@ class Station < ApplicationRecord
   before_save :update_slugs
 
   mount_uploader :store_image, StoreImageUploader
+  mount_uploader :map, ImageUploader
 
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  delegate :starsystem, to: :planet, allow_nil: true
+  delegate :starsystem, to: :planet
 
   def self.visible
     where(hidden: false)
@@ -34,10 +36,16 @@ class Station < ApplicationRecord
     images.first
   end
 
-  def ship_counts
-    docks.to_a.group_by(&:max_ship_size).map do |size, _docks|
-      docks.group_by(&:dock_type).map do |dock_type, docks|
-        OpenStruct.new(size: size, dock_type: dock_type, count: docks.size)
+  def habitation_counts
+    habitations.group_by(&:habitation_type).map do |habitation_type, habitations_by_type|
+      OpenStruct.new(habitation_type: habitation_type, habitation_type_label: habitations_by_type.first.habitation_type_label, count: habitations_by_type.size)
+    end.flatten
+  end
+
+  def dock_counts
+    docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
+      docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
+        OpenStruct.new(size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, count: docks_by_type.size)
       end
     end.flatten
   end

@@ -1,15 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  shop_id: 
-  name: MyString
+commidity_one:
+  shop: dumpers
+  name: Shield
   description: MyText
-  commodity_item: one
-  commodity_item_type: Commodity item
 
-two:
-  shop_id: 
-  name: MyString
+commidity_two:
+  shop: dumpers
+  name: Weapon
   description: MyText
-  commodity_item: two
-  commodity_item_type: Commodity item

@@ -1,0 +1,151 @@
+<template>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="sr-only">{{ t('headlines.starsystems') }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <Panel>
+            <div class="starmap">
+              <img
+                :src="require('images/map.png')"
+                alt="map"
+              >
+              <router-link
+                :to="{
+                  name: 'starsystem',
+                  params: {
+                    slug: 'stanton',
+                  },
+                }"
+                class="starsystem"
+                style="left: 59.766411599%; top: 48.460661345%;"
+              />
+            </div>
+          </Panel>
+          <transition-group
+            name="fade-list"
+            class="flex-row"
+            tag="div"
+            appear
+          >
+            <div
+              v-for="starsystem in starsystems"
+              :key="starsystem.slug"
+              class="col-xs-12 fade-list-item"
+            >
+              <StarsystemList
+                :item="starsystem"
+                :route="{
+                  name: 'starsystem',
+                  params: {
+                    slug: starsystem.slug,
+                  },
+                }"
+              >
+
+                <template v-if="starsystem.planets.length">
+                  <h3>{{ t('headlines.planets') }}</h3>
+                  <transition-group
+                    name="fade-list"
+                    class="flex-row"
+                    tag="div"
+                    appear
+                  >
+                    <div
+                      v-for="planet in starsystem.planets"
+                      :key="planet.slug"
+                      class="col-xs-12 col-md-3 fade-list-item"
+                    >
+                      <PlanetPanel
+                        :item="planet"
+                        :route="{
+                          name: 'planet',
+                          params: {
+                            slug: planet.slug,
+                          },
+                        }"
+                      />
+                    </div>
+                  </transition-group>
+                </template>
+              </StarsystemList>
+            </div>
+          </transition-group>
+          <EmptyBox v-if="emptyBoxVisible" />
+          <Loader
+            :loading="loading"
+            fixed
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
+import StarsystemList from 'frontend/partials/Stations/List'
+import PlanetPanel from 'frontend/partials/Stations/Panel'
+import EmptyBox from 'frontend/partials/EmptyBox'
+import Hash from 'frontend/mixins/Hash'
+
+export default {
+  components: {
+    Loader,
+    EmptyBox,
+    StarsystemList,
+    Panel,
+    PlanetPanel,
+  },
+  mixins: [I18n, MetaInfo, Hash],
+  data() {
+    return {
+      loading: false,
+      starsystems: [],
+    }
+  },
+  computed: {
+    emptyBoxVisible() {
+      return !this.loading && !this.starsystems.length
+    },
+  },
+  watch: {
+    $route() {
+      this.fetch()
+    },
+  },
+  created() {
+    this.fetch()
+  },
+  methods: {
+    async fetch() {
+      this.loading = true
+      const response = await this.$api.get('starsystems', {
+        q: this.$route.query.q,
+        page: this.$route.query.page,
+      })
+      this.loading = false
+      if (!response.error) {
+        this.starsystems = response.data
+        this.scrollToAnchor()
+      }
+    },
+  },
+  metaInfo() {
+    return this.getMetaInfo({
+      title: this.t('title.starsystems'),
+    })
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+  @import './styles/index.scss';
+</style>

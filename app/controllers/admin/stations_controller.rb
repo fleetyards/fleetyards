@@ -70,7 +70,7 @@ module Admin
     private def station_params
       @station_params ||= params.require(:station).permit(
         :name, :station_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
-        :planet_id, :location,
+        :planet_id, :location, :map, :map_cache, :remove_map,
         docks_attributes: %i[
           id dock_type name min_ship_size max_ship_size _destroy
         ]

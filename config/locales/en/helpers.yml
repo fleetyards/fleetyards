@@ -25,8 +25,6 @@ en:
         hidden: hidden?
       dock:
         name: Name
-        min_ship_size: Min. Ship Size?
-        max_ship_size: Max. Ship Size?
       shop_commodity:
         name: Name
         description: Description
@@ -42,6 +40,7 @@ en:
         commodity: Commodity
       docks:
         dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
       stations:
         station_type: Please select a Station Type
         planet: Please select a Planet
@@ -49,3 +48,5 @@ en:
         station: Please select a Station
       shop_commodities:
         commodity_item: Please select a Model/Component
+      planets:
+        starsystem: Please select a Starsystem

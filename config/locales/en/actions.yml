@@ -24,6 +24,10 @@ en:
         new: Create new Station
       shop:
         new: Create new Shop
+      planet:
+        new: Create new Planet
+      starsystem:
+        new: Create new Starsystem
     back: Back
     cancel: Cancel
     confirm: Confirm Account

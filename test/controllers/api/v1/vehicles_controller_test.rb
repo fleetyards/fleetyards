@@ -38,12 +38,12 @@ module Api
           expected = {
             'total' => 2,
             'classifications' => [{
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 1
-            }, {
               'name' => 'explorer',
               'label' => 'Explorer',
+              'count' => 1
+            }, {
+              'name' => 'multi_role',
+              'label' => 'Multi role',
               'count' => 1
             }]
           }

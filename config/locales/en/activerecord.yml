@@ -58,18 +58,56 @@ en:
       trade_commodity:
         sell: Sale?
         buy: Buy?
+      dock:
+        dock_types:
+          vehiclepad: Vehiclepad
+          garage: Garage
+          landingpad: Landingpad
+          dockingport: Dockingport
+          hangar: Hangar
+        ship_sizes:
+          small: Small
+          medium: Medium
+          medium_large: Medium Large
+          large: Large
+          extra_large: Extra Large
+          capital: Capital
+      habitation:
+        habitation_types:
+          container: Container
+          small_apartment: Small Apartment
+          medium_apartment: Medium Apartment
+          large_apartment: Large Apartment
+          suite: Suite
+      shop:
+        shop_types:
+          clothing: Clothing
+          armor: Armor
+          weapons: Weapons
+          components: Components
+          armor_and_weapons: Armor & Weapons
+          superstore: Superstore
+          ships: Ships
+          admin: Admin Office
+          bar: Bar
+          hospital: Hospital
+          salvage: Salvage Yard
+          resources: Resources
+          rental: Rental
       station:
         hidden: hidden?
         station_types:
           spaceport: Spaceport
           station: Station
           hub: Hub
-          truckstop: Truckstop
+          rest_stop: Rest Stop
           cargo-station: Cargo Station
           mining-station: Mining Station
           asteroid-station: Asteriod Station
-          outpost: Outpost
           refinery: Refinery
+          district: District
+          outpost: Outpost
+          aid_shelter: Aid Shelter
 
     errors:
       messages:

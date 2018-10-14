@@ -40,6 +40,14 @@ en:
         edit: Shop %{shop}
         index: Shops
         new: New Shop
+      planet:
+        edit: Planet %{planet}
+        index: Planets
+        new: New Planet
+      starsystem:
+        edit: Starsystem %{starsystem}
+        index: Starsystems
+        new: New Starsystem
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

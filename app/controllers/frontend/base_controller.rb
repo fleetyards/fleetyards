@@ -96,6 +96,50 @@ module Frontend
       render 'frontend/index'
     end
 
+    def starsystem
+      @starsystem = Starsystem.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      if @starsystem.present?
+        @title = I18n.t('title.frontend.starsystem', starsystem: @starsystem.name)
+        # @description = @station.description
+        @og_type = 'article'
+        @og_image = @starsystem.store_image.url
+      end
+      render 'frontend/index'
+    end
+
+    def station
+      @station = Station.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      if @station.present?
+        @title = I18n.t('title.frontend.station', station: @station.name, planet: @station.planet.name)
+        # @description = @station.description
+        @og_type = 'article'
+        @og_image = @station.store_image.url
+      end
+      render 'frontend/index'
+    end
+
+    def planet
+      @planet = Planet.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      if @planet.present?
+        @title = I18n.t('title.frontend.planet', starsystem: @planet.starsystem.name, planet: @planet.name)
+        # @description = @station.description
+        @og_type = 'article'
+        @og_image = @planet.store_image.url
+      end
+      render 'frontend/index'
+    end
+
+    def shop
+      @shop = Shop.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      if @shop.present?
+        @title =  I18n.t('title.frontend.shop', station: @shop.station.name, shop: @shop.name)
+        # @description = @station.description
+        @og_type = 'article'
+        @og_image = @shop.store_image.url
+      end
+      render 'frontend/index'
+    end
+
     def not_found
       respond_to do |format|
         format.html do

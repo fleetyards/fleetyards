@@ -83,7 +83,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    Model.visible.active.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+    %w[vehicle snub small medium large capital].map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,
