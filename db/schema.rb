@@ -255,24 +255,32 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shop_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "shop_id"
+    t.string "name"
+    t.text "description"
+    t.decimal "buy_price", precision: 15, scale: 2
+    t.decimal "sell_price", precision: 15, scale: 2
+    t.decimal "rent_price", precision: 15, scale: 2
+    t.string "commodity_item_type"
+    t.uuid "commodity_item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
+  end
+
   create_table "shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "store_image"
+    t.uuid "station_id"
   end
 
   create_table "starsystems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "station_shops", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "station_id"
-    t.uuid "shop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -286,6 +294,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "updated_at", null: false
     t.boolean "hidden", default: false
     t.string "store_image"
+    t.string "location"
   end
 
   create_table "task_forces", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

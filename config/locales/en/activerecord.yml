@@ -61,6 +61,8 @@ en:
       station:
         hidden: hidden?
         station_types:
+          spaceport: Spaceport
+          station: Station
           hub: Hub
           truckstop: Truckstop
           cargo-station: Cargo Station

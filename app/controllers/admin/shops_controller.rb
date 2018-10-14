@@ -55,7 +55,10 @@ module Admin
 
     private def shop_params
       @shop_params ||= params.require(:shop).permit(
-        :name, :store_image, :store_image_cache, :remove_store_image
+        :name, :station_id, :store_image, :store_image_cache, :remove_store_image,
+        shop_commodities_attributes: %i[
+          id name description commodity_item_selected buy_price sell_price rent_price _destroy
+        ]
       )
     end
 

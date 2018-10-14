@@ -6,7 +6,7 @@ en:
     add_video: Add Video
     add_trade_commodity: Add Commodity
     add_dock: Add Dock
-    add_shop: Add Shop
+    add_commodity: Add Commodity
     admin:
       component:
         new: Creae new Component

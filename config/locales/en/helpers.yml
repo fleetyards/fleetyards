@@ -27,6 +27,12 @@ en:
         name: Name
         min_ship_size: Min. Ship Size?
         max_ship_size: Max. Ship Size?
+      shop_commodity:
+        name: Name
+        description: Description
+        buy_price: Buy Price
+        sell_price: Sell Price
+        rent_price: Rent Price
     prompt:
       video:
         video_type: Please select a Video Type
@@ -39,5 +45,7 @@ en:
       stations:
         station_type: Please select a Station Type
         planet: Please select a Planet
-      station_shops:
-        shop: Please select a Shop
+      shops:
+        station: Please select a Station
+      shop_commodities:
+        commodity_item: Please select a Model/Component

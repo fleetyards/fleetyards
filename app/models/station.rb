@@ -3,12 +3,8 @@
 class Station < ApplicationRecord
   paginates_per 30
 
-  has_many :station_shops,
-           dependent: :destroy
-  has_many :shops,
-           through: :station_shops
-  has_many :docks,
-           dependent: :destroy
+  has_many :shops, dependent: :destroy
+  has_many :docks, dependent: :destroy
 
   has_many :images,
            as: :gallery,
@@ -17,9 +13,9 @@ class Station < ApplicationRecord
 
   belongs_to :planet
 
-  enum station_type: %i[hub truckstop refinery cargo-station mining-station asteroid-station outpost]
+  enum station_type: %i[spaceport hub truckstop refinery cargo-station mining-station asteroid-station outpost]
 
-  validates :name, :station_type, presence: true
+  validates :name, :station_type, :location, :planet, presence: true
   validates :name, uniqueness: true
 
   before_save :update_slugs
@@ -27,7 +23,6 @@ class Station < ApplicationRecord
   mount_uploader :store_image, StoreImageUploader
 
   accepts_nested_attributes_for :docks, allow_destroy: true
-  accepts_nested_attributes_for :station_shops, allow_destroy: true
 
   delegate :starsystem, to: :planet, allow_nil: true
 

@@ -8,6 +8,7 @@
   %td
     = station.planet.name if station.planet.present?
     = "(#{station.starsystem.name} System)" if station.starsystem.present?
+    = station.location
   %td.text-right
     .btn-group
       = link_to gallery_admin_station_path(station), title: I18n.t(:"actions.station.gallery"), class: "btn btn-default" do

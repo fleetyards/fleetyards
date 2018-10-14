@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shop_id: 
+  name: MyString
+  description: MyText
+  commodity_item: one
+  commodity_item_type: Commodity item
+
+two:
+  shop_id: 
+  name: MyString
+  description: MyText
+  commodity_item: two
+  commodity_item_type: Commodity item

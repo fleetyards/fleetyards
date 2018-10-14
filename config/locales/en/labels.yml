@@ -46,7 +46,7 @@ en:
       blank:
         default: No Entries could be found.
         image: No Image could be found.
-        ship: No Models could be found.
+        model: No Models could be found.
         commodity: No Commodities could be found.
         trade_hub: No Trade could be found.
         station: No Stations could be found.
