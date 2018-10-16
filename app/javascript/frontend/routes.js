@@ -29,7 +29,6 @@ export const routes = [
     name: 'home',
     component: Home,
     meta: {
-      needsAuthentication: true,
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-6.jpg'),
     },
