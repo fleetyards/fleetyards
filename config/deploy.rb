@@ -12,7 +12,8 @@ set :shared_dirs, [
 set :shared_files, [
   'config/secrets.yml',
   'config/database.yml',
-  '.rbenv-vars'
+  '.rbenv-vars',
+  'blacklist.json'
 ]
 
 set :stages, %w[local live]

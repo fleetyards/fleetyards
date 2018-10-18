@@ -205,7 +205,7 @@
 </template>
 
 <script>
-import { success } from 'frontend/lib/Noty'
+import { success, alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import SubmitButton from 'frontend/components/SubmitButton'
@@ -244,6 +244,8 @@ export default {
       if (!response.error) {
         success(this.t('messages.signup.success'))
         this.$router.push('/')
+      } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
+        alert(this.t('texts.signup.blacklisted'))
       }
     },
   },
