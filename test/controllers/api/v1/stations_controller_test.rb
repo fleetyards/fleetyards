@@ -22,23 +22,6 @@ module Api
           json = JSON.parse response.body
 
           expected = [{
-            'name' => 'Corvolex Shipping Hub',
-            'slug' => 'corvolex',
-            'type' => 'Cargo Station',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
-            'planet' => {
-              'name' => 'Daymar',
-              'slug' => 'daymar'
-            },
-            'starsystem' => nil,
-            'shipCounts' => [{
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }],
-            'createdAt' => Station.first.created_at.to_time.iso8601,
-            'updatedAt' => Station.first.updated_at.to_time.iso8601
-          }, {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
@@ -70,6 +53,23 @@ module Api
             }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
+          }, {
+            'name' => 'Corvolex Shipping Hub',
+            'slug' => 'corvolex',
+            'type' => 'Cargo Station',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'planet' => {
+              'name' => 'Daymar',
+              'slug' => 'daymar'
+            },
+            'starsystem' => nil,
+            'shipCounts' => [{
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
+            }],
+            'createdAt' => Station.first.created_at.to_time.iso8601,
+            'updatedAt' => Station.first.updated_at.to_time.iso8601
           }]
 
           assert_equal expected, json
@@ -146,23 +146,6 @@ module Api
           json = JSON.parse response.body
 
           expected = [{
-            'name' => 'Corvolex Shipping Hub',
-            'slug' => 'corvolex',
-            'type' => 'Cargo Station',
-            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
-            'planet' => {
-              'name' => 'Daymar',
-              'slug' => 'daymar'
-            },
-            'starsystem' => nil,
-            'shipCounts' => [{
-              'size' => 1,
-              'count' => 1,
-              'dockType' =>  'Hangar'
-            }],
-            'createdAt' => Station.first.created_at.to_time.iso8601,
-            'updatedAt' => Station.first.updated_at.to_time.iso8601
-          }, {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'Hub',
@@ -194,6 +177,23 @@ module Api
             }],
             'createdAt' => Station.last.created_at.to_time.iso8601,
             'updatedAt' => Station.last.updated_at.to_time.iso8601
+          }, {
+            'name' => 'Corvolex Shipping Hub',
+            'slug' => 'corvolex',
+            'type' => 'Cargo Station',
+            'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-652ef628ba8ccc5a6624faff5888c726b1981954ddc800133b12c299bc400e1f.jpg',
+            'planet' => {
+              'name' => 'Daymar',
+              'slug' => 'daymar'
+            },
+            'starsystem' => nil,
+            'shipCounts' => [{
+              'size' => 1,
+              'count' => 1,
+              'dockType' =>  'Hangar'
+            }],
+            'createdAt' => Station.first.created_at.to_time.iso8601,
+            'updatedAt' => Station.first.updated_at.to_time.iso8601
           }]
 
           assert_equal expected, json

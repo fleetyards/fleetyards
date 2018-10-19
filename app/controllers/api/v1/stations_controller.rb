@@ -7,10 +7,10 @@ module Api
 
       def index
         authorize! :index, :api_stations
+        query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+
         @q = Station.visible
                     .ransack(query_params)
-
-        @q.sorts = 'name asc' if @q.sorts.empty?
 
         @stations = @q.result
                       .page(params[:page])

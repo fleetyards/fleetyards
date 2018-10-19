@@ -59,9 +59,10 @@ module Api
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
     end
+
     private def query_params
       @query_params ||= begin
-        q = JSON.parse(params[:q].to_s || '{}')
+        q = JSON.parse(params[:q] || '{}')
         q.transform_keys(&:underscore)
       end
     rescue JSON::ParserError
@@ -71,6 +72,19 @@ module Api
     private def per_page(model)
       per_page_param = params[:perPage].to_i if params[:perPage].present?
       [(per_page_param || model.default_per_page), model.default_per_page * 4].min
+    end
+
+    private def sort_by_name(fallback = 'name asc', minimum = 'name asc')
+      if query_params['sorts'].present?
+        sorts = query_params['sorts']
+        sorts = sorts.split(',') if sorts.is_a? String
+        unless sorts.include?('name') || sorts.include?('name desc') || sorts.include?('name asc')
+          sorts.push(minimum)
+        end
+        sorts
+      else
+        fallback
+      end
     end
   end
 end

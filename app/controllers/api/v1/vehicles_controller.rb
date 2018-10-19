@@ -21,9 +21,9 @@ module Api
           scope = scope.includes(:model).where(models: { fallback_pledge_price: pledge_price_range })
         end
 
-        @q = scope.ransack(query_params)
+        query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
-        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
+        @q = scope.ransack(query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -74,11 +74,12 @@ module Api
 
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+
         @q = user.vehicles
                  .purchased
                  .ransack(query_params)
-
-        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)

@@ -7,10 +7,11 @@ module Api
 
       def index
         authorize! :index, :api_planets
+
+        query_params['sorts'] = sort_by_name
+
         @q = Planet.visible
                    .ransack(query_params)
-
-        @q.sorts = 'name asc' if @q.sorts.empty?
 
         @planets = @q.result
                      .page(params[:page])
