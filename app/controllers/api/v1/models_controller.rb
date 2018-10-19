@@ -22,9 +22,9 @@ module Api
           scope = scope.where(price: price_range)
         end
 
-        @q = scope.ransack(query_params)
+        query_params['sorts'] = sort_by_name
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        @q = scope.ransack(query_params)
 
         @models = @q.result
                     .page(params[:page])

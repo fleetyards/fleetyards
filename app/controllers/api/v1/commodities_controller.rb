@@ -7,9 +7,10 @@ module Api
 
       def index
         authorize! :index, :api_commodities
-        @q = Commodity.ransack(query_params)
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        query_params['sorts'] = sort_by_name
+
+        @q = Commodity.ransack(query_params)
 
         @commodities = @q.result.offset(params[:offset]).limit(params[:limit])
       end

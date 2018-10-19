@@ -16,10 +16,9 @@ module Api
 
         scope = scope.with_model if params[:with_model]
 
-        Rails.logger.debug(query_params.to_yaml)
-        @q = scope.ransack(query_params)
+        query_params['sorts'] = sort_by_name
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        @q = scope.ransack(query_params)
 
         @manufacturers = @q.result
                            .page(params[:page])
