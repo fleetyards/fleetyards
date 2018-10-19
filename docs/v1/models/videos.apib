@@ -1,0 +1,31 @@
+## Model [/v1/models/{slug}/videos]
+
+### GET Videos [GET]
+Get Video List of a Model referenced by its Slug
+
++ Parameters
+
+    + slug: `cutlass-black` (required, string) - The Model Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            [
+                {
+                    "id": "8e2cda2b-3960-4ac8-b2df-ad68b2551d21",
+                    "url": "https://www.youtube.com/embed/xd7ftF298iU",
+                    "videoId": "xd7ftF298iU",
+                    "type": "youtube",
+                    "createdAt": "2018-09-15T09:42:50+02:00",
+                    "updatedAt": "2018-09-15T09:42:50+02:00"
+                }
+            ]
