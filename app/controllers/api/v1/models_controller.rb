@@ -125,6 +125,29 @@ module Api
                        .per(per_page(Video))
       end
 
+      def variants
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.variants.visible.active
+        if pledge_price_range.present?
+          query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(query_params)
+
+        @variants = @q.result
+                      .page(params[:page])
+                      .per(per_page(Model))
+      end
+
       def store_image
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new

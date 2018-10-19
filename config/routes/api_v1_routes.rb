@@ -23,6 +23,7 @@ v1_api_routes = lambda do
     member do
       get :images
       get :videos
+      get :variants
       get :store_image, path: 'store-image'
       get :fleetchart_image, path: 'fleetchart-image'
     end

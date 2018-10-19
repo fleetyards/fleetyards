@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_13_115739) do
+ActiveRecord::Schema.define(version: 2018_10_19_104322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -242,6 +242,8 @@ ActiveRecord::Schema.define(version: 2018_10_13_115739) do
     t.boolean "notified", default: false
     t.boolean "active", default: true
     t.decimal "price", precision: 15, scale: 2
+    t.uuid "base_model_id"
+    t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
   create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
