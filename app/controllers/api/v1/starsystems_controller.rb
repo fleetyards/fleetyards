@@ -7,9 +7,10 @@ module Api
 
       def index
         authorize! :index, :api_starsystems
-        @q = Starsystem.ransack(query_params)
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        query_params['sorts'] = sort_by_name
+
+        @q = Starsystem.ransack(query_params)
 
         @starsystems = @q.result
       end

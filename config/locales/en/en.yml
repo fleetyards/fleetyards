@@ -55,6 +55,7 @@ en:
       images: Images
       cargo: Cargo
       ships: Ships
+      stations: Stations
       starsystems: Starsystems
       starsystem: "%{starsystem} Starsystem"
       planet: "%{planet} in the %{starsystem} System"
