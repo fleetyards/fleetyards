@@ -35,7 +35,7 @@
             />
           </div>
           <div
-            v-if="vehicles.length > 0"
+            v-if="vehicles.length > 0 || fleetchartVehicles.length > 0"
             class="col-xs-12 col-md-6"
           >
             <div class="page-actions">
