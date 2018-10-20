@@ -76,7 +76,7 @@ pad = 1
 end
 
 benson_mining_outpost = Station.find_or_initialize_by(name: 'Benson Mining Outpost')
-benson_mining_outpost.update!(planet: yela, station_type: :outpost, location: 'Yela')
+benson_mining_outpost.update!(planet: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/benson_mining.jpg').open)
 admin_office = Shop.find_or_create_by(name: 'Admin Office', station: benson_mining_outpost)
 admin_office.update!(shop_type: :admin)
 
@@ -114,8 +114,8 @@ nakamura_valley_aid_shelter.update!(planet: yela, station_type: :outpost, locati
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: 'Kosso Basin Aid Shelter')
 kosso_basin_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela')
 aston_ridge_aid_shelter = Station.find_or_initialize_by(name: 'Aston Ridge Aid Shelter')
-aston_ridge_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela')
+aston_ridge_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/aston_ridge.jpg').open)
 talarine_divide_aid_shelter = Station.find_or_initialize_by(name: 'Talarine Divide Aid Shelter')
-talarine_divide_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela')
+talarine_divide_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/talarine_divide.jpg').open)
 
 
