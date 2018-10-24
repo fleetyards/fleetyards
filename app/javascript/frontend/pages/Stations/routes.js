@@ -1,6 +1,6 @@
 import Starsystems from 'frontend/pages/Stations/Starsystems'
 import Starsystem from 'frontend/pages/Stations/Starsystem'
-import Planet from 'frontend/pages/Stations/Planet'
+import CelestialObject from 'frontend/pages/Stations/CelestialObject'
 import Station from 'frontend/pages/Stations/Show'
 import Shop from 'frontend/pages/Stations/Shop'
 
@@ -14,9 +14,9 @@ export const routes = [
     name: 'starsystem',
     component: Starsystem,
   }, {
-    path: '/planets/:slug',
-    name: 'planet',
-    component: Planet,
+    path: '/celestial-objects/:slug',
+    name: 'celestialObject',
+    component: CelestialObject,
   }, {
     path: ':slug',
     name: 'station',

@@ -2,8 +2,8 @@
 
 json.cache! ['v1', starsystem] do
   json.partial! 'api/v1/starsystems/base', starsystem: starsystem
-  json.planets do
-    json.array! starsystem.planets.main.order(:name), partial: 'api/v1/planets/base', as: :planet
+  json.celestialObjects do
+    json.array! starsystem.celestial_objects.main.order(:designation), partial: 'api/v1/celestial_objects/base', as: :celestial_object
   end
   json.partial! 'api/shared/dates', record: starsystem
 end

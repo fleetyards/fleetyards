@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-crusader = Planet.find_by!(name: 'Crusader')
-
-delamar = Planet.find_or_initialize_by(name: 'Delamar')
-delamar.update!(planet: crusader, store_image: Rails.root.join('db/seeds/images/delamar/delamar.jpg').open)
+delamar = CelestialObject.find_by!(slug: 'delamar')
+delamar.update!(store_image: Rails.root.join('db/seeds/images/delamar/delamar.jpg').open)
 
 levski = Station.find_or_initialize_by(name: 'Levski')
-levski.update!(planet: delamar, station_type: 'mining-station', location: 'Delamar', store_image: Rails.root.join('db/seeds/images/delamar/levski.jpg').open)
+levski.update!(celestial_object: delamar, station_type: 'mining-station', location: 'Delamar', store_image: Rails.root.join('db/seeds/images/delamar/levski.jpg').open)
 
 levski.docks.destroy_all
 pad = 1

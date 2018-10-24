@@ -3,17 +3,17 @@
     <div class="row">
       <div class="col-xs-12">
         <h1
-          v-if="planet"
+          v-if="celestialObject"
           class="back-button"
         >
-          {{ planet.name }}
+          {{ celestialObject.name }}
           <router-link
             :to="{
               name: 'starsystem',
               params: {
-                slug: planet.starsystem.slug,
+                slug: celestialObject.starsystem.slug,
               },
-              hash: `#${planet.slug}`,
+              hash: `#${celestialObject.slug}`,
             }"
             class="btn btn-link"
           >
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div
-      v-if="planet"
+      v-if="celestialObject"
       class="row"
     >
       <div class="col-xs-12">
@@ -50,11 +50,11 @@
             >
               <template slot="stats">
                 <dl class="dl-horizontal">
-                  <dt>{{ t('labels.stations.type') }}:</dt>
+                  <dt>{{ t('labels.station.type') }}:</dt>
                   <dd>{{ station.typeLabel }}</dd>
-                  <dt>{{ t('labels.stations.location') }}:</dt>
+                  <dt>{{ t('labels.station.location') }}:</dt>
                   <dd>{{ station.location }}</dd>
-                  <dt>{{ t('labels.stations.docks') }}:</dt>
+                  <dt>{{ t('labels.station.docks') }}:</dt>
                   <dd>
                     <template v-if="station.docks.length">
                       <ul class="list-unstyled">
@@ -71,7 +71,7 @@
                     </template>
                   </dd>
 
-                  <dt>{{ t('labels.stations.habitation') }}:</dt>
+                  <dt>{{ t('labels.station.habitation') }}:</dt>
                   <dd>
                     <template v-if="station.habitations.length">
                       <ul class="list-unstyled">
@@ -125,7 +125,7 @@
         />
       </div>
       <div
-        v-if="planet.moons.length"
+        v-if="celestialObject.moons.length"
         class="col-xs-12"
       >
         <h2>{{ t('headlines.moons') }}</h2>
@@ -136,14 +136,14 @@
           appear
         >
           <div
-            v-for="moon in planet.moons"
+            v-for="moon in celestialObject.moons"
             :key="moon.slug"
             class="col-xs-12 col-sm-6 col-md-3 fade-list-item"
           >
             <ShopPanel
               :item="moon"
               :route="{
-                name: 'planet',
+                name: 'celestialObject',
                 params: {
                   slug: moon.slug,
                 },
@@ -176,7 +176,7 @@ export default {
   data() {
     return {
       loading: false,
-      planet: null,
+      celestialObject: null,
       stations: [],
     }
   },
@@ -185,19 +185,19 @@ export default {
       return !this.loading && this.stations.length === 0
     },
     title() {
-      if (!this.planet) {
+      if (!this.celestialObject) {
         return null
       }
-      return this.t('title.planet', { planet: this.planet.name, starsystem: this.planet.starsystem.name })
+      return this.t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
     },
   },
   watch: {
     $route() {
       this.fetch()
     },
-    planet() {
-      if (this.planet.storeImage) {
-        this.$store.commit('setBackgroundImage', this.planet.storeImage)
+    celestial_object() {
+      if (this.celestialObject.storeImage) {
+        this.$store.commit('setBackgroundImage', this.celestialObject.storeImage)
       }
     },
   },
@@ -207,10 +207,10 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      const response = await this.$api.get(`planets/${this.$route.params.slug}`)
+      const response = await this.$api.get(`celestial-objects/${this.$route.params.slug}`)
       this.loading = false
       if (!response.error) {
-        this.planet = response.data
+        this.celestialObject = response.data
         this.fetchStations()
       }
     },
@@ -219,7 +219,7 @@ export default {
       const response = await this.$api.get('stations', {
         q: {
           ...this.$route.query.q,
-          planetSlugEq: this.$route.params.slug,
+          celestialObjectSlugEq: this.$route.params.slug,
         },
         page: this.$route.query.page,
       })

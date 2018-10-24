@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-crusader = Planet.find_by!(name: 'Crusader')
-
-yela = Planet.find_or_initialize_by(name: 'Yela')
-yela.update!(planet: crusader, store_image: Rails.root.join('db/seeds/images/yela/yela.jpg').open)
+yela = CelestialObject.find_by!(slug: 'yela')
+yela.update!(store_image: Rails.root.join('db/seeds/images/yela/yela.jpg').open)
 
 grimhex = Station.find_or_initialize_by(name: 'Grimhex')
-grimhex.update!(planet: yela, station_type: 'asteroid-station', location: 'Asteroidbelt', store_image: Rails.root.join('db/seeds/images/yela/grimhex.jpg').open)
+grimhex.update!(celestial_object: yela, station_type: 'asteroid-station', location: 'Asteroidbelt', store_image: Rails.root.join('db/seeds/images/yela/grimhex.jpg').open)
 
 grimhex.docks.destroy_all
 pad = 1
@@ -47,7 +45,7 @@ old_38 = Shop.find_or_create_by(name: "Old '38", station: grimhex)
 old_38.update!(shop_type: :bar, store_image: Rails.root.join('db/seeds/images/yela/old_38.jpg').open)
 
 deakins_research_outpost = Station.find_or_initialize_by(name: 'Deakins Research Outpost')
-deakins_research_outpost.update!(planet: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/deakins_research_outpost.jpg').open)
+deakins_research_outpost.update!(celestial_object: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/deakins_research_outpost.jpg').open)
 admin_office = Shop.find_or_create_by(name: 'Admin Office', station: deakins_research_outpost)
 admin_office.update!(shop_type: :admin)
 
@@ -76,12 +74,12 @@ pad = 1
 end
 
 benson_mining_outpost = Station.find_or_initialize_by(name: 'Benson Mining Outpost')
-benson_mining_outpost.update!(planet: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/benson_mining.jpg').open)
+benson_mining_outpost.update!(celestial_object: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/benson_mining.jpg').open)
 admin_office = Shop.find_or_create_by(name: 'Admin Office', station: benson_mining_outpost)
 admin_office.update!(shop_type: :admin)
 
 arc_corp_mining_area_157 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 157')
-arc_corp_mining_area_157.update!(planet: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/arccorp.jpg').open)
+arc_corp_mining_area_157.update!(celestial_object: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/arccorp.jpg').open)
 admin_office = Shop.find_or_create_by(name: 'Admin Office', station: arc_corp_mining_area_157)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/yela/arccorp_admin.jpg').open)
 
@@ -110,12 +108,12 @@ pad = 1
 end
 
 nakamura_valley_aid_shelter = Station.find_or_initialize_by(name: 'Nakamura Valley Aid Shelter')
-nakamura_valley_aid_shelter.update!(planet: yela, station_type: :outpost, location: 'Yela')
+nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/nakamura_valley.jpg').open)
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: 'Kosso Basin Aid Shelter')
-kosso_basin_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela')
+kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela')
 aston_ridge_aid_shelter = Station.find_or_initialize_by(name: 'Aston Ridge Aid Shelter')
-aston_ridge_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/aston_ridge.jpg').open)
+aston_ridge_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/aston_ridge.jpg').open)
 talarine_divide_aid_shelter = Station.find_or_initialize_by(name: 'Talarine Divide Aid Shelter')
-talarine_divide_aid_shelter.update!(planet: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/talarine_divide.jpg').open)
+talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/yela/talarine_divide.jpg').open)
 
 

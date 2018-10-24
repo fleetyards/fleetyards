@@ -12,11 +12,11 @@ class Station < ApplicationRecord
            dependent: :destroy,
            inverse_of: :gallery
 
-  belongs_to :planet
+  belongs_to :celestial_object
 
   enum station_type: %i[spaceport hub rest_stop station cargo-station mining-station asteroid-station refinery district outpost aid_shelter]
 
-  validates :name, :station_type, :location, :planet, presence: true
+  validates :name, :station_type, :location, :celestial_object, presence: true
   validates :name, uniqueness: true
 
   before_save :update_slugs
@@ -26,7 +26,7 @@ class Station < ApplicationRecord
 
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  delegate :starsystem, to: :planet
+  delegate :starsystem, to: :celestial_object
 
   def self.visible
     where(hidden: false)

@@ -23,7 +23,7 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
   get 'stations/:station_slug/:slug' => 'base#shop'
   get 'starsystems' => 'base#index'
   get 'starsystems/:slug' => 'base#starsystem'
-  get 'planets/:slug' => 'base#planet'
+  get 'celestial-objects/:slug' => 'base#celestial_object'
 
   get 'commodities' => 'base#index'
   get 'commodities/:id' => 'base#commodities'

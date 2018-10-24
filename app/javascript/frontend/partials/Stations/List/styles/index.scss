@@ -33,6 +33,13 @@ $borderRadius: 16px;
     opacity: 0.7;
   }
 
+  .panel-stats {
+    dd,
+    dt {
+      text-shadow: 0 0 2px black;
+    }
+  }
+
   .items {
     margin-top: 140px;
 

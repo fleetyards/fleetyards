@@ -15,14 +15,19 @@
                 alt="map"
               >
               <router-link
+                v-for="starsystem in starsystems"
+                :key="starsystem.slug"
                 :to="{
                   name: 'starsystem',
                   params: {
-                    slug: 'stanton',
+                    slug: starsystem.slug,
                   },
                 }"
+                :style="{
+                  left: `${starsystem.mapX}%`,
+                  top: `${starsystem.mapY}%`
+                }"
                 class="starsystem"
-                style="left: 59.766411599%; top: 48.460661345%;"
               />
             </div>
           </Panel>
@@ -47,8 +52,8 @@
                 }"
               >
 
-                <template v-if="starsystem.planets.length">
-                  <h3>{{ t('headlines.planets') }}</h3>
+                <template v-if="starsystem.celestialObjects.length">
+                  <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
                   <transition-group
                     name="fade-list"
                     class="flex-row"
@@ -56,16 +61,16 @@
                     appear
                   >
                     <div
-                      v-for="planet in starsystem.planets"
-                      :key="planet.slug"
+                      v-for="celestialObject in starsystem.celestialObjects"
+                      :key="celestialObject.slug"
                       class="col-xs-12 col-md-3 fade-list-item"
                     >
                       <PlanetPanel
-                        :item="planet"
+                        :item="celestialObject"
                         :route="{
-                          name: 'planet',
+                          name: 'celestialObject',
                           params: {
-                            slug: planet.slug,
+                            slug: celestialObject.slug,
                           },
                         }"
                       />

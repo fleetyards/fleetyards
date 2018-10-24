@@ -9,9 +9,9 @@
           {{ station.name }}
           <router-link
             :to="{
-              name: 'planet',
+              name: 'celestialObject',
               params: {
-                slug: station.planet.slug,
+                slug: station.celestialObject.slug,
               },
               hash: `#${station.slug}`,
             }"
@@ -20,6 +20,77 @@
             <i class="fal fa-chevron-left" />
           </router-link>
         </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        v-if="station"
+        class="col-xs-12 col-md-8"
+      >
+        <img
+          :src="station.storeImage"
+          class="image"
+          alt="model image"
+        >
+        <blockquote class="description">
+          <p v-html="station.description" />
+        </blockquote>
+      </div>
+      <div
+        v-if="station"
+        class="col-xs-12 col-md-4"
+      >
+        <Panel>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <StationBaseMetrics :station="station" />
+            </li>
+          </ul>
+        </Panel>
+        <Panel>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <StationDocks :station="station" />
+            </li>
+          </ul>
+        </Panel>
+        <Panel>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <StationHabitations :station="station" />
+            </li>
+          </ul>
+        </Panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <template v-if="station">
+          <h2>{{ t('headlines.shops') }}</h2>
+          <transition-group
+            name="fade-list"
+            class="flex-row"
+            tag="div"
+            appear
+          >
+            <div
+              v-for="shop in station.shops"
+              :key="shop.slug"
+              class="col-xs-12 col-md-3 fade-list-item"
+            >
+              <ShopPanel
+                :item="shop"
+                :route="{
+                  name: 'shop',
+                  params: {
+                    station: station.slug,
+                    slug: shop.slug,
+                  },
+                }"
+              />
+            </div>
+          </transition-group>
+        </template>
       </div>
     </div>
   </section>
@@ -31,11 +102,21 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
+import Panel from 'frontend/components/Panel'
+import ShopPanel from 'frontend/partials/Stations/Panel'
+import StationBaseMetrics from 'frontend/partials/Stations/BaseMetrics'
+import StationDocks from 'frontend/partials/Stations/Docks'
+import StationHabitations from 'frontend/partials/Stations/Habitations'
 
 export default {
   components: {
     Loader,
     EmptyBox,
+    Panel,
+    ShopPanel,
+    StationBaseMetrics,
+    StationDocks,
+    StationHabitations,
   },
   mixins: [I18n, MetaInfo, Hash],
   data() {
@@ -52,7 +133,7 @@ export default {
       if (!this.station) {
         return null
       }
-      return this.t('title.station', { station: this.station.name, planet: this.station.planet.name })
+      return this.t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
     },
   },
   watch: {
@@ -86,6 +167,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  @import './styles/index.scss';
 </style>

@@ -58,8 +58,8 @@ en:
       stations: Stations
       starsystems: Starsystems
       starsystem: "%{starsystem} Starsystem"
-      planet: "%{planet} in the %{starsystem} System"
-      station: "%{station} near %{planet}"
+      celestial_object: "%{celestial_object} in the %{starsystem} System"
+      station: "%{station} near %{celestial_object}"
       shop: "%{shop} - %{station}"
       ship_images: "%{model} Images"
       ship_videos: "%{model} Videos"

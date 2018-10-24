@@ -25,21 +25,21 @@
           appear
         >
           <div
-            v-for="planet in planets"
-            :key="planet.slug"
+            v-for="celestialObject in celestialObjects"
+            :key="celestialObject.slug"
             class="col-xs-12 fade-list-item"
           >
             <PlanetList
-              :item="planet"
+              :item="celestialObject"
               :route="{
-                name: 'planet',
+                name: 'celestialObject',
                 params: {
-                  slug: planet.slug,
+                  slug: celestialObject.slug,
                 },
               }"
             >
-              <template v-if="planet.moons.length">
-                <h3>{{ t('headlines.moons') }}</h3>
+              <template v-if="celestialObject.moons.length">
+                <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
                 <transition-group
                   name="fade-list"
                   class="flex-row"
@@ -47,14 +47,14 @@
                   appear
                 >
                   <div
-                    v-for="moon in planet.moons"
+                    v-for="moon in celestialObject.moons"
                     :key="moon.slug"
                     class="col-xs-12 col-md-3 fade-list-item"
                   >
                     <MoonPanel
                       :item="moon"
                       :route="{
-                        name: 'planet',
+                        name: 'celestialObject',
                         params: {
                           slug: moon.slug,
                         },
@@ -97,18 +97,18 @@ export default {
     return {
       loading: false,
       starsystem: null,
-      planets: [],
+      celestialObjects: [],
     }
   },
   computed: {
     emptyBoxVisible() {
-      return !this.loading && !this.planets.length
+      return !this.loading && !this.celestialObjects.length
     },
     starsystemName() {
-      if (this.planets.length === 0) {
+      if (this.celestialObjects.length === 0) {
         return ''
       }
-      return this.planets[0].starsystem.name
+      return this.celestialObjects[0].starsystem.name
     },
     title() {
       if (!this.starsystem) {
@@ -119,7 +119,7 @@ export default {
   },
   watch: {
     $route() {
-      this.fetchPlanets()
+      this.fetchCelestialObjects()
     },
     starsystem() {
       if (this.starsystem.storeImage) {
@@ -129,7 +129,7 @@ export default {
   },
   created() {
     this.fetch()
-    this.fetchPlanets()
+    this.fetchCelestialObjects()
   },
   methods: {
     async fetch() {
@@ -138,18 +138,19 @@ export default {
         this.starsystem = response.data
       }
     },
-    async fetchPlanets() {
+    async fetchCelestialObjects() {
       this.loading = true
-      const response = await this.$api.get('planets', {
+      const response = await this.$api.get('celestial-objects', {
         q: {
           ...this.$route.query.q,
           starsystemSlugEq: this.$route.params.slug,
+          objectTypeIn: ['PLANET', 'ASTEROID_BELT', 'ASTEROID_FIELD'],
         },
         page: this.$route.query.page,
       })
       this.loading = false
       if (!response.error) {
-        this.planets = response.data
+        this.celestialObjects = response.data
         this.scrollToAnchor()
       }
     },

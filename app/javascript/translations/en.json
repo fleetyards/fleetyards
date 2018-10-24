@@ -14,8 +14,8 @@
     "hangar": "My Hangar",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
-    "planet": "%{planet} in the %{starsystem} System",
-    "station": "%{station} near %{planet}",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "station": "%{station} near %{celestialObject}",
     "shop": "%{shop} - %{station}",
     "hangarPublic": "%{user} Hangar",
     "requestPassword": "Request Password",
@@ -76,13 +76,12 @@
     "cargo": "Cargo",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
-    "planets": "Planets",
-    "planet": "%{planet} in the %{starsystem} System",
+    "celestialObjects": "Celestial Objects",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
     "stations": "Stations",
-    "station": "%{station} near %{planet}",
+    "station": "%{station} near %{celestialObject}",
     "shops": "Shops",
     "shop": "%{shop} on %{station}",
-    "moons": "Moons",
     "commodities": "Commodities",
     "rsiVerification": "Verify your RSI-Account",
     "hangarGuide": "Not much to see here?"
@@ -335,11 +334,12 @@
         "productionStatus": "Production Status"
       }
     },
-    "stations": {
+    "station": {
       "docks": "Docks",
       "location": "Location",
       "type": "Type",
-      "habitation": "Habitation"
+      "habitation": "Habitation",
+      "habs": "Habs"
     }
   },
   "placeholders": {
@@ -553,6 +553,10 @@
         "failure": "We could not destroy your Account! Please try again later."
       }
     }
+  },
+  "station": {
+    "type": "Type",
+    "location": "Location"
   },
   "model": {
     "focus": "Focus",

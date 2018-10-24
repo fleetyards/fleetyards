@@ -6,8 +6,9 @@ json.location station.location
 json.type station.station_type
 json.type_label station.station_type_label
 json.store_image station.store_image.url
-json.planet do
-  json.partial! 'api/v1/planets/base', planet: station.planet
+json.description station.description
+json.celestial_object do
+  json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
 end
 json.starsystem do
   json.partial! 'api/v1/starsystems/base', starsystem: station.starsystem

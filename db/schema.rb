@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_104322) do
+ActiveRecord::Schema.define(version: 2018_10_21_144825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "affiliations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "affiliationable_type"
+    t.uuid "affiliationable_id"
+    t.uuid "faction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["affiliationable_type", "affiliationable_id"], name: "index_affiliations_on_affiliationable"
+    t.index ["faction_id"], name: "index_affiliations_on_faction_id"
+  end
 
   create_table "ahoy_events", force: :cascade do |t|
     t.bigint "visit_id"
@@ -66,6 +76,33 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.index ["user_id"], name: "index_auth_tokens_on_user_id"
   end
 
+  create_table "celestial_objects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.uuid "starsystem_id"
+    t.string "object_type"
+    t.integer "rsi_id"
+    t.string "code"
+    t.string "status"
+    t.string "designation"
+    t.datetime "last_updated_at"
+    t.text "description"
+    t.boolean "hidden", default: true
+    t.string "orbit_period"
+    t.boolean "habitable"
+    t.boolean "fairchanceact"
+    t.integer "sensor_population"
+    t.integer "sensor_economy"
+    t.integer "sensor_danger"
+    t.string "size"
+    t.string "sub_type"
+    t.string "store_image"
+    t.uuid "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["starsystem_id"], name: "index_celestial_objects_on_starsystem_id"
+  end
+
   create_table "commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -102,6 +139,16 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "updated_at", null: false
     t.integer "ship_size"
     t.index ["station_id"], name: "index_docks_on_station_id"
+  end
+
+  create_table "factions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.string "name"
+    t.string "slug"
+    t.string "code"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -264,19 +311,6 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
-  create_table "planets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.uuid "starsystem_id"
-    t.uuid "planet_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "map"
-    t.string "store_image"
-    t.index ["planet_id"], name: "index_planets_on_planet_id"
-    t.index ["starsystem_id"], name: "index_planets_on_starsystem_id"
-  end
-
   create_table "shop_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "shop_id"
     t.string "name"
@@ -311,6 +345,22 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.datetime "updated_at", null: false
     t.string "map"
     t.string "store_image"
+    t.integer "rsi_id"
+    t.string "code"
+    t.string "position_x"
+    t.string "position_y"
+    t.string "position_z"
+    t.string "status"
+    t.datetime "last_updated_at"
+    t.string "system_type"
+    t.string "aggregated_size"
+    t.integer "aggregated_population"
+    t.integer "aggregated_economy"
+    t.integer "aggregated_danger"
+    t.boolean "hidden", default: true
+    t.text "description"
+    t.string "map_y"
+    t.string "map_x"
   end
 
   create_table "stations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -324,6 +374,9 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "store_image"
     t.string "location"
     t.string "map"
+    t.text "description"
+    t.uuid "celestial_object_id"
+    t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["planet_id"], name: "index_stations_on_planet_id"
   end
 
@@ -390,6 +443,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.string "rsi_verification_token"
     t.string "rsi_orgs"
     t.boolean "tracking", default: true
+    t.boolean "public_hangar", default: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -407,6 +461,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_104322) do
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
+    t.boolean "public", default: true
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end

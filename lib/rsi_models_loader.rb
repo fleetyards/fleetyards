@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-class RsiModelsLoader
-  attr_accessor :json_file_path, :base_url, :vat_percent
+require 'rsi_base_loader'
+
+class RsiModelsLoader < RsiBaseLoader
+  attr_accessor :json_file_path, :vat_percent
 
   def initialize(options = {})
     @json_file_path = 'public/models.json'
-    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
     @vat_percent = options[:vat_percent] || 23
   end
 
@@ -145,10 +146,6 @@ class RsiModelsLoader
     model
   end
 
-  def strip_name(name)
-    name.gsub(/^\s*(?:AEGIS|Aegis|ANVIL|Anvil|BANU|Banu|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an)[^a-zA-Z0-9]+/, '')
-  end
-
   def create_or_update_manufacturer(manufacturer_data)
     manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
 
@@ -204,17 +201,5 @@ class RsiModelsLoader
     end
 
     component
-  end
-
-  private def nil_or_float(value)
-    return if value.blank?
-
-    value.to_f
-  end
-
-  private def nil_or_int(value)
-    return if value.blank?
-
-    value.to_i
   end
 end
