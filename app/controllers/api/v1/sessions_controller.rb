@@ -30,7 +30,7 @@ module Api
           user_id: resource.id,
           browser: user_agent.browser,
           platform: user_agent.platform,
-          permanent: params[:remember_me]
+          permanent: params[:rememberMe]
         )
 
         render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
