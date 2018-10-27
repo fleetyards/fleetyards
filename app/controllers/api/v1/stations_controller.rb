@@ -4,6 +4,7 @@ module Api
   module V1
     class StationsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:stations) }, only: [:index]
 
       def index
         authorize! :index, :api_stations
@@ -19,7 +20,7 @@ module Api
 
       def show
         authorize! :show, :api_stations
-        @station = Station.find_by!(slug: params[:slug])
+        @station = Station.visible.find_by!(slug: params[:slug])
       end
     end
   end

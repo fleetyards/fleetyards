@@ -19,6 +19,10 @@ class Shop < ApplicationRecord
     Shop.human_enum_name(:shop_type, shop_type)
   end
 
+  def self.visible
+    where(hidden: false)
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end

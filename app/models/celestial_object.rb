@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CelestialObject < ApplicationRecord
+  paginates_per 30
+
   belongs_to :starsystem, required: false
 
   belongs_to :parent,
@@ -17,6 +19,8 @@ class CelestialObject < ApplicationRecord
            as: :affiliationable,
            dependent: :destroy
   has_many :factions, through: :affiliations
+
+  validates :name, presence: true
 
   before_save :update_slugs
 

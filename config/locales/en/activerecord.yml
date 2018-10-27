@@ -80,20 +80,25 @@ en:
           large_apartment: Large Apartment
           suite: Suite
       shop:
+        hidden: hidden?
+        rental: Does offer Rentals?
+        acquisition: Does buy Items?
         shop_types:
-          clothing: Clothing
-          armor: Armor
-          weapons: Weapons
-          components: Components
-          armor_and_weapons: Armor & Weapons
+          clothing: Clothing Store
+          armor: Armor Store
+          weapons: Weapons Store
+          components: Components Store
+          armor_and_weapons: Armor & Weapons Store
           superstore: Superstore
-          ships: Ships
+          ships: Ship Store
           admin: Admin Office
           bar: Bar
           hospital: Hospital
           salvage: Salvage Yard
-          resources: Resources
+          resources: Resources Broker
           rental: Rental
+      celestial_object:
+        hidden: hidden?
       station:
         hidden: hidden?
         station_types:

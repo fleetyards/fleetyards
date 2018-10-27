@@ -3,6 +3,11 @@
     = image_tag starsystem.store_image.url
   %td
     = starsystem.name
+  %td
+    - if starsystem.hidden?
+      %i.fa.fa-check
+    - else
+      %i.far.fa-square
   %td.text-right
     .btn-group
       = link_to edit_admin_starsystem_path(starsystem), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

@@ -32,7 +32,10 @@
           class="image"
           alt="model image"
         >
-        <blockquote class="description">
+        <blockquote
+          v-if="station.description"
+          class="description"
+        >
           <p v-html="station.description" />
         </blockquote>
       </div>
@@ -47,14 +50,14 @@
             </li>
           </ul>
         </Panel>
-        <Panel>
+        <Panel v-if="station.docks.length">
           <ul class="list-group">
             <li class="list-group-item">
               <StationDocks :station="station" />
             </li>
           </ul>
         </Panel>
-        <Panel>
+        <Panel v-if="station.habitations.length">
           <ul class="list-group">
             <li class="list-group-item">
               <StationHabitations :station="station" />
@@ -90,6 +93,11 @@
               />
             </div>
           </transition-group>
+          <EmptyBox v-if="emptyBoxVisible" />
+          <Loader
+            :loading="loading"
+            fixed
+          />
         </template>
       </div>
     </div>

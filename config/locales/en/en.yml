@@ -47,7 +47,7 @@ en:
     workers: Workers
     trade_hubs: Trade Hubs
     commodities: Commodities
-    planets: Planets
+    celestial_objects: Celestial Objects
     starsystems: Starsystems
   title:
     frontend:
@@ -113,9 +113,9 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
-    planet:
-      edit: Edit Planet
-      index: Planets
+    celestial_object:
+      edit: Edit Celestial Object
+      index: Celestial Objects
       new: New Planet
     starsystem:
       edit: Edit Starsystem

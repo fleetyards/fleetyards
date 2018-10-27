@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-delamar = CelestialObject.find_by!(slug: 'delamar')
-delamar.update!(store_image: Rails.root.join('db/seeds/images/delamar/delamar.jpg').open)
+delamar = CelestialObject.find_or_create_by!(name: 'Delamar')
+delamar.update!(store_image: Rails.root.join('db/seeds/images/delamar/delamar.jpg').open, hidden: false)
 
 levski = Station.find_or_initialize_by(name: 'Levski')
-levski.update!(celestial_object: delamar, station_type: 'mining-station', location: 'Delamar', store_image: Rails.root.join('db/seeds/images/delamar/levski.jpg').open)
+levski.update!(celestial_object: delamar, station_type: 'mining-station', location: 'Delamar', store_image: Rails.root.join('db/seeds/images/delamar/levski.jpg').open, hidden: false)
 
 levski.docks.destroy_all
 pad = 1
@@ -33,17 +33,19 @@ levski.habitations.destroy_all
   end
 end
 
-admin_office = Shop.find_or_create_by(name: 'Admin Office', station: levski)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/delamar/admin_levski.jpg').open)
-dumpers_depot = Shop.find_or_create_by(name: "Dumper's Depot", station: levski, shop_type: :components)
-dumpers_depot.update!(shop_type: :components, store_image: Rails.root.join('db/seeds/images/delamar/dumpers_depot_levski.jpg').open)
-conscientious_objects = Shop.find_or_create_by(name: 'Conscientious Objects', station: levski, shop_type: :weapons)
-conscientious_objects.update!(shop_type: :weapons, store_image: Rails.root.join('db/seeds/images/delamar/conscientious_objects_levski.jpg').open)
-cordrys = Shop.find_or_create_by(name: "Cordry's", station: levski, shop_type: :armor)
-cordrys.update!(shop_type: :armor, store_image: Rails.root.join('db/seeds/images/delamar/cordrys_levski.jpg').open)
-grand_barter = Shop.find_or_create_by(name: 'Grand Barter', station: levski, shop_type: :clothing)
-grand_barter.update!(shop_type: :clothing, store_image: Rails.root.join('db/seeds/images/delamar/grand_barter_levski.jpg').open)
-hospital = Shop.find_or_create_by(name: 'Levski Hospital', station: levski, shop_type: :hospital)
-hospital.update!(shop_type: :hospital, store_image: Rails.root.join('db/seeds/images/delamar/hospital_levski.jpg').open)
-cafe_musain = Shop.find_or_create_by(name: 'Cafe Musáin', station: levski, shop_type: :bar)
-cafe_musain.update!(shop_type: :bar, store_image: Rails.root.join('db/seeds/images/delamar/cafe_musain_levski.jpg').open)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: levski)
+admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/delamar/admin_levski.jpg').open, hidden: false)
+dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: levski, shop_type: :components)
+dumpers_depot.update!(shop_type: :components, store_image: Rails.root.join('db/seeds/images/delamar/dumpers_depot_levski.jpg').open, hidden: false)
+conscientious_objects = Shop.find_or_initialize_by(name: 'Conscientious Objects', station: levski)
+conscientious_objects.update!(shop_type: :weapons, store_image: Rails.root.join('db/seeds/images/delamar/conscientious_objects_levski.jpg').open, hidden: false)
+cordrys = Shop.find_or_initialize_by(name: "Cordry's", station: levski, shop_type: :armor)
+cordrys.update!(shop_type: :armor, store_image: Rails.root.join('db/seeds/images/delamar/cordrys_levski.jpg').open, hidden: false)
+grand_barter = Shop.find_or_initialize_by(name: 'Grand Barter', station: levski)
+grand_barter.update!(shop_type: :clothing, store_image: Rails.root.join('db/seeds/images/delamar/grand_barter_levski.jpg').open, hidden: false)
+hospital = Shop.find_or_initialize_by(name: 'Levski Hospital', station: levski)
+hospital.update!(shop_type: :hospital, store_image: Rails.root.join('db/seeds/images/delamar/hospital_levski.jpg').open, hidden: false)
+cafe_musain = Shop.find_or_initialize_by(name: 'Cafe Musáin', station: levski)
+cafe_musain.update!(shop_type: :bar, store_image: Rails.root.join('db/seeds/images/delamar/cafe_musain_levski.jpg').open, hidden: false)
+teachs = Shop.find_or_initialize_by(name: "Teach's Ship Shop", station: levski)
+teachs.update!(shop_type: :ships, store_image: Rails.root.join('db/seeds/images/delamar/teachs.jpg').open, hidden: false)

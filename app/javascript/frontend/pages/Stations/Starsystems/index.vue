@@ -1,94 +1,118 @@
 <template>
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1 class="sr-only">{{ t('headlines.starsystems') }}</h1>
-        </div>
+  <section class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="sr-only">{{ t('headlines.starsystems') }}</h1>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <Panel>
-            <div class="starmap">
-              <img
-                :src="require('images/map.png')"
-                alt="map"
-              >
-              <router-link
-                v-for="starsystem in starsystems"
-                :key="starsystem.slug"
-                :to="{
-                  name: 'starsystem',
-                  params: {
-                    slug: starsystem.slug,
-                  },
-                }"
-                :style="{
-                  left: `${starsystem.mapX}%`,
-                  top: `${starsystem.mapY}%`
-                }"
-                class="starsystem"
-              />
-            </div>
-          </Panel>
-          <transition-group
-            name="fade-list"
-            class="flex-row"
-            tag="div"
-            appear
-          >
-            <div
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <Panel>
+          <div class="starmap">
+            <img
+              :src="require('images/map.png')"
+              alt="map"
+            >
+            <router-link
               v-for="starsystem in starsystems"
               :key="starsystem.slug"
-              class="col-xs-12 fade-list-item"
-            >
-              <StarsystemList
-                :item="starsystem"
-                :route="{
-                  name: 'starsystem',
-                  params: {
-                    slug: starsystem.slug,
-                  },
-                }"
-              >
-
-                <template v-if="starsystem.celestialObjects.length">
-                  <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
-                  <transition-group
-                    name="fade-list"
-                    class="flex-row"
-                    tag="div"
-                    appear
-                  >
-                    <div
-                      v-for="celestialObject in starsystem.celestialObjects"
-                      :key="celestialObject.slug"
-                      class="col-xs-12 col-md-3 fade-list-item"
-                    >
-                      <PlanetPanel
-                        :item="celestialObject"
-                        :route="{
-                          name: 'celestialObject',
-                          params: {
-                            slug: celestialObject.slug,
-                          },
-                        }"
-                      />
-                    </div>
-                  </transition-group>
-                </template>
-              </StarsystemList>
-            </div>
-          </transition-group>
-          <EmptyBox v-if="emptyBoxVisible" />
-          <Loader
-            :loading="loading"
-            fixed
+              :to="{
+                name: 'starsystem',
+                params: {
+                  slug: starsystem.slug,
+                },
+              }"
+              :style="{
+                left: `${starsystem.mapX}%`,
+                top: `${starsystem.mapY}%`
+              }"
+              class="starsystem"
+            />
+          </div>
+        </Panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="starsystems.length"
+            :page="currentPage"
+            :total="totalPages"
           />
         </div>
       </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <transition-group
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="starsystem in starsystems"
+            :key="starsystem.slug"
+            class="col-xs-12 fade-list-item"
+          >
+            <StarsystemList
+              :item="starsystem"
+              :route="{
+                name: 'starsystem',
+                params: {
+                  slug: starsystem.slug,
+                },
+              }"
+            >
+
+              <template v-if="starsystem.celestialObjects.length">
+                <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
+                <transition-group
+                  name="fade-list"
+                  class="flex-row"
+                  tag="div"
+                  appear
+                >
+                  <div
+                    v-for="celestialObject in starsystem.celestialObjects"
+                    :key="celestialObject.slug"
+                    class="col-xs-12 col-md-3 fade-list-item"
+                  >
+                    <PlanetPanel
+                      :item="celestialObject"
+                      :route="{
+                        name: 'celestialObject',
+                        params: {
+                          slug: celestialObject.slug,
+                        },
+                      }"
+                    />
+                  </div>
+                </transition-group>
+              </template>
+            </StarsystemList>
+          </div>
+        </transition-group>
+        <EmptyBox v-if="emptyBoxVisible" />
+        <Loader
+          :loading="loading"
+          fixed
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="starsystems.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -100,6 +124,7 @@ import StarsystemList from 'frontend/partials/Stations/List'
 import PlanetPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
+import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   components: {
@@ -109,7 +134,7 @@ export default {
     Panel,
     PlanetPanel,
   },
-  mixins: [I18n, MetaInfo, Hash],
+  mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -141,6 +166,7 @@ export default {
         this.starsystems = response.data
         this.scrollToAnchor()
       }
+      this.setPages(response.meta)
     },
   },
   metaInfo() {

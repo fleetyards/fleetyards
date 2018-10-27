@@ -6,17 +6,20 @@
       </div>
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
-      <div
-        v-for="(dock, index) in station.docks"
-        :key="index"
-      >
-        <div class="metrics-label">{{ dock.size }} {{ dock.typeLabel }}:</div>
+      <div class="row">
         <div
-          v-tooltip="`${dock.size} ${dock.typeLabel}`"
+          v-for="(dock, index) in station.docks"
           :key="index"
-          class="metrics-value"
+          class="col-xs-6"
         >
-          {{ dock.count }}
+          <div class="metrics-label">{{ dock.size }} {{ dock.typeLabel }}:</div>
+          <div
+            v-tooltip="`${dock.size} ${dock.typeLabel}`"
+            :key="index"
+            class="metrics-value"
+          >
+            {{ dock.count }}
+          </div>
         </div>
       </div>
     </div>

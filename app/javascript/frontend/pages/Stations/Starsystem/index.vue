@@ -18,6 +18,17 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="celestialObjects.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -73,6 +84,17 @@
         />
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="celestialObjects.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -84,6 +106,7 @@ import PlanetList from 'frontend/partials/Stations/List'
 import MoonPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
+import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   components: {
@@ -92,7 +115,7 @@ export default {
     PlanetList,
     MoonPanel,
   },
-  mixins: [I18n, MetaInfo, Hash],
+  mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -153,6 +176,7 @@ export default {
         this.celestialObjects = response.data
         this.scrollToAnchor()
       }
+      this.setPages(response.meta)
     },
   },
   metaInfo() {

@@ -1,11 +1,32 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  object_type: MyString
-  rsi_id: 1
+hurston:
+  name: Hurston
+  slug: hurston
+  starsystem: stanton
+  hidden: false
 
-two:
-  name: MyString
-  object_type: MyString
-  rsi_id: 1
+crusader:
+  name: Crusader
+  slug: crusader
+  starsystem: stanton
+  hidden: false
+
+yela:
+  name: Yela
+  slug: yela
+  parent: crusader
+  starsystem: stanton
+  hidden: false
+
+daymar:
+  name: Daymar
+  slug: daymar
+  parent: crusader
+  starsystem: stanton
+  hidden: false
+
+uriel:
+  name: Uriel
+  slug: uriel
+  starsystem: oberon

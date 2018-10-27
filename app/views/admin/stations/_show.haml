@@ -6,7 +6,12 @@
   %td
     = station.station_type_label
   %td
-    = station.planet.name if station.planet.present?
+    - if station.hidden?
+      %i.fa.fa-check
+    - else
+      %i.far.fa-square
+  %td
+    = station.celestial_object.name if station.celestial_object.present?
     = "(#{station.starsystem.name} System)" if station.starsystem.present?
     = station.location
   %td.text-right

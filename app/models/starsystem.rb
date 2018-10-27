@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Starsystem < ApplicationRecord
+  paginates_per 15
+
   has_many :celestial_objects,
            dependent: :destroy
   has_many :planets,
@@ -19,7 +21,13 @@ class Starsystem < ApplicationRecord
 
   before_save :update_slugs
 
+  validates :name, presence: true
+
   mount_uploader :store_image, StoreImageUploader
+
+  def self.visible
+    where(hidden: false)
+  end
 
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)

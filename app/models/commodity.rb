@@ -10,6 +10,12 @@ class Commodity < ApplicationRecord
 
   before_save :update_slugs
 
+  mount_uploader :store_image, StoreImageUploader
+
+  def self.ordered_by_name
+    order(name: :asc)
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end

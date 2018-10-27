@@ -9,6 +9,12 @@ class Component < ApplicationRecord
 
   before_save :update_slugs
 
+  mount_uploader :store_image, StoreImageUploader
+
+  def self.ordered_by_name
+    order(name: :asc)
+  end
+
   def self.class_filters
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(

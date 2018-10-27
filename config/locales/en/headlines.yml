@@ -33,17 +33,17 @@ en:
         new: New Commodity
       station:
         edit: Station %{station}
-        gallery: Imageuplaod for %{station}
+        gallery: Imageupload for %{station}
         index: Stations
         new: New Station
       shop:
         edit: Shop %{shop}
         index: Shops
         new: New Shop
-      planet:
-        edit: Planet %{planet}
-        index: Planets
-        new: New Planet
+      celestial_object:
+        edit: Celestial Object %{celestial_object}
+        index: Celestial Objects
+        new: New Celestial Object
       starsystem:
         edit: Starsystem %{starsystem}
         index: Starsystems

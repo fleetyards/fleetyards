@@ -55,8 +55,6 @@ class RsiLocationLoader < RsiBaseLoader
 
     create_or_update_affiliations(starsystem, data['affiliation'])
 
-    starsystem.hidden = false
-
     starsystem.save!
 
     starsystem
@@ -99,8 +97,6 @@ class RsiLocationLoader < RsiBaseLoader
     celestial_object = create_or_update_celestial_object(data, starsystem_id)
 
     create_or_update_affiliations(celestial_object, data['affiliation'])
-
-    celestial_object.hidden = false
 
     celestial_object.save!
 

@@ -2,10 +2,10 @@
 
 commidity_one:
   shop: dumpers
-  name: Shield
-  description: MyText
+  commodity_item: explorer
+  commodity_item_type: Model
 
 commidity_two:
   shop: dumpers
-  name: Weapon
-  description: MyText
+  commodity_item: andromeda
+  commodity_item_type: Model

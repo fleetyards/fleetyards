@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_21_144825) do
+ActiveRecord::Schema.define(version: 2018_10_27_201034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -108,6 +108,8 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
+    t.string "store_image"
   end
 
   create_table "commodity_prices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -126,6 +128,8 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
     t.string "component_class"
     t.string "slug"
     t.string "component_type"
+    t.text "description"
+    t.string "store_image"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -139,6 +143,17 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
     t.datetime "updated_at", null: false
     t.integer "ship_size"
     t.index ["station_id"], name: "index_docks_on_station_id"
+  end
+
+  create_table "equipment", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "store_image"
+    t.integer "equipment_type"
+    t.boolean "hidden", default: true
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "factions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -313,8 +328,6 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
 
   create_table "shop_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "shop_id"
-    t.string "name"
-    t.text "description"
     t.decimal "buy_price", precision: 15, scale: 2
     t.decimal "sell_price", precision: 15, scale: 2
     t.decimal "rent_price", precision: 15, scale: 2
@@ -335,6 +348,9 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
     t.string "store_image"
     t.uuid "station_id"
     t.integer "shop_type"
+    t.boolean "hidden", default: true
+    t.boolean "rental", default: false
+    t.boolean "acquisition", default: false
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
@@ -370,12 +386,13 @@ ActiveRecord::Schema.define(version: 2018_10_21_144825) do
     t.integer "station_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "hidden", default: false
+    t.boolean "hidden", default: true
     t.string "store_image"
     t.string "location"
     t.string "map"
     t.text "description"
     t.uuid "celestial_object_id"
+    t.integer "status"
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["planet_id"], name: "index_stations_on_planet_id"
   end

@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-# microtech = CelestialObject.find_by!(slug: 'microTech')
+# microtech = CelestialObject.find_or_create_by!(name: 'microTech')

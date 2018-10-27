@@ -25,6 +25,102 @@
         </h1>
       </div>
     </div>
+    <div class="row">
+      <div
+        v-if="shop"
+        class="col-xs-12 col-md-8"
+      >
+        <blockquote
+          v-if="shop.description"
+          class="description"
+        >
+          <p v-html="shop.description" />
+        </blockquote>
+      </div>
+      <div
+        v-if="shop"
+        class="col-xs-12 col-md-4"
+      >
+        <Panel>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <ShopBaseMetrics :shop="shop" />
+            </li>
+          </ul>
+        </Panel>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="commodities.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <Panel v-if="commodities.length">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <transition-group
+                name="fade"
+                tag="tbody"
+                appear
+              >
+                <tr
+                  v-for="(commodity, index) in commodities"
+                  :key="index"
+                  class="fade-item"
+                >
+                  <td class="store-image">
+                    <img
+                      v-if="storeImage(commodity)"
+                      :src="storeImage(commodity).url"
+                      alt="storeImage"
+                    >
+                  </td>
+                  <td>{{ name(commodity) }}</td>
+                  <td class="description">{{ description(commodity) }}</td>
+                  <td class="price">{{ toUEC(commodity.buyPrice) }}</td>
+                  <td
+                    v-if="shop.acquisition"
+                    class="price"
+                  >
+                    {{ toUEC(commodity.sellPrice) }}
+                  </td>
+                  <td
+                    v-if="shop.rental"
+                    class="price"
+                  >
+                    {{ toUEC(commodity.rentPrice) }}
+                  </td>
+                </tr>
+              </transition-group>
+            </table>
+          </div>
+        </Panel>
+        <EmptyBox v-if="emptyBoxVisible" />
+        <Loader
+          :loading="loading"
+          fixed
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="commodities.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -33,19 +129,30 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Hash from 'frontend/mixins/Hash'
+import Panel from 'frontend/components/Panel'
+import ShopBaseMetrics from 'frontend/partials/Shops/BaseMetrics'
+import EmptyBox from 'frontend/partials/EmptyBox'
+import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   components: {
     Loader,
+    EmptyBox,
+    Panel,
+    ShopBaseMetrics,
   },
-  mixins: [I18n, MetaInfo, Hash],
+  mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
       shop: null,
+      commodities: [],
     }
   },
   computed: {
+    emptyBoxVisible() {
+      return !this.loading && this.commodities.length === 0
+    },
     title() {
       if (!this.shop) {
         return ''
@@ -56,19 +163,54 @@ export default {
   watch: {
     $route() {
       this.fetch()
+      this.fetchCommodities()
+    },
+    shop() {
+      if (this.shop.storeImage) {
+        this.$store.commit('setBackgroundImage', this.shop.storeImage)
+      }
     },
   },
   created() {
     this.fetch()
+    this.fetchCommodities()
   },
   methods: {
+    storeImage(commodity) {
+      if (!commodity.commodityItem) {
+        return null
+      }
+      return commodity.commodityItem.storeImage
+    },
+    name(commodity) {
+      if (commodity.commodityItem) {
+        return commodity.commodityItem.name
+      }
+      return commodity.name
+    },
+    description(commodity) {
+      if (commodity.commodityItem) {
+        return commodity.commodityItem.description
+      }
+      return commodity.description
+    },
     async fetch() {
-      this.loading = true
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)
-      this.loading = false
       if (!response.error) {
         this.shop = response.data
       }
+    },
+    async fetchCommodities() {
+      this.loading = true
+      const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`, {
+        q: this.$route.query.q,
+        page: this.$route.query.page,
+      })
+      this.loading = false
+      if (!response.error) {
+        this.commodities = response.data
+      }
+      this.setPages(response.meta)
     },
   },
   metaInfo() {

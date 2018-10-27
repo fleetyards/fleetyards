@@ -6,6 +6,7 @@ class RsiModelsLoader < RsiBaseLoader
   attr_accessor :json_file_path, :vat_percent
 
   def initialize(options = {})
+    super
     @json_file_path = 'public/models.json'
     @vat_percent = options[:vat_percent] || 23
   end

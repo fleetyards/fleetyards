@@ -24,8 +24,8 @@ en:
         new: Create new Station
       shop:
         new: Create new Shop
-      planet:
-        new: Create new Planet
+      celestial_object:
+        new: Create new Celestial Object
       starsystem:
         new: Create new Starsystem
     back: Back

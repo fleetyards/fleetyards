@@ -22,12 +22,53 @@
         </h1>
       </div>
     </div>
+    <div class="row">
+      <div
+        v-if="celestialObject.moons.length"
+        class="col-xs-12"
+      >
+        <h2>{{ t('headlines.moons') }}</h2>
+        <transition-group
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="moon in celestialObject.moons"
+            :key="moon.slug"
+            class="col-xs-12 col-sm-6 col-md-3 fade-list-item"
+          >
+            <ShopPanel
+              :item="moon"
+              :route="{
+                name: 'celestialObject',
+                params: {
+                  slug: moon.slug,
+                },
+              }"
+            />
+          </div>
+        </transition-group>
+      </div>
+    </div>
     <div
       v-if="celestialObject"
       class="row"
     >
+      <div class="col-xs-12 col-md-6">
+        <h2>{{ t('headlines.stations') }}</h2>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="pull-right">
+          <Paginator
+            v-if="stations.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
+      </div>
       <div class="col-xs-12">
-        <h2 class="sr-only">{{ t('headlines.stations') }}</h2>
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -124,33 +165,14 @@
           fixed
         />
       </div>
-      <div
-        v-if="celestialObject.moons.length"
-        class="col-xs-12"
-      >
-        <h2>{{ t('headlines.moons') }}</h2>
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="moon in celestialObject.moons"
-            :key="moon.slug"
-            class="col-xs-12 col-sm-6 col-md-3 fade-list-item"
-          >
-            <ShopPanel
-              :item="moon"
-              :route="{
-                name: 'celestialObject',
-                params: {
-                  slug: moon.slug,
-                },
-              }"
-            />
-          </div>
-        </transition-group>
+      <div class="col-xs-12">
+        <div class="pull-right">
+          <Paginator
+            v-if="stations.length"
+            :page="currentPage"
+            :total="totalPages"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -164,6 +186,7 @@ import StationList from 'frontend/partials/Stations/List'
 import ShopPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
+import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   components: {
@@ -172,7 +195,7 @@ export default {
     StationList,
     ShopPanel,
   },
-  mixins: [I18n, MetaInfo, Hash],
+  mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -195,7 +218,7 @@ export default {
     $route() {
       this.fetch()
     },
-    celestial_object() {
+    celestialObject() {
       if (this.celestialObject.storeImage) {
         this.$store.commit('setBackgroundImage', this.celestialObject.storeImage)
       }
@@ -228,6 +251,7 @@ export default {
         this.stations = response.data
         this.scrollToAnchor()
       }
+      this.setPages(response.meta)
     },
   },
   metaInfo() {

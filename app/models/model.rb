@@ -52,6 +52,10 @@ class Model < ApplicationRecord
   after_save :broadcast_update
   after_save :send_new_model_notification
 
+  def self.ordered_by_name
+    order(name: :asc)
+  end
+
   def self.production_status_filters
     Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(

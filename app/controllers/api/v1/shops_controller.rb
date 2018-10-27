@@ -7,11 +7,11 @@ module Api
 
       def show
         authorize! :show, :api_shops
-        @shop = station.shops.find_by!(slug: params[:slug])
+        @shop = station.shops.visible.find_by!(slug: params[:slug])
       end
 
       private def station
-        @station ||= Station.find_by!(slug: params[:station_slug])
+        @station ||= Station.visible.find_by!(slug: params[:station_slug])
       end
     end
   end

@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-# arccorp = CelestialObject.find_by!(slug: 'arccorp')
+# arccorp = CelestialObject.find_or_create_by!(name: 'ArcCorp')

@@ -5,3 +5,4 @@ dumpers:
   slug: dumpers-depot
   station: portolisar
   shop_type: components
+  hidden: false

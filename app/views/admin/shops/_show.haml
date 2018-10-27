@@ -5,6 +5,11 @@
     = shop.name
   %td
     = shop.station.name
+  %td
+    - if shop.hidden?
+      %i.fa.fa-check
+    - else
+      %i.far.fa-square
   %td.text-right
     .btn-group
       = link_to edit_admin_shop_path(shop), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

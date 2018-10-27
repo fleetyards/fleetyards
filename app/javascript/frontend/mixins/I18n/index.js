@@ -31,6 +31,9 @@ export default {
       })
     },
     toUEC(value) {
+      if (!value) {
+        return '-'
+      }
       return I18n.toCurrency(value, {
         precision: 2,
         unit: I18n.t('labels.uec'),

@@ -6,16 +6,19 @@
       </div>
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
-      <div
-        v-for="(hab, index) in station.habitations"
-        :key="index"
-      >
-        <div class="metrics-label">{{ hab.typeLabel }}:</div>
+      <div class="row">
         <div
-          v-tooltip="hab.typeLabel"
-          class="metrics-value"
+          v-for="(hab, index) in station.habitations"
+          :key="index"
+          class="col-xs-6"
         >
-          {{ hab.count }}
+          <div class="metrics-label">{{ hab.typeLabel }}:</div>
+          <div
+            v-tooltip="hab.typeLabel"
+            class="metrics-value"
+          >
+            {{ hab.count }}
+          </div>
         </div>
       </div>
     </div>

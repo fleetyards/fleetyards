@@ -1,6 +1,7 @@
 stanton:
   name: Stanton
   slug: stanton
+  hidden: false
 
 sol:
   name: Sol
@@ -9,3 +10,4 @@ sol:
 oberon:
   name: Oberon
   slug: oberon
+  hidden: false

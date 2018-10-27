@@ -25,10 +25,11 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'location' => nil,
-            'type' => 'hub',
-            'typeLabel' => 'Hub',
+            'type' => 'spaceport',
+            'typeLabel' => 'Spaceport',
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'description' => nil,
+            'celestialObject' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -36,13 +37,17 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [{
               'name' => 'Dumpers Depot',
               'slug' => 'dumpers-depot',
-              'shopType' => 'components',
-              'shopTypeLabel' => 'Components',
+              'type' => 'components',
+              'typeLabel' => 'Components Store',
+              'rental' => false,
+              'acquisition' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -70,7 +75,8 @@ module Api
             'type' => 'cargo-station',
             'typeLabel' => 'Cargo Station',
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'description' => nil,
+            'celestialObject' => {
               'name' => 'Daymar',
               'slug' => 'daymar',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -78,7 +84,9 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [],
             'docks' => [{
@@ -105,10 +113,11 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'location' => nil,
-            'type' => 'hub',
-            'typeLabel' => 'Hub',
+            'type' => 'spaceport',
+            'typeLabel' => 'Spaceport',
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'description' => nil,
+            'celestialObject' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -116,13 +125,17 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [{
               'name' => 'Dumpers Depot',
               'slug' => 'dumpers-depot',
-              'shopType' => 'components',
-              'shopTypeLabel' => 'Components',
+              'type' => 'components',
+              'typeLabel' => 'Components Store',
+              'rental' => false,
+              'acquisition' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -167,10 +180,11 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'location' => nil,
-            'type' => 'hub',
-            'typeLabel' => 'Hub',
+            'type' => 'spaceport',
+            'typeLabel' => 'Spaceport',
+            'description' => nil,
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'celestialObject' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -178,13 +192,17 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [{
               'name' => 'Dumpers Depot',
               'slug' => 'dumpers-depot',
-              'shopType' => 'components',
-              'shopTypeLabel' => 'Components',
+              'type' => 'components',
+              'typeLabel' => 'Components Store',
+              'rental' => false,
+              'acquisition' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -211,8 +229,9 @@ module Api
             'location' => nil,
             'type' => 'cargo-station',
             'typeLabel' => 'Cargo Station',
+            'description' => nil,
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'celestialObject' => {
               'name' => 'Daymar',
               'slug' => 'daymar',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -220,7 +239,9 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [],
             'docks' => [{
@@ -247,10 +268,11 @@ module Api
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'location' => nil,
-            'type' => 'hub',
-            'typeLabel' => 'Hub',
+            'type' => 'spaceport',
+            'typeLabel' => 'Spaceport',
+            'description' => nil,
             'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
-            'planet' => {
+            'celestialObject' => {
               'name' => 'Crusader',
               'slug' => 'crusader',
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
@@ -258,13 +280,17 @@ module Api
             'starsystem' => {
               'name' => 'Stanton',
               'slug' => 'stanton',
-              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
+              'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg',
+              'mapX' => nil,
+              'mapY' => nil
             },
             'shops' => [{
               'name' => 'Dumpers Depot',
               'slug' => 'dumpers-depot',
-              'shopType' => 'components',
-              'shopTypeLabel' => 'Components',
+              'type' => 'components',
+              'typeLabel' => 'Components Store',
+              'rental' => false,
+              'acquisition' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{

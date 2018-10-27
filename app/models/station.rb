@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Station < ApplicationRecord
-  paginates_per 30
+  paginates_per 15
 
   has_many :shops, dependent: :destroy
   has_many :docks, dependent: :destroy

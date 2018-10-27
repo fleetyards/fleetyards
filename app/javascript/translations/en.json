@@ -78,6 +78,7 @@
     "starsystem": "%{starsystem} Starsystem",
     "celestialObjects": "Celestial Objects",
     "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "moons": "Moons",
     "stations": "Stations",
     "station": "%{station} near %{celestialObject}",
     "shops": "Shops",
@@ -229,6 +230,7 @@
       }
     },
     "metrics": {
+      "info": "Info",
       "base": "Base",
       "crew": "Crew",
       "speed": "Speed",
@@ -614,6 +616,11 @@
         "rank": "Organization rank"
       }
     }
+  },
+  "shop": {
+    "type": "Type",
+    "celestialObject": "Location",
+    "station": "Station"
   },
   "number": {
     "format": {

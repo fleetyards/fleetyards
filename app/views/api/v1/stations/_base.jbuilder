@@ -14,7 +14,7 @@ json.starsystem do
   json.partial! 'api/v1/starsystems/base', starsystem: station.starsystem
 end
 json.shops do
-  json.array! station.shops.order(:name), partial: 'api/v1/shops/base', as: :shop
+  json.array! station.shops.visible.order(:name), partial: 'api/v1/shops/base', as: :shop
 end
 json.docks do
   json.array! station.dock_counts, partial: 'api/v1/stations/dock', as: :dock_count

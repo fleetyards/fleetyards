@@ -2,6 +2,8 @@
 
 module Admin
   class ApplicationController < ActionController::Base
+    include RansackHelper
+
     layout 'admin/application'
 
     before_action :configure_permitted_parameters, if: :devise_controller?
