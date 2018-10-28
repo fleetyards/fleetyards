@@ -1,0 +1,69 @@
+## Celestial Objects [/v1/celestial-objects]
+
+### GET List [GET]
+Get a List of Celestial Objects
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                ...
+                {
+                    "name": "Hurston",
+                    "slug": "hurston",
+                    "designation": "Stanton I",
+                    "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/35908b50-7f8e-4344-85e5-f14d98b2be54/hurston.png",
+                    "moons": [],
+                    "starsystem": {
+                        "name": "Stanton",
+                        "slug": "stanton",
+                        "storeImage": "http://api.fleetyards.test/uploads/starsystem/store_image/17b3dde9-c594-4667-9fe7-07ce9ba83be0/stanton.jpg",
+                        "mapX": "59.766411599",
+                        "mapY": "48.460661345"
+                    },
+                    "createdAt": "2018-10-26T20:19:07+02:00",
+                    "updatedAt": "2018-10-28T14:26:09+01:00"
+                },
+                {
+                    "name": "Crusader",
+                    "slug": "crusader",
+                    "designation": "Stanton II",
+                    "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/224e95de-367e-4904-aebc-b85c70d0a318/crusader.jpg",
+                    "moons": [
+                        {
+                            "name": "Cellin",
+                            "slug": "cellin",
+                            "designation": "Stanton 2a",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/01ec2fc2-6ca3-40e7-a4d7-5a4c78021a10/cellin.jpg"
+                        },
+                        {
+                            "name": "Daymar",
+                            "slug": "daymar",
+                            "designation": "Stanton 2b",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/14c78eae-04a5-4455-925d-0f1a5e2933ee/daymar.jpg"
+                        },
+                        {
+                            "name": "Yela",
+                            "slug": "yela",
+                            "designation": "Stanton 2c",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/88644597-b695-42cf-9ab5-15a6b61605ca/yela.jpg"
+                        }
+                    ],
+                    "starsystem": {
+                        "name": "Stanton",
+                        "slug": "stanton",
+                        "storeImage": "http://api.fleetyards.test/uploads/starsystem/store_image/17b3dde9-c594-4667-9fe7-07ce9ba83be0/stanton.jpg",
+                        "mapX": "59.766411599",
+                        "mapY": "48.460661345"
+                    },
+                    "createdAt": "2018-10-26T20:19:07+02:00",
+                    "updatedAt": "2018-10-28T14:26:07+01:00"
+                }
+            ]
