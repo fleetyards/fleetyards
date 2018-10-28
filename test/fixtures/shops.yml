@@ -6,3 +6,10 @@ dumpers:
   station: portolisar
   shop_type: components
   hidden: false
+
+new_deal:
+  name: New Deal
+  slug: new-deal
+  station: portolisar
+  shop_type: ships
+  hidden: false

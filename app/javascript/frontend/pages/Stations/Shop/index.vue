@@ -78,23 +78,39 @@
                   class="fade-item"
                 >
                   <td class="store-image">
-                    <img
-                      :src="commodity.commodityItem.storeImage.url"
-                      alt="storeImage"
-                    >
-                  </td>
-                  <td>
                     <router-link
                       v-if="link(commodity.commodityItem)"
                       :to="link(commodity.commodityItem)"
                     >
-                      {{ commodity.commodityItem.name }}
+                      <div
+                        v-lazy:background-image="commodity.commodityItem.storeImage"
+                        :key="commodity.commodityItem.storeImage"
+                        class="image"
+                        alt="storeImage"
+                      />
                     </router-link>
-                    <span v-else>
-                      {{ commodity.commodityItem.type }}
-                    </span>
+                    <div
+                      v-lazy:background-image="commodity.commodityItem.storeImage"
+                      v-else
+                      :key="commodity.commodityItem.storeImage"
+                      class="image"
+                      alt="storeImage"
+                    />
                   </td>
-                  <td class="description">{{ commodity.commodityItem.description }}</td>
+                  <td class="description">
+                    <h2>
+                      <router-link
+                        v-if="link(commodity.commodityItem)"
+                        :to="link(commodity.commodityItem)"
+                      >
+                        {{ commodity.commodityItem.name }}
+                      </router-link>
+                      <span v-else>
+                        {{ commodity.commodityItem.type }}
+                      </span>
+                    </h2>
+                    {{ commodity.commodityItem.description }}
+                  </td>
                   <td
                     v-if="shop.selling"
                     class="price"
