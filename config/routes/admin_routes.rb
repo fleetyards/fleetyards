@@ -37,6 +37,7 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
   resources :starsystems, except: [:show]
   resources :trade_hubs, except: [:show]
   resources :commodities, except: [:show]
+  resources :equipment, except: [:show]
   resources :stations, except: [:show] do
     get 'gallery', on: :member
   end

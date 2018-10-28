@@ -47,7 +47,8 @@ module Api
               'type' => 'components',
               'typeLabel' => 'Components Store',
               'rental' => false,
-              'acquisition' => false,
+              'buying' => false,
+              'selling' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -135,7 +136,8 @@ module Api
               'type' => 'components',
               'typeLabel' => 'Components Store',
               'rental' => false,
-              'acquisition' => false,
+              'buying' => false,
+              'selling' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -202,7 +204,8 @@ module Api
               'type' => 'components',
               'typeLabel' => 'Components Store',
               'rental' => false,
-              'acquisition' => false,
+              'buying' => false,
+              'selling' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{
@@ -290,7 +293,8 @@ module Api
               'type' => 'components',
               'typeLabel' => 'Components Store',
               'rental' => false,
-              'acquisition' => false,
+              'buying' => false,
+              'selling' => false,
               'storeImage' => 'https://api.fleetyards.net/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg'
             }],
             'docks' => [{

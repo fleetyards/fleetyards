@@ -53,6 +53,7 @@ en:
         shop: No Shops could be found.
         planet: No Planets could be found.
         starsystem: No Starsystems could be found.
+        equipment: No Equipment could be found.
       component:
         category: Category
       model:

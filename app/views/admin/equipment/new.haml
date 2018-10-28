@@ -1,0 +1,15 @@
+- content_for :title do
+  = I18n.t(:"title.equipment.new")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.equipment.new")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t("actions.back"), admin_equipment_index_path(params: index_back_params), class: "btn btn-default"
+
+    = render "form"

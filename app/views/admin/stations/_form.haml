@@ -13,11 +13,11 @@
         = form_errors station, :station_type
 
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :planet_id)}
-      = form.label :planet_id
-      = form.select :planet_id, Planet.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.planet") }, { class: 'form-control' }
+    .col-xs-12.col-md-6.form-group{class: form_error?(station, :celestial_object_id)}
+      = form.label :celestial_object_id
+      = form.select :celestial_object_id, CelestialObject.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.celestial_object") }, { class: 'form-control' }
       %small
-        = form_errors station, :planet_id
+        = form_errors station, :celestial_object_id
 
     .col-xs-12.col-md-6.form-group{class: form_error?(station, :location)}
       = form.label :location

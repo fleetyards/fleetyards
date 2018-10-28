@@ -2,10 +2,8 @@
 
 commidity_one:
   shop: dumpers
-  commodity_item: explorer
-  commodity_item_type: Model
+  commodity_item: explorer (Model)
 
 commidity_two:
   shop: dumpers
-  commodity_item: andromeda
-  commodity_item_type: Model
+  commodity_item: andromeda (Model)

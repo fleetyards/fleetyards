@@ -8,7 +8,7 @@ grimhex.update!(celestial_object: yela, station_type: 'asteroid-station', locati
 
 grimhex.docks.destroy_all
 pad = 1
-{ small: 3, medium: 2, medium_large: 1 }.each do |ship_size, count|
+{ extra_small: 3, small: 2, medium: 1 }.each do |ship_size, count|
   count.times do
     grimhex.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",
@@ -62,7 +62,7 @@ pad = 1
   end
 end
 pad = 1
-{ medium: 1, medium_large: 1 }.each do |ship_size, count|
+{ medium: 1, large: 1 }.each do |ship_size, count|
   count.times do
     deakins_research_outpost.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",
@@ -96,7 +96,7 @@ pad = 1
   end
 end
 pad = 1
-{medium_large: 1}.each do |ship_size, count|
+{large: 1}.each do |ship_size, count|
   count.times do
     arc_corp_mining_area_157.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",

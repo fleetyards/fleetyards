@@ -54,6 +54,8 @@
           }
 
           &.store-image {
+            padding-left: 20px;
+
             img {
               max-width: 200px;
               border-radius: 2px;
@@ -68,6 +70,9 @@
           &.price {
             min-width: 150px;
             font-weight: bold;
+            text-align: right;
+            vertical-align: middle;
+            padding-right: 20px;
           }
         }
       }

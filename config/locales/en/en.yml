@@ -37,6 +37,7 @@ en:
       description: "%{model} Videos"
   nav:
     components: Components
+    equipment: Equipment
     home: Home
     images: Images
     manufacturers: Manufacturers
@@ -113,6 +114,10 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    equipment:
+      edit: Edit Equipment
+      index: Equipment
+      new: New Equipment
     celestial_object:
       edit: Edit Celestial Object
       index: Celestial Objects

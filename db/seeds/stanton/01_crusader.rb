@@ -8,7 +8,7 @@ portolisar.update!(celestial_object: crusader, station_type: :hub, location: 'Or
 portolisar.docks.destroy_all
 %w[A B C D].each do |strut|
   pad = 1
-  { medium: 8, medium_large: 2, extra_large: 1 }.each do |ship_size, count|
+  { small: 8, medium: 2, extra_large: 1 }.each do |ship_size, count|
     count.times do
       portolisar.docks << Dock.new(
         name: "Ladingpad #{strut} #{"%02d" % pad}",
@@ -50,7 +50,7 @@ r_n_r_cru_l2.update!(celestial_object: crusader, station_type: :rest_stop, locat
 
 r_n_r_cru_l2.docks.destroy_all
 pad = 1
-{ medium_large: 2, large: 2 }.each do |ship_size, count|
+{ medium: 2, large: 2 }.each do |ship_size, count|
   count.times do |index|
     r_n_r_cru_l2.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",

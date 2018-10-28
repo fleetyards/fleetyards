@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_27_201034) do
+ActiveRecord::Schema.define(version: 2018_10_28_074234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -350,7 +350,8 @@ ActiveRecord::Schema.define(version: 2018_10_27_201034) do
     t.integer "shop_type"
     t.boolean "hidden", default: true
     t.boolean "rental", default: false
-    t.boolean "acquisition", default: false
+    t.boolean "buying", default: false
+    t.boolean "selling", default: false
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 

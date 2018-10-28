@@ -12,19 +12,25 @@
       %small
         = form_errors shop, :station_id
 
-    .col-xs-12.col-sm-6.form-group
+    .col-xs-12.col-sm-3.form-group
       .checkbox
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.shop.hidden")
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.shop.hidden")
 
-    .col-xs-12.col-sm-6.form-group
+    .col-xs-12.col-sm-3.form-group
       .checkbox
-        = form.check_box :acquisition, placeholder: I18n.t(:"helpers.placeholder.shop.acquisition")
-        = form.label :acquisition do
-          = I18n.t(:"activerecord.attributes.shop.acquisition")
+        = form.check_box :selling, placeholder: I18n.t(:"helpers.placeholder.shop.selling")
+        = form.label :selling do
+          = I18n.t(:"activerecord.attributes.shop.selling")
 
-    .col-xs-12.col-sm-6.form-group
+    .col-xs-12.col-sm-3.form-group
+      .checkbox
+        = form.check_box :buying, placeholder: I18n.t(:"helpers.placeholder.shop.buying")
+        = form.label :buying do
+          = I18n.t(:"activerecord.attributes.shop.buying")
+
+    .col-xs-12.col-sm-3.form-group
       .checkbox
         = form.check_box :rental, placeholder: I18n.t(:"helpers.placeholder.shop.rental")
         = form.label :rental do

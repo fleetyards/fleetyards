@@ -66,9 +66,9 @@ en:
           dockingport: Dockingport
           hangar: Hangar
         ship_sizes:
+          extra_small: Extra Small
           small: Small
           medium: Medium
-          medium_large: Medium Large
           large: Large
           extra_large: Extra Large
           capital: Capital
@@ -79,10 +79,19 @@ en:
           medium_apartment: Medium Apartment
           large_apartment: Large Apartment
           suite: Suite
+      equipment:
+        hidden: hidden?
+        equipment_types:
+          armor: Armor
+          weapon: Weapon
+          clothing: Clothing
+          tool: Tool
+          medical: Medical
       shop:
         hidden: hidden?
         rental: Does offer Rentals?
-        acquisition: Does buy Items?
+        buying: Does buy Items?
+        selling: Does sell Items?
         shop_types:
           clothing: Clothing Store
           armor: Armor Store

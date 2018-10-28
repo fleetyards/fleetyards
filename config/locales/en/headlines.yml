@@ -31,6 +31,10 @@ en:
         edit: Commodity %{commodity}
         index: Commodities
         new: New Commodity
+      equipment:
+        edit: Equipment %{equipment}
+        index: Equipment
+        new: New Equipment
       station:
         edit: Station %{station}
         gallery: Imageupload for %{station}

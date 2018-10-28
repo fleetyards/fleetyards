@@ -74,23 +74,38 @@
                 <tr
                   v-for="(commodity, index) in commodities"
                   :key="index"
+                  :id="commodity.slug"
                   class="fade-item"
                 >
                   <td class="store-image">
                     <img
-                      v-if="storeImage(commodity)"
-                      :src="storeImage(commodity).url"
+                      :src="commodity.commodityItem.storeImage.url"
                       alt="storeImage"
                     >
                   </td>
-                  <td>{{ name(commodity) }}</td>
-                  <td class="description">{{ description(commodity) }}</td>
-                  <td class="price">{{ toUEC(commodity.buyPrice) }}</td>
+                  <td>
+                    <router-link
+                      v-if="link(commodity.commodityItem)"
+                      :to="link(commodity.commodityItem)"
+                    >
+                      {{ commodity.commodityItem.name }}
+                    </router-link>
+                    <span v-else>
+                      {{ commodity.commodityItem.type }}
+                    </span>
+                  </td>
+                  <td class="description">{{ commodity.commodityItem.description }}</td>
                   <td
-                    v-if="shop.acquisition"
+                    v-if="shop.selling"
                     class="price"
                   >
                     {{ toUEC(commodity.sellPrice) }}
+                  </td>
+                  <td
+                    v-if="shop.buying"
+                    class="price"
+                  >
+                    {{ toUEC(commodity.buyPrice) }}
                   </td>
                   <td
                     v-if="shop.rental"
@@ -176,23 +191,16 @@ export default {
     this.fetchCommodities()
   },
   methods: {
-    storeImage(commodity) {
-      if (!commodity.commodityItem) {
+    link(item) {
+      if (item.type !== 'Model') {
         return null
       }
-      return commodity.commodityItem.storeImage
-    },
-    name(commodity) {
-      if (commodity.commodityItem) {
-        return commodity.commodityItem.name
+      return {
+        name: 'model',
+        params: {
+          slug: item.slug,
+        },
       }
-      return commodity.name
-    },
-    description(commodity) {
-      if (commodity.commodityItem) {
-        return commodity.commodityItem.description
-      }
-      return commodity.description
     },
     async fetch() {
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)
@@ -209,6 +217,7 @@ export default {
       this.loading = false
       if (!response.error) {
         this.commodities = response.data
+        this.scrollToAnchor()
       }
       this.setPages(response.meta)
     },

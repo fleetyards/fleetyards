@@ -13,10 +13,8 @@ class ShopCommodity < ApplicationRecord
   attr_accessor :commodity_item_selected
 
   def set_commodity_item
-    self.commodity_item = if commodity_item_selected.blank?
-                            nil
-                          else
-                            GlobalID::Locator.locate(commodity_item_selected)
-                          end
+    return if commodity_item_selected.blank?
+
+    self.commodity_item = GlobalID::Locator.locate(commodity_item_selected)
   end
 end

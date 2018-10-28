@@ -9,7 +9,9 @@ en:
     add_commodity: Add Commodity
     admin:
       component:
-        new: Creae new Component
+        new: Create new Component
+      equipment:
+        new: Create new Equipment
       manufacturer:
         new: Create new Manufacturer
       model:

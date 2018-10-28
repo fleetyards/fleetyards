@@ -4,7 +4,7 @@ class Dock < ApplicationRecord
   belongs_to :station
 
   enum dock_type: %i[vehiclepad garage landingpad dockingport hangar]
-  enum ship_size: %i[small medium medium_large large extra_large capital]
+  enum ship_size: %i[extra_small small medium large extra_large capital]
 
   validates :dock_type, :station_id, :ship_size, presence: true
 

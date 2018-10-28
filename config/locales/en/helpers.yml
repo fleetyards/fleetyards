@@ -43,10 +43,12 @@ en:
         ship_size: Please select a Ship size
       stations:
         station_type: Please select a Station Type
-        planet: Please select a Planet
+        celestial_object: Please select a Celestial Object
       shops:
         station: Please select a Station
       shop_commodities:
         commodity_item: Please select a Model/Component
-      planets:
+      celestial_object:
         starsystem: Please select a Starsystem
+      equipment:
+        equipment_type: Please select a Type
