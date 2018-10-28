@@ -58,7 +58,8 @@
 
             .image {
               width: 200px;
-              height: 150px;
+              height: 100px;
+              margin: 5px 0;
               background-size: cover;
               background-color: black;
               background-position: center;
@@ -94,6 +95,7 @@
 
             h2 {
               font-size: 20px;
+              margin-top: 5px;
               font-family: 'Orbitron', sans-serif;
               font-weight: normal;
             }
