@@ -127,7 +127,7 @@
                     v-if="shop.rental"
                     class="price"
                   >
-                    {{ toUEC(commodity.rentPrice) }}
+                    {{ t('shop.rentalPrice', { price: toUEC(commodity.rentPrice) }) }}
                   </td>
                 </tr>
               </transition-group>
