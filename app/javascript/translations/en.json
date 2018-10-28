@@ -128,7 +128,13 @@
     "stats": "Stats",
     "profile": "Profile",
     "account": "Account",
-    "rsiVerification": "RSI Verification"
+    "rsiVerification": "RSI Verification",
+    "stations": {
+      "index": "Stations",
+      "overview": "Overview",
+      "starsystems": "By Starsystems",
+      "shops": "Shops"
+    }
   },
   "pagination": {
     "previous": "Previous Page",

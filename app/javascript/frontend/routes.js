@@ -131,9 +131,6 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
     },
-    redirect: {
-      name: 'starsystems',
-    },
     children: StationsRoutes,
   }, {
     path: '/cargo',
