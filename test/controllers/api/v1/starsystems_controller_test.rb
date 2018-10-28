@@ -33,12 +33,12 @@ module Api
           'celestialObjects' => [{
             'name' => 'Hurston',
             'slug' => 'hurston',
-            'designation' => nil,
+            'designation' => '1',
             'storeImage' => stanton.celestial_objects.first.store_image.url
           }, {
             'name' => 'Crusader',
             'slug' => 'crusader',
-            'designation' => nil,
+            'designation' => '2',
             'storeImage' => stanton.celestial_objects.last.store_image.url
           }],
           'createdAt' => stanton.created_at.to_time.iso8601,
@@ -55,12 +55,12 @@ module Api
           'celestialObjects' => [{
             'name' => 'Hurston',
             'slug' => 'hurston',
-            'designation' => nil,
+            'designation' => '1',
             'storeImage' => stanton.celestial_objects.first.store_image.url
           }, {
             'name' => 'Crusader',
             'slug' => 'crusader',
-            'designation' => nil,
+            'designation' => '2',
             'storeImage' => stanton.celestial_objects.last.store_image.url
           }],
           'createdAt' => stanton.created_at.to_time.iso8601,

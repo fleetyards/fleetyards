@@ -26,7 +26,7 @@ module Api
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
-            'designation' => nil,
+            'designation' => '2',
             'storeImage' => portolisar.celestial_object.store_image.url
           },
           'starsystem' => {
@@ -84,7 +84,7 @@ module Api
           'celestialObject' => {
             'name' => 'Daymar',
             'slug' => 'daymar',
-            'designation' => nil,
+            'designation' => '4',
             'storeImage' => corvolex.celestial_object.store_image.url
           },
           'starsystem' => {
@@ -118,7 +118,7 @@ module Api
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
-            'designation' => nil,
+            'designation' => '2',
             'storeImage' => portolisar.celestial_object.store_image.url
           },
           'starsystem' => {

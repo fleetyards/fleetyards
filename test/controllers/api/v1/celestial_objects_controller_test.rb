@@ -20,7 +20,7 @@ module Api
         [{
           'name' => 'Hurston',
           'slug' => 'hurston',
-          'designation' => nil,
+          'designation' => '1',
           'storeImage' => hurston.store_image.url,
           'moons' => [],
           'starsystem' => {
@@ -35,18 +35,18 @@ module Api
         }, {
           'name' => 'Crusader',
           'slug' => 'crusader',
-          'designation' => nil,
+          'designation' => '2',
           'storeImage' => crusader.store_image.url,
           'moons' => [{
-            'name' => 'Daymar',
-            'slug' => 'daymar',
-            'designation' => nil,
-            'storeImage' => crusader.moons.first.store_image.url
-          }, {
             'name' => 'Yela',
             'slug' => 'yela',
-            'designation' => nil,
+            'designation' => '3',
             'storeImage' => crusader.moons.last.store_image.url
+          }, {
+            'name' => 'Daymar',
+            'slug' => 'daymar',
+            'designation' => '4',
+            'storeImage' => crusader.moons.first.store_image.url
           }],
           'starsystem' => {
             'name' => 'Stanton',
@@ -60,7 +60,7 @@ module Api
         }, {
           'name' => 'Yela',
           'slug' => 'yela',
-          'designation' => nil,
+          'designation' => '3',
           'storeImage' => yela.store_image.url,
           'moons' => [],
           'starsystem' => {
@@ -75,7 +75,7 @@ module Api
         }, {
           'name' => 'Daymar',
           'slug' => 'daymar',
-          'designation' => nil,
+          'designation' => '4',
           'storeImage' => daymar.store_image.url,
           'moons' => [],
           'starsystem' => {
@@ -93,18 +93,18 @@ module Api
         {
           'name' => 'Crusader',
           'slug' => 'crusader',
-          'designation' => nil,
+          'designation' => '2',
           'storeImage' => crusader.store_image.url,
           'moons' => [{
-            'name' => 'Daymar',
-            'slug' => 'daymar',
-            'designation' => nil,
-            'storeImage' => crusader.moons.first.store_image.url
-          }, {
             'name' => 'Yela',
             'slug' => 'yela',
-            'designation' => nil,
+            'designation' => '3',
             'storeImage' => crusader.moons.last.store_image.url
+          }, {
+            'name' => 'Daymar',
+            'slug' => 'daymar',
+            'designation' => '4',
+            'storeImage' => crusader.moons.first.store_image.url
           }],
           'starsystem' => {
             'name' => 'Stanton',
