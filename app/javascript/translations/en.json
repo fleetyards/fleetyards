@@ -136,6 +136,11 @@
     "gap": "&hellip;"
   },
   "labels": {
+    "shop": {
+      "rentPrice": "rent / day",
+      "sellPrice": "price",
+      "buyPrice": "buying price"
+    },
     "stats": {
       "modelsByClassification": "Models by Classification",
       "modelsBySize": "Models by Size",

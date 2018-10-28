@@ -2,8 +2,9 @@
 .panel {
   table {
     thead {
-      td {
-        color: #959595;
+      th {
+        color: darken($text-color, 30%);
+        border-bottom: 2px solid darken(#444, 20%);
       }
     }
     tbody {

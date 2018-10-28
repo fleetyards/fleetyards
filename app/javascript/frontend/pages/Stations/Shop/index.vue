@@ -66,6 +66,14 @@
         <Panel v-if="commodities.length">
           <div class="table-responsive">
             <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th colspan="2" />
+                  <th v-if="shop.selling">{{ t('labels.shop.sellPrice') }}</th>
+                  <th v-if="shop.buying">{{ t('labels.shop.buyPrice') }}</th>
+                  <th v-if="shop.rental">{{ t('labels.shop.rentPrice') }}</th>
+                </tr>
+              </thead>
               <transition-group
                 name="fade"
                 tag="tbody"
