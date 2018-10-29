@@ -1,15 +1,8 @@
 # frozen_string_literal: true
 
 module RansackHelper
-  def query_params
-    @query_params ||= begin
-      orginal_params = params.to_unsafe_h.fetch(:q, '{}')
-      orginal_params = orginal_params.to_json if orginal_params.is_a? Hash
-      q = JSON.parse(orginal_params)
-      q.transform_keys(&:underscore)
-    end
-  rescue JSON::ParserError
-    {}
+  def query_params(*filters)
+    @query_params ||= ActionController::Parameters.new(parse_query_params).permit(filters)
   end
 
   def per_page(model)
@@ -28,5 +21,14 @@ module RansackHelper
     else
       fallback
     end
+  end
+
+  private def parse_query_params
+    orginal_params = params.to_unsafe_h.fetch(:q, '{}')
+    orginal_params = orginal_params.to_json if orginal_params.is_a? Hash
+    q = JSON.parse(orginal_params)
+    q.transform_keys(&:underscore)
+  rescue JSON::ParserError
+    {}
   end
 end

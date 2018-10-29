@@ -318,6 +318,14 @@
       "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
     },
     "filters": {
+      "shopItems": {
+        "category": "Category",
+        "subCategory": "Sub Category",
+        "name": "Name",
+        "manufacturer": "Manufacturer",
+        "minPrice": "min. Price",
+        "maxPrice": "max. Price"
+      },
       "vehicles": {
         "name": "Name",
         "purchased": "Purchased",
@@ -363,6 +371,11 @@
       "search": "Search for Ships..."
     },
     "filters": {
+      "shopItems": {
+        "name": "Aurora, L86, Laranite...",
+        "minPrice": "...",
+        "maxPrice": "..."
+      },
       "vehicles": {
         "name": "Enterprise, Nebuchadnezzar..."
       },

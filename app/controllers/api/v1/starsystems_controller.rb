@@ -9,9 +9,9 @@ module Api
       def index
         authorize! :index, :api_starsystems
 
-        query_params['sorts'] = sort_by_name
+        starsystem_query_params['sorts'] = sort_by_name
 
-        @q = Starsystem.visible.ransack(query_params)
+        @q = Starsystem.visible.ransack(starsystem_query_params)
 
         @starsystems = @q.result
                          .page(params[:page])
@@ -21,6 +21,10 @@ module Api
       def show
         authorize! :show, :api_starsystems
         @starsystem = Starsystem.visible.find_by!(slug: params[:slug])
+      end
+
+      private def starsystem_query_params
+        @starsystem_query_params ||= query_params
       end
     end
   end

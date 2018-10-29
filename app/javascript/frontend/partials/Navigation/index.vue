@@ -320,7 +320,7 @@ export default {
       this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components')
       this.userRouteActive = path.includes('settings')
       this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
-      this.stationRouteActive = path.includes('stations') || this.starsystemRouteActive
+      this.stationRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
     async logout() {

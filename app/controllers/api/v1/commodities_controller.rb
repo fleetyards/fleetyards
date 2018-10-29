@@ -8,11 +8,15 @@ module Api
       def index
         authorize! :index, :api_commodities
 
-        query_params['sorts'] = sort_by_name
+        commodity_query_params['sorts'] = sort_by_name
 
-        @q = Commodity.ransack(query_params)
+        @q = Commodity.ransack(commodity_query_params)
 
         @commodities = @q.result.offset(params[:offset]).limit(params[:limit])
+      end
+
+      private def commodity_query_params
+        @commodity_query_params ||= query_params
       end
     end
   end

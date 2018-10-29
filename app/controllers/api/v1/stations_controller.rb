@@ -8,10 +8,10 @@ module Api
 
       def index
         authorize! :index, :api_stations
-        query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+        station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
 
         @q = Station.visible
-                    .ransack(query_params)
+                    .ransack(station_query_params)
 
         @stations = @q.result
                       .page(params[:page])
@@ -21,6 +21,12 @@ module Api
       def show
         authorize! :show, :api_stations
         @station = Station.visible.find_by!(slug: params[:slug])
+      end
+
+      private def station_query_params
+        @station_query_params ||= query_params(
+          :celestial_object_slug_eq
+        )
       end
     end
   end

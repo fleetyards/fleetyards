@@ -160,9 +160,6 @@ export default {
     clearNameOrDescription() {
       this.form.nameOrDescriptionCont = null
     },
-    clearOnSale() {
-      this.form.onSaleEq = null
-    },
   },
 }
 </script>

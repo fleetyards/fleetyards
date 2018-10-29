@@ -27,6 +27,7 @@ export default function getStorePlugins() {
       'hangarFilterVisible',
       'modelDetailsVisible',
       'modelFilterVisible',
+      'shopFilterVisible',
     ],
   })]
 }

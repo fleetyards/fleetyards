@@ -51,7 +51,27 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 col-md-6">
+        <div class="page-actions page-actions-left">
+          <Btn
+            v-tooltip="toggleFiltersTooltip"
+            :active="shopFilterVisible"
+            :aria-label="toggleFiltersTooltip"
+            small
+            @click.native="toggleFilter"
+          >
+            <i
+              v-if="isFilterSelected"
+              class="fas fa-filter"
+            />
+            <i
+              v-else
+              class="fal fa-filter"
+            />
+          </Btn>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
         <div class="pull-right">
           <Paginator
             v-if="commodities.length"
@@ -61,8 +81,27 @@
         </div>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-xs-12">
+      <transition
+        name="slide"
+        appear
+        @before-enter="toggleFullscreen"
+        @after-leave="toggleFullscreen"
+      >
+        <div
+          v-show="shopFilterVisible"
+          class="col-xs-12 col-md-3 col-xlg-2"
+        >
+          <FilterForm />
+        </div>
+      </transition>
+      <div
+        :class="{
+          'col-md-9 col-xlg-10': !fullscreen,
+        }"
+        class="col-xs-12 col-animated"
+      >
         <Panel v-if="commodities.length">
           <div class="table-responsive">
             <table class="table table-hover table-striped">
@@ -79,65 +118,14 @@
                 tag="tbody"
                 appear
               >
-                <tr
+                <ShopItemRow
                   v-for="(commodity, index) in commodities"
                   :key="index"
-                  :id="commodity.slug"
-                  class="fade-item"
-                >
-                  <td class="store-image">
-                    <router-link
-                      v-if="link(commodity.commodityItem)"
-                      :to="link(commodity.commodityItem)"
-                    >
-                      <div
-                        v-lazy:background-image="commodity.commodityItem.storeImage"
-                        :key="commodity.commodityItem.storeImage"
-                        class="image"
-                        alt="storeImage"
-                      />
-                    </router-link>
-                    <div
-                      v-lazy:background-image="commodity.commodityItem.storeImage"
-                      v-else
-                      :key="commodity.commodityItem.storeImage"
-                      class="image"
-                      alt="storeImage"
-                    />
-                  </td>
-                  <td class="description">
-                    <h2>
-                      <router-link
-                        v-if="link(commodity.commodityItem)"
-                        :to="link(commodity.commodityItem)"
-                      >
-                        {{ commodity.commodityItem.name }}
-                      </router-link>
-                      <span v-else>
-                        {{ commodity.commodityItem.type }}
-                      </span>
-                    </h2>
-                    {{ commodity.commodityItem.description }}
-                  </td>
-                  <td
-                    v-if="shop.selling"
-                    class="price"
-                  >
-                    {{ toUEC(commodity.sellPrice) }}
-                  </td>
-                  <td
-                    v-if="shop.buying"
-                    class="price"
-                  >
-                    {{ toUEC(commodity.buyPrice) }}
-                  </td>
-                  <td
-                    v-if="shop.rental"
-                    class="price"
-                  >
-                    {{ t('shop.rentalPrice', { price: toUEC(commodity.rentPrice) }) }}
-                  </td>
-                </tr>
+                  :commodity="commodity"
+                  :selling="shop.selling"
+                  :rental="shop.rental"
+                  :buying="shop.buying"
+                />
               </transition-group>
             </table>
           </div>
@@ -170,8 +158,13 @@ import Loader from 'frontend/components/Loader'
 import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/components/Panel'
 import ShopBaseMetrics from 'frontend/partials/Shops/BaseMetrics'
+import ShopItemRow from 'frontend/partials/Shops/ShopItemRow'
+import FilterForm from 'frontend/partials/Shops/ShopItemFilterForm'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Pagination from 'frontend/mixins/Pagination'
+import Filters from 'frontend/mixins/Filters'
+import Btn from 'frontend/components/Btn'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -179,16 +172,30 @@ export default {
     EmptyBox,
     Panel,
     ShopBaseMetrics,
+    ShopItemRow,
+    FilterForm,
+    Btn,
   },
-  mixins: [I18n, MetaInfo, Hash, Pagination],
+  mixins: [I18n, MetaInfo, Filters, Hash, Pagination],
   data() {
     return {
       loading: false,
       shop: null,
       commodities: [],
+      fullscreen: false,
     }
   },
   computed: {
+    ...mapGetters([
+      'shopFilterVisible',
+      'mobile',
+    ]),
+    toggleFiltersTooltip() {
+      if (this.shopFilterVisible) {
+        return this.t('actions.hideFilter')
+      }
+      return this.t('actions.showFilter')
+    },
     emptyBoxVisible() {
       return !this.loading && this.commodities.length === 0
     },
@@ -212,19 +219,18 @@ export default {
   },
   created() {
     this.fetch()
+    if (this.mobile) {
+      this.$store.commit('setShopFilterVisible', false)
+    }
     this.fetchCommodities()
+    this.toggleFullscreen()
   },
   methods: {
-    link(item) {
-      if (item.type !== 'Model') {
-        return null
-      }
-      return {
-        name: 'model',
-        params: {
-          slug: item.slug,
-        },
-      }
+    toggleFullscreen() {
+      this.fullscreen = !this.shopFilterVisible
+    },
+    toggleFilter() {
+      this.$store.dispatch('toggleShopFilter')
     },
     async fetch() {
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)

@@ -16,13 +16,19 @@ module Api
 
         scope = scope.with_model if params[:with_model]
 
-        query_params['sorts'] = sort_by_name
+        manufacturer_query_params['sorts'] = sort_by_name
 
-        @q = scope.ransack(query_params)
+        @q = scope.ransack(manufacturer_query_params)
 
         @manufacturers = @q.result
                            .page(params[:page])
                            .per(per_page(Manufacturer))
+      end
+
+      private def manufacturer_query_params
+        @manufacturer_query_params ||= query_params(
+          :name_or_slug_cont, name_or_slug_in: []
+        )
       end
     end
   end

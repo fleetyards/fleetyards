@@ -15,30 +15,42 @@ module Api
       let(:new_deal) { shops :new_deal }
       let(:explorer) { shop_commodities :commodity_three }
       let(:andromeda) { shop_commodities :commodity_four }
-      let(:show_result) do
+      let(:index_result) do
         [{
+          'name' => '600i',
+          'slug' => '600i',
+          'storeImage' => explorer.commodity_item.store_image.url,
+          'category' => 'model',
+          'subCategory' => 'explorer',
+          'subCategoryLabel' => 'Explorer',
+          'description' => nil,
           'sellPrice' => nil,
           'buyPrice' => nil,
           'rentPrice' => nil,
-          'commodityItem' => {
-            'name' => '600i',
-            'slug' => '600i',
-            'description' => nil,
-            'storeImage' => explorer.commodity_item.store_image.url,
-            'type' => 'Model'
+          'manufacturer' => {
+            'name' => 'Origin',
+            'slug' => 'origin',
+            'code' => nil,
+            'logo' => nil
           },
           'createdAt' => explorer.created_at.to_time.iso8601,
           'updatedAt' => explorer.updated_at.to_time.iso8601
         }, {
+          'name' => 'Andromeda',
+          'slug' => 'andromeda',
+          'storeImage' => andromeda.commodity_item.store_image.url,
+          'category' => 'model',
+          'subCategory' => 'multi_role',
+          'subCategoryLabel' => 'Multi role',
+          'description' => nil,
           'sellPrice' => nil,
           'buyPrice' => nil,
           'rentPrice' => nil,
-          'commodityItem' => {
-            'name' => 'Andromeda',
-            'slug' => 'andromeda',
-            'description' => nil,
-            'storeImage' => andromeda.commodity_item.store_image.url,
-            'type' => 'Model'
+          'manufacturer' => {
+            'name' => 'RSI',
+            'slug' => 'rsi',
+            'code' => nil,
+            'logo' => nil
           },
           'createdAt' => andromeda.created_at.to_time.iso8601,
           'updatedAt' => andromeda.updated_at.to_time.iso8601
@@ -52,9 +64,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
       end
 
@@ -71,9 +81,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
       end
     end

@@ -426,7 +426,7 @@ export default {
       })
     },
     async fetchGroups() {
-      const response = await this.$api.get('hangar-groups', {})
+      const response = await this.$api.get('hangar-groups')
       if (!response.error) {
         this.hangarGroups = response.data
       }

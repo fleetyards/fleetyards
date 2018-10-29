@@ -94,6 +94,8 @@ v1_api_routes = lambda do
     end
   end
 
+  get 'filters/shop-commodities/sub-categories' => 'shop_commodities#sub_categories'
+
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle
     resources :orgs, only: %i[show], param: :sid

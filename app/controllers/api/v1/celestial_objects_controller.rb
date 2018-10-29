@@ -9,10 +9,10 @@ module Api
       def index
         authorize! :index, :api_celestial_objects
 
-        query_params['sorts'] = sort_by_name('designation asc', 'designation asc')
+        celestial_object_query_params['sorts'] = sort_by_name('designation asc', 'designation asc')
 
         @q = CelestialObject.visible
-                            .ransack(query_params)
+                            .ransack(celestial_object_query_params)
 
         @celestial_objects = @q.result
                                .page(params[:page])
@@ -22,6 +22,10 @@ module Api
       def show
         authorize! :show, :api_celestial_objects
         @celestial_object = CelestialObject.visible.find_by!(slug: params[:slug])
+      end
+
+      private def celestial_object_query_params
+        @celestial_object_query_params ||= query_params
       end
     end
   end

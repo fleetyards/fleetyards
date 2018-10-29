@@ -145,7 +145,6 @@ export default {
     return {
       loading: false,
       models: [],
-      filters: [],
       fullscreen: false,
     }
   },
