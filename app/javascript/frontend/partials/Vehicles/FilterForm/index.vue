@@ -37,8 +37,8 @@
     <FilterGroup
       v-model="form.modelManufacturerSlugIn"
       :label="t('labels.filters.models.manufacturer')"
-      :name="`${prefix}-manufacturer`"
       :fetch="fetchManufacturers"
+      name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
       paginated
@@ -48,45 +48,45 @@
     <FilterGroup
       v-model="form.modelProductionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
-      :name="`${prefix}-production-status`"
       :fetch="fetchProductionStatus"
+      name="production-status"
       multiple
     />
     <FilterGroup
       v-model="form.modelClassificationIn"
       :label="t('labels.filters.models.classification')"
-      :name="`${prefix}-classification`"
       :fetch="fetchClassifications"
+      name="classification"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.modelFocusIn"
       :label="t('labels.filters.models.focus')"
-      :name="`${prefix}-focus`"
       :fetch="fetchFocus"
+      name="focus"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.modelSizeIn"
       :label="t('labels.filters.models.size')"
-      :name="`${prefix}-size`"
       :fetch="fetchSize"
+      name="size"
       multiple
     />
     <FilterGroup
       :options="pledgePriceOptions"
       v-model="form.modelPledgePriceIn"
       :label="t('labels.filters.models.pledgePrice')"
-      :name="`${prefix}-pledge-price`"
+      name="pledge-price"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
       v-model="form.modelPriceIn"
       :label="t('labels.filters.models.price')"
-      :name="`${prefix}-price`"
+      name="price"
       multiple
     />
     <FilterGroup
@@ -99,7 +99,7 @@
       })"
       v-model="form.hangarGroupsSlugIn"
       :label="t('labels.filters.vehicles.group')"
-      :name="`${prefix}-hangar-group`"
+      name="hangar-group"
       multiple
     />
     <RadioList
@@ -108,17 +108,16 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.purchasedEq"
-      :name="`${prefix}-purchased`"
+      name="purchased"
     />
     <RadioList
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.modelOnSaleEq"
-      :name="`${prefix}-sale`"
+      name="sale"
     />
     <Btn
-      v-if="!hideButtons"
       :disabled="!isFilterSelected"
       block
       @click.native="reset"
@@ -144,19 +143,11 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
-    hideButtons: {
-      type: Boolean,
-      default: false,
-    },
     hangarGroupsOptions: {
       type: Array,
       default() {
         return []
       },
-    },
-    prefix: {
-      type: String,
-      default: 'filter',
     },
   },
   data() {

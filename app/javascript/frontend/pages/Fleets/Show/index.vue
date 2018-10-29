@@ -103,7 +103,7 @@
           class="row"
         >
           <div class="hidden-xs hidden-sm col-md-3 col-xlg-2">
-            <ModelsFilterForm :filters="filters" />
+            <ModelsFilterForm />
           </div>
           <div class="col-md-9 col-xlg-10">
             <transition-group
@@ -224,7 +224,6 @@ export default {
     currentUser() {
       if (this.isMember) {
         this.fetchModels()
-        this.fetchFilters()
         this.fetchCount()
       }
     },
@@ -233,7 +232,6 @@ export default {
     this.fetch()
     if (this.isMember) {
       this.fetchModels()
-      this.fetchFilters()
       this.fetchCount()
     }
   },
@@ -270,12 +268,6 @@ export default {
       const response = await this.$api.get(`fleets/${this.$route.params.sid}/count`)
       if (!response.error) {
         this.fleetCount = response.data
-      }
-    },
-    async fetchFilters() {
-      const response = await this.$api.get('models/filters')
-      if (!response.error) {
-        this.filters = response.data
       }
     },
   },

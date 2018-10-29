@@ -24,9 +24,18 @@ module Api
       end
 
       private def station_query_params
-        @station_query_params ||= query_params(
-          :celestial_object_slug_eq
-        )
+        @station_query_params ||= begin
+          permitted_query_params = query_params(
+            :celestial_object_slug_eq, :name_cont,
+            celestial_object_slug_in: [], starsystem_slug_in: []
+          )
+
+          if permitted_query_params['starsystem_slug_in'].present?
+            permitted_query_params['celestial_object_starsystem_slug_in'] = permitted_query_params.delete('starsystem_slug_in')
+          end
+
+          permitted_query_params
+        end
       end
     end
   end

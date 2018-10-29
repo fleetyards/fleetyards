@@ -28,6 +28,7 @@ export default function getStorePlugins() {
       'modelDetailsVisible',
       'modelFilterVisible',
       'shopFilterVisible',
+      'stationFilterVisible',
     ],
   })]
 }

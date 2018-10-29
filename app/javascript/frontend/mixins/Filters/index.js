@@ -1,3 +1,5 @@
+import { debounce } from 'debounce'
+
 export default {
   data() {
     return {
@@ -108,7 +110,7 @@ export default {
         query: {},
       })
     },
-    filter() {
+    filter: debounce(function debounced() {
       const query = {
         q: JSON.parse(JSON.stringify(this.q)),
       }
@@ -123,7 +125,7 @@ export default {
         name: this.$route.name,
         query,
       })
-    },
+    }, 500),
     fetchManufacturers({ page, search, missingValue }) {
       const query = {
         with_model: true,

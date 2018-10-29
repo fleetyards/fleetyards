@@ -22,21 +22,21 @@
       :options="categoryOptions"
       v-model="form.categoryIn"
       :label="t('labels.filters.shopItems.category')"
-      :name="`${prefix}-category`"
+      name="category"
       multiple
     />
     <FilterGroup
       v-model="form.subCategoryIn"
       :label="t('labels.filters.shopItems.subCategory')"
-      :name="`${prefix}-sub-category`"
       :fetch="fetchSubCategories"
+      name="sub-category"
       multiple
     />
     <FilterGroup
       v-model="form.manufacturerSlugIn"
       :label="t('labels.filters.shopItems.manufacturer')"
-      :name="`${prefix}-manufacturer`"
       :fetch="fetchManufacturers"
+      name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
       paginated
@@ -80,7 +80,6 @@
       />
     </div>
     <Btn
-      v-if="!hideButtons"
       :disabled="!isFilterSelected"
       block
       @click.native="reset"
@@ -94,27 +93,15 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
-import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
-    RadioList,
     FilterGroup,
     Btn,
   },
   mixins: [I18n, Filters],
-  props: {
-    hideButtons: {
-      type: Boolean,
-      default: false,
-    },
-    prefix: {
-      type: String,
-      default: 'filter',
-    },
-  },
   data() {
     const query = this.$route.query.q || {}
     return {

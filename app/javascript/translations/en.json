@@ -12,6 +12,7 @@
     "login": "Login",
     "signUp": "Sign Up",
     "hangar": "My Hangar",
+    "stations": "Stations",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
     "celestialObject": "%{celestialObject} in the %{starsystem} System",
@@ -326,6 +327,11 @@
         "minPrice": "min. Price",
         "maxPrice": "max. Price"
       },
+      "stations": {
+        "name": "Name",
+        "celestialObject": "Celestial Object",
+        "starsystem": "Starsystem"
+      },
       "vehicles": {
         "name": "Name",
         "purchased": "Purchased",
@@ -371,6 +377,9 @@
       "search": "Search for Ships..."
     },
     "filters": {
+      "stations": {
+        "name": "Port Olisar, Teasa Spaceport..."
+      },
       "shopItems": {
         "name": "Aurora, L86, Laranite...",
         "minPrice": "...",
