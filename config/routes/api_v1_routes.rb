@@ -92,7 +92,6 @@ v1_api_routes = lambda do
     collection do
       get 'ship-sizes' => 'stations#ship_sizes'
       get 'station-types' => 'stations#station_types'
-      get 'shop-types' => 'shops#shop_types'
     end
     resources :shops, param: :slug, only: %i[show] do
       resources :shop_commodities, path: 'shop-commodities', only: %i[index]
@@ -100,6 +99,12 @@ v1_api_routes = lambda do
   end
 
   get 'filters/shop-commodities/sub-categories' => 'shop_commodities#sub_categories'
+
+  resources :shops, param: :slug, only: %i[index] do
+    collection do
+      get 'shop-types' => 'shops#shop_types'
+    end
+  end
 
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle

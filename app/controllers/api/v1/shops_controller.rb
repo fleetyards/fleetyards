@@ -10,6 +10,18 @@ module Api
         @shop = station.shops.visible.find_by!(slug: params[:slug])
       end
 
+      def index
+        authorize! :index, :api_shops
+
+        shop_query_params['sorts'] = sort_by_name
+
+        @q = Shop.visible.ransack(shop_query_params)
+
+        @shops = @q.result
+                   .page(params[:page])
+                   .per(per_page(Shop))
+      end
+
       def shop_types
         authorize! :show, :api_shops
 
@@ -20,6 +32,13 @@ module Api
 
       private def station
         @station ||= Station.visible.find_by!(slug: params[:station_slug])
+      end
+
+      private def shop_query_params
+        @shop_query_params ||= query_params(
+          :name_cont, :commodity_name_cont,
+          commodity_category_in: [], station_in: [], celestial_object_in: [], starsystem_in: []
+        )
       end
     end
   end

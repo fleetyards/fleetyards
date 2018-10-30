@@ -20,7 +20,7 @@ class Ability
     can %i[index], :api_manufacturers
     can %i[index show], :api_stations
     can %i[show index], :api_celestial_objects
-    can %i[show], :api_shops
+    can %i[index show], :api_shops
     can %i[index], :api_shop_commodities
     can %i[show index], :api_starsystems
     can %i[index], :api_images

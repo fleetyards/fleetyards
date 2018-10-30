@@ -166,7 +166,7 @@ export default {
       return this.$api.get('stations/station-types')
     },
     fetchShopTypes() {
-      return this.$api.get('stations/shop-types')
+      return this.$api.get('shops/shop-types')
     },
   },
 }
