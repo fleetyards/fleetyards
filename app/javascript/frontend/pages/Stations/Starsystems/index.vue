@@ -5,7 +5,7 @@
         <h1 class="sr-only">{{ t('headlines.starsystems') }}</h1>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xs-12">
         <Panel>
           <div class="starmap">
@@ -31,7 +31,7 @@
           </div>
         </Panel>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-xs-12">
         <div class="pull-right">
