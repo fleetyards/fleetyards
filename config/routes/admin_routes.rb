@@ -33,8 +33,11 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
     put 'toggle_background', on: :member
   end
 
+  resources :celestial_objects, path: 'celestial-objects', except: [:show]
+  resources :starsystems, except: [:show]
   resources :trade_hubs, except: [:show]
   resources :commodities, except: [:show]
+  resources :equipment, except: [:show]
   resources :stations, except: [:show] do
     get 'gallery', on: :member
   end

@@ -2,16 +2,23 @@
 
 json.name station.name
 json.slug station.slug
-json.type station.station_type_label
+json.location station.location
+json.type station.station_type
+json.type_label station.station_type_label
 json.store_image station.store_image.url
-json.planet do
-  json.partial! 'api/v1/stations/planet', planet: station.planet if station.planet.present?
+json.description station.description
+json.celestial_object do
+  json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
 end
-json.planet nil if station.planet.blank?
 json.starsystem do
-  json.partial! 'api/v1/stations/starsystem', starsystem: station.starsystem if station.starsystem.present?
+  json.partial! 'api/v1/starsystems/base', starsystem: station.starsystem
 end
-json.starsystem nil if station.starsystem.blank?
-json.ship_counts do
-  json.array! station.ship_counts, partial: 'api/v1/stations/ship_count', as: :ship_count
+json.shops do
+  json.array! station.shops.visible.order(:name), partial: 'api/v1/shops/base', as: :shop
+end
+json.docks do
+  json.array! station.dock_counts, partial: 'api/v1/stations/dock', as: :dock_count
+end
+json.habitations do
+  json.array! station.habitation_counts, partial: 'api/v1/stations/habitation', as: :habitation_count
 end

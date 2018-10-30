@@ -37,6 +37,7 @@ en:
       description: "%{model} Videos"
   nav:
     components: Components
+    equipment: Equipment
     home: Home
     images: Images
     manufacturers: Manufacturers
@@ -47,12 +48,21 @@ en:
     workers: Workers
     trade_hubs: Trade Hubs
     commodities: Commodities
+    celestial_objects: Celestial Objects
+    starsystems: Starsystems
   title:
     frontend:
       home: Home
       images: Images
       cargo: Cargo
       ships: Ships
+      shops: Shops
+      stations: Stations
+      starsystems: Starsystems
+      starsystem: "%{starsystem} Starsystem"
+      celestial_object: "%{celestial_object} in the %{starsystem} System"
+      station: "%{station} near %{celestial_object}"
+      shop: "%{shop} - %{station}"
       ship_images: "%{model} Images"
       ship_videos: "%{model} Videos"
       commodities: Commodities
@@ -105,6 +115,18 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    equipment:
+      edit: Edit Equipment
+      index: Equipment
+      new: New Equipment
+    celestial_object:
+      edit: Edit Celestial Object
+      index: Celestial Objects
+      new: New Planet
+    starsystem:
+      edit: Edit Starsystem
+      index: Starsystems
+      new: New Starsystem
     not_found: 404
     sign_in: Login
     password:

@@ -1,0 +1,14 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th.preview
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :equipment_type)
+        %th=sort_link(@q, :hidden)
+        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
+    %tbody
+      = render partial: "admin/equipment/show", collection: @equipment_list, as: :equipment
+
+      - if @equipment_list.blank?
+        = render "shared/tables/blank", count: 5, resource: "equipment"

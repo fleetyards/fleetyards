@@ -6,10 +6,12 @@ en:
     add_video: Add Video
     add_trade_commodity: Add Commodity
     add_dock: Add Dock
-    add_shop: Add Shop
+    add_commodity: Add Commodity
     admin:
       component:
-        new: Creae new Component
+        new: Create new Component
+      equipment:
+        new: Create new Equipment
       manufacturer:
         new: Create new Manufacturer
       model:
@@ -24,6 +26,10 @@ en:
         new: Create new Station
       shop:
         new: Create new Shop
+      celestial_object:
+        new: Create new Celestial Object
+      starsystem:
+        new: Create new Starsystem
     back: Back
     cancel: Cancel
     confirm: Confirm Account

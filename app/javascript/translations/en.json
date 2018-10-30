@@ -12,6 +12,13 @@
     "login": "Login",
     "signUp": "Sign Up",
     "hangar": "My Hangar",
+    "stations": "Stations",
+    "shops": "Shops",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "station": "%{station} near %{celestialObject}",
+    "shop": "%{shop} - %{station}",
     "hangarPublic": "%{user} Hangar",
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
@@ -69,6 +76,15 @@
       "models": "Compare Ships"
     },
     "cargo": "Cargo",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "celestialObjects": "Celestial Objects",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "moons": "Moons",
+    "stations": "Stations",
+    "station": "%{station} near %{celestialObject}",
+    "shops": "Shops",
+    "shop": "%{shop} on %{station}",
     "commodities": "Commodities",
     "rsiVerification": "Verify your RSI-Account",
     "hangarGuide": "Not much to see here?"
@@ -114,7 +130,13 @@
     "stats": "Stats",
     "profile": "Profile",
     "account": "Account",
-    "rsiVerification": "RSI Verification"
+    "rsiVerification": "RSI Verification",
+    "stations": {
+      "index": "Stations",
+      "overview": "Overview",
+      "starsystems": "By Starsystems",
+      "shops": "Shops"
+    }
   },
   "pagination": {
     "previous": "Previous Page",
@@ -122,6 +144,11 @@
     "gap": "&hellip;"
   },
   "labels": {
+    "shop": {
+      "rentPrice": "rent / day",
+      "sellPrice": "price",
+      "buyPrice": "buying price"
+    },
     "stats": {
       "modelsByClassification": "Models by Classification",
       "modelsBySize": "Models by Size",
@@ -156,6 +183,7 @@
       }
     },
     "unknown": "Unknown",
+    "none": "-",
     "searchInput": "Search Input",
     "search": "Search",
     "unknownModel": "%{slug} Unknown",
@@ -215,6 +243,7 @@
       }
     },
     "metrics": {
+      "info": "Info",
       "base": "Base",
       "crew": "Crew",
       "speed": "Speed",
@@ -291,6 +320,31 @@
       "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
     },
     "filters": {
+      "shops": {
+        "name": "Name",
+        "commodityName": "Commodity Name",
+        "type": "Type",
+        "celestialObject": "Celestial object",
+        "starsystem": "Starsystem",
+        "station": "Station"
+      },
+      "shopItems": {
+        "category": "Category",
+        "subCategory": "Sub Category",
+        "name": "Name",
+        "manufacturer": "Manufacturer",
+        "minPrice": "min. Price",
+        "maxPrice": "max. Price"
+      },
+      "stations": {
+        "name": "Name",
+        "celestialObject": "Celestial Object",
+        "starsystem": "Starsystem",
+        "type": "Station Type",
+        "shops": "Shops",
+        "docks": "Docks",
+        "habs": "Habitation?"
+      },
       "vehicles": {
         "name": "Name",
         "purchased": "Purchased",
@@ -319,6 +373,13 @@
         "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
       }
+    },
+    "station": {
+      "docks": "Docks",
+      "location": "Location",
+      "type": "Type",
+      "habitation": "Habitation",
+      "habs": "Habs"
     }
   },
   "placeholders": {
@@ -329,6 +390,18 @@
       "search": "Search for Ships..."
     },
     "filters": {
+      "shops": {
+        "name": "Casaba, Platinum Bay...",
+        "commodityName": "Aurora, L86, Laranite..."
+      },
+      "stations": {
+        "name": "Port Olisar, Teasa Spaceport..."
+      },
+      "shopItems": {
+        "name": "Aurora, L86, Laranite...",
+        "minPrice": "minmal Price in UEC",
+        "maxPrice": "maximal Price in UEC"
+      },
       "vehicles": {
         "name": "Enterprise, Nebuchadnezzar..."
       },
@@ -533,6 +606,10 @@
       }
     }
   },
+  "station": {
+    "type": "Type",
+    "location": "Location"
+  },
   "model": {
     "focus": "Focus",
     "classification": "Classification",
@@ -589,6 +666,12 @@
         "rank": "Organization rank"
       }
     }
+  },
+  "shop": {
+    "type": "Type",
+    "celestialObject": "Location",
+    "station": "Station",
+    "rentalPrice": "%{price} / day"
   },
   "number": {
     "format": {

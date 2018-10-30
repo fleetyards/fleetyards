@@ -15,26 +15,33 @@
       %li{class: active_nav?('admin-components')}
         = link_to Component.name.humanize.pluralize, admin_components_path
 
-  %li.dropdown{class: active_nav?(%w(admin-stations admin-shops))}
+  %li.dropdown{class: active_nav?(%w(admin-stations admin-shops admin-trade-hubs admin-commodities admin-planets admin-starsystems))}
     %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
       = Station.name.humanize.pluralize
       %b.caret
     %ul.dropdown-menu
       %li{class: active_nav?('admin-stations')}
         = link_to Station.name.humanize.pluralize, admin_stations_path
-      %li.divider
       %li{class: active_nav?('admin-shops')}
         = link_to Shop.name.humanize.pluralize, admin_shops_path
+      %li{class: active_nav?('admin-commodities')}
+        = link_to I18n.t(:"nav.commodities"), admin_commodities_path
+      %li{class: active_nav?('admin-equipment')}
+        = link_to I18n.t(:"nav.equipment"), admin_equipment_index_path
+      %li.divider
+      %li{class: active_nav?('admin-trade-hubs')}
+        = link_to I18n.t(:"nav.trade_hubs"), admin_trade_hubs_path
+      %li.divider
+      %li{class: active_nav?('admin-celestial_objects')}
+        = link_to I18n.t(:"nav.celestial_objects"), admin_celestial_objects_path
+      %li{class: active_nav?('admin-starsystems')}
+        = link_to I18n.t(:"nav.starsystems"), admin_starsystems_path
   %li{class: active_nav?('admin-images')}
     = link_to I18n.t(:"nav.images"), admin_images_path
   %li{class: active_nav?('admin-users')}
     = link_to I18n.t(:"nav.users"), admin_users_path
   %li{class: active_nav?('admin-vehicles')}
     = link_to Vehicle.name.humanize.pluralize, admin_vehicles_path
-  %li{class: active_nav?('admin-trade-hubs')}
-    = link_to I18n.t(:"nav.trade_hubs"), admin_trade_hubs_path
-  %li{class: active_nav?('admin-commodities')}
-    = link_to I18n.t(:"nav.commodities"), admin_commodities_path
   %li
     %a{href: admin_sidekiq_web_url, target: "_blank"}
       = I18n.t(:"nav.workers")

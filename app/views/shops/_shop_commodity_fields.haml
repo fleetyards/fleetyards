@@ -1,0 +1,31 @@
+.row.fields
+  .col-xs-12.col-md-5
+    .form-group{class: form_error?(fields.object, :commodity_item)}
+      :ruby
+        options = {
+          selected: fields.object.commodity_item&.to_global_id,
+          include_blank: I18n.t(:"helpers.prompt.shop_commodities.commodity_item")
+        }
+      = fields.grouped_collection_select :commodity_item_selected, [Model, Component, Commodity, Equipment], :ordered_by_name, :model_name, :to_global_id, :name, options, class: 'form-control'
+      = form_errors fields.object, :commodity_item
+
+  .col-xs-12.col-md-2
+    .form-group
+      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.sell_price"), class: 'form-control', step: 0.01
+
+  .col-xs-12.col-md-2
+    .form-group
+      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.buy_price"), class: 'form-control', step: 0.01
+
+  .col-xs-12.col-md-2
+    .form-group
+      = fields.number_field :rent_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price"), class: 'form-control', step: 0.01
+
+  .col-xs-12.col-md-1
+    .btn-group-responsive.form-group.pull-right
+      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+        %i.fa.fa-trash
+
+  .clearfix
+  .col-xs-12.visible-sm.visible-xs
+    %hr

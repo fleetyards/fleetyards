@@ -1,0 +1,24 @@
+@import "~stylesheets/variables";
+
+.starmap {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  .starsystem {
+    position: absolute;
+    display: block;
+    width: 1.530406766%;
+    height: 2.166476625%;
+    box-shadow: 0 0 20px $primary;
+    border-radius: 50%;
+    transition: box-shadow ease 0.5s, border ease 1s;
+
+    &:hover {
+      border: 1px solid $primary;
+      box-shadow: 0 0 30px $primary;
+    }
+  }
+}

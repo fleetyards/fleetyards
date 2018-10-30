@@ -16,6 +16,14 @@ class Vehicle < ApplicationRecord
   after_save :set_flagship
   after_commit :broadcast_update
 
+  ransack_alias :on_sale, :model_on_sale
+  ransack_alias :manufacturer, :model_manufacturer_slug
+  ransack_alias :classification, :model_classification
+  ransack_alias :focus, :model_focus
+  ransack_alias :size, :model_size
+  ransack_alias :production_status, :model_production_status
+  ransack_alias :hangar_groups, :hangar_groups_slug
+
   def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
   end

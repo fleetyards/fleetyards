@@ -52,6 +52,13 @@ class Model < ApplicationRecord
   after_save :broadcast_update
   after_save :send_new_model_notification
 
+  ransack_alias :name, :name_or_slug
+  ransack_alias :manufacturer, :manufacturer_slug
+
+  def self.ordered_by_name
+    order(name: :asc)
+  end
+
   def self.production_status_filters
     Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
@@ -83,7 +90,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    Model.visible.active.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+    %w[vehicle snub small medium large capital].map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,

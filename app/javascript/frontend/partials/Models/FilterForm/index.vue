@@ -19,10 +19,10 @@
       />
     </div>
     <FilterGroup
-      v-model="form.manufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
-      :name="`${prefix}-manufacturer`"
       :fetch="fetchManufacturers"
+      name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
       paginated
@@ -32,45 +32,45 @@
     <FilterGroup
       v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
-      :name="`${prefix}-production-status`"
       :fetch="fetchProductionStatus"
+      name="production-status"
       multiple
     />
     <FilterGroup
       v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
-      :name="`${prefix}-classification`"
       :fetch="fetchClassifications"
+      name="classification"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
-      :name="`${prefix}-focus`"
       :fetch="fetchFocus"
+      name="focus"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
-      :name="`${prefix}-size`"
       :fetch="fetchSize"
+      name="size"
       multiple
     />
     <FilterGroup
       :options="pledgePriceOptions"
       v-model="form.pledgePriceIn"
       :label="t('labels.filters.models.pledgePrice')"
-      :name="`${prefix}-pldege-price`"
+      name="pldege-price"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
       v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
-      :name="`${prefix}-price`"
+      name="price"
       multiple
     />
     <RadioList
@@ -78,10 +78,9 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.onSaleEq"
-      :name="`${prefix}-sale`"
+      name="sale"
     />
     <Btn
-      v-if="!hideButtons"
       :disabled="!isFilterSelected"
       block
       @click.native="reset"
@@ -106,16 +105,6 @@ export default {
     Btn,
   },
   mixins: [I18n, Filters],
-  props: {
-    hideButtons: {
-      type: Boolean,
-      default: false,
-    },
-    prefix: {
-      type: String,
-      default: 'filter',
-    },
-  },
   data() {
     const query = this.$route.query.q || {}
     return {
@@ -123,7 +112,7 @@ export default {
       form: {
         nameOrDescriptionCont: query.nameOrDescriptionCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
@@ -139,7 +128,7 @@ export default {
       this.form = {
         nameOrDescriptionCont: query.nameOrDescriptionCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
@@ -159,9 +148,6 @@ export default {
   methods: {
     clearNameOrDescription() {
       this.form.nameOrDescriptionCont = null
-    },
-    clearOnSale() {
-      this.form.onSaleEq = null
     },
   },
 }

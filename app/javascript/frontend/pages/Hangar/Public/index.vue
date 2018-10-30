@@ -240,16 +240,14 @@ export default {
       this.setPages(response.meta)
     },
     async fetchCount() {
-      const response = await this.$api.get(`vehicles/${this.username}/count`, {})
+      const response = await this.$api.get(`vehicles/${this.username}/count`)
       if (!response.error) {
         this.vehiclesCount = response.data
       }
     },
     async fetchFleetchart() {
       this.loading = true
-      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`, {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
       this.loading = false
       if (!response.error) {
         this.fleetchartVehicles = response.data

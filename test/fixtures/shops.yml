@@ -1,7 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+dumpers:
+  name: Dumpers Depot
+  slug: dumpers-depot
+  station: portolisar
+  shop_type: components
+  hidden: false
 
-two:
-  name: MyString
+new_deal:
+  name: New Deal
+  slug: new-deal
+  station: portolisar
+  shop_type: ships
+  hidden: false

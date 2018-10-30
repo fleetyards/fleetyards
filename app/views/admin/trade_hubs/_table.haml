@@ -6,9 +6,9 @@
         %th=sort_link(@q, :system)
         %th=sort_link(@q, :planet)
         %th=sort_link(@q, :station_type, 'Type')
-        %th.actions.actions-two
+        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/trade_hubs/show", collection: @trade_hubs, as: :trade_hub
 
       - if @trade_hubs.blank?
-        = render "shared/tables/blank", count: 3, resource: "trade_hub"
+        = render "shared/tables/blank", count: 5, resource: "trade_hub"

@@ -38,12 +38,12 @@ module Api
           expected = {
             'total' => 2,
             'classifications' => [{
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 1
-            }, {
               'name' => 'explorer',
               'label' => 'Explorer',
+              'count' => 1
+            }, {
+              'name' => 'multi_role',
+              'label' => 'Multi role',
               'count' => 1
             }]
           }
@@ -204,7 +204,7 @@ module Api
 
         it 'should return list for index when filtered' do
           query_params = {
-            hangarGroupsSlugIn: data.vehicles.last.hangar_groups.map(&:slug)
+            hangarGroupsIn: data.vehicles.last.hangar_groups.map(&:slug)
           }
           get :index, params: { q: query_params.to_json }
 
@@ -306,7 +306,7 @@ module Api
         end
 
         it 'should return counts for count' do
-          get :count, params: { q: '{ "modelClassificationIn": ["combat"] }' }
+          get :count, params: { q: '{ "classificationIn": ["combat"] }' }
 
           assert_response :ok
           json = JSON.parse response.body

@@ -1,0 +1,116 @@
+
+.panel {
+  table {
+    thead {
+      th {
+        color: darken($text-color, 30%);
+        border-bottom: 2px solid darken(#444, 20%);
+      }
+    }
+    tbody {
+      tr {
+        &:hover {
+          td:first-child::before,
+          td:last-child::before {
+            opacity: 1;
+          }
+        }
+
+        td {
+          height: 80px;
+          border-top: 2px solid #444;
+
+          &:first-child,
+          &:last-child {
+            position: relative;
+
+            &::before {
+              content: '';
+              opacity: 0;
+              position: absolute;
+              top: 50%;
+              height: 60px;
+              margin-top: -30px;
+              width: 4px;
+              background-color: $primary;
+            }
+          }
+
+          &:last-child {
+            &::before {
+              border-top-left-radius: 2px;
+              border-bottom-left-radius: 2px;
+              box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+              right: 0;
+            }
+          }
+
+          &:first-child {
+            &::before {
+              left: 0;
+              border-top-right-radius: 2px;
+              border-bottom-right-radius: 2px;
+              box-shadow: 3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            }
+          }
+
+          &.store-image {
+            padding-left: 20px;
+
+            .image {
+              width: 200px;
+              height: 100px;
+              margin: 5px 0;
+              background-size: cover;
+              background-color: black;
+              background-position: center;
+              position: relative;
+              display: inline-block;
+              vertical-align: middle;
+              border-radius: $border-radius-base;
+              box-shadow: 0 0 5px black;
+
+              &[lazy=loading]::before {
+                content: "";
+                background-image: url('~images/loading.gif');
+                background-size: 100%;
+                background-position: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -25px;
+                margin-top: -25px;
+                width: 50px;
+                height: 50px;
+              }
+
+              &[lazy=error] {
+                background-image: url('~images/store_image.jpg') !important;
+              }
+            }
+          }
+
+          &.description {
+            white-space: normal;
+            min-width: 400px;
+
+            h2 {
+              font-size: 20px;
+              margin-top: 5px;
+              font-family: 'Orbitron', sans-serif;
+              font-weight: normal;
+            }
+          }
+
+          &.price {
+            min-width: 150px;
+            font-weight: bold;
+            text-align: right;
+            vertical-align: middle;
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors station, :name
+
     .col-xs-12.col-md-6.form-group{class: form_error?(station, :station_type)}
       = form.label :station_type
       = form.select :station_type, Station.station_types.keys.map { |w| [Station.human_enum_name(:station_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.stations.station_type") }, { class: 'form-control' }
@@ -12,11 +13,18 @@
         = form_errors station, :station_type
 
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :planet_id)}
-      = form.label :planet_id
-      = form.select :planet_id, Planet.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.planet") }, { class: 'form-control' }
+    .col-xs-12.col-md-6.form-group{class: form_error?(station, :celestial_object_id)}
+      = form.label :celestial_object_id
+      = form.select :celestial_object_id, CelestialObject.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.celestial_object") }, { class: 'form-control' }
       %small
-        = form_errors station, :planet_id
+        = form_errors station, :celestial_object_id
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(station, :location)}
+      = form.label :location
+      = form.text_field :location, class: 'form-control'
+      %small
+        = form_errors station, :location
+
     .col-xs-12.col-md-6.form-group{class: form_error?(station, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
@@ -29,6 +37,17 @@
       %small
         = form_errors station, :store_image
 
+    .col-xs-12.col-md-6.form-group{class: form_error?(station, :map)}
+      = form.label :map
+      = form.file_field :map, class: 'form-control'
+      = form.hidden_field :map_cache
+      %br
+      - if station.map?
+        = image_tag(station.map.url)
+        = form.check_box :remove_map
+        Remove Map
+      %small
+        = form_errors station, :map
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group
       .checkbox
@@ -48,18 +67,5 @@
       = link_to_add_fields form, :docks, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#docks" do
         %i.fa.fa-plus
         = I18n.t(:"actions.add_dock")
-
-  %fieldset
-    %legend
-      Shops:
-    #station_shops
-      - if station.station_shops.any?
-        = form.fields_for :station_shops, station.station_shops do |builder|
-          = render 'stations/station_shop_fields', fields: builder
-
-    .btn-group-responsive.pull-right
-      = link_to_add_fields form, :station_shops, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#station_shops" do
-        %i.fa.fa-plus
-        = I18n.t(:"actions.add_shop")
 
   = render "shared/submit", path: admin_stations_path

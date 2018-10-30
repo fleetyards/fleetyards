@@ -65,7 +65,7 @@ module Admin
 
     private def commodity_params
       @commodity_params ||= params.require(:commodity).permit(
-        :name
+        :name, :store_image, :store_image_cache, :remove_store_image
       )
     end
 

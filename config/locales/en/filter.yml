@@ -2,6 +2,11 @@
 en:
   filter:
     all: All
+    shop_commodities:
+      sub_categories:
+        class: "Component"
+        classification: "Ship"
+        equipment_type: "Equipment"
     image:
       model:
         title: Model

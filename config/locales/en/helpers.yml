@@ -25,8 +25,12 @@ en:
         hidden: hidden?
       dock:
         name: Name
-        min_ship_size: Min. Ship Size?
-        max_ship_size: Max. Ship Size?
+      shop_commodity:
+        name: Name
+        description: Description
+        buy_price: Buy Price
+        sell_price: Sell Price
+        rent_price: Rent Price
     prompt:
       video:
         video_type: Please select a Video Type
@@ -36,8 +40,15 @@ en:
         commodity: Commodity
       docks:
         dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
       stations:
         station_type: Please select a Station Type
-        planet: Please select a Planet
-      station_shops:
-        shop: Please select a Shop
+        celestial_object: Please select a Celestial Object
+      shops:
+        station: Please select a Station
+      shop_commodities:
+        commodity_item: Please select a Model/Component
+      celestial_object:
+        starsystem: Please select a Starsystem
+      equipment:
+        equipment_type: Please select a Type

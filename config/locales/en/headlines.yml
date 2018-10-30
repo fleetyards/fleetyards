@@ -31,15 +31,27 @@ en:
         edit: Commodity %{commodity}
         index: Commodities
         new: New Commodity
+      equipment:
+        edit: Equipment %{equipment}
+        index: Equipment
+        new: New Equipment
       station:
         edit: Station %{station}
-        gallery: Imageuplaod for %{station}
+        gallery: Imageupload for %{station}
         index: Stations
         new: New Station
       shop:
         edit: Shop %{shop}
         index: Shops
         new: New Shop
+      celestial_object:
+        edit: Celestial Object %{celestial_object}
+        index: Celestial Objects
+        new: New Celestial Object
+      starsystem:
+        edit: Starsystem %{starsystem}
+        index: Starsystems
+        new: New Starsystem
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

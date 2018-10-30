@@ -23,6 +23,7 @@
     "caniuse-lite": "^1.0.30000874",
     "css-loader": "^1.0.0",
     "date-fns": "1.29.0",
+    "debounce": "^1.2.0",
     "downloadjs": "1.4.7",
     "highcharts": "^6.1.4",
     "html2canvas": "1.0.0-alpha.12",

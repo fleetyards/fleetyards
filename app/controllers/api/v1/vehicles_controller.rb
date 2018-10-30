@@ -12,18 +12,18 @@ module Api
         scope = current_user.vehicles
 
         if price_range.present?
-          query_params['sorts'] = 'price asc'
+          vehicle_query_params['sorts'] = 'price asc'
           scope = scope.includes(:model).where(models: { price: price_range })
         end
 
         if pledge_price_range.present?
-          query_params['sorts'] = 'fallback_pledge_price asc'
+          vehicle_query_params['sorts'] = 'fallback_pledge_price asc'
           scope = scope.includes(:model).where(models: { fallback_pledge_price: pledge_price_range })
         end
 
-        query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
-        @q = scope.ransack(query_params)
+        @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -35,7 +35,7 @@ module Api
       def fleetchart
         authorize! :index, :api_hangar
         @q = current_user.vehicles
-                         .ransack(query_params)
+                         .ransack(vehicle_query_params)
 
         @q.sorts = ['model_length desc', 'model_name asc']
 
@@ -47,7 +47,7 @@ module Api
       def count
         authorize! :index, :api_hangar
         @q = current_user.vehicles
-                         .ransack(query_params)
+                         .ransack(vehicle_query_params)
 
         @q.sorts = ['model_classification asc']
 
@@ -75,11 +75,11 @@ module Api
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
-        query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
                  .purchased
-                 .ransack(query_params)
+                 .ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -93,7 +93,7 @@ module Api
 
         @q = user.vehicles
                  .purchased
-                 .ransack(query_params)
+                 .ransack(vehicle_query_params)
 
         @q.sorts = ['model_length desc', 'model_name asc']
 
@@ -104,7 +104,7 @@ module Api
 
       def public_count
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
-        models = user.purchased_models
+        models = user.purchased_models.order(classification: :asc)
 
         @count = OpenStruct.new(
           total: models.count,
@@ -205,15 +205,24 @@ module Api
       end
 
       private def pledge_price_in
-        pledge_price_in = query_params.delete('model_pledge_price_in')
+        pledge_price_in = vehicle_query_params.delete('pledge_price_in')
         pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
         pledge_price_in
       end
 
       private def price_in
-        price_in = query_params.delete('model_price_in')
+        price_in = vehicle_query_params.delete('price_in')
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
+      end
+
+      private def vehicle_query_params
+        @vehicle_query_params ||= query_params(
+          :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq,
+          manufacturer_in: [], classification_in: [], focus_in: [],
+          size_in: [], price_in: [], pledge_price_in: [],
+          production_status_in: [], hangar_groups_in: []
+        )
       end
     end
   end

@@ -1,3 +1,5 @@
+import { debounce } from 'debounce'
+
 export default {
   data() {
     return {
@@ -108,7 +110,7 @@ export default {
         query: {},
       })
     },
-    filter() {
+    filter: debounce(function debounced() {
       const query = {
         q: JSON.parse(JSON.stringify(this.q)),
       }
@@ -123,16 +125,16 @@ export default {
         name: this.$route.name,
         query,
       })
-    },
+    }, 500),
     fetchManufacturers({ page, search, missingValue }) {
       const query = {
         with_model: true,
         q: {},
       }
       if (search) {
-        query.q.nameOrSlugCont = search
+        query.q.nameCont = search
       } else if (missingValue) {
-        query.q.nameOrSlugIn = missingValue
+        query.q.nameIn = missingValue
       } else if (page) {
         query.page = page
       }

@@ -46,11 +46,14 @@ en:
       blank:
         default: No Entries could be found.
         image: No Image could be found.
-        ship: No Models could be found.
+        model: No Models could be found.
         commodity: No Commodities could be found.
         trade_hub: No Trade could be found.
         station: No Stations could be found.
         shop: No Shops could be found.
+        planet: No Planets could be found.
+        starsystem: No Starsystems could be found.
+        equipment: No Equipment could be found.
       component:
         category: Category
       model:

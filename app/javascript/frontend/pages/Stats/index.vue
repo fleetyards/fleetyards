@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">{{ t('labels.stats.modelsByClassification') }}</h2>
@@ -21,7 +21,7 @@
               />
             </Panel>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">{{ t('labels.stats.modelsBySize') }}</h2>
@@ -64,7 +64,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">{{ t('labels.stats.modelsByManufacturer') }}</h2>

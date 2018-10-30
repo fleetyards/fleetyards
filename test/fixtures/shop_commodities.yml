@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+commodity_one:
+  shop: dumpers
+  commodity_item: explorer (Model)
+
+commodity_two:
+  shop: dumpers
+  commodity_item: andromeda (Model)
+
+commodity_three:
+  shop: new_deal
+  commodity_item: explorer (Model)
+
+commodity_four:
+  shop: new_deal
+  commodity_item: andromeda (Model)

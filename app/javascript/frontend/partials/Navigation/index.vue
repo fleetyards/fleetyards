@@ -63,6 +63,53 @@
             >
               <a>{{ t('nav.models') }}</a>
             </router-link>
+            <li
+              :class="{
+                'open': stationMenuOpen,
+                'active': stationsRouteActive
+              }"
+              class="dropdown station-menu"
+            >
+              <a
+                class="dropdown-toggle"
+                @click="toggleStationMenu"
+              >
+                {{ t('nav.stations.index') }}
+              </a>
+              <ul class="dropdown-menu navbar-right">
+                <router-link
+                  :to="{ name: 'stations' }"
+                  :class="{
+                    active: stationRouteActive,
+                  }"
+                  active-class="router-active"
+                  tag="li"
+                >
+                  <a>{{ t('nav.stations.overview') }}</a>
+                </router-link>
+                <router-link
+                  :to="{ name: 'starsystems' }"
+                  :class="{
+                    active: starsystemRouteActive,
+                  }"
+                  active-class="router-active"
+                  tag="li"
+                >
+                  <a>{{ t('nav.stations.starsystems') }}</a>
+                </router-link>
+                <li class="divider" />
+                <router-link
+                  :to="{ name: 'shops' }"
+                  :class="{
+                    active: shopRouteActive,
+                  }"
+                  active-class="router-active"
+                  tag="li"
+                >
+                  <a>{{ t('nav.stations.shops') }}</a>
+                </router-link>
+              </ul>
+            </li>
             <router-link
               :to="{ name: 'hangar' }"
               tag="li"
@@ -230,7 +277,12 @@ export default {
       shipsRouteActive: false,
       userRouteActive: false,
       cargoRouteActive: false,
+      stationsRouteActive: false,
+      stationRouteActive: false,
+      shopRouteActive: false,
+      starsystemRouteActive: false,
       userMenuOpen: false,
+      stationMenuOpen: false,
       searchQuery: null,
     }
   },
@@ -263,17 +315,25 @@ export default {
     toggleUserMenu() {
       this.userMenuOpen = !this.userMenuOpen
     },
+    toggleStationMenu() {
+      this.stationMenuOpen = !this.stationMenuOpen
+    },
     toggle() {
       this.$store.commit('toggleNavbar')
     },
     close() {
       this.userMenuOpen = false
+      this.stationMenuOpen = false
       this.$store.commit('closeNavbar')
     },
     checkRoutes() {
       const { path } = this.$route
       this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components')
       this.userRouteActive = path.includes('settings')
+      this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
+      this.stationsRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
+      this.stationRouteActive = path.includes('stations') && !path.includes('shops')
+      this.shopRouteActive = path.includes('shops')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
     async logout() {

@@ -13,6 +13,8 @@ import Hangar from 'frontend/pages/Hangar'
 import PublicHangar from 'frontend/pages/Hangar/Public'
 import Fleets from 'frontend/pages/Fleets'
 import Fleet from 'frontend/pages/Fleets/Show'
+import Stations from 'frontend/pages/Stations'
+import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import Cargo from 'frontend/pages/Cargo'
 import Commodities from 'frontend/pages/Commodities'
 import Login from 'frontend/pages/Login'
@@ -121,6 +123,15 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
     },
+  }, {
+    path: '/stations',
+    name: 'stations',
+    component: Stations,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-7.jpg'),
+    },
+    children: StationsRoutes,
   }, {
     path: '/cargo',
     name: 'cargo',

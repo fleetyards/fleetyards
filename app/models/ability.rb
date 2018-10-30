@@ -19,7 +19,10 @@ class Ability
     can %i[index show], :api_models
     can %i[index], :api_manufacturers
     can %i[index show], :api_stations
-    can %i[index], :api_planets
+    can %i[show index], :api_celestial_objects
+    can %i[index show], :api_shops
+    can %i[index], :api_shop_commodities
+    can %i[show index], :api_starsystems
     can %i[index], :api_images
     can %i[index], :api_trade_hubs
     can %i[index], :api_commodities

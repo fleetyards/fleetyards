@@ -204,7 +204,6 @@ export default {
   mixins: [I18n, MetaInfo],
   data() {
     return {
-      title: null,
       loading: false,
       show3d: false,
       color3d: false,
@@ -228,6 +227,15 @@ export default {
       const startship42Params = qs.stringify(data)
       return `https://starship42.fleetyards.net/fleetview/single?${startship42Params}`
     },
+    title() {
+      if (!this.model) {
+        return null
+      }
+      return this.t('title.model', {
+        name: this.model.name,
+        manufacturer: this.model.manufacturer.name,
+      })
+    },
   },
   watch: {
     $route() {
@@ -236,10 +244,6 @@ export default {
     model() {
       this.setBackRoute()
 
-      this.title = this.t('title.model', {
-        name: this.model.name,
-        manufacturer: this.model.manufacturer.name,
-      })
       if (this.model.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       }
@@ -260,7 +264,7 @@ export default {
         hash: `#${this.model.slug}`,
       }
 
-      if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
+      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop'].includes(this.previousRoute.name)) {
         route.name = this.previousRoute.name
         route.params = this.previousRoute.params
         route.query = this.previousRoute.query

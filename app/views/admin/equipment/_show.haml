@@ -1,0 +1,18 @@
+%tr{id: equipment.id}
+  %td.preview.text-center
+    = image_tag equipment.store_image.url
+  %td
+    = equipment.name
+  %td
+    = equipment.equipment_type
+  %td
+    - if equipment.hidden?
+      %i.fa.fa-check
+    - else
+      %i.far.fa-square
+  %td.text-right
+    .btn-group
+      = link_to edit_admin_equipment_path(equipment), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+        %i.fa.fa-edit
+      = confirm_link_to admin_equipment_path(equipment), data: {notyConfirm: I18n.t(:"messages.confirm.delete")}, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
+        %i.fa.fa-trash
