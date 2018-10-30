@@ -96,7 +96,7 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <Panel v-if="commodities.length">
+        <Panel v-if="commodities.length && shop">
           <div class="table-responsive">
             <table class="table table-hover table-striped">
               <thead>
