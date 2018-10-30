@@ -81,12 +81,6 @@ module Api
                  .public
                  .ransack(vehicle_query_params)
 
-        @vehicles = Kaminari.paginate_array([])
-                            .page(params[:page])
-                            .per(per_page(Vehicle))
-
-        return unless user.public_hangar?
-
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
