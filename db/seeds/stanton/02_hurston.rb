@@ -4,7 +4,7 @@ hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 hurston.update!(store_image: Rails.root.join('db/seeds/images/hurston/hurston.png').open, hidden: false)
 
 teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
-teasa_spaceport.update!(celestial_object: hurston, station_type: :spaceport, location: 'Lorville', store_image: Rails.root.join('db/seeds/images/hurston/teasa_spaceport.jpg').open)
+teasa_spaceport.update!(celestial_object: hurston, station_type: :spaceport, location: 'Lorville', store_image: Rails.root.join('db/seeds/images/hurston/teasa_spaceport.jpg').open, hidden: false)
 
 new_deal = Shop.find_or_initialize_by(name: 'New Deal', station: teasa_spaceport)
 new_deal.update!(shop_type: :ships, store_image: Rails.root.join('db/seeds/images/hurston/new_deal.png').open, selling: true, hidden: false)
