@@ -66,7 +66,7 @@
             <li
               :class="{
                 'open': stationMenuOpen,
-                'active': stationRouteActive
+                'active': stationsRouteActive
               }"
               class="dropdown station-menu"
             >
@@ -79,6 +79,10 @@
               <ul class="dropdown-menu navbar-right">
                 <router-link
                   :to="{ name: 'stations' }"
+                  :class="{
+                    active: stationRouteActive,
+                  }"
+                  active-class="router-active"
                   tag="li"
                 >
                   <a>{{ t('nav.stations.overview') }}</a>
@@ -88,6 +92,7 @@
                   :class="{
                     active: starsystemRouteActive,
                   }"
+                  active-class="router-active"
                   tag="li"
                 >
                   <a>{{ t('nav.stations.starsystems') }}</a>
@@ -95,6 +100,10 @@
                 <li class="divider" />
                 <router-link
                   :to="{ name: 'shops' }"
+                  :class="{
+                    active: shopRouteActive,
+                  }"
+                  active-class="router-active"
                   tag="li"
                 >
                   <a>{{ t('nav.stations.shops') }}</a>
@@ -268,7 +277,9 @@ export default {
       shipsRouteActive: false,
       userRouteActive: false,
       cargoRouteActive: false,
+      stationsRouteActive: false,
       stationRouteActive: false,
+      shopRouteActive: false,
       starsystemRouteActive: false,
       userMenuOpen: false,
       stationMenuOpen: false,
@@ -320,7 +331,9 @@ export default {
       this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components')
       this.userRouteActive = path.includes('settings')
       this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
-      this.stationRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
+      this.stationsRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
+      this.stationRouteActive = path.includes('stations') && !path.includes('shops')
+      this.shopRouteActive = path.includes('shops')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
     async logout() {

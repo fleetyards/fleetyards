@@ -89,6 +89,11 @@ v1_api_routes = lambda do
   resources :starsystems, param: :slug, only: %i[index show]
   resources :celestial_objects, path: 'celestial-objects', param: :slug, only: %i[index show]
   resources :stations, param: :slug, only: %i[index show] do
+    collection do
+      get 'ship-sizes' => 'stations#ship_sizes'
+      get 'station-types' => 'stations#station_types'
+      get 'shop-types' => 'shops#shop_types'
+    end
     resources :shops, param: :slug, only: %i[show] do
       resources :shop_commodities, path: 'shop-commodities', only: %i[index]
     end

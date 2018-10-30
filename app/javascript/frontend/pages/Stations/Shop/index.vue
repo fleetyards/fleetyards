@@ -208,7 +208,6 @@ export default {
   },
   watch: {
     $route() {
-      this.fetch()
       this.fetchCommodities()
     },
     shop() {

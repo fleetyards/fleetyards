@@ -12,6 +12,12 @@ class ShopCommodity < ApplicationRecord
 
   attr_accessor :commodity_item_selected
 
+  ransack_alias :name, :commodity_item_of_Model_type_name_or_commodity_item_of_Component_type_name_or_commodity_item_of_Commodity_type_name_or_commodity_item_of_Equipment_type_name
+  ransack_alias :category, :commodity_item_type
+  ransack_alias :sub_category, :commodity_item_of_Model_type_classification_or_commodity_item_of_Component_type_component_class_or_commodity_item_of_Equipment_type_equipment_type
+  ransack_alias :manufacturer_slug, :commodity_item_of_Model_type_manufacturer_slug_or_commodity_item_of_Component_type_manufacturer_slug_or_commodity_item_of_Equipment_type_manufacturer_slug
+  ransack_alias :price, :sell_price_or_buy_price_or_rent_price
+
   def set_commodity_item
     return if commodity_item_selected.blank?
 

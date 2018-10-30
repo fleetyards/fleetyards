@@ -49,13 +49,13 @@
       </label>
       <input
         :id="idFor('shopitems-min-price')"
-        v-model="form.minPrice"
+        v-model="form.priceGteq"
         :placeholder="t('placeholders.filters.shopItems.minPrice')"
         type="number"
         class="form-control"
       >
       <a
-        v-if="form.minPrice"
+        v-if="form.priceGteq"
         class="btn btn-clear"
         @click="clearMinPrice"
         v-html="'&times;'"
@@ -67,13 +67,13 @@
       </label>
       <input
         :id="idFor('shopitems-max-price')"
-        v-model="form.maxPrice"
+        v-model="form.priceLteq"
         :placeholder="t('placeholders.filters.shopItems.maxPrice')"
         type="number"
         class="form-control"
       >
       <a
-        v-if="form.maxPrice"
+        v-if="form.priceLteq"
         class="btn btn-clear"
         @click="clearMaxPrice"
         v-html="'&times;'"
@@ -111,8 +111,8 @@ export default {
         categoryIn: query.categoryeIn || [],
         subCategoryIn: query.subCategoryIn || [],
         manufacturerSlugIn: query.manufacturerSlugIn || [],
-        minPrice: query.minPrice,
-        maxPrice: query.maxPrice,
+        priceGteq: query.priceGteq,
+        priceLteq: query.priceLteq,
       },
       categoryOptions: [{
         name: 'Ship',
@@ -137,8 +137,8 @@ export default {
         categoryIn: query.categoryIn || [],
         subCategoryIn: query.subCategoryIn || [],
         manufacturerSlugIn: query.manufacturerSlugIn || [],
-        minPrice: query.minPrice,
-        maxPrice: query.maxPrice,
+        priceGteq: query.priceGteq,
+        priceLteq: query.priceLteq,
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
@@ -154,10 +154,10 @@ export default {
       this.form.nameCont = null
     },
     clearMinPrice() {
-      this.form.minPrice = null
+      this.form.priceGteq = null
     },
     clearMaxPrice() {
-      this.form.maxPrice = null
+      this.form.priceLteq = null
     },
     fetchSubCategories() {
       return this.$api.get('filters/shop-commodities/sub-categories')

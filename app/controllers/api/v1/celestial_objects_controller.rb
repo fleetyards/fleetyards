@@ -9,7 +9,8 @@ module Api
       def index
         authorize! :index, :api_celestial_objects
 
-        celestial_object_query_params['sorts'] = sort_by_name('designation asc', 'designation asc')
+        sorts = ['parent_id desc', 'designation asc']
+        celestial_object_query_params['sorts'] = sort_by_name(sorts, sorts)
 
         @q = CelestialObject.visible
                             .ransack(celestial_object_query_params)

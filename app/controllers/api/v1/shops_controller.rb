@@ -10,6 +10,14 @@ module Api
         @shop = station.shops.visible.find_by!(slug: params[:slug])
       end
 
+      def shop_types
+        authorize! :show, :api_shops
+
+        @filters = Shop.type_filters
+
+        render 'api/v1/shared/filters'
+      end
+
       private def station
         @station ||= Station.visible.find_by!(slug: params[:station_slug])
       end

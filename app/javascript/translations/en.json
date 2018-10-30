@@ -330,7 +330,11 @@
       "stations": {
         "name": "Name",
         "celestialObject": "Celestial Object",
-        "starsystem": "Starsystem"
+        "starsystem": "Starsystem",
+        "type": "Station Type",
+        "shops": "Shops",
+        "docks": "Docks",
+        "habs": "Habitation?"
       },
       "vehicles": {
         "name": "Name",
@@ -382,8 +386,8 @@
       },
       "shopItems": {
         "name": "Aurora, L86, Laranite...",
-        "minPrice": "...",
-        "maxPrice": "..."
+        "minPrice": "minmal Price in UEC",
+        "maxPrice": "maximal Price in UEC"
       },
       "vehicles": {
         "name": "Enterprise, Nebuchadnezzar..."

@@ -1,5 +1,5 @@
 <template>
-  <router-view v-if="$route.name !== 'stations'" />
+  <router-view v-if="isSubRoute" />
   <section
     v-else
     class="container"
@@ -204,6 +204,9 @@ export default {
       'stationFilterVisible',
       'mobile',
     ]),
+    isSubRoute() {
+      return this.$route.name !== 'stations'
+    },
     toggleFiltersTooltip() {
       if (this.stationFilterVisible) {
         return this.t('actions.hideFilter')
@@ -234,6 +237,9 @@ export default {
       this.$store.dispatch('toggleStationFilter')
     },
     async fetch() {
+      if (this.isSubRoute) {
+        return
+      }
       this.loading = true
       const response = await this.$api.get('stations', {
         q: this.$route.query.q,

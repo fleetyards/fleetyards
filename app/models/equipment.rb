@@ -12,6 +12,9 @@ class Equipment < ApplicationRecord
   mount_uploader :store_image, StoreImageUploader
 
   enum equipment_type: %i[armor weapon tool clothing medical]
+  ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
+    parent.table[:equipment_type]
+  end
 
   def self.ordered_by_name
     order(name: :asc)

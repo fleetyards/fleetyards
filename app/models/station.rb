@@ -15,6 +15,10 @@ class Station < ApplicationRecord
   belongs_to :celestial_object
 
   enum station_type: %i[spaceport hub rest_stop station cargo-station mining-station asteroid-station refinery district outpost aid_shelter]
+  ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
+    parent.table[:station_type]
+  end
+  ransack_alias :habs, :habitations_station_id
 
   validates :name, :station_type, :location, :celestial_object, presence: true
   validates :name, uniqueness: true
@@ -30,6 +34,16 @@ class Station < ApplicationRecord
 
   def self.visible
     where(hidden: false)
+  end
+
+  def self.type_filters
+    Station.station_types.map do |(item, _index)|
+      Filter.new(
+        category: 'station_type',
+        name: Station.human_enum_name(:station_type, item),
+        value: item
+      )
+    end
   end
 
   def image

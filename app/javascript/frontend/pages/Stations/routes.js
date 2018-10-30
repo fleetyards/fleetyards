@@ -27,7 +27,7 @@ export const routes = [
     name: 'station',
     component: Station,
   }, {
-    path: ':station/:slug',
+    path: ':station/shops/:slug',
     name: 'shop',
     component: Shop,
   },

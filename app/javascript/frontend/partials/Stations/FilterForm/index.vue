@@ -38,6 +38,36 @@
       searchable
       multiple
     />
+    <FilterGroup
+      v-model="form.stationTypeIn"
+      :label="t('labels.filters.stations.type')"
+      :fetch="fetchStationTypes"
+      name="station-types"
+      multiple
+    />
+    <FilterGroup
+      v-model="form.shopsShopTypeIn"
+      :label="t('labels.filters.stations.shops')"
+      :fetch="fetchShopTypes"
+      name="shops"
+      multiple
+    />
+    <FilterGroup
+      v-model="form.docksShipSizeIn"
+      :label="t('labels.filters.stations.docks')"
+      :fetch="fetchShipSizes"
+      name="docks"
+      multiple
+    />
+    <RadioList
+      :label="t('labels.filters.stations.habs')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      v-model="form.habsNotNull"
+      name="habs"
+    />
+    <!-- <br>
+    Filter by Status -->
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -53,11 +83,13 @@
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
+import RadioList from 'frontend/components/Form/RadioList'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     FilterGroup,
+    RadioList,
     Btn,
   },
   mixins: [I18n, Filters],
@@ -67,8 +99,12 @@ export default {
       loading: false,
       form: {
         nameCont: query.nameCont,
+        habsNotNull: query.habsNotNull,
         celestialObjectSlugIn: query.celestialObjectSlugIn || [],
         starsystemSlugIn: query.starsystemSlugIn || [],
+        stationTypeIn: query.stationTypeIn || [],
+        shopsShopTypeIn: query.shopsShopTypeIn || [],
+        docksShipSizeIn: query.docksShipSizeIn || [],
       },
     }
   },
@@ -77,8 +113,12 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
+        habsNotNull: query.habsNotNull,
         celestialObjectSlugIn: query.celestialObjectSlugIn || [],
         starsystemSlugIn: query.starsystemSlugIn || [],
+        stationTypeIn: query.stationTypeIn || [],
+        shopsShopTypeIn: query.shopsShopTypeIn || [],
+        docksShipSizeIn: query.docksShipSizeIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
@@ -118,6 +158,15 @@ export default {
         query.page = page
       }
       return this.$api.get('starsystems', query)
+    },
+    fetchShipSizes() {
+      return this.$api.get('stations/ship-sizes')
+    },
+    fetchStationTypes() {
+      return this.$api.get('stations/station-types')
+    },
+    fetchShopTypes() {
+      return this.$api.get('stations/shop-types')
     },
   },
 }

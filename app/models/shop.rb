@@ -11,6 +11,9 @@ class Shop < ApplicationRecord
   accepts_nested_attributes_for :shop_commodities, allow_destroy: true
 
   enum shop_type: %i[clothing armor weapons components armor_and_weapons superstore ships admin bar hospital salvage resources rental]
+  ransacker :shop_type, formatter: proc { |v| Shop.shop_types[v] } do |parent|
+    parent.table[:shop_type]
+  end
 
   before_save :update_slugs
   before_validation :update_shop_commodities
@@ -21,6 +24,16 @@ class Shop < ApplicationRecord
 
   def self.visible
     where(hidden: false)
+  end
+
+  def self.type_filters
+    Shop.shop_types.map do |(item, _index)|
+      Filter.new(
+        category: 'shop_type',
+        name: Shop.human_enum_name(:shop_type, item),
+        value: item
+      )
+    end
   end
 
   private def update_slugs

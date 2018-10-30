@@ -13,7 +13,7 @@ module Api
         @q = Station.visible
                     .ransack(station_query_params)
 
-        @stations = @q.result
+        @stations = @q.result(distinct: true)
                       .page(params[:page])
                       .per(per_page(Station))
       end
@@ -23,11 +23,28 @@ module Api
         @station = Station.visible.find_by!(slug: params[:slug])
       end
 
+      def ship_sizes
+        authorize! :show, :api_stations
+
+        @filters = Dock.size_filters
+
+        render 'api/v1/shared/filters'
+      end
+
+      def station_types
+        authorize! :show, :api_stations
+
+        @filters = Station.type_filters
+
+        render 'api/v1/shared/filters'
+      end
+
       private def station_query_params
         @station_query_params ||= begin
           permitted_query_params = query_params(
-            :celestial_object_slug_eq, :name_cont,
-            celestial_object_slug_in: [], starsystem_slug_in: []
+            :celestial_object_slug_eq, :name_cont, :habs_not_null,
+            celestial_object_slug_in: [], starsystem_slug_in: [], station_type_in: [],
+            shops_shop_type_in: [], docks_ship_size_in: []
           )
 
           if permitted_query_params['starsystem_slug_in'].present?
