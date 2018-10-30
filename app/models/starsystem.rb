@@ -21,8 +21,6 @@ class Starsystem < ApplicationRecord
 
   before_save :update_slugs
 
-  validates :name, presence: true
-
   mount_uploader :store_image, StoreImageUploader
 
   def self.visible

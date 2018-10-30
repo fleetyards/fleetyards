@@ -20,8 +20,6 @@ class CelestialObject < ApplicationRecord
            dependent: :destroy
   has_many :factions, through: :affiliations
 
-  validates :name, presence: true
-
   before_save :update_slugs
 
   mount_uploader :store_image, StoreImageUploader
