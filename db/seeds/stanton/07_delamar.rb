@@ -48,4 +48,4 @@ hospital.update!(shop_type: :hospital, store_image: Rails.root.join('db/seeds/im
 cafe_musain = Shop.find_or_initialize_by(name: 'Cafe Musáin', station: levski)
 cafe_musain.update!(shop_type: :bar, store_image: Rails.root.join('db/seeds/images/delamar/cafe_musain_levski.jpg').open, hidden: false)
 teachs = Shop.find_or_initialize_by(name: "Teach's Ship Shop", station: levski)
-teachs.update!(shop_type: :ships, store_image: Rails.root.join('db/seeds/images/delamar/teachs.jpg').open, hidden: false)
+teachs.update!(shop_type: :ships, store_image: Rails.root.join('db/seeds/images/delamar/teachs.jpg').open, hidden: false, selling: true)
