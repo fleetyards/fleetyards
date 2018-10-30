@@ -78,7 +78,7 @@ module Api
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
-                 .purchased
+                 .public
                  .ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
@@ -92,10 +92,13 @@ module Api
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         @q = user.vehicles
-                 .purchased
+                 .public
                  .ransack(vehicle_query_params)
 
         @q.sorts = ['model_length desc', 'model_name asc']
+
+        @vehicles = []
+        return unless user.public_hangar?
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -104,7 +107,8 @@ module Api
 
       def public_count
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
-        models = user.purchased_models.order(classification: :asc)
+        models = []
+        models = user.public_models.order(classification: :asc) if user.public_hangar?
 
         @count = OpenStruct.new(
           total: models.count,
@@ -160,7 +164,7 @@ module Api
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
             .permit(
-              :name, :model_id, :purchased, :name_visible,
+              :name, :model_id, :purchased, :name_visible, :public,
               :sale_notify, :flagship, hangar_group_ids: []
             ).merge(user_id: current_user.id)
         end

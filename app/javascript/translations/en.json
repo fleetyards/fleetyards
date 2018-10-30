@@ -294,13 +294,15 @@
       "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
     },
     "user": {
-      "saleNotify": "I want to receive Sale Notifications"
+      "saleNotify": "I want to receive Sale Notifications",
+      "publicHangar": "Public Hangar enabled"
     },
     "vehicle": {
       "name": "Name",
       "flagship": "Flagship",
       "purchased": "Purchased",
-      "nameVisible": "Name visible to Public",
+      "public": "Visible on Public Hangar",
+      "nameVisible": "Name visible on Public Hangar",
       "saleNotify": "I want to receive Sale Notifications",
       "selectGroup": "Select a Group"
     },

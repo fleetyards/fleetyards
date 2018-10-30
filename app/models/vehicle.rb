@@ -32,6 +32,10 @@ class Vehicle < ApplicationRecord
     where(purchased: true)
   end
 
+  def self.public
+    purchased.where(purchased: true)
+  end
+
   def set_flagship
     return unless flagship?
 
