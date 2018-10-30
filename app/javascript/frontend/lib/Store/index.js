@@ -39,6 +39,7 @@ const initialState = {
   hangarFilterVisible: true,
   shopFilterVisible: false,
   stationFilterVisible: true,
+  shopsFilterVisible: true,
   navbarCollapsed: true,
   overlayVisible: false,
   modelDetailsVisible: false,
@@ -96,6 +97,9 @@ const store = new Vuex.Store({
     },
     stationFilterVisible(state) {
       return state.stationFilterVisible
+    },
+    shopsFilterVisible(state) {
+      return state.shopsFilterVisible
     },
     navbarCollapsed(state) {
       return state.navbarCollapsed
@@ -176,6 +180,9 @@ const store = new Vuex.Store({
     },
     toggleStationFilter({ commit, state }) {
       commit('setStationFilterVisible', !state.stationFilterVisible)
+    },
+    toggleShopsFilter({ commit, state }) {
+      commit('setShopsFilterVisible', !state.shopsFilterVisible)
     },
   },
   /* eslint-disable no-param-reassign */
@@ -297,6 +304,9 @@ const store = new Vuex.Store({
     },
     setStationFilterVisible(state, payload) {
       state.stationFilterVisible = payload
+    },
+    setShopsFilterVisible(state, payload) {
+      state.shopsFilterVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

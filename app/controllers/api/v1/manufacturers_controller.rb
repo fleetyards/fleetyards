@@ -20,7 +20,7 @@ module Api
 
         @q = scope.ransack(manufacturer_query_params)
 
-        @manufacturers = @q.result
+        @manufacturers = @q.result(distinct: true)
                            .page(params[:page])
                            .per(per_page(Manufacturer))
       end

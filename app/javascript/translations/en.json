@@ -13,6 +13,7 @@
     "signUp": "Sign Up",
     "hangar": "My Hangar",
     "stations": "Stations",
+    "shops": "Shops",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
     "celestialObject": "%{celestialObject} in the %{starsystem} System",
@@ -319,6 +320,14 @@
       "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
     },
     "filters": {
+      "shops": {
+        "name": "Name",
+        "commodityName": "Commodity Name",
+        "type": "Type",
+        "celestialObject": "Celestial object",
+        "starsystem": "Starsystem",
+        "station": "Station"
+      },
       "shopItems": {
         "category": "Category",
         "subCategory": "Sub Category",
@@ -381,6 +390,10 @@
       "search": "Search for Ships..."
     },
     "filters": {
+      "shops": {
+        "name": "Casaba, Platinum Bay...",
+        "commodityName": "Aurora, L86, Laranite..."
+      },
       "stations": {
         "name": "Port Olisar, Teasa Spaceport..."
       },

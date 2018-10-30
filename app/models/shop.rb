@@ -17,6 +17,13 @@ class Shop < ApplicationRecord
     parent.table[:shop_type]
   end
 
+  ransack_alias :name, :name_or_slug
+  ransack_alias :commodity_name, :shop_commodities_commodity_item_of_Model_type_name_or_shop_commodities_commodity_item_of_Component_type_name_or_shop_commodities_commodity_item_of_Commodity_type_name_or_shop_commodities_commodity_item_of_Equipment_type_name
+  ransack_alias :commodity_category, :shop_commodities_commodity_item_type
+  ransack_alias :station, :station_slug
+  ransack_alias :celestial_object, :station_celestial_object_slug
+  ransack_alias :starsystem, :station_celestial_object_starsystem_slug
+
   before_save :update_slugs
   before_validation :update_shop_commodities
 

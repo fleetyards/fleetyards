@@ -125,9 +125,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = index_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
 
         it 'should return a single record for show' do
@@ -136,9 +134,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal show_result, json
         end
       end
 
@@ -155,9 +151,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = index_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
 
         it 'should return a single record for show' do
@@ -166,9 +160,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal show_result, json
         end
       end
     end

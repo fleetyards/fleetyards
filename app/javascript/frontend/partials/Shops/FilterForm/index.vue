@@ -1,13 +1,13 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('stations-name')">
-        {{ t('labels.filters.stations.name') }}
+      <label :for="idFor('shops-name')">
+        {{ t('labels.filters.shops.name') }}
       </label>
       <input
-        :id="idFor('stations-name')"
+        :id="idFor('shops-name')"
         v-model="form.nameCont"
-        :placeholder="t('placeholders.filters.stations.name')"
+        :placeholder="t('placeholders.filters.shops.name')"
         type="text"
         class="form-control"
       >
@@ -18,9 +18,44 @@
         v-html="'&times;'"
       />
     </div>
+    <div class="form-group">
+      <label :for="idFor('shops-commodity-name')">
+        {{ t('labels.filters.shops.commodityName') }}
+      </label>
+      <input
+        :id="idFor('shops-commodity-name')"
+        v-model="form.commodityNameCont"
+        :placeholder="t('placeholders.filters.shops.commodityName')"
+        type="text"
+        class="form-control"
+      >
+      <a
+        v-if="form.commodityNameCont"
+        class="btn btn-clear"
+        @click="clearCommodityName"
+        v-html="'&times;'"
+      />
+    </div>
+    <FilterGroup
+      v-model="form.shopTypeIn"
+      :label="t('labels.filters.shops.type')"
+      :fetch="fetchShopTypes"
+      name="type"
+      multiple
+    />
+    <FilterGroup
+      v-model="form.stationIn"
+      :label="t('labels.filters.shops.station')"
+      :fetch="fetchStations"
+      name="station"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
     <FilterGroup
       v-model="form.celestialObjectIn"
-      :label="t('labels.filters.stations.celestialObject')"
+      :label="t('labels.filters.shops.celestialObject')"
       :fetch="fetchCelestialObjects"
       name="celestial-object"
       value-attr="slug"
@@ -30,7 +65,7 @@
     />
     <FilterGroup
       v-model="form.starsystemIn"
-      :label="t('labels.filters.stations.starsystem')"
+      :label="t('labels.filters.shops.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
       value-attr="slug"
@@ -38,36 +73,6 @@
       searchable
       multiple
     />
-    <FilterGroup
-      v-model="form.stationTypeIn"
-      :label="t('labels.filters.stations.type')"
-      :fetch="fetchStationTypes"
-      name="station-types"
-      multiple
-    />
-    <FilterGroup
-      v-model="form.shopsShopTypeIn"
-      :label="t('labels.filters.stations.shops')"
-      :fetch="fetchShopTypes"
-      name="shops"
-      multiple
-    />
-    <FilterGroup
-      v-model="form.docksShipSizeIn"
-      :label="t('labels.filters.stations.docks')"
-      :fetch="fetchShipSizes"
-      name="docks"
-      multiple
-    />
-    <RadioList
-      :label="t('labels.filters.stations.habs')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      v-model="form.habsNotNull"
-      name="habs"
-    />
-    <!-- <br>
-    Filter by Status -->
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -99,12 +104,11 @@ export default {
       loading: false,
       form: {
         nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
+        commodityNameCont: query.commodityNameCont,
+        stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
-        stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
+        shopTypeIn: query.shopTypeIn || [],
       },
     }
   },
@@ -113,12 +117,11 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
-        habsNotNull: query.habsNotNull,
+        commodityNameCont: query.commodityNameCont,
+        stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
-        stationTypeIn: query.stationTypeIn || [],
-        shopsShopTypeIn: query.shopsShopTypeIn || [],
-        docksShipSizeIn: query.docksShipSizeIn || [],
+        shopTypeIn: query.shopTypeIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
@@ -132,6 +135,22 @@ export default {
   methods: {
     clearName() {
       this.form.nameCont = null
+    },
+    clearCommodityName() {
+      this.form.commodityNameCont = null
+    },
+    fetchStations({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('stations', query)
     },
     fetchCelestialObjects({ page, search, missingValue }) {
       const query = {
@@ -158,12 +177,6 @@ export default {
         query.page = page
       }
       return this.$api.get('starsystems', query)
-    },
-    fetchShipSizes() {
-      return this.$api.get('stations/ship-sizes')
-    },
-    fetchStationTypes() {
-      return this.$api.get('stations/station-types')
     },
     fetchShopTypes() {
       return this.$api.get('shops/shop-types')

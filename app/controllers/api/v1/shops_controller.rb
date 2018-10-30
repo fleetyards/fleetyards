@@ -4,6 +4,7 @@ module Api
   module V1
     class ShopsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:shops) }, only: [:index]
 
       def show
         authorize! :show, :api_shops
@@ -17,7 +18,7 @@ module Api
 
         @q = Shop.visible.ransack(shop_query_params)
 
-        @shops = @q.result
+        @shops = @q.result(distinct: true)
                    .page(params[:page])
                    .per(per_page(Shop))
       end
@@ -37,7 +38,8 @@ module Api
       private def shop_query_params
         @shop_query_params ||= query_params(
           :name_cont, :commodity_name_cont,
-          commodity_category_in: [], station_in: [], celestial_object_in: [], starsystem_in: []
+          shop_type_in: [], commodity_category_in: [], station_in: [], celestial_object_in: [],
+          starsystem_in: []
         )
       end
     end

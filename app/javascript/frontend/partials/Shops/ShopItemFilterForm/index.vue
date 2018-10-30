@@ -35,7 +35,7 @@
     <FilterGroup
       v-model="form.manufacturerIn"
       :label="t('labels.filters.shopItems.manufacturer')"
-      :fetch="fetchManufacturers"
+      :fetch="fetchCommodityManufacturers"
       name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
@@ -161,6 +161,19 @@ export default {
     },
     fetchSubCategories() {
       return this.$api.get('filters/shop-commodities/sub-categories')
+    },
+    fetchCommodityManufacturers({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('manufacturers', query)
     },
   },
 }

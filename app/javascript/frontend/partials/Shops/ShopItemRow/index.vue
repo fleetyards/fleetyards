@@ -29,11 +29,12 @@
           v-if="link"
           :to="link"
         >
-          {{ name }}
+          <span v-html="name" />
         </router-link>
-        <span v-else>
-          {{ name }}
-        </span>
+        <span
+          v-else
+          v-html="name"
+        />
         <small>{{ commodity.subCategoryLabel }}</small>
       </h2>
       {{ commodity.description }}
@@ -84,10 +85,13 @@ export default {
   },
   computed: {
     name() {
-      if (!this.commodity.manufacturer) {
-        return this.commodity.name
+      if (this.commodity.manufacturer) {
+        if (this.commodity.manufacturer.code) {
+          return `${this.commodity.manufacturer.code} ${this.commodity.name}`
+        }
+        return `${this.commodity.manufacturer.name} ${this.commodity.name}`
       }
-      return `${this.commodity.manufacturer.code} ${this.commodity.name}`
+      return this.commodity.name
     },
     link() {
       if (this.commodity.category !== 'model') {

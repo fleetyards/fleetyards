@@ -15,7 +15,7 @@ module Api
         @q = CelestialObject.visible
                             .ransack(celestial_object_query_params)
 
-        @celestial_objects = @q.result
+        @celestial_objects = @q.result(distinct: true)
                                .page(params[:page])
                                .per(per_page(CelestialObject))
       end

@@ -13,7 +13,7 @@ module Api
 
         @q = Starsystem.visible.ransack(starsystem_query_params)
 
-        @starsystems = @q.result
+        @starsystems = @q.result(distinct: true)
                          .page(params[:page])
                          .per(per_page(Starsystem))
       end
