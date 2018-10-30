@@ -19,7 +19,7 @@
       />
     </div>
     <FilterGroup
-      v-model="form.manufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
       :fetch="fetchManufacturers"
       name="manufacturer"
@@ -112,7 +112,7 @@ export default {
       form: {
         nameOrDescriptionCont: query.nameOrDescriptionCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
@@ -128,7 +128,7 @@ export default {
       this.form = {
         nameOrDescriptionCont: query.nameOrDescriptionCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],

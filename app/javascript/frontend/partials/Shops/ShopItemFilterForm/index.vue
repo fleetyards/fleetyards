@@ -33,7 +33,7 @@
       multiple
     />
     <FilterGroup
-      v-model="form.manufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.shopItems.manufacturer')"
       :fetch="fetchManufacturers"
       name="manufacturer"
@@ -110,7 +110,7 @@ export default {
         nameCont: query.nameCont,
         categoryIn: query.categoryeIn || [],
         subCategoryIn: query.subCategoryIn || [],
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
       },
@@ -136,7 +136,7 @@ export default {
         nameCont: query.nameCont,
         categoryIn: query.categoryIn || [],
         subCategoryIn: query.subCategoryIn || [],
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
       }

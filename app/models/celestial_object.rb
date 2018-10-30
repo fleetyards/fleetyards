@@ -26,6 +26,8 @@ class CelestialObject < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  ransack_alias :starsystem, :starsystem_slug
+
   def self.main
     where(parent_id: nil)
   end

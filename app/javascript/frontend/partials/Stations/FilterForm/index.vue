@@ -19,7 +19,7 @@
       />
     </div>
     <FilterGroup
-      v-model="form.celestialObjectSlugIn"
+      v-model="form.celestialObjectIn"
       :label="t('labels.filters.stations.celestialObject')"
       :fetch="fetchCelestialObjects"
       name="celestial-object"
@@ -29,7 +29,7 @@
       multiple
     />
     <FilterGroup
-      v-model="form.starsystemSlugIn"
+      v-model="form.starsystemIn"
       :label="t('labels.filters.stations.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
@@ -100,8 +100,8 @@ export default {
       form: {
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
-        celestialObjectSlugIn: query.celestialObjectSlugIn || [],
-        starsystemSlugIn: query.starsystemSlugIn || [],
+        celestialObjectIn: query.celestialObjectIn || [],
+        starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],
         shopsShopTypeIn: query.shopsShopTypeIn || [],
         docksShipSizeIn: query.docksShipSizeIn || [],
@@ -114,8 +114,8 @@ export default {
       this.form = {
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
-        celestialObjectSlugIn: query.celestialObjectSlugIn || [],
-        starsystemSlugIn: query.starsystemSlugIn || [],
+        celestialObjectIn: query.celestialObjectIn || [],
+        starsystemIn: query.starsystemIn || [],
         stationTypeIn: query.stationTypeIn || [],
         shopsShopTypeIn: query.shopsShopTypeIn || [],
         docksShipSizeIn: query.docksShipSizeIn || [],

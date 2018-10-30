@@ -27,7 +27,7 @@ module Api
 
       private def celestial_object_query_params
         @celestial_object_query_params ||= query_params(
-          :starsystem_slug_eq, :name_cont
+          :starsystem_eq, :name_cont
         )
       end
     end

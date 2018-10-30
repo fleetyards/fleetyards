@@ -242,7 +242,7 @@ export default {
       const response = await this.$api.get('stations', {
         q: {
           ...this.$route.query.q,
-          celestialObjectSlugEq: this.$route.params.slug,
+          celestialObjectEq: this.$route.params.slug,
         },
         page: this.$route.query.page,
       })

@@ -177,10 +177,7 @@ export default {
   },
   methods: {
     filterManufacturerQuery(manufacturer) {
-      if (this.$route.name === 'models') {
-        return { manufacturerSlugIn: [manufacturer] }
-      }
-      return { modelManufacturerSlugIn: [manufacturer] }
+      return { manufacturerIn: [manufacturer] }
     },
     showEditModal() {
       this.$refs.vehicleModal.open()

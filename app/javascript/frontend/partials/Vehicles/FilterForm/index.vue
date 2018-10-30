@@ -35,7 +35,7 @@
         v-html="'&times;'"/>
     </div>
     <FilterGroup
-      v-model="form.modelManufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
       :fetch="fetchManufacturers"
       name="manufacturer"
@@ -46,14 +46,14 @@
       multiple
     />
     <FilterGroup
-      v-model="form.modelProductionStatusIn"
+      v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
       :fetch="fetchProductionStatus"
       name="production-status"
       multiple
     />
     <FilterGroup
-      v-model="form.modelClassificationIn"
+      v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
       :fetch="fetchClassifications"
       name="classification"
@@ -61,7 +61,7 @@
       multiple
     />
     <FilterGroup
-      v-model="form.modelFocusIn"
+      v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
       :fetch="fetchFocus"
       name="focus"
@@ -69,7 +69,7 @@
       multiple
     />
     <FilterGroup
-      v-model="form.modelSizeIn"
+      v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
       :fetch="fetchSize"
       name="size"
@@ -77,14 +77,14 @@
     />
     <FilterGroup
       :options="pledgePriceOptions"
-      v-model="form.modelPledgePriceIn"
+      v-model="form.pledgePriceIn"
       :label="t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
-      v-model="form.modelPriceIn"
+      v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
       name="price"
       multiple
@@ -97,7 +97,7 @@
           name: item.name,
         }
       })"
-      v-model="form.hangarGroupsSlugIn"
+      v-model="form.hangarGroupsIn"
       :label="t('labels.filters.vehicles.group')"
       name="hangar-group"
       multiple
@@ -114,7 +114,7 @@
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.modelOnSaleEq"
+      v-model="form.onSaleEq"
       name="sale"
     />
     <Btn
@@ -156,16 +156,16 @@ export default {
       form: {
         nameCont: query.nameCont,
         modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
-        modelOnSaleEq: query.modelOnSaleEq,
+        onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
-        modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
-        modelClassificationIn: query.modelClassificationIn || [],
-        modelFocusIn: query.modelFocusIn || [],
-        modelSizeIn: query.modelSizeIn || [],
-        modelPriceIn: query.modelPriceIn || [],
-        modelPledgePriceIn: query.modelPledgePriceIn || [],
-        modelProductionStatusIn: query.modelProductionStatusIn || [],
-        hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
+        classificationIn: query.classificationIn || [],
+        focusIn: query.focusIn || [],
+        sizeIn: query.sizeIn || [],
+        priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
+        productionStatusIn: query.productionStatusIn || [],
+        hangarGroupsIn: query.hangarGroupsIn || [],
       },
     }
   },
@@ -175,16 +175,16 @@ export default {
       this.form = {
         nameCont: query.nameCont,
         modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
-        modelOnSaleEq: query.modelOnSaleEq,
+        onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
-        modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
-        modelClassificationIn: query.modelClassificationIn || [],
-        modelFocusIn: query.modelFocusIn || [],
-        modelSizeIn: query.modelSizeIn || [],
-        modelPriceIn: query.modelPriceIn || [],
-        modelPledgePriceIn: query.modelPledgePriceIn || [],
-        modelProductionStatusIn: query.modelProductionStatusIn || [],
-        hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
+        classificationIn: query.classificationIn || [],
+        focusIn: query.focusIn || [],
+        sizeIn: query.sizeIn || [],
+        priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
+        productionStatusIn: query.productionStatusIn || [],
+        hangarGroupsIn: query.hangarGroupsIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },

@@ -205,23 +205,23 @@ module Api
       end
 
       private def pledge_price_in
-        pledge_price_in = vehicle_query_params.delete('model_pledge_price_in')
+        pledge_price_in = vehicle_query_params.delete('pledge_price_in')
         pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
         pledge_price_in
       end
 
       private def price_in
-        price_in = vehicle_query_params.delete('model_price_in')
+        price_in = vehicle_query_params.delete('price_in')
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
       end
 
       private def vehicle_query_params
         @vehicle_query_params ||= query_params(
-          :name_cont, :model_name_or_model_description_cont, :model_on_sale_eq, :purchased_eq,
-          model_manufacturer_slug_in: [], model_classification_in: [], model_focus_in: [],
-          model_size_in: [], model_price_in: [], model_pledge_price_in: [],
-          model_production_status_in: [], hangar_groups_slug_in: []
+          :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq,
+          manufacturer_in: [], classification_in: [], focus_in: [],
+          size_in: [], price_in: [], pledge_price_in: [],
+          production_status_in: [], hangar_groups_in: []
         )
       end
     end

@@ -13,7 +13,7 @@
               v-if="vehiclesCount"
               :label="t('labels.hangar')"
               :count-data="vehiclesCount"
-              filter-key="modelClassificationIn"
+              filter-key="classificationIn"
             />
             <GroupLabels
               v-if="!mobile && (vehicles.length || fleetchartVehicles.length

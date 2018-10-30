@@ -27,14 +27,11 @@ module Api
       def sub_categories
         authorize! :index, :api_shop_commodities
 
-        @filters ||= begin
-          filters = []
-          filters << Model.classification_filters
-          filters << Equipment.type_filters
-          filters << Component.class_filters
-          filters.flatten
-                 .sort_by { |category| [category.category, category.name] }
-        end
+        @filters = [
+          Model.classification_filters,
+          Equipment.type_filters,
+          Component.class_filters
+        ].flatten.sort_by { |category| [category.category, category.name] }
       end
 
       private def shop
@@ -48,7 +45,7 @@ module Api
       private def shop_commodities_query_params
         @shop_commodities_query_params ||= query_params(
           :name_cont, :price_gteq, :price_lteq,
-          category_in: [], sub_category_in: [], manufacturer_slug_in: []
+          category_in: [], sub_category_in: [], manufacturer_in: []
         )
       end
     end
