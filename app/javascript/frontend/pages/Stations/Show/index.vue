@@ -8,13 +8,7 @@
         >
           {{ station.name }}
           <router-link
-            :to="{
-              name: 'celestialObject',
-              params: {
-                slug: station.celestialObject.slug,
-              },
-              hash: `#${station.slug}`,
-            }"
+            :to="stationBackRoute"
             class="btn btn-link"
           >
             <i class="fal fa-chevron-left" />
@@ -115,6 +109,7 @@ import ShopPanel from 'frontend/partials/Stations/Panel'
 import StationBaseMetrics from 'frontend/partials/Stations/BaseMetrics'
 import StationDocks from 'frontend/partials/Stations/Docks'
 import StationHabitations from 'frontend/partials/Stations/Habitations'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -134,6 +129,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'previousRoute',
+      'stationBackRoute',
+    ]),
     emptyBoxVisible() {
       return !this.loading && (!this.station || this.station.shops.length === 0)
     },
@@ -149,6 +148,7 @@ export default {
       this.fetch()
     },
     station() {
+      this.setBackRoute()
       if (this.station.storeImage) {
         this.$store.commit('setBackgroundImage', this.station.storeImage)
       }
@@ -158,6 +158,20 @@ export default {
     this.fetch()
   },
   methods: {
+    setBackRoute() {
+      const route = {
+        name: 'stations',
+        hash: `#${this.station.slug}`,
+      }
+
+      if (this.previousRoute && ['stations', 'celestialObject'].includes(this.previousRoute.name)) {
+        route.name = this.previousRoute.name
+        route.params = this.previousRoute.params
+        route.query = this.previousRoute.query
+      }
+
+      this.$store.commit('setStationBackRoute', route)
+    },
     async fetch() {
       this.loading = true
       const response = await this.$api.get(`stations/${this.$route.params.slug}`)

@@ -1,6 +1,6 @@
 <template>
   <Panel
-    :id="item.slug"
+    :id="id || item.slug"
     class="station-item"
   >
     <div class="panel-image text-center">
@@ -37,6 +37,10 @@ export default {
     route: {
       type: Object,
       required: true,
+    },
+    id: {
+      type: String,
+      default: null,
     },
   },
 }

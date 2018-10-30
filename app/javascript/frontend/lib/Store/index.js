@@ -45,6 +45,8 @@ const initialState = {
   modelDetailsVisible: false,
   modelFilterVisible: true,
   modelBackRoute: null,
+  shopBackRoute: null,
+  stationBackRoute: null,
 }
 
 const store = new Vuex.Store({
@@ -115,6 +117,12 @@ const store = new Vuex.Store({
     },
     modelBackRoute(state) {
       return state.modelBackRoute
+    },
+    shopBackRoute(state) {
+      return state.shopBackRoute
+    },
+    stationBackRoute(state) {
+      return state.stationBackRoute
     },
   },
   actions: {
@@ -298,6 +306,12 @@ const store = new Vuex.Store({
     },
     setModelBackRoute(state, payload) {
       state.modelBackRoute = payload
+    },
+    setShopBackRoute(state, payload) {
+      state.shopBackRoute = payload
+    },
+    setStationBackRoute(state, payload) {
+      state.stationBackRoute = payload
     },
     setShopFilterVisible(state, payload) {
       state.shopFilterVisible = payload

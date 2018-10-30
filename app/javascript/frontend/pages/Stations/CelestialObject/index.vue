@@ -145,6 +145,7 @@
                   >
                     <ShopPanel
                       :item="shop"
+                      :id="`${station.slug}-${shop.slug}`"
                       :route="{
                         name: 'shop',
                         params: {

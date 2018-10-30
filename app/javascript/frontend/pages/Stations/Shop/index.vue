@@ -11,13 +11,7 @@
             {{ shop.station.name }}
           </small>
           <router-link
-            :to="{
-              name: 'station',
-              params: {
-                slug: shop.station.slug,
-              },
-              hash: `#${shop.slug}`,
-            }"
+            :to="shopBackRoute"
             class="btn btn-link"
           >
             <i class="fal fa-chevron-left" />
@@ -187,6 +181,8 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'previousRoute',
+      'shopBackRoute',
       'shopFilterVisible',
       'mobile',
     ]),
@@ -211,6 +207,7 @@ export default {
       this.fetchCommodities()
     },
     shop() {
+      this.setBackRoute()
       if (this.shop.storeImage) {
         this.$store.commit('setBackgroundImage', this.shop.storeImage)
       }
@@ -225,6 +222,25 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
+    setBackRoute() {
+      if (this.shopBackRoute && this.previousRoute
+        && ['model'].includes(this.previousRoute.name)) {
+        return
+      }
+
+      const route = {
+        name: 'shops',
+        hash: `#${this.shop.station.slug}-${this.shop.slug}`,
+      }
+
+      if (this.previousRoute && ['shops', 'station', 'celestialObject'].includes(this.previousRoute.name)) {
+        route.name = this.previousRoute.name
+        route.params = this.previousRoute.params
+        route.query = this.previousRoute.query
+      }
+
+      this.$store.commit('setShopBackRoute', route)
+    },
     toggleFullscreen() {
       this.fullscreen = !this.shopFilterVisible
     },
