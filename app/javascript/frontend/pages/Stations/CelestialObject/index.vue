@@ -24,7 +24,7 @@
     </div>
     <div class="row">
       <div
-        v-if="celestialObject.moons.length"
+        v-if="celestialObject && celestialObject.moons.length"
         class="col-xs-12"
       >
         <h2>{{ t('headlines.moons') }}</h2>
