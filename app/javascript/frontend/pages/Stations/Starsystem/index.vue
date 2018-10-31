@@ -167,6 +167,7 @@ export default {
         q: {
           ...this.$route.query.q,
           starsystemEq: this.$route.params.slug,
+          main: true,
         },
         page: this.$route.query.page,
       })
