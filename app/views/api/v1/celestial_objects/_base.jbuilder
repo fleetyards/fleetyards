@@ -2,7 +2,7 @@
 
 json.name celestial_object.name
 json.slug celestial_object.slug
-json.type celestial_object.object_type.humanize
+json.type celestial_object.object_type&.humanize
 json.designation celestial_object.designation
 json.store_image celestial_object.store_image.url
 json.description celestial_object.description

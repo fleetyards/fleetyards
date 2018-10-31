@@ -26,15 +26,31 @@ module Api
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
+            'type' => nil,
             'designation' => '2',
-            'storeImage' => portolisar.celestial_object.store_image.url
+            'storeImage' => portolisar.celestial_object.store_image.url,
+            'description' => nil,
+            'habitable' => nil,
+            'fairchanceact' => nil,
+            'subType' => nil,
+            'size' => nil,
+            'danger' => nil,
+            'economy' => nil,
+            'population' => nil
           },
           'starsystem' => {
             'name' => 'Stanton',
             'slug' => 'stanton',
             'storeImage' => portolisar.starsystem.store_image.url,
             'mapX' => nil,
-            'mapY' => nil
+            'mapY' => nil,
+            'description' => nil,
+            'type' => nil,
+            'size' => nil,
+            'population' => nil,
+            'economy' => nil,
+            'danger' => nil,
+            'status' => nil
           },
           'shops' => [{
             'name' => 'Dumpers Depot',
@@ -84,15 +100,31 @@ module Api
           'celestialObject' => {
             'name' => 'Daymar',
             'slug' => 'daymar',
+            'type' => nil,
             'designation' => '4',
-            'storeImage' => corvolex.celestial_object.store_image.url
+            'storeImage' => corvolex.celestial_object.store_image.url,
+            'description' => nil,
+            'habitable' => nil,
+            'fairchanceact' => nil,
+            'subType' => nil,
+            'size' => nil,
+            'danger' => nil,
+            'economy' => nil,
+            'population' => nil
           },
           'starsystem' => {
             'name' => 'Stanton',
             'slug' => 'stanton',
             'storeImage' => corvolex.starsystem.store_image.url,
             'mapX' => nil,
-            'mapY' => nil
+            'mapY' => nil,
+            'description' => nil,
+            'type' => nil,
+            'size' => nil,
+            'population' => nil,
+            'economy' => nil,
+            'danger' => nil,
+            'status' => nil
           },
           'shops' => [],
           'docks' => [{
@@ -118,15 +150,31 @@ module Api
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
+            'type' => nil,
             'designation' => '2',
-            'storeImage' => portolisar.celestial_object.store_image.url
+            'storeImage' => portolisar.celestial_object.store_image.url,
+            'description' => nil,
+            'habitable' => nil,
+            'fairchanceact' => nil,
+            'subType' => nil,
+            'size' => nil,
+            'danger' => nil,
+            'economy' => nil,
+            'population' => nil
           },
           'starsystem' => {
             'name' => 'Stanton',
             'slug' => 'stanton',
             'storeImage' => portolisar.starsystem.store_image.url,
             'mapX' => nil,
-            'mapY' => nil
+            'mapY' => nil,
+            'description' => nil,
+            'type' => nil,
+            'size' => nil,
+            'population' => nil,
+            'economy' => nil,
+            'danger' => nil,
+            'status' => nil
           },
           'shops' => [{
             'name' => 'Dumpers Depot',
@@ -176,9 +224,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = index_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
 
         it 'should return a single record for show' do
@@ -187,9 +233,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal show_result, json
         end
       end
 
@@ -206,9 +250,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = index_result
-
-          assert_equal expected, json
+          assert_equal index_result, json
         end
 
         it 'should return a single record for show' do
@@ -217,9 +259,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          expected = show_result
-
-          assert_equal expected, json
+          assert_equal show_result, json
         end
       end
     end
