@@ -65,7 +65,7 @@
           <div
             v-for="(shop, index) in shops"
             :key="index"
-            class="col-xs-6 fade-list-item"
+            class="col-xs-12 col-md-6 fade-list-item"
           >
             <Panel
               :id="`${shop.station.slug}-${shop.slug}`"
