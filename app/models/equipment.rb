@@ -30,6 +30,10 @@ class Equipment < ApplicationRecord
     end
   end
 
+  def equipment_type_label
+    Equipment.human_enum_name(:equipment_type, equipment_type)
+  end
+
   private def update_slugs
     self.slug = SlugHelper.generate_slug(name)
   end

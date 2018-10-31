@@ -6,6 +6,7 @@ en:
         remember_me: Remember me
     placeholder:
       name: Name
+      description: Description
       trade_hub:
         system: System
         station_type: Type

@@ -6,6 +6,12 @@
       %small
         = form_errors equipment, :name
 
+    .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :description)}
+      = form.label :description
+      = form.text_area :description, placeholder: I18n.t(:"helpers.placeholder.description"), class: 'form-control'
+      %small
+        = form_errors equipment, :description
+
     .col-xs-12.col-sm-6.form-group
       .checkbox
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden")
