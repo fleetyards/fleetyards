@@ -7,6 +7,7 @@
           class="back-button"
         >
           {{ celestialObject.name }}
+          <small>{{ celestialObject.designation }}</small>
           <router-link
             :to="{
               name: 'starsystem',
@@ -20,6 +21,28 @@
             <i class="fal fa-chevron-left" />
           </router-link>
         </h1>
+      </div>
+    </div>
+    <div
+      v-if="celestialObject"
+      class="row"
+    >
+      <div class="col-xs-12 col-md-8">
+        <blockquote
+          v-if="celestialObject.description"
+          class="description"
+        >
+          <p v-html="celestialObject.description" />
+        </blockquote>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <Panel>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <CelestialObjectMetrics :celestial-object="celestialObject" />
+            </li>
+          </ul>
+        </Panel>
       </div>
     </div>
     <div class="row">
@@ -183,18 +206,22 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
 import StationList from 'frontend/partials/Stations/List'
 import ShopPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
+import CelestialObjectMetrics from 'frontend/partials/CelestialObjects/Metrics'
 
 export default {
   components: {
     Loader,
+    Panel,
     EmptyBox,
     StationList,
     ShopPanel,
+    CelestialObjectMetrics,
   },
   mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {

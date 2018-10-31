@@ -38,21 +38,13 @@
         class="col-xs-12 col-md-4"
       >
         <Panel>
-          <ul class="list-group">
+          <ul class="list-group metrics">
             <li class="list-group-item">
               <StationBaseMetrics :station="station" />
             </li>
-          </ul>
-        </Panel>
-        <Panel v-if="station.docks.length">
-          <ul class="list-group">
             <li class="list-group-item">
               <StationDocks :station="station" />
             </li>
-          </ul>
-        </Panel>
-        <Panel v-if="station.habitations.length">
-          <ul class="list-group">
             <li class="list-group-item">
               <StationHabitations :station="station" />
             </li>

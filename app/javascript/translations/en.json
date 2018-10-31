@@ -144,6 +144,8 @@
     "gap": "&hellip;"
   },
   "labels": {
+    "true": "Yes",
+    "false": "No",
     "shop": {
       "rentPrice": "rent / day",
       "sellPrice": "price",
@@ -210,6 +212,7 @@
     },
     "cargoRoutes": "Cargo routes",
     "uecPerUnit": "aUEC / Unit",
+    "au": "AU",
     "uec": "aUEC",
     "sell": "Sell",
     "buy": "Buy",
@@ -244,6 +247,7 @@
     },
     "metrics": {
       "info": "Info",
+      "levels": "Levels",
       "base": "Base",
       "crew": "Crew",
       "speed": "Speed",
@@ -668,6 +672,22 @@
         "rank": "Organization rank"
       }
     }
+  },
+  "celestialObject": {
+    "type": "Type",
+    "subType": "Sub Type",
+    "habitable": "Habitable?",
+    "fairchanceakt": "Fair Chance Akt?",
+    "population": "Population",
+    "economy": "Economy",
+    "danger": "Danger"
+  },
+  "starsystem": {
+    "type": "Type",
+    "size": "Size",
+    "population": "Population",
+    "economy": "Economy",
+    "danger": "Danger"
   },
   "shop": {
     "type": "Type",

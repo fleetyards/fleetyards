@@ -16,6 +16,31 @@
         </h1>
       </div>
     </div>
+    <div
+      v-if="starsystem"
+      class="row"
+    >
+      <div class="col-xs-12 col-md-8">
+        <blockquote
+          v-if="starsystem.description"
+          class="description"
+        >
+          <p v-html="starsystem.description" />
+        </blockquote>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <Panel>
+          <ul class="list-group metrics">
+            <li class="list-group-item">
+              <StarsystemBaseMetrics :starsystem="starsystem" />
+            </li>
+            <li class="list-group-item">
+              <StarsystemLevelsMetrics :starsystem="starsystem" />
+            </li>
+          </ul>
+        </Panel>
+      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12">
         <div class="pull-right">
@@ -102,9 +127,12 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
 import PlanetList from 'frontend/partials/Stations/List'
 import MoonPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
+import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 
@@ -114,6 +142,9 @@ export default {
     EmptyBox,
     PlanetList,
     MoonPanel,
+    StarsystemBaseMetrics,
+    StarsystemLevelsMetrics,
+    Panel,
   },
   mixins: [I18n, MetaInfo, Hash, Pagination],
   data() {
