@@ -65,7 +65,8 @@ module Admin
 
     private def equipment_params
       @equipment_params ||= params.require(:equipment).permit(
-        :name, :equipment_type, :hidden, :store_image, :store_image_cache, :remove_store_image
+        :name, :equipment_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
+        :manufacturer_id
       )
     end
 
