@@ -12,23 +12,23 @@
       %small
         = form_errors equipment, :description
 
-    .col-xs-12.col-sm-6.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden")
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.equipment.hidden")
-
     .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :equipment_type)}
       = form.label :equipment_type
       = form.select :equipment_type, Equipment.equipment_types.keys.map { |w| [Equipment.human_enum_name(:equipment_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.equipment_type") }, { class: 'form-control' }
       %small
         = form_errors equipment, :equipment_type
 
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(equipment, :manufacturer_id)}
+    .col-xs-12.col-sm-6.form-group{class: form_error?(equipment, :manufacturer_id)}
       = form.label :manufacturer_id
       = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, equipment.manufacturer_id), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors equipment, :manufacturer_id
+
+    .col-xs-12.col-sm-6.form-group
+      .checkbox
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden")
+        = form.label :hidden do
+          = I18n.t(:"activerecord.attributes.equipment.hidden")
 
     .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :store_image)}
       = form.label :store_image
