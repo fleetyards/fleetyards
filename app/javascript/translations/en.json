@@ -353,6 +353,7 @@
       },
       "vehicles": {
         "name": "Name",
+        "modelName": "Ship Name",
         "purchased": "Purchased",
         "group": "Group"
       },
@@ -368,7 +369,6 @@
         "planet": "Planet"
       },
       "models": {
-        "nameOrDescription": "Name or Description",
         "shipRole": "Ship Role",
         "classification": "Classification",
         "focus": "Focus",
@@ -398,13 +398,13 @@
     "filters": {
       "shops": {
         "name": "Casaba, Platinum Bay...",
-        "commodityName": "Aurora, L86, Laranite..."
+        "commodityName": "Aurora, L86..."
       },
       "stations": {
-        "name": "Port Olisar, Teasa Spaceport..."
+        "name": "Port Olisar, Teasa..."
       },
       "shopItems": {
-        "name": "Aurora, L86, Laranite...",
+        "name": "Aurora, L86...",
         "minPrice": "minmal Price in UEC",
         "maxPrice": "maximal Price in UEC"
       },
@@ -412,7 +412,7 @@
         "name": "Enterprise, Nebuchadnezzar..."
       },
       "models": {
-        "nameOrDescription": "Gladius, Andromeda, Hornet...",
+        "name": "Gladius, Andromeda...",
         "shipRole": "Cargo, Capital Ship, Fighter...",
         "classification": "Vehicle, Fighter, Cargo...",
         "manufacturer": "Origin, Robert Space Industries, Aegis...",

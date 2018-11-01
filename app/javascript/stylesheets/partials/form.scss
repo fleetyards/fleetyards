@@ -23,10 +23,19 @@ input.disabled-clean[disabled=disabled] {
   cursor: copy;
 }
 
+.form-control-filter {
+  padding-right: 50px;
+  text-overflow: ellipsis;
+}
+
 .btn-clear {
   position: absolute;
-  right: 15px;
-  top: 28px;
+  right: 20px;
+  top: 30px;
+
+  &:nth-child(2) {
+    top: 4px;
+  }
 }
 
 .form-horizontal {

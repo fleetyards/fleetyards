@@ -1,20 +1,16 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('model-name-or-description')">
-        {{ t('labels.filters.models.nameOrDescription') }}
-      </label>
       <input
-        :id="idFor('model-name-or-description')"
-        v-model="form.nameOrDescriptionCont"
-        :placeholder="t('placeholders.filters.models.nameOrDescription')"
+        v-model="form.nameCont"
+        :placeholder="t('placeholders.filters.models.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
-        v-if="form.nameOrDescriptionCont"
+        v-if="form.nameCont"
         class="btn btn-clear"
-        @click="clearNameOrDescription"
+        @click="clearName"
         v-html="'&times;'"
       />
     </div>
@@ -110,7 +106,7 @@ export default {
     return {
       loading: false,
       form: {
-        nameOrDescriptionCont: query.nameOrDescriptionCont,
+        nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
@@ -126,7 +122,7 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        nameOrDescriptionCont: query.nameOrDescriptionCont,
+        nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
@@ -146,8 +142,8 @@ export default {
     },
   },
   methods: {
-    clearNameOrDescription() {
-      this.form.nameOrDescriptionCont = null
+    clearName() {
+      this.form.nameCont = null
     },
   },
 }

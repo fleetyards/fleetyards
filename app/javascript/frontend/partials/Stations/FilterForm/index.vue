@@ -1,15 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('stations-name')">
-        {{ t('labels.filters.stations.name') }}
-      </label>
       <input
-        :id="idFor('stations-name')"
         v-model="form.nameCont"
         :placeholder="t('placeholders.filters.stations.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
         v-if="form.nameCont"

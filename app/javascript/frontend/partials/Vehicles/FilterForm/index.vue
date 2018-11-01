@@ -1,15 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('user-vehicle-name')">
-        {{ t('labels.filters.vehicles.name') }}
-      </label>
       <input
-        :id="idFor('user-vehicle-name')"
         v-model="form.nameCont"
         :placeholder="t('placeholders.filters.vehicles.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
         v-if="form.nameCont"
@@ -18,20 +14,20 @@
         v-html="'&times;'"/>
     </div>
     <div class="form-group">
-      <label :for="idFor('model-name-or-description')">
-        {{ t('labels.filters.models.nameOrDescription') }}
+      <label :for="idFor('model-name')">
+        {{ t('labels.filters.vehicles.modelName') }}
       </label>
       <input
-        :id="idFor('model-name-or-description')"
-        v-model="form.modelNameOrModelDescriptionCont"
-        :placeholder="t('placeholders.filters.models.nameOrDescription')"
+        :id="idFor('model-name')"
+        v-model="form.modelNameCont"
+        :placeholder="t('placeholders.filters.models.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
-        v-if="form.modelNameOrModelDescriptionCont"
+        v-if="form.modelNameCont"
         class="btn btn-clear"
-        @click="clearModelNameOrDescription"
+        @click="clearModelName"
         v-html="'&times;'"/>
     </div>
     <FilterGroup
@@ -155,7 +151,7 @@ export default {
     return {
       form: {
         nameCont: query.nameCont,
-        modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
+        modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
         manufacturerIn: query.manufacturerIn || [],
@@ -174,7 +170,7 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
-        modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
+        modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
         manufacturerIn: query.manufacturerIn || [],
@@ -199,8 +195,8 @@ export default {
     clearName() {
       this.form.nameCont = null
     },
-    clearModelNameOrDescription() {
-      this.form.modelNameOrModelDescriptionCont = null
+    clearModelName() {
+      this.form.modelNameCont = null
     },
   },
 }
