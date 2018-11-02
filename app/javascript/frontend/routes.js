@@ -127,10 +127,6 @@ export const routes = [
     path: '/stations',
     name: 'stations',
     component: Stations,
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-7.jpg'),
-    },
     children: StationsRoutes,
   }, {
     path: '/cargo',
