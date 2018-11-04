@@ -37,6 +37,31 @@
         />
         <small>{{ commodity.subCategoryLabel }}</small>
       </h2>
+      <div
+        v-if="showStats"
+        class="row"
+      >
+        <div class="col-xs-12 col-md-6">
+          <ul class="list-unstyled">
+            <li
+              v-for="item in leftStatItems"
+              :key="item.key"
+            >
+              <b v-if="item.label">{{ item.label }}</b>{{ item.value }}
+            </li>
+          </ul>
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <ul class="list-unstyled">
+            <li
+              v-for="item in rightStatItems"
+              :key="item.key"
+            >
+              <b v-if="item.label">{{ item.label }}</b>{{ item.value }}
+            </li>
+          </ul>
+        </div>
+      </div>
       {{ commodity.description }}
     </td>
     <td
@@ -84,12 +109,27 @@ export default {
     },
   },
   computed: {
+    showStats() {
+      return ['equipment', 'component'].includes(this.commodity.category)
+    },
+    leftStatItems() {
+      return ['grade', 'size', 'type', 'itemType', 'weaponClass'].map(this.statItem).filter(item => item)
+    },
+    rightStatItems() {
+      return ['range', 'damageReduction', 'rateOfFire', 'extras'].map(this.statItem).filter(item => item)
+    },
+    manufacturer() {
+      if (!this.commodity.item || !this.commodity.item.manufacturer) {
+        return null
+      }
+      return this.commodity.item.manufacturer
+    },
     name() {
-      if (this.commodity.manufacturer) {
-        if (this.commodity.manufacturer.code) {
-          return `${this.commodity.manufacturer.code} ${this.commodity.name}`
+      if (this.manufacturer) {
+        if (this.manufacturer.code) {
+          return `${this.manufacturer.code} ${this.commodity.name}`
         }
-        return `${this.commodity.manufacturer.name} ${this.commodity.name}`
+        return `${this.manufacturer.name} ${this.commodity.name}`
       }
       return this.commodity.name
     },
@@ -102,6 +142,25 @@ export default {
         params: {
           slug: this.commodity.slug,
         },
+      }
+    },
+  },
+  methods: {
+    statItem(item) {
+      const value = this.commodity.item[`${item}Label`] || this.commodity.item[item]
+      if (!value) {
+        return null
+      }
+
+      let label = this.t(`commodityItem.${item}`)
+      if (label) {
+        label = `${label}: `
+      }
+
+      return {
+        key: item,
+        label,
+        value,
       }
     },
   },

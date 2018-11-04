@@ -49,10 +49,4 @@ class ShopCommodity < ApplicationRecord
       commodity_item.equipment_type_label
     end
   end
-
-  def manufacturer
-    return unless %w[Model Equipment Component].include?(commodity_item_type)
-
-    commodity_item.manufacturer
-  end
 end

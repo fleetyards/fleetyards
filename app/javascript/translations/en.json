@@ -695,6 +695,18 @@
     "station": "Station",
     "rentalPrice": "%{price} / day"
   },
+  "commodityItem": {
+    "grade": "Grade",
+    "type": "Type",
+    "itemType": "Item Type",
+    "class": "Item Class",
+    "weaponClass": "Weapon Class",
+    "size": "Size",
+    "range": "Range",
+    "damageReduction": "Damage Reduction",
+    "rateOfFire": "Rate of Fire",
+    "extras": ""
+  },
   "number": {
     "format": {
       "precision": 2,

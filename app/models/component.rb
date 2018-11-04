@@ -54,6 +54,14 @@ class Component < ApplicationRecord
     end
   end
 
+  def item_class_label
+    Component.human_enum_name(:item_class, item_class)
+  end
+
+  def item_type_label
+    Component.human_enum_name(:item_type, item_type)
+  end
+
   def component_class_label
     I18n.t("filter.component.class.items.#{component_class.downcase}")
   end

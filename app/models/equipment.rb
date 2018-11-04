@@ -54,6 +54,18 @@ class Equipment < ApplicationRecord
     Equipment.human_enum_name(:equipment_type, equipment_type)
   end
 
+  def item_type_label
+    Equipment.human_enum_name(:item_type, item_type)
+  end
+
+  def slot_label
+    Equipment.human_enum_name(:slot, slot)
+  end
+
+  def weapon_class_label
+    Equipment.human_enum_name(:weapon_class, weapon_class)
+  end
+
   private def touch_shop_commodities
     # rubocop:disable Rails/SkipsModelValidations
     shop_commodities.update_all(updated_at: Time.zone.now)
