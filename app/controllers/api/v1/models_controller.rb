@@ -225,9 +225,9 @@ module Api
 
       private def model_query_params
         @model_query_params ||= query_params(
-          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq,
+          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           manufacturer_in: [], classification_in: [], focus_in: [], production_status_in: [],
-          price_in: [], pledge_price_in: [], size_in: []
+          price_in: [], pledge_price_in: [], size_in: [], sorts: []
         )
       end
     end
