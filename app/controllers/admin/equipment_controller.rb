@@ -7,7 +7,8 @@ module Admin
 
     def index
       authorize! :index, :admin_equipment
-      @q = Equipment.ransack(params[:q])
+      @q = Equipment.order(name: :asc)
+                    .ransack(params[:q])
       @equipment_list = @q.result
                           .page(params.fetch(:page) { nil })
                           .per(40)
