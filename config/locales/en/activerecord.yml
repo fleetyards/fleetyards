@@ -111,7 +111,7 @@ en:
           undersuit: Undersuit
           armor: Armor
           weapon: Weapon
-          weapon_attachment: Attachment
+          weapon_attachment: Weapon Attachment
           clothing: Clothing
           tool: Tool
           medical: Medical
@@ -124,7 +124,6 @@ en:
           medium_armor: Medium Armor
           heavy_armor: Heavy Armor
           magazine: Magazine
-          battery: Battery
           pistol: Pistol
           smg: SMG
           grenade: Grenade

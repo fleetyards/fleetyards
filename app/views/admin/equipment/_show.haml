@@ -4,7 +4,7 @@
   %td
     = equipment.name
   %td
-    = equipment.equipment_type
+    = Equipment.human_enum_name(:equipment_type, equipment.equipment_type) if equipment.equipment_type.present?
   %td
     - if equipment.hidden?
       %i.fa.fa-check
