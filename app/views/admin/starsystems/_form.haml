@@ -19,6 +19,7 @@
       %br
       - if starsystem.store_image?
         = image_tag(starsystem.store_image.url)
+        %br
         = form.check_box :remove_store_image
         Remove Image
       %small

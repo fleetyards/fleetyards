@@ -55,6 +55,7 @@
       %br
       - if component.store_image?
         = image_tag(component.store_image.url)
+        %br
         = form.check_box :remove_store_image
         Remove Image
       %small

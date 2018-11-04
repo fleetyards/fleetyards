@@ -25,6 +25,7 @@
       %br
       - if celestial_object.store_image?
         = image_tag(celestial_object.store_image.url)
+        %br
         = form.check_box :remove_store_image
         Remove Image
       %small

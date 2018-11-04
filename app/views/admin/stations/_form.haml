@@ -44,6 +44,7 @@
       %br
       - if station.map?
         = image_tag(station.map.url)
+        %br
         = form.check_box :remove_map
         Remove Map
       %small

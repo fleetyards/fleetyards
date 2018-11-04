@@ -6,7 +6,7 @@
         %th=sort_link(@q, :name)
         %th=sort_link(@q, :station_name, 'Station')
         %th=sort_link(@q, :hidden)
-        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
+        %th.actions.actions-two=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/shops/show", collection: @shops, as: :shop
 
