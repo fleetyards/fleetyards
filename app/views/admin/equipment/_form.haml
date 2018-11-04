@@ -12,19 +12,74 @@
       %small
         = form_errors equipment, :description
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :equipment_type)}
-      = form.label :equipment_type
-      = form.select :equipment_type, Equipment.equipment_types.keys.map { |w| [Equipment.human_enum_name(:equipment_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.equipment_type") }, { class: 'form-control' }
-      %small
-        = form_errors equipment, :equipment_type
-
-    .col-xs-12.col-sm-6.form-group{class: form_error?(equipment, :manufacturer_id)}
+    .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :manufacturer_id)}
       = form.label :manufacturer_id
       = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, equipment.manufacturer_id), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors equipment, :manufacturer_id
 
-    .col-xs-12.col-sm-6.form-group
+  .row
+    .col-xs-12.col-md-4.form-group{class: form_error?(equipment, :equipment_type)}
+      = form.label :equipment_type
+      = form.select :equipment_type, Equipment.equipment_types.keys.map { |w| [Equipment.human_enum_name(:equipment_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.equipment_type") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :equipment_type
+
+    .col-xs-12.col-md-4.form-group{class: form_error?(equipment, :item_type)}
+      = form.label :item_type
+      = form.select :item_type, Equipment.item_types.keys.map { |w| [Equipment.human_enum_name(:item_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.item_type") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :item_type
+
+    .col-xs-12.col-md-4.form-group{class: form_error?(equipment, :slot)}
+      = form.label :slot
+      = form.select :slot, Equipment.slots.keys.map { |w| [Equipment.human_enum_name(:slot, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.slot") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :slot
+
+    .col-xs-12.col-md-4.form-group{class: form_error?(equipment, :weapon_class)}
+      = form.label :weapon_class
+      = form.select :weapon_class, Equipment.weapon_classes.keys.map { |w| [Equipment.human_enum_name(:weapon_class, w), w] }, { include_blank: I18n.t(:"helpers.prompt.equipment.weapon_class") }, { class: 'form-control' }
+      %small
+        = form_errors equipment, :weapon_class
+  .row
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :size)}
+      = form.label :size
+      = form.text_field :size, placeholder: I18n.t(:"helpers.placeholder.equipment.size"), class: 'form-control'
+      %small
+        = form_errors equipment, :size
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :grade)}
+      = form.label :grade
+      = form.text_field :grade, placeholder: I18n.t(:"helpers.placeholder.equipment.grade"), class: 'form-control'
+      %small
+        = form_errors equipment, :grade
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :damage_reduction)}
+      = form.label :damage_reduction
+      = form.number_field :damage_reduction, placeholder: I18n.t(:"helpers.placeholder.equipment.damage_reduction"), class: 'form-control'
+      %small
+        = form_errors equipment, :damage_reduction
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :rate_of_fire)}
+      = form.label :rate_of_fire
+      = form.number_field :rate_of_fire, placeholder: I18n.t(:"helpers.placeholder.equipment.rate_of_fire"), class: 'form-control'
+      %small
+        = form_errors equipment, :rate_of_fire
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :range)}
+      = form.label :range
+      = form.number_field :range, placeholder: I18n.t(:"helpers.placeholder.equipment.range"), class: 'form-control'
+      %small
+        = form_errors equipment, :range
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :extras)}
+      = form.label :extras
+      = form.text_field :extras, placeholder: I18n.t(:"helpers.placeholder.equipment.extras"), class: 'form-control'
+      %small
+        = form_errors equipment, :extras
+
+    .col-xs-12.col-md-3.form-group
       .checkbox
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.equipment.hidden")
         = form.label :hidden do

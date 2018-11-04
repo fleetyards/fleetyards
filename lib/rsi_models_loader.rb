@@ -187,13 +187,13 @@ class RsiModelsLoader < RsiBaseLoader
       name: hardpoint_data['name'],
       size: hardpoint_data['component_size'],
       component_class: hardpoint_data['component_class'],
-      component_type: hardpoint_data['type']
+      item_type: hardpoint_data['type']
     )
 
     component.update(
       size: hardpoint_data['component_size'],
       component_class: hardpoint_data['component_class'],
-      component_type: hardpoint_data['type']
+      item_type: hardpoint_data['type']
     )
 
     if hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'

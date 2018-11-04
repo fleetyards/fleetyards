@@ -22,7 +22,7 @@ module Admin
       authorize! :create, :admin_equipment
       @equipment = Equipment.new(equipment_params)
       if equipment.save
-        redirect_to admin_equipment_index_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.equipment"))
       end
@@ -35,7 +35,7 @@ module Admin
     def update
       authorize! :update, equipment
       if equipment.update(equipment_params)
-        redirect_to admin_equipment_index_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
       else
         render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.equipment"))
       end
@@ -65,8 +65,9 @@ module Admin
 
     private def equipment_params
       @equipment_params ||= params.require(:equipment).permit(
-        :name, :equipment_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
-        :manufacturer_id
+        :name, :equipment_type, :item_type, :weapon_class, :size, :grade, :range, :extras,
+        :weapon_class, :damage_reduction, :rate_of_fire, :hidden, :store_image, :store_image_cache,
+        :remove_store_image, :manufacturer_id, :slot
       )
     end
 

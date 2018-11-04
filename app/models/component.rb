@@ -15,6 +15,33 @@ class Component < ApplicationRecord
     order(name: :asc)
   end
 
+  enum item_class: %i[stealth civilian industrial military]
+  ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do |parent|
+    parent.table[:item_class]
+  end
+
+  def self.item_types
+    %w[
+      weapons
+      turrets
+      shield_generators
+      missiles
+      coolers
+      power_plants
+      quantum_drives
+    ]
+  end
+
+  def self.component_classes
+    %w[
+      RSIModular
+      RSIWeapon
+      RSIAvionic
+      RSIPropulsion
+      RSIThruster
+    ]
+  end
+
   def self.class_filters
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(

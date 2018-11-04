@@ -79,14 +79,60 @@ en:
           medium_apartment: Medium Apartment
           large_apartment: Large Apartment
           suite: Suite
+      component:
+        item_types:
+          weapons: Weapons
+          turrets: Turrets
+          missiles: Missiles
+          shield_generators: Shield Generators
+          coolers: Coolers
+          power_plants: Power Plants
+          quantum_drives: Quantum Drives
+        item_classes:
+          stealth: Stealth
+          civilian: Civilian
+          industrial: Industrial
+          military: Military
+        component_classes:
+          RSIModular: Modular
+          RSIWeapon: Weapon
+          RSIAvionic: Avionic
+          RSIPropulsion: Propulsion
+          RSIThruster: Thruster
       equipment:
         hidden: hidden?
+        slots:
+          undersuit: Undersuit
+          arms: Arms
+          helmet: Helmet
+          torso: Torso
+          legs: Legs
         equipment_types:
+          undersuit: Undersuit
           armor: Armor
           weapon: Weapon
+          weapon_attachment: Attachment
           clothing: Clothing
           tool: Tool
           medical: Medical
+        weapon_classes:
+          energy: Energy
+          balistic: Balistic
+        item_types:
+          flightsuit: Flightsuit
+          light_armor: Light Armor
+          medium_armor: Medium Armor
+          heavy_armor: Heavy Armor
+          magazine: Magazine
+          battery: Battery
+          pistol: Pistol
+          smg: SMG
+          grenade: Grenade
+          rifle: Rifle
+          shotgun: Shotgun
+          lmg: LMG
+          sniper_rifle: Sniper Rifle
+          special_railgun: Special - Railgun
       shop:
         hidden: hidden?
         rental: Does offer Rentals?

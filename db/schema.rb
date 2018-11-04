@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_29_160043) do
+ActiveRecord::Schema.define(version: 2018_11_04_103453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -127,9 +127,11 @@ ActiveRecord::Schema.define(version: 2018_10_29_160043) do
     t.uuid "manufacturer_id"
     t.string "component_class"
     t.string "slug"
-    t.string "component_type"
+    t.string "item_type"
     t.text "description"
     t.string "store_image"
+    t.string "grade"
+    t.integer "item_class"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -155,6 +157,15 @@ ActiveRecord::Schema.define(version: 2018_10_29_160043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "manufacturer_id"
+    t.integer "item_type"
+    t.string "size"
+    t.string "grade"
+    t.integer "damage_reduction"
+    t.integer "rate_of_fire"
+    t.integer "range"
+    t.string "extras"
+    t.integer "weapon_class"
+    t.integer "slot"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 

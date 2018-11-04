@@ -32,6 +32,16 @@ en:
         buy_price: Buy Price
         sell_price: Sell Price
         rent_price: Rent Price
+      component:
+        grade: Grade
+        size: Size
+      equipment:
+        grade: Grade
+        size: Size
+        damage_reduction: Damage Reduction
+        rate_of_fire: Rate of Fire
+        range: Range
+        extras: Extras
     prompt:
       video:
         video_type: Please select a Video Type
@@ -51,5 +61,13 @@ en:
         commodity_item: Please select a Model/Component
       celestial_object:
         starsystem: Please select a Starsystem
+      component:
+        manufacturer: Please select a Manufacturer
+        item_type: Please select a Item Type
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
       equipment:
+        slot: Please select a Slot
         equipment_type: Please select a Type
+        item_type: Please select a Item Type
+        weapon_class: Please select a Weapon Class

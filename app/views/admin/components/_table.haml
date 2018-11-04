@@ -2,11 +2,12 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
+        %th.preview
         %th=sort_link(@q, :name)
         %th=sort_link(@q, :size)
         %th=sort_link(@q, :manufacturer_name, 'Manufacturer')
         %th=sort_link(@q, :component_class, 'Class')
-        %th.actions.actions-two
+        %th.actions.actions-three-ladda=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/components/show", collection: @components, as: :component
 

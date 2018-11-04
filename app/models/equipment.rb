@@ -11,9 +11,27 @@ class Equipment < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
-  enum equipment_type: %i[armor weapon tool clothing medical]
+  enum equipment_type: %i[undersuit armor weapon tool clothing medical weapon_attachment]
   ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
     parent.table[:equipment_type]
+  end
+
+  enum slot: %i[undersuit arms helmet torso legs], _suffix: true
+  ransacker :slot, formatter: proc { |v| Equipment.slots[v] } do |parent|
+    parent.table[:slot]
+  end
+
+  enum item_type: %i[
+    flightsuit light_armor medium_armor heavy_armor magazine battery pistol grenade smg rifle
+    shotgun lmg sniper_rifle special_railgun
+  ]
+  ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
+    parent.table[:item_type]
+  end
+
+  enum weapon_class: %i[energy balistic]
+  ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
+    parent.table[:weapon_class]
   end
 
   def self.ordered_by_name

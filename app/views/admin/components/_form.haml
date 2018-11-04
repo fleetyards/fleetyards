@@ -1,13 +1,63 @@
 = form_for [:admin, component] do |form|
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(component, :name)}
+      = form.label :name
       = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
       %small
         = form_errors component, :name
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(component, :size)}
-      = form.text_field :size, placeholder: I18n.t(:"helpers.placeholder.size"), class: 'form-control'
+    .col-xs-12.col-md-6.form-group{class: form_error?(component, :description)}
+      = form.label :description
+      = form.text_area :description, placeholder: I18n.t(:"helpers.placeholder.description"), class: 'form-control'
+      %small
+        = form_errors component, :description
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(component, :manufacturer_id)}
+      = form.label :manufacturer_id
+      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, component.manufacturer_id), { include_blank: I18n.t(:"helpers.prompt.component.manufacturer") }, {class: 'form-control'}
+      %small
+        = form_errors component, :manufacturer_id
+  .row
+    .col-xs-12.col-md-4.form-group{class: form_error?(component, :component_class)}
+      = form.label :component_class
+      = form.select :component_class, Component.component_classes.map { |w| [Component.human_enum_name(:component_class, w), w] }, { include_blank: I18n.t(:"helpers.prompt.component.component_class") }, { class: 'form-control' }
+      %small
+        = form_errors component, :component_class
+
+    .col-xs-12.col-md-4.form-group{class: form_error?(component, :item_type)}
+      = form.label :item_type
+      = form.select :item_type, Component.item_types.map { |w| [Component.human_enum_name(:item_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.component.item_type") }, { class: 'form-control' }
+      %small
+        = form_errors component, :item_type
+
+    .col-xs-12.col-md-4.form-group{class: form_error?(component, :item_class)}
+      = form.label :item_class
+      = form.select :item_class, Component.item_classes.keys.map { |w| [Component.human_enum_name(:item_class, w), w] }, { include_blank: I18n.t(:"helpers.prompt.component.item_class") }, { class: 'form-control' }
+      %small
+        = form_errors component, :item_class
+  .row
+    .col-xs-12.col-md-3.form-group{class: form_error?(component, :size)}
+      = form.label :size
+      = form.text_field :size, placeholder: I18n.t(:"helpers.placeholder.component.size"), class: 'form-control'
       %small
         = form_errors component, :size
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(component, :grade)}
+      = form.label :grade
+      = form.text_field :grade, placeholder: I18n.t(:"helpers.placeholder.component.grade"), class: 'form-control'
+      %small
+        = form_errors component, :grade
+
+    .col-xs-12.col-md-6.form-group{class: form_error?(component, :store_image)}
+      = form.label :store_image
+      = form.file_field :store_image, class: 'form-control'
+      = form.hidden_field :store_image_cache
+      %br
+      - if component.store_image?
+        = image_tag(component.store_image.url)
+        = form.check_box :remove_store_image
+        Remove Image
+      %small
+        = form_errors component, :store_image
 
   = render "shared/submit", path: admin_components_path
