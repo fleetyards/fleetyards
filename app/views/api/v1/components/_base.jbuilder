@@ -3,6 +3,7 @@
 json.name component.name
 json.slug component.slug
 json.grade component.grade
+json.class component.component_class
 json.size component.size
 json.type component.item_type
 json.type_label component.item_type_label
