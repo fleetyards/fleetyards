@@ -4,10 +4,12 @@ class Equipment < ApplicationRecord
   include SlugHelper
 
   belongs_to :manufacturer, required: false
+  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   validates :name, presence: true
 
   before_save :update_slugs
+  after_save :touch_shop_commodities
 
   mount_uploader :store_image, StoreImageUploader
 
@@ -50,6 +52,12 @@ class Equipment < ApplicationRecord
 
   def equipment_type_label
     Equipment.human_enum_name(:equipment_type, equipment_type)
+  end
+
+  private def touch_shop_commodities
+    # rubocop:disable Rails/SkipsModelValidations
+    shop_commodities.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def update_slugs

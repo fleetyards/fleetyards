@@ -48,6 +48,7 @@ class Model < ApplicationRecord
   before_save :update_slugs
   before_create :set_last_updated_at
 
+  after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
@@ -168,6 +169,12 @@ class Model < ApplicationRecord
 
     VehiclesWorker.perform_async(id)
     ActionCable.server.broadcast('on_sale', to_builder.target!)
+  end
+
+  private def touch_shop_commodities
+    # rubocop:disable Rails/SkipsModelValidations
+    shop_commodities.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def update_slugs
