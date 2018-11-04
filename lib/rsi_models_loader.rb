@@ -185,15 +185,15 @@ class RsiModelsLoader < RsiBaseLoader
   def create_or_update_component(hardpoint_data)
     component = Component.find_or_create_by!(
       name: hardpoint_data['name'],
-      size: hardpoint_data['component_size'],
-      component_class: hardpoint_data['component_class'],
-      item_type: hardpoint_data['type']
+      size: hardpoint_data['component_size']
     )
 
+    item_type = hardpoint_data['type']
+    item_type = 'weapons' if item_type == 'turrets'
+
     component.update(
-      size: hardpoint_data['component_size'],
       component_class: hardpoint_data['component_class'],
-      item_type: hardpoint_data['type']
+      item_type: item_type
     )
 
     if hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
