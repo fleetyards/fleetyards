@@ -39,6 +39,8 @@ class Model < ApplicationRecord
   has_many :videos,
            dependent: :destroy
 
+  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+
   accepts_nested_attributes_for :videos, allow_destroy: true
 
   mount_uploader :store_image, StoreImageUploader
