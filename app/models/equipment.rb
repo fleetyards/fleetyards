@@ -31,7 +31,7 @@ class Equipment < ApplicationRecord
     parent.table[:item_type]
   end
 
-  enum weapon_class: %i[energy balistic]
+  enum weapon_class: %i[energy ballistic]
   ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
     parent.table[:weapon_class]
   end

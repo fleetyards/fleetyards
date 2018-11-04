@@ -117,7 +117,7 @@ en:
           medical: Medical
         weapon_classes:
           energy: Energy
-          balistic: Balistic
+          ballistic: Ballistic
         item_types:
           flightsuit: Flightsuit
           light_armor: Light Armor
