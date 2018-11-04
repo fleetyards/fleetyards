@@ -713,9 +713,11 @@
       "strip_insignificant_zeros": true,
       "delimiter": ""
     },
+    "percent": "%{count} %",
     "distance": "%{count} m",
     "weight": "%{count} t",
     "speed": "%{count} m/s",
+    "rateOfFire": "%{count} shots/min",
     "rotation": "%{count} deg/s",
     "cargo": "%{count} SCU",
     "people": {
