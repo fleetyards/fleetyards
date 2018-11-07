@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class LogoUploader < CarrierWave::Uploader::Base
-  include CarrierWave::ImageOptimizer
   include CarrierWave::MiniMagick
 
   storage :file
