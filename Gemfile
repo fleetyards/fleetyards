@@ -73,7 +73,6 @@ gem 'highline'
 gem 'thor'
 
 gem 'carrierwave'
-gem 'carrierwave-imageoptimizer'
 gem 'mini_magick'
 
 gem 'nokogiri', '>= 1.7.1'

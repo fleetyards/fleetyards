@@ -6,8 +6,6 @@ class StoreImageUploader < CarrierWave::Uploader::Base
 
   storage :file
 
-  process optimize: [{ level: 3, quiet: true }]
-
   def default_url(*_args)
     host = 'https://api.fleetyards.net'
     host = 'http://api.fleetyards.test' if Rails.env.development?

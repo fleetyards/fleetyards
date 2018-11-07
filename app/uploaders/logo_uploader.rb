@@ -6,16 +6,13 @@ class LogoUploader < CarrierWave::Uploader::Base
 
   storage :file
 
-  process optimize: [{ level: 3, quiet: true }]
-
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   version :small do
     process resize_to_limit: [400, 400]
-    process quality: 60
-    process optimize: [{ quality: 60, level: 3, quiet: true }]
+    process quality: 80
   end
 
   def extension_white_list
