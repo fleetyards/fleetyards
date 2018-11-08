@@ -110,7 +110,6 @@
               <transition-group
                 name="fade"
                 tag="tbody"
-                appear
               >
                 <ShopItemRow
                   v-for="(commodity, index) in commodities"
