@@ -17,10 +17,9 @@
         />
       </router-link>
       <div
+        v-lazy:background-image="commodity.storeImage"
         v-else
-        :style="{
-          'background-image': `url(${commodity.storeImage}`,
-        }"
+        :key="commodity.storeImage"
         class="image"
         alt="storeImage"
       />
