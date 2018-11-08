@@ -24,6 +24,8 @@ module Api
           'buying' => false,
           'selling' => false,
           'storeImage' => new_deal.store_image.url,
+          'storeImageMedium' => new_deal.store_image.medium.url,
+          'storeImageThumb' => new_deal.store_image.small.url,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -46,6 +48,8 @@ module Api
           'buying' => false,
           'selling' => false,
           'storeImage' => dumpers.store_image.url,
+          'storeImageMedium' => dumpers.store_image.medium.url,
+          'storeImageThumb' => dumpers.store_image.small.url,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -65,6 +69,8 @@ module Api
           'buying' => false,
           'selling' => false,
           'storeImage' => new_deal.store_image.url,
+          'storeImageMedium' => new_deal.store_image.medium.url,
+          'storeImageThumb' => new_deal.store_image.small.url,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
