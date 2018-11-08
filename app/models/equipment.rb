@@ -36,8 +36,12 @@ class Equipment < ApplicationRecord
     parent.table[:weapon_class]
   end
 
+  def self.visible
+    where(hidden: false)
+  end
+
   def self.ordered_by_name
-    order(name: :asc)
+    visible.order(name: :asc)
   end
 
   def self.type_filters
