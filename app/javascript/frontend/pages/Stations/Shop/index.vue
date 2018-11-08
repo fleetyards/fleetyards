@@ -96,34 +96,35 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <Panel v-if="commodities.length && shop">
-          <div class="table-responsive">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th colspan="2" />
-                  <th v-if="shop.selling">{{ t('labels.shop.sellPrice') }}</th>
-                  <th v-if="shop.buying">{{ t('labels.shop.buyPrice') }}</th>
-                  <th v-if="shop.rental">{{ t('labels.shop.rentPrice') }}</th>
-                </tr>
-              </thead>
-              <transition-group
-                name="fade"
-                tag="tbody"
-                appear
-              >
-                <ShopItemRow
-                  v-for="(commodity, index) in commodities"
-                  :key="index"
-                  :commodity="commodity"
-                  :selling="shop.selling"
-                  :rental="shop.rental"
-                  :buying="shop.buying"
-                />
-              </transition-group>
-            </table>
-          </div>
-        </Panel>
+        <transition
+          name="fade"
+          appear
+        >
+          <Panel v-if="commodities.length && shop">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th colspan="2" />
+                    <th v-if="shop.selling">{{ t('labels.shop.sellPrice') }}</th>
+                    <th v-if="shop.buying">{{ t('labels.shop.buyPrice') }}</th>
+                    <th v-if="shop.rental">{{ t('labels.shop.rentPrice') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ShopItemRow
+                    v-for="(commodity, index) in commodities"
+                    :key="index"
+                    :commodity="commodity"
+                    :selling="shop.selling"
+                    :rental="shop.rental"
+                    :buying="shop.buying"
+                  />
+                </tbody>
+              </table>
+            </div>
+          </Panel>
+        </transition>
         <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"
