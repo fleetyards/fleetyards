@@ -60,7 +60,7 @@
       Commodities:
     #commodities
       - if shop.shop_commodities.any?
-        = form.fields_for :shop_commodities, shop.shop_commodities do |builder|
+        = form.fields_for :shop_commodities, shop.shop_commodities.order(created_at: :asc) do |builder|
           = render 'shops/shop_commodity_fields', fields: builder
 
     .btn-group-responsive.pull-right

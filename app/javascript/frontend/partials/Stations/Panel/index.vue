@@ -5,8 +5,8 @@
   >
     <div class="panel-image text-center">
       <router-link
-        v-lazy:background-image="item.storeImageThumb"
-        :key="item.storeImageThumb"
+        v-lazy:background-image="item.storeImageMedium"
+        :key="item.storeImageMedium"
         :to="route"
         :aria-label="item.name"
       />
