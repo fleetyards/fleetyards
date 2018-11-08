@@ -96,35 +96,54 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <transition
-          name="fade"
-          appear
-        >
-          <Panel v-if="commodities.length && shop">
-            <div class="table-responsive">
-              <table class="table table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th colspan="2" />
-                    <th v-if="shop.selling">{{ t('labels.shop.sellPrice') }}</th>
-                    <th v-if="shop.buying">{{ t('labels.shop.buyPrice') }}</th>
-                    <th v-if="shop.rental">{{ t('labels.shop.rentPrice') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ShopItemRow
-                    v-for="(commodity, index) in commodities"
-                    :key="index"
-                    :commodity="commodity"
-                    :selling="shop.selling"
-                    :rental="shop.rental"
-                    :buying="shop.buying"
-                  />
-                </tbody>
-              </table>
+        <Panel v-if="commodities.length && shop">
+          <transition-group
+            name="fade-list"
+            class="flex-list"
+            tag="div"
+            appear
+          >
+            <div
+              key="heading"
+              class="fade-list-item col-xs-12 flex-list-heading"
+            >
+              <div class="flex-list-row">
+                <div class="store-image" />
+                <div class="description" />
+                <div
+                  v-if="shop.selling"
+                  class="price"
+                >
+                  {{ t('labels.shop.sellPrice') }}
+                </div>
+                <div
+                  v-if="shop.buying"
+                  class="price"
+                >
+                  {{ t('labels.shop.buyPrice') }}
+                </div>
+                <div
+                  v-if="shop.rental"
+                  class="rent-price"
+                >
+                  {{ t('labels.shop.rentPrice') }}
+                </div>
+              </div>
             </div>
-          </Panel>
-        </transition>
+            <div
+              v-for="(commodity, index) in commodities"
+              :key="index"
+              class="fade-list-item col-xs-12 flex-list-item"
+            >
+              <ShopItemRow
+                :commodity="commodity"
+                :selling="shop.selling"
+                :rental="shop.rental"
+                :buying="shop.buying"
+              />
+            </div>
+          </transition-group>
+        </Panel>
         <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"

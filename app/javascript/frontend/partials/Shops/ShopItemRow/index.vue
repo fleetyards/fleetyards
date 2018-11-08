@@ -1,9 +1,9 @@
 <template>
-  <tr
+  <div
     :id="commodity.slug"
-    class="fade-item"
+    class="flex-list-row"
   >
-    <td class="store-image">
+    <div class="store-image">
       <router-link
         v-if="link"
         :to="link"
@@ -22,8 +22,8 @@
         class="image"
         alt="storeImage"
       />
-    </td>
-    <td class="description">
+    </div>
+    <div class="description">
       <h2>
         <router-link
           v-if="link"
@@ -79,26 +79,29 @@
         </div>
       </div>
       {{ commodity.description }}
-    </td>
-    <td
+    </div>
+    <div
       v-if="selling"
       class="price"
     >
+      <span class="price-label">{{ t('labels.shop.sellPrice') }}:&nbsp;</span>
       {{ toUEC(commodity.sellPrice) }}
-    </td>
-    <td
+    </div>
+    <div
       v-if="buying"
       class="price"
     >
+      <span class="price-label">{{ t('labels.shop.buyPrice') }}:&nbsp;</span>
       {{ toUEC(commodity.buyPrice) }}
-    </td>
-    <td
+    </div>
+    <div
       v-if="rental"
-      class="price"
+      class="rent-price"
     >
+      <span class="price-label">{{ t('labels.shop.rentPrice') }}:&nbsp;</span>
       {{ t('shop.rentalPrice', { price: toUEC(commodity.rentPrice) }) }}
-    </td>
-  </tr>
+    </div>
+  </div>
 </template>
 
 <script>
