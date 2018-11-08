@@ -50,8 +50,9 @@
       </div>
       <div class="panel-image text-center">
         <router-link
-          v-lazy:background-image="model.storeImage"
-          :key="model.storeImage"
+          :style="{
+            'background-image': `url(${model.storeImage}`,
+          }"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
         >

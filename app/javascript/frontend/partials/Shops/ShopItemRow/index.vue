@@ -9,8 +9,9 @@
         :to="link"
       >
         <div
-          v-lazy:background-image="commodity.storeImage"
-          :key="commodity.storeImage"
+          :style="{
+            'background-image': `url(${commodity.storeImage}`,
+          }"
           class="image"
           alt="storeImage"
         />
