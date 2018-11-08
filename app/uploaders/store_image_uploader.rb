@@ -11,6 +11,16 @@ class StoreImageUploader < CarrierWave::Uploader::Base
     ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: host)
   end
 
+  version :medium do
+    process resize_to_limit: [800, 800]
+    process quality: 90
+  end
+
+  version :small do
+    process resize_to_limit: [300, 300]
+    process quality: 80
+  end
+
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
