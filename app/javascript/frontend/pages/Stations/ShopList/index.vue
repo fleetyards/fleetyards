@@ -72,8 +72,8 @@
               class="shop-list"
             >
               <div
-                v-lazy:background-image="shop.storeImage"
-                :key="shop.storeImage"
+                v-lazy:background-image="shop.storeImageMedium"
+                :key="shop.storeImageMedium"
                 class="panel-bg"
               />
               <div class="row">
