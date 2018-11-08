@@ -4,9 +4,8 @@
     class="station-list"
   >
     <div
-      :style="{
-        'background-image': `url(${item.storeImage}`,
-      }"
+      v-lazy:background-image="item.storeImage"
+      :key="item.storeImage"
       class="panel-bg"
     />
     <div class="row">

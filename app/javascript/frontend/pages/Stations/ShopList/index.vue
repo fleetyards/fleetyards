@@ -72,9 +72,8 @@
               class="shop-list"
             >
               <div
-                :style="{
-                  'background-image': `url(${shop.storeImage}`,
-                }"
+                v-lazy:background-image="shop.storeImage"
+                :key="shop.storeImage"
                 class="panel-bg"
               />
               <div class="row">
