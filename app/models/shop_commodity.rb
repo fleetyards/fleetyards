@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ShopCommodity < ApplicationRecord
-  paginates_per 20
+  paginates_per 30
 
   belongs_to :commodity_item, polymorphic: true, required: false
   belongs_to :shop
