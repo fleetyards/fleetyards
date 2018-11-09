@@ -133,6 +133,7 @@ en:
           lmg: LMG
           sniper_rifle: Sniper Rifle
           special_railgun: Special - Railgun
+          assault_rifle: Assault Rifle
       shop:
         hidden: hidden?
         rental: Does offer Rentals?
