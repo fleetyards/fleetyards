@@ -42,12 +42,8 @@ module Api
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by do |item|
-                        if item.model.fallback_length.blank? || item.model.fallback_length.zero?
-                          -item.model.length
-                        else
-                          -item.model.fallback_length
-                        end
+                      .sort_by do |vehicle|
+                        -vehicle.model.display_length
                       end
       end
 
