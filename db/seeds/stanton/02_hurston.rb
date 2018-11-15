@@ -5,6 +5,34 @@ hurston.update!(store_image: Rails.root.join('db/seeds/images/hurston/hurston.pn
 
 teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
 teasa_spaceport.update!(celestial_object: hurston, station_type: :spaceport, location: 'Lorville', store_image: Rails.root.join('db/seeds/images/hurston/teasa_spaceport.jpg').open, hidden: false)
+teasa_spaceport.docks.destroy_all
+pad = 1
+{ large: 6, extra_large: 2 }.each do |ship_size, count|
+  count.times do
+    teasa_spaceport.docks << Dock.new(
+      name: "Hangar #{"%02d" % pad}",
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+    pad += 1
+  end
+end
+
+teasa_spaceport.habitations.destroy_all
+%w[1 2 3 4 5 6].each do |level|
+  [['C', 6], ['B', 4]].each do |prefix|
+    pad = 1
+    { small_apartment: prefix[1] }.each do |apartment_size, count|
+      count.times do
+        teasa_spaceport.habitations << Habitation.new(
+          name: "L19 Habitations - Level #{level} Apartment #{prefix[0]}#{"%02d" % pad}",
+          habitation_type: apartment_size
+        )
+        pad += 1
+      end
+    end
+  end
+end
 
 new_deal = Shop.find_or_initialize_by(name: 'New Deal', station: teasa_spaceport)
 new_deal.update!(shop_type: :ships, store_image: Rails.root.join('db/seeds/images/hurston/new_deal.png').open, selling: true, hidden: false)

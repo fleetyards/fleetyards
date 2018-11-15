@@ -42,9 +42,7 @@ module Api
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by do |vehicle|
-                        -vehicle.model.display_length
-                      end
+                      .sort_by { |vehicle| -vehicle.model.display_length }
       end
 
       def count
