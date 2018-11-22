@@ -103,13 +103,20 @@ class RsiModelsLoader < RsiBaseLoader
     )
   end
 
+  # rubocop:disable Metrics/MethodLength
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
+
+    if model.last_updated_at < data['time_modified.unfiltered']
+      model.update(
+        production_status: data['production_status'],
+        production_note: data['production_note']
+      )
+    end
+
     model.update(
       name: strip_name(data['name']),
       rsi_name: data['name'],
-      production_status: data['production_status'],
-      production_note: data['production_note'],
       description: data['description'],
       length: data['length'].to_f,
       beam: data['beam'].to_f,
@@ -135,6 +142,7 @@ class RsiModelsLoader < RsiBaseLoader
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
     # rubocop:enable Style/RescueModifier
+
     if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
       model.store_images_updated_at = data['media'][0]['time_modified']
       store_image_url = data['media'][0]['images']['store_hub_large']
@@ -146,6 +154,7 @@ class RsiModelsLoader < RsiBaseLoader
     end
     model
   end
+  # rubocop:enable Metrics/MethodLength
 
   def create_or_update_manufacturer(manufacturer_data)
     manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
