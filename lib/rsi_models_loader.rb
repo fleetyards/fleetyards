@@ -107,7 +107,7 @@ class RsiModelsLoader < RsiBaseLoader
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
 
-    if model.last_updated_at < data['time_modified.unfiltered']
+    if model.last_updated_at.blank? || model.last_updated_at < data['time_modified.unfiltered']
       model.update(
         production_status: data['production_status'],
         production_note: data['production_note']

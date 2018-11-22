@@ -7,7 +7,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { RsiModelsLoader.new }
 
   before do
-    Timecop.freeze('2018-01-01 14:00:00')
+    Timecop.freeze('2017-01-01 14:00:00')
   end
 
   after do
