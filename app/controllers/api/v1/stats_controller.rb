@@ -21,7 +21,7 @@ module Api
         authorize! :read, :api_stats
 
         models_by_size = transform_for_pie_chart(
-          Model.group(:size).count
+          Model.visible.group(:size).count
               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
               .reduce(:merge)
         )
@@ -33,7 +33,7 @@ module Api
         authorize! :read, :api_stats
 
         models_by_production_status = transform_for_pie_chart(
-          Model.group(:production_status).count
+          Model.visible.group(:production_status).count
               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
               .reduce(:merge)
         )
@@ -57,9 +57,10 @@ module Api
         authorize! :read, :api_stats
 
         models_by_classification = transform_for_pie_chart(
-          Model.group(:classification).count
-              .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-              .reduce(:merge)
+          Model.visible
+               .group(:classification).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge)
         )
 
         render json: models_by_classification.to_json
@@ -68,7 +69,7 @@ module Api
       def models_per_month
         authorize! :read, :api_stats
 
-        models_per_month = Model.where('created_at > ?', Time.zone.now - 1.year)
+        models_per_month = Model.visible.where('created_at > ?', Time.zone.now - 1.year)
                                 .group_by_month(:created_at)
                                 .count
                                 .map do |created_at, count|
