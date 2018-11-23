@@ -49,6 +49,25 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     end
   end
 
+  test '#updates production status only when time_modified changes' do
+    VCR.use_cassette('rsi_models_loader_all') do
+      loader.one(7)
+
+      model = Model.find_by(name: '300i')
+
+      assert_equal('flight-ready', model.production_status)
+
+      model.update(production_status: 'in-concept')
+
+      Timecop.travel(1.day)
+
+      loader.one(model.rsi_id)
+      model.reload
+
+      assert_equal('in-concept', model.production_status)
+    end
+  end
+
   test '#overides present data' do
     VCR.use_cassette('rsi_models_loader_all') do
       model_polaris = Model.create(

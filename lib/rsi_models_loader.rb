@@ -107,7 +107,13 @@ class RsiModelsLoader < RsiBaseLoader
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
 
-    if model.last_updated_at.blank? || model.last_updated_at < data['time_modified.unfiltered']
+    new_time_modified = begin
+      Time.zone.parse(data['time_modified.unfiltered'])
+    rescue ArgumentError
+      nil
+    end
+
+    if model.last_updated_at.blank? || model.last_updated_at < new_time_modified
       model.update(
         production_status: data['production_status'],
         production_note: data['production_note']
@@ -137,7 +143,7 @@ class RsiModelsLoader < RsiBaseLoader
       classification: data['type'],
       focus: data['focus'],
       store_url: data['url'],
-      last_updated_at: data['time_modified.unfiltered']
+      last_updated_at: new_time_modified
     )
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
