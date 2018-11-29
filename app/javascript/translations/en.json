@@ -234,6 +234,7 @@
     },
     "source": "Source",
     "model": {
+      "modules": "Modules",
       "brochure": "Brochure",
       "onSale": "On Sale",
       "purchased": "Purchased",

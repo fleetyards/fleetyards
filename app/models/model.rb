@@ -31,6 +31,11 @@ class Model < ApplicationRecord
   has_many :components,
            through: :hardpoints
 
+  has_many :modules,
+           class_name: 'ModelModule',
+           dependent: :destroy,
+           autosave: true
+
   has_many :images,
            as: :gallery,
            dependent: :destroy,

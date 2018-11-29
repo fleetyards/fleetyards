@@ -1,0 +1,13 @@
+%tr{id: model_module.id}
+  %td.preview.text-center
+    = image_tag model_module.store_image.url
+  %td
+    = model_module.name
+  %td
+    = model_module.manufacturer.name.html_safe if model_module.manufacturer.present?
+  %td.text-right
+    .btn-group
+      = link_to edit_admin_model_module_path(model_module), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+        %i.fa.fa-edit
+      = confirm_link_to admin_model_module_path(model_module), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
+        %i.fa.fa-trash

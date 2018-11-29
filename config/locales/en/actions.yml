@@ -30,6 +30,8 @@ en:
         new: Create new Celestial Object
       starsystem:
         new: Create new Starsystem
+      model_module:
+        new: Create new Module
     back: Back
     cancel: Cancel
     confirm: Confirm Account

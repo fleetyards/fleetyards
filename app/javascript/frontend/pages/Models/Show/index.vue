@@ -169,6 +169,38 @@
       </div>
       <Loader :loading="loading" />
     </div>
+    <div
+      v-if="model && model.modules.length"
+      class="row"
+    >
+      <div class="col-xs-12 modules">
+        <h2 class="text-uppercase">{{ t('labels.model.modules') }}</h2>
+        <div class="row">
+          <div
+            v-for="module in model.modules"
+            :key="module.id"
+            class="col-xs-12 col-sm-6"
+          >
+            <Panel>
+              <div class="model-panel">
+                <div
+                  :style="{
+                    'background-image': `url(${module.storeImage})`
+                  }"
+                  class="model-panel-image"
+                />
+                <div class="model-panel-body">
+                  <h3>{{ module.name }}</h3>
+                  <p>
+                    {{ module.description }}
+                  </p>
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
