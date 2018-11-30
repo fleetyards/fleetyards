@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_221401) do
+ActiveRecord::Schema.define(version: 2018_11_30_140741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -350,6 +350,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_221401) do
     t.boolean "active", default: true
     t.decimal "price", precision: 15, scale: 2
     t.uuid "base_model_id"
+    t.integer "rsi_chassis_id"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

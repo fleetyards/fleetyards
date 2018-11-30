@@ -30,6 +30,8 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
                    components: Component.count,
                    models: Model.count,
                    manufacturers: Manufacturer.count)
+
+      assert_equal(Model.find_by(slug: '300i').rsi_chassis_id, Model.find_by(slug: '315p').rsi_chassis_id)
     end
   end
 

@@ -5,12 +5,6 @@ class Model < ApplicationRecord
 
   paginates_per 30
 
-  has_many :variants,
-           class_name: 'Model',
-           foreign_key: 'base_model_id',
-           inverse_of: :base_model,
-           dependent: :nullify
-  belongs_to :base_model, class_name: 'Model', required: false
   belongs_to :manufacturer, required: false
   has_one :addition,
           class_name: 'ModelAddition',
@@ -128,6 +122,10 @@ class Model < ApplicationRecord
         try(method_name)
       end
     end
+  end
+
+  def variants
+    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
   end
 
   def in_hangar(user)
