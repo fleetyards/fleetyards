@@ -175,11 +175,11 @@
     >
       <div class="col-xs-12 modules">
         <h2 class="text-uppercase">{{ t('labels.model.modules') }}</h2>
-        <div class="row">
+        <div class="flex-row">
           <div
             v-for="module in model.modules"
             :key="module.id"
-            class="col-xs-12 col-sm-6"
+            class="col-xs-12 col-sm-6 col-xlg-4"
           >
             <Panel>
               <div class="model-panel">
