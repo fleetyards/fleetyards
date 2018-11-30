@@ -201,6 +201,35 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="!loadingVariants && variants.length"
+      class="row"
+    >
+      <div class="col-xs-12 variants">
+        <h2 class="text-uppercase">{{ t('labels.model.variants') }}</h2>
+        <transition-group
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="variant in variants"
+            :key="variant.slug"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-3 fade-list-item"
+          >
+            <ModelPanel
+              :model="variant"
+              details
+            />
+          </div>
+        </transition-group>
+        <Loader
+          :loading="loadingVariants"
+          fixed
+        />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -218,6 +247,7 @@ import ModelHardpoints from 'frontend/partials/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
+import ModelPanel from 'frontend/partials/Models/Panel'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -232,14 +262,17 @@ export default {
     ModelBaseMetrics,
     ModelCrewMetrics,
     ModelSpeedMetrics,
+    ModelPanel,
   },
   mixins: [I18n, MetaInfo],
   data() {
     return {
       loading: false,
+      loadingVariants: false,
       show3d: false,
       color3d: false,
       model: null,
+      variants: [],
       attributes: [
         'length', 'beam', 'height', 'mass', 'cargo', 'minCrew', 'maxCrew', 'scmSpeed', 'afterburnerSpeed',
       ],
@@ -283,6 +316,7 @@ export default {
   },
   created() {
     this.fetch()
+    this.fetchVariants()
   },
   methods: {
     setBackRoute() {
@@ -321,6 +355,14 @@ export default {
         this.model = response.data
       } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
+      }
+    },
+    async fetchVariants() {
+      this.loadingVariants = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/variants`)
+      this.loadingVariants = false
+      if (!response.error) {
+        this.variants = response.data
       }
     },
   },

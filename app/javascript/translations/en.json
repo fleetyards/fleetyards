@@ -234,6 +234,7 @@
     },
     "source": "Source",
     "model": {
+      "variants": "Variants",
       "modules": "Modules",
       "brochure": "Brochure",
       "onSale": "On Sale",
