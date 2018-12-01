@@ -206,7 +206,7 @@ export default {
         name: 'models',
         query: {
           q: {
-            nameOrDescriptionCont: this.searchQuery,
+            nameCont: this.searchQuery,
           },
         },
       })

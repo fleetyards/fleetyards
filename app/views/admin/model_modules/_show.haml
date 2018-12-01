@@ -4,7 +4,19 @@
   %td
     = model_module.name
   %td
-    = model_module.manufacturer.name.html_safe if model_module.manufacturer.present?
+    %ul.list-unstyled
+      - model_module.models.each do |model|
+        %li= model.name
+  %td
+    - if model_module.hidden?
+      %i.fa.fa-check
+    - else
+      %i.fa.fa-square
+  %td
+    - if model_module.active?
+      %i.fa.fa-check
+    - else
+      %i.fa.fa-square
   %td.text-right
     .btn-group
       = link_to edit_admin_model_module_path(model_module), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

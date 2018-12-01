@@ -4,8 +4,10 @@
       %tr
         %th.preview
         %th=sort_link(@q, :name)
-        %th=sort_link(@q, :manufacturer_name, 'Manufacturer')
-        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
+        %th=sort_link(@q, :model_name, 'Models')
+        %th=sort_link(@q, :hidden)
+        %th=sort_link(@q, :active)
+        %th.actions.actions-two=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/model_modules/show", collection: @model_modules, as: :model_module
 

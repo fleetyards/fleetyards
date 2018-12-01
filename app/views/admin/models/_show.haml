@@ -10,6 +10,16 @@
     = model.manufacturer.name.html_safe if model.manufacturer.present?
   %td
     = model.focus
+  %td
+    - if model.hidden?
+      %i.fa.fa-check
+    - else
+      %i.fa.fa-square
+  %td
+    - if model.active?
+      %i.fa.fa-check
+    - else
+      %i.fa.fa-square
   %td.text-right
     .btn-group
       %button.reload-models.btn.btn-default.ladda-button{data: {style: "expand-right", action: reload_one_admin_model_path(model), workerPath: admin_check_worker_state_path('ModelsWorker')}, onclick: "App.Models.reload($(this)); return false;"}

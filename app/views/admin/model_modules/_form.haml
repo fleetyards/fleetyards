@@ -11,40 +11,33 @@
       %small
         = form_errors model_module, :description
 
-
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :model_id)}
-      = form.label :model_id
-      = form.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, model_module.model_id), { include_blank: true }, { class: 'form-control' }
-      %small
-        = form_errors model_module, :model_id
-
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :manufacturer_id)}
-      = form.label :manufacturer_id
-      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, model_module.manufacturer_id), { include_blank: true }, { class: 'form-control' }
-      %small
-        = form_errors model_module, :manufacturer_id
-
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :production_status)}
+    .col-xs-12.col-sm-6.col-md-3.form-group{class: form_error?(model_module, :production_status)}
       = form.label :production_status
       = form.select :production_status, options_from_collection_for_select(Model.production_status_filters, :value, :name, model_module.production_status), { include_blank: true }, { class: 'form-control' }
       %small
         = form_errors model_module, :production_status
 
-  .row
-    .col-xs-12.col-sm-6.col-md-4.form-group
+    .col-xs-12.col-sm-6.col-md-3.form-group
       .checkbox
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-4.form-group
+    .col-xs-12.col-sm-6.col-md-3.form-group
       .checkbox
         = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
-    .col-xs-12.col-md-4.form-group{class: form_error?(model_module, :store_image)}
+    .col-xs-12.col-sm-6.col-md-3.form-group{class: form_error?(model_module, :pledge_price)}
+      = form.label :pledge_price
+      = form.text_field :pledge_price, class: 'form-control'
+      %small
+        = form_errors model_module, :pledge_price
+
+  .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
@@ -55,5 +48,18 @@
         Remove Image
       %small
         = form_errors model_module, :store_image
+
+  %fieldset
+    %legend
+      Models:
+    #module_hardpoints
+      - if model_module.module_hardpoints.any?
+        = form.fields_for :module_hardpoints, model_module.module_hardpoints do |builder|
+          = render 'modelmodules/module_hardpoint_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :module_hardpoints, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#module_hardpoints" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_module_hardpoint")
 
   = render "shared/submit", path: admin_model_modules_path
