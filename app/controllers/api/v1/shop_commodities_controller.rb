@@ -9,11 +9,11 @@ module Api
       def index
         authorize! :index, :api_shop_commodities
         sorts = [
-          'commodity_item_of_Model_type_name asc',
-          'commodity_item_of_Component_type_name asc',
-          'commodity_item_of_Commodity_type_name asc',
-          'commodity_item_of_Equipment_type_name asc',
-          'commodity_item_of_ModelModule_type_name asc'
+          'model_name asc',
+          'component_name asc',
+          'commodity_name asc',
+          'equipment_name asc',
+          'model_module_name asc'
         ]
         shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 

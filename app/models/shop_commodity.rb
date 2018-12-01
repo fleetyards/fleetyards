@@ -4,6 +4,56 @@ class ShopCommodity < ApplicationRecord
   paginates_per 15
 
   belongs_to :commodity_item, polymorphic: true, required: false
+  belongs_to :model,
+             -> { where(shop_commodities: { commodity_item_type: 'Model' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities
+  def model
+    return unless commodity_item_type == 'Model'
+
+    super
+  end
+
+  belongs_to :component,
+             -> { where(shop_commodities: { commodity_item_type: 'Component' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities
+  def component
+    return unless commodity_item_type == 'Component'
+
+    super
+  end
+
+  belongs_to :commodity,
+             -> { where(shop_commodities: { commodity_item_type: 'Commodity' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities
+  def commodity
+    return unless commodity_item_type == 'Commodity'
+
+    super
+  end
+
+  belongs_to :equipment,
+             -> { where(shop_commodities: { commodity_item_type: 'Equipment' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities
+  def equipment
+    return unless commodity_item_type == 'Equipment'
+
+    super
+  end
+
+  belongs_to :model_module,
+             -> { where(shop_commodities: { commodity_item_type: 'ModelModule' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities
+  def model_module
+    return unless commodity_item_type == 'ModelModule'
+
+    super
+  end
+
   belongs_to :shop
 
   validates :commodity_item, presence: true
@@ -12,10 +62,10 @@ class ShopCommodity < ApplicationRecord
 
   attr_accessor :commodity_item_selected
 
-  ransack_alias :name, :commodity_item_of_Model_type_name_or_commodity_item_of_Component_type_name_or_commodity_item_of_Commodity_type_name_or_commodity_item_of_Equipment_type_name_or_commodity_item_of_ModelModule_type_name
+  ransack_alias :name, :model_name_or_component_name_or_commodity_item_of_Commodity_type_name_or_equipment_name_or_model_module_name
   ransack_alias :category, :commodity_item_type
-  ransack_alias :sub_category, :commodity_item_of_Model_type_classification_or_commodity_item_of_Component_type_component_class_or_commodity_item_of_Equipment_type_equipment_type
-  ransack_alias :manufacturer, :commodity_item_of_Model_type_manufacturer_slug_or_commodity_item_of_Component_type_manufacturer_slug_or_commodity_item_of_Equipment_type_manufacturer_slug_or_commodity_item_of_ModelModule_type_manufacturer_slug
+  ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
+  ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
   ransack_alias :price, :sell_price_or_buy_price_or_rent_price
 
   def set_commodity_item
