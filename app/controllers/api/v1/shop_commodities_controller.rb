@@ -12,7 +12,8 @@ module Api
           'commodity_item_of_Model_type_name asc',
           'commodity_item_of_Component_type_name asc',
           'commodity_item_of_Commodity_type_name asc',
-          'commodity_item_of_Equipment_type_name asc'
+          'commodity_item_of_Equipment_type_name asc',
+          'commodity_item_of_ModelModule_type_name asc'
         ]
         shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 
