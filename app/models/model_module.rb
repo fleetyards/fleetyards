@@ -3,6 +3,8 @@
 class ModelModule < ApplicationRecord
   paginates_per 30
 
+  belongs_to :manufacturer, required: false
+
   has_many :module_hardpoints,
            dependent: :destroy
   has_many :models, through: :module_hardpoints

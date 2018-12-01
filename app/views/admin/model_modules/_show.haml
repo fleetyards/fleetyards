@@ -8,6 +8,8 @@
       - model_module.models.each do |model|
         %li= model.name
   %td
+    = model_module.manufacturer.name.html_safe if model_module.manufacturer.present?
+  %td
     - if model_module.hidden?
       %i.fa.fa-check
     - else

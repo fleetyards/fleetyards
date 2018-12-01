@@ -6,6 +6,7 @@ class Model < ApplicationRecord
   paginates_per 30
 
   belongs_to :manufacturer, required: false
+
   has_one :addition,
           class_name: 'ModelAddition',
           dependent: :destroy,
@@ -123,6 +124,12 @@ class Model < ApplicationRecord
         try(method_name)
       end
     end
+  end
+
+  def price
+    ShopCommodity.where(commodity_item_type: 'Model', commodity_item_id: id)
+                 .order(sell_price: :desc)
+                 .first&.sell_price
   end
 
   def variants

@@ -37,6 +37,12 @@
         = form_errors model_module, :pledge_price
 
   .row
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :manufacturer_id)}
+      = form.label :manufacturer_id
+      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, model_module.manufacturer_id), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model_module, :manufacturer_id
+
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_module, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
@@ -55,7 +61,7 @@
     #module_hardpoints
       - if model_module.module_hardpoints.any?
         = form.fields_for :module_hardpoints, model_module.module_hardpoints do |builder|
-          = render 'modelmodules/module_hardpoint_fields', fields: builder
+          = render 'model_modules/module_hardpoint_fields', fields: builder
 
     .btn-group-responsive.pull-right
       = link_to_add_fields form, :module_hardpoints, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#module_hardpoints" do

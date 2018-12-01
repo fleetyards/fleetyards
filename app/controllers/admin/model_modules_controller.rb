@@ -55,7 +55,7 @@ module Admin
 
     private def model_module_params
       @model_module_params ||= params.require(:model_module).permit(
-        :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
+        :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image, :manufacturer_id,
         :pledge_price, :description, :production_status, module_hardpoints_attributes: %i[
           id model_id _destroy
         ]
