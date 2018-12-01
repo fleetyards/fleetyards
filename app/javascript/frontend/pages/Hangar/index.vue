@@ -316,7 +316,7 @@ export default {
       return `/hangar/${this.currentUser.username}`
     },
     starship42Url() {
-      const shipList = this.vehicles.map(vehicle => vehicle.model.rsiName)
+      const shipList = this.fleetchartVehicles.map(vehicle => vehicle.model.rsiName)
       const data = { source: 'FleetYards', type: 'matrix', s: shipList }
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
@@ -333,9 +333,6 @@ export default {
       if (this.currentUser) {
         this.setupUpdates()
       }
-    },
-    hangarFleetchartVisible() {
-      this.fetch()
     },
   },
   created() {
@@ -373,11 +370,8 @@ export default {
       this.$store.dispatch('toggleHangarFleetchart')
     },
     fetch() {
-      if (this.hangarFleetchartVisible) {
-        this.fetchFleetchart()
-      } else {
-        this.fetchVehicles()
-      }
+      this.fetchFleetchart()
+      this.fetchVehicles()
       this.fetchGroups()
       this.fetchCount()
     },
