@@ -15,9 +15,18 @@ class ModelModule < ApplicationRecord
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 
   after_save :touch_shop_commodities
+  after_save :touch_models
 
   def self.ordered_by_name
     order(name: :asc)
+  end
+
+  def self.visible
+    where(hidden: false)
+  end
+
+  def self.active
+    where(active: true)
   end
 
   private def touch_shop_commodities

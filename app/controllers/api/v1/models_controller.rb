@@ -153,6 +153,17 @@ module Api
                       .per(per_page(Model))
       end
 
+      def modules
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_modules = model.modules
+                              .visible
+                              .active
+                              .page(params[:page])
+                              .per(per_page(Model))
+      end
+
       def store_image
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new

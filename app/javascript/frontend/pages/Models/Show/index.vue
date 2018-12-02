@@ -169,15 +169,20 @@
       </div>
       <Loader :loading="loading" />
     </div>
-    <div
-      v-if="model && model.modules.length"
-      class="row"
-    >
+    <div class="row">
       <div class="col-xs-12 modules">
-        <h2 class="text-uppercase">{{ t('labels.model.modules') }}</h2>
-        <div class="flex-row">
+        <h2
+          v-if="modules.length"
+          class="text-uppercase"
+        >
+          {{ t('labels.model.modules') }}
+        </h2>
+        <div
+          v-if="modules.length"
+          class="flex-row"
+        >
           <div
-            v-for="module in model.modules"
+            v-for="module in modules"
             :key="module.id"
             class="col-xs-12 col-sm-6 col-xlg-4"
           >
@@ -199,15 +204,22 @@
             </Panel>
           </div>
         </div>
+        <Loader
+          :loading="loadingModules"
+          fixed
+        />
       </div>
     </div>
-    <div
-      v-if="!loadingVariants && variants.length"
-      class="row"
-    >
+    <div class="row">
       <div class="col-xs-12 variants">
-        <h2 class="text-uppercase">{{ t('labels.model.variants') }}</h2>
+        <h2
+          v-if="variants.length"
+          class="text-uppercase"
+        >
+          {{ t('labels.model.variants') }}
+        </h2>
         <transition-group
+          v-if="variants.length"
           name="fade-list"
           class="flex-row"
           tag="div"
@@ -269,10 +281,12 @@ export default {
     return {
       loading: false,
       loadingVariants: false,
+      loadingModules: false,
       show3d: false,
       color3d: false,
       model: null,
       variants: [],
+      modules: [],
       attributes: [
         'length', 'beam', 'height', 'mass', 'cargo', 'minCrew', 'maxCrew', 'scmSpeed', 'afterburnerSpeed',
       ],
@@ -316,6 +330,7 @@ export default {
   },
   created() {
     this.fetch()
+    this.fetchModules()
     this.fetchVariants()
   },
   methods: {
@@ -355,6 +370,14 @@ export default {
         this.model = response.data
       } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
+      }
+    },
+    async fetchModules() {
+      this.loadingModules = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/modules`)
+      this.loadingModules = false
+      if (!response.error) {
+        this.modules = response.data
       }
     },
     async fetchVariants() {
