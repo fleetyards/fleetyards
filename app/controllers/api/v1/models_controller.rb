@@ -31,6 +31,11 @@ module Api
                     .per(per_page(Model))
       end
 
+      def slugs
+        authorize! :index, :api_models
+        render json: Model.all.pluck(:slug)
+      end
+
       def production_states
         authorize! :index, :api_models
         @production_states = Model.production_status_filters
