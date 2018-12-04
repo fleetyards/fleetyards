@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  slug: MyString
+tradehub_one:
+  name: Tradehub One
+  slug: tradehub-one
   planet: MyString
   system: MyString
   station_type: MyString
 
-two:
-  name: MyString
-  slug: MyString
+tradehub_two:
+  name: Tradehub Two
+  slug: tradehub-two
   planet: MyString
   system: MyString
   station_type: MyString

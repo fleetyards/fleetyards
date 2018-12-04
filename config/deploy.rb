@@ -12,7 +12,8 @@ set :shared_dirs, [
 set :shared_files, [
   'config/secrets.yml',
   'config/database.yml',
-  '.rbenv-vars'
+  '.rbenv-vars',
+  'blacklist.json'
 ]
 
 set :stages, %w[local live]
@@ -147,6 +148,13 @@ namespace :db do
       comment %(Loading Schema for database)
       command %(#{fetch(:rake)} db:schema:load)
       invoke :'server:start'
+    end
+  end
+
+  task migration_status: :remote_environment do
+    in_path fetch(:current_path).to_s do
+      comment %(Migration Status)
+      command %(#{fetch(:rake)} db:migrate:status)
     end
   end
 

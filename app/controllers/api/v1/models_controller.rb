@@ -13,18 +13,27 @@ module Api
       def index
         authorize! :index, :api_models
         scope = Model.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
         if price_range.present?
-          query_params['sorts'] = 'fallback_price asc'
-          scope = scope.where(fallback_price: price_range)
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
         end
 
-        @q = scope.ransack(query_params)
+        model_query_params['sorts'] = sort_by_name
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        @q = scope.ransack(model_query_params)
 
         @models = @q.result
                     .page(params[:page])
                     .per(per_page(Model))
+      end
+
+      def slugs
+        authorize! :index, :api_models
+        render json: Model.all.pluck(:slug)
       end
 
       def production_states
@@ -121,6 +130,40 @@ module Api
                        .per(per_page(Video))
       end
 
+      def variants
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.variants.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(model_query_params)
+
+        @variants = @q.result
+                      .page(params[:page])
+                      .per(per_page(Model))
+      end
+
+      def modules
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_modules = model.modules
+                              .visible
+                              .active
+                              .page(params[:page])
+                              .per(per_page(Model))
+      end
+
       def store_image
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
@@ -152,8 +195,33 @@ module Api
         end
       end
 
+      private def pledge_price_range
+        @pledge_price_range ||= begin
+          pledge_price_in.map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
+        end
+      end
+
+      private def pledge_price_in
+        pledge_price_in = model_query_params.delete('pledge_price_in')
+        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
+        pledge_price_in
+      end
+
       private def price_in
-        price_in = query_params.delete('price_in')
+        price_in = model_query_params.delete('price_in')
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
       end
@@ -168,6 +236,14 @@ module Api
       private def updated_params
         @updated_params ||= params.permit(
           :from, :to
+        )
+      end
+
+      private def model_query_params
+        @model_query_params ||= query_params(
+          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
+          manufacturer_in: [], classification_in: [], focus_in: [], production_status_in: [],
+          price_in: [], pledge_price_in: [], size_in: [], sorts: []
         )
       end
     end

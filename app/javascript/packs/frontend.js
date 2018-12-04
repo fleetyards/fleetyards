@@ -1,8 +1,6 @@
 import 'stylesheets/main'
 import 'babel-polyfill'
 import Vue from 'vue'
-import Raven from 'raven-js'
-import RavenVue from 'raven-js/plugins/vue'
 import VeeValidate, { Validator } from 'vee-validate'
 import VTooltip from 'v-tooltip'
 import VueClipboard from 'vue-clipboard2'
@@ -21,6 +19,7 @@ import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
 import ahoy from 'ahoy.js'
+import * as Sentry from '@sentry/browser'
 
 ahoy.configure({
   cookies: false,
@@ -81,17 +80,17 @@ Vue.use(BootstrapVue)
 
 Vue.use(VueClipboard)
 
-Raven.config(
-  process.env.RAVEN_DSN,
-  {
-    release: window.APP_VERSION,
-    tags: {
-      appVersion: window.APP_VERSION,
-      appCodename: window.APP_CODENAME,
-      storeVersion: process.env.STORE_VERSION,
-    },
-  },
-).addPlugin(RavenVue, Vue).install()
+Sentry.init({
+  release: window.APP_VERSION,
+  dsn: process.env.RAVEN_DSN,
+  integrations: [new Sentry.Integrations.Vue({ Vue })],
+})
+
+Sentry.configureScope((scope) => {
+  scope.setTag('appVersion', window.APP_VERSION)
+  scope.setTag('appCodename', window.APP_CODENAME)
+  scope.setTag('storeVersion', process.env.STORE_VERSION)
+})
 
 Vue.config.productionTip = false
 

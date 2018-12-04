@@ -24,6 +24,12 @@
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :base_model_id)}
+      = form.label :base_model_id
+      = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
+      %small
+        = form_errors model, :base_model_id
+
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
       = form.label :focus
@@ -208,10 +214,16 @@
     #addition
       .row.fields
         .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_price)}
-            = form.label :fallback_price
-            = form.number_field :fallback_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
-            = form_errors model, :fallback_price
+          .form-group{class: form_error?(model, :price)}
+            = form.label :price
+            = form.number_field :price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :price
+
+        .col-xs-12.col-sm-6.col-md-4
+          .form-group{class: form_error?(model, :fallback_pledge_price)}
+            = form.label :fallback_pledge_price
+            = form.number_field :fallback_pledge_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :fallback_pledge_price
 
         .col-xs-12.col-sm-6.col-md-4
           .form-group{class: form_error?(model, :fallback_beam)}

@@ -10,6 +10,9 @@ production: &production
   fleets_worker_job:
     cron: '0 1 * * *'
     class: 'FleetsWorker'
+  locations_worker_job:
+    cron: '0 3 * * 0'
+    class: 'LocationsWorker'
   cleanup_auth_tokens_worker:
     cron: '0 2 * * *'
     class: 'CleanupAuthTokensWorker'

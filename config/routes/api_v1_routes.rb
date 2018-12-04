@@ -11,6 +11,7 @@ v1_api_routes = lambda do
   resources :models, param: :slug, only: %i[index show] do
     collection do
       get :latest
+      get :slugs
       get :updated
       get :filters
       get :classifications
@@ -23,6 +24,8 @@ v1_api_routes = lambda do
     member do
       get :images
       get :videos
+      get :variants
+      get :modules
       get :store_image, path: 'store-image'
       get :fleetchart_image, path: 'fleetchart-image'
     end
@@ -75,6 +78,7 @@ v1_api_routes = lambda do
       get 'hangar-items' => 'vehicles#hangar_items'
       get ':username' => 'vehicles#public', as: :public
       get ':username/count' => 'vehicles#public_count', as: :public_count
+      get ':username/fleetchart' => 'vehicles#public_fleetchart', as: :public_fleetchart
     end
   end
 
@@ -84,8 +88,25 @@ v1_api_routes = lambda do
   resources :commodities, only: [:index]
   resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
 
-  resources :planets, param: :slug, only: %i[index]
-  resources :stations, param: :slug, only: %i[index show]
+  resources :starsystems, param: :slug, only: %i[index show]
+  resources :celestial_objects, path: 'celestial-objects', param: :slug, only: %i[index show]
+  resources :stations, param: :slug, only: %i[index show] do
+    collection do
+      get 'ship-sizes' => 'stations#ship_sizes'
+      get 'station-types' => 'stations#station_types'
+    end
+    resources :shops, param: :slug, only: %i[show] do
+      resources :shop_commodities, path: 'shop-commodities', only: %i[index]
+    end
+  end
+
+  get 'filters/shop-commodities/sub-categories' => 'shop_commodities#sub_categories'
+
+  resources :shops, param: :slug, only: %i[index] do
+    collection do
+      get 'shop-types' => 'shops#shop_types'
+    end
+  end
 
   namespace :rsi do
     resources :citizens, only: [:show], param: :handle

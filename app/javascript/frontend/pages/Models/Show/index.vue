@@ -154,7 +154,7 @@
                 class="sale-button"
                 large
               >
-                {{ t('actions.model.onSale', { price: toDollar(model.price) }) }}
+                {{ t('actions.model.onSale', { price: toDollar(model.pledgePrice) }) }}
                 <small class="price-info">{{ t('labels.taxExcluded') }}</small>
               </ExternalLink>
             </div>
@@ -168,6 +168,79 @@
         </div>
       </div>
       <Loader :loading="loading" />
+    </div>
+    <div class="row">
+      <div class="col-xs-12 modules">
+        <h2
+          v-if="modules.length"
+          class="text-uppercase"
+        >
+          {{ t('labels.model.modules') }}
+        </h2>
+        <div
+          v-if="modules.length"
+          class="flex-row"
+        >
+          <div
+            v-for="module in modules"
+            :key="module.id"
+            class="col-xs-12 col-sm-6 col-xlg-4"
+          >
+            <Panel>
+              <div class="model-panel">
+                <div
+                  :style="{
+                    'background-image': `url(${module.storeImage})`
+                  }"
+                  class="model-panel-image"
+                />
+                <div class="model-panel-body">
+                  <h3>{{ module.name }}</h3>
+                  <p>
+                    {{ module.description }}
+                  </p>
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </div>
+        <Loader
+          :loading="loadingModules"
+          fixed
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 variants">
+        <h2
+          v-if="variants.length"
+          class="text-uppercase"
+        >
+          {{ t('labels.model.variants') }}
+        </h2>
+        <transition-group
+          v-if="variants.length"
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="variant in variants"
+            :key="variant.slug"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-3 fade-list-item"
+          >
+            <ModelPanel
+              :model="variant"
+              details
+            />
+          </div>
+        </transition-group>
+        <Loader
+          :loading="loadingVariants"
+          fixed
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -186,6 +259,7 @@ import ModelHardpoints from 'frontend/partials/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
+import ModelPanel from 'frontend/partials/Models/Panel'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -200,15 +274,19 @@ export default {
     ModelBaseMetrics,
     ModelCrewMetrics,
     ModelSpeedMetrics,
+    ModelPanel,
   },
   mixins: [I18n, MetaInfo],
   data() {
     return {
-      title: null,
       loading: false,
+      loadingVariants: false,
+      loadingModules: false,
       show3d: false,
       color3d: false,
       model: null,
+      variants: [],
+      modules: [],
       attributes: [
         'length', 'beam', 'height', 'mass', 'cargo', 'minCrew', 'maxCrew', 'scmSpeed', 'afterburnerSpeed',
       ],
@@ -228,6 +306,15 @@ export default {
       const startship42Params = qs.stringify(data)
       return `https://starship42.fleetyards.net/fleetview/single?${startship42Params}`
     },
+    title() {
+      if (!this.model) {
+        return null
+      }
+      return this.t('title.model', {
+        name: this.model.name,
+        manufacturer: this.model.manufacturer.name,
+      })
+    },
   },
   watch: {
     $route() {
@@ -236,10 +323,6 @@ export default {
     model() {
       this.setBackRoute()
 
-      this.title = this.t('title.model', {
-        name: this.model.name,
-        manufacturer: this.model.manufacturer.name,
-      })
       if (this.model.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       }
@@ -247,6 +330,8 @@ export default {
   },
   created() {
     this.fetch()
+    this.fetchModules()
+    this.fetchVariants()
   },
   methods: {
     setBackRoute() {
@@ -260,7 +345,7 @@ export default {
         hash: `#${this.model.slug}`,
       }
 
-      if (this.previousRoute && ['models', 'fleet', 'hangar'].includes(this.previousRoute.name)) {
+      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop'].includes(this.previousRoute.name)) {
         route.name = this.previousRoute.name
         route.params = this.previousRoute.params
         route.query = this.previousRoute.query
@@ -283,8 +368,24 @@ export default {
       this.loading = false
       if (!response.error) {
         this.model = response.data
-      } else if (response.error.response.status === 404) {
+      } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
+      }
+    },
+    async fetchModules() {
+      this.loadingModules = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/modules`)
+      this.loadingModules = false
+      if (!response.error) {
+        this.modules = response.data
+      }
+    },
+    async fetchVariants() {
+      this.loadingVariants = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/variants`)
+      this.loadingVariants = false
+      if (!response.error) {
+        this.variants = response.data
       }
     },
   },

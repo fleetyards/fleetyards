@@ -42,3 +42,5 @@ yarn-debug.log*
 .yarn-integrity
 
 .eslintcache
+
+blacklist.json

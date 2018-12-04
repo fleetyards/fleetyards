@@ -1,0 +1,58 @@
+## Shops [/v1/shops]
+
+### GET List [GET]
+Get a List of Shops
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                {
+                    "name": "Admin Office",
+                    "slug": "admin-office",
+                    "type": "admin",
+                    "typeLabel": "Admin Office",
+                    "rental": false,
+                    "buying": false,
+                    "selling": false,
+                    "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/25819e85-43bb-41cd-ac6e-fd6e8b5d70ba/hickes_admin.jpg",
+                    "station": {
+                        "name": "Hickes Research Outpost",
+                        "slug": "hickes-research-outpost"
+                    },
+                    "celestialObject": {
+                        "name": "Cellin",
+                        "slug": "cellin"
+                    },
+                    "createdAt": "2018-10-26T20:19:23+02:00",
+                    "updatedAt": "2018-10-28T21:43:29+01:00"
+                },
+                {
+                    "name": "Admin Office",
+                    "slug": "admin-office",
+                    "type": "admin",
+                    "typeLabel": "Admin Office",
+                    "rental": false,
+                    "buying": false,
+                    "selling": false,
+                    "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/df5ca457-331d-4b60-96dc-ce01e73bf592/admin_portolisar.jpg",
+                    "station": {
+                        "name": "Port Olisar",
+                        "slug": "port-olisar"
+                    },
+                    "celestialObject": {
+                        "name": "Crusader",
+                        "slug": "crusader"
+                    },
+                    "createdAt": "2018-10-26T20:19:20+02:00",
+                    "updatedAt": "2018-10-28T21:43:27+01:00"
+                },
+                ...
+            ]

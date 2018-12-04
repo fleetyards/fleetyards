@@ -63,6 +63,11 @@
           v-model="form.saleNotify"
           :label="t('labels.user.saleNotify')"
         />
+        <Checkbox
+          id="publicHangar"
+          v-model="form.publicHangar"
+          :label="t('labels.user.publicHangar')"
+        />
         <div
           :class="{'has-error has-feedback': errors.has('rsiHandle')}"
           class="form-group"
@@ -186,6 +191,7 @@ export default {
         username: null,
         email: null,
         saleNotify: false,
+        publicHangar: true,
       },
       loading: false,
       rsiCitizen: null,
@@ -227,6 +233,7 @@ export default {
       this.form.username = this.currentUser.username
       this.form.email = this.currentUser.email
       this.form.saleNotify = !!this.currentUser.saleNotify
+      this.form.publicHangar = !!this.currentUser.publicHangar
     },
     async submit() {
       const result = await this.$validator.validateAll()

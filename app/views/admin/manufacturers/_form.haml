@@ -1,12 +1,21 @@
 = form_for [:admin, manufacturer] do |form|
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(manufacturer, :name)}
+      = form.label :name
       = form.text_field :name, placeholder: I18n.t(:"helpers.placeholder.name"), class: 'form-control'
       %small
         = form_errors manufacturer, :name
 
     .col-xs-12.col-md-6.form-group{class: form_error?(manufacturer, :logo)}
-      = form.file_field :logo, placeholder: I18n.t(:"helpers.placeholder.logo"), class: 'form-control'
+      = form.label :logo
+      = form.file_field :logo, class: 'form-control'
+      = form.hidden_field :logo_cache
+      %br
+      - if manufacturer.logo?
+        = image_tag(manufacturer.logo.url)
+        %br
+        = form.check_box :remove_logo
+        Remove Logo
       %small
         = form_errors manufacturer, :logo
 

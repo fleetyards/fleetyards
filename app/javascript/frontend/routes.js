@@ -13,6 +13,8 @@ import Hangar from 'frontend/pages/Hangar'
 import PublicHangar from 'frontend/pages/Hangar/Public'
 import Fleets from 'frontend/pages/Fleets'
 import Fleet from 'frontend/pages/Fleets/Show'
+import Stations from 'frontend/pages/Stations'
+import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import Cargo from 'frontend/pages/Cargo'
 import Commodities from 'frontend/pages/Commodities'
 import Login from 'frontend/pages/Login'
@@ -30,7 +32,7 @@ export const routes = [
     component: Home,
     meta: {
       // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-0.jpg'),
+      backgroundImage: require('images/bg-6.jpg'),
     },
   }, {
     path: '/impressum',
@@ -44,22 +46,42 @@ export const routes = [
     path: '/ships',
     name: 'models',
     component: Models,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+    },
   }, {
     path: '/compare/ships',
     name: 'compare-models',
     component: CompareModels,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+    },
   }, {
     path: '/ships/:slug',
     name: 'model',
     component: Model,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+    },
   }, {
     path: '/ships/:slug/images',
     name: 'model-images',
     component: ModelImages,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+    },
   }, {
     path: '/ships/:slug/videos',
     name: 'model-videos',
     component: ModelVideos,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+    },
   }, {
     path: '/stats',
     name: 'stats',
@@ -102,12 +124,17 @@ export const routes = [
       backgroundImage: require('images/bg-2.jpg'),
     },
   }, {
+    path: '/stations',
+    name: 'stations',
+    component: Stations,
+    children: StationsRoutes,
+  }, {
     path: '/cargo',
     name: 'cargo',
     component: Cargo,
     meta: {
       // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
+      backgroundImage: require('images/bg-7.jpg'),
     },
   }, {
     path: '/commodities',
@@ -115,7 +142,7 @@ export const routes = [
     component: Commodities,
     meta: {
       // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
+      backgroundImage: require('images/bg-7.jpg'),
     },
   }, {
     path: '/commodities/:id',
@@ -123,7 +150,7 @@ export const routes = [
     component: Commodities,
     meta: {
       // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
+      backgroundImage: require('images/bg-7.jpg'),
     },
   }, {
     path: '/settings',

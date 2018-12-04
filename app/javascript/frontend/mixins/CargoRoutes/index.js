@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     async fetchModels() {
-      const response = await this.$api.get('models/cargo-options', {})
+      const response = await this.$api.get('models/cargo-options')
       if (!response.error) {
         this.modelOptions = response.data.map(item => ({
           name: `${item.name} (${this.toNumber(item.cargo, 'cargo')})`,
@@ -23,7 +23,7 @@ export default {
     },
     async fetchTradeHubs() {
       this.tradeHubsLoading = true
-      const response = await this.$api.get('trade-hubs', {})
+      const response = await this.$api.get('trade-hubs')
       this.tradeHubsLoading = false
       if (!response.error) {
         this.tradeHubs = response.data
@@ -41,7 +41,7 @@ export default {
     },
     async fetchCommodities() {
       this.commoditiesLoading = true
-      const response = await this.$api.get('commodities', {})
+      const response = await this.$api.get('commodities')
       this.commoditiesLoading = false
       if (!response.error) {
         this.commodities = response.data

@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-class RsiModelsLoader
-  attr_accessor :json_file_path, :base_url, :vat_percent
+require 'rsi_base_loader'
+
+class RsiModelsLoader < RsiBaseLoader
+  attr_accessor :json_file_path, :vat_percent
 
   def initialize(options = {})
+    super
     @json_file_path = 'public/models.json'
-    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
     @vat_percent = options[:vat_percent] || 23
   end
 
@@ -52,7 +54,7 @@ class RsiModelsLoader
 
     buying_options = get_buying_options(model.store_url)
     if buying_options.present?
-      model.price = buying_options.price if buying_options.price.present?
+      model.pledge_price = buying_options.price if buying_options.price.present?
       model.on_sale = buying_options.on_sale
     end
 
@@ -101,13 +103,27 @@ class RsiModelsLoader
     )
   end
 
+  # rubocop:disable Metrics/MethodLength
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
+
+    new_time_modified = begin
+      Time.zone.parse(data['time_modified.unfiltered'])
+    rescue ArgumentError
+      nil
+    end
+
+    if model.last_updated_at.blank? || model.last_updated_at < new_time_modified
+      model.update(
+        production_status: data['production_status'],
+        production_note: data['production_note']
+      )
+    end
+
     model.update(
       name: strip_name(data['name']),
+      rsi_chassis_id: data['chassis_id'],
       rsi_name: data['name'],
-      production_status: data['production_status'],
-      production_note: data['production_note'],
       description: data['description'],
       length: data['length'].to_f,
       beam: data['beam'].to_f,
@@ -128,22 +144,25 @@ class RsiModelsLoader
       classification: data['type'],
       focus: data['focus'],
       store_url: data['url'],
-      last_updated_at: data['time_modified.unfiltered']
+      last_updated_at: new_time_modified
     )
+
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
     # rubocop:enable Style/RescueModifier
+
     if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
       model.store_images_updated_at = data['media'][0]['time_modified']
-      model.remote_store_image_url = "#{base_url}#{data['media'][0]['images']['store_hub_large']}"
-      model.save
+      store_image_url = data['media'][0]['images']['store_hub_large']
+      store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
+      if store_image_url.present?
+        model.remote_store_image_url = store_image_url
+        model.save
+      end
     end
     model
   end
-
-  def strip_name(name)
-    name.gsub(/^\s*(?:AEGIS|Aegis|ANVIL|Anvil|BANU|Banu|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an)[^a-zA-Z0-9]+/, '')
-  end
+  # rubocop:enable Metrics/MethodLength
 
   def create_or_update_manufacturer(manufacturer_data)
     manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
@@ -183,15 +202,15 @@ class RsiModelsLoader
   def create_or_update_component(hardpoint_data)
     component = Component.find_or_create_by!(
       name: hardpoint_data['name'],
-      size: hardpoint_data['component_size'],
-      component_class: hardpoint_data['component_class'],
-      component_type: hardpoint_data['type']
+      size: hardpoint_data['component_size']
     )
 
+    item_type = hardpoint_data['type']
+    item_type = 'weapons' if item_type == 'turrets'
+
     component.update(
-      size: hardpoint_data['component_size'],
       component_class: hardpoint_data['component_class'],
-      component_type: hardpoint_data['type']
+      item_type: item_type
     )
 
     if hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
@@ -200,17 +219,5 @@ class RsiModelsLoader
     end
 
     component
-  end
-
-  private def nil_or_float(value)
-    return if value.blank?
-
-    value.to_f
-  end
-
-  private def nil_or_int(value)
-    return if value.blank?
-
-    value.to_i
   end
 end

@@ -2,6 +2,7 @@
 
 module Api
   class BaseController < ActionController::Base
+    include RansackHelper
     include ActionController::HttpAuthentication::Token
     include Concerns::Pagination
 
@@ -58,19 +59,6 @@ module Api
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
-    end
-    private def query_params
-      @query_params ||= begin
-        q = JSON.parse(params[:q].to_s || '{}')
-        q.transform_keys(&:underscore)
-      end
-    rescue JSON::ParserError
-      {}
-    end
-
-    private def per_page(model)
-      per_page_param = params[:perPage].to_i if params[:perPage].present?
-      [(per_page_param || model.default_per_page), model.default_per_page * 4].min
     end
   end
 end

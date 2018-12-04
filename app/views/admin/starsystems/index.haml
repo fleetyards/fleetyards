@@ -1,0 +1,45 @@
+- content_for :title do
+  = I18n.t(:"title.starsystem.index")
+.row#starsystems
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.starsystem.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.starsystem.new"), new_admin_starsystem_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @starsystems.count
+          of
+          = @starsystems.total_count
+      .col-xs-12.col-md-6
+        = paginate @starsystems
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/starsystems/table", :@starsystems => @starsystems
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @starsystems

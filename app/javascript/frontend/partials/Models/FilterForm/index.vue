@@ -1,28 +1,24 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('model-name-or-description')">
-        {{ t('labels.filters.models.nameOrDescription') }}
-      </label>
       <input
-        :id="idFor('model-name-or-description')"
-        v-model="form.nameOrDescriptionCont"
-        :placeholder="t('placeholders.filters.models.nameOrDescription')"
+        v-model="form.nameCont"
+        :placeholder="t('placeholders.filters.models.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
-        v-if="form.nameOrDescriptionCont"
+        v-if="form.nameCont"
         class="btn btn-clear"
-        @click="clearNameOrDescription"
+        @click="clearName"
         v-html="'&times;'"
       />
     </div>
     <FilterGroup
-      v-model="form.manufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
-      :name="`${prefix}-manufacturer`"
       :fetch="fetchManufacturers"
+      name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
       paginated
@@ -32,38 +28,45 @@
     <FilterGroup
       v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
-      :name="`${prefix}-production-status`"
       :fetch="fetchProductionStatus"
+      name="production-status"
       multiple
     />
     <FilterGroup
       v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
-      :name="`${prefix}-classification`"
       :fetch="fetchClassifications"
+      name="classification"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
-      :name="`${prefix}-focus`"
       :fetch="fetchFocus"
+      name="focus"
       searchable
       multiple
     />
     <FilterGroup
       v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
-      :name="`${prefix}-size`"
       :fetch="fetchSize"
+      name="size"
+      multiple
+    />
+    <FilterGroup
+      :options="pledgePriceOptions"
+      v-model="form.pledgePriceIn"
+      :label="t('labels.filters.models.pledgePrice')"
+      name="pldege-price"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
       v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
-      :name="`${prefix}-price`"
+      name="price"
       multiple
     />
     <RadioList
@@ -71,10 +74,9 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.onSaleEq"
-      :name="`${prefix}-sale`"
+      name="sale"
     />
     <Btn
-      v-if="!hideButtons"
       :disabled="!isFilterSelected"
       block
       @click.native="reset"
@@ -99,28 +101,19 @@ export default {
     Btn,
   },
   mixins: [I18n, Filters],
-  props: {
-    hideButtons: {
-      type: Boolean,
-      default: false,
-    },
-    prefix: {
-      type: String,
-      default: 'filter',
-    },
-  },
   data() {
     const query = this.$route.query.q || {}
     return {
       loading: false,
       form: {
-        nameOrDescriptionCont: query.nameOrDescriptionCont,
+        nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
         priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       },
     }
@@ -129,13 +122,14 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
-        nameOrDescriptionCont: query.nameOrDescriptionCont,
+        nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
-        manufacturerSlugIn: query.manufacturerSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
         productionStatusIn: query.productionStatusIn || [],
         priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
@@ -148,11 +142,8 @@ export default {
     },
   },
   methods: {
-    clearNameOrDescription() {
-      this.form.nameOrDescriptionCont = null
-    },
-    clearOnSale() {
-      this.form.onSaleEq = null
+    clearName() {
+      this.form.nameCont = null
     },
   },
 }

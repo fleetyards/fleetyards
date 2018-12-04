@@ -7,9 +7,10 @@ module Api
 
       def index
         authorize! :index, :api_trade_hubs
-        @q = TradeHub.ransack(query_params)
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        query_params['sorts'] = sort_by_name
+
+        @q = TradeHub.ransack(query_params)
 
         @trade_hubs = @q.result.offset(params[:offset]).limit(params[:limit])
       end

@@ -353,7 +353,7 @@
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelA.lastPrice) }}
+                    {{ toDollar(modelA.price) }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -361,7 +361,31 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelB.lastPrice) }}
+                    {{ toDollar(modelB.price) }}
+                  </span>
+                </div>
+              </div>
+              <div
+                v-if="modelA || modelB"
+                class="row compare-row"
+              >
+                <div class="col-xs-12 col-md-2 text-right metrics-label">
+                  {{ t('model.pledgePrice') }}
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelA"
+                    class="metrics-value"
+                  >
+                    {{ toDollar(modelA.lastPledgePrice) }}
+                  </span>
+                </div>
+                <div class="col-xs-6 col-md-4 text-center">
+                  <span
+                    v-if="modelB"
+                    class="metrics-value"
+                  >
+                    {{ toDollar(modelB.lastPledgePrice) }}
                   </span>
                 </div>
               </div>

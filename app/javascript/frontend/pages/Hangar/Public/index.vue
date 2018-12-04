@@ -35,7 +35,7 @@
             />
           </div>
           <div
-            v-if="vehicles.length > 0"
+            v-if="vehicles.length > 0 || fleetchartVehicles.length > 0"
             class="col-xs-12 col-md-6"
           >
             <div class="page-actions">
@@ -60,7 +60,7 @@
           </div>
         </div>
         <div
-          v-if="hangarPublicFleetchartVisible && vehicles.length > 0"
+          v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
           class="row"
         >
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
@@ -75,39 +75,27 @@
             />
           </div>
         </div>
-        <transition-group
+        <div
           v-if="hangarPublicFleetchartVisible"
-          id="fleetchart"
-          name="fade-list"
-          class="flex-row fleetchart"
-          tag="div"
-          appear
+          class="row"
         >
-          <router-link
-            v-for="vehicle in fleetchartVehicles"
-            :key="vehicle.id"
-            :to="{
-              name: 'model',
-              params: {
-                slug: vehicle.model.slug,
-              },
-            }"
-            class="fleetchart-item fade-list-item"
-          >
-            <img
-              v-if="vehicle.model.fleetchartImage"
-              :style="{
-                height: `${vehicle.model.length * lengthMultiplicator}px`,
-              }"
-              :src="vehicle.model.fleetchartImage"
-              :alt="vehicle.model.slug"
+          <div class="col-xs-12 fleetchart-wrapper">
+            <transition-group
+              id="fleetchart"
+              name="fade-list"
+              class="flex-row fleetchart"
+              tag="div"
+              appear
             >
-            <span v-else>
-              <i class="fal fa-question-circle" />
-              <p>{{ vehicle.model.name }}</p>
-            </span>
-          </router-link>
-        </transition-group>
+              <FleetchartItem
+                v-for="vehicle in fleetchartVehicles"
+                :key="vehicle.id"
+                :model="vehicle.model"
+                :scale="scale"
+              />
+            </transition-group>
+          </div>
+        </div>
         <transition-group
           v-else
           name="fade-list"
@@ -147,6 +135,7 @@
 <script>
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/partials/Models/Panel'
+import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
@@ -164,6 +153,7 @@ export default {
     Btn,
     vueSlider,
     ModelClassLabels,
+    FleetchartItem,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {
@@ -201,21 +191,13 @@ export default {
   },
   watch: {
     $route() {
-      if (this.hangarPublicFleetchart) {
-        this.fetch()
-      } else {
-        this.fetchFleetchart()
-      }
+      this.fetch()
     },
     scale(value) {
       this.$store.commit('setHangarPublicFleetchartScale', value)
     },
-    hangarPublicFleetchart() {
-      if (this.hangarPublicFleetchart) {
-        this.fetchFleetchart()
-      } else {
-        this.fetch()
-      }
+    hangarPublicFleetchartVisible() {
+      this.fetch()
     },
   },
   created() {
@@ -223,7 +205,7 @@ export default {
   },
   methods: {
     toggleFleetchart() {
-      this.$store.commit('toggleHangarPublicFleetchart')
+      this.$store.dispatch('toggleHangarPublicFleetchart')
     },
     download() {
       this.downloading = true
@@ -235,7 +217,14 @@ export default {
         download(canvas.toDataURL(), 'fleetchart.png')
       })
     },
-    async fetch() {
+    fetch() {
+      if (this.hangarPublicFleetchartVisible) {
+        this.fetchFleetchart()
+      } else {
+        this.fetchVehicles()
+      }
+    },
+    async fetchVehicles() {
       this.loading = true
 
       this.fetchCount()
@@ -251,16 +240,14 @@ export default {
       this.setPages(response.meta)
     },
     async fetchCount() {
-      const response = await this.$api.get(`vehicles/${this.username}/count`, {})
+      const response = await this.$api.get(`vehicles/${this.username}/count`)
       if (!response.error) {
         this.vehiclesCount = response.data
       }
     },
     async fetchFleetchart() {
       this.loading = true
-      const response = await this.$api.get('vehicles/fleetchart', {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
       this.loading = false
       if (!response.error) {
         this.fleetchartVehicles = response.data

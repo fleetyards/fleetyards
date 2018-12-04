@@ -160,7 +160,7 @@ export default {
       this.setPages(response.meta)
     },
     async fetchMyFleets() {
-      const response = await this.$api.get('fleets/my', {})
+      const response = await this.$api.get('fleets/my')
       if (!response.error) {
         this.myFleets = response.data
       }

@@ -1,0 +1,63 @@
+## Shop Commodities [/v1/stations/{station_slug}/shops/{slug}/shop-commodities]
+
+### GET List [GET]
+Get a List of Shop Commodities
+
++ Parameters
+
+    + station_slug: `port-olisar` (required, string) - The Station Slug
+    + slug: `dumpers-depot` (required, string) - The Shop Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            [
+                {
+                    "name": "Avenger Titan",
+                    "slug": "avenger-titan",
+                    "storeImage": "http://api.fleetyards.test/uploads/model/store_image/cabcdeec-8af1-4cd9-b403-041f008fedff/Titan_01-Squashed.jpg",
+                    "category": "model"
+                    "subCategory": "transport",
+                    "subCategoryLabel": "Transport",
+                    "description": "Lacking the prisoner cells of the Stalker or the EMP of the Warlock, the Titan’s hold is free to carry cargo. Couple that with the Avenger’s tried and true combat abilities and you’ve got a light cargo hauler that’s more than capable of handling itself in a fight.\n\n*This is the standard Avenger chassis with the Titan Cargo Module pre-installed.*",
+                    "sellPrice": "100000.0",
+                    "buyPrice": null,
+                    "rentPrice": null,
+                    "manufacturer": {
+                        "name": "Aegis Dynamics",
+                        "slug": "aegis-dynamics",
+                        "code": "AEGS",
+                        "logo": "http://api.fleetyards.test/uploads/manufacturer/logo/cbd6be28-6766-4ed3-935a-86e0828fc0c3/small_Aegis.png"
+                    },
+                    "createdAt": "2018-10-27T16:37:32+02:00",
+                    "updatedAt": "2018-10-28T08:48:59+01:00"
+                },
+                {
+                    "name": "Destroyer Mass Driver",
+                    "slug": "destroyer-mass-driver",
+                    "storeImage": "http://api.fleetyards.test/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg",
+                    "category": "component",
+                    "subCategory": "RSIWeapon",
+                    "subCategoryLabel": "Weapon",
+                    "description": null,
+                    "sellPrice": "1000.0",
+                    "buyPrice": null,
+                    "rentPrice": null,
+                    "manufacturer": {
+                        "name": "Klaus &amp; Werner",
+                        "slug": "klaus-amp-werner",
+                        "code": null,
+                        "logo": null
+                    },
+                    "createdAt": "2018-10-27T12:32:19+02:00",
+                    "updatedAt": "2018-10-28T02:52:11+02:00"
+                },
+                ...
+            ]
