@@ -122,6 +122,9 @@ export default {
       }, {
         name: 'Commodity',
         value: 'Commodity',
+      }, {
+        name: 'Module',
+        value: 'ModelModule',
       }],
     }
   },

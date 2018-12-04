@@ -6,14 +6,14 @@
   %td
     = station.station_type_label
   %td
+    = station.celestial_object.name if station.celestial_object.present?
+    = "(#{station.starsystem.name} System)" if station.starsystem.present?
+    = station.location
+  %td
     - if station.hidden?
       %i.fa.fa-check
     - else
       %i.far.fa-square
-  %td
-    = station.celestial_object.name if station.celestial_object.present?
-    = "(#{station.starsystem.name} System)" if station.starsystem.present?
-    = station.location
   %td.text-right
     .btn-group
       = link_to gallery_admin_station_path(station), title: I18n.t(:"actions.station.gallery"), class: "btn btn-default" do

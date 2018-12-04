@@ -52,6 +52,10 @@ en:
         edit: Starsystem %{starsystem}
         index: Starsystems
         new: New Starsystem
+      model_module:
+        edit: Module %{model_module}
+        index: Modules
+        new: New Module
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

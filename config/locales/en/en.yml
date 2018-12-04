@@ -127,6 +127,10 @@ en:
       edit: Edit Starsystem
       index: Starsystems
       new: New Starsystem
+    model_module:
+      edit: Edit Module
+      index: Modules
+      new: New Module
     not_found: 404
     sign_in: Login
     password:

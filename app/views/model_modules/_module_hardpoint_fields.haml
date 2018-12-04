@@ -1,0 +1,14 @@
+.row.fields
+  .col-xs-12.col-md-6
+    .form-group{class: form_error?(fields.object, :model_id)}
+      = fields.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, fields.object.model_id), { include_blank: true }, { class: 'form-control' }
+      = form_errors fields.object, :model_id
+
+  .col-xs-12.col-md-1
+    .btn-group-responsive.form-group.pull-right
+      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+        %i.fa.fa-trash
+
+  .clearfix
+  .col-xs-12.visible-sm.visible-xs
+    %hr
