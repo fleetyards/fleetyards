@@ -54,6 +54,7 @@ en:
         planet: No Planets could be found.
         starsystem: No Starsystems could be found.
         equipment: No Equipment could be found.
+        model_module: No Module could be found.
       component:
         category: Category
       model:

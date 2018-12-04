@@ -6,7 +6,7 @@
           selected: fields.object.commodity_item&.to_global_id,
           include_blank: I18n.t(:"helpers.prompt.shop_commodities.commodity_item")
         }
-      = fields.grouped_collection_select :commodity_item_selected, [Model, Component, Commodity, Equipment], :ordered_by_name, :model_name, :to_global_id, :name, options, class: 'form-control'
+      = fields.grouped_collection_select :commodity_item_selected, [Model, Component, Commodity, Equipment, ModelModule], :ordered_by_name, :model_name, :to_global_id, :name, options, class: 'form-control'
       = form_errors fields.object, :commodity_item
 
   .col-xs-12.col-md-2

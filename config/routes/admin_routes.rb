@@ -24,6 +24,8 @@ namespace :admin, path: '', constraints: { subdomain: 'admin' } do
     end
   end
 
+  resources :model_modules, path: 'model-modules', except: [:show]
+
   resources :manufacturers, except: [:show]
 
   resources :components, except: [:show]
