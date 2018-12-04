@@ -99,7 +99,7 @@ GEM
     crass (1.0.4)
     css_parser (1.6.0)
       addressable
-    dalli (2.7.8)
+    dalli (2.7.9)
     database_cleaner (1.7.0)
     deepl-rb (2.1.0)
     device_detector (1.0.1)
