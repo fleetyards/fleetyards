@@ -20,7 +20,7 @@
     "axios": "0.18.0",
     "bootstrap-sass": "3.3.7",
     "bootstrap-vue": "1.5.1",
-    "caniuse-lite": "^1.0.30000874",
+    "caniuse-lite": "^1.0.30000912",
     "css-loader": "^1.0.0",
     "date-fns": "1.29.0",
     "debounce": "^1.2.0",
