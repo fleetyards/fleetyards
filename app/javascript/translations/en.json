@@ -234,6 +234,7 @@
     },
     "source": "Source",
     "model": {
+      "variants": "Variants",
       "modules": "Modules",
       "brochure": "Brochure",
       "onSale": "On Sale",
@@ -458,7 +459,7 @@
     "hideDetails": "Hide Details",
     "showFleetchart": "Fleetchart",
     "hideFleetchart": "Default view",
-    "supportUs": "Support us via PayPal",
+    "supportUs": "Support FleetYards via PayPal",
     "login": "Login",
     "signUp": "Sign Up",
     "reset-password": "Forgot password?",

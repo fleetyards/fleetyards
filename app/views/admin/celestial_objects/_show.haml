@@ -4,12 +4,12 @@
   %td
     = celestial_object.name
   %td
+    = celestial_object.starsystem.name
+  %td
     - if celestial_object.hidden?
       %i.fa.fa-check
     - else
       %i.far.fa-square
-  %td
-    = celestial_object.starsystem.name
   %td.text-right
     .btn-group
       = link_to edit_admin_celestial_object_path(celestial_object), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

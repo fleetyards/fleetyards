@@ -53,11 +53,14 @@
   }
 }
 
-.modules {
+.modules,
+.variants {
   h2 {
     font-family: 'Orbitron', sans-serif;
   }
+}
 
+.modules {
   .model-panel {
     display: flex;
 

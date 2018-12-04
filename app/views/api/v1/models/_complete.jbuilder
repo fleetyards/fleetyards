@@ -9,9 +9,6 @@ json.cache! ['v1', model] do
   json.hardpoints do
     json.array! model.hardpoints, partial: 'api/v1/models/hardpoint', as: :hardpoint
   end
-  json.modules do
-    json.array! model.modules, partial: 'api/v1/models/model_module', as: :model_module
-  end
   if params[:without_images].blank?
     json.images do
       json.array! model.images.enabled, partial: 'api/v1/images/base', as: :image

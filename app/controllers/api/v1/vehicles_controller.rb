@@ -37,12 +37,10 @@ module Api
         @q = current_user.vehicles
                          .ransack(vehicle_query_params)
 
-        vehicle_query_params['sorts'] = sort_by_name
-
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by { |vehicle| -vehicle.model.display_length }
+                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
       end
 
       def count

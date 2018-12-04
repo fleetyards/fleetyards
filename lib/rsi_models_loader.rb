@@ -122,6 +122,7 @@ class RsiModelsLoader < RsiBaseLoader
 
     model.update(
       name: strip_name(data['name']),
+      rsi_chassis_id: data['chassis_id'],
       rsi_name: data['name'],
       description: data['description'],
       length: data['length'].to_f,
@@ -145,6 +146,7 @@ class RsiModelsLoader < RsiBaseLoader
       store_url: data['url'],
       last_updated_at: new_time_modified
     )
+
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
     # rubocop:enable Style/RescueModifier
