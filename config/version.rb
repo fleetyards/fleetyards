@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = 'Hurston'
-  VERSION = 'v2.0.2'
+  VERSION = 'v2.0.3'
 end
