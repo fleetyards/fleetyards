@@ -88,7 +88,7 @@ export default {
         return
       }
       this.submitting = true
-      await this.$api.post('password/request')
+      await this.$api.post('password/request', this.form)
       this.submitting = false
       success(this.t('messages.requestPasswordChange.success'))
       this.$router.push('/')
