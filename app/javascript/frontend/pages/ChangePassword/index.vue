@@ -71,6 +71,7 @@
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
               id="password"
+              ref="password"
               v-model="form.password"
               :autofocus="!$store.getters.isAuthenticated"
               :data-vv-as="t('labels.password')"
