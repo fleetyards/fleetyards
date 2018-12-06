@@ -168,7 +168,7 @@ export default {
         return
       }
       this.submitting = true
-      const response = await this.$api.post(`password/update/${this.$route.params.token}`, this.form)
+      const response = await this.$api.put(`password/update/${this.$route.params.token}`, this.form)
       this.submitting = false
       if (!response.error) {
         success(this.t('messages.changePassword.success'))
