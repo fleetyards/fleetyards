@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Shop < ApplicationRecord
-  paginates_per 20
+  paginates_per 30
 
   belongs_to :station
   has_many :shop_commodities, dependent: :destroy

@@ -41,6 +41,7 @@
             v-tooltip.right="errors.first('password')"
             v-validate="'required|min:8'"
             id="password"
+            ref="password"
             v-model="form.password"
             :autofocus="!$store.getters.isAuthenticated"
             :data-vv-as="t('labels.password')"
@@ -116,7 +117,7 @@ export default {
         return
       }
       this.submitting = true
-      const response = await this.$api.post(`password/update/${this.$route.params.token}`, this.form)
+      const response = await this.$api.put('password/update', this.form)
       this.submitting = false
       if (!response.error) {
         success(this.t('messages.changePassword.success'))

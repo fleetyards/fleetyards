@@ -94,14 +94,13 @@ module Api
                  .public
                  .ransack(vehicle_query_params)
 
-        @q.sorts = ['model_length desc', 'model_name asc']
-
         @vehicles = []
         return unless user.public_hangar?
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
+                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
       end
 
       def public_count

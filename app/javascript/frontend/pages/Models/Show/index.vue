@@ -184,7 +184,7 @@
           <div
             v-for="module in modules"
             :key="module.id"
-            class="col-xs-12 col-sm-6 col-xlg-4"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
           >
             <Panel>
               <div class="model-panel">
@@ -228,7 +228,7 @@
           <div
             v-for="variant in variants"
             :key="variant.slug"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-3 fade-list-item"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
               :model="variant"
