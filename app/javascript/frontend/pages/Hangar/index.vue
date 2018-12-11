@@ -13,7 +13,7 @@
               v-if="vehiclesCount"
               :label="t('labels.hangar')"
               :count-data="vehiclesCount"
-              filter-key="modelClassificationIn"
+              filter-key="classificationIn"
             />
             <GroupLabels
               v-if="!mobile && (vehicles.length || fleetchartVehicles.length
@@ -68,17 +68,17 @@
             <div class="page-actions page-actions-left">
               <Btn
                 v-tooltip="t('actions.saveScreenshot')"
-                v-show="hangarFleetchartVisible && fleetchartVehicles.length > 0"
+                v-show="hangarFleetchartVisible && fleetchartVehicles.length"
                 :disabled="downloading"
                 :aria-label="t('actions.saveScreenshot')"
                 small
                 @click.native="download"
               >
-                <i class="fal fa-download" />
+                {{ t('actions.saveScreenshot') }}
               </Btn>
               <Btn
                 v-tooltip="toggleDetailsTooltip"
-                v-show="!hangarFleetchartVisible && vehicles.length > 0"
+                v-show="!hangarFleetchartVisible && vehicles.length"
                 :active="hangarDetailsVisible"
                 :aria-label="toggleDetailsTooltip"
                 small
@@ -189,12 +189,12 @@
             >
               <div
                 v-for="vehicle in vehicles"
-                :class="{
-                  'col-lg-4 col-xlg-3 col-xxlg-2-4': fullscreen,
-                  'col-xlg-4 col-xxlg-3': !fullscreen,
-                }"
                 :key="vehicle.id"
-                class="col-xs-12 col-sm-6 fade-list-item"
+                :class="{
+                  'col-lg-4': fullscreen,
+                  'col-xlg-4': !fullscreen,
+                }"
+                class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
               >
                 <ModelPanel
                   :model="vehicle.model"
@@ -316,7 +316,7 @@ export default {
       return `/hangar/${this.currentUser.username}`
     },
     starship42Url() {
-      const shipList = this.vehicles.map(vehicle => vehicle.model.rsiName)
+      const shipList = this.fleetchartVehicles.map(vehicle => vehicle.model.rsiName)
       const data = { source: 'FleetYards', type: 'matrix', s: shipList }
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
@@ -333,9 +333,6 @@ export default {
       if (this.currentUser) {
         this.setupUpdates()
       }
-    },
-    hangarFleetchartVisible() {
-      this.fetch()
     },
   },
   created() {
@@ -373,11 +370,8 @@ export default {
       this.$store.dispatch('toggleHangarFleetchart')
     },
     fetch() {
-      if (this.hangarFleetchartVisible) {
-        this.fetchFleetchart()
-      } else {
-        this.fetchVehicles()
-      }
+      this.fetchFleetchart()
+      this.fetchVehicles()
       this.fetchGroups()
       this.fetchCount()
     },
@@ -426,7 +420,7 @@ export default {
       })
     },
     async fetchGroups() {
-      const response = await this.$api.get('hangar-groups', {})
+      const response = await this.$api.get('hangar-groups')
       if (!response.error) {
         this.hangarGroups = response.data
       }

@@ -13,6 +13,8 @@ class Manufacturer < ApplicationRecord
   has_many :components,
            dependent: :nullify
 
+  ransack_alias :name, :name_or_slug
+
   def self.with_name
     where.not(name: nil)
   end

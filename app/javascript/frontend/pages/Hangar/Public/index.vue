@@ -35,7 +35,7 @@
             />
           </div>
           <div
-            v-if="vehicles.length > 0"
+            v-if="vehicles.length > 0 || fleetchartVehicles.length > 0"
             class="col-xs-12 col-md-6"
           >
             <div class="page-actions">
@@ -106,7 +106,7 @@
           <div
             v-for="vehicle in vehicles"
             :key="vehicle.id"
-            class="col-xs-12 col-sm-6 col-lg-4 col-xlg-3 col-xxlg-2-4 fade-list-item"
+            class="col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
               :model="vehicle.model"
@@ -240,16 +240,14 @@ export default {
       this.setPages(response.meta)
     },
     async fetchCount() {
-      const response = await this.$api.get(`vehicles/${this.username}/count`, {})
+      const response = await this.$api.get(`vehicles/${this.username}/count`)
       if (!response.error) {
         this.vehiclesCount = response.data
       }
     },
     async fetchFleetchart() {
       this.loading = true
-      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`, {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
       this.loading = false
       if (!response.error) {
         this.fleetchartVehicles = response.data

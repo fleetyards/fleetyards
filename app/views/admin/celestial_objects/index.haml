@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.celestial_object.index")
+.row#celestial_objects
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.celestial_object.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.celestial_object.new"), new_admin_celestial_object_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @celestial_objects.count
+          of
+          = @celestial_objects.total_count
+      .col-xs-12.col-md-6
+        = paginate @celestial_objects
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/celestial_objects/table", :@celestial_objects => @celestial_objects
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .form-group
+            = f.label :starsystem_id_eq
+            = f.select :starsystem_id_eq, Starsystem.all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @celestial_objects

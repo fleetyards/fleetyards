@@ -4,22 +4,47 @@ module Api
   module V1
     class StationsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:stations) }, only: [:index]
 
       def index
         authorize! :index, :api_stations
-        query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+        station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
 
         @q = Station.visible
-                    .ransack(query_params)
+                    .ransack(station_query_params)
 
-        @stations = @q.result
+        @stations = @q.result(distinct: true)
                       .page(params[:page])
                       .per(per_page(Station))
       end
 
       def show
         authorize! :show, :api_stations
-        @station = Station.find_by!(slug: params[:slug])
+        @station = Station.visible.find_by!(slug: params[:slug])
+      end
+
+      def ship_sizes
+        authorize! :show, :api_stations
+
+        @filters = Dock.size_filters
+
+        render 'api/v1/shared/filters'
+      end
+
+      def station_types
+        authorize! :show, :api_stations
+
+        @filters = Station.type_filters
+
+        render 'api/v1/shared/filters'
+      end
+
+      private def station_query_params
+        @station_query_params ||= query_params(
+          :celestial_object_eq, :name_cont, :habs_not_null,
+          celestial_object_in: [], starsystem_in: [], station_type_in: [],
+          shops_shop_type_in: [], docks_ship_size_in: []
+        )
       end
     end
   end

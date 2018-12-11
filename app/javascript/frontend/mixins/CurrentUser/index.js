@@ -13,7 +13,7 @@ export default {
       if (!this.isAuthenticated) {
         return
       }
-      const response = await this.$api.get('users/current', {})
+      const response = await this.$api.get('users/current')
       if (!response.error) {
         this.$store.commit('setCurrentUser', response.data)
         if (this.currentUser.rsiHandle) {
@@ -28,7 +28,7 @@ export default {
         return
       }
 
-      const response = await this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`, {})
+      const response = await this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`)
       if (!response.error) {
         this.$store.commit('setCitizen', response.data)
       } else {

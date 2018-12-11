@@ -1,0 +1,58 @@
+## Starsystems [/v1/starsystems]
+
+### GET List [GET]
+Get a List of Starsystems
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                ...
+                {
+                    "name": "Nyx",
+                    "slug": "nyx",
+                    "storeImage": "http://api.fleetyards.test/assets/fallback/store_image-2105ffa73bd0ba272086daec49ef5d4f6fc8e2a47df7a0c2d07b8d016ad61319.jpg",
+                    "mapX": "42.2",
+                    "mapY": "22.75",
+                    "celestialObjects": [
+                        {
+                            "name": "Delamar",
+                            "slug": "delamar",
+                            "designation": "Delamar",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/720bd053-0cf1-45e5-8c7a-8364596d1a32/delamar.jpg"
+                        }
+                    ],
+                    "createdAt": "2018-10-26T20:19:08+02:00",
+                    "updatedAt": "2018-10-26T20:24:43+02:00"
+                },
+                {
+                    "name": "Stanton",
+                    "slug": "stanton",
+                    "storeImage": "http://api.fleetyards.test/uploads/starsystem/store_image/17b3dde9-c594-4667-9fe7-07ce9ba83be0/stanton.jpg",
+                    "mapX": "59.766411599",
+                    "mapY": "48.460661345",
+                    "celestialObjects": [
+                        {
+                            "name": "Hurston",
+                            "slug": "hurston",
+                            "designation": "Stanton I",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/35908b50-7f8e-4344-85e5-f14d98b2be54/hurston.png"
+                        },
+                        {
+                            "name": "Crusader",
+                            "slug": "crusader",
+                            "designation": "Stanton II",
+                            "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/224e95de-367e-4904-aebc-b85c70d0a318/crusader.jpg"
+                        }
+                    ],
+                    "createdAt": "2018-10-26T20:19:06+02:00",
+                    "updatedAt": "2018-10-28T14:26:07+01:00"
+                }
+            ]

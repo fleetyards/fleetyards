@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+olisar_habs:
+  name: Hab 1
+  habitation_type: container
+  station: portolisar

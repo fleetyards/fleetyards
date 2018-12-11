@@ -18,6 +18,14 @@ namespace :frontend, path: '', constraints: { subdomain: 'www' } do
 
   get 'cargo' => 'base#index'
 
+  get 'stations' => 'base#index'
+  get 'shops' => 'base#index'
+  get 'stations/:slug' => 'base#station'
+  get 'stations/:station_slug/shops/:slug' => 'base#shop'
+  get 'starsystems' => 'base#index'
+  get 'starsystems/:slug' => 'base#starsystem'
+  get 'celestial-objects/:slug' => 'base#celestial_object'
+
   get 'commodities' => 'base#index'
   get 'commodities/:id' => 'base#commodities'
 

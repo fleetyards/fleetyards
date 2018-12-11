@@ -25,7 +25,7 @@ module Admin
       authorize! :create, :admin_stations
       @station = Station.new(station_params)
       if station.save
-        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.station"))
+        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.station"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.station"))
       end
@@ -38,7 +38,7 @@ module Admin
     def update
       authorize! :update, station
       if station.update(station_params)
-        redirect_to admin_stations_path(params: index_back_params, anchor: station.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.station"))
+        redirect_to edit_admin_station_path(station.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.station"))
       else
         render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.station"))
       end
@@ -70,11 +70,9 @@ module Admin
     private def station_params
       @station_params ||= params.require(:station).permit(
         :name, :station_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
-        :planet_id,
+        :celestial_object_id, :location, :map, :map_cache, :remove_map,
         docks_attributes: %i[
           id dock_type name min_ship_size max_ship_size _destroy
-        ], station_shops_attributes: %i[
-          id shop_id _destroy
         ]
       )
     end

@@ -10,13 +10,13 @@ class User < ApplicationRecord
            dependent: :destroy
   has_many :models,
            through: :vehicles
-  has_many :purchased_vehicles,
-           -> { where(purchased: true) },
+  has_many :public_vehicles,
+           -> { where(purchased: true, public: true) },
            class_name: 'Vehicle',
            inverse_of: false
-  has_many :purchased_models,
+  has_many :public_models,
            class_name: 'Model',
-           through: :purchased_vehicles,
+           through: :public_vehicles,
            source: :model,
            inverse_of: false
 

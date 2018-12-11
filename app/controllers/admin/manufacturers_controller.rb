@@ -65,7 +65,9 @@ module Admin
     helper_method :index_back_params
 
     private def manufacturer_params
-      @manufacturer_params ||= params.require(:manufacturer).permit(:name, :logo)
+      @manufacturer_params ||= params.require(:manufacturer).permit(
+        :name, :logo, :logo_cache, :remove_logo
+      )
     end
 
     private def manufacturer

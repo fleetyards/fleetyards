@@ -88,7 +88,7 @@ module Api
           params.transform_keys(&:underscore)
                 .permit(
                   :username, :email, :rsi_handle, :rsi_org,
-                  :password, :password_confirmation, :sale_notify
+                  :password, :password_confirmation, :sale_notify, :public_hangar
                 )
         end
       end

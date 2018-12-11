@@ -38,12 +38,12 @@ module Api
           expected = {
             'total' => 2,
             'classifications' => [{
-              'name' => 'multi_role',
-              'label' => 'Multi role',
-              'count' => 1
-            }, {
               'name' => 'explorer',
               'label' => 'Explorer',
+              'count' => 1
+            }, {
+              'name' => 'multi_role',
+              'label' => 'Multi role',
               'count' => 1
             }]
           }
@@ -76,6 +76,7 @@ module Api
             'id' => data.vehicles.first.id,
             'name' => '',
             'purchased' => true,
+            'public' => true,
             'flagship' => false,
             'nameVisible' => false,
             'saleNotify' => false,
@@ -107,6 +108,8 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => data.vehicles.first.model.store_image.url,
+              'storeImageMedium' => data.vehicles.first.model.store_image.medium.url,
+              'storeImageThumb' => data.vehicles.first.model.store_image.small.url,
               'fleetchartImage' => nil,
               'backgroundImage' => nil,
               'brochure' => nil,
@@ -139,6 +142,7 @@ module Api
             'id' => data.vehicles.last.id,
             'name' => 'Enterprise',
             'purchased' => true,
+            'public' => true,
             'flagship' => false,
             'nameVisible' => false,
             'saleNotify' => false,
@@ -170,6 +174,8 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => data.vehicles.last.model.store_image.url,
+              'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
+              'storeImageThumb' => data.vehicles.last.model.store_image.small.url,
               'fleetchartImage' => nil,
               'backgroundImage' => nil,
               'brochure' => nil,
@@ -204,7 +210,7 @@ module Api
 
         it 'should return list for index when filtered' do
           query_params = {
-            hangarGroupsSlugIn: data.vehicles.last.hangar_groups.map(&:slug)
+            hangarGroupsIn: data.vehicles.last.hangar_groups.map(&:slug)
           }
           get :index, params: { q: query_params.to_json }
 
@@ -215,6 +221,7 @@ module Api
             'id' => data.vehicles.last.id,
             'name' => 'Enterprise',
             'purchased' => true,
+            'public' => true,
             'flagship' => false,
             'nameVisible' => false,
             'saleNotify' => false,
@@ -246,6 +253,8 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => data.vehicles.last.model.store_image.url,
+              'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
+              'storeImageThumb' => data.vehicles.last.model.store_image.small.url,
               'fleetchartImage' => nil,
               'backgroundImage' => nil,
               'brochure' => nil,
@@ -306,7 +315,7 @@ module Api
         end
 
         it 'should return counts for count' do
-          get :count, params: { q: '{ "modelClassificationIn": ["combat"] }' }
+          get :count, params: { q: '{ "classificationIn": ["combat"] }' }
 
           assert_response :ok
           json = JSON.parse response.body

@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.model_module.index")
+.row#model_modules
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.model_module.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.model_module.new"), new_admin_model_module_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @model_modules.count
+          of
+          = @model_modules.total_count
+      .col-xs-12.col-md-6
+        = paginate @model_modules
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/model_modules/table", :@model_modules => @model_modules
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_or_slug_cont
+            = f.search_field :name_or_slug_cont, class: 'form-control'
+
+          .form-group
+            = f.label :manufacturer_id_eq
+            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, {class: 'form-control'}
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @model_modules

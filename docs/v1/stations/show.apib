@@ -1,0 +1,123 @@
+## Station [/v1/stations/{slug}]
+
+### GET Detail [GET]
+Get Detail of a Station referenced by its Slug
+
++ Parameters
+
+    + slug: `port-olisar` (required, string) - The Station Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "name": "Port Olisar",
+                "slug": "port-olisar",
+                "location": "Orbit",
+                "type": "hub",
+                "typeLabel": "Hub",
+                "storeImage": "http://api.fleetyards.test/uploads/station/store_image/95381bc5-66fc-433b-a016-e87be4b2d8c3/portolisar.jpg",
+                "description": null,
+                "celestialObject": {
+                    "name": "Crusader",
+                    "slug": "crusader",
+                    "designation": "Stanton II",
+                    "storeImage": "http://api.fleetyards.test/uploads/celestial_object/store_image/224e95de-367e-4904-aebc-b85c70d0a318/crusader.jpg"
+                },
+                "starsystem": {
+                    "name": "Stanton",
+                    "slug": "stanton",
+                    "storeImage": "http://api.fleetyards.test/uploads/starsystem/store_image/17b3dde9-c594-4667-9fe7-07ce9ba83be0/stanton.jpg",
+                    "mapX": "59.766411599",
+                    "mapY": "48.460661345"
+                },
+                "shops": [
+                    {
+                        "name": "Admin Office",
+                        "slug": "admin-office",
+                        "type": "admin",
+                        "typeLabel": "Admin Office",
+                        "rental": false,
+                        "buying": false,
+                        "selling": false,
+                        "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/df5ca457-331d-4b60-96dc-ce01e73bf592/admin_portolisar.jpg"
+                    },
+                    {
+                        "name": "Casaba Outlet",
+                        "slug": "casaba-outlet",
+                        "type": "clothing",
+                        "typeLabel": "Clothing Store",
+                        "rental": false,
+                        "buying": false,
+                        "selling": true,
+                        "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/8e4ea426-f6ac-4f06-b069-6ca6b336ec84/casaba_portolisar.jpg"
+                    },
+                    {
+                        "name": "Dumper's Depot",
+                        "slug": "dumper-s-depot",
+                        "type": "components",
+                        "typeLabel": "Components Store",
+                        "rental": false,
+                        "buying": false,
+                        "selling": false,
+                        "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/a3e69cfc-dde1-4429-9c62-c66789184e32/dumpers_depot_portolisar.jpg"
+                    },
+                    {
+                        "name": "Garrity Defense",
+                        "slug": "garrity-defense",
+                        "type": "armor",
+                        "typeLabel": "Armor Store",
+                        "rental": false,
+                        "buying": false,
+                        "selling": false,
+                        "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/0fedbdbe-96b1-4980-8bf9-30e62960c3cd/garrity_defense_portolisar.jpg"
+                    },
+                    {
+                        "name": "Live Fire Weapons",
+                        "slug": "live-fire-weapons",
+                        "type": "weapons",
+                        "typeLabel": "Weapons Store",
+                        "rental": false,
+                        "buying": false,
+                        "selling": false,
+                        "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/904f4aea-91d2-4f6b-a9bf-de08df2c47b5/live_fire_weapons_portolisar.jpg"
+                    }
+                ],
+                "docks": [
+                    {
+                        "size": "Small",
+                        "count": 32,
+                        "type": "landingpad",
+                        "typeLabel": "Landingpad"
+                    },
+                    {
+                        "size": "Medium",
+                        "count": 8,
+                        "type": "landingpad",
+                        "typeLabel": "Landingpad"
+                    },
+                    {
+                        "size": "Extra large",
+                        "count": 4,
+                        "type": "landingpad",
+                        "typeLabel": "Landingpad"
+                    }
+                ],
+                "habitations": [
+                    {
+                        "count": 64,
+                        "type": "container",
+                        "typeLabel": "Container"
+                    }
+                ],
+                "images": [],
+                "createdAt": "2018-10-26T20:19:20+02:00",
+                "updatedAt": "2018-10-28T14:26:07+01:00"
+            }

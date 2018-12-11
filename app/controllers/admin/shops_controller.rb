@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_shops
       @q = Shop.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = ['name asc', 'id asc'] if @q.sorts.empty?
 
       @shops = @q.result
                  .page(params.fetch(:page) { nil })
@@ -25,7 +25,7 @@ module Admin
       authorize! :create, :admin_shops
       @shop = Shop.new(shop_params)
       if shop.save
-        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.shop"))
+        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.shop"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.shop"))
       end
@@ -38,7 +38,7 @@ module Admin
     def update
       authorize! :update, shop
       if shop.update(shop_params)
-        redirect_to admin_shops_path(params: index_back_params, anchor: shop.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.shop"))
+        redirect_to edit_admin_shop_path(shop.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.shop"))
       else
         render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.shop"))
       end
@@ -55,7 +55,11 @@ module Admin
 
     private def shop_params
       @shop_params ||= params.require(:shop).permit(
-        :name, :store_image, :store_image_cache, :remove_store_image
+        :name, :station_id, :store_image, :shop_type, :store_image_cache, :remove_store_image, :hidden,
+        :rental, :buying, :selling,
+        shop_commodities_attributes: %i[
+          id commodity_item_selected buy_price sell_price rent_price _destroy
+        ]
       )
     end
 

@@ -50,8 +50,8 @@
       </div>
       <div class="panel-image text-center">
         <router-link
-          v-lazy:background-image="model.storeImage"
-          :key="model.storeImage"
+          v-lazy:background-image="model.storeImageMedium"
+          :key="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
         >
@@ -177,10 +177,7 @@ export default {
   },
   methods: {
     filterManufacturerQuery(manufacturer) {
-      if (this.$route.name === 'models') {
-        return { manufacturerSlugIn: [manufacturer] }
-      }
-      return { modelManufacturerSlugIn: [manufacturer] }
+      return { manufacturerIn: [manufacturer] }
     },
     showEditModal() {
       this.$refs.vehicleModal.open()

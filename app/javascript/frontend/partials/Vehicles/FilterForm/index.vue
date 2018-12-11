@@ -1,15 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <div class="form-group">
-      <label :for="idFor('user-vehicle-name')">
-        {{ t('labels.filters.vehicles.name') }}
-      </label>
       <input
-        :id="idFor('user-vehicle-name')"
         v-model="form.nameCont"
         :placeholder="t('placeholders.filters.vehicles.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
         v-if="form.nameCont"
@@ -18,27 +14,27 @@
         v-html="'&times;'"/>
     </div>
     <div class="form-group">
-      <label :for="idFor('model-name-or-description')">
-        {{ t('labels.filters.models.nameOrDescription') }}
+      <label :for="idFor('model-name')">
+        {{ t('labels.filters.vehicles.modelName') }}
       </label>
       <input
-        :id="idFor('model-name-or-description')"
-        v-model="form.modelNameOrModelDescriptionCont"
-        :placeholder="t('placeholders.filters.models.nameOrDescription')"
+        :id="idFor('model-name')"
+        v-model="form.modelNameCont"
+        :placeholder="t('placeholders.filters.models.name')"
         type="text"
-        class="form-control"
+        class="form-control form-control-filter"
       >
       <a
-        v-if="form.modelNameOrModelDescriptionCont"
+        v-if="form.modelNameCont"
         class="btn btn-clear"
-        @click="clearModelNameOrDescription"
+        @click="clearModelName"
         v-html="'&times;'"/>
     </div>
     <FilterGroup
-      v-model="form.modelManufacturerSlugIn"
+      v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
-      :name="`${prefix}-manufacturer`"
       :fetch="fetchManufacturers"
+      name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
       paginated
@@ -46,47 +42,47 @@
       multiple
     />
     <FilterGroup
-      v-model="form.modelProductionStatusIn"
+      v-model="form.productionStatusIn"
       :label="t('labels.filters.models.productionStatus')"
-      :name="`${prefix}-production-status`"
       :fetch="fetchProductionStatus"
+      name="production-status"
       multiple
     />
     <FilterGroup
-      v-model="form.modelClassificationIn"
+      v-model="form.classificationIn"
       :label="t('labels.filters.models.classification')"
-      :name="`${prefix}-classification`"
       :fetch="fetchClassifications"
+      name="classification"
       searchable
       multiple
     />
     <FilterGroup
-      v-model="form.modelFocusIn"
+      v-model="form.focusIn"
       :label="t('labels.filters.models.focus')"
-      :name="`${prefix}-focus`"
       :fetch="fetchFocus"
+      name="focus"
       searchable
       multiple
     />
     <FilterGroup
-      v-model="form.modelSizeIn"
+      v-model="form.sizeIn"
       :label="t('labels.filters.models.size')"
-      :name="`${prefix}-size`"
       :fetch="fetchSize"
+      name="size"
       multiple
     />
     <FilterGroup
       :options="pledgePriceOptions"
-      v-model="form.modelPledgePriceIn"
+      v-model="form.pledgePriceIn"
       :label="t('labels.filters.models.pledgePrice')"
-      :name="`${prefix}-pledge-price`"
+      name="pledge-price"
       multiple
     />
     <FilterGroup
       :options="priceOptions"
-      v-model="form.modelPriceIn"
+      v-model="form.priceIn"
       :label="t('labels.filters.models.price')"
-      :name="`${prefix}-price`"
+      name="price"
       multiple
     />
     <FilterGroup
@@ -97,9 +93,9 @@
           name: item.name,
         }
       })"
-      v-model="form.hangarGroupsSlugIn"
+      v-model="form.hangarGroupsIn"
       :label="t('labels.filters.vehicles.group')"
-      :name="`${prefix}-hangar-group`"
+      name="hangar-group"
       multiple
     />
     <RadioList
@@ -108,17 +104,16 @@
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       v-model="form.purchasedEq"
-      :name="`${prefix}-purchased`"
+      name="purchased"
     />
     <RadioList
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.modelOnSaleEq"
-      :name="`${prefix}-sale`"
+      v-model="form.onSaleEq"
+      name="sale"
     />
     <Btn
-      v-if="!hideButtons"
       :disabled="!isFilterSelected"
       block
       @click.native="reset"
@@ -144,19 +139,11 @@ export default {
   },
   mixins: [I18n, Filters],
   props: {
-    hideButtons: {
-      type: Boolean,
-      default: false,
-    },
     hangarGroupsOptions: {
       type: Array,
       default() {
         return []
       },
-    },
-    prefix: {
-      type: String,
-      default: 'filter',
     },
   },
   data() {
@@ -164,17 +151,17 @@ export default {
     return {
       form: {
         nameCont: query.nameCont,
-        modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
-        modelOnSaleEq: query.modelOnSaleEq,
+        modelNameCont: query.modelNameCont,
+        onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
-        modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
-        modelClassificationIn: query.modelClassificationIn || [],
-        modelFocusIn: query.modelFocusIn || [],
-        modelSizeIn: query.modelSizeIn || [],
-        modelPriceIn: query.modelPriceIn || [],
-        modelPledgePriceIn: query.modelPledgePriceIn || [],
-        modelProductionStatusIn: query.modelProductionStatusIn || [],
-        hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
+        classificationIn: query.classificationIn || [],
+        focusIn: query.focusIn || [],
+        sizeIn: query.sizeIn || [],
+        priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
+        productionStatusIn: query.productionStatusIn || [],
+        hangarGroupsIn: query.hangarGroupsIn || [],
       },
     }
   },
@@ -183,17 +170,17 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
-        modelNameOrModelDescriptionCont: query.modelNameOrModelDescriptionCont,
-        modelOnSaleEq: query.modelOnSaleEq,
+        modelNameCont: query.modelNameCont,
+        onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
-        modelManufacturerSlugIn: query.modelManufacturerSlugIn || [],
-        modelClassificationIn: query.modelClassificationIn || [],
-        modelFocusIn: query.modelFocusIn || [],
-        modelSizeIn: query.modelSizeIn || [],
-        modelPriceIn: query.modelPriceIn || [],
-        modelPledgePriceIn: query.modelPledgePriceIn || [],
-        modelProductionStatusIn: query.modelProductionStatusIn || [],
-        hangarGroupsSlugIn: query.hangarGroupsSlugIn || [],
+        manufacturerIn: query.manufacturerIn || [],
+        classificationIn: query.classificationIn || [],
+        focusIn: query.focusIn || [],
+        sizeIn: query.sizeIn || [],
+        priceIn: query.priceIn || [],
+        pledgePriceIn: query.pledgePriceIn || [],
+        productionStatusIn: query.productionStatusIn || [],
+        hangarGroupsIn: query.hangarGroupsIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
@@ -208,8 +195,8 @@ export default {
     clearName() {
       this.form.nameCont = null
     },
-    clearModelNameOrDescription() {
-      this.form.modelNameOrModelDescriptionCont = null
+    clearModelName() {
+      this.form.modelNameCont = null
     },
   },
 }

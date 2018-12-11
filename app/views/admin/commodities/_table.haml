@@ -2,8 +2,9 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
+        %th.preview
         %th=sort_link(@q, :name)
-        %th.actions.actions-two
+        %th.actions.actions-five-ladda=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/commodities/show", collection: @commodities, as: :commodity
 

@@ -3,11 +3,13 @@
 portolisar:
   name: Port Olisar
   slug: port-olisar
-  planet: crusader
-  station_type: 0
+  celestial_object: crusader
+  station_type: spaceport
+  hidden: false
 
 corvolex:
   name: Corvolex Shipping Hub
   slug: corvolex
-  planet: daymar
-  station_type: 3
+  celestial_object: daymar
+  station_type: cargo-station
+  hidden: false

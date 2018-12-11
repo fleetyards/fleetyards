@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+hurston:
+  name: Hurston
+  slug: hurston
+  starsystem: stanton
+  designation: 1
+  hidden: false
+
+crusader:
+  name: Crusader
+  slug: crusader
+  designation: 2
+  starsystem: stanton
+  hidden: false
+
+yela:
+  name: Yela
+  slug: yela
+  designation: 3
+  parent: crusader
+  starsystem: stanton
+  hidden: false
+
+daymar:
+  name: Daymar
+  slug: daymar
+  designation: 4
+  parent: crusader
+  starsystem: stanton
+  hidden: false
+
+uriel:
+  name: Uriel
+  slug: uriel
+  designation: 1
+  starsystem: oberon

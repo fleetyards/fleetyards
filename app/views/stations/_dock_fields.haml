@@ -4,7 +4,7 @@
       = fields.text_field :name, placeholder: I18n.t(:"helpers.placeholder.dock.name"), class: 'form-control'
       = form_errors fields.object, :name
 
-  .col-xs-12.col-md-4
+  .col-xs-12.col-md-3
     .form-group{class: form_error?(fields.object, :dock_type)}
       = fields.select :dock_type, Dock.dock_types.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.docks.dock_type") }, class: 'form-control'
       = form_errors fields.object, :dock_type
@@ -16,6 +16,11 @@
   .col-xs-12.col-md-2
     .form-group
       = fields.number_field :max_ship_size, placeholder: I18n.t(:"helpers.placeholder.dock.max_ship_size"), class: 'form-control', min: 1
+
+  .col-xs-12.col-md-1
+    .btn-group-responsive.form-group.pull-right
+      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+        %i.fa.fa-trash
 
   .clearfix
   .col-xs-12.visible-sm.visible-xs

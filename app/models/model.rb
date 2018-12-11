@@ -5,13 +5,8 @@ class Model < ApplicationRecord
 
   paginates_per 30
 
-  has_many :variants,
-           class_name: 'Model',
-           foreign_key: 'base_model_id',
-           inverse_of: :base_model,
-           dependent: :nullify
-  belongs_to :base_model, class_name: 'Model', required: false
   belongs_to :manufacturer, required: false
+
   has_one :addition,
           class_name: 'ModelAddition',
           dependent: :destroy,
@@ -31,6 +26,12 @@ class Model < ApplicationRecord
   has_many :components,
            through: :hardpoints
 
+  has_many :module_hardpoints,
+           dependent: :destroy
+  has_many :modules,
+           through: :module_hardpoints,
+           source: :model_module
+
   has_many :images,
            as: :gallery,
            dependent: :destroy,
@@ -38,6 +39,8 @@ class Model < ApplicationRecord
 
   has_many :videos,
            dependent: :destroy
+
+  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   accepts_nested_attributes_for :videos, allow_destroy: true
 
@@ -48,9 +51,17 @@ class Model < ApplicationRecord
   before_save :update_slugs
   before_create :set_last_updated_at
 
+  after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
+
+  ransack_alias :name, :name_or_slug
+  ransack_alias :manufacturer, :manufacturer_slug
+
+  def self.ordered_by_name
+    order(name: :asc)
+  end
 
   def self.production_status_filters
     Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
@@ -83,7 +94,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    Model.visible.active.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+    %w[vehicle snub small medium large capital].map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,
@@ -113,6 +124,16 @@ class Model < ApplicationRecord
         try(method_name)
       end
     end
+  end
+
+  def price
+    ShopCommodity.where(commodity_item_type: 'Model', commodity_item_id: id)
+                 .order(sell_price: :desc)
+                 .first&.sell_price
+  end
+
+  def variants
+    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
   end
 
   def in_hangar(user)
@@ -161,6 +182,12 @@ class Model < ApplicationRecord
 
     VehiclesWorker.perform_async(id)
     ActionCable.server.broadcast('on_sale', to_builder.target!)
+  end
+
+  private def touch_shop_commodities
+    # rubocop:disable Rails/SkipsModelValidations
+    shop_commodities.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def update_slugs

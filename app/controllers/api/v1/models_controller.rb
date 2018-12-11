@@ -14,21 +14,26 @@ module Api
         authorize! :index, :api_models
         scope = Model.visible.active
         if pledge_price_range.present?
-          query_params['sorts'] = 'fallback_pledge_price asc'
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
           scope = scope.where(fallback_pledge_price: pledge_price_range)
         end
         if price_range.present?
-          query_params['sorts'] = 'price asc'
+          model_query_params['sorts'] = 'price asc'
           scope = scope.where(price: price_range)
         end
 
-        query_params['sorts'] = sort_by_name
+        model_query_params['sorts'] = sort_by_name
 
-        @q = scope.ransack(query_params)
+        @q = scope.ransack(model_query_params)
 
         @models = @q.result
                     .page(params[:page])
                     .per(per_page(Model))
+      end
+
+      def slugs
+        authorize! :index, :api_models
+        render json: Model.all.pluck(:slug)
       end
 
       def production_states
@@ -131,21 +136,32 @@ module Api
 
         scope = model.variants.visible.active
         if pledge_price_range.present?
-          query_params['sorts'] = 'fallback_pledge_price asc'
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
           scope = scope.where(fallback_pledge_price: pledge_price_range)
         end
         if price_range.present?
-          query_params['sorts'] = 'price asc'
+          model_query_params['sorts'] = 'price asc'
           scope = scope.where(price: price_range)
         end
 
-        query_params['sorts'] = sort_by_name
+        model_query_params['sorts'] = sort_by_name
 
-        @q = scope.ransack(query_params)
+        @q = scope.ransack(model_query_params)
 
         @variants = @q.result
                       .page(params[:page])
                       .per(per_page(Model))
+      end
+
+      def modules
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_modules = model.modules
+                              .visible
+                              .active
+                              .page(params[:page])
+                              .per(per_page(Model))
       end
 
       def store_image
@@ -199,13 +215,13 @@ module Api
       end
 
       private def pledge_price_in
-        pledge_price_in = query_params.delete('pledge_price_in')
+        pledge_price_in = model_query_params.delete('pledge_price_in')
         pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
         pledge_price_in
       end
 
       private def price_in
-        price_in = query_params.delete('price_in')
+        price_in = model_query_params.delete('price_in')
         price_in = price_in.to_s.split unless price_in.is_a?(Array)
         price_in
       end
@@ -220,6 +236,14 @@ module Api
       private def updated_params
         @updated_params ||= params.permit(
           :from, :to
+        )
+      end
+
+      private def model_query_params
+        @model_query_params ||= query_params(
+          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
+          manufacturer_in: [], classification_in: [], focus_in: [], production_status_in: [],
+          price_in: [], pledge_price_in: [], size_in: [], sorts: []
         )
       end
     end

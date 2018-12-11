@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-class RsiOrgsLoader
-  attr_accessor :base_url
+require 'rsi_base_loader'
 
-  def initialize(options = {})
-    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
-  end
-
+class RsiOrgsLoader < RsiBaseLoader
   def fetch(sid)
     data = fetch_org_data(sid)
     return false, nil if data.blank?
