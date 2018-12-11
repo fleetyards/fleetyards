@@ -189,12 +189,12 @@
             >
               <div
                 v-for="vehicle in vehicles"
-                :class="{
-                  'col-lg-4 col-xlg-3 col-xxlg-2-4': fullscreen,
-                  'col-xlg-4 col-xxlg-3': !fullscreen,
-                }"
                 :key="vehicle.id"
-                class="col-xs-12 col-sm-6 fade-list-item"
+                :class="{
+                  'col-lg-4': fullscreen,
+                  'col-xlg-4': !fullscreen,
+                }"
+                class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
               >
                 <ModelPanel
                   :model="vehicle.model"

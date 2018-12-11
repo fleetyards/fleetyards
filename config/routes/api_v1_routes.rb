@@ -66,6 +66,8 @@ v1_api_routes = lambda do
   resource :password, only: [:update] do
     collection do
       post 'request' => 'passwords#request_email'
+      patch 'update' => 'passwords#update'
+      put 'update' => 'passwords#update'
       patch 'update/:reset_password_token' => 'passwords#update_with_token'
       put 'update/:reset_password_token' => 'passwords#update_with_token'
     end

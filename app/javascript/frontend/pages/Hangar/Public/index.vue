@@ -106,7 +106,7 @@
           <div
             v-for="vehicle in vehicles"
             :key="vehicle.id"
-            class="col-xs-12 col-sm-6 col-lg-4 col-xlg-3 col-xxlg-2-4 fade-list-item"
+            class="col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
               :model="vehicle.model"
