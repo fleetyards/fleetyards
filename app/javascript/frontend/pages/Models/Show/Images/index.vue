@@ -34,7 +34,7 @@
           <div
             v-for="(image, index) in images"
             :key="image.id"
-            class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-lg-3 col-xxlg-2-4 fade-list-item"
+            class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
           >
             <a
               v-lazy:background-image="image.smallUrl"
