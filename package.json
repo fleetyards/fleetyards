@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
-    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/config-conventional": "^7.1.2",
     "@vue/test-utils": "^1.0.0-beta.20",
     "aglio": "^2.3.0",
     "babel-eslint": "^8.2.6",

@@ -115,7 +115,7 @@
               <div
                 v-for="fleetModel in fleetModels"
                 :key="fleetModel.slug"
-                class="fade-list-item col-xs-12 col-sm-6 col-lg-4 col-xlg-3"
+                class="fade-list-item col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4"
               >
                 <ModelPanel
                   :model="fleetModel"
