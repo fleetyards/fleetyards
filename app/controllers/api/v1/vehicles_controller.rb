@@ -3,8 +3,8 @@
 module Api
   module V1
     class VehiclesController < ::Api::V1::BaseController
-      skip_authorization_check only: %i[public public_count]
-      before_action :authenticate_api_user!, except: %i[public public_count]
+      skip_authorization_check only: %i[public public_count public_fleetchart]
+      before_action :authenticate_api_user!, except: %i[public public_count public_fleetchart]
       after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
@@ -12,35 +12,41 @@ module Api
         scope = current_user.vehicles
 
         if price_range.present?
-          query_params['sorts'] = 'fallback_price asc'
-          scope = scope.includes(:model).where(models: { fallback_price: price_range })
+          vehicle_query_params['sorts'] = 'price asc'
+          scope = scope.includes(:model).where(models: { price: price_range })
         end
 
-        @q = scope.ransack(query_params)
+        if pledge_price_range.present?
+          vehicle_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.includes(:model).where(models: { fallback_pledge_price: pledge_price_range })
+        end
 
-        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+
+        @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
                       .page(params[:page])
-                      .per([(params[:per_page] || Vehicle.default_per_page), Vehicle.default_per_page * 4].min)
+                      .per(per_page(Vehicle))
       end
 
       def fleetchart
         authorize! :index, :api_hangar
         @q = current_user.vehicles
-                         .ransack(query_params)
+                         .ransack(vehicle_query_params)
 
-        @q.sorts = ['model_length desc', 'model_name asc']
-
-        @vehicles = @q.result.uniq
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
+                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
       end
 
       def count
         authorize! :index, :api_hangar
         @q = current_user.vehicles
-                         .ransack(query_params)
+                         .ransack(vehicle_query_params)
 
         @q.sorts = ['model_classification asc']
 
@@ -57,7 +63,7 @@ module Api
             )
           end,
           metrics: {
-            total_money: models.map(&:fallback_price).sum(&:to_i),
+            total_money: models.map(&:fallback_pledge_price).sum(&:to_i),
             total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
             total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
             total_cargo: models.map(&:display_cargo).sum(&:to_i)
@@ -67,20 +73,40 @@ module Api
 
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+
         @q = user.vehicles
-                 .purchased
-                 .ransack(query_params)
+                 .public
+                 .ransack(vehicle_query_params)
 
-        @q.sorts = ['flagship desc', 'purchased desc', 'name asc', 'model_name asc'] if @q.sorts.empty?
-
-        @vehicles = @q.result
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
                       .page(params[:page])
-                      .per([(params[:per_page] || Vehicle.default_per_page), Vehicle.default_per_page * 4].min)
+                      .per(per_page(Vehicle))
+      end
+
+      def public_fleetchart
+        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        @q = user.vehicles
+                 .public
+                 .ransack(vehicle_query_params)
+
+        @vehicles = []
+        return unless user.public_hangar?
+
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
+                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
       end
 
       def public_count
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
-        models = user.purchased_models
+        models = []
+        models = user.public_models.order(classification: :asc) if user.public_hangar?
 
         @count = OpenStruct.new(
           total: models.count,
@@ -133,15 +159,18 @@ module Api
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= params.permit(
-          :name, :model_id, :purchased, :name_visible,
-          :sale_notify, :flagship, hangar_group_ids: []
-        ).merge(user_id: current_user.id)
+        @vehicle_params ||= begin
+          params.transform_keys(&:underscore)
+            .permit(
+              :name, :model_id, :purchased, :name_visible, :public,
+              :sale_notify, :flagship, hangar_group_ids: []
+            ).merge(user_id: current_user.id)
+        end
       end
 
       private def price_range
         @price_range ||= begin
-          (query_params.delete('model_price_in') || []).map do |prices|
+          price_in.map do |prices|
             gt_price, lt_price = prices.split('-')
             gt_price = if gt_price.blank?
                          0
@@ -156,6 +185,46 @@ module Api
             (gt_price...lt_price)
           end
         end
+      end
+
+      private def pledge_price_range
+        @pledge_price_range ||= begin
+          pledge_price_in.map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
+        end
+      end
+
+      private def pledge_price_in
+        pledge_price_in = vehicle_query_params.delete('pledge_price_in')
+        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
+        pledge_price_in
+      end
+
+      private def price_in
+        price_in = vehicle_query_params.delete('price_in')
+        price_in = price_in.to_s.split unless price_in.is_a?(Array)
+        price_in
+      end
+
+      private def vehicle_query_params
+        @vehicle_query_params ||= query_params(
+          :name_cont, :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq,
+          manufacturer_in: [], classification_in: [], focus_in: [],
+          size_in: [], price_in: [], pledge_price_in: [],
+          production_status_in: [], hangar_groups_in: []
+        )
       end
     end
   end

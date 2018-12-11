@@ -206,14 +206,14 @@ export default {
         name: 'models',
         query: {
           q: {
-            nameOrDescriptionCont: this.searchQuery,
+            nameCont: this.searchQuery,
           },
         },
       })
     },
     async fetchModels() {
       this.modelsLoading = true
-      const response = await this.$api.get('models/latest', {})
+      const response = await this.$api.get('models/latest')
       this.modelsLoading = false
       if (!response.error) {
         this.models = response.data
@@ -221,7 +221,7 @@ export default {
     },
     async fetchImages() {
       this.imagesLoading = true
-      const response = await this.$api.get('images/random', {})
+      const response = await this.$api.get('images/random')
       this.imagesLoading = false
       if (!response.error) {
         this.images = response.data

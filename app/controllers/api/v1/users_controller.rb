@@ -21,6 +21,11 @@ module Api
       end
 
       def signup
+        if blacklisted(user_params[:email])
+          render json: { code: 'blacklisted' }, status: :bad_request
+          return
+        end
+
         @user = User.new(user_params)
 
         return if @user.save
@@ -79,10 +84,21 @@ module Api
       end
 
       private def user_params
-        @user_params ||= params.permit(
-          :username, :email, :rsi_handle, :rsi_org,
-          :password, :password_confirmation, :sale_notify
-        )
+        @user_params ||= begin
+          params.transform_keys(&:underscore)
+                .permit(
+                  :username, :email, :rsi_handle, :rsi_org,
+                  :password, :password_confirmation, :sale_notify, :public_hangar
+                )
+        end
+      end
+
+      private def blacklisted(email)
+        return unless File.exist?(Rails.root.join('blacklist.json'))
+
+        blacklist = JSON.parse(File.read(Rails.root.join('blacklist.json')))
+
+        blacklist.include?(email)
       end
     end
   end

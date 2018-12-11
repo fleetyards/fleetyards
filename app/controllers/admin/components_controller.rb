@@ -22,7 +22,7 @@ module Admin
       authorize! :create, :admin_components
       @component = Component.new(component_params)
       if component.save
-        redirect_to admin_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.component"))
       end
@@ -35,7 +35,7 @@ module Admin
     def update
       authorize! :update, component
       if component.update(component_params)
-        redirect_to admin_components_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
       else
         render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
       end
@@ -85,7 +85,10 @@ module Admin
     helper_method :index_back_params
 
     private def component_params
-      @component_params ||= params.require(:component).permit(:name, :enabled)
+      @component_params ||= params.require(:component).permit(
+        :name, :manufacturer_id, :description, :item_type, :item_class, :store_image,
+        :store_image_cache, :remove_store_image, :component_class, :size, :grade
+      )
     end
 
     private def component

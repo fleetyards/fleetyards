@@ -17,7 +17,7 @@ module Api
 
         @fleets = scope.order(name: :asc)
                        .page(params[:page])
-                       .per([(params[:per_page] || Fleet.default_per_page), Fleet.default_per_page * 4].min)
+                       .per(per_page(Fleet))
       end
 
       def my
@@ -47,9 +47,10 @@ module Api
 
       def models
         authorize! :models, fleet
-        @q = fleet_models.ransack(query_params)
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        fleet_model_query_params['sorts'] = sort_by_name
+
+        @q = fleet_models.ransack(fleet_model_query_params)
 
         @models = @q.result
                     .page(params[:page])
@@ -79,6 +80,7 @@ module Api
 
       private def fleet
         return unless current_user.rsi_verified?
+
         @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).find_by(sid: params[:sid])
       end
 
@@ -94,6 +96,14 @@ module Api
           model_slugs = fleet_vehicles.map { |vehicle| vehicle.model.slug }
           Model.where(slug: model_slugs)
         end
+      end
+
+      private def fleet_model_query_params
+        @fleet_model_query_params ||= query_params(
+          :name_or_description_cont, :on_sale_eq, :name_cont,
+          manufacturer_in: [], classification_in: [],
+          focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: []
+        )
       end
     end
   end

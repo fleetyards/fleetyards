@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.model_module.edit")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.model_module.edit", model_module: model_module.name)
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.back"), admin_model_modules_path(params: index_back_params, anchor: model_module.id), class: "btn btn-default"
+
+    .well
+      = render "form"

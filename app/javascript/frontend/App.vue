@@ -60,7 +60,12 @@ export default {
     ]),
   },
   watch: {
-    $route: 'setBackground',
+    $route() {
+      this.setBackground()
+      if (this.isAuthenticated) {
+        this.fetchHangar()
+      }
+    },
     navbarCollapsed: 'setNoScroll',
     overlayVisible: 'setNoScroll',
     isAuthenticated() {
@@ -129,6 +134,9 @@ export default {
       }
     },
     async fetchHangar() {
+      if (!['models', 'model', 'fleet', 'hangar'].includes(this.$route.name)) {
+        return
+      }
       const response = await this.$api.get('vehicles/hangar-items')
       if (!response.error) {
         this.$store.commit('setHangar', response.data)

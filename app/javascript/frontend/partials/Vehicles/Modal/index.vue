@@ -43,7 +43,20 @@
             :label="t('labels.vehicle.saleNotify')"
           />
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div
+          v-else
+          class="col-xs-12 col-sm-6"
+        >
+          <Checkbox
+            id="public"
+            v-model="form.public"
+            :label="t('labels.vehicle.public')"
+          />
+        </div>
+        <div
+          v-if="form.public && form.purchased"
+          class="col-xs-12 col-sm-6"
+        >
           <Checkbox
             id="nameVisible"
             v-model="form.nameVisible"
@@ -131,6 +144,7 @@ export default {
         name: this.vehicle.name,
         purchased: this.vehicle.purchased,
         flagship: this.vehicle.flagship,
+        public: this.vehicle.public,
         saleNotify: this.vehicle.saleNotify,
         nameVisible: this.vehicle.nameVisible,
         hangarGroupIds: this.vehicle.hangarGroupIds,
@@ -143,6 +157,7 @@ export default {
         name: this.vehicle.name,
         purchased: this.vehicle.purchased,
         flagship: this.vehicle.flagship,
+        public: this.vehicle.public,
         saleNotify: this.vehicle.saleNotify,
         nameVisible: this.vehicle.nameVisible,
         hangarGroupIds: this.vehicle.hangarGroupIds,

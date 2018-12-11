@@ -213,7 +213,7 @@ export default {
       this.filterVisible = !this.filterVisible
     },
     async fetch() {
-      const response = await this.$api.get(`commodity-prices/${this.$route.params.id}`, {})
+      const response = await this.$api.get(`commodity-prices/${this.$route.params.id}`)
       if (!response.error) {
         this.$store.commit('setTradeHubPrices', response.data.data)
       }

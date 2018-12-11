@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-gem 'rails', '5.2.0'
+gem 'rails', '5.2.1.1'
 
 gem 'pg', '~> 1.0'
 
@@ -17,6 +17,7 @@ gem 'haml-rails'
 gem 'slim-rails'
 
 gem 'ahoy_matey'
+gem 'groupdate'
 
 gem 'i18n-js'
 gem 'js_cookie_rails'
@@ -72,7 +73,6 @@ gem 'highline'
 gem 'thor'
 
 gem 'carrierwave'
-gem 'carrierwave-imageoptimizer'
 gem 'mini_magick'
 
 gem 'nokogiri', '>= 1.7.1'

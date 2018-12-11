@@ -7,7 +7,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { RsiModelsLoader.new }
 
   before do
-    Timecop.freeze('2018-01-01 14:00:00')
+    Timecop.freeze('2017-01-01 14:00:00')
   end
 
   after do
@@ -19,10 +19,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 1698,
-        components: 120,
-        models: 109,
-        manufacturers: 43
+        hardpoints: 1987,
+        components: 116,
+        models: 129,
+        manufacturers: 44
       }
 
       assert_equal(expectations,
@@ -30,6 +30,8 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
                    components: Component.count,
                    models: Model.count,
                    manufacturers: Manufacturer.count)
+
+      assert_equal(Model.find_by(slug: '300i').rsi_chassis_id, Model.find_by(slug: '315p').rsi_chassis_id)
     end
   end
 
@@ -46,6 +48,25 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       assert(model.updated_at.day != Time.zone.now.day)
       assert_equal(23.0, model.length.to_f)
+    end
+  end
+
+  test '#updates production status only when time_modified changes' do
+    VCR.use_cassette('rsi_models_loader_all') do
+      loader.one(7)
+
+      model = Model.find_by(name: '300i')
+
+      assert_equal('flight-ready', model.production_status)
+
+      model.update(production_status: 'in-concept')
+
+      Timecop.travel(1.day)
+
+      loader.one(model.rsi_id)
+      model.reload
+
+      assert_equal('in-concept', model.production_status)
     end
   end
 

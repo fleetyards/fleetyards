@@ -1,0 +1,45 @@
+- content_for :title do
+  = I18n.t(:"title.equipment.index")
+.row#equipment_list
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.equipment.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.equipment.new"), new_admin_equipment_path, class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @equipment_list
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/equipment/table", :@equipment_list => @equipment_list
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_cont
+            = f.search_field :name_cont, class: 'form-control'
+
+          .form-group
+            = f.label :equipment_type_eq
+            = f.select :equipment_type_eq, Equipment.equipment_types.keys.map { |w| [Equipment.human_enum_name(:equipment_type, w), w] }, { include_blank: true }, { class: 'form-control' }
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @equipment_list

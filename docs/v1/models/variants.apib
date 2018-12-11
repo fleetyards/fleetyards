@@ -1,0 +1,77 @@
+## Model [/v1/models/{slug}/variants]
+
+### GET Variants [GET]
+Get Variants List of a Model referenced by its Slug
+
++ Parameters
+
+    + slug: `300i` (required, string) - The Model Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            [
+                {
+                    "id": "44ebab77-3856-40da-9162-4774aa8c27f5",
+                    "name": "315p",
+                    "rsiName": "315p",
+                    "slug": "315p",
+                    "rsiSlug": "315p",
+                    "description": "Exploration is man's highest calling. Prepare to chart distant horizons with man's most sophisticated piece of technology, the ORIGIN 315p. Featuring a more robust power plant and a custom scanning package, exclusively designed by Chimera Communications.",
+                    "length": 23,
+                    "beam": 15.5,
+                    "height": 7,
+                    "mass": 46195.5,
+                    "cargo": 2,
+                    "cargoLabel": "315p (2 SCU)",
+                    "minCrew": 1,
+                    "maxCrew": 1,
+                    "scmSpeed": "275.0",
+                    "afterburnerSpeed": "1225.0",
+                    "groundSpeed": null,
+                    "afterburnerGroundSpeed": null,
+                    "pitchMax": "85.0",
+                    "yawMax": "85.0",
+                    "rollMax": "120.0",
+                    "xaxisAcceleration": "71.0",
+                    "yaxisAcceleration": "87.2",
+                    "zaxisAcceleration": "75.4",
+                    "size": "small",
+                    "sizeLabel": "Small",
+                    "storeImage": "http://api.fleetyards.test/uploads/model/store_image/44ebab77-3856-40da-9162-4774aa8c27f5/315p_storefront_visual-1450470009.jpg",
+                    "fleetchartImage": "http://api.fleetyards.test/uploads/model/fleetchart_image/44ebab77-3856-40da-9162-4774aa8c27f5/ORIG_-_315p-1519582123.png",
+                    "backgroundImage": "http://api.fleetyards.test/uploads/image/name/4322afdc-550a-429d-b72b-d9c56ef3a86e/315p.jpg",
+                    "brochure": null,
+                    "storeUrl": "https://robertsspaceindustries.com/pledge/ships/origin-300/315p",
+                    "price": null,
+                    "pledgePrice": 65,
+                    "lastPledgePrice": 65,
+                    "onSale": true,
+                    "productionStatus": "flight-ready",
+                    "productionNote": "Update Pass Scheduled",
+                    "classification": "exploration",
+                    "classificationLabel": "Exploration",
+                    "focus": "Pathfinder",
+                    "rsiId": 8,
+                    "hasImages": true,
+                    "hasVideos": false,
+                    "manufacturer": {
+                        "name": "Origin Jumpworks GmbH",
+                        "slug": "origin-jumpworks-gmbh",
+                        "code": "ORIG",
+                        "logo": "http://api.fleetyards.test/uploads/manufacturer/logo/4052e7cf-5451-4a9f-a7e2-797daa26ccd8/small_Origin.png"
+                    },
+                    "createdAt": "2014-10-04T23:45:33+02:00",
+                    "updatedAt": "2018-10-19T12:57:17+02:00"
+                },
+                ...
+            ]

@@ -26,6 +26,12 @@ class Model < ApplicationRecord
   has_many :components,
            through: :hardpoints
 
+  has_many :module_hardpoints,
+           dependent: :destroy
+  has_many :modules,
+           through: :module_hardpoints,
+           source: :model_module
+
   has_many :images,
            as: :gallery,
            dependent: :destroy,
@@ -33,6 +39,8 @@ class Model < ApplicationRecord
 
   has_many :videos,
            dependent: :destroy
+
+  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   accepts_nested_attributes_for :videos, allow_destroy: true
 
@@ -43,12 +51,20 @@ class Model < ApplicationRecord
   before_save :update_slugs
   before_create :set_last_updated_at
 
+  after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
 
+  ransack_alias :name, :name_or_slug
+  ransack_alias :manufacturer, :manufacturer_slug
+
+  def self.ordered_by_name
+    order(name: :asc)
+  end
+
   def self.production_status_filters
-    Model.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:production_status).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'productionStatus',
         name: item.humanize,
@@ -58,7 +74,7 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'classification',
         name: item.humanize,
@@ -68,7 +84,7 @@ class Model < ApplicationRecord
   end
 
   def self.focus_filters
-    Model.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
+    Model.visible.active.all.map(&:focus).reject(&:blank?).compact.uniq.map do |item|
       Filter.new(
         category: 'focus',
         name: item.humanize,
@@ -78,7 +94,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    Model.all.map(&:size).reject(&:blank?).compact.uniq.map do |item|
+    %w[vehicle snub small medium large capital].map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,
@@ -87,8 +103,16 @@ class Model < ApplicationRecord
     end
   end
 
+  def self.year(year)
+    where('created_at <= ? AND created_at >= ?', "#{year}-12-31", "#{year}-01-01")
+  end
+
   def self.visible
     where(hidden: false)
+  end
+
+  def self.active
+    where(active: true)
   end
 
   %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed ground_speed afterburner_ground_speed].each do |method_name|
@@ -102,8 +126,19 @@ class Model < ApplicationRecord
     end
   end
 
+  def price
+    ShopCommodity.where(commodity_item_type: 'Model', commodity_item_id: id)
+                 .order(sell_price: :desc)
+                 .first&.sell_price
+  end
+
+  def variants
+    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
+  end
+
   def in_hangar(user)
     return if user.blank?
+
     user.models.exists?(id)
   end
 
@@ -117,11 +152,13 @@ class Model < ApplicationRecord
 
   def human_display_cargo
     return if display_cargo.blank? || display_cargo.zero?
+
     number_with_precision(display_cargo, precision: 2, strip_insignificant_zeros: true)
   end
 
   def cargo_label
     return if display_cargo.blank? || display_cargo.zero?
+
     human_cargo = number_with_precision(
       display_cargo,
       precision: 2,
@@ -136,13 +173,21 @@ class Model < ApplicationRecord
 
   private def send_new_model_notification
     return if notified? || hidden?
+
     ModelNotificationWorker.perform_async(id)
   end
 
   private def send_on_sale_notification
     return unless on_sale?
+
     VehiclesWorker.perform_async(id)
     ActionCable.server.broadcast('on_sale', to_builder.target!)
+  end
+
+  private def touch_shop_commodities
+    # rubocop:disable Rails/SkipsModelValidations
+    shop_commodities.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   private def update_slugs
@@ -152,6 +197,7 @@ class Model < ApplicationRecord
 
   private def set_last_updated_at
     return if last_updated_at.present?
+
     self.last_updated_at = Time.zone.now
   end
 

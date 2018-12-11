@@ -2,6 +2,7 @@
 
 module Api
   class BaseController < ActionController::Base
+    include RansackHelper
     include ActionController::HttpAuthentication::Token
     include Concerns::Pagination
 
@@ -11,6 +12,7 @@ module Api
     skip_before_action :track_ahoy_visit
 
     before_action :authenticate_api_user!, except: %i[root version]
+
     check_authorization except: %i[root version]
 
     after_action :set_rate_limit_headers
@@ -49,21 +51,14 @@ module Api
 
     private def set_rate_limit_headers
       return if request.env['rack.attack.throttle_data'].blank?
+
       match_data = request.env['rack.attack.throttle_data']['api']
       return if match_data.blank?
+
       now = Time.zone.now
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).to_time.iso8601
-    end
-
-    private def query_params
-      @query_params ||= begin
-        q = JSON.parse(params[:q].to_s || '{}')
-        q.transform_keys { |key| key.to_s.underscore }
-      end
-    rescue JSON::ParserError
-      {}
     end
   end
 end

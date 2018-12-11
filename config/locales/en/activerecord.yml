@@ -25,6 +25,7 @@ en:
         variants: Variants
         weapons: Weapons
         hidden: hidden?
+        active: active?
       setting:
         base:
           registration: Registration active?
@@ -57,16 +58,117 @@ en:
       trade_commodity:
         sell: Sale?
         buy: Buy?
+      dock:
+        dock_types:
+          vehiclepad: Vehiclepad
+          garage: Garage
+          landingpad: Landingpad
+          dockingport: Dockingport
+          hangar: Hangar
+        ship_sizes:
+          extra_small: Extra Small
+          small: Small
+          medium: Medium
+          large: Large
+          extra_large: Extra Large
+          capital: Capital
+      habitation:
+        habitation_types:
+          container: Container
+          small_apartment: Small Apartment
+          medium_apartment: Medium Apartment
+          large_apartment: Large Apartment
+          suite: Suite
+      component:
+        item_types:
+          weapons: Weapons
+          turrets: Turrets
+          missiles: Missiles
+          shield_generators: Shield Generators
+          coolers: Coolers
+          power_plants: Power Plants
+          quantum_drives: Quantum Drives
+        item_classes:
+          stealth: Stealth
+          civilian: Civilian
+          industrial: Industrial
+          military: Military
+        component_classes:
+          RSIModular: Modular
+          RSIWeapon: Weapon
+          RSIAvionic: Avionic
+          RSIPropulsion: Propulsion
+          RSIThruster: Thruster
+      equipment:
+        hidden: hidden?
+        slots:
+          undersuit: Undersuit
+          arms: Arms
+          helmet: Helmet
+          torso: Torso
+          legs: Legs
+        equipment_types:
+          undersuit: Undersuit
+          armor: Armor
+          weapon: Weapon
+          weapon_attachment: Weapon Attachment
+          clothing: Clothing
+          tool: Tool
+          medical: Medical
+        weapon_classes:
+          energy: Energy
+          ballistic: Ballistic
+        item_types:
+          flightsuit: Flightsuit
+          light_armor: Light Armor
+          medium_armor: Medium Armor
+          heavy_armor: Heavy Armor
+          magazine: Magazine
+          battery: Battery
+          pistol: Pistol
+          smg: SMG
+          grenade: Grenade
+          rifle: Rifle
+          shotgun: Shotgun
+          lmg: LMG
+          sniper_rifle: Sniper Rifle
+          special_railgun: Special - Railgun
+          assault_rifle: Assault Rifle
+      shop:
+        hidden: hidden?
+        rental: Does offer Rentals?
+        buying: Does buy Items?
+        selling: Does sell Items?
+        shop_types:
+          clothing: Clothing Store
+          armor: Armor Store
+          weapons: Weapons Store
+          components: Components Store
+          armor_and_weapons: Armor & Weapons Store
+          superstore: Superstore
+          ships: Ship Store
+          admin: Admin Office
+          bar: Bar
+          hospital: Hospital
+          salvage: Salvage Yard
+          resources: Resources Broker
+          rental: Rental
+      celestial_object:
+        hidden: hidden?
       station:
         hidden: hidden?
         station_types:
+          spaceport: Spaceport
+          station: Station
           hub: Hub
-          truckstop: Truckstop
+          rest_stop: Rest Stop
           cargo-station: Cargo Station
           mining-station: Mining Station
           asteroid-station: Asteriod Station
-          outpost: Outpost
           refinery: Refinery
+          district: District
+          outpost: Outpost
+          aid_shelter: Aid Shelter
 
     errors:
       messages:

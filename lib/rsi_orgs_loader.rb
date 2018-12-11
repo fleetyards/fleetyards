@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-class RsiOrgsLoader
-  attr_accessor :base_url
+require 'rsi_base_loader'
 
-  def initialize(options = {})
-    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
-  end
-
+class RsiOrgsLoader < RsiBaseLoader
   def fetch(sid)
     data = fetch_org_data(sid)
     return false, nil if data.blank?
@@ -71,6 +67,7 @@ class RsiOrgsLoader
   private def fetch_org_data(sid)
     response = Typhoeus.get("#{base_url}/orgs/#{sid}")
     return if response.code != 200
+
     page = Nokogiri::HTML(response.body)
     org_box = page.css('#organization')
     {
@@ -93,6 +90,7 @@ class RsiOrgsLoader
   private def parse_background_image(element)
     div = element&.first || {}
     return if div.blank? || div.to_h.fetch('style', nil).blank?
+
     background_url = div.to_h.fetch('style', '').scan(/background-image:url\('(.*)'\);/).last&.first
     "https://robertsspaceindustries.com#{background_url}"
   end
@@ -100,6 +98,7 @@ class RsiOrgsLoader
   private def parse_image(element)
     img = element&.first || {}
     return if img.blank? || img.to_h.fetch('src', nil).blank?
+
     "https://robertsspaceindustries.com#{img.to_h.fetch('src', nil)}"
   end
 end

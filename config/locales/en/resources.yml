@@ -14,3 +14,6 @@ en:
     commodity: Commodity
     station: Station
     shop: Shop
+    celestial_object: Celestial Object
+    equipment: Equipment
+    model_module: ModelModule

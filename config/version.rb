@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Fleetyards
-  CODENAME = 'Pyro'
-  VERSION = 'v1.0.7'
+  CODENAME = 'Hurston'
+  VERSION = 'v2.0.3'
 end

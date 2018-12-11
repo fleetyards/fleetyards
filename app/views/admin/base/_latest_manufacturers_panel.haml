@@ -10,13 +10,17 @@
           %th= I18n.t(:"labels.table.updated_at")
           %th.actions.actions-one
       %tbody
-        - Manufacturer.unscoped.order(updated_at: :desc).limit(5).each do |manufacturer|
+        - @latest_manufacturers.each do |manufacturer|
           %tr
             %td
               = manufacturer.name.html_safe
             %td
-              = I18n.t(:"activerecord.attributes.updated_at", time: time_ago_in_words(manufacturer.updated_at))
+              = I18n.l(manufacturer.updated_at, format: :short)
             %td
               .btn-group
                 = link_to edit_admin_manufacturer_path(manufacturer), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
                   %i.fa.fa-edit
+  .panel-footer.text-right
+    = link_to admin_manufacturers_path do
+      = I18n.t('actions.more')
+      %i.fa.fa-angle-right

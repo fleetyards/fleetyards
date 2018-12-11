@@ -8,9 +8,17 @@
     "modelImages": "%{name} Images",
     "modelVideos": "%{name} Videos",
     "images": "Images",
+    "stats": "Stats",
     "login": "Login",
     "signUp": "Sign Up",
     "hangar": "My Hangar",
+    "stations": "Stations",
+    "shops": "Shops",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "station": "%{station} near %{celestialObject}",
+    "shop": "%{shop} - %{station}",
     "hangarPublic": "%{user} Hangar",
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
@@ -37,6 +45,7 @@
     "welcomeImages": "Random Images",
     "models": "Ships Index",
     "images": "Images Index",
+    "stats": "Stats",
     "error": "Navigation Error",
     "comments": "Comments",
     "login": "Login",
@@ -67,6 +76,15 @@
       "models": "Compare Ships"
     },
     "cargo": "Cargo",
+    "starsystems": "Starsystems",
+    "starsystem": "%{starsystem} Starsystem",
+    "celestialObjects": "Celestial Objects",
+    "celestialObject": "%{celestialObject} in the %{starsystem} System",
+    "moons": "Moons",
+    "stations": "Stations",
+    "station": "%{station} near %{celestialObject}",
+    "shops": "Shops",
+    "shop": "%{shop} on %{station}",
     "commodities": "Commodities",
     "rsiVerification": "Verify your RSI-Account",
     "hangarGuide": "Not much to see here?"
@@ -109,9 +127,16 @@
     "rsiProfile": "RSI Profile",
     "cargo": "Cargo",
     "api": "API Docs",
+    "stats": "Stats",
     "profile": "Profile",
     "account": "Account",
-    "rsiVerification": "RSI Verification"
+    "rsiVerification": "RSI Verification",
+    "stations": {
+      "index": "Stations",
+      "overview": "Overview",
+      "starsystems": "By Starsystems",
+      "shops": "Shops"
+    }
   },
   "pagination": {
     "previous": "Previous Page",
@@ -119,7 +144,48 @@
     "gap": "&hellip;"
   },
   "labels": {
+    "true": "Yes",
+    "false": "No",
+    "shop": {
+      "rentPrice": "rent / day",
+      "sellPrice": "price",
+      "buyPrice": "buying price"
+    },
+    "stats": {
+      "modelsByClassification": "Models by Classification",
+      "modelsBySize": "Models by Size",
+      "modelsPerMonth": "Models per Month",
+      "modelsByManufacturer": "Models by Manufacturer",
+      "modelsByProductionStatus": "Models by Production Status"
+    },
+    "charts": {
+      "view": {
+        "one": "%{label}:<br><b>%{count}</b> View",
+        "other": "%{label}:<br><b>%{count}</b> Views"
+      },
+      "ship": {
+        "one": "%{label}:<br><b>%{count}</b> Ship",
+        "other": "%{label}:<br><b>%{count}</b> Ships"
+      },
+      "ship-pie": {
+        "one": "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)",
+        "other": "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      },
+      "component-pie": {
+        "one": "%{label}:<br><b>%{count}</b> Component (%{percentage} %)",
+        "other": "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+      },
+      "user": {
+        "one": "%{label}:<br><b>%{count}</b> User",
+        "other": "%{label}:<br><b>%{count}</b> Users"
+      },
+      "visit": {
+        "one": "%{label}:<br><b>%{count}</b> Visit",
+        "other": "%{label}:<br><b>%{count}</b> Visits"
+      }
+    },
     "unknown": "Unknown",
+    "none": "-",
     "searchInput": "Search Input",
     "search": "Search",
     "unknownModel": "%{slug} Unknown",
@@ -145,8 +211,9 @@
       "selectModel": "Select a Ship"
     },
     "cargoRoutes": "Cargo routes",
-    "uecPerUnit": "UEC / Unit",
-    "uec": "UEC",
+    "uecPerUnit": "aUEC / Unit",
+    "au": "AU",
+    "uec": "aUEC",
     "sell": "Sell",
     "buy": "Buy",
     "yourFlagship": "Your Flagship",
@@ -167,6 +234,8 @@
     },
     "source": "Source",
     "model": {
+      "variants": "Variants",
+      "modules": "Modules",
       "brochure": "Brochure",
       "onSale": "On Sale",
       "purchased": "Purchased",
@@ -179,6 +248,8 @@
       }
     },
     "metrics": {
+      "info": "Info",
+      "levels": "Levels",
       "base": "Base",
       "crew": "Crew",
       "speed": "Speed",
@@ -188,6 +259,12 @@
       "size": "Size: %{size}"
     },
     "hardpoint": {
+      "mounts": "Total Mounts",
+      "quantity": "Per Mount",
+      "size": "Size",
+      "rackSize": "Rack Size",
+      "category": "Category",
+      "categoryOrRackSize": "Category / Rack Size",
       "categories": {
         "rsiavionic": "Avionics",
         "rsimodular": "Systems",
@@ -223,13 +300,15 @@
       "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
     },
     "user": {
-      "saleNotify": "I want to receive Sale Notifications"
+      "saleNotify": "I want to receive Sale Notifications",
+      "publicHangar": "Public Hangar enabled"
     },
     "vehicle": {
       "name": "Name",
       "flagship": "Flagship",
       "purchased": "Purchased",
-      "nameVisible": "Name visible to Public",
+      "public": "Visible on Public Hangar",
+      "nameVisible": "Name visible on Public Hangar",
       "saleNotify": "I want to receive Sale Notifications",
       "selectGroup": "Select a Group"
     },
@@ -249,8 +328,34 @@
       "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
     },
     "filters": {
+      "shops": {
+        "name": "Name",
+        "commodityName": "Commodity Name",
+        "type": "Type",
+        "celestialObject": "Celestial object",
+        "starsystem": "Starsystem",
+        "station": "Station"
+      },
+      "shopItems": {
+        "category": "Category",
+        "subCategory": "Sub Category",
+        "name": "Name",
+        "manufacturer": "Manufacturer",
+        "minPrice": "min. Price",
+        "maxPrice": "max. Price"
+      },
+      "stations": {
+        "name": "Name",
+        "celestialObject": "Celestial Object",
+        "starsystem": "Starsystem",
+        "type": "Station Type",
+        "shops": "Shops",
+        "docks": "Docks",
+        "habs": "Habitation?"
+      },
       "vehicles": {
         "name": "Name",
+        "modelName": "Ship Name",
         "purchased": "Purchased",
         "group": "Group"
       },
@@ -266,7 +371,6 @@
         "planet": "Planet"
       },
       "models": {
-        "nameOrDescription": "Name or Description",
         "shipRole": "Ship Role",
         "classification": "Classification",
         "focus": "Focus",
@@ -274,8 +378,16 @@
         "onSale": "On Sale",
         "size": "Size",
         "price": "Price",
+        "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
       }
+    },
+    "station": {
+      "docks": "Docks",
+      "location": "Location",
+      "type": "Type",
+      "habitation": "Habitation",
+      "habs": "Habs"
     }
   },
   "placeholders": {
@@ -286,11 +398,23 @@
       "search": "Search for Ships..."
     },
     "filters": {
+      "shops": {
+        "name": "Casaba, Platinum Bay...",
+        "commodityName": "Aurora, L86..."
+      },
+      "stations": {
+        "name": "Port Olisar, Teasa..."
+      },
+      "shopItems": {
+        "name": "Aurora, L86...",
+        "minPrice": "minmal Price in UEC",
+        "maxPrice": "maximal Price in UEC"
+      },
       "vehicles": {
         "name": "Enterprise, Nebuchadnezzar..."
       },
       "models": {
-        "nameOrDescription": "Gladius, Andromeda, Hornet...",
+        "name": "Gladius, Andromeda...",
         "shipRole": "Cargo, Capital Ship, Fighter...",
         "classification": "Vehicle, Fighter, Cargo...",
         "manufacturer": "Origin, Robert Space Industries, Aegis...",
@@ -335,7 +459,7 @@
     "hideDetails": "Hide Details",
     "showFleetchart": "Fleetchart",
     "hideFleetchart": "Default view",
-    "supportUs": "Support us via PayPal",
+    "supportUs": "Support FleetYards via PayPal",
     "login": "Login",
     "signUp": "Sign Up",
     "reset-password": "Forgot password?",
@@ -413,7 +537,10 @@
       },
       "liabilityExternal": "Our site contains links to websites of third parties (“external links”). As the content of these sites is not under our control, We cannot assume any liability for such external content. In all cases, the provider of information of the linked sites is liable for the content and accuracy of the information provided. At the point in time when the links were placed, no infringements of the law were recognisable to us. As soon as an infringement of the law becomes known to us, We will immediately remove the link in question."
     },
-    "privacy": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address or RSI Handle) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible."
+    "privacy": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address or RSI Handle) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.",
+    "signup": {
+      "blacklisted": "You have been blacklisted from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info@fleetyards.net"
+    }
   },
   "confirm": {
     "vehicle": {
@@ -487,6 +614,10 @@
       }
     }
   },
+  "station": {
+    "type": "Type",
+    "location": "Location"
+  },
   "model": {
     "focus": "Focus",
     "classification": "Classification",
@@ -506,6 +637,7 @@
     "yawMax": "Yaw Max",
     "rollMax": "Roll Max",
     "price": "Price",
+    "pledgePrice": "Pledge Price",
     "xaxisAcceleration": "X-Axis",
     "yaxisAcceleration": "Y-Axis",
     "zaxisAcceleration": "Z-Axis",
@@ -543,15 +675,51 @@
       }
     }
   },
+  "celestialObject": {
+    "type": "Type",
+    "subType": "Sub Type",
+    "habitable": "Habitable?",
+    "fairchanceakt": "Fair Chance Akt?",
+    "population": "Population",
+    "economy": "Economy",
+    "danger": "Danger"
+  },
+  "starsystem": {
+    "type": "Type",
+    "size": "Size",
+    "population": "Population",
+    "economy": "Economy",
+    "danger": "Danger"
+  },
+  "shop": {
+    "type": "Type",
+    "celestialObject": "Location",
+    "station": "Station",
+    "rentalPrice": "%{price} / day"
+  },
+  "commodityItem": {
+    "grade": "Grade",
+    "type": "Type",
+    "itemType": "Item Type",
+    "class": "Item Class",
+    "weaponClass": "Weapon Class",
+    "size": "Size",
+    "range": "Range",
+    "damageReduction": "Damage Reduction",
+    "rateOfFire": "Rate of Fire",
+    "extras": ""
+  },
   "number": {
     "format": {
       "precision": 2,
       "strip_insignificant_zeros": true,
       "delimiter": ""
     },
+    "percent": "%{count} %",
     "distance": "%{count} m",
     "weight": "%{count} t",
     "speed": "%{count} m/s",
+    "rateOfFire": "%{count} shots/min",
     "rotation": "%{count} deg/s",
     "cargo": "%{count} SCU",
     "people": {

@@ -36,6 +36,10 @@
             = f.label :station_type_eq
             = f.select :station_type_eq, Station.station_types.keys.map { |w| [Station.human_enum_name(:station_type, w), w] }, { include_blank: true }, { class: 'form-control' }
 
+          .form-group
+            = f.label :celestial_object_id_eq
+            = f.select :celestial_object_id_eq, CelestialObject.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+
           .btn-group
             %button.btn.btn-primary
               Filter

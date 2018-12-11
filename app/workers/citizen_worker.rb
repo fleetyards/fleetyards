@@ -10,6 +10,7 @@ class CitizenWorker
     User.find_each do |user|
       success, citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
       next unless success
+
       user.update(rsi_orgs: citizen.orgs)
     end
   end

@@ -37,11 +37,16 @@ const initialState = {
   hangarPublicFleetchartVisible: false,
   hangarPublicFleetchartScale: 1,
   hangarFilterVisible: true,
+  shopFilterVisible: false,
+  stationFilterVisible: true,
+  shopsFilterVisible: true,
   navbarCollapsed: true,
   overlayVisible: false,
   modelDetailsVisible: false,
   modelFilterVisible: true,
   modelBackRoute: null,
+  shopBackRoute: null,
+  stationBackRoute: null,
 }
 
 const store = new Vuex.Store({
@@ -89,6 +94,15 @@ const store = new Vuex.Store({
     hangarFilterVisible(state) {
       return state.hangarFilterVisible
     },
+    shopFilterVisible(state) {
+      return state.shopFilterVisible
+    },
+    stationFilterVisible(state) {
+      return state.stationFilterVisible
+    },
+    shopsFilterVisible(state) {
+      return state.shopsFilterVisible
+    },
     navbarCollapsed(state) {
       return state.navbarCollapsed
     },
@@ -103,6 +117,12 @@ const store = new Vuex.Store({
     },
     modelBackRoute(state) {
       return state.modelBackRoute
+    },
+    shopBackRoute(state) {
+      return state.shopBackRoute
+    },
+    stationBackRoute(state) {
+      return state.stationBackRoute
     },
   },
   actions: {
@@ -162,6 +182,15 @@ const store = new Vuex.Store({
     },
     toggleHangarFilter({ commit, state }) {
       commit('setHangarFilterVisible', !state.hangarFilterVisible)
+    },
+    toggleShopFilter({ commit, state }) {
+      commit('setShopFilterVisible', !state.shopFilterVisible)
+    },
+    toggleStationFilter({ commit, state }) {
+      commit('setStationFilterVisible', !state.stationFilterVisible)
+    },
+    toggleShopsFilter({ commit, state }) {
+      commit('setShopsFilterVisible', !state.shopsFilterVisible)
     },
   },
   /* eslint-disable no-param-reassign */
@@ -277,6 +306,21 @@ const store = new Vuex.Store({
     },
     setModelBackRoute(state, payload) {
       state.modelBackRoute = payload
+    },
+    setShopBackRoute(state, payload) {
+      state.shopBackRoute = payload
+    },
+    setStationBackRoute(state, payload) {
+      state.stationBackRoute = payload
+    },
+    setShopFilterVisible(state, payload) {
+      state.shopFilterVisible = payload
+    },
+    setStationFilterVisible(state, payload) {
+      state.stationFilterVisible = payload
+    },
+    setShopsFilterVisible(state, payload) {
+      state.shopsFilterVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

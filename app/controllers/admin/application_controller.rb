@@ -2,12 +2,16 @@
 
 module Admin
   class ApplicationController < ActionController::Base
+    include RansackHelper
+
     layout 'admin/application'
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_admin_user!, :set_default_nav
 
     protect_from_forgery with: :exception
+
+    skip_before_action :track_ahoy_visit
 
     add_flash_types :error, :warning
 
@@ -46,6 +50,16 @@ module Admin
       current_admin_user
     end
     helper_method :current_user
+
+    private def jwt_token
+      @jwt_token ||= begin
+        auth_token = AuthToken.where(user_id: current_user).valid.first_or_create do |token|
+          token.permanent = true
+        end
+        ::JsonWebToken.encode(auth_token.to_jwt_payload)
+      end
+    end
+    helper_method :jwt_token
 
     private def after_sign_out_path_for(_resource_or_scope)
       admin_root_path

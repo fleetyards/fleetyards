@@ -96,14 +96,14 @@ module Admin
 
     private def model_params
       @model_params ||= params.require(:model).permit(
-        :name, :hidden, :store_image, :store_image_cache, :remove_store_image,
+        :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
-        :brochure, :brochure_cache, :remove_brochure, :store_url,
-        :beam, :length, :height, :mass, :cargo, :price, :on_sale, :manufacturer_id, :focus,
+        :brochure, :brochure_cache, :remove_brochure, :store_url, :base_model_id,
+        :beam, :length, :height, :mass, :cargo, :pledge_price, :on_sale, :manufacturer_id, :focus,
         :classification, :description, :production_status, :production_note, :size,
         :scm_speed, :afterburner_speed, :cruise_speed, :ground_speed, :afterburner_ground_speed,
         :pitch_max, :yaw_max, :roll_max, :max_crew, :min_crew, :fallback_beam, :fallback_length,
-        :fallback_height, :fallback_mass, :fallback_cargo, :fallback_price, :fallback_min_crew,
+        :fallback_height, :fallback_mass, :fallback_cargo, :price, :fallback_pledge_price, :fallback_min_crew,
         :fallback_max_crew, :rsi_id, videos_attributes: %i[
           id url video_type _destroy
         ]

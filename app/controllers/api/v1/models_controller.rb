@@ -12,19 +12,28 @@ module Api
 
       def index
         authorize! :index, :api_models
-        scope = Model.visible
+        scope = Model.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
         if price_range.present?
-          query_params['sorts'] = 'fallback_price asc'
-          scope = scope.where(fallback_price: price_range)
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
         end
 
-        @q = scope.ransack(query_params)
+        model_query_params['sorts'] = sort_by_name
 
-        @q.sorts = 'name asc' if @q.sorts.empty?
+        @q = scope.ransack(model_query_params)
 
         @models = @q.result
                     .page(params[:page])
-                    .per([(params[:per_page] || Model.default_per_page), Model.default_per_page * 4].min)
+                    .per(per_page(Model))
+      end
+
+      def slugs
+        authorize! :index, :api_models
+        render json: Model.all.pluck(:slug)
       end
 
       def production_states
@@ -64,21 +73,25 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        @models = Model.where('cargo > 0')
+        @models = Model.visible
+                       .active
+                       .where('cargo > 0')
                        .order(name: :asc)
                        .all
       end
 
       def latest
         authorize! :index, :api_models
-        @models = Model.order(last_updated_at: :desc, name: :asc)
+        @models = Model.visible
+                       .active
+                       .order(last_updated_at: :desc, name: :asc)
                        .limit(9)
       end
 
       def embed
         authorize! :index, :api_models
 
-        @models = Model.where(slug: params[:models]).order(name: :asc)
+        @models = Model.visible.active.where(slug: params[:models]).order(name: :asc)
 
         render 'api/v1/models/index'
       end
@@ -86,7 +99,7 @@ module Api
       def updated
         authorize! :index, :api_models
         if updated_range.present?
-          scope = Model.where(updated_at: updated_range)
+          scope = Model.visible.active.where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
         else
           render json: [], status: :not_modified
@@ -95,43 +108,77 @@ module Api
 
       def show
         authorize! :show, :api_models
-        @model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def images
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @images = model.images
                        .enabled
                        .order('images.created_at desc')
                        .page(params[:page])
-                       .per([(params[:per_page] || Image.default_per_page), Image.default_per_page * 4].min)
+                       .per(per_page(Image))
       end
 
       def videos
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @videos = model.videos
-                       .order('videos.created_at asc')
+                       .order('videos.created_at desc')
                        .page(params[:page])
-                       .per([(params[:per_page] || Video.default_per_page), Video.default_per_page * 4].min)
+                       .per(per_page(Video))
+      end
+
+      def variants
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.variants.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(model_query_params)
+
+        @variants = @q.result
+                      .page(params[:page])
+                      .per(per_page(Model))
+      end
+
+      def modules
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_modules = model.modules
+                              .visible
+                              .active
+                              .page(params[:page])
+                              .per(per_page(Model))
       end
 
       def store_image
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
         redirect_to model.store_image.url
       end
 
       def fleetchart_image
         authorize! :show, :api_models
-        model = Model.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         redirect_to model.fleetchart_image.url
       end
 
       private def price_range
         @price_range ||= begin
-          (query_params.delete('price_in') || []).map do |prices|
+          price_in.map do |prices|
             gt_price, lt_price = prices.split('-')
             gt_price = if gt_price.blank?
                          0
@@ -148,8 +195,40 @@ module Api
         end
       end
 
+      private def pledge_price_range
+        @pledge_price_range ||= begin
+          pledge_price_in.map do |prices|
+            gt_price, lt_price = prices.split('-')
+            gt_price = if gt_price.blank?
+                         0
+                       else
+                         gt_price.to_i
+                       end
+            lt_price = if lt_price.blank?
+                         Float::INFINITY
+                       else
+                         lt_price.to_i
+                       end
+            (gt_price...lt_price)
+          end
+        end
+      end
+
+      private def pledge_price_in
+        pledge_price_in = model_query_params.delete('pledge_price_in')
+        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
+        pledge_price_in
+      end
+
+      private def price_in
+        price_in = model_query_params.delete('price_in')
+        price_in = price_in.to_s.split unless price_in.is_a?(Array)
+        price_in
+      end
+
       private def updated_range
         return if updated_params[:from].blank?
+
         to = updated_params[:to] || Time.zone.now
         [updated_params[:from]...to]
       end
@@ -157,6 +236,14 @@ module Api
       private def updated_params
         @updated_params ||= params.permit(
           :from, :to
+        )
+      end
+
+      private def model_query_params
+        @model_query_params ||= query_params(
+          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
+          manufacturer_in: [], classification_in: [], focus_in: [], production_status_in: [],
+          price_in: [], pledge_price_in: [], size_in: [], sorts: []
         )
       end
     end

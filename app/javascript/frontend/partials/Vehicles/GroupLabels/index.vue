@@ -76,16 +76,16 @@ export default {
     filter(filter) {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
-      if ((query.hangarGroupsSlugIn || []).includes(filter)) {
-        const index = query.hangarGroupsSlugIn.findIndex(item => item === filter)
+      if ((query.hangarGroupsIn || []).includes(filter)) {
+        const index = query.hangarGroupsIn.findIndex(item => item === filter)
         if (index > -1) {
-          query.hangarGroupsSlugIn.splice(index, 1)
+          query.hangarGroupsIn.splice(index, 1)
         }
       } else {
-        if (!query.hangarGroupsSlugIn) {
-          query.hangarGroupsSlugIn = []
+        if (!query.hangarGroupsIn) {
+          query.hangarGroupsIn = []
         }
-        query.hangarGroupsSlugIn.push(filter)
+        query.hangarGroupsIn.push(filter)
       }
 
       this.$router.replace({
@@ -100,7 +100,7 @@ export default {
         return false
       }
 
-      const classFilter = this.$route.query.q.hangarGroupsSlugIn
+      const classFilter = this.$route.query.q.hangarGroupsIn
       if (!classFilter) {
         return false
       }
