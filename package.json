@@ -63,7 +63,7 @@
     "eslint-config-vue": "^2.0.2",
     "eslint-plugin-compat": "^2.6.3",
     "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jest": "^21.21.0",
+    "eslint-plugin-jest": "^21.27.2",
     "eslint-plugin-vue": "^4.7.1",
     "husky": "^0.14.3",
     "jest": "^23.6.0",
