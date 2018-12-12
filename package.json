@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@rails/webpacker": "3.5",
-    "@sentry/browser": "^4.2.1",
+    "@sentry/browser": "^4.4.1",
     "actioncable": "5.2.1",
     "ahoy.js": "^0.3.3",
     "axios": "0.18.0",
