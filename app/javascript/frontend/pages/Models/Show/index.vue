@@ -30,39 +30,41 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-8">
-            <Btn
-              :active="show3d"
-              class="toggle-3d"
-              small
-              @click.native="toggle3d"
-            >
-              {{ t('labels.3dView') }}
-            </Btn>
-            <Btn
-              v-if="show3d"
-              :active="color3d"
-              class="toggle-3d-color"
-              small
-              @click.native="toggle3dColor"
-            >
-              {{ t('labels.3dColor') }}
-            </Btn>
-            <div
-              v-if="show3d"
-              class="embed-responsive embed-responsive-16by9"
-            >
-              <iframe
-                :src="starship42Url"
-                class="embed-responsive-item"
-                frameborder="0"
-              />
+            <div class="image-wrapper">
+              <Btn
+                :active="show3d"
+                class="toggle-3d"
+                small
+                @click.native="toggle3d"
+              >
+                {{ t('labels.3dView') }}
+              </Btn>
+              <Btn
+                v-if="show3d"
+                :active="color3d"
+                class="toggle-3d-color"
+                small
+                @click.native="toggle3dColor"
+              >
+                {{ t('labels.3dColor') }}
+              </Btn>
+              <div
+                v-if="show3d"
+                class="embed-responsive embed-responsive-16by9"
+              >
+                <iframe
+                  :src="starship42Url"
+                  class="embed-responsive-item"
+                  frameborder="0"
+                />
+              </div>
+              <img
+                v-else
+                :src="model.storeImage"
+                class="image"
+                alt="model image"
+              >
             </div>
-            <img
-              v-else
-              :src="model.storeImage"
-              class="image"
-              alt="model image"
-            >
             <div class="row production-status">
               <div class="col-xs-6">
                 <template v-if="model.productionStatus">
