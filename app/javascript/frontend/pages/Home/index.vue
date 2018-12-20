@@ -63,7 +63,7 @@
         <div class="row">
           <div class="col-xs-12 col-md-8 col-md-offset-4">
             <blockquote class="pull-right">
-              <p v-html="t('texts.indexQuote')"/>
+              <p v-html="t('texts.indexQuote')" />
               <small>
                 {{ t('texts.indexQuoteSource') }}
                 <a
@@ -91,7 +91,9 @@
     <section class="container">
       <div class="row">
         <div class="col-xs-12 col-md-6 relative home-ships">
-          <h2 class="sr-only">{{ t('headlines.welcomeShips') }}</h2>
+          <h2 class="sr-only">
+            {{ t('headlines.welcomeShips') }}
+          </h2>
           <transition-group
             name="fade-list"
             class="flex-row"
@@ -130,7 +132,9 @@
         </div>
         <div class="col-xs-12 col-md-6 relative home-images">
           <Panel>
-            <h2 class="sr-only">{{ t('headlines.welcomeImages') }}</h2>
+            <h2 class="sr-only">
+              {{ t('headlines.welcomeImages') }}
+            </h2>
             <div class="panel-body images">
               <transition-group
                 v-if="images"
@@ -145,10 +149,10 @@
                   class="col-xs-12 col-sm-6 col-md-6"
                 >
                   <router-link
+                    :key="image.smallUrl"
                     v-lazy:background-image="image.smallUrl"
                     :data-index="index"
                     :title="image.name"
-                    :key="image.smallUrl"
                     :to="{name: 'model', params: { slug: image.model.slug }}"
                     class="image"
                   />

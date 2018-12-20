@@ -7,16 +7,20 @@
       <div class="panel-heading">
         <h2 class="panel-title">
           <router-link :to="{ name: 'model', params: { slug: model.slug }}">
-            <span v-if="customName">{{ customName }}</span>
-            <span v-else>{{ countLabel }}{{ model.name }}</span>
+            <span v-if="customName">
+              {{ customName }}
+            </span>
+            <span v-else>
+              {{ countLabel }}{{ model.name }}
+            </span>
           </router-link>
           <small
-            v-tooltip.right="flagshipTooltip"
             v-if="vehicle && vehicle.flagship"
+            v-tooltip.right="flagshipTooltip"
           >
             <i class="fa fa-certificate" />
           </small>
-          <br >
+          <br>
           <small v-if="customName">
             <router-link
               :to="{ query: { q: filterManufacturerQuery(model.manufacturer.slug) }}"
@@ -50,27 +54,38 @@
       </div>
       <div class="panel-image text-center">
         <router-link
-          v-lazy:background-image="model.storeImageMedium"
           :key="model.storeImageMedium"
+          v-lazy:background-image="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
         >
           <div
-            v-tooltip="t('labels.model.purchased')"
             v-if="isMyShip"
             v-show="vehicle.purchased"
+            v-tooltip="t('labels.model.purchased')"
             class="purchased"
           >
             <i class="fal fa-check" />
           </div>
           <div
-            v-tooltip="t('labels.model.onSale')"
             v-show="model.onSale"
+            v-tooltip="t('labels.model.onSale')"
             class="on-sale"
           >
             <i class="fal fa-dollar-sign" />
           </div>
         </router-link>
+        <div
+          v-if="upgradable"
+          v-tooltip="t('labels.model.addons')"
+          class="addons"
+          :class="{
+            selected: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length)
+          }"
+          @click="showAddonsModal"
+        >
+          <i class="far fa-plus-octagon" />
+        </div>
       </div>
       <div
         v-if="details"
@@ -103,6 +118,11 @@
       :vehicle="vehicle"
       :hangar-groups="hangarGroups"
     />
+    <AddonsModal
+      v-if="upgradable"
+      ref="addonsModal"
+      :vehicle="vehicle"
+    />
   </div>
 </template>
 
@@ -111,6 +131,7 @@ import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import AddToHangar from 'frontend/components/AddToHangar'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
+import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
@@ -118,6 +139,7 @@ export default {
   components: {
     Panel,
     VehicleModal,
+    AddonsModal,
     AddToHangar,
     ModelTopMetrics,
     ModelBaseMetrics,
@@ -174,6 +196,9 @@ export default {
     isMyShip() {
       return this.vehicle && this.$route.name === 'hangar'
     },
+    upgradable() {
+      return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)
+    },
   },
   methods: {
     filterManufacturerQuery(manufacturer) {
@@ -181,6 +206,10 @@ export default {
     },
     showEditModal() {
       this.$refs.vehicleModal.open()
+    },
+    showAddonsModal(ev) {
+      ev.preventDefault()
+      this.$refs.addonsModal.open()
     },
   },
 }

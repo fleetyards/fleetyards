@@ -2,7 +2,8 @@
   <div class="labels">
     <transition-group
       name="fade-list"
-      appear>
+      appear
+    >
       <h3
         v-if="countData.total > 0"
         key="all"
@@ -12,11 +13,11 @@
       </h3>
       <a
         v-for="classification in countData.classifications"
+        :key="classification.name"
         :class="{
           'label-link': filterKey,
           'active': isActive(classification.name),
         }"
-        :key="classification.name"
         class="label fade-list-item"
         @click="filter(classification.name)"
       >

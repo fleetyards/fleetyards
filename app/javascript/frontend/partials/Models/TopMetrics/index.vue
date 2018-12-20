@@ -4,7 +4,9 @@
       v-if="model.focus"
       class="col-xs-6 col-sm-4"
     >
-      <div class="metrics-label">{{ t('model.focus') }}:</div>
+      <div class="metrics-label">
+        {{ t('model.focus') }}:
+      </div>
       <div
         v-tooltip="model.focus"
         class="metrics-value"
@@ -16,7 +18,9 @@
       v-if="model.minCrew || model.maxCrew"
       class="col-xs-6 col-sm-4"
     >
-      <div class="metrics-label">{{ t('model.crew') }}:</div>
+      <div class="metrics-label">
+        {{ t('model.crew') }}:
+      </div>
       <div
         v-tooltip="crew"
         class="metrics-value"
@@ -25,7 +29,9 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4">
-      <div class="metrics-label">{{ t('model.speed') }}:</div>
+      <div class="metrics-label">
+        {{ t('model.speed') }}:
+      </div>
       <div
         v-tooltip="speeds"
         class="metrics-value"

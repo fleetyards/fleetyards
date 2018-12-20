@@ -126,6 +126,8 @@ module Api
               'rsiId' => 141,
               'hasImages' => false,
               'hasVideos' => false,
+              'hasModules' => false,
+              'hasUpgrades' => false,
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
@@ -136,6 +138,8 @@ module Api
               'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
             },
             'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
+            'modelModuleIds' => data.vehicles.first.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
             'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
             'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
           }, {
@@ -192,6 +196,8 @@ module Api
               'rsiId' => nil,
               'hasImages' => false,
               'hasVideos' => false,
+              'hasModules' => false,
+              'hasUpgrades' => false,
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -202,6 +208,8 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
+            'modelModuleIds' => data.vehicles.first.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
             'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
             'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
           }]
@@ -271,6 +279,8 @@ module Api
               'rsiId' => nil,
               'hasImages' => false,
               'hasVideos' => false,
+              'hasModules' => false,
+              'hasUpgrades' => false,
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -281,6 +291,8 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
+            'modelModuleIds' => data.vehicles.first.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
             'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
             'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
           }]

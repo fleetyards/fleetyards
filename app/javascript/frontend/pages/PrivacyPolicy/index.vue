@@ -28,7 +28,9 @@
                 href="https://sentry.io/"
                 target="_blank"
                 rel="noopener"
-              >Sentry.io</a> to collect and group those Errors.
+              >
+                Sentry.io
+              </a> to collect and group those Errors.
             </p>
             <br>
 
@@ -36,7 +38,9 @@
             <p>
               As a registered User on Fleetyards.net we only collect, besides the Information a
               Guest provides to us in the case of an Error, the Information you provide to us via
-              the <router-link :to="{name: 'signup'}">Signup form</router-link>.
+              the <router-link :to="{name: 'signup'}">
+                Signup form
+              </router-link>.
             </p>
             <br>
 
@@ -65,11 +69,15 @@
                     href="https://robertsspaceindustries.com"
                     target="_blank"
                     rel="noopener"
-                  >robertsspaceindustries.com</a> and to gather Additional Information from <a
+                  >
+                    robertsspaceindustries.com
+                  </a> and to gather Additional Information from <a
                     href="https://robertsspaceindustries.com"
                     target="_blank"
                     rel="noopener"
-                  >robertsspaceindustries.com</a> like:
+                  >
+                    robertsspaceindustries.com
+                  </a> like:
                 </p>
                 <ul>
                   <li>Username</li>
@@ -85,7 +93,9 @@
                   href="https://robertsspaceindustries.com"
                   target="_blank"
                   rel="noopener"
-                >robertsspaceindustries.com</a> when you provide us with your RSI-Handle and are not
+                >
+                  robertsspaceindustries.com
+                </a> when you provide us with your RSI-Handle and are not
                 saved in any form on our Systems and are also not shared with any Third Parties.
               </dd>
             </dl>
@@ -165,11 +175,15 @@
             <h2>Your choices</h2>
             <p>
               You can opt out on Notifications on the
-              <router-link :to="{name: 'settings'}">Settings Page</router-link>.
+              <router-link :to="{name: 'settings'}">
+                Settings Page
+              </router-link>.
             </p>
             <p>
               You can delete your Account by clicking on the "Destroy Account" Button on the
-              <router-link :to="{name: 'settings'}">Settings Page</router-link> or just contact us
+              <router-link :to="{name: 'settings'}">
+                Settings Page
+              </router-link> or just contact us
               and we will delete all your Information asap.
             </p>
             <p>

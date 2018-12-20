@@ -1,0 +1,15 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th.preview
+        %th=sort_link(@q, :name)
+        %th=sort_link(@q, :model_name, 'Models')
+        %th=sort_link(@q, :hidden)
+        %th=sort_link(@q, :active)
+        %th.actions.actions-two=I18n.t(:"labels.table.actions")
+    %tbody
+      = render partial: "admin/model_upgrades/show", collection: @model_upgrades, as: :model_upgrade
+
+      - if @model_upgrades.blank?
+        = render "shared/tables/blank", count: 6, resource: "model_upgrade"

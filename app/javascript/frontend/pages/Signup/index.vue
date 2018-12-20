@@ -6,7 +6,8 @@
           <h1>
             <router-link
               to="/"
-              exact>
+              exact
+            >
               {{ t('app') }}
             </router-link>
           </h1>
@@ -23,10 +24,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('username')"
-              v-validate="'required|alpha_dash|usernameTaken'"
               id="username"
               v-model="form.username"
+              v-tooltip.right="errors.first('username')"
+              v-validate="'required|alpha_dash|usernameTaken'"
               :data-vv-as="t('labels.username')"
               :placeholder="t('labels.username')"
               name="username"
@@ -57,10 +58,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('rsiHandle')"
-              v-validate="'alpha_dash|handle'"
               id="rsi-handle"
               v-model="form.rsiHandle"
+              v-tooltip.right="errors.first('rsiHandle')"
+              v-validate="'alpha_dash|handle'"
               :placeholder="t('labels.rsiHandle')"
               :data-vv-as="t('labels.rsiHandle')"
               name="rsiHandle"
@@ -90,10 +91,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('email')"
-              v-validate="'required|email|emailTaken'"
               id="email"
               v-model="form.email"
+              v-tooltip.right="errors.first('email')"
+              v-validate="'required|email|emailTaken'"
               :data-vv-as="t('labels.email')"
               :placeholder="t('labels.email')"
               name="email"
@@ -120,11 +121,11 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('password')"
-              v-validate="'required|min:8'"
               id="password"
               ref="password"
               v-model="form.password"
+              v-tooltip.right="errors.first('password')"
+              v-validate="'required|min:8'"
               :placeholder="t('labels.password')"
               :data-vv-as="t('labels.password')"
               name="password"
@@ -151,10 +152,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('passwordConfirmation')"
-              v-validate="'required|confirmed:password'"
               id="password-confirmation"
               v-model="form.passwordConfirmation"
+              v-tooltip.right="errors.first('passwordConfirmation')"
+              v-validate="'required|confirmed:password'"
               :data-vv-as="t('labels.passwordConfirmation')"
               :placeholder="t('labels.passwordConfirmation')"
               name="passwordConfirmation"
@@ -187,10 +188,12 @@
               Privacy Policy
             </router-link>
           </p>
-          <div class="clearfix"/>
+          <div class="clearfix" />
           <br>
           <br>
-          <p class="text-center">{{ t('labels.alreadyRegistered') }}</p>
+          <p class="text-center">
+            {{ t('labels.alreadyRegistered') }}
+          </p>
           <InternalLink
             :route="{name: 'login'}"
             block

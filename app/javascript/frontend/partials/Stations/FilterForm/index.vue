@@ -56,10 +56,10 @@
       multiple
     />
     <RadioList
+      v-model="form.habsNotNull"
       :label="t('labels.filters.stations.habs')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.habsNotNull"
       name="habs"
     />
     <!-- <br>

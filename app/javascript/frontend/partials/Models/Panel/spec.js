@@ -1,4 +1,5 @@
 import ModelPanel from 'frontend/partials/Models/Panel'
+import Panel from 'frontend/components/Panel'
 
 describe('ShipPanel', () => {
   let cmp
@@ -19,7 +20,8 @@ describe('ShipPanel', () => {
   })
 
   it('renders ship panel', () => {
-    expect(cmp.vm.$el.querySelector('.panel')).toBeTruthy()
+    const panel = cmp.find(Panel)
+    expect(panel.is(Panel)).toBe(true)
   })
 
   it('renders heading with ship name and manufacturer', () => {

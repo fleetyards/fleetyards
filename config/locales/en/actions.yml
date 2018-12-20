@@ -6,6 +6,7 @@ en:
     add_video: Add Video
     add_trade_commodity: Add Commodity
     add_module_hardpoint: Add Model
+    add_upgrade_kit: Add Model
     add_dock: Add Dock
     add_commodity: Add Commodity
     admin:
@@ -33,6 +34,8 @@ en:
         new: Create new Starsystem
       model_module:
         new: Create new Module
+      model_upgrade:
+        new: Create new Upgrade
     back: Back
     cancel: Cancel
     confirm: Confirm Account

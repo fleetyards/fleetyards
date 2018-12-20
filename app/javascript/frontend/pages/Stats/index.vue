@@ -4,14 +4,18 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="sr-only">{{ t('headlines.stats') }}</h1>
+            <h1 class="sr-only">
+              {{ t('headlines.stats') }}
+            </h1>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
-                <h2 class="panel-title">{{ t('labels.stats.modelsByClassification') }}</h2>
+                <h2 class="panel-title">
+                  {{ t('labels.stats.modelsByClassification') }}
+                </h2>
               </div>
               <Chart
                 key="models-by-classification"
@@ -24,7 +28,9 @@
           <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
-                <h2 class="panel-title">{{ t('labels.stats.modelsBySize') }}</h2>
+                <h2 class="panel-title">
+                  {{ t('labels.stats.modelsBySize') }}
+                </h2>
               </div>
               <Chart
                 key="models-by-size"
@@ -39,7 +45,9 @@
           <div class="col-xs-12 col-md-4">
             <Panel>
               <div class="panel-heading">
-                <h2 class="panel-title">{{ t('labels.stats.modelsByProductionStatus') }}</h2>
+                <h2 class="panel-title">
+                  {{ t('labels.stats.modelsByProductionStatus') }}
+                </h2>
               </div>
               <Chart
                 key="models-by-production-status"
@@ -52,7 +60,9 @@
           <div class="col-xs-12 col-md-8">
             <Panel>
               <div class="panel-heading">
-                <h2 class="panel-title">{{ t('labels.stats.modelsPerMonth') }}</h2>
+                <h2 class="panel-title">
+                  {{ t('labels.stats.modelsPerMonth') }}
+                </h2>
               </div>
               <Chart
                 key="models-per-month"
@@ -67,7 +77,9 @@
           <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
-                <h2 class="panel-title">{{ t('labels.stats.modelsByManufacturer') }}</h2>
+                <h2 class="panel-title">
+                  {{ t('labels.stats.modelsByManufacturer') }}
+                </h2>
               </div>
               <Chart
                 key="models-by-manufacturer"

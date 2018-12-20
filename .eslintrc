@@ -32,7 +32,9 @@
       "argsIgnorePattern": "^_"
     }],
     "no-useless-escape": 0,
-    "space-before-function-paren": 0
+    "space-before-function-paren": 0,
+    "vue/no-v-html": "off",
+    "vue/component-name-in-template-casing": "off"
   },
   "env": {
     "browser": true,

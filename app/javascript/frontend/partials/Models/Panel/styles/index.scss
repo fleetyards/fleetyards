@@ -47,6 +47,31 @@
       right: -15px;
     }
   }
+
+  .addons {
+    position: absolute;
+    cursor: pointer;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid $gray;
+    border-top: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid $gray;
+
+    &.selected {
+      border-left: 20px solid $success;
+      border-bottom: 20px solid $success;
+    }
+
+    i {
+      color: #fff;
+      position: absolute;
+      bottom: -14px;
+      left: -14px;
+    }
+  }
 }
 
 .panel-heading {

@@ -67,7 +67,8 @@
           name="fade-list"
           class="row"
           tag="div"
-          appear>
+          appear
+        >
           <div
             v-for="station in filteredTradeHubs"
             :key="station.slug"
@@ -102,7 +103,9 @@
                           type="number"
                           @change="updatePrices(`${station.slug}-${tradeCommodity.slug}-buy`)"
                         >
-                        <span class="input-group-addon">{{ t('labels.uecPerUnit') }}</span>
+                        <span class="input-group-addon">
+                          {{ t('labels.uecPerUnit') }}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -126,7 +129,9 @@
                           min="0"
                           @change="updatePrices(`${station.slug}-${tradeCommodity.slug}-sell`)"
                         >
-                        <span class="input-group-addon">{{ t('labels.uecPerUnit') }}</span>
+                        <span class="input-group-addon">
+                          {{ t('labels.uecPerUnit') }}
+                        </span>
                       </div>
                     </div>
                   </div>

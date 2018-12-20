@@ -1,9 +1,9 @@
 <template>
   <div
+    :id="id"
     :class="{
       loading,
     }"
-    :id="id"
     class="chart"
   />
 </template>

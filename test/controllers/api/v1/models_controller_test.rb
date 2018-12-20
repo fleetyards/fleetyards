@@ -64,6 +64,8 @@ module Api
           'rsiId' => 141,
           'hasImages' => false,
           'hasVideos' => false,
+          'hasModules' => false,
+          'hasUpgrades' => false,
           'manufacturer' => {
             'name' => 'Origin',
             'slug' => 'origin',
@@ -118,6 +120,8 @@ module Api
           'rsiId' => nil,
           'hasImages' => false,
           'hasVideos' => false,
+          'hasModules' => false,
+          'hasUpgrades' => false,
           'manufacturer' => {
             'name' => 'RSI',
             'slug' => 'rsi',

@@ -10,7 +10,9 @@
             <h1 class="back-button">
               {{ model.name }}
               <small class="manufacturer">
-                <span class="manufacturer-prefix">from</span>
+                <span class="manufacturer-prefix">
+                  from
+                </span>
                 <span v-html="model.manufacturer.name" />
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
@@ -157,10 +159,12 @@
                 large
               >
                 {{ t('actions.model.onSale', { price: toDollar(model.pledgePrice) }) }}
-                <small class="price-info">{{ t('labels.taxExcluded') }}</small>
+                <small class="price-info">
+                  {{ t('labels.taxExcluded') }}
+                </small>
               </ExternalLink>
             </div>
-            <br >
+            <br>
           </div>
         </div>
         <div class="row components">
@@ -208,6 +212,47 @@
         </div>
         <Loader
           :loading="loadingModules"
+          fixed
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 upgrades">
+        <h2
+          v-if="upgrades.length"
+          class="text-uppercase"
+        >
+          {{ t('labels.model.upgrades') }}
+        </h2>
+        <div
+          v-if="upgrades.length"
+          class="flex-row"
+        >
+          <div
+            v-for="upgrade in upgrades"
+            :key="upgrade.id"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
+          >
+            <Panel>
+              <div class="model-panel">
+                <div
+                  :style="{
+                    'background-image': `url(${upgrade.storeImage})`
+                  }"
+                  class="model-panel-image"
+                />
+                <div class="model-panel-body">
+                  <h3>{{ upgrade.name }}</h3>
+                  <p>
+                    {{ upgrade.description }}
+                  </p>
+                </div>
+              </div>
+            </Panel>
+          </div>
+        </div>
+        <Loader
+          :loading="loadingUpgrades"
           fixed
         />
       </div>
@@ -284,11 +329,13 @@ export default {
       loading: false,
       loadingVariants: false,
       loadingModules: false,
+      loadingUpgrades: false,
       show3d: false,
       color3d: false,
       model: null,
       variants: [],
       modules: [],
+      upgrades: [],
       attributes: [
         'length', 'beam', 'height', 'mass', 'cargo', 'minCrew', 'maxCrew', 'scmSpeed', 'afterburnerSpeed',
       ],
@@ -321,6 +368,9 @@ export default {
   watch: {
     $route() {
       this.fetch()
+      this.fetchModules()
+      this.fetchUpgrades()
+      this.fetchVariants()
     },
     model() {
       this.setBackRoute()
@@ -333,6 +383,7 @@ export default {
   created() {
     this.fetch()
     this.fetchModules()
+    this.fetchUpgrades()
     this.fetchVariants()
   },
   methods: {
@@ -380,6 +431,14 @@ export default {
       this.loadingModules = false
       if (!response.error) {
         this.modules = response.data
+      }
+    },
+    async fetchUpgrades() {
+      this.loadingUpgrades = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/upgrades`)
+      this.loadingUpgrades = false
+      if (!response.error) {
+        this.upgrades = response.data
       }
     },
     async fetchVariants() {

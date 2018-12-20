@@ -11,7 +11,8 @@
         v-if="form.nameCont"
         class="btn btn-clear"
         @click="clearName"
-        v-html="'&times;'"/>
+        v-html="'&times;'"
+      />
     </div>
     <div class="form-group">
       <label :for="idFor('model-name')">
@@ -28,7 +29,8 @@
         v-if="form.modelNameCont"
         class="btn btn-clear"
         @click="clearModelName"
-        v-html="'&times;'"/>
+        v-html="'&times;'"
+      />
     </div>
     <FilterGroup
       v-model="form.manufacturerIn"
@@ -72,45 +74,45 @@
       multiple
     />
     <FilterGroup
-      :options="pledgePriceOptions"
       v-model="form.pledgePriceIn"
+      :options="pledgePriceOptions"
       :label="t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       multiple
     />
     <FilterGroup
-      :options="priceOptions"
       v-model="form.priceIn"
+      :options="priceOptions"
       :label="t('labels.filters.models.price')"
       name="price"
       multiple
     />
     <FilterGroup
       v-if="hangarGroupsOptions.length > 0"
+      v-model="form.hangarGroupsIn"
       :options="hangarGroupsOptions.map(item => {
         return {
           value: item.slug,
           name: item.name,
         }
       })"
-      v-model="form.hangarGroupsIn"
       :label="t('labels.filters.vehicles.group')"
       name="hangar-group"
       multiple
     />
     <RadioList
       v-if="$route.name === 'hangar'"
+      v-model="form.purchasedEq"
       :label="t('labels.filters.vehicles.purchased')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.purchasedEq"
       name="purchased"
     />
     <RadioList
+      v-model="form.onSaleEq"
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.onSaleEq"
       name="sale"
     />
     <Btn

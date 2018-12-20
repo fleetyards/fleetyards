@@ -56,6 +56,10 @@ en:
         edit: Module %{model_module}
         index: Modules
         new: New Module
+      model_upgrade:
+        edit: Upgrade %{model_upgrade}
+        index: Upgrades
+        new: New Upgrade
     change_password: Change your Password
     comments: Comments
     confirm: Confirm your Account

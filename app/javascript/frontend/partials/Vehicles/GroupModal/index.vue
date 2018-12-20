@@ -15,9 +15,9 @@
             class="form-group"
           >
             <input
+              v-model="form.name"
               v-tooltip.right="errors.first('name')"
               v-validate="'required'"
-              v-model="form.name"
               :data-vv-as="t('labels.hangarGroup.name')"
               :placeholder="t('labels.hangarGroup.name')"
               name="name"
@@ -38,9 +38,9 @@
             class="form-group"
           >
             <input
+              v-model="form.sort"
               v-tooltip.right="errors.first('sort')"
               v-validate="'numeric'"
-              v-model="form.sort"
               :data-vv-as="t('labels.hangarGroup.sort')"
               :placeholder="t('labels.hangarGroup.sort')"
               name="sort"
@@ -61,9 +61,9 @@
             class="form-group"
           >
             <swatches
+              v-model="form.color"
               v-tooltip.right="errors.first('color')"
               v-validate="'required'"
-              v-model="form.color"
               :data-vv-as="t('labels.hangarGroup.color')"
               name="color"
               colors="material-dark"
@@ -101,7 +101,6 @@ import I18n from 'frontend/mixins/I18n'
 import SubmitButton from 'frontend/components/SubmitButton'
 import Modal from 'frontend/components/Modal'
 import { confirm, alert } from 'frontend/lib/Noty'
-import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
@@ -110,7 +109,6 @@ export default {
   components: {
     SubmitButton,
     Modal,
-    Checkbox,
     Btn,
     Swatches,
   },
