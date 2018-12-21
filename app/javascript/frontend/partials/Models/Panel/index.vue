@@ -84,7 +84,13 @@
           }"
           @click="showAddonsModal"
         >
-          <i class="far fa-plus-octagon" />
+          <i
+            class="fa-plus-octagon"
+            :class="{
+              far: !(vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length),
+              fa: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length),
+            }"
+          />
         </div>
       </div>
       <div
