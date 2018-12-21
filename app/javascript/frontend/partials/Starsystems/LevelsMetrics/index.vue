@@ -8,7 +8,9 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-4">
-          <div class="metrics-label">{{ t('starsystem.population') }}:</div>
+          <div class="metrics-label">
+            {{ t('starsystem.population') }}:
+          </div>
           <div
             v-tooltip="starsystem.population"
             class="metrics-value"
@@ -17,7 +19,9 @@
           </div>
         </div>
         <div class="col-xs-4">
-          <div class="metrics-label">{{ t('starsystem.economy') }}:</div>
+          <div class="metrics-label">
+            {{ t('starsystem.economy') }}:
+          </div>
           <div
             v-tooltip="starsystem.economy"
             class="metrics-value"
@@ -26,7 +30,9 @@
           </div>
         </div>
         <div class="col-xs-4">
-          <div class="metrics-label">{{ t('starsystem.danger') }}:</div>
+          <div class="metrics-label">
+            {{ t('starsystem.danger') }}:
+          </div>
           <div
             v-tooltip="starsystem.danger"
             class="metrics-value"

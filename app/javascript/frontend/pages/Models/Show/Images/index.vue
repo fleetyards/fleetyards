@@ -37,8 +37,8 @@
             class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
           >
             <a
-              v-lazy:background-image="image.smallUrl"
               :key="image.smallUrl"
+              v-lazy:background-image="image.smallUrl"
               :title="image.name"
               :href="image.url"
               class="image"
@@ -70,13 +70,11 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
 import Gallery from 'frontend/components/Gallery'
 
 export default {
   components: {
     Loader,
-    Panel,
     Gallery,
   },
   mixins: [I18n, MetaInfo, Pagination],

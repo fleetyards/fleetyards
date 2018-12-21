@@ -76,7 +76,7 @@
             >
               <Checkbox
                 :label="group.name"
-                :value="form.hangarGroupIds.includes(group.id)"
+                :value="selected(group.id)"
                 @input="changeGroup(group)"
               />
             </div>
@@ -165,6 +165,9 @@ export default {
     },
   },
   methods: {
+    selected(groupId) {
+      return this.form.hangarGroupIds.includes(groupId)
+    },
     open() {
       this.$refs.modal.open()
     },

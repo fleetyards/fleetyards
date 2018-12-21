@@ -4,7 +4,9 @@
       <div class="col-xs-12 col-md-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="sr-only">{{ t('headlines.hangar') }}</h1>
+            <h1 class="sr-only">
+              {{ t('headlines.hangar') }}
+            </h1>
           </div>
         </div>
         <div class="hangar-header">
@@ -17,7 +19,7 @@
             />
             <GroupLabels
               v-if="!mobile && (vehicles.length || fleetchartVehicles.length
-              || (!vehicles.length && !fleetchartVehicles.length && isFilterSelected))"
+                || (!vehicles.length && !fleetchartVehicles.length && isFilterSelected))"
               :hangar-groups="hangarGroups"
               :label="t('labels.groups')"
             />
@@ -40,23 +42,33 @@
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
             <div class="metrics-item">
-              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMoney') }}:</div>
-              <div class="metrics-value">{{ toDollar(vehiclesCount.metrics.totalMoney) }}</div>
+              <div class="metrics-label">
+                {{ t('labels.hangarMetrics.totalMoney') }}:
+              </div>
+              <div class="metrics-value">
+                {{ toDollar(vehiclesCount.metrics.totalMoney) }}
+              </div>
             </div>
             <div class="metrics-item">
-              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMinCrew') }}:</div>
+              <div class="metrics-label">
+                {{ t('labels.hangarMetrics.totalMinCrew') }}:
+              </div>
               <div class="metrics-value">
                 {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
-              <div class="metrics-label">{{ t('labels.hangarMetrics.totalMaxCrew') }}:</div>
+              <div class="metrics-label">
+                {{ t('labels.hangarMetrics.totalMaxCrew') }}:
+              </div>
               <div class="metrics-value">
                 {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
-              <div class="metrics-label">{{ t('labels.hangarMetrics.totalCargo') }}:</div>
+              <div class="metrics-label">
+                {{ t('labels.hangarMetrics.totalCargo') }}:
+              </div>
               <div class="metrics-value">
                 {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
               </div>
@@ -67,8 +79,8 @@
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
               <Btn
-                v-tooltip="t('actions.saveScreenshot')"
                 v-show="hangarFleetchartVisible && fleetchartVehicles.length"
+                v-tooltip="t('actions.saveScreenshot')"
                 :disabled="downloading"
                 :aria-label="t('actions.saveScreenshot')"
                 small
@@ -77,8 +89,8 @@
                 {{ t('actions.saveScreenshot') }}
               </Btn>
               <Btn
-                v-tooltip="toggleDetailsTooltip"
                 v-show="!hangarFleetchartVisible && vehicles.length"
+                v-tooltip="toggleDetailsTooltip"
                 :active="hangarDetailsVisible"
                 :aria-label="toggleDetailsTooltip"
                 small
@@ -109,7 +121,9 @@
                 <template v-if="hangarFleetchartVisible">
                   {{ t('actions.hideFleetchart') }}
                 </template>
-                <template v-else>{{ t('actions.showFleetchart') }}</template>
+                <template v-else>
+                  {{ t('actions.showFleetchart') }}
+                </template>
               </Btn>
             </div>
           </div>

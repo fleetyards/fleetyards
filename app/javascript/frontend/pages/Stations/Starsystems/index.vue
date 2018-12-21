@@ -2,7 +2,9 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1 class="sr-only">{{ t('headlines.starsystems') }}</h1>
+        <h1 class="sr-only">
+          {{ t('headlines.starsystems') }}
+        </h1>
       </div>
     </div>
     <!-- <div class="row">
@@ -65,9 +67,10 @@
                 },
               }"
             >
-
               <template v-if="starsystem.celestialObjects.length">
-                <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
+                <h3 class="sr-only">
+                  {{ t('headlines.celestialObjects') }}
+                </h3>
                 <transition-group
                   name="fade-list"
                   class="flex-row"
@@ -119,7 +122,6 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
 import StarsystemList from 'frontend/partials/Stations/List'
 import PlanetPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
@@ -131,7 +133,6 @@ export default {
     Loader,
     EmptyBox,
     StarsystemList,
-    Panel,
     PlanetPanel,
   },
   mixins: [I18n, MetaInfo, Hash, Pagination],

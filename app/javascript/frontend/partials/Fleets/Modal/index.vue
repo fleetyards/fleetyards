@@ -15,10 +15,10 @@
             class="form-group"
           >
             <input
-              v-tooltip.bottom-end="errors.first('sid')"
-              v-validate="'required|alpha_dash|org'"
               id="sid"
               v-model="sid"
+              v-tooltip.bottom-end="errors.first('sid')"
+              v-validate="'required|alpha_dash|org'"
               :placeholder="t('placeholders.fleet.sid')"
               :data-vv-as="t('labels.fleet.sid')"
               name="sid"
@@ -43,7 +43,8 @@
       <div class="col-xs-12 fleet-preview">
         <transition
           name="fade-list"
-          appear>
+          appear
+        >
           <FleetPanel
             v-if="org"
             :fleet="org"

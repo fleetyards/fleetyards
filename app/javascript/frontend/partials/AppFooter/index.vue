@@ -18,10 +18,16 @@
           RSI
         </a>
         |
-        <router-link :to="{ name: 'privacy-policy' }">{{ t('nav.privacyPolicy') }}</router-link>
+        <router-link :to="{ name: 'privacy-policy' }">
+          {{ t('nav.privacyPolicy') }}
+        </router-link>
         |
-        <router-link :to="{ name: 'impressum' }">{{ t('nav.impressum') }}</router-link>
-        <span class="hidden-xs">|</span>
+        <router-link :to="{ name: 'impressum' }">
+          {{ t('nav.impressum') }}
+        </router-link>
+        <span class="hidden-xs">
+          |
+        </span>
         <br class="visible-xs">
         <a
           v-tooltip="'Twitter'"
@@ -53,13 +59,13 @@
       </div>
       <div class="app-footer-item">
         Copyright &copy; {{ new Date().getFullYear() }}
-        <a
-          href="mailto:info@mortik.de"
-          target="_blank"
-          rel="noopener"
-        >
-          Marten Klitzke - mortik.
-        </a>
+                  <a
+                    href="mailto:info@mortik.de"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Marten Klitzke - mortik.
+                  </a>
       </div>
       <div class="app-version">
         {{ appCodename }} ({{ appVersion }})

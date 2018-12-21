@@ -10,10 +10,10 @@
         }"
         class="loader"
       >
-        <div class="cube1 cube"/>
-        <div class="cube2 cube"/>
-        <div class="cube4 cube"/>
-        <div class="cube3 cube"/>
+        <div class="cube1 cube" />
+        <div class="cube2 cube" />
+        <div class="cube4 cube" />
+        <div class="cube3 cube" />
       </div>
     </div>
   </transition>

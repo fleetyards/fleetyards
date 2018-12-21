@@ -26,8 +26,8 @@
       </div>
       <div
         v-for="(option, index) in options"
-        :class="{ 'radio-inline': inline }"
         :key="`${radioID}-${option.value}-${index}`"
+        :class="{ 'radio-inline': inline }"
         class="radio"
       >
         <input

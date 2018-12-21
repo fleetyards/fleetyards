@@ -1,5 +1,8 @@
 <template>
-  <div class="row">
+  <div
+    v-if="hardpoints"
+    class="row"
+  >
     <div class="col-xs-12">
       <h2
         v-if="!withoutTitle"
@@ -10,7 +13,7 @@
       <Panel>
         <div class="hardpoint-category">
           <div
-            v-for="(hardpoints, type) in groupByType(hardpoints)"
+            v-for="(items, type) in groupByType(hardpoints)"
             :key="type"
             class="hardpoint-type"
           >
@@ -22,7 +25,7 @@
               {{ t(`labels.hardpoint.types.${type}`) }}
             </div>
             <HardpointIcon
-              v-for="hardpoint in hardpoints"
+              v-for="hardpoint in items"
               :key="hardpoint.id"
               :hardpoint="hardpoint"
               @click.native="openComponentModal(hardpoint)"
@@ -41,9 +44,15 @@
       >
         <div class="row">
           <div class="col-xs-6">
-            <div class="metrics-label">{{ t('component.size') }}:</div>
-            <div class="metrics-value">{{ component.size }}</div>
-            <div class="metrics-label">{{ t('component.manufacturer') }}:</div>
+            <div class="metrics-label">
+              {{ t('component.size') }}:
+            </div>
+            <div class="metrics-value">
+              {{ component.size }}
+            </div>
+            <div class="metrics-label">
+              {{ t('component.manufacturer') }}:
+            </div>
             <div
               class="metrics-value"
               v-html="component.manufacturer.name"
@@ -53,8 +62,12 @@
             v-if="selectedHardpoint.type === 'missiles'"
             class="col-xs-6"
           >
-            <div class="metrics-label">{{ t('labels.hardpoint.rackSize') }}:</div>
-            <div class="metrics-value">{{ selectedHardpoint.size }}</div>
+            <div class="metrics-label">
+              {{ t('labels.hardpoint.rackSize') }}:
+            </div>
+            <div class="metrics-value">
+              {{ selectedHardpoint.size }}
+            </div>
           </div>
         </div>
       </div>
@@ -76,13 +89,13 @@ export default {
   },
   mixins: [I18n],
   props: {
-    hardpoints: {
-      type: Array,
-      required: true,
-    },
     category: {
       type: String,
       required: true,
+    },
+    hardpoints: {
+      type: Array,
+      default: null,
     },
     withoutTitle: {
       type: Boolean,

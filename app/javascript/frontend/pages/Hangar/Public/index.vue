@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-12">
         <div class="row">
-          <div class="col-xs-12"/>
+          <div class="col-xs-12" />
         </div>
         <div class="row">
           <div class="col-xs-12">
@@ -13,7 +13,9 @@
               to="/"
             >
               <i class="fal fa-chevron-left" />
-              <span class="brand">{{ t('app') }}</span>
+              <span class="brand">
+                {{ t('app') }}
+              </span>
             </router-link>
           </div>
         </div>
@@ -54,7 +56,9 @@
                 <template v-if="hangarPublicFleetchartVisible">
                   {{ t('actions.hideFleetchart') }}
                 </template>
-                <template v-else>{{ t('actions.showFleetchart') }}</template>
+                <template v-else>
+                  {{ t('actions.showFleetchart') }}
+                </template>
               </Btn>
             </div>
           </div>

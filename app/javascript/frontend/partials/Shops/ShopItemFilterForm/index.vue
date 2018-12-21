@@ -15,8 +15,8 @@
       />
     </div>
     <FilterGroup
-      :options="categoryOptions"
       v-model="form.categoryIn"
+      :options="categoryOptions"
       :label="t('labels.filters.shopItems.category')"
       name="category"
       multiple

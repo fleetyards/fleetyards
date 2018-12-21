@@ -13,16 +13,16 @@
       <i class="fa fa-chevron-right" />
     </div>
     <b-collapse
-      :visible="selectedOptions.length > 0 && !visible"
       :id="`${groupID}-${selectedId}`"
+      :visible="selectedOptions.length > 0 && !visible"
       class="filter-list-items"
     >
       <a
         v-for="(option, index) in selectedOptions"
+        :key="`${groupID}-${selectedId}-${option[valueAttr]}-${index}`"
         :class="{
           active: selected(option[valueAttr]),
         }"
-        :key="`${groupID}-${selectedId}-${option[valueAttr]}-${index}`"
         class="filter-list-item fade-list-item"
         @click="select(option[valueAttr])"
       >
@@ -30,9 +30,9 @@
           v-if="option[iconAttr]"
           class="filter-list-item-icon"
         >
-          <img :src="option[iconAttr]" >
+          <img :src="option[iconAttr]">
         </span>
-        <span v-html="option[labelAttr]"/>
+        <span v-html="option[labelAttr]" />
         <span v-if="multiple">
           <i class="fal fa-plus" />
         </span>
@@ -57,16 +57,16 @@
       />
     </div>
     <b-collapse
-      :visible="visible"
       :id="`${groupID}-${id}`"
+      :visible="visible"
       class="filter-list-items"
     >
       <a
         v-for="(option, index) in filteredOptions"
+        :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
         :class="{
           active: selected(option[valueAttr]),
         }"
-        :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
         class="filter-list-item fade-list-item"
         @click="select(option[valueAttr])"
       >
@@ -74,9 +74,9 @@
           v-if="option[iconAttr]"
           class="filter-list-item-icon"
         >
-          <img :src="option[iconAttr]" >
+          <img :src="option[iconAttr]">
         </span>
-        <span v-html="option[labelAttr]"/>
+        <span v-html="option[labelAttr]" />
         <span v-if="multiple">
           <i class="fal fa-plus" />
         </span>

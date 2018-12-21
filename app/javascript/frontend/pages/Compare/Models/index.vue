@@ -28,8 +28,8 @@
                   class="compare-image"
                 >
                   <router-link
-                    v-lazy:background-image="modelA.storeImage"
                     :key="modelA.storeImage"
+                    v-lazy:background-image="modelA.storeImage"
                     :to="{ name: 'model', params: { slug: modelA.slug }}"
                     :aria-label="modelA.name"
                   />
@@ -51,8 +51,8 @@
                   class="compare-image"
                 >
                   <router-link
-                    v-lazy:background-image="modelB.storeImage"
                     :key="modelB.storeImage"
+                    v-lazy:background-image="modelB.storeImage"
                     :to="{ name: 'model', params: { slug: modelB.slug }}"
                     :aria-label="modelB.name"
                   />
@@ -62,10 +62,14 @@
 
             <div class="row compare-row visible-xs visible-sm">
               <div class="col-xs-6 col-md-4 text-center">
-                <strong v-if="modelA">{{ modelA.name }}</strong>
+                <strong v-if="modelA">
+                  {{ modelA.name }}
+                </strong>
               </div>
               <div class="col-xs-6 col-md-4 text-center">
-                <strong v-if="modelB">{{ modelB.name }}</strong>
+                <strong v-if="modelB">
+                  {{ modelB.name }}
+                </strong>
               </div>
             </div>
 
@@ -751,7 +755,7 @@
                   v-if="modelA || modelB"
                   class="row compare-row"
                 >
-                  <div class="col-xs-12 col-ms-12 col-md-2"/>
+                  <div class="col-xs-12 col-ms-12 col-md-2" />
                   <div class="col-xs-12 col-ms-6 col-md-4 text-center">
                     <div
                       v-if="modelA"
@@ -792,13 +796,11 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
-import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
 import HardpointCategory from 'frontend/partials/Models/Hardpoints/Category'
 import Box from 'frontend/components/Box'
 
 export default {
   components: {
-    HardpointIcon,
     FilterGroup,
     HardpointCategory,
     Box,

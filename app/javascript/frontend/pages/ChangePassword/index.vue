@@ -19,7 +19,8 @@
           <h1 v-else>
             <router-link
               :to="{ name: 'home'}"
-              exact>
+              exact
+            >
               {{ t('app') }}
             </router-link>
           </h1>
@@ -37,10 +38,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('currentPassword')"
-              v-validate="'required'"
               id="current-password"
               v-model="form.currentPassword"
+              v-tooltip.right="errors.first('currentPassword')"
+              v-validate="'required'"
               :data-vv-as="t('labels.currentPassword')"
               :placeholder="t('labels.currentPassword')"
               name="currentPassword"
@@ -68,11 +69,11 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('password')"
-              v-validate="'required|min:8'"
               id="password"
               ref="password"
               v-model="form.password"
+              v-tooltip.right="errors.first('password')"
+              v-validate="'required|min:8'"
               :autofocus="!$store.getters.isAuthenticated"
               :data-vv-as="t('labels.password')"
               :placeholder="t('labels.password')"
@@ -100,10 +101,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('passwordConfirmation')"
-              v-validate="'required|confirmed:password'"
               id="password-confirmation"
               v-model="form.passwordConfirmation"
+              v-tooltip.right="errors.first('passwordConfirmation')"
+              v-validate="'required|confirmed:password'"
               :data-vv-as="t('labels.passwordConfirmation')"
               :placeholder="t('labels.passwordConfirmation')"
               name="passwordConfirmation"
@@ -124,13 +125,16 @@
             {{ t('actions.save') }}
           </submit-button>
           <template v-if="!$store.getters.isAuthenticated">
-            <div class="clearfix"/>
+            <div class="clearfix" />
             <br>
             <br>
-            <p class="text-center">{{ t('labels.alreadyRegistered') }}</p>
+            <p class="text-center">
+              {{ t('labels.alreadyRegistered') }}
+            </p>
             <router-link
               class="btn btn-default btn-block"
-              to="/login">
+              to="/login"
+            >
               {{ t('actions.login') }}
             </router-link>
           </template>

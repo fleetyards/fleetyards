@@ -2,7 +2,8 @@
   <div class="labels">
     <transition-group
       name="fade-list"
-      appear>
+      appear
+    >
       <h3
         key="all"
         class="label-title fade-list-item"
@@ -16,7 +17,7 @@
           'active': isActive(group.slug),
         }"
         class="label label-link fade-list-item"
-        @click="filter(group.slug)"
+        @click.exact="filter(group.slug)"
         @click.right.prevent="edit(group)"
       >
         <span class="label-inner">
@@ -30,8 +31,8 @@
         </span>
       </a>
       <a
-        v-tooltip="t('actions.addGroup')"
         key="add"
+        v-tooltip="t('actions.addGroup')"
         class="label label-link fade-list-item"
         @click="add"
       >

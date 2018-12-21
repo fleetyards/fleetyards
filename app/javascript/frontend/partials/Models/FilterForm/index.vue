@@ -56,24 +56,24 @@
       multiple
     />
     <FilterGroup
-      :options="pledgePriceOptions"
       v-model="form.pledgePriceIn"
+      :options="pledgePriceOptions"
       :label="t('labels.filters.models.pledgePrice')"
       name="pldege-price"
       multiple
     />
     <FilterGroup
-      :options="priceOptions"
       v-model="form.priceIn"
+      :options="priceOptions"
       :label="t('labels.filters.models.price')"
       name="price"
       multiple
     />
     <RadioList
+      v-model="form.onSaleEq"
       :label="t('labels.filters.models.onSale')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      v-model="form.onSaleEq"
       name="sale"
     />
     <Btn

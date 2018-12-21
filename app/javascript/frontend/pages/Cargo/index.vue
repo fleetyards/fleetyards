@@ -57,7 +57,8 @@
           name="fade-list"
           class="row"
           tag="div"
-          appear>
+          appear
+        >
           <div
             v-for="route in cargoRoutes"
             :key="`${route.from.slug}-${route.to.slug}-${route.commodity.slug}`"
@@ -79,7 +80,9 @@
                 </Panel>
               </div>
               <div class="col-xs-12 col-sm-4 cargo-route-center">
-                <h2 class="text-center">{{ route.commodity.name }}</h2>
+                <h2 class="text-center">
+                  {{ route.commodity.name }}
+                </h2>
                 <i class="fa fa-angle-double-right" />
                 <div class="profit">
                   {{ route.profit }} {{ uecLabel }}
@@ -129,7 +132,6 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import Btn from 'frontend/components/Btn'
 import InternalLink from 'frontend/components/InternalLink'
 import Panel from 'frontend/components/Panel'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
@@ -138,7 +140,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    Btn,
     InternalLink,
     Panel,
     FilterForm,

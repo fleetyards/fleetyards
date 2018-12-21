@@ -161,7 +161,18 @@ module Api
                               .visible
                               .active
                               .page(params[:page])
-                              .per(per_page(Model))
+                              .per(per_page(ModelModule))
+      end
+
+      def upgrades
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @model_upgrades = model.upgrades
+                               .visible
+                               .active
+                               .page(params[:page])
+                               .per(per_page(ModelUpgrade))
       end
 
       def store_image

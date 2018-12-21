@@ -10,16 +10,24 @@
                 small
                 @click.native="toggleGrouping"
               >
-                <template v-if="grouping">{{ t('actions.disableGrouping') }}</template>
-                <template v-else>{{ t('actions.enableGrouping') }}</template>
+                <template v-if="grouping">
+                  {{ t('actions.disableGrouping') }}
+                </template>
+                <template v-else>
+                  {{ t('actions.enableGrouping') }}
+                </template>
               </Btn>
               <Btn
                 v-show="fleetchart && groupedButton"
                 small
                 @click.native="toggleFleetchartGrouping"
               >
-                <template v-if="fleetchartGrouping">{{ t('actions.disableGrouping') }}</template>
-                <template v-else>{{ t('actions.enableGrouping') }}</template>
+                <template v-if="fleetchartGrouping">
+                  {{ t('actions.disableGrouping') }}
+                </template>
+                <template v-else>
+                  {{ t('actions.enableGrouping') }}
+                </template>
               </Btn>
               <Btn
                 v-show="!fleetchart"
@@ -27,15 +35,23 @@
                 small
                 @click.native="toggleDetails"
               >
-                <template v-if="details">{{ t('actions.hideDetails') }}</template>
-                <template v-else>{{ t('actions.showDetails') }}</template>
+                <template v-if="details">
+                  {{ t('actions.hideDetails') }}
+                </template>
+                <template v-else>
+                  {{ t('actions.showDetails') }}
+                </template>
               </Btn>
               <Btn
                 small
                 @click.native="toggleFleetchart"
               >
-                <template v-if="fleetchart">{{ t('actions.hideFleetchart') }}</template>
-                <template v-else>{{ t('actions.showFleetchart') }}</template>
+                <template v-if="fleetchart">
+                  {{ t('actions.hideFleetchart') }}
+                </template>
+                <template v-else>
+                  {{ t('actions.showFleetchart') }}
+                </template>
               </Btn>
             </div>
           </div>

@@ -5,54 +5,34 @@ class ShopCommodity < ApplicationRecord
 
   belongs_to :commodity_item, polymorphic: true, required: false
   belongs_to :model,
-             -> { where(shop_commodities: { commodity_item_type: 'Model' }) },
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
              foreign_key: 'commodity_item_id',
-             inverse_of: :shop_commodities
-  def model
-    return unless commodity_item_type == 'Model'
-
-    super
-  end
+             inverse_of: :shop_commodities,
+             required: false
 
   belongs_to :component,
-             -> { where(shop_commodities: { commodity_item_type: 'Component' }) },
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Component' }) },
              foreign_key: 'commodity_item_id',
-             inverse_of: :shop_commodities
-  def component
-    return unless commodity_item_type == 'Component'
-
-    super
-  end
+             inverse_of: :shop_commodities,
+             required: false
 
   belongs_to :commodity,
-             -> { where(shop_commodities: { commodity_item_type: 'Commodity' }) },
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Commodity' }) },
              foreign_key: 'commodity_item_id',
-             inverse_of: :shop_commodities
-  def commodity
-    return unless commodity_item_type == 'Commodity'
-
-    super
-  end
+             inverse_of: :shop_commodities,
+             required: false
 
   belongs_to :equipment,
-             -> { where(shop_commodities: { commodity_item_type: 'Equipment' }) },
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Equipment' }) },
              foreign_key: 'commodity_item_id',
-             inverse_of: :shop_commodities
-  def equipment
-    return unless commodity_item_type == 'Equipment'
-
-    super
-  end
+             inverse_of: :shop_commodities,
+             required: false
 
   belongs_to :model_module,
-             -> { where(shop_commodities: { commodity_item_type: 'ModelModule' }) },
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelModule' }) },
              foreign_key: 'commodity_item_id',
-             inverse_of: :shop_commodities
-  def model_module
-    return unless commodity_item_type == 'ModelModule'
-
-    super
-  end
+             inverse_of: :shop_commodities,
+             required: false
 
   belongs_to :shop
 

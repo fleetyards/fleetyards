@@ -64,12 +64,10 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
 
 export default {
   components: {
     Loader,
-    Panel,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {

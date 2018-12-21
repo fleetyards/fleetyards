@@ -16,7 +16,9 @@
           {{ t('actions.empty.reset') }}
         </InternalLink>
       </template>
-      <p v-else>{{ t('texts.empty.info') }}</p>
+      <p v-else>
+        {{ t('texts.empty.info') }}
+      </p>
     </Box>
   </div>
 </template>

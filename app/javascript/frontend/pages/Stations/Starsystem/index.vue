@@ -75,7 +75,9 @@
               }"
             >
               <template v-if="celestialObject.moons.length">
-                <h3 class="sr-only">{{ t('headlines.celestialObjects') }}</h3>
+                <h3 class="sr-only">
+                  {{ t('headlines.celestialObjects') }}
+                </h3>
                 <transition-group
                   name="fade-list"
                   class="flex-row"
