@@ -148,6 +148,7 @@
     "true": "Yes",
     "false": "No",
     "selected": "Selected",
+    "deselect": "Click to deselect",
     "shop": {
       "rentPrice": "rent / day",
       "sellPrice": "price",

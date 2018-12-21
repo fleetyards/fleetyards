@@ -142,6 +142,9 @@ module Api
       def update
         authorize! :update, vehicle
 
+        vehicle.vehicle_modules.destroy_all if vehicle_params[:model_module_ids].present?
+        vehicle.vehicle_upgrades.destroy_all if vehicle_params[:model_upgrade_ids].present?
+
         return if vehicle.update(vehicle_params)
 
         render json: ValidationError.new('vehicle.update', @vehicle.errors), status: :bad_request
@@ -164,9 +167,8 @@ module Api
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
             .permit(
-              :name, :model_id, :purchased, :name_visible, :public,
-              :sale_notify, :flagship, hangar_group_ids: [], model_module_ids: [],
-                                       model_upgrade_ids: []
+              :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship,
+              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [],
             ).merge(user_id: current_user.id)
         end
       end

@@ -1,0 +1,62 @@
+@import "~stylesheets/variables";
+
+.add-addons {
+  justify-content: center;
+
+  .form-group {
+    margin-bottom: 21px;
+  }
+}
+
+.addons {
+  .model-panel {
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+
+    .model-panel-selected {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 25px solid $success;
+      border-top: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 25px solid $success;
+
+      i {
+        color: #fff;
+        position: absolute;
+        bottom: -16px;
+        left: -16px;
+      }
+    }
+
+    .model-panel-body {
+      padding: 15px;
+      flex: 0.5;
+      min-height: 80px;
+      justify-content: flex-end;
+      display: flex;
+      align-items: center;
+    }
+
+    .model-panel-image {
+      flex: 0.5;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.8;
+    }
+
+    h3 {
+      text-align: right;
+      font-size: 20px;
+      margin-bottom: 0;
+      font-family: 'Orbitron', tahoma, sans-serif;
+      font-weight: 400;
+    }
+  }
+}

@@ -55,21 +55,21 @@
     left: 0;
     width: 0;
     height: 0;
-    border-left: 20px solid $gray;
-    border-top: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 20px solid $gray;
+    border-left: 25px solid $gray;
+    border-top: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 25px solid $gray;
 
     &.selected {
-      border-left: 20px solid $success;
-      border-bottom: 20px solid $success;
+      border-left: 25px solid $success;
+      border-bottom: 25px solid $success;
     }
 
     i {
       color: #fff;
       position: absolute;
-      bottom: -14px;
-      left: -14px;
+      bottom: -16px;
+      left: -16px;
     }
   }
 }

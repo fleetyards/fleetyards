@@ -16,42 +16,16 @@
             <legend>
               <h3>{{ t('labels.model.modules') }}:</h3>
             </legend>
-            <div class="row">
-              <div
-                v-for="module in modules"
-                :key="module.id"
-                class="col-xs-12 modules"
-              >
-                <Panel>
-                  <div
-                    class="model-panel"
-                    @click.capture="changeModule(module)"
-                  >
-                    <div
-                      :style="{
-                        'background-image': `url(${module.storeImage})`
-                      }"
-                      class="model-panel-image"
-                    />
-                    <div class="model-panel-body">
-                      <h3>{{ module.name }}</h3>
-                    </div>
-                    <div
-                      v-if="selectedModule(module.id)"
-                      v-tooltip="t('labels.selected')"
-                      class="model-panel-selected"
-                    >
-                      <i class="fa fa-check" />
-                    </div>
-                  </div>
-                </Panel>
-              </div>
-            </div>
+            <Addons
+              v-model="form.modelModuleIds"
+              :addons="modules"
+              :initial-addons="vehicle.modelModuleIds"
+            />
           </fieldset>
           <Loader :loading="loadingModules" />
         </div>
       </div>
-      <div class="row">
+      <div class="flex-row">
         <div
           class="col-xs-12"
         >
@@ -59,37 +33,11 @@
             <legend>
               <h3>{{ t('labels.model.upgrades') }}:</h3>
             </legend>
-            <div class="row">
-              <div
-                v-for="upgrade in upgrades"
-                :key="upgrade.id"
-                class="col-xs-12 upgrades"
-              >
-                <Panel>
-                  <div
-                    class="model-panel"
-                    @click.capture="changeUpgrade(upgrade)"
-                  >
-                    <div
-                      :style="{
-                        'background-image': `url(${upgrade.storeImage})`
-                      }"
-                      class="model-panel-image"
-                    />
-                    <div class="model-panel-body">
-                      <h3>{{ upgrade.name }}</h3>
-                    </div>
-                    <div
-                      v-if="selectedUpgrade(upgrade.id)"
-                      v-tooltip="t('labels.selected')"
-                      class="model-panel-selected"
-                    >
-                      <i class="fa fa-check" />
-                    </div>
-                  </div>
-                </Panel>
-              </div>
-            </div>
+            <Addons
+              v-model="form.modelUpgradeIds"
+              :addons="upgrades"
+              :initial-addons="vehicle.modelModuleIds"
+            />
           </fieldset>
         </div>
         <Loader :loading="loadingUpgrades" />
@@ -113,14 +61,14 @@ import I18n from 'frontend/mixins/I18n'
 import SubmitButton from 'frontend/components/SubmitButton'
 import Modal from 'frontend/components/Modal'
 import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
+import Addons from './Addons'
 
 export default {
   components: {
     SubmitButton,
     Modal,
     Loader,
-    Panel,
+    Addons,
   },
   mixins: [I18n],
   props: {
@@ -141,38 +89,29 @@ export default {
       loadingUpgrades: false,
       submitting: false,
       form: {
-        modelModuleIds: this.vehicle.modelModuleIds,
-        modelUpgradeIds: this.vehicle.modelUpgradeIds,
+        modelModuleIds: [...this.vehicle.modelModuleIds],
+        modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
       },
     }
   },
   watch: {
     vehicle() {
       this.form = {
-        modelModuleIds: this.vehicle.modelModuleIds,
-        modelUpgradeIds: this.vehicle.modelUpgradeIds,
+        modelModuleIds: [...this.vehicle.modelModuleIds],
+        modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
       }
     },
   },
   methods: {
-    selectedModule(moduleId) {
-      return this.form.modelModuleIds.includes(moduleId)
-    },
     selectedUpgrade(upgradeId) {
       return this.form.modelUpgradeIds.includes(upgradeId)
     },
     open() {
-      this.$refs.modal.open()
-    },
-    changeModule(module) {
-      if (this.form.modelModuleIds.includes(module.id)) {
-        const index = this.form.modelModuleIds.findIndex(moduleId => moduleId === module.id)
-        if (index > -1) {
-          this.form.modelModuleIds.splice(index, 1)
-        }
-      } else {
-        this.form.modelModuleIds.push(module.id)
+      this.form = {
+        modelModuleIds: [...this.vehicle.modelModuleIds],
+        modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
       }
+      this.$refs.modal.open()
     },
     changeUpgrade(upgrade) {
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {

@@ -3,7 +3,8 @@
     ref="modal"
     :class="{
       in: isOpen,
-      show: isShow
+      show: isShow,
+      wide: wide,
     }"
     class="modal fade"
     @click.self="close"
@@ -50,6 +51,10 @@ export default {
   mixins: [I18n],
   props: {
     visible: {
+      type: Boolean,
+      default: false,
+    },
+    wide: {
       type: Boolean,
       default: false,
     },

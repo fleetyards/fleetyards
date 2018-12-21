@@ -29,6 +29,12 @@
     margin-right: -15px;
   }
 
+  &.wide  {
+    .modal-dialog {
+      width: 1000px;
+    }
+  }
+
   &.show {
     display: block !important;
   }
