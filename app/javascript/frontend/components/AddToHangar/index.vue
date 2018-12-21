@@ -1,7 +1,7 @@
 <template>
   <Btn
-    v-tooltip.bottom="t('actions.addToHangar')"
     v-if="isAuthenticated"
+    v-tooltip.bottom="t('actions.addToHangar')"
     :clean="clean"
     :small="small"
     @click.native="add"

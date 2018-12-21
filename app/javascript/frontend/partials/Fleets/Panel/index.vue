@@ -2,7 +2,7 @@
   <Panel>
     <div class="panel-fleet">
       <div class="logo">
-        <img :src="fleet.logo" >
+        <img :src="fleet.logo">
       </div>
       <div class="inner">
         <h3>

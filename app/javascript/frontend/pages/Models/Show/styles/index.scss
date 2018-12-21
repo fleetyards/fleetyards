@@ -8,6 +8,12 @@
   box-shadow: 0 0 5px black;
 }
 
+.image-wrapper {
+  max-width: 1200px;
+  position: relative;
+  margin: 0 auto;
+}
+
 .description {
   margin: 20px 0;
 }
@@ -54,13 +60,15 @@
 }
 
 .modules,
+.upgrades,
 .variants {
   h2 {
     font-family: 'Orbitron', sans-serif;
   }
 }
 
-.modules {
+.modules,
+.upgrades {
   .model-panel {
     display: flex;
 

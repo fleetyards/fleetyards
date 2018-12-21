@@ -3,32 +3,31 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
       <HardpointCategory
         v-for="category in ['RSIAvionic', 'RSIModular']"
-        v-if="hardpointsForCategory(category).length > 0"
-        :category="category"
         :key="category"
+        :category="category"
         :hardpoints="hardpointsForCategory(category)"
       />
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <HardpointCategory
         v-for="category in ['RSIPropulsion', 'RSIThruster']"
-        v-if="hardpointsForCategory(category).length > 0"
-        :category="category"
         :key="category"
+        :category="category"
         :hardpoints="hardpointsForCategory(category)"
       />
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <HardpointCategory
         v-for="category in ['RSIWeapon']"
-        v-if="hardpointsForCategory(category).length > 0"
-        :category="category"
         :key="category"
+        :category="category"
         :hardpoints="hardpointsForCategory(category)"
       />
       <div class="row">
         <div class="col-xs-12">
-          <h2 class="hardpoint-category-label">Legend</h2>
+          <h2 class="hardpoint-category-label">
+            Legend
+          </h2>
           <Panel>
             <div class="hardpoint-category hardpoint-legend">
               <div class="row">
@@ -82,7 +81,9 @@
                           points="14,0 7,0 3.5,6.1 7,12.1 14,12.1 17.5,6.1"
                         />
                       </svg>
-                      <div class="hardpoint-label hardpoint-category-label">V</div>
+                      <div class="hardpoint-label hardpoint-category-label">
+                        V
+                      </div>
                     </div>
                     <div class="hardpoint-labels">
                       {{ t('labels.hardpoint.categoryOrRackSize') }}
@@ -101,7 +102,9 @@
                           r="6.38"
                         />
                       </svg>
-                      <div class="hardpoint-label hardpoint-mounts-label">2</div>
+                      <div class="hardpoint-label hardpoint-mounts-label">
+                        2
+                      </div>
                     </div>
                     <div class="hardpoint-labels">
                       {{ t('labels.hardpoint.mounts') }}

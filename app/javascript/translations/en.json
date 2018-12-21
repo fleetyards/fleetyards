@@ -52,6 +52,7 @@
     "hangar": "My Hangar",
     "hangarPublic": "%{user} Hangar",
     "myVehicle": "My %{vehicle}",
+    "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
     "impressum": "Impressum",
     "privacy": "Privacy policy",
     "requestPassword": "Request Password",
@@ -146,6 +147,7 @@
   "labels": {
     "true": "Yes",
     "false": "No",
+    "selected": "Selected",
     "shop": {
       "rentPrice": "rent / day",
       "sellPrice": "price",
@@ -236,8 +238,10 @@
     "model": {
       "variants": "Variants",
       "modules": "Modules",
+      "upgrades": "Upgrade-Kits",
       "brochure": "Brochure",
       "onSale": "On Sale",
+      "addons": "Modules & Upgrade-Kits",
       "purchased": "Purchased",
       "productionStatus": {
         "in-production": "In Production",

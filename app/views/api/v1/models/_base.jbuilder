@@ -45,3 +45,5 @@ json.focus model.focus
 json.rsi_id model.rsi_id
 json.has_images model.images.count.positive?
 json.has_videos model.videos.count.positive?
+json.has_modules model.modules.count.positive?
+json.has_upgrades model.upgrades.count.positive?

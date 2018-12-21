@@ -8,7 +8,9 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">{{ t('station.type') }}:</div>
+          <div class="metrics-label">
+            {{ t('station.type') }}:
+          </div>
           <div
             v-tooltip="station.typeLabel"
             class="metrics-value"
@@ -17,7 +19,9 @@
           </div>
         </div>
         <div class="col-xs-6">
-          <div class="metrics-label">{{ t('station.location') }}:</div>
+          <div class="metrics-label">
+            {{ t('station.location') }}:
+          </div>
           <div
             v-tooltip="station.location"
             class="metrics-value"

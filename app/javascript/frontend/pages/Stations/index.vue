@@ -6,7 +6,9 @@
   >
     <div class="row">
       <div class="col-xs-12">
-        <h1 class="sr-only">{{ t('headlines.stations') }}</h1>
+        <h1 class="sr-only">
+          {{ t('headlines.stations') }}
+        </h1>
       </div>
     </div>
     <div class="row">
@@ -165,7 +167,8 @@
           />
         </div>
       </div>
-  </div></section>
+    </div>
+  </section>
 </template>
 
 <script>

@@ -132,7 +132,7 @@
             </div>
             <div
               v-for="(commodity, index) in commodities"
-              :key="index"
+              :key="`commodities-${index}`"
               class="fade-list-item col-xs-12 flex-list-item"
             >
               <ShopItemRow

@@ -9,7 +9,9 @@
       <div class="col-xs-12 col-md-9 metrics-block">
         <div class="row">
           <div class="col-xs-6">
-            <div class="metrics-label">{{ t('celestialObject.type') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.type') }}:
+            </div>
             <div
               v-tooltip="celestialObject.type"
               class="metrics-value"
@@ -18,7 +20,9 @@
             </div>
           </div>
           <div class="col-xs-6">
-            <div class="metrics-label">{{ t('celestialObject.subType') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.subType') }}:
+            </div>
             <div
               v-tooltip="celestialObject.subType"
               class="metrics-value"
@@ -27,7 +31,9 @@
             </div>
           </div>
           <div class="col-xs-6">
-            <div class="metrics-label">{{ t('celestialObject.habitable') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.habitable') }}:
+            </div>
             <div
               v-tooltip="celestialObject.habitable"
               class="metrics-value"
@@ -36,7 +42,9 @@
             </div>
           </div>
           <div class="col-xs-6">
-            <div class="metrics-label">{{ t('celestialObject.fairchanceakt') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.fairchanceakt') }}:
+            </div>
             <div
               v-tooltip="celestialObject.fairchanceakt"
               class="metrics-value"
@@ -57,7 +65,9 @@
       <div class="col-xs-12 col-md-9 metrics-block">
         <div class="row">
           <div class="col-xs-4">
-            <div class="metrics-label">{{ t('celestialObject.population') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.population') }}:
+            </div>
             <div
               v-tooltip="celestialObject.population"
               class="metrics-value"
@@ -66,7 +76,9 @@
             </div>
           </div>
           <div class="col-xs-4">
-            <div class="metrics-label">{{ t('celestialObject.economy') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.economy') }}:
+            </div>
             <div
               v-tooltip="celestialObject.economy"
               class="metrics-value"
@@ -75,7 +87,9 @@
             </div>
           </div>
           <div class="col-xs-4">
-            <div class="metrics-label">{{ t('celestialObject.danger') }}:</div>
+            <div class="metrics-label">
+              {{ t('celestialObject.danger') }}:
+            </div>
             <div
               v-tooltip="celestialObject.danger"
               class="metrics-value"

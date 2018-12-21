@@ -2,7 +2,9 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1 class="sr-only">{{ t('headlines.shops') }}</h1>
+        <h1 class="sr-only">
+          {{ t('headlines.shops') }}
+        </h1>
       </div>
     </div>
     <div class="row">
@@ -64,7 +66,7 @@
         >
           <div
             v-for="(shop, index) in shops"
-            :key="index"
+            :key="`shops-${index}`"
             class="col-xs-12 col-md-6 fade-list-item"
           >
             <Panel
@@ -72,8 +74,8 @@
               class="shop-list"
             >
               <div
-                v-lazy:background-image="shop.storeImageMedium"
                 :key="shop.storeImageMedium"
+                v-lazy:background-image="shop.storeImageMedium"
                 class="panel-bg"
               />
               <div class="row">
@@ -117,7 +119,8 @@
           />
         </div>
       </div>
-  </div></section>
+    </div>
+  </section>
 </template>
 
 <script>

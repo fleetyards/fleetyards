@@ -9,16 +9,16 @@
         :to="link"
       >
         <div
-          v-lazy:background-image="commodity.storeImageThumb"
           :key="commodity.storeImageThumb"
+          v-lazy:background-image="commodity.storeImageThumb"
           class="image"
           alt="storeImage"
         />
       </router-link>
       <div
-        v-lazy:background-image="commodity.storeImageThumb"
         v-else
         :key="commodity.storeImageThumb"
+        v-lazy:background-image="commodity.storeImageThumb"
         class="image"
         alt="storeImage"
       />
@@ -74,7 +74,9 @@
               <b>{{ t('commodityItem.rateOfFire') }}:</b>
               {{ toNumber(commodity.item.rateOfFire, 'rateOfFire') }}
             </li>
-            <li v-if="commodity.item.extras">{{ commodity.item.extras }}</li>
+            <li v-if="commodity.item.extras">
+              {{ commodity.item.extras }}
+            </li>
           </ul>
         </div>
       </div>
@@ -84,21 +86,27 @@
       v-if="selling"
       class="price"
     >
-      <span class="price-label">{{ t('labels.shop.sellPrice') }}:&nbsp;</span>
+      <span class="price-label">
+        {{ t('labels.shop.sellPrice') }}:&nbsp;
+      </span>
       {{ toUEC(commodity.sellPrice) }}
     </div>
     <div
       v-if="buying"
       class="price"
     >
-      <span class="price-label">{{ t('labels.shop.buyPrice') }}:&nbsp;</span>
+      <span class="price-label">
+        {{ t('labels.shop.buyPrice') }}:&nbsp;
+      </span>
       {{ toUEC(commodity.buyPrice) }}
     </div>
     <div
       v-if="rental"
       class="rent-price"
     >
-      <span class="price-label">{{ t('labels.shop.rentPrice') }}:&nbsp;</span>
+      <span class="price-label">
+        {{ t('labels.shop.rentPrice') }}:&nbsp;
+      </span>
       {{ t('shop.rentalPrice', { price: toUEC(commodity.rentPrice) }) }}
     </div>
   </div>

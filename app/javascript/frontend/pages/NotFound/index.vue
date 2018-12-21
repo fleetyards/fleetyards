@@ -2,7 +2,8 @@
   <div class="container">
     <Box
       class="error"
-      large>
+      large
+    >
       <h1>{{ t('headlines.error') }}</h1>
       <p>{{ t('texts.error') }}</p>
       <template slot="footer">

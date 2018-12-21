@@ -131,6 +131,10 @@ en:
       edit: Edit Module
       index: Modules
       new: New Module
+    model_upgrade:
+      edit: Edit Upgrade
+      index: Upgrades
+      new: New Upgrade
     not_found: 404
     sign_in: Login
     password:

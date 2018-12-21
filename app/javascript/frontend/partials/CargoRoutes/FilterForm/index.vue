@@ -16,8 +16,8 @@
     />
     <FilterGroup
       v-if="tradeHubOptions.length > 0"
-      :options="tradeHubOptions"
       v-model="form.tradeHubIn"
+      :options="tradeHubOptions"
       :label="t('labels.filters.cargoRoutes.tradeHub')"
       :name="`${prefix}-tradehubs`"
       searchable
@@ -34,8 +34,8 @@
     />
     <FilterGroup
       v-if="planetOptions.length > 0"
-      :options="planetOptions"
       v-model="form.planetIn"
+      :options="planetOptions"
       :name="`${prefix}-planets`"
       :label="t('labels.filters.cargoRoutes.planet')"
       searchable

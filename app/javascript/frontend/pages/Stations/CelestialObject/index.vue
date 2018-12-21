@@ -167,8 +167,8 @@
                     class="col-xs-12 col-md-3 fade-list-item"
                   >
                     <ShopPanel
-                      :item="shop"
                       :id="`${station.slug}-${shop.slug}`"
+                      :item="shop"
                       :route="{
                         name: 'shop',
                         params: {

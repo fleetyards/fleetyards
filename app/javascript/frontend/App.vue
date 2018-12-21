@@ -7,8 +7,8 @@
     class="app-body"
   >
     <div
-      v-lazy:background-image="$store.state.backgroundImage"
       :key="$store.state.backgroundImage"
+      v-lazy:background-image="$store.state.backgroundImage"
       class="background-image"
     />
     <transition

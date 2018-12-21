@@ -9,6 +9,12 @@ class Vehicle < ApplicationRecord
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
 
+  has_many :vehicle_modules, dependent: :destroy
+  has_many :model_modules, through: :vehicle_modules
+
+  has_many :vehicle_upgrades, dependent: :destroy
+  has_many :model_upgrades, through: :vehicle_upgrades
+
   validates :model_id, presence: true
 
   NULL_ATTRS = %w[name].freeze
