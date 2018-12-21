@@ -84,13 +84,11 @@
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
-import RadioList from 'frontend/components/Form/RadioList'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     FilterGroup,
-    RadioList,
     Btn,
   },
   mixins: [I18n, Filters],

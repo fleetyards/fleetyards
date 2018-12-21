@@ -52,6 +52,8 @@ module Api
 
         vehicles = @q.result
         models = vehicles.map(&:model)
+        upgrades = vehicles.map(&:model_upgrades).flatten
+        modules = vehicles.map(&:model_modules).flatten
 
         @count = OpenStruct.new(
           total: vehicles.count,
@@ -63,7 +65,7 @@ module Api
             )
           end,
           metrics: {
-            total_money: models.map(&:fallback_pledge_price).sum(&:to_i),
+            total_money: models.map(&:fallback_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
             total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
             total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
             total_cargo: models.map(&:display_cargo).sum(&:to_i)
@@ -163,7 +165,8 @@ module Api
           params.transform_keys(&:underscore)
             .permit(
               :name, :model_id, :purchased, :name_visible, :public,
-              :sale_notify, :flagship, hangar_group_ids: []
+              :sale_notify, :flagship, hangar_group_ids: [], model_module_ids: [],
+                                       model_upgrade_ids: []
             ).merge(user_id: current_user.id)
         end
       end

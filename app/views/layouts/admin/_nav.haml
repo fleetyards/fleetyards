@@ -1,19 +1,20 @@
 %ul.nav.navbar-nav
   %li{class: active_nav?('admin')}
     = link_to I18n.t(:"nav.home"), admin_root_path
-  %li.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components admin-model_modules))}
+  %li.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components admin-model_modules admin-model_upgrades))}
     %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
       = Model.name.humanize.pluralize
       %b.caret
     %ul.dropdown-menu
       %li{class: active_nav?('admin-models')}
         = link_to Model.name.humanize.pluralize, admin_models_path
+      %li{class: active_nav?('admin-model_modules')}
+        = link_to ModelModule.name.humanize.pluralize, admin_model_modules_path
+      %li{class: active_nav?('admin-model_upgrades')}
+        = link_to ModelUpgrade.name.humanize.pluralize, admin_model_upgrades_path
       %li.divider
       %li{class: active_nav?('admin-manufacturers')}
         = link_to Manufacturer.name.humanize.pluralize, admin_manufacturers_path
-      %li.divider
-      %li{class: active_nav?('admin-model_modules')}
-        = link_to ModelModule.name.humanize.pluralize, admin_model_modules_path
       %li.divider
       %li{class: active_nav?('admin-components')}
         = link_to Component.name.humanize.pluralize, admin_components_path

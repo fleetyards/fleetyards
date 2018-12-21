@@ -74,7 +74,7 @@
       </a>
     </li>
   </ul>
-  <div v-else/>
+  <div v-else />
 </template>
 
 <script>

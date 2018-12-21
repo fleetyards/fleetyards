@@ -12,10 +12,12 @@
           :key="index"
           class="col-xs-6"
         >
-          <div class="metrics-label">{{ dock.size }} {{ dock.typeLabel }}:</div>
+          <div class="metrics-label">
+            {{ dock.size }} {{ dock.typeLabel }}:
+          </div>
           <div
-            v-tooltip="`${dock.size} ${dock.typeLabel}`"
             :key="index"
+            v-tooltip="`${dock.size} ${dock.typeLabel}`"
             class="metrics-value"
           >
             {{ dock.count }}

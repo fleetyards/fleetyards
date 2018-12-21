@@ -12,7 +12,9 @@
           :key="index"
           class="col-xs-6"
         >
-          <div class="metrics-label">{{ hab.typeLabel }}:</div>
+          <div class="metrics-label">
+            {{ hab.typeLabel }}:
+          </div>
           <div
             v-tooltip="hab.typeLabel"
             class="metrics-value"

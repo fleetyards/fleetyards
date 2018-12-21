@@ -1,14 +1,16 @@
 <template>
   <div class="form-group">
     <input
+      :id="checkboxID"
       :checked="value ? 'checked' : null"
       :disabled="disabled ? 'disabled' : null"
-      :id="checkboxID"
       class="checkbox"
       type="checkbox"
       @change="change"
     >
-    <label :for="checkboxID">{{ label }}</label>
+    <label :for="checkboxID">
+      {{ label }}
+    </label>
   </div>
 </template>
 

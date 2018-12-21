@@ -60,13 +60,15 @@
 }
 
 .modules,
+.upgrades,
 .variants {
   h2 {
     font-family: 'Orbitron', sans-serif;
   }
 }
 
-.modules {
+.modules,
+.upgrades {
   .model-panel {
     display: flex;
 

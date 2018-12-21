@@ -4,7 +4,9 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="sr-only">{{ t('headlines.fleets') }}</h1>
+            <h1 class="sr-only">
+              {{ t('headlines.fleets') }}
+            </h1>
           </div>
         </div>
         <div
@@ -12,7 +14,9 @@
           class="row"
         >
           <div class="col-xs-12">
-            <h2 class="text-center">- My Fleets -</h2>
+            <h2 class="text-center">
+              - My Fleets -
+            </h2>
             <transition-group
               name="fade-list"
               class="flex-row"
@@ -97,7 +101,6 @@ import Pagination from 'frontend/mixins/Pagination'
 import FleetModal from 'frontend/partials/Fleets/Modal'
 import FleetPanel from 'frontend/partials/Fleets/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 
@@ -105,7 +108,6 @@ export default {
   components: {
     FleetModal,
     FleetPanel,
-    Loader,
     Btn,
     EmptyBox,
   },

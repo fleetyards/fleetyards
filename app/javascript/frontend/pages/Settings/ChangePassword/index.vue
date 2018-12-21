@@ -12,12 +12,14 @@
           :class="{'has-error has-feedback': errors.has('currentPassword')}"
           class="form-group"
         >
-          <label for="current-password">{{ t('labels.currentPassword') }}</label>
+          <label for="current-password">
+            {{ t('labels.currentPassword') }}
+          </label>
           <input
-            v-tooltip.right="errors.first('currentPassword')"
-            v-validate="'required'"
             id="current-password"
             v-model="form.currentPassword"
+            v-tooltip.right="errors.first('currentPassword')"
+            v-validate="'required'"
             :data-vv-as="t('labels.currentPassword')"
             :placeholder="t('labels.currentPassword')"
             name="currentPassword"
@@ -36,13 +38,15 @@
           :class="{'has-error has-feedback': errors.has('password')}"
           class="form-group"
         >
-          <label for="password">{{ t('labels.password') }}</label>
+          <label for="password">
+            {{ t('labels.password') }}
+          </label>
           <input
-            v-tooltip.right="errors.first('password')"
-            v-validate="'required|min:8'"
             id="password"
             ref="password"
             v-model="form.password"
+            v-tooltip.right="errors.first('password')"
+            v-validate="'required|min:8'"
             :autofocus="!$store.getters.isAuthenticated"
             :data-vv-as="t('labels.password')"
             :placeholder="t('labels.password')"
@@ -61,12 +65,14 @@
           :class="{'has-error has-feedback': errors.has('passwordConfirmation')}"
           class="form-group"
         >
-          <label for="password-confirmation">{{ t('labels.passwordConfirmation') }}</label>
+          <label for="password-confirmation">
+            {{ t('labels.passwordConfirmation') }}
+          </label>
           <input
-            v-tooltip.right="errors.first('passwordConfirmation')"
-            v-validate="'required|confirmed:password'"
             id="password-confirmation"
             v-model="form.passwordConfirmation"
+            v-tooltip.right="errors.first('passwordConfirmation')"
+            v-validate="'required|confirmed:password'"
             :data-vv-as="t('labels.passwordConfirmation')"
             :placeholder="t('labels.passwordConfirmation')"
             name="passwordConfirmation"

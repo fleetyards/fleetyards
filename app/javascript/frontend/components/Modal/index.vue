@@ -19,7 +19,9 @@
             >
               <i class="fal fa-times" />
             </a>
-            <h2 class="modal-title">{{ title }}</h2>
+            <h2 class="modal-title">
+              {{ title }}
+            </h2>
           </div>
           <div class="modal-body">
             <slot />
@@ -30,7 +32,7 @@
         v-if="$slots['footer']"
         class="modal-footer"
       >
-        <slot name="footer"/>
+        <slot name="footer" />
         <div class="clearfix" />
       </div>
     </div>
@@ -55,10 +57,6 @@ export default {
       type: String,
       required: true,
     },
-    onClose: {
-      type: Function,
-      default: null,
-    },
   },
   data() {
     return {
@@ -72,6 +70,7 @@ export default {
       this.$nextTick(function onOpen() {
         this.isOpen = true
         this.$refs.modal.focus()
+        this.$emit('open')
       })
     },
     close() {
@@ -79,9 +78,7 @@ export default {
       this.$nextTick(function onClose() {
         setTimeout(() => {
           this.isShow = false
-          if (this.onClose) {
-            this.onClose()
-          }
+          this.$emit('close')
         }, 500)
       })
     },

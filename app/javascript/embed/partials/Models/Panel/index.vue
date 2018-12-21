@@ -13,7 +13,7 @@
           >
             {{ countLabel }}{{ model.name }}
           </a>
-          <br >
+          <br>
           <small v-html="model.manufacturer.name" />
         </h2>
       </div>

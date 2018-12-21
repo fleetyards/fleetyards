@@ -32,6 +32,17 @@ class Model < ApplicationRecord
            through: :module_hardpoints,
            source: :model_module
 
+  has_many :upgrades,
+           class_name: 'ModelUpgrade',
+           dependent: :destroy,
+           inverse_of: :model
+
+  has_many :upgrade_kits,
+           dependent: :destroy
+  has_many :upgrades,
+           through: :upgrade_kits,
+           source: :model_upgrade
+
   has_many :images,
            as: :gallery,
            dependent: :destroy,

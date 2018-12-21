@@ -17,7 +17,9 @@
           aria-label="Toggle Navigation"
           @click.stop.prevent="toggle"
         >
-          <span class="sr-only">Toggle Navigation</span>
+          <span class="sr-only">
+            Toggle Navigation
+          </span>
           <span class="icon-bar top-bar" />
           <span class="icon-bar middle-bar" />
           <span class="icon-bar bottom-bar" />
@@ -208,15 +210,15 @@
                 @click="toggleUserMenu"
               >
                 <span
-                  v-tooltip="t('labels.rsiVerified')"
                   v-if="currentUser.rsiVerified"
+                  v-tooltip="t('labels.rsiVerified')"
                   class="verified"
                 >
                   <i class="fa fa-check" />
                 </span>
                 <img
-                  v-tooltip.left="currentUser.username"
                   v-if="citizen"
+                  v-tooltip.left="currentUser.username"
                   :src="citizen.avatar"
                   class="avatar"
                   alt="avatar"
@@ -224,13 +226,15 @@
                   height="36"
                 >
                 <span
-                  v-tooltip.left="currentUser.username"
                   v-if="!citizen || !citizen.avatar"
+                  v-tooltip.left="currentUser.username"
                   class="avatar"
                 >
                   <i class="fa fa-user" />
                 </span>
-                <span class="username">{{ currentUser.username }}</span>
+                <span class="username">
+                  {{ currentUser.username }}
+                </span>
               </a>
               <ul class="dropdown-menu navbar-right">
                 <router-link
@@ -251,7 +255,9 @@
                 </li>
                 <li class="divider" />
                 <li>
-                  <a @click="logout">{{ t('nav.logout') }}</a>
+                  <a @click="logout">
+                    {{ t('nav.logout') }}
+                  </a>
                 </li>
               </ul>
             </li>

@@ -11,12 +11,14 @@
           :class="{'has-error has-feedback': errors.has('username')}"
           class="form-group"
         >
-          <label for="username">{{ t('labels.username') }}</label>
+          <label for="username">
+            {{ t('labels.username') }}
+          </label>
           <input
-            v-tooltip.bottom-end="errors.first('username')"
-            v-validate="'required|alpha_dash'"
             id="username"
             v-model="form.username"
+            v-tooltip.bottom-end="errors.first('username')"
+            v-validate="'required|alpha_dash'"
             :data-vv-as="t('labels.username')"
             :placeholder="t('labels.username')"
             name="username"
@@ -37,12 +39,14 @@
           :class="{'has-error has-feedback': errors.has('email')}"
           class="form-group"
         >
-          <label for="email">{{ t('labels.email') }}</label>
+          <label for="email">
+            {{ t('labels.email') }}
+          </label>
           <input
-            v-tooltip.bottom-end="errors.first('email')"
-            v-validate="'required|email'"
             id="email"
             v-model="form.email"
+            v-tooltip.bottom-end="errors.first('email')"
+            v-validate="'required|email'"
             :data-vv-as="t('labels.email')"
             name="email"
             type="email"
@@ -72,14 +76,18 @@
           :class="{'has-error has-feedback': errors.has('rsiHandle')}"
           class="form-group"
         >
-          <label for="rsi-handle">{{ t('labels.rsiHandle') }}</label>
+          <label for="rsi-handle">
+            {{ t('labels.rsiHandle') }}
+          </label>
           <div class="input-group">
-            <span class="input-group-addon">https://robertsspaceindustries.com/citizens/</span>
+            <span class="input-group-addon">
+              https://robertsspaceindustries.com/citizens/
+            </span>
             <input
-              v-tooltip.bottom-end="errors.first('rsiHandle')"
-              v-validate="'alpha_dash'"
               id="rsi-handle"
               v-model="form.rsiHandle"
+              v-tooltip.bottom-end="errors.first('rsiHandle')"
+              v-validate="'alpha_dash'"
               :data-vv-as="t('labels.rsiHandle')"
               name="rsiHandle"
               type="text"
@@ -168,7 +176,6 @@
 import { mapGetters } from 'vuex'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/components/Btn'
 import SubmitButton from 'frontend/components/SubmitButton'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import { success } from 'frontend/lib/Noty'
@@ -179,7 +186,6 @@ export default {
   components: {
     SubmitButton,
     Checkbox,
-    Btn,
     Loader,
     Panel,
   },

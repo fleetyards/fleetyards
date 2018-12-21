@@ -6,7 +6,8 @@
           <h1>
             <router-link
               to="/"
-              exact>
+              exact
+            >
               {{ t('app') }}
             </router-link>
           </h1>
@@ -23,10 +24,10 @@
               </label>
             </transition>
             <input
-              v-tooltip.right="errors.first('email')"
-              v-validate="'required|email'"
               id="email"
               v-model="form.email"
+              v-tooltip.right="errors.first('email')"
+              v-validate="'required|email'"
               :data-vv-as="t('labels.email')"
               :placeholder="t('labels.email')"
               name="email"
@@ -47,13 +48,16 @@
           >
             {{ t('actions.requestPassword') }}
           </submit-button>
-          <div class="clearfix"/>
+          <div class="clearfix" />
           <br>
           <br>
-          <p class="text-center">{{ t('labels.alreadyRegistered') }}</p>
+          <p class="text-center">
+            {{ t('labels.alreadyRegistered') }}
+          </p>
           <router-link
             class="btn btn-default btn-block"
-            to="/login">
+            to="/login"
+          >
             {{ t('actions.login') }}
           </router-link>
         </form>

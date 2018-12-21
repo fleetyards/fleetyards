@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue, TransitionStub } from '@vue/test-utils'
 import router from 'frontend/lib/Router'
 import Vuex from 'vuex'
 import store from 'frontend/lib/Store'
@@ -15,7 +15,10 @@ global.mountVM = function mountVM(Component, propsData) {
   localVue.use(VueLazyload)
   localVue.use(VTooltip)
 
-  return mount(Component, {
-    store, router, localVue, propsData,
+  return shallowMount(Component, {
+    store,
+    router,
+    localVue,
+    propsData,
   })
 }

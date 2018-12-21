@@ -8,7 +8,9 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">{{ t('shop.type') }}:</div>
+          <div class="metrics-label">
+            {{ t('shop.type') }}:
+          </div>
           <div
             v-tooltip="shop.typeLabel"
             class="metrics-value"
@@ -19,7 +21,9 @@
       </div>
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">{{ t('shop.celestialObject') }}:</div>
+          <div class="metrics-label">
+            {{ t('shop.celestialObject') }}:
+          </div>
           <div
             v-tooltip="shop.celestialObject.name"
             class="metrics-value"
@@ -28,7 +32,9 @@
           </div>
         </div>
         <div class="col-xs-6">
-          <div class="metrics-label">{{ t('shop.station') }}:</div>
+          <div class="metrics-label">
+            {{ t('shop.station') }}:
+          </div>
           <div
             v-tooltip="shop.station.name"
             class="metrics-value"

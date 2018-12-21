@@ -6,7 +6,8 @@
           <h1>
             <router-link
               to="/"
-              exact>
+              exact
+            >
               {{ t('app') }}
             </router-link>
           </h1>
@@ -16,14 +17,16 @@
               :placeholder="t('labels.login')"
               type="text"
               autofocus
-              class="form-control">
+              class="form-control"
+            >
           </div>
           <div class="form-group">
             <input
               v-model="form.password"
               :placeholder="t('labels.password')"
               type="password"
-              class="form-control">
+              class="form-control"
+            >
           </div>
           <Checkbox
             id="rememberMe"
@@ -36,19 +39,22 @@
           >
             {{ t('actions.login') }}
           </submit-button>
-          <div class="clearfix"/>
+          <div class="clearfix" />
           <br>
           <br>
           <div class="text-center">
             <router-link
               class="btn btn-link"
-              to="/password/request">
+              to="/password/request"
+            >
               {{ t('actions.reset-password') }}
             </router-link>
           </div>
           <br>
           <br>
-          <p class="text-center">{{ t('labels.signUp') }}</p>
+          <p class="text-center">
+            {{ t('labels.signUp') }}
+          </p>
           <InternalLink
             :route="{name: 'signup'}"
             block

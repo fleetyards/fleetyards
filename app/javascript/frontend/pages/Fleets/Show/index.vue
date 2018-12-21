@@ -9,10 +9,12 @@
               class="to-fleetyards"
             >
               <i class="fal fa-chevron-left" />
-              <span class="brand">{{ t('app') }}</span>
+              <span class="brand">
+                {{ t('app') }}
+              </span>
             </router-link>
             <h1 v-if="fleet">
-              <img :src="fleet.logo" >
+              <img :src="fleet.logo">
               <a
                 :href="`https://robertsspaceindustries.com/orgs/${fleet.sid}`"
                 target="_blank"
@@ -22,13 +24,13 @@
               </a>
               <span class="activities">
                 <img
-                  v-tooltip="fleet.mainActivity"
                   v-if="fleet"
+                  v-tooltip="fleet.mainActivity"
                   :src="acitivtyIcons[fleet.mainActivity]"
                 >
                 <img
-                  v-tooltip="fleet.secondaryActivity"
                   v-if="fleet"
+                  v-tooltip="fleet.secondaryActivity"
                   :src="acitivtyIcons[fleet.secondaryActivity]"
                 >
               </span>
@@ -54,7 +56,7 @@
               </span>
             </h2>
           </div>
-          <div class="col-xs-12 col-md-4 text-right"/>
+          <div class="col-xs-12 col-md-4 text-right" />
         </div>
         <div class="row">
           <ModelClassLabels
