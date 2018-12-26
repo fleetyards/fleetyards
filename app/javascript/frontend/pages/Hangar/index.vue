@@ -215,6 +215,8 @@
                   :vehicle="vehicle"
                   :details="hangarDetailsVisible"
                   :hangar-groups="hangarGroups"
+                  :on-edit="showEditModal"
+                  :on-addons="showAddonsModal"
                 />
               </div>
             </transition-group>
@@ -239,6 +241,11 @@
         </div>
       </div>
     </div>
+    <VehicleModal
+      ref="vehicleModal"
+      :hangar-groups="hangarGroups"
+    />
+    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -263,6 +270,8 @@ import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import vueSlider from 'vue-slider-component'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
+import VehicleModal from 'frontend/partials/Vehicles/Modal'
+import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 
 export default {
   components: {
@@ -277,6 +286,8 @@ export default {
     ModelClassLabels,
     GroupLabels,
     vueSlider,
+    VehicleModal,
+    AddonsModal,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
@@ -361,6 +372,12 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
+    showEditModal(vehicle) {
+      this.$refs.vehicleModal.open(vehicle)
+    },
+    showAddonsModal(vehicle) {
+      this.$refs.addonsModal.open(vehicle)
+    },
     toggleFullscreen() {
       this.fullscreen = !this.hangarFilterVisible
     },

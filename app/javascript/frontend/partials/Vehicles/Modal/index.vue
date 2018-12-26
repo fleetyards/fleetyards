@@ -1,5 +1,6 @@
 <template>
   <Modal
+    v-if="vehicle"
     ref="modal"
     :title="t('headlines.myVehicle', { vehicle: vehicle.model.name })"
     :visible="visible"
@@ -121,10 +122,6 @@ export default {
   },
   mixins: [I18n],
   props: {
-    vehicle: {
-      type: Object,
-      required: true,
-    },
     hangarGroups: {
       type: Array,
       default() {
@@ -140,15 +137,8 @@ export default {
     return {
       submitting: false,
       deleting: false,
-      form: {
-        name: this.vehicle.name,
-        purchased: this.vehicle.purchased,
-        flagship: this.vehicle.flagship,
-        public: this.vehicle.public,
-        saleNotify: this.vehicle.saleNotify,
-        nameVisible: this.vehicle.nameVisible,
-        hangarGroupIds: this.vehicle.hangarGroupIds,
-      },
+      vehicle: null,
+      form: {},
     }
   },
   watch: {
@@ -168,8 +158,11 @@ export default {
     selected(groupId) {
       return this.form.hangarGroupIds.includes(groupId)
     },
-    open() {
-      this.$refs.modal.open()
+    open(vehicle) {
+      this.vehicle = vehicle
+      this.$nextTick(() => {
+        this.$refs.modal.open()
+      })
     },
     remove() {
       this.deleting = true

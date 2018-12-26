@@ -35,11 +35,11 @@
             />
           </small>
           <a
-            v-if="isMyShip"
+            v-if="isMyShip && onEdit"
             :title="t('actions.edit')"
             :aria-label="t('actions.edit')"
             class="btn btn-link panel-edit-button"
-            @click="showEditModal"
+            @click="onEdit(vehicle)"
           >
             <i class="fa fa-pencil" />
           </a>
@@ -76,13 +76,13 @@
           </div>
         </router-link>
         <div
-          v-if="upgradable"
+          v-if="upgradable && onAddons"
           v-tooltip="t('labels.model.addons')"
           class="addons"
           :class="{
             selected: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length)
           }"
-          @click="showAddonsModal"
+          @click="onAddons(vehicle)"
         >
           <i
             class="fa-plus-octagon"
@@ -118,17 +118,6 @@
         </li>
       </ul>
     </Panel>
-    <VehicleModal
-      v-if="isMyShip"
-      ref="vehicleModal"
-      :vehicle="vehicle"
-      :hangar-groups="hangarGroups"
-    />
-    <AddonsModal
-      v-if="upgradable"
-      ref="addonsModal"
-      :vehicle="vehicle"
-    />
   </div>
 </template>
 
@@ -136,16 +125,12 @@
 import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import AddToHangar from 'frontend/components/AddToHangar'
-import VehicleModal from 'frontend/partials/Vehicles/Modal'
-import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
   components: {
     Panel,
-    VehicleModal,
-    AddonsModal,
     AddToHangar,
     ModelTopMetrics,
     ModelBaseMetrics,
@@ -160,6 +145,18 @@ export default {
       type: Object,
       default() {
         return {}
+      },
+    },
+    onEdit: {
+      type: Function,
+      default() {
+        return () => {}
+      },
+    },
+    onAddons: {
+      type: Function,
+      default() {
+        return () => {}
       },
     },
     details: {
@@ -209,13 +206,6 @@ export default {
   methods: {
     filterManufacturerQuery(manufacturer) {
       return { manufacturerIn: [manufacturer] }
-    },
-    showEditModal() {
-      this.$refs.vehicleModal.open()
-    },
-    showAddonsModal(ev) {
-      ev.preventDefault()
-      this.$refs.addonsModal.open()
     },
   },
 }

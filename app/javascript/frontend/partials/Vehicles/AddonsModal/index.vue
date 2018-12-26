@@ -1,5 +1,6 @@
 <template>
   <Modal
+    v-if="vehicle"
     ref="modal"
     :title="t('headlines.myVehicleAddons', { vehicle: vehicle.model.name })"
     :visible="visible"
@@ -72,10 +73,6 @@ export default {
   },
   mixins: [I18n],
   props: {
-    vehicle: {
-      type: Object,
-      required: true,
-    },
     visible: {
       type: Boolean,
       default: false,
@@ -84,14 +81,12 @@ export default {
   data() {
     return {
       modules: [],
+      vehicle: null,
       loadingModules: false,
       upgrades: [],
       loadingUpgrades: false,
       submitting: false,
-      form: {
-        modelModuleIds: [...this.vehicle.modelModuleIds],
-        modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
-      },
+      form: {},
     }
   },
   watch: {
@@ -106,12 +101,15 @@ export default {
     selectedUpgrade(upgradeId) {
       return this.form.modelUpgradeIds.includes(upgradeId)
     },
-    open() {
+    open(vehicle) {
+      this.vehicle = vehicle
       this.form = {
         modelModuleIds: [...this.vehicle.modelModuleIds],
         modelUpgradeIds: [...this.vehicle.modelUpgradeIds],
       }
-      this.$refs.modal.open()
+      this.$nextTick(() => {
+        this.$refs.modal.open()
+      })
     },
     changeUpgrade(upgrade) {
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {
