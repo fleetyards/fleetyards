@@ -80,3 +80,7 @@ input.form-control {
 .page-options {
   margin-bottom: 15px;
 }
+
+.file-select input[type="file"] {
+  display: none;
+}

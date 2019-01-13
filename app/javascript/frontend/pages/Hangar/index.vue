@@ -34,8 +34,20 @@
             <ExternalLink :url="publicUrl">
               {{ t('labels.publicUrl') }}
             </ExternalLink>
+            <Btn
+              class="file-select"
+              @click.native="selectFile"
+            >
+              Select File
+              <input
+                ref="fileUpload"
+                type="file"
+                @change="uploadVehicles"
+              >
+            </Btn>
           </div>
         </div>
+        {{ uploadedVehicles }}
         <div
           v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics"
           class="row"
@@ -294,6 +306,7 @@ export default {
     return {
       loading: false,
       downloading: false,
+      uploadedVehicles: null,
       vehicles: [],
       filters: [],
       fleetchartVehicles: [],
@@ -377,6 +390,19 @@ export default {
     },
     showAddonsModal(vehicle) {
       this.$refs.addonsModal.open(vehicle)
+    },
+    uploadVehicles(e) {
+      const reader = new FileReader()
+
+      reader.onload = (event) => {
+        this.uploadedVehicles = JSON.parse(event.target.result)
+        console.log(this.uploadedVehicles)
+      }
+
+      reader.readAsText(e.target.files[0])
+    },
+    selectFile() {
+      this.$refs.fileUpload.click()
     },
     toggleFullscreen() {
       this.fullscreen = !this.hangarFilterVisible
