@@ -54,10 +54,10 @@
             <h2>{{ t('sublines.impressum.disclaimer') }}</h2>
             <br>
             <p>
-              This site is not endorsed by or affiliated with the Cloud Imperium or Roberts Space
-              Industries group of companies.<br>
-              All game content and materials are copyright Cloud Imperium Rights LLC and Cloud
-              Imperium Rights Ltd..<br>
+              This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium
+              group of companies.<br>
+              All content on this site not authored by its host or users are property of their
+              respective owners.<br>
               Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are
               registered trademarks of Cloud Imperium Rights LLC.<br>
               All rights reserved.
