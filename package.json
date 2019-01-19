@@ -62,7 +62,7 @@
     "babel-jest": "^23.6.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "caniuse-lite": "^1.0.30000921",
-    "eslint": "^5.10.0",
+    "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-compat": "^2.6.3",
     "eslint-plugin-import": "^2.13.0",
