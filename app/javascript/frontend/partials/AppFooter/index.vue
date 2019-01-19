@@ -73,9 +73,8 @@
           of companies.<br>
           All content on this site not authored by its host or users are property of their
           respective owners.<br>
-          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are registered
-          trademarks of Cloud Imperium Rights LLC.<br>
-          All rights reserved.
+          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are<br>
+          registered trademarks of Cloud Imperium Rights LLC. All rights reserved.
         </p>
       </div>
       <div class="app-community-logo" />
