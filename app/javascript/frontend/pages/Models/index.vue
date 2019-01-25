@@ -19,7 +19,12 @@
                 small
                 @click.native="toggleDetails"
               >
-                <i class="fas fa-list" />
+                <i
+                  :class="{
+                    'fa fa-chevron-up': modelDetailsVisible,
+                    'far fa-chevron-down': !modelDetailsVisible,
+                  }"
+                />
               </Btn>
               <Btn
                 v-tooltip="toggleFiltersTooltip"
@@ -29,12 +34,11 @@
                 @click.native="toggleFilter"
               >
                 <i
-                  v-if="isFilterSelected"
-                  class="fas fa-filter"
-                />
-                <i
-                  v-else
-                  class="fal fa-filter"
+                  :class="{
+                    fas: modelFilterVisible,
+                    fal: !modelFilterVisible,
+                  }"
+                  class="fa-filter"
                 />
               </Btn>
               <InternalLink
@@ -161,13 +165,13 @@ export default {
         || this.$route.query.page)
     },
     toggleDetailsTooltip() {
-      if (this.hangarDetails) {
+      if (this.modelDetailsVisible) {
         return this.t('actions.hideDetails')
       }
       return this.t('actions.showDetails')
     },
     toggleFiltersTooltip() {
-      if (this.hangarFilterVisible) {
+      if (this.modelFilterVisible) {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')

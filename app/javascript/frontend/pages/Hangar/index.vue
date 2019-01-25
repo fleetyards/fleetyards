@@ -96,7 +96,12 @@
                 small
                 @click.native="toggleDetails"
               >
-                <i class="fas fa-list" />
+                <i
+                  :class="{
+                    'fa fa-chevron-up': hangarDetailsVisible,
+                    'far fa-chevron-down': !hangarDetailsVisible,
+                  }"
+                />
               </Btn>
               <Btn
                 v-tooltip="toggleFiltersTooltip"
@@ -106,12 +111,11 @@
                 @click.native="toggleFilter"
               >
                 <i
-                  v-if="isFilterSelected"
-                  class="fas fa-filter"
-                />
-                <i
-                  v-else
-                  class="fal fa-filter"
+                  :class="{
+                    fas: hangarFilterVisible,
+                    fal: !hangarFilterVisible,
+                  }"
+                  class="fa-filter"
                 />
               </Btn>
               <Btn
