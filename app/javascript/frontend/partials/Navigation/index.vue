@@ -151,7 +151,7 @@
           </ul>
           <div
             :class="{
-              'navbar-form-placeholder': !updateAvailable
+              'navbar-form-placeholder': !isUpdateAvailable
             }"
             class="navbar-form"
           >
@@ -161,7 +161,7 @@
               appear
             >
               <div
-                v-if="updateAvailable"
+                v-if="isUpdateAvailable"
                 class="text-right"
               >
                 <Btn
@@ -299,11 +299,8 @@ export default {
       'isAuthenticated',
       'navbarCollapsed',
       'mobile',
-      'appVersion',
+      'isUpdateAvailable',
     ]),
-    updateAvailable() {
-      return this.appVersion !== window.APP_VERSION
-    },
   },
   watch: {
     $route() {

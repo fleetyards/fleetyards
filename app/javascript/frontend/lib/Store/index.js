@@ -124,6 +124,9 @@ const store = new Vuex.Store({
     stationBackRoute(state) {
       return state.stationBackRoute
     },
+    isUpdateAvailable(state) {
+      return state.appVersion !== window.APP_VERSION
+    },
   },
   actions: {
     updateAppVersion({ state, commit }, payload = {}) {
