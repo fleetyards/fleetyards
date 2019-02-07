@@ -6,6 +6,17 @@ nav.navbar {
   .navbar-brand {
     font-size: 20px;
     line-height: 25px;
+    padding-left: 65px;
+    position: relative;
+
+    .logo {
+      width: 60px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      display: block;
+      margin-top: -20px;
+    }
   }
 
   .navbar-collapse {
@@ -213,19 +224,24 @@ img.avatar {
     right: auto;
   }
 
-  .navbar-brand {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-left: 65px;
-    margin-right: 65px;
-    white-space: nowrap;
-    text-align: center;
-    display: block;
-    float: none;
-  }
-
   nav.navbar {
     transition: left ease 0.5s, right ease 0.5s;
+
+    .navbar-brand {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-left: 65px;
+      margin-right: 65px;
+      white-space: nowrap;
+      text-align: center;
+      display: block;
+      float: none;
+      padding-left: 0;
+
+      .logo {
+        display: none;
+      }
+    }
 
     .navbar-right {
       margin-right: -14px;

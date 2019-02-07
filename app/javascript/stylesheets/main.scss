@@ -83,6 +83,13 @@ body {
   margin-top: -70px;
   margin-bottom: -50px;
   height: 100vh;
+  text-align: center;
+
+  .logo {
+    width: 200px;
+    margin-bottom: 28px;
+    margin-right: -30px;
+  }
 }
 
 a,
@@ -107,6 +114,14 @@ button {
       position: relative;
       transition: left ease 0.5s, right ease 0.5s;
       width: 100%;
+    }
+  }
+
+  .app-intro {
+    .logo {
+      width: 200px;
+      margin-bottom: 20px;
+      margin-right: 0;
     }
   }
 }

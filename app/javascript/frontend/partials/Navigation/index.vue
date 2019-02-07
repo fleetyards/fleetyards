@@ -29,6 +29,11 @@
           class="navbar-brand"
           exact
         >
+          <img
+            :src="require('images/logo.png')"
+            class="logo"
+            alt="logo"
+          >
           {{ t('app') }}
         </router-link>
       </div>
