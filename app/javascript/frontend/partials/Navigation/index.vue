@@ -30,7 +30,7 @@
           exact
         >
           <img
-            :src="require('images/logo.png')"
+            :src="require('images/logo-small.png')"
             class="logo"
             alt="logo"
           >
