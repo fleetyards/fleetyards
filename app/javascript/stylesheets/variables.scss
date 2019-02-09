@@ -19,7 +19,7 @@ $large-desktop-breakpoint: 1800px;
 
 $border-radius-base: 4px;
 
-$panel-bg: rgba(#2c3339, 0.9);
+$panel-bg: rgba($gray-darker, 0.9);
 $panel-outer-border: lighten(#555, 10%);
 $panel-inner-border: rgba(#c8c8c8, 0.9);
 
