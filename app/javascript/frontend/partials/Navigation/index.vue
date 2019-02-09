@@ -22,6 +22,10 @@
       <span class="icon-bar bottom-bar" />
     </button>
     <div class="nav-container">
+      <img
+        :src="require('images/logo.png')"
+        class="logo"
+      >
       <ul
         v-if="!isAuthenticated"
         class="nav navbar-nav navbar-right"
@@ -225,10 +229,6 @@
           <a>{{ t('nav.stats') }}</a>
         </router-link>
       </ul>
-      <img
-        :src="require('images/logo.png')"
-        class="logo"
-      >
     </div>
   </nav>
 </template>
