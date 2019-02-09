@@ -7,6 +7,10 @@
             <div class="search-form text-center">
               <h1>
                 <small>{{ t('headlines.welcome') }}</small>
+                <img
+                  :src="require(`images/logo.png`)"
+                  class="logo"
+                >
                 {{ t('app') }}
               </h1>
               <div class="row">

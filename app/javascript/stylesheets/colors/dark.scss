@@ -129,7 +129,7 @@ $navbar-padding-horizontal:        floor($grid-gutter-width / 2);
 $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2);
 
 $navbar-default-color:             $text-color;
-$navbar-default-bg:                rgba(#2c3339, 0.9);
+$navbar-default-bg:                rgba($gray-darker, 0.9);
 $navbar-default-border:            darken($navbar-default-bg, 6.5%);
 
 // Navbar links

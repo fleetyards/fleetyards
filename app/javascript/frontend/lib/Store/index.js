@@ -40,7 +40,7 @@ const initialState = {
   shopFilterVisible: false,
   stationFilterVisible: true,
   shopsFilterVisible: true,
-  navbarCollapsed: true,
+  navCollapsed: true,
   overlayVisible: false,
   modelDetailsVisible: false,
   modelFilterVisible: true,
@@ -103,8 +103,8 @@ const store = new Vuex.Store({
     shopsFilterVisible(state) {
       return state.shopsFilterVisible
     },
-    navbarCollapsed(state) {
-      return state.navbarCollapsed
+    navCollapsed(state) {
+      return state.navCollapsed
     },
     overlayVisible(state) {
       return state.overlayVisible
@@ -289,8 +289,8 @@ const store = new Vuex.Store({
     setHangarPublicFleetchartScale(state, payload) {
       state.hangarPublicFleetchartScale = payload
     },
-    toggleNavbar(state) {
-      state.navbarCollapsed = !state.navbarCollapsed
+    toggleNav(state) {
+      state.navCollapsed = !state.navCollapsed
     },
     showOverlay(state) {
       state.overlayVisible = true
@@ -298,8 +298,8 @@ const store = new Vuex.Store({
     hideOverlay(state) {
       state.overlayVisible = false
     },
-    closeNavbar(state) {
-      state.navbarCollapsed = true
+    closeNav(state) {
+      state.navCollapsed = true
     },
     setModelFilterVisible(state, payload) {
       state.modelFilterVisible = payload

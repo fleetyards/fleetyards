@@ -60,7 +60,7 @@ a,
   right: 0;
 }
 
-.navbar-visible {
+.nav-visible {
   .btn-filter {
     right: -80vw;
   }
@@ -229,6 +229,10 @@ $panel-content-border-radius: 6px;
     &.panel-btn-mobile-block {
       margin-right: 0;
       clear: both;
+    }
+
+    .panel-btn-inner {
+      white-space: normal;
     }
   }
 
