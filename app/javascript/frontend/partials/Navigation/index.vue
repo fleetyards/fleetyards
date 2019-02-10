@@ -289,6 +289,9 @@ export default {
     toggle() {
       this.$store.commit('toggleNav')
     },
+    open() {
+      this.$store.commit('openNav')
+    },
     close() {
       this.$store.commit('closeNav')
     },
