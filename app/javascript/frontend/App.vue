@@ -16,10 +16,7 @@
       mode="out-in"
       appear
     >
-      <Navigation
-        v-show="!$route.meta.hideNavigation"
-        ref="navigation"
-      />
+      <Navigation ref="navigation" />
     </transition>
     <transition
       name="fade"
