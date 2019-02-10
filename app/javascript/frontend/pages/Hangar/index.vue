@@ -132,13 +132,12 @@
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
-            <div class="pull-right">
-              <Paginator
-                v-if="!hangarFleetchartVisible && vehicles.length"
-                :page="currentPage"
-                :total="totalPages"
-              />
-            </div>
+            <Paginator
+              v-if="!hangarFleetchartVisible && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+              right
+            />
           </div>
         </div>
         <div class="row">
@@ -234,13 +233,12 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <div class="pull-right">
-              <Paginator
-                v-if="!hangarFleetchartVisible && vehicles.length"
-                :page="currentPage"
-                :total="totalPages"
-              />
-            </div>
+            <Paginator
+              v-if="!hangarFleetchartVisible && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+              right
+            />
           </div>
         </div>
       </div>

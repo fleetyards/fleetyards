@@ -83,13 +83,12 @@
         <h2>{{ t('headlines.stations') }}</h2>
       </div>
       <div class="col-xs-12 col-md-6">
-        <div class="pull-right">
-          <Paginator
-            v-if="stations.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="stations.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
       <div class="col-xs-12">
         <transition-group
@@ -190,13 +189,12 @@
         />
       </div>
       <div class="col-xs-12">
-        <div class="pull-right">
-          <Paginator
-            v-if="stations.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="stations.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
     </div>
   </section>

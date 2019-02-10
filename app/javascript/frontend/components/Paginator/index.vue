@@ -1,7 +1,10 @@
 <template>
   <ul
     v-if="total > 1"
-    :class="{'pagination-centered': center}"
+    :class="{
+      'pagination-centered': center,
+      'pagination-right': right
+    }"
     class="pagination"
   >
     <li
@@ -101,6 +104,10 @@ export default {
       default: 7,
     },
     center: {
+      type: Boolean,
+      default: false,
+    },
+    right: {
       type: Boolean,
       default: false,
     },

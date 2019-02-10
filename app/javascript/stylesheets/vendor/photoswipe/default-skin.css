@@ -51,6 +51,10 @@
   border: 0;
 }
 
+.pswp__top-bar {
+  padding-top: env(safe-area-inset-top);
+}
+
 /* pswp__ui--over-close class it added when mouse is over element that should close gallery */
 .pswp__ui--over-close .pswp__button--close {
   opacity: 1;
