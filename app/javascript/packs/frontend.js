@@ -20,6 +20,7 @@ import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
 import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
+import Vue2TouchEvents from 'vue2-touch-events'
 
 console.info(`
 
@@ -41,6 +42,8 @@ Vue.prototype.$api = apiClient
 Vue.prototype.$cable = ActionCable.createConsumer(window.CABLE_ENDPOINT)
 
 Vue.use(Comlink)
+
+Vue.use(Vue2TouchEvents)
 
 Vue.use(VeeValidate)
 Validator.extend('emailTaken', EmailValidator)
