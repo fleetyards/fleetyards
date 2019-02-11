@@ -234,7 +234,7 @@ export default {
       }
     },
     scrollDown() {
-      this.$scrollTo('.ships')
+      this.$scrollTo('.home-ships')
     },
   },
   metaInfo() {
