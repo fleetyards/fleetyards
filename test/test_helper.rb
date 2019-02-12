@@ -31,16 +31,12 @@ Sidekiq::Testing.fake!
 
 # helper
 require 'support/session_helper'
-require 'database_cleaner'
 
 require 'vcr'
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock # or :fakeweb
 end
-
-# database cleaner
-DatabaseCleaner.strategy = :transaction
 
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
@@ -49,14 +45,6 @@ class ActionController::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -65,14 +53,6 @@ class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -81,14 +61,6 @@ class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 
   after do
     Sidekiq::Worker.clear_all
