@@ -101,7 +101,6 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner'
   gem 'faker'
   gem 'minitest-ci'
   gem 'minitest-rails'
