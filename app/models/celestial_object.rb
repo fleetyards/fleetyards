@@ -3,11 +3,11 @@
 class CelestialObject < ApplicationRecord
   paginates_per 30
 
-  belongs_to :starsystem, required: false
+  belongs_to :starsystem, optional: true
 
   belongs_to :parent,
              class_name: 'CelestialObject',
-             required: false
+             optional: true
 
   has_many :moons,
            class_name: 'CelestialObject',
