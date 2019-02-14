@@ -93,7 +93,10 @@
           />
         </div>
       </div>
-      <b-collapse :visible="details">
+      <b-collapse
+        :id="`details-${model.slug}-wrapper`"
+        :visible="details"
+      >
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
