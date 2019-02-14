@@ -233,7 +233,7 @@ nav {
     }
 
     .nav-container {
-      padding-top: m#{a}x(10px, env(safe-area-inset-left));
+      padding-top: env(safe-area-inset-left);
       padding-left: env(safe-area-inset-left);
       width: 300px;
       left: -300px;
