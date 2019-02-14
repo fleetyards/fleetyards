@@ -26,209 +26,208 @@
         :src="require('images/logo.png')"
         class="logo"
       >
-      <ul
-        v-if="!isAuthenticated"
-        class="nav navbar-nav navbar-right"
-      >
-        <router-link
-          :to="{ name: 'signup' }"
-          tag="li"
-        >
-          <a>{{ t('nav.signUp') }}</a>
-        </router-link>
-        <router-link
-          :to="{ name: 'login' }"
-          tag="li"
-        >
-          <a>{{ t('nav.login') }}</a>
-        </router-link>
-        <li class="divider" />
-      </ul>
-      <ul v-if="isAuthenticated && currentUser">
-        <li
-          :class="{
-            active: userRouteActive,
-            open: userMenuOpen,
-          }"
-          class="sub-menu user-menu"
-        >
-          <a @click="toggleUserMenu">
-            <div class="avatar">
-              <div
-                v-if="currentUser.rsiVerified"
-                v-tooltip="t('labels.rsiVerified')"
-                class="verified"
-              >
-                <i class="fa fa-check" />
+      <div class="nav-container-inner">
+        <ul v-if="!isAuthenticated">
+          <router-link
+            :to="{ name: 'signup' }"
+            tag="li"
+          >
+            <a>{{ t('nav.signUp') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'login' }"
+            tag="li"
+          >
+            <a>{{ t('nav.login') }}</a>
+          </router-link>
+          <li class="divider" />
+        </ul>
+        <ul v-if="isAuthenticated && currentUser">
+          <li
+            :class="{
+              active: userRouteActive,
+              open: userMenuOpen,
+            }"
+            class="sub-menu user-menu"
+          >
+            <a @click="toggleUserMenu">
+              <div class="avatar">
+                <div
+                  v-if="currentUser.rsiVerified"
+                  v-tooltip="t('labels.rsiVerified')"
+                  class="verified"
+                >
+                  <i class="fa fa-check" />
+                </div>
+                <img
+                  v-if="citizen && citizen.avatar"
+                  :src="citizen.avatar"
+                  alt="avatar"
+                  width="36"
+                  height="36"
+                >
+                <div
+                  v-else
+                  class="no-avatar"
+                >
+                  <i class="fa fa-user" />
+                </div>
               </div>
-              <img
-                v-if="citizen && citizen.avatar"
-                :src="citizen.avatar"
-                alt="avatar"
-                width="36"
-                height="36"
+              <span class="username">
+                {{ currentUser.username }}
+              </span>
+              <i class="fa fa-chevron-down" />
+            </a>
+            <b-collapse
+              :id="`user-sub-menu`"
+              :visible="userMenuOpen"
+              tag="ul"
+            >
+              <router-link
+                :to="{ name: 'settings' }"
+                tag="li"
               >
-              <div
-                v-else
-                class="no-avatar"
+                <a>{{ t('nav.settings') }}</a>
+              </router-link>
+              <li v-if="currentUser.rsiHandle">
+                <a
+                  :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {{ t('nav.rsiProfile') }}
+                </a>
+              </li>
+              <li class="divider" />
+              <li>
+                <a @click="logout">
+                  {{ t('nav.logout') }}
+                </a>
+              </li>
+            </b-collapse>
+          </li>
+        </ul>
+        <transition
+          name="fade"
+          mode="out-in"
+          appear
+        >
+          <div
+            v-if="isUpdateAvailable"
+            class="update"
+          >
+            <Btn
+              primary
+              inline
+              small
+              @click.native="reload"
+            >
+              <i class="fal fa-sync" />
+              {{ t('actions.upgrade') }}
+            </Btn>
+          </div>
+        </transition>
+        <ul>
+          <router-link
+            :to="{ name: 'home' }"
+            tag="li"
+            exact
+          >
+            <a>{{ t('nav.home') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'models' }"
+            tag="li"
+          >
+            <a>{{ t('nav.models') }}</a>
+          </router-link>
+          <li
+            :class="{
+              active: stationRouteActive,
+              open: stationMenuOpen,
+            }"
+            class="sub-menu"
+          >
+            <a @click="toggleStationMenu">
+              {{ t('nav.stations.index') }}
+              <i class="fa fa-chevron-down" />
+            </a>
+            <b-collapse
+              :id="`stations-sub-menu`"
+              :visible="stationMenuOpen"
+              tag="ul"
+            >
+              <router-link
+                :to="{ name: 'stations' }"
+                :class="{
+                  active: stationRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
               >
-                <i class="fa fa-user" />
-              </div>
-            </div>
-            <span class="username">
-              {{ currentUser.username }}
-            </span>
-            <i class="fa fa-chevron-down" />
-          </a>
-          <b-collapse
-            :id="`user-sub-menu`"
-            :visible="userMenuOpen"
-            tag="ul"
-          >
-            <router-link
-              :to="{ name: 'settings' }"
-              tag="li"
-            >
-              <a>{{ t('nav.settings') }}</a>
-            </router-link>
-            <li v-if="currentUser.rsiHandle">
-              <a
-                :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-                target="_blank"
-                rel="noopener"
+                <a>{{ t('nav.stations.overview') }}</a>
+              </router-link>
+              <router-link
+                :to="{ name: 'starsystems' }"
+                :class="{
+                  active: starsystemRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
               >
-                {{ t('nav.rsiProfile') }}
-              </a>
-            </li>
-            <li class="divider" />
-            <li>
-              <a @click="logout">
-                {{ t('nav.logout') }}
-              </a>
-            </li>
-          </b-collapse>
-        </li>
-      </ul>
-      <transition
-        name="fade"
-        mode="out-in"
-        appear
-      >
-        <div
-          v-if="isUpdateAvailable"
-          class="update"
-        >
-          <Btn
-            primary
-            inline
-            small
-            @click.native="reload"
+                <a>{{ t('nav.stations.starsystems') }}</a>
+              </router-link>
+              <li class="divider" />
+              <router-link
+                :to="{ name: 'shops' }"
+                :class="{
+                  active: shopRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ t('nav.stations.shops') }}</a>
+              </router-link>
+            </b-collapse>
+          </li>
+          <router-link
+            :to="{ name: 'hangar' }"
+            tag="li"
           >
-            <i class="fal fa-sync" />
-            {{ t('actions.upgrade') }}
-          </Btn>
-        </div>
-      </transition>
-      <ul>
-        <router-link
-          :to="{ name: 'home' }"
-          tag="li"
-          exact
-        >
-          <a>{{ t('nav.home') }}</a>
-        </router-link>
-        <router-link
-          :to="{ name: 'models' }"
-          tag="li"
-        >
-          <a>{{ t('nav.models') }}</a>
-        </router-link>
-        <li
-          :class="{
-            active: stationRouteActive,
-            open: stationMenuOpen,
-          }"
-          class="sub-menu"
-        >
-          <a @click="toggleStationMenu">
-            {{ t('nav.stations.index') }}
-            <i class="fa fa-chevron-down" />
-          </a>
-          <b-collapse
-            :id="`stations-sub-menu`"
-            :visible="stationMenuOpen"
-            tag="ul"
+            <a>{{ t('nav.hangar') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'images' }"
+            tag="li"
           >
-            <router-link
-              :to="{ name: 'stations' }"
-              :class="{
-                active: stationRouteActive,
-              }"
-              active-class="router-active"
-              tag="li"
-            >
-              <a>{{ t('nav.stations.overview') }}</a>
-            </router-link>
-            <router-link
-              :to="{ name: 'starsystems' }"
-              :class="{
-                active: starsystemRouteActive,
-              }"
-              active-class="router-active"
-              tag="li"
-            >
-              <a>{{ t('nav.stations.starsystems') }}</a>
-            </router-link>
-            <li class="divider" />
-            <router-link
-              :to="{ name: 'shops' }"
-              :class="{
-                active: shopRouteActive,
-              }"
-              active-class="router-active"
-              tag="li"
-            >
-              <a>{{ t('nav.stations.shops') }}</a>
-            </router-link>
-          </b-collapse>
-        </li>
-        <router-link
-          :to="{ name: 'hangar' }"
-          tag="li"
-        >
-          <a>{{ t('nav.hangar') }}</a>
-        </router-link>
-        <router-link
-          :to="{ name: 'images' }"
-          tag="li"
-        >
-          <a>{{ t('nav.images') }}</a>
-        </router-link>
-        <router-link
-          :to="{ name: 'fleets' }"
-          tag="li"
-        >
-          <a>{{ t('nav.fleets') }}</a>
-        </router-link>
-        <router-link
-          :class="{ active: cargoRouteActive }"
-          :to="{
-            name: 'cargo',
-            query: {
-              q: $store.state.filters['cargo'],
-            },
-          }"
-          tag="li"
-        >
-          <a>{{ t('nav.cargo') }}</a>
-        </router-link>
-        <router-link
-          :to="{ name: 'stats' }"
-          tag="li"
-        >
-          <a>{{ t('nav.stats') }}</a>
-        </router-link>
-      </ul>
+            <a>{{ t('nav.images') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'fleets' }"
+            tag="li"
+          >
+            <a>{{ t('nav.fleets') }}</a>
+          </router-link>
+          <router-link
+            :class="{ active: cargoRouteActive }"
+            :to="{
+              name: 'cargo',
+              query: {
+                q: $store.state.filters['cargo'],
+              },
+            }"
+            tag="li"
+          >
+            <a>{{ t('nav.cargo') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'stats' }"
+            tag="li"
+          >
+            <a>{{ t('nav.stats') }}</a>
+          </router-link>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
