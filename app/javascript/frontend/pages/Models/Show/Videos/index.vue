@@ -4,14 +4,14 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="back-button">
-              {{ title }}
+            <h1>
               <router-link
                 :to="{ name: 'model', param: { slug: $route.params.slug }}"
-                class="btn btn-link"
+                class="back-button"
               >
                 <i class="fal fa-chevron-left" />
               </router-link>
+              {{ title }}
             </h1>
           </div>
         </div>

@@ -2,17 +2,14 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1
-          v-if="station"
-          class="back-button"
-        >
-          {{ station.name }}
+        <h1 v-if="station">
           <router-link
             :to="stationBackRoute"
-            class="btn btn-link"
+            class="back-button"
           >
             <i class="fal fa-chevron-left" />
           </router-link>
+          {{ station.name }}
         </h1>
       </div>
     </div>

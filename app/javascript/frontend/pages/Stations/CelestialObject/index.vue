@@ -2,12 +2,7 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1
-          v-if="celestialObject"
-          class="back-button"
-        >
-          {{ celestialObject.name }}
-          <small>{{ celestialObject.designation }}</small>
+        <h1 v-if="celestialObject">
           <router-link
             :to="{
               name: 'starsystem',
@@ -16,10 +11,12 @@
               },
               hash: `#${celestialObject.slug}`,
             }"
-            class="btn btn-link"
+            class="back-button"
           >
             <i class="fal fa-chevron-left" />
           </router-link>
+          {{ celestialObject.name }}
+          <small>{{ celestialObject.designation }}</small>
         </h1>
       </div>
     </div>

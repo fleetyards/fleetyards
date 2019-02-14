@@ -2,20 +2,17 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1
-          v-if="shop"
-          class="back-button"
-        >
+        <h1 v-if="shop">
+          <router-link
+            :to="shopBackRoute"
+            class="back-button"
+          >
+            <i class="fal fa-chevron-left" />
+          </router-link>
           {{ shop.name }}
           <small>
             {{ shop.station.name }}
           </small>
-          <router-link
-            :to="shopBackRoute"
-            class="btn btn-link"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
         </h1>
       </div>
     </div>
