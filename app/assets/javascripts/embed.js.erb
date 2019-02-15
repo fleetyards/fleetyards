@@ -16,9 +16,9 @@ fonts.media = 'all';
 fetch(`${host}/embed-chunks.json`).then(response => response.json()).then((chunks) => {
   chunks.forEach((chunkUrl) => {
     const chunk = d.createElement('script')
-    chunk.src = chunkUrl
+    chunk.src = `${host}${chunkUrl}`
     chunk.type = 'application/javascript'
     const parent = d.head || d.body
-    parent.appendChild(`${host}${chunk}`)
+    parent.appendChild(chunk)
   })
 })
