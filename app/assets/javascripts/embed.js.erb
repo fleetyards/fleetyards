@@ -1,4 +1,4 @@
-const host = `${window.location.protocol}//${window.location.host}`
+const host = '//<%= Rails.application.secrets[:domain] %>'
 
 const d = document
 const styles = d.createElement('link')
@@ -12,8 +12,6 @@ fonts.href = '//fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,5
 fonts.rel = 'stylesheet'
 fonts.media = 'all';
 (d.head || d.body).appendChild(fonts)
-
-console.log('foo')
 
 fetch(`${host}/embed-chunks.json`).then(response => response.json()).then((chunks) => {
   chunks.forEach((chunkUrl) => {

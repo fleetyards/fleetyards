@@ -163,7 +163,10 @@ module Frontend
     end
 
     def embed_chunks
-      render json: Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq
+      chunks = Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.map do |path|
+        ActionController::Base.helpers.asset_url(path)
+      end
+      render json: chunks
     end
 
     def embed_test
