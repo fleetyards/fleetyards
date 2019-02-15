@@ -6,7 +6,7 @@
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
     "test": "jest",
     "test:watch": "jest --watch --notify",
-    "test:functional": "./scripts/run-functional-tests.sh chrome",
+    "test:e2e": "cypress open",
     "lint": "yarn run lint:js && yarn run lint:style",
     "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript",
     "lint:style": "stylelint --fix \"./src/**/*.scss\", \"./src/**/*.vue\""
@@ -63,7 +63,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "css-loader": "^2.1.0",
-    "cypress": "^3.1.4",
+    "cypress": "^3.1.5",
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-compat": "^2.7.0",

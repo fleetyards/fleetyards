@@ -46,7 +46,8 @@
     "env": true,
     "fixture": true,
     "self": true,
-    "clients": true
+    "clients": true,
+    "cy": true
   },
   "overrides": [{
     "files": ["**/*+(spec|test).?(f|functional).js"],
