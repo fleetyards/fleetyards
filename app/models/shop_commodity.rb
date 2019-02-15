@@ -3,7 +3,7 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
-  belongs_to :commodity_item, polymorphic: true, required: false
+  belongs_to :commodity_item, polymorphic: true, optional: true
   belongs_to :model,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
              foreign_key: 'commodity_item_id',

@@ -29,9 +29,7 @@ class RsiLocationLoader < RsiBaseLoader
 
   def load_starsysyems
     json_file_path = 'public/starsystems.json'
-    if Rails.env.test? && File.exist?(json_file_path)
-      return JSON.parse(File.read(json_file_path))['data']['resultset']
-    end
+    return JSON.parse(File.read(json_file_path))['data']['resultset'] if Rails.env.test? && File.exist?(json_file_path)
 
     response = Typhoeus.post("#{base_url}/api/starmap/star-systems")
 

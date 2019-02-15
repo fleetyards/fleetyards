@@ -11,9 +11,7 @@ module Api
         authorize! :index, :api_fleets
 
         scope = Fleet
-        if current_user.present? && current_user.rsi_verified?
-          scope = scope.where.not(sid: current_user.rsi_orgs.map(&:downcase))
-        end
+        scope = scope.where.not(sid: current_user.rsi_orgs.map(&:downcase)) if current_user.present? && current_user.rsi_verified?
 
         @fleets = scope.order(name: :asc)
                        .page(params[:page])
