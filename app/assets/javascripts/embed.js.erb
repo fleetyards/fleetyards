@@ -1,4 +1,4 @@
-const host = 'https://www.<%= Rails.application.secrets[:domain] %>'
+const host = '<%= Rails.application.secrets[:host] %>'
 
 const d = document
 const styles = d.createElement('link')
@@ -19,6 +19,6 @@ fetch(`${host}/embed-chunks.json`).then(response => response.json()).then((chunk
     chunk.src = chunkUrl
     chunk.type = 'application/javascript'
     const parent = d.head || d.body
-    parent.appendChild(chunk)
+    parent.appendChild(`${host}${chunk}`)
   })
 })
