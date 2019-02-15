@@ -155,11 +155,15 @@ module Frontend
     end
 
     def embed
-      redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.js'))
+      redirect_to ActionController::Base.helpers.asset_url('embed.js')
     end
 
     def embed_styles
       redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.css'))
+    end
+
+    def embed_chunks
+      render json: Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq
     end
 
     def embed_test

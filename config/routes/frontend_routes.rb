@@ -51,6 +51,7 @@ namespace :frontend, path: '' do
 
   get 'embed' => 'base#embed'
   get 'embed-styles' => 'base#embed_styles'
+  get 'embed-chunks' => 'base#embed_chunks', constraints: { format: 'json' }
   get 'embed-test' => 'base#embed_test' if Rails.env.development?
 
   get 'service-worker' => 'base#service_worker'

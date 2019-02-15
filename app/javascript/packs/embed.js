@@ -9,19 +9,6 @@ import 'frontend/lib/LazyLoad'
 
 Vue.prototype.$api = apiClient
 
-const d = document
-const styles = d.createElement('link')
-styles.href = `${process.env.FRONTEND_HOST}/embed-styles.css#${+new Date()}`
-styles.rel = 'stylesheet'
-styles.type = 'text/css';
-(d.head || d.body).appendChild(styles)
-
-const fonts = d.createElement('link')
-fonts.href = '//fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900'
-fonts.rel = 'stylesheet'
-fonts.media = 'all';
-(d.head || d.body).appendChild(fonts)
-
 Vue.config.productionTip = false
 
 VTooltip.enabled = window.innerWidth > 768
