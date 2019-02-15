@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vim git yarn rsync patch postgresql postgresql-contrib python-psycopg2 build-essential cmake \
     imagemagick openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libpq-dev \
     libxml2-dev libxslt-dev libc6-dev libicu-dev libqtwebkit-dev qt4-qmake xvfb bzip2 libssl-dev \
-    unzip \
+    libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 unzip \
     && apt-get clean \
     && rm -rf /tmp/* /var/lib/apt/lists/*
 

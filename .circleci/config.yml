@@ -1,7 +1,11 @@
-version: 2.0
+version: 2.1
+
+orbs:
+  cypress: cypress-io/cypress@1
 
 defaults: &defaults
   working_directory: ~/app
+
   docker:
     - image: fleetyards/app:2.5.1
       environment:
@@ -67,6 +71,7 @@ jobs:
           key: v1-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/app/node_modules
+            - /root/.cache/Cypress
 
   audit:
     <<: *defaults
@@ -134,15 +139,19 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
-  e2e_tests:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/app
-      - run: yarn install
-      - run:
-          name: Run Javascript Tests
-          command: yarn run test:e2e
+  # e2e_tests:
+  #   <<: *defaults
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/app
+  #     - run: bundle --path vendor/bundle
+  #     - run: bundle exec rails s -p 8270 -d
+  #     - run: yarn install
+  #     - run: yarn run cypress install
+  #     - run:
+  #         name: Run E2E Tests
+  #         command: yarn run test:e2e
+  #     - run: kill -9 $(cat tmp/pids/server.pid)
 
   precompile_assets:
     <<: *defaults
@@ -220,9 +229,6 @@ workflows:
       - javascript_tests:
           requires:
             - yarn_dependencies
-      - e2e_tests:
-          requires:
-            - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
@@ -254,9 +260,24 @@ workflows:
       - javascript_tests:
           requires:
             - yarn_dependencies
-      - e2e_tests:
+      - cypress/run:
           requires:
+            - bundle_dependencies
             - yarn_dependencies
+          pre-steps:
+            - attach_workspace:
+                at: ~/app
+            - run: bundle --path vendor/bundle
+            - run: yarn install
+          post-steps:
+            - run: kill -9 $(cat tmp/pids/server.pid)
+          name: 'E2E tests'
+          yarn: true
+          record: true
+          parallel: true
+          parallelism: 2
+          start: 'bundle exec rails s -p 8270'
+          wait-on: 'http://localhost:8270'
       - precompile_assets:
           requires:
             - bundle_dependencies
