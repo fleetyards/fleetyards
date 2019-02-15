@@ -1,5 +1,5 @@
 import 'stylesheets/embed'
-import 'babel-polyfill'
+import '@babel/polyfill'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
