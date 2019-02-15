@@ -121,7 +121,7 @@ GEM
     execjs (2.7.0)
     faker (1.9.3)
       i18n (>= 0.7)
-    faraday (0.15.2)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
     font-awesome-sass (5.6.1)
@@ -363,7 +363,7 @@ GEM
     sassc (2.0.0)
       ffi (~> 1.9.6)
       rake
-    sentry-raven (2.7.4)
+    sentry-raven (2.9.0)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.11.0)
     shoulda (3.5.0)
