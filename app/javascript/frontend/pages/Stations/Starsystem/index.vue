@@ -2,17 +2,14 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1
-          v-if="starsystem"
-          class="back-button"
-        >
-          {{ t('headlines.starsystem', { starsystem: starsystem.name }) }}
+        <h1 v-if="starsystem">
           <router-link
             :to="{name: 'starsystems'}"
-            class="btn btn-link"
+            class="back-button"
           >
             <i class="fal fa-chevron-left" />
           </router-link>
+          {{ t('headlines.starsystem', { starsystem: starsystem.name }) }}
         </h1>
       </div>
     </div>
@@ -43,13 +40,12 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="pull-right">
-          <Paginator
-            v-if="celestialObjects.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="celestialObjects.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
     </div>
     <div class="row">
@@ -113,13 +109,12 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="pull-right">
-          <Paginator
-            v-if="celestialObjects.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="celestialObjects.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
     </div>
   </section>

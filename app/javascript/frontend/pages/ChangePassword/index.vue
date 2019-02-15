@@ -3,18 +3,15 @@
     <div class="row">
       <div class="col-xs-12">
         <form @submit.prevent="changePassword">
-          <h1
-            v-if="$store.getters.isAuthenticated"
-            class="back-button"
-          >
-            {{ t('headlines.changePassword') }}
+          <h1 v-if="$store.getters.isAuthenticated">
             <router-link
               v-tooltip.left="t('actions.back')"
               :to="{ name: 'settings'}"
-              class="btn btn-link"
+              class="back-button"
             >
               <i class="fal fa-chevron-left" />
             </router-link>
+            {{ t('headlines.changePassword') }}
           </h1>
           <h1 v-else>
             <router-link

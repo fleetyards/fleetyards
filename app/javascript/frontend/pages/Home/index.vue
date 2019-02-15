@@ -4,58 +4,60 @@
       <section class="container">
         <div class="row">
           <div class="col-xs-12">
-            <Panel>
-              <div class="search-form text-center">
-                <h1>
-                  <small>{{ t('headlines.welcome') }}</small>
-                  {{ t('app') }}
-                </h1>
-                <div class="row">
-                  <div class="col-xs-12 col-md-offset-3 col-md-6">
-                    <form @submit.prevent="search">
-                      <div class="form-group">
-                        <div class="input-group-flex">
-                          <input
-                            v-model="searchQuery"
-                            :aria-label="t('labels.searchInput')"
-                            name="search"
-                            class="form-control input-lg"
-                            autofocus
-                          >
-                          <Btn
-                            :aria-label="t('labels.search')"
-                            large
-                            @click.native="search"
-                          >
-                            <i class="fal fa-search" />
-                          </Btn>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12 col-md-12">
-                    <p>{{ t('texts.index') }}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12">
-                    <span v-html="t('texts.indexSupport', { code: 'STAR-5F32-SJZ4'})" />
-                  </div>
-                </div>
-                <br>
-                <br>
-                <ExternalLink
-                  url="https://paypal.me/pools/c/83jQLadz60"
-                  large
-                  filled
+            <div class="search-form text-center">
+              <h1>
+                <small>{{ t('headlines.welcome') }}</small>
+                <img
+                  :src="require(`images/logo.png`)"
+                  class="logo"
                 >
-                  <i class="fab fa-paypal" />
-                  {{ t('actions.supportUs') }}
-                </ExternalLink>
+                {{ t('app') }}
+              </h1>
+              <div class="row">
+                <div class="col-xs-12 col-md-offset-3 col-md-6">
+                  <form @submit.prevent="search">
+                    <div class="form-group">
+                      <div class="input-group-flex">
+                        <input
+                          v-model="searchQuery"
+                          :aria-label="t('labels.searchInput')"
+                          name="search"
+                          class="form-control input-lg"
+                          autofocus
+                        >
+                        <Btn
+                          :aria-label="t('labels.search')"
+                          large
+                          @click.native="search"
+                        >
+                          <i class="fal fa-search" />
+                        </Btn>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </Panel>
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <p>{{ t('texts.index') }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <span v-html="t('texts.indexSupport', { code: 'STAR-5F32-SJZ4'})" />
+                </div>
+              </div>
+              <br>
+              <br>
+              <ExternalLink
+                url="https://paypal.me/pools/c/83jQLadz60"
+                large
+                filled
+              >
+                <i class="fab fa-paypal" />
+                {{ t('actions.supportUs') }}
+              </ExternalLink>
+            </div>
           </div>
         </div>
       </section>
@@ -232,7 +234,7 @@ export default {
       }
     },
     scrollDown() {
-      this.$scrollTo('.ships')
+      this.$scrollTo('.home-ships')
     },
   },
   metaInfo() {

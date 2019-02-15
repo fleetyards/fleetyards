@@ -9,6 +9,10 @@ $innerBorderWidth: 2px;
   width: 100%;
   margin-bottom: 20px;
 
+  &.pagination-right {
+    justify-content: flex-end;
+  }
+
   &.pagination-centered {
     justify-content: center;
   }
@@ -85,6 +89,16 @@ $innerBorderWidth: 2px;
         color: $text-color;
         background-color: transparent;
       }
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .pagination {
+    justify-content: center;
+
+    &.pagination-right {
+      justify-content: center;
     }
   }
 }

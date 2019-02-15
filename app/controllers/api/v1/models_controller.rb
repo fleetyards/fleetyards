@@ -5,6 +5,8 @@ module Api
     class ModelsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:models) }, only: [:index]
+      after_action -> { pagination_header(:images) }, only: [:images]
+      after_action -> { pagination_header(:videos) }, only: [:videos]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t('messages.record_not_found.model', slug: params[:slug]))

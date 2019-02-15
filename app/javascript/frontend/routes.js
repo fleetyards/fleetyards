@@ -103,9 +103,6 @@ export const routes = [
     path: '/hangar/:user',
     name: 'hangar-public',
     component: PublicHangar,
-    meta: {
-      hideNavigation: true,
-    },
   }, {
     path: '/fleets',
     name: 'fleets',
@@ -119,7 +116,6 @@ export const routes = [
     name: 'fleet',
     component: Fleet,
     meta: {
-      hideNavigation: true,
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
     },
@@ -167,30 +163,18 @@ export const routes = [
     path: '/sign-up',
     name: 'signup',
     component: Signup,
-    meta: {
-      hideNavigation: true,
-    },
   }, {
     path: '/login',
     name: 'login',
     component: Login,
-    meta: {
-      hideNavigation: true,
-    },
   }, {
     path: '/password/request',
     name: 'request-password',
     component: RequestPassword,
-    meta: {
-      hideNavigation: true,
-    },
   }, {
     path: '/password/update/:token',
     name: 'change-password',
     component: ChangePassword,
-    meta: {
-      hideNavigation: true,
-    },
   }, {
     path: '/confirm/:token',
     name: 'confirm',

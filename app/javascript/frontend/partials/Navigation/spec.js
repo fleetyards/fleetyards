@@ -8,6 +8,6 @@ describe('Navigation', () => {
   })
 
   it('renders nothing without pagination info', () => {
-    expect(cmp.vm.$el.className).toContain('navbar')
+    expect(cmp.findAll('nav')).toHaveLength(1)
   })
 })

@@ -2,3 +2,5 @@
 /node_modules
 /vendor
 service_worker.js.erb
+babel.config.js
+postcss.config.js

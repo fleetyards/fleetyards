@@ -7,7 +7,14 @@
       >
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="back-button">
+            <h1>
+              <router-link
+                v-if="modelBackRoute"
+                :to="modelBackRoute"
+                class="back-button"
+              >
+                <i class="fal fa-chevron-left" />
+              </router-link>
               {{ model.name }}
               <small class="manufacturer">
                 <span class="manufacturer-prefix">
@@ -20,13 +27,6 @@
                   class="manufacturer-logo"
                 >
               </small>
-              <router-link
-                v-if="modelBackRoute"
-                :to="modelBackRoute"
-                class="btn btn-link"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
             </h1>
           </div>
         </div>

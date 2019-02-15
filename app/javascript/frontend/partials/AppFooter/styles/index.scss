@@ -19,7 +19,7 @@ $outerBorderWidth: 2px;
     position: absolute;
     display: block;
     width: 80px;
-    height: outerBorderWidth;
+    height: $outerBorderWidth;
   }
 
   .app-footer-border-left {
@@ -45,7 +45,7 @@ $outerBorderWidth: 2px;
     padding-bottom: 30px;
     padding-top: 30px;
     border-top: $innerBorderWidth solid $panel-inner-border;
-    background-color: rgba(#2c3339, 0.9);
+    background-color: rgba($gray-darker, 0.7);
 
     .app-footer-inner-border {
       width: 100%;
@@ -78,6 +78,23 @@ $outerBorderWidth: 2px;
     margin-bottom: 5px;
   }
 
+  .app-community-logo {
+    background-image: url('~images/community-logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    opacity: 0.7;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 25px;
+    top: 10px;
+  }
+
+  .rsi-disclaimer {
+    color: darken($text-color, 20%);
+  }
+
   .app-version {
     position: absolute;
     bottom: 25px;
@@ -87,6 +104,15 @@ $outerBorderWidth: 2px;
 
 @media (max-width: $desktop-breakpoint) {
   .app-footer {
+    .app-community-logo {
+      position: relative;
+      margin-bottom: 10px;
+      width: 100%;
+      background-size: 100px;
+      left: auto;
+      top: auto;
+    }
+
     .app-version {
       bottom: 5px;
       left: 10px;

@@ -2,7 +2,7 @@
   <div
     id="app"
     :class="{
-      'navbar-visible': !navbarCollapsed,
+      'nav-visible': !navCollapsed,
     }"
     class="app-body"
   >
@@ -16,17 +16,17 @@
       mode="out-in"
       appear
     >
-      <Navigation
-        v-show="!$route.meta.hideNavigation"
-        ref="navigation"
-      />
+      <Navigation ref="navigation" />
     </transition>
     <transition
       name="fade"
       mode="out-in"
       appear
     >
-      <router-view class="main" />
+      <router-view
+        class="main"
+        @click.native="closeNavigation"
+      />
     </transition>
     <BackToTop visible-offset="500" />
     <AppFooter class="app-footer" />
@@ -55,7 +55,7 @@ export default {
   computed: {
     ...mapGetters([
       'isAuthenticated',
-      'navbarCollapsed',
+      'navCollapsed',
       'overlayVisible',
     ]),
   },
@@ -66,7 +66,7 @@ export default {
         this.fetchHangar()
       }
     },
-    navbarCollapsed: 'setNoScroll',
+    navCollapsed: 'setNoScroll',
     overlayVisible: 'setNoScroll',
     isAuthenticated() {
       if (this.isAuthenticated) {
@@ -99,6 +99,9 @@ export default {
     window.removeEventListener('offline', this.offline)
   },
   methods: {
+    closeNavigation() {
+      this.$refs.navigation.close()
+    },
     offline() {
       this.$store.commit('setOnlineStatus', false)
     },
@@ -109,7 +112,7 @@ export default {
       this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
     },
     setNoScroll() {
-      if (!this.navbarCollapsed || this.overlayVisible) {
+      if (!this.navCollapsed || this.overlayVisible) {
         document.documentElement.classList.add('no-scroll')
         document.body.classList.add('no-scroll')
       } else {
