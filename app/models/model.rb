@@ -5,7 +5,7 @@ class Model < ApplicationRecord
 
   paginates_per 30
 
-  belongs_to :manufacturer, required: false
+  belongs_to :manufacturer, optional: true
 
   has_one :addition,
           class_name: 'ModelAddition',

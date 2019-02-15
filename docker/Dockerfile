@@ -1,6 +1,6 @@
 FROM ruby:2.5.1
 
-RUN curl https://deb.nodesource.com/setup_9.x | bash - \
+RUN curl https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y --no-install-recommends \
     nodejs
 

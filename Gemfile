@@ -51,7 +51,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker'
+gem 'webpacker', '>= 4.0.x'
 
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'

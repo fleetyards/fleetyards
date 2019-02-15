@@ -2,7 +2,7 @@
 
 class Hardpoint < ApplicationRecord
   belongs_to :model
-  belongs_to :component, required: false
+  belongs_to :component, optional: true
 
   validates :model_id, presence: true
 end

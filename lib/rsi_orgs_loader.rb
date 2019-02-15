@@ -37,9 +37,7 @@ class RsiOrgsLoader < RsiBaseLoader
       user.title = value.text.strip if index == 2
     end
     user.avatar = parse_image(page.css('.profile .thumb img'))
-    if page.css('.profile-content .bio').present?
-      user.bio = page.css('.profile-content .bio').text.strip
-    end
+    user.bio = page.css('.profile-content .bio').text.strip if page.css('.profile-content .bio').present?
     user.citizen_record = page.css('.citizen-record .value').text.strip
     page.css('.profile-content > .left-col .value').each_with_index do |value, index|
       if index.zero?
