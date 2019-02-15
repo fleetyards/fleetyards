@@ -47,24 +47,8 @@ h1,
   font-size: 70%;
 }
 
-h1.back-button {
-  padding-left: 40px;
-  position: relative;
-
-  .btn {
-    position: absolute;
-    left: 0;
-    top: -5px;
-
-    i,
-    svg {
-      font-size: 150%;
-    }
-
-    &:hover {
-      opacity: 0.6;
-    }
-  }
+a.back-button {
+  padding-right: 5px;
 }
 
 .panel-title {

@@ -2,12 +2,13 @@
 
 .back-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 30px;
+  bottom: 0;
+  right: 0;
   font-size: 160%;
   z-index: 1000;
   cursor: pointer;
   transition: all ease 0.5s;
+  padding: 20px 30px;
 
   &:hover {
     opacity: 0.6;
@@ -16,7 +17,6 @@
 
 @media (max-width: $desktop-breakpoint) {
   .back-to-top {
-    bottom: 0;
-    right: 10px;
+    padding: 10px 20px;
   }
 }

@@ -108,7 +108,12 @@
                 small
                 @click.native="toggleDetails"
               >
-                <i class="fas fa-list" />
+                <i
+                  :class="{
+                    'fa fa-chevron-up': hangarDetailsVisible,
+                    'far fa-chevron-down': !hangarDetailsVisible,
+                  }"
+                />
               </Btn>
               <Btn
                 v-tooltip="toggleFiltersTooltip"
@@ -118,12 +123,11 @@
                 @click.native="toggleFilter"
               >
                 <i
-                  v-if="isFilterSelected"
-                  class="fas fa-filter"
-                />
-                <i
-                  v-else
-                  class="fal fa-filter"
+                  :class="{
+                    fas: hangarFilterVisible,
+                    fal: !hangarFilterVisible,
+                  }"
+                  class="fa-filter"
                 />
               </Btn>
               <Btn
@@ -140,13 +144,12 @@
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
-            <div class="pull-right">
-              <Paginator
-                v-if="!hangarFleetchartVisible && vehicles.length"
-                :page="currentPage"
-                :total="totalPages"
-              />
-            </div>
+            <Paginator
+              v-if="!hangarFleetchartVisible && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+              right
+            />
           </div>
         </div>
         <div class="row">
@@ -242,13 +245,12 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <div class="pull-right">
-              <Paginator
-                v-if="!hangarFleetchartVisible && vehicles.length"
-                :page="currentPage"
-                :total="totalPages"
-              />
-            </div>
+            <Paginator
+              v-if="!hangarFleetchartVisible && vehicles.length"
+              :page="currentPage"
+              :total="totalPages"
+              right
+            />
           </div>
         </div>
       </div>

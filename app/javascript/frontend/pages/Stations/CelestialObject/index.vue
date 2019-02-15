@@ -2,12 +2,7 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1
-          v-if="celestialObject"
-          class="back-button"
-        >
-          {{ celestialObject.name }}
-          <small>{{ celestialObject.designation }}</small>
+        <h1 v-if="celestialObject">
           <router-link
             :to="{
               name: 'starsystem',
@@ -16,10 +11,12 @@
               },
               hash: `#${celestialObject.slug}`,
             }"
-            class="btn btn-link"
+            class="back-button"
           >
             <i class="fal fa-chevron-left" />
           </router-link>
+          {{ celestialObject.name }}
+          <small>{{ celestialObject.designation }}</small>
         </h1>
       </div>
     </div>
@@ -83,13 +80,12 @@
         <h2>{{ t('headlines.stations') }}</h2>
       </div>
       <div class="col-xs-12 col-md-6">
-        <div class="pull-right">
-          <Paginator
-            v-if="stations.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="stations.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
       <div class="col-xs-12">
         <transition-group
@@ -190,13 +186,12 @@
         />
       </div>
       <div class="col-xs-12">
-        <div class="pull-right">
-          <Paginator
-            v-if="stations.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
+        <Paginator
+          v-if="stations.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
       </div>
     </div>
   </section>

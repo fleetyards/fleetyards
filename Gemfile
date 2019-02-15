@@ -8,7 +8,6 @@ gem 'rails', '5.2.2'
 
 gem 'pg', '~> 1.0'
 
-gem 'rufus-scheduler', '~> 3.4.0' # fix for sidekiq-cron not working with rufus 3.5.0
 gem 'sidekiq'
 gem 'sidekiq-cron'
 
@@ -51,7 +50,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker'
+gem 'webpacker', '>= 4.0.x'
 
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
@@ -93,6 +92,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development do
   gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'
+  gem 'rails-erd'
   gem 'rubocop', require: false
   gem 'spring'
   gem 'spring-watcher-listen'
@@ -100,15 +100,14 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner'
   gem 'faker'
   gem 'minitest-ci'
   gem 'minitest-rails'
   gem 'mocha', require: false
   gem 'rails-perftest'
   gem 'ruby-prof'
-  gem 'shoulda', '~> 3.5'
-  gem 'shoulda-matchers', '~> 2.0'
+  gem 'shoulda'
+  gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
   gem 'simplecov-html', require: false

@@ -3,7 +3,7 @@
 class Component < ApplicationRecord
   include SlugHelper
 
-  belongs_to :manufacturer, required: false
+  belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   validates :name, presence: true

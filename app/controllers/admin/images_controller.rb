@@ -59,9 +59,7 @@ module Admin
         format.js do
           if image.update(image_params)
             message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.image"))
-            if image.enabled?
-              message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.image"))
-            end
+            message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.image")) if image.enabled?
             render json: { message: message }
           else
             render json: false, status: :bad_request
@@ -80,9 +78,7 @@ module Admin
         format.js do
           if image.update(image_params)
             message = I18n.t(:"messages.background_disabled.success", resource: I18n.t(:"resources.image"))
-            if image.enabled?
-              message = I18n.t(:"messages.background_enabled.success", resource: I18n.t(:"resources.image"))
-            end
+            message = I18n.t(:"messages.background_enabled.success", resource: I18n.t(:"resources.image")) if image.enabled?
             render json: { message: message }
           else
             render json: false, status: :bad_request

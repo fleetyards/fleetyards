@@ -58,15 +58,26 @@
         </a>
       </div>
       <div class="app-footer-item">
-        Copyright &copy; {{ new Date().getFullYear() }}
-                  <a
-                    href="mailto:info@mortik.de"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Marten Klitzke - mortik.
-                  </a>
+        <p>
+          <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
+          <a
+            href="mailto:info@mortik.de"
+            target="_blank"
+            rel="noopener"
+          >
+            Marten Klitzke - mortik.
+          </a>
+        </p>
+        <p class="rsi-disclaimer">
+          This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group
+          of companies.<br>
+          All content on this site not authored by its host or users are property of their
+          respective owners.<br>
+          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are<br>
+          registered trademarks of Cloud Imperium Rights LLC. All rights reserved.
+        </p>
       </div>
+      <div class="app-community-logo" />
       <div class="app-version">
         {{ appCodename }} ({{ appVersion }})
       </div>

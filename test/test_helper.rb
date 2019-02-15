@@ -18,9 +18,7 @@ require 'rails/test_help'
 require 'minitest/rails'
 
 # https://github.com/rails/rails/issues/31324
-if ActionPack::VERSION::STRING >= '5.2.0'
-  Minitest::Rails::TestUnit = Rails::TestUnit
-end
+Minitest::Rails::TestUnit = Rails::TestUnit if ActionPack::VERSION::STRING >= '5.2.0'
 
 require 'faker'
 
@@ -31,7 +29,6 @@ Sidekiq::Testing.fake!
 
 # helper
 require 'support/session_helper'
-require 'database_cleaner'
 
 require 'vcr'
 VCR.configure do |config|
@@ -39,8 +36,12 @@ VCR.configure do |config|
   config.hook_into :webmock # or :fakeweb
 end
 
-# database cleaner
-DatabaseCleaner.strategy = :transaction
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :minitest
+    with.library :rails
+  end
+end
 
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
@@ -49,14 +50,6 @@ class ActionController::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -65,14 +58,6 @@ class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -81,14 +66,6 @@ class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
-
-  before do
-    DatabaseCleaner.start
-  end
-
-  after do
-    DatabaseCleaner.clean
-  end
 
   after do
     Sidekiq::Worker.clear_all

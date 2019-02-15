@@ -12,9 +12,7 @@ class Release < Thor
   desc 'new', 'Create new Version'
   option :push, type: :boolean, default: false, aliases: :p
   def new(type, name = '')
-    if type == 'major' && name.empty?
-      raise Thor::Error, 'Major Releases need a Name'
-    end
+    raise Thor::Error, 'Major Releases need a Name' if type == 'major' && name.empty?
 
     bump_version(type, name)
 

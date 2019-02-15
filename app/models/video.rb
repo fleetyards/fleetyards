@@ -3,7 +3,7 @@
 class Video < ApplicationRecord
   paginates_per 8
 
-  belongs_to :model, required: true
+  belongs_to :model, optional: false
 
   enum video_type: %i[youtube]
 
