@@ -58,7 +58,7 @@ task :deploy do
     command %(bundle clean)
 
     invoke :'rails:db_migrate'
-    invoke 'webpacker_compile'
+    invoke :webpacker_compile
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
@@ -72,7 +72,7 @@ end
 task broadcast_version: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Broadcast Version)
-    command %(bundle exec thor broadcast:version)
+    # command %(bundle exec thor broadcast:version)
   end
 end
 

@@ -1,7 +1,5 @@
 const host = '<%= Rails.application.secrets[:host] %>'
 
-console.log(<%= Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.to_json %>)
-
 const d = document
 const styles = d.createElement('link')
 styles.href = `${host}/embed-styles.css#${+new Date()}`
@@ -15,12 +13,12 @@ fonts.rel = 'stylesheet'
 fonts.media = 'all';
 (d.head || d.body).appendChild(fonts)
 
-fetch(`${host}/embed-chunks.json`).then(response => response.json()).then((chunks) => {
-  chunks.forEach((chunkUrl) => {
-    const chunk = d.createElement('script')
-    chunk.src = `${host}${chunkUrl}`
-    chunk.type = 'application/javascript'
-    const parent = d.head || d.body
-    parent.appendChild(chunk)
-  })
+const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.to_json %>
+
+chunks.forEach((chunkUrl) => {
+  const chunk = d.createElement('script')
+  chunk.src = `${host}${chunkUrl}`
+  chunk.type = 'application/javascript'
+  const parent = d.head || d.body
+  parent.appendChild(chunk)
 })
