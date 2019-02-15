@@ -36,6 +36,13 @@ VCR.configure do |config|
   config.hook_into :webmock # or :fakeweb
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :minitest
+    with.library :rails
+  end
+end
+
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers
