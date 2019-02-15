@@ -41,6 +41,8 @@ yarn-debug.log*
 yarn-debug.log*
 .yarn-integrity
 build
+cypress/videos
+cypress/screenshots
 
 .eslintcache
 

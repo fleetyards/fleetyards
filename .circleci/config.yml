@@ -134,6 +134,16 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
+  e2e_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: yarn install
+      - run:
+          name: Run Javascript Tests
+          command: yarn run test:e2e
+
   precompile_assets:
     <<: *defaults
     steps:
@@ -210,6 +220,9 @@ workflows:
       - javascript_tests:
           requires:
             - yarn_dependencies
+      - e2e_tests:
+          requires:
+            - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
@@ -239,6 +252,9 @@ workflows:
             - bundle_dependencies
             - yarn_dependencies
       - javascript_tests:
+          requires:
+            - yarn_dependencies
+      - e2e_tests:
           requires:
             - yarn_dependencies
       - precompile_assets:
