@@ -58,6 +58,7 @@ task :deploy do
     command %(bundle clean)
 
     invoke :'rails:db_migrate'
+    invoke 'webpacker_compile'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
@@ -75,17 +76,17 @@ task broadcast_version: :remote_environment do
   end
 end
 
-task assets_precompile: :remote_environment do
+task webpacker_compile: :remote_environment do
   in_path fetch(:current_path).to_s do
-    comment %(Precompile Assets)
-    command %(#{fetch(:rake)} assets:precompile)
+    comment %(Precompile Webpacker)
+    command %(#{fetch(:rails)} webpacker:compile)
   end
 end
 
 task assets_precompile: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Precompile Assets)
-    command %(#{fetch(:rake)} assets:precompile)
+    command %(#{fetch(:rails)} assets:precompile)
   end
   invoke :'server:restart'
 end

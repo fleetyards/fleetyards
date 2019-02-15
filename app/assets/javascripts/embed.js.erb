@@ -1,5 +1,7 @@
 const host = '<%= Rails.application.secrets[:host] %>'
 
+console.log(<%= Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.to_json %>)
+
 const d = document
 const styles = d.createElement('link')
 styles.href = `${host}/embed-styles.css#${+new Date()}`
