@@ -157,6 +157,30 @@ platinum_bay.update!(shop_type: :components, store_image: Rails.root.join('db/se
 r_n_r_cru_l5 = Station.find_or_initialize_by(name: 'Rest & Relax (CRU-L5)')
 r_n_r_cru_l5.update!(celestial_object: crusader, station_type: :rest_stop, location: 'CRU-L5', store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/cru-l5.jpg').open, hidden: false)
 
+r_n_r_cru_l5.docks.destroy_all
+pad = 1
+{ medium: 4 }.each do |ship_size, count|
+  count.times do |index|
+    r_n_r_cru_l5.docks << Dock.new(
+      name: "Ladingpad #{"%02d" % pad}",
+      dock_type: :landingpad,
+      ship_size: ship_size,
+    )
+    pad += 1
+  end
+end
+pad = 1
+{ large: 2 }.each do |ship_size, count|
+  count.times do |index|
+    r_n_r_cru_l5.docks << Dock.new(
+      name: "Hangar #{"%02d" % pad}",
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+    pad += 1
+  end
+end
+
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: r_n_r_cru_l5)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/admin.jpg').open, hidden: false)
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station: r_n_r_cru_l5)
