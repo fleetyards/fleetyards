@@ -1,35 +1,28 @@
-import Starsystems from 'frontend/pages/Stations/Starsystems'
-import Starsystem from 'frontend/pages/Stations/Starsystem'
-import CelestialObject from 'frontend/pages/Stations/CelestialObject'
-import Station from 'frontend/pages/Stations/Show'
-import Shop from 'frontend/pages/Stations/Shop'
-import Shops from 'frontend/pages/Stations/ShopList'
-
 export const routes = [
   {
     path: '/starsystems',
     name: 'starsystems',
-    component: Starsystems,
+    component: () => import(/* webpackChunkName: "page.starsystems" */ 'frontend/pages/Stations/Starsystems'),
   }, {
     path: '/starsystems/:slug',
     name: 'starsystem',
-    component: Starsystem,
+    component: () => import(/* webpackChunkName: "page.starsystem" */ 'frontend/pages/Stations/Starsystem'),
   }, {
     path: '/celestial-objects/:slug',
     name: 'celestialObject',
-    component: CelestialObject,
+    component: () => import(/* webpackChunkName: "page.celestial-object" */ 'frontend/pages/Stations/CelestialObject'),
   }, {
     path: '/shops',
     name: 'shops',
-    component: Shops,
+    component: () => import(/* webpackChunkName: "page.station.shops" */ 'frontend/pages/Stations/ShopList'),
   }, {
     path: ':slug',
     name: 'station',
-    component: Station,
+    component: () => import(/* webpackChunkName: "page.station" */ 'frontend/pages/Stations/Show'),
   }, {
     path: ':station/shops/:slug',
     name: 'shop',
-    component: Shop,
+    component: () => import(/* webpackChunkName: "page.stations.shop" */ 'frontend/pages/Stations/Shop'),
   },
 ]
 

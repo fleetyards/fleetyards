@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="hardpoints"
+    v-if="hardpoints.length"
     class="row"
   >
     <div class="col-xs-12">

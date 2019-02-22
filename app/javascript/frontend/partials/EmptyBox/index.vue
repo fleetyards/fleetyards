@@ -8,7 +8,7 @@
       <template v-if="isQueryPresent">
         <p>{{ t('texts.empty.query') }}</p>
         <InternalLink
-          slot="footer"
+          #footer
           :route="{ name: this.$route.name }"
           class="pull-right"
           exact

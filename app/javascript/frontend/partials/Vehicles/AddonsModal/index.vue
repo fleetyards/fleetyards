@@ -44,7 +44,7 @@
         <Loader :loading="loadingUpgrades" />
       </div>
     </form>
-    <template slot="footer">
+    <template #footer>
       <div class="pull-right">
         <SubmitButton
           :form="`vehicle-addons-${vehicle.id}`"

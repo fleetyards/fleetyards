@@ -85,7 +85,7 @@ admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/i
 
 arc_corp_mining_area_157.docks.destroy_all
 pad = 1
-{small: 2}.each do |ship_size, count|
+{ small: 2 }.each do |ship_size, count|
   count.times do
     arc_corp_mining_area_157.docks << Dock.new(
       name: "Vehiclepad #{"%02d" % pad}",
@@ -96,7 +96,7 @@ pad = 1
   end
 end
 pad = 1
-{large: 1}.each do |ship_size, count|
+{ medium: 1, large: 1 }.each do |ship_size, count|
   count.times do
     arc_corp_mining_area_157.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",
@@ -107,12 +107,18 @@ pad = 1
   end
 end
 
+jump_town = Station.find_or_initialize_by(name: 'Jump Town')
+jump_town.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', hidden: true)
+
 nakamura_valley_aid_shelter = Station.find_or_initialize_by(name: 'Nakamura Valley Aid Shelter')
 nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :outpost, location: 'Yela', store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nakamura_valley.jpg').open, hidden: false)
+
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: 'Kosso Basin Aid Shelter')
 kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/kosso_basin.jpg').open, hidden: false)
+
 aston_ridge_aid_shelter = Station.find_or_initialize_by(name: 'Aston Ridge Aid Shelter')
 aston_ridge_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/aston_ridge.jpg').open, hidden: false)
+
 talarine_divide_aid_shelter = Station.find_or_initialize_by(name: 'Talarine Divide Aid Shelter')
 talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: 'Yela', store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/talarine_divide.jpg').open, hidden: false)
 
