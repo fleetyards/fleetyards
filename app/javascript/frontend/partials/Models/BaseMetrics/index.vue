@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row base-metrics">
     <div
       v-if="title"
       :class="{
