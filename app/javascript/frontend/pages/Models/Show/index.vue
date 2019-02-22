@@ -353,7 +353,7 @@ export default {
         data.style = 'colored'
       }
       const startship42Params = qs.stringify(data)
-      return `https://starship42.fleetyards.net/fleetview/single?${startship42Params}`
+      return `https://starship42.com/fleetview/single?${startship42Params}`
     },
     title() {
       if (!this.model) {
