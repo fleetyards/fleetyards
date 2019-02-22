@@ -85,7 +85,7 @@
         </div>
       </div>
     </form>
-    <template slot="footer">
+    <template #footer>
       <div class="pull-right">
         <Btn
           v-if="vehicle"

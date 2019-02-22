@@ -1,34 +1,29 @@
-import Profile from 'frontend/pages/Settings/Profile'
-import Verify from 'frontend/pages/Settings/Verify'
-import Account from 'frontend/pages/Settings/Account'
-import ChangePassword from 'frontend/pages/Settings/ChangePassword'
-
 export const routes = [
   {
     path: 'profile',
     name: 'settings-profile',
-    component: Profile,
+    component: () => import(/* webpackChunkName: "page.settings.profile" */ 'frontend/pages/Settings/Profile'),
     meta: {
       needsAuthentication: true,
     },
   }, {
     path: 'verify',
     name: 'settings-verify',
-    component: Verify,
+    component: () => import(/* webpackChunkName: "page.settings.verify" */ 'frontend/pages/Settings/Verify'),
     meta: {
       needsAuthentication: true,
     },
   }, {
     path: 'account',
     name: 'settings-account',
-    component: Account,
+    component: () => import(/* webpackChunkName: "page.settings.account" */ 'frontend/pages/Settings/Account'),
     meta: {
       needsAuthentication: true,
     },
   }, {
     path: 'change-password',
     name: 'settings-change-password',
-    component: ChangePassword,
+    component: () => import(/* webpackChunkName: "page.settings.change-password" */ 'frontend/pages/Settings/ChangePassword'),
     meta: {
       needsAuthentication: true,
     },

@@ -35,19 +35,8 @@ vendor/assets/bower_components/sweetalert
 yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-/public/packs
-/public/packs-test
-/node_modules
-yarn-debug.log*
-.yarn-integrity
 build
 
 .eslintcache
 
 blacklist.json
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity

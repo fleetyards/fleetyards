@@ -76,16 +76,17 @@
               You seem to be a Member of {{ fleet.name }}.
               To be able to view Ships of this Fleet you need to verify your RSI Handle
 
-              <div
-                slot="footer"
-                class="pull-right"
-              >
-                <InternalLink
-                  :route="{name: 'settings-verify'}"
+              <template #footer>
+                <div
+                  class="pull-right"
                 >
-                  Verify your RSI-Handle
-                </InternalLink>
-              </div>
+                  <InternalLink
+                    :route="{name: 'settings-verify'}"
+                  >
+                    Verify your RSI-Handle
+                  </InternalLink>
+                </div>
+              </template>
             </Box>
           </div>
         </div>

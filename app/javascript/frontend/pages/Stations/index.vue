@@ -81,7 +81,7 @@
                 }
               }"
             >
-              <template slot="stats">
+              <template #stats>
                 <dl class="dl-horizontal">
                   <dt>{{ t('labels.station.type') }}:</dt>
                   <dd>{{ station.typeLabel }}</dd>

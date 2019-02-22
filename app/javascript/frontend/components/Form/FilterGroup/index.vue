@@ -87,8 +87,8 @@
         :distance="100"
         @infinite="fetchMore"
       >
-        <span slot="no-more" />
-        <span slot="spinner" />
+        <template #no-more />
+        <template #spinner />
       </InfiniteLoading>
     </b-collapse>
   </div>
