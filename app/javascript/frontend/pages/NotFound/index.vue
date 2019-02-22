@@ -6,7 +6,7 @@
     >
       <h1>{{ t('headlines.error') }}</h1>
       <p>{{ t('texts.error') }}</p>
-      <template slot="footer">
+      <template #footer>
         <InternalLink
           :route="{name: 'home'}"
           exact
