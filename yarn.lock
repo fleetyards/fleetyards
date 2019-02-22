@@ -12742,10 +12742,10 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-swatches@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-1.0.2.tgz#06eb6d892aef94032bd7aae8c2096da7b768feb4"
-  integrity sha512-aYQPhUmqsFSO6UOEJzBij+rhZHeTKUOXhqrCPQ9mT0UZwV7qcqXdIyUAI/xc6tlYNxoaD9dCeVHGoOGJjYYq6w==
+vue-swatches@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-1.0.3.tgz#84eb23ba99bbbb0d56698f3a8bdb1b340203d33b"
+  integrity sha512-3J+Nc3bisvhhp0BW0pfTbQvdl3i+dhwoPjoM+2D6R6hW65KNpXOA+sJwcSg2j1Xd6fLcOV7LMb2sz6s4vKSWRg==
 
 vue-template-compiler@^2.6.6:
   version "2.6.6"
