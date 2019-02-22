@@ -1,35 +1,11 @@
-import Home from 'frontend/pages/Home'
-import Impressum from 'frontend/pages/Impressum'
-import PrivacyPolicy from 'frontend/pages/PrivacyPolicy'
-import Models from 'frontend/pages/Models'
-import Model from 'frontend/pages/Models/Show'
-import ModelImages from 'frontend/pages/Models/Show/Images'
-import ModelVideos from 'frontend/pages/Models/Show/Videos'
-import CompareModels from 'frontend/pages/Compare/Models'
-import NotFound from 'frontend/pages/NotFound'
-import Images from 'frontend/pages/Images'
-import Stats from 'frontend/pages/Stats'
-import Hangar from 'frontend/pages/Hangar'
-import PublicHangar from 'frontend/pages/Hangar/Public'
-import Fleets from 'frontend/pages/Fleets'
-import Fleet from 'frontend/pages/Fleets/Show'
-import Stations from 'frontend/pages/Stations'
 import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
-import Cargo from 'frontend/pages/Cargo'
-import Commodities from 'frontend/pages/Commodities'
-import Login from 'frontend/pages/Login'
-import RequestPassword from 'frontend/pages/RequestPassword'
-import ChangePassword from 'frontend/pages/ChangePassword'
-import Signup from 'frontend/pages/Signup'
-import Confirm from 'frontend/pages/Confirm'
-import Settings from 'frontend/pages/Settings'
 import { routes as SettingsRoutes } from 'frontend/pages/Settings/routes'
 
 export const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home,
+    component: () => import(/* webpackChunkName: "page.home" */ 'frontend/pages/Home'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-6.jpg'),
@@ -37,15 +13,15 @@ export const routes = [
   }, {
     path: '/impressum',
     name: 'impressum',
-    component: Impressum,
+    component: () => import(/* webpackChunkName: "page.impressum" */ 'frontend/pages/Impressum'),
   }, {
     path: '/privacy-policy',
     name: 'privacy-policy',
-    component: PrivacyPolicy,
+    component: () => import(/* webpackChunkName: "page.privacyPolicy" */ 'frontend/pages/PrivacyPolicy'),
   }, {
     path: '/ships',
     name: 'models',
-    component: Models,
+    component: () => import(/* webpackChunkName: "page.ships" */ 'frontend/pages/Models'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -53,7 +29,7 @@ export const routes = [
   }, {
     path: '/compare/ships',
     name: 'compare-models',
-    component: CompareModels,
+    component: () => import(/* webpackChunkName: "page.compare-ships" */ 'frontend/pages/Compare/Models'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -61,7 +37,7 @@ export const routes = [
   }, {
     path: '/ships/:slug',
     name: 'model',
-    component: Model,
+    component: () => import(/* webpackChunkName: "page.ship" */ 'frontend/pages/Models/Show'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -69,7 +45,7 @@ export const routes = [
   }, {
     path: '/ships/:slug/images',
     name: 'model-images',
-    component: ModelImages,
+    component: () => import(/* webpackChunkName: "page.ship-images" */ 'frontend/pages/Models/Show/Images'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -77,7 +53,7 @@ export const routes = [
   }, {
     path: '/ships/:slug/videos',
     name: 'model-videos',
-    component: ModelVideos,
+    component: () => import(/* webpackChunkName: "page.ship-videos" */ 'frontend/pages/Models/Show/Videos'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -85,15 +61,15 @@ export const routes = [
   }, {
     path: '/stats',
     name: 'stats',
-    component: Stats,
+    component: () => import(/* webpackChunkName: "page.stats" */ 'frontend/pages/Stats'),
   }, {
     path: '/images',
     name: 'images',
-    component: Images,
+    component: () => import(/* webpackChunkName: "page.images" */ 'frontend/pages/Images'),
   }, {
     path: '/hangar',
     name: 'hangar',
-    component: Hangar,
+    component: () => import(/* webpackChunkName: "page.hangar" */ 'frontend/pages/Hangar'),
     meta: {
       needsAuthentication: true,
       // eslint-disable-next-line global-require
@@ -102,11 +78,11 @@ export const routes = [
   }, {
     path: '/hangar/:user',
     name: 'hangar-public',
-    component: PublicHangar,
+    component: () => import(/* webpackChunkName: "page.hangar-public" */ 'frontend/pages/Hangar/Public'),
   }, {
     path: '/fleets',
     name: 'fleets',
-    component: Fleets,
+    component: () => import(/* webpackChunkName: "page.fleets" */ 'frontend/pages/Fleets'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
@@ -114,7 +90,7 @@ export const routes = [
   }, {
     path: '/fleets/:sid',
     name: 'fleet',
-    component: Fleet,
+    component: () => import(/* webpackChunkName: "page.fleet" */ 'frontend/pages/Fleets/Show'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
@@ -122,12 +98,12 @@ export const routes = [
   }, {
     path: '/stations',
     name: 'stations',
-    component: Stations,
+    component: () => import(/* webpackChunkName: "page.stations" */ 'frontend/pages/Stations'),
     children: StationsRoutes,
   }, {
     path: '/cargo',
     name: 'cargo',
-    component: Cargo,
+    component: () => import(/* webpackChunkName: "page.cargo" */ 'frontend/pages/Cargo'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -135,7 +111,7 @@ export const routes = [
   }, {
     path: '/commodities',
     name: 'commodities',
-    component: Commodities,
+    component: () => import(/* webpackChunkName: "page.commodities" */ 'frontend/pages/Commodities'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -143,7 +119,7 @@ export const routes = [
   }, {
     path: '/commodities/:id',
     name: 'commoditiesSaved',
-    component: Commodities,
+    component: () => import(/* webpackChunkName: "page.commodities" */ 'frontend/pages/Commodities'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -151,7 +127,7 @@ export const routes = [
   }, {
     path: '/settings',
     name: 'settings',
-    component: Settings,
+    component: () => import(/* webpackChunkName: "page.settings" */ 'frontend/pages/Settings'),
     meta: {
       needsAuthentication: true,
     },
@@ -162,34 +138,34 @@ export const routes = [
   }, {
     path: '/sign-up',
     name: 'signup',
-    component: Signup,
+    component: () => import(/* webpackChunkName: "page.signup" */ 'frontend/pages/Signup'),
   }, {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: () => import(/* webpackChunkName: "page.login" */ 'frontend/pages/Login'),
   }, {
     path: '/password/request',
     name: 'request-password',
-    component: RequestPassword,
+    component: () => import(/* webpackChunkName: "page.request-password" */ 'frontend/pages/RequestPassword'),
   }, {
     path: '/password/update/:token',
     name: 'change-password',
-    component: ChangePassword,
+    component: () => import(/* webpackChunkName: "page.change-password" */ 'frontend/pages/ChangePassword'),
   }, {
     path: '/confirm/:token',
     name: 'confirm',
-    component: Confirm,
+    component: () => import(/* webpackChunkName: "page.confirm" */ 'frontend/pages/Confirm'),
   }, {
     path: '/404',
     name: '404',
-    component: NotFound,
+    component: () => import(/* webpackChunkName: "page.404" */ 'frontend/pages/NotFound'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-404.jpg'),
     },
   }, {
     path: '*',
-    component: NotFound,
+    component: () => import(/* webpackChunkName: "page.404" */ 'frontend/pages/NotFound'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-404.jpg'),

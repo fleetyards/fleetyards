@@ -56,7 +56,7 @@
         />
       </div>
     </div>
-    <template slot="footer">
+    <template #footer>
       <SubmitButton
         :loading="submitting"
         form="fleet-form"
