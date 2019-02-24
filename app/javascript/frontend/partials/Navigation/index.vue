@@ -25,6 +25,7 @@
       <img
         :src="require('images/logo.png')"
         class="logo"
+        alt="logo"
       >
       <div class="nav-container-inner">
         <ul v-if="!isAuthenticated">

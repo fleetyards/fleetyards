@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :admin, path: '', constraints: { subdomain: 'admin' } do
+namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (ENV['CI'] ? '' : 'admin') } do
   devise_for :users, skip: %i[registration]
 
   resource :password, only: %i[edit update]

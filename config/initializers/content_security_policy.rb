@@ -22,7 +22,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
   if Rails.env.development?
     # policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
-  else
+  elsif ENV['SENTRY_CSP_URI'].present?
     # policy.script_src :self, :https
     policy.report_uri ENV['SENTRY_CSP_URI']
   end
