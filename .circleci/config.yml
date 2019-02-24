@@ -199,7 +199,8 @@ jobs:
       - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
       - run:
           name: Run Server
-          command: bundle exec puma -C config/puma.rb -d
+          command: bundle exec puma -C config/puma.rb
+          background: true
       - run:
           name: Wait for Server
           command: |
