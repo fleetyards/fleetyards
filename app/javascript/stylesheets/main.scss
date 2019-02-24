@@ -47,11 +47,11 @@ body {
 
 .app-body {
   display: flex;
-  padding-top: 70px;
   min-height: 100vh;
   flex-direction: column;
 
   .main {
+    padding-top: 70px;
     margin-bottom: 50px;
     overflow-y: auto;
     flex: 1;

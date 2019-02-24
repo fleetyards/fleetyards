@@ -29,7 +29,7 @@
       />
     </transition>
     <BackToTop visible-offset="500" />
-    <AppFooter class="app-footer" />
+    <AppFooter />
   </div>
 </template>
 

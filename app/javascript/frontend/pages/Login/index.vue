@@ -13,6 +13,7 @@
           </h1>
           <div class="form-group">
             <input
+              id="login"
               v-model="form.login"
               :placeholder="t('labels.login')"
               type="text"

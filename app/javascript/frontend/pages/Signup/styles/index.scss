@@ -21,6 +21,14 @@ h1 {
 
 .privacy-info {
   color: $gray-light;
+
+  a {
+    color: lighten($gray-light, 10%);
+
+    &:hover {
+      color: lighten($gray-light, 30%)
+    }
+  }
 }
 
 .form-control {
@@ -36,6 +44,8 @@ h1 {
     z-index: 2;
   }
 }
+
+
 
 .has-feedback {
   .form-control-feedback {

@@ -1,4 +1,5 @@
 {
+  // "browsers": ["chrome"],
   "browsers": ["chrome:headless  --no-sandbox --disable-gpu"],
   "concurrency": 2,
   "src": ["test/e2e/pages/**/*.e2e.js"],
