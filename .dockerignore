@@ -1,11 +1,6 @@
-.bundle
-
-# logfiles and tempfiles.
 log/*
 tmp/*
 dumps
-
-pids/*
 
 # config files
 .env
@@ -14,13 +9,10 @@ pids/*
 # test files
 coverage/*
 test/reports/*
-test/e2e/logs/*
 
 # app files
 public/uploads/*
-public/assets
 public/compare/*
-public/packs
 public/packs-test
 
 # js dependencies
@@ -32,7 +24,6 @@ vendor/assets/bower_components/sweetalert
 
 .byebug_history
 
-/node_modules
 yarn-error.log
 yarn-debug.log*
 .yarn-integrity

@@ -100,12 +100,10 @@ nav {
 
       li {
 
-        > ul {
-          padding-left: 20px;
-        }
 
         > a {
           cursor: pointer;
+          color: darken($text-color, 10%);
           position: relative;
           display: block;
           padding: 10px 15px 10px 30px;
@@ -113,15 +111,7 @@ nav {
 
           &::after {
             transition: all ease $transition-base-speed;
-            width: 3px;
-            opacity: 0;
-            height: 80%;
-            content: "";
-            position: absolute;
-            top: 10%;
-            border-top-left-radius: 2px;
-            border-bottom-left-radius: 2px;
-            right: 0;
+            opacity: 1;
           }
         }
 
@@ -132,30 +122,52 @@ nav {
           background-color: $gray-darker;
         }
 
-        &.active > a,
         &:hover > a {
-          color: #fff;
-          background-image: linear-gradient(to right, transparent, rgba($gray-darker, 0.6));
+          color: lighten($text-color, 10%);
+        }
+
+        &.active > a {
+          color: lighten($text-color, 20%);
 
           &::after {
-            opacity: 1;
+            width: 3px;
+            height: 80%;
+            content: "";
+            position: absolute;
+            top: 10%;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+            left: 0;
             background: $primary;
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
           }
         }
       }
     }
 
     .sub-menu {
-      > a > i {
-        transition: all 0.5s ease;
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        margin-top: -7px;
+      > a {
+
+        > i {
+          transition: all 0.5s ease;
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          margin-top: -7px;
+        }
+      }
+
+      ul > li > a {
+        padding-left: 40px;
       }
 
       &.open {
+        &.active > a {
+          &::after {
+            opacity: 0;
+          }
+        }
+
         > a > i {
           transform: rotate(180deg);
         }

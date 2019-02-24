@@ -1,5 +1,7 @@
-.metrics-value {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.base-metrics {
+  .metrics-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

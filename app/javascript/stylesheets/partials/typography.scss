@@ -1,8 +1,12 @@
-h1,
 h2,
 h3,
 h4 {
   margin-top: 0;
+}
+
+h1 {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 address {
@@ -20,7 +24,7 @@ blockquote {
       color: $gray-light;
 
       &:hover {
-        color: $gray-light;
+        color: white;
       }
     }
   }
@@ -52,7 +56,7 @@ a.back-button {
 }
 
 .panel-title {
-  font-size: 20px;
+  font-size: 22px;
   font-family: 'Orbitron', sans-serif;
   font-weight: normal;
 

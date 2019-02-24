@@ -1,6 +1,9 @@
 production:
   url: <%= ENV["DATABASE_URL"] %>
 
+docker:
+  url: <%= ENV["DATABASE_URL"] %>
+
 development:
   database: fleetyards_dev
   adapter: postgresql

@@ -5,16 +5,26 @@ set -eu
 pushd docker
 
 echo
-echo "Build Container..."
+echo "Base Container..."
 echo
 
-docker build -t fleetyards/app:2.5.1 .
+pushd base
+
+docker build -t fleetyards/base:2.5.1 .
+docker push fleetyards/base:2.5.1
+
+popd
 
 echo
-echo "Push Container..."
+echo "CI Container..."
 echo
 
-docker push fleetyards/app:2.5.1
+pushd ci
+
+docker build -t fleetyards/ci:2.5.1 .
+docker push fleetyards/ci:2.5.1
+
+popd
 
 echo
 echo "...Done"
