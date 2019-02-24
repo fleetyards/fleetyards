@@ -316,13 +316,19 @@ export default {
       'mobile',
     ]),
     emptyBoxVisible() {
-      return !this.loading && ((!this.vehicles.length && !this.hangarFleetchartVisible)
-      || (!this.fleetchartVehicles.length && this.hangarFleetchartVisible))
-      && (this.isFilterSelected || this.$route.query.page)
+      return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
     },
     guideVisible() {
-      return !this.loading && !this.vehicles.length && !this.isFilterSelected
-        && !this.fleetchartVehicles.length
+      return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && !this.filterPresent
+    },
+    noVehicles() {
+      return !this.vehicles.length && !this.hangarFleetchartVisible
+    },
+    noFleetchartVehicles() {
+      return !this.fleetchartVehicles.length && this.hangarFleetchartVisible
+    },
+    filterPresent() {
+      return this.isFilterSelected || this.$route.query.page
     },
     toggleDetailsTooltip() {
       if (this.hangarDetailsVisible) {
