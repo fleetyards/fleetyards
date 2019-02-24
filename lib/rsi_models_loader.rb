@@ -28,7 +28,7 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def load_models
-    return JSON.parse(File.read(json_file_path))['data'] if Rails.env.test? && File.exist?(json_file_path)
+    return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI']) && File.exist?(json_file_path)
 
     response = Typhoeus.get("#{base_url}/ship-matrix/index")
 

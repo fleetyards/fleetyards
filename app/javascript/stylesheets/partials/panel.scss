@@ -78,8 +78,22 @@ $contentBorderRadius: 16px;
       text-overflow: ellipsis;
       padding-right: 30px;
 
+      > a {
+        display: inline-block;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+
       small {
-        color: $text-color;
+        color: darken($text-color, 20%);
+
+        a {
+          color: darken($text-color, 20%);
+
+          &:hover {
+            color: $text-color;
+          }
+        }
       }
     }
   }

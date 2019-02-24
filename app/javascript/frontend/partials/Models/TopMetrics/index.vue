@@ -1,5 +1,5 @@
 <template>
-  <div class="row metrics-block main-metrics">
+  <div class="row metrics-block top-metrics">
     <div
       v-if="model.focus"
       class="col-xs-6 col-sm-4"
