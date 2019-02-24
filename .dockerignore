@@ -1,0 +1,34 @@
+log/*
+tmp/*
+dumps
+
+# config files
+.env
+.wti
+
+# test files
+coverage/*
+test/reports/*
+
+# app files
+public/uploads/*
+public/compare/*
+public/packs-test
+
+# js dependencies
+vendor/assets/.bowerrc
+vendor/assets/bower.json
+vendor/assets/bower_components/jquery
+vendor/assets/bower_components/bootstrap
+vendor/assets/bower_components/sweetalert
+
+.byebug_history
+
+yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+build
+
+.eslintcache
+
+blacklist.json

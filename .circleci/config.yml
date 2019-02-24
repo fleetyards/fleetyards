@@ -3,7 +3,7 @@ version: 2.0
 defaults: &defaults
   working_directory: ~/app
   docker:
-    - image: fleetyards/app:2.5.1
+    - image: fleetyards/base:2.5.1
       environment:
         RAILS_ENV: test
         DATABASE_HOST: 127.0.0.1
@@ -11,10 +11,34 @@ defaults: &defaults
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
-    - image: circleci/postgres:9.6.2-alpine
+    - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
         POSTGRES_DB: fleetyards_test
+
+e2e: &e2e
+  working_directory: ~/app
+  docker:
+    - image: fleetyards/ci:2.5.1
+      environment:
+        DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
+        TEST_SEEDS: 1
+        RAILS_ENV: docker
+        RAILS_SERVE_STATIC_FILES: 1
+        DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+        API_URL: http://localhost:8270/api/v1
+        CABLE_URL: ws://localhost:8270/cable
+        PORT: 8270
+        RAVEN_DSN: https://763123f723e3482790f14e89ca1a9623@sentry.io/1401277
+        LC_ALL: C.UTF-8
+        LANG: en_US.UTF-8
+        LANGUAGE: en_US.UTF-8
+    - image: circleci/postgres:9.5.16-alpine
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: fleetyards
+    - image: circleci/redis:5.0.3-alpine
 
 jobs:
   checkout_code:
@@ -122,7 +146,7 @@ jobs:
           name: Run Unit Tests
           command: bundle exec rails test
       - store_test_results:
-          path: test/reports
+          path: ~/app/test/reports
 
   javascript_tests:
     <<: *defaults
@@ -155,6 +179,42 @@ jobs:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/app/public/assets
+
+  e2e_tests:
+    <<: *e2e
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: bundle --path vendor/bundle
+      - run: yarn install
+      - run:
+          name: Setup DB
+          command: bundle exec rails db:create db:schema:load
+      - run:
+          name: Prefill DB
+          command: bundle exec rails db:seed
+      - run:
+          name: Precompile Assets
+          command: bundle exec rails webpacker:compile assets:precompile
+      - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
+      - run:
+          name: Run Server
+          command: bundle exec puma -C config/puma.rb
+          background: true
+      - run:
+          name: Wait for Server
+          command: |
+              until $(curl --output /dev/null --silent --head --fail http://localhost:8270); do
+                  printf '.'
+                  sleep 5
+              done
+      - run: yarn install
+      - run:
+          name: Run E2E Tests
+          command: yarn run test:e2e
+      - store_artifacts:
+          path: ~/app/test/e2e/logs
+          destination: e2e
 
   deploy:
     <<: *defaults
@@ -207,12 +267,18 @@ workflows:
       - unit_tests:
           requires:
             - bundle_dependencies
+            - yarn_dependencies
       - javascript_tests:
           requires:
             - yarn_dependencies
       - precompile_assets:
           requires:
             - bundle_dependencies
+            - yarn_dependencies
+      - e2e_tests:
+          requires:
+            - bundle_dependencies
+            - yarn_dependencies
   main:
     jobs:
       - checkout_code
@@ -245,8 +311,13 @@ workflows:
           requires:
             - bundle_dependencies
             - yarn_dependencies
+      - e2e_tests:
+          requires:
+            - bundle_dependencies
+            - yarn_dependencies
       - deploy:
           requires:
+            - e2e_tests
             - audit
             - rubocop
             - eslint

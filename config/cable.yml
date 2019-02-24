@@ -2,6 +2,10 @@ production:
   adapter: redis
   url: <%=ENV['REDIS_URL']%>
 
+docker:
+  adapter: redis
+  url: <%=ENV['REDIS_URL']%>
+
 development:
   adapter: redis
   url: <%=ENV['REDIS_URL']%>
