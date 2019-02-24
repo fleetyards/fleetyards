@@ -12729,10 +12729,10 @@ vue-scrollto@^2.13.0:
   dependencies:
     bezier-easing "^2.0.3"
 
-vue-slider-component@^2.8.3:
-  version "2.8.10"
-  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-2.8.10.tgz#85b7310fe199f42a3078dc95c5bbc293ac8b9f85"
-  integrity sha512-3/p5GRysvC6cl7uXSXHsex3ShbdBty1X8pcWGq2/rkQdHtK1cTtE2P1A5tmXsgg9go2IrLhlWY6CZsbzQPv4Fg==
+vue-slider-component@^2.8.12:
+  version "2.8.12"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-2.8.12.tgz#bad1b76eae2c8c0d0f38ffc10f8907a33a847bfd"
+  integrity sha512-ISR46fKAh1cUnS35rZqsbm50h9JjTITtZQP3ddWRYg9cOAxfyNLPzKrLBOW5hW5JkFNkDPOWaVcEE8eI5gN4+g==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
