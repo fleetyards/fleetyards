@@ -14,6 +14,7 @@ pids/*
 # test files
 coverage/*
 test/reports/*
+test/e2e/logs/*
 
 # app files
 public/uploads/*
