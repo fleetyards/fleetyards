@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-`rails log:clear` if Rails.env.development? || Rails.env.test?
+if Rails.env.development? || Rails.env.test?
+  `rails log:clear`
+  `rm -rf #{Rails.root.join('test', 'e2e', 'screenshots', '*')} 2> /dev/null`
+end

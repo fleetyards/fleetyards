@@ -1,10 +1,9 @@
 {
-  // "browsers": ["chrome"],
   "browsers": ["chrome:headless  --no-sandbox --disable-gpu"],
   "concurrency": 2,
   "src": ["test/e2e/pages/**/*.e2e.js"],
   "takeScreenshotsOnFails": true,
-  "screenshotPath": "./test/e2e/logs",
+  "screenshotPath": "./test/e2e/screenshots",
   "selectorTimeout": 3000,
   "pageLoadTimeout": 3000,
   "speed": 0.1
