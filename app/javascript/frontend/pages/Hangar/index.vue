@@ -319,7 +319,7 @@ export default {
       return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
     },
     guideVisible() {
-      return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && !this.filterPresent
+      return !this.hangar.length
     },
     noVehicles() {
       return !this.vehicles.length && !this.hangarFleetchartVisible
