@@ -294,7 +294,7 @@ export default {
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
-      loading: false,
+      loading: true,
       downloading: false,
       vehicles: [],
       filters: [],
@@ -420,12 +420,12 @@ export default {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
-      this.loading = false
       if (!response.error) {
         this.vehicles = response.data
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
+      this.loading = false
     },
     async fetchCount() {
       const response = await this.$api.get('vehicles/count', {
@@ -440,7 +440,6 @@ export default {
       const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
       })
-      this.loading = false
       this.$nextTick(() => {
         if (this.$refs.scaleSlider) {
           setTimeout(this.$refs.scaleSlider.refresh, 500)
@@ -449,6 +448,7 @@ export default {
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
+      this.loading = false
     },
     setupUpdates() {
       this.vehiclesChannel = this.$cable.subscriptions.create({
