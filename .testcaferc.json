@@ -1,5 +1,5 @@
 {
-  "browsers": ["chrome:headless  --no-sandbox --disable-gpu"],
+  "browsers": ["chrome:headless  --no-sandbox --disable-gpu --window-size=\"1680,1200\""],
   "concurrency": 2,
   "src": ["test/e2e/pages/**/*.e2e.js"],
   "takeScreenshotsOnFails": true,
