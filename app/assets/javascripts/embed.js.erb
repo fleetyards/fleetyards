@@ -2,7 +2,7 @@ const host = '<%= Rails.application.secrets[:host] %>'
 
 const d = document
 const styles = d.createElement('link')
-styles.href = `${host}/embed-styles.css#${+new Date()}`
+styles.href = `${host}/embed-styles.css#${new Date().getTime()}`
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
