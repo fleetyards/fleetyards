@@ -47,7 +47,7 @@ test('Random Images', async (t) => {
   ).ok().expect(
     Selector('.home-images .image', { visibilityCheck: true }).count,
   ).eql(16)
-    .wait(2000)
+    .wait(10000)
     .takeElementScreenshot('.home-images', 'home-images.png')
 
   await compareScreenshot('home-images')
