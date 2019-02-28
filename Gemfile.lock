@@ -167,7 +167,7 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
-    inky-rb (1.3.7.3)
+    inky-rb (1.3.7.4)
       foundation_emails (~> 2)
       nokogiri
     jaro_winkler (1.5.2)
