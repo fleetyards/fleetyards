@@ -14,23 +14,21 @@ module Api
 
       def index
         authorize! :index, :api_models
-        scope = Model.visible.active
-        if pledge_price_range.present?
-          model_query_params['sorts'] = 'fallback_pledge_price asc'
-          scope = scope.where(fallback_pledge_price: pledge_price_range)
-        end
-        if price_range.present?
-          model_query_params['sorts'] = 'price asc'
-          scope = scope.where(price: price_range)
-        end
 
-        model_query_params['sorts'] = sort_by_name
-
-        @q = scope.ransack(model_query_params)
+        @q = index_scope
 
         @models = @q.result
                     .page(params[:page])
                     .per(per_page(Model))
+      end
+
+      def fleetchart
+        authorize! :index, :api_models
+
+        @q = index_scope
+
+        @models = @q.result
+                    .sort_by { |model| [-model.display_length, model.name] }
       end
 
       def slugs
@@ -225,6 +223,22 @@ module Api
             (gt_price...lt_price)
           end
         end
+      end
+
+      private def index_scope
+        scope = Model.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'fallback_pledge_price asc'
+          scope = scope.where(fallback_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        scope.ransack(model_query_params)
       end
 
       private def pledge_price_in

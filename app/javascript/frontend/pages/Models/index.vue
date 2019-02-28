@@ -47,11 +47,22 @@
               >
                 {{ t('actions.compare.models') }}
               </InternalLink>
+              <Btn
+                small
+                @click.native="toggleFleetchart"
+              >
+                <template v-if="modelFleetchartVisible">
+                  {{ t('actions.hideFleetchart') }}
+                </template>
+                <template v-else>
+                  {{ t('actions.showFleetchart') }}
+                </template>
+              </Btn>
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
             <Paginator
-              v-if="models.length"
+              v-if="!modelFleetchartVisible && models.length"
               :page="currentPage"
               :total="totalPages"
               right
@@ -78,7 +89,45 @@
             }"
             class="col-xs-12 col-animated"
           >
+            <div
+              v-if="modelFleetchartVisible && fleetchartModels.length"
+              class="row"
+            >
+              <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+                <vue-slider
+                  ref="scaleSlider"
+                  v-model="scale"
+                  :min="0.5"
+                  :max="4"
+                  :interval="0.1"
+                  formatter="{value}x"
+                  tooltip="hover"
+                />
+              </div>
+            </div>
+            <div
+              v-if="modelFleetchartVisible"
+              class="row"
+            >
+              <div class="col-xs-12 fleetchart-wrapper">
+                <transition-group
+                  id="fleetchart"
+                  name="fade-list"
+                  class="flex-row fleetchart"
+                  tag="div"
+                  appear
+                >
+                  <FleetchartItem
+                    v-for="model in fleetchartModels"
+                    :key="`fleetchart-${model.slug}`"
+                    :model="model"
+                    :scale="scale"
+                  />
+                </transition-group>
+              </div>
+            </div>
             <transition-group
+              v-else
               name="fade-list"
               class="flex-row"
               tag="div"
@@ -109,7 +158,7 @@
         <div class="row">
           <div class="col-xs-12">
             <Paginator
-              v-if="models.length"
+              v-if="!modelFleetchartVisible && models.length"
               :page="currentPage"
               :total="totalPages"
               right
@@ -133,6 +182,8 @@ import Loader from 'frontend/components/Loader'
 import Filters from 'frontend/mixins/Filters'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
+import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
+import vueSlider from 'vue-slider-component'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -143,6 +194,8 @@ export default {
     EmptyBox,
     Btn,
     InternalLink,
+    FleetchartItem,
+    vueSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
@@ -150,12 +203,16 @@ export default {
       loading: false,
       models: [],
       fullscreen: false,
+      fleetchart: false,
+      fleetchartModels: [],
+      scale: this.$store.state.modelFleetchartScale,
     }
   },
   computed: {
     ...mapGetters([
       'modelDetailsVisible',
       'modelFilterVisible',
+      'modelFleetchartVisible',
       'mobile',
     ]),
     emptyBoxVisible() {
@@ -182,14 +239,23 @@ export default {
   },
   created() {
     this.fetch()
+
     if (this.mobile) {
       this.$store.commit('setModelFilterVisible', false)
     }
+
     this.toggleFullscreen()
   },
   methods: {
+    fetch() {
+      this.fetchModels()
+      this.fetchFleetchart()
+    },
     toggleFullscreen() {
       this.fullscreen = !this.modelFilterVisible
+    },
+    toggleFleetchart() {
+      this.$store.dispatch('toggleModelFleetchart')
     },
     toggleFilter() {
       this.$store.dispatch('toggleModelFilter')
@@ -197,7 +263,7 @@ export default {
     toggleDetails() {
       this.$store.dispatch('toggleModelDetails')
     },
-    async fetch() {
+    async fetchModels() {
       this.loading = true
       const response = await this.$api.get('models', {
         q: this.$route.query.q,
@@ -209,6 +275,21 @@ export default {
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
+    },
+    async fetchFleetchart() {
+      this.loading = true
+      const response = await this.$api.get('models/fleetchart', {
+        q: this.$route.query.q,
+      })
+      this.$nextTick(() => {
+        if (this.$refs.scaleSlider) {
+          setTimeout(this.$refs.scaleSlider.refresh, 500)
+        }
+      })
+      if (!response.error) {
+        this.fleetchartModels = response.data
+      }
+      this.loading = false
     },
   },
   metaInfo() {
