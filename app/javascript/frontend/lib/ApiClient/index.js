@@ -9,6 +9,10 @@ const client = axios.create({
   baseURL: process.env.API_URL,
 })
 
+const { CancelToken } = axios
+
+const cancelations = {}
+
 client.interceptors.request.use((config) => {
   const clientConfig = config
   clientConfig.headers.common.Accept = 'application/json'
@@ -35,7 +39,7 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
 const handleError = async function handleError(error) {
   nprogress.done()
 
-  if (!error.response || !error.response.data || !error.response.data.message) {
+  if (error.message !== 'cancel' && (!error.response || !error.response.data || !error.response.data.message)) {
     alert(I18n.t('messages.error.default'))
   }
 
@@ -66,7 +70,15 @@ const handleResponse = function handleResponse(response, params) {
 export async function get(path, params = {}) {
   nprogress.start()
   try {
-    return handleResponse(await client.get(path, { params }), params)
+    return handleResponse(await client.get(path, {
+      params,
+      cancelToken: new CancelToken((c) => {
+        if (cancelations[path]) {
+          cancelations[path]('cancel')
+        }
+        cancelations[path] = c
+      }),
+    }), params)
   } catch (error) {
     return handleError(error)
   }

@@ -44,6 +44,8 @@ const initialState = {
   overlayVisible: false,
   modelDetailsVisible: false,
   modelFilterVisible: true,
+  modelFleetchartVisible: false,
+  modelFleetchartScale: 1,
   modelBackRoute: null,
   shopBackRoute: null,
   stationBackRoute: null,
@@ -115,6 +117,9 @@ const store = new Vuex.Store({
     modelFilterVisible(state) {
       return state.modelFilterVisible
     },
+    modelFleetchartVisible(state) {
+      return state.modelFleetchartVisible
+    },
     modelBackRoute(state) {
       return state.modelBackRoute
     },
@@ -173,6 +178,9 @@ const store = new Vuex.Store({
     },
     toggleModelDetails({ commit, state }) {
       commit('setModelDetailsVisible', !state.modelDetailsVisible)
+    },
+    toggleModelFleetchart({ commit, state }) {
+      commit('setModelFleetchartVisible', !state.modelFleetchartVisible)
     },
     toggleHangarDetails({ commit, state }) {
       commit('setHangarDetailsVisible', !state.hangarDetailsVisible)
@@ -306,6 +314,9 @@ const store = new Vuex.Store({
     },
     setModelDetailsVisible(state, payload) {
       state.modelDetailsVisible = payload
+    },
+    setModelFleetchartVisible(state, payload) {
+      state.modelFleetchartVisible = payload
     },
     setModelBackRoute(state, payload) {
       state.modelBackRoute = payload

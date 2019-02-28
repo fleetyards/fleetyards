@@ -10,6 +10,7 @@ v1_api_routes = lambda do
 
   resources :models, param: :slug, only: %i[index show] do
     collection do
+      get :fleetchart
       get :latest
       get :slugs
       get :updated

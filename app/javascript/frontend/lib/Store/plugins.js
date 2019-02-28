@@ -27,6 +27,8 @@ export default function getStorePlugins() {
       'hangarFilterVisible',
       'modelDetailsVisible',
       'modelFilterVisible',
+      'modelFleetchartVisible',
+      'modelFleetchartScale',
       'shopFilterVisible',
       'shopsFilterVisible',
       'stationFilterVisible',
