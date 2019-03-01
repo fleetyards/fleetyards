@@ -54,13 +54,14 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
 
     invoke :'bundle:install'
-    comment 'bundle clean'
-    command %(bundle clean)
 
     invoke :'rails:db_migrate'
     invoke :webpacker_compile
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
+
+    # comment 'bundle clean'
+    # command %(bundle clean)
 
     on :launch do
       invoke :'server:restart'
