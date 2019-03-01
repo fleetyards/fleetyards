@@ -56,8 +56,15 @@ task :deploy do
     invoke :'bundle:install'
 
     invoke :'rails:db_migrate'
-    invoke :webpacker_compile
+
+    comment %(Install JS Dependencies)
+    command %(yarn install)
+
+    comment %(Webpacker Compile)
+    command %{#{fetch(:rails)} webpacker:compile}
+
     invoke :'rails:assets_precompile'
+
     invoke :'deploy:cleanup'
 
     # comment 'bundle clean'
