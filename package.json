@@ -79,7 +79,7 @@
     "sass-loader": "^7.1.0",
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0",
-    "testcafe": "^1.0.1",
+    "testcafe": "^1.1.0",
     "typescript": "^3.3.3333",
     "vue-eslint-parser": "^6.0.3",
     "vue-jest": "^3.0.3",
