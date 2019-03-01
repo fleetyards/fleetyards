@@ -61,7 +61,7 @@ task :deploy do
     command %(yarn install)
 
     comment %(Webpacker Compile)
-    command %{#{fetch(:rails)} webpacker:compile}
+    command %(#{fetch(:rails)} webpacker:compile)
 
     invoke :'rails:assets_precompile'
 
