@@ -81,7 +81,7 @@
     "stylelint-config-standard": "^18.2.0",
     "testcafe": "^1.0.1",
     "typescript": "^3.3.3333",
-    "vue-eslint-parser": "^6.0.2",
+    "vue-eslint-parser": "^6.0.3",
     "vue-jest": "^3.0.3",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
