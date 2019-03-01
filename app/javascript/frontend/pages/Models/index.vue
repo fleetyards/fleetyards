@@ -203,7 +203,6 @@ export default {
       loading: false,
       models: [],
       fullscreen: false,
-      fleetchart: false,
       fleetchartModels: [],
       scale: this.$store.state.modelFleetchartScale,
     }
@@ -240,6 +239,10 @@ export default {
   created() {
     this.fetch()
 
+    if (this.$route.query.fleetchart && !this.modelFleetchartVisible) {
+      this.$store.dispatch('toggleModelFleetchart')
+    }
+
     if (this.mobile) {
       this.$store.commit('setModelFilterVisible', false)
     }
@@ -256,6 +259,17 @@ export default {
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleModelFleetchart')
+
+      if (this.$route.query.fleetchart && !this.modelFleetchartVisible) {
+        const query = JSON.parse(JSON.stringify(this.$route.query))
+
+        delete query.fleetchart
+
+        this.$router.replace({
+          name: this.$route.name,
+          query,
+        })
+      }
     },
     toggleFilter() {
       this.$store.dispatch('toggleModelFilter')
