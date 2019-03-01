@@ -108,8 +108,8 @@
                 <vue-slider
                   ref="scaleSlider"
                   v-model="scale"
-                  :min="0.5"
-                  :max="4"
+                  :min="0.1"
+                  :max="5"
                   :interval="0.1"
                   formatter="{value}x"
                   tooltip="hover"
@@ -248,6 +248,9 @@ export default {
   watch: {
     $route() {
       this.fetch()
+    },
+    scale(value) {
+      this.$store.commit('setModelFleetchartScale', value)
     },
   },
   created() {

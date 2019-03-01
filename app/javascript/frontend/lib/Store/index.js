@@ -318,6 +318,9 @@ const store = new Vuex.Store({
     setModelFleetchartVisible(state, payload) {
       state.modelFleetchartVisible = payload
     },
+    setModelFleetchartScale(state, payload) {
+      state.modelFleetchartScale = payload
+    },
     setModelBackRoute(state, payload) {
       state.modelBackRoute = payload
     },
