@@ -13,6 +13,17 @@
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
               <Btn
+                v-if="modelFleetchartVisible"
+                v-tooltip="t('actions.saveScreenshot')"
+                :disabled="downloading"
+                :aria-label="t('actions.saveScreenshot')"
+                small
+                @click.native="download"
+              >
+                {{ t('actions.saveScreenshot') }}
+              </Btn>
+              <Btn
+                v-else
                 v-tooltip="toggleDetailsTooltip"
                 :active="modelDetailsVisible"
                 :aria-label="toggleDetailsTooltip"
@@ -185,6 +196,8 @@ import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import vueSlider from 'vue-slider-component'
 import { mapGetters } from 'vuex'
+import html2canvas from 'html2canvas'
+import download from 'downloadjs'
 
 export default {
   components: {
@@ -201,6 +214,7 @@ export default {
   data() {
     return {
       loading: false,
+      downloading: false,
       models: [],
       fullscreen: false,
       fleetchartModels: [],
@@ -250,6 +264,16 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
+    download() {
+      this.downloading = true
+      html2canvas(document.querySelector('#fleetchart'), {
+        backgroundColor: null,
+        useCORS: true,
+      }).then((canvas) => {
+        this.downloading = false
+        download(canvas.toDataURL(), 'fleetchart.png')
+      })
+    },
     fetch() {
       this.fetchModels()
       this.fetchFleetchart()
