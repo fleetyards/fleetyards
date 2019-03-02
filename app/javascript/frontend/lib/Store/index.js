@@ -90,8 +90,14 @@ const store = new Vuex.Store({
     hangarFleetchartVisible(state) {
       return state.hangarFleetchartVisible
     },
+    HangarFleetchartScale(state) {
+      return state.hangarFleetchartScale
+    },
     hangarPublicFleetchartVisible(state) {
       return state.hangarPublicFleetchartVisible
+    },
+    HangarPublicFleetchartScale(state) {
+      return state.hangarPublicFleetchartScale
     },
     hangarFilterVisible(state) {
       return state.hangarFilterVisible
@@ -119,6 +125,9 @@ const store = new Vuex.Store({
     },
     modelFleetchartVisible(state) {
       return state.modelFleetchartVisible
+    },
+    ModelFleetchartScale(state) {
+      return state.modelFleetchartScale
     },
     modelBackRoute(state) {
       return state.modelBackRoute

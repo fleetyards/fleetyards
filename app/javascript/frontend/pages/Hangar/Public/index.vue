@@ -8,15 +8,6 @@
         <div class="row">
           <div class="col-xs-12">
             <h1>{{ t('headlines.hangarPublic', { user: usernamePlural }) }}</h1>
-            <router-link
-              class="to-fleetyards"
-              to="/"
-            >
-              <i class="fal fa-chevron-left" />
-              <span class="brand">
-                {{ t('app') }}
-              </span>
-            </router-link>
           </div>
         </div>
         <div class="row">
@@ -63,22 +54,22 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
-          class="row"
+        <transition
+          name="fade"
+          appear
         >
-          <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-            <vue-slider
-              ref="slider"
-              v-model="scale"
-              :min="scaleMin"
-              :max="scaleMax"
-              :interval="scaleInterval"
-              formatter="{value}x"
-              tooltip="hover"
-            />
+          <div
+            v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
+            class="row"
+          >
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+              <FleetchartSlider
+                ref="fleetchartSlider"
+                scale-key="HangarPublicFleetchartScale"
+              />
+            </div>
           </div>
-        </div>
+        </transition>
         <div
           v-if="hangarPublicFleetchartVisible"
           class="row"
@@ -95,7 +86,7 @@
                 v-for="vehicle in fleetchartVehicles"
                 :key="vehicle.id"
                 :model="vehicle.model"
-                :scale="scale"
+                :scale="HangarPublicFleetchartScale"
               />
             </transition-group>
           </div>
@@ -144,20 +135,20 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import vueSlider from 'vue-slider-component'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 
 export default {
   components: {
     ModelPanel,
     Loader,
     Btn,
-    vueSlider,
     ModelClassLabels,
     FleetchartItem,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {
@@ -167,19 +158,13 @@ export default {
       vehicles: [],
       fleetchartVehicles: [],
       vehiclesCount: null,
-      scale: this.$store.state.hangarPublicFleetchartScale,
-      scaleMax: 4,
-      scaleMin: 0.5,
-      scaleInterval: 0.1,
     }
   },
   computed: {
     ...mapGetters([
       'hangarPublicFleetchartVisible',
+      'HangarPublicFleetchartScale',
     ]),
-    lengthMultiplicator() {
-      return this.scale * 4
-    },
     username() {
       return this.$route.params.user
     },
@@ -196,9 +181,6 @@ export default {
   watch: {
     $route() {
       this.fetch()
-    },
-    scale(value) {
-      this.$store.commit('setHangarPublicFleetchartScale', value)
     },
     hangarPublicFleetchartVisible() {
       this.fetch()
@@ -253,6 +235,11 @@ export default {
       this.loading = true
       const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
       this.loading = false
+      this.$nextTick(() => {
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
+        }
+      })
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }

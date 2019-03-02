@@ -100,22 +100,22 @@
             }"
             class="col-xs-12 col-animated"
           >
-            <div
-              v-if="modelFleetchartVisible && fleetchartModels.length"
-              class="row"
+            <transition
+              name="fade"
+              appear
             >
-              <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                <vue-slider
-                  ref="scaleSlider"
-                  v-model="scale"
-                  :min="0.1"
-                  :max="5"
-                  :interval="0.1"
-                  formatter="{value}x"
-                  tooltip="hover"
-                />
+              <div
+                v-if="modelFleetchartVisible && fleetchartModels.length"
+                class="row"
+              >
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+                  <FleetchartSlider
+                    ref="fleetchartSlider"
+                    scale-key="ModelFleetchartScale"
+                  />
+                </div>
               </div>
-            </div>
+            </transition>
             <div
               v-if="modelFleetchartVisible"
               class="row"
@@ -132,7 +132,7 @@
                     v-for="model in fleetchartModels"
                     :key="`fleetchart-${model.slug}`"
                     :model="model"
-                    :scale="scale"
+                    :scale="ModelFleetchartScale"
                   />
                 </transition-group>
               </div>
@@ -194,7 +194,7 @@ import Filters from 'frontend/mixins/Filters'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
-import vueSlider from 'vue-slider-component'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import { mapGetters } from 'vuex'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
@@ -208,7 +208,7 @@ export default {
     Btn,
     InternalLink,
     FleetchartItem,
-    vueSlider,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
@@ -218,7 +218,6 @@ export default {
       models: [],
       fullscreen: false,
       fleetchartModels: [],
-      scale: this.$store.state.modelFleetchartScale,
     }
   },
   computed: {
@@ -226,6 +225,7 @@ export default {
       'modelDetailsVisible',
       'modelFilterVisible',
       'modelFleetchartVisible',
+      'ModelFleetchartScale',
       'mobile',
     ]),
     emptyBoxVisible() {
@@ -248,9 +248,6 @@ export default {
   watch: {
     $route() {
       this.fetch()
-    },
-    scale(value) {
-      this.$store.commit('setModelFleetchartScale', value)
     },
   },
   created() {
@@ -323,8 +320,8 @@ export default {
         q: this.$route.query.q,
       })
       this.$nextTick(() => {
-        if (this.$refs.scaleSlider) {
-          setTimeout(this.$refs.scaleSlider.refresh, 500)
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
         }
       })
       if (!response.error) {

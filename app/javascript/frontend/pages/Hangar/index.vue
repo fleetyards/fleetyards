@@ -160,22 +160,22 @@
             }"
             class="col-xs-12 col-animated"
           >
-            <div
-              v-if="hangarFleetchartVisible && fleetchartVehicles.length"
-              class="row"
+            <transition
+              name="fade"
+              appear
             >
-              <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                <vue-slider
-                  ref="scaleSlider"
-                  v-model="scale"
-                  :min="0.1"
-                  :max="5"
-                  :interval="0.1"
-                  formatter="{value}x"
-                  tooltip="hover"
-                />
+              <div
+                v-if="hangarFleetchartVisible && fleetchartVehicles.length"
+                class="row"
+              >
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+                  <FleetchartSlider
+                    ref="fleetchartSlider"
+                    scale-key="HangarFleetchartScale"
+                  />
+                </div>
               </div>
-            </div>
+            </transition>
             <div
               v-if="hangarFleetchartVisible"
               class="row"
@@ -192,7 +192,7 @@
                     v-for="vehicle in fleetchartVehicles"
                     :key="vehicle.id"
                     :model="vehicle.model"
-                    :scale="scale"
+                    :scale="HangarFleetchartScale"
                   />
                 </transition-group>
               </div>
@@ -269,11 +269,11 @@ import Filters from 'frontend/mixins/Filters'
 import { mapGetters } from 'vuex'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
-import vueSlider from 'vue-slider-component'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 
 export default {
   components: {
@@ -287,7 +287,7 @@ export default {
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    vueSlider,
+    FleetchartSlider,
     VehicleModal,
     AddonsModal,
   },
@@ -303,7 +303,6 @@ export default {
       fullscreen: false,
       vehiclesCount: null,
       tooltipTrigger: 'click',
-      scale: this.$store.state.hangarFleetchartScale,
     }
   },
   computed: {
@@ -313,6 +312,7 @@ export default {
       'hangarDetailsVisible',
       'hangarFleetchartVisible',
       'hangarFilterVisible',
+      'HangarFleetchartScale',
       'mobile',
     ]),
     emptyBoxVisible() {
@@ -358,9 +358,6 @@ export default {
   watch: {
     $route() {
       this.fetch()
-    },
-    scale(value) {
-      this.$store.commit('setHangarFleetchartScale', value)
     },
     currentUser() {
       if (this.currentUser) {
@@ -441,8 +438,8 @@ export default {
         q: this.$route.query.q,
       })
       this.$nextTick(() => {
-        if (this.$refs.scaleSlider) {
-          setTimeout(this.$refs.scaleSlider.refresh, 500)
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
         }
       })
       if (!response.error) {
