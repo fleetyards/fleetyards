@@ -3,7 +3,7 @@
     ref="scaleSlider"
     v-model="scale"
     :min="10"
-    :max="500"
+    :max="max"
     :interval="10"
     dot-size="20"
     :marks="mark"
@@ -16,6 +16,7 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -32,6 +33,14 @@ export default {
       scale: this.$store.getters[this.scaleKey],
     }
   },
+  computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+    max() {
+      return this.mobile ? 100 : 300
+    },
+  },
   watch: {
     scale(value) {
       this.$store.commit(`set${this.scaleKey}`, value)
@@ -39,17 +48,17 @@ export default {
   },
   methods: {
     mark(value) {
-        if (value % 100 === 0 || value === 10) {
-          return {
-            label: this.label(value),
-          }
+      if (value % 50 === 0 || value === 10) {
+        return {
+          label: this.label(value),
         }
-        return false
+      }
+      return false
     },
     label(value) {
       return `${value} %`
-    }
-  }
+    },
+  },
 }
 </script>
 

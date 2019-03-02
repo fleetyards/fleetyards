@@ -59,7 +59,7 @@
             v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
             class="row"
           >
-            <div class="col-xs-12 col-md-6 col-md-offset-3 fleetchart-slider">
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
               <FleetchartSlider scale-key="HangarPublicFleetchartScale" />
             </div>
           </div>
@@ -122,27 +122,27 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
+import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
-import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import Btn from 'frontend/components/Btn'
-import { mapGetters } from 'vuex'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 
 export default {
   components: {
-    ModelPanel,
-    Loader,
     Btn,
-    ModelClassLabels,
-    FleetchartItem,
-    FleetchartSlider,
+    Loader,
     DownloadScreenshotBtn,
+    ModelPanel,
+    FleetchartItem,
+    ModelClassLabels,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {

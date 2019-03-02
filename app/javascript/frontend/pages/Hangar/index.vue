@@ -163,7 +163,7 @@
                 v-if="hangarFleetchartVisible && fleetchartVehicles.length"
                 class="row"
               >
-                <div class="col-xs-12 col-md-6 col-md-offset-3 fleetchart-slider">
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
                   <FleetchartSlider scale-key="HangarFleetchartScale" />
                 </div>
               </div>
@@ -245,43 +245,43 @@
 
 <script>
 import qs from 'qs'
-import I18n from 'frontend/mixins/I18n'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
-import Hash from 'frontend/mixins/Hash'
+import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
-import Filters from 'frontend/mixins/Filters'
-import { mapGetters } from 'vuex'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Filters from 'frontend/mixins/Filters'
+import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 
 export default {
   components: {
-    FleetchartItem,
-    EmptyBox,
-    HangarGuideBox,
-    ModelPanel,
     Loader,
     Btn,
     ExternalLink,
+    DownloadScreenshotBtn,
+    ModelPanel,
+    FleetchartItem,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    FleetchartSlider,
+    EmptyBox,
+    HangarGuideBox,
     VehicleModal,
     AddonsModal,
-    DownloadScreenshotBtn,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {

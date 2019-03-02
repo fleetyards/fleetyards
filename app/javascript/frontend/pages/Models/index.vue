@@ -103,7 +103,7 @@
                 v-if="modelFleetchartVisible && fleetchartModels.length"
                 class="row"
               >
-                <div class="col-xs-12 col-md-6 col-md-offset-3 fleetchart-slider">
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
                   <FleetchartSlider scale-key="ModelFleetchartScale" />
                 </div>
               </div>
@@ -174,33 +174,33 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
-import Hash from 'frontend/mixins/Hash'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
 import InternalLink from 'frontend/components/InternalLink'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
-import Filters from 'frontend/mixins/Filters'
+import ModelPanel from 'frontend/partials/Models/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import { mapGetters } from 'vuex'
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Filters from 'frontend/mixins/Filters'
+import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 
 export default {
   components: {
-    ModelPanel,
-    ModelsFilterForm,
-    Loader,
-    EmptyBox,
     Btn,
     InternalLink,
+    DownloadScreenshotBtn,
+    Loader,
+    ModelPanel,
+    EmptyBox,
+    ModelsFilterForm,
     FleetchartItem,
     FleetchartSlider,
-    DownloadScreenshotBtn,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
