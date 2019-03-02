@@ -2,25 +2,23 @@
   <vue-slider
     ref="scaleSlider"
     v-model="scale"
-    :min="0.1"
-    :max="5"
-    :interval="0.1"
-    tooltip="hover"
-  >
-    <template v-slot:tooltip="{ value }">
-      <div class="slider-tooltip">
-        {{ parseInt(value * 100, 10) }} %
-      </div>
-    </template>
-  </vue-slider>
+    :min="10"
+    :max="500"
+    :interval="10"
+    dot-size="20"
+    :marks="mark"
+    :tooltip-formatter="'{value} %'"
+    lazy
+  />
 </template>
 
 <script>
-import vueSlider from 'vue-slider-component'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 
 export default {
   components: {
-    vueSlider,
+    VueSlider,
   },
   props: {
     scaleKey: {
@@ -31,6 +29,14 @@ export default {
   data() {
     return {
       scale: this.$store.getters[this.scaleKey],
+      mark(value) {
+        if (value % 100 === 0 || value === 10) {
+          return {
+            label: false,
+          }
+        }
+        return false
+      },
     }
   },
   watch: {
@@ -38,14 +44,9 @@ export default {
       this.$store.commit(`set${this.scaleKey}`, value)
     },
   },
-  methods: {
-    refresh() {
-      setTimeout(this.$refs.scaleSlider.refresh, 500)
-    },
-  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "./styles/index";
 </style>

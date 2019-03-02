@@ -1,3 +1,9 @@
 .slider-tooltip {
   white-space: nowrap;
 }
+
+.vue-slider-dot:hover {
+  .vue-slider-dot-tooltip {
+    visibility: visible;
+  }
+}
