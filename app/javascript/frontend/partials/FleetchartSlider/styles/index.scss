@@ -1,9 +1,29 @@
+@import "~stylesheets/variables";
+
 .slider-tooltip {
   white-space: nowrap;
 }
 
-.vue-slider-dot:hover {
+.vue-slider {
+  .vue-slider-mark-label,
   .vue-slider-dot-tooltip {
+    transition: opacity $transition-base-speed ease;
+    opacity: 0;
     visibility: visible;
+  }
+
+  .vue-slider-rail {
+    cursor: pointer;
+  }
+
+  &:hover {
+    .vue-slider-mark-label,
+    .vue-slider-dot-tooltip {
+      opacity: 1;
+    }
+
+    .vue-slider-dot-tooltip {
+      visibility: visible;
+    }
   }
 }

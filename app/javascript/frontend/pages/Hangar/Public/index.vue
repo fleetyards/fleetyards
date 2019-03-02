@@ -59,7 +59,7 @@
             v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
             class="row"
           >
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+            <div class="col-xs-12 col-md-6 col-md-offset-3 fleetchart-slider">
               <FleetchartSlider scale-key="HangarPublicFleetchartScale" />
             </div>
           </div>

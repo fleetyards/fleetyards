@@ -7,7 +7,8 @@
     :interval="10"
     dot-size="20"
     :marks="mark"
-    :tooltip-formatter="'{value} %'"
+    :tooltip-formatter="label"
+    :process="false"
     lazy
   />
 </template>
@@ -29,14 +30,6 @@ export default {
   data() {
     return {
       scale: this.$store.getters[this.scaleKey],
-      mark(value) {
-        if (value % 100 === 0 || value === 10) {
-          return {
-            label: false,
-          }
-        }
-        return false
-      },
     }
   },
   watch: {
@@ -44,6 +37,19 @@ export default {
       this.$store.commit(`set${this.scaleKey}`, value)
     },
   },
+  methods: {
+    mark(value) {
+        if (value % 100 === 0 || value === 10) {
+          return {
+            label: this.label(value),
+          }
+        }
+        return false
+    },
+    label(value) {
+      return `${value} %`
+    }
+  }
 }
 </script>
 
