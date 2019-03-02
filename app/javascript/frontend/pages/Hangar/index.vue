@@ -164,10 +164,7 @@
                 class="row"
               >
                 <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                  <FleetchartSlider
-                    ref="fleetchartSlider"
-                    scale-key="HangarFleetchartScale"
-                  />
+                  <FleetchartSlider scale-key="HangarFleetchartScale" />
                 </div>
               </div>
             </transition>
@@ -390,13 +387,6 @@ export default {
     toggleFleetchart() {
       this.$store.dispatch('toggleHangarFleetchart')
     },
-    updateSlider() {
-      this.$nextTick(() => {
-        if (this.$refs.fleetchartSlider) {
-          this.$refs.fleetchartSlider.refresh()
-        }
-      })
-    },
     fetch() {
       this.fetchFleetchart()
       this.fetchVehicles()
@@ -429,7 +419,6 @@ export default {
       const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
       })
-      this.updateSlider()
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
