@@ -32,14 +32,11 @@
             class="col-xs-12 col-md-6"
           >
             <div class="page-actions">
-              <Btn
+              <DownloadScreenshotBtn
                 v-if="hangarPublicFleetchartVisible"
-                :disabled="downloading"
-                small
-                @click.native="download"
-              >
-                {{ t('actions.saveScreenshot') }}
-              </Btn>
+                element="#fleetchart"
+                :filename="`${username}-hangar-fleetchart`"
+              />
               <Btn
                 small
                 @click.native="toggleFleetchart"
@@ -137,9 +134,8 @@ import Pagination from 'frontend/mixins/Pagination'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
-import html2canvas from 'html2canvas'
-import download from 'downloadjs'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 
 export default {
   components: {
@@ -149,12 +145,12 @@ export default {
     ModelClassLabels,
     FleetchartItem,
     FleetchartSlider,
+    DownloadScreenshotBtn,
   },
   mixins: [I18n, MetaInfo, Pagination],
   data() {
     return {
       loading: false,
-      downloading: false,
       vehicles: [],
       fleetchartVehicles: [],
       vehiclesCount: null,
@@ -193,14 +189,11 @@ export default {
     toggleFleetchart() {
       this.$store.dispatch('toggleHangarPublicFleetchart')
     },
-    download() {
-      this.downloading = true
-      html2canvas(document.querySelector('#fleetchart'), {
-        backgroundColor: null,
-        useCORS: true,
-      }).then((canvas) => {
-        this.downloading = false
-        download(canvas.toDataURL(), 'fleetchart.png')
+    updateSlider() {
+      this.$nextTick(() => {
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
+        }
       })
     },
     fetch() {
@@ -235,11 +228,7 @@ export default {
       this.loading = true
       const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
       this.loading = false
-      this.$nextTick(() => {
-        if (this.$refs.fleetchartSlider) {
-          this.$refs.fleetchartSlider.refresh()
-        }
-      })
+      this.updateSlider()
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }

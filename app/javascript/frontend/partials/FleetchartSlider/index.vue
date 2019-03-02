@@ -38,7 +38,7 @@ export default {
       this.$store.commit(`set${this.scaleKey}`, value)
     },
   },
-  methids: {
+  methods: {
     refresh() {
       setTimeout(this.$refs.scaleSlider.refresh, 500)
     },

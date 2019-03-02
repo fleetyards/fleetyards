@@ -78,16 +78,11 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <Btn
-                v-show="hangarFleetchartVisible && fleetchartVehicles.length"
-                v-tooltip="t('actions.saveScreenshot')"
-                :disabled="downloading"
-                :aria-label="t('actions.saveScreenshot')"
-                small
-                @click.native="download"
-              >
-                {{ t('actions.saveScreenshot') }}
-              </Btn>
+              <DownloadScreenshotBtn
+                v-if="hangarFleetchartVisible"
+                element="#fleetchart"
+                filename="my-hangar-fleetchart"
+              />
               <Btn
                 v-show="!hangarFleetchartVisible && vehicles.length"
                 v-tooltip="toggleDetailsTooltip"
@@ -269,11 +264,10 @@ import Filters from 'frontend/mixins/Filters'
 import { mapGetters } from 'vuex'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
-import html2canvas from 'html2canvas'
-import download from 'downloadjs'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 
 export default {
   components: {
@@ -290,12 +284,12 @@ export default {
     FleetchartSlider,
     VehicleModal,
     AddonsModal,
+    DownloadScreenshotBtn,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: true,
-      downloading: false,
       vehicles: [],
       filters: [],
       fleetchartVehicles: [],
@@ -386,24 +380,22 @@ export default {
     toggleFullscreen() {
       this.fullscreen = !this.hangarFilterVisible
     },
-    download() {
-      this.downloading = true
-      html2canvas(document.querySelector('#fleetchart'), {
-        backgroundColor: null,
-        useCORS: true,
-      }).then((canvas) => {
-        this.downloading = false
-        download(canvas.toDataURL(), 'fleetchart.png')
-      })
-    },
     toggleFilter() {
       this.$store.dispatch('toggleHangarFilter')
+      this.updateSlider()
     },
     toggleDetails() {
       this.$store.dispatch('toggleHangarDetails')
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleHangarFleetchart')
+    },
+    updateSlider() {
+      this.$nextTick(() => {
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
+        }
+      })
     },
     fetch() {
       this.fetchFleetchart()
@@ -437,11 +429,7 @@ export default {
       const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
       })
-      this.$nextTick(() => {
-        if (this.$refs.fleetchartSlider) {
-          this.$refs.fleetchartSlider.refresh()
-        }
-      })
+      this.updateSlider()
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }

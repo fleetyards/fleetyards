@@ -12,16 +12,11 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <Btn
+              <DownloadScreenshotBtn
                 v-if="modelFleetchartVisible"
-                v-tooltip="t('actions.saveScreenshot')"
-                :disabled="downloading"
-                :aria-label="t('actions.saveScreenshot')"
-                small
-                @click.native="download"
-              >
-                {{ t('actions.saveScreenshot') }}
-              </Btn>
+                element="#fleetchart"
+                filename="ships-fleetchart"
+              />
               <Btn
                 v-else
                 v-tooltip="toggleDetailsTooltip"
@@ -195,9 +190,8 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import { mapGetters } from 'vuex'
-import html2canvas from 'html2canvas'
-import download from 'downloadjs'
 
 export default {
   components: {
@@ -209,12 +203,12 @@ export default {
     InternalLink,
     FleetchartItem,
     FleetchartSlider,
+    DownloadScreenshotBtn,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
-      downloading: false,
       models: [],
       fullscreen: false,
       fleetchartModels: [],
@@ -264,22 +258,13 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
-    download() {
-      this.downloading = true
-      html2canvas(document.querySelector('#fleetchart'), {
-        backgroundColor: null,
-        useCORS: true,
-      }).then((canvas) => {
-        this.downloading = false
-        download(canvas.toDataURL(), 'fleetchart.png')
-      })
-    },
     fetch() {
       this.fetchModels()
       this.fetchFleetchart()
     },
     toggleFullscreen() {
       this.fullscreen = !this.modelFilterVisible
+      this.updateSlider()
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleModelFleetchart')
@@ -301,6 +286,13 @@ export default {
     toggleDetails() {
       this.$store.dispatch('toggleModelDetails')
     },
+    updateSlider() {
+      this.$nextTick(() => {
+        if (this.$refs.fleetchartSlider) {
+          this.$refs.fleetchartSlider.refresh()
+        }
+      })
+    },
     async fetchModels() {
       this.loading = true
       const response = await this.$api.get('models', {
@@ -319,11 +311,7 @@ export default {
       const response = await this.$api.get('models/fleetchart', {
         q: this.$route.query.q,
       })
-      this.$nextTick(() => {
-        if (this.$refs.fleetchartSlider) {
-          this.$refs.fleetchartSlider.refresh()
-        }
-      })
+      this.updateSlider()
       if (!response.error) {
         this.fleetchartModels = response.data
       }
