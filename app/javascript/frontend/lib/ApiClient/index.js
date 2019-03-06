@@ -4,25 +4,33 @@ import Store from 'frontend/lib/Store'
 import { alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/lib/I18n'
 import linkHeaderParser from 'parse-link-header'
+import axiosDefaults from 'axios/lib/defaults'
 
 const client = axios.create({
   baseURL: process.env.API_URL,
+  headers: {
+    common: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  },
+  transformRequest: axiosDefaults.transformRequest.concat(
+    (data, headers) => {
+      nprogress.start()
+
+      if (Store.getters.isAuthenticated) {
+        // eslint-disable-next-line no-param-reassign
+        headers.Authorization = `Bearer ${Store.state.authToken}`
+      }
+
+      return data
+    },
+  ),
 })
 
 const { CancelToken } = axios
 
 const cancelations = {}
-
-client.interceptors.request.use((config) => {
-  const clientConfig = config
-  clientConfig.headers.common.Accept = 'application/json'
-  clientConfig.headers.common['Content-Type'] = 'application/json'
-
-  if (Store.getters.isAuthenticated) {
-    clientConfig.headers.common.Authorization = `Bearer ${Store.state.authToken}`
-  }
-  return clientConfig
-}, error => Promise.reject(error))
 
 const extractMetaInfo = function extractMetaInfo(headers, params) {
   const links = linkHeaderParser(headers.link)
@@ -68,7 +76,6 @@ const handleResponse = function handleResponse(response, params) {
 }
 
 export async function get(path, params = {}) {
-  nprogress.start()
   try {
     return handleResponse(await client.get(path, {
       params,
@@ -85,7 +92,6 @@ export async function get(path, params = {}) {
 }
 
 export async function post(path, body = {}) {
-  nprogress.start()
   try {
     return handleResponse(await client.post(path, body), body)
   } catch (error) {
@@ -94,7 +100,6 @@ export async function post(path, body = {}) {
 }
 
 export async function put(path, body = {}) {
-  nprogress.start()
   try {
     return handleResponse(await client.put(path, body), body)
   } catch (error) {
@@ -103,7 +108,6 @@ export async function put(path, body = {}) {
 }
 
 export async function destroy(path, data = {}) {
-  nprogress.start()
   try {
     return handleResponse(await client.delete(path, { data }))
   } catch (error) {
