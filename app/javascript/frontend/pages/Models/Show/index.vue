@@ -127,7 +127,7 @@
                   v-if="model.hasImages"
                   :route="{ name: 'model-images', params: { slug: model.slug }}"
                 >
-                  <i class="fa fa-image" />
+                  <i class="fa fa-images" />
                 </InternalLink>
                 <InternalLink
                   v-if="model.hasVideos"

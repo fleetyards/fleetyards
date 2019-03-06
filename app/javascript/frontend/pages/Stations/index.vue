@@ -27,7 +27,7 @@
             />
             <i
               v-else
-              class="fal fa-filter"
+              class="far fa-filter"
             />
           </Btn>
         </div>

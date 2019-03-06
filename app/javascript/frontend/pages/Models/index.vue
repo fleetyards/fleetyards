@@ -12,13 +12,8 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <DownloadScreenshotBtn
-                v-if="modelFleetchartVisible"
-                element="#fleetchart"
-                filename="ships-fleetchart"
-              />
               <Btn
-                v-else
+                v-if="!modelFleetchartVisible"
                 v-tooltip="toggleDetailsTooltip"
                 :active="modelDetailsVisible"
                 :aria-label="toggleDetailsTooltip"
@@ -42,7 +37,7 @@
                 <i
                   :class="{
                     fas: modelFilterVisible,
-                    fal: !modelFilterVisible,
+                    far: !modelFilterVisible,
                   }"
                   class="fa-filter"
                 />
@@ -53,6 +48,11 @@
               >
                 {{ t('actions.compare.models') }}
               </InternalLink>
+              <DownloadScreenshotBtn
+                v-if="modelFleetchartVisible"
+                element="#fleetchart"
+                filename="ships-fleetchart"
+              />
               <Btn
                 small
                 @click.native="toggleFleetchart"
