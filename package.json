@@ -82,7 +82,7 @@
     "testcafe": "^1.1.0",
     "typescript": "^3.3.3333",
     "vue-eslint-parser": "^6.0.3",
-    "vue-jest": "^3.0.3",
+    "vue-jest": "^3.0.4",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"
