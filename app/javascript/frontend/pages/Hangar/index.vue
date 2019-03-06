@@ -78,11 +78,6 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <DownloadScreenshotBtn
-                v-if="hangarFleetchartVisible"
-                element="#fleetchart"
-                filename="my-hangar-fleetchart"
-              />
               <Btn
                 v-show="!hangarFleetchartVisible && vehicles.length"
                 v-tooltip="toggleDetailsTooltip"
@@ -108,11 +103,16 @@
                 <i
                   :class="{
                     fas: hangarFilterVisible,
-                    fal: !hangarFilterVisible,
+                    far: !hangarFilterVisible,
                   }"
                   class="fa-filter"
                 />
               </Btn>
+              <DownloadScreenshotBtn
+                v-if="hangarFleetchartVisible"
+                element="#fleetchart"
+                filename="my-hangar-fleetchart"
+              />
               <Btn
                 small
                 @click.native="toggleFleetchart"
