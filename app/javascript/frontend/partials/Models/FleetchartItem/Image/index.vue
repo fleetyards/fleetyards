@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     lengthMultiplicator() {
-      return this.scale * 4
+      return (this.scale / 100) * 4
     },
   },
 }

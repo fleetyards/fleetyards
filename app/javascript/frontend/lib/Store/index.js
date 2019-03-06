@@ -33,9 +33,9 @@ const initialState = {
   filters: {},
   hangarDetailsVisible: false,
   hangarFleetchartVisible: false,
-  hangarFleetchartScale: 1,
+  hangarFleetchartScale: 100,
   hangarPublicFleetchartVisible: false,
-  hangarPublicFleetchartScale: 1,
+  hangarPublicFleetchartScale: 100,
   hangarFilterVisible: true,
   shopFilterVisible: false,
   stationFilterVisible: true,
@@ -45,7 +45,7 @@ const initialState = {
   modelDetailsVisible: false,
   modelFilterVisible: true,
   modelFleetchartVisible: false,
-  modelFleetchartScale: 1,
+  modelFleetchartScale: 100,
   modelBackRoute: null,
   shopBackRoute: null,
   stationBackRoute: null,
@@ -90,8 +90,14 @@ const store = new Vuex.Store({
     hangarFleetchartVisible(state) {
       return state.hangarFleetchartVisible
     },
+    HangarFleetchartScale(state) {
+      return state.hangarFleetchartScale
+    },
     hangarPublicFleetchartVisible(state) {
       return state.hangarPublicFleetchartVisible
+    },
+    HangarPublicFleetchartScale(state) {
+      return state.hangarPublicFleetchartScale
     },
     hangarFilterVisible(state) {
       return state.hangarFilterVisible
@@ -119,6 +125,9 @@ const store = new Vuex.Store({
     },
     modelFleetchartVisible(state) {
       return state.modelFleetchartVisible
+    },
+    ModelFleetchartScale(state) {
+      return state.modelFleetchartScale
     },
     modelBackRoute(state) {
       return state.modelBackRoute
@@ -317,6 +326,9 @@ const store = new Vuex.Store({
     },
     setModelFleetchartVisible(state, payload) {
       state.modelFleetchartVisible = payload
+    },
+    setModelFleetchartScale(state, payload) {
+      state.modelFleetchartScale = payload
     },
     setModelBackRoute(state, payload) {
       state.modelBackRoute = payload

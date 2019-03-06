@@ -1,0 +1,67 @@
+<template>
+  <vue-slider
+    ref="scaleSlider"
+    v-model="scale"
+    :min="10"
+    :max="max"
+    :interval="10"
+    dot-size="20"
+    :marks="mark"
+    :tooltip-formatter="label"
+    :process="false"
+    lazy
+  />
+</template>
+
+<script>
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
+import { mapGetters } from 'vuex'
+
+export default {
+  components: {
+    VueSlider,
+  },
+  props: {
+    scaleKey: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      scale: this.$store.getters[this.scaleKey],
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+    max() {
+      return this.mobile ? 100 : 300
+    },
+  },
+  watch: {
+    scale(value) {
+      this.$store.commit(`set${this.scaleKey}`, value)
+    },
+  },
+  methods: {
+    mark(value) {
+      if (value % 50 === 0 || value === 10) {
+        return {
+          label: this.label(value),
+        }
+      }
+      return false
+    },
+    label(value) {
+      return `${value} %`
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+  @import "./styles/index";
+</style>

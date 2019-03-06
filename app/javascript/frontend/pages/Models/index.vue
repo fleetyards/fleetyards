@@ -12,16 +12,11 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <Btn
+              <DownloadScreenshotBtn
                 v-if="modelFleetchartVisible"
-                v-tooltip="t('actions.saveScreenshot')"
-                :disabled="downloading"
-                :aria-label="t('actions.saveScreenshot')"
-                small
-                @click.native="download"
-              >
-                {{ t('actions.saveScreenshot') }}
-              </Btn>
+                element="#fleetchart"
+                filename="ships-fleetchart"
+              />
               <Btn
                 v-else
                 v-tooltip="toggleDetailsTooltip"
@@ -100,22 +95,19 @@
             }"
             class="col-xs-12 col-animated"
           >
-            <div
-              v-if="modelFleetchartVisible && fleetchartModels.length"
-              class="row"
+            <transition
+              name="fade"
+              appear
             >
-              <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                <vue-slider
-                  ref="scaleSlider"
-                  v-model="scale"
-                  :min="0.5"
-                  :max="4"
-                  :interval="0.1"
-                  formatter="{value}x"
-                  tooltip="hover"
-                />
+              <div
+                v-if="modelFleetchartVisible && fleetchartModels.length"
+                class="row"
+              >
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+                  <FleetchartSlider scale-key="ModelFleetchartScale" />
+                </div>
               </div>
-            </div>
+            </transition>
             <div
               v-if="modelFleetchartVisible"
               class="row"
@@ -132,7 +124,7 @@
                     v-for="model in fleetchartModels"
                     :key="`fleetchart-${model.slug}`"
                     :model="model"
-                    :scale="scale"
+                    :scale="ModelFleetchartScale"
                   />
                 </transition-group>
               </div>
@@ -182,43 +174,41 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
-import Hash from 'frontend/mixins/Hash'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
 import InternalLink from 'frontend/components/InternalLink'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
-import Filters from 'frontend/mixins/Filters'
+import ModelPanel from 'frontend/partials/Models/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
-import vueSlider from 'vue-slider-component'
-import { mapGetters } from 'vuex'
-import html2canvas from 'html2canvas'
-import download from 'downloadjs'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Filters from 'frontend/mixins/Filters'
+import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 
 export default {
   components: {
-    ModelPanel,
-    ModelsFilterForm,
-    Loader,
-    EmptyBox,
     Btn,
     InternalLink,
+    DownloadScreenshotBtn,
+    Loader,
+    ModelPanel,
+    EmptyBox,
+    ModelsFilterForm,
     FleetchartItem,
-    vueSlider,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: false,
-      downloading: false,
       models: [],
       fullscreen: false,
       fleetchartModels: [],
-      scale: this.$store.state.modelFleetchartScale,
     }
   },
   computed: {
@@ -226,6 +216,7 @@ export default {
       'modelDetailsVisible',
       'modelFilterVisible',
       'modelFleetchartVisible',
+      'ModelFleetchartScale',
       'mobile',
     ]),
     emptyBoxVisible() {
@@ -264,22 +255,13 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
-    download() {
-      this.downloading = true
-      html2canvas(document.querySelector('#fleetchart'), {
-        backgroundColor: null,
-        useCORS: true,
-      }).then((canvas) => {
-        this.downloading = false
-        download(canvas.toDataURL(), 'fleetchart.png')
-      })
-    },
     fetch() {
       this.fetchModels()
       this.fetchFleetchart()
     },
     toggleFullscreen() {
       this.fullscreen = !this.modelFilterVisible
+      this.updateSlider()
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleModelFleetchart')
@@ -318,11 +300,6 @@ export default {
       this.loading = true
       const response = await this.$api.get('models/fleetchart', {
         q: this.$route.query.q,
-      })
-      this.$nextTick(() => {
-        if (this.$refs.scaleSlider) {
-          setTimeout(this.$refs.scaleSlider.refresh, 500)
-        }
       })
       if (!response.error) {
         this.fleetchartModels = response.data

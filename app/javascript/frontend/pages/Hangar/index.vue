@@ -78,16 +78,11 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
-              <Btn
-                v-show="hangarFleetchartVisible && fleetchartVehicles.length"
-                v-tooltip="t('actions.saveScreenshot')"
-                :disabled="downloading"
-                :aria-label="t('actions.saveScreenshot')"
-                small
-                @click.native="download"
-              >
-                {{ t('actions.saveScreenshot') }}
-              </Btn>
+              <DownloadScreenshotBtn
+                v-if="hangarFleetchartVisible"
+                element="#fleetchart"
+                filename="my-hangar-fleetchart"
+              />
               <Btn
                 v-show="!hangarFleetchartVisible && vehicles.length"
                 v-tooltip="toggleDetailsTooltip"
@@ -160,22 +155,19 @@
             }"
             class="col-xs-12 col-animated"
           >
-            <div
-              v-if="hangarFleetchartVisible && fleetchartVehicles.length"
-              class="row"
+            <transition
+              name="fade"
+              appear
             >
-              <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                <vue-slider
-                  ref="scaleSlider"
-                  v-model="scale"
-                  :min="0.5"
-                  :max="4"
-                  :interval="0.1"
-                  formatter="{value}x"
-                  tooltip="hover"
-                />
+              <div
+                v-if="hangarFleetchartVisible && fleetchartVehicles.length"
+                class="row"
+              >
+                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+                  <FleetchartSlider scale-key="HangarFleetchartScale" />
+                </div>
               </div>
-            </div>
+            </transition>
             <div
               v-if="hangarFleetchartVisible"
               class="row"
@@ -192,7 +184,7 @@
                     v-for="vehicle in fleetchartVehicles"
                     :key="vehicle.id"
                     :model="vehicle.model"
-                    :scale="scale"
+                    :scale="HangarFleetchartScale"
                   />
                 </transition-group>
               </div>
@@ -253,49 +245,48 @@
 
 <script>
 import qs from 'qs'
-import I18n from 'frontend/mixins/I18n'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
-import Hash from 'frontend/mixins/Hash'
+import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import ExternalLink from 'frontend/components/ExternalLink'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
-import Filters from 'frontend/mixins/Filters'
-import { mapGetters } from 'vuex'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
-import vueSlider from 'vue-slider-component'
-import html2canvas from 'html2canvas'
-import download from 'downloadjs'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import I18n from 'frontend/mixins/I18n'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Filters from 'frontend/mixins/Filters'
+import Pagination from 'frontend/mixins/Pagination'
+import Hash from 'frontend/mixins/Hash'
 
 export default {
   components: {
-    FleetchartItem,
-    EmptyBox,
-    HangarGuideBox,
-    ModelPanel,
     Loader,
     Btn,
     ExternalLink,
+    DownloadScreenshotBtn,
+    ModelPanel,
+    FleetchartItem,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    vueSlider,
+    EmptyBox,
+    HangarGuideBox,
     VehicleModal,
     AddonsModal,
+    FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: true,
-      downloading: false,
       vehicles: [],
       filters: [],
       fleetchartVehicles: [],
@@ -303,7 +294,6 @@ export default {
       fullscreen: false,
       vehiclesCount: null,
       tooltipTrigger: 'click',
-      scale: this.$store.state.hangarFleetchartScale,
     }
   },
   computed: {
@@ -313,6 +303,7 @@ export default {
       'hangarDetailsVisible',
       'hangarFleetchartVisible',
       'hangarFilterVisible',
+      'HangarFleetchartScale',
       'mobile',
     ]),
     emptyBoxVisible() {
@@ -359,9 +350,6 @@ export default {
     $route() {
       this.fetch()
     },
-    scale(value) {
-      this.$store.commit('setHangarFleetchartScale', value)
-    },
     currentUser() {
       if (this.currentUser) {
         this.setupUpdates()
@@ -389,18 +377,9 @@ export default {
     toggleFullscreen() {
       this.fullscreen = !this.hangarFilterVisible
     },
-    download() {
-      this.downloading = true
-      html2canvas(document.querySelector('#fleetchart'), {
-        backgroundColor: null,
-        useCORS: true,
-      }).then((canvas) => {
-        this.downloading = false
-        download(canvas.toDataURL(), 'fleetchart.png')
-      })
-    },
     toggleFilter() {
       this.$store.dispatch('toggleHangarFilter')
+      this.updateSlider()
     },
     toggleDetails() {
       this.$store.dispatch('toggleHangarDetails')
@@ -439,11 +418,6 @@ export default {
       this.loading = true
       const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
-      })
-      this.$nextTick(() => {
-        if (this.$refs.scaleSlider) {
-          setTimeout(this.$refs.scaleSlider.refresh, 500)
-        }
       })
       if (!response.error) {
         this.fleetchartVehicles = response.data
