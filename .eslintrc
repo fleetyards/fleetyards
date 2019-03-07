@@ -61,7 +61,8 @@
     },
     "globals": {
       "mountVM": true,
-      "jest": true
+      "jest": true,
+      "cy": true
     },
     "env": {
       "jest": true,
