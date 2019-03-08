@@ -6,6 +6,7 @@ defaults: &defaults
     - image: fleetyards/base:2.5.1
       environment:
         RAILS_ENV: test
+        DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
         DATABASE_HOST: 127.0.0.1
         DATABASE_USER: root
         LC_ALL: C.UTF-8
@@ -41,7 +42,7 @@ e2e: &e2e
     - image: circleci/redis:5.0.3-alpine
 
 jobs:
-  checkout_code:
+  checkout-code:
     <<: *defaults
     steps:
       - checkout
@@ -54,7 +55,7 @@ jobs:
           paths:
             - ~/app
 
-  bundle_dependencies:
+  bundle:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -73,7 +74,7 @@ jobs:
           paths:
             - ~/app/vendor/bundle
 
-  yarn_dependencies:
+  yarn:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -135,7 +136,7 @@ jobs:
           name: Run Seeds
           command: bundle exec rails db:seed
 
-  unit_tests:
+  ruby-tests:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -148,7 +149,7 @@ jobs:
       - store_test_results:
           path: ~/app/test/reports
 
-  javascript_tests:
+  js-tests:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -158,7 +159,7 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
-  precompile_assets:
+  build:
     <<: *defaults
     steps:
       - restore_cache:
@@ -169,8 +170,8 @@ jobs:
           at: ~/app
       - run: bundle --path vendor/bundle
       - run:
-          name: Precompile assets
-          command: bundle exec rails assets:precompile
+          name: Webpacker & Assets Compile
+          command: RAILS_ENV=production bundle exec thor assets:compile
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -180,7 +181,7 @@ jobs:
           paths:
             - ~/app/public/assets
 
-  e2e_tests:
+  e2e-tests:
     <<: *e2e
     steps:
       - attach_workspace:
@@ -194,8 +195,8 @@ jobs:
           name: Prefill DB
           command: bundle exec rails db:seed
       - run:
-          name: Precompile Assets
-          command: bundle exec rails webpacker:compile assets:precompile
+          name: Webpacker & Assets Compile
+          command: bundle exec thor assets:compile
       - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
       - run:
           name: Run Server
@@ -245,86 +246,86 @@ workflows:
             branches:
               only: master
     jobs:
-      - checkout_code
-      - bundle_dependencies:
+      - checkout-code
+      - bundle:
           requires:
-            - checkout_code
-      - yarn_dependencies:
+            - checkout-code
+      - yarn:
           requires:
-            - checkout_code
+            - checkout-code
       - audit:
           requires:
-            - bundle_dependencies
+            - bundle
       - rubocop:
           requires:
-            - bundle_dependencies
+            - bundle
       - eslint:
           requires:
-            - yarn_dependencies
+            - yarn
       - seeds:
           requires:
-            - bundle_dependencies
-      - unit_tests:
+            - bundle
+      - ruby-tests:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
-      - javascript_tests:
+            - bundle
+            - yarn
+      - js-tests:
           requires:
-            - yarn_dependencies
-      - precompile_assets:
+            - yarn
+      - build:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
-      - e2e_tests:
+            - bundle
+            - yarn
+      - e2e-tests:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
+            - bundle
+            - yarn
   main:
     jobs:
-      - checkout_code
-      - bundle_dependencies:
+      - checkout-code
+      - bundle:
           requires:
-            - checkout_code
-      - yarn_dependencies:
+            - checkout-code
+      - yarn:
           requires:
-            - checkout_code
+            - checkout-code
       - audit:
           requires:
-            - bundle_dependencies
+            - bundle
       - rubocop:
           requires:
-            - bundle_dependencies
+            - bundle
       - eslint:
           requires:
-            - yarn_dependencies
+            - yarn
       - seeds:
           requires:
-            - bundle_dependencies
-      - unit_tests:
+            - bundle
+      - ruby-tests:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
-      - javascript_tests:
+            - bundle
+            - yarn
+      - js-tests:
           requires:
-            - yarn_dependencies
-      - precompile_assets:
+            - yarn
+      - build:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
-      - e2e_tests:
+            - bundle
+            - yarn
+      - e2e-tests:
           requires:
-            - bundle_dependencies
-            - yarn_dependencies
+            - bundle
+            - yarn
       - deploy:
           requires:
-            - e2e_tests
+            - e2e-tests
             - audit
             - rubocop
             - eslint
             - seeds
-            - unit_tests
-            - javascript_tests
-            - precompile_assets
+            - ruby-tests
+            - js-tests
+            - build
           filters:
             branches:
               only: master

@@ -35,8 +35,6 @@ set :rails_env, 'production'
 set :branch, 'master'
 set :version_scheme, :datetime
 
-set :force_asset_precompile, true
-
 task :remote_environment do
   invoke :'rbenv:load'
 end
@@ -60,10 +58,7 @@ task :deploy do
     comment %(Install JS Dependencies)
     command %(yarn install)
 
-    comment %(Webpacker Compile)
-    command %(#{fetch(:rails)} webpacker:compile)
-
-    invoke :'rails:assets_precompile'
+    command %(bundle exec thor assets:compile)
 
     invoke :'deploy:cleanup'
 
