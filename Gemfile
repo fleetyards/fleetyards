@@ -44,6 +44,7 @@ gem 'redis-session-store'
 
 gem 'jwt'
 gem 'rqrcode-rails3'
+gem 'useragent'
 
 gem 'useragent'
 
