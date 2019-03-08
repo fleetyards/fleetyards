@@ -28,6 +28,7 @@
               v-model="form.username"
               v-tooltip.right="errors.first('username')"
               v-validate="'required|alpha_dash|usernameTaken'"
+              data-test="username"
               :data-vv-as="t('labels.username')"
               :placeholder="t('labels.username')"
               name="username"
@@ -58,10 +59,11 @@
               </label>
             </transition>
             <input
-              id="rsi-handle"
+              id="rsiHandle"
               v-model="form.rsiHandle"
               v-tooltip.right="errors.first('rsiHandle')"
               v-validate="'alpha_dash|handle'"
+              data-test="rsi-handle"
               :placeholder="t('labels.rsiHandle')"
               :data-vv-as="t('labels.rsiHandle')"
               name="rsiHandle"
@@ -94,7 +96,8 @@
               id="email"
               v-model="form.email"
               v-tooltip.right="errors.first('email')"
-              v-validate="'required|email|emailTaken'"
+              v-validate="'required|email'"
+              data-test="email"
               :data-vv-as="t('labels.email')"
               :placeholder="t('labels.email')"
               name="email"
@@ -126,6 +129,7 @@
               v-model="form.password"
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
+              data-test="password"
               :placeholder="t('labels.password')"
               :data-vv-as="t('labels.password')"
               name="password"
@@ -156,6 +160,7 @@
               v-model="form.passwordConfirmation"
               v-tooltip.right="errors.first('passwordConfirmation')"
               v-validate="'required|confirmed:password'"
+              data-test="password-confirmation"
               :data-vv-as="t('labels.passwordConfirmation')"
               :placeholder="t('labels.passwordConfirmation')"
               name="passwordConfirmation"
@@ -239,6 +244,7 @@ export default {
     async signup() {
       const result = await this.$validator.validateAll()
       if (!result) {
+        alert(this.t('messages.signup.invalid'))
         return
       }
       this.submitting = true
@@ -249,6 +255,8 @@ export default {
         this.$router.push('/')
       } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
         alert(this.t('texts.signup.blacklisted'))
+      } else {
+        alert(this.t('messages.signup.failure'))
       }
     },
   },

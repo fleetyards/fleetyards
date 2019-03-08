@@ -1,15 +1,21 @@
-/// <reference types="Cypress" />
+Cypress.Commands.add('select', id => cy.get(`[data-test="${id}"]`))
 
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('acceptConfirm', () => {
+  cy.get('#noty-confirm .noty_buttons button:first-child').click()
+})
+
+Cypress.Commands.add('cancelConfirm', () => {
+  cy.get('#noty-confirm .noty_buttons button:last-child').click()
+})
+
+Cypress.Commands.add('alert', (message) => {
+  cy.get('.noty_type__error .noty_body', { timeout: 10000 }).then(($noty) => {
+    expect($noty).to.contain(message)
+  })
+})
+
+Cypress.Commands.add('success', (message) => {
+  cy.get('.noty_type__success .noty_body', { timeout: 10000 }).then(($noty) => {
+    expect($noty).to.contain(message)
+  })
+})

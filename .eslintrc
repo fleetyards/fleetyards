@@ -10,6 +10,7 @@
   ],
   "plugins": [
     "compat",
+    "cypress",
     "jest",
     "import"
   ],
@@ -42,7 +43,6 @@
     "node": true
   },
   "globals": {
-    "jest": true,
     "process": true,
     "env": true,
     "fixture": true,
@@ -56,14 +56,21 @@
       "mountVM": true
     }
   }, {
+    "files": ["cypress/**/*.js"],
+    "rules": {
+      "no-unused-expressions": "off",
+      "jest/valid-expect": "off"
+    },
+    "env": {
+      "cypress/globals": true
+    }
+  }, {
     "files": ["**/*+(spec|test).js"],
     "rules": {
       "no-unused-expressions": "off"
     },
     "globals": {
-      "mountVM": true,
-      "jest": true,
-      "cy": true
+      "mountVM": true
     },
     "env": {
       "jest": true,

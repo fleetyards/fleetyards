@@ -13,8 +13,8 @@
           </h1>
           <div class="form-group">
             <input
-              id="login"
               v-model="form.login"
+              data-test="login"
               :placeholder="t('labels.login')"
               type="text"
               autofocus
@@ -24,6 +24,7 @@
           <div class="form-group">
             <input
               v-model="form.password"
+              data-test="password"
               :placeholder="t('labels.password')"
               type="password"
               class="form-control"

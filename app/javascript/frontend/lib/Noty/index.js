@@ -120,7 +120,7 @@ export function confirm(text, confirmCallback, closeCallback = () => {}) {
 }
 
 export function alert(text) {
-  displayNotification(text, 'error', 10000)
+  displayNotification(text, 'error', false)
 }
 
 export function success(text) {

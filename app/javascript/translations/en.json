@@ -392,7 +392,8 @@
       "location": "Location",
       "type": "Type",
       "habitation": "Habitation",
-      "habs": "Habs"
+      "habs": "Habs",
+      "shops": "Shops"
     }
   },
   "placeholders": {
@@ -573,6 +574,7 @@
     },
     "signup": {
       "success": "<b>Welcome to FleetYards.net!</b> Your account has been created.<br>You will receive a confirmation email to activate your account.",
+      "invalid": "Please resolve the errors before your account can be created.",
       "failure": "We could not create your account. Please try again later."
     },
     "confirm": {

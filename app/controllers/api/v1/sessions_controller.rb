@@ -15,7 +15,7 @@ module Api
           render json: { code: 'session.create.not_found_in_database', message: I18n.t('devise.failure.not_found_in_database') }, status: :bad_request
           return
         else
-          unless resource.confirmed?
+          unless resource.active_for_authentication?
             render json: { code: 'session.create.unconfirmed', message: I18n.t('devise.failure.unconfirmed') }, status: :bad_request
             return
           end
