@@ -1,4 +1,5 @@
 {
   "baseUrl": "http://fleetyards.test",
-  "projectId": "w9ogrp"
+  "viewportWidth": 1920,
+  "viewportHeight": 1080
 }

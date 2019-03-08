@@ -1,13 +1,15 @@
-describe('Home', () => {
-  it('Loads', () => {
-    cy.visit('/')
+/// <reference types="Cypress" />
 
+describe('Home', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
+  it('Loads', () => {
     cy.contains('Welcome')
   })
 
   it('Shows Search Results via Button', () => {
-    cy.visit('/')
-
     cy.get('input[name=search]')
       .type('600i')
 
@@ -19,8 +21,6 @@ describe('Home', () => {
   })
 
   it('Shows Search Results via Key', () => {
-    cy.visit('/')
-
     cy.get('input[name=search]')
       .type('600i Touring{enter}')
 
@@ -30,14 +30,10 @@ describe('Home', () => {
   })
 
   it('Shows Latest Ships', () => {
-    cy.visit('/')
-
     cy.get('.home-ships .model-panel').should('have.length', 9)
   })
 
   it('Shows Random Images', () => {
-    cy.visit('/')
-
     cy.get('.home-images .image').should('have.length', 16)
   })
 })
