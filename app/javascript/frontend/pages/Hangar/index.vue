@@ -379,7 +379,6 @@ export default {
     },
     toggleFilter() {
       this.$store.dispatch('toggleHangarFilter')
-      this.updateSlider()
     },
     toggleDetails() {
       this.$store.dispatch('toggleHangarDetails')

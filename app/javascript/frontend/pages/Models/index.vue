@@ -261,7 +261,6 @@ export default {
     },
     toggleFullscreen() {
       this.fullscreen = !this.modelFilterVisible
-      this.updateSlider()
     },
     toggleFleetchart() {
       this.$store.dispatch('toggleModelFleetchart')
