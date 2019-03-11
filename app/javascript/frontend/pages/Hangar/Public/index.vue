@@ -180,6 +180,10 @@ export default {
     },
   },
   created() {
+    if (this.$route.query.fleetchart && !this.hangarPublicFleetchartVisible) {
+      this.$store.dispatch('toggleFleetchart')
+    }
+
     this.fetch()
   },
   methods: {

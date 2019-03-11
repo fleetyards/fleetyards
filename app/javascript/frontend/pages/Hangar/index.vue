@@ -362,6 +362,11 @@ export default {
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
     this.$comlink.$on('hangarGroupSave', this.fetchGroups)
+
+    if (this.$route.query.fleetchart && !this.hangarFleetchartVisible) {
+      this.$store.dispatch('toggleFleetchart')
+    }
+
     if (this.mobile) {
       this.$store.commit('setHangarFilterVisible', false)
     }
