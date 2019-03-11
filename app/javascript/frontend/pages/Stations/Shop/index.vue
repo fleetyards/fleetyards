@@ -94,7 +94,7 @@
       >
         <Panel v-if="commodities.length && shop">
           <transition-group
-            name="fade-list"
+            name="fade"
             class="flex-list"
             tag="div"
             appear
