@@ -114,6 +114,12 @@
                   <dd>{{ station.typeLabel }}</dd>
                   <dt>{{ t('labels.station.location') }}:</dt>
                   <dd>{{ station.location }}</dd>
+                  <dt v-if="station.shops.length">
+                    {{ t('labels.station.shops') }}:
+                  </dt>
+                  <dd v-if="station.shops.length">
+                    {{ station.shops.map(item => item.name).join(', ') }}
+                  </dd>
                   <dt>{{ t('labels.station.docks') }}:</dt>
                   <dd>
                     <template v-if="station.docks.length">
@@ -148,33 +154,6 @@
                     </template>
                   </dd>
                 </dl>
-              </template>
-              <template v-if="station.shops.length">
-                <h3>{{ t('headlines.shops') }}</h3>
-                <transition-group
-                  name="fade-list"
-                  class="flex-row"
-                  tag="div"
-                  appear
-                >
-                  <div
-                    v-for="shop in station.shops"
-                    :key="shop.slug"
-                    class="col-xs-12 col-md-3 fade-list-item"
-                  >
-                    <ShopPanel
-                      :id="`${station.slug}-${shop.slug}`"
-                      :item="shop"
-                      :route="{
-                        name: 'shop',
-                        params: {
-                          station: station.slug,
-                          slug: shop.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
               </template>
             </StationList>
           </div>

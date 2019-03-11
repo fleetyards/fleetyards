@@ -18,7 +18,7 @@ module Devise
         return fail! unless claim.key?(:user)
         return fail! unless auth_token?(claim)
 
-        success!(User.find(claim[:user]))
+        success!(User.find_by(id: claim[:user]))
       end
 
       protected def auth_token?(claim)

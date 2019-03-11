@@ -1,5 +1,8 @@
 <template>
-  <div class="row">
+  <div
+    v-if="station.docks.length"
+    class="row"
+  >
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
         {{ t('labels.station.docks') }}

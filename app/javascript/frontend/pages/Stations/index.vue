@@ -87,6 +87,12 @@
                   <dd>{{ station.typeLabel }}</dd>
                   <dt>{{ t('labels.station.location') }}:</dt>
                   <dd>{{ station.location }}</dd>
+                  <dt v-if="station.shops.length">
+                    {{ t('labels.station.shops') }}:
+                  </dt>
+                  <dd v-if="station.shops.length">
+                    {{ station.shops.map(item => item.name).join(', ') }}
+                  </dd>
                   <dt>{{ t('labels.station.docks') }}:</dt>
                   <dd>
                     <template v-if="station.docks.length">
@@ -122,32 +128,6 @@
                   </dd>
                 </dl>
               </template>
-              <template v-if="station.shops.length">
-                <h3>{{ t('headlines.shops') }}</h3>
-                <transition-group
-                  name="fade-list"
-                  class="flex-row"
-                  tag="div"
-                  appear
-                >
-                  <div
-                    v-for="shop in station.shops"
-                    :key="shop.slug"
-                    class="col-xs-12 col-md-3 fade-list-item"
-                  >
-                    <ShopPanel
-                      :item="shop"
-                      :route="{
-                        name: 'shop',
-                        params: {
-                          station: station.slug,
-                          slug: shop.slug,
-                        },
-                      }"
-                    />
-                  </div>
-                </transition-group>
-              </template>
             </StationList>
           </div>
         </transition-group>
@@ -174,7 +154,6 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import StationList from 'frontend/partials/Stations/List'
-import ShopPanel from 'frontend/partials/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
@@ -188,7 +167,6 @@ export default {
     Loader,
     EmptyBox,
     StationList,
-    ShopPanel,
     FilterForm,
     Btn,
   },

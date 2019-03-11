@@ -26,10 +26,6 @@
 @import "partials/pagination";
 @import "partials/v-select-overrides";
 
-html {
-  height: 100%;
-}
-
 .no-scroll {
   overflow: hidden !important;
   position: relative !important;
@@ -38,7 +34,6 @@ html {
 
 body {
   font-family: 'Open Sans', sans-serif;
-  height: auto;
   position: relative;
   min-width: 320px;
   min-height: 100%;

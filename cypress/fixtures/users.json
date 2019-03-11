@@ -1,0 +1,13 @@
+{
+  "test": {
+    "username": "TestUser",
+    "email": "test@fleetyards.net",
+    "password": "TestPassword"
+  },
+  "new": {
+    "username": "NewTestUser",
+    "email": "new-test@fleetyards.net",
+    "password": "NewTestPassword",
+    "handle": "torlekmaru"
+  }
+}

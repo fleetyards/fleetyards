@@ -10,6 +10,7 @@
   ],
   "plugins": [
     "compat",
+    "cypress",
     "jest",
     "import"
   ],
@@ -34,14 +35,14 @@
     "no-useless-escape": 0,
     "space-before-function-paren": 0,
     "vue/no-v-html": "off",
-    "vue/component-name-in-template-casing": "off"
+    "vue/component-name-in-template-casing": "off",
+    "spaced-comment": [2, "always", {"exceptions": ["-"], "markers": ["/"]}]
   },
   "env": {
     "browser": true,
     "node": true
   },
   "globals": {
-    "jest": true,
     "process": true,
     "env": true,
     "fixture": true,
@@ -55,13 +56,21 @@
       "mountVM": true
     }
   }, {
+    "files": ["cypress/**/*.js"],
+    "rules": {
+      "no-unused-expressions": "off",
+      "jest/valid-expect": "off"
+    },
+    "env": {
+      "cypress/globals": true
+    }
+  }, {
     "files": ["**/*+(spec|test).js"],
     "rules": {
       "no-unused-expressions": "off"
     },
     "globals": {
-      "mountVM": true,
-      "jest": true
+      "mountVM": true
     },
     "env": {
       "jest": true,

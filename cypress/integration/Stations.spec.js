@@ -1,0 +1,16 @@
+describe('Stations', () => {
+  it('Loads', () => {
+    cy.visit('/')
+
+    cy.get('.nav-toggle').click()
+    cy.get('nav a').contains('Stations').click()
+
+    cy.get('#stations-sub-menu a').contains('Overview').click()
+
+    cy.url().should('include', '/stations')
+
+    cy.get('.panel-title a').contains('Port Olisar').should('exist')
+
+    cy.get('.panel').should('have.length', 10)
+  })
+})

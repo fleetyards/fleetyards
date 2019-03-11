@@ -9,6 +9,8 @@ dumps
 # test files
 coverage/*
 test/reports/*
+cypress/screenshots/*
+cypress/videos/*
 
 # app files
 public/uploads/*

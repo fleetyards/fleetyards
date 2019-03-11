@@ -14,7 +14,8 @@ pids/*
 # test files
 coverage/*
 test/reports/*
-test/e2e/logs/*
+cypress/screenshots/*
+cypress/videos/*
 
 # app files
 public/uploads/*
