@@ -350,11 +350,14 @@ export default {
     $route() {
       this.fetch()
     },
-    currentUser() {
-      if (this.currentUser) {
-        this.setupUpdates()
-      }
-    },
+  },
+  mounted() {
+    this.setupUpdates()
+  },
+  beforeDestroy() {
+    if (this.vehiclesChannel) {
+      this.vehiclesChannel.unsubscribe()
+    }
   },
   created() {
     this.fetch()
@@ -429,6 +432,10 @@ export default {
       this.loading = false
     },
     setupUpdates() {
+      if (this.vehiclesChannel) {
+        this.vehiclesChannel.unsubscribe()
+      }
+
       this.vehiclesChannel = this.$cable.subscriptions.create({
         channel: 'HangarChannel',
         username: this.currentUser.username,
