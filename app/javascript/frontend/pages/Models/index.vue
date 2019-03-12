@@ -293,7 +293,7 @@ export default {
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
-      this.restLoading()
+      this.resetLoading()
     },
     async fetchFleetchart() {
       this.loading = true
@@ -303,7 +303,7 @@ export default {
       if (!response.error) {
         this.fleetchartModels = response.data
       }
-      this.restLoading()
+      this.resetLoading()
     },
     resetLoading() {
       setTimeout(() => {

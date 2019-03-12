@@ -274,7 +274,6 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
-import { setTimeout } from 'timers';
 
 export default {
   components: {
