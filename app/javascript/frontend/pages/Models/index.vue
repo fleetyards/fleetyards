@@ -303,7 +303,9 @@ export default {
       if (!response.error) {
         this.fleetchartModels = response.data
       }
-      this.loading = false
+      this.$nextTick(() => {
+        this.loading = false
+      })
     },
   },
   metaInfo() {

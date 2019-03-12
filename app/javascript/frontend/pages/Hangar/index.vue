@@ -124,6 +124,15 @@
                   {{ t('actions.showFleetchart') }}
                 </template>
               </Btn>
+              <Btn
+                v-tooltip="toggleGuideTooltip"
+                :active="guideVisible"
+                :aria-label="toggleGuideTooltip"
+                small
+                @click.native="toggleGuide"
+              >
+                <i class="fa fa-question" />
+              </Btn>
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
@@ -168,8 +177,9 @@
                 </div>
               </div>
             </transition>
+            <HangarGuideBox v-if="guideVisible" />
             <div
-              v-if="hangarFleetchartVisible"
+              v-else-if="hangarFleetchartVisible"
               class="row"
             >
               <div class="col-xs-12 fleetchart-wrapper">
@@ -216,7 +226,6 @@
               </div>
             </transition-group>
             <EmptyBox v-if="emptyBoxVisible" />
-            <HangarGuideBox v-if="guideVisible" />
             <Loader
               :loading="loading"
               fixed
@@ -294,6 +303,7 @@ export default {
       fullscreen: false,
       vehiclesCount: null,
       tooltipTrigger: 'click',
+      showGuide: false,
     }
   },
   computed: {
@@ -310,7 +320,7 @@ export default {
       return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
     },
     guideVisible() {
-      return !this.hangar.length
+      return !this.hangar.length || this.showGuide
     },
     noVehicles() {
       return !this.vehicles.length && !this.hangarFleetchartVisible
@@ -332,6 +342,12 @@ export default {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
+    },
+    toggleGuideTooltip() {
+      if (this.guideVisible) {
+        return this.t('actions.hideGuide')
+      }
+      return this.t('actions.showGuide')
     },
     publicUrl() {
       if (!this.currentUser) {
@@ -376,6 +392,9 @@ export default {
     this.toggleFullscreen()
   },
   methods: {
+    toggleGuide() {
+      this.showGuide = !this.showGuide
+    },
     showEditModal(vehicle) {
       this.$refs.vehicleModal.open(vehicle)
     },
@@ -411,7 +430,9 @@ export default {
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
-      this.loading = false
+      this.$nextTick(() => {
+        this.loading = false
+      })
     },
     async fetchCount() {
       const response = await this.$api.get('vehicles/count', {
@@ -429,7 +450,9 @@ export default {
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
-      this.loading = false
+      this.$nextTick(() => {
+        this.loading = false
+      })
     },
     setupUpdates() {
       if (this.vehiclesChannel) {
