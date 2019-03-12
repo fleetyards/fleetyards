@@ -205,7 +205,7 @@ export default {
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
-      loading: false,
+      loading: true,
       models: [],
       fullscreen: false,
       fleetchartModels: [],
