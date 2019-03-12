@@ -274,6 +274,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
+import { setTimeout } from 'timers';
 
 export default {
   components: {
@@ -430,9 +431,7 @@ export default {
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
-      this.$nextTick(() => {
-        this.loading = false
-      })
+      this.resetLoading()
     },
     async fetchCount() {
       const response = await this.$api.get('vehicles/count', {
@@ -450,9 +449,7 @@ export default {
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
-      this.$nextTick(() => {
-        this.loading = false
-      })
+      this.resetLoading()
     },
     setupUpdates() {
       if (this.vehiclesChannel) {
@@ -471,6 +468,11 @@ export default {
       if (!response.error) {
         this.hangarGroups = response.data
       }
+    },
+    resetLoading() {
+      setTimeout(() => {
+        this.loading = false
+      }, 300)
     },
   },
   metaInfo() {

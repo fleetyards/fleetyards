@@ -288,12 +288,12 @@ export default {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
-      this.loading = false
       if (!response.error) {
         this.models = response.data
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
+      this.restLoading()
     },
     async fetchFleetchart() {
       this.loading = true
@@ -303,9 +303,12 @@ export default {
       if (!response.error) {
         this.fleetchartModels = response.data
       }
-      this.$nextTick(() => {
+      this.restLoading()
+    },
+    resetLoading() {
+      setTimeout(() => {
         this.loading = false
-      })
+      }, 300)
     },
   },
   metaInfo() {
