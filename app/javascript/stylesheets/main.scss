@@ -45,12 +45,15 @@ body {
   min-height: 100vh;
   flex-direction: column;
 
-  .main {
-    padding-top: 70px;
-    margin-bottom: 50px;
-    overflow-y: auto;
+  .main-wrapper {
     min-height: 100vh;
     flex: 1;
+    padding-top: 70px;
+    margin-bottom: 50px;
+  }
+
+  .main {
+    overflow-y: auto;
   }
 
   &.nav-visible {

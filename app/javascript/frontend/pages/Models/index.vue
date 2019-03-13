@@ -205,7 +205,7 @@ export default {
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
-      loading: false,
+      loading: true,
       models: [],
       fullscreen: false,
       fleetchartModels: [],
@@ -288,12 +288,12 @@ export default {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
-      this.loading = false
       if (!response.error) {
         this.models = response.data
         this.scrollToAnchor()
       }
       this.setPages(response.meta)
+      this.resetLoading()
     },
     async fetchFleetchart() {
       this.loading = true
@@ -303,7 +303,12 @@ export default {
       if (!response.error) {
         this.fleetchartModels = response.data
       }
-      this.loading = false
+      this.resetLoading()
+    },
+    resetLoading() {
+      setTimeout(() => {
+        this.loading = false
+      }, 300)
     },
   },
   metaInfo() {

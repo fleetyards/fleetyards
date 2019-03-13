@@ -463,6 +463,8 @@
     "hideFilter": "Hide Filters",
     "showDetails": "Show Details",
     "hideDetails": "Hide Details",
+    "showGuide": "Show Guide",
+    "hideGuide": "Hide Guide",
     "showFleetchart": "Fleetchart",
     "hideFleetchart": "Default view",
     "supportUs": "Support FleetYards via PayPal",

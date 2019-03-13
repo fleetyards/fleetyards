@@ -7,10 +7,7 @@ export default {
   mixins: [I18n],
   data() {
     return {
-      onSaleHangarChannel: null,
-      onSaleChannel: null,
-      vehiclesChannel: null,
-      appVersionChannel: null,
+      channels: {},
     }
   },
   computed: {
@@ -18,21 +15,30 @@ export default {
       'currentUser',
     ]),
   },
-  created() {
+  mounted() {
     this.setupAppVersionUpdates()
+    this.setupUpdates()
+  },
+  beforeDestroy() {
+    Object.keys(this.channels).forEach((channel) => {
+      this.channels[channel].unsubscribe()
+    })
   },
   watch: {
     currentUser() {
+      this.setupUpdates()
+    },
+  },
+  methods: {
+    setupUpdates() {
       if (this.currentUser) {
         this.setupOnSaleVehiclesUpdates()
         this.setupOnSaleUpdates()
         this.setupHangarUpdates()
       }
     },
-  },
-  methods: {
     setupAppVersionUpdates() {
-      this.appVersionChannel = this.$cable.subscriptions.create({
+      this.channels.appVersion = this.$cable.subscriptions.create({
         channel: 'AppVersionChannel',
       }, {
         received: this.updateAppVersion,
@@ -42,7 +48,7 @@ export default {
       this.$store.dispatch('updateAppVersion', JSON.parse(data))
     },
     setupHangarUpdates() {
-      this.vehiclesChannel = this.$cable.subscriptions.create({
+      this.channels.vehicles = this.$cable.subscriptions.create({
         channel: 'HangarChannel',
         username: this.currentUser.username,
       }, {
@@ -53,10 +59,12 @@ export default {
       const vehicle = JSON.parse(data)
       if (vehicle.deleted) {
         this.$store.commit('removeFromHangar', vehicle.model.slug)
+      } else {
+        this.$store.commit('addToHangar', vehicle.model.slug)
       }
     },
     setupOnSaleVehiclesUpdates() {
-      this.onSaleHangarChannel = this.$cable.subscriptions.create({
+      this.channels.onSaleHangar = this.$cable.subscriptions.create({
         channel: 'OnSaleHangarChannel',
         username: this.currentUser.username,
       }, {
@@ -67,7 +75,7 @@ export default {
       })
     },
     setupOnSaleUpdates() {
-      this.onSaleChannel = this.$cable.subscriptions.create({
+      this.channels.onSale = this.$cable.subscriptions.create({
         channel: 'OnSaleChannel',
       }, {
         received(data) {
