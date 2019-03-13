@@ -18,16 +18,18 @@
     >
       <Navigation ref="navigation" />
     </transition>
-    <transition
-      name="fade"
-      mode="out-in"
-      appear
-    >
-      <router-view
-        class="main"
-        @click.native="closeNavigation"
-      />
-    </transition>
+    <div class="main-wrapper">
+      <transition
+        name="fade"
+        mode="out-in"
+        appear
+      >
+        <router-view
+          class="main"
+          @click.native="closeNavigation"
+        />
+      </transition>
+    </div>
     <BackToTop visible-offset="500" />
     <AppFooter />
   </div>
