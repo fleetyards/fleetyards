@@ -62,9 +62,6 @@ task :deploy do
 
     invoke :'deploy:cleanup'
 
-    # comment 'bundle clean'
-    # command %(bundle clean)
-
     on :launch do
       invoke :'server:restart'
       invoke :broadcast_version
@@ -98,6 +95,13 @@ task recreate_images: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Recreate Images)
     command %(bundle exec thor images:recreate)
+  end
+end
+
+task bundle_clean: :remote_environment do
+  in_path fetch(:current_path).to_s do
+    comment %(Bundle Clean)
+    command %(bundle clean)
   end
 end
 

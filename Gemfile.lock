@@ -465,6 +465,7 @@ DEPENDENCIES
   bourbon
   bower-rails
   bullet
+  bundler (~> 2.0)
   bundler-audit
   byebug
   cancancan
@@ -541,7 +542,7 @@ DEPENDENCIES
   webpacker (>= 4.0.x)
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.6.1p33
 
 BUNDLED WITH
-   1.17.3
+   2.0.1

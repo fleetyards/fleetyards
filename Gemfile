@@ -2,11 +2,13 @@
 
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.6.1'
 
 gem 'rails', '5.2.2.1'
 
 gem 'pg', '~> 1.0'
+
+gem 'bundler', '~> 2.0'
 
 gem 'sidekiq'
 gem 'sidekiq-cron'
