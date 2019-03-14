@@ -7,7 +7,7 @@ threads threads_count, threads_count
 pidfile "#{ENV['APP_DIR']}/tmp/pids/puma.pid"
 state_path "#{ENV['APP_DIR']}/tmp/pids/puma.state"
 
-prune_bundler
+# prune_bundler
 
 rackup      DefaultRackup
 port        ENV['PORT']      || 3000
