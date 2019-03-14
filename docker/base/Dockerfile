@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ## install bundler
 RUN gem update --system
+RUN gem uninstall bundler
 RUN gem install bundler -v 2.0.1
 
 RUN mkdir /app
