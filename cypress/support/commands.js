@@ -1,5 +1,13 @@
 Cypress.Commands.add('select', id => cy.get(`[data-test="${id}"]`))
 
+Cypress.Commands.add('clickNav', (name, openNav = true) => {
+  if (openNav) {
+    cy.get('.nav-toggle').click()
+  }
+
+  cy.contains('nav a', name).click()
+})
+
 Cypress.Commands.add('acceptConfirm', () => {
   cy.get('#noty-confirm .noty_buttons button:first-child').click()
 })

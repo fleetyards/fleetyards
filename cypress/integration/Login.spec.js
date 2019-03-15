@@ -2,8 +2,7 @@ describe('Login', () => {
   it('Loads and excepts valid credentials', () => {
     cy.visit('/')
 
-    cy.get('.nav-toggle').click()
-    cy.get('nav a').contains('Login').click()
+    cy.clickNav('Login')
 
     cy.url().should('include', '/login')
 
@@ -16,10 +15,10 @@ describe('Login', () => {
       cy.location('pathname').should('eq', '/')
 
       cy.get('.nav-toggle').click()
-      cy.get('.username').contains(userData.test.username).click()
-      cy.get('nav a').contains('Logout').click()
+      cy.contains('.username', userData.test.username).click()
+      cy.clickNav('Logout', false)
 
-      cy.get('nav a').contains('Login').should('exist')
+      cy.contains('nav a', 'Login').should('exist')
 
       cy.location('pathname').should('eq', '/')
     })
@@ -41,8 +40,7 @@ describe('Login', () => {
   it('Redirects to login when navigating to restricted page', () => {
     cy.visit('/')
 
-    cy.get('.nav-toggle').click()
-    cy.get('nav a').contains('Hangar').click()
+    cy.clickNav('Hangar')
 
     cy.url().should('include', '/login')
 
