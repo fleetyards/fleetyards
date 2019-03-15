@@ -2,8 +2,7 @@ describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
     cy.visit('/')
 
-    cy.get('.nav-toggle').click()
-    cy.get('nav a').contains('Sign up').click()
+    cy.clickNav('Sign up')
 
     cy.url().should('include', '/sign-up')
 
@@ -18,8 +17,7 @@ describe('Signup', () => {
 
       cy.success('Welcome to FleetYards.net')
 
-      cy.get('.nav-toggle').click()
-      cy.get('nav a').contains('Login').click()
+      cy.clickNav('Login')
 
       cy.select('login').type(userData.new.username)
       cy.select('password').type(userData.new.password)
@@ -29,8 +27,8 @@ describe('Signup', () => {
       cy.location('pathname').should('eq', '/')
 
       cy.get('.nav-toggle').click()
-      cy.get('.username').click()
-      cy.get('nav a').contains('Settings').click()
+      cy.contains('.username', userData.new.username).click()
+      cy.clickNav('Settings', false)
 
       cy.url().should('include', '/settings')
 
@@ -50,7 +48,7 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
-      cy.get('nav a').contains('Login').should('exist')
+      cy.get('nav a').contains('nav a', 'Login').should('exist')
     })
   })
 

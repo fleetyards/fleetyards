@@ -2,8 +2,7 @@ describe('Stations', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.get('.nav-toggle').click()
-    cy.get('nav a').contains('Stations').click()
+    cy.clickNav('Stations')
 
     cy.get('#stations-sub-menu a').contains('Overview').click()
 

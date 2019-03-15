@@ -1,7 +1,7 @@
 <template>
   <nav
     :class="{
-      'visble': !navCollapsed,
+      'visible': !navCollapsed,
     }"
     role="navigation"
   >
