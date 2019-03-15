@@ -11,9 +11,12 @@ if ENV['TEST_SEEDS'].present?
     model.images << Image.new(name: Rails.root.join("db/seeds/images/models/stub-#{index}.jpg").open, enabled: true)
   end
 
-  require 'rsi_location_loader'
-
-  RsiLocationLoader.new.all
+  stanton = Starsystem.find_or_create_by!(name: 'Stanton')
+  stanton.update!(map_x: '59.766411599', map_y: '48.460661345', hidden: false)
+  crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
+  crusader.update!(hidden: false)
+  portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
+  portolisar.update!(celestial_object: crusader, station_type: :hub, location: 'Orbit', hidden: false)
 
   test_user = User.find_or_initialize_by(username: 'TestUser')
   test_user.skip_confirmation!
@@ -22,6 +25,8 @@ if ENV['TEST_SEEDS'].present?
     password_confirmation: 'TestPassword',
     email: 'test@fleetyards.net'
   )
+
+  return
 end
 
 Dir[File.join(Rails.root, 'db', 'seeds', '**', '*.rb')].sort.each do |seed|
