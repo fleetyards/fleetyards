@@ -14,7 +14,7 @@ if ENV['TEST_SEEDS'].present?
   stanton = Starsystem.find_or_create_by!(name: 'Stanton')
   stanton.update!(map_x: '59.766411599', map_y: '48.460661345', hidden: false)
   crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
-  crusader.update!(hidden: false)
+  crusader.update!(starsystem: stanton, hidden: false)
   portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
   portolisar.update!(celestial_object: crusader, station_type: :hub, location: 'Orbit', hidden: false)
 
