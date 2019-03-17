@@ -33,6 +33,7 @@ describe('Signup', () => {
       cy.url().should('include', '/settings')
 
       cy.select('username').should('have.value', userData.new.username)
+      cy.select('username').parent().should('not.have.class', 'has-error')
       cy.select('email').should('have.value', userData.new.email)
       cy.select('rsi-handle').should('have.value', userData.new.handle)
 
