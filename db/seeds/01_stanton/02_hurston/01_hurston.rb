@@ -7,7 +7,7 @@ teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
 teasa_spaceport.update!(celestial_object: hurston, station_type: :spaceport, location: 'Lorville', store_image: Rails.root.join('db/seeds/images/stanton/hurston/teasa_spaceport.jpg').open, hidden: false)
 teasa_spaceport.docks.destroy_all
 pad = 1
-{ large: 6, capital: 2 }.each do |ship_size, count|
+{ capital: 1, medium: 3, small: 3, large: 2 }.each do |ship_size, count|
   count.times do
     teasa_spaceport.docks << Dock.new(
       name: "Hangar #{"%02d" % pad}",
@@ -25,7 +25,7 @@ teasa_spaceport.habitations.destroy_all
     { small_apartment: prefix[1] }.each do |apartment_size, count|
       count.times do
         teasa_spaceport.habitations << Habitation.new(
-          name: "L19 Habitations - Level #{level} Apartment #{prefix[0]}#{"%02d" % pad}",
+          name: "L19 Habitations - Level #{"%02d" % level} Apartment #{prefix[0]}#{"%02d" % pad}",
           habitation_type: apartment_size
         )
         pad += 1
