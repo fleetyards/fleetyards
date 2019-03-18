@@ -190,6 +190,7 @@ jobs:
           at: ~/app
       - run: bundle --path vendor/bundle
       - run: yarn install
+      - run: echo $BUNDLE_GEMFILE
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
