@@ -132,14 +132,7 @@ export default {
   },
   methods: {
     groupByType(hardpoints) {
-      return hardpoints.reduce((rv, x) => {
-        const value = JSON.parse(JSON.stringify(rv))
-
-        value[x.type] = rv[x.type] || []
-        value[x.type].push(x)
-
-        return value
-      }, {})
+      return this.groupBy(hardpoints, 'type')
     },
     openComponentModal(hardpoint) {
       if (!hardpoint.component) {

@@ -169,6 +169,7 @@ en:
           district: District
           outpost: Outpost
           aid_shelter: Aid Shelter
+          gate: Gate
 
     errors:
       messages:

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="station.habitations.length"
+    v-if="station.habitationCounts.length"
     class="row"
   >
     <div class="col-xs-12 col-md-3">
@@ -11,18 +11,15 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div
-          v-for="(hab, index) in station.habitations"
-          :key="index"
+          v-for="(habs, name) in habitationsByName"
+          :key="name"
           class="col-xs-6"
         >
           <div class="metrics-label">
-            {{ hab.typeLabel }}:
+            {{ name }}:
           </div>
-          <div
-            v-tooltip="hab.typeLabel"
-            class="metrics-value"
-          >
-            {{ hab.count }}
+          <div class="metrics-value">
+            {{ habs.length }}x {{ habs[0].typeLabel }}
           </div>
         </div>
       </div>
@@ -36,6 +33,11 @@ export default {
     station: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    habitationsByName() {
+      return this.groupBy(this.station.habitations, 'habitationName')
     },
   },
 }
