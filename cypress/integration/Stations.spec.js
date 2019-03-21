@@ -2,8 +2,7 @@ describe('Stations', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.get('.nav-toggle').click()
-    cy.get('nav a').contains('Stations').click()
+    cy.clickNav('Stations')
 
     cy.get('#stations-sub-menu a').contains('Overview').click()
 
@@ -11,6 +10,6 @@ describe('Stations', () => {
 
     cy.get('.panel-title a').contains('Port Olisar').should('exist')
 
-    cy.get('.panel').should('have.length', 10)
+    cy.get('.panel').should('have.length', Cypress.env('CI') ? 1 : 10)
   })
 })
