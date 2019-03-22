@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '' do
+namespace :frontend, path: '', constraints: { subdomain: false } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
 
   get 'ships' => 'base#index'
