@@ -1,4 +1,4 @@
-FROM fleetyards/base:2.5.1
+FROM fleetyards/base:2.6.2
 
 ## install chrome
 RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \

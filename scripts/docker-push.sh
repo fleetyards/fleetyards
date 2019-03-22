@@ -10,8 +10,8 @@ echo
 
 pushd base
 
-docker build -t fleetyards/base:2.5.1 .
-docker push fleetyards/base:2.5.1
+docker build -t fleetyards/base:2.6.2 .
+docker push fleetyards/base:2.6.2
 
 popd
 
@@ -21,8 +21,8 @@ echo
 
 pushd ci
 
-docker build -t fleetyards/ci:2.5.1 .
-docker push fleetyards/ci:2.5.1
+docker build -t fleetyards/ci:2.6.2 .
+docker push fleetyards/ci:2.6.2
 
 popd
 
