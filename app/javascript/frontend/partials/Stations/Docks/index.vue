@@ -50,7 +50,12 @@
 </template>
 
 <script>
+import DockItem from './Item'
+
 export default {
+  components: {
+    DockItem,
+  },
   props: {
     station: {
       type: Object,

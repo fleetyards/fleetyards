@@ -30,13 +30,15 @@ body {
   .main-wrapper {
     min-height: 100vh;
     flex: 1;
+    padding-top: 80px;
+    margin-bottom: 50px;
   }
 
   .main {
-    padding-top: 70px;
-    margin-bottom: 50px;
-    min-height: 100vh;
-    overflow-y: auto;
+    left: 0;
+    position: relative;
+    transition: left ease .5s, right ease .5s;
+    width: 100%;
   }
 
   &.nav-visible {
@@ -81,10 +83,10 @@ button {
 
 @media (max-width: $desktop-breakpoint) {
   .app-body {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
-
-    .main {
-      padding-top: 50px;
+    .main-wrapper {
+      margin-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
   }
 
@@ -105,7 +107,7 @@ button {
   .app-body {
     padding-top: 70px;
 
-    .main {
+    .main-wrapper {
       padding-top: 0;
     }
 
