@@ -15,6 +15,7 @@
         :key="group.id"
         :class="{
           'active': isActive(group.slug),
+          'inverted': isInverted(group.slug),
         }"
         class="label label-link fade-list-item"
         @click.exact="filter(group.slug)"
@@ -78,9 +79,19 @@ export default {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
       if ((query.hangarGroupsIn || []).includes(filter)) {
+        if (!query.hangarGroupsNotIn) {
+          query.hangarGroupsNotIn = []
+        }
+        query.hangarGroupsNotIn.push(filter)
+
         const index = query.hangarGroupsIn.findIndex(item => item === filter)
         if (index > -1) {
           query.hangarGroupsIn.splice(index, 1)
+        }
+      } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
+        const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
+        if (index > -1) {
+          query.hangarGroupsNotIn.splice(index, 1)
         }
       } else {
         if (!query.hangarGroupsIn) {
@@ -96,17 +107,33 @@ export default {
         },
       })
     },
-    isActive(classification) {
+    isActive(group) {
       if (!this.$route.query.q) {
         return false
       }
 
-      const classFilter = this.$route.query.q.hangarGroupsIn
-      if (!classFilter) {
+      const filter = this.$route.query.q.hangarGroupsIn
+      if (!filter) {
         return false
       }
 
-      if (classFilter.includes(classification)) {
+      if (filter.includes(group)) {
+        return true
+      }
+
+      return false
+    },
+    isInverted(group) {
+      if (!this.$route.query.q) {
+        return false
+      }
+
+      const filter = this.$route.query.q.hangarGroupsNotIn
+      if (!filter) {
+        return false
+      }
+
+      if (filter.includes(group)) {
         return true
       }
 

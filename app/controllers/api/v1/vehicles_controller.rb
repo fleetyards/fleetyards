@@ -228,7 +228,7 @@ module Api
           :name_cont, :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
-          production_status_in: [], hangar_groups_in: []
+          production_status_in: [], hangar_groups_in: [], hangar_groups_not_in: []
         )
       end
     end

@@ -66,6 +66,18 @@ $innerBorderWidth: 2px;
           background-color: $panel-inner-border;
         }
       }
+
+      &.inverted {
+        .label-inner {
+          background-color: darkred;
+        }
+
+        &:hover {
+          .label-inner {
+            color: $text-color;
+          }
+        }
+      }
     }
   }
 }
