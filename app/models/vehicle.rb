@@ -39,7 +39,7 @@ class Vehicle < ApplicationRecord
   end
 
   def self.public
-    purchased.where(purchased: true)
+    purchased.where(purchased: true, public: true)
   end
 
   def set_flagship
