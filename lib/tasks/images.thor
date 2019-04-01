@@ -58,7 +58,7 @@ class Images < Thor
         dir_name = "#{image_dirs.join('/')}/#{image_id_parts.join('/')}"
         destination = "#{dir_name}/#{image_name}"
 
-        puts "Moving image to #{destionation}"
+        puts "Moving image to #{destination}"
         FileUtils.mkdir_p(dir_name)
         FileUtils.copy(image, destination)
       end
