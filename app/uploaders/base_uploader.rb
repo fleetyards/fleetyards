@@ -8,7 +8,6 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   private def uuid_path
-    # model.id.split(/(.{2})(.{2})(.+)/).join('/')
-    model.id
+    model.id.split(/(.{2})(.{2})(.+)/).join('/')
   end
 end
