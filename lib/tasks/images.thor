@@ -26,4 +26,72 @@ class Images < Thor
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
     end
   end
+
+  desc 'migrate', 'Migrate'
+  def migrate
+    require './config/environment'
+    require 'fileutils'
+
+    [
+      'celestial_object/store_image',
+      'equipment/store_image',
+      'image/name',
+      'manufacturer/logo',
+      'model/brochure',
+      'model/fleetchart_image',
+      'model/image',
+      'model/store_image',
+      'model_module/store_image',
+      'model_upgrade/store_image',
+      'planet/store_image',
+      'shop/store_image',
+      'starsystem/store_image',
+      'station/store_image'
+    ].each do |model_path|
+      Dir[[Rails.root.join('public', 'uploads'), model_path, '**', '*.*'].join('/')].each do |image|
+        image_dirs = File.dirname(image).split('/')
+
+        image_id = image_dirs.pop
+        image_id_parts = [image_id.slice(0, 2), image_id.slice(2, 2), image_id.slice(4, 32)]
+
+        image_name = File.basename(image)
+        dir_name = "#{image_dirs.join('/')}/#{image_id_parts.join('/')}"
+        destination = "#{dir_name}/#{image_name}"
+
+        puts "Moving image to #{destionation}"
+        FileUtils.mkdir_p(dir_name)
+        FileUtils.copy(image, destination)
+      end
+    end
+  end
+
+  desc 'cleanup_migrate', 'Cleanup migration'
+  def cleanup_migrate
+    require './config/environment'
+    require 'fileutils'
+
+    [
+      'celestial_object/store_image',
+      'equipment/store_image',
+      'image/name',
+      'manufacturer/logo',
+      'model/brochure',
+      'model/fleetchart_image',
+      'model/image',
+      'model/store_image',
+      'model_module/store_image',
+      'model_upgrade/store_image',
+      'planet/store_image',
+      'shop/store_image',
+      'starsystem/store_image',
+      'station/store_image'
+    ].each do |model_path|
+      Dir[[Rails.root.join('public', 'uploads'), model_path, '*'].join('/')].each do |dir|
+        name = File.basename(dir)
+        next unless name.size == 36
+
+        FileUtils.rm_rf(dir)
+      end
+    end
+  end
 end
