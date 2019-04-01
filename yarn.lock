@@ -1743,10 +1743,10 @@ acorn@^6.0.1, acorn@^6.0.2, acorn@^6.0.5, acorn@^6.0.7:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
 
-actioncable@^5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.2.tgz#0ec83195fd363c4d91a2fc19f78e77350aa5caac"
-  integrity sha512-uZveOQ0OL1z8VwYqA84gMMfLMPHpS/GsnodS8oVh1xTUYeMf1L80gAbTVVVVVj84zUf7lOiIZMaiY0IlXNsgiw==
+actioncable@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.3.tgz#639d98855b854b7bfe2059ab97d6e0ae8fd60a1d"
+  integrity sha512-KNdZHRDu92VDSO7SOEJS8Bf5G//LZZLz5e6m7mv8Wjafe9Svdp/DPJ/DpO7rJmPAlKcLAYwi/R7pNJ/VCHV1FQ==
 
 after@0.8.2:
   version "0.8.2"
@@ -12322,10 +12322,10 @@ vue-scrollto@^2.15.0:
   dependencies:
     bezier-easing "2.1.0"
 
-vue-slider-component@^3.0.16:
-  version "3.0.16"
-  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.0.16.tgz#067257c0c306b48437baa856e4608e840bd4cac6"
-  integrity sha512-Ioe2tuTulU5gSeY2xDXC5wi0j1OZK6CY6M9QH53Om6Bf896bUnfI0L+fZKrk96ckq0FBj+zYuRPb1qaBJWqmrg==
+vue-slider-component@^3.0.21:
+  version "3.0.21"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.0.21.tgz#858cce95084c87ac0aa2fdc80a191f7ef6db859a"
+  integrity sha512-g4ZlmC9rICgtNyT2kI+9XrqnARz9HQsCPdKDDFA6r1ChJvx+wMYeFAvqLMohY1/I4OOdmZ9hrLOPY+qXNuIk4g==
   dependencies:
     vue-property-decorator "^8.0.0"
 
