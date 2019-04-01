@@ -46,11 +46,11 @@ end
 
 CarrierWave.configure do |config|
   if Rails.env.production?
-    config.asset_host = 'https://api.fleetyards.net'
+    config.asset_host = 'https://fleetyards.net'
   elsif Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
   else
-    config.asset_host = 'http://api.fleetyards.test'
+    config.asset_host = 'http://fleetyards.test'
   end
 end
