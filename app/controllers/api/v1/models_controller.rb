@@ -177,7 +177,9 @@ module Api
 
       def store_image
         authorize! :show, :api_models
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first || Model.new
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
+        model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
+        model = Model.new if model.blank?
         redirect_to model.store_image.url
       end
 

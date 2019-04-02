@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
-class StoreImageUploader < CarrierWave::Uploader::Base
+class StoreImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  storage :file
-
   def default_url(*_args)
-    host = 'https://api.fleetyards.net'
-    host = 'http://api.fleetyards.test' if Rails.env.development?
-    ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: host)
+    ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: Rails.application.secrets[:host])
   end
 
   version :medium do
@@ -19,10 +15,6 @@ class StoreImageUploader < CarrierWave::Uploader::Base
   version :small do
     process resize_to_limit: [300, 300]
     process quality: 80
-  end
-
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   def extension_white_list
