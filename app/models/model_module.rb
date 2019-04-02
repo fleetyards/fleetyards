@@ -14,6 +14,8 @@ class ModelModule < ApplicationRecord
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 
+  before_save :update_slugs
+
   after_save :touch_shop_commodities
   after_save :touch_models
 

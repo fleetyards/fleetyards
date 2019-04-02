@@ -202,7 +202,7 @@ class Model < ApplicationRecord
   end
 
   private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
+    super
     self.rsi_slug = SlugHelper.generate_slug(rsi_name)
   end
 
