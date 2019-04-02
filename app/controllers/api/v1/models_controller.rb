@@ -179,7 +179,8 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
-        redirect_to model&.store_image&.url
+        model = Model.new if model.blank?
+        redirect_to model.store_image.url
       end
 
       def fleetchart_image
