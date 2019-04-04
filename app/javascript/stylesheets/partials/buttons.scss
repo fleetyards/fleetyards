@@ -86,6 +86,7 @@ $panel-content-border-radius: 6px;
   min-width: 50px;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
+  cursor: pointer;
 
   &::before {
     content: "";

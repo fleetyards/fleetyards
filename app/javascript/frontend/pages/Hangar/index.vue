@@ -125,6 +125,14 @@
                 </template>
               </Btn>
               <Btn
+                v-tooltip="t('actions.addVehicle')"
+                :aria-label="t('actions.addVehicle')"
+                small
+                @click.native="showNewModal"
+              >
+                <i class="fa fa-plus" />
+              </Btn>
+              <Btn
                 v-tooltip="toggleGuideTooltip"
                 :active="guideVisible"
                 :aria-label="toggleGuideTooltip"
@@ -249,6 +257,7 @@
       :hangar-groups="hangarGroups"
     />
     <AddonsModal ref="addonsModal" />
+    <NewVehiclesModal ref="newVehiclesModal" />
   </section>
 </template>
 
@@ -268,6 +277,7 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
+import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -290,6 +300,7 @@ export default {
     HangarGuideBox,
     VehicleModal,
     AddonsModal,
+    NewVehiclesModal,
     FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
@@ -397,6 +408,9 @@ export default {
     },
     showEditModal(vehicle) {
       this.$refs.vehicleModal.open(vehicle)
+    },
+    showNewModal() {
+      this.$refs.newVehiclesModal.open()
     },
     showAddonsModal(vehicle) {
       this.$refs.addonsModal.open(vehicle)
