@@ -146,12 +146,13 @@ $contentBorderRadius: 16px;
 
     &:last-child {
       border-bottom: none;
+      border-bottom-right-radius: $contentBorderRadius;
+      border-bottom-left-radius: $contentBorderRadius;
     }
   }
 
   .panel-inner {
     border-radius: $contentBorderRadius;
-    overflow: hidden;
   }
 
   .btn-group {

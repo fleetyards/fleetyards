@@ -10,6 +10,11 @@
 }
 
 .panel-image {
+  &.no-details {
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+
   .on-sale {
     position: absolute;
     top: 0;

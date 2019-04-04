@@ -52,6 +52,7 @@
     "hangar": "My Hangar",
     "hangarPublic": "%{user} Hangar",
     "myVehicle": "My %{vehicle}",
+    "newVehicles": "Add Ships",
     "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
     "impressum": "Impressum",
     "privacy": "Privacy policy",
@@ -482,6 +483,9 @@
     "resetPrices": "Reset Prices",
     "requestPassword": "Request Password E-Mail",
     "changePassword": "Change Password",
+    "add": "Add",
+    "addAnother": "Add another",
+    "addVehicle": "Add Ships",
     "addGroup": "Add Group",
     "compare": {
       "models": "Compare"
