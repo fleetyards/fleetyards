@@ -1,8 +1,8 @@
 $outerBorderWidth: 2px;
-$outerBorderRadius: 24px;
+$outerBorderRadius: $panelOuterBorderRadius;
 $innerBorderWidth: 3px;
-$innerBorderRadius: 20px;
-$contentBorderRadius: 16px;
+$innerBorderRadius: $panelInnerBorderRadius;
+$contentBorderRadius: $panelContentBorderRadius;
 
 .panel-wrapper {
   border: $outerBorderWidth solid $panel-outer-border;

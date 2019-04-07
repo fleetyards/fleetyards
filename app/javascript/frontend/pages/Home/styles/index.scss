@@ -9,6 +9,11 @@
   margin-bottom: 0;
 }
 
+.home-ships .model-panel-image {
+  border-top-left-radius: $panelContentBorderRadius;
+  border-bottom-left-radius: $panelContentBorderRadius;
+}
+
 .home-screen-intro {
   height: 100vh;
   min-height: 300px;

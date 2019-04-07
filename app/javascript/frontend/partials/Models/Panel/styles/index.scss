@@ -11,8 +11,8 @@
 
 .panel-image {
   &.no-details {
-    border-bottom-right-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
   }
 
   .on-sale {
