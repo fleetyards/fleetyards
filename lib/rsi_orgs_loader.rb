@@ -10,6 +10,15 @@ class RsiOrgsLoader < RsiBaseLoader
     [true, OpenStruct.new(data)]
   end
 
+  def fetch_with_members(sid)
+    data = fetch_org_data(sid)
+    return false, nil if data.blank?
+
+    data[:members] = fetch_org_citizens(sid, data[:member_count])
+
+    [true, OpenStruct.new(data)]
+  end
+
   def fetch_citizen(handle)
     response = Typhoeus.get("#{base_url}/citizens/#{handle}")
     return false, nil unless response.success?
@@ -84,6 +93,71 @@ class RsiOrgsLoader < RsiBaseLoader
       banner: parse_image(org_box.css('.heading .banner img')),
     }
   end
+
+  # rubocop:disable Metrics/MethodLength
+  private def fetch_org_citizens(sid, member_count)
+    members = []
+
+    (member_count / 32.0).ceil.times do |page|
+      sleep 2
+
+      response = Typhoeus.post("#{base_url}/api/orgs/getOrgMembers", body: {
+                                 symbol: sid,
+                                 page: page + 1,
+                                 pagesize: 32
+                               })
+      next if response.code != 200
+
+      response_body = JSON.parse(response.body)
+
+      next if response_body['success'].zero?
+
+      page_data = Nokogiri::HTML(response_body['data']['html'])
+
+      page_data.css('.member-item').each do |member_item|
+        handle = member_item.css('.frontinfo .nick').text.strip
+
+        member = {
+          name: member_item.css('.frontinfo .name').text.strip,
+          handle: handle,
+          rank: member_item.css('.frontinfo .rank').text.strip,
+          url: "https://robertsspaceindustries.com/citizens/#{handle}"
+        }
+
+        citizen_response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
+        if citizen_response.success?
+          citizen = parse_citizen(Nokogiri::HTML(citizen_response.body))
+          member[:id] = citizen.citizen_record
+        elsif citizen_response.code == 404
+          member[:status] = if member[:name].present?
+                              'DELETED'
+                            else
+                              'REDACTED'
+                            end
+        end
+
+        members << member
+      end
+    end
+
+    require 'csv'
+    CSV.open("#{sid}-members-#{DateTime.now.in_time_zone.strftime('%Y-%m-%d')}.csv", 'wb') do |csv|
+      members.each do |member|
+        csv << [
+          member[:id],
+          member[:name],
+          member[:handle],
+          member[:rank],
+          member[:url],
+          member[:orgs],
+          member[:status]
+        ]
+      end
+    end
+
+    members
+  end
+  # rubocop:enable Metrics/MethodLength
 
   private def parse_background_image(element)
     div = element&.first || {}

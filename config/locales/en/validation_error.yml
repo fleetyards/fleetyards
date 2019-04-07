@@ -9,3 +9,5 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
+    fleet:
+      create: Fleet could not be created
