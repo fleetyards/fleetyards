@@ -102,8 +102,8 @@
               >
                 <i
                   :class="{
-                    fas: hangarFilterVisible,
-                    far: !hangarFilterVisible,
+                    fas: isFilterSelected,
+                    far: !isFilterSelected,
                   }"
                   class="fa-filter"
                 />

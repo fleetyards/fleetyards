@@ -36,8 +36,8 @@
               >
                 <i
                   :class="{
-                    fas: modelFilterVisible,
-                    far: !modelFilterVisible,
+                    fas: isFilterSelected,
+                    far: !isFilterSelected,
                   }"
                   class="fa-filter"
                 />
