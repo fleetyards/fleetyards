@@ -22,8 +22,10 @@
 }
 
 h1 {
-  img {
+  .logo {
     max-width: 60px;
     max-height: 60px;
+    border-radius: $border-radius-base * 2;
+    margin-bottom: 10px;
   }
 }

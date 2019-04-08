@@ -5,7 +5,11 @@
         <div class="row headlines">
           <div class="col-xs-12 col-md-8">
             <h1 v-if="fleet">
-              <img :src="fleet.logo">
+              <img
+                class="logo"
+                :src="fleet.logo"
+                alt="Logo"
+              >
               <a
                 :href="`https://robertsspaceindustries.com/orgs/${fleet.sid}`"
                 target="_blank"
