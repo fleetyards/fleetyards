@@ -39,11 +39,8 @@
               @click="toggle(release)"
             >
               {{ release }}
-              <span
-                v-if="items[0].released"
-                class="released-label"
-              >
-                ({{ t('labels.released') }})
+              <span class="released-label">
+                ({{ items[0].releaseDescription }})
               </span>
               <small>{{ t('labels.roadmap.ships', { count: items.length }) }}</small>
               <i class="fa fa-chevron-right" />
@@ -66,7 +63,13 @@
                         'background-image': `url(https://robertsspaceindustries.com${item.image})`
                       }"
                       class="item-image"
-                    />
+                    >
+                      <div
+                        v-if="recentlyUpdated(item)"
+                        v-tooltip="t('labels.roadmap.recentlyUpdated')"
+                        class="roadmap-item-updated"
+                      />
+                    </div>
                     <div class="item-body">
                       <h3>
                         <router-link
@@ -85,7 +88,7 @@
                         </template>
                         <small>{{ t('labels.roadmap.tasks', { count: item.tasks }) }}</small>
                         <i
-                          v-tooltip="l(item.updatedAt)"
+                          v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
                           class="fal fa-info-circle"
                         />
                       </h3>
@@ -124,6 +127,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import { isBefore, addHours } from 'date-fns'
 
 export default {
   components: {
@@ -176,6 +180,9 @@ export default {
     this.fetch()
   },
   methods: {
+    recentlyUpdated(item) {
+      return isBefore(new Date(), addHours(new Date(item.updatedAt), 24))
+    },
     toggleReleased() {
       this.onlyReleased = !this.onlyReleased
     },

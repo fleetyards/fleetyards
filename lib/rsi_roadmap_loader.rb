@@ -25,6 +25,7 @@ class RsiRoadmapLoader < RsiBaseLoader
 
         item.update(
           release: release['name'],
+          release_description: release['description'],
           rsi_release_id: release['id'],
           released: release['released'].zero? ? false : true,
           rsi_category_id: card['category_id'],

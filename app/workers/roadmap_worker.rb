@@ -7,6 +7,6 @@ class RoadmapWorker
   sidekiq_options retry: false, queue: (ENV['ROADMAP_LOADER_QUEUE'] || 'fleetyards_roadmap_loader').to_sym
 
   def perform
-    RsiRoadmapLoader.fetch
+    RsiRoadmapLoader.new.fetch
   end
 end

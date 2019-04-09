@@ -70,6 +70,18 @@
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: 0.8;
+    position: relative;
+
+    .roadmap-item-updated {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: $success;
+      box-shadow: 0 0 3px $gray-darker;
+    }
   }
 
   .progress-bar {

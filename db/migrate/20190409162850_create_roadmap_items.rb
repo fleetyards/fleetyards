@@ -5,6 +5,7 @@ class CreateRoadmapItems < ActiveRecord::Migration[5.2]
       t.integer :rsi_category_id
       t.integer :rsi_release_id
       t.string :release
+      t.text :release_description
       t.string :name
       t.uuid :model_id
       t.text :body

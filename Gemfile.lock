@@ -57,6 +57,8 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
+    audited (4.8.0)
+      activerecord (>= 4.0, < 5.3)
     autoprefixer-rails (9.4.7)
       execjs
     bcrypt (3.1.12)
@@ -458,6 +460,7 @@ PLATFORMS
 
 DEPENDENCIES
   ahoy_matey
+  audited
   bootsnap (>= 1.1.0)
   bootstrap-sass
   bourbon

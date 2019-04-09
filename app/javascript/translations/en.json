@@ -23,7 +23,7 @@
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "fleets": "Fleets",
-    "roadmap": "Roadmap",
+    "roadmap": "Ship-Roadmap",
     "settings": "Settings",
     "verify": "Verify your RSI Handle",
     "account": "Account",
@@ -78,7 +78,7 @@
     "compare": {
       "models": "Compare Ships"
     },
-    "roadmap": "Roadmap",
+    "roadmap": "Ship-Roadmap",
     "cargo": "Cargo",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
@@ -132,7 +132,7 @@
     "cargo": "Cargo",
     "api": "API Docs",
     "stats": "Stats",
-    "roadmap": "Roadmap",
+    "roadmap": "Ship-Roadmap",
     "profile": "Profile",
     "account": "Account",
     "rsiVerification": "RSI Verification",
@@ -151,7 +151,6 @@
   "labels": {
     "true": "Yes",
     "false": "No",
-    "released": "Released",
     "selected": "Selected",
     "deselect": "Click to deselect",
     "shop": {
@@ -167,6 +166,8 @@
       "modelsByProductionStatus": "Models by Production Status"
     },
     "roadmap": {
+      "lastUpdate": "Last Update: %{date}",
+      "recentlyUpdated": "Updated in the last 24 Hours",
       "tasks": {
         "one": "%{count} Task",
         "other": "%{count} Tasks"

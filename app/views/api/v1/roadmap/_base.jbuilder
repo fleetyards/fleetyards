@@ -3,6 +3,7 @@
 json.id item.id
 json.name item.name
 json.release item.release
+json.release_description item.release_description
 json.rsi_release_id item.rsi_release_id
 json.description item.description
 json.body item.body
