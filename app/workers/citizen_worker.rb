@@ -4,14 +4,14 @@ require 'rsi_orgs_loader'
 
 class CitizenWorker
   include Sidekiq::Worker
-  sidekiq_options retry: true, queue: (ENV['FLEETS_LOADER_QUEUE'] || 'fleetyards_fleets_loader').to_sym
+  sidekiq_options retry: true, queue: (ENV['FLEETS_LOADER_QUEUE'] || 'fleetyards_citizens_loader').to_sym
 
-  def perform
-    User.find_each do |user|
-      success, citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
-      next unless success
+  def perform(user_id)
+    user = User.find(user_id)
 
-      user.update(rsi_orgs: citizen.orgs)
-    end
+    success, citizen = RsiOrgsLoader.new.fetch_citizen(user.rsi_handle)
+    return unless success
+
+    user.update(rsi_orgs: citizen.orgs)
   end
 end

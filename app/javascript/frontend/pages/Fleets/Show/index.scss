@@ -1,19 +1,11 @@
 @import '~stylesheets/variables';
 
-.to-fleetyards {
-  position: absolute;
-  top: -40px;
-  color: $text-color;
-  transition: all ease .5s;
-
-  .brand {
-    font-family: 'Orbitron', sans-serif;
-  }
+.headlines {
+  margin-bottom: 20px;
 }
 
-.headlines {
-  margin-top: 40px;
-  margin-bottom: 40px;
+.actions {
+  margin-top: 20px;
 }
 
 .activities {

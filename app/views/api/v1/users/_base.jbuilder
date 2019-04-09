@@ -9,7 +9,8 @@ json.cache! ['v1', user] do
   json.rsi_handle user.rsi_handle
   json.sale_notify user.sale_notify
   json.public_hangar user.public_hangar
-  json.fleets user.rsi_orgs
+  json.orgs user.rsi_orgs
+  json.fleets user.fleets.map(&:sid)
   json.rsi_verified user.rsi_verified
   json.partial! 'api/shared/dates', record: user
 end

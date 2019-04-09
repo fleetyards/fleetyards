@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fleet_id: 
+  user_id: 
+  role: 1
+
+two:
+  fleet_id: 
+  user_id: 
+  role: 1

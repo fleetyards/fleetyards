@@ -1,5 +1,6 @@
 import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import { routes as SettingsRoutes } from 'frontend/pages/Settings/routes'
+import { routes as FleetRoutes } from 'frontend/pages/Fleets/routes'
 
 export const routes = [
   {
@@ -127,6 +128,7 @@ export const routes = [
     path: '/fleets/:sid',
     name: 'fleet',
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
+    children: FleetRoutes,
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),

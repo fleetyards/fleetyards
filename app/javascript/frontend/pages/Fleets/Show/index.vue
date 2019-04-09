@@ -5,6 +5,12 @@
         <div class="row headlines">
           <div class="col-xs-12 col-md-8">
             <h1 v-if="fleet">
+              <router-link
+                :to="{ name: 'fleets' }"
+                class="back-button"
+              >
+                <i class="fal fa-chevron-left" />
+              </router-link>
               <img
                 class="logo"
                 :src="fleet.logo"
@@ -51,8 +57,64 @@
               </span>
             </h2>
           </div>
-          <div class="col-xs-12 col-md-4 text-right" />
+          <div class="col-xs-12 col-md-4 text-right actions">
+            <Btn
+              v-if="myFleet && $route.name === 'fleet'"
+              :to="{
+                name: 'fleet-members',
+                params: {
+                  sid: this.$route.params.sid,
+                },
+              }"
+            >
+              Members
+            </Btn>
+            <Btn
+              v-if="myFleet && $route.name === 'fleet-members'"
+              :to="{
+                name: 'fleet',
+                params: {
+                  sid: this.$route.params.sid,
+                },
+              }"
+              exact
+            >
+              Ships
+            </Btn>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <Box
+          v-if="!isMember && myOrg && fleet"
+          class="row"
+          large
+        >
+          You seem to be a Member of {{ fleet.name }}.
+          To be able to view Ships of this Fleet you need to verify your RSI Handle
+
+          <template #footer>
+            <div
+              class="pull-right"
+            >
+              <Btn
+                :to="{name: 'settings-verify'}"
+              >
+                Verify your RSI-Handle
+              </Btn>
+            </div>
+          </template>
+        </Box>
+      </div>
+    </div>
+    <div class="row">
+      <router-view v-if="isSubRoute" />
+      <div
+        v-else
+        class="col-xs-12"
+      >
         <div class="row">
           <ModelClassLabels
             v-if="fleetCount"
@@ -146,32 +208,34 @@ import Btn from 'frontend/components/Btn'
 import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/components/Models/Panel'
 import Pagination from 'frontend/mixins/Pagination'
+import Fleet from 'frontend/mixins/Fleet'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 
 export default {
   components: {
+    Box,
     ModelPanel,
     Loader,
     ModelsFilterForm,
     ModelClassLabels,
     Btn,
-    Box,
   },
 
   mixins: [
     MetaInfo,
     Pagination,
+    Fleet,
   ],
 
   data() {
     return {
       loading: false,
       fleetCount: null,
-      fleet: null,
       fleetModels: [],
       filters: [],
+      fleet: null,
       acitivtyIcons: {
         /* eslint-disable global-require */
         BountyHunting: require('images/org-icons/bountyhunting.png'),

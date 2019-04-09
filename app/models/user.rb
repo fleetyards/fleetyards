@@ -22,6 +22,11 @@ class User < ApplicationRecord
            source: :model,
            inverse_of: false
 
+  has_many :fleet_memberships,
+           dependent: :destroy
+  has_many :fleets,
+           through: :fleet_memberships
+
   serialize :rsi_orgs, Array
 
   validates :username,
@@ -29,6 +34,8 @@ class User < ApplicationRecord
             format: { with: /\A[a-zA-Z0-9\-_]+\Z/ }
 
   attr_accessor :login
+
+  after_create :lookup_rsi_orgs
 
   before_save :update_gravatar_hash
   before_save :check_rsi_verification
@@ -53,6 +60,10 @@ class User < ApplicationRecord
              Digest::MD5.hexdigest(gravatar.downcase.strip)
            end
     self.gravatar_hash = hash
+  end
+
+  def lookup_rsi_orgs
+    CitizenWorker.perform_async(id)
   end
 
   def generate_rsi_verification_token

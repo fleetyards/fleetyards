@@ -23,7 +23,7 @@ module Api
         authorize! :my, :api_fleets
 
         @fleets = if current_user.rsi_verified?
-                    Fleet.where(['lower(sid) in (:sid)', { sid: current_user.rsi_orgs.map(&:downcase) }]).order(name: :asc).all
+                    Fleet.where(['lower(sid) in (:sid)', { sid: current_user.rsi_orgs.map(&:downcase) }]).or(Fleet.where(id: current_user.fleet_ids)).order(name: :asc).all
                   else
                     []
                   end

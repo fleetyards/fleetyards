@@ -121,10 +121,10 @@ class RsiOrgsLoader < RsiBaseLoader
           name: member_item.css('.frontinfo .name').text.strip,
           handle: handle,
           rank: member_item.css('.frontinfo .rank').text.strip,
-          url: "https://robertsspaceindustries.com/citizens/#{handle}"
+          url: "#{base_url}/citizens/#{handle}"
         }
 
-        citizen_response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
+        citizen_response = Typhoeus.get("#{base_url}/citizens/#{handle}")
         if citizen_response.success?
           citizen = parse_citizen(Nokogiri::HTML(citizen_response.body))
           member[:id] = citizen.citizen_record
