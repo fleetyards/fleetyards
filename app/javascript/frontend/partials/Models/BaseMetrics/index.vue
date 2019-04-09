@@ -22,29 +22,20 @@
           <div class="metrics-label">
             {{ t('model.length') }}:
           </div>
-          <div
-            v-tooltip="toNumber(model.length, 'distance')"
-            class="metrics-value"
-          >
+          <div class="metrics-value">
             {{ toNumber(model.length, 'distance') }}
           </div>
           <div class="metrics-label">
             {{ t('model.beam') }}:
           </div>
-          <div
-            v-tooltip="toNumber(model.beam, 'distance')"
-            class="metrics-value"
-          >
+          <div class="metrics-value">
             {{ toNumber(model.beam, 'distance') }}
           </div>
           <template v-if="detailed">
             <div class="metrics-label">
               {{ t('model.classification') }}:
             </div>
-            <div
-              v-tooltip="model.classificationLabel"
-              class="metrics-value"
-            >
+            <div class="metrics-value">
               {{ model.classificationLabel }}
             </div>
           </template>
@@ -53,29 +44,20 @@
           <div class="metrics-label">
             {{ t('model.height') }}:
           </div>
-          <div
-            v-tooltip="toNumber(model.height, 'distance')"
-            class="metrics-value"
-          >
+          <div class="metrics-value">
             {{ toNumber(model.height, 'distance') }}
           </div>
           <div class="metrics-label">
             {{ t('model.mass') }}:
           </div>
-          <div
-            v-tooltip="toNumber(model.mass, 'weight')"
-            class="metrics-value"
-          >
+          <div class="metrics-value">
             {{ toNumber(model.mass, 'weight') }}
           </div>
           <template v-if="detailed">
             <div class="metrics-label">
               {{ t('model.size') }}:
             </div>
-            <div
-              v-tooltip="model.sizeLabel"
-              class="metrics-value"
-            >
+            <div class="metrics-value">
               {{ model.sizeLabel }}
             </div>
           </template>
@@ -86,10 +68,7 @@
               <div class="metrics-label">
                 {{ t('model.cargo') }}:
               </div>
-              <div
-                v-tooltip="toNumber(model.cargo, 'cargo')"
-                class="metrics-value"
-              >
+              <div class="metrics-value">
                 {{ toNumber(model.cargo, 'cargo') }}
               </div>
             </div>
@@ -100,10 +79,7 @@
               <div class="metrics-label">
                 {{ t('model.price') }}:
               </div>
-              <div
-                v-tooltip="toUEC(model.price)"
-                class="metrics-value"
-              >
+              <div class="metrics-value">
                 {{ toUEC(model.price) }}
               </div>
             </div>
@@ -114,10 +90,7 @@
               <div class="metrics-label">
                 {{ t('model.pledgePrice') }}:
               </div>
-              <div
-                v-tooltip="toDollar(model.lastPledgePrice)"
-                class="metrics-value"
-              >
+              <div class="metrics-value">
                 {{ toDollar(model.lastPledgePrice) }}
               </div>
             </div>

@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181220185616) do
-
+ActiveRecord::Schema.define(version: 2019_04_09_162850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -370,6 +369,24 @@ ActiveRecord::Schema.define(version: 20181220185616) do
   create_table "module_hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "model_module_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roadmap_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.integer "rsi_category_id"
+    t.integer "rsi_release_id"
+    t.string "release"
+    t.string "name"
+    t.uuid "model_id"
+    t.text "body"
+    t.text "description"
+    t.boolean "released"
+    t.string "image"
+    t.integer "tasks"
+    t.integer "inprogress"
+    t.integer "completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

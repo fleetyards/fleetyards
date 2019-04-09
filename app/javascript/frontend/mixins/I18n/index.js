@@ -5,8 +5,8 @@ export default {
     t(key, options) {
       return I18n.t(key, options)
     },
-    l(key, value) {
-      return I18n.l(key, value)
+    l(value, format = 'datetime.formats.default') {
+      return I18n.toTime(format, value)
     },
     toNumber(value, units) {
       let count = I18n.l('number', value)

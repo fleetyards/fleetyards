@@ -108,6 +108,7 @@ $contentBorderRadius: $panelContentBorderRadius;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
+    transition: border-radius $transition-base-speed ease;
 
     & > a {
       position: relative;

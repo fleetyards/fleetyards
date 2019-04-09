@@ -77,7 +77,7 @@
               <span class="username">
                 {{ currentUser.username }}
               </span>
-              <i class="fa fa-chevron-down" />
+              <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
               :id="`user-sub-menu`"
@@ -151,7 +151,7 @@
           >
             <a @click="toggleStationMenu">
               {{ t('nav.stations.index') }}
-              <i class="fa fa-chevron-down" />
+              <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
               :id="`stations-sub-menu`"
@@ -226,6 +226,12 @@
             tag="li"
           >
             <a>{{ t('nav.stats') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'roadmap' }"
+            tag="li"
+          >
+            <a>{{ t('nav.roadmap') }}</a>
           </router-link>
         </ul>
       </div>
