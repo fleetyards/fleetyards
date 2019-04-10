@@ -6,7 +6,7 @@ json.cache! ['v1', item] do
     if item.model.blank?
       json.null!
     else
-      json.partial! 'api/v1/models/base', model: item.models
+      json.partial! 'api/v1/models/base', model: item.model
     end
   end
   json.last_version do
