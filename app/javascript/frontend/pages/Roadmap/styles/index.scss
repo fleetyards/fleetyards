@@ -12,22 +12,15 @@
   margin-bottom: 30px;
   position: relative;
 
-  &::after {
-    content: "";
-    height: 3px;
-    background-color: $gray-dark;
-    position: absolute;
-    bottom: 0;
-    left: 15px;
-    right: 15px;
-    border-radius: 2px;
-  }
-
   h2 {
     margin-bottom: 20px;
-    cursor: pointer;
+
+    .title {
+      cursor: pointer;
+    }
 
     i {
+      cursor: pointer;
       transition: all 0.5s ease;
       position: absolute;
       right: 20px;

@@ -451,8 +451,8 @@
     "images": "Images"
   },
   "actions": {
-    "showReleased": "Show Released",
-    "hideReleased": "Hide Released",
+    "showReleased": "Show old Releases",
+    "hideReleased": "Hide old Releases",
     "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
