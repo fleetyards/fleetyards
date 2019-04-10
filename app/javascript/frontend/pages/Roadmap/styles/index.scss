@@ -3,8 +3,9 @@
 .show-released {
   cursor: pointer;
   font-weight: bold;
-
+  display: inline-block;
   color: darken($text-color, 10%);
+  margin-bottom: 30px;
 }
 
 .release {
@@ -20,14 +21,6 @@
     left: 15px;
     right: 15px;
     border-radius: 2px;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-
-    &::after {
-      display: none;
-    }
   }
 
   h2 {

@@ -166,6 +166,7 @@
       "modelsByProductionStatus": "Models by Production Status"
     },
     "roadmap": {
+      "unscheduled": "Unscheduled",
       "lastUpdate": "Last Update: %{date}",
       "recentlyUpdated": "Updated in the last 24 Hours",
       "tasks": {

@@ -49,64 +49,65 @@
             <b-collapse
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
-              class="flex-row"
             >
-              <div
-                v-for="item in items"
-                :key="item.id"
-                class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
-              >
-                <Panel>
-                  <div class="roadmap-item">
-                    <div
-                      :style="{
-                        'background-image': `url(https://robertsspaceindustries.com${item.image})`
-                      }"
-                      class="item-image"
-                    >
+              <div class="flex-row">
+                <div
+                  v-for="item in items"
+                  :key="item.id"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                >
+                  <Panel>
+                    <div class="roadmap-item">
                       <div
-                        v-if="recentlyUpdated(item)"
-                        v-tooltip="t('labels.roadmap.recentlyUpdated')"
-                        class="roadmap-item-updated"
-                      />
-                    </div>
-                    <div class="item-body">
-                      <h3>
-                        <router-link
-                          v-if="item.model"
-                          :to="{
-                            name: 'model',
-                            params: {
-                              slug: item.model.slug
-                            }
-                          }"
-                        >
-                          {{ item.name }}
-                        </router-link>
-                        <template v-else>
-                          {{ item.name }}
-                        </template>
-                        <small>{{ t('labels.roadmap.tasks', { count: item.tasks }) }}</small>
-                        <i
-                          v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
-                          class="fal fa-info-circle"
+                        :style="{
+                          'background-image': `url(https://robertsspaceindustries.com${item.image})`
+                        }"
+                        class="item-image"
+                      >
+                        <div
+                          v-if="recentlyUpdated(item)"
+                          v-tooltip="t('labels.roadmap.recentlyUpdated')"
+                          class="roadmap-item-updated"
                         />
-                      </h3>
-                      <p>{{ item.body }}</p>
-                      <b-progress :max="item.tasks">
-                        <b-progress-bar
-                          v-if="item.completed !== 0"
-                          :value="item.completed"
-                          :class="{
-                            completed: item.completed === item.tasks
-                          }"
-                        >
-                          {{ item.completed }} / {{ item.tasks }}
-                        </b-progress-bar>
-                      </b-progress>
+                      </div>
+                      <div class="item-body">
+                        <h3>
+                          <router-link
+                            v-if="item.model"
+                            :to="{
+                              name: 'model',
+                              params: {
+                                slug: item.model.slug
+                              }
+                            }"
+                          >
+                            {{ item.name }}
+                          </router-link>
+                          <template v-else>
+                            {{ item.name }}
+                          </template>
+                          <small>{{ t('labels.roadmap.tasks', { count: item.tasks }) }}</small>
+                          <i
+                            v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
+                            class="fal fa-info-circle"
+                          />
+                        </h3>
+                        <p>{{ item.body }}</p>
+                        <b-progress :max="item.tasks">
+                          <b-progress-bar
+                            v-if="item.completed !== 0"
+                            :value="item.completed"
+                            :class="{
+                              completed: item.completed === item.tasks
+                            }"
+                          >
+                            {{ item.completed }} / {{ item.tasks }}
+                          </b-progress-bar>
+                        </b-progress>
+                      </div>
                     </div>
-                  </div>
-                </Panel>
+                  </Panel>
+                </div>
               </div>
             </b-collapse>
           </div>
@@ -116,6 +117,60 @@
           :loading="loading"
           fixed
         />
+        <div class="row">
+          <div class="col-xs-12 fade-list-item release">
+            <h2
+              :class="{
+                open: visible.includes('unscheduled'),
+              }"
+              @click="toggle('unscheduled')"
+            >
+              {{ t('labels.roadmap.unscheduled') }}
+              <small>{{ t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
+              <i class="fa fa-chevron-right" />
+            </h2>
+
+            <b-collapse
+              id="unscheduled-cards"
+              :visible="visible.includes('unscheduled')"
+            >
+              <div class="flex-row">
+                <div
+                  v-for="model in unscheduledModels"
+                  :key="model.slug"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                >
+                  <Panel>
+                    <div class="roadmap-item">
+                      <div
+                        :style="{
+                          'background-image': `url(${model.storeImage})`
+                        }"
+                        class="item-image"
+                      />
+                      <div class="item-body">
+                        <h3>
+                          <router-link
+                            :to="{
+                              name: 'model',
+                              params: {
+                                slug: model.slug
+                              }
+                            }"
+                          >
+                            {{ model.name }}
+                          </router-link>
+                        </h3>
+                        <p>{{ model.description }}</p>
+                        <b-progress />
+                      </div>
+                    </div>
+                  </Panel>
+                </div>
+              </div>
+            </b-collapse>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -142,6 +197,7 @@ export default {
       onlyReleased: true,
       roadmapItems: [],
       visible: [],
+      unscheduledModels: [],
     }
   },
   computed: {
@@ -169,6 +225,14 @@ export default {
 
         return value
       }, {})
+    },
+    otherModels() {
+      return this.models
+    },
+    modelsOnRoadmap() {
+      return this.roadmapItems.filter(item => item.model)
+        .map(item => item.model.id)
+        .filter(item => item)
     },
   },
   watch: {
@@ -212,7 +276,14 @@ export default {
       this.loading = false
       if (!response.error) {
         this.roadmapItems = response.data
+        await this.fetchModels()
         this.openReleased()
+      }
+    },
+    async fetchModels() {
+      const response = await this.$api.get('models/unscheduled')
+      if (!response.error) {
+        this.unscheduledModels = response.data
       }
     },
   },
