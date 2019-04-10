@@ -9,11 +9,6 @@
   margin-bottom: 0;
 }
 
-.home-ships .model-panel-image {
-  border-top-left-radius: $panelContentBorderRadius;
-  border-bottom-left-radius: $panelContentBorderRadius;
-}
-
 .home-screen-intro {
   height: 100vh;
   min-height: 300px;
@@ -92,6 +87,8 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
     opacity: 0.8;
   }
 

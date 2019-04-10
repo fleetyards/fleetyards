@@ -39,6 +39,8 @@ v1_api_routes = lambda do
     get :random, on: :collection
   end
 
+  resources :roadmap, only: %i[index]
+
   resources :fleets, param: :sid, only: %i[index show create destroy] do
     collection do
       get :my

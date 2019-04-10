@@ -30,6 +30,7 @@ class Ability
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
     can %i[index show], :api_fleets
+    can %i[index], :api_roadmap
 
     return if user.id.blank?
 

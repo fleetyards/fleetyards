@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181220185616) do
+ActiveRecord::Schema.define(version: 2019_04_09_225524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -62,6 +62,28 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "audits", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.uuid "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.jsonb "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "auth_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -144,6 +166,7 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ship_size"
+    t.string "group"
     t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
@@ -179,6 +202,14 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "fleet_id"
+    t.uuid "user_id"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "logo"
@@ -204,6 +235,7 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.uuid "station_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "habitation_name"
     t.index ["station_id"], name: "index_habitations_on_station_id"
   end
 
@@ -370,6 +402,25 @@ ActiveRecord::Schema.define(version: 20181220185616) do
   create_table "module_hardpoints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "model_module_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roadmap_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.integer "rsi_category_id"
+    t.integer "rsi_release_id"
+    t.string "release"
+    t.text "release_description"
+    t.string "name"
+    t.uuid "model_id"
+    t.text "body"
+    t.text "description"
+    t.boolean "released"
+    t.string "image"
+    t.integer "tasks"
+    t.integer "inprogress"
+    t.integer "completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

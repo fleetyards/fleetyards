@@ -74,6 +74,7 @@ en:
       settings_verify: Verify your RSI Handle
       settings_change-password: Change Password
       fleets: Fleets
+      roadmap: Ship-Roadmap
       hangar: My Hangar
       public_hangar: "%{user} Hangar"
       impressum: Impressum

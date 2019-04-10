@@ -23,6 +23,7 @@
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "fleets": "Fleets",
+    "roadmap": "Ship-Roadmap",
     "settings": "Settings",
     "verify": "Verify your RSI Handle",
     "account": "Account",
@@ -77,6 +78,7 @@
     "compare": {
       "models": "Compare Ships"
     },
+    "roadmap": "Ship-Roadmap",
     "cargo": "Cargo",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
@@ -130,6 +132,7 @@
     "cargo": "Cargo",
     "api": "API Docs",
     "stats": "Stats",
+    "roadmap": "Ship-Roadmap",
     "profile": "Profile",
     "account": "Account",
     "rsiVerification": "RSI Verification",
@@ -161,6 +164,18 @@
       "modelsPerMonth": "Models per Month",
       "modelsByManufacturer": "Models by Manufacturer",
       "modelsByProductionStatus": "Models by Production Status"
+    },
+    "roadmap": {
+      "lastUpdate": "Last Update: %{date}",
+      "recentlyUpdated": "Updated in the last 24 Hours",
+      "tasks": {
+        "one": "%{count} Task",
+        "other": "%{count} Tasks"
+      },
+      "ships": {
+        "one": "%{count} Ship",
+        "other": "%{count} Ships"
+      }
     },
     "charts": {
       "view": {
@@ -435,6 +450,8 @@
     "images": "Images"
   },
   "actions": {
+    "showReleased": "Show Released",
+    "hideReleased": "Hide Released",
     "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
@@ -721,6 +738,11 @@
     "damageReduction": "Damage Reduction",
     "rateOfFire": "Rate of Fire",
     "extras": ""
+  },
+  "datetime": {
+    "formats": {
+      "default": "%a, %d %b %Y %H:%M:%S %z"
+    }
   },
   "number": {
     "format": {

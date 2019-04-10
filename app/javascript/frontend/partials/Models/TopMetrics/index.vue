@@ -7,10 +7,7 @@
       <div class="metrics-label">
         {{ t('model.focus') }}:
       </div>
-      <div
-        v-tooltip="model.focus"
-        class="metrics-value"
-      >
+      <div class="metrics-value">
         {{ model.focus }}
       </div>
     </div>
@@ -21,10 +18,7 @@
       <div class="metrics-label">
         {{ t('model.crew') }}:
       </div>
-      <div
-        v-tooltip="crew"
-        class="metrics-value"
-      >
+      <div class="metrics-value">
         {{ crew }}
       </div>
     </div>
@@ -33,7 +27,6 @@
         {{ t('model.speed') }}:
       </div>
       <div
-        v-tooltip="speeds"
         class="metrics-value"
         v-html="speeds"
       />
