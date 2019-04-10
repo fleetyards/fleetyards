@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RoadmapItem < ApplicationRecord
-  audited max_audits: 5, on: [:update]
+  audited only: [:release, :tasks, :completed], on: [:update]
 
   belongs_to :model, optional: true
 end

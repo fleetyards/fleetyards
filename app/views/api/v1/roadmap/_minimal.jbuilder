@@ -3,8 +3,18 @@
 json.cache! ['v1', item] do
   json.partial! 'api/v1/roadmap/base', item: item
   json.model do
-    json.null! if item.model.blank?
-    json.partial! 'api/v1/models/base', model: item.model if item.model.present?
+    if item.model.blank?
+      json.null!
+    else
+      json.partial! 'api/v1/models/base', model: item.models
+    end
+  end
+  json.last_version do
+    if item.audits.count.zero?
+      json.null!
+    else
+      json.merge! item.audits.last.audited_changes
+    end
   end
   json.partial! 'api/shared/dates', record: item
 end
