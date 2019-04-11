@@ -13,10 +13,14 @@ class RoadmapWorker
 
     count_after = Audited::Audit.where(auditable_type: 'RoadmapItem').count
 
-    return if count_before == count_after
+    changes = count_after - count_before
+
+    return if changes.zero?
+
+    RoadmapMailer.notify_admin(changes).deliver_later
 
     ActionCable.server.broadcast('roadmap', {
-      changes: count_after - count_before
+      changes: changes
     }.to_json)
   end
 end
