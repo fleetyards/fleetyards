@@ -14,13 +14,9 @@
 
   h2 {
     margin-bottom: 20px;
-
-    .title {
-      cursor: pointer;
-    }
+    cursor: pointer;
 
     i {
-      cursor: pointer;
       transition: all 0.5s ease;
       position: absolute;
       right: 20px;
