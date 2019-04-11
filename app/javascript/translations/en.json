@@ -167,8 +167,13 @@
     },
     "roadmap": {
       "unscheduled": "Unscheduled",
-      "lastUpdate": "Last Update: %{date}",
+      "lastUpdate": "<b>Last Update:</b> %{date}",
       "recentlyUpdated": "Updated in the last 24 Hours",
+      "lastVersion": {
+        "completed": "- Completed changed from \"%{old}\" to \"%{new}\"",
+        "tasks": "- Tasks changed from \"%{old}\" to \"%{new}\"",
+        "release": "- Release changed from \"%{old}\" to \"%{new}\""
+      },
       "tasks": {
         "one": "%{count} Task",
         "other": "%{count} Tasks"
@@ -743,7 +748,7 @@
   },
   "datetime": {
     "formats": {
-      "default": "%a, %d %b %Y %H:%M:%S %z"
+      "default": "%e %B %Y at %H:%M"
     }
   },
   "number": {

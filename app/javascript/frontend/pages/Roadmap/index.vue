@@ -96,7 +96,7 @@
                             {{ item.name }}
                           </template>
                           <i
-                            v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
+                            v-tooltip="updatedAtTooltip(item)"
                             class="fal fa-info-circle"
                           />
                         </h3>
@@ -295,6 +295,30 @@ export default {
         return null
       }
       return this.visible.push(release)
+    },
+    updatedAtTooltip(item) {
+      const tooltip = [this.t('labels.roadmap.lastUpdate', { date: this.l(item.updatedAt) })]
+      if (item.lastVersion) {
+        if (item.lastVersion.tasks) {
+          tooltip.push(this.t('labels.roadmap.lastVersion.tasks', {
+            old: item.lastVersion.tasks[0],
+            new: item.lastVersion.tasks[1],
+          }))
+        }
+        if (item.lastVersion.completed) {
+          tooltip.push(this.t('labels.roadmap.lastVersion.completed', {
+            old: item.lastVersion.completed[0],
+            new: item.lastVersion.completed[1],
+          }))
+        }
+        if (item.lastVersion.release) {
+          tooltip.push(this.t('labels.roadmap.lastVersion.release', {
+            old: item.lastVersion.release[0],
+            new: item.lastVersion.release[1],
+          }))
+        }
+      }
+      return tooltip.join('<br>')
     },
     openReleased() {
       Object.keys(this.groupedByRelease).forEach((release) => {
