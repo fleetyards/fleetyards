@@ -168,7 +168,7 @@
     "roadmap": {
       "unscheduled": "Unscheduled",
       "lastUpdate": "<b>Last Update:</b> %{date}",
-      "recentlyUpdated": "Updated in the last 24 Hours",
+      "recentlyUpdated": "Recently Updated",
       "lastVersion": {
         "completed": "- Completed changed from \"%{old}\" to \"%{new}\"",
         "tasks": "- Tasks changed from \"%{old}\" to \"%{new}\"",
