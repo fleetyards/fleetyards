@@ -45,21 +45,14 @@
               :class="{
                 open: visible.includes(release),
               }"
+              @click="toggle(release)"
             >
-              <span
-                class="title"
-                @click="toggle(release)"
-              >
-                {{ release }}
-              </span>
+              <span class="title">{{ release }}</span>
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
               <small>{{ t('labels.roadmap.ships', { count: items.length }) }}</small>
-              <i
-                class="fa fa-chevron-right"
-                @click="toggle(release)"
-              />
+              <i class="fa fa-chevron-right" />
             </h2>
 
             <b-collapse
@@ -141,18 +134,13 @@
               :class="{
                 open: visible.includes('unscheduled'),
               }"
+              @click="toggle('unscheduled')"
             >
-              <span
-                class="title"
-                @click="toggle('unscheduled')"
-              >
+              <span class="title">
                 {{ t('labels.roadmap.unscheduled') }}
               </span>
               <small>{{ t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
-              <i
-                class="fa fa-chevron-right"
-                @click="toggle('unscheduled')"
-              />
+              <i class="fa fa-chevron-right" />
             </h2>
             <b-collapse
               id="unscheduled-cards"
