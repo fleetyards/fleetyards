@@ -204,6 +204,7 @@
         "other": "%{label}:<br><b>%{count}</b> Visits"
       }
     },
+    "rsiRoadmap": "RSI Roadmap",
     "unknown": "Unknown",
     "none": "-",
     "searchInput": "Search Input",

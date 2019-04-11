@@ -9,6 +9,15 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <div class="page-actions">
+          <ExternalLink url="https://robertsspaceindustries.com/roadmap">
+            {{ t('labels.rsiRoadmap') }}
+          </ExternalLink>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <div class="text-center">
           <a
             class="show-released"
@@ -93,7 +102,6 @@
                           <template v-else>
                             {{ item.name }}
                           </template>
-                          <small>{{ t('labels.roadmap.tasks', { count: item.tasks }) }}</small>
                           <i
                             v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
                             class="fal fa-info-circle"
@@ -110,6 +118,9 @@
                           >
                             {{ item.completed }} / {{ item.tasks }}
                           </b-progress-bar>
+                          <div class="progress-max">
+                            {{ t('labels.roadmap.tasks', { count: item.tasks }) }}
+                          </div>
                         </b-progress>
                       </div>
                     </div>
@@ -175,7 +186,11 @@
                           </router-link>
                         </h3>
                         <p>{{ model.description }}</p>
-                        <b-progress />
+                        <b-progress>
+                          <div class="progress-max">
+                            {{ t('labels.roadmap.tasks', { count: '?' }) }}
+                          </div>
+                        </b-progress>
                       </div>
                     </div>
                   </Panel>
@@ -194,6 +209,7 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
+import ExternalLink from 'frontend/components/ExternalLink'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import { isBefore, addHours } from 'date-fns'
 
@@ -202,6 +218,7 @@ export default {
     Loader,
     EmptyBox,
     Panel,
+    ExternalLink,
   },
   mixins: [I18n, MetaInfo],
   data() {

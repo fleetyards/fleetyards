@@ -70,8 +70,14 @@
     }
   }
 
+  .progress-max {
+    text-align: right;
+    padding-right: 10px;
+  }
+
   .progress-bar {
     background-color: $primary;
+
 
     &.completed {
       background-color: $success;
@@ -87,6 +93,7 @@
     font-family: 'Orbitron', tahoma, sans-serif;
     font-weight: 400;
     position: relative;
+    padding-right: 20px;
 
     i {
       position: absolute;
