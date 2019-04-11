@@ -315,6 +315,7 @@ export default {
       vehiclesCount: null,
       tooltipTrigger: 'click',
       showGuide: false,
+      vehiclesChannel: null,
     }
   },
   computed: {

@@ -216,6 +216,7 @@ export default {
       roadmapItems: [],
       visible: [],
       unscheduledModels: [],
+      roadmapChannel: null,
     }
   },
   computed: {
@@ -261,7 +262,26 @@ export default {
   created() {
     this.fetch()
   },
+  mounted() {
+    this.setupUpdates()
+  },
+  beforeDestroy() {
+    if (this.roadmapChannel) {
+      this.roadmapChannel.unsubscribe()
+    }
+  },
   methods: {
+    setupUpdates() {
+      if (this.roadmapChannel) {
+        this.roadmapChannel.unsubscribe()
+      }
+
+      this.roadmapChannel = this.$cable.subscriptions.create({
+        channel: 'RoadmapChannel',
+      }, {
+        received: this.fetch,
+      })
+    },
     recentlyUpdated(item) {
       return isBefore(new Date(), addHours(new Date(item.updatedAt), 24))
     },
