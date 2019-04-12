@@ -66,17 +66,24 @@
     }
   }
 
-  .progress-max {
-    text-align: right;
-    padding-right: 10px;
-  }
+  .progress {
+    position: relative;
 
-  .progress-bar {
-    background-color: $primary;
+    .progress-label {
+      color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      text-align: center;
+    }
 
+    .progress-bar {
+      background-color: $primary;
 
-    &.completed {
-      background-color: $success;
+      &.completed {
+        background-color: $success;
+      }
     }
   }
 

@@ -167,16 +167,19 @@
     },
     "roadmap": {
       "unscheduled": "Unscheduled",
-      "lastUpdate": "<b>Last Update:</b> %{date}",
+      "lastUpdate": "Last Update:",
       "recentlyUpdated": "Recently Updated",
       "lastVersion": {
-        "completed": "- Completed changed from \"%{old}\" to \"%{new}\"",
-        "tasks": "- Tasks changed from \"%{old}\" to \"%{new}\"",
-        "release": "- Release changed from \"%{old}\" to \"%{new}\""
+        "completed": {
+          "one": "Completed %{count} Task",
+          "other": "Completed %{count} Tasks"
+        },
+        "tasks": "Increased Tasks by %{count}",
+        "release": "Item moved from release %{old} to %{new}"
       },
       "tasks": {
-        "one": "%{count} Task",
-        "other": "%{count} Tasks"
+        "one": "of %{count} Task",
+        "other": "of %{count} Tasks"
       },
       "ships": {
         "one": "%{count} Ship",

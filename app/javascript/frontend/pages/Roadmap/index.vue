@@ -95,25 +95,37 @@
                           <template v-else>
                             {{ item.name }}
                           </template>
-                          <i
-                            v-tooltip="updatedAtTooltip(item)"
-                            class="fal fa-info-circle"
-                          />
                         </h3>
                         <p>{{ item.body }}</p>
+                        <h4>
+                          {{ t('labels.roadmap.lastUpdate') }}
+                          <small>{{ l(item.updatedAt) }}</small>
+                        </h4>
+                        <ul v-if="item.lastVersion">
+                          <li
+                            v-for="(update, index) in updates(item.lastVersion)"
+                            :key="index"
+                          >
+                            {{ t(`labels.roadmap.lastVersion.${update.key}`, {
+                              old: update.old,
+                              new: update.new,
+                              count: update.count,
+                            }) }}
+                          </li>
+                        </ul>
                         <b-progress :max="item.tasks">
+                          <div class="progress-label">
+                            {{ item.completed }} {{ t('labels.roadmap.tasks', {
+                              count: item.tasks,
+                            }) }}
+                          </div>
                           <b-progress-bar
                             v-if="item.completed !== 0"
                             :value="item.completed"
                             :class="{
                               completed: item.completed === item.tasks
                             }"
-                          >
-                            {{ item.completed }} / {{ item.tasks }}
-                          </b-progress-bar>
-                          <div class="progress-max">
-                            {{ t('labels.roadmap.tasks', { count: item.tasks }) }}
-                          </div>
+                          />
                         </b-progress>
                       </div>
                     </div>
@@ -175,8 +187,8 @@
                         </h3>
                         <p>{{ model.description }}</p>
                         <b-progress>
-                          <div class="progress-max">
-                            {{ t('labels.roadmap.tasks', { count: '?' }) }}
+                          <div class="progress-label">
+                            0 {{ t('labels.roadmap.tasks', { count: '?' }) }}
                           </div>
                         </b-progress>
                       </div>
@@ -271,6 +283,14 @@ export default {
     }
   },
   methods: {
+    updates(lastVersion) {
+      return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map(key => ({
+        key,
+        old: lastVersion[key][0],
+        new: lastVersion[key][1],
+        count: lastVersion[key][1] - lastVersion[key][0],
+      }))
+    },
     setupUpdates() {
       if (this.roadmapChannel) {
         this.roadmapChannel.unsubscribe()
@@ -295,30 +315,6 @@ export default {
         return null
       }
       return this.visible.push(release)
-    },
-    updatedAtTooltip(item) {
-      const tooltip = [this.t('labels.roadmap.lastUpdate', { date: this.l(item.updatedAt) })]
-      if (item.lastVersion) {
-        if (item.lastVersion.tasks) {
-          tooltip.push(this.t('labels.roadmap.lastVersion.tasks', {
-            old: item.lastVersion.tasks[0],
-            new: item.lastVersion.tasks[1],
-          }))
-        }
-        if (item.lastVersion.completed) {
-          tooltip.push(this.t('labels.roadmap.lastVersion.completed', {
-            old: item.lastVersion.completed[0],
-            new: item.lastVersion.completed[1],
-          }))
-        }
-        if (item.lastVersion.release) {
-          tooltip.push(this.t('labels.roadmap.lastVersion.release', {
-            old: item.lastVersion.release[0],
-            new: item.lastVersion.release[1],
-          }))
-        }
-      }
-      return tooltip.join('<br>')
     },
     openReleased() {
       Object.keys(this.groupedByRelease).forEach((release) => {
