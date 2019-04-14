@@ -27,12 +27,9 @@ e2e: &e2e
         RAILS_ENV: docker
         RAILS_SERVE_STATIC_FILES: 1
         DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-        API_URL: http://localhost:8270/api/v1
         CYPRESS_BASE_URL: http://localhost:8270
         CYPRESS_CI: 1
-        CABLE_URL: ws://localhost:8270/cable
         PORT: 8270
-        RAVEN_DSN: https://763123f723e3482790f14e89ca1a9623@sentry.io/1401277
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8

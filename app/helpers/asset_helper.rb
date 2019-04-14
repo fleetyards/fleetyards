@@ -2,7 +2,7 @@
 
 module AssetHelper
   def rsi_store_url(path, options = {})
-    url = "#{Rails.application.secrets[:rsi_hostname]}#{path}"
+    url = "#{Rails.application.secrets[:rsi_endpoint]}#{path}"
     if options[:anchor].present?
       "#{url}##{options[:anchor]}"
     else
