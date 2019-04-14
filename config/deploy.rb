@@ -10,7 +10,6 @@ set :shared_dirs, [
 ]
 
 set :shared_files, [
-  'config/secrets.yml',
   'config/database.yml',
   '.rbenv-vars',
   'blacklist.json'
