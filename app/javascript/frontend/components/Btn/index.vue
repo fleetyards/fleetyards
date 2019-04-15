@@ -1,39 +1,55 @@
 <template>
-  <button
-    :type="type"
-    :class="{
-      'panel-btn-clear': clear,
-      'panel-btn-clean': clean,
-      'panel-btn-small': small,
-      'panel-btn-large': large,
-      'panel-btn-block': block,
-      'panel-btn-inline': inline,
-      'panel-btn-primary': primary,
-      'panel-btn-mobile-block': mobileBlock,
-      'active': active,
-    }"
-    class="panel-btn"
+  <router-link
+    v-if="to"
+    :class="cssClasses"
+    :to="to"
+    :exact="exact"
   >
-    <div class="panel-btn-inner">
-      <template v-if="loading">
-        {{ t('actions.loading') }}
-      </template>
-      <template v-else>
-        <slot />
-      </template>
-    </div>
+    <BtnInner :loading="loading">
+      <slot />
+    </BtnInner>
+  </router-link>
+  <a
+    v-else-if="href"
+    :class="cssClasses"
+    :href="href"
+    target="_blank"
+    rel="noopener"
+  >
+    <BtnInner :loading="loading">
+      <slot />
+    </BtnInner>
+  </a>
+  <button
+    v-else
+    :type="type"
+    :class="cssClasses"
+  >
+    <BtnInner :loading="loading">
+      <slot />
+    </BtnInner>
   </button>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
+import BtnInner from 'frontend/components/Btn/Inner'
 
 export default {
-  mixins: [I18n],
+  components: {
+    BtnInner,
+  },
   props: {
     loading: {
       type: Boolean,
       default: false,
+    },
+    to: {
+      type: Object,
+      default: null,
+    },
+    href: {
+      type: String,
+      default: null,
     },
     type: {
       type: String,
@@ -71,6 +87,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    exact: {
+      type: Boolean,
+      default: false,
+    },
     primary: {
       type: Boolean,
       default: false,
@@ -78,6 +98,22 @@ export default {
     inline: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    cssClasses() {
+      return {
+        'panel-btn': true,
+        'panel-btn-clear': this.clear,
+        'panel-btn-clean': this.clean,
+        'panel-btn-small': this.small,
+        'panel-btn-large': this.large,
+        'panel-btn-block': this.block,
+        'panel-btn-inline': this.inline,
+        'panel-btn-primary': this.primary,
+        'panel-btn-mobile-block': this.mobileBlock,
+        active: this.active,
+      }
     },
   },
 }

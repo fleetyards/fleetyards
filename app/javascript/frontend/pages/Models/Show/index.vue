@@ -123,28 +123,28 @@
             </Panel>
             <div class="text-right">
               <div class="page-actions">
-                <InternalLink
+                <Btn
                   v-if="model.hasImages"
-                  :route="{ name: 'model-images', params: { slug: model.slug }}"
+                  :to="{ name: 'model-images', params: { slug: model.slug }}"
                 >
                   <i class="fa fa-images" />
-                </InternalLink>
-                <InternalLink
+                </Btn>
+                <Btn
                   v-if="model.hasVideos"
-                  :route="{ name: 'model-videos', params: { slug: model.slug }}"
+                  :to="{ name: 'model-videos', params: { slug: model.slug }}"
                 >
                   <i class="fal fa-video" />
-                </InternalLink>
-                <ExternalLink
+                </Btn>
+                <Btn
                   v-if="model.brochure"
-                  :url="model.brochure"
+                  :href="model.brochure"
                 >
                   {{ t('labels.model.brochure') }}
                   <i class="fal fa-download" />
-                </ExternalLink>
-                <ExternalLink :url="model.storeUrl">
+                </Btn>
+                <Btn :href="model.storeUrl">
                   {{ t('actions.model.store') }}
-                </ExternalLink>
+                </Btn>
                 <AddToHangar :model="model" />
               </div>
             </div>
@@ -153,8 +153,8 @@
               v-if="model.onSale"
               class="text-center"
             >
-              <ExternalLink
-                :url="`${model.storeUrl}#buying-options`"
+              <Btn
+                :href="`${model.storeUrl}#buying-options`"
                 class="sale-button"
                 large
               >
@@ -162,7 +162,7 @@
                 <small class="price-info">
                   {{ t('labels.taxExcluded') }}
                 </small>
-              </ExternalLink>
+              </Btn>
             </div>
             <br>
           </div>
@@ -300,8 +300,6 @@ import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/components/AddToHangar'
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
-import ExternalLink from 'frontend/components/ExternalLink'
-import InternalLink from 'frontend/components/InternalLink'
 import ModelHardpoints from 'frontend/partials/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
@@ -315,8 +313,6 @@ export default {
     AddToHangar,
     Panel,
     Btn,
-    ExternalLink,
-    InternalLink,
     ModelHardpoints,
     ModelBaseMetrics,
     ModelCrewMetrics,

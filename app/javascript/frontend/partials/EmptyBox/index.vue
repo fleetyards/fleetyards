@@ -7,14 +7,14 @@
       <h1>{{ t('headlines.empty') }}</h1>
       <template v-if="isQueryPresent">
         <p>{{ t('texts.empty.query') }}</p>
-        <InternalLink
+        <Btn
           slot="footer"
-          :route="{ name: this.$route.name }"
+          :to="{ name: this.$route.name }"
           class="pull-right"
           exact
         >
           {{ t('actions.empty.reset') }}
-        </InternalLink>
+        </Btn>
       </template>
       <p v-else>
         {{ t('texts.empty.info') }}
@@ -26,12 +26,12 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import Box from 'frontend/components/Box'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     Box,
-    InternalLink,
+    Btn,
   },
   mixins: [I18n],
   computed: {

@@ -10,9 +10,12 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="page-actions">
-          <ExternalLink url="https://robertsspaceindustries.com/roadmap">
+          <Btn :to="{ name: 'roadmap-changes' }">
+            Changes
+          </Btn>
+          <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ t('labels.rsiRoadmap') }}
-          </ExternalLink>
+          </Btn>
         </div>
       </div>
     </div>
@@ -209,7 +212,7 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
-import ExternalLink from 'frontend/components/ExternalLink'
+import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import { isBefore, addHours } from 'date-fns'
 
@@ -218,7 +221,7 @@ export default {
     Loader,
     EmptyBox,
     Panel,
-    ExternalLink,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -266,15 +269,8 @@ export default {
         .filter(item => item)
     },
   },
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
-  created() {
-    this.fetch()
-  },
   mounted() {
+    this.fetch()
     this.setupUpdates()
   },
   beforeDestroy() {
