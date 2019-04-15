@@ -1,3 +1,5 @@
+@import "~stylesheets/variables";
+
 .panel-fleet {
   display: flex;
 
@@ -11,6 +13,8 @@
     background-color: lighten(black, 10%);
     display: flex;
     align-items: center;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
 
     img {
       max-width: 100%;

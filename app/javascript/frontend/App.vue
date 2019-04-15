@@ -64,6 +64,7 @@ export default {
   watch: {
     $route() {
       this.setBackground()
+      this.fetchVersion()
       if (this.isAuthenticated) {
         this.fetchHangar()
       }
@@ -145,6 +146,12 @@ export default {
       const response = await this.$api.get('vehicles/hangar-items')
       if (!response.error) {
         this.$store.commit('setHangar', response.data)
+      }
+    },
+    async fetchVersion() {
+      const response = await this.$api.get('version')
+      if (!response.error) {
+        this.$store.dispatch('updateAppVersion', response.data)
       }
     },
   },

@@ -125,6 +125,14 @@ export const routes = [
       backgroundImage: require('images/bg-7.jpg'),
     },
   }, {
+    path: '/roadmap',
+    name: 'roadmap',
+    component: () => import(/* webpackChunkName: "page.roadmap" */ 'frontend/pages/Roadmap'),
+    // meta: {
+    //   // eslint-disable-next-line global-require
+    //   backgroundImage: require('images/bg-7.jpg'),
+    // },
+  }, {
     path: '/settings',
     name: 'settings',
     component: () => import(/* webpackChunkName: "page.settings" */ 'frontend/pages/Settings'),

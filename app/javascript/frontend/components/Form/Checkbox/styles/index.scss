@@ -9,11 +9,12 @@
     cursor: pointer;
     padding: 10px 0 4px;
     padding-left: 30px;
+    margin-bottom: 8px;
   }
 
   & + label::before {
     content: '';
-    top: 7px;
+    top: 8px;
     left: 0;
     display: inline-block;
     position: absolute;

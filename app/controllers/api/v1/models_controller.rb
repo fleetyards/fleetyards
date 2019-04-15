@@ -31,6 +31,18 @@ module Api
                     .sort_by { |model| [-model.display_length, model.name] }
       end
 
+      def unscheduled
+        authorize! :index, :api_models
+
+        @models = Model.visible
+                       .active
+                       .where.not(id: RoadmapItem.pluck(:model_id).compact)
+                       .where.not(rsi_id: nil)
+                       .where.not(production_status: ['flight-ready'])
+                       .order(name: :asc)
+                       .all
+      end
+
       def slugs
         authorize! :index, :api_models
         render json: Model.all.pluck(:slug)
@@ -272,7 +284,7 @@ module Api
         @model_query_params ||= query_params(
           :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           manufacturer_in: [], classification_in: [], focus_in: [], production_status_in: [],
-          price_in: [], pledge_price_in: [], size_in: [], sorts: []
+          price_in: [], pledge_price_in: [], size_in: [], sorts: [], id_not_in: []
         )
       end
     end

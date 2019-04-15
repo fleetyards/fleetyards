@@ -53,11 +53,6 @@ router.beforeResolve((to, from, next) => {
 })
 
 router.beforeEach((to, from, next) => {
-  if (Store.getters.isUpdateAvailable && Object.keys(to.params).length === 0) {
-    window.location.href = to.path
-    return
-  }
-
   const newLocale = navigator.language
   if (!Store.state.locale || Store.state.locale !== newLocale) {
     Store.commit('setLocale', newLocale)

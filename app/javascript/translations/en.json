@@ -23,6 +23,7 @@
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "fleets": "Fleets",
+    "roadmap": "Ship-Roadmap",
     "settings": "Settings",
     "verify": "Verify your RSI Handle",
     "account": "Account",
@@ -52,6 +53,7 @@
     "hangar": "My Hangar",
     "hangarPublic": "%{user} Hangar",
     "myVehicle": "My %{vehicle}",
+    "newVehicles": "Add Ships",
     "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
     "impressum": "Impressum",
     "privacy": "Privacy policy",
@@ -76,6 +78,7 @@
     "compare": {
       "models": "Compare Ships"
     },
+    "roadmap": "Ship-Roadmap",
     "cargo": "Cargo",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
@@ -129,6 +132,7 @@
     "cargo": "Cargo",
     "api": "API Docs",
     "stats": "Stats",
+    "roadmap": "Ship-Roadmap",
     "profile": "Profile",
     "account": "Account",
     "rsiVerification": "RSI Verification",
@@ -161,6 +165,27 @@
       "modelsByManufacturer": "Models by Manufacturer",
       "modelsByProductionStatus": "Models by Production Status"
     },
+    "roadmap": {
+      "unscheduled": "Unscheduled",
+      "lastUpdate": "Last Update:",
+      "recentlyUpdated": "Recently Updated",
+      "lastVersion": {
+        "completed": {
+          "one": "Completed %{count} Task",
+          "other": "Completed %{count} Tasks"
+        },
+        "tasks": "Increased Tasks by %{count}",
+        "release": "Item moved from release %{old} to %{new}"
+      },
+      "tasks": {
+        "one": "of %{count} Task",
+        "other": "of %{count} Tasks"
+      },
+      "ships": {
+        "one": "%{count} Ship",
+        "other": "%{count} Ships"
+      }
+    },
     "charts": {
       "view": {
         "one": "%{label}:<br><b>%{count}</b> View",
@@ -187,6 +212,7 @@
         "other": "%{label}:<br><b>%{count}</b> Visits"
       }
     },
+    "rsiRoadmap": "RSI Roadmap",
     "unknown": "Unknown",
     "none": "-",
     "searchInput": "Search Input",
@@ -434,6 +460,8 @@
     "images": "Images"
   },
   "actions": {
+    "showReleased": "Show old Releases",
+    "hideReleased": "Hide old Releases",
     "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
@@ -482,6 +510,9 @@
     "resetPrices": "Reset Prices",
     "requestPassword": "Request Password E-Mail",
     "changePassword": "Change Password",
+    "add": "Add",
+    "addAnother": "Add another",
+    "addVehicle": "Add Ships",
     "addGroup": "Add Group",
     "compare": {
       "models": "Compare"
@@ -717,6 +748,11 @@
     "damageReduction": "Damage Reduction",
     "rateOfFire": "Rate of Fire",
     "extras": ""
+  },
+  "datetime": {
+    "formats": {
+      "default": "%e %B %Y at %H:%M"
+    }
   },
   "number": {
     "format": {
