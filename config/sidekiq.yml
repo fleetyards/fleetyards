@@ -9,3 +9,4 @@
   - fleetyards_model_notification
   - fleetyards_cleanup_auth_tokens
   - fleetyards_app_version_notifications
+  - fleetyards_admin_notifier
