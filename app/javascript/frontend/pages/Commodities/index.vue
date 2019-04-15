@@ -21,8 +21,8 @@
               </button>
             </div>
             <div class="page-actions">
-              <InternalLink
-                :route="{
+              <Btn
+                :to="{
                   name: 'cargo',
                   query: {
                     q: $store.state.filters['cargo'],
@@ -31,7 +31,7 @@
                 mobile-block
               >
                 {{ t('labels.cargoRoutes') }}
-              </InternalLink>
+              </Btn>
               <Btn
                 :disabled="this.$route.params.id"
                 @click.native="save"
@@ -161,7 +161,6 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import InternalLink from 'frontend/components/InternalLink'
 import Panel from 'frontend/components/Panel'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Filters from 'frontend/mixins/Filters'
@@ -172,7 +171,6 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Btn,
-    InternalLink,
     Panel,
     FilterForm,
   },

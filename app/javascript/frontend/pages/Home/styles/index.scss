@@ -87,6 +87,8 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
     opacity: 0.8;
   }
 

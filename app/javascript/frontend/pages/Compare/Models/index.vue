@@ -916,9 +916,9 @@ export default {
         q: {},
       }
       if (search) {
-        query.q.nameOrSlugCont = search
+        query.q.nameCont = search
       } else if (missingValue) {
-        query.q.nameOrSlugCont = missingValue
+        query.q.nameCont = missingValue
       } else if (page) {
         query.page = page
       }

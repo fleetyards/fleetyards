@@ -1,8 +1,8 @@
 $outerBorderWidth: 2px;
-$outerBorderRadius: 24px;
+$outerBorderRadius: $panelOuterBorderRadius;
 $innerBorderWidth: 3px;
-$innerBorderRadius: 20px;
-$contentBorderRadius: 16px;
+$innerBorderRadius: $panelInnerBorderRadius;
+$contentBorderRadius: $panelContentBorderRadius;
 
 .panel-wrapper {
   border: $outerBorderWidth solid $panel-outer-border;
@@ -108,6 +108,7 @@ $contentBorderRadius: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
+    transition: border-radius $transition-base-speed ease;
 
     & > a {
       position: relative;
@@ -146,12 +147,13 @@ $contentBorderRadius: 16px;
 
     &:last-child {
       border-bottom: none;
+      border-bottom-right-radius: $contentBorderRadius;
+      border-bottom-left-radius: $contentBorderRadius;
     }
   }
 
   .panel-inner {
     border-radius: $contentBorderRadius;
-    overflow: hidden;
   }
 
   .btn-group {

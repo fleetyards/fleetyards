@@ -199,13 +199,13 @@
           <p class="text-center">
             {{ t('labels.alreadyRegistered') }}
           </p>
-          <InternalLink
-            :route="{name: 'login'}"
+          <Btn
+            :to="{name: 'login'}"
             block
             small
           >
             {{ t('actions.login') }}
-          </InternalLink>
+          </Btn>
         </form>
       </div>
     </div>
@@ -217,13 +217,13 @@ import { success, alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import SubmitButton from 'frontend/components/SubmitButton'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
   components: {
     SubmitButton,
-    InternalLink,
+    Btn,
     Checkbox,
   },
   mixins: [I18n, MetaInfo],

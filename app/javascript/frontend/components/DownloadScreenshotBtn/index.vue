@@ -49,12 +49,20 @@ export default {
   methods: {
     download() {
       this.downloading = true
-      html2canvas(document.querySelector(this.element), {
+
+      const element = document.querySelector(this.element)
+      element.classList.add('fleetchart-download')
+
+      html2canvas(element, {
         backgroundColor: null,
         useCORS: true,
       }).then((canvas) => {
+        element.classList.remove('fleetchart-download')
         this.downloading = false
         download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
+      }).catch(() => {
+        element.classList.remove('fleetchart-download')
+        this.downloading = false
       })
     },
   },
