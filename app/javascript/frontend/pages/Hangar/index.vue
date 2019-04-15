@@ -25,15 +25,15 @@
             />
           </div>
           <div class="page-actions">
-            <ExternalLink
+            <Btn
               v-tooltip="t('labels.poweredByStarship42')"
-              :url="starship42Url"
+              :href="starship42Url"
             >
               {{ t('labels.3dView') }}
-            </ExternalLink>
-            <ExternalLink :url="publicUrl">
+            </Btn>
+            <Btn :href="publicUrl">
               {{ t('labels.publicUrl') }}
-            </ExternalLink>
+            </Btn>
           </div>
         </div>
         <div
@@ -266,7 +266,6 @@ import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
-import ExternalLink from 'frontend/components/ExternalLink'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
@@ -289,7 +288,6 @@ export default {
   components: {
     Loader,
     Btn,
-    ExternalLink,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartItem,
@@ -380,15 +378,8 @@ export default {
     },
   },
   mounted() {
-    this.setupUpdates()
-  },
-  beforeDestroy() {
-    if (this.vehiclesChannel) {
-      this.vehiclesChannel.unsubscribe()
-    }
-  },
-  created() {
     this.fetch()
+    this.setupUpdates()
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -402,6 +393,11 @@ export default {
       this.$store.commit('setHangarFilterVisible', false)
     }
     this.toggleFullscreen()
+  },
+  beforeDestroy() {
+    if (this.vehiclesChannel) {
+      this.vehiclesChannel.unsubscribe()
+    }
   },
   methods: {
     toggleGuide() {

@@ -11,7 +11,7 @@ class RsiOrgsLoader < RsiBaseLoader
   end
 
   def fetch_citizen(handle)
-    response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}")
+    response = Typhoeus.get("#{base_url}/citizens/#{handle}")
     return false, nil unless response.success?
 
     citizen = parse_citizen(Nokogiri::HTML(response.body))
@@ -23,7 +23,7 @@ class RsiOrgsLoader < RsiBaseLoader
   end
 
   def fetch_orgs_for_citizen(handle)
-    response = Typhoeus.get("https://robertsspaceindustries.com/citizens/#{handle}/organizations")
+    response = Typhoeus.get("#{base_url}/citizens/#{handle}/organizations")
     return false, nil unless response.success?
 
     [true, parse_citizen_orgs(Nokogiri::HTML(response.body))]
@@ -90,13 +90,13 @@ class RsiOrgsLoader < RsiBaseLoader
     return if div.blank? || div.to_h.fetch('style', nil).blank?
 
     background_url = div.to_h.fetch('style', '').scan(/background-image:url\('(.*)'\);/).last&.first
-    "https://robertsspaceindustries.com#{background_url}"
+    "#{base_url}#{background_url}"
   end
 
   private def parse_image(element)
     img = element&.first || {}
     return if img.blank? || img.to_h.fetch('src', nil).blank?
 
-    "https://robertsspaceindustries.com#{img.to_h.fetch('src', nil)}"
+    "#{base_url}#{img.to_h.fetch('src', nil)}"
   end
 end
