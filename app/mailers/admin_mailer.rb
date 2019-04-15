@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @stats = stats
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
-      subject: I18n.t(:"mailer.admin.weekly.subject"),
+      subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
 end
