@@ -57,13 +57,13 @@
           <p class="text-center">
             {{ t('labels.signUp') }}
           </p>
-          <InternalLink
-            :route="{name: 'signup'}"
+          <Btn
+            :to="{name: 'signup'}"
             block
             small
           >
             {{ t('actions.signUp') }}
-          </InternalLink>
+          </Btn>
         </form>
       </div>
     </div>
@@ -75,13 +75,13 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { alert } from 'frontend/lib/Noty'
 import SubmitButton from 'frontend/components/SubmitButton'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
   components: {
     SubmitButton,
-    InternalLink,
+    Btn,
     Checkbox,
   },
   mixins: [I18n, MetaInfo],

@@ -42,12 +42,12 @@
                   class="fa-filter"
                 />
               </Btn>
-              <InternalLink
-                :route="{name: 'compare-models'}"
+              <Btn
+                :to="{name: 'compare-models'}"
                 small
               >
                 {{ t('actions.compare.models') }}
-              </InternalLink>
+              </Btn>
               <DownloadScreenshotBtn
                 v-if="modelFleetchartVisible"
                 element="#fleetchart"
@@ -176,7 +176,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
-import InternalLink from 'frontend/components/InternalLink'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/partials/Models/Panel'
@@ -193,7 +192,6 @@ import Hash from 'frontend/mixins/Hash'
 export default {
   components: {
     Btn,
-    InternalLink,
     DownloadScreenshotBtn,
     Loader,
     ModelPanel,
