@@ -40,7 +40,7 @@
     "vue-lazyload": "^1.2.6",
     "vue-loader": "^15.7.0",
     "vue-meta": "^1.6.0",
-    "vue-router": "^3.0.2",
+    "vue-router": "^3.0.4",
     "vue-scrollto": "^2.15.0",
     "vue-slider-component": "^3.0.26",
     "vue-swatches": "^1.0.3",
