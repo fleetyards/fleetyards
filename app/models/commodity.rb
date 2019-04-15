@@ -17,8 +17,4 @@ class Commodity < ApplicationRecord
   def self.ordered_by_name
     order(name: :asc)
   end
-
-  private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
-  end
 end

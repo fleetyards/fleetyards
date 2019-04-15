@@ -11,6 +11,7 @@ v1_api_routes = lambda do
   resources :models, param: :slug, only: %i[index show] do
     collection do
       get :fleetchart
+      get :unscheduled
       get :latest
       get :slugs
       get :updated
@@ -38,6 +39,8 @@ v1_api_routes = lambda do
   resources :images, only: %i[index] do
     get :random, on: :collection
   end
+
+  resources :roadmap, only: %i[index]
 
   resources :fleets, param: :sid, only: %i[index show create destroy] do
     collection do

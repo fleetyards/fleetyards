@@ -22,12 +22,11 @@
             @click.native="toggleFilter"
           >
             <i
-              v-if="isFilterSelected"
-              class="fas fa-filter"
-            />
-            <i
-              v-else
-              class="far fa-filter"
+              :class="{
+                fas: isFilterSelected,
+                far: !isFilterSelected,
+              }"
+              class="fa-filter"
             />
           </Btn>
         </div>

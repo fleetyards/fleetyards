@@ -33,6 +33,8 @@ namespace :frontend, path: '', constraints: { subdomain: false } do
 
   get 'stats' => 'base#index'
 
+  get 'roadmap' => 'base#index'
+
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'
 

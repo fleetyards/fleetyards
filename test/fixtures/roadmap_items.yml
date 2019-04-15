@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rsi_id: 1
+  rsi_category_id: 1
+  rsi_release_id: 1
+  release: MyString
+  name: MyString
+  body: MyText
+  description: MyText
+  released: false
+  image: MyString
+  tasks: 1
+  inprogress: 1
+  completed: 1
+
+two:
+  rsi_id: 1
+  rsi_category_id: 1
+  rsi_release_id: 1
+  release: MyString
+  name: MyString
+  body: MyText
+  description: MyText
+  released: false
+  image: MyString
+  tasks: 1
+  inprogress: 1
+  completed: 1

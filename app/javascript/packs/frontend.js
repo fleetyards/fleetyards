@@ -10,6 +10,8 @@ import store from 'frontend/lib/Store'
 import ActionCable from 'actioncable'
 import { apiClient } from 'frontend/lib/ApiClient'
 import 'frontend/lib/LazyLoad'
+import 'frontend/lib/Sentry'
+import 'frontend/lib/Ahoy'
 import BootstrapVue from 'bootstrap-vue'
 import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
@@ -18,14 +20,6 @@ import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
 import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
-import ahoy from 'ahoy.js'
-import * as Sentry from '@sentry/browser'
-
-ahoy.configure({
-  cookies: false,
-})
-
-ahoy.trackAll()
 
 console.info(`
 
@@ -44,7 +38,7 @@ TWITTER: https://twitter.com/FleetYardsNet
 `)
 
 Vue.prototype.$api = apiClient
-Vue.prototype.$cable = ActionCable.createConsumer(process.env.CABLE_URL)
+Vue.prototype.$cable = ActionCable.createConsumer(window.CABLE_ENDPOINT)
 
 Vue.use(Comlink)
 
@@ -80,26 +74,18 @@ Vue.use(BootstrapVue)
 
 Vue.use(VueClipboard)
 
-Sentry.init({
-  release: window.APP_VERSION,
-  dsn: process.env.RAVEN_DSN,
-  integrations: [new Sentry.Integrations.Vue({ Vue })],
-})
-
-Sentry.configureScope((scope) => {
-  scope.setTag('appVersion', window.APP_VERSION)
-  scope.setTag('appCodename', window.APP_CODENAME)
-  scope.setTag('storeVersion', process.env.STORE_VERSION)
-})
-
-Vue.config.productionTip = false
+if (process.env.NODE_ENV !== 'production') {
+  Vue.config.devtools = true
+} else {
+  Vue.config.productionTip = false
+}
 
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
 console.info(`APP Version: ${window.APP_VERSION} (${window.APP_CODENAME})`)
-console.info(`Store Version: ${process.env.STORE_VERSION}`)
-console.info(`API Endpoint: ${process.env.API_URL}`)
+console.info(`Store Version: ${window.STORE_VERSION}`)
+console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
@@ -109,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  if (store.state.storeVersion !== process.env.STORE_VERSION) {
+  if (store.state.storeVersion !== window.STORE_VERSION) {
     console.info('Updating Store Version and resetting Store')
     store.commit('reset')
-    store.commit('setStoreVersion', process.env.STORE_VERSION)
+    store.commit('setStoreVersion', window.STORE_VERSION)
   }
 
   // eslint-disable-next-line no-new

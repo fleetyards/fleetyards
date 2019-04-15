@@ -7,13 +7,13 @@
       <h1>{{ t('headlines.error') }}</h1>
       <p>{{ t('texts.error') }}</p>
       <template #footer>
-        <InternalLink
-          :route="{name: 'home'}"
+        <Btn
+          :to="{name: 'home'}"
           exact
         >
           <i class="fa fa-chevron-left" />
           {{ t('actions.backToHome').toUpperCase() }}
-        </InternalLink>
+        </Btn>
       </template>
     </Box>
   </div>
@@ -23,12 +23,12 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Box from 'frontend/components/Box'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     Box,
-    InternalLink,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   metaInfo() {

@@ -10,6 +10,11 @@
 }
 
 .panel-image {
+  &.no-details {
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+  }
+
   .on-sale {
     position: absolute;
     top: 0;

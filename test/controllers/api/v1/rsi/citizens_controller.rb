@@ -23,7 +23,7 @@ module Api
             expected = {
               'username' => 'Torlek Maru',
               'handle' => 'torlekmaru',
-              'avatar' => 'https://robertsspaceindustries.com/media/t7fv6wn954w41r/heap_infobox/Screenshot-2017-09-27-094353.png',
+              'avatar' => "#{Rails.application.secrets[:rsi_endpoint]}/media/t7fv6wn954w41r/heap_infobox/Screenshot-2017-09-27-094353.png",
               'title' => 'Guardian Angel',
               'enlisted' => 'Nov 22, 2012',
               'citizenRecord' => '#79955',

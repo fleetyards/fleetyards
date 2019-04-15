@@ -8,11 +8,17 @@
       class="filter-list-title"
       @click="toggle"
     >
-      {{ label }}
+      <template v-if="multiple || !selectedOptions.length">
+        {{ label }}
+      </template>
+      <template v-else>
+        {{ selectedOptions[0][labelAttr] }}
+      </template>
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
     <b-collapse
+      v-if="multiple"
       :id="`${groupID}-${selectedId}`"
       :visible="selectedOptions.length > 0 && !visible"
       class="filter-list-items"

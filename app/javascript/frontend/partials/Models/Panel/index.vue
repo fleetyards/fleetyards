@@ -52,7 +52,12 @@
           />
         </h2>
       </div>
-      <div class="panel-image text-center">
+      <div
+        :class="{
+          'no-details': !details,
+        }"
+        class="panel-image text-center"
+      >
         <router-link
           :key="model.storeImageMedium"
           v-lazy:background-image="model.storeImageMedium"

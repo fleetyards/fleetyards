@@ -4,8 +4,6 @@ export default function getStorePlugins() {
   return [createPersistedState({
     key: 'FleetYards',
     paths: [
-      'appVersion',
-      'appCodename',
       'route',
       'lastRoute',
       'authToken',

@@ -80,11 +80,9 @@
                 <div
                   class="pull-right"
                 >
-                  <InternalLink
-                    :route="{name: 'settings-verify'}"
-                  >
+                  <Btn :to="{name: 'settings-verify'}">
                     Verify your RSI-Handle
-                  </InternalLink>
+                  </Btn>
                 </div>
               </template>
             </Box>
@@ -149,7 +147,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
@@ -164,7 +162,7 @@ export default {
     Loader,
     ModelsFilterForm,
     ModelClassLabels,
-    InternalLink,
+    Btn,
     Box,
   },
   mixins: [I18n, MetaInfo, Pagination],
