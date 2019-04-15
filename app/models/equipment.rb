@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Equipment < ApplicationRecord
-  include SlugHelper
-
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
@@ -74,9 +72,5 @@ class Equipment < ApplicationRecord
     # rubocop:disable Rails/SkipsModelValidations
     shop_commodities.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations
-  end
-
-  private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
   end
 end

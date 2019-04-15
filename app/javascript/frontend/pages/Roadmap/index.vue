@@ -9,6 +9,18 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <div class="page-actions">
+          <Btn :to="{ name: 'roadmap-changes' }">
+            Changes
+          </Btn>
+          <Btn href="https://robertsspaceindustries.com/roadmap">
+            {{ t('labels.rsiRoadmap') }}
+          </Btn>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <div class="text-center">
           <a
             class="show-released"
@@ -38,7 +50,7 @@
               }"
               @click="toggle(release)"
             >
-              {{ release }}
+              <span class="title">{{ release }}</span>
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
@@ -49,64 +61,79 @@
             <b-collapse
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
-              class="flex-row"
             >
-              <div
-                v-for="item in items"
-                :key="item.id"
-                class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
-              >
-                <Panel>
-                  <div class="roadmap-item">
-                    <div
-                      :style="{
-                        'background-image': `url(https://robertsspaceindustries.com${item.image})`
-                      }"
-                      class="item-image"
-                    >
+              <div class="flex-row">
+                <div
+                  v-for="item in items"
+                  :key="item.id"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                >
+                  <Panel>
+                    <div class="roadmap-item">
                       <div
-                        v-if="recentlyUpdated(item)"
-                        v-tooltip="t('labels.roadmap.recentlyUpdated')"
-                        class="roadmap-item-updated"
-                      />
-                    </div>
-                    <div class="item-body">
-                      <h3>
-                        <router-link
-                          v-if="item.model"
-                          :to="{
-                            name: 'model',
-                            params: {
-                              slug: item.model.slug
-                            }
-                          }"
-                        >
-                          {{ item.name }}
-                        </router-link>
-                        <template v-else>
-                          {{ item.name }}
-                        </template>
-                        <small>{{ t('labels.roadmap.tasks', { count: item.tasks }) }}</small>
-                        <i
-                          v-tooltip="t('labels.roadmap.lastUpdate', { date: l(item.updatedAt) })"
-                          class="fal fa-info-circle"
+                        :style="{
+                          'background-image': `url(https://robertsspaceindustries.com${item.image})`
+                        }"
+                        class="item-image"
+                      >
+                        <div
+                          v-if="recentlyUpdated(item)"
+                          v-tooltip="t('labels.roadmap.recentlyUpdated')"
+                          class="roadmap-item-updated"
                         />
-                      </h3>
-                      <p>{{ item.body }}</p>
-                      <b-progress :max="item.tasks">
-                        <b-progress-bar
-                          v-if="item.completed !== 0"
-                          :value="item.completed"
-                          :class="{
-                            completed: item.completed === item.tasks
-                          }"
-                        >
-                          {{ item.completed }} / {{ item.tasks }}
-                        </b-progress-bar>
-                      </b-progress>
+                      </div>
+                      <div class="item-body">
+                        <h3>
+                          <router-link
+                            v-if="item.model"
+                            :to="{
+                              name: 'model',
+                              params: {
+                                slug: item.model.slug
+                              }
+                            }"
+                          >
+                            {{ item.name }}
+                          </router-link>
+                          <template v-else>
+                            {{ item.name }}
+                          </template>
+                        </h3>
+                        <p>{{ item.body }}</p>
+                        <h4>
+                          {{ t('labels.roadmap.lastUpdate') }}
+                          <small>{{ l(item.updatedAt) }}</small>
+                        </h4>
+                        <ul v-if="item.lastVersion">
+                          <li
+                            v-for="(update, index) in updates(item.lastVersion)"
+                            :key="index"
+                          >
+                            {{ t(`labels.roadmap.lastVersion.${update.key}`, {
+                              old: update.old,
+                              new: update.new,
+                              count: update.count,
+                            }) }}
+                          </li>
+                        </ul>
+                        <b-progress :max="item.tasks">
+                          <div class="progress-label">
+                            {{ item.completed }} {{ t('labels.roadmap.tasks', {
+                              count: item.tasks,
+                            }) }}
+                          </div>
+                          <b-progress-bar
+                            v-if="item.completed !== 0"
+                            :value="item.completed"
+                            :class="{
+                              completed: item.completed === item.tasks
+                            }"
+                          />
+                        </b-progress>
+                      </div>
                     </div>
-                  </div>
-                </Panel>
+                  </Panel>
+                </div>
               </div>
             </b-collapse>
           </div>
@@ -116,6 +143,65 @@
           :loading="loading"
           fixed
         />
+        <div class="row">
+          <div class="col-xs-12 fade-list-item release">
+            <h2
+              :class="{
+                open: visible.includes('unscheduled'),
+              }"
+              @click="toggle('unscheduled')"
+            >
+              <span class="title">
+                {{ t('labels.roadmap.unscheduled') }}
+              </span>
+              <small>{{ t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
+              <i class="fa fa-chevron-right" />
+            </h2>
+            <b-collapse
+              id="unscheduled-cards"
+              :visible="visible.includes('unscheduled')"
+            >
+              <div class="flex-row">
+                <div
+                  v-for="model in unscheduledModels"
+                  :key="model.slug"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                >
+                  <Panel>
+                    <div class="roadmap-item">
+                      <div
+                        :style="{
+                          'background-image': `url(${model.storeImage})`
+                        }"
+                        class="item-image"
+                      />
+                      <div class="item-body">
+                        <h3>
+                          <router-link
+                            :to="{
+                              name: 'model',
+                              params: {
+                                slug: model.slug
+                              }
+                            }"
+                          >
+                            {{ model.name }}
+                          </router-link>
+                        </h3>
+                        <p>{{ model.description }}</p>
+                        <b-progress>
+                          <div class="progress-label">
+                            0 {{ t('labels.roadmap.tasks', { count: '?' }) }}
+                          </div>
+                        </b-progress>
+                      </div>
+                    </div>
+                  </Panel>
+                </div>
+              </div>
+            </b-collapse>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -126,6 +212,7 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
+import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import { isBefore, addHours } from 'date-fns'
 
@@ -134,6 +221,7 @@ export default {
     Loader,
     EmptyBox,
     Panel,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -142,6 +230,8 @@ export default {
       onlyReleased: true,
       roadmapItems: [],
       visible: [],
+      unscheduledModels: [],
+      roadmapChannel: null,
     }
   },
   computed: {
@@ -170,16 +260,44 @@ export default {
         return value
       }, {})
     },
-  },
-  watch: {
-    $route() {
-      this.fetch()
+    otherModels() {
+      return this.models
+    },
+    modelsOnRoadmap() {
+      return this.roadmapItems.filter(item => item.model)
+        .map(item => item.model.id)
+        .filter(item => item)
     },
   },
-  created() {
+  mounted() {
     this.fetch()
+    this.setupUpdates()
+  },
+  beforeDestroy() {
+    if (this.roadmapChannel) {
+      this.roadmapChannel.unsubscribe()
+    }
   },
   methods: {
+    updates(lastVersion) {
+      return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map(key => ({
+        key,
+        old: lastVersion[key][0],
+        new: lastVersion[key][1],
+        count: lastVersion[key][1] - lastVersion[key][0],
+      }))
+    },
+    setupUpdates() {
+      if (this.roadmapChannel) {
+        this.roadmapChannel.unsubscribe()
+      }
+
+      this.roadmapChannel = this.$cable.subscriptions.create({
+        channel: 'RoadmapChannel',
+      }, {
+        received: this.fetch,
+      })
+    },
     recentlyUpdated(item) {
       return isBefore(new Date(), addHours(new Date(item.updatedAt), 24))
     },
@@ -212,7 +330,14 @@ export default {
       this.loading = false
       if (!response.error) {
         this.roadmapItems = response.data
+        await this.fetchModels()
         this.openReleased()
+      }
+    },
+    async fetchModels() {
+      const response = await this.$api.get('models/unscheduled')
+      if (!response.error) {
+        this.unscheduledModels = response.data
       }
     },
   },

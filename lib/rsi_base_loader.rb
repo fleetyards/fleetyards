@@ -4,7 +4,7 @@ class RsiBaseLoader
   attr_accessor :base_url
 
   def initialize(options = {})
-    @base_url = options[:base_url] || 'https://robertsspaceindustries.com'
+    @base_url = options[:base_url] || Rails.application.secrets[:rsi_endpoint]
   end
 
   private def strip_name(name)

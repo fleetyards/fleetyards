@@ -166,11 +166,20 @@
       "modelsByProductionStatus": "Models by Production Status"
     },
     "roadmap": {
-      "lastUpdate": "Last Update: %{date}",
-      "recentlyUpdated": "Updated in the last 24 Hours",
+      "unscheduled": "Unscheduled",
+      "lastUpdate": "Last Update:",
+      "recentlyUpdated": "Recently Updated",
+      "lastVersion": {
+        "completed": {
+          "one": "Completed %{count} Task",
+          "other": "Completed %{count} Tasks"
+        },
+        "tasks": "Increased Tasks by %{count}",
+        "release": "Item moved from release %{old} to %{new}"
+      },
       "tasks": {
-        "one": "%{count} Task",
-        "other": "%{count} Tasks"
+        "one": "of %{count} Task",
+        "other": "of %{count} Tasks"
       },
       "ships": {
         "one": "%{count} Ship",
@@ -203,6 +212,7 @@
         "other": "%{label}:<br><b>%{count}</b> Visits"
       }
     },
+    "rsiRoadmap": "RSI Roadmap",
     "unknown": "Unknown",
     "none": "-",
     "searchInput": "Search Input",
@@ -450,8 +460,8 @@
     "images": "Images"
   },
   "actions": {
-    "showReleased": "Show Released",
-    "hideReleased": "Hide Released",
+    "showReleased": "Show old Releases",
+    "hideReleased": "Hide old Releases",
     "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
@@ -741,7 +751,7 @@
   },
   "datetime": {
     "formats": {
-      "default": "%a, %d %b %Y %H:%M:%S %z"
+      "default": "%e %B %Y at %H:%M"
     }
   },
   "number": {

@@ -1,8 +1,5 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-process.env.API_URL = process.env.API_URL || 'http://api.fleetyards.test/v1'
-process.env.FRONTEND_HOST = process.env.FRONTEND_HOST || 'http://www.fleetyards.test'
-process.env.STORE_VERSION = process.env.STORE_VERSION || 7
-process.env.CABLE_URL = process.env.CABLE_URL || 'ws://api.fleetyards.test/cable'
+process.env.FRONTEND_ENDPOINT = process.env.FRONTEND_ENDPOINT || 'http://fleetyards.test'
 
 const environment = require('./environment')
 

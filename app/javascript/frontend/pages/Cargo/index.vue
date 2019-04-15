@@ -21,8 +21,8 @@
               </button>
             </div>
             <div class="page-actions">
-              <InternalLink
-                :route="{
+              <Btn
+                :to="{
                   name: 'commodities',
                   query: {
                     q: $store.state.filters['commodities'],
@@ -30,7 +30,7 @@
                 }"
               >
                 {{ t('actions.editCommodities') }}
-              </InternalLink>
+              </Btn>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import InternalLink from 'frontend/components/InternalLink'
+import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
@@ -140,7 +140,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    InternalLink,
+    Btn,
     Panel,
     FilterForm,
   },

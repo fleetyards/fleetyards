@@ -4,18 +4,18 @@ production: &production
   models_worker_job:
     cron: '*/10 * * * *'
     class: 'ModelsWorker'
+  roadmap_worker_job:
+    cron: '0 */1 * * *'
+    class: 'RoadmapWorker'
   citizen_worker_job:
     cron: '0 */2 * * *'
     class: 'CitizenWorker'
   fleets_worker_job:
     cron: '0 1 * * *'
     class: 'FleetsWorker'
-  roadmap_worker_job:
-    cron: '0 3 * * *'
-    class: 'RoadmapWorker'
-  locations_worker_job:
-    cron: '0 3 * * 0'
-    class: 'LocationsWorker'
   cleanup_auth_tokens_worker:
     cron: '0 2 * * *'
     class: 'CleanupAuthTokensWorker'
+  locations_worker_job:
+    cron: '0 3 * * 0'
+    class: 'LocationsWorker'

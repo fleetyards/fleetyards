@@ -24,6 +24,11 @@ en:
           part_two: is now on Sale!
         price: Starting at %{price}
         subject: "%{model} now on Sale!"
+    roadmap:
+      admin:
+        headline: New changes on the Roadmap
+        subject: New changes on the Roadmap
+        body: There have been %{changes} changes to the Roadmap
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
