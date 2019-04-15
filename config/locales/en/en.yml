@@ -13,10 +13,14 @@ en:
         body: "Allow me to introduce: The"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
-    user:
-      admin:
-        headline: New User Registered
-        subject: New User Registration
+    admin:
+      weekly:
+        headline: FleetYards.net Weekly
+        subject: FleetYards.net Weekly
+        registrations: "New Registrations"
+        ships: "New Ships"
+        vehicles: "New Vehicles"
+        fleets: "New Fleets"
     vehicle:
       on_sale:
         headline:

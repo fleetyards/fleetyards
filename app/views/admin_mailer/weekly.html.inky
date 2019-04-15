@@ -1,0 +1,15 @@
+<h4>
+  <%= I18n.t("mailer.admin.weekly.headline") %>
+</h4>
+<p>
+  <%= I18n.t("mailer.admin.weekly.registrations") %>: <%= @stats[:registrations] %>
+</p>
+<p>
+  <%= I18n.t("mailer.admin.weekly.ships") %>: <%= @stats[:ships] %>
+</p>
+<p>
+  <%= I18n.t("mailer.admin.weekly.vehicles") %>: <%= @stats[:vehicles] %>
+</p>
+<p>
+  <%= I18n.t("mailer.admin.weekly.fleets") %>: <%= @stats[:fleets] %>
+</p>

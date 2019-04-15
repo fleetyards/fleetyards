@@ -19,3 +19,6 @@ production: &production
   locations_worker_job:
     cron: '0 3 * * 0'
     class: 'LocationsWorker'
+  admin_notifier_worker_job:
+    cron: '0 20 * * 0'
+    class: 'AdminNotifierWorker'

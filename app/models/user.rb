@@ -28,7 +28,6 @@ class User < ApplicationRecord
 
   attr_accessor :login
 
-  after_create :send_admin_mail
   before_save :update_gravatar_hash
   before_save :check_rsi_verification
   before_validation :clean_username
@@ -43,10 +42,6 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
-  end
-
-  def send_admin_mail
-    UserMailer.notify_admin(self).deliver_later
   end
 
   def update_gravatar_hash
