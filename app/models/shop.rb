@@ -45,10 +45,6 @@ class Shop < ApplicationRecord
     end
   end
 
-  private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
-  end
-
   private def update_shop_commodities
     shop_commodities.each(&:set_commodity_item)
   end

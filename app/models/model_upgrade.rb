@@ -12,6 +12,7 @@ class ModelUpgrade < ApplicationRecord
 
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 
+  before_save :update_slugs
   after_save :touch_shop_commodities
   after_save :touch_models
 
