@@ -11,7 +11,7 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 environment rails_env
 
 # Set up socket location
-bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock"
+bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock" unless rails_env == 'docker'
 
 # Logging
 stdout_redirect "#{ENV['APP_DIR']}/log/puma.stdout.log", "#{ENV['APP_DIR']}/log/puma.stderr.log", true
@@ -19,7 +19,7 @@ stdout_redirect "#{ENV['APP_DIR']}/log/puma.stdout.log", "#{ENV['APP_DIR']}/log/
 # Set master PID and state locations
 pidfile "#{ENV['APP_DIR']}/tmp/pids/puma.pid"
 state_path "#{ENV['APP_DIR']}/tmp/pids/puma.state"
-activate_control_app
+activate_control_app unless rails_env == 'docker'
 
 on_worker_boot do
   require 'active_record'
