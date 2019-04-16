@@ -197,7 +197,7 @@ jobs:
       - run:
           name: Webpacker & Assets Compile
           command: bundle exec thor assets:compile
-      - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
+      - run: mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Run Server
           command: bundle exec puma -C config/puma.rb
