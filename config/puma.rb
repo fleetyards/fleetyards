@@ -11,7 +11,7 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 environment rails_env
 
 # Set up socket location
-bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock" unless rails_env == 'docker'
+bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock"
 
 # Logging
 stdout_redirect "#{ENV['APP_DIR']}/log/puma.stdout.log", "#{ENV['APP_DIR']}/log/puma.stderr.log", true

@@ -1,7 +1,7 @@
 production:
   url: <%= ENV["DATABASE_URL"] %>
 
-docker:
+ci:
   url: <%= ENV["DATABASE_URL"] %>
 
 development:
