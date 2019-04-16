@@ -13,13 +13,10 @@ environment rails_env
 # Set up socket location
 bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock"
 
-# Logging
-stdout_redirect "#{ENV['APP_DIR']}/log/puma.stdout.log", "#{ENV['APP_DIR']}/log/puma.stderr.log", true
-
 # Set master PID and state locations
 pidfile "#{ENV['APP_DIR']}/tmp/pids/puma.pid"
 state_path "#{ENV['APP_DIR']}/tmp/pids/puma.state"
-activate_control_app unless rails_env == 'docker'
+activate_control_app
 
 on_worker_boot do
   require 'active_record'
@@ -28,6 +25,7 @@ on_worker_boot do
   ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
   # rubocop:enable Style/RescueModifier
 
-  db_config = YAML.safe_load(ERB.new(File.read(Rails.root.join('config', 'database.yml'))).result)[Rails.env]
-  ActiveRecord::Base.establish_connection(db_config)
+  require 'erb'
+
+  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{ENV['APP_DIR']}/config/database.yml")).result)[rails_env])
 end
