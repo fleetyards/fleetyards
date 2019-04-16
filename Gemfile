@@ -96,6 +96,7 @@ group :development do
   gem 'listen'
   gem 'rails-erd'
   gem 'rubocop', require: false
+  gem 'rubocop-performance'
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
