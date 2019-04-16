@@ -29,6 +29,7 @@ e2e: &e2e
         DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
         CYPRESS_BASE_URL: http://localhost:8270
         CYPRESS_CI: 1
+        APP_DIR: .
         PORT: 8270
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
@@ -196,10 +197,10 @@ jobs:
       - run:
           name: Webpacker & Assets Compile
           command: bundle exec thor assets:compile
-      - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
+      - run: mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Run Server
-          command: bundle exec puma -C config/puma.ci.rb
+          command: bundle exec puma -C config/puma.rb
           background: true
       - run:
           name: Wait for Server

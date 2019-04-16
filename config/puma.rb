@@ -28,5 +28,6 @@ on_worker_boot do
   ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
   # rubocop:enable Style/RescueModifier
 
-  ActiveRecord::Base.establish_connection(YAML.load_file("#{ENV['APP_DIR']}/config/database.yml")[rails_env])
+  db_config = YAML.safe_load(ERB.new(File.read(Rails.root.join('config', 'database.yml'))).result)[Rails.env]
+  ActiveRecord::Base.establish_connection(db_config)
 end
