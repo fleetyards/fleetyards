@@ -128,10 +128,10 @@ export const routes = [
     path: '/roadmap',
     name: 'roadmap',
     component: () => import(/* webpackChunkName: "page.roadmap" */ 'frontend/pages/Roadmap'),
-    // meta: {
-    //   // eslint-disable-next-line global-require
-    //   backgroundImage: require('images/bg-7.jpg'),
-    // },
+  }, {
+    path: '/roadmap/changes',
+    name: 'roadmap-changes',
+    component: () => import(/* webpackChunkName: "page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
   }, {
     path: '/settings',
     name: 'settings',

@@ -84,6 +84,7 @@ en:
       settings_change-password: Change Password
       fleets: Fleets
       roadmap: Ship-Roadmap
+      roadmap_changes: Roadmap Changes
       hangar: My Hangar
       public_hangar: "%{user} Hangar"
       impressum: Impressum

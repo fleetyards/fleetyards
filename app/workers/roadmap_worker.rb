@@ -7,13 +7,12 @@ class RoadmapWorker
   sidekiq_options retry: false, queue: (ENV['ROADMAP_LOADER_QUEUE'] || 'fleetyards_roadmap_loader').to_sym
 
   def perform
-    count_before = Audited::Audit.where(auditable_type: 'RoadmapItem').count
-
     RsiRoadmapLoader.new.fetch
 
-    count_after = Audited::Audit.where(auditable_type: 'RoadmapItem').count
-
-    changes = count_after - count_before
+    changes = Audit.includes(:roadmap_items).where(
+      roadmap_items: { rsi_category_id: RoadmapItem::MODELS_CATEGORY },
+      created_at: (Time.zone.now - 1.day)..Time.zone.now
+    ).count
 
     return if changes.zero?
 
