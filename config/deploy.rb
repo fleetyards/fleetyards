@@ -110,17 +110,20 @@ end
 namespace :server do
   task :restart do
     comment 'Restart Application'
-    command %(sudo supervisorctl restart fleetyards:*)
+    command %(sudo service fleetyards-app restart)
+    command %(sudo service fleetyards-worker restart)
   end
 
   task :stop do
     comment 'Stopping Application'
-    command %(sudo supervisorctl stop fleetyards:*)
+    command %(sudo service fleetyards-app stop)
+    command %(sudo service fleetyards-worker stop)
   end
 
   task :start do
     comment 'Starting Application'
-    command %(sudo supervisorctl start fleetyards:*)
+    command %(sudo service fleetyards-app start)
+    command %(sudo service fleetyards-worker start)
   end
 end
 
