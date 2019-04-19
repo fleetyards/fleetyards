@@ -3,6 +3,9 @@ const getByKey = function getByKey(key) {
 }
 
 const cleanData = function cleanData(key) {
+  if (!window.DATA_PREFILL[key]) {
+    return
+  }
   window.DATA_PREFILL[key] = null
 }
 
