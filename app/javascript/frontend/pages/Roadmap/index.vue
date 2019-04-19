@@ -109,11 +109,19 @@
                             v-for="(update, index) in updates(item.lastVersion)"
                             :key="index"
                           >
-                            {{ t(`labels.roadmap.lastVersion.${update.key}`, {
-                              old: update.old,
-                              new: update.new,
-                              count: update.count,
-                            }) }}
+                            {{ update.key }}
+                            <template v-if="update.key === 'tasks'">
+                              {{ t(`labels.roadmap.lastVersion.${update.key}.${update.change}`, {
+                                value: update.count,
+                              }) }}
+                            </template>
+                            <template v-else>
+                              {{ t(`labels.roadmap.lastVersion.${update.key}`, {
+                                old: update.old,
+                                new: update.new,
+                                count: update.count,
+                              }) }}
+                            </template>
                           </li>
                         </ul>
                         <b-progress :max="item.tasks">
@@ -280,12 +288,16 @@ export default {
   },
   methods: {
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map(key => ({
-        key,
-        old: lastVersion[key][0],
-        new: lastVersion[key][1],
-        count: lastVersion[key][1] - lastVersion[key][0],
-      }))
+      return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map((key) => {
+        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+        return {
+          key,
+          change: (Math.sign(count) === -1) ? 'decreased' : 'increased',
+          old: lastVersion[key][0],
+          new: lastVersion[key][1],
+          count,
+        }
+      })
     },
     setupUpdates() {
       if (this.roadmapChannel) {

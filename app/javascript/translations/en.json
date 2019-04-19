@@ -175,7 +175,10 @@
           "one": "Completed %{count} Task",
           "other": "Completed %{count} Tasks"
         },
-        "tasks": "Increased Tasks by %{count}",
+        "tasks": {
+          "decreased": "Decreased Tasks by %{value}",
+          "increased": "Increased Tasks by %{value}"
+        },
         "release": "Item moved from release %{old} to %{new}"
       },
       "tasks": {
