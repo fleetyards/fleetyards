@@ -6,7 +6,6 @@
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
     "test": "jest",
     "test:watch": "jest --watch --notify",
-    "test:functional": "./scripts/run-functional-tests.sh chrome",
     "lint": "yarn run lint:js && yarn run lint:style",
     "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript",
     "lint:style": "stylelint --fix \"./src/**/*.scss\", \"./src/**/*.vue\"",

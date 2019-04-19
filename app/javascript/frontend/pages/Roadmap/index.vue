@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container roadmap">
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
@@ -348,7 +348,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  @import "./styles/index";
-</style>

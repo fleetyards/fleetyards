@@ -192,11 +192,11 @@ jobs:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
       - run:
-          name: Prefill DB
-          command: bundle exec rails db:seed
-      - run:
           name: Webpacker & Assets Compile
           command: bundle exec thor assets:compile
+      - run:
+          name: Prefill DB
+          command: bundle exec rails db:seed
       - run: mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Run Server
