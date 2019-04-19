@@ -1,5 +1,5 @@
 const getByKey = function getByKey(key) {
-  return window.DATA_PREFILL[key]
+  return (window.DATA_PREFILL || {})[key]
 }
 
 const cleanData = function cleanData(key) {
