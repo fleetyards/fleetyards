@@ -369,6 +369,10 @@ export default {
       this.fetchVariants()
     },
     model() {
+      if (!this.model) {
+        return
+      }
+
       this.setBackRoute()
 
       if (this.model.backgroundImage) {
@@ -409,6 +413,11 @@ export default {
       this.color3d = !this.color3d
     },
     async fetch() {
+      this.model = this.$dataPrefill('model')
+      if (this.model) {
+        return
+      }
+
       this.loading = true
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
         without_images: true,

@@ -53,6 +53,7 @@ module Frontend
         @description = @model.description
         @og_type = 'article'
         @og_image = @model.store_image.url
+        add_to_data_prefill(:model, @model.to_json)
       end
       render 'frontend/index'
     end
@@ -176,6 +177,11 @@ module Frontend
           render 'frontend/service_worker', layout: false
         end
       end
+    end
+
+    private def add_to_data_prefill(key, data)
+      @data_prefill ||= {}
+      @data_prefill[key] = data
     end
 
     private def username(name)
