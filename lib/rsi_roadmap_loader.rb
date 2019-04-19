@@ -38,7 +38,7 @@ class RsiRoadmapLoader < RsiBaseLoader
           completed: card['completed']
         )
 
-        next unless item.rsi_category_id == 6 && item.model_id.blank?
+        next unless item.rsi_category_id == RoadmapItem::MODELS_CATEGORY && item.model_id.blank?
 
         item.update(
           model: Model.where('name ILIKE ?', strip_roadmap_name(card['name'])).first

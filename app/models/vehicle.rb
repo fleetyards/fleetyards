@@ -31,7 +31,7 @@ class Vehicle < ApplicationRecord
   ransack_alias :hangar_groups, :hangar_groups_slug
 
   def broadcast_update
-    ActionCable.server.broadcast("hangar_#{user.username}", to_builder.target!)
+    ActionCable.server.broadcast("hangar_#{user.username}", to_json)
   end
 
   def self.purchased
@@ -52,18 +52,8 @@ class Vehicle < ApplicationRecord
     # rubocop:enable SkipsModelValidations
   end
 
-  def to_builder
-    Jbuilder.new do |vehicle|
-      vehicle.id id
-      vehicle.name name
-      vehicle.purchased purchased
-      vehicle.flagship flagship
-      vehicle.deleted destroyed?
-      vehicle.model do
-        vehicle.name model.name
-        vehicle.slug model.slug
-      end
-    end
+  def to_json(*_args)
+    to_jbuilder_json
   end
 
   protected def nil_if_blank

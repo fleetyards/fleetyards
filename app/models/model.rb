@@ -178,8 +178,12 @@ class Model < ApplicationRecord
     "#{name} (#{human_cargo} SCU)"
   end
 
+  def to_json(*_args)
+    to_jbuilder_json
+  end
+
   private def broadcast_update
-    ActionCable.server.broadcast('models', to_builder.target!)
+    ActionCable.server.broadcast('models', to_json)
   end
 
   private def send_new_model_notification
@@ -192,7 +196,7 @@ class Model < ApplicationRecord
     return unless on_sale?
 
     VehiclesWorker.perform_async(id)
-    ActionCable.server.broadcast('on_sale', to_builder.target!)
+    ActionCable.server.broadcast('on_sale', to_json)
   end
 
   private def touch_shop_commodities
@@ -210,12 +214,5 @@ class Model < ApplicationRecord
     return if last_updated_at.present?
 
     self.last_updated_at = Time.zone.now
-  end
-
-  def to_builder
-    Jbuilder.new do |model|
-      model.name name
-      model.slug slug
-    end
   end
 end
