@@ -39,7 +39,6 @@
 import BackToTop from 'frontend/components/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
-import CheckAppVersion from 'frontend/mixins/CheckAppVersion'
 import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
@@ -53,7 +52,7 @@ export default {
     AppFooter,
     BackToTop,
   },
-  mixins: [Updates, CurrentUser, CheckAppVersion, RenewSession],
+  mixins: [Updates, CurrentUser, RenewSession],
   computed: {
     ...mapGetters([
       'isAuthenticated',
@@ -64,7 +63,6 @@ export default {
   watch: {
     $route() {
       this.setBackground()
-      this.fetchVersion()
       if (this.isAuthenticated) {
         this.fetchHangar()
       }
@@ -83,7 +81,6 @@ export default {
   created() {
     this.setNoScroll()
     this.setBackground()
-    this.redirectToLastRoute()
     this.checkMobile()
 
     if (this.isAuthenticated) {
@@ -134,14 +131,6 @@ export default {
       }
       this.$store.commit('setBackgroundImage', backgroundImage)
     },
-    redirectToLastRoute() {
-      if (!this.$store.state.lastRoute || !navigator.standalone) {
-        return
-      }
-      if (this.$store.state.lastRoute.name !== this.$route.name) {
-        this.$router.replace(this.$store.state.lastRoute)
-      }
-    },
     async fetchHangar() {
       if (!['models', 'model', 'fleet', 'hangar'].includes(this.$route.name)) {
         return
@@ -149,12 +138,6 @@ export default {
       const response = await this.$api.get('vehicles/hangar-items')
       if (!response.error) {
         this.$store.commit('setHangar', response.data)
-      }
-    },
-    async fetchVersion() {
-      const response = await this.$api.get('version')
-      if (!response.error) {
-        this.$store.dispatch('updateAppVersion', response.data)
       }
     },
   },

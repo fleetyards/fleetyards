@@ -5,6 +5,7 @@ import {
   format, parse, differenceInMinutes, isBefore, subMinutes,
 } from 'date-fns'
 import getStorePlugins from './plugins'
+import getStoreModules from './modules'
 
 Vue.use(Vuex)
 
@@ -16,8 +17,6 @@ const getLeeway = (expiresAt) => {
 const initialState = {
   locale: 'en-US',
   mobile: false,
-  appVersion: window.APP_VERSION,
-  appCodename: window.APP_CODENAME,
   storeVersion: null,
   authToken: null,
   authTokenRenewAt: null,
@@ -53,13 +52,8 @@ const initialState = {
 
 const store = new Vuex.Store({
   state: initialState,
+  modules: getStoreModules(),
   getters: {
-    appVersion(state) {
-      return state.appVersion
-    },
-    appCodename(state) {
-      return state.appCodename
-    },
     isAuthenticated(state) {
       return state.authToken !== null
     },
@@ -138,17 +132,8 @@ const store = new Vuex.Store({
     stationBackRoute(state) {
       return state.stationBackRoute
     },
-    isUpdateAvailable(state) {
-      return state.appVersion !== window.APP_VERSION
-    },
   },
   actions: {
-    updateAppVersion({ state, commit }, payload = {}) {
-      if (payload.version && state.appVersion !== payload.version) {
-        commit('setAppVersion', payload.version)
-        commit('setAppCodename', payload.codename)
-      }
-    },
     async logout({ commit }, fromError = false) {
       if (!fromError) {
         try {
@@ -215,12 +200,6 @@ const store = new Vuex.Store({
   },
   /* eslint-disable no-param-reassign */
   mutations: {
-    setAppVersion(state, payload) {
-      state.appVersion = payload
-    },
-    setAppCodename(state, payload) {
-      state.appCodename = payload
-    },
     reset(state) {
       Object.assign(state, initialState)
     },

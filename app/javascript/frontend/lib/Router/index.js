@@ -58,6 +58,12 @@ router.beforeEach((to, from, next) => {
     Store.commit('setLocale', newLocale)
   }
 
+  // check if update is available
+  if (Store.getters['app/isUpdateAvailable'] && Object.keys(to.params).length === 0) {
+    window.location.href = to.path
+    return
+  }
+
   next()
 })
 
