@@ -4,10 +4,10 @@
   "scripts": {
     "docs": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch --notify",
     "lint": "yarn run lint:js && yarn run lint:style",
-    "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript",
+    "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript test/javascript",
     "lint:style": "stylelint --fix \"./src/**/*.scss\", \"./src/**/*.vue\"",
     "test:e2e": "cypress run"
   },
@@ -33,7 +33,7 @@
     "photoswipe": "^4.1.3",
     "qs": "^6.7.0",
     "v-tooltip": "^2.0.0-rc.33",
-    "vee-validate": "^2.1.4",
+    "vee-validate": "^2.2.3",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.0",
     "vue-infinite-loading": "^2.4.4",
