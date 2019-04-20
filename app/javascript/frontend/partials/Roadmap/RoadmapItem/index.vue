@@ -24,7 +24,9 @@
             {{ item.name }}
           </template>
         </h3>
-        <p>{{ description }}</p>
+        <p v-if="!withoutDescription">
+          {{ description }}
+        </p>
         <h4>
           {{ t('labels.roadmap.lastUpdate') }}
           <small>{{ l(item.updatedAt) }}</small>
@@ -87,6 +89,10 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+    withoutDescription: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
