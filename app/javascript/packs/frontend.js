@@ -9,6 +9,7 @@ import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import ActionCable from 'actioncable'
 import { apiClient } from 'frontend/lib/ApiClient'
+import dataPrefill from 'frontend/lib/DataPrefill'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Ahoy'
@@ -39,6 +40,7 @@ TWITTER: https://twitter.com/FleetYardsNet
 
 Vue.prototype.$api = apiClient
 Vue.prototype.$cable = ActionCable.createConsumer(window.CABLE_ENDPOINT)
+Vue.prototype.$dataPrefill = dataPrefill
 
 Vue.use(Comlink)
 
