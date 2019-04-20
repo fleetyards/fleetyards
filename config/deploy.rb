@@ -111,7 +111,11 @@ namespace :server do
   task :restart do
     comment 'Restart Application'
     command %(sudo service fleetyards-app restart)
+    command %(sudo systemctl is-active --quiet fleetyards-app.service)
+    comment 'App Restarted'
     command %(sudo service fleetyards-worker restart)
+    command %(sudo systemctl is-active --quiet fleetyards-worker.service)
+    comment 'Worker Restarted'
   end
 
   task :stop do
