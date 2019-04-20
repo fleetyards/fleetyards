@@ -81,7 +81,7 @@
     "sass-loader": "^7.1.0",
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.3.0",
-    "typescript": "^3.4.3",
+    "typescript": "^3.4.4",
     "vue-eslint-parser": "^6.0.3",
     "vue-jest": "^3.0.4",
     "webpack": "^4.30.0",
