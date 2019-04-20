@@ -315,6 +315,9 @@ const store = new Vuex.Store({
     hideOverlay(state) {
       state.overlayVisible = false
     },
+    openNav(state) {
+      state.navCollapsed = false
+    },
     closeNav(state) {
       state.navCollapsed = true
     },

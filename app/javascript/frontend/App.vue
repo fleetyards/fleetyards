@@ -1,6 +1,8 @@
 <template>
   <div
     id="app"
+    v-touch:swipe.left="swipeHandler"
+    v-touch:swipe.right="swipeHandler"
     :class="{
       'nav-visible': !navCollapsed,
     }"
@@ -102,8 +104,18 @@ export default {
     window.removeEventListener('offline', this.offline)
   },
   methods: {
+    swipeHandler(direction) {
+      if (direction === 'left') {
+        this.closeNavigation()
+      } else {
+        this.openNavigation()
+      }
+    },
     closeNavigation() {
       this.$refs.navigation.close()
+    },
+    openNavigation() {
+      this.$refs.navigation.open()
     },
     offline() {
       this.$store.commit('setOnlineStatus', false)
