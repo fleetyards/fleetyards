@@ -14,8 +14,9 @@ pids/*
 # test files
 coverage/*
 test/reports/*
-cypress/screenshots/*
-cypress/videos/*
+test/javascript/e2e/screenshots/*
+test/javascript/e2e/videos/*
+test/javascript/unit/coverage/*
 
 # app files
 public/uploads/*

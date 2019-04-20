@@ -40,41 +40,24 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true,
+    "mocha": true,
+    "cypress/globals": true
   },
   "globals": {
     "process": true,
     "env": true,
     "fixture": true,
     "self": true,
-    "clients": true
+    "clients": true,
+    "test": true,
+    "mountVM": true
   },
   "overrides": [{
-    "files": ["**/*+(spec|test).?(f|functional).js"],
-    "globals": {
-      "test": true,
-      "mountVM": true
-    }
-  }, {
-    "files": ["cypress/**/*.js"],
+    "files": ["**/e2e/**/*.js"],
     "rules": {
-      "no-unused-expressions": "off",
       "jest/valid-expect": "off"
-    },
-    "env": {
-      "cypress/globals": true
-    }
-  }, {
-    "files": ["**/*+(spec|test).js"],
-    "rules": {
-      "no-unused-expressions": "off"
-    },
-    "globals": {
-      "mountVM": true
-    },
-    "env": {
-      "jest": true,
-      "mocha": true
     }
   }]
 }

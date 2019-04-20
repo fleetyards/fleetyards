@@ -1,16 +1,24 @@
 module.exports = {
   testURL: 'http://localhost:3000',
   roots: ['app/javascript'],
+  collectCoverage: false,
+  collectCoverageFrom: [
+    'app/javascript/**/*.{js,vue}',
+    'test/javascript/**',
+    'app/javascript/translations/**',
+  ],
+  coverageDirectory: '<rootDir>/test/javascript/unit/coverage',
+  coverageReporters: ['json', 'lcov', 'text'],
   moduleFileExtensions: ['js', 'vue'],
   setupFiles: [
-    '<rootDir>/test/javascript/setup',
+    '<rootDir>/test/javascript/unit/setup',
   ],
   snapshotSerializers: [
     '<rootDir>/node_modules/jest-serializer-vue',
   ],
   testPathIgnorePatterns: ['config'],
   moduleNameMapper: {
-    '\\.(css|sass|scss)$': '<rootDir>/test/unit/__mocks__/style.js',
+    '\\.(css|sass|scss)$': '<rootDir>/test/javascript/unit/__mocks__/style.js',
   },
   transform: {
     '^.+\\.js$': 'babel-jest',
