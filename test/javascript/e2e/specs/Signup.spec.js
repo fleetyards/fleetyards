@@ -72,6 +72,7 @@ describe('Signup', () => {
       cy.select('rsi-handle').clear().type('torlekmaru')
       cy.select('rsi-handle').parent().should('not.have.class', 'has-error')
 
+      cy.select('password-confirmation').type('bar').clear()
       cy.select('password-confirmation').parent().should('have.class', 'has-error')
       cy.select('password-confirmation').type(userData.test.password)
       cy.select('password-confirmation').parent().should('not.have.class', 'has-error')

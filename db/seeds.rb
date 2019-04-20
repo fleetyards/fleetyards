@@ -26,6 +26,22 @@ if ENV['TEST_SEEDS'].present?
     email: 'test@fleetyards.net'
   )
 
+  RoadmapItem.create(
+    rsi_id: 1,
+    release: '1.0.0',
+    release_description: 'lorem ipsum',
+    rsi_release_id: 1,
+    released: false,
+    rsi_category_id: 6,
+    name: 'Foo Bar',
+    description: 'lorem ipsum',
+    body: 'lorem ipsum',
+    image: '/media/a71abdkipkp96r/product_thumb_large/01-Pacheco.jpg',
+    tasks: 2,
+    inprogress: 0,
+    completed: 0
+  )
+
   return
 end
 

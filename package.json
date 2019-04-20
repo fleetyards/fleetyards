@@ -4,10 +4,10 @@
   "scripts": {
     "docs": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch --notify",
     "lint": "yarn run lint:js && yarn run lint:style",
-    "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript",
+    "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript test/javascript",
     "lint:style": "stylelint --fix \"./src/**/*.scss\", \"./src/**/*.vue\"",
     "test:e2e": "cypress run"
   },
