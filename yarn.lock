@@ -12409,10 +12409,10 @@ vue-eslint-parser@^5.0.0:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-vue-eslint-parser@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-6.0.3.tgz#e8b4748a8c63c72889341a8a2e48c33e58d1c9d3"
-  integrity sha512-f2jZQojTLyZmuDLhCybJ8qIicfZfC6PmO7dEubZ0U/0tQ4dweRFuB0RpbbaHeMUfVFSYiKexbiemkze/h3/6SA==
+vue-eslint-parser@^6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-6.0.4.tgz#56ff47e2c2644bff39951d5a284982c7ecd6f7fa"
+  integrity sha512-GYsDsDWwKaGtnkW4nGUxr01wqIO2FB9/QHQTW1Gl5SUr5OyQvpnR90/D+Gq2cIxURX7aJ7+VyD+37Yx9eFwTgw==
   dependencies:
     debug "^4.1.1"
     eslint-scope "^4.0.0"
