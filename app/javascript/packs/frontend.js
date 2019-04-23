@@ -100,9 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (store.state.storeVersion !== window.STORE_VERSION) {
     console.info('Updating Store Version and resetting Store')
 
-    store.commit('reset')
+    store.dispatch('reset')
     store.commit('setStoreVersion', window.STORE_VERSION)
   }
+
+  store.dispatch('sentry/reset')
 
   store.dispatch('app/init')
 

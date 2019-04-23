@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import BackToTop from 'frontend/components/BackToTop'
+import BackToTop from 'frontend/partials/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
 import RenewSession from 'frontend/mixins/RenewSession'
@@ -55,9 +55,11 @@ export default {
   mixins: [Updates, CurrentUser, RenewSession],
   computed: {
     ...mapGetters([
-      'isAuthenticated',
       'navCollapsed',
       'overlayVisible',
+    ]),
+    ...mapGetters('session', [
+      'isAuthenticated',
     ]),
   },
   watch: {
@@ -135,10 +137,7 @@ export default {
       if (!['models', 'model', 'fleet', 'hangar'].includes(this.$route.name)) {
         return
       }
-      const response = await this.$api.get('vehicles/hangar-items')
-      if (!response.error) {
-        this.$store.commit('setHangar', response.data)
-      }
+      this.$store.dispatch('hangar/fetch')
     },
   },
 }

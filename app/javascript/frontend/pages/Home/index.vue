@@ -28,7 +28,8 @@
                         <Btn
                           id="search-submit"
                           :aria-label="t('labels.search')"
-                          large
+                          size="large"
+                          inline
                           @click.native="search"
                         >
                           <i class="fal fa-search" />
@@ -52,8 +53,7 @@
               <br>
               <Btn
                 href="https://paypal.me/pools/c/83jQLadz60"
-                large
-                filled
+                size="large"
               >
                 <i class="fab fa-paypal" />
                 {{ t('actions.supportUs') }}
@@ -108,22 +108,14 @@
               :key="model.id"
               class="col-xs-12 fade-list-item"
             >
-              <Panel>
-                <div class="model-panel">
-                  <div
-                    v-lazy:background-image="model.storeImageMedium"
-                    class="model-panel-image lazy"
-                  />
-                  <div class="model-panel-body">
-                    <router-link :to="{name: 'model', params: { slug: model.slug }}">
-                      <h3>{{ model.name }}</h3>
-                      <p>
-                        {{ model.description }}
-                      </p>
-                    </router-link>
-                  </div>
-                </div>
-              </Panel>
+              <TeaserPanel
+                :item="model"
+                :to="{
+                  name: 'model',
+                  params: { slug: model.slug },
+                }"
+                variant="text"
+              />
             </div>
           </transition-group>
           <Loader
@@ -173,12 +165,14 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
+import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     Loader,
     Panel,
+    TeaserPanel,
     Btn,
   },
   mixins: [I18n, MetaInfo],

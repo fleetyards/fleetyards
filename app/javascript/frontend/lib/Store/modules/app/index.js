@@ -1,12 +1,10 @@
 import actions from './actions'
+import getDefaultState from './state'
 
 export default () => ({
   namespaced: true,
 
-  state: {
-    version: window.APP_VERSION,
-    codename: window.APP_CODENAME,
-  },
+  state: getDefaultState(),
 
   actions,
 

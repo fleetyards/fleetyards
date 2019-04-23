@@ -60,7 +60,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'currentUser',
     ]),
     rsiVerificationDisabled() {

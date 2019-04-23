@@ -18,9 +18,9 @@ const client = axios.create({
     (data, headers) => {
       nprogress.start()
 
-      if (Store.getters.isAuthenticated) {
+      if (Store.getters['session/isAuthenticated']) {
         // eslint-disable-next-line no-param-reassign
-        headers.Authorization = `Bearer ${Store.state.authToken}`
+        headers.Authorization = `Bearer ${Store.getters['session/authToken']}`
       }
 
       return data
@@ -51,8 +51,8 @@ const handleError = async function handleError(error) {
     alert(I18n.t('messages.error.default'))
   }
 
-  if (error.response && error.response.status === 401 && Store.getters.isAuthenticated) {
-    Store.dispatch('logout', true)
+  if (error.response && error.response.status === 401 && Store.getters['session/isAuthenticated']) {
+    Store.dispatch('session/logout', true)
   }
 
   return {

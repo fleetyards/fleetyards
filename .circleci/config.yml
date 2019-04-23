@@ -124,6 +124,13 @@ jobs:
           at: ~/app
       - run: yarn run lint:js
 
+  vue-lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: yarn run lint:vue
+
   style-lint:
     <<: *defaults
     steps:
@@ -259,39 +266,9 @@ workflows:
       - bundle:
           requires:
             - checkout-code
-      - yarn:
-          requires:
-            - checkout-code
       - audit:
           requires:
             - bundle
-      - rubocop:
-          requires:
-            - bundle
-      - js-lint:
-          requires:
-            - yarn
-      - style-lint:
-          requires:
-            - yarn
-      - seeds:
-          requires:
-            - bundle
-      - ruby-tests:
-          requires:
-            - bundle
-            - yarn
-      - js-tests:
-          requires:
-            - yarn
-      - build:
-          requires:
-            - bundle
-            - yarn
-      - e2e-tests:
-          requires:
-            - bundle
-            - yarn
   main:
     jobs:
       - checkout-code
@@ -308,6 +285,9 @@ workflows:
           requires:
             - bundle
       - js-lint:
+          requires:
+            - yarn
+      - vue-lint:
           requires:
             - yarn
       - style-lint:
@@ -337,6 +317,7 @@ workflows:
             - audit
             - rubocop
             - js-lint
+            - vue-lint
             - style-lint
             - seeds
             - ruby-tests

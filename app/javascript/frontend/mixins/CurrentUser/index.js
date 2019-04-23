@@ -2,7 +2,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'isAuthenticated',
       'currentUser',
       'citizen',
@@ -13,13 +13,14 @@ export default {
       if (!this.isAuthenticated) {
         return
       }
+
       const response = await this.$api.get('users/current')
       if (!response.error) {
-        this.$store.commit('setCurrentUser', response.data)
+        this.$store.commit('session/setCurrentUser', response.data)
         if (this.currentUser.rsiHandle) {
           this.fetchCitizen()
         } else {
-          this.$store.commit('resetCitizen')
+          this.$store.dispatch('session/resetCitizen')
         }
       }
     },
@@ -30,9 +31,9 @@ export default {
 
       const response = await this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`)
       if (!response.error) {
-        this.$store.commit('setCitizen', response.data)
+        this.$store.commit('session/setCitizen', response.data)
       } else {
-        this.$store.commit('resetCitizen')
+        this.$store.dispatch('session/resetCitizen')
       }
     },
   },

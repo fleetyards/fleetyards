@@ -8,7 +8,7 @@
     "git add"
   ],
   "*.vue": [
-    "yarn run lint",
+    "yarn run lint:vue",
     "git add"
   ],
   "*.{rb,erb,haml,jbuilder}": [

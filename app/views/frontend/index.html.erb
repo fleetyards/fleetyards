@@ -1,6 +1,7 @@
 <script>
   window.APP_VERSION = '<%= Fleetyards::VERSION %>'
   window.APP_CODENAME = '<%= Fleetyards::CODENAME %>'
+  window.NODE_ENV = '<%= Rails.env %>'
   window.STORE_VERSION = '<%= Rails.application.secrets[:store_version] %>'
   window.API_ENDPOINT = '<%= Rails.application.secrets[:api_endpoint] %>'
   window.CABLE_ENDPOINT = '<%= Rails.application.secrets[:cable_endpoint] %>'

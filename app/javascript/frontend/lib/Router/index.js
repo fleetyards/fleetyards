@@ -32,7 +32,7 @@ const router = new Router({
 })
 
 const validateAndResolveNewRoute = (to) => {
-  if (to.meta.needsAuthentication && !Store.getters.isAuthenticated) {
+  if (to.meta.needsAuthentication && !Store.getters['session/isAuthenticated']) {
     return {
       routeName: 'login',
       routeParams: {

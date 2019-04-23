@@ -10,10 +10,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="page-actions">
-          <Btn
-            :to="{ name: 'roadmap' }"
-            exact
-          >
+          <Btn :to="{ name: 'roadmap', exact: true }">
             Roadmap
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">

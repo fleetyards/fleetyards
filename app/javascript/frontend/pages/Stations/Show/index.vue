@@ -4,7 +4,7 @@
       <div class="col-xs-12">
         <h1 v-if="station">
           <router-link
-            :to="stationBackRoute"
+            :to="backRoute"
             class="back-button"
           >
             <i class="fal fa-chevron-left" />
@@ -120,7 +120,9 @@ export default {
   computed: {
     ...mapGetters([
       'previousRoute',
-      'stationBackRoute',
+    ]),
+    ...mapGetters('stations', [
+      'backRoute',
     ]),
     emptyBoxVisible() {
       return !this.loading && (!this.station || this.station.shops.length === 0)
@@ -159,7 +161,7 @@ export default {
         route.query = this.previousRoute.query
       }
 
-      this.$store.commit('setStationBackRoute', route)
+      this.$store.commit('stations/setBackRoute', route)
     },
     async fetch() {
       this.loading = true

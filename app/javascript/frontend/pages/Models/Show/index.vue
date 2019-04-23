@@ -9,8 +9,8 @@
           <div class="col-xs-12">
             <h1>
               <router-link
-                v-if="modelBackRoute"
-                :to="modelBackRoute"
+                v-if="backRoute"
+                :to="backRoute"
                 class="back-button"
               >
                 <i class="fal fa-chevron-left" />
@@ -36,7 +36,7 @@
               <Btn
                 :active="show3d"
                 class="toggle-3d"
-                small
+                size="small"
                 @click.native="toggle3d"
               >
                 {{ t('labels.3dView') }}
@@ -45,7 +45,7 @@
                 v-if="show3d"
                 :active="color3d"
                 class="toggle-3d-color"
-                small
+                size="small"
                 @click.native="toggle3dColor"
               >
                 {{ t('labels.3dColor') }}
@@ -156,7 +156,7 @@
               <Btn
                 :href="`${model.storeUrl}#buying-options`"
                 class="sale-button"
-                large
+                size="large"
               >
                 {{ t('actions.model.onSale', { price: toDollar(model.pledgePrice) }) }}
                 <small class="price-info">
@@ -192,22 +192,7 @@
             :key="module.id"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
           >
-            <Panel>
-              <div class="model-panel">
-                <div
-                  :style="{
-                    'background-image': `url(${module.storeImage})`
-                  }"
-                  class="model-panel-image"
-                />
-                <div class="model-panel-body">
-                  <h3>{{ module.name }}</h3>
-                  <p>
-                    {{ module.description }}
-                  </p>
-                </div>
-              </div>
-            </Panel>
+            <TeaserPanel :item="module" />
           </div>
         </div>
         <Loader
@@ -233,22 +218,7 @@
             :key="upgrade.id"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
           >
-            <Panel>
-              <div class="model-panel">
-                <div
-                  :style="{
-                    'background-image': `url(${upgrade.storeImage})`
-                  }"
-                  class="model-panel-image"
-                />
-                <div class="model-panel-body">
-                  <h3>{{ upgrade.name }}</h3>
-                  <p>
-                    {{ upgrade.description }}
-                  </p>
-                </div>
-              </div>
-            </Panel>
+            <TeaserPanel :item="upgrade" />
           </div>
         </div>
         <Loader
@@ -297,14 +267,15 @@ import qs from 'qs'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import AddToHangar from 'frontend/components/AddToHangar'
+import AddToHangar from 'frontend/partials/Models/AddToHangar'
+import TeaserPanel from 'frontend/components/TeaserPanel'
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
 import ModelHardpoints from 'frontend/partials/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import ModelPanel from 'frontend/components/Models/Panel'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -312,6 +283,7 @@ export default {
     Loader,
     AddToHangar,
     Panel,
+    TeaserPanel,
     Btn,
     ModelHardpoints,
     ModelBaseMetrics,
@@ -341,7 +313,9 @@ export default {
     ...mapGetters([
       'previousRoute',
       'overlayVisible',
-      'modelBackRoute',
+    ]),
+    ...mapGetters('models', [
+      'backRoute',
     ]),
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
@@ -388,7 +362,7 @@ export default {
   },
   methods: {
     setBackRoute() {
-      if (this.modelBackRoute && this.previousRoute
+      if (this.backRoute && this.previousRoute
         && ['model-images', 'model-videos'].includes(this.previousRoute.name)) {
         return
       }
@@ -404,7 +378,7 @@ export default {
         route.query = this.previousRoute.query
       }
 
-      this.$store.commit('setModelBackRoute', route)
+      this.$store.commit('models/setBackRoute', route)
     },
     toggle3d() {
       this.show3d = !this.show3d

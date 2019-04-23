@@ -169,9 +169,13 @@
       </div>
     </div>
     <br>
-    <SubmitButton :loading="submitting">
+    <Btn
+      :loading="submitting"
+      type="submit"
+      size="large"
+    >
       {{ t('actions.save') }}
-    </SubmitButton>
+    </Btn>
   </form>
 </template>
 
@@ -179,7 +183,7 @@
 import { mapGetters } from 'vuex'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import SubmitButton from 'frontend/components/SubmitButton'
+import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import { success } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
@@ -187,7 +191,7 @@ import Panel from 'frontend/components/Panel'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
     Checkbox,
     Loader,
     Panel,
@@ -209,7 +213,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'currentUser',
       'citizen',
     ]),

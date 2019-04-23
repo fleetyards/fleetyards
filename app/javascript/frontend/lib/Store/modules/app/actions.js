@@ -1,8 +1,13 @@
 import { apiClient } from 'frontend/lib/ApiClient'
+import getDefaultState from './state'
 
 const CHECK_VERSION_INTERVAL = 60 * 1000 // 60s
 
 export default {
+  reset({ state }) {
+    Object.assign(state, getDefaultState())
+  },
+
   async init({ commit, dispatch }) {
     await dispatch('checkVersion')
     commit('setCheckVersionIntervalHandle', setInterval(() => { dispatch('checkVersion') }, CHECK_VERSION_INTERVAL))

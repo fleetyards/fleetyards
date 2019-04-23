@@ -34,21 +34,22 @@
               v-html="model.manufacturer.name"
             />
           </small>
-          <a
+          <Btn
             v-if="isMyShip && onEdit"
             :title="t('actions.edit')"
             :aria-label="t('actions.edit')"
-            class="btn btn-link panel-edit-button"
-            @click="onEdit(vehicle)"
+            class="panel-edit-button"
+            variant="link"
+            size="small"
+            @click.native="onEdit(vehicle)"
           >
             <i class="fa fa-pencil" />
-          </a>
+          </Btn>
           <AddToHangar
             v-else
             :model="model"
             class="panel-add-to-hangar-button"
-            clean
-            small
+            variant="panel"
           />
         </h2>
       </div>
@@ -129,7 +130,8 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
-import AddToHangar from 'frontend/components/AddToHangar'
+import Btn from 'frontend/components/Btn'
+import AddToHangar from 'frontend/partials/Models/AddToHangar'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
@@ -137,6 +139,7 @@ export default {
   name: 'ModelPanel',
   components: {
     Panel,
+    Btn,
     AddToHangar,
     ModelTopMetrics,
     ModelBaseMetrics,
@@ -173,12 +176,6 @@ export default {
       type: Number,
       default: null,
     },
-    hangarGroups: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
   },
   computed: {
     customName() {
@@ -203,7 +200,7 @@ export default {
       return this.t('labels.flagship')
     },
     isMyShip() {
-      return this.vehicle && this.$route.name === 'hangar'
+      return this.vehicle && this.onEdit
     },
     upgradable() {
       return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)

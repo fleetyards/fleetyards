@@ -8,7 +8,10 @@
   z-index: 1000;
   cursor: pointer;
   transition: all ease .5s;
-  padding: 20px 30px;
+  padding: 14px 20px;
+  margin: 10px;
+  background-color: rgba($gray-darker, .8);
+  border-radius: 50%;
 
   &:hover {
     opacity: .6;

@@ -247,12 +247,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentUser',
-      'citizen',
-      'isAuthenticated',
       'navCollapsed',
       'mobile',
       'isUpdateAvailable',
+    ]),
+    ...mapGetters('session', [
+      'currentUser',
+      'citizen',
+      'isAuthenticated',
     ]),
   },
   watch: {
@@ -296,7 +298,7 @@ export default {
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
     async logout() {
-      await this.$store.dispatch('logout')
+      await this.$store.dispatch('session/logout')
     },
     reload() {
       this.close()

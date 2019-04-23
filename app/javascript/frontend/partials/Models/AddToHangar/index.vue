@@ -2,8 +2,8 @@
   <Btn
     v-if="isAuthenticated"
     v-tooltip.bottom="t('actions.addToHangar')"
-    :clean="clean"
-    :small="small"
+    :variant="variant === 'panel' ? 'link' : 'default'"
+    :size="variant === 'panel' ? 'small' : 'default'"
     @click.native="add"
   >
     <span v-show="inHangar">
@@ -31,29 +31,30 @@ export default {
       type: Object,
       required: true,
     },
-    clean: {
-      type: Boolean,
-      default: false,
-    },
-    small: {
-      type: Boolean,
-      default: false,
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'panel'].indexOf(value) !== -1
+      },
     },
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'isAuthenticated',
-      'hangar',
+    ]),
+    ...mapGetters('hangar', [
+      'ships',
     ]),
     inHangar() {
-      return !!(this.hangar || []).find(item => item === this.model.slug)
+      return !!(this.ships || []).find(item => item === this.model.slug)
     },
   },
   methods: {
     async add() {
       const response = await this.$api.post('vehicles', { modelId: this.model.id })
       if (!response.error) {
-        this.$store.commit('addToHangar', this.model.slug)
+        this.$store.dispatch('hangar/add', this.model.slug)
         success(this.t('messages.vehicle.add.success', { model: this.model.name }))
       }
     },

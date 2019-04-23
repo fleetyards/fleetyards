@@ -9,9 +9,8 @@
         <p>{{ t('texts.empty.query') }}</p>
         <Btn
           slot="footer"
-          :to="{ name: this.$route.name }"
+          :to="{ name: this.$route.name, exact: true }"
           class="pull-right"
-          exact
         >
           {{ t('actions.empty.reset') }}
         </Btn>

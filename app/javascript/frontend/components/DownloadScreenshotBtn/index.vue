@@ -1,9 +1,9 @@
 <template>
   <Btn
     v-tooltip="t('actions.saveScreenshot')"
-    :disabled="downloading"
+    :loading="downloading"
     :aria-label="t('actions.saveScreenshot')"
-    small
+    size="small"
     @click.native="download"
   >
     <SmallLoader :loading="downloading" />

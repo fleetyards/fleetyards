@@ -149,7 +149,7 @@ import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import Box from 'frontend/components/Box'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import ModelPanel from 'frontend/components/Models/Panel'
 import I18n from 'frontend/mixins/I18n'
 import Pagination from 'frontend/mixins/Pagination'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -193,7 +193,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'currentUser',
     ]),
     fleetTitle() {
