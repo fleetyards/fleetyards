@@ -389,8 +389,7 @@
         "habs": "Habitation?"
       },
       "vehicles": {
-        "name": "Name",
-        "modelName": "Ship Name",
+        "name": "Name or Ship name",
         "purchased": "Purchased",
         "group": "Group"
       },
@@ -447,7 +446,7 @@
         "maxPrice": "maximal Price in UEC"
       },
       "vehicles": {
-        "name": "Enterprise, Nebuchadnezzar..."
+        "name": "Enterprise, Andromeda..."
       },
       "models": {
         "name": "Gladius, Andromeda...",

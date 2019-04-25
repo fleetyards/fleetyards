@@ -49,7 +49,7 @@ body {
   .main-wrapper {
     min-height: 100vh;
     flex: 1;
-    padding-top: 70px;
+    padding-top: 80px;
     margin-bottom: 50px;
   }
 
@@ -75,7 +75,7 @@ body {
   justify-content: space-evenly;
   align-items: center;
   flex-flow: column;
-  margin-top: -70px;
+  margin-top: -80px;
   margin-bottom: -50px;
   height: 100vh;
   text-align: center;
@@ -116,13 +116,21 @@ button {
   }
 }
 
+.top-search-bar {
+  position: fixed;
+  top: 15px;
+  left: 70px;
+  width: 600px;
+  transition: left ease 0.5s, right ease 0.5s;
+}
+
+.nav-visible .top-search-bar {
+  left: 370px;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
-
-    .main-wrapper {
-      padding-top: 50px;
-    }
   }
 
   .app-intro {
@@ -130,6 +138,20 @@ button {
       width: 200px;
       margin-bottom: 20px;
       margin-right: 0;
+    }
+  }
+
+  .top-search-bar {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+    width: auto;
+    right: 15px;
+  }
+
+  .app-body {
+    &.nav-visible {
+      .top-search-bar {
+        right: -285px;
+      }
     }
   }
 }
@@ -153,6 +175,10 @@ button {
       .app-footer {
         left: 250px;
         right: -250px;
+      }
+
+      .top-search-bar {
+        right: -285px;
       }
     }
   }

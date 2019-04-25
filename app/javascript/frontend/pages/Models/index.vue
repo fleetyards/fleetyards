@@ -1,5 +1,8 @@
 <template>
   <section class="container">
+    <div class="top-search-bar">
+      <ModelsSearch />
+    </div>
     <div class="row">
       <div class="col-xs-12">
         <div class="row">
@@ -180,6 +183,7 @@ import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import ModelsSearch from 'frontend/partials/Models/Search'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
@@ -196,6 +200,7 @@ export default {
     Loader,
     ModelPanel,
     EmptyBox,
+    ModelsSearch,
     ModelsFilterForm,
     FleetchartItem,
     FleetchartSlider,

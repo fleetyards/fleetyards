@@ -1,5 +1,8 @@
 <template>
   <section class="container hangar">
+    <div class="top-search-bar">
+      <VehiclesSearch />
+    </div>
     <div class="row">
       <div class="col-xs-12 col-md-12">
         <div class="row">
@@ -269,6 +272,7 @@ import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
+import VehiclesSearch from 'frontend/partials/Vehicles/Search'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
@@ -291,6 +295,7 @@ export default {
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartItem,
+    VehiclesSearch,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
