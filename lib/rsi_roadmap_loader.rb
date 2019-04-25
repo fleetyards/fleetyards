@@ -32,11 +32,19 @@ class RsiRoadmapLoader < RsiBaseLoader
           name: card['name'],
           description: card['description'],
           body: card['body'],
-          image: card['thumbnail']['urls']['source'],
           tasks: card['tasks'],
           inprogress: card['inprogress'],
           completed: card['completed']
         )
+
+        if item.store_image.blank?
+          image_url = card['thumbnail']['urls']['source']
+          image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
+          if image_url.present?
+            item.remote_store_image_url = image_url
+            item.save
+          end
+        end
 
         next unless item.rsi_category_id == RoadmapItem::MODELS_CATEGORY && item.model_id.blank?
 

@@ -9,6 +9,7 @@ json.description item.description
 json.body item.body
 json.rsi_category_id item.rsi_category_id
 json.image item.image
+json.store_image item.store_image.url
 json.released item.released
 json.tasks item.tasks
 json.inprogress item.inprogress
