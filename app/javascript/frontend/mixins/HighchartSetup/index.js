@@ -95,6 +95,9 @@ export default {
           column: {
             borderColor: '#333',
           },
+          bar: {
+            borderColor: '#333',
+          },
           pie: {
             borderColor: '#333',
             innerSize: '50%',
