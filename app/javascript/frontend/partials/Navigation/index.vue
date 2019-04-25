@@ -245,6 +245,7 @@ import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Navigation',
   components: {
     Btn,
   },

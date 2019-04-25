@@ -4,7 +4,6 @@ module.exports = {
   collectCoverage: false,
   collectCoverageFrom: [
     'app/javascript/**/*.{js,vue}',
-    'test/javascript/**',
     'app/javascript/translations/**',
   ],
   coverageDirectory: '<rootDir>/test/javascript/unit/coverage',
@@ -13,9 +12,7 @@ module.exports = {
   setupFiles: [
     '<rootDir>/test/javascript/unit/setup',
   ],
-  snapshotSerializers: [
-    '<rootDir>/node_modules/jest-serializer-vue',
-  ],
+  snapshotSerializers: ['jest-serializer-vue'],
   testPathIgnorePatterns: ['config'],
   moduleNameMapper: {
     '\\.(css|sass|scss)$': '<rootDir>/test/javascript/unit/__mocks__/style.js',
@@ -28,5 +25,6 @@ module.exports = {
   moduleDirectories: [
     '<rootDir>/node_modules',
     '<rootDir>/app/javascript',
+    '<rootDir>/test/javascript/unit',
   ],
 }

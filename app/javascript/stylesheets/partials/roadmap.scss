@@ -53,6 +53,24 @@
       opacity: 0.8;
       position: relative;
 
+      &[lazy=loading]::before {
+        content: "";
+        background-image: url('~images/loading.gif');
+        background-size: 100%;
+        background-position: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+        width: 50px;
+        height: 50px;
+      }
+
+      &[lazy=error] {
+        background-image: url('~images/store_image.jpg') !important;
+      }
+
       .roadmap-item-updated {
         position: absolute;
         top: 10px;

@@ -2,9 +2,7 @@
   <Panel>
     <div class="roadmap-item">
       <div
-        :style="{
-          'background-image': `url(${storeImage})`
-        }"
+        v-lazy:background-image="storeImage"
         class="item-image"
       />
       <div class="item-body">

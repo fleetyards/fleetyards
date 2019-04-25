@@ -133,6 +133,7 @@ import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
+  name: 'ModelPanel',
   components: {
     Panel,
     AddToHangar,

@@ -1,5 +1,6 @@
 import ModelPanel from 'frontend/partials/Models/Panel'
 import Panel from 'frontend/components/Panel'
+import mountVM from 'helpers/mount'
 
 describe('ShipPanel', () => {
   let cmp

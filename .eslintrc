@@ -45,15 +45,6 @@
     "mocha": true,
     "cypress/globals": true
   },
-  "globals": {
-    "process": true,
-    "env": true,
-    "fixture": true,
-    "self": true,
-    "clients": true,
-    "test": true,
-    "mountVM": true
-  },
   "overrides": [{
     "files": ["**/e2e/**/*.js"],
     "rules": {

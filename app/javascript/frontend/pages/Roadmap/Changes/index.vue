@@ -26,7 +26,7 @@
       <div class="col-xs-12">
         <transition-group
           name="fade-list"
-          class="row"
+          class="flex-row"
           tag="div"
           appear
         >

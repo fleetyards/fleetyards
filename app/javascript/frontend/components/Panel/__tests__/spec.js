@@ -1,3 +1,4 @@
+import mountVM from 'helpers/mount'
 import Panel from 'frontend/components/Panel'
 
 describe('Panel', () => {

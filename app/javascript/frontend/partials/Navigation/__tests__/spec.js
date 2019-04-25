@@ -1,3 +1,4 @@
+import mountVM from 'helpers/mount'
 import Navigation from 'frontend/partials/Navigation'
 
 describe('Navigation', () => {

@@ -1,9 +1,10 @@
+import { mount } from '@vue/test-utils'
 import Box from 'frontend/components/Box'
 
 describe('Box', () => {
   let cmp
   beforeEach(() => {
-    cmp = mountVM(Box)
+    cmp = mount(Box)
   })
 
   it('renders', () => {

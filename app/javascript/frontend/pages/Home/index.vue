@@ -111,9 +111,7 @@
               <Panel>
                 <div class="model-panel">
                   <div
-                    :style="{
-                      'background-image': `url(${model.storeImage})`
-                    }"
+                    v-lazy:background-image="model.storeImageMedium"
                     class="model-panel-image"
                   />
                   <div class="model-panel-body">
