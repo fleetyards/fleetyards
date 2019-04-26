@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 h2.hardpoint-category-label {
   text-transform: uppercase;
@@ -13,7 +13,7 @@ h2.hardpoint-category-label {
 .hardpoint-type {
   padding-left: 200px;
   position: relative;
-  border-bottom: 1px solid rgba($gray-darker, 0.7);
+  border-bottom: 1px solid rgba($gray-darker, .7);
   margin-bottom: 5px;
 
   &:last-child {

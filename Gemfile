@@ -55,7 +55,6 @@ gem 'sass-rails'
 gem 'webpacker', '>= 4.0.x'
 
 gem 'bootstrap-sass'
-gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 gem 'js-routes'

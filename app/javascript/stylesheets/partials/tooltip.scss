@@ -17,12 +17,12 @@
   &[aria-hidden='true'] {
     visibility: hidden;
     opacity: 0;
-    transition: opacity ease 0.15s, visibility ease 0.15s;
+    transition: opacity ease .15s, visibility ease .15s;
   }
 
   &[aria-hidden='false'] {
     visibility: visible;
     opacity: 1;
-    transition: opacity ease 0.15s;
+    transition: opacity ease .15s;
   }
 }

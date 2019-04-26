@@ -1,10 +1,10 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .to-fleetyards {
   position: absolute;
   top: -40px;
   color: $text-color;
-  transition: all ease 0.5s;
+  transition: all ease .5s;
 
   .brand {
     font-family: 'Orbitron', sans-serif;

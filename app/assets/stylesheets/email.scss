@@ -1,12 +1,12 @@
 
 $primary-color: #428bca;
-$global-font-color: #C8C8C8;
-$body-background: #272B30;
-$container-background: #272B30;
+$global-font-color: #c8c8c8;
+$body-background: #272b30;
+$container-background: #272b30;
 $body-font-family: 'Open Sans', sans-serif;
 
-@import "partials/email-fonts";
-@import "foundation-emails";
+@import 'partials/email-fonts';
+@import 'foundation-emails';
 
 body,
 html,
@@ -40,8 +40,7 @@ p {
 }
 
 .transmission {
-  font-size: 0.9em;
+  font-size: .9em;
   font-family: 'Orbitron', sans-serif;
   color: darken($global-font-color, 20%);
 }
-

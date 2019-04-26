@@ -24,11 +24,6 @@ module ApplicationHelper
     end
   end
 
-  def gravatar_path(size = 20, hash = nil)
-    hash ||= current_user.gravatar_hash
-    "//www.gravatar.com/avatar/#{hash}?s=#{size}&d=https%3A%2F%2Fidenticons.github.com%2F#{hash}.png&amp;r=x&amp;s=#{size}"
-  end
-
   def current_background_image
     if content_for?(:background_image)
       content_for(:background_image)

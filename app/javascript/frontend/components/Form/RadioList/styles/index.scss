@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 $color1: #f4f4f4;
 $color2: #3197ee;
@@ -17,7 +17,7 @@ $color2: #3197ee;
     padding-top: 2px;
   }
 
-  input[type="radio"] {
+  input[type='radio'] {
     position: absolute;
     opacity: 0;
 
@@ -54,7 +54,7 @@ $color2: #3197ee;
     }
 
     &:disabled + .radio-label::before {
-      opacity: 0.9;
+      opacity: .9;
     }
 
     &:disabled:checked + .radio-label::before {

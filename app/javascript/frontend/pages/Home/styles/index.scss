@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .home-ships,
 .home-images .images {
@@ -40,7 +40,7 @@
   text-align: center;
   left: 50%;
   font-size: 3em;
-  transition: all 0.5s ease-in-out;
+  transition: all .5s ease-in-out;
   cursor: pointer;
 
   &:hover {
@@ -79,35 +79,17 @@
 
   .model-panel-body {
     padding: 15px;
-    flex: 0.66;
+    flex: .66;
   }
 
   .model-panel-image {
-    flex: 0.33;
+    flex: .33;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
-    opacity: 0.8;
-
-    &[lazy=loading]::before {
-      content: "";
-      background-image: url('~images/loading.gif');
-      background-size: 100%;
-      background-position: center;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-left: -25px;
-      margin-top: -25px;
-      width: 50px;
-      height: 50px;
-    }
-
-    &[lazy=error] {
-      background-image: url('~images/store_image.jpg') !important;
-    }
+    opacity: .8;
   }
 
   a {

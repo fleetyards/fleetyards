@@ -1,31 +1,31 @@
-@import "~noty/lib/noty";
-@import "~photoswipe/dist/photoswipe";
-@import "vendor/photoswipe/default-skin";
-@import "variables";
-@import "colors/default";
-@import "bootstrap-custom";
-@import "colors/dark_overrides";
-@import "nprogress-custom";
-@import "partials/typography";
-@import "partials/transitions";
-@import "partials/background";
-@import "partials/flex";
-@import "partials/media";
-@import "partials/noty";
-@import "partials/form";
-@import "partials/buttons";
-@import "partials/tooltip";
-@import "partials/loader";
-@import "partials/hardpoint";
-@import "partials/small-loader";
-@import "partials/metrics";
-@import "partials/labels";
-@import "partials/tabs";
-@import "partials/panel";
-@import "partials/fleetchart";
-@import "partials/pagination";
-@import "partials/v-select-overrides";
-@import "partials/roadmap";
+@import '~noty/lib/noty';
+@import '~photoswipe/dist/photoswipe';
+@import 'vendor/photoswipe/default-skin';
+@import 'variables';
+@import 'colors/default';
+@import 'bootstrap-custom';
+@import 'colors/dark_overrides';
+@import 'nprogress-custom';
+@import 'partials/typography';
+@import 'partials/transitions';
+@import 'partials/background';
+@import 'partials/flex';
+@import 'partials/media';
+@import 'partials/noty';
+@import 'partials/form';
+@import 'partials/buttons';
+@import 'partials/tooltip';
+@import 'partials/loader';
+@import 'partials/hardpoint';
+@import 'partials/small-loader';
+@import 'partials/metrics';
+@import 'partials/labels';
+@import 'partials/tabs';
+@import 'partials/panel';
+@import 'partials/fleetchart';
+@import 'partials/pagination';
+@import 'partials/v-select-overrides';
+@import 'partials/roadmap';
 
 .no-scroll {
   overflow: hidden !important;
@@ -55,6 +55,15 @@ body {
 
   .main {
     overflow-y: auto;
+    left: 0;
+    position: relative;
+    transition: left ease .5s, right ease .5s;
+    width: 100%;
+  }
+
+  .app-footer {
+    left: 0;
+    transition: left ease .5s, right ease .5s;
   }
 
   &.nav-visible {
@@ -88,7 +97,7 @@ body {
 }
 
 a,
-input[type=button],
+input[type='button'],
 button {
   outline: 0 none !important;
 }
@@ -102,26 +111,12 @@ button {
   overflow-y: auto;
 }
 
-.app-body {
-  .main {
-    left: 0;
-    position: relative;
-    transition: left ease 0.5s, right ease 0.5s;
-    width: 100%;
-  }
-
-  .app-footer {
-    left: 0;
-    transition: left ease 0.5s, right ease 0.5s;
-  }
-}
-
 .top-search-bar {
   position: fixed;
   top: 15px;
   left: 70px;
   width: 600px;
-  transition: left ease 0.5s, right ease 0.5s;
+  transition: left ease .5s, right ease .5s;
 }
 
 .nav-visible .top-search-bar {
@@ -131,6 +126,12 @@ button {
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+
+    &.nav-visible {
+      .top-search-bar {
+        right: -285px;
+      }
+    }
   }
 
   .app-intro {
@@ -146,14 +147,6 @@ button {
     width: auto;
     right: 15px;
   }
-
-  .app-body {
-    &.nav-visible {
-      .top-search-bar {
-        right: -285px;
-      }
-    }
-  }
 }
 
 @media (max-width: 370px) {
@@ -163,9 +156,7 @@ button {
     .main-wrapper {
       padding-top: 0;
     }
-  }
 
-  .app-body {
     &.nav-visible {
       .main {
         left: 250px;

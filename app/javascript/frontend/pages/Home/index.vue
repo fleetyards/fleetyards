@@ -112,7 +112,7 @@
                 <div class="model-panel">
                   <div
                     v-lazy:background-image="model.storeImageMedium"
-                    class="model-panel-image"
+                    class="model-panel-image lazy"
                   />
                   <div class="model-panel-body">
                     <router-link :to="{name: 'model', params: { slug: model.slug }}">
@@ -155,7 +155,7 @@
                     :data-index="index"
                     :title="image.name"
                     :to="{name: 'model', params: { slug: image.model.slug }}"
-                    class="image"
+                    class="image lazy"
                   />
                 </div>
               </transition-group>
@@ -243,5 +243,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

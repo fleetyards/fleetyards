@@ -1,13 +1,13 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 nav {
-  transition: left ease 0.5s, right ease 0.5s;
+  transition: left ease .5s, right ease .5s;
   position: fixed;
   z-index: 1000;
   top: 0;
 
   .nav-toggle {
-    transition: left ease 0.5s;
+    transition: left ease .5s;
     position: absolute;
     left: 0;
     top: 0;
@@ -24,7 +24,7 @@ nav {
       border-radius: 1px;
       background-color: #c8c8c8;
       width: 22px;
-      transition: all ease 0.2s;
+      transition: all ease .2s;
     }
 
     .top-bar {
@@ -56,10 +56,10 @@ nav {
   }
 
   .nav-container {
-    transition: left ease 0.5s;
+    transition: left ease .5s;
     position: fixed;
-    background-color: rgba($gray-darker, 0.5);
-    border-right: 1px solid rgba(30, 34, 38, 0.5);
+    background-color: rgba($gray-darker, .5);
+    border-right: 1px solid rgba(30, 34, 38, .5);
     width: 300px;
     top: 0;
     bottom: 0;
@@ -75,7 +75,7 @@ nav {
       position: absolute;
       left: 10%;
       bottom: 20px;
-      opacity: 0.5;
+      opacity: .5;
     }
 
     .nav-container-inner {
@@ -99,8 +99,6 @@ nav {
       margin: 0;
 
       li {
-
-
         > a {
           cursor: pointer;
           color: darken($text-color, 10%);
@@ -132,14 +130,14 @@ nav {
           &::after {
             width: 3px;
             height: 80%;
-            content: "";
+            content: '';
             position: absolute;
             top: 10%;
             border-top-right-radius: 2px;
             border-bottom-right-radius: 2px;
             left: 0;
             background: $primary;
-            box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
           }
         }
       }
@@ -147,9 +145,8 @@ nav {
 
     .sub-menu {
       > a {
-
         > i {
-          transition: all 0.5s ease;
+          transition: all .5s ease;
           position: absolute;
           right: 20px;
           top: 50%;
@@ -229,7 +226,7 @@ nav {
 
   nav {
     .nav-toggle {
-      left: 300px
+      left: 300px;
     }
 
     .nav-container {
@@ -278,7 +275,7 @@ nav {
 
     nav {
       .nav-toggle {
-        left: 250px
+        left: 250px;
       }
     }
   }

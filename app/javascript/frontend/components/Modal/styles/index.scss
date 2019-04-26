@@ -1,7 +1,7 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .modal {
-  background-color: rgba(black, 0.7);
+  background-color: rgba(black, .7);
   display: none;
   position: fixed;
   top: 0;
@@ -28,7 +28,7 @@
     margin-right: -15px;
   }
 
-  &.wide  {
+  &.wide {
     .modal-dialog {
       width: 1000px;
     }
