@@ -105,7 +105,7 @@ export default {
       this.loading = true
       const response = await this.$api.get('roadmap', {
         q: {
-          updatedAtLteq: format(subWeeks(new Date(), 1), 'YYYY-MM-DD'),
+          updatedAtGteq: format(subWeeks(new Date(), 1), 'YYYY-MM-DD'),
         },
       })
       this.loading = false

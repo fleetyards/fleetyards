@@ -17,7 +17,7 @@ module Api
 
       private def roadmap_query_params
         @roadmap_query_params ||= query_params(
-          :name_cont, :released_eq, :updated_at_lteq, rsi_category_id_in: [], sorts: []
+          :name_cont, :released_eq, :updated_at_gteq, :updated_at_lteq, rsi_category_id_in: [], sorts: []
         )
       end
     end
