@@ -1,9 +1,14 @@
+import Vue from 'vue'
 import * as Sentry from '@sentry/browser'
+import * as Integrations from '@sentry/integrations'
 
 Sentry.init({
   release: window.APP_VERSION,
   dsn: window.SENTRY_DSN,
-  integrations: [new Sentry.Integrations.Vue()],
+  integrations: [new Integrations.Vue({
+    Vue,
+    attachProps: true,
+  })],
 })
 
 Sentry.configureScope((scope) => {

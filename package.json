@@ -15,6 +15,7 @@
   "dependencies": {
     "@rails/webpacker": "4.0.2",
     "@sentry/browser": "5.1.1",
+    "@sentry/integrations": "^5.1.0",
     "actioncable": "5.2.3",
     "ahoy.js": "0.3.4",
     "axios": "0.18.0",

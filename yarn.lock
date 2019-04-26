@@ -1094,6 +1094,14 @@
     "@sentry/utils" "5.1.0"
     tslib "^1.9.3"
 
+"@sentry/integrations@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.1.0.tgz#b0e8c9bb97fe6fc1410e9f023bb80d6f31428c8c"
+  integrity sha512-PkELxAWzoaaprBVtUcXTLFWYEMnoBDvM2MS2fXCFDMDpK3Nd6o5Ikl9b9gaS3JJ/w3lnv93vXjSsDH1LpUyCJg==
+  dependencies:
+    "@sentry/types" "5.1.0"
+    "@sentry/utils" "5.1.0"
+
 "@sentry/minimal@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.1.0.tgz#7892908c70d4f9f85b79eb861e561b82a170bfc2"
