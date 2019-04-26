@@ -1,15 +1,15 @@
-.checkbox input[type="checkbox"]:checked + label::after,
-.checkbox input[type="radio"]:checked + label::after {
-  font-family: "Font Awesome 5 Free";
+.checkbox input[type='checkbox']:checked + label::after,
+.checkbox input[type='radio']:checked + label::after {
+  font-family: 'Font Awesome 5 Pro', sans-serif;
   font-weight: 900;
-  content: "\f00c";
+  content: '\f00c';
 }
 
-input[type="checkbox"].styled:checked + label:after,
-input[type="radio"].styled:checked + label:after {
-  font-family: "Font Awesome 5 Free";
+input[type='checkbox'].styled:checked + label::after,
+input[type='radio'].styled:checked + label::after {
+  font-family: 'Font Awesome 5 Pro', sans-serif;
   font-weight: 900;
-  content: "\f00c";
+  content: '\f00c';
 }
 
 form {
@@ -34,21 +34,25 @@ form {
   }
 
   .has-error {
-    input, textarea {
+    input,
+    textarea {
       border-color: #c60f13;
-      background-color: rgba(red, 0.1);
+      background-color: rgba(red, .1);
       color: #ccc;
     }
 
     ::-webkit-input-placeholder {
       color: $state-danger-text;
     }
+
     :-moz-placeholder {
       color: $state-danger-text;
     }
+
     ::-moz-placeholder {
       color: $state-danger-text;
     }
+
     :-ms-input-placeholder {
       color: $state-danger-text;
     }
@@ -58,37 +62,9 @@ form {
     top: 0;
   }
 
-  .has-error {
-    input, textarea {
-      border-color: #c60f13;
-      background-color: rgba(red, 0.1);
-    }
-
-    ::-webkit-input-placeholder {
-      color: $state-danger-text;
-    }
-    :-moz-placeholder {
-      color: $state-danger-text;
-    }
-    ::-moz-placeholder {
-      color: $state-danger-text;
-    }
-    :-ms-input-placeholder {
-      color: $state-danger-text;
-    }
-  }
-
-  .invoice-position-value {
-    text-align: right;
-  }
-
   textarea {
     max-width: 100%;
     min-height: 150px;
-  }
-
-  .invoice-position-value {
-    text-align: right;
   }
 }
 
@@ -121,7 +97,7 @@ form {
 
       input {
         border-radius: 0 0 4px 4px;
-        border-bottom: 1px solid #999999;
+        border-bottom: 1px solid #999;
       }
     }
   }

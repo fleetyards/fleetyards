@@ -23,6 +23,7 @@
           :href="`${$root.frontendHost}/ships/${model.slug}`"
           target="_blank"
           rel="noopener"
+          class="lazy"
         />
       </div>
       <div
@@ -92,5 +93,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

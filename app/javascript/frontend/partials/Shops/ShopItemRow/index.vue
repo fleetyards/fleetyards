@@ -11,7 +11,7 @@
         <div
           :key="commodity.storeImageThumb"
           v-lazy:background-image="commodity.storeImageThumb"
-          class="image"
+          class="image lazy"
           alt="storeImage"
         />
       </router-link>
@@ -19,7 +19,7 @@
         v-else
         :key="commodity.storeImageThumb"
         v-lazy:background-image="commodity.storeImageThumb"
-        class="image"
+        class="image lazy"
         alt="storeImage"
       />
     </div>
@@ -168,7 +168,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

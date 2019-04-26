@@ -12,16 +12,16 @@
   &.hardpoint-empty {
     svg {
       .hardpoint-icon-bg {
-        opacity: 0.25;
+        opacity: .25;
       }
 
       .hardpoint-icon-empty-bg {
         polygon {
-          opacity: 0.05;
+          opacity: .05;
         }
 
         path {
-          opacity: 0.25;
+          opacity: .25;
         }
       }
     }
@@ -40,7 +40,7 @@
 
     .hardpoint-icon-quantity {
       polygon.hardpoint-icon-part {
-        opacity: 0.25;
+        opacity: .25;
       }
     }
 
@@ -55,7 +55,7 @@
   }
 
   .hardpoint-label {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, .8);
     position: absolute;
     font-size: 10px;
     display: flex;

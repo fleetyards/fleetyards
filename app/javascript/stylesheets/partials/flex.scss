@@ -80,24 +80,6 @@
       vertical-align: middle;
       border-radius: $border-radius-base;
       box-shadow: 0 0 5px black;
-
-      &[lazy=loading]::before {
-        content: "";
-        background-image: url('~images/loading.gif');
-        background-size: 100%;
-        background-position: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -25px;
-        margin-top: -25px;
-        width: 50px;
-        height: 50px;
-      }
-
-      &[lazy=error] {
-        background-image: url('~images/store_image.jpg') !important;
-      }
     }
   }
 
@@ -187,7 +169,7 @@
         &::before {
           border-top-left-radius: 2px;
           border-bottom-left-radius: 2px;
-          box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+          box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
           right: 0;
         }
       }
@@ -199,7 +181,7 @@
           left: 0;
           border-top-right-radius: 2px;
           border-bottom-right-radius: 2px;
-          box-shadow: 3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+          box-shadow: 3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
         }
       }
     }

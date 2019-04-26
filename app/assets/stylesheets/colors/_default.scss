@@ -4,7 +4,6 @@ $gravatar-shadow:        0 1px 0 #fff;
 $primary:              #428bca;
 $navbar-active:          $primary;
 
-
 $container-xlg:           80%;
 $container-lg:           90%;
 $container-md:           90%;
@@ -16,5 +15,5 @@ $font-size-h1: floor(($font-size-base * 2.15));
 $font-size-h2: floor(($font-size-base * 1.7));
 $font-size-h3: floor(($font-size-base * 1.25));
 $font-size-h4: $font-size-base;
-$font-size-h5: floor(($font-size-base * 0.85));
-$font-size-h6: floor(($font-size-base * 0.85));
+$font-size-h5: floor(($font-size-base * .85));
+$font-size-h6: floor(($font-size-base * .85));

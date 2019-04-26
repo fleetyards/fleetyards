@@ -6,7 +6,7 @@
     <div
       :key="item.storeImage"
       v-lazy:background-image="item.storeImage"
-      class="panel-bg"
+      class="panel-bg lazy"
     />
     <div class="row">
       <div class="col-xs-12">

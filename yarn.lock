@@ -1094,7 +1094,7 @@
     "@sentry/utils" "5.1.0"
     tslib "^1.9.3"
 
-"@sentry/integrations@^5.1.0":
+"@sentry/integrations@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.1.0.tgz#b0e8c9bb97fe6fc1410e9f023bb80d6f31428c8c"
   integrity sha512-PkELxAWzoaaprBVtUcXTLFWYEMnoBDvM2MS2fXCFDMDpK3Nd6o5Ikl9b9gaS3JJ/w3lnv93vXjSsDH1LpUyCJg==
@@ -11293,6 +11293,11 @@ stylehacks@^4.0.0:
     browserslist "^4.0.0"
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
+
+stylelint-config-prettier@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/stylelint-config-prettier/-/stylelint-config-prettier-5.1.0.tgz#bbc21d4b0dc01c8d19c181c2cca68fb8dadb515b"
+  integrity sha512-xRWnMTVxVcBJ2lHi0Y1B0Gr8RoXC6SsnXNYb5sjmDYupf2fxx67uxrms8jni1pviR/4QkwlqKuuH6Z4nXWnPWw==
 
 stylelint-config-recommended@^2.2.0:
   version "2.2.0"

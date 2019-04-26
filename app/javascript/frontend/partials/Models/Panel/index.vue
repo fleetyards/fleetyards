@@ -63,6 +63,7 @@
           v-lazy:background-image="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
+          class="lazy"
         >
           <div
             v-if="isMyShip"
@@ -217,5 +218,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

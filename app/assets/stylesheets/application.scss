@@ -9,19 +9,13 @@
 //= require noty/lib/noty
 //= require_self
 
-@import "bourbon";
-@import "font-awesome-sprockets";
-@import "font-awesome";
-@import "bootstrap-sprockets";
-
-@import "colors/default";
-@import "colors/dark";
-
+@import 'bourbon';
+@import 'bootstrap-sprockets';
+@import 'colors/default';
+@import 'colors/dark';
 @import 'bootstrap-custom';
-
-@import "colors/dark_overrides";
-
-@import "partials";
+@import 'colors/dark_overrides';
+@import 'partials';
 
 html {
   height: 100%;
@@ -48,9 +42,9 @@ body {
 .btn,
 .pagination a,
 a.list-group-item,
+.nav-tabs li a,
 footer#main a,
-a.navbar-brand,
-.nav-tabs li a {
+a.navbar-brand {
   transition: all .5s;
 }
 
@@ -104,6 +98,7 @@ a.thumbnail.active {
   justify-content: center;
   flex-wrap: wrap;
 }
+
 .panel-body {
   .highcharts-container {
     border-bottom-left-radius: 4px;
@@ -111,11 +106,16 @@ a.thumbnail.active {
   }
 }
 
+.env-label {
+  font-size: 20px;
+  padding: 10px;
+}
+
 .chart {
   position: relative;
 
   &.loading::before {
-    content: "";
+    content: '';
     background-image: image-url('loading.gif');
     background-size: 100%;
     background-position: center;

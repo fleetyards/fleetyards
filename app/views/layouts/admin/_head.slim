@@ -17,7 +17,9 @@ meta name="apple-mobile-web-app-status-bar-style" content="black"
 = favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png'
 = favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png'
 
-== stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700|Orbitron:400,500,700,900"
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-oi8o31xSQq8S0RpBcb4FaLB8LJi9AT8oIdmS1QldR8Ui7KUQjNAnDlJjp55Ba8FG" crossorigin="anonymous">
+<link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900" crossorigin>
+
 == stylesheet_link_tag 'application'
 
 - if defined?(jwt_token)

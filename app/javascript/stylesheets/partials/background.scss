@@ -1,7 +1,7 @@
 .background-image {
   display: block;
   position: fixed;
-  opacity: 0.4;
+  opacity: .4;
   z-index: -1;
   left: 0;
   top: 0;
@@ -12,7 +12,6 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  transition: background-image ease 0.5s;
+  transition: background-image ease .5s;
   background-color: black;
 }
-

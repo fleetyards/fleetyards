@@ -1,13 +1,13 @@
-@import "bootstrap/variables";
+@import 'bootstrap/variables';
 
 $footer-border-color:    #111;
 $footer-bg-color:        #222;
 $gravatar-shadow:        0 1px 0 #333;
-$gray-darker:            #272B30;
+$gray-darker:            #272b30;
 $default-btn:            #3a3f44;
-$gray-dark:              #3A3F44;
-$gray:                   #52575C;
-$gray-light:             #7A8288;
+$gray-dark:              #3a3f44;
+$gray:                   #52575c;
+$gray-light:             #7a8288;
 $gray-lighter:           #999;
 
 // Brand colors
@@ -21,7 +21,7 @@ $brand-info:            #5bc0de;
 // Scaffolding
 // -------------------------
 $body-bg:               $gray-darker;
-$text-color:            #C8C8C8;
+$text-color:            #c8c8c8;
 
 // Links
 // -------------------------
@@ -42,7 +42,6 @@ $table-bg-hover:                     lighten($body-bg, 15%);
 $table-bg-active:                    $table-bg-hover;
 
 $table-border-color:                 darken($gray-darker, 5%); // table and cell border
-
 
 // Buttons
 // -------------------------
@@ -75,7 +74,6 @@ $btn-info-border:                darken($btn-info-bg, 6%);
 
 $btn-link-disabled-color:        $gray-light;
 
-
 // Forms
 // -------------------------
 
@@ -103,7 +101,7 @@ $input-group-addon-border-color: $btn-primary-bg;
 // -------------------------
 
 $dropdown-bg:                    rgba(darken($gray-dark, 10%), .9);
-$dropdown-border:                rgba(0,0,0,.15);
+$dropdown-border:                rgba(0, 0, 0, .15);
 $dropdown-fallback-border:       $gray-darker;
 $dropdown-divider-bg:            darken($gray-darker, 5%);
 
@@ -177,7 +175,6 @@ $nav-pills-border-radius:                   $border-radius-base;
 $nav-pills-active-link-hover-bg:            $btn-default-bg;//$component-active-bg;
 $nav-pills-active-link-hover-color:         $component-active-color;
 
-
 // Pagination
 // -------------------------
 $pagination-color:                     #fff;
@@ -207,14 +204,14 @@ $jumbotron-bg:                   rgba(darken($body-bg, 5%), .8);
 // Popovers
 // -------------------------
 $popover-bg:                          lighten($body-bg, 3%);
-$popover-border-color:                rgba(0,0,0,.2);
+$popover-border-color:                rgba(0, 0, 0, .2);
 $popover-fallback-border-color:       #999;
 
 $popover-title-bg:                    $popover-bg;
 $popover-arrow-color:                 $popover-bg;
 
 $popover-arrow-outer-width:           ($popover-arrow-width + 1);
-$popover-arrow-outer-color:           rgba(0,0,0,.25);
+$popover-arrow-outer-color:           rgba(0, 0, 0, .25);
 $popover-arrow-outer-fallback-color:  #999;
 
 // Labels
@@ -229,19 +226,17 @@ $label-danger-bg:             $brand-danger;
 $label-color:                 #fff;
 $label-link-hover-color:      #fff;
 
-
 // Modals
 // -------------------------
 $modal-title-line-height:     $line-height-base;
 
 $modal-content-bg:                             lighten($body-bg, 3%);
-$modal-content-border-color:                   rgba(0,0,0,.2);
+$modal-content-border-color:                   rgba(0, 0, 0, .2);
 $modal-content-fallback-border-color:          #999;
 
 $modal-backdrop-bg:           #000;
 $modal-header-border-color:   darken($gray-darker, 5%);
 $modal-footer-border-color:   $modal-header-border-color;
-
 
 // Alerts
 // -------------------------
@@ -264,7 +259,6 @@ $alert-danger-bg:             $state-danger-bg;
 $alert-danger-text:           $state-danger-text;
 $alert-danger-border:         $state-danger-border;
 
-
 // Progress bars
 // -------------------------
 $progress-bg:                 darken($body-bg, 5%);
@@ -276,11 +270,10 @@ $progress-bar-warning-bg:     $brand-warning;
 $progress-bar-danger-bg:      $brand-danger;
 $progress-bar-info-bg:        $brand-info;
 
-
 // List group
 // -------------------------
 $list-group-bg:               rgba(lighten($body-bg, 3%), .4);
-$list-group-border:           rgba(0, 0, 0, 0.6);
+$list-group-border:           rgba(0, 0, 0, .6);
 $list-group-border-radius:    $border-radius-base;
 
 $list-group-hover-bg:         rgba(lighten($body-bg, 10%), .8);
@@ -292,16 +285,15 @@ $list-group-link-color:          $text-color;
 $list-group-link-heading-color:  #fff;
 $list-group-link-hover-color:    darken(#fff, 10%);
 
-
 // Panels
 // -------------------------
 $panel-bg:                    rgba(lighten($body-bg, 3%), .8);
-$panel-inner-border:          rgba(0, 0, 0, 0.6);
+$panel-inner-border:          rgba(0, 0, 0, .6);
 $panel-border-radius:         $border-radius-base;
 $panel-footer-bg:             lighten($body-bg, 10%);
 
 $panel-default-text:          $text-color;
-$panel-default-border:        rgba(0, 0, 0, 0.6);
+$panel-default-border:        rgba(0, 0, 0, .6);
 $panel-default-heading-bg:    rgba(lighten($body-bg, 10%), .4);
 
 $panel-primary-text:          #fff;
@@ -332,7 +324,6 @@ $thumbnail-border-radius:     $border-radius-base;
 
 $thumbnail-caption-color:     $text-color;
 
-
 // Wells
 // -------------------------
 $well-bg:                     rgba(darken($body-bg, 5%), .8);
@@ -349,14 +340,12 @@ $badge-active-bg:             $gray-light;
 
 $badge-font-weight:           bold;
 
-
 // Breadcrumbs
 // -------------------------
 $breadcrumb-bg:               transparent;
 $breadcrumb-color:            #ccc;
 $breadcrumb-active-color:     $gray-light;
-$breadcrumb-separator:        "/";
-
+$breadcrumb-separator:        '/';
 
 // Code
 // ------------------------

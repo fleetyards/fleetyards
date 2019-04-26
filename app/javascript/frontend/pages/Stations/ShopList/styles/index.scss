@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 $borderRadius: 16px;
 
@@ -26,10 +26,10 @@ $borderRadius: 16px;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, .6);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    opacity: 0.7;
+    opacity: .7;
   }
 }

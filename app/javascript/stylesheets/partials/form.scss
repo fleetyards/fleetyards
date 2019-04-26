@@ -23,7 +23,7 @@
   position: relative;
 }
 
-input.disabled-clean[disabled=disabled] {
+input.disabled-clean[disabled='disabled'] {
   cursor: copy;
 }
 

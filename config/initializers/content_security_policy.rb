@@ -1,37 +1,57 @@
 # frozen_string_literal: true
 
-# Be sure to restart your server when you modify this file.
-
 # Define an application-wide content security policy
 # For further information see the following documentation
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-# Rails.application.config.content_security_policy do |policy|
-#   policy.default_src :self, :https
-#   policy.font_src    :self, :https, :data
-#   policy.img_src     :self, :https, :data
-#   policy.object_src  :none
-#   policy.script_src  :self, :https
-#   policy.style_src   :self, :https
-
-#   # Specify URI for violation reports
-#   # policy.report_uri "/csp-violation-report-endpoint"
-# end
+require 'uri'
 
 Rails.application.config.content_security_policy do |policy|
-  policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
+  api_endpoint = "https://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
+  cable_endpoint = "wss://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
+
   if Rails.env.development?
-    # policy.script_src :self, :https, :unsafe_eval, :unsafe_inline
-  elsif ENV['SENTRY_CSP_URI'].present?
-    # policy.script_src :self, :https
-    policy.report_uri ENV['SENTRY_CSP_URI']
+    api_endpoint = "http://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
+    cable_endpoint = "ws://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
   end
+
+  connect_src = [
+    :self, cable_endpoint, api_endpoint, 'https://img.youtube.com',
+    'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
+    'https://pro.fontawesome.com', Rails.application.secrets.rsi_endpoint
+  ]
+
+  connect_src.concat ['ws://localhost:3035', 'http://localhost:3035'] if Rails.env.development?
+
+  script_src = [
+    :self, :unsafe_inline, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com'
+  ]
+
+  style_src = [
+    :self, :unsafe_inline, 'https://fonts.googleapis.com', 'https://pro.fontawesome.com'
+  ]
+
+  img_src = [
+    :self, :data, :blob, Rails.application.secrets.frontend_endpoint,
+    Rails.application.secrets.rsi_endpoint, 'https://img.youtube.com'
+  ]
+
+  font_src = [
+    :self, 'https://fonts.gstatic.com', 'https://pro.fontawesome.com'
+  ]
+
+  frame_src = [
+    :self, 'https://www.youtube.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
+  ]
+
+  policy.default_src :self
+  policy.connect_src(*connect_src)
+  policy.script_src(*script_src)
+  policy.style_src(*style_src)
+  policy.img_src(*img_src)
+  policy.font_src(*font_src)
+  policy.frame_src(*frame_src)
+  policy.worker_src :self
+  policy.object_src :self
+  policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
 end
-
-# If you are using UJS then enable automatic nonce generation
-# Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }
-
-# Report CSP violations to a specified URI
-# For further information see the following documentation:
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
-# Rails.application.config.content_security_policy_report_only = true

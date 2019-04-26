@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 $innerBorderWidth: 3px;
 $outerBorderWidth: 2px;
@@ -45,7 +45,7 @@ $outerBorderWidth: 2px;
     padding-bottom: 30px;
     padding-top: 30px;
     border-top: $innerBorderWidth solid $panel-inner-border;
-    background-color: rgba($gray-darker, 0.7);
+    background-color: rgba($gray-darker, .7);
 
     .app-footer-inner-border {
       width: 100%;
@@ -83,7 +83,7 @@ $outerBorderWidth: 2px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
-    opacity: 0.7;
+    opacity: .7;
     width: 100px;
     height: 100px;
     position: absolute;

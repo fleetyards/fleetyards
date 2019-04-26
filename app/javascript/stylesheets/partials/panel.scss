@@ -16,7 +16,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &::before {
-    content: "";
+    content: '';
     height: $outerBorderWidth;
     background-color: #444;
     position: absolute;
@@ -26,7 +26,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &::after {
-    content: "";
+    content: '';
     height: $outerBorderWidth;
     background-color: #444;
     position: absolute;
@@ -39,13 +39,13 @@ $contentBorderRadius: $panelContentBorderRadius;
 .panel {
   border: $innerBorderWidth solid $panel-inner-border;
   background-color: $panel-bg;
-  box-shadow: 0 1px 1px rgba(#000, 0.05);
+  box-shadow: 0 1px 1px rgba(#000, .05);
   border-radius: $innerBorderRadius;
   min-height: $innerBorderRadius * 2;
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     border-bottom-right-radius: 1px;
     border-bottom-left-radius: 1px;
     height: ($innerBorderWidth + 1);
@@ -57,7 +57,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &::after {
-    content: "";
+    content: '';
     border-top-right-radius: 1px;
     border-top-left-radius: 1px;
     height: ($innerBorderWidth + 1);
@@ -105,7 +105,7 @@ $contentBorderRadius: $panelContentBorderRadius;
 
   .panel-image {
     height: 200px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(0, 0, 0, .6);
     position: relative;
     overflow: hidden;
     transition: border-radius $transition-base-speed ease;
@@ -115,7 +115,7 @@ $contentBorderRadius: $panelContentBorderRadius;
       display: block;
       height: 100%;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, .6);
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -125,24 +125,6 @@ $contentBorderRadius: $panelContentBorderRadius;
       animation-fill-mode: both;
       -webkit-animation-name: fadeIn;
       animation-name: fadeIn;
-
-      &[lazy=loading]::before {
-        content: "";
-        background-image: url('~images/loading.gif');
-        background-size: 100%;
-        background-position: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -25px;
-        margin-top: -25px;
-        width: 50px;
-        height: 50px;
-      }
-
-      &[lazy=error] {
-        background-image: url('~images/store_image.jpg') !important;
-      }
     }
 
     &:last-child {
@@ -186,5 +168,4 @@ $contentBorderRadius: $panelContentBorderRadius;
     border-width: 0 0 1px;
     border-radius: 0;
   }
-
 }

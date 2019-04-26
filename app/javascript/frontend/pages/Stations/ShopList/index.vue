@@ -74,7 +74,7 @@
               <div
                 :key="shop.storeImageMedium"
                 v-lazy:background-image="shop.storeImageMedium"
-                class="panel-bg"
+                class="panel-bg lazy"
               />
               <div class="row">
                 <div class="col-xs-12">

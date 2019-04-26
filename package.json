@@ -9,13 +9,13 @@
     "test:watch": "jest --watch --notify",
     "lint": "yarn run lint:js && yarn run lint:style",
     "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript test/javascript",
-    "lint:style": "stylelint --fix \"./app/javascript/**/*.scss\", \"./app/javascript/**/*.vue\"",
+    "lint:style": "stylelint \"app/javascript/**/*.scss\" \"app/javascript/**/*.vue\" \"app/assets/**/*.scss\" --fix",
     "test:e2e": "cypress run"
   },
   "dependencies": {
     "@rails/webpacker": "4.0.2",
     "@sentry/browser": "5.1.1",
-    "@sentry/integrations": "^5.1.0",
+    "@sentry/integrations": "5.1.0",
     "actioncable": "5.2.3",
     "ahoy.js": "0.3.4",
     "axios": "0.18.0",
@@ -84,6 +84,7 @@
     "lint-staged": "^8.1.5",
     "sass-loader": "7.1.0",
     "stylelint": "10.0.1",
+    "stylelint-config-prettier": "5.1.0",
     "stylelint-config-standard": "18.3.0",
     "typescript": "3.4.5",
     "vue-eslint-parser": "6.0.4",

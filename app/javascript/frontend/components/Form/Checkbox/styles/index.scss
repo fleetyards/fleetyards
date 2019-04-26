@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .checkbox {
   position: absolute;
@@ -51,7 +51,7 @@
   }
 
   &:disabled + label {
-    opacity: 0.5;
+    opacity: .5;
     cursor: not-allowed;
 
     &::before {

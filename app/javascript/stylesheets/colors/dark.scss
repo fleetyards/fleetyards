@@ -1,4 +1,4 @@
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
 
 $grid-float-breakpoint: $screen-sm-max;
 
@@ -40,7 +40,7 @@ $component-active-bg:            transparent;
 // -------------------------
 
 $table-bg:                           transparent;
-$table-bg-accent:                    rgba(lighten($body-bg, 6%), 0.2); // for striping
+$table-bg-accent:                    rgba(lighten($body-bg, 6%), .2); // for striping
 $table-bg-hover:                     lighten($body-bg, 15%);
 $table-bg-active:                    $table-bg-hover;
 
@@ -103,8 +103,8 @@ $input-group-addon-border-color: $gray-darker;
 // Dropdowns
 // -------------------------
 
-$dropdown-bg:                    rgba(darken($gray-dark, 10%), 0.9);
-$dropdown-border:                rgba(0, 0, 0, 0.15);
+$dropdown-bg:                    rgba(darken($gray-dark, 10%), .9);
+$dropdown-border:                rgba(0, 0, 0, .15);
 $dropdown-fallback-border:       $gray-darker;
 $dropdown-divider-bg:            darken($gray-darker, 5%);
 
@@ -129,7 +129,7 @@ $navbar-padding-horizontal:        floor($grid-gutter-width / 2);
 $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2);
 
 $navbar-default-color:             $text-color;
-$navbar-default-bg:                rgba($gray-darker, 0.9);
+$navbar-default-bg:                rgba($gray-darker, .9);
 $navbar-default-border:            darken($navbar-default-bg, 6.5%);
 
 // Navbar links
@@ -166,7 +166,7 @@ $nav-tabs-border-color:                     darken($gray-darker, 5%);
 
 $nav-tabs-link-hover-border-color:          darken($gray-darker, 5%);
 
-$nav-tabs-active-link-hover-bg:             rgba(lighten($body-bg, 5%), 0.8);
+$nav-tabs-active-link-hover-bg:             rgba(lighten($body-bg, 5%), .8);
 $nav-tabs-active-link-hover-color:          #fff;
 $nav-tabs-active-link-hover-border-color:   darken($gray-darker, 5%);
 
@@ -202,29 +202,29 @@ $pager-disabled-color:                 $gray-light;
 
 // Jumbotron
 // -------------------------
-$jumbotron-bg:                   rgba(darken($body-bg, 5%), 0.8);
+$jumbotron-bg:                   rgba(darken($body-bg, 5%), .8);
 
 // Popovers
 // -------------------------
 $popover-bg:                          lighten($body-bg, 3%);
-$popover-border-color:                rgba(0, 0, 0, 0.2);
+$popover-border-color:                rgba(0, 0, 0, .2);
 $popover-fallback-border-color:       #999;
 
 $popover-title-bg:                    $popover-bg;
 $popover-arrow-color:                 $popover-bg;
 
 $popover-arrow-outer-width:           ($popover-arrow-width + 1);
-$popover-arrow-outer-color:           rgba(0, 0, 0, 0.25);
+$popover-arrow-outer-color:           rgba(0, 0, 0, .25);
 $popover-arrow-outer-fallback-color:  #999;
 
 // Labels
 // -------------------------
-$label-default-bg:            rgba($btn-default-bg, 0.8);
-$label-primary-bg:            rgba($primary, 0.8);
-$label-success-bg:            rgba($brand-success, 0.8);
-$label-info-bg:               rgba($brand-info, 0.8);
-$label-warning-bg:            rgba($brand-warning, 0.8);
-$label-danger-bg:             rgba($brand-danger, 0.8);
+$label-default-bg:            rgba($btn-default-bg, .8);
+$label-primary-bg:            rgba($primary, .8);
+$label-success-bg:            rgba($brand-success, .8);
+$label-info-bg:               rgba($brand-info, .8);
+$label-warning-bg:            rgba($brand-warning, .8);
+$label-danger-bg:             rgba($brand-danger, .8);
 
 $label-color:                 #fff;
 $label-link-hover-color:      #fff;
@@ -234,7 +234,7 @@ $label-link-hover-color:      #fff;
 $modal-title-line-height:     $line-height-base;
 
 $modal-content-bg:                             lighten($body-bg, 3%);
-$modal-content-border-color:                   rgba(0, 0, 0, 0.2);
+$modal-content-border-color:                   rgba(0, 0, 0, .2);
 $modal-content-fallback-border-color:          #999;
 
 $modal-backdrop-bg:           #000;
@@ -275,11 +275,11 @@ $progress-bar-info-bg:        $brand-info;
 
 // List group
 // -------------------------
-$list-group-bg:               rgba(lighten($body-bg, 3%), 0.4);
-$list-group-border:           rgba(0, 0, 0, 0.6);
+$list-group-bg:               rgba(lighten($body-bg, 3%), .4);
+$list-group-border:           rgba(0, 0, 0, .6);
 $list-group-border-radius:    $border-radius-base;
 
-$list-group-hover-bg:         rgba(lighten($body-bg, 10%), 0.8);
+$list-group-hover-bg:         rgba(lighten($body-bg, 10%), .8);
 $list-group-active-color:     $component-active-color;
 $list-group-active-bg:        lighten($body-bg, 10%);
 $list-group-active-border:    $list-group-border;
@@ -290,7 +290,7 @@ $list-group-link-hover-color:    darken(#fff, 10%);
 
 // Wells
 // -------------------------
-$well-bg:                     rgba(darken($body-bg, 5%), 0.8);
+$well-bg:                     rgba(darken($body-bg, 5%), .8);
 $well-border:                 darken($well-bg, 7%);
 
 // Badges
@@ -309,7 +309,7 @@ $badge-font-weight:           bold;
 $breadcrumb-bg:               transparent;
 $breadcrumb-color:            #ccc;
 $breadcrumb-active-color:     $gray-light;
-$breadcrumb-separator:        "/";
+$breadcrumb-separator:        '/';
 
 // Code
 // ------------------------

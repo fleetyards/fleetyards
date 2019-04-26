@@ -6,13 +6,15 @@
 
         &.file-preview {
           width: 200px;
+
           img {
             max-width: 100%;
             max-height: 100px;
           }
         }
 
-        &.file-size, &.upload-progress {
+        &.file-size,
+        &.upload-progress {
           width: 300px;
         }
 
@@ -47,11 +49,11 @@
   }
 
   &.fade {
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -ms-transition: all .3s ease-out;
+    -o-transition: all .3s ease-out;
+    transition: all .3s ease-out;
     opacity: 1;
   }
 }

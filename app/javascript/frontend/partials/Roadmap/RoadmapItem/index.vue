@@ -3,7 +3,7 @@
     <div class="roadmap-item">
       <div
         v-lazy:background-image="storeImage"
-        class="item-image"
+        class="item-image lazy"
       />
       <div class="item-body">
         <h3>

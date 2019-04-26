@@ -23,7 +23,7 @@ $innerBorderWidth: 2px;
     background-color: $panel-bg;
 
     &::before {
-      content: "";
+      content: '';
       height: $innerBorderWidth;
       background-color: #444;
       position: absolute;
@@ -33,7 +33,7 @@ $innerBorderWidth: 2px;
     }
 
     &::after {
-      content: "";
+      content: '';
       height: $innerBorderWidth;
       background-color: #444;
       position: absolute;

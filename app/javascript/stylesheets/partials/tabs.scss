@@ -1,12 +1,12 @@
 $padding-horizontal: floor(($grid-gutter-width / 2));
-$nav-transition-speed: 0.3s;
+$nav-transition-speed: .3s;
 
 .tabs {
   position: relative;
   padding: 25px 0 20px;
 
   &::before {
-    content: "";
+    content: '';
     background: linear-gradient(transparent 0%, $gray-darker 10%, $gray-darker 90%, transparent 100%);
     height: 100%;
     width: 1px;
@@ -42,7 +42,7 @@ $nav-transition-speed: 0.3s;
         opacity: 0;
         background: $primary;
         width: 3px;
-        content: "";
+        content: '';
         position: absolute;
         height: 100%;
         top: 0;
@@ -81,7 +81,7 @@ $nav-transition-speed: 0.3s;
 
     &.disabled {
       > a {
-        opacity: 0.8;
+        opacity: .8;
         color: $text-color;
         cursor: default;
 
@@ -110,7 +110,7 @@ $nav-transition-speed: 0.3s;
 
         &:hover {
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
           }
         }
       }
@@ -125,7 +125,7 @@ $nav-transition-speed: 0.3s;
           border-right: none;
 
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
           }
         }
       }
@@ -150,7 +150,7 @@ $nav-transition-speed: 0.3s;
 
         &:hover {
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
           }
         }
       }
@@ -165,7 +165,7 @@ $nav-transition-speed: 0.3s;
           border-left: none;
 
           &::before {
-            box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
           }
         }
       }

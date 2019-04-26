@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .filter-list {
   margin-bottom: 15px;
@@ -23,22 +23,25 @@
     }
   }
 
-  .filter-list-title {
-    font-weight: bold;
-    position: relative;
-    cursor: pointer;
-    background: rgba($input-bg, 0.9);
-    padding: 10px 40px 10px 10px;
-    border-radius: $border-radius-base;
-    border: 1px solid $input-border;
-    transition: all 0.5s ease;
-
+  .filter-list-title,
+  .filter-list-item {
     i {
-      transition: all 0.5s ease;
+      transition: all .5s ease;
       position: absolute;
       right: 15px;
       top: 13px;
     }
+  }
+
+  .filter-list-title {
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    background: rgba($input-bg, .9);
+    padding: 10px 40px 10px 10px;
+    border-radius: $border-radius-base;
+    border: 1px solid $input-border;
+    transition: all .5s ease;
 
     &:hover {
       background: $input-bg;
@@ -64,7 +67,7 @@
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, 0.8);
+    background-color: rgba($gray-darker, .8);
     border-bottom-left-radius: $border-radius-base;
     border-bottom-right-radius: $border-radius-base;
   }
@@ -92,22 +95,15 @@
       }
     }
 
-    i {
-      position: absolute;
-      right: 15px;
-      top: 12px;
-      transition: all 0.5s ease;
-    }
-
     &::before,
     &::after {
       width: 3px;
       height: 26px;
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       margin-top: -13px;
-      transition: all ease 0.3s;
+      transition: all ease .3s;
       opacity: 0;
     }
 
@@ -129,20 +125,20 @@
       &::before {
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
-        box-shadow: 3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+        box-shadow: 3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
       }
 
       &::after {
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
-        box-shadow: -3px 0 10px rgba(darken($primary, 20%), 0.9), 0 3px 10px rgba(darken($primary, 20%), 0.9), 0 -3px 10px rgba(darken($primary, 20%), 0.9);
+        box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
       }
     }
 
     &.active {
       color: $primary;
       animation-name: flash;
-      animation-duration: 0.5s;
+      animation-duration: .5s;
 
       i {
         transform: rotate(45deg);
@@ -164,6 +160,6 @@
 
   25%,
   75% {
-    opacity: 0.5;
+    opacity: .5;
   }
 }

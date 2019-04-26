@@ -11,7 +11,7 @@
     <div
       :key="$store.state.backgroundImage"
       v-lazy:background-image="$store.state.backgroundImage"
-      class="background-image"
+      class="background-image lazy"
     />
     <transition
       name="fade"

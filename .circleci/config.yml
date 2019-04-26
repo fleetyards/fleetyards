@@ -116,14 +116,19 @@ jobs:
           name: rubocoptering
           command: bundle exec rubocop --format progress
 
-  eslint:
+  js-lint:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/app
-      - run:
-          name: eslint
-          command: yarn run lint
+      - run: yarn run lint:js
+
+  style-lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: yarn run lint:style
 
   seeds:
     <<: *defaults
@@ -262,7 +267,10 @@ workflows:
       - rubocop:
           requires:
             - bundle
-      - eslint:
+      - js-lint:
+          requires:
+            - yarn
+      - style-lint:
           requires:
             - yarn
       - seeds:
@@ -298,7 +306,10 @@ workflows:
       - rubocop:
           requires:
             - bundle
-      - eslint:
+      - js-lint:
+          requires:
+            - yarn
+      - style-lint:
           requires:
             - yarn
       - seeds:
@@ -324,7 +335,8 @@ workflows:
             - e2e-tests
             - audit
             - rubocop
-            - eslint
+            - js-lint
+            - style-lint
             - seeds
             - ruby-tests
             - js-tests

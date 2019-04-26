@@ -5,7 +5,7 @@
 .close {
   color: $text-color;
   transition: opacity $transition-base-speed ease;
-  opacity: 0.6;
+  opacity: .6;
   float: right;
   font-size: 22px;
   line-height: 1;
@@ -28,7 +28,7 @@ a,
 .btn-link {
   color: $text-color;
   text-decoration: none;
-  transition: all ease 0.5s;
+  transition: all ease .5s;
 
   &:hover {
     color: white;
@@ -89,7 +89,7 @@ $panel-content-border-radius: 6px;
   cursor: pointer;
 
   &::before {
-    content: "";
+    content: '';
     height: $panel-border-width;
     background-color: #444;
     position: absolute;
@@ -99,7 +99,7 @@ $panel-content-border-radius: 6px;
   }
 
   &::after {
-    content: "";
+    content: '';
     height: $panel-border-width;
     background-color: #444;
     position: absolute;
@@ -185,7 +185,7 @@ $panel-content-border-radius: 6px;
   }
 
   &[disabled] {
-    opacity: 0.5;
+    opacity: .5;
   }
 
   &:last-child {
@@ -202,7 +202,7 @@ $panel-content-border-radius: 6px;
 
   &:active:not([disabled]) {
     animation-name: flash;
-    animation-duration: 0.5s;
+    animation-duration: .5s;
   }
 }
 
@@ -215,7 +215,7 @@ $panel-content-border-radius: 6px;
 
   25%,
   75% {
-    opacity: 0.5;
+    opacity: .5;
   }
 }
 
