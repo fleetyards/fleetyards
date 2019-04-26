@@ -9,7 +9,7 @@
     "test:watch": "jest --watch --notify",
     "lint": "yarn run lint:js && yarn run lint:style",
     "lint:js": "eslint --ext .vue,.js --fix --cache app/javascript test/javascript",
-    "lint:style": "stylelint --fix \"./src/**/*.scss\", \"./src/**/*.vue\"",
+    "lint:style": "stylelint --fix \"./app/javascript/**/*.scss\", \"./app/javascript/**/*.vue\"",
     "test:e2e": "cypress run"
   },
   "dependencies": {
