@@ -1,8 +1,6 @@
 <template>
   <div
     id="app"
-    v-touch:swipe.left="swipeHandler"
-    v-touch:swipe.right="swipeHandler"
     :class="{
       'nav-visible': !navCollapsed,
     }"

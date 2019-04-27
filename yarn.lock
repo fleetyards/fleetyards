@@ -12293,11 +12293,6 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue2-touch-events@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/vue2-touch-events/-/vue2-touch-events-1.1.2.tgz#e900eb22ae067c3915976e1d38454be08cec0a7d"
-  integrity sha512-xY5y76R9Rrhjs1ezrJE+GPI5C38JGj1Bz2aB2KAF+COwdVuW9ghaLj77JjOapVUXqqBL36ZObsZ68LD3DZzjmA==
-
 vue@2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
