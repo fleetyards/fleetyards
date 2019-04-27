@@ -2,17 +2,10 @@ import { mount } from '@vue/test-utils'
 import defaultComponent from '../__mocks__/defaultComponent'
 import optionsDefault from './mountDefault'
 
-/**
- * @description This should check if the component can be rendered
- *
- * @param {object} Component - needs to be a vue component
- * @param {object} options - options for the mounting default are the options from mountDefault.js
- * @param {function} mountDefault - set the mount type default is "mount"
- * @param {object} additionalPlugins - set the additions plugins
- */
 export default (
   Component,
   propsData = {},
+  mocks = {},
   additionalPlugins = [],
 ) => {
   let componentUsed
@@ -32,6 +25,7 @@ export default (
       wrapper = mount(componentUsed, {
         ...optionsDefault(),
         propsData,
+        mocks,
       }, additionalPlugins)
     })
 

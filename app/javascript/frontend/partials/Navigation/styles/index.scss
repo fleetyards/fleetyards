@@ -2,9 +2,11 @@
 
 nav {
   transition: left ease .5s, right ease .5s;
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   top: 0;
+  left: 0;
+  right: 0;
 
   .nav-toggle {
     transition: left ease .5s;
@@ -235,12 +237,25 @@ nav {
   }
 }
 
+.quick-search-bar {
+  position: absolute;
+  top: 15px;
+  left: 70px;
+  width: 600px;
+  transition: left ease .5s, right ease .5s;
+}
+
+.nav-visible .quick-search-bar {
+  left: 370px;
+}
+
 @media (max-width: $desktop-breakpoint) {
   nav {
     margin-top: env(safe-area-inset-top);
 
     .nav-container {
-      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
       width: 300px;
       left: -300px;
 
@@ -257,6 +272,25 @@ nav {
       .logo {
         bottom: 10px;
       }
+    }
+
+    .nav-toggle {
+      margin-left: env(safe-area-inset-left);
+      padding-left: 24px;
+    }
+  }
+
+  .quick-search-bar {
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
+    width: auto;
+    right: 15px;
+  }
+
+  .nav-visible {
+    .quick-search-bar {
+      left: 370px;
+      right: -285px;
     }
   }
 }
@@ -277,6 +311,11 @@ nav {
       .nav-toggle {
         left: 250px;
       }
+    }
+
+    .quick-search-bar {
+      left: 250px;
+      right: -285px;
     }
   }
 }

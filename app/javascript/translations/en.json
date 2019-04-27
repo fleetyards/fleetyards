@@ -429,6 +429,11 @@
     "fleet": {
       "sid": "Your Orgs Spectrum ID (SID) from robertsspaceindustries.com"
     },
+    "quicksearch": {
+      "models": "Gladius, Andromeda...",
+      "model": "Gladius, Andromeda...",
+      "hangar": "Enterprise, Andromeda..."
+    },
     "nav": {
       "search": "Search for Ships..."
     },

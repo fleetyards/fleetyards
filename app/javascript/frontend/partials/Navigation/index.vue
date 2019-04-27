@@ -21,6 +21,7 @@
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
     </button>
+    <QuickSearch v-if="$route.meta.quickSearch" />
     <div class="nav-container">
       <img
         :src="require('images/logo.png')"
@@ -242,12 +243,14 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import Btn from 'frontend/components/Btn'
+import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Navigation',
   components: {
     Btn,
+    QuickSearch,
   },
   mixins: [I18n],
   data() {

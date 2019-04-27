@@ -7,6 +7,8 @@ $outerBorderWidth: 2px;
   text-align: center;
   position: relative;
   padding-top: ($outerBorderWidth * 2);
+  left: 0;
+  transition: left ease .5s, right ease .5s;
 
   .app-footer-border {
     position: absolute;
@@ -102,6 +104,13 @@ $outerBorderWidth: 2px;
   }
 }
 
+.nav-visible {
+  .app-footer {
+    left: 300px;
+    right: -300px;
+  }
+}
+
 @media (max-width: $desktop-breakpoint) {
   .app-footer {
     .app-community-logo {
@@ -113,9 +122,18 @@ $outerBorderWidth: 2px;
       top: auto;
     }
 
-    .app-version {
-      bottom: 5px;
-      left: 10px;
+    .app-footer-inner {
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  .nav-visible {
+    .app-footer-inner {
+      left: 250px;
+      right: -250px;
     }
   }
 }

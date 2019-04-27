@@ -11,8 +11,17 @@
 
 .panel-image {
   &.no-details {
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
     border-bottom-right-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
+
+    img {
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
   }
 
   .on-sale {

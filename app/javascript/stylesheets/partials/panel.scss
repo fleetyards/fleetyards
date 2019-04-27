@@ -129,8 +129,17 @@ $contentBorderRadius: $panelContentBorderRadius;
 
     &:last-child {
       border-bottom: none;
+      -webkit-border-bottom-left-radius: $contentBorderRadius;
+      -webkit-border-bottom-right-radius: $contentBorderRadius;
       border-bottom-right-radius: $contentBorderRadius;
       border-bottom-left-radius: $contentBorderRadius;
+
+      img {
+        -webkit-border-bottom-left-radius: $contentBorderRadius;
+        -webkit-border-bottom-right-radius: $contentBorderRadius;
+        border-bottom-right-radius: $contentBorderRadius;
+        border-bottom-left-radius: $contentBorderRadius;
+      }
     }
   }
 

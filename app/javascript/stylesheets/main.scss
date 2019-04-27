@@ -61,18 +61,8 @@ body {
     width: 100%;
   }
 
-  .app-footer {
-    left: 0;
-    transition: left ease .5s, right ease .5s;
-  }
-
   &.nav-visible {
     .main {
-      left: 300px;
-      right: -300px;
-    }
-
-    .app-footer {
       left: 300px;
       right: -300px;
     }
@@ -111,26 +101,12 @@ button {
   overflow-y: auto;
 }
 
-.top-search-bar {
-  position: fixed;
-  top: 15px;
-  left: 70px;
-  width: 600px;
-  transition: left ease .5s, right ease .5s;
-}
-
-.nav-visible .top-search-bar {
-  left: 370px;
-}
-
 @media (max-width: $desktop-breakpoint) {
   .app-body {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
-
-    &.nav-visible {
-      .top-search-bar {
-        right: -285px;
-      }
+    .main-wrapper {
+      margin-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
   }
 
@@ -140,12 +116,6 @@ button {
       margin-bottom: 20px;
       margin-right: 0;
     }
-  }
-
-  .top-search-bar {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
-    width: auto;
-    right: 15px;
   }
 }
 
@@ -161,15 +131,6 @@ button {
       .main {
         left: 250px;
         right: -250px;
-      }
-
-      .app-footer {
-        left: 250px;
-        right: -250px;
-      }
-
-      .top-search-bar {
-        right: -285px;
       }
     }
   }

@@ -5,10 +5,8 @@ config.stubs['router-link'] = RouterLinkStub
 
 Vue.config.productionTip = false
 
-// mock all vue-i18n $t('key') function calls to return the key itself
-config.mocks.$t = key => key
-
 jest.mock('frontend/lib/Store/plugins')
+jest.mock('axios')
 
 // do not swallow errors
 console.error = (e, ...args) => {
