@@ -102,13 +102,6 @@ export default {
     window.removeEventListener('offline', this.offline)
   },
   methods: {
-    swipeHandler(direction) {
-      if (direction === 'left') {
-        this.closeNavigation()
-      } else {
-        this.openNavigation()
-      }
-    },
     closeNavigation() {
       this.$refs.navigation.close()
     },

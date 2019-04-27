@@ -9,8 +9,7 @@ class RoadmapWorker
   def perform
     RsiRoadmapLoader.new.fetch
 
-    changes = Audit.includes(:roadmap_item).where(
-      roadmap_items: { rsi_category_id: RoadmapItem::MODELS_CATEGORY },
+    changes = Audit.where(
       created_at: (Time.zone.now - 1.day)..Time.zone.now
     ).count
 
