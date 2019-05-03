@@ -83,6 +83,10 @@
         &.completed {
           background-color: $success;
         }
+
+        &.active {
+          background-color: $warning;
+        }
       }
     }
 
