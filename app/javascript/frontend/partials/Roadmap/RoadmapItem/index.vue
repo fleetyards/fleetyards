@@ -59,7 +59,7 @@
             {{ completed }} {{ t('labels.roadmap.tasks', {
               count: tasks,
             }) }}
-            <template v-if="inprogress != 0">
+            <template v-if="showInprogress">
               {{ t('labels.roadmap.inprogress', {
                 count: inprogress,
               }) }}
@@ -73,7 +73,7 @@
             }"
           />
           <b-progress-bar
-            v-if="inprogress !== 0 && completed !== item.tasks"
+            v-if="showInprogress"
             :value="inprogress"
             class="active"
           />
@@ -118,7 +118,7 @@ export default {
     },
     inprogress() {
       if (this.item.inprogress) {
-        return this.item.inprogress
+        return this.item.inprogress - this.completed
       }
       return 0
     },
@@ -133,6 +133,9 @@ export default {
         return this.item.body
       }
       return this.item.description
+    },
+    showInprogress() {
+      return this.inprogress !== 0 && this.completed !== this.item.tasks
     },
     recentlyUpdated() {
       return isBefore(new Date(), addHours(new Date(this.item.updatedAt), 24))
