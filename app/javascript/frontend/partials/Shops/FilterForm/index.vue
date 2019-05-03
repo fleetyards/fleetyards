@@ -1,37 +1,19 @@
 <template>
   <form @submit.prevent="filter">
-    <div class="form-group">
-      <input
-        v-model="form.nameCont"
-        :placeholder="t('placeholders.filters.shops.name')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.nameCont"
-        class="btn btn-clear"
-        @click="clearName"
-        v-html="'&times;'"
-      />
-    </div>
-    <div class="form-group">
-      <label :for="idFor('shops-commodity-name')">
-        {{ t('labels.filters.shops.commodityName') }}
-      </label>
-      <input
-        :id="idFor('shops-commodity-name')"
-        v-model="form.commodityNameCont"
-        :placeholder="t('placeholders.filters.shops.commodityName')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.commodityNameCont"
-        class="btn btn-clear"
-        @click="clearCommodityName"
-        v-html="'&times;'"
-      />
-    </div>
+    <FormInput
+      v-model="form.nameCont"
+      :placeholder="t('placeholders.filters.shops.name')"
+      :aria-label="t('placeholders.filters.shops.name')"
+    />
+
+    <FormInput
+      :id="idFor('shops-commodity-name')"
+      v-model="form.commodityNameCont"
+      :label="t('labels.filters.shops.commodityName')"
+      :placeholder="t('placeholders.filters.shops.commodityName')"
+      :aria-label="t('placeholders.filters.shops.commodityName')"
+    />
+
     <FilterGroup
       v-model="form.shopTypeIn"
       :label="t('labels.filters.shops.type')"
@@ -39,6 +21,7 @@
       name="type"
       multiple
     />
+
     <FilterGroup
       v-model="form.stationIn"
       :label="t('labels.filters.shops.station')"
@@ -49,6 +32,7 @@
       searchable
       multiple
     />
+
     <FilterGroup
       v-model="form.celestialObjectIn"
       :label="t('labels.filters.shops.celestialObject')"
@@ -59,6 +43,7 @@
       searchable
       multiple
     />
+
     <FilterGroup
       v-model="form.starsystemIn"
       :label="t('labels.filters.shops.starsystem')"
@@ -69,6 +54,7 @@
       searchable
       multiple
     />
+
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -84,11 +70,13 @@
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     FilterGroup,
+    FormInput,
     Btn,
   },
   mixins: [I18n, Filters],
@@ -127,12 +115,6 @@ export default {
     },
   },
   methods: {
-    clearName() {
-      this.form.nameCont = null
-    },
-    clearCommodityName() {
-      this.form.commodityNameCont = null
-    },
     fetchStations({ page, search, missingValue }) {
       const query = {
         q: {},

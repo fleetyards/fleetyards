@@ -114,7 +114,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  @import './styles/index';
-</style>

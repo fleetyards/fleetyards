@@ -18,13 +18,12 @@
                   <form @submit.prevent="search">
                     <div class="form-group">
                       <div class="input-group-flex">
-                        <input
+                        <FormInput
                           v-model="searchQuery"
                           :aria-label="t('labels.searchInput')"
-                          name="search"
-                          class="form-control input-lg"
+                          size="large"
                           autofocus
-                        >
+                        />
                         <Btn
                           id="search-submit"
                           :aria-label="t('labels.search')"
@@ -167,6 +166,7 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 
 export default {
   components: {
@@ -174,6 +174,7 @@ export default {
     Panel,
     TeaserPanel,
     Btn,
+    FormInput,
   },
   mixins: [I18n, MetaInfo],
   data() {

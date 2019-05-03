@@ -1,19 +1,10 @@
 <template>
   <form @submit.prevent="filter">
-    <div class="form-group">
-      <input
-        v-model="form.nameCont"
-        :placeholder="t('placeholders.filters.shopItems.name')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.nameCont"
-        class="btn btn-clear"
-        @click="clearName"
-        v-html="'&times;'"
-      />
-    </div>
+    <FormInput
+      v-model="form.nameCont"
+      :placeholder="t('placeholders.filters.shopItems.name')"
+    />
+
     <FilterGroup
       v-model="form.categoryIn"
       :options="categoryOptions"
@@ -21,6 +12,7 @@
       name="category"
       multiple
     />
+
     <FilterGroup
       v-model="form.subCategoryIn"
       :label="t('labels.filters.shopItems.subCategory')"
@@ -28,6 +20,7 @@
       name="sub-category"
       multiple
     />
+
     <FilterGroup
       v-model="form.manufacturerIn"
       :label="t('labels.filters.shopItems.manufacturer')"
@@ -39,42 +32,23 @@
       searchable
       multiple
     />
-    <div class="form-group">
-      <label :for="idFor('shopitems-min-price')">
-        {{ t('labels.filters.shopItems.minPrice') }}
-      </label>
-      <input
-        :id="idFor('shopitems-min-price')"
-        v-model="form.priceGteq"
-        :placeholder="t('placeholders.filters.shopItems.minPrice')"
-        type="number"
-        class="form-control"
-      >
-      <a
-        v-if="form.priceGteq"
-        class="btn btn-clear"
-        @click="clearMinPrice"
-        v-html="'&times;'"
-      />
-    </div>
-    <div class="form-group">
-      <label :for="idFor('shopitems-max-price')">
-        {{ t('labels.filters.shopItems.maxPrice') }}
-      </label>
-      <input
-        :id="idFor('shopitems-max-price')"
-        v-model="form.priceLteq"
-        :placeholder="t('placeholders.filters.shopItems.maxPrice')"
-        type="number"
-        class="form-control"
-      >
-      <a
-        v-if="form.priceLteq"
-        class="btn btn-clear"
-        @click="clearMaxPrice"
-        v-html="'&times;'"
-      />
-    </div>
+
+    <FormInput
+      :id="idFor('shopitems-min-price')"
+      v-model="form.priceGteq"
+      :label="t('labels.filters.shopItems.minPrice')"
+      :placeholder="t('placeholders.filters.shopItems.minPrice')"
+      type="number"
+    />
+
+    <FormInput
+      :id="idFor('shopitems-max-price')"
+      v-model="form.priceLteq"
+      :label="t('labels.filters.shopItems.maxPrice')"
+      :placeholder="t('placeholders.filters.shopItems.maxPrice')"
+      type="number"
+    />
+
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -90,11 +64,13 @@
 import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     FilterGroup,
+    FormInput,
     Btn,
   },
   mixins: [I18n, Filters],
@@ -149,15 +125,6 @@ export default {
     },
   },
   methods: {
-    clearName() {
-      this.form.nameCont = null
-    },
-    clearMinPrice() {
-      this.form.priceGteq = null
-    },
-    clearMaxPrice() {
-      this.form.priceLteq = null
-    },
     fetchSubCategories() {
       return this.$api.get('filters/shop-commodities/sub-categories')
     },

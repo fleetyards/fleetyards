@@ -1,19 +1,10 @@
 <template>
   <form @submit.prevent="filter">
-    <div class="form-group">
-      <input
-        v-model="form.nameCont"
-        :placeholder="t('placeholders.filters.stations.name')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.nameCont"
-        class="btn btn-clear"
-        @click="clearName"
-        v-html="'&times;'"
-      />
-    </div>
+    <FormInput
+      v-model="form.nameCont"
+      :placeholder="t('placeholders.filters.stations.name')"
+      :aria-label="t('placeholders.filters.stations.name')"
+    />
     <FilterGroup
       v-model="form.celestialObjectIn"
       :label="t('labels.filters.stations.celestialObject')"
@@ -80,12 +71,14 @@ import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import RadioList from 'frontend/components/Form/RadioList'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     FilterGroup,
     RadioList,
+    FormInput,
     Btn,
   },
   mixins: [I18n, Filters],

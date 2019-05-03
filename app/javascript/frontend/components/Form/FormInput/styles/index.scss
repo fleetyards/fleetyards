@@ -1,0 +1,25 @@
+.form-group {
+  width: 100%;
+}
+
+.clear {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  margin-top: -13px;
+
+  &.with-label {
+    margin-top: 0;
+  }
+}
+
+input {
+  &:focus {
+    outline: none;
+  }
+}
+
+.input-clean {
+  border-radius: 0;
+  border: none;
+}
