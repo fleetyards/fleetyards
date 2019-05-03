@@ -4,7 +4,13 @@
       <div
         v-lazy:background-image="storeImage"
         class="item-image lazy"
-      />
+      >
+        <div
+          v-if="recentlyUpdated"
+          v-tooltip="t('labels.roadmap.recentlyUpdated')"
+          class="roadmap-item-updated"
+        />
+      </div>
       <div class="item-body">
         <h3>
           <router-link
@@ -61,13 +67,6 @@
               completed: completed === item.tasks
             }"
           />
-          <b-progress-bar
-            v-if="completed !== 0"
-            :value="completed"
-            :class="{
-              completed: completed === item.tasks
-            }"
-          />
         </b-progress>
       </div>
     </div>
@@ -77,6 +76,7 @@
 <script>
 import Panel from 'frontend/components/Panel'
 import I18n from 'frontend/mixins/I18n'
+import { isBefore, addHours } from 'date-fns'
 
 export default {
   components: {
@@ -117,6 +117,9 @@ export default {
         return this.item.body
       }
       return this.item.description
+    },
+    recentlyUpdated() {
+      return isBefore(new Date(), addHours(new Date(this.item.updatedAt), 24))
     },
   },
   methods: {

@@ -121,7 +121,6 @@ import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import { isBefore, addHours } from 'date-fns'
 
 export default {
   components: {
@@ -196,9 +195,6 @@ export default {
       }, {
         received: this.fetch,
       })
-    },
-    recentlyUpdated(item) {
-      return isBefore(new Date(), addHours(new Date(item.updatedAt), 24))
     },
     toggleReleased() {
       this.onlyReleased = !this.onlyReleased
