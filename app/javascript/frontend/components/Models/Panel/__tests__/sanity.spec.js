@@ -1,5 +1,5 @@
 import sanityTest from 'helpers/sanityTest'
-import Component from 'frontend/partials/Models/Panel'
+import Component from 'frontend/components/Models/Panel'
 
 const model = {
   name: 'Enterprise',

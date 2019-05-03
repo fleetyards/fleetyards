@@ -35,6 +35,7 @@
 import Panel from 'frontend/components/Panel'
 
 export default {
+  name: 'TeaserPanel',
   components: {
     Panel,
   },

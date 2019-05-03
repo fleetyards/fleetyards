@@ -21,6 +21,7 @@
                         <FormInput
                           v-model="searchQuery"
                           :aria-label="t('labels.searchInput')"
+                          data-test="home-search"
                           size="large"
                           autofocus
                         />

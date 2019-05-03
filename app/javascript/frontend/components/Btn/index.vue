@@ -37,6 +37,7 @@
 import BtnInner from 'frontend/components/Btn/Inner'
 
 export default {
+  name: 'Btn',
   components: {
     BtnInner,
   },

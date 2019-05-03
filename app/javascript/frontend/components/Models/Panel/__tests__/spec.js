@@ -1,4 +1,4 @@
-import ModelPanel from 'frontend/partials/Models/Panel'
+import ModelPanel from 'frontend/components/Models/Panel'
 import Panel from 'frontend/components/Panel'
 import mountVM from 'helpers/mount'
 
