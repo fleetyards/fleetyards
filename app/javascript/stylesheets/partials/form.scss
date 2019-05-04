@@ -11,7 +11,7 @@
 .input-lg,
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon {
-  height: 52px;
+  height: 51px;
 }
 
 .label {
@@ -24,11 +24,6 @@
 
 input.disabled-clean[disabled='disabled'] {
   cursor: copy;
-}
-
-.form-control-filter {
-  padding-right: 50px;
-  text-overflow: ellipsis;
 }
 
 .form-horizontal {

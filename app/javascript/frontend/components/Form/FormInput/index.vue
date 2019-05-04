@@ -1,6 +1,6 @@
 <template>
   <div
-    class="form-input form-group"
+    class="form-input"
     :class="cssClasses"
   >
     <label
@@ -16,7 +16,6 @@
       :type="type"
       :aria-label="ariaLabel"
       :autofocus="autofocus"
-      class="form-control form-control-filter"
       @input="update"
     >
     <Btn
