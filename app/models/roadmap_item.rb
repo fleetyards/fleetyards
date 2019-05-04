@@ -3,7 +3,7 @@
 class RoadmapItem < ApplicationRecord
   MODELS_CATEGORY = 6
 
-  audited only: %i[release tasks inprogress completed], on: [:update]
+  has_paper_trail on: [:update], only: %i[release tasks inprogress completed]
 
   belongs_to :model, optional: true
 

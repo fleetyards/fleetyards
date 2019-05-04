@@ -14,5 +14,6 @@
   "*.{rb,erb,haml,jbuilder}": [
     "rubocop",
     "git add"
-  ]
+  ],
+  "ignore": ["**/db/*.rb"]
 }

@@ -11,7 +11,7 @@ gem 'pg', '~> 1.0'
 gem 'sidekiq'
 gem 'sidekiq-cron'
 
-gem 'audited'
+gem 'paper_trail'
 
 gem 'haml'
 gem 'haml-rails'

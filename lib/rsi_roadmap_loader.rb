@@ -23,7 +23,7 @@ class RsiRoadmapLoader < RsiBaseLoader
       release['cards'].each do |card|
         item = RoadmapItem.find_or_create_by(rsi_id: card['id'])
 
-        item.update(
+        item.update!(
           release: release['name'],
           release_description: release['description'],
           rsi_release_id: release['id'],
@@ -36,6 +36,8 @@ class RsiRoadmapLoader < RsiBaseLoader
           inprogress: card['inprogress'],
           completed: card['completed']
         )
+
+        Rails.logger.debug item.errors.to_yaml
 
         if item.store_image.blank?
           image_url = card['thumbnail']['urls']['source']
