@@ -1,25 +1,38 @@
-.form-group {
+.form-input {
   width: 100%;
-}
 
-.clear {
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  margin-top: -13px;
-
-  &.with-label {
-    margin-top: 0;
+  input {
+    &:focus {
+      outline: none;
+    }
   }
-}
 
-input {
-  &:focus {
-    outline: none;
+  .clear {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    height: 40px;
+    margin: 0;
   }
-}
 
-.input-clean {
-  border-radius: 0;
-  border: none;
+  &.form-input-large {
+    input {
+      height: 52px;
+      padding: 10px 16px;
+      font-size: 19px;
+      line-height: 1.33333;
+      border-radius: 6px;
+    }
+
+    .clear {
+      bottom: 6px;
+    }
+  }
+
+  &.form-input-clean {
+    input {
+      border-radius: 0;
+      border: none;
+    }
+  }
 }

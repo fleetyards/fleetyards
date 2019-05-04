@@ -1,5 +1,8 @@
 <template>
-  <div class="form-group">
+  <div
+    class="form-input form-group"
+    :class="cssClasses"
+  >
     <label
       v-if="label"
       :for="id"
@@ -14,7 +17,6 @@
       :aria-label="ariaLabel"
       :autofocus="autofocus"
       class="form-control form-control-filter"
-      :class="cssClasses"
       @input="update"
     >
     <Btn
@@ -93,8 +95,8 @@ export default {
   computed: {
     cssClasses() {
       return {
-        'input-lg': this.size === 'large',
-        'input-clean': this.variant === 'clean',
+        'form-input-large': this.size === 'large',
+        'form-input-clean': this.variant === 'clean',
       }
     },
   },
