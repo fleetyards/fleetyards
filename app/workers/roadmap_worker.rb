@@ -7,11 +7,11 @@ class RoadmapWorker
   sidekiq_options retry: false, queue: (ENV['ROADMAP_LOADER_QUEUE'] || 'fleetyards_roadmap_loader').to_sym
 
   def perform
-    count_before = Audit.where(autitable_type: 'RoadmapItem').count
+    count_before = PaperTrail::Version.where(item_type: 'RoadmapItem').count
 
     RsiRoadmapLoader.new.fetch
 
-    changes = Audit.where(autitable_type: 'RoadmapItem').count - count_before
+    changes = PaperTrail::Version.where(item_type: 'RoadmapItem').count - count_before
 
     return if changes.zero?
 

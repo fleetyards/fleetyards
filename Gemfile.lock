@@ -57,8 +57,6 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     ast (2.4.0)
-    audited (4.8.0)
-      activerecord (>= 4.0, < 5.3)
     autoprefixer-rails (9.4.7)
       execjs
     bcrypt (3.1.12)
@@ -246,6 +244,9 @@ GEM
     open4 (1.3.4)
     optimist (3.0.0)
     orm_adapter (0.5.0)
+    paper_trail (10.3.0)
+      activerecord (>= 4.2, < 6.1)
+      request_store (~> 1.1)
     parallel (1.17.0)
     parser (2.6.2.1)
       ast (~> 2.4.0)
@@ -460,7 +461,6 @@ PLATFORMS
 
 DEPENDENCIES
   ahoy_matey
-  audited
   bootsnap (>= 1.1.0)
   bootstrap-sass
   bourbon
@@ -499,6 +499,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   nokogiri (>= 1.7.1)
+  paper_trail
   pg (~> 1.0)
   premailer-rails
   pry-byebug

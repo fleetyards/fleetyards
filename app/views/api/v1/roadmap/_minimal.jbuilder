@@ -10,10 +10,10 @@ json.cache! ['v1', item] do
     end
   end
   json.last_version do
-    if item.audits.count.zero?
+    if item.versions.count.zero?
       json.null!
     else
-      json.merge! item.audits.last.audited_changes
+      json.merge! item.versions.last.changeset
     end
   end
   json.partial! 'api/shared/dates', record: item

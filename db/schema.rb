@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_25_200250) do
+ActiveRecord::Schema.define(version: 2019_05_04_100141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -62,28 +62,6 @@ ActiveRecord::Schema.define(version: 2019_04_25_200250) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "audits", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "auditable_id"
-    t.string "auditable_type"
-    t.integer "associated_id"
-    t.string "associated_type"
-    t.uuid "user_id"
-    t.string "user_type"
-    t.string "username"
-    t.string "action"
-    t.jsonb "audited_changes"
-    t.integer "version", default: 0
-    t.string "comment"
-    t.string "remote_address"
-    t.string "request_uuid"
-    t.datetime "created_at"
-    t.index ["associated_type", "associated_id"], name: "associated_index"
-    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
-    t.index ["created_at"], name: "index_audits_on_created_at"
-    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
-    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "auth_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -603,6 +581,17 @@ ActiveRecord::Schema.define(version: 2019_04_25_200250) do
     t.boolean "public", default: true
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"
+  end
+
+  create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
