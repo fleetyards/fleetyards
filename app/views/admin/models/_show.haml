@@ -26,7 +26,7 @@
     .btn-group
       %button.reload-models.btn.btn-default.ladda-button{data: {style: "expand-right", action: reload_one_admin_model_path(model), workerPath: admin_check_worker_state_path('ModelsWorker')}, onclick: "App.Models.reload($(this)); return false;"}
         %i.fa.fa-sync
-      = link_to gallery_admin_model_path(model), title: I18n.t(:"actions.model.gallery"), class: "btn btn-default" do
+      = link_to images_admin_model_path(model), 'data-turbolinks': "false", title: I18n.t(:"actions.model.images"), class: "btn btn-default" do
         %i.fa.fa-image
       = link_to edit_admin_model_path(model), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
         %i.fa.fa-edit

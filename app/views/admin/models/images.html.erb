@@ -1,0 +1,28 @@
+
+<% content_for :title do %>
+  <%= I18n.t(:"title.model.images") %>
+<% end %>
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+    <div class="row">
+      <div class="col-xs-12 col-md-8">
+        <h2>
+          <%= I18n.t(:"headlines.admin.model.images", model: model.name) %>
+        </h2>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <div class="btn-group pull-right resource-nav">
+          <%= link_to I18n.t(:"actions.back"), admin_models_path(params: index_back_params, anchor: model.id), class: "btn btn-default" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
+  window.AUTH_TOKEN = '<%= jwt_token %>'
+  window.GALLERY_TYPE = 'Model'
+  window.GALLERY_PATH = 'models'
+</script>
+<%= javascript_packs_with_chunks_tag 'admin' %>

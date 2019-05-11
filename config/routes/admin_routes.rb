@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (ENV['CI'] ? '' : 'admin') } do
+  draw :admin_api_routes
+
   devise_for :users, skip: %i[registration]
 
   resource :password, only: %i[edit update]
@@ -19,7 +21,7 @@ namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (E
   resources :models, except: [:show] do
     put 'reload', on: :collection
     member do
-      get 'gallery'
+      get 'images'
       put 'reload_one'
     end
   end
@@ -31,10 +33,7 @@ namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (E
 
   resources :components, except: [:show]
 
-  resources :images, except: %i[show new edit update] do
-    put 'toggle', on: :member
-    put 'toggle_background', on: :member
-  end
+  resources :images, only: %i[index]
 
   resources :celestial_objects, path: 'celestial-objects', except: [:show]
   resources :starsystems, except: [:show]
@@ -42,7 +41,7 @@ namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (E
   resources :commodities, except: [:show]
   resources :equipment, except: [:show]
   resources :stations, except: [:show] do
-    get 'gallery', on: :member
+    get 'images', on: :member
   end
   resources :shops, except: [:show]
 

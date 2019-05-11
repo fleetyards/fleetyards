@@ -159,7 +159,7 @@ module Api
       end
 
       private def vehicle
-        @vehicle ||= Vehicle.find_by!(id: params[:id])
+        @vehicle ||= Vehicle.find(params[:id])
       end
       helper_method :vehicle
 

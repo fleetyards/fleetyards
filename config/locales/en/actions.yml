@@ -43,8 +43,10 @@ en:
     edit: Edit
     loading: Please wait...
     model:
-      gallery: Gallery
+      images: Images
       reload: Reload Models
+    station:
+      images: Images
     ok: OK
     reset_password: Forgot password?
     save: Save

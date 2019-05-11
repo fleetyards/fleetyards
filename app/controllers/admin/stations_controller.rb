@@ -53,18 +53,8 @@ module Admin
       end
     end
 
-    def gallery
-      authorize! :gallery, :admin_stations
-      respond_to do |format|
-        format.js do
-          images = station.images.order('created_at desc').all
-          jq_images = images.collect(&:to_jq_upload)
-          render json: { files: jq_images }.to_json
-        end
-        format.html do
-          # render upload form
-        end
-      end
+    def images
+      authorize! :images, :admin_stations
     end
 
     private def station_params
