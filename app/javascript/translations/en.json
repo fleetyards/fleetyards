@@ -180,7 +180,7 @@
           "increased": "Increased Tasks by %{value}"
         },
         "release": "Item moved from release %{old} to %{new}",
-        "addedToRelease": "Item new in release ${release}"
+        "addedToRelease": "Item new in release %{release}"
       },
       "tasks": {
         "one": "of %{count} Task",
