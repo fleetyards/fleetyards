@@ -40,7 +40,7 @@
             v-for="(update, index) in updates(item.lastVersion)"
             :key="index"
           >
-            <template v-if="update.key === 'tasks'">
+            <template v-if="update.key === 'tasks' && update.old">
               {{ t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
@@ -50,7 +50,7 @@
                 release: update.new,
               }) }}
             </template>
-            <template v-else>
+            <template v-else-if="update.old">
               {{ t(`labels.roadmap.lastVersion.${update.key}`, {
                 old: update.old,
                 new: update.new,
