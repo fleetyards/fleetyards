@@ -45,7 +45,7 @@
                 value: removeSign(update.count),
               }) }}
             </template>
-            <template v-if="update.key === 'release' && !update.old">
+            <template v-else-if="update.key === 'release' && !update.old">
               {{ t('labels.roadmap.lastVersion.addedToRelease', {
                 release: update.new,
               }) }}
