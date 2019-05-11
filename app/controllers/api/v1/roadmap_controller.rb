@@ -10,7 +10,7 @@ module Api
 
         roadmap_query_params['sorts'] = ['release asc', 'updated_at desc', 'name asc']
 
-        @q = RoadmapItem.ransack(roadmap_query_params)
+        @q = RoadmapItem.active.ransack(roadmap_query_params)
 
         @roadmap_items = @q.result
       end

@@ -8,4 +8,8 @@ class RoadmapItem < ApplicationRecord
   belongs_to :model, optional: true
 
   mount_uploader :store_image, StoreImageUploader
+
+  def self.active
+    where(active: true)
+  end
 end
