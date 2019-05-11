@@ -36,7 +36,7 @@ class RsiRoadmapLoader < RsiBaseLoader
           tasks: card['tasks'],
           inprogress: card['inprogress'],
           completed: card['completed'],
-          active: true,
+          active: true
         )
 
         roadmap_item_ids << item.id

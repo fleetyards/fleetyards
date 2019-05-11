@@ -39,7 +39,8 @@ if ENV['TEST_SEEDS'].present?
     image: '/media/a71abdkipkp96r/product_thumb_large/01-Pacheco.jpg',
     tasks: 2,
     inprogress: 0,
-    completed: 0
+    completed: 0,
+    active: true
   )
 
   return
