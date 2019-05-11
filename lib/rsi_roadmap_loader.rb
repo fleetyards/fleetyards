@@ -21,9 +21,11 @@ class RsiRoadmapLoader < RsiBaseLoader
   private def parse_roadmap(data)
     data['data']['releases'].each do |release|
       release['cards'].each do |card|
-        item = RoadmapItem.find_or_create_by(rsi_id: card['id'])
+        item = RoadmapItem.where(rsi_id: card['id']).or(RoadmapItem.where(name: card['name'])).first
+        item = RoadmapItem.create(rsi_id: card['id'], name: card['name']) if item.blank?
 
         item.update!(
+          rsi_id: card['id'],
           release: release['name'],
           release_description: release['description'],
           rsi_release_id: release['id'],
@@ -36,8 +38,6 @@ class RsiRoadmapLoader < RsiBaseLoader
           inprogress: card['inprogress'],
           completed: card['completed']
         )
-
-        Rails.logger.debug item.errors.to_yaml
 
         if item.store_image.blank?
           image_url = card['thumbnail']['urls']['source']

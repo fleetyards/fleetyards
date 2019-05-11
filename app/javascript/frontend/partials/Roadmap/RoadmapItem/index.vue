@@ -41,8 +41,13 @@
             :key="index"
           >
             <template v-if="update.key === 'tasks'">
-              {{ t(`labels.roadmap.lastVersion.${update.key}.${update.change}`, {
+              {{ t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
+              }) }}
+            </template>
+            <template v-if="update.key === 'release' && !update.old">
+              {{ t('labels.roadmap.lastVersion.addedToRelease', {
+                release: update.new,
               }) }}
             </template>
             <template v-else>
