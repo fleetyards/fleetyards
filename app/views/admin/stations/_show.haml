@@ -16,7 +16,7 @@
       %i.far.fa-square
   %td.text-right
     .btn-group
-      = link_to gallery_admin_station_path(station), title: I18n.t(:"actions.station.gallery"), class: "btn btn-default" do
+      = link_to images_admin_station_path(station), 'data-turbolinks': "false", title: I18n.t(:"actions.station.images"), class: "btn btn-default" do
         %i.fa.fa-image
       = link_to edit_admin_station_path(station), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
         %i.fa.fa-edit

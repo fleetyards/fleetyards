@@ -16,7 +16,7 @@ en:
         new: New Manufacturer
       model:
         edit: Edit %{model}
-        gallery: Imageuplaod for %{model}
+        images: Imageuplaod for %{model}
         index: Models
         new: New Model
       user:
@@ -37,7 +37,7 @@ en:
         new: New Equipment
       station:
         edit: Station %{station}
-        gallery: Imageupload for %{station}
+        images: Imageupload for %{station}
         index: Stations
         new: New Station
       shop:

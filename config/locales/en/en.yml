@@ -109,10 +109,12 @@ en:
     model:
       edit: Edit Model
       index: Models
+      images: Images
       new: New Model
     station:
       edit: Edit Station
       index: Stations
+      images: Images
       new: New Station
     shop:
       edit: Edit Shop
