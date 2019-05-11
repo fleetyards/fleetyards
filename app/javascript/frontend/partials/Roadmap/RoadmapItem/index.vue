@@ -160,7 +160,7 @@ export default {
           new: lastVersion[key][1],
           count,
         }
-      }).filter(update => (update.key === 'release' && !update.old) || update.old)
+      })
     },
   },
 }
