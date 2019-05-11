@@ -148,7 +148,7 @@ export default {
         .reduce((pv, cv) => pv + cv, 0)
       const completedUploads = this.uploadCount - this.pendingFiles.length
 
-      return (pendingProgress + (completedUploads * 100)) / this.uploadCount
+      return Math.ceil((pendingProgress + (completedUploads * 100)) / this.uploadCount)
     },
     speed() {
       if (!this.activeFiles.length) {
