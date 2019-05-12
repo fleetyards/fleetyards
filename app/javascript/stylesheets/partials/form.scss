@@ -10,8 +10,7 @@
 
 .input-lg,
 .input-group-lg > .form-control,
-.input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .btn {
+.input-group-lg > .input-group-addon {
   height: 51px;
 }
 
@@ -27,37 +26,14 @@ input.disabled-clean[disabled='disabled'] {
   cursor: copy;
 }
 
-.form-control-filter {
-  padding-right: 50px;
-  text-overflow: ellipsis;
-}
-
-.btn-clear {
-  position: absolute;
-  right: 5px;
-  top: 30px;
-
-  &:nth-child(2) {
-    top: 4px;
-  }
-}
-
 .form-horizontal {
   label {
     padding-top: 7px;
-  }
-
-  .btn-clear {
-    top: 1px;
   }
 }
 
 .navbar-form {
   flex-grow: 1;
-
-  .btn-clear {
-    top: 5px;
-  }
 
   .form-group {
     display: block;

@@ -1,0 +1,105 @@
+@import '~stylesheets/variables';
+
+.production-status {
+  font-size: 75%;
+  text-align: center;
+  line-height: 1;
+  color: $gray-light;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, .6);
+}
+
+.panel-image {
+  &.no-details {
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    img {
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
+  .on-sale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-right: 20px solid transparent;
+    border-top: 20px solid $primary;
+    border-left: 20px solid $primary;
+    border-bottom: 20px solid transparent;
+
+    i {
+      color: #fff;
+      position: absolute;
+      top: -15px;
+      left: -10px;
+    }
+  }
+
+  .purchased {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-top: 20px solid $success;
+    border-right: 20px solid $success;
+    border-bottom: 20px solid transparent;
+
+    i {
+      color: #fff;
+      position: absolute;
+      top: -15px;
+      right: -15px;
+    }
+  }
+
+  .addons {
+    position: absolute;
+    cursor: pointer;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 25px solid $gray;
+    border-top: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 25px solid $gray;
+
+    &.selected {
+      border-left: 25px solid $success;
+      border-bottom: 25px solid $success;
+    }
+
+    i {
+      color: #fff;
+      position: absolute;
+      bottom: -16px;
+      left: -16px;
+    }
+  }
+}
+
+.panel-heading {
+  .panel-edit-button,
+  .panel-add-to-hangar-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 6px;
+  }
+}
+
+.roles {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

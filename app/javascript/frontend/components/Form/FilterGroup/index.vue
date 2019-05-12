@@ -44,24 +44,14 @@
         </span>
       </a>
     </b-collapse>
-    <div
+    <FormInput
       v-if="searchable && visible"
+      v-model="search"
+      :placeholder="searchLabel || t('actions.find')"
       class="filter-list-search"
-    >
-      <input
-        ref="searchInput"
-        v-model="search"
-        :placeholder="searchLabel || t('actions.find')"
-        class="form-control"
-        @input="onSearch"
-      >
-      <a
-        v-if="search"
-        class="btn btn-clear"
-        @click="clearSearch"
-        v-html="'&times;'"
-      />
-    </div>
+      variant="clean"
+      @input="onSearch"
+    />
     <b-collapse
       :id="`${groupID}-${id}`"
       :visible="visible"
@@ -103,6 +93,7 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import SmallLoader from 'frontend/components/SmallLoader'
+import FormInput from 'frontend/components/Form/FormInput'
 import debounce from 'lodash.debounce'
 import InfiniteLoading from 'vue-infinite-loading'
 
@@ -110,6 +101,7 @@ export default {
   components: {
     SmallLoader,
     InfiniteLoading,
+    FormInput,
   },
   mixins: [I18n],
   props: {

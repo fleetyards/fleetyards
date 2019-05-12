@@ -109,26 +109,6 @@
             </b-collapse>
           </li>
         </ul>
-        <transition
-          name="fade"
-          mode="out-in"
-          appear
-        >
-          <div
-            v-if="isUpdateAvailable"
-            class="update"
-          >
-            <Btn
-              primary
-              inline
-              small
-              @click.native="reload"
-            >
-              <i class="fal fa-sync" />
-              {{ t('actions.upgrade') }}
-            </Btn>
-          </div>
-        </transition>
         <ul>
           <router-link
             :to="{ name: 'home' }"
@@ -242,14 +222,12 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import Btn from 'frontend/components/Btn'
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Navigation',
   components: {
-    Btn,
     QuickSearch,
   },
   mixins: [I18n],
@@ -269,12 +247,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentUser',
-      'citizen',
-      'isAuthenticated',
       'navCollapsed',
       'mobile',
       'isUpdateAvailable',
+    ]),
+    ...mapGetters('session', [
+      'currentUser',
+      'citizen',
+      'isAuthenticated',
     ]),
   },
   watch: {
@@ -318,7 +298,7 @@ export default {
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
     },
     async logout() {
-      await this.$store.dispatch('logout')
+      await this.$store.dispatch('session/logout')
     },
     reload() {
       this.close()

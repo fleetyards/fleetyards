@@ -94,12 +94,14 @@
         >
           <i class="fal fa-trash" />
         </Btn>
-        <SubmitButton
+        <Btn
           :form="`vehicle-${vehicle.id}`"
           :loading="submitting"
+          type="submit"
+          size="large"
         >
           {{ t('actions.save') }}
-        </SubmitButton>
+        </Btn>
       </div>
     </template>
   </Modal>
@@ -107,7 +109,6 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import SubmitButton from 'frontend/components/SubmitButton'
 import Modal from 'frontend/components/Modal'
 import { confirm } from 'frontend/lib/Noty'
 import Checkbox from 'frontend/components/Form/Checkbox'
@@ -115,7 +116,6 @@ import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
-    SubmitButton,
     Modal,
     Checkbox,
     Btn,

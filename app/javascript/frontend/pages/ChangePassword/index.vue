@@ -3,17 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
         <form @submit.prevent="changePassword">
-          <h1 v-if="$store.getters.isAuthenticated">
-            <router-link
-              v-tooltip.left="t('actions.back')"
-              :to="{ name: 'settings'}"
-              class="back-button"
-            >
-              <i class="fal fa-chevron-left" />
-            </router-link>
-            {{ t('headlines.changePassword') }}
-          </h1>
-          <h1 v-else>
+          <h1>
             <router-link
               :to="{ name: 'home'}"
               exact
@@ -21,38 +11,6 @@
               {{ t('app') }}
             </router-link>
           </h1>
-          <div
-            v-if="$store.getters.isAuthenticated"
-            :class="{'has-error has-feedback': errors.has('currentPassword')}"
-            class="form-group"
-          >
-            <transition name="fade">
-              <label
-                v-show="form.currentPassword"
-                for="current-password"
-              >
-                {{ t('labels.currentPassword') }}
-              </label>
-            </transition>
-            <input
-              id="current-password"
-              v-model="form.currentPassword"
-              v-tooltip.right="errors.first('currentPassword')"
-              v-validate="'required'"
-              :data-vv-as="t('labels.currentPassword')"
-              :placeholder="t('labels.currentPassword')"
-              name="currentPassword"
-              type="password"
-              class="form-control"
-              autofocus
-            >
-            <span
-              v-show="errors.has('currentPassword')"
-              class="form-control-feedback"
-            >
-              <i class="fal fa-exclamation-triangle" />
-            </span>
-          </div>
           <div
             :class="{'has-error has-feedback': errors.has('password')}"
             class="form-group"
@@ -71,12 +29,12 @@
               v-model="form.password"
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
-              :autofocus="!$store.getters.isAuthenticated"
               :data-vv-as="t('labels.password')"
               :placeholder="t('labels.password')"
               name="password"
               type="password"
               class="form-control"
+              autofocus
             >
             <span
               v-show="errors.has('password')"
@@ -115,26 +73,29 @@
               <i class="fal fa-exclamation-triangle" />
             </span>
           </div>
-          <submit-button
+
+          <Btn
             :loading="submitting"
-            class="btn-block"
+            type="submit"
+            size="large"
+            block
           >
             {{ t('actions.save') }}
-          </submit-button>
-          <template v-if="!$store.getters.isAuthenticated">
-            <div class="clearfix" />
-            <br>
-            <br>
+          </Btn>
+
+          <footer>
             <p class="text-center">
               {{ t('labels.alreadyRegistered') }}
             </p>
-            <router-link
-              class="btn btn-default btn-block"
-              to="/login"
+
+            <Btn
+              :to="{name: 'login'}"
+              size="small"
+              block
             >
               {{ t('actions.login') }}
-            </router-link>
-          </template>
+            </Btn>
+          </footer>
         </form>
       </div>
     </div>
@@ -143,13 +104,14 @@
 
 <script>
 import { success, alert } from 'frontend/lib/Noty'
+import Btn from 'frontend/components/Btn'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import SubmitButton from 'frontend/components/SubmitButton'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -160,6 +122,16 @@ export default {
         password: null,
         passwordConfirmation: null,
       },
+    }
+  },
+  computed: {
+    ...mapGetters('session', [
+      'isAuthenticated',
+    ]),
+  },
+  mounted() {
+    if (this.isAuthenticated) {
+      this.$router.push({ name: 'settings-change-password' })
     }
   },
   methods: {

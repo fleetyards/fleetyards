@@ -46,12 +46,14 @@
     </form>
     <template #footer>
       <div class="pull-right">
-        <SubmitButton
+        <Btn
           :form="`vehicle-addons-${vehicle.id}`"
           :loading="submitting"
+          type="submit"
+          size="large"
         >
           {{ t('actions.save') }}
-        </SubmitButton>
+        </Btn>
       </div>
     </template>
   </Modal>
@@ -59,14 +61,14 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import SubmitButton from 'frontend/components/SubmitButton'
+import Btn from 'frontend/components/Btn'
 import Modal from 'frontend/components/Modal'
 import Loader from 'frontend/components/Loader'
 import Addons from './Addons'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
     Modal,
     Loader,
     Addons,

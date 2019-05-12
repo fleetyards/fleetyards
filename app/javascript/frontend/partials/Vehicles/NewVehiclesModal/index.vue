@@ -47,12 +47,14 @@
     </form>
     <template #footer>
       <div class="pull-right">
-        <SubmitButton
+        <Btn
+          type="submit"
           form="new-vehicles"
           :loading="submitting"
+          size="large"
         >
           {{ t('actions.add') }}
-        </SubmitButton>
+        </Btn>
       </div>
     </template>
   </Modal>
@@ -60,14 +62,12 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import SubmitButton from 'frontend/components/SubmitButton'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
-    SubmitButton,
     Modal,
     FilterGroup,
     Btn,

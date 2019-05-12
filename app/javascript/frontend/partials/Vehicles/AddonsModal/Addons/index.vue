@@ -48,7 +48,7 @@
             </option>
           </select>
           <Btn
-            small
+            size="small"
             @click.native="addAddon"
           >
             <i class="fa fa-plus" />

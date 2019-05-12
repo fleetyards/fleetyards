@@ -1,7 +1,7 @@
 <template>
   <vue-slider
     ref="scaleSlider"
-    v-model="scale"
+    :value="scale"
     :min="10"
     :max="max"
     :interval="10"
@@ -10,43 +10,41 @@
     :tooltip-formatter="label"
     :process="false"
     lazy
+    @change="updateScale"
   />
 </template>
 
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
     VueSlider,
   },
   props: {
-    scaleKey: {
-      type: String,
+    initialScale: {
+      type: Number,
       required: true,
     },
   },
   data() {
     return {
-      scale: this.$store.getters[this.scaleKey],
+      scale: null,
     }
   },
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
     max() {
       return this.mobile ? 100 : 300
     },
   },
-  watch: {
-    scale(value) {
-      this.$store.commit(`set${this.scaleKey}`, value)
-    },
+  mounted() {
+    this.scale = this.initialScale
   },
   methods: {
+    updateScale(value) {
+      this.$emit('change', value)
+    },
     mark(value) {
       if (value % 50 === 0 || value === 10) {
         return {

@@ -7,7 +7,7 @@
             <div class="page-actions">
               <Btn
                 v-show="!fleetchart && groupedButton"
-                small
+                size="small"
                 @click.native="toggleGrouping"
               >
                 <template v-if="grouping">
@@ -19,7 +19,7 @@
               </Btn>
               <Btn
                 v-show="fleetchart && groupedButton"
-                small
+                size="small"
                 @click.native="toggleFleetchartGrouping"
               >
                 <template v-if="fleetchartGrouping">
@@ -32,7 +32,7 @@
               <Btn
                 v-show="!fleetchart"
                 :active="details"
-                small
+                size="small"
                 @click.native="toggleDetails"
               >
                 <template v-if="details">
@@ -43,7 +43,7 @@
                 </template>
               </Btn>
               <Btn
-                small
+                size="small"
                 @click.native="toggleFleetchart"
               >
                 <template v-if="fleetchart">

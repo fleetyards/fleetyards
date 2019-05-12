@@ -8,8 +8,7 @@ describe('Home', () => {
   })
 
   it('Shows Search Results via Button', () => {
-    cy.get('input[name=search]')
-      .type('600i')
+    cy.selectInput('home-search').type('600i')
 
     cy.get('#search-submit').click()
 
@@ -19,8 +18,7 @@ describe('Home', () => {
   })
 
   it('Shows Search Results via Key', () => {
-    cy.get('input[name=search]')
-      .type('600i Touring{enter}')
+    cy.selectInput('home-search').type('600i Touring{enter}')
 
     cy.url().should('include', '/ships')
 
@@ -28,7 +26,7 @@ describe('Home', () => {
   })
 
   it('Shows Latest Ships', () => {
-    cy.get('.home-ships .model-panel').should('have.length', 9)
+    cy.get('.home-ships .teaser-panel').should('have.length', 9)
   })
 
   it('Shows Random Images', () => {

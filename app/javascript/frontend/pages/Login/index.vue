@@ -35,35 +35,36 @@
             v-model="form.rememberMe"
             :label="t('labels.rememberMe')"
           />
-          <submit-button
+          <Btn
             :loading="submitting"
-            class="btn-block"
+            type="submit"
+            size="large"
+            block
           >
             {{ t('actions.login') }}
-          </submit-button>
-          <div class="clearfix" />
-          <br>
-          <br>
-          <div class="text-center">
-            <router-link
-              class="btn btn-link"
-              to="/password/request"
-            >
-              {{ t('actions.reset-password') }}
-            </router-link>
-          </div>
-          <br>
-          <br>
-          <p class="text-center">
-            {{ t('labels.signUp') }}
-          </p>
-          <Btn
-            :to="{name: 'signup'}"
-            block
-            small
-          >
-            {{ t('actions.signUp') }}
           </Btn>
+          <Btn
+            :to="{
+              name: 'request-password',
+            }"
+            variant="link"
+            size="small"
+            block
+          >
+            {{ t('actions.reset-password') }}
+          </Btn>
+          <footer>
+            <p class="text-center">
+              {{ t('labels.signUp') }}
+            </p>
+            <Btn
+              :to="{name: 'signup'}"
+              size="small"
+              block
+            >
+              {{ t('actions.signUp') }}
+            </Btn>
+          </footer>
         </form>
       </div>
     </div>
@@ -74,13 +75,11 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { alert } from 'frontend/lib/Noty'
-import SubmitButton from 'frontend/components/SubmitButton'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
   components: {
-    SubmitButton,
     Btn,
     Checkbox,
   },
@@ -101,7 +100,7 @@ export default {
       const response = await this.$api.post('sessions', this.form)
       this.submitting = false
       if (!response.error) {
-        this.$store.dispatch('login', response.data)
+        this.$store.dispatch('session/login', response.data)
         if (this.$route.params.redirectToRoute) {
           this.$router.replace({ name: this.$route.params.redirectToRoute })
         } else {

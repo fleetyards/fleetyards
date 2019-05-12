@@ -85,12 +85,14 @@
         >
           <i class="fal fa-trash" />
         </Btn>
-        <SubmitButton
+        <Btn
           :form="`group-${id}`"
           :loading="submitting"
+          type="submit"
+          size="large"
         >
           {{ t('actions.save') }}
-        </SubmitButton>
+        </Btn>
       </div>
     </template>
   </Modal>
@@ -98,7 +100,6 @@
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import SubmitButton from 'frontend/components/SubmitButton'
 import Modal from 'frontend/components/Modal'
 import { confirm, alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
@@ -107,7 +108,6 @@ import 'vue-swatches/dist/vue-swatches.min.css'
 
 export default {
   components: {
-    SubmitButton,
     Modal,
     Btn,
     Swatches,

@@ -4,7 +4,7 @@
       <div class="col-xs-12">
         <h1 v-if="shop">
           <router-link
-            :to="shopBackRoute"
+            :to="backRoute"
             class="back-button"
           >
             <i class="fal fa-chevron-left" />
@@ -46,9 +46,9 @@
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
-            :active="shopFilterVisible"
+            :active="filterVisible"
             :aria-label="toggleFiltersTooltip"
-            small
+            size="small"
             @click.native="toggleFilter"
           >
             <i
@@ -80,7 +80,7 @@
         @after-leave="toggleFullscreen"
       >
         <div
-          v-show="shopFilterVisible"
+          v-show="filterVisible"
           class="col-xs-12 col-md-3 col-xlg-2"
         >
           <FilterForm />
@@ -197,12 +197,14 @@ export default {
   computed: {
     ...mapGetters([
       'previousRoute',
-      'shopBackRoute',
-      'shopFilterVisible',
       'mobile',
     ]),
+    ...mapGetters('shop', [
+      'backRoute',
+      'filterVisible',
+    ]),
     toggleFiltersTooltip() {
-      if (this.shopFilterVisible) {
+      if (this.filterVisible) {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
@@ -231,7 +233,7 @@ export default {
   created() {
     this.fetch()
     if (this.mobile) {
-      this.$store.commit('setShopFilterVisible', false)
+      this.$store.commit('shop/setFilterVisible', false)
     }
     this.fetchCommodities()
     this.toggleFullscreen()
@@ -254,13 +256,13 @@ export default {
         route.query = this.previousRoute.query
       }
 
-      this.$store.commit('setShopBackRoute', route)
+      this.$store.commit('shop/setBackRoute', route)
     },
     toggleFullscreen() {
-      this.fullscreen = !this.shopFilterVisible
+      this.fullscreen = !this.filterVisible
     },
     toggleFilter() {
-      this.$store.dispatch('toggleShopFilter')
+      this.$store.dispatch('shop/toggleFilter')
     },
     async fetch() {
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)

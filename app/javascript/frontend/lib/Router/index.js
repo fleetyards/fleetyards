@@ -32,7 +32,7 @@ const router = new Router({
 })
 
 const validateAndResolveNewRoute = (to) => {
-  if (to.meta.needsAuthentication && !Store.getters.isAuthenticated) {
+  if (to.meta.needsAuthentication && !Store.getters['session/isAuthenticated']) {
     return {
       routeName: 'login',
       routeParams: {
@@ -56,6 +56,12 @@ router.beforeEach((to, from, next) => {
   const newLocale = navigator.language
   if (!Store.state.locale || Store.state.locale !== newLocale) {
     Store.commit('setLocale', newLocale)
+  }
+
+  // check if update is available
+  if (Store.getters['app/isUpdateAvailable'] && Object.keys(to.params).length === 0) {
+    window.location.href = to.path
+    return
   }
 
   next()

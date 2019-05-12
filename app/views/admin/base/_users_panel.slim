@@ -1,45 +1,49 @@
 .row
   .col-xs-12.col-md-7
-    .panel.panel-default
-      .panel-heading
-        h2.panel-title
-          = I18n.t(:"labels.panels.registrations")
-      .panel-body
-        javascript:
-          window.App.Dashboard.addChart({
-            id: 'registrations-per-month-chart',
-            url: '/stats/registrations-per-month',
-            type: 'column',
-            height: '344px',
-            tooltip: 'user',
-          })
+    .panel-wrapper.panel-outer-spacing
+      .panel
+        .panel-inner
+          .panel-heading
+            h2.panel-title
+              = I18n.t(:"labels.panels.registrations")
+          .panel-body
+            javascript:
+              window.App.Dashboard.addChart({
+                id: 'registrations-per-month-chart',
+                url: '/stats/registrations-per-month',
+                type: 'column',
+                height: '344px',
+                tooltip: 'user',
+              })
 
-        #registrations-per-month-chart(style="height: 344px;")
+            #registrations-per-month-chart(style="height: 344px;")
 
   .col-xs-12.col-md-5
-    .panel.panel-default
-      .panel-heading
-        h2.panel-title
-          = I18n.t(:"labels.panels.latest_users")
-      .table-responsive
-        table.table.table-striped
-          thead
-            tr
-              th= I18n.t(:"labels.table.user.username")
-              th= I18n.t(:"labels.table.user.last_sign_in_at")
-              th= I18n.t(:"labels.table.user.created_at")
-          tbody
-            - @latest_users.each do |user|
-              tr
-                td
-                  = user.username
-                td
-                  - if user.current_sign_in_at.present?
-                    = time_ago_in_words(user.current_sign_in_at)
-                td
-                  = I18n.l(user.created_at, format: :short)
-      .panel-footer.text-right
-        = link_to admin_users_path do
-          = I18n.t('actions.more')
-          '
-          i.fa.fa-angle-right
+    .panel-wrapper.panel-outer-spacing
+      .panel
+        .panel-inner
+          .panel-heading
+            h2.panel-title
+              = I18n.t(:"labels.panels.latest_users")
+          .table-responsive
+            table.table.table-striped
+              thead
+                tr
+                  th= I18n.t(:"labels.table.user.username")
+                  th= I18n.t(:"labels.table.user.last_sign_in_at")
+                  th= I18n.t(:"labels.table.user.created_at")
+              tbody
+                - @latest_users.each do |user|
+                  tr
+                    td
+                      = user.username
+                    td
+                      - if user.current_sign_in_at.present?
+                        = time_ago_in_words(user.current_sign_in_at)
+                    td
+                      = I18n.l(user.created_at, format: :short)
+          .panel-footer.text-right
+            = link_to admin_users_path do
+              = I18n.t('actions.more')
+              '
+              i.fa.fa-angle-right

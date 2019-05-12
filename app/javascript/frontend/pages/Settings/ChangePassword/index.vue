@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-6">
         <div
-          v-if="$store.getters.isAuthenticated"
+          v-if="isAuthenticated"
           :class="{'has-error has-feedback': errors.has('currentPassword')}"
           class="form-group"
         >
@@ -47,7 +47,7 @@
             v-model="form.password"
             v-tooltip.right="errors.first('password')"
             v-validate="'required|min:8'"
-            :autofocus="!$store.getters.isAuthenticated"
+            :autofocus="!isAuthenticated"
             :data-vv-as="t('labels.password')"
             :placeholder="t('labels.password')"
             name="password"
@@ -87,9 +87,13 @@
           </span>
         </div>
         <br>
-        <submit-button :loading="submitting">
+        <Btn
+          :loading="submitting"
+          type="submit"
+          size="large"
+        >
           {{ t('actions.save') }}
-        </submit-button>
+        </Btn>
       </div>
     </div>
   </form>
@@ -99,11 +103,12 @@
 import { success, alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import SubmitButton from 'frontend/components/SubmitButton'
+import Btn from 'frontend/components/Btn'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -115,6 +120,11 @@ export default {
         passwordConfirmation: null,
       },
     }
+  },
+  computed: {
+    ...mapGetters('session', [
+      'isAuthenticated',
+    ]),
   },
   methods: {
     async changePassword() {

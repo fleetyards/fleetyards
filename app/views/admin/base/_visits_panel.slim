@@ -1,53 +1,59 @@
 .row
   .col-xs-12.col-lg-12
-    .panel.panel-default
-      .panel-heading
-        h2.panel-title
-          = I18n.t(:"labels.panels.visits_per_day")
-      .panel-body
-        javascript:
-          window.App.Dashboard.addChart({
-            id: 'visits-per-day-chart',
-            url: '/stats/visits-per-day',
-            type: 'area',
-            height: '250px',
-            tooltip: 'visit',
-          });
+    .panel-wrapper.panel-outer-spacing
+      .panel
+        .panel-inner
+          .panel-heading
+            h2.panel-title
+              = I18n.t(:"labels.panels.visits_per_day")
+          .panel-body
+            javascript:
+              window.App.Dashboard.addChart({
+                id: 'visits-per-day-chart',
+                url: '/stats/visits-per-day',
+                type: 'area',
+                height: '250px',
+                tooltip: 'visit',
+              });
 
-        #visits-per-day-chart.chart(style="height: 250px;")
+            #visits-per-day-chart.chart(style="height: 250px;")
 
   .col-xs-12.col-lg-12
     .row
       .col-xs-12.col-md-5
-        .panel.panel-default
-          .panel-heading
-            h2.panel-title
-              = I18n.t(:"labels.panels.most_viewed_pages")
-          .panel-body
-            javascript:
-              window.App.Dashboard.addChart({
-                id: 'most-viewed-pages-chart',
-                url: '/stats/most-viewed-pages',
-                type: 'bar',
-                height: '344px',
-                tooltip: 'view',
-              });
+        .panel-wrapper.panel-outer-spacing
+          .panel
+            .panel-inner
+              .panel-heading
+                h2.panel-title
+                  = I18n.t(:"labels.panels.most_viewed_pages")
+              .panel-body
+                javascript:
+                  window.App.Dashboard.addChart({
+                    id: 'most-viewed-pages-chart',
+                    url: '/stats/most-viewed-pages',
+                    type: 'bar',
+                    height: '344px',
+                    tooltip: 'view',
+                  });
 
-            #most-viewed-pages-chart.chart(style="height: 344px;")
+                #most-viewed-pages-chart.chart(style="height: 344px;")
 
       .col-xs-12.col-md-7
-        .panel.panel-default
-          .panel-heading
-            h2.panel-title
-              = I18n.t(:"labels.panels.visits_per_month")
-          .panel-body
-            javascript:
-              window.App.Dashboard.addChart({
-                id: 'visits-per-month-chart',
-                url: '/stats/visits-per-month',
-                type: 'column',
-                height: '344px',
-                tooltip: 'visit',
-              });
+        .panel-wrapper.panel-outer-spacing
+          .panel
+            .panel-inner
+              .panel-heading
+                h2.panel-title
+                  = I18n.t(:"labels.panels.visits_per_month")
+              .panel-body
+                javascript:
+                  window.App.Dashboard.addChart({
+                    id: 'visits-per-month-chart',
+                    url: '/stats/visits-per-month',
+                    type: 'column',
+                    height: '344px',
+                    tooltip: 'visit',
+                  });
 
-            #visits-per-month-chart.chart(style="height: 344px;")
+                #visits-per-month-chart.chart(style="height: 344px;")

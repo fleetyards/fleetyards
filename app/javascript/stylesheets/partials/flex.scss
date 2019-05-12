@@ -94,6 +94,9 @@
       margin-top: 5px;
       font-family: 'Orbitron', sans-serif;
       font-weight: normal;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
     }
   }
 
@@ -220,6 +223,11 @@
       .image {
         width: 100%;
       }
+    }
+
+    .actions {
+      padding-right: 10px;
+      width: 100%;
     }
 
     .price,

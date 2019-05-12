@@ -34,7 +34,7 @@
             </transition-group>
             <div class="text-center">
               <Btn
-                large
+                size="large"
                 @click.native="create"
               >
                 {{ t('actions.fleet.create') }}
@@ -122,7 +122,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'isAuthenticated',
     ]),
   },

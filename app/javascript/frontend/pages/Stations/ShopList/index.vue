@@ -12,9 +12,9 @@
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
-            :active="shopsFilterVisible"
+            :active="filterVisible"
             :aria-label="toggleFiltersTooltip"
-            small
+            size="small"
             @click.native="toggleFilter"
           >
             <i
@@ -44,7 +44,7 @@
         @after-leave="toggleFullscreen"
       >
         <div
-          v-show="shopsFilterVisible"
+          v-show="filterVisible"
           class="col-xs-12 col-md-3 col-xlg-2"
         >
           <FilterForm />
@@ -151,11 +151,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'shopsFilterVisible',
       'mobile',
     ]),
+    ...mapGetters('shops', [
+      'filterVisible',
+    ]),
     toggleFiltersTooltip() {
-      if (this.shopsFilterVisible) {
+      if (this.filterVisible) {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
@@ -172,16 +174,16 @@ export default {
   created() {
     this.fetch()
     if (this.mobile) {
-      this.$store.commit('setShopsFilterVisible', false)
+      this.$store.commit('shops/setFilterVisible', false)
     }
     this.toggleFullscreen()
   },
   methods: {
     toggleFullscreen() {
-      this.fullscreen = !this.shopsFilterVisible
+      this.fullscreen = !this.filterVisible
     },
     toggleFilter() {
-      this.$store.dispatch('toggleShopsFilter')
+      this.$store.dispatch('shops/toggleFilter')
     },
     async fetch() {
       this.loading = true
