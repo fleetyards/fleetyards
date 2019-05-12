@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .production-status {
   font-size: 75%;
@@ -6,10 +6,24 @@
   line-height: 1;
   color: $gray-light;
   padding: 4px 6px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(0, 0, 0, .6);
 }
 
 .panel-image {
+  &.no-details {
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    img {
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
   .on-sale {
     position: absolute;
     top: 0;

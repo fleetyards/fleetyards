@@ -2,7 +2,6 @@
   - if admin_user_signed_in?
     %li.dropdown{class: active_nav?('users')}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-        %img.gravatar{src: gravatar_path, alt: "avatar", with: 20, height: 20}
         %span.user-login
           = current_user.username
         %b.caret

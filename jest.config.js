@@ -1,31 +1,30 @@
 module.exports = {
   testURL: 'http://localhost:3000',
-  roots: [
-    'app/javascript',
+  roots: ['app/javascript'],
+  collectCoverage: false,
+  collectCoverageFrom: [
+    'app/javascript/**/*.{js,vue}',
+    'app/javascript/translations/**',
   ],
-  moduleFileExtensions: [
-    'js',
-    'vue',
-  ],
+  coverageDirectory: '<rootDir>/test/javascript/unit/coverage',
+  coverageReporters: ['json', 'lcov', 'text'],
+  moduleFileExtensions: ['js', 'vue'],
   setupFiles: [
-    '<rootDir>/test/javascript/setup',
+    '<rootDir>/test/javascript/unit/setup',
   ],
-  snapshotSerializers: [
-    '<rootDir>/node_modules/jest-serializer-vue',
-  ],
-  testPathIgnorePatterns: [
-    'config',
-  ],
+  snapshotSerializers: ['jest-serializer-vue'],
+  testPathIgnorePatterns: ['config'],
   moduleNameMapper: {
-    '\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+    '\\.(css|sass|scss)$': '<rootDir>/test/javascript/unit/__mocks__/style.js',
+  },
+  transform: {
+    '^.+\\.js$': 'babel-jest',
+    '.*\\.(vue)$': 'vue-jest',
+    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': 'jest-transform-stub',
   },
   moduleDirectories: [
     '<rootDir>/node_modules',
     '<rootDir>/app/javascript',
+    '<rootDir>/test/javascript/unit',
   ],
-  transform: {
-    '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
-    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
-  },
 }

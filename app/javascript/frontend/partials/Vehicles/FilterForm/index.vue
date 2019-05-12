@@ -14,24 +14,6 @@
         v-html="'&times;'"
       />
     </div>
-    <div class="form-group">
-      <label :for="idFor('model-name')">
-        {{ t('labels.filters.vehicles.modelName') }}
-      </label>
-      <input
-        :id="idFor('model-name')"
-        v-model="form.modelNameCont"
-        :placeholder="t('placeholders.filters.models.name')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.modelNameCont"
-        class="btn btn-clear"
-        @click="clearModelName"
-        v-html="'&times;'"
-      />
-    </div>
     <FilterGroup
       v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
@@ -153,7 +135,6 @@ export default {
     return {
       form: {
         nameCont: query.nameCont,
-        modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
         manufacturerIn: query.manufacturerIn || [],
@@ -164,6 +145,7 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         productionStatusIn: query.productionStatusIn || [],
         hangarGroupsIn: query.hangarGroupsIn || [],
+        hangarGroupsNotIn: query.hangarGroupsNotIn || [],
       },
     }
   },
@@ -172,7 +154,6 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
-        modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
         manufacturerIn: query.manufacturerIn || [],
@@ -183,6 +164,7 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         productionStatusIn: query.productionStatusIn || [],
         hangarGroupsIn: query.hangarGroupsIn || [],
+        hangarGroupsNotIn: query.hangarGroupsNotIn || [],
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
@@ -196,9 +178,6 @@ export default {
   methods: {
     clearName() {
       this.form.nameCont = null
-    },
-    clearModelName() {
-      this.form.modelNameCont = null
     },
   },
 }

@@ -1,13 +1,14 @@
 .col-animated {
-  transition: width 0.4s ease;
+  transition: width .4s ease;
 }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: width 0.5s ease, padding 0.5s ease;
+  transition: width .5s ease, padding .5s ease;
   overflow: hidden;
 
-  label, .filter-list-title {
+  label,
+  .filter-list-title {
     white-space: nowrap;
   }
 
@@ -24,11 +25,11 @@
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity .5s;
 }
 
 .fade-enter-active {
-  transition-delay: 0.5s;
+  transition-delay: .5s;
 }
 
 .fade-enter,
@@ -51,7 +52,7 @@
 }
 
 .fade-list-item {
-  transition: all 0.5s;
+  transition: all .5s;
 }
 
 .fade-list-enter,
@@ -69,5 +70,5 @@
 }
 
 .fade-list-enter-active {
-  transition-delay: 0.5s;
+  transition-delay: .5s;
 }

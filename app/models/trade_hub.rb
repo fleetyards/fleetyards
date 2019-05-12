@@ -14,8 +14,4 @@ class TradeHub < ApplicationRecord
   accepts_nested_attributes_for :trade_commodities, allow_destroy: true
 
   enum station_type: %i[hub truckstop mining-station asteroid-station outpost]
-
-  private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
-  end
 end

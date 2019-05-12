@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .back-to-top {
   position: fixed;
@@ -7,11 +7,11 @@
   font-size: 160%;
   z-index: 1000;
   cursor: pointer;
-  transition: all ease 0.5s;
+  transition: all ease .5s;
   padding: 20px 30px;
 
   &:hover {
-    opacity: 0.6;
+    opacity: .6;
   }
 }
 

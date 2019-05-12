@@ -1,4 +1,17 @@
-h1, .navbar-brand {
+blockquote {
+  small {
+    a {
+      color: $blockquote-small-color;
+
+      &:hover {
+        color: $blockquote-small-color;
+      }
+    }
+  }
+}
+
+h1,
+.navbar-brand {
   font-family: 'Orbitron', sans-serif;
 
   small {
@@ -6,7 +19,10 @@ h1, .navbar-brand {
   }
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   margin-top: 0;
 }
 
@@ -20,18 +36,6 @@ address {
     color: #999;
     font-family: 'Orbitron', sans-serif;
     font-weight: normal;
-  }
-}
-
-blockquote {
-  small {
-    a {
-      color: $blockquote-small-color;
-
-      &:hover {
-        color: $blockquote-small-color;
-      }
-    }
   }
 }
 

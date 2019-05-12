@@ -1,6 +1,0 @@
-<h4>
-  <%= I18n.t("mailer.user.admin.headline") %>
-</h4>
-<p>
-  <%= simple_format(@user_info.join("\n")) %>
-</p>

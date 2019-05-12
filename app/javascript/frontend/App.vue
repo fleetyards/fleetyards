@@ -9,7 +9,7 @@
     <div
       :key="$store.state.backgroundImage"
       v-lazy:background-image="$store.state.backgroundImage"
-      class="background-image"
+      class="background-image lazy"
     />
     <transition
       name="fade"
@@ -64,6 +64,7 @@ export default {
   watch: {
     $route() {
       this.setBackground()
+      this.fetchVersion()
       if (this.isAuthenticated) {
         this.fetchHangar()
       }
@@ -103,6 +104,9 @@ export default {
   methods: {
     closeNavigation() {
       this.$refs.navigation.close()
+    },
+    openNavigation() {
+      this.$refs.navigation.open()
     },
     offline() {
       this.$store.commit('setOnlineStatus', false)
@@ -145,6 +149,12 @@ export default {
       const response = await this.$api.get('vehicles/hangar-items')
       if (!response.error) {
         this.$store.commit('setHangar', response.data)
+      }
+    },
+    async fetchVersion() {
+      const response = await this.$api.get('version')
+      if (!response.error) {
+        this.$store.dispatch('updateAppVersion', response.data)
       }
     },
   },

@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .home-ships,
 .home-images .images {
@@ -40,7 +40,7 @@
   text-align: center;
   left: 50%;
   font-size: 3em;
-  transition: all 0.5s ease-in-out;
+  transition: all .5s ease-in-out;
   cursor: pointer;
 
   &:hover {
@@ -79,15 +79,17 @@
 
   .model-panel-body {
     padding: 15px;
-    flex: 0.66;
+    flex: .66;
   }
 
   .model-panel-image {
-    flex: 0.33;
+    flex: .33;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.8;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+    opacity: .8;
   }
 
   a {

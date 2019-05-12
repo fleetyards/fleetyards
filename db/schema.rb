@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181220185616) do
+ActiveRecord::Schema.define(version: 2019_05_11_193502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ship_size"
+    t.string "group"
     t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
@@ -179,6 +180,14 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "fleet_id"
+    t.uuid "user_id"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "logo"
@@ -204,6 +213,7 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.uuid "station_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "habitation_name"
     t.index ["station_id"], name: "index_habitations_on_station_id"
   end
 
@@ -372,6 +382,27 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.uuid "model_module_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "roadmap_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "rsi_id"
+    t.integer "rsi_category_id"
+    t.integer "rsi_release_id"
+    t.string "release"
+    t.text "release_description"
+    t.string "name"
+    t.uuid "model_id"
+    t.text "body"
+    t.text "description"
+    t.boolean "released"
+    t.string "image"
+    t.integer "tasks"
+    t.integer "inprogress"
+    t.integer "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "store_image"
+    t.boolean "active"
   end
 
   create_table "shop_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -551,6 +582,17 @@ ActiveRecord::Schema.define(version: 20181220185616) do
     t.boolean "public", default: true
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"
+  end
+
+  create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   create_table "videos", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

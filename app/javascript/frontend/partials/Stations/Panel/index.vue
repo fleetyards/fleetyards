@@ -9,6 +9,7 @@
         v-lazy:background-image="item.storeImageMedium"
         :to="route"
         :aria-label="item.name"
+        class="lazy"
       />
     </div>
     <h2 class="panel-title">

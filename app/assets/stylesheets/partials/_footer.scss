@@ -22,11 +22,13 @@ footer#main-footer {
     margin-top: 20px;
     color: #666;
   }
+
   nav {
     margin-bottom: 10px;
 
     a {
       color: lighten(#428bca, 10%);
+
       &:hover {
         color: #428bca;
       }

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Manufacturer < ApplicationRecord
-  include SlugHelper
   include ActionView::Helpers::OutputSafetyHelper
 
   paginates_per 30
@@ -12,6 +11,8 @@ class Manufacturer < ApplicationRecord
            dependent: :nullify
   has_many :components,
            dependent: :nullify
+
+  before_save :update_slugs
 
   ransack_alias :name, :name_or_slug
 
@@ -44,15 +45,9 @@ class Manufacturer < ApplicationRecord
     )
   end
 
-  before_save :update_slugs
-
   def name_clean
     # rubocop:disable Rails/OutputSafety
     name.html_safe
     # rubocop:enable Rails/OutputSafety
-  end
-
-  private def update_slugs
-    self.slug = SlugHelper.generate_slug(name)
   end
 end

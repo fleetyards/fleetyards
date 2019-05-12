@@ -1,6 +1,7 @@
 ---
 :queues:
   - fleetyards_model_loader
+  - fleetyards_roadmap_loader
   - fleetyards_vehicles_loader
   - fleetyards_fleets_loader
   - fleetyards_location_loader
@@ -8,3 +9,4 @@
   - fleetyards_model_notification
   - fleetyards_cleanup_auth_tokens
   - fleetyards_app_version_notifications
+  - fleetyards_admin_notifier

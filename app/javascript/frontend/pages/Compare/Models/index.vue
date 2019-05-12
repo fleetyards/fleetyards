@@ -32,6 +32,7 @@
                     v-lazy:background-image="modelA.storeImage"
                     :to="{ name: 'model', params: { slug: modelA.slug }}"
                     :aria-label="modelA.name"
+                    class="lazy"
                   />
                 </div>
               </div>
@@ -55,6 +56,7 @@
                     v-lazy:background-image="modelB.storeImage"
                     :to="{ name: 'model', params: { slug: modelB.slug }}"
                     :aria-label="modelB.name"
+                    class="lazy"
                   />
                 </div>
               </div>
@@ -916,9 +918,9 @@ export default {
         q: {},
       }
       if (search) {
-        query.q.nameOrSlugCont = search
+        query.q.nameCont = search
       } else if (missingValue) {
-        query.q.nameOrSlugCont = missingValue
+        query.q.nameCont = missingValue
       } else if (page) {
         query.page = page
       }

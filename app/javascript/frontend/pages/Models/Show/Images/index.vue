@@ -41,7 +41,7 @@
               v-lazy:background-image="image.smallUrl"
               :title="image.name"
               :href="image.url"
-              class="image"
+              class="image lazy"
               @click="openGallery(index, $event)"
             />
           </div>

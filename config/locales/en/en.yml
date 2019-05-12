@@ -13,10 +13,14 @@ en:
         body: "Allow me to introduce: The"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
-    user:
-      admin:
-        headline: New User Registered
-        subject: New User Registration
+    admin:
+      weekly:
+        headline: FleetYards.net Weekly
+        subject: FleetYards.net Weekly
+        registrations: "New Registrations"
+        ships: "New Ships"
+        vehicles: "New Vehicles"
+        fleets: "New Fleets"
     vehicle:
       on_sale:
         headline:
@@ -24,6 +28,11 @@ en:
           part_two: is now on Sale!
         price: Starting at %{price}
         subject: "%{model} now on Sale!"
+    roadmap:
+      admin:
+        headline: New changes on the Roadmap
+        subject: New changes on the Roadmap
+        body: There have been %{changes} changes to the Roadmap
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
@@ -74,6 +83,8 @@ en:
       settings_verify: Verify your RSI Handle
       settings_change-password: Change Password
       fleets: Fleets
+      roadmap: Ship-Roadmap
+      roadmap_changes: Roadmap Changes
       hangar: My Hangar
       public_hangar: "%{user} Hangar"
       impressum: Impressum
@@ -98,10 +109,12 @@ en:
     model:
       edit: Edit Model
       index: Models
+      images: Images
       new: New Model
     station:
       edit: Edit Station
       index: Stations
+      images: Images
       new: New Station
     shop:
       edit: Edit Shop

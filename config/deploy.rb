@@ -10,7 +10,6 @@ set :shared_dirs, [
 ]
 
 set :shared_files, [
-  'config/secrets.yml',
   'config/database.yml',
   '.rbenv-vars',
   'blacklist.json'
@@ -115,17 +114,24 @@ end
 namespace :server do
   task :restart do
     comment 'Restart Application'
-    command %(sudo supervisorctl restart fleetyards:*)
+    command %(sudo service fleetyards-app restart)
+    command %(sudo systemctl is-active --quiet fleetyards-app.service)
+    comment 'App Restarted'
+    command %(sudo service fleetyards-worker restart)
+    command %(sudo systemctl is-active --quiet fleetyards-worker.service)
+    comment 'Worker Restarted'
   end
 
   task :stop do
     comment 'Stopping Application'
-    command %(sudo supervisorctl stop fleetyards:*)
+    command %(sudo service fleetyards-app stop)
+    command %(sudo service fleetyards-worker stop)
   end
 
   task :start do
     comment 'Starting Application'
-    command %(sudo supervisorctl start fleetyards:*)
+    command %(sudo service fleetyards-app start)
+    command %(sudo service fleetyards-worker start)
   end
 end
 

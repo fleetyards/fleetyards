@@ -52,12 +52,18 @@
           />
         </h2>
       </div>
-      <div class="panel-image text-center">
+      <div
+        :class="{
+          'no-details': !details,
+        }"
+        class="panel-image text-center"
+      >
         <router-link
           :key="model.storeImageMedium"
           v-lazy:background-image="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
+          class="lazy"
         >
           <div
             v-if="isMyShip"
@@ -128,6 +134,7 @@ import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
+  name: 'ModelPanel',
   components: {
     Panel,
     AddToHangar,
@@ -211,5 +218,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

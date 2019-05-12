@@ -25,15 +25,15 @@
             />
           </div>
           <div class="page-actions">
-            <ExternalLink
+            <Btn
               v-tooltip="t('labels.poweredByStarship42')"
-              :url="starship42Url"
+              :href="starship42Url"
             >
               {{ t('labels.3dView') }}
-            </ExternalLink>
-            <ExternalLink :url="publicUrl">
+            </Btn>
+            <Btn :href="publicUrl">
               {{ t('labels.publicUrl') }}
-            </ExternalLink>
+            </Btn>
           </div>
         </div>
         <div
@@ -102,8 +102,8 @@
               >
                 <i
                   :class="{
-                    fas: hangarFilterVisible,
-                    far: !hangarFilterVisible,
+                    fas: isFilterSelected,
+                    far: !isFilterSelected,
                   }"
                   class="fa-filter"
                 />
@@ -123,6 +123,14 @@
                 <template v-else>
                   {{ t('actions.showFleetchart') }}
                 </template>
+              </Btn>
+              <Btn
+                v-tooltip="t('actions.addVehicle')"
+                :aria-label="t('actions.addVehicle')"
+                small
+                @click.native="showNewModal"
+              >
+                <i class="fa fa-plus" />
               </Btn>
               <Btn
                 v-tooltip="toggleGuideTooltip"
@@ -249,6 +257,7 @@
       :hangar-groups="hangarGroups"
     />
     <AddonsModal ref="addonsModal" />
+    <NewVehiclesModal ref="newVehiclesModal" />
   </section>
 </template>
 
@@ -257,7 +266,6 @@ import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
-import ExternalLink from 'frontend/components/ExternalLink'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/partials/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
@@ -268,6 +276,7 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
+import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -279,7 +288,6 @@ export default {
   components: {
     Loader,
     Btn,
-    ExternalLink,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartItem,
@@ -290,6 +298,7 @@ export default {
     HangarGuideBox,
     VehicleModal,
     AddonsModal,
+    NewVehiclesModal,
     FleetchartSlider,
   },
   mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
@@ -304,6 +313,7 @@ export default {
       vehiclesCount: null,
       tooltipTrigger: 'click',
       showGuide: false,
+      vehiclesChannel: null,
     }
   },
   computed: {
@@ -368,15 +378,8 @@ export default {
     },
   },
   mounted() {
-    this.setupUpdates()
-  },
-  beforeDestroy() {
-    if (this.vehiclesChannel) {
-      this.vehiclesChannel.unsubscribe()
-    }
-  },
-  created() {
     this.fetch()
+    this.setupUpdates()
     this.$comlink.$on('vehicleSave', this.fetch)
     this.$comlink.$on('vehicleDelete', this.fetch)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
@@ -391,12 +394,20 @@ export default {
     }
     this.toggleFullscreen()
   },
+  beforeDestroy() {
+    if (this.vehiclesChannel) {
+      this.vehiclesChannel.unsubscribe()
+    }
+  },
   methods: {
     toggleGuide() {
       this.showGuide = !this.showGuide
     },
     showEditModal(vehicle) {
       this.$refs.vehicleModal.open(vehicle)
+    },
+    showNewModal() {
+      this.$refs.newVehiclesModal.open()
     },
     showAddonsModal(vehicle) {
       this.$refs.addonsModal.open(vehicle)
@@ -483,5 +494,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

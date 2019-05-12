@@ -8,28 +8,35 @@ table {
       margin: 0;
     }
   }
-  td, th {
+
+  td,
+  th {
     &.actions {
       &.actions-one {
         width: 56px;
         min-width: 56px;
       }
+
       &.actions-two {
         width: 95px;
         min-width: 95px;
       }
+
       &.actions-three {
         width: 134px;
         min-width: 134px;
       }
+
       &.actions-four {
         width: 172px;
         min-width: 172px;
       }
+
       &.actions-five {
         width: 208px;
         min-width: 208px;
       }
+
       &.actions-five-ladda {
         width: 256px;
         min-width: 256px;
@@ -40,14 +47,17 @@ table {
           width: 45px;
           min-width: 45px;
         }
+
         &.actions-two {
           width: 83px;
           min-width: 83px;
         }
+
         &.actions-three {
           width: 114px;
           min-width: 114px;
         }
+
         &.actions-four {
           width: 150px;
           min-width: 150px;
@@ -62,12 +72,14 @@ table {
 
     &.preview {
       width: 100px;
+
       img {
         max-width: 100px;
         max-height: 50px;
       }
     }
   }
+
   tr {
     &.border {
       td {

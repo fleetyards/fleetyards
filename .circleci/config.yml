@@ -24,15 +24,13 @@ e2e: &e2e
       environment:
         DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
         TEST_SEEDS: 1
-        RAILS_ENV: docker
+        RAILS_ENV: ci
         RAILS_SERVE_STATIC_FILES: 1
         DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-        API_URL: http://localhost:8270/api/v1
         CYPRESS_BASE_URL: http://localhost:8270
         CYPRESS_CI: 1
-        CABLE_URL: ws://localhost:8270/cable
+        APP_DIR: .
         PORT: 8270
-        RAVEN_DSN: https://763123f723e3482790f14e89ca1a9623@sentry.io/1401277
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
@@ -118,14 +116,19 @@ jobs:
           name: rubocoptering
           command: bundle exec rubocop --format progress
 
-  eslint:
+  js-lint:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/app
-      - run:
-          name: eslint
-          command: yarn run lint
+      - run: yarn run lint:js
+
+  style-lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: yarn run lint:style
 
   seeds:
     <<: *defaults
@@ -195,12 +198,12 @@ jobs:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
       - run:
-          name: Prefill DB
-          command: bundle exec rails db:seed
-      - run:
           name: Webpacker & Assets Compile
           command: bundle exec thor assets:compile
-      - run: mkdir -p /tmp/pids && rm -f /tmp/pids/*
+      - run:
+          name: Prefill DB
+          command: bundle exec rails db:seed
+      - run: mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Run Server
           command: bundle exec puma -C config/puma.rb
@@ -265,7 +268,10 @@ workflows:
       - rubocop:
           requires:
             - bundle
-      - eslint:
+      - js-lint:
+          requires:
+            - yarn
+      - style-lint:
           requires:
             - yarn
       - seeds:
@@ -301,7 +307,10 @@ workflows:
       - rubocop:
           requires:
             - bundle
-      - eslint:
+      - js-lint:
+          requires:
+            - yarn
+      - style-lint:
           requires:
             - yarn
       - seeds:
@@ -327,7 +336,8 @@ workflows:
             - e2e-tests
             - audit
             - rubocop
-            - eslint
+            - js-lint
+            - style-lint
             - seeds
             - ruby-tests
             - js-tests

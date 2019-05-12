@@ -18,12 +18,11 @@
             @click.native="toggleFilter"
           >
             <i
-              v-if="isFilterSelected"
-              class="fas fa-filter"
-            />
-            <i
-              v-else
-              class="far fa-filter"
+              :class="{
+                fas: isFilterSelected,
+                far: !isFilterSelected,
+              }"
+              class="fa-filter"
             />
           </Btn>
         </div>
@@ -75,7 +74,7 @@
               <div
                 :key="shop.storeImageMedium"
                 v-lazy:background-image="shop.storeImageMedium"
-                class="panel-bg"
+                class="panel-bg lazy"
               />
               <div class="row">
                 <div class="col-xs-12">

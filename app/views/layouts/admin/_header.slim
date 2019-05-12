@@ -14,3 +14,7 @@ nav#main-nav.navbar.navbar-default.navbar-fixed-top role="navigation"
       - if admin_user_signed_in?
         = render "layouts/admin/nav"
       = render "layouts/admin/user_nav"
+      - if Rails.env.development?
+        .nav.navbar-nav.navbar-right.env-label
+          span.label.label-danger
+            = Rails.env.upcase

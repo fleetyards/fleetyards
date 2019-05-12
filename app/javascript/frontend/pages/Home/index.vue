@@ -50,14 +50,14 @@
               </div>
               <br>
               <br>
-              <ExternalLink
-                url="https://paypal.me/pools/c/83jQLadz60"
+              <Btn
+                href="https://paypal.me/pools/c/83jQLadz60"
                 large
                 filled
               >
                 <i class="fab fa-paypal" />
                 {{ t('actions.supportUs') }}
-              </ExternalLink>
+              </Btn>
             </div>
           </div>
         </div>
@@ -111,10 +111,8 @@
               <Panel>
                 <div class="model-panel">
                   <div
-                    :style="{
-                      'background-image': `url(${model.storeImage})`
-                    }"
-                    class="model-panel-image"
+                    v-lazy:background-image="model.storeImageMedium"
+                    class="model-panel-image lazy"
                   />
                   <div class="model-panel-body">
                     <router-link :to="{name: 'model', params: { slug: model.slug }}">
@@ -157,7 +155,7 @@
                     :data-index="index"
                     :title="image.name"
                     :to="{name: 'model', params: { slug: image.model.slug }}"
-                    class="image"
+                    class="image lazy"
                   />
                 </div>
               </transition-group>
@@ -175,14 +173,12 @@ import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
-import ExternalLink from 'frontend/components/ExternalLink'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     Loader,
     Panel,
-    ExternalLink,
     Btn,
   },
   mixins: [I18n, MetaInfo],
@@ -247,5 +243,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

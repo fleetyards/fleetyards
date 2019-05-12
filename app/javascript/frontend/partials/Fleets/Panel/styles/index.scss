@@ -1,3 +1,5 @@
+@import '~stylesheets/variables';
+
 .panel-fleet {
   display: flex;
 
@@ -7,10 +9,12 @@
 
   .logo {
     padding: 5px;
-    flex: 0.2;
+    flex: .2;
     background-color: lighten(black, 10%);
     display: flex;
     align-items: center;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
 
     img {
       max-width: 100%;
@@ -19,7 +23,7 @@
 
   .inner {
     padding: 12px;
-    flex: 0.8;
+    flex: .8;
   }
 
   .activities {

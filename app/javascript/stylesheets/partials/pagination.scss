@@ -33,7 +33,7 @@ $innerBorderWidth: 2px;
     }
 
     &::before {
-      content: "";
+      content: '';
       height: $innerBorderWidth;
       background-color: #444;
       position: absolute;
@@ -43,7 +43,7 @@ $innerBorderWidth: 2px;
     }
 
     &::after {
-      content: "";
+      content: '';
       height: $innerBorderWidth;
       background-color: #444;
       position: absolute;
@@ -66,7 +66,6 @@ $innerBorderWidth: 2px;
       background-color: $panel-inner-border;
     }
 
-
     &.gap,
     &.arrow {
       margin-right: 11px;
@@ -82,7 +81,7 @@ $innerBorderWidth: 2px;
     }
 
     &.disabled {
-      opacity: 0.5;
+      opacity: .5;
 
       a {
         cursor: default;

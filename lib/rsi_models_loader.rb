@@ -158,6 +158,7 @@ class RsiModelsLoader < RsiBaseLoader
         model.save
       end
     end
+
     model
   end
   # rubocop:enable Metrics/MethodLength

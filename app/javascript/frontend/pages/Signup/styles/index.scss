@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 form {
   max-width: 300px;
@@ -26,7 +26,7 @@ h1 {
     color: lighten($gray-light, 10%);
 
     &:hover {
-      color: lighten($gray-light, 30%)
+      color: lighten($gray-light, 30%);
     }
   }
 }
@@ -44,8 +44,6 @@ h1 {
     z-index: 2;
   }
 }
-
-
 
 .has-feedback {
   .form-control-feedback {

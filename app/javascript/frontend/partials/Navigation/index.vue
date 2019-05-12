@@ -21,6 +21,7 @@
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
     </button>
+    <QuickSearch v-if="$route.meta.quickSearch" />
     <div class="nav-container">
       <img
         :src="require('images/logo.png')"
@@ -77,7 +78,7 @@
               <span class="username">
                 {{ currentUser.username }}
               </span>
-              <i class="fa fa-chevron-down" />
+              <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
               :id="`user-sub-menu`"
@@ -151,7 +152,7 @@
           >
             <a @click="toggleStationMenu">
               {{ t('nav.stations.index') }}
-              <i class="fa fa-chevron-down" />
+              <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
               :id="`stations-sub-menu`"
@@ -227,6 +228,12 @@
           >
             <a>{{ t('nav.stats') }}</a>
           </router-link>
+          <router-link
+            :to="{ name: 'roadmap' }"
+            tag="li"
+          >
+            <a>{{ t('nav.roadmap') }}</a>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -236,11 +243,14 @@
 <script>
 import I18n from 'frontend/mixins/I18n'
 import Btn from 'frontend/components/Btn'
+import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Navigation',
   components: {
     Btn,
+    QuickSearch,
   },
   mixins: [I18n],
   data() {
@@ -319,5 +329,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/index";
+  @import './styles/index';
 </style>

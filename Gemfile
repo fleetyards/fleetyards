@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '2.6.2'
 
-gem 'rails', '5.2.2.1'
+gem 'rails', '5.2.3'
 
 gem 'pg', '~> 1.0'
 
@@ -12,6 +12,8 @@ gem 'bundler', '~> 2.0'
 
 gem 'sidekiq'
 gem 'sidekiq-cron'
+
+gem 'paper_trail'
 
 gem 'haml'
 gem 'haml-rails'
@@ -55,7 +57,6 @@ gem 'sass-rails'
 gem 'webpacker', '>= 4.0.x'
 
 gem 'bootstrap-sass'
-gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 gem 'js-routes'
@@ -96,6 +97,7 @@ group :development do
   gem 'listen'
   gem 'rails-erd'
   gem 'rubocop', require: false
+  gem 'rubocop-performance'
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'

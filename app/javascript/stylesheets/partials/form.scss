@@ -1,3 +1,7 @@
+.form-control {
+  height: 43px;
+}
+
 .input-group-addon {
   color: $gray-lighter;
   max-width: 60vw;
@@ -19,7 +23,7 @@
   position: relative;
 }
 
-input.disabled-clean[disabled=disabled] {
+input.disabled-clean[disabled='disabled'] {
   cursor: copy;
 }
 
@@ -30,7 +34,7 @@ input.disabled-clean[disabled=disabled] {
 
 .btn-clear {
   position: absolute;
-  right: 20px;
+  right: 5px;
   top: 30px;
 
   &:nth-child(2) {

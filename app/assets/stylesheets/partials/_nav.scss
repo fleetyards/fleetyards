@@ -31,6 +31,7 @@ $nav-transition-speed: .3s;
               border-color: $navbar-default-bg;
               transition: all $nav-transition-speed;
             }
+
             &.active > a,
             &:hover > a {
               border-right: 4px solid $navbar-active;
@@ -46,9 +47,9 @@ $nav-transition-speed: .3s;
         max-height: none;
 
         > li {
-          &.active > a,
           > a:hover,
-          &.open > a {
+          &.open > a,
+          &.active > a {
             border: none;
             border-right: 4px solid $navbar-active;
             padding-bottom: 10px;
@@ -110,7 +111,7 @@ $nav-transition-speed: .3s;
 
   .icon-bar {
     width: 22px;
-    transition: all 0.2s;
+    transition: all .2s;
   }
 
   .top-bar {

@@ -18,12 +18,12 @@
     bottom: 4px !important;
 
     &::before {
-      border-color: $input-color !important
+      border-color: $input-color !important;
     }
   }
 
   .dropdown-menu {
-    background: rgba($input-bg, 0.9) !important;
+    background: rgba($input-bg, .9) !important;
   }
 
   &.open {

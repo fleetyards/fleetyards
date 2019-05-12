@@ -23,6 +23,8 @@
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "fleets": "Fleets",
+    "roadmap": "Ship-Roadmap",
+    "roadmapChanges": "Roadmap Changes",
     "settings": "Settings",
     "verify": "Verify your RSI Handle",
     "account": "Account",
@@ -52,6 +54,7 @@
     "hangar": "My Hangar",
     "hangarPublic": "%{user} Hangar",
     "myVehicle": "My %{vehicle}",
+    "newVehicles": "Add Ships",
     "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
     "impressum": "Impressum",
     "privacy": "Privacy policy",
@@ -76,6 +79,7 @@
     "compare": {
       "models": "Compare Ships"
     },
+    "roadmap": "Ship-Roadmap",
     "cargo": "Cargo",
     "starsystems": "Starsystems",
     "starsystem": "%{starsystem} Starsystem",
@@ -129,6 +133,7 @@
     "cargo": "Cargo",
     "api": "API Docs",
     "stats": "Stats",
+    "roadmap": "Ship-Roadmap",
     "profile": "Profile",
     "account": "Account",
     "rsiVerification": "RSI Verification",
@@ -161,6 +166,32 @@
       "modelsByManufacturer": "Models by Manufacturer",
       "modelsByProductionStatus": "Models by Production Status"
     },
+    "roadmap": {
+      "unscheduled": "Unscheduled",
+      "lastUpdate": "Last Update:",
+      "recentlyUpdated": "Recently Updated",
+      "lastVersion": {
+        "completed": {
+          "one": "Completed %{count} Task",
+          "other": "Completed %{count} Tasks"
+        },
+        "tasks": {
+          "decreased": "Decreased Tasks by %{value}",
+          "increased": "Increased Tasks by %{value}"
+        },
+        "release": "Item moved from release %{old} to %{new}",
+        "addedToRelease": "Item new in release %{release}"
+      },
+      "tasks": {
+        "one": "of %{count} Task",
+        "other": "of %{count} Tasks"
+      },
+      "inprogress": "( %{count} in Progress )",
+      "ships": {
+        "one": "%{count} Ship",
+        "other": "%{count} Ships"
+      }
+    },
     "charts": {
       "view": {
         "one": "%{label}:<br><b>%{count}</b> View",
@@ -187,6 +218,7 @@
         "other": "%{label}:<br><b>%{count}</b> Visits"
       }
     },
+    "rsiRoadmap": "RSI Roadmap",
     "unknown": "Unknown",
     "none": "-",
     "searchInput": "Search Input",
@@ -359,8 +391,7 @@
         "habs": "Habitation?"
       },
       "vehicles": {
-        "name": "Name",
-        "modelName": "Ship Name",
+        "name": "Name or Ship name",
         "purchased": "Purchased",
         "group": "Group"
       },
@@ -400,6 +431,11 @@
     "fleet": {
       "sid": "Your Orgs Spectrum ID (SID) from robertsspaceindustries.com"
     },
+    "quicksearch": {
+      "models": "Gladius, Andromeda...",
+      "model": "Gladius, Andromeda...",
+      "hangar": "Enterprise, Andromeda..."
+    },
     "nav": {
       "search": "Search for Ships..."
     },
@@ -417,7 +453,7 @@
         "maxPrice": "maximal Price in UEC"
       },
       "vehicles": {
-        "name": "Enterprise, Nebuchadnezzar..."
+        "name": "Enterprise, Andromeda..."
       },
       "models": {
         "name": "Gladius, Andromeda...",
@@ -434,6 +470,8 @@
     "images": "Images"
   },
   "actions": {
+    "showReleased": "Show old Releases",
+    "hideReleased": "Hide old Releases",
     "upgrade": "Update available!",
     "backToHome": "Plot new course",
     "disableGrouping": "Disable Grouping",
@@ -482,6 +520,9 @@
     "resetPrices": "Reset Prices",
     "requestPassword": "Request Password E-Mail",
     "changePassword": "Change Password",
+    "add": "Add",
+    "addAnother": "Add another",
+    "addVehicle": "Add Ships",
     "addGroup": "Add Group",
     "compare": {
       "models": "Compare"
@@ -717,6 +758,11 @@
     "damageReduction": "Damage Reduction",
     "rateOfFire": "Rate of Fire",
     "extras": ""
+  },
+  "datetime": {
+    "formats": {
+      "default": "%e %B %Y at %H:%M"
+    }
   },
   "number": {
     "format": {

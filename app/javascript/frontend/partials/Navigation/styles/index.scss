@@ -1,20 +1,22 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 nav {
-  transition: left ease 0.5s, right ease 0.5s;
-  position: fixed;
+  transition: left ease .5s, right ease .5s;
+  position: absolute;
   z-index: 1000;
   top: 0;
+  left: 0;
+  right: 0;
 
   .nav-toggle {
-    transition: left ease 0.5s;
+    transition: left ease .5s;
     position: absolute;
     left: 0;
-    top: 10px;
+    top: 0;
     border-color: transparent;
     background-color: transparent;
-    margin: 0;
-    padding: 8px 15px;
+    margin: 10px 10px;
+    padding: 18px 14px;
     border: 1px solid transparent;
     border-radius: 3px;
 
@@ -24,7 +26,7 @@ nav {
       border-radius: 1px;
       background-color: #c8c8c8;
       width: 22px;
-      transition: all ease 0.2s;
+      transition: all ease .2s;
     }
 
     .top-bar {
@@ -56,10 +58,10 @@ nav {
   }
 
   .nav-container {
-    transition: left ease 0.5s;
+    transition: left ease .5s;
     position: fixed;
-    background-color: rgba($gray-darker, 0.5);
-    border-right: 1px solid rgba(30, 34, 38, 0.5);
+    background-color: rgba($gray-darker, .5);
+    border-right: 1px solid rgba(30, 34, 38, .5);
     width: 300px;
     top: 0;
     bottom: 0;
@@ -75,7 +77,7 @@ nav {
       position: absolute;
       left: 10%;
       bottom: 20px;
-      opacity: 0.5;
+      opacity: .5;
     }
 
     .nav-container-inner {
@@ -99,8 +101,6 @@ nav {
       margin: 0;
 
       li {
-
-
         > a {
           cursor: pointer;
           color: darken($text-color, 10%);
@@ -132,14 +132,14 @@ nav {
           &::after {
             width: 3px;
             height: 80%;
-            content: "";
+            content: '';
             position: absolute;
             top: 10%;
             border-top-right-radius: 2px;
             border-bottom-right-radius: 2px;
             left: 0;
             background: $primary;
-            box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
+            box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
           }
         }
       }
@@ -147,9 +147,8 @@ nav {
 
     .sub-menu {
       > a {
-
         > i {
-          transition: all 0.5s ease;
+          transition: all .5s ease;
           position: absolute;
           right: 20px;
           top: 50%;
@@ -169,7 +168,7 @@ nav {
         }
 
         > a > i {
-          transform: rotate(180deg);
+          transform: rotate(90deg);
         }
       }
     }
@@ -229,7 +228,7 @@ nav {
 
   nav {
     .nav-toggle {
-      left: 300px
+      left: 300px;
     }
 
     .nav-container {
@@ -238,16 +237,25 @@ nav {
   }
 }
 
+.quick-search-bar {
+  position: absolute;
+  top: 15px;
+  left: 70px;
+  width: 600px;
+  transition: left ease .5s, right ease .5s;
+}
+
+.nav-visible .quick-search-bar {
+  left: 370px;
+}
+
 @media (max-width: $desktop-breakpoint) {
   nav {
-    .nav-toggle {
-      margin-top: env(safe-area-inset-top);
-    }
+    margin-top: env(safe-area-inset-top);
 
     .nav-container {
       padding-top: env(safe-area-inset-top);
       padding-left: env(safe-area-inset-left);
-      padding-bottom: env(safe-area-inset-bottom);
       width: 300px;
       left: -300px;
 
@@ -264,6 +272,25 @@ nav {
       .logo {
         bottom: 10px;
       }
+    }
+
+    .nav-toggle {
+      margin-left: env(safe-area-inset-left);
+      padding-left: 24px;
+    }
+  }
+
+  .quick-search-bar {
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
+    width: auto;
+    right: 15px;
+  }
+
+  .nav-visible {
+    .quick-search-bar {
+      left: 370px;
+      right: -285px;
     }
   }
 }
@@ -282,8 +309,13 @@ nav {
 
     nav {
       .nav-toggle {
-        left: 250px
+        left: 250px;
       }
+    }
+
+    .quick-search-bar {
+      left: 250px;
+      right: -285px;
     }
   }
 }

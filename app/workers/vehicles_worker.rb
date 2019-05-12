@@ -8,7 +8,7 @@ class VehiclesWorker
     Vehicle.where(model_id: model_id, sale_notify: true, purchased: false).find_each do |vehicle|
       next unless vehicle.user.sale_notify?
 
-      ActionCable.server.broadcast("on_sale_#{vehicle.user.username}", vehicle.to_builder.target!)
+      ActionCable.server.broadcast("on_sale_#{vehicle.user.username}", vehicle.to_json)
       VehicleMailer.on_sale(vehicle).deliver_later
     end
   end

@@ -2,6 +2,7 @@ $text-color: #c8c8c8;
 $primary: #428bca;
 $success: #5cb85c;
 $danger: lighten(red, 10%);
+$warning: lighten(OrangeRed, 20%);
 
 $gray: #52575c;
 $gray-dark: #3a3f44;
@@ -19,10 +20,13 @@ $large-desktop-breakpoint: 1800px;
 
 $border-radius-base: 4px;
 
-$panel-bg: rgba($gray-darker, 0.9);
+$panel-bg: rgba($gray-darker, .9);
 $panel-outer-border: lighten(#555, 10%);
-$panel-inner-border: rgba(#c8c8c8, 0.9);
+$panel-inner-border: rgba(#c8c8c8, .9);
+$panelOuterBorderRadius: 24px;
+$panelInnerBorderRadius: 20px;
+$panelContentBorderRadius: 16px;
 
-$transition-base-speed: 0.5s;
+$transition-base-speed: .5s;
 
 $font-size-base: 15px;

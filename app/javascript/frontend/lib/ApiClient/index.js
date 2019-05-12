@@ -7,7 +7,7 @@ import linkHeaderParser from 'parse-link-header'
 import axiosDefaults from 'axios/lib/defaults'
 
 const client = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: window.API_ENDPOINT,
   headers: {
     common: {
       Accept: 'application/json',

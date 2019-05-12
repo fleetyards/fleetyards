@@ -25,6 +25,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
+      quickSearch: 'nameCont',
     },
   }, {
     path: '/compare/ships',
@@ -41,6 +42,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
+      quickSearch: 'nameCont',
     },
   }, {
     path: '/ships/:slug/images',
@@ -74,6 +76,7 @@ export const routes = [
       needsAuthentication: true,
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
+      quickSearch: 'nameCont',
     },
   }, {
     path: '/hangar/:user',
@@ -124,6 +127,14 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
     },
+  }, {
+    path: '/roadmap',
+    name: 'roadmap',
+    component: () => import(/* webpackChunkName: "page.roadmap" */ 'frontend/pages/Roadmap'),
+  }, {
+    path: '/roadmap/changes',
+    name: 'roadmap-changes',
+    component: () => import(/* webpackChunkName: "page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
   }, {
     path: '/settings',
     name: 'settings',

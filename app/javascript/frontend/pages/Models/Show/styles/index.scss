@@ -1,4 +1,4 @@
-@import "~stylesheets/variables";
+@import '~stylesheets/variables';
 
 .image {
   margin-bottom: 10px;
@@ -74,15 +74,15 @@
 
     .model-panel-body {
       padding: 15px;
-      flex: 0.5;
+      flex: .5;
     }
 
     .model-panel-image {
-      flex: 0.5;
+      flex: .5;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      opacity: 0.8;
+      opacity: .8;
     }
 
     a {
@@ -100,7 +100,6 @@
       z-index: 20;
       position: relative;
     }
-
   }
 }
 

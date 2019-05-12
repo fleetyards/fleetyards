@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
-class ImageUploader < CarrierWave::Uploader::Base
+class ImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  storage :file
-
   process :store_dimensions
-
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
 
   version :small do
     process resize_to_limit: [500, 500]

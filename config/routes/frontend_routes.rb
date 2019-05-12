@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '' do
+namespace :frontend, path: '', constraints: { subdomain: false } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
 
   get 'ships' => 'base#index'
@@ -32,6 +32,9 @@ namespace :frontend, path: '' do
   get 'images' => 'base#index'
 
   get 'stats' => 'base#index'
+
+  get 'roadmap' => 'base#index'
+  get 'roadmap/changes' => 'base#index'
 
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'
