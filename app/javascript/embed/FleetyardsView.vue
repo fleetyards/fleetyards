@@ -61,14 +61,9 @@
           class="row"
         >
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-            <vue-slider
-              ref="slider"
-              v-model="scale"
-              :min="scaleMin"
-              :max="scaleMax"
-              :interval="scaleInterval"
-              formatter="{value}x"
-              tooltip="hover"
+            <FleetchartSlider
+              :initial-scale="scale"
+              @change="updateScale"
             />
           </div>
         </div>
@@ -124,10 +119,10 @@
 <script>
 import ModelPanel from 'embed/partials/Models/Panel'
 import FleetchartItem from 'embed/partials/Models/FleetchartItem'
+import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import I18n from 'frontend/mixins/I18n'
-import vueSlider from 'vue-slider-component'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -137,7 +132,7 @@ export default {
     FleetchartItem,
     Loader,
     Btn,
-    vueSlider,
+    FleetchartSlider,
   },
   mixins: [I18n],
   data() {
@@ -146,26 +141,17 @@ export default {
       models: null,
       loading: false,
       slider: false,
-      scale: this.$store.state.scale,
-      scaleMax: 4,
-      scaleMin: 0.1,
-      scaleInterval: 0.1,
       groupedButton: false,
     }
   },
   computed: {
     ...mapGetters([
+      'scale',
       'details',
       'grouping',
       'fleetchartGrouping',
       'fleetchart',
     ]),
-    toggleDetailsTooltip() {
-      if (this.details) {
-        return this.t('actions.hideDetails')
-      }
-      return this.t('actions.showDetails')
-    },
     ungroupedModels() {
       return this.ships.map(slug => ({
         slug,
@@ -215,11 +201,6 @@ export default {
       })
     },
   },
-  watch: {
-    scale(value) {
-      this.$store.commit('setScale', value)
-    },
-  },
   mounted() {
     this.ships = this.$root.ships
     this.slider = this.$root.fleetchartSlider
@@ -227,6 +208,9 @@ export default {
     this.fetch()
   },
   methods: {
+    updateScale(value) {
+      this.$store.commit('setScale', value)
+    },
     toggleDetails() {
       this.$store.commit('toggleDetails')
     },

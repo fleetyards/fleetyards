@@ -11,7 +11,7 @@ const initialState = {
   locale: 'en-US',
   details: config.details || true,
   fleetchart: config.fleetchart || false,
-  scale: config.fleetchartScale || 1,
+  scale: 100,
   grouping: config.grouped || true,
   fleetchartGrouping: config.fleetchartGrouped || false,
 }
@@ -27,6 +27,9 @@ const store = new Vuex.Store({
     },
     grouping(state) {
       return state.grouping
+    },
+    scale(state) {
+      return state.scale
     },
     fleetchartGrouping(state) {
       return state.fleetchartGrouping
