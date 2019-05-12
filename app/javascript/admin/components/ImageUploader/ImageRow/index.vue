@@ -77,10 +77,9 @@
         >
           <i
             :class="{
-              'fa-eye': file.background,
-              'fa-eye-slash': !file.background,
+              'fa fa-eye': file.background,
+              'far fa-eye-slash': !file.background,
             }"
-            class="fa"
           />
         </Btn>
         <Btn
@@ -90,7 +89,7 @@
         >
           <i
             :class="{
-              'fa fa-check': file.enabled,
+              'fa fa-check-square': file.enabled,
               'far fa-square': !file.enabled,
             }"
           />
@@ -112,10 +111,7 @@
           <i class="fa fa-upload" />
           <span>Start</span>
         </Btn>
-        <Btn
-          class="btn btn-warning cancel"
-          @click.native="cancel(file)"
-        >
+        <Btn @click.native="cancel(file)">
           <i class="fa fa-ban-circle" />
           <span>Cancel</span>
         </Btn>

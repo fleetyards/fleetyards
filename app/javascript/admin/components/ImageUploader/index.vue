@@ -135,6 +135,20 @@ export default {
     Btn,
     Panel,
   },
+  props: {
+    galleryId: {
+      type: String,
+      required: true,
+    },
+    galleryType: {
+      type: String,
+      required: true,
+    },
+    fetchUrl: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       files: [],
@@ -158,13 +172,10 @@ export default {
     emptyBoxVisible() {
       return !this.loading && !this.allFiles.length
     },
-    uuid() {
-      return window.location.pathname.split('/')[2]
-    },
     uploadData() {
       return {
-        galleryId: this.uuid,
-        galleryType: window.GALLERY_TYPE,
+        galleryId: this.galleryId,
+        galleryType: this.galleryType,
       }
     },
     activeFiles() {
@@ -233,7 +244,7 @@ export default {
     async fetch() {
       this.loading = true
 
-      const response = await this.$api.get(`${window.GALLERY_PATH}/${this.uuid}/images`)
+      const response = await this.$api.get(this.fetchUrl)
 
       this.loading = false
       if (!response.error) {
