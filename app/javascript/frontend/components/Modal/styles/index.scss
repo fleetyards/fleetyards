@@ -28,6 +28,22 @@
     margin-right: -15px;
   }
 
+  .modal-header {
+    position: relative;
+
+    .modal-title {
+      padding-right: 20px;
+    }
+
+    .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 3px 10px;
+      cursor: pointer;
+    }
+  }
+
   &.wide {
     .modal-dialog {
       width: 1000px;
