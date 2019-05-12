@@ -29,7 +29,7 @@
         };
         (function() {
             var d = document, s = d.createElement('script');
-            s.src = 'https://fleetyards.net/embed.js#' + new Date().getTime();
+            s.src = '<%=Rails.application.secrets.frontend_endpoint %>/embed.js#' + new Date().getTime();
             (d.head || d.body).appendChild(s);
         })();
     </script>

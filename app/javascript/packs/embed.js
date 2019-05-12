@@ -28,7 +28,7 @@ setTimeout(() => {
       ships: config.ships || [],
       groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
-      frontendEndpoint: process.env.FRONTEND_ENDPOINT,
+      frontendEndpoint: window.FRONTEND_ENDPOINT,
     },
     render: h => h(FleetyardsView),
   })

@@ -159,13 +159,6 @@ $contentBorderRadius: $panelContentBorderRadius;
     border-radius: $contentBorderRadius;
   }
 
-  .btn-group {
-    .btn:last-child {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-  }
-
   .list-group-item {
     background: transparent;
   }
