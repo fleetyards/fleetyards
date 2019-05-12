@@ -7,7 +7,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'isAuthenticated',
     ]),
   },
@@ -22,7 +22,7 @@ export default {
   },
   created() {
     if (this.isAuthenticated) {
-      this.$store.dispatch('renewSession')
+      this.$store.dispatch('session/renew')
 
       this.setupSessionRenewInterval()
     }
@@ -39,7 +39,7 @@ export default {
       }
 
       this.sessionRenewInterval = setInterval(() => {
-        this.$store.dispatch('renewSession')
+        this.$store.dispatch('session/renew')
       }, 60 * 1000)
     },
   },

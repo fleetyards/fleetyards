@@ -42,24 +42,29 @@
               <i class="fal fa-exclamation-triangle" />
             </span>
           </div>
-          <submit-button
+
+          <Btn
             :loading="submitting"
-            class="btn-block"
+            type="submit"
+            size="large"
+            block
           >
             {{ t('actions.requestPassword') }}
-          </submit-button>
-          <div class="clearfix" />
-          <br>
-          <br>
-          <p class="text-center">
-            {{ t('labels.alreadyRegistered') }}
-          </p>
-          <router-link
-            class="btn btn-default btn-block"
-            to="/login"
-          >
-            {{ t('actions.login') }}
-          </router-link>
+          </Btn>
+
+          <footer>
+            <p class="text-center">
+              {{ t('labels.alreadyRegistered') }}
+            </p>
+
+            <Btn
+              :to="{name: 'login'}"
+              size="small"
+              block
+            >
+              {{ t('actions.login') }}
+            </Btn>
+          </footer>
         </form>
       </div>
     </div>
@@ -70,11 +75,11 @@
 import { success } from 'frontend/lib/Noty'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import SubmitButton from 'frontend/components/SubmitButton'
+import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
   },
   mixins: [I18n, MetaInfo],
   data() {

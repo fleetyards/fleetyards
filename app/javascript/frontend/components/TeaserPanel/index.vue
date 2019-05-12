@@ -1,0 +1,78 @@
+<template>
+  <Panel>
+    <div
+      class="teaser-panel"
+      :class="{
+        'teaser-panel-text': variant === 'text',
+      }"
+    >
+      <div
+        v-lazy:background-image="image"
+        class="teaser-panel-image lazy"
+      />
+      <div class="teaser-panel-body">
+        <router-link
+          v-if="to"
+          :to="to"
+        >
+          <h3>{{ title }}</h3>
+          <p>
+            {{ item.description }}
+          </p>
+        </router-link>
+        <template v-else>
+          <h3>{{ title }}</h3>
+          <p>
+            {{ item.description }}
+          </p>
+        </template>
+      </div>
+    </div>
+  </Panel>
+</template>
+
+<script>
+import Panel from 'frontend/components/Panel'
+
+export default {
+  name: 'TeaserPanel',
+  components: {
+    Panel,
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+    to: {
+      type: Object,
+      default: null,
+    },
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'text'].indexOf(value) !== -1
+      },
+    },
+  },
+  computed: {
+    image() {
+      return this.item.storeImageMedium
+    },
+    title() {
+      if (this.item.title) {
+        return this.item.title
+      } if (this.item.label) {
+        return this.item.label
+      }
+      return this.item.name
+    },
+  },
+}
+</script>
+
+
+<style lang="scss" scoped>
+  @import './styles/index';
+</style>

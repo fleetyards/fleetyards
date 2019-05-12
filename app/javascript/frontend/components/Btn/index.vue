@@ -3,7 +3,8 @@
     v-if="to"
     :class="cssClasses"
     :to="to"
-    :exact="exact"
+    :exact="to.exact"
+    :disabled="disabled || loading"
   >
     <BtnInner :loading="loading">
       <slot />
@@ -24,6 +25,7 @@
     v-else
     :type="type"
     :class="cssClasses"
+    :disabled="disabled || loading"
   >
     <BtnInner :loading="loading">
       <slot />
@@ -35,6 +37,7 @@
 import BtnInner from 'frontend/components/Btn/Inner'
 
 export default {
+  name: 'Btn',
   components: {
     BtnInner,
   },
@@ -54,26 +57,23 @@ export default {
     type: {
       type: String,
       default: 'button',
+      validator(value) {
+        return ['button', 'submit'].indexOf(value) !== -1
+      },
     },
-    clear: {
-      type: Boolean,
-      default: false,
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'transparent', 'link', 'danger'].indexOf(value) !== -1
+      },
     },
-    clean: {
-      type: Boolean,
-      default: false,
-    },
-    large: {
-      type: Boolean,
-      default: false,
-    },
-    danger: {
-      type: Boolean,
-      default: false,
-    },
-    small: {
-      type: Boolean,
-      default: false,
+    size: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'small', 'large'].indexOf(value) !== -1
+      },
     },
     block: {
       type: Boolean,
@@ -83,19 +83,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    inline: {
+      type: Boolean,
+      default: false,
+    },
     active: {
       type: Boolean,
       default: false,
     },
-    exact: {
-      type: Boolean,
-      default: false,
-    },
-    primary: {
-      type: Boolean,
-      default: false,
-    },
-    inline: {
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -104,13 +100,14 @@ export default {
     cssClasses() {
       return {
         'panel-btn': true,
-        'panel-btn-clear': this.clear,
-        'panel-btn-clean': this.clean,
-        'panel-btn-small': this.small,
-        'panel-btn-large': this.large,
+        'panel-btn-submit': this.type === 'submit',
+        'panel-btn-transparent': this.variant === 'transparent',
+        'panel-btn-link': this.variant === 'link',
+        'panel-btn-danger': this.variant === 'danger',
+        'panel-btn-small': this.size === 'small',
+        'panel-btn-large': this.size === 'large',
         'panel-btn-block': this.block,
         'panel-btn-inline': this.inline,
-        'panel-btn-primary': this.primary,
         'panel-btn-mobile-block': this.mobileBlock,
         active: this.active,
       }

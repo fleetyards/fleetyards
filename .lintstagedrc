@@ -1,19 +1,21 @@
 {
-  "*.js": [
-    "yarn run lint:js",
-    "git add"
-  ],
-  "*.{css,scss}": [
-    "yarn run lint:style",
-    "git add"
-  ],
-  "*.vue": [
-    "yarn run lint",
-    "git add"
-  ],
-  "*.{rb,erb,haml,jbuilder}": [
-    "rubocop",
-    "git add"
-  ],
+  "linters": {
+    "*.js": [
+      "yarn run lint:js",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "yarn run lint:style",
+      "git add"
+    ],
+    "*.vue": [
+      "yarn run lint:vue",
+      "git add"
+    ],
+    "*.{rb,erb,haml,jbuilder}": [
+      "rubocop",
+      "git add"
+    ],
+  },
   "ignore": ["**/db/*.rb"]
 }

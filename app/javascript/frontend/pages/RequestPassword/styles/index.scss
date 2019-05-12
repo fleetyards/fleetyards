@@ -49,6 +49,10 @@ label {
   display: none;
 }
 
+footer {
+  margin-top: 20px;
+}
+
 @media (min-width: $desktop-breakpoint) {
   label {
     display: block;

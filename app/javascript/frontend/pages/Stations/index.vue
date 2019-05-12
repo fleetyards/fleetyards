@@ -16,9 +16,9 @@
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
-            :active="stationFilterVisible"
+            :active="filterVisible"
             :aria-label="toggleFiltersTooltip"
-            small
+            size="small"
             @click.native="toggleFilter"
           >
             <i
@@ -48,7 +48,7 @@
         @after-leave="toggleFullscreen"
       >
         <div
-          v-show="stationFilterVisible"
+          v-show="filterVisible"
           class="col-xs-12 col-md-3 col-xlg-2"
         >
           <FilterForm />
@@ -179,14 +179,16 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'stationFilterVisible',
       'mobile',
+    ]),
+    ...mapGetters('stations', [
+      'filterVisible',
     ]),
     isSubRoute() {
       return this.$route.name !== 'stations'
     },
     toggleFiltersTooltip() {
-      if (this.stationFilterVisible) {
+      if (this.filterVisible) {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
@@ -203,16 +205,16 @@ export default {
   created() {
     this.fetch()
     if (this.mobile) {
-      this.$store.commit('setStationFilterVisible', false)
+      this.$store.commit('stations/setFilterVisible', false)
     }
     this.toggleFullscreen()
   },
   methods: {
     toggleFullscreen() {
-      this.fullscreen = !this.stationFilterVisible
+      this.fullscreen = !this.filterVisible
     },
     toggleFilter() {
-      this.$store.dispatch('toggleStationFilter')
+      this.$store.dispatch('stations/toggleFilter')
     },
     async fetch() {
       if (this.isSubRoute) {

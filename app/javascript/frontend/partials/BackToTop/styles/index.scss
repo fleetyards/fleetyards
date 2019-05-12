@@ -1,0 +1,25 @@
+@import '~stylesheets/variables';
+
+.back-to-top {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-size: 160%;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all ease .5s;
+  padding: 14px 20px;
+  margin: 10px;
+  background-color: rgba($gray-darker, .8);
+  border-radius: 50%;
+
+  &:hover {
+    opacity: .6;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .back-to-top {
+    padding: 10px 20px;
+  }
+}

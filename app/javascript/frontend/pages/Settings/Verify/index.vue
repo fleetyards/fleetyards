@@ -21,7 +21,7 @@
               disabled
             >
             <Btn
-              small
+              size="small"
               @click.native="copyToken"
             >
               <i class="fa fa-copy" />
@@ -35,9 +35,13 @@
       />
     </div>
     <br>
-    <SubmitButton :loading="fetchRsiVerificationToken || submitting">
+    <Btn
+      :loading="fetchRsiVerificationToken || submitting"
+      type="submit"
+      size="large"
+    >
       {{ t('actions.verify') }}
-    </SubmitButton>
+    </Btn>
     <br>
     <p v-html="t('texts.rsiVerification.subline')" />
   </form>
@@ -47,7 +51,6 @@
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import SubmitButton from 'frontend/components/SubmitButton'
 import { success, alert } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
 import { mapGetters } from 'vuex'
@@ -56,7 +59,6 @@ export default {
   components: {
     Loader,
     Btn,
-    SubmitButton,
   },
   mixins: [I18n, MetaInfo],
   data() {
@@ -67,7 +69,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('session', [
       'currentUser',
       'citizen',
     ]),

@@ -7,18 +7,18 @@
 require 'uri'
 
 Rails.application.config.content_security_policy do |policy|
-  api_endpoint = "https://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
-  cable_endpoint = "wss://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
+  api_endpoint = "https://#{URI.parse(Rails.application.secrets[:api_endpoint]).host}"
+  cable_endpoint = "wss://#{URI.parse(Rails.application.secrets[:cable_endpoint]).host}"
 
   if Rails.env.development?
-    api_endpoint = "http://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
-    cable_endpoint = "ws://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
+    api_endpoint = "http://#{URI.parse(Rails.application.secrets[:api_endpoint]).host}"
+    cable_endpoint = "ws://#{URI.parse(Rails.application.secrets[:cable_endpoint]).host}"
   end
 
   connect_src = [
     :self, cable_endpoint, api_endpoint, 'https://img.youtube.com',
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
-    'https://pro.fontawesome.com', Rails.application.secrets.rsi_endpoint
+    'https://pro.fontawesome.com', Rails.application.secrets[:rsi_endpoint]
   ]
 
   connect_src.concat ['ws://localhost:3035', 'http://localhost:3035'] if Rails.env.development?
@@ -32,8 +32,8 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   img_src = [
-    :self, :data, :blob, Rails.application.secrets.frontend_endpoint,
-    Rails.application.secrets.rsi_endpoint, 'https://img.youtube.com'
+    :self, :data, :blob, Rails.application.secrets[:frontend_endpoint],
+    Rails.application.secrets[:rsi_endpoint], 'https://img.youtube.com'
   ]
 
   font_src = [

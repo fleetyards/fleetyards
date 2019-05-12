@@ -1,5 +1,8 @@
 const fleetyardsEndpoint = '<%= Rails.application.secrets[:frontend_endpoint] %>'
 
+window.API_ENDPOINT = '<%= Rails.application.secrets[:api_endpoint] %>'
+window.FRONTEND_ENDPOINT = fleetyardsEndpoint
+
 const d = document
 const styles = d.createElement('link')
 styles.href = `${fleetyardsEndpoint}/embed-styles.css#${new Date().getTime()}`
@@ -8,7 +11,7 @@ styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
 
 const fonts = d.createElement('link')
-fonts.href = '//fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900'
+fonts.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900'
 fonts.rel = 'stylesheet'
 fonts.media = 'all';
 (d.head || d.body).appendChild(fonts)

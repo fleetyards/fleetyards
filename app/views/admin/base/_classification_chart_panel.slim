@@ -1,15 +1,17 @@
-.panel.panel-default
-  .panel-heading
-    h2.panel-title
-      = I18n.t(:"labels.panels.models_by_classification")
-  .panel-body
-    javascript:
-      window.App.Dashboard.addChart({
-        id: 'models-by-classification-chart',
-        url: '#{models_by_classification_api_v1_stats_url}',
-        type: 'pie',
-        height: '453px',
-        tooltip: 'ship-pie',
-      });
+.panel-wrapper.panel-outer-spacing
+  .panel
+    .panel-inner
+      .panel-heading
+        h2.panel-title
+          = I18n.t(:"labels.panels.models_by_classification")
+      .panel-body
+        javascript:
+          window.App.Dashboard.addChart({
+            id: 'models-by-classification-chart',
+            url: '#{models_by_classification_api_v1_stats_url}',
+            type: 'pie',
+            height: '453px',
+            tooltip: 'ship-pie',
+          });
 
-    #models-by-classification-chart.chart(style="height: 453px;")
+        #models-by-classification-chart.chart(style="height: 453px;")

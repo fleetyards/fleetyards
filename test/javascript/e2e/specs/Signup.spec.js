@@ -48,6 +48,7 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
+      cy.get('.nav-toggle').click()
       cy.get('nav a').contains('nav a', 'Login').should('exist')
     })
   })

@@ -29,11 +29,11 @@ export default {
         this.tradeHubs = response.data
         this.tradeHubs.forEach((hub) => {
           hub.tradeCommodities.forEach((tc) => {
-            if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] && tc.sell) {
-              this.tradeHubPrices[`${hub.slug}-${tc.slug}-sell`] = tc.sellPrice
+            if (!this.prices[`${hub.slug}-${tc.slug}-sell`] && tc.sell) {
+              this.prices[`${hub.slug}-${tc.slug}-sell`] = tc.sellPrice
             }
-            if (!this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] && tc.buy) {
-              this.tradeHubPrices[`${hub.slug}-${tc.slug}-buy`] = tc.buyPrice
+            if (!this.prices[`${hub.slug}-${tc.slug}-buy`] && tc.buy) {
+              this.prices[`${hub.slug}-${tc.slug}-buy`] = tc.buyPrice
             }
           })
         })
@@ -57,8 +57,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      'tradeHubPrices',
+    ...mapGetters('tradehubs', [
+      'prices',
     ]),
   },
   created() {

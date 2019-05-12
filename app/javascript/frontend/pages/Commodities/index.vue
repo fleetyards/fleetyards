@@ -7,19 +7,6 @@
             <h1>{{ t('headlines.commodities') }}</h1>
           </div>
           <div class="col-xs-12 col-md-6">
-            <div class="text-right hidden-md hidden-lg">
-              <button
-                class="btn btn-link btn-filter"
-                @click="toggleFilter"
-              >
-                <span v-show="isFilterSelected">
-                  <i class="fas fa-filter" />
-                </span>
-                <span v-show="!isFilterSelected">
-                  <i class="fal fa-filter" />
-                </span>
-              </button>
-            </div>
             <div class="page-actions">
               <Btn
                 :to="{
@@ -47,13 +34,36 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div class="page-actions page-actions-left">
+          <Btn
+            v-tooltip="toggleFiltersTooltip"
+            :active="filterVisible"
+            :aria-label="toggleFiltersTooltip"
+            size="small"
+            @click.native="toggleFilter"
+          >
+            <i
+              :class="{
+                fas: isFilterSelected,
+                far: !isFilterSelected,
+              }"
+              class="fa-filter"
+            />
+          </Btn>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <transition
-        name="fade"
+        name="slide"
         appear
+        @before-enter="toggleFullscreen"
+        @after-leave="toggleFullscreen"
       >
         <div
-          v-show="!mobile || filterVisible"
-          class="col-sm-12 col-md-3"
+          v-show="filterVisible"
+          class="col-md-3 col-xlg-2"
         >
           <FilterForm
             :trade-hubs="tradeHubs"
@@ -62,7 +72,12 @@
           />
         </div>
       </transition>
-      <div class="col-xs-12 col-md-9">
+      <div
+        :class="{
+          'col-md-9 col-xlg-10': !fullscreen,
+        }"
+        class="col-xs-12 col-animated"
+      >
         <transition-group
           name="fade-list"
           class="row"
@@ -96,7 +111,7 @@
                       <div class="input-group">
                         <input
                           :id="`${station.slug}-${tradeCommodity.slug}`"
-                          v-model="tradeHubPrices[`${station.slug}-${tradeCommodity.slug}-buy`]"
+                          v-model="prices[`${station.slug}-${tradeCommodity.slug}-buy`]"
                           class="form-control"
                           min="0"
                           step="0.01"
@@ -122,7 +137,7 @@
                       <div class="input-group">
                         <input
                           :id="`${station.slug}-${tradeCommodity.slug}`"
-                          v-model="tradeHubPrices[`${station.slug}-${tradeCommodity.slug}-sell`]"
+                          v-model="prices[`${station.slug}-${tradeCommodity.slug}-sell`]"
                           class="form-control"
                           type="number"
                           step="0.01"
@@ -166,7 +181,6 @@ import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Filters from 'frontend/mixins/Filters'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
 import { confirm } from 'frontend/lib/Noty'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -179,12 +193,10 @@ export default {
     return {
       profitRate: 77.4,
       filterVisible: false,
+      fullscreen: false,
     }
   },
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
     filteredTradeHubs() {
       const query = this.$route.query.q || {}
       return this.tradeHubs.filter((hub) => {
@@ -205,25 +217,37 @@ export default {
         return query.commodityIn.some(v => commodities.indexOf(v) >= 0)
       })
     },
+    toggleFiltersTooltip() {
+      if (this.filterVisible) {
+        return this.t('actions.hideFilter')
+      }
+      return this.t('actions.showFilter')
+    },
   },
   created() {
     if (this.$route.params.id) {
       this.fetch()
     }
   },
+  mounted() {
+    this.toggleFullscreen()
+  },
   methods: {
     toggleFilter() {
       this.filterVisible = !this.filterVisible
     },
+    toggleFullscreen() {
+      this.fullscreen = !this.filterVisible
+    },
     async fetch() {
       const response = await this.$api.get(`commodity-prices/${this.$route.params.id}`)
       if (!response.error) {
-        this.$store.commit('setTradeHubPrices', response.data.data)
+        this.$store.commit('tradehubs/setPrices', response.data.data)
       }
     },
     resetPrices() {
       confirm(this.t('confirm.tradeRoutes.reset'), () => {
-        this.$store.commit('resetTradeHubPrices')
+        this.$store.dispatch('tradehubs/reset')
         this.$router.replace({
           name: 'commodities',
           query: {
@@ -233,7 +257,7 @@ export default {
       })
     },
     updatePrices(key) {
-      let prices = JSON.parse(JSON.stringify(this.tradeHubPrices))
+      let prices = JSON.parse(JSON.stringify(this.prices))
 
       if (key.endsWith('buy')) {
         prices = Object.assign({}, prices, {
@@ -241,7 +265,7 @@ export default {
         })
       }
 
-      this.$store.commit('setTradeHubPrices', prices)
+      this.$store.commit('tradehubs/setPrices', prices)
       this.$router.replace({
         name: 'commodities',
         query: {
@@ -251,10 +275,10 @@ export default {
     },
     async save() {
       const response = await this.$api.post('commodity-prices', {
-        data: JSON.stringify(this.tradeHubPrices),
+        data: JSON.stringify(this.prices),
       })
       if (!response.error) {
-        this.$store.commit('setTradeHubPricesID', response.data.id)
+        this.$store.commit('tradehubs/setPricesID', response.data.id)
         this.$router.replace({
           name: 'commoditiesSaved',
           params: {

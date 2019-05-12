@@ -79,7 +79,7 @@
       </div>
       <div class="app-community-logo" />
       <div class="app-version">
-        {{ appCodename }} ({{ appVersion }})
+        {{ codename }} ({{ version }})
       </div>
     </div>
   </footer>
@@ -92,9 +92,9 @@ import { mapGetters } from 'vuex'
 export default {
   mixins: [I18n],
   computed: {
-    ...mapGetters([
-      'appVersion',
-      'appCodename',
+    ...mapGetters('app', [
+      'version',
+      'codename',
     ]),
   },
 }

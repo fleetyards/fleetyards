@@ -68,6 +68,11 @@ $contentBorderRadius: $panelContentBorderRadius;
     right: 40px;
   }
 
+  &.panel-primary {
+    background-color: $primary;
+    color: white;
+  }
+
   .panel-heading {
     padding: 10px 15px;
 
@@ -96,6 +101,13 @@ $contentBorderRadius: $panelContentBorderRadius;
         }
       }
     }
+  }
+
+  .panel-footer {
+    -webkit-border-bottom-left-radius: $contentBorderRadius;
+    -webkit-border-bottom-right-radius: $contentBorderRadius;
+    border-bottom-right-radius: $contentBorderRadius;
+    border-bottom-left-radius: $contentBorderRadius;
   }
 
   .panel-body {
@@ -145,13 +157,6 @@ $contentBorderRadius: $panelContentBorderRadius;
 
   .panel-inner {
     border-radius: $contentBorderRadius;
-  }
-
-  .btn-group {
-    .btn:last-child {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
   }
 
   .list-group-item {

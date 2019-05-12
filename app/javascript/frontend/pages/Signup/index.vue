@@ -179,12 +179,16 @@
             v-model="form.saleNotify"
             :label="t('labels.user.saleNotify')"
           />
-          <submit-button
+
+          <Btn
             :loading="submitting"
-            class="btn-block"
+            type="submit"
+            size="large"
+            block
           >
             {{ t('actions.signUp') }}
-          </submit-button>
+          </Btn>
+
           <p class="privacy-info">
             By creating a FleetYards account, you agree to our
             <router-link
@@ -193,19 +197,20 @@
               Privacy Policy
             </router-link>
           </p>
-          <div class="clearfix" />
-          <br>
-          <br>
-          <p class="text-center">
-            {{ t('labels.alreadyRegistered') }}
-          </p>
-          <Btn
-            :to="{name: 'login'}"
-            block
-            small
-          >
-            {{ t('actions.login') }}
-          </Btn>
+
+          <footer>
+            <p class="text-center">
+              {{ t('labels.alreadyRegistered') }}
+            </p>
+
+            <Btn
+              :to="{name: 'login'}"
+              size="small"
+              block
+            >
+              {{ t('actions.login') }}
+            </Btn>
+          </footer>
         </form>
       </div>
     </div>
@@ -216,13 +221,11 @@
 import { success, alert } from 'frontend/lib/Noty'
 import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import SubmitButton from 'frontend/components/SubmitButton'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
   components: {
-    SubmitButton,
     Btn,
     Checkbox,
   },

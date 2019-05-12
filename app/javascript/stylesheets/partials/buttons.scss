@@ -1,21 +1,3 @@
-.btn {
-  transition: all ease $transition-base-speed;
-}
-
-.close {
-  color: $text-color;
-  transition: opacity $transition-base-speed ease;
-  opacity: .6;
-  float: right;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
 .page-actions {
   text-align: right;
 
@@ -24,8 +6,7 @@
   }
 }
 
-a,
-.btn-link {
+a {
   color: $text-color;
   text-decoration: none;
   transition: all ease .5s;
@@ -39,35 +20,6 @@ a,
     color: $text-color;
     text-decoration: none;
   }
-}
-
-.input-group {
-  .btn {
-    padding: 8px 12px 9px;
-  }
-
-  .btn-lg {
-    padding: 10px 16px;
-  }
-}
-
-.btn-filter {
-  font-size: 1em;
-  z-index: 1030;
-  position: fixed;
-  top: 10px;
-  margin-right: 15px;
-  right: 0;
-}
-
-.nav-visible {
-  .btn-filter {
-    right: -80vw;
-  }
-}
-
-.btn-block + .btn-block {
-  margin-top: 0;
 }
 
 $panel-border-width: 2px;
@@ -84,6 +36,7 @@ $panel-content-border-radius: 6px;
   display: inline-block;
   margin-bottom: 20px;
   min-width: 50px;
+  min-height: 43px;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
   cursor: pointer;
@@ -119,11 +72,11 @@ $panel-content-border-radius: 6px;
     text-align: center;
   }
 
-  &.panel-btn-clear {
+  &.panel-btn-transparent {
     background: transparent;
   }
 
-  &.panel-btn-clean {
+  &.panel-btn-link {
     background: transparent;
     border: none;
 
@@ -148,15 +101,17 @@ $panel-content-border-radius: 6px;
 
   &.panel-btn-small {
     min-width: 40px;
+    min-height: 39px;
 
     .panel-btn-inner {
       padding: 5px 10px;
-      font-size: 90%;
+      font-size: 100%;
     }
   }
 
   &.panel-btn-large {
     min-width: 62px;
+    min-height: 51px;
 
     .panel-btn-inner {
       padding: 8px 16px;
@@ -164,16 +119,8 @@ $panel-content-border-radius: 6px;
     }
   }
 
-  &.panel-btn-danger {
-    .panel-btn-inner {
-      color: $danger;
-    }
-  }
-
-  &.panel-btn-primary {
-    .panel-btn-inner {
-      color: $primary;
-    }
+  &.panel-btn-submit {
+    min-width: 140px;
   }
 
   &.panel-btn-inline {
@@ -204,6 +151,12 @@ $panel-content-border-radius: 6px;
     animation-name: flash;
     animation-duration: .5s;
   }
+
+  &.panel-btn-danger {
+    .panel-btn-inner {
+      color: $danger;
+    }
+  }
 }
 
 @keyframes flash {
@@ -220,6 +173,18 @@ $panel-content-border-radius: 6px;
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .page-actions {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .panel-btn {
+      flex-grow: 1;
+    }
+  }
+
   .panel-btn {
     &.panel-btn-block,
     &.panel-btn-mobile-block,
@@ -234,18 +199,6 @@ $panel-content-border-radius: 6px;
 
     .panel-btn-inner {
       white-space: normal;
-    }
-  }
-
-  .page-actions {
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-
-    .panel-btn {
-      flex-grow: 1;
     }
   }
 }

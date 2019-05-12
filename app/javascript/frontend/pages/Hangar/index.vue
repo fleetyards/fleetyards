@@ -79,25 +79,25 @@
           <div class="col-xs-12 col-md-6">
             <div class="page-actions page-actions-left">
               <Btn
-                v-show="!hangarFleetchartVisible && vehicles.length"
+                v-show="!fleetchartVisible && vehicles.length"
                 v-tooltip="toggleDetailsTooltip"
-                :active="hangarDetailsVisible"
+                :active="detailsVisible"
                 :aria-label="toggleDetailsTooltip"
-                small
+                size="small"
                 @click.native="toggleDetails"
               >
                 <i
                   :class="{
-                    'fa fa-chevron-up': hangarDetailsVisible,
-                    'far fa-chevron-down': !hangarDetailsVisible,
+                    'fa fa-chevron-up': detailsVisible,
+                    'far fa-chevron-down': !detailsVisible,
                   }"
                 />
               </Btn>
               <Btn
                 v-tooltip="toggleFiltersTooltip"
-                :active="hangarFilterVisible"
+                :active="filterVisible"
                 :aria-label="toggleFiltersTooltip"
-                small
+                size="small"
                 @click.native="toggleFilter"
               >
                 <i
@@ -109,15 +109,15 @@
                 />
               </Btn>
               <DownloadScreenshotBtn
-                v-if="hangarFleetchartVisible"
+                v-if="fleetchartVisible"
                 element="#fleetchart"
                 filename="my-hangar-fleetchart"
               />
               <Btn
-                small
+                size="small"
                 @click.native="toggleFleetchart"
               >
-                <template v-if="hangarFleetchartVisible">
+                <template v-if="fleetchartVisible">
                   {{ t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
@@ -127,7 +127,7 @@
               <Btn
                 v-tooltip="t('actions.addVehicle')"
                 :aria-label="t('actions.addVehicle')"
-                small
+                size="small"
                 @click.native="showNewModal"
               >
                 <i class="fa fa-plus" />
@@ -136,7 +136,7 @@
                 v-tooltip="toggleGuideTooltip"
                 :active="guideVisible"
                 :aria-label="toggleGuideTooltip"
-                small
+                size="small"
                 @click.native="toggleGuide"
               >
                 <i class="fa fa-question" />
@@ -145,7 +145,7 @@
           </div>
           <div class="col-xs-12 col-md-6">
             <Paginator
-              v-if="!hangarFleetchartVisible && vehicles.length"
+              v-if="!fleetchartVisible && vehicles.length"
               :page="currentPage"
               :total="totalPages"
               right
@@ -160,7 +160,7 @@
             @after-leave="toggleFullscreen"
           >
             <div
-              v-show="hangarFilterVisible"
+              v-show="filterVisible"
               class="col-md-3 col-xlg-2"
             >
               <VehiclesFilterForm :hangar-groups-options="hangarGroups" />
@@ -177,17 +177,20 @@
               appear
             >
               <div
-                v-if="hangarFleetchartVisible && fleetchartVehicles.length"
+                v-if="fleetchartVisible && fleetchartVehicles.length"
                 class="row"
               >
                 <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                  <FleetchartSlider scale-key="HangarFleetchartScale" />
+                  <FleetchartSlider
+                    :initial-scale="fleetchartScale"
+                    @change="updateScale"
+                  />
                 </div>
               </div>
             </transition>
             <HangarGuideBox v-if="guideVisible" />
             <div
-              v-else-if="hangarFleetchartVisible"
+              v-else-if="fleetchartVisible"
               class="row"
             >
               <div class="col-xs-12 fleetchart-wrapper">
@@ -202,7 +205,7 @@
                     v-for="vehicle in fleetchartVehicles"
                     :key="vehicle.id"
                     :model="vehicle.model"
-                    :scale="HangarFleetchartScale"
+                    :scale="fleetchartScale"
                   />
                 </transition-group>
               </div>
@@ -226,8 +229,7 @@
                 <ModelPanel
                   :model="vehicle.model"
                   :vehicle="vehicle"
-                  :details="hangarDetailsVisible"
-                  :hangar-groups="hangarGroups"
+                  :details="detailsVisible"
                   :on-edit="showEditModal"
                   :on-addons="showAddonsModal"
                 />
@@ -243,7 +245,7 @@
         <div class="row">
           <div class="col-xs-12">
             <Paginator
-              v-if="!hangarFleetchartVisible && vehicles.length"
+              v-if="!fleetchartVisible && vehicles.length"
               :page="currentPage"
               :total="totalPages"
               right
@@ -267,7 +269,7 @@ import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import ModelPanel from 'frontend/components/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
@@ -285,6 +287,7 @@ import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
 
 export default {
+  name: 'Hangar',
   components: {
     Loader,
     Btn,
@@ -318,37 +321,41 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentUser',
-      'hangar',
-      'hangarDetailsVisible',
-      'hangarFleetchartVisible',
-      'hangarFilterVisible',
-      'HangarFleetchartScale',
       'mobile',
+    ]),
+    ...mapGetters('session', [
+      'currentUser',
+    ]),
+    ...mapGetters('hangar', [
+      'ships',
+      'detailsVisible',
+      'filterVisible',
+      'fleetchartVisible',
+      'fleetchartScale',
     ]),
     emptyBoxVisible() {
       return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
     },
     guideVisible() {
-      return !this.hangar.length || this.showGuide
+      return !this.ships.length || this.showGuide
     },
     noVehicles() {
-      return !this.vehicles.length && !this.hangarFleetchartVisible
+      return !this.vehicles.length && !this.fleetchartVisible
     },
     noFleetchartVehicles() {
-      return !this.fleetchartVehicles.length && this.hangarFleetchartVisible
+      return !this.fleetchartVehicles.length && this.fleetchartVisible
     },
     filterPresent() {
       return this.isFilterSelected || this.$route.query.page
     },
     toggleDetailsTooltip() {
-      if (this.hangarDetailsVisible) {
+      if (this.detailsVisible) {
         return this.t('actions.hideDetails')
       }
       return this.t('actions.showDetails')
     },
     toggleFiltersTooltip() {
-      if (this.hangarFilterVisible) {
+      if (this.filterVisible) {
         return this.t('actions.hideFilter')
       }
       return this.t('actions.showFilter')
@@ -385,12 +392,12 @@ export default {
     this.$comlink.$on('hangarGroupDelete', this.fetch)
     this.$comlink.$on('hangarGroupSave', this.fetchGroups)
 
-    if (this.$route.query.fleetchart && !this.hangarFleetchartVisible) {
-      this.$store.dispatch('toggleFleetchart')
+    if (this.$route.query.fleetchart && !this.fleetchartVisible) {
+      this.$store.dispatch('hangar/toggleFleetchart')
     }
 
     if (this.mobile) {
-      this.$store.commit('setHangarFilterVisible', false)
+      this.$store.commit('hangar/setFilterVisible', false)
     }
     this.toggleFullscreen()
   },
@@ -406,6 +413,9 @@ export default {
     showEditModal(vehicle) {
       this.$refs.vehicleModal.open(vehicle)
     },
+    updateScale(value) {
+      this.$store.commit('hangar/setFleetchartScale', value)
+    },
     showNewModal() {
       this.$refs.newVehiclesModal.open()
     },
@@ -413,16 +423,16 @@ export default {
       this.$refs.addonsModal.open(vehicle)
     },
     toggleFullscreen() {
-      this.fullscreen = !this.hangarFilterVisible
+      this.fullscreen = !this.filterVisible
     },
     toggleFilter() {
-      this.$store.dispatch('toggleHangarFilter')
+      this.$store.dispatch('hangar/toggleFilter')
     },
     toggleDetails() {
-      this.$store.dispatch('toggleHangarDetails')
+      this.$store.dispatch('hangar/toggleDetails')
     },
     toggleFleetchart() {
-      this.$store.dispatch('toggleHangarFleetchart')
+      this.$store.dispatch('hangar/toggleFleetchart')
     },
     fetch() {
       this.fetchFleetchart()

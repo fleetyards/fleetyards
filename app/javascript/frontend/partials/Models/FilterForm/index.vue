@@ -1,19 +1,10 @@
 <template>
   <form @submit.prevent="filter">
-    <div class="form-group">
-      <input
-        v-model="form.nameCont"
-        :placeholder="t('placeholders.filters.models.name')"
-        type="text"
-        class="form-control form-control-filter"
-      >
-      <a
-        v-if="form.nameCont"
-        class="btn btn-clear"
-        @click="clearName"
-        v-html="'&times;'"
-      />
-    </div>
+    <FormInput
+      v-model="form.nameCont"
+      :placeholder="t('placeholders.filters.models.name')"
+      :aria-label="t('placeholders.filters.models.name')"
+    />
     <FilterGroup
       v-model="form.manufacturerIn"
       :label="t('labels.filters.models.manufacturer')"
@@ -93,12 +84,14 @@ import Filters from 'frontend/mixins/Filters'
 import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 
 export default {
   components: {
     RadioList,
     FilterGroup,
     Btn,
+    FormInput,
   },
   mixins: [I18n, Filters],
   data() {
@@ -139,11 +132,6 @@ export default {
         this.filter()
       },
       deep: true,
-    },
-  },
-  methods: {
-    clearName() {
-      this.form.nameCont = null
     },
   },
 }

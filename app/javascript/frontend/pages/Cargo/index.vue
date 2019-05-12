@@ -7,19 +7,6 @@
             <h1>{{ t('headlines.cargo') }}</h1>
           </div>
           <div class="col-xs-12 col-md-6">
-            <div class="text-right hidden-md hidden-lg">
-              <button
-                class="btn btn-link btn-filter"
-                @click="toggleFilter"
-              >
-                <span v-show="isFilterSelected">
-                  <i class="fas fa-filter" />
-                </span>
-                <span v-show="!isFilterSelected">
-                  <i class="fal fa-filter" />
-                </span>
-              </button>
-            </div>
             <div class="page-actions">
               <Btn
                 :to="{
@@ -34,16 +21,39 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <div class="page-actions page-actions-left">
+              <Btn
+                v-tooltip="toggleFiltersTooltip"
+                :active="filterVisible"
+                :aria-label="toggleFiltersTooltip"
+                size="small"
+                @click.native="toggleFilter"
+              >
+                <i
+                  :class="{
+                    fas: isFilterSelected,
+                    far: !isFilterSelected,
+                  }"
+                  class="fa-filter"
+                />
+              </Btn>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
       <transition
-        name="fade"
+        name="slide"
         appear
+        @before-enter="toggleFullscreen"
+        @after-leave="toggleFullscreen"
       >
         <div
-          v-show="!mobile || filterVisible"
-          class="col-sm-12 col-md-3"
+          v-show="filterVisible"
+          class="col-md-3 col-xlg-2"
         >
           <FilterForm
             :trade-hubs="tradeHubs"
@@ -52,7 +62,12 @@
           />
         </div>
       </transition>
-      <div class="col-sm-12 col-md-9">
+      <div
+        :class="{
+          'col-md-9 col-xlg-10': !fullscreen,
+        }"
+        class="col-xs-12 col-animated"
+      >
         <transition-group
           name="fade-list"
           class="row"
@@ -136,7 +151,6 @@ import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -148,12 +162,10 @@ export default {
   data() {
     return {
       filterVisible: false,
+      fullscreen: false,
     }
   },
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
     cargoShip() {
       const query = this.$route.query.q || {}
       return this.modelOptions.find(item => item.value === query.cargoShip)
@@ -164,16 +176,22 @@ export default {
     avaiableCargo() {
       return this.cargoShip ? this.cargoShip.cargo * 100 : 1
     },
+    toggleFiltersTooltip() {
+      if (this.filterVisible) {
+        return this.t('actions.hideFilter')
+      }
+      return this.t('actions.showFilter')
+    },
     cargoRoutes() {
       const cargoRoutes = []
       this.commodities.forEach((commodity) => {
         this.tradeHubs.forEach((from) => {
-          const buyPrice = this.tradeHubPrices[`${from.slug}-${commodity.slug}-buy`]
+          const buyPrice = this.prices[`${from.slug}-${commodity.slug}-buy`]
           if (!buyPrice) {
             return
           }
           this.tradeHubs.filter(station => station.slug !== from.slug).forEach((to) => {
-            const sellPrice = this.tradeHubPrices[`${to.slug}-${commodity.slug}-sell`]
+            const sellPrice = this.prices[`${to.slug}-${commodity.slug}-sell`]
             if (!sellPrice) {
               return
             }
@@ -200,9 +218,15 @@ export default {
       return this.filter(result.sort(this.sortByProfitPercent))
     },
   },
+  mounted() {
+    this.toggleFullscreen()
+  },
   methods: {
     toggleFilter() {
       this.filterVisible = !this.filterVisible
+    },
+    toggleFullscreen() {
+      this.fullscreen = !this.filterVisible
     },
     sortByProfitPercent(a, b) {
       if (a.profitPercent > b.profitPercent) {

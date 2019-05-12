@@ -4,23 +4,7 @@
   margin-bottom: 15px;
 
   .filter-list-search {
-    position: relative;
-
-    input {
-      width: 100%;
-      // background-color: rgba($gray-darker, 0.8);
-      border-radius: 0;
-      border: none;
-
-      &:focus {
-        outline: none;
-      }
-    }
-
-    .btn-clear {
-      top: 4px;
-      right: 3px;
-    }
+    margin-bottom: 0;
   }
 
   .filter-list-title,

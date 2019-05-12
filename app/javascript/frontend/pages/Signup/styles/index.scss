@@ -20,7 +20,7 @@ h1 {
 }
 
 .privacy-info {
-  color: $gray-light;
+  color: $gray-lighter;
 
   a {
     color: lighten($gray-light, 10%);
@@ -59,6 +59,10 @@ h1 {
 
 label {
   display: none;
+}
+
+footer {
+  margin-top: 40px;
 }
 
 @media (min-width: $desktop-breakpoint) {

@@ -24,6 +24,19 @@ class Image < ApplicationRecord
     where(background: true)
   end
 
+  def dimensions
+    dimensions = []
+    dimensions = ::MiniMagick::Image.open(name.file.file)[:dimensions] if dimensions_missing?
+    OpenStruct.new(
+      width: width || dimensions[0],
+      height: height || dimensions[1]
+    )
+  end
+
+  private def dimensions_missing?
+    (width.blank? || height.blank?) && File.exist?(name.file.file)
+  end
+
   def to_jq_upload
     {
       'name' => self[:name],

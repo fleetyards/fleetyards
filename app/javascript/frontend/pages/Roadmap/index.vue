@@ -41,7 +41,7 @@
         >
           <div
             v-for="(items, release) in groupedByRelease"
-            :key="release"
+            :key="`releases-${release}`"
             class="col-xs-12 fade-list-item release"
           >
             <h2

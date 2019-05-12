@@ -42,7 +42,6 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
-      quickSearch: 'nameCont',
     },
   }, {
     path: '/ships/:slug/images',

@@ -12,8 +12,8 @@
         </p>
         <Btn
           :loading="deleting"
-          danger
-          large
+          variant="danger"
+          size="large"
           @click.native="destroy"
         >
           {{ t('actions.destroyAccount') }}
@@ -46,7 +46,7 @@ export default {
         const response = await this.$api.destroy('users/current')
         if (!response.error) {
           success(this.t('messages.account.destroy.success'))
-          await this.$store.dispatch('logout')
+          await this.$store.dispatch('session/logout')
           this.$router.push({ name: 'home' })
         } else {
           alert(this.t('messages.account.destroy.error'))

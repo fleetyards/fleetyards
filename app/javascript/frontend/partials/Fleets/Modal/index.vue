@@ -57,20 +57,22 @@
       </div>
     </div>
     <template #footer>
-      <SubmitButton
+      <Btn
         :loading="submitting"
+        type="submit"
+        size="large"
         form="fleet-form"
         class="pull-right"
       >
         {{ t('actions.save') }}
-      </SubmitButton>
+      </Btn>
     </template>
   </Modal>
 </template>
 
 <script>
 import I18n from 'frontend/mixins/I18n'
-import SubmitButton from 'frontend/components/SubmitButton'
+import Btn from 'frontend/components/Btn'
 import Modal from 'frontend/components/Modal'
 import { alert } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
@@ -78,7 +80,7 @@ import FleetPanel from 'frontend/partials/Fleets/Panel'
 
 export default {
   components: {
-    SubmitButton,
+    Btn,
     Modal,
     Loader,
     FleetPanel,

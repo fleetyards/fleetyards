@@ -22,7 +22,7 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <Paginator
-              v-if="!hangarPublicFleetchartVisible && vehicles.length"
+              v-if="!publicFleetchartVisible && vehicles.length"
               :page="currentPage"
               :total="totalPages"
             />
@@ -33,15 +33,15 @@
           >
             <div class="page-actions">
               <DownloadScreenshotBtn
-                v-if="hangarPublicFleetchartVisible"
+                v-if="publicFleetchartVisible"
                 element="#fleetchart"
                 :filename="`${username}-hangar-fleetchart`"
               />
               <Btn
-                small
+                size="small"
                 @click.native="toggleFleetchart"
               >
-                <template v-if="hangarPublicFleetchartVisible">
+                <template v-if="publicFleetchartVisible">
                   {{ t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
@@ -56,16 +56,19 @@
           appear
         >
           <div
-            v-if="hangarPublicFleetchartVisible && fleetchartVehicles.length > 0"
+            v-if="publicFleetchartVisible && fleetchartVehicles.length > 0"
             class="row"
           >
             <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-              <FleetchartSlider scale-key="HangarPublicFleetchartScale" />
+              <FleetchartSlider
+                :initial-scale="publicFleetchartScale"
+                @change="updateScale"
+              />
             </div>
           </div>
         </transition>
         <div
-          v-if="hangarPublicFleetchartVisible"
+          v-if="publicFleetchartVisible"
           class="row"
         >
           <div class="col-xs-12 fleetchart-wrapper">
@@ -80,7 +83,7 @@
                 v-for="vehicle in fleetchartVehicles"
                 :key="vehicle.id"
                 :model="vehicle.model"
-                :scale="HangarPublicFleetchartScale"
+                :scale="publicFleetchartScale"
               />
             </transition-group>
           </div>
@@ -112,7 +115,7 @@
     <div class="row">
       <div class="col-xs-12">
         <Paginator
-          v-if="!hangarPublicFleetchartVisible && vehicles.length"
+          v-if="!publicFleetchartVisible && vehicles.length"
           :page="currentPage"
           :total="totalPages"
         />
@@ -126,7 +129,7 @@ import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import ModelPanel from 'frontend/partials/Models/Panel'
+import ModelPanel from 'frontend/components/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
@@ -154,9 +157,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'hangarPublicFleetchartVisible',
-      'HangarPublicFleetchartScale',
+    ...mapGetters('hangar', [
+      'publicFleetchartVisible',
+      'publicFleetchartScale',
     ]),
     username() {
       return this.$route.params.user
@@ -175,23 +178,26 @@ export default {
     $route() {
       this.fetch()
     },
-    hangarPublicFleetchartVisible() {
+    publicFleetchartVisible() {
       this.fetch()
     },
   },
   created() {
-    if (this.$route.query.fleetchart && !this.hangarPublicFleetchartVisible) {
-      this.$store.dispatch('toggleFleetchart')
+    if (this.$route.query.fleetchart && !this.publicFleetchartVisible) {
+      this.$store.dispatch('hangar/togglePublicFleetchart')
     }
 
     this.fetch()
   },
   methods: {
+    updateScale(value) {
+      this.$store.commit('hangar/setPublicFleetchartScale', value)
+    },
     toggleFleetchart() {
-      this.$store.dispatch('toggleHangarPublicFleetchart')
+      this.$store.dispatch('hangar/togglePublicFleetchart')
     },
     fetch() {
-      if (this.hangarPublicFleetchartVisible) {
+      if (this.publicFleetchartVisible) {
         this.fetchFleetchart()
       } else {
         this.fetchVehicles()

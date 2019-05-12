@@ -103,7 +103,7 @@ module Api
       def embed
         authorize! :index, :api_models
 
-        @models = Model.visible.active.where(slug: params[:models]).order(name: :asc)
+        @models = Model.visible.active.where(slug: params[:models]).order(name: :asc).all
 
         render 'api/v1/models/index'
       end

@@ -94,10 +94,14 @@
       margin-top: 5px;
       font-family: 'Orbitron', sans-serif;
       font-weight: normal;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
     }
   }
 
   .price,
+  .size,
   .rent-price {
     display: flex;
     flex-direction: column;
@@ -112,6 +116,14 @@
     .price-label {
       display: none;
     }
+  }
+
+  .actions {
+    min-width: 150px;
+    max-width: 100%;
+    text-align: right;
+    vertical-align: middle;
+    padding-left: 20px;
   }
 
   .rent-price {
@@ -211,6 +223,11 @@
       .image {
         width: 100%;
       }
+    }
+
+    .actions {
+      padding-right: 10px;
+      width: 100%;
     }
 
     .price,
