@@ -46,6 +46,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run: mkdir -p ~/app/log
       - persist_to_workspace:
           root: ~/app
           paths:
