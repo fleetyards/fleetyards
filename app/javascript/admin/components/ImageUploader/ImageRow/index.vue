@@ -1,31 +1,33 @@
 <template>
-  <tr class="fade in">
-    <td class="file-preview">
-      <span class="preview">
+  <div class="flex-list-row">
+    <div class="store-image">
+      <a
+        v-if="uploaded"
+        :href="file.url"
+        :title="file.name"
+        :download="file.name"
+        target="_blank"
+      >
+        <div
+          :key="file.smallUrl"
+          v-lazy:background-image="file.smallUrl"
+          class="image lazy"
+          alt="storeImage"
+        />
+      </a>
+      <div
+        v-else
+        :key="file.smallUrl"
+        v-lazy:background-image="file.smallUrl"
+        class="image lazy"
+        alt="storeImage"
+      />
+    </div>
+    <div class="description">
+      <h2>
         <a
           v-if="uploaded"
           :href="file.url"
-          :title="file.name"
-          :download="file.name"
-          target="_blank"
-        >
-          <img
-            :src="file.smallUrl"
-            :alt="file.name"
-          >
-        </a>
-        <img
-          v-else
-          :src="file.smallUrl"
-          :alt="file.name"
-        >
-      </span>
-    </td>
-    <td>
-      <p class="name">
-        <a
-          v-if="uploaded"
-          href=""
           :title="file.name"
           :download="file.name"
         >
@@ -34,64 +36,44 @@
         <span v-else>
           {{ file.name }}
         </span>
-      </p>
+      </h2>
       <div v-if="file.error">
         <span class="label label-danger">
           Error
         </span>
       </div>
-    </td>
-
-    <td
-      v-if="uploaded"
-      class="file-size"
-    >
-      <span class="size">
-        {{ file.size | formatSize }}
-      </span>
-    </td>
-    <td
-      v-else
-      class="upload-progress"
-    >
-      <p
-        v-if="file.active"
-        class="size"
-      >
-        Processing...
-        {{ file.speed | formatSize }}
-      </p>
-      <div
-        v-if="file.active || file.progress !== '0.00'"
-        class="progress"
-      >
+      <template v-if="!uploaded">
+        <p v-if="file.active">
+          Processing...
+          {{ file.speed | formatSize }}
+        </p>
         <div
-          class="progress-bar progress-bar-info progress-bar-striped"
-          :class="{
-            'progress-bar-danger': file.error,
-            'progress-bar-animated': file.active
-          }"
-          role="progressbar"
-          :style="{width: file.progress + '%'}"
+          v-if="file.active || file.progress !== '0.00'"
+          class="progress"
         >
-          {{ file.progress }} %
+          <div
+            class="progress-bar progress-bar-info progress-bar-striped"
+            :class="{
+              'progress-bar-danger': file.error,
+              'progress-bar-animated': file.active
+            }"
+            role="progressbar"
+            :style="{width: file.progress + '%'}"
+          >
+            {{ file.progress }} %
+          </div>
         </div>
-      </div>
-    </td>
-
-    <td
-      v-if="uploaded"
-      class="actions"
-    >
-      <div class="btn-group">
-        <button
-          :class="{
-            active: file.background,
-          }"
+      </template>
+    </div>
+    <div class="size">
+      {{ file.size | formatSize }}
+    </div>
+    <div class="actions">
+      <template v-if="uploaded">
+        <Btn
           :disabled="updating"
-          class="btn btn-default active"
-          type="button"
-          @click="toggleBackground"
+          size="small"
+          @click.native="toggleBackground"
         >
           <i
             :class="{
@@ -100,62 +82,55 @@
             }"
             class="fa"
           />
-        </button>
-        <button
-          :class="{
-            active: file.enabled,
-          }"
+        </Btn>
+        <Btn
           :disabled="updating"
-          class="btn btn-default"
-          type="button"
-          @click="toggleEnabled"
+          size="small"
+          @click.native="toggleEnabled"
         >
           <i
             :class="{
-              'fa-check': file.enabled,
-              'fa-square': !file.enabled,
+              'fa fa-check': file.enabled,
+              'far fa-square': !file.enabled,
             }"
-            class="fa"
           />
-        </button>
-
-        <button
-          class="btn btn-danger delete"
+        </Btn>
+        <Btn
           :disabled="deleting"
-          @click="deleteFile"
+          size="small"
+          @click.native="deleteFile"
         >
           <i class="fa fa-trash" />
           <span>Delete</span>
-        </button>
-      </div>
-    </td>
-    <td
-      v-else
-      class="actions"
-    >
-      <div class="btn-group">
-        <button
+        </Btn>
+      </template>
+      <template v-else>
+        <Btn
           v-if="!file.success"
-          class="btn btn-primary start"
-          @click.prevent="start(file)"
+          @click.native="start(file)"
         >
           <i class="fa fa-upload" />
           <span>Start</span>
-        </button>
-        <button
+        </Btn>
+        <Btn
           class="btn btn-warning cancel"
-          @click.prevent="cancel(file)"
+          @click.native="cancel(file)"
         >
           <i class="fa fa-ban-circle" />
           <span>Cancel</span>
-        </button>
-      </div>
-    </td>
-  </tr>
+        </Btn>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script>
+import Btn from 'frontend/components/Btn'
+
 export default {
+  components: {
+    Btn,
+  },
   props: {
     file: {
       type: Object,
@@ -221,3 +196,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import 'styles/index.scss';
+</style>

@@ -1,4 +1,6 @@
 .lazy {
+  position: relative;
+
   &[lazy='loading']::before {
     content: '';
     background-image: url('~images/loading.gif');

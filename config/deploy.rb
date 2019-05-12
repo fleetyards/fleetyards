@@ -132,73 +132,112 @@ namespace :server do
 end
 
 namespace :uploads do
-  task backup: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      comment 'Creating Uploads Backup...'
-      command %(tar -zcvf dumps/uploads.tar.gz /home/fleetyards/shared/public/uploads)
-      comment 'Uploads Backup finished'
+  task :sync_to_local do
+    run :local do
+      comment %(Backup and Reimport to Local DB)
+    end
+    invoke :'uploads:backup'
+    invoke :'uploads:download'
+    invoke :'uploads:local_import'
+  end
+
+  task :backup do
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        comment 'Creating Uploads Backup...'
+        command %(tar -zcvf dumps/uploads.tar.gz /home/fleetyards/shared/public/uploads)
+        comment 'Uploads Backup finished'
+      end
+    end
+  end
+
+  task :download do
+    run :local do
+      comment 'Downloading latest Uploads backup...'
+      system %(mkdir -p dumps)
+      system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz dumps/)
+      comment 'Download finished'
     end
   end
 
   task :local_import do
-    system %(tar --strip-components=5 -xvzf dumps/uploads.tar.gz -C public/uploads/ home/fleetyards/shared/public/uploads)
-  end
-
-  task :download do
-    comment 'Downloading latest Uploads backup...'
-    system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz dumps/)
-    comment 'Download finished'
+    run :local do
+      system %(mkdir -p public/uploads)
+      system %(tar --strip-components=5 -xvzf dumps/uploads.tar.gz -C public/uploads/ home/fleetyards/shared/public/uploads)
+    end
   end
 end
 
 namespace :db do
+  task :sync_to_local do
+    run :local do
+      comment %(Backup and Reimport to Local DB)
+    end
+    invoke :'db:backup'
+    invoke :'db:download'
+    invoke :'db:local_import'
+  end
+
   task load_schema: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      invoke :'server:stop'
-      comment %(Loading Schema for database)
-      command %(#{fetch(:rake)} db:schema:load)
-      invoke :'server:start'
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        invoke :'server:stop'
+        comment %(Loading Schema for database)
+        command %(#{fetch(:rake)} db:schema:load)
+        invoke :'server:start'
+      end
     end
   end
 
   task migration_status: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      comment %(Migration Status)
-      command %(#{fetch(:rake)} db:migrate:status)
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        comment %(Migration Status)
+        command %(#{fetch(:rake)} db:migrate:status)
+      end
     end
   end
 
   task seed: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      comment %(Seeding database)
-      command %(#{fetch(:rake)} db:seed)
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        comment %(Seeding database)
+        command %(#{fetch(:rake)} db:seed)
+      end
     end
   end
 
   task migrate: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      comment %(Migrating database)
-      command %(#{fetch(:rake)} db:migrate)
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        comment %(Migrating database)
+        command %(#{fetch(:rake)} db:migrate)
+      end
     end
   end
 
   task backup: :remote_environment do
-    in_path fetch(:current_path).to_s do
-      comment 'Creating DB Backup...'
-      command %(bundle exec thor db:dump)
-      comment 'DB Backup finished'
+    run :remote do
+      in_path fetch(:current_path).to_s do
+        comment 'Creating DB Backup...'
+        command %(bundle exec thor db:dump)
+        comment 'DB Backup finished'
+      end
+    end
+  end
+
+  task :download do
+    run :local do
+      comment 'Downloading latest backup...'
+      system %(mkdir -p dumps)
+      system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
+      comment 'Download finished'
     end
   end
 
   task :local_import do
-    system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
-  end
-
-  # pg_restore --verbose --clean --no-acl --no-owner -h 127.0.0.1 -U fleetyards -d fleetyards dumps/latest.dump
-
-  task :download_backup do
-    comment 'Downloading latest backup...'
-    system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
-    comment 'Download finished'
+    run :local do
+      system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
+    end
   end
 end

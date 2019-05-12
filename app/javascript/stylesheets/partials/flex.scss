@@ -98,6 +98,7 @@
   }
 
   .price,
+  .size,
   .rent-price {
     display: flex;
     flex-direction: column;
@@ -112,6 +113,14 @@
     .price-label {
       display: none;
     }
+  }
+
+  .actions {
+    min-width: 150px;
+    max-width: 100%;
+    text-align: right;
+    vertical-align: middle;
+    padding-left: 20px;
   }
 
   .rent-price {

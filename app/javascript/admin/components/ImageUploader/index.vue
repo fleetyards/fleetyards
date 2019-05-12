@@ -4,37 +4,43 @@
       <div class="col-lg-7">
         <VueUploadComponent
           ref="upload"
-          v-model="files"
+          v-model="newFiles"
           :thread="3"
           :post-action="postAction"
           drop="#dropzone"
           :headers="headers"
           :data="uploadData"
           multiple
-          class="btn btn-success fileinput-button"
           :add-index="true"
           @input-file="inputFile"
           @input-filter="inputFilter"
+        />
+        <Btn
+          @click.native="selectFiles"
         >
           <i class="fa fa-plus" />
           <span>Add files...</span>
-        </VueUploadComponent>
-        <button
-          v-if="pendingFiles.length"
-          class="btn btn-primary start"
-          @click.prevent="startUpload"
+        </Btn>
+        <Btn
+          @click.native="selectFolder"
+        >
+          <i class="fa fa-plus" />
+          <span>Add a folder...</span>
+        </Btn>
+        <Btn
+          v-if="newFiles.length"
+          @click.native="startUpload"
         >
           <i class="fa fa-upload" />
           <span>Start upload</span>
-        </button>
-        <button
-          v-if="pendingFiles.length"
-          class="btn btn-warning cancel"
-          @click.prevent="cancelUpload"
+        </Btn>
+        <Btn
+          v-if="newFiles.length"
+          @click.native="cancelUpload"
         >
           <i class="fa fa-ban-circle" />
           <span>Cancel upload</span>
-        </button>
+        </Btn>
       </div>
 
       <div
@@ -67,56 +73,75 @@
         Drop files here
       </h3>
     </div>
-
-    <div class="panel panel-default">
-      <div class="table-responsive">
-        <table
-          class="table table-hover table-striped"
-          role="presentation"
+    <Panel v-if="allFiles.length">
+      <transition-group
+        name="fade"
+        class="flex-list"
+        tag="div"
+        appear
+      >
+        <div
+          key="heading"
+          class="fade-list-item col-xs-12 flex-list-heading"
         >
-          <thead>
-            <tr>
-              <th class="preview" />
-              <th>
-                Name
-              </th>
-              <th>
-                File size
-              </th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            <ImageRow
-              v-for="file in files"
-              :key="file.id"
-              :file="file"
-              @start="startSingleUpload"
-              @cancel="cancelSingleUpload"
-              @fetch="fetch"
-            />
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <div class="flex-list-row">
+            <div class="store-image" />
+            <div class="description">
+              Name
+            </div>
+            <div class="size">
+              File size
+            </div>
+            <div class="actions" />
+          </div>
+        </div>
+        <div
+          v-for="file in allFiles"
+          :key="file.id"
+          class="fade-list-item col-xs-12 flex-list-item"
+        >
+          <ImageRow
+            :file="file"
+            @start="startSingleUpload"
+            @cancel="cancelSingleUpload"
+            @fetch="fetch"
+          />
+        </div>
+      </transition-group>
+    </Panel>
+    <EmptyBox v-if="emptyBoxVisible" />
+    <Loader
+      :loading="loading"
+      fixed
+    />
   </div>
 </template>
 
 <script>
 import VueUploadComponent from 'vue-upload-component'
 import ImageRow from 'admin/components/ImageUploader/ImageRow'
+import Loader from 'frontend/components/Loader'
+import EmptyBox from 'frontend/partials/EmptyBox'
+import Btn from 'frontend/components/Btn'
+import Panel from 'frontend/components/Panel'
 
 export default {
   name: 'ImageUploader',
   components: {
+    Loader,
     VueUploadComponent,
     ImageRow,
+    EmptyBox,
+    Btn,
+    Panel,
   },
   data() {
     return {
       files: [],
+      newFiles: [],
       postAction: '/api/v1/images',
       uploadCount: 1,
+      loading: true,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${window.AUTH_TOKEN}`,
@@ -124,6 +149,15 @@ export default {
     }
   },
   computed: {
+    allFiles() {
+      return [
+        ...this.newFiles,
+        ...this.files,
+      ]
+    },
+    emptyBoxVisible() {
+      return !this.loading && !this.allFiles.length
+    },
     uuid() {
       return window.location.pathname.split('/')[2]
     },
@@ -133,20 +167,17 @@ export default {
         galleryType: window.GALLERY_TYPE,
       }
     },
-    pendingFiles() {
-      return this.files.filter(item => !item.url)
-    },
     activeFiles() {
-      return this.files.filter(item => item.active)
+      return this.newFiles.filter(item => item.active)
     },
     progress() {
-      if (!this.pendingFiles.length) {
+      if (!this.newFiles.length) {
         return 0
       }
 
-      const pendingProgress = this.pendingFiles.map(item => parseFloat(item.progress))
+      const pendingProgress = this.newFiles.map(item => parseFloat(item.progress))
         .reduce((pv, cv) => pv + cv, 0)
-      const completedUploads = this.uploadCount - this.pendingFiles.length
+      const completedUploads = this.uploadCount - this.newFiles.length
 
       return Math.ceil((pendingProgress + (completedUploads * 100)) / this.uploadCount)
     },
@@ -163,8 +194,28 @@ export default {
     this.fetch()
   },
   methods: {
+    selectFiles() {
+      this.$refs.upload.$el.querySelector('input').click()
+    },
+    selectFolder() {
+      if (!this.$refs.upload.features.directory) {
+        this.alert('Your browser does not support')
+        return
+      }
+      const input = this.$refs.upload.$el.querySelector('input')
+      input.directory = true
+      input.webkitdirectory = true
+      this.directory = true
+      input.onclick = null
+      input.click()
+      input.onclick = (_e) => {
+        this.directory = false
+        input.directory = false
+        input.webkitdirectory = false
+      }
+    },
     setUploadCount() {
-      this.uploadCount = this.pendingFiles.length
+      this.uploadCount = this.newFiles.length
     },
     startUpload() {
       this.setUploadCount()
@@ -174,14 +225,17 @@ export default {
       this.$refs.upload.update(file, { active: true })
     },
     cancelUpload() {
-      this.fetch()
+      this.newFiles = []
     },
     cancelSingleUpload(file) {
       this.$refs.upload.remove(file)
     },
     async fetch() {
+      this.loading = true
+
       const response = await this.$api.get(`${window.GALLERY_PATH}/${this.uuid}/images`)
 
+      this.loading = false
       if (!response.error) {
         this.files = response.data
       }
@@ -189,13 +243,9 @@ export default {
     async inputFile(newFile, oldFile) {
       if (newFile && oldFile && !newFile.active && oldFile.active) {
         if (newFile.xhr && newFile.xhr.status === 200) {
-          /* eslint-disable no-param-reassign */
-          newFile.id = newFile.response.id
-          newFile.url = newFile.response.url
-          newFile.enabled = newFile.response.enabled
-          newFile.background = newFile.response.background
-          newFile.smallUrl = newFile.response.smallUrl
-          /* eslint-enable no-param-reassign */
+          this.fetch()
+          const index = this.newFiles.indexOf(newFile)
+          this.newFiles.splice(index, 1)
         }
       }
     },
@@ -221,3 +271,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import 'styles/index.scss';
+</style>
