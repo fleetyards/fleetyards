@@ -1,30 +1,32 @@
-.panel.panel-default
-  .panel-heading
-    %h2.panel-title
-      = I18n.t(:"labels.panels.latest_models")
-  .table-responsive
-    %table.table.table-striped
-      %thead
-        %tr
-          %th= I18n.t(:"labels.table.name")
-          %th= I18n.t(:"labels.table.model.manufacturer")
-          %th= I18n.t(:"labels.table.updated_at")
-          %th.actions.actions-one
-      %tbody
-        - @latest_models.each do |model|
-          %tr
-            %td
-              = model.name
-            %td
-              = model.manufacturer.name.html_safe if model.manufacturer.present?
-            %td
-              = I18n.l(model.updated_at, format: :short)
-            %td
-              .btn-group
-                = link_to edit_admin_model_path(model), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
-                  %i.fa.fa-edit
+.panel-wrapper.panel-outer-spacing
+  .panel
+    .panel-inner
+      .panel-heading
+        %h2.panel-title
+          = I18n.t(:"labels.panels.latest_models")
+      .table-responsive
+        %table.table.table-striped
+          %thead
+            %tr
+              %th= I18n.t(:"labels.table.name")
+              %th= I18n.t(:"labels.table.model.manufacturer")
+              %th= I18n.t(:"labels.table.updated_at")
+              %th.actions.actions-one
+          %tbody
+            - @latest_models.each do |model|
+              %tr
+                %td
+                  = model.name
+                %td
+                  = model.manufacturer.name.html_safe if model.manufacturer.present?
+                %td
+                  = I18n.l(model.updated_at, format: :short)
+                %td
+                  .btn-group
+                    = link_to edit_admin_model_path(model), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+                      %i.fa.fa-edit
 
-  .panel-footer.text-right
-    = link_to admin_models_path do
-      = I18n.t('actions.more')
-      %i.fa.fa-angle-right
+      .panel-footer.text-right
+        = link_to admin_models_path do
+          = I18n.t('actions.more')
+          %i.fa.fa-angle-right

@@ -1,59 +1,67 @@
 .row
   .col-xs-12.col-sm-6.col-md-4.col-lg-12
-    .panel.panel-primary
-      .panel-heading
-        .row
-          .col-xs-3
-            %i.fa.fa-users.fa-5x
-          .col-xs-9.text-right
-            .text-huge#online-count
-              = online_count
-            %div
-              = I18n.t('labels.panels.online_count')
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-xs-3
+                %i.fa.fa-users.fa-4x
+              .col-xs-9.text-right
+                .text-huge#online-count
+                  = online_count
+                %div
+                  = I18n.t('labels.panels.online_count')
 
   .col-xs-12.col-sm-6.col-md-4.col-lg-12
-    .panel.panel-primary
-      .panel-heading
-        .row
-          .col-xs-3
-            %i.fa.fa-rocket.fa-5x
-          .col-xs-9.text-right
-            .text-huge#ships-count-year
-              = Model.year(Time.current.year).count
-            %div
-              = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-xs-3
+                %i.fa.fa-rocket.fa-4x
+              .col-xs-9.text-right
+                .text-huge#ships-count-year
+                  = Model.year(Time.current.year).count
+                %div
+                  = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
 
   .col-xs-12.col-sm-6.col-md-4.col-lg-12
-    .panel.panel-primary
-      .panel-heading
-        .row
-          .col-xs-3
-            %span.fa-4-icons
-              %i.fa.fa-rocket.fa-2x{style: 'margin-right: 2px'}
-              %i.fa.fa-rocket.fa-2x
-              %br
-              %i.fa.fa-rocket.fa-2x{style: 'margin-right: 2px'}
-              %i.fa.fa-rocket.fa-2x
-          .col-xs-9.text-right
-            .text-huge#ships-count-total
-              = Model.count
-            %div
-              = I18n.t('labels.panels.ships_count_total')
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-xs-3
+                %span.fa-4-icons
+                  %i.fa.fa-rocket.fa-2x{style: 'margin-right: 2px'}
+                  %i.fa.fa-rocket.fa-2x
+                  %br
+                  %i.fa.fa-rocket.fa-2x{style: 'margin-right: 2px'}
+                  %i.fa.fa-rocket.fa-2x
+              .col-xs-9.text-right
+                .text-huge#ships-count-total
+                  = Model.count
+                %div
+                  = I18n.t('labels.panels.ships_count_total')
 
   .col-xs-12.col-sm-6.col-md-4.col-lg-12
-    .panel.panel-primary
-      .panel-heading
-        .row
-          .col-xs-3
-            %span.fa-4-icons
-              %i.fa.fa-user.fa-2x{style: 'margin-right: 2px'}
-              %i.fa.fa-user.fa-2x
-              %br
-              %i.fa.fa-user.fa-2x{style: 'margin-right: 2px'}
-              %i.fa.fa-user.fa-2x
-          .col-xs-9.text-right
-            .text-huge#users-count-total
-              = User.count
-            %div
-              = I18n.t('labels.panels.users_count_total')
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-xs-3
+                %span.fa-4-icons
+                  %i.fa.fa-user.fa-2x{style: 'margin-right: 2px'}
+                  %i.fa.fa-user.fa-2x
+                  %br
+                  %i.fa.fa-user.fa-2x{style: 'margin-right: 2px'}
+                  %i.fa.fa-user.fa-2x
+              .col-xs-9.text-right
+                .text-huge#users-count-total
+                  = User.count
+                %div
+                  = I18n.t('labels.panels.users_count_total')
 

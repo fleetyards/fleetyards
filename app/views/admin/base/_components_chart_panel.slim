@@ -1,15 +1,17 @@
-.panel.panel-default
-  .panel-heading
-    h2.panel-title
-      = I18n.t(:"labels.panels.components_by_class")
-  .panel-body
-    javascript:
-      window.App.Dashboard.addChart({
-        id: 'components-by-class-chart',
-        url: '#{components_by_class_api_v1_stats_url}',
-        type: 'pie',
-        height: '453px',
-        tooltip: 'component-pie',
-      });
+.panel-wrapper.panel-outer-spacing
+  .panel
+    .panel-inner
+      .panel-heading
+        h2.panel-title
+          = I18n.t(:"labels.panels.components_by_class")
+      .panel-body
+        javascript:
+          window.App.Dashboard.addChart({
+            id: 'components-by-class-chart',
+            url: '#{components_by_class_api_v1_stats_url}',
+            type: 'pie',
+            height: '453px',
+            tooltip: 'component-pie',
+          });
 
-    #components-by-class-chart.chart(style="height: 453px;")
+        #components-by-class-chart.chart(style="height: 453px;")

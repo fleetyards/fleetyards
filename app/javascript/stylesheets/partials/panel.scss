@@ -68,6 +68,11 @@ $contentBorderRadius: $panelContentBorderRadius;
     right: 40px;
   }
 
+  &.panel-primary {
+    background-color: $primary;
+    color: white;
+  }
+
   .panel-heading {
     padding: 10px 15px;
 
@@ -96,6 +101,13 @@ $contentBorderRadius: $panelContentBorderRadius;
         }
       }
     }
+  }
+
+  .panel-footer {
+    -webkit-border-bottom-left-radius: $contentBorderRadius;
+    -webkit-border-bottom-right-radius: $contentBorderRadius;
+    border-bottom-right-radius: $contentBorderRadius;
+    border-bottom-left-radius: $contentBorderRadius;
   }
 
   .panel-body {
