@@ -1,10 +1,12 @@
-@import '~stylesheets/variables';
+@import '~vue-slider-component/theme/default';
 
 .slider-tooltip {
   white-space: nowrap;
 }
 
 .vue-slider {
+  box-sizing: content-box;
+
   .vue-slider-mark-label,
   .vue-slider-dot-tooltip {
     transition: opacity $transition-base-speed ease;

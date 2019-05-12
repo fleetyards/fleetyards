@@ -16,7 +16,6 @@
 
 <script>
 import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
 
 export default {
   components: {
@@ -59,7 +58,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-  @import './styles/index';
-</style>
