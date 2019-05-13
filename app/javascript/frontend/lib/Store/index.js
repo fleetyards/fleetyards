@@ -87,6 +87,7 @@ const store = new Vuex.Store({
     },
   },
   /* eslint-enable no-param-reassign */
+
   plugins: getStorePlugins(),
 })
 

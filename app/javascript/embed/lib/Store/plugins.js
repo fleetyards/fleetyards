@@ -4,9 +4,10 @@ export default function getStorePlugins() {
   return [createPersistedState({
     key: 'FleetYards-Fleetview',
     paths: [
+      'storeVersion',
       'details',
       'fleetchart',
-      'scale',
+      'fleetchartScale',
       'grouping',
       'fleetchartGrouping',
     ],

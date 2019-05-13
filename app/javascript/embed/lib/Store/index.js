@@ -1,25 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getStorePlugins from './plugins'
+import getDefaultState from './state'
+import actions from './actions'
 
 Vue.use(Vuex)
 
-// eslint-disable-next-line no-undef
-const config = fleetyards_config()
-
-const scale = Math.max(config.fleetchartScale, 10)
-
-const initialState = {
-  locale: 'en-US',
-  details: config.details || true,
-  fleetchart: config.fleetchart || false,
-  scale,
-  grouping: config.grouped || true,
-  fleetchartGrouping: config.fleetchartGrouped || false,
-}
-
 const store = new Vuex.Store({
-  state: initialState,
+  state: getDefaultState(),
+
+  actions,
+
   getters: {
     fleetchart(state) {
       return state.fleetchart
@@ -30,13 +21,14 @@ const store = new Vuex.Store({
     grouping(state) {
       return state.grouping
     },
-    scale(state) {
-      return state.scale
+    fleetchartScale(state) {
+      return state.fleetchartScale
     },
     fleetchartGrouping(state) {
       return state.fleetchartGrouping
     },
   },
+
   /* eslint-disable no-param-reassign */
   mutations: {
     setLocale(state, locale) {
@@ -66,11 +58,12 @@ const store = new Vuex.Store({
     setFleetchartGrouping(state, payload) {
       state.fleetchartGrouping = payload
     },
-    setScale(state, payload) {
-      state.scale = payload
+    setFleetchartScale(state, payload) {
+      state.fleetchartScale = payload
     },
   },
   /* eslint-enable no-param-reassign */
+
   plugins: getStorePlugins(),
 })
 

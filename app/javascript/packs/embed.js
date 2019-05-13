@@ -19,7 +19,14 @@ Vue.use(VTooltip, {
 // eslint-disable-next-line no-undef
 const config = fleetyards_config()
 
-setTimeout(() => {
+document.addEventListener('DOMContentLoaded', () => {
+  if (store.state.storeVersion !== window.STORE_VERSION) {
+    console.info('Updating Store Version and resetting Store')
+
+    store.dispatch('reset')
+    store.commit('setStoreVersion', window.STORE_VERSION)
+  }
+
   // eslint-disable-next-line no-new
   new Vue({
     el: '#fleetyards-view',
@@ -32,4 +39,4 @@ setTimeout(() => {
     },
     render: h => h(FleetyardsView),
   })
-}, 1000)
+})

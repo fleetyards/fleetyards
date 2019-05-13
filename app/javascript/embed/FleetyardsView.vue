@@ -62,8 +62,8 @@
         >
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
             <FleetchartSlider
-              :initial-scale="scale"
-              @change="updateScale"
+              :initial-scale="fleetchartScale"
+              @change="updateFleetchartScale"
             />
           </div>
         </div>
@@ -83,7 +83,7 @@
                 v-for="(model, index) in fleetchartModels"
                 :key="`${index}-${model.slug}`"
                 :model="model"
-                :scale="scale"
+                :scale="fleetchartScale"
               />
             </transition-group>
           </div>
@@ -146,7 +146,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'scale',
+      'fleetchartScale',
       'details',
       'grouping',
       'fleetchartGrouping',
@@ -208,8 +208,8 @@ export default {
     this.fetch()
   },
   methods: {
-    updateScale(value) {
-      this.$store.commit('setScale', value)
+    updateFleetchartScale(value) {
+      this.$store.commit('setFleetChartScale', value)
     },
     toggleDetails() {
       this.$store.commit('toggleDetails')
