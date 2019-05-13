@@ -10,17 +10,21 @@
             <span v-if="customName">
               {{ customName }}
             </span>
+
             <span v-else>
               {{ countLabel }}{{ model.name }}
             </span>
           </router-link>
+
           <small
             v-if="vehicle && vehicle.flagship"
             v-tooltip.right="flagshipTooltip"
           >
             <i class="fa fa-certificate" />
           </small>
+
           <br>
+
           <small v-if="customName">
             <router-link
               :to="{ query: { q: filterManufacturerQuery(model.manufacturer.slug) }}"
@@ -28,13 +32,14 @@
             />
             {{ model.name }}
           </small>
+
           <small v-else>
             <router-link
               :to="{ query: { q: filterManufacturerQuery(model.manufacturer.slug) }}"
               v-html="model.manufacturer.name"
             />
           </small>
-          {{ isMyShip }}
+
           <Btn
             v-if="isMyShip"
             :title="t('actions.edit')"
@@ -46,6 +51,7 @@
           >
             <i class="fa fa-pencil" />
           </Btn>
+
           <AddToHangar
             v-else
             :model="model"
