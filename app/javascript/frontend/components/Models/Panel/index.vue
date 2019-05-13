@@ -34,8 +34,9 @@
               v-html="model.manufacturer.name"
             />
           </small>
+          {{ isMyShip }}
           <Btn
-            v-if="isMyShip && onEdit"
+            v-if="isMyShip"
             :title="t('actions.edit')"
             :aria-label="t('actions.edit')"
             class="panel-edit-button"
@@ -153,7 +154,7 @@ export default {
     vehicle: {
       type: Object,
       default() {
-        return {}
+        return null
       },
     },
     onEdit: {
@@ -200,7 +201,7 @@ export default {
       return this.t('labels.flagship')
     },
     isMyShip() {
-      return this.vehicle && this.onEdit
+      return this.vehicle && !!this.onEdit
     },
     upgradable() {
       return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)

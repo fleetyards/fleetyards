@@ -1,6 +1,6 @@
 <template>
   <div class="flex-list-row">
-    <div class="store-image">
+    <div class="store-image wide">
       <a
         v-if="uploaded"
         :href="file.url"

@@ -85,7 +85,7 @@
           class="fade-list-item col-xs-12 flex-list-heading"
         >
           <div class="flex-list-row">
-            <div class="store-image" />
+            <div class="store-image wide" />
             <div class="description">
               Name
             </div>
