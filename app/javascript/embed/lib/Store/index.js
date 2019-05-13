@@ -31,6 +31,9 @@ const store = new Vuex.Store({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    setStoreVersion(state, payload) {
+      state.storeVersion = payload
+    },
     setLocale(state, locale) {
       state.locale = locale
     },
