@@ -7,11 +7,13 @@ Vue.use(Vuex)
 // eslint-disable-next-line no-undef
 const config = fleetyards_config()
 
+const scale = Math.max(config.fleetchartScale, 10)
+
 const initialState = {
   locale: 'en-US',
   details: config.details || true,
   fleetchart: config.fleetchart || false,
-  scale: 100,
+  scale,
   grouping: config.grouped || true,
   fleetchartGrouping: config.fleetchartGrouped || false,
 }

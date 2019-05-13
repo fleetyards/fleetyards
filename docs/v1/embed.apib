@@ -11,6 +11,7 @@ To get a custom Ship List on your Website you can just paste the example code on
             grouped: true, // Set to false if you want to display the same Ships multiple times in your Fleetview.
             fleetchart: false, // Set to true if you want to display a Fleetchart instead of the normal Ship Panels.
             fleetchartGrouped: false, // Set to true if you want to group the Ships on the Fleetchart View or not.
+            fleetchartScale: 50, // Initial Scale of the Fleetchart
             groupedButton: false, // Allow the User to toggle Groupped Views
             fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
             ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
@@ -58,6 +59,15 @@ Display the Fleetview as a Fleetchart with correct Ship Dimensions.
 Group duplicated Ships in the Fleetchart
 
 <br>
+
+### Initial Fleetchart Scale
+
+```fleetchartScale```: `50` (int) default is `50` 
+
+Set the initial Scale of the Fleetchart, can be between 10 - 300 for Desktop and 10 - 100 for Mobile.
+
+<br>
+
 
 ### Show Fleetchart Slider
 

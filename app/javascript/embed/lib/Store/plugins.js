@@ -6,6 +6,7 @@ export default function getStorePlugins() {
     paths: [
       'details',
       'fleetchart',
+      'scale',
       'grouping',
       'fleetchartGrouping',
     ],

@@ -33,6 +33,7 @@ set :repository, 'https://github.com/fleetyards/app.git'
 set :rails_env, 'production'
 set :branch, 'master'
 set :version_scheme, :datetime
+set :force_asset_precompile, true
 
 task :remote_environment do
   invoke :'rbenv:load'
