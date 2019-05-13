@@ -1,7 +1,7 @@
 export default () => {
   // eslint-disable-next-line no-undef
   const config = fleetyards_config()
-  const scale = Math.max(config.fleetchartScale, 10)
+  const scale = Math.max(config.fleetchartScale || 0, 10)
 
   return {
     locale: 'en-US',
