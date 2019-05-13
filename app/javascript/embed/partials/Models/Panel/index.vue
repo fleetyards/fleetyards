@@ -7,7 +7,7 @@
       <div class="panel-heading">
         <h2 class="panel-title">
           <a
-            :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
+            :href="url"
             target="_blank"
             rel="noopener"
           >
@@ -20,7 +20,7 @@
       <div class="panel-image text-center">
         <a
           v-lazy:background-image="model.storeImage"
-          :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
+          :href="url"
           target="_blank"
           rel="noopener"
           class="lazy"
@@ -82,6 +82,9 @@ export default {
     },
   },
   computed: {
+    url() {
+      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
+    },
     countLabel() {
       if (!this.count) {
         return ''

@@ -4,7 +4,7 @@
     class="fleetchart-item fade-list-item"
   >
     <a
-      :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
+      :href="url"
       target="_blank"
       rel="noopener"
     >
@@ -38,6 +38,9 @@ export default {
     },
   },
   computed: {
+    url() {
+      return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
+    },
     label() {
       return `${this.model.manufacturer.code} ${this.model.name}`
     },
