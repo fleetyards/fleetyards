@@ -1,11 +1,10 @@
-const fleetyardsEndpoint = '<%= Rails.application.secrets[:frontend_endpoint] %>'
-
+window.FRONTEND_ENDPOINT = '<%= Rails.application.secrets[:frontend_endpoint] %>'
 window.API_ENDPOINT = '<%= Rails.application.secrets[:api_endpoint] %>'
-window.FRONTEND_ENDPOINT = fleetyardsEndpoint
 
 const d = document
 const styles = d.createElement('link')
-styles.href = `${fleetyardsEndpoint}/embed-styles.css#${new Date().getTime()}`
+
+styles.href = '<%= Rails.application.secrets[:frontend_endpoint] %><%= ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.css')) %>'
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
@@ -16,11 +15,11 @@ fonts.rel = 'stylesheet'
 fonts.media = 'all';
 (d.head || d.body).appendChild(fonts)
 
-const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.to_json %>
+const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed', type: :javascript).flatten.uniq.to_json.html_safe %>
 
 chunks.forEach((chunkUrl) => {
   const chunk = d.createElement('script')
-  chunk.src = `${fleetyardsEndpoint}${chunkUrl}`
+  chunk.src = '<%= Rails.application.secrets[:frontend_endpoint] %>' + chunkUrl
   chunk.type = 'application/javascript'
   const parent = d.head || d.body
   parent.appendChild(chunk)

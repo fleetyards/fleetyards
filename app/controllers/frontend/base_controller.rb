@@ -4,7 +4,7 @@ require 'mini_magick'
 
 module Frontend
   class BaseController < ApplicationController
-    protect_from_forgery except: :service_worker
+    protect_from_forgery except: %i[service_worker embed]
 
     def index
       route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
@@ -156,11 +156,14 @@ module Frontend
     end
 
     def embed
-      redirect_to ActionController::Base.helpers.asset_url('embed.js')
-    end
-
-    def embed_styles
-      redirect_to ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed.css'))
+      respond_to do |format|
+        format.js do
+          render 'frontend/embed', layout: false
+        end
+        format.all do
+          redirect_to '/404'
+        end
+      end
     end
 
     def embed_test

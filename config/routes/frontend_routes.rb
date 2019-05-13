@@ -53,7 +53,6 @@ namespace :frontend, path: '', constraints: { subdomain: false } do
   get 'confirm/:token' => 'base#confirm'
 
   get 'embed' => 'base#embed'
-  get 'embed-styles' => 'base#embed_styles'
   get 'embed-test' => 'base#embed_test'
 
   get 'service-worker' => 'base#service_worker'
