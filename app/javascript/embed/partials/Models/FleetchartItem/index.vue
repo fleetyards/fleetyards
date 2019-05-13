@@ -4,7 +4,7 @@
     class="fleetchart-item fade-list-item"
   >
     <a
-      :href="`${$root.frontendHost}/ships/${model.slug}`"
+      :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
       target="_blank"
       rel="noopener"
     >

@@ -7,7 +7,7 @@
       <div class="panel-heading">
         <h2 class="panel-title">
           <a
-            :href="`${$root.frontendHost}/ships/${model.slug}`"
+            :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
             target="_blank"
             rel="noopener"
           >
@@ -20,7 +20,7 @@
       <div class="panel-image text-center">
         <a
           v-lazy:background-image="model.storeImage"
-          :href="`${$root.frontendHost}/ships/${model.slug}`"
+          :href="`${window.FRONTEND_ENDPOINT}/ships/${model.slug}`"
           target="_blank"
           rel="noopener"
           class="lazy"
