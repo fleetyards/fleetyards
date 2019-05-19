@@ -349,6 +349,22 @@
       "saleNotify": "I want to receive Sale Notifications",
       "selectGroup": "Select a Group"
     },
+    "image": {
+      "background": "Use as Background?",
+      "enabled": "Enabled?",
+      "delete": "Delete",
+      "start": "Start",
+      "cancel": "Cancel",
+      "processing": "Processing...",
+      "error": "Error",
+      "name": "Name",
+      "size": "File size",
+      "dropzone": "Drop images here",
+      "cancelUpload": "Cancel upload",
+      "startUpload": "Start upload",
+      "selectImages": "Add images...",
+      "selectFolder": "Add a folder..."
+    },
     "signUp": "Don't have an Account?",
     "login": "Username or E-Mail",
     "username": "Username",
@@ -416,6 +432,10 @@
         "price": "Price",
         "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
+      },
+      "images": {
+        "station": "Station",
+        "model": "Ship"
       }
     },
     "station": {

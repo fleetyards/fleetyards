@@ -1,0 +1,16 @@
+<% content_for :title do %>
+  <%= I18n.t(:"title.image.index") %>
+<% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>
+      <%= I18n.t(:"headlines.admin.image.index") %>
+    </h2>
+  </div>
+</div>
+
+<script>
+  window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
+  window.AUTH_TOKEN = '<%= jwt_token %>'
+</script>
+<%= javascript_packs_with_chunks_tag 'admin' %>

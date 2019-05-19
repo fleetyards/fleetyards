@@ -45,7 +45,8 @@
       </a>
     </b-collapse>
     <FormInput
-      v-if="searchable && visible"
+      v-show="searchable && visible"
+      ref="searchInput"
       v-model="search"
       :placeholder="searchLabel || $t('actions.find')"
       class="filter-list-search"
@@ -312,7 +313,7 @@ export default {
     },
     focusSearch() {
       if (this.searchable && this.visible) {
-        this.$nextTick(() => this.$refs.searchInput.focus())
+        this.$nextTick(() => this.$refs.searchInput.setFocus())
       }
     },
   },

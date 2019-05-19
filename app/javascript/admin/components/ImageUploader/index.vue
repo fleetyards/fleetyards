@@ -1,45 +1,52 @@
 <template>
   <div id="fileupload">
-    <div class="row fileupload-buttonbar">
+    <div
+      v-if="isUploadActive"
+      class="row fileupload-buttonbar"
+    >
       <div class="col-lg-7">
         <VueUploadComponent
           ref="upload"
-          v-model="newFiles"
+          v-model="newImages"
           :thread="3"
           :post-action="postAction"
           drop="#dropzone"
           :headers="headers"
-          :data="uploadData"
+          :data="metaData"
           multiple
           :add-index="true"
-          @input-file="inputFile"
+          @input-file="inputImage"
           @input-filter="inputFilter"
         />
+
         <Btn
-          @click.native="selectFiles"
+          @click.native="selectImages"
         >
           <i class="fa fa-plus" />
-          <span>Add files...</span>
+          <span>{{ $t('labels.image.selectImages') }}</span>
         </Btn>
+
         <Btn
           @click.native="selectFolder"
         >
           <i class="fa fa-plus" />
-          <span>Add a folder...</span>
+          <span>{{ $t('labels.image.selectFolder') }}</span>
         </Btn>
+
         <Btn
-          v-if="newFiles.length"
+          v-if="newImages.length"
           @click.native="startUpload"
         >
           <i class="fa fa-upload" />
-          <span>Start upload</span>
+          <span>{{ $t('labels.image.startUpload') }}</span>
         </Btn>
+
         <Btn
-          v-if="newFiles.length"
+          v-if="newImages.length"
           @click.native="cancelUpload"
         >
           <i class="fa fa-ban-circle" />
-          <span>Cancel upload</span>
+          <span>{{ $t('labels.image.cancelUpload') }}</span>
         </Btn>
       </div>
 
@@ -50,6 +57,7 @@
         <span class="fileupload-process">
           {{ speed | formatSize }}
         </span>
+
         <div class="progress">
           <div
             class="progress-bar progress-bar-animated progress-bar-info progress-bar-striped"
@@ -62,18 +70,20 @@
       </div>
     </div>
 
+    <slot name="header" />
+
     <div
+      v-if="isUploadActive"
       id="dropzone"
       :class="{
         in: $refs.upload && $refs.upload.dropActive
       }"
       class="fade well drop-active"
     >
-      <h3>
-        Drop files here
-      </h3>
+      <h3>{{ $t('labels.image.dropzone') }}</h3>
     </div>
-    <Panel v-if="allFiles.length">
+
+    <Panel v-if="allImages.length">
       <transition-group
         name="fade"
         class="flex-list"
@@ -86,30 +96,36 @@
         >
           <div class="flex-list-row">
             <div class="store-image wide" />
+
             <div class="description">
-              Name
+              {{ $t('labels.image.name') }}
             </div>
+
             <div class="size">
-              File size
+              {{ $t('labels.image.size') }}
             </div>
+
             <div class="actions" />
           </div>
         </div>
+
         <div
-          v-for="file in allFiles"
-          :key="file.id"
+          v-for="image in allImages"
+          :key="image.id"
           class="fade-list-item col-xs-12 flex-list-item"
         >
           <ImageRow
-            :file="file"
+            :image="image"
             @start="startSingleUpload"
             @cancel="cancelSingleUpload"
-            @fetch="fetch"
+            @imageDeleted="$emit('imageDeleted')"
           />
         </div>
       </transition-group>
     </Panel>
+
     <EmptyBox v-if="emptyBoxVisible" />
+
     <Loader
       :loading="loading"
       fixed
@@ -136,26 +152,28 @@ export default {
     Panel,
   },
   props: {
+    images: {
+      type: Array,
+      required: true,
+    },
     galleryId: {
       type: String,
-      required: true,
+      default: null,
     },
     galleryType: {
       type: String,
-      required: true,
+      default: null,
     },
-    fetchUrl: {
-      type: String,
-      required: true,
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
     return {
-      files: [],
-      newFiles: [],
+      newImages: [],
       postAction: '/api/v1/images',
       uploadCount: 1,
-      loading: true,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${window.AUTH_TOKEN}`,
@@ -163,49 +181,49 @@ export default {
     }
   },
   computed: {
-    allFiles() {
+    isUploadActive() {
+      return !!this.galleryId && !!this.galleryType
+    },
+    allImages() {
       return [
-        ...this.newFiles,
-        ...this.files,
+        ...this.newImages,
+        ...this.images,
       ]
     },
-    emptyBoxVisible() {
-      return !this.loading && !this.allFiles.length
-    },
-    uploadData() {
+    metaData() {
       return {
         galleryId: this.galleryId,
         galleryType: this.galleryType,
       }
     },
-    activeFiles() {
-      return this.newFiles.filter(item => item.active)
+    emptyBoxVisible() {
+      return !this.loading && !this.allImages.length
+    },
+    activeImages() {
+      return this.newImages.filter(item => item.active)
     },
     progress() {
-      if (!this.newFiles.length) {
+      if (!this.newImages.length) {
         return 0
       }
 
-      const pendingProgress = this.newFiles.map(item => parseFloat(item.progress))
+      const pendingProgress = this.newImages.map(item => parseFloat(item.progress))
         .reduce((pv, cv) => pv + cv, 0)
-      const completedUploads = this.uploadCount - this.newFiles.length
+      const completedUploads = this.uploadCount - this.newImages.length
 
       return Math.ceil((pendingProgress + (completedUploads * 100)) / this.uploadCount)
     },
     speed() {
-      if (!this.activeFiles.length) {
+      if (!this.activeImages.length) {
         return 0
       }
 
-      return this.activeFiles.map(item => parseFloat(item.speed))
-        .reduce((pv, cv) => pv + cv, 0) / this.activeFiles.length
+      return this.activeImages.map(item => parseFloat(item.speed))
+        .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     },
   },
-  mounted() {
-    this.fetch()
-  },
   methods: {
-    selectFiles() {
+    selectImages() {
       this.$refs.upload.$el.querySelector('input').click()
     },
     selectFolder() {
@@ -226,56 +244,46 @@ export default {
       }
     },
     setUploadCount() {
-      this.uploadCount = this.newFiles.length
+      this.uploadCount = this.newImages.length
     },
     startUpload() {
       this.setUploadCount()
       this.$refs.upload.active = true
     },
-    startSingleUpload(file) {
-      this.$refs.upload.update(file, { active: true })
+    startSingleUpload(image) {
+      this.$refs.upload.update(image, { active: true })
     },
     cancelUpload() {
-      this.newFiles = []
+      this.newImages = []
     },
-    cancelSingleUpload(file) {
-      this.$refs.upload.remove(file)
+    cancelSingleUpload(image) {
+      this.$refs.upload.remove(image)
     },
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get(this.fetchUrl)
-
-      this.loading = false
-      if (!response.error) {
-        this.files = response.data
-      }
-    },
-    async inputFile(newFile, oldFile) {
-      if (newFile && oldFile && !newFile.active && oldFile.active) {
-        if (newFile.xhr && newFile.xhr.status === 200) {
-          this.fetch()
-          const index = this.newFiles.indexOf(newFile)
-          this.newFiles.splice(index, 1)
+    async inputImage(newImage, oldImage) {
+      if (newImage && oldImage && !newImage.active && oldImage.active) {
+        if (newImage.xhr && newImage.xhr.status === 200) {
+          this.$emit('fileUploaded', newImage)
+          const index = this.newImages.indexOf(newImage)
+          this.newImages.splice(index, 1)
         }
       }
     },
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+    inputFilter(newImage, oldImage, prevent) {
+      if (newImage && !oldImage) {
+        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
           prevent()
         }
       }
 
       /* eslint-disable no-param-reassign */
-      newFile.blob = ''
+      newImage.blob = ''
       const URL = window.URL || window.webkitURL
       if (URL && URL.createObjectURL) {
-        newFile.blob = URL.createObjectURL(newFile.file)
+        newImage.blob = URL.createObjectURL(newImage.file)
       }
-      newFile.smallUrl = ''
-      if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
-        newFile.smallUrl = newFile.blob
+      newImage.smallUrl = ''
+      if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
+        newImage.smallUrl = newImage.blob
       }
       /* eslint-enable no-param-reassign */
     },

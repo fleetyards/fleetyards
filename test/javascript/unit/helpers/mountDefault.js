@@ -15,6 +15,7 @@ export default (config = {}) => {
   localVue.use(VueLazyload)
   localVue.use(VTooltip)
   localVue.use(BootstrapVue)
+  localVue.use(I18n)
 
   return {
     store,

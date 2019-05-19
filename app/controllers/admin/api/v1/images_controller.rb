@@ -4,6 +4,20 @@ module Admin
   module Api
     module V1
       class ImagesController < ::Admin::Api::BaseController
+        after_action -> { pagination_header(:images) }, only: [:index]
+
+        def index
+          authorize! :index, :admin_api_images
+
+          image_query_params['sorts'] = 'created_at desc'
+
+          @q = Image.ransack(image_query_params)
+
+          @images = @q.result
+                      .page(params.fetch(:page, nil))
+                      .per(40)
+        end
+
         def create
           authorize! :create, :admin_api_images
 
@@ -29,6 +43,12 @@ module Admin
           return if image.update(image_params)
 
           render json: ValidationError.new('image.update', image.errors), status: :bad_request
+        end
+
+        private def image_query_params
+          @image_query_params ||= query_params(
+            :gallery_id_eq, :gallery_type_eq
+          )
         end
 
         private def image_params

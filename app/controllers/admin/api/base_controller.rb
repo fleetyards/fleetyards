@@ -3,6 +3,9 @@
 module Admin
   module Api
     class BaseController < ActionController::Base
+      include RansackHelper
+      include Concerns::Pagination
+
       protect_from_forgery with: :null_session
       respond_to :json
 

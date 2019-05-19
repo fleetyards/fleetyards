@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
 v1_admin_api_routes = lambda do
-  resources :models, only: %i[] do
+  resources :models, only: %i[index] do
+    get :options, on: :collection
     get :images, on: :member
   end
 
-  resources :stations, only: %i[] do
+  resources :stations, only: %i[index] do
+    get :options, on: :collection
     get :images, on: :member
   end
 
-  resources :images, only: %i[create destroy update]
+  resources :images, only: %i[index create destroy update]
 end
 
 scope :v1, as: :v1 do

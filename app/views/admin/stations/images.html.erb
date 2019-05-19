@@ -3,7 +3,7 @@
   <%= I18n.t(:"title.station.images") %>
 <% end %>
 <div class="row">
-  <div class="col-xs-12 col-md-12">
+  <div class="col-xs-12">
     <div class="row">
       <div class="col-xs-12 col-md-8">
         <h2>
@@ -22,7 +22,5 @@
 <script>
   window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
   window.AUTH_TOKEN = '<%= jwt_token %>'
-  window.GALLERY_TYPE = 'Station'
-  window.GALLERY_PATH = 'stations'
 </script>
 <%= javascript_packs_with_chunks_tag 'admin' %>
