@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
-          {{ t('headlines.starsystems') }}
+          {{ $t('headlines.starsystems') }}
         </h1>
       </div>
     </div>
@@ -68,7 +68,7 @@
             >
               <template v-if="starsystem.celestialObjects.length">
                 <h3 class="sr-only">
-                  {{ t('headlines.celestialObjects') }}
+                  {{ $t('headlines.celestialObjects') }}
                 </h3>
                 <transition-group
                   name="fade-list"
@@ -117,7 +117,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import StarsystemList from 'frontend/partials/Stations/List'
@@ -133,7 +132,7 @@ export default {
     StarsystemList,
     PlanetPanel,
   },
-  mixins: [I18n, MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -170,7 +169,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.starsystems'),
+      title: this.$t('title.starsystems'),
     })
   },
 }

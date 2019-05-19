@@ -47,7 +47,7 @@
     <FormInput
       v-if="searchable && visible"
       v-model="search"
-      :placeholder="searchLabel || t('actions.find')"
+      :placeholder="searchLabel || $t('actions.find')"
       class="filter-list-search"
       variant="clean"
       @input="onSearch"
@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import SmallLoader from 'frontend/components/SmallLoader'
 import FormInput from 'frontend/components/Form/FormInput'
 import debounce from 'lodash.debounce'
@@ -103,7 +102,6 @@ export default {
     InfiniteLoading,
     FormInput,
   },
-  mixins: [I18n],
   props: {
     name: {
       type: String,

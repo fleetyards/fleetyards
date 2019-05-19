@@ -15,7 +15,7 @@ export default {
       const response = await this.$api.get('models/cargo-options')
       if (!response.error) {
         this.modelOptions = response.data.map(item => ({
-          name: `${item.name} (${this.toNumber(item.cargo, 'cargo')})`,
+          name: `${item.name} (${this.$toNumber(item.cargo, 'cargo')})`,
           value: item.value,
           cargo: item.cargo,
         }))

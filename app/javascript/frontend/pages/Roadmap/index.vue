@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
-          {{ t('headlines.roadmap') }}
+          {{ $t('headlines.roadmap') }}
         </h1>
       </div>
     </div>
@@ -14,7 +14,7 @@
             Changes
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ t('labels.rsiRoadmap') }}
+            {{ $t('labels.rsiRoadmap') }}
           </Btn>
         </div>
       </div>
@@ -54,7 +54,7 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ t('labels.roadmap.ships', { count: items.length }) }}</small>
+              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
               <i class="fa fa-chevron-right" />
             </h2>
 
@@ -88,9 +88,9 @@
               @click="toggle('unscheduled')"
             >
               <span class="title">
-                {{ t('labels.roadmap.unscheduled') }}
+                {{ $t('labels.roadmap.unscheduled') }}
               </span>
-              <small>{{ t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
+              <small>{{ $t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
               <i class="fa fa-chevron-right" />
             </h2>
             <b-collapse
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
@@ -129,7 +128,7 @@ export default {
     RoadmapItem,
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       loading: true,
@@ -143,9 +142,9 @@ export default {
   computed: {
     releasedToggleLabel() {
       if (this.onlyReleased) {
-        return this.t('actions.showReleased')
+        return this.$t('actions.showReleased')
       }
-      return this.t('actions.hideReleased')
+      return this.$t('actions.hideReleased')
     },
     emptyBoxVisible() {
       return !this.loading && this.roadmapItems.length === 0
@@ -238,7 +237,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.roadmap'),
+      title: this.$t('title.roadmap'),
     })
   },
 }

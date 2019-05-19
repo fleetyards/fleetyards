@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
-          {{ t('headlines.shops') }}
+          {{ $t('headlines.shops') }}
         </h1>
       </div>
     </div>
@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
@@ -141,7 +140,7 @@ export default {
     FilterForm,
     Btn,
   },
-  mixins: [I18n, MetaInfo, Hash, Filters, Pagination],
+  mixins: [MetaInfo, Hash, Filters, Pagination],
   data() {
     return {
       loading: false,
@@ -158,9 +157,9 @@ export default {
     ]),
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
     emptyBoxVisible() {
       return !this.loading && this.shops.length === 0
@@ -201,7 +200,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.shops'),
+      title: this.$t('title.shops'),
     })
   },
 }

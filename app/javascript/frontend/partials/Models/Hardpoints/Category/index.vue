@@ -8,7 +8,7 @@
         v-if="!withoutTitle"
         class="hardpoint-category-label"
       >
-        {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
+        {{ $t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
       </h2>
       <Panel>
         <div class="hardpoint-category">
@@ -22,7 +22,7 @@
                 :src="icons[type]"
                 class="hardpoint-type-icon"
               >
-              {{ t(`labels.hardpoint.types.${type}`) }}
+              {{ $t(`labels.hardpoint.types.${type}`) }}
             </div>
             <HardpointIcon
               v-for="hardpoint in items"
@@ -45,13 +45,13 @@
         <div class="row">
           <div class="col-xs-6">
             <div class="metrics-label">
-              {{ t('component.size') }}:
+              {{ $t('component.size') }}:
             </div>
             <div class="metrics-value">
               {{ component.size }}
             </div>
             <div class="metrics-label">
-              {{ t('component.manufacturer') }}:
+              {{ $t('component.manufacturer') }}:
             </div>
             <div
               class="metrics-value"
@@ -63,7 +63,7 @@
             class="col-xs-6"
           >
             <div class="metrics-label">
-              {{ t('labels.hardpoint.rackSize') }}:
+              {{ $t('labels.hardpoint.rackSize') }}:
             </div>
             <div class="metrics-value">
               {{ selectedHardpoint.size }}
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import Modal from 'frontend/components/Modal'
 import HardpointIcon from '../Icon'
@@ -87,7 +86,6 @@ export default {
     Panel,
     Modal,
   },
-  mixins: [I18n],
   props: {
     category: {
       type: String,

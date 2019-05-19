@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
@@ -77,7 +76,7 @@ export default {
     Loader,
     Gallery,
   },
-  mixins: [I18n, MetaInfo, Pagination],
+  mixins: [MetaInfo, Pagination],
   data() {
     return {
       title: null,
@@ -91,7 +90,7 @@ export default {
       this.fetch()
     },
     model() {
-      this.title = this.t('title.modelImages', {
+      this.title = this.$t('title.modelImages', {
         name: this.model.name,
       })
       this.$store.commit('setBackgroundImage', this.model.backgroundImage)

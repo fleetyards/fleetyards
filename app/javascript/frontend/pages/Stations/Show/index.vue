@@ -52,7 +52,7 @@
     <div class="row">
       <div class="col-xs-12">
         <template v-if="station">
-          <h2>{{ t('headlines.shops') }}</h2>
+          <h2>{{ $t('headlines.shops') }}</h2>
           <transition-group
             name="fade-list"
             class="flex-row"
@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
@@ -110,7 +109,7 @@ export default {
     StationDocks,
     StationHabitations,
   },
-  mixins: [I18n, MetaInfo, Hash],
+  mixins: [MetaInfo, Hash],
   data() {
     return {
       loading: false,
@@ -131,7 +130,7 @@ export default {
       if (!this.station) {
         return null
       }
-      return this.t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
+      return this.$t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
     },
   },
   watch: {

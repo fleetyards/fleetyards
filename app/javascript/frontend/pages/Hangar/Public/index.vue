@@ -7,14 +7,14 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <h1>{{ t('headlines.hangarPublic', { user: usernamePlural }) }}</h1>
+            <h1>{{ $t('headlines.hangarPublic', { user: usernamePlural }) }}</h1>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-9">
             <ModelClassLabels
               v-if="vehiclesCount"
-              :label="t('labels.hangar')"
+              :label="$t('labels.hangar')"
               :count-data="vehiclesCount"
             />
           </div>
@@ -42,10 +42,10 @@
                 @click.native="toggleFleetchart"
               >
                 <template v-if="publicFleetchartVisible">
-                  {{ t('actions.hideFleetchart') }}
+                  {{ $t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.showFleetchart') }}
+                  {{ $t('actions.showFleetchart') }}
                 </template>
               </Btn>
             </div>
@@ -133,7 +133,6 @@ import ModelPanel from 'frontend/components/Models/Panel'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 
@@ -147,7 +146,7 @@ export default {
     ModelClassLabels,
     FleetchartSlider,
   },
-  mixins: [I18n, MetaInfo, Pagination],
+  mixins: [MetaInfo, Pagination],
   data() {
     return {
       loading: false,
@@ -235,7 +234,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.hangarPublic', { user: this.usernamePlural }),
+      title: this.$t('title.hangarPublic', { user: this.usernamePlural }),
     })
   },
 }

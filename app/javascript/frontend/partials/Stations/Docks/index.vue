@@ -5,7 +5,7 @@
   >
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
-        {{ t('labels.station.docks') }}
+        {{ $t('labels.station.docks') }}
       </div>
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
@@ -32,10 +32,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     station: {
       type: Object,

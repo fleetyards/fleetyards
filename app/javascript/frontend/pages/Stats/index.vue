@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.stats') }}
+              {{ $t('headlines.stats') }}
             </h1>
           </div>
         </div>
@@ -14,7 +14,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ t('labels.stats.modelsByClassification') }}
+                  {{ $t('labels.stats.modelsByClassification') }}
                 </h2>
               </div>
               <Chart
@@ -29,7 +29,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ t('labels.stats.modelsBySize') }}
+                  {{ $t('labels.stats.modelsBySize') }}
                 </h2>
               </div>
               <Chart
@@ -46,7 +46,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ t('labels.stats.modelsByProductionStatus') }}
+                  {{ $t('labels.stats.modelsByProductionStatus') }}
                 </h2>
               </div>
               <Chart
@@ -61,7 +61,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ t('labels.stats.modelsPerMonth') }}
+                  {{ $t('labels.stats.modelsPerMonth') }}
                 </h2>
               </div>
               <Chart
@@ -78,7 +78,7 @@
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
-                  {{ t('labels.stats.modelsByManufacturer') }}
+                  {{ $t('labels.stats.modelsByManufacturer') }}
                 </h2>
               </div>
               <Chart
@@ -96,7 +96,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Chart from 'frontend/components/Chart'
 import Panel from 'frontend/components/Panel'
@@ -106,10 +105,10 @@ export default {
     Chart,
     Panel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.stats'),
+      title: this.$t('title.stats'),
     })
   },
   methods: {

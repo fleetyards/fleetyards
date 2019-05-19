@@ -4,7 +4,7 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12 col-md-6">
-            <h1>{{ t('headlines.cargo') }}</h1>
+            <h1>{{ $t('headlines.cargo') }}</h1>
           </div>
           <div class="col-xs-12 col-md-6">
             <div class="page-actions">
@@ -16,7 +16,7 @@
                   },
                 }"
               >
-                {{ t('actions.editCommodities') }}
+                {{ $t('actions.editCommodities') }}
               </Btn>
             </div>
           </div>
@@ -144,7 +144,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/components/Btn'
@@ -158,7 +157,7 @@ export default {
     Panel,
     FilterForm,
   },
-  mixins: [I18n, MetaInfo, CargoRoutes, Filters],
+  mixins: [MetaInfo, CargoRoutes, Filters],
   data() {
     return {
       filterVisible: false,
@@ -171,16 +170,16 @@ export default {
       return this.modelOptions.find(item => item.value === query.cargoShip)
     },
     uecLabel() {
-      return this.cargoShip ? this.t('labels.uec') : this.t('labels.uecPerUnit')
+      return this.cargoShip ? this.$t('labels.uec') : this.$t('labels.uecPerUnit')
     },
     avaiableCargo() {
       return this.cargoShip ? this.cargoShip.cargo * 100 : 1
     },
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
     cargoRoutes() {
       const cargoRoutes = []
@@ -278,7 +277,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.cargo'),
+      title: this.$t('title.cargo'),
     })
   },
 }

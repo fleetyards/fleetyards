@@ -9,7 +9,7 @@
           >
             <i class="fal fa-chevron-left" />
           </router-link>
-          {{ t('headlines.starsystem', { starsystem: starsystem.name }) }}
+          {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
         </h1>
       </div>
     </div>
@@ -72,7 +72,7 @@
             >
               <template v-if="celestialObject.moons.length">
                 <h3 class="sr-only">
-                  {{ t('headlines.celestialObjects') }}
+                  {{ $t('headlines.celestialObjects') }}
                 </h3>
                 <transition-group
                   name="fade-list"
@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
@@ -143,7 +142,7 @@ export default {
     StarsystemLevelsMetrics,
     Panel,
   },
-  mixins: [I18n, MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -165,7 +164,7 @@ export default {
       if (!this.starsystem) {
         return null
       }
-      return this.t('title.starsystem', { starsystem: this.starsystem.name })
+      return this.$t('title.starsystem', { starsystem: this.starsystem.name })
     },
   },
   watch: {

@@ -6,12 +6,12 @@
           <div class="col-xs-12">
             <div class="search-form text-center">
               <h1 id="home-welcome">
-                <small>{{ t('headlines.welcome') }}</small>
+                <small>{{ $t('headlines.welcome') }}</small>
                 <img
                   :src="require(`images/logo.png`)"
                   class="logo"
                 >
-                {{ t('app') }}
+                {{ $t('app') }}
               </h1>
               <div class="row">
                 <div class="col-xs-12 col-md-offset-3 col-md-6">
@@ -20,14 +20,14 @@
                       <div class="input-group-flex">
                         <FormInput
                           v-model="searchQuery"
-                          :aria-label="t('labels.searchInput')"
+                          :aria-label="$t('labels.searchInput')"
                           data-test="home-search"
                           size="large"
                           autofocus
                         />
                         <Btn
                           id="search-submit"
-                          :aria-label="t('labels.search')"
+                          :aria-label="$t('labels.search')"
                           size="large"
                           inline
                           @click.native="search"
@@ -41,12 +41,12 @@
               </div>
               <div class="row">
                 <div class="col-xs-12 col-md-12">
-                  <p>{{ t('texts.index') }}</p>
+                  <p>{{ $t('texts.index') }}</p>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-12">
-                  <span v-html="t('texts.indexSupport', { code: 'STAR-5F32-SJZ4'})" />
+                  <span v-html="$t('texts.indexSupport', { code: 'STAR-5F32-SJZ4'})" />
                 </div>
               </div>
               <br>
@@ -56,7 +56,7 @@
                 size="large"
               >
                 <i class="fab fa-paypal" />
-                {{ t('actions.supportUs') }}
+                {{ $t('actions.supportUs') }}
               </Btn>
             </div>
           </div>
@@ -66,9 +66,9 @@
         <div class="row">
           <div class="col-xs-12 col-md-8 col-md-offset-4">
             <blockquote class="pull-right">
-              <p v-html="t('texts.indexQuote')" />
+              <p v-html="$t('texts.indexQuote')" />
               <small>
-                {{ t('texts.indexQuoteSource') }}
+                {{ $t('texts.indexQuoteSource') }}
                 <a
                   href="https://robertsspaceindustries.com"
                   target="_blank"
@@ -95,7 +95,7 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 relative home-ships">
           <h2 class="sr-only">
-            {{ t('headlines.welcomeShips') }}
+            {{ $t('headlines.welcomeShips') }}
           </h2>
           <transition-group
             name="fade-list"
@@ -126,7 +126,7 @@
         <div class="col-xs-12 col-md-6 relative home-images">
           <Panel>
             <h2 class="sr-only">
-              {{ t('headlines.welcomeImages') }}
+              {{ $t('headlines.welcomeImages') }}
             </h2>
             <div class="panel-body images">
               <transition-group
@@ -161,7 +161,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
@@ -177,7 +176,7 @@ export default {
     Btn,
     FormInput,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       models: [],
@@ -232,7 +231,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.home'),
+      title: this.$t('title.home'),
     })
   },
 }

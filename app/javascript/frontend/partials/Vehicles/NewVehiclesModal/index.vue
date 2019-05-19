@@ -1,7 +1,7 @@
 <template>
   <Modal
     ref="modal"
-    :title="t('headlines.newVehicles')"
+    :title="$t('headlines.newVehicles')"
     :visible="visible"
   >
     <form
@@ -17,9 +17,9 @@
         <div class="col-xs-8 col-sm-10">
           <FilterGroup
             v-model="item.modelId"
-            :label="t('labels.compare.selectModel')"
+            :label="$t('labels.compare.selectModel')"
             :name="`model`"
-            :search-label="t('actions.findModel')"
+            :search-label="$t('actions.findModel')"
             :fetch="fetchModels"
             value-attr="id"
             paginated
@@ -28,8 +28,8 @@
         </div>
         <div class="col-xs-4 col-sm-2">
           <Btn
-            v-tooltip="t('actions.delete')"
-            :aria-label="t('actions.delete')"
+            v-tooltip="$t('actions.delete')"
+            :aria-label="$t('actions.delete')"
             :disabled="form.vehicles.length <= 1"
             @click.native="removeItem(index)"
           >
@@ -38,8 +38,8 @@
         </div>
       </div>
       <Btn
-        v-tooltip="t('actions.addAnother')"
-        :aria-label="t('actions.addAnother')"
+        v-tooltip="$t('actions.addAnother')"
+        :aria-label="$t('actions.addAnother')"
         @click.native="addItem"
       >
         <i class="fa fa-plus" />
@@ -53,7 +53,7 @@
           :loading="submitting"
           size="large"
         >
-          {{ t('actions.add') }}
+          {{ $t('actions.add') }}
         </Btn>
       </div>
     </template>
@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
@@ -72,7 +71,6 @@ export default {
     FilterGroup,
     Btn,
   },
-  mixins: [I18n],
   props: {
     visible: {
       type: Boolean,

@@ -2,20 +2,20 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
-      :placeholder="t('placeholders.filters.shopItems.name')"
+      :placeholder="$t('placeholders.filters.shopItems.name')"
     />
 
     <FilterGroup
       v-model="form.categoryIn"
       :options="categoryOptions"
-      :label="t('labels.filters.shopItems.category')"
+      :label="$t('labels.filters.shopItems.category')"
       name="category"
       multiple
     />
 
     <FilterGroup
       v-model="form.subCategoryIn"
-      :label="t('labels.filters.shopItems.subCategory')"
+      :label="$t('labels.filters.shopItems.subCategory')"
       :fetch="fetchSubCategories"
       name="sub-category"
       multiple
@@ -23,7 +23,7 @@
 
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.shopItems.manufacturer')"
+      :label="$t('labels.filters.shopItems.manufacturer')"
       :fetch="fetchCommodityManufacturers"
       name="manufacturer"
       value-attr="slug"
@@ -36,16 +36,16 @@
     <FormInput
       :id="idFor('shopitems-min-price')"
       v-model="form.priceGteq"
-      :label="t('labels.filters.shopItems.minPrice')"
-      :placeholder="t('placeholders.filters.shopItems.minPrice')"
+      :label="$t('labels.filters.shopItems.minPrice')"
+      :placeholder="$t('placeholders.filters.shopItems.minPrice')"
       type="number"
     />
 
     <FormInput
       :id="idFor('shopitems-max-price')"
       v-model="form.priceLteq"
-      :label="t('labels.filters.shopItems.maxPrice')"
-      :placeholder="t('placeholders.filters.shopItems.maxPrice')"
+      :label="$t('labels.filters.shopItems.maxPrice')"
+      :placeholder="$t('placeholders.filters.shopItems.maxPrice')"
       type="number"
     />
 
@@ -55,13 +55,12 @@
       @click.native="reset"
     >
       <i class="fal fa-times" />
-      {{ t('actions.resetFilter') }}
+      {{ $t('actions.resetFilter') }}
     </Btn>
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import FormInput from 'frontend/components/Form/FormInput'
@@ -73,7 +72,7 @@ export default {
     FormInput,
     Btn,
   },
-  mixins: [I18n, Filters],
+  mixins: [Filters],
   data() {
     const query = this.$route.query.q || {}
     return {

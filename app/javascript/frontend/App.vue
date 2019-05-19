@@ -46,7 +46,7 @@ import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
 
 export default {
-  name: 'App',
+  name: 'FrontendApp',
   components: {
     Navigation,
     AppFooter,

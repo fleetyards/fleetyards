@@ -32,10 +32,10 @@
       >
         <strong class="text-uppercase">
           <template v-if="model.productionStatus">
-            {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+            {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
           </template>
           <template v-else>
-            {{ t(`labels.not-available`) }}
+            {{ $t(`labels.not-available`) }}
           </template>
         </strong>
       </div>
@@ -58,7 +58,6 @@
 import Panel from 'frontend/components/Panel'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
-import I18n from 'frontend/mixins/I18n'
 
 export default {
   components: {
@@ -66,7 +65,6 @@ export default {
     ModelTopMetrics,
     ModelBaseMetrics,
   },
-  mixins: [I18n],
   props: {
     model: {
       type: Object,

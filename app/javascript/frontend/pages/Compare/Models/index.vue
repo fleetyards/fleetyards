@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.compare.models') }}
+              {{ $t('headlines.compare.models') }}
             </h1>
           </div>
         </div>
@@ -15,9 +15,9 @@
               <div class="col-xs-12 col-ms-6 col-md-4 col-md-offset-2">
                 <FilterGroup
                   v-model="selectA"
-                  :label="t('labels.compare.selectModel')"
+                  :label="$t('labels.compare.selectModel')"
                   :name="`model-a`"
-                  :search-label="t('actions.findModel')"
+                  :search-label="$t('actions.findModel')"
                   :fetch="fetchModels"
                   value-attr="slug"
                   paginated
@@ -39,8 +39,8 @@
               <div class="col-xs-12 col-ms-6 col-md-4">
                 <FilterGroup
                   v-model="selectB"
-                  :label="t('labels.compare.selectModel')"
-                  :search-label="t('actions.findModel')"
+                  :label="$t('labels.compare.selectModel')"
+                  :search-label="$t('actions.findModel')"
                   :name="`model-b`"
                   :fetch="fetchModels"
                   value-attr="slug"
@@ -84,8 +84,8 @@
                   class="info"
                   large
                 >
-                  <h1>{{ t('headlines.compare.models') }}</h1>
-                  <p>{{ t('texts.compare.models.info') }}</p>
+                  <h1>{{ $t('headlines.compare.models') }}</h1>
+                  <p>{{ $t('texts.compare.models.info') }}</p>
                 </Box>
               </div>
             </div>
@@ -98,7 +98,7 @@
                   class="text-right metrics-title"
                   @click="toggle('base')"
                 >
-                  {{ t('labels.metrics.base') }}
+                  {{ $t('labels.metrics.base') }}
                   <i class="fa fa-chevron-right" />
                 </div>
               </div>
@@ -114,7 +114,7 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.manufacturer') }}
+                  {{ $t('model.manufacturer') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
@@ -136,14 +136,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.productionStatus') }}
+                  {{ $t('model.productionStatus') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
+                    {{ $t(`labels.model.productionStatus.${modelA.productionStatus}`) }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -151,7 +151,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
+                    {{ $t(`labels.model.productionStatus.${modelB.productionStatus}`) }}
                   </span>
                 </div>
               </div>
@@ -160,7 +160,7 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.focus') }}
+                  {{ $t('model.focus') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
@@ -184,7 +184,7 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.classification') }}
+                  {{ $t('model.classification') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
@@ -208,7 +208,7 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.size') }}
+                  {{ $t('model.size') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
@@ -232,14 +232,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.length') }}
+                  {{ $t('model.length') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.length, 'distance') }}
+                    {{ $toNumber(modelA.length, 'distance') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -247,7 +247,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.length, 'distance') }}
+                    {{ $toNumber(modelB.length, 'distance') }}
                   </span>
                 </div>
               </div>
@@ -256,14 +256,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.beam') }}
+                  {{ $t('model.beam') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.beam, 'distance') }}
+                    {{ $toNumber(modelA.beam, 'distance') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -271,7 +271,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.beam, 'distance') }}
+                    {{ $toNumber(modelB.beam, 'distance') }}
                   </span>
                 </div>
               </div>
@@ -280,14 +280,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.height') }}
+                  {{ $t('model.height') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.height, 'distance') }}
+                    {{ $toNumber(modelA.height, 'distance') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -295,7 +295,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.height, 'distance') }}
+                    {{ $toNumber(modelB.height, 'distance') }}
                   </span>
                 </div>
               </div>
@@ -304,14 +304,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.mass') }}
+                  {{ $t('model.mass') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.mass, 'weight') }}
+                    {{ $toNumber(modelA.mass, 'weight') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -319,7 +319,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.mass, 'weight') }}
+                    {{ $toNumber(modelB.mass, 'weight') }}
                   </span>
                 </div>
               </div>
@@ -328,14 +328,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.cargo') }}
+                  {{ $t('model.cargo') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.cargo, 'cargo') }}
+                    {{ $toNumber(modelA.cargo, 'cargo') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -343,7 +343,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.cargo, 'cargo') }}
+                    {{ $toNumber(modelB.cargo, 'cargo') }}
                   </span>
                 </div>
               </div>
@@ -352,14 +352,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.price') }}
+                  {{ $t('model.price') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelA.price) }}
+                    {{ $toDollar(modelA.price) }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -367,7 +367,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelB.price) }}
+                    {{ $toDollar(modelB.price) }}
                   </span>
                 </div>
               </div>
@@ -376,14 +376,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.pledgePrice') }}
+                  {{ $t('model.pledgePrice') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelA.lastPledgePrice) }}
+                    {{ $toDollar(modelA.lastPledgePrice) }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -391,7 +391,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toDollar(modelB.lastPledgePrice) }}
+                    {{ $toDollar(modelB.lastPledgePrice) }}
                   </span>
                 </div>
               </div>
@@ -406,7 +406,7 @@
                   class="text-right metrics-title"
                   @click="toggle('crew')"
                 >
-                  {{ t('labels.metrics.crew') }}
+                  {{ $t('labels.metrics.crew') }}
                   <i class="fa fa-chevron-right" />
                 </div>
               </div>
@@ -422,14 +422,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.minCrew') }}
+                  {{ $t('model.minCrew') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.minCrew, 'people') }}
+                    {{ $toNumber(modelA.minCrew, 'people') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -437,7 +437,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.minCrew, 'people') }}
+                    {{ $toNumber(modelB.minCrew, 'people') }}
                   </span>
                 </div>
               </div>
@@ -446,14 +446,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.maxCrew') }}
+                  {{ $t('model.maxCrew') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.maxCrew, 'people') }}
+                    {{ $toNumber(modelA.maxCrew, 'people') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -461,7 +461,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.maxCrew, 'people') }}
+                    {{ $toNumber(modelB.maxCrew, 'people') }}
                   </span>
                 </div>
               </div>
@@ -476,7 +476,7 @@
                   class="text-right metrics-title"
                   @click="toggle('speed')"
                 >
-                  {{ t('labels.metrics.speed') }}
+                  {{ $t('labels.metrics.speed') }}
                   <i class="fa fa-chevron-right" />
                 </div>
               </div>
@@ -492,14 +492,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.scmSpeed') }}
+                  {{ $t('model.scmSpeed') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.scmSpeed, 'speed') }}
+                    {{ $toNumber(modelA.scmSpeed, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -507,7 +507,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.scmSpeed, 'speed') }}
+                    {{ $toNumber(modelB.scmSpeed, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -516,14 +516,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.afterburnerSpeed') }}
+                  {{ $t('model.afterburnerSpeed') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.afterburnerSpeed, 'speed') }}
+                    {{ $toNumber(modelA.afterburnerSpeed, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -531,7 +531,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.afterburnerSpeed, 'speed') }}
+                    {{ $toNumber(modelB.afterburnerSpeed, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -540,14 +540,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.groundSpeed') }}
+                  {{ $t('model.groundSpeed') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.groundSpeed, 'speed') }}
+                    {{ $toNumber(modelA.groundSpeed, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -555,7 +555,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.groundSpeed, 'speed') }}
+                    {{ $toNumber(modelB.groundSpeed, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -564,14 +564,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.afterburnerGroundSpeed') }}
+                  {{ $t('model.afterburnerGroundSpeed') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.afterburnerGroundSpeed, 'speed') }}
+                    {{ $toNumber(modelA.afterburnerGroundSpeed, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -579,7 +579,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.afterburnerGroundSpeed, 'speed') }}
+                    {{ $toNumber(modelB.afterburnerGroundSpeed, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -588,14 +588,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.pitchMax') }}
+                  {{ $t('model.pitchMax') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.pitchMax, 'rotation') }}
+                    {{ $toNumber(modelA.pitchMax, 'rotation') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -603,7 +603,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.pitchMax, 'rotation') }}
+                    {{ $toNumber(modelB.pitchMax, 'rotation') }}
                   </span>
                 </div>
               </div>
@@ -612,14 +612,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.yawMax') }}
+                  {{ $t('model.yawMax') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.yawMax, 'rotation') }}
+                    {{ $toNumber(modelA.yawMax, 'rotation') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -627,7 +627,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.yawMax, 'rotation') }}
+                    {{ $toNumber(modelB.yawMax, 'rotation') }}
                   </span>
                 </div>
               </div>
@@ -636,14 +636,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.rollMax') }}
+                  {{ $t('model.rollMax') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.rollMax, 'rotation') }}
+                    {{ $toNumber(modelA.rollMax, 'rotation') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -651,7 +651,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.rollMax, 'rotation') }}
+                    {{ $toNumber(modelB.rollMax, 'rotation') }}
                   </span>
                 </div>
               </div>
@@ -660,14 +660,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.xaxisAcceleration') }}
+                  {{ $t('model.xaxisAcceleration') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.xaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelA.xaxisAcceleration, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -675,7 +675,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.xaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelB.xaxisAcceleration, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -684,14 +684,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.yaxisAcceleration') }}
+                  {{ $t('model.yaxisAcceleration') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.yaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelA.yaxisAcceleration, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -699,7 +699,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.yaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelB.yaxisAcceleration, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -708,14 +708,14 @@
                 class="row compare-row"
               >
                 <div class="col-xs-12 col-md-2 text-right metrics-label">
-                  {{ t('model.zaxisAcceleration') }}
+                  {{ $t('model.zaxisAcceleration') }}
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
                   <span
                     v-if="modelA"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelA.zaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelA.zaxisAcceleration, 'speed') }}
                   </span>
                 </div>
                 <div class="col-xs-6 col-md-4 text-center">
@@ -723,7 +723,7 @@
                     v-if="modelB"
                     class="metrics-value"
                   >
-                    {{ toNumber(modelB.zaxisAcceleration, 'speed') }}
+                    {{ $toNumber(modelB.zaxisAcceleration, 'speed') }}
                   </span>
                 </div>
               </div>
@@ -742,7 +742,7 @@
                     class="text-right metrics-title"
                     @click="toggle(category.toLowerCase())"
                   >
-                    {{ t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
+                    {{ $t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
                     <i class="fa fa-chevron-right" />
                   </div>
                 </div>
@@ -795,7 +795,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import HardpointCategory from 'frontend/partials/Models/Hardpoints/Category'
@@ -807,7 +806,7 @@ export default {
     HardpointCategory,
     Box,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       selectA: null,
@@ -944,7 +943,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.compare.models'),
+      title: this.$t('title.compare.models'),
     })
   },
 }

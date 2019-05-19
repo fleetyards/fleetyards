@@ -2,12 +2,12 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
-      :placeholder="t('placeholders.filters.vehicles.name')"
-      :aria-label="t('placeholders.filters.vehicles.name')"
+      :placeholder="$t('placeholders.filters.vehicles.name')"
+      :aria-label="$t('placeholders.filters.vehicles.name')"
     />
     <FilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.models.manufacturer')"
+      :label="$t('labels.filters.models.manufacturer')"
       :fetch="fetchManufacturers"
       name="manufacturer"
       value-attr="slug"
@@ -18,14 +18,14 @@
     />
     <FilterGroup
       v-model="form.productionStatusIn"
-      :label="t('labels.filters.models.productionStatus')"
+      :label="$t('labels.filters.models.productionStatus')"
       :fetch="fetchProductionStatus"
       name="production-status"
       multiple
     />
     <FilterGroup
       v-model="form.classificationIn"
-      :label="t('labels.filters.models.classification')"
+      :label="$t('labels.filters.models.classification')"
       :fetch="fetchClassifications"
       name="classification"
       searchable
@@ -33,7 +33,7 @@
     />
     <FilterGroup
       v-model="form.focusIn"
-      :label="t('labels.filters.models.focus')"
+      :label="$t('labels.filters.models.focus')"
       :fetch="fetchFocus"
       name="focus"
       searchable
@@ -41,7 +41,7 @@
     />
     <FilterGroup
       v-model="form.sizeIn"
-      :label="t('labels.filters.models.size')"
+      :label="$t('labels.filters.models.size')"
       :fetch="fetchSize"
       name="size"
       multiple
@@ -49,14 +49,14 @@
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
-      :label="t('labels.filters.models.pledgePrice')"
+      :label="$t('labels.filters.models.pledgePrice')"
       name="pledge-price"
       multiple
     />
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
-      :label="t('labels.filters.models.price')"
+      :label="$t('labels.filters.models.price')"
       name="price"
       multiple
     />
@@ -69,22 +69,22 @@
           name: item.name,
         }
       })"
-      :label="t('labels.filters.vehicles.group')"
+      :label="$t('labels.filters.vehicles.group')"
       name="hangar-group"
       multiple
     />
     <RadioList
       v-if="$route.name === 'hangar'"
       v-model="form.purchasedEq"
-      :label="t('labels.filters.vehicles.purchased')"
-      :reset-label="t('labels.all')"
+      :label="$t('labels.filters.vehicles.purchased')"
+      :reset-label="$t('labels.all')"
       :options="booleanOptions"
       name="purchased"
     />
     <RadioList
       v-model="form.onSaleEq"
-      :label="t('labels.filters.models.onSale')"
-      :reset-label="t('labels.all')"
+      :label="$t('labels.filters.models.onSale')"
+      :reset-label="$t('labels.all')"
       :options="booleanOptions"
       name="sale"
     />
@@ -94,13 +94,12 @@
       @click.native="reset"
     >
       <i class="fal fa-times" />
-      {{ t('actions.resetFilter') }}
+      {{ $t('actions.resetFilter') }}
     </Btn>
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
@@ -114,7 +113,7 @@ export default {
     FormInput,
     Btn,
   },
-  mixins: [I18n, Filters],
+  mixins: [Filters],
   props: {
     hangarGroupsOptions: {
       type: Array,
