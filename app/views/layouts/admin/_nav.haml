@@ -41,7 +41,7 @@
       %li{class: active_nav?('admin-starsystems')}
         = link_to I18n.t(:"nav.starsystems"), admin_starsystems_path
   %li{class: active_nav?('admin-images')}
-    = link_to I18n.t(:"nav.images"), admin_images_path
+    = link_to I18n.t(:"nav.images"), admin_images_path, 'data-turbolinks': "false"
   %li{class: active_nav?('admin-users')}
     = link_to I18n.t(:"nav.users"), admin_users_path
   %li{class: active_nav?('admin-vehicles')}

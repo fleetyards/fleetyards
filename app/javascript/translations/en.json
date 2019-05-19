@@ -416,6 +416,10 @@
         "price": "Price",
         "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status"
+      },
+      "images": {
+        "station": "Station",
+        "model": "Ship"
       }
     },
     "station": {
