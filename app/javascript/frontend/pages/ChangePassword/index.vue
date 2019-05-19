@@ -8,7 +8,7 @@
               :to="{ name: 'home'}"
               exact
             >
-              {{ t('app') }}
+              {{ $t('app') }}
             </router-link>
           </h1>
           <div
@@ -20,7 +20,7 @@
                 v-show="form.password"
                 for="password"
               >
-                {{ t('labels.password') }}
+                {{ $t('labels.password') }}
               </label>
             </transition>
             <input
@@ -29,8 +29,8 @@
               v-model="form.password"
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
-              :data-vv-as="t('labels.password')"
-              :placeholder="t('labels.password')"
+              :data-vv-as="$t('labels.password')"
+              :placeholder="$t('labels.password')"
               name="password"
               type="password"
               class="form-control"
@@ -52,7 +52,7 @@
                 v-show="form.passwordConfirmation"
                 for="password-confirmation"
               >
-                {{ t('labels.passwordConfirmation') }}
+                {{ $t('labels.passwordConfirmation') }}
               </label>
             </transition>
             <input
@@ -60,8 +60,8 @@
               v-model="form.passwordConfirmation"
               v-tooltip.right="errors.first('passwordConfirmation')"
               v-validate="'required|confirmed:password'"
-              :data-vv-as="t('labels.passwordConfirmation')"
-              :placeholder="t('labels.passwordConfirmation')"
+              :data-vv-as="$t('labels.passwordConfirmation')"
+              :placeholder="$t('labels.passwordConfirmation')"
               name="passwordConfirmation"
               type="password"
               class="form-control"
@@ -80,12 +80,12 @@
             size="large"
             block
           >
-            {{ t('actions.save') }}
+            {{ $t('actions.save') }}
           </Btn>
 
           <footer>
             <p class="text-center">
-              {{ t('labels.alreadyRegistered') }}
+              {{ $t('labels.alreadyRegistered') }}
             </p>
 
             <Btn
@@ -93,7 +93,7 @@
               size="small"
               block
             >
-              {{ t('actions.login') }}
+              {{ $t('actions.login') }}
             </Btn>
           </footer>
         </form>
@@ -105,7 +105,6 @@
 <script>
 import { success, alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { mapGetters } from 'vuex'
 
@@ -113,7 +112,7 @@ export default {
   components: {
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -144,16 +143,16 @@ export default {
       const response = await this.$api.put(`password/update/${this.$route.params.token}`, this.form)
       this.submitting = false
       if (!response.error) {
-        success(this.t('messages.changePassword.success'))
+        success(this.$t('messages.changePassword.success'))
         this.$router.push('/')
       } else {
-        alert(this.t('messages.changePassword.failure'))
+        alert(this.$t('messages.changePassword.failure'))
       }
     },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.changePassword'),
+      title: this.$t('title.changePassword'),
     })
   },
 }

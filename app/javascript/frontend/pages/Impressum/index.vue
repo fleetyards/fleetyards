@@ -4,10 +4,10 @@
       <div class="col-xs-12 col-md-8 col-md-offset-2">
         <Panel>
           <div class="panel-body">
-            <h1>{{ t('headlines.impressum') }}</h1>
+            <h1>{{ $t('headlines.impressum') }}</h1>
             <br>
 
-            <h2>{{ t('sublines.impressum.general') }}</h2>
+            <h2>{{ $t('sublines.impressum.general') }}</h2>
 
             <address>
               <dl class="dl-horizontal">
@@ -36,10 +36,10 @@
             </address>
             <br>
 
-            <h2>{{ t('sublines.impressum.thirdpartycontent') }}</h2>
+            <h2>{{ $t('sublines.impressum.thirdpartycontent') }}</h2>
             <br>
             <h3>YT Ship Images</h3>
-            <p v-html="t('texts.impressum.ytShipImages')" />
+            <p v-html="$t('texts.impressum.ytShipImages')" />
             <p>
               <a
                 href="https://redd.it/8k18sm"
@@ -51,7 +51,7 @@
             </p>
             <br>
 
-            <h2>{{ t('sublines.impressum.disclaimer') }}</h2>
+            <h2>{{ $t('sublines.impressum.disclaimer') }}</h2>
             <br>
             <p>
               This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium
@@ -63,17 +63,17 @@
             </p>
             <br>
 
-            <h3>{{ t('sublines.impressum.copyright') }}:</h3>
-            <p v-html="t('texts.impressum.copyright')" />
+            <h3>{{ $t('sublines.impressum.copyright') }}:</h3>
+            <p v-html="$t('texts.impressum.copyright')" />
             <br>
 
-            <h3>{{ t('sublines.impressum.liabilityInternal') }}:</h3>
-            <p v-html="t('texts.impressum.liabilityInternal.paragraphOne')" />
-            <p v-html="t('texts.impressum.liabilityInternal.paragraphTwo')" />
+            <h3>{{ $t('sublines.impressum.liabilityInternal') }}:</h3>
+            <p v-html="$t('texts.impressum.liabilityInternal.paragraphOne')" />
+            <p v-html="$t('texts.impressum.liabilityInternal.paragraphTwo')" />
             <br>
 
-            <h3>{{ t('sublines.impressum.liabilityExternal') }}:</h3>
-            <p v-html="t('texts.impressum.liabilityExternal')" />
+            <h3>{{ $t('sublines.impressum.liabilityExternal') }}:</h3>
+            <p v-html="$t('texts.impressum.liabilityExternal')" />
             <br>
           </div>
         </Panel>
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
 
@@ -91,10 +90,10 @@ export default {
   components: {
     Panel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.impressum'),
+      title: this.$t('title.impressum'),
     })
   },
 }

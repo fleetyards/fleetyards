@@ -39,7 +39,7 @@
                 size="small"
                 @click.native="toggle3d"
               >
-                {{ t('labels.3dView') }}
+                {{ $t('labels.3dView') }}
               </Btn>
               <Btn
                 v-if="show3d"
@@ -48,7 +48,7 @@
                 size="small"
                 @click.native="toggle3dColor"
               >
-                {{ t('labels.3dColor') }}
+                {{ $t('labels.3dColor') }}
               </Btn>
               <div
                 v-if="show3d"
@@ -71,7 +71,7 @@
               <div class="col-xs-6">
                 <template v-if="model.productionStatus">
                   <h3 class="text-uppercase">
-                    {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+                    {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
                   </h3>
                   <p>{{ model.productionNote }}</p>
                 </template>
@@ -79,7 +79,7 @@
               <div class="col-xs-6">
                 <template v-if="model.focus">
                   <h3 class="text-uppercase text-right">
-                    <small>{{ t('model.focus') }}:</small>
+                    <small>{{ $t('model.focus') }}:</small>
                     {{ model.focus }}
                   </h3>
                 </template>
@@ -139,11 +139,11 @@
                   v-if="model.brochure"
                   :href="model.brochure"
                 >
-                  {{ t('labels.model.brochure') }}
+                  {{ $t('labels.model.brochure') }}
                   <i class="fal fa-download" />
                 </Btn>
                 <Btn :href="model.storeUrl">
-                  {{ t('actions.model.store') }}
+                  {{ $t('actions.model.store') }}
                 </Btn>
                 <AddToHangar :model="model" />
               </div>
@@ -158,9 +158,9 @@
                 class="sale-button"
                 size="large"
               >
-                {{ t('actions.model.onSale', { price: toDollar(model.pledgePrice) }) }}
+                {{ $t('actions.model.onSale', { price: $toDollar(model.pledgePrice) }) }}
                 <small class="price-info">
-                  {{ t('labels.taxExcluded') }}
+                  {{ $t('labels.taxExcluded') }}
                 </small>
               </Btn>
             </div>
@@ -181,7 +181,7 @@
           v-if="modules.length"
           class="text-uppercase"
         >
-          {{ t('labels.model.modules') }}
+          {{ $t('labels.model.modules') }}
         </h2>
         <div
           v-if="modules.length"
@@ -207,7 +207,7 @@
           v-if="upgrades.length"
           class="text-uppercase"
         >
-          {{ t('labels.model.upgrades') }}
+          {{ $t('labels.model.upgrades') }}
         </h2>
         <div
           v-if="upgrades.length"
@@ -233,7 +233,7 @@
           v-if="variants.length"
           class="text-uppercase"
         >
-          {{ t('labels.model.variants') }}
+          {{ $t('labels.model.variants') }}
         </h2>
         <transition-group
           v-if="variants.length"
@@ -264,7 +264,6 @@
 
 <script>
 import qs from 'qs'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
@@ -291,7 +290,7 @@ export default {
     ModelSpeedMetrics,
     ModelPanel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       loading: false,
@@ -329,7 +328,7 @@ export default {
       if (!this.model) {
         return null
       }
-      return this.t('title.model', {
+      return this.$t('title.model', {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })

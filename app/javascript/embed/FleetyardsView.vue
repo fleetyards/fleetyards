@@ -11,10 +11,10 @@
                 @click.native="toggleGrouping"
               >
                 <template v-if="grouping">
-                  {{ t('actions.disableGrouping') }}
+                  {{ $t('actions.disableGrouping') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.enableGrouping') }}
+                  {{ $t('actions.enableGrouping') }}
                 </template>
               </Btn>
               <Btn
@@ -23,10 +23,10 @@
                 @click.native="toggleFleetchartGrouping"
               >
                 <template v-if="fleetchartGrouping">
-                  {{ t('actions.disableGrouping') }}
+                  {{ $t('actions.disableGrouping') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.enableGrouping') }}
+                  {{ $t('actions.enableGrouping') }}
                 </template>
               </Btn>
               <Btn
@@ -36,10 +36,10 @@
                 @click.native="toggleDetails"
               >
                 <template v-if="details">
-                  {{ t('actions.hideDetails') }}
+                  {{ $t('actions.hideDetails') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.showDetails') }}
+                  {{ $t('actions.showDetails') }}
                 </template>
               </Btn>
               <Btn
@@ -47,10 +47,10 @@
                 @click.native="toggleFleetchart"
               >
                 <template v-if="fleetchart">
-                  {{ t('actions.hideFleetchart') }}
+                  {{ $t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.showFleetchart') }}
+                  {{ $t('actions.showFleetchart') }}
                 </template>
               </Btn>
             </div>
@@ -122,7 +122,6 @@ import FleetchartItem from 'embed/partials/Models/FleetchartItem'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
-import I18n from 'frontend/mixins/I18n'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -134,7 +133,6 @@ export default {
     Btn,
     FleetchartSlider,
   },
-  mixins: [I18n],
   data() {
     return {
       ships: [],
@@ -160,10 +158,10 @@ export default {
         .map((item) => {
           if (!item.model) {
             return {
-              name: this.t('labels.unknownModel', { slug: item.slug }),
+              name: this.$t('labels.unknownModel', { slug: item.slug }),
               slug: item.slug,
               manufacturer: {
-                name: this.t('labels.unknown'),
+                name: this.$t('labels.unknown'),
               },
             }
           }

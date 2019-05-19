@@ -2,7 +2,7 @@
   <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ t('headlines.settings') }}</h1>
+        <h1>{{ $t('headlines.settings') }}</h1>
       </div>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
           class="form-group"
         >
           <label for="username">
-            {{ t('labels.username') }}
+            {{ $t('labels.username') }}
           </label>
           <input
             id="username"
@@ -20,8 +20,8 @@
             v-tooltip.bottom-end="errors.first('username')"
             v-validate="'required|alpha_dash'"
             data-test="username"
-            :data-vv-as="t('labels.username')"
-            :placeholder="t('labels.username')"
+            :data-vv-as="$t('labels.username')"
+            :placeholder="$t('labels.username')"
             name="username"
             type="text"
             class="form-control"
@@ -41,7 +41,7 @@
           class="form-group"
         >
           <label for="email">
-            {{ t('labels.email') }}
+            {{ $t('labels.email') }}
           </label>
           <input
             id="email"
@@ -49,7 +49,7 @@
             v-tooltip.bottom-end="errors.first('email')"
             v-validate="'required|email'"
             data-test="email"
-            :data-vv-as="t('labels.email')"
+            :data-vv-as="$t('labels.email')"
             name="email"
             type="email"
             class="form-control"
@@ -67,19 +67,19 @@
         <Checkbox
           id="saleNotify"
           v-model="form.saleNotify"
-          :label="t('labels.user.saleNotify')"
+          :label="$t('labels.user.saleNotify')"
         />
         <Checkbox
           id="publicHangar"
           v-model="form.publicHangar"
-          :label="t('labels.user.publicHangar')"
+          :label="$t('labels.user.publicHangar')"
         />
         <div
           :class="{'has-error has-feedback': errors.has('rsiHandle')}"
           class="form-group"
         >
           <label for="rsi-handle">
-            {{ t('labels.rsiHandle') }}
+            {{ $t('labels.rsiHandle') }}
           </label>
           <div class="input-group">
             <span class="input-group-addon">
@@ -91,7 +91,7 @@
               v-tooltip.bottom-end="errors.first('rsiHandle')"
               v-validate="'alpha_dash'"
               data-test="rsi-handle"
-              :data-vv-as="t('labels.rsiHandle')"
+              :data-vv-as="$t('labels.rsiHandle')"
               name="rsiHandle"
               type="text"
               class="form-control"
@@ -117,43 +117,43 @@
               <tbody>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.username') }}</strong>
+                    <strong>{{ $t('user.rsi.username') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.username }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.handle') }}</strong>
+                    <strong>{{ $t('user.rsi.handle') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.handle }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.title') }}</strong>
+                    <strong>{{ $t('user.rsi.title') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.title }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.citizenRecord') }}</strong>
+                    <strong>{{ $t('user.rsi.citizenRecord') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.citizenRecord }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.enlisted') }}</strong>
+                    <strong>{{ $t('user.rsi.enlisted') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.enlisted }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.languages') }}</strong>
+                    <strong>{{ $t('user.rsi.languages') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.languages }}</td>
                 </tr>
                 <tr>
                   <td>
-                    <strong>{{ t('user.rsi.location') }}</strong>
+                    <strong>{{ $t('user.rsi.location') }}</strong>
                   </td>
                   <td>{{ rsiCitizen.location }}</td>
                 </tr>
@@ -162,7 +162,7 @@
           </Panel>
           <Panel v-else-if="!loading">
             <div class="empty-citizen">
-              {{ t('labels.blank.rsiCitizen') }}
+              {{ $t('labels.blank.rsiCitizen') }}
             </div>
           </Panel>
         </transition>
@@ -174,14 +174,13 @@
       type="submit"
       size="large"
     >
-      {{ t('actions.save') }}
+      {{ $t('actions.save') }}
     </Btn>
   </form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
@@ -196,7 +195,7 @@ export default {
     Loader,
     Panel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       form: {
@@ -258,7 +257,7 @@ export default {
       this.submitting = false
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
-        success(this.t('messages.updateProfile.success'))
+        success(this.$t('messages.updateProfile.success'))
       }
     },
     async fetchCitizen() {
@@ -278,7 +277,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.settings'),
+      title: this.$t('title.settings'),
     })
   },
 }

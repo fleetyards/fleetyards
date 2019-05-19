@@ -18,8 +18,8 @@
               v-model="form.name"
               v-tooltip.right="errors.first('name')"
               v-validate="'required'"
-              :data-vv-as="t('labels.hangarGroup.name')"
-              :placeholder="t('labels.hangarGroup.name')"
+              :data-vv-as="$t('labels.hangarGroup.name')"
+              :placeholder="$t('labels.hangarGroup.name')"
               name="name"
               type="text"
               class="form-control"
@@ -41,8 +41,8 @@
               v-model="form.sort"
               v-tooltip.right="errors.first('sort')"
               v-validate="'numeric'"
-              :data-vv-as="t('labels.hangarGroup.sort')"
-              :placeholder="t('labels.hangarGroup.sort')"
+              :data-vv-as="$t('labels.hangarGroup.sort')"
+              :placeholder="$t('labels.hangarGroup.sort')"
               name="sort"
               type="text"
               class="form-control"
@@ -64,7 +64,7 @@
               v-model="form.color"
               v-tooltip.right="errors.first('color')"
               v-validate="'required'"
-              :data-vv-as="t('labels.hangarGroup.color')"
+              :data-vv-as="$t('labels.hangarGroup.color')"
               name="color"
               colors="material-dark"
               shapes="circles"
@@ -91,7 +91,7 @@
           type="submit"
           size="large"
         >
-          {{ t('actions.save') }}
+          {{ $t('actions.save') }}
         </Btn>
       </div>
     </template>
@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Modal from 'frontend/components/Modal'
 import { confirm, alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
@@ -112,7 +111,6 @@ export default {
     Btn,
     Swatches,
   },
-  mixins: [I18n],
   props: {
     group: {
       type: Object,
@@ -137,9 +135,9 @@ export default {
   computed: {
     title() {
       if (this.group.id) {
-        return this.t('headlines.hangarGroup.edit')
+        return this.$t('headlines.hangarGroup.edit')
       }
-      return this.t('headlines.hangarGroup.create')
+      return this.$t('headlines.hangarGroup.create')
     },
     id() {
       return (this.group.id || 'new')
@@ -160,7 +158,7 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm(this.t('confirm.hangarGroup.destroy'), () => {
+      confirm(this.$t('confirm.hangarGroup.destroy'), () => {
         this.destroy()
       }, () => {
         this.deleting = false

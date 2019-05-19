@@ -4,7 +4,7 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12 col-md-6">
-            <h1>{{ t('headlines.commodities') }}</h1>
+            <h1>{{ $t('headlines.commodities') }}</h1>
           </div>
           <div class="col-xs-12 col-md-6">
             <div class="page-actions">
@@ -17,16 +17,16 @@
                 }"
                 mobile-block
               >
-                {{ t('labels.cargoRoutes') }}
+                {{ $t('labels.cargoRoutes') }}
               </Btn>
               <Btn
                 :disabled="this.$route.params.id"
                 @click.native="save"
               >
-                {{ t('actions.save') }}
+                {{ $t('actions.save') }}
               </Btn>
               <Btn @click.native="resetPrices">
-                {{ t('actions.resetPrices') }}
+                {{ $t('actions.resetPrices') }}
               </Btn>
             </div>
           </div>
@@ -119,7 +119,7 @@
                           @change="updatePrices(`${station.slug}-${tradeCommodity.slug}-buy`)"
                         >
                         <span class="input-group-addon">
-                          {{ t('labels.uecPerUnit') }}
+                          {{ $t('labels.uecPerUnit') }}
                         </span>
                       </div>
                     </div>
@@ -145,7 +145,7 @@
                           @change="updatePrices(`${station.slug}-${tradeCommodity.slug}-sell`)"
                         >
                         <span class="input-group-addon">
-                          {{ t('labels.uecPerUnit') }}
+                          {{ $t('labels.uecPerUnit') }}
                         </span>
                       </div>
                     </div>
@@ -173,7 +173,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
@@ -188,7 +187,7 @@ export default {
     Panel,
     FilterForm,
   },
-  mixins: [I18n, MetaInfo, CargoRoutes, Filters],
+  mixins: [MetaInfo, CargoRoutes, Filters],
   data() {
     return {
       profitRate: 77.4,
@@ -219,9 +218,9 @@ export default {
     },
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
   },
   created() {
@@ -246,7 +245,7 @@ export default {
       }
     },
     resetPrices() {
-      confirm(this.t('confirm.tradeRoutes.reset'), () => {
+      confirm(this.$t('confirm.tradeRoutes.reset'), () => {
         this.$store.dispatch('tradehubs/reset')
         this.$router.replace({
           name: 'commodities',
@@ -293,7 +292,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.commodities'),
+      title: this.$t('title.commodities'),
     })
   },
 }

@@ -8,7 +8,7 @@
               to="/"
               exact
             >
-              {{ t('app') }}
+              {{ $t('app') }}
             </router-link>
           </h1>
           <div
@@ -20,7 +20,7 @@
                 v-show="form.username"
                 for="username"
               >
-                {{ t('labels.username') }}
+                {{ $t('labels.username') }}
               </label>
             </transition>
             <input
@@ -29,8 +29,8 @@
               v-tooltip.right="errors.first('username')"
               v-validate="'required|alpha_dash|usernameTaken'"
               data-test="username"
-              :data-vv-as="t('labels.username')"
-              :placeholder="t('labels.username')"
+              :data-vv-as="$t('labels.username')"
+              :placeholder="$t('labels.username')"
               name="username"
               type="text"
               class="form-control"
@@ -55,7 +55,7 @@
                 v-show="form.rsiHandle"
                 for="rsiHandle"
               >
-                {{ t('labels.rsiHandle') }}
+                {{ $t('labels.rsiHandle') }}
               </label>
             </transition>
             <input
@@ -64,8 +64,8 @@
               v-tooltip.right="errors.first('rsiHandle')"
               v-validate="'alpha_dash|handle'"
               data-test="rsi-handle"
-              :placeholder="t('labels.rsiHandle')"
-              :data-vv-as="t('labels.rsiHandle')"
+              :placeholder="$t('labels.rsiHandle')"
+              :data-vv-as="$t('labels.rsiHandle')"
               name="rsiHandle"
               type="text"
               class="form-control"
@@ -89,7 +89,7 @@
                 v-show="form.email"
                 for="email"
               >
-                {{ t('labels.email') }}
+                {{ $t('labels.email') }}
               </label>
             </transition>
             <input
@@ -98,8 +98,8 @@
               v-tooltip.right="errors.first('email')"
               v-validate="'required|email'"
               data-test="email"
-              :data-vv-as="t('labels.email')"
-              :placeholder="t('labels.email')"
+              :data-vv-as="$t('labels.email')"
+              :placeholder="$t('labels.email')"
               name="email"
               type="email"
               class="form-control"
@@ -120,7 +120,7 @@
                 v-show="form.password"
                 for="password"
               >
-                {{ t('labels.password') }}
+                {{ $t('labels.password') }}
               </label>
             </transition>
             <input
@@ -130,8 +130,8 @@
               v-tooltip.right="errors.first('password')"
               v-validate="'required|min:8'"
               data-test="password"
-              :placeholder="t('labels.password')"
-              :data-vv-as="t('labels.password')"
+              :placeholder="$t('labels.password')"
+              :data-vv-as="$t('labels.password')"
               name="password"
               type="password"
               class="form-control"
@@ -152,7 +152,7 @@
                 v-show="form.passwordConfirmation"
                 for="password-confirmation"
               >
-                {{ t('labels.passwordConfirmation') }}
+                {{ $t('labels.passwordConfirmation') }}
               </label>
             </transition>
             <input
@@ -161,8 +161,8 @@
               v-tooltip.right="errors.first('passwordConfirmation')"
               v-validate="'required|confirmed:password'"
               data-test="password-confirmation"
-              :data-vv-as="t('labels.passwordConfirmation')"
-              :placeholder="t('labels.passwordConfirmation')"
+              :data-vv-as="$t('labels.passwordConfirmation')"
+              :placeholder="$t('labels.passwordConfirmation')"
               name="passwordConfirmation"
               type="password"
               class="form-control"
@@ -177,7 +177,7 @@
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
-            :label="t('labels.user.saleNotify')"
+            :label="$t('labels.user.saleNotify')"
           />
 
           <Btn
@@ -186,7 +186,7 @@
             size="large"
             block
           >
-            {{ t('actions.signUp') }}
+            {{ $t('actions.signUp') }}
           </Btn>
 
           <p class="privacy-info">
@@ -200,7 +200,7 @@
 
           <footer>
             <p class="text-center">
-              {{ t('labels.alreadyRegistered') }}
+              {{ $t('labels.alreadyRegistered') }}
             </p>
 
             <Btn
@@ -208,7 +208,7 @@
               size="small"
               block
             >
-              {{ t('actions.login') }}
+              {{ $t('actions.login') }}
             </Btn>
           </footer>
         </form>
@@ -219,7 +219,6 @@
 
 <script>
 import { success, alert } from 'frontend/lib/Noty'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
@@ -229,7 +228,7 @@ export default {
     Btn,
     Checkbox,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -247,25 +246,25 @@ export default {
     async signup() {
       const result = await this.$validator.validateAll()
       if (!result) {
-        alert(this.t('messages.signup.invalid'))
+        alert(this.$t('messages.signup.invalid'))
         return
       }
       this.submitting = true
       const response = await this.$api.post('users/signup', this.form)
       this.submitting = false
       if (!response.error) {
-        success(this.t('messages.signup.success'))
+        success(this.$t('messages.signup.success'))
         this.$router.push('/')
       } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
-        alert(this.t('texts.signup.blacklisted'))
+        alert(this.$t('texts.signup.blacklisted'))
       } else {
-        alert(this.t('messages.signup.failure'))
+        alert(this.$t('messages.signup.failure'))
       }
     },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.signUp'),
+      title: this.$t('title.signUp'),
     })
   },
 }

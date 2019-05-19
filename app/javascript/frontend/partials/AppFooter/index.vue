@@ -19,11 +19,11 @@
         </a>
         |
         <router-link :to="{ name: 'privacy-policy' }">
-          {{ t('nav.privacyPolicy') }}
+          {{ $t('nav.privacyPolicy') }}
         </router-link>
         |
         <router-link :to="{ name: 'impressum' }">
-          {{ t('nav.impressum') }}
+          {{ $t('nav.impressum') }}
         </router-link>
         <span class="hidden-xs">
           |
@@ -54,7 +54,7 @@
           target="_blank"
           rel="noopener"
         >
-          {{ t('nav.api') }}
+          {{ $t('nav.api') }}
         </a>
       </div>
       <div class="app-footer-item">
@@ -86,11 +86,9 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import { mapGetters } from 'vuex'
 
 export default {
-  mixins: [I18n],
   computed: {
     ...mapGetters('app', [
       'version',

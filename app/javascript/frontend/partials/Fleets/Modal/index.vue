@@ -1,7 +1,7 @@
 <template>
   <Modal
     ref="modal"
-    :title="t('headlines.newFleet')"
+    :title="$t('headlines.newFleet')"
     :visible="visible"
   >
     <form
@@ -19,8 +19,8 @@
               v-model="sid"
               v-tooltip.bottom-end="errors.first('sid')"
               v-validate="'required|alpha_dash|org'"
-              :placeholder="t('placeholders.fleet.sid')"
-              :data-vv-as="t('labels.fleet.sid')"
+              :placeholder="$t('placeholders.fleet.sid')"
+              :data-vv-as="$t('labels.fleet.sid')"
               name="sid"
               type="text"
               class="form-control"
@@ -64,14 +64,13 @@
         form="fleet-form"
         class="pull-right"
       >
-        {{ t('actions.save') }}
+        {{ $t('actions.save') }}
       </Btn>
     </template>
   </Modal>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Btn from 'frontend/components/Btn'
 import Modal from 'frontend/components/Modal'
 import { alert } from 'frontend/lib/Noty'
@@ -85,7 +84,6 @@ export default {
     Loader,
     FleetPanel,
   },
-  mixins: [I18n],
   props: {
     visible: {
       type: Boolean,
@@ -139,7 +137,7 @@ export default {
         this.callback()
         this.$refs.modal.close()
       } else {
-        alert(this.t('messages.fleet.create.failure'))
+        alert(this.$t('messages.fleet.create.failure'))
       }
     },
   },

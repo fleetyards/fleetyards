@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import HangarGuide from 'frontend/partials/HangarGuide'
 
@@ -16,7 +15,6 @@ export default {
     Panel,
     HangarGuide,
   },
-  mixins: [I18n],
 }
 </script>
 

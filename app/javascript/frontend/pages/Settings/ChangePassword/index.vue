@@ -2,7 +2,7 @@
   <form @submit.prevent="changePassword">
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ t('headlines.changePassword') }}</h1>
+        <h1>{{ $t('headlines.changePassword') }}</h1>
       </div>
     </div>
     <div class="row">
@@ -13,15 +13,15 @@
           class="form-group"
         >
           <label for="current-password">
-            {{ t('labels.currentPassword') }}
+            {{ $t('labels.currentPassword') }}
           </label>
           <input
             id="current-password"
             v-model="form.currentPassword"
             v-tooltip.right="errors.first('currentPassword')"
             v-validate="'required'"
-            :data-vv-as="t('labels.currentPassword')"
-            :placeholder="t('labels.currentPassword')"
+            :data-vv-as="$t('labels.currentPassword')"
+            :placeholder="$t('labels.currentPassword')"
             name="currentPassword"
             type="password"
             class="form-control"
@@ -39,7 +39,7 @@
           class="form-group"
         >
           <label for="password">
-            {{ t('labels.password') }}
+            {{ $t('labels.password') }}
           </label>
           <input
             id="password"
@@ -48,8 +48,8 @@
             v-tooltip.right="errors.first('password')"
             v-validate="'required|min:8'"
             :autofocus="!isAuthenticated"
-            :data-vv-as="t('labels.password')"
-            :placeholder="t('labels.password')"
+            :data-vv-as="$t('labels.password')"
+            :placeholder="$t('labels.password')"
             name="password"
             type="password"
             class="form-control"
@@ -66,15 +66,15 @@
           class="form-group"
         >
           <label for="password-confirmation">
-            {{ t('labels.passwordConfirmation') }}
+            {{ $t('labels.passwordConfirmation') }}
           </label>
           <input
             id="password-confirmation"
             v-model="form.passwordConfirmation"
             v-tooltip.right="errors.first('passwordConfirmation')"
             v-validate="'required|confirmed:password'"
-            :data-vv-as="t('labels.passwordConfirmation')"
-            :placeholder="t('labels.passwordConfirmation')"
+            :data-vv-as="$t('labels.passwordConfirmation')"
+            :placeholder="$t('labels.passwordConfirmation')"
             name="passwordConfirmation"
             type="password"
             class="form-control"
@@ -92,7 +92,7 @@
           type="submit"
           size="large"
         >
-          {{ t('actions.save') }}
+          {{ $t('actions.save') }}
         </Btn>
       </div>
     </div>
@@ -101,7 +101,6 @@
 
 <script>
 import { success, alert } from 'frontend/lib/Noty'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
@@ -110,7 +109,7 @@ export default {
   components: {
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -136,16 +135,16 @@ export default {
       const response = await this.$api.put('password/update', this.form)
       this.submitting = false
       if (!response.error) {
-        success(this.t('messages.changePassword.success'))
+        success(this.$t('messages.changePassword.success'))
         this.$router.push('/')
       } else {
-        alert(this.t('messages.changePassword.failure'))
+        alert(this.$t('messages.changePassword.failure'))
       }
     },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.changePassword'),
+      title: this.$t('title.changePassword'),
     })
   },
 }

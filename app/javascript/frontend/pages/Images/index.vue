@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.images') }}
+              {{ $t('headlines.images') }}
             </h1>
           </div>
         </div>
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
@@ -71,7 +70,7 @@ export default {
     Loader,
     Gallery,
   },
-  mixins: [I18n, MetaInfo, Pagination],
+  mixins: [MetaInfo, Pagination],
   data() {
     return {
       images: [],
@@ -105,7 +104,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.images'),
+      title: this.$t('title.images'),
     })
   },
 }

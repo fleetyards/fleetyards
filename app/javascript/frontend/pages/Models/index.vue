@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.models') }}
+              {{ $t('headlines.models') }}
             </h1>
           </div>
         </div>
@@ -46,7 +46,7 @@
                 :to="{name: 'compare-models'}"
                 size="small"
               >
-                {{ t('actions.compare.models') }}
+                {{ $t('actions.compare.models') }}
               </Btn>
               <DownloadScreenshotBtn
                 v-if="fleetchartVisible"
@@ -58,10 +58,10 @@
                 @click.native="toggleFleetchart"
               >
                 <template v-if="fleetchartVisible">
-                  {{ t('actions.hideFleetchart') }}
+                  {{ $t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.showFleetchart') }}
+                  {{ $t('actions.showFleetchart') }}
                 </template>
               </Btn>
             </div>
@@ -186,7 +186,6 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -203,7 +202,7 @@ export default {
     FleetchartItem,
     FleetchartSlider,
   },
-  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
+  mixins: [MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: true,
@@ -228,15 +227,15 @@ export default {
     },
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
-        return this.t('actions.hideDetails')
+        return this.$t('actions.hideDetails')
       }
-      return this.t('actions.showDetails')
+      return this.$t('actions.showDetails')
     },
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
   },
   watch: {
@@ -319,7 +318,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.models'),
+      title: this.$t('title.models'),
     })
   },
 }

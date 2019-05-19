@@ -2,13 +2,13 @@
   <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ t('headlines.verify') }}</h1>
+        <h1>{{ $t('headlines.verify') }}</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-10">
         <br>
-        <p v-html="t('texts.rsiVerification.instructions')" />
+        <p v-html="$t('texts.rsiVerification.instructions')" />
         <br>
         <div
           :class="{'has-error has-feedback': errors.has('username')}"
@@ -40,15 +40,14 @@
       type="submit"
       size="large"
     >
-      {{ t('actions.verify') }}
+      {{ $t('actions.verify') }}
     </Btn>
     <br>
-    <p v-html="t('texts.rsiVerification.subline')" />
+    <p v-html="$t('texts.rsiVerification.subline')" />
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import { success, alert } from 'frontend/lib/Noty'
@@ -60,7 +59,7 @@ export default {
     Loader,
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -77,7 +76,7 @@ export default {
       if (!this.currentUser || !this.rsiVerificationToken) {
         return ''
       }
-      return this.t('texts.rsiVerification.verificationText', { username: this.currentUser.username, token: this.rsiVerificationToken })
+      return this.$t('texts.rsiVerification.verificationText', { username: this.currentUser.username, token: this.rsiVerificationToken })
     },
   },
   watch: {
@@ -96,9 +95,9 @@ export default {
     },
     copyToken() {
       this.$copyText(this.verificationText).then(() => {
-        success(this.t('messages.copy.success'))
+        success(this.$t('messages.copy.success'))
       }, () => {
-        alert(this.t('messages.copy.failure'))
+        alert(this.$t('messages.copy.failure'))
       })
     },
     async submit() {
@@ -106,11 +105,11 @@ export default {
       const response = await this.$api.post('users/finish-rsi-verification')
       this.submitting = false
       if (!response.error) {
-        success(this.t('messages.rsiVerification.success'))
+        success(this.$t('messages.rsiVerification.success'))
         this.$comlink.$emit('userUpdate')
         this.$router.push({ name: 'settings-profile' })
       } else {
-        alert(this.t('messages.rsiVerification.failure'))
+        alert(this.$t('messages.rsiVerification.failure'))
       }
     },
     async startRsiVerification() {
@@ -124,7 +123,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.verify'),
+      title: this.$t('title.verify'),
     })
   },
 }

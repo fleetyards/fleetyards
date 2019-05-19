@@ -1,6 +1,6 @@
 import Noty from 'noty'
 import { isBefore, addSeconds } from 'date-fns'
-import I18n from 'frontend/lib/I18n'
+import { I18n } from 'frontend/lib/I18n'
 
 const notifyPermissionGranted = function notifyPermissionGranted() {
   return ('Notification' in window) && window.Notification.permission === 'granted'

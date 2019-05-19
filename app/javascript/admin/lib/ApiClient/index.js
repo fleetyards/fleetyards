@@ -1,7 +1,7 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
 import { alert } from 'frontend/lib/Noty'
-import I18n from 'frontend/lib/I18n'
+import { I18n } from 'frontend/lib/I18n'
 import linkHeaderParser from 'parse-link-header'
 import axiosDefaults from 'axios/lib/defaults'
 
@@ -106,6 +106,15 @@ export async function destroy(path, data = {}) {
   }
 }
 
-export const apiClient = {
+const apiClient = {
   get, post, put, destroy, client,
+}
+
+export { apiClient }
+
+export default {
+  install(Vue) {
+    // eslint-disable-next-line no-param-reassign
+    Vue.prototype.$api = apiClient
+  },
 }

@@ -2,7 +2,7 @@
   <Modal
     v-if="vehicle"
     ref="modal"
-    :title="t('headlines.myVehicleAddons', { vehicle: vehicle.model.name })"
+    :title="$t('headlines.myVehicleAddons', { vehicle: vehicle.model.name })"
     :visible="visible"
     @open="fetch"
   >
@@ -15,7 +15,7 @@
         <div class="col-xs-12">
           <fieldset v-if="modules.length">
             <legend>
-              <h3>{{ t('labels.model.modules') }}:</h3>
+              <h3>{{ $t('labels.model.modules') }}:</h3>
             </legend>
             <Addons
               v-model="form.modelModuleIds"
@@ -32,7 +32,7 @@
         >
           <fieldset v-if="upgrades.length">
             <legend>
-              <h3>{{ t('labels.model.upgrades') }}:</h3>
+              <h3>{{ $t('labels.model.upgrades') }}:</h3>
             </legend>
             <Addons
               v-model="form.modelUpgradeIds"
@@ -52,7 +52,7 @@
           type="submit"
           size="large"
         >
-          {{ t('actions.save') }}
+          {{ $t('actions.save') }}
         </Btn>
       </div>
     </template>
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Btn from 'frontend/components/Btn'
 import Modal from 'frontend/components/Modal'
 import Loader from 'frontend/components/Loader'
@@ -73,7 +72,6 @@ export default {
     Loader,
     Addons,
   },
-  mixins: [I18n],
   props: {
     visible: {
       type: Boolean,

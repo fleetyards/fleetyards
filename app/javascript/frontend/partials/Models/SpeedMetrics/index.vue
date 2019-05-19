@@ -8,7 +8,7 @@
       class="col-xs-12"
     >
       <div class="metrics-title">
-        {{ t('labels.metrics.speed') }}
+        {{ $t('labels.metrics.speed') }}
       </div>
     </div>
     <div
@@ -23,18 +23,18 @@
       >
         <div class="col-xs-6">
           <div class="metrics-label">
-            {{ t('model.scmSpeed') }}:
+            {{ $t('model.scmSpeed') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.scmSpeed, 'speed') }}
+            {{ $$toNumber(model.scmSpeed, 'speed') }}
           </div>
         </div>
         <div class="col-xs-6">
           <div class="metrics-label">
-            {{ t('model.afterburnerSpeed') }}:
+            {{ $t('model.afterburnerSpeed') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.afterburnerSpeed, 'speed') }}
+            {{ $$toNumber(model.afterburnerSpeed, 'speed') }}
           </div>
         </div>
       </div>
@@ -47,10 +47,10 @@
           class="col-xs-6"
         >
           <div class="metrics-label">
-            {{ t('model.groundSpeed') }}:
+            {{ $t('model.groundSpeed') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.groundSpeed, 'speed') }}
+            {{ $$toNumber(model.groundSpeed, 'speed') }}
           </div>
         </div>
         <div
@@ -58,10 +58,10 @@
           class="col-xs-6"
         >
           <div class="metrics-label">
-            {{ t('model.afterburnerGroundSpeed') }}:
+            {{ $t('model.afterburnerGroundSpeed') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.afterburnerGroundSpeed, 'speed') }}
+            {{ $$toNumber(model.afterburnerGroundSpeed, 'speed') }}
           </div>
         </div>
       </div>
@@ -79,26 +79,26 @@
       >
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.pitchMax') }}:
+            {{ $t('model.pitchMax') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.pitchMax, 'rotation') }}
+            {{ $$toNumber(model.pitchMax, 'rotation') }}
           </div>
         </div>
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.yawMax') }}:
+            {{ $t('model.yawMax') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.yawMax, 'rotation') }}
+            {{ $$toNumber(model.yawMax, 'rotation') }}
           </div>
         </div>
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.rollMax') }}:
+            {{ $t('model.rollMax') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.rollMax, 'rotation') }}
+            {{ $$toNumber(model.rollMax, 'rotation') }}
           </div>
         </div>
       </div>
@@ -116,26 +116,26 @@
       >
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.xaxisAcceleration') }}:
+            {{ $t('model.xaxisAcceleration') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.xaxisAcceleration, 'speed') }}
+            {{ $$toNumber(model.xaxisAcceleration, 'speed') }}
           </div>
         </div>
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.yaxisAcceleration') }}:
+            {{ $t('model.yaxisAcceleration') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.yaxisAcceleration, 'speed') }}
+            {{ $$toNumber(model.yaxisAcceleration, 'speed') }}
           </div>
         </div>
         <div class="col-xs-6 col-md-4">
           <div class="metrics-label">
-            {{ t('model.zaxisAcceleration') }}:
+            {{ $t('model.zaxisAcceleration') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.zaxisAcceleration, 'speed') }}
+            {{ $$toNumber(model.zaxisAcceleration, 'speed') }}
           </div>
         </div>
       </div>
@@ -144,10 +144,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     model: {
       type: Object,

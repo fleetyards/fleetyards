@@ -33,7 +33,7 @@
       </a>
       <a
         key="add"
-        v-tooltip="t('actions.addGroup')"
+        v-tooltip="$t('actions.addGroup')"
         class="label label-link fade-list-item"
         @click="add"
       >
@@ -50,14 +50,12 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import GroupModal from 'frontend/partials/Vehicles/GroupModal'
 
 export default {
   components: {
     GroupModal,
   },
-  mixins: [I18n],
   props: {
     hangarGroups: {
       type: Array,

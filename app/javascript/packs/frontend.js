@@ -8,11 +8,13 @@ import App from 'frontend/App'
 import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import ActionCable from 'actioncable'
-import { apiClient } from 'frontend/lib/ApiClient'
 import dataPrefill from 'frontend/lib/DataPrefill'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Ahoy'
+import I18n from 'frontend/lib/I18n'
+import ApiClient from 'frontend/lib/ApiClient'
+import Subscriptions from 'frontend/lib/Subscriptions'
 import BootstrapVue from 'bootstrap-vue'
 import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
@@ -38,11 +40,15 @@ TWITTER: https://twitter.com/FleetYardsNet
 
 `)
 
-Vue.prototype.$api = apiClient
 Vue.prototype.$cable = ActionCable.createConsumer(window.CABLE_ENDPOINT)
 Vue.prototype.$dataPrefill = dataPrefill
 
+Vue.use(Subscriptions)
+Vue.use(ApiClient)
 Vue.use(Comlink)
+Vue.use(I18n)
+
+Vue.use(VueClipboard)
 
 Vue.use(VeeValidate)
 Validator.extend('emailTaken', EmailValidator)
@@ -73,8 +79,6 @@ Vue.component = function bootstrapFix(name, definition) {
   originalVueComponent.apply(this, [name, definition])
 }
 Vue.use(BootstrapVue)
-
-Vue.use(VueClipboard)
 
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true

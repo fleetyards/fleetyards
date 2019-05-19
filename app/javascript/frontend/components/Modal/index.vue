@@ -41,14 +41,12 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 
 export default {
   components: {
     Panel,
   },
-  mixins: [I18n],
   props: {
     visible: {
       type: Boolean,

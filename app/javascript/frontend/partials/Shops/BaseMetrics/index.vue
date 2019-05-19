@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
-        {{ t('labels.metrics.info') }}
+        {{ $t('labels.metrics.info') }}
       </div>
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-6">
           <div class="metrics-label">
-            {{ t('shop.type') }}:
+            {{ $t('shop.type') }}:
           </div>
           <div
             v-tooltip="shop.typeLabel"
@@ -22,7 +22,7 @@
       <div class="row">
         <div class="col-xs-6">
           <div class="metrics-label">
-            {{ t('shop.celestialObject') }}:
+            {{ $t('shop.celestialObject') }}:
           </div>
           <div
             v-tooltip="shop.celestialObject.name"
@@ -33,7 +33,7 @@
         </div>
         <div class="col-xs-6">
           <div class="metrics-label">
-            {{ t('shop.station') }}:
+            {{ $t('shop.station') }}:
           </div>
           <div
             v-tooltip="shop.station.name"
@@ -48,10 +48,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     shop: {
       type: Object,

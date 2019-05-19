@@ -8,7 +8,7 @@
               to="/"
               exact
             >
-              {{ t('app') }}
+              {{ $t('app') }}
             </router-link>
           </h1>
           <div
@@ -20,7 +20,7 @@
                 v-show="form.email"
                 for="email"
               >
-                {{ t('labels.email') }}
+                {{ $t('labels.email') }}
               </label>
             </transition>
             <input
@@ -28,8 +28,8 @@
               v-model="form.email"
               v-tooltip.right="errors.first('email')"
               v-validate="'required|email'"
-              :data-vv-as="t('labels.email')"
-              :placeholder="t('labels.email')"
+              :data-vv-as="$t('labels.email')"
+              :placeholder="$t('labels.email')"
               name="email"
               type="email"
               class="form-control"
@@ -49,12 +49,12 @@
             size="large"
             block
           >
-            {{ t('actions.requestPassword') }}
+            {{ $t('actions.requestPassword') }}
           </Btn>
 
           <footer>
             <p class="text-center">
-              {{ t('labels.alreadyRegistered') }}
+              {{ $t('labels.alreadyRegistered') }}
             </p>
 
             <Btn
@@ -62,7 +62,7 @@
               size="small"
               block
             >
-              {{ t('actions.login') }}
+              {{ $t('actions.login') }}
             </Btn>
           </footer>
         </form>
@@ -73,7 +73,6 @@
 
 <script>
 import { success } from 'frontend/lib/Noty'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 
@@ -81,7 +80,7 @@ export default {
   components: {
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -99,13 +98,13 @@ export default {
       this.submitting = true
       await this.$api.post('password/request', this.form)
       this.submitting = false
-      success(this.t('messages.requestPasswordChange.success'))
+      success(this.$t('messages.requestPasswordChange.success'))
       this.$router.push('/')
     },
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.requestPassword'),
+      title: this.$t('title.requestPassword'),
     })
   },
 }

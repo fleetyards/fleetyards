@@ -42,8 +42,8 @@
 
           <Btn
             v-if="isMyShip"
-            :title="t('actions.edit')"
-            :aria-label="t('actions.edit')"
+            :title="$t('actions.edit')"
+            :aria-label="$t('actions.edit')"
             class="panel-edit-button"
             variant="link"
             size="small"
@@ -76,14 +76,14 @@
           <div
             v-if="isMyShip"
             v-show="vehicle.purchased"
-            v-tooltip="t('labels.model.purchased')"
+            v-tooltip="$t('labels.model.purchased')"
             class="purchased"
           >
             <i class="fal fa-check" />
           </div>
           <div
             v-show="model.onSale"
-            v-tooltip="t('labels.model.onSale')"
+            v-tooltip="$t('labels.model.onSale')"
             class="on-sale"
           >
             <i class="fal fa-dollar-sign" />
@@ -91,7 +91,7 @@
         </router-link>
         <div
           v-if="upgradable && onAddons"
-          v-tooltip="t('labels.model.addons')"
+          v-tooltip="$t('labels.model.addons')"
           class="addons"
           :class="{
             selected: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length)
@@ -114,10 +114,10 @@
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{ t(`labels.model.productionStatus.${model.productionStatus}`) }}
+              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
             </template>
             <template v-else>
-              {{ t(`labels.not-available`) }}
+              {{ $t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
@@ -135,7 +135,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
@@ -151,7 +150,6 @@ export default {
     ModelTopMetrics,
     ModelBaseMetrics,
   },
-  mixins: [I18n],
   props: {
     model: {
       type: Object,
@@ -202,9 +200,9 @@ export default {
         return ''
       }
       if (this.$route.name === 'hangar') {
-        return this.t('labels.yourFlagship')
+        return this.$t('labels.yourFlagship')
       }
-      return this.t('labels.flagship')
+      return this.$t('labels.flagship')
     },
     isMyShip() {
       return this.vehicle && !!this.onEdit

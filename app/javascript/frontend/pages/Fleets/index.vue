@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.fleets') }}
+              {{ $t('headlines.fleets') }}
             </h1>
           </div>
         </div>
@@ -37,7 +37,7 @@
                 size="large"
                 @click.native="create"
               >
-                {{ t('actions.fleet.create') }}
+                {{ $t('actions.fleet.create') }}
               </Btn>
             </div>
             <br>
@@ -95,7 +95,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import FleetModal from 'frontend/partials/Fleets/Modal'
@@ -111,7 +110,7 @@ export default {
     Btn,
     EmptyBox,
   },
-  mixins: [I18n, MetaInfo, Pagination],
+  mixins: [MetaInfo, Pagination],
   data() {
     return {
       fetchMoreQuery: 'fleets',
@@ -170,7 +169,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.fleets'),
+      title: this.$t('title.fleets'),
     })
   },
 }

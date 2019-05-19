@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
-        {{ t('labels.metrics.levels') }}
+        {{ $t('labels.metrics.levels') }}
       </div>
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-4">
           <div class="metrics-label">
-            {{ t('starsystem.population') }}:
+            {{ $t('starsystem.population') }}:
           </div>
           <div
             v-tooltip="starsystem.population"
@@ -20,7 +20,7 @@
         </div>
         <div class="col-xs-4">
           <div class="metrics-label">
-            {{ t('starsystem.economy') }}:
+            {{ $t('starsystem.economy') }}:
           </div>
           <div
             v-tooltip="starsystem.economy"
@@ -31,7 +31,7 @@
         </div>
         <div class="col-xs-4">
           <div class="metrics-label">
-            {{ t('starsystem.danger') }}:
+            {{ $t('starsystem.danger') }}:
           </div>
           <div
             v-tooltip="starsystem.danger"
@@ -46,10 +46,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     starsystem: {
       type: Object,

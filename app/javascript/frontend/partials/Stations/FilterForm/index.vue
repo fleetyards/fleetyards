@@ -2,12 +2,12 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
-      :placeholder="t('placeholders.filters.stations.name')"
-      :aria-label="t('placeholders.filters.stations.name')"
+      :placeholder="$t('placeholders.filters.stations.name')"
+      :aria-label="$t('placeholders.filters.stations.name')"
     />
     <FilterGroup
       v-model="form.celestialObjectIn"
-      :label="t('labels.filters.stations.celestialObject')"
+      :label="$t('labels.filters.stations.celestialObject')"
       :fetch="fetchCelestialObjects"
       name="celestial-object"
       value-attr="slug"
@@ -17,7 +17,7 @@
     />
     <FilterGroup
       v-model="form.starsystemIn"
-      :label="t('labels.filters.stations.starsystem')"
+      :label="$t('labels.filters.stations.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
       value-attr="slug"
@@ -27,29 +27,29 @@
     />
     <FilterGroup
       v-model="form.stationTypeIn"
-      :label="t('labels.filters.stations.type')"
+      :label="$t('labels.filters.stations.type')"
       :fetch="fetchStationTypes"
       name="station-types"
       multiple
     />
     <FilterGroup
       v-model="form.shopsShopTypeIn"
-      :label="t('labels.filters.stations.shops')"
+      :label="$t('labels.filters.stations.shops')"
       :fetch="fetchShopTypes"
       name="shops"
       multiple
     />
     <FilterGroup
       v-model="form.docksShipSizeIn"
-      :label="t('labels.filters.stations.docks')"
+      :label="$t('labels.filters.stations.docks')"
       :fetch="fetchShipSizes"
       name="docks"
       multiple
     />
     <RadioList
       v-model="form.habsNotNull"
-      :label="t('labels.filters.stations.habs')"
-      :reset-label="t('labels.all')"
+      :label="$t('labels.filters.stations.habs')"
+      :reset-label="$t('labels.all')"
       :options="booleanOptions"
       name="habs"
     />
@@ -61,13 +61,12 @@
       @click.native="reset"
     >
       <i class="fal fa-times" />
-      {{ t('actions.resetFilter') }}
+      {{ $t('actions.resetFilter') }}
     </Btn>
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import RadioList from 'frontend/components/Form/RadioList'
@@ -81,7 +80,7 @@ export default {
     FormInput,
     Btn,
   },
-  mixins: [I18n, Filters],
+  mixins: [Filters],
   data() {
     const query = this.$route.query.q || {}
     return {

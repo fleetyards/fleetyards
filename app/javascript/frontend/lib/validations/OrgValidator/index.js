@@ -1,5 +1,5 @@
 import { get } from 'frontend/lib/ApiClient'
-import I18n from 'frontend/lib/I18n'
+import { I18n } from 'frontend/lib/I18n'
 
 export default {
   getMessage() {

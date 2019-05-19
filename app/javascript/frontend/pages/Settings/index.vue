@@ -7,20 +7,20 @@
             :to="{ name: 'settings-profile' }"
             tag="li"
           >
-            <a>{{ t('nav.profile') }}</a>
+            <a>{{ $t('nav.profile') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'settings-account' }"
             tag="li"
           >
-            <a>{{ t('nav.account') }}</a>
+            <a>{{ $t('nav.account') }}</a>
           </router-link>
           <li
             v-if="rsiVerificationDisabled"
             class="disabled"
           >
             <a>
-              {{ t('labels.rsiVerifiedLong') }}
+              {{ $t('labels.rsiVerifiedLong') }}
               <span class="verified">
                 <i class="fa fa-check" />
               </span>
@@ -31,13 +31,13 @@
             :to="{ name: 'settings-verify' }"
             tag="li"
           >
-            <a>{{ t('actions.startRsiVerification') }}</a>
+            <a>{{ $t('actions.startRsiVerification') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'settings-change-password' }"
             tag="li"
           >
-            <a>{{ t('actions.changePassword') }}</a>
+            <a>{{ $t('actions.changePassword') }}</a>
           </router-link>
         </ul>
       </div>
@@ -50,10 +50,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import I18n from 'frontend/mixins/I18n'
 
 export default {
-  mixins: [I18n],
   data() {
     return {
       rsiVerificationToken: null,

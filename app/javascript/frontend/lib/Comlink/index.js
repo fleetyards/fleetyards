@@ -1,5 +1,5 @@
 export default {
-  install (Vue) {
+  install(Vue) {
     const Bus = new Vue()
 
     // eslint-disable-next-line no-param-reassign

@@ -3,22 +3,22 @@
     <div class="store-image wide">
       <a
         v-if="uploaded"
-        :href="file.url"
-        :title="file.name"
-        :download="file.name"
+        :href="image.url"
+        :title="image.name"
+        :download="image.name"
         target="_blank"
       >
         <div
-          :key="file.smallUrl"
-          v-lazy:background-image="file.smallUrl"
+          :key="image.smallUrl"
+          v-lazy:background-image="image.smallUrl"
           class="image lazy"
           alt="storeImage"
         />
       </a>
       <div
         v-else
-        :key="file.smallUrl"
-        v-lazy:background-image="file.smallUrl"
+        :key="image.smallUrl"
+        v-lazy:background-image="image.smallUrl"
         class="image lazy"
         alt="storeImage"
       />
@@ -27,93 +27,95 @@
       <h2>
         <a
           v-if="uploaded"
-          :href="file.url"
-          :title="file.name"
-          :download="file.name"
+          :href="image.url"
+          :title="image.name"
+          :download="image.name"
         >
-          {{ file.name }}
+          {{ image.name }}
         </a>
         <span v-else>
-          {{ file.name }}
+          {{ image.name }}
         </span>
       </h2>
-      <div v-if="file.error">
+      <div v-if="image.error">
         <span class="label label-danger">
-          Error
+          {{ $t('labels.image.error') }}
         </span>
       </div>
       <template v-if="!uploaded">
-        <p v-if="file.active">
-          Processing...
-          {{ file.speed | formatSize }}
+        <p v-if="image.active">
+          {{ $t('labels.image.processing') }}
+          {{ image.speed | formatSize }}
         </p>
         <div
-          v-if="file.active || file.progress !== '0.00'"
+          v-if="image.active || image.progress !== '0.00'"
           class="progress"
         >
           <div
             class="progress-bar progress-bar-info progress-bar-striped"
             :class="{
-              'progress-bar-danger': file.error,
-              'progress-bar-animated': file.active
+              'progress-bar-danger': image.error,
+              'progress-bar-animated': image.active
             }"
             role="progressbar"
-            :style="{width: file.progress + '%'}"
+            :style="{width: image.progress + '%'}"
           >
-            {{ file.progress }} %
+            {{ image.progress }} %
           </div>
         </div>
       </template>
     </div>
     <div class="size">
-      {{ file.size | formatSize }}
+      {{ image.size | formatSize }}
     </div>
     <div class="actions">
       <template v-if="uploaded">
         <Btn
+          v-tooltip="$t('labels.image.background')"
           :disabled="updating"
           size="small"
           @click.native="toggleBackground"
         >
           <i
             :class="{
-              'fa fa-eye': file.background,
-              'far fa-eye-slash': !file.background,
+              'fa fa-eye': image.background,
+              'far fa-eye-slash': !image.background,
             }"
           />
         </Btn>
         <Btn
+          v-tooltip="$t('labels.image.enabled')"
           :disabled="updating"
           size="small"
           @click.native="toggleEnabled"
         >
           <i
             :class="{
-              'fa fa-check-square': file.enabled,
-              'far fa-square': !file.enabled,
+              'fa fa-check-square': image.enabled,
+              'far fa-square': !image.enabled,
             }"
           />
         </Btn>
         <Btn
           :disabled="deleting"
           size="small"
-          @click.native="deleteFile"
+          @click.native="deleteImage"
         >
           <i class="fa fa-trash" />
-          <span>Delete</span>
+          <span>{{ $t('labels.image.delete') }}</span>
         </Btn>
       </template>
       <template v-else>
         <Btn
-          v-if="!file.success"
-          @click.native="start(file)"
+          v-if="!image.success"
+          @click.native="start(image)"
         >
           <i class="fa fa-upload" />
-          <span>Start</span>
+          <span>{{ $t('labels.image.start') }}</span>
         </Btn>
-        <Btn @click.native="cancel(file)">
+        <Btn @click.native="cancel(image)">
           <i class="fa fa-ban-circle" />
-          <span>Cancel</span>
+          <span>{{ $t('labels.image.cancel') }}</span>
         </Btn>
       </template>
     </div>
@@ -128,7 +130,7 @@ export default {
     Btn,
   },
   props: {
-    file: {
+    image: {
       type: Object,
       required: true,
     },
@@ -141,51 +143,48 @@ export default {
   },
   computed: {
     uploaded() {
-      return !!this.file.url
+      return !!this.image.url
     },
   },
   methods: {
     start() {
-      this.$emit('start', this.file)
+      this.$emit('start', this.image)
     },
     cancel() {
-      this.$emit('cancel', this.file)
-    },
-    fetch() {
-      this.$emit('fetch')
+      this.$emit('cancel', this.image)
     },
     async toggleEnabled() {
       this.updating = true
-      this.file.enabled = !this.file.enabled
-      const response = await this.$api.put(`images/${this.file.id}`, {
-        enabled: this.file.enabled,
+      this.image.enabled = !this.image.enabled
+      const response = await this.$api.put(`images/${this.image.id}`, {
+        enabled: this.image.enabled,
       })
 
       this.updating = false
 
       if (response.error) {
-        this.file.enabled = !this.file.enabled
+        this.image.enabled = !this.image.enabled
       }
     },
     async toggleBackground() {
       this.updating = true
-      this.file.background = !this.file.background
-      const response = await this.$api.put(`images/${this.file.id}`, {
-        background: this.file.background,
+      this.image.background = !this.image.background
+      const response = await this.$api.put(`images/${this.image.id}`, {
+        background: this.image.background,
       })
 
       this.updating = false
 
       if (response.error) {
-        this.file.background = !this.file.background
+        this.image.background = !this.image.background
       }
     },
-    async deleteFile() {
+    async deleteImage() {
       this.deleting = true
-      const response = await this.$api.destroy(`images/${this.file.id}`)
+      const response = await this.$api.destroy(`images/${this.image.id}`)
 
       if (!response.error) {
-        await this.fetch()
+        this.$emit('imageDeleted', this.image)
         this.deleting = false
       }
     },

@@ -3,14 +3,14 @@
     <FilterGroup
       v-model="form.sortBy"
       :options="sortOptions"
-      :label="t('labels.filters.cargoRoutes.sortBy')"
+      :label="$t('labels.filters.cargoRoutes.sortBy')"
       :name="`${prefix}-sort`"
     />
     <FilterGroup
       v-if="modelOptions.length > 0"
       v-model="form.cargoShip"
       :options="modelOptions"
-      :label="t('labels.filters.cargoRoutes.cargoShip')"
+      :label="$t('labels.filters.cargoRoutes.cargoShip')"
       :name="`${prefix}-models`"
       searchable
     />
@@ -18,7 +18,7 @@
       v-if="tradeHubOptions.length > 0"
       v-model="form.tradeHubIn"
       :options="tradeHubOptions"
-      :label="t('labels.filters.cargoRoutes.tradeHub')"
+      :label="$t('labels.filters.cargoRoutes.tradeHub')"
       :name="`${prefix}-tradehubs`"
       searchable
       multiple
@@ -27,7 +27,7 @@
       v-if="commodityOptions.length > 0"
       v-model="form.commodityIn"
       :options="commodityOptions"
-      :label="t('labels.filters.cargoRoutes.commodity')"
+      :label="$t('labels.filters.cargoRoutes.commodity')"
       :name="`${prefix}-commodities`"
       searchable
       multiple
@@ -37,7 +37,7 @@
       v-model="form.planetIn"
       :options="planetOptions"
       :name="`${prefix}-planets`"
-      :label="t('labels.filters.cargoRoutes.planet')"
+      :label="$t('labels.filters.cargoRoutes.planet')"
       searchable
       multiple
     />
@@ -48,13 +48,12 @@
       @click.native="reset"
     >
       <i class="fal fa-times" />
-      {{ t('actions.resetFilter') }}
+      {{ $t('actions.resetFilter') }}
     </Btn>
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Btn from 'frontend/components/Btn'
@@ -64,7 +63,7 @@ export default {
     FilterGroup,
     Btn,
   },
-  mixins: [I18n, Filters],
+  mixins: [Filters],
   props: {
     tradeHubs: {
       type: Array,
@@ -97,10 +96,10 @@ export default {
     const query = this.$route.query.q || {}
     return {
       sortOptions: [{
-        name: this.t('labels.filters.cargoRoutes.sortByValues.percent'),
+        name: this.$t('labels.filters.cargoRoutes.sortByValues.percent'),
         value: 'percent',
       }, {
-        name: this.t('labels.filters.cargoRoutes.sortByValues.profit'),
+        name: this.$t('labels.filters.cargoRoutes.sortByValues.profit'),
         value: 'profit',
       }],
       form: {

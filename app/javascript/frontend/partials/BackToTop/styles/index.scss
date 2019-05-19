@@ -8,18 +8,22 @@
   z-index: 1000;
   cursor: pointer;
   transition: all ease .5s;
-  padding: 14px 20px;
+  width: 59px;
+  height: 59px;
   margin: 10px;
-  background-color: rgba($gray-darker, .8);
+  background-color: rgba($gray-darker, .9);
   border-radius: 50%;
+  box-shadow: 0 0 6px rgba(black, .5);
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -13px;
+  }
 
   &:hover {
     opacity: .6;
-  }
-}
-
-@media (max-width: $desktop-breakpoint) {
-  .back-to-top {
-    padding: 10px 20px;
   }
 }

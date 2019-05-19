@@ -10,7 +10,7 @@
             >
               <i class="fal fa-chevron-left" />
               <span class="brand">
-                {{ t('app') }}
+                {{ $t('app') }}
               </span>
             </router-link>
             <h1 v-if="fleet">
@@ -46,13 +46,13 @@
                 v-if="fleet.rpg"
                 class="label label-info"
               >
-                {{ t('labels.fleet.rpg') }}
+                {{ $t('labels.fleet.rpg') }}
               </span>
               <span
                 v-if="fleet.exclusive"
                 class="label label-info"
               >
-                {{ t('labels.fleet.exclusive') }}
+                {{ $t('labels.fleet.exclusive') }}
               </span>
             </h2>
           </div>
@@ -150,7 +150,6 @@ import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import Box from 'frontend/components/Box'
 import ModelPanel from 'frontend/components/Models/Panel'
-import I18n from 'frontend/mixins/I18n'
 import Pagination from 'frontend/mixins/Pagination'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
@@ -165,7 +164,7 @@ export default {
     Btn,
     Box,
   },
-  mixins: [I18n, MetaInfo, Pagination],
+  mixins: [MetaInfo, Pagination],
   data() {
     return {
       loading: false,

@@ -4,7 +4,7 @@
       <div class="col-xs-12 col-md-8 col-md-offset-2">
         <Panel>
           <div class="panel-body">
-            <h1>{{ t('headlines.privacy') }}</h1>
+            <h1>{{ $t('headlines.privacy') }}</h1>
             <p>
               Below you can read about what Information we are using to provide you the services on
               Fleetyards.net. For most parts this only concerns registered Users but please read
@@ -229,7 +229,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
 
@@ -237,10 +236,10 @@ export default {
   components: {
     Panel,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.privacyPolicy'),
+      title: this.$t('title.privacyPolicy'),
     })
   },
 }

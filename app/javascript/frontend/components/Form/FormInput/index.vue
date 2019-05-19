@@ -11,6 +11,7 @@
     </label>
     <input
       :id="id"
+      ref="input"
       v-model="inputValue"
       :placeholder="placeholder"
       :type="type"
@@ -108,6 +109,9 @@ export default {
     this.inputValue = this.value
   },
   methods: {
+    setFocus() {
+      this.$refs.input.focus()
+    },
     update() {
       this.$emit('input', this.inputValue)
     },
