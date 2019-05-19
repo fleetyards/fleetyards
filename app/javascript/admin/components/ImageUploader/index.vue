@@ -23,14 +23,14 @@
           @click.native="selectImages"
         >
           <i class="fa fa-plus" />
-          <span>Add images...</span>
+          <span>{{ $t('labels.image.selectImages') }}</span>
         </Btn>
 
         <Btn
           @click.native="selectFolder"
         >
           <i class="fa fa-plus" />
-          <span>Add a folder...</span>
+          <span>{{ $t('labels.image.selectFolder') }}</span>
         </Btn>
 
         <Btn
@@ -38,7 +38,7 @@
           @click.native="startUpload"
         >
           <i class="fa fa-upload" />
-          <span>Start upload</span>
+          <span>{{ $t('labels.image.startUpload') }}</span>
         </Btn>
 
         <Btn
@@ -46,7 +46,7 @@
           @click.native="cancelUpload"
         >
           <i class="fa fa-ban-circle" />
-          <span>Cancel upload</span>
+          <span>{{ $t('labels.image.cancelUpload') }}</span>
         </Btn>
       </div>
 
@@ -80,9 +80,7 @@
       }"
       class="fade well drop-active"
     >
-      <h3>
-        Drop images here
-      </h3>
+      <h3>{{ $t('labels.image.dropzone') }}</h3>
     </div>
 
     <Panel v-if="allImages.length">
@@ -100,11 +98,11 @@
             <div class="store-image wide" />
 
             <div class="description">
-              Name
+              {{ $t('labels.image.name') }}
             </div>
 
             <div class="size">
-              Size
+              {{ $t('labels.image.size') }}
             </div>
 
             <div class="actions" />

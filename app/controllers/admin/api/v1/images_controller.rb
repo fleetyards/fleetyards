@@ -45,21 +45,6 @@ module Admin
           render json: ValidationError.new('image.update', image.errors), status: :bad_request
         end
 
-        def galleries
-          authorize! :index, :api_image_galleries
-
-          @galleries = [
-            Model.all,
-            Station.all,
-          ].flatten.map do |item|
-            Filter.new(
-              category: item.class.name,
-              name: item.name,
-              value: item.id
-            )
-          end.sort_by { |item| [item.category, item.name] }
-        end
-
         private def image_query_params
           @image_query_params ||= query_params(
             :gallery_id_eq, :gallery_type_eq

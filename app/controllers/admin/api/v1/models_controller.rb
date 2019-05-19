@@ -4,6 +4,7 @@ module Admin
   module Api
     module V1
       class ModelsController < ::Admin::Api::BaseController
+        after_action -> { pagination_header(:models) }, only: [:index]
         after_action -> { pagination_header(:images) }, only: [:images]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|

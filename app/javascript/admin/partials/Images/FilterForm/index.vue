@@ -82,6 +82,10 @@ export default {
     },
     form: {
       handler() {
+        if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
+          this.modelIdEq = null
+          this.stationIdEq = null
+        }
         this.filter()
       },
       deep: true,

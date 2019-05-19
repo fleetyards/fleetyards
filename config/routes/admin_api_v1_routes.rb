@@ -11,9 +11,7 @@ v1_admin_api_routes = lambda do
     get :images, on: :member
   end
 
-  resources :images, only: %i[index create destroy update] do
-    get :galleries, on: :collection
-  end
+  resources :images, only: %i[index create destroy update]
 end
 
 scope :v1, as: :v1 do

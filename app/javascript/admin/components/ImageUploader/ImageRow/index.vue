@@ -39,12 +39,12 @@
       </h2>
       <div v-if="image.error">
         <span class="label label-danger">
-          Error
+          {{ $t('labels.image.error') }}
         </span>
       </div>
       <template v-if="!uploaded">
         <p v-if="image.active">
-          Processing...
+          {{ $t('labels.image.processing') }}
           {{ image.speed | formatSize }}
         </p>
         <div
@@ -71,6 +71,7 @@
     <div class="actions">
       <template v-if="uploaded">
         <Btn
+          v-tooltip="$t('labels.image.background')"
           :disabled="updating"
           size="small"
           @click.native="toggleBackground"
@@ -83,6 +84,7 @@
           />
         </Btn>
         <Btn
+          v-tooltip="$t('labels.image.enabled')"
           :disabled="updating"
           size="small"
           @click.native="toggleEnabled"
@@ -100,7 +102,7 @@
           @click.native="deleteImage"
         >
           <i class="fa fa-trash" />
-          <span>Delete</span>
+          <span>{{ $t('labels.image.delete') }}</span>
         </Btn>
       </template>
       <template v-else>
@@ -109,11 +111,11 @@
           @click.native="start(image)"
         >
           <i class="fa fa-upload" />
-          <span>Start</span>
+          <span>{{ $t('labels.image.start') }}</span>
         </Btn>
         <Btn @click.native="cancel(image)">
           <i class="fa fa-ban-circle" />
-          <span>Cancel</span>
+          <span>{{ $t('labels.image.cancel') }}</span>
         </Btn>
       </template>
     </div>

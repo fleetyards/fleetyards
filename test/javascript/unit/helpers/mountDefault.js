@@ -10,6 +10,7 @@ import createLocalVue from './createLocalVue'
 export default (config = {}) => {
   const localVue = createLocalVue(config)
 
+  localVue.use(I18n)
   localVue.use(Vuex)
   localVue.use(VueLazyload)
   localVue.use(VTooltip)
