@@ -34,13 +34,13 @@
             :to="{ name: 'signup' }"
             tag="li"
           >
-            <a>{{ t('nav.signUp') }}</a>
+            <a>{{ $t('nav.signUp') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'login' }"
             tag="li"
           >
-            <a>{{ t('nav.login') }}</a>
+            <a>{{ $t('nav.login') }}</a>
           </router-link>
           <li class="divider" />
         </ul>
@@ -56,7 +56,7 @@
               <div class="avatar">
                 <div
                   v-if="currentUser.rsiVerified"
-                  v-tooltip="t('labels.rsiVerified')"
+                  v-tooltip="$t('labels.rsiVerified')"
                   class="verified"
                 >
                   <i class="fa fa-check" />
@@ -89,7 +89,7 @@
                 :to="{ name: 'settings' }"
                 tag="li"
               >
-                <a>{{ t('nav.settings') }}</a>
+                <a>{{ $t('nav.settings') }}</a>
               </router-link>
               <li v-if="currentUser.rsiHandle">
                 <a
@@ -97,13 +97,13 @@
                   target="_blank"
                   rel="noopener"
                 >
-                  {{ t('nav.rsiProfile') }}
+                  {{ $t('nav.rsiProfile') }}
                 </a>
               </li>
               <li class="divider" />
               <li>
                 <a @click="logout">
-                  {{ t('nav.logout') }}
+                  {{ $t('nav.logout') }}
                 </a>
               </li>
             </b-collapse>
@@ -115,13 +115,13 @@
             tag="li"
             exact
           >
-            <a>{{ t('nav.home') }}</a>
+            <a>{{ $t('nav.home') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'models' }"
             tag="li"
           >
-            <a>{{ t('nav.models') }}</a>
+            <a>{{ $t('nav.models') }}</a>
           </router-link>
           <li
             :class="{
@@ -131,7 +131,7 @@
             class="sub-menu"
           >
             <a @click="toggleStationMenu">
-              {{ t('nav.stations.index') }}
+              {{ $t('nav.stations.index') }}
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
@@ -147,7 +147,7 @@
                 active-class="router-active"
                 tag="li"
               >
-                <a>{{ t('nav.stations.overview') }}</a>
+                <a>{{ $t('nav.stations.overview') }}</a>
               </router-link>
               <router-link
                 :to="{ name: 'starsystems' }"
@@ -157,7 +157,7 @@
                 active-class="router-active"
                 tag="li"
               >
-                <a>{{ t('nav.stations.starsystems') }}</a>
+                <a>{{ $t('nav.stations.starsystems') }}</a>
               </router-link>
               <li class="divider" />
               <router-link
@@ -168,7 +168,7 @@
                 active-class="router-active"
                 tag="li"
               >
-                <a>{{ t('nav.stations.shops') }}</a>
+                <a>{{ $t('nav.stations.shops') }}</a>
               </router-link>
             </b-collapse>
           </li>
@@ -176,19 +176,19 @@
             :to="{ name: 'hangar' }"
             tag="li"
           >
-            <a>{{ t('nav.hangar') }}</a>
+            <a>{{ $t('nav.hangar') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'images' }"
             tag="li"
           >
-            <a>{{ t('nav.images') }}</a>
+            <a>{{ $t('nav.images') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'fleets' }"
             tag="li"
           >
-            <a>{{ t('nav.fleets') }}</a>
+            <a>{{ $t('nav.fleets') }}</a>
           </router-link>
           <router-link
             :class="{ active: cargoRouteActive }"
@@ -200,19 +200,19 @@
             }"
             tag="li"
           >
-            <a>{{ t('nav.cargo') }}</a>
+            <a>{{ $t('nav.cargo') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'stats' }"
             tag="li"
           >
-            <a>{{ t('nav.stats') }}</a>
+            <a>{{ $t('nav.stats') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'roadmap' }"
             tag="li"
           >
-            <a>{{ t('nav.roadmap') }}</a>
+            <a>{{ $t('nav.roadmap') }}</a>
           </router-link>
         </ul>
       </div>
@@ -221,7 +221,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
 
@@ -230,7 +229,6 @@ export default {
   components: {
     QuickSearch,
   },
-  mixins: [I18n],
   data() {
     return {
       shipsRouteActive: false,

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ t('headlines.hangar') }}
+              {{ $t('headlines.hangar') }}
             </h1>
           </div>
         </div>
@@ -13,7 +13,7 @@
           <div>
             <ModelClassLabels
               v-if="vehiclesCount"
-              :label="t('labels.hangar')"
+              :label="$t('labels.hangar')"
               :count-data="vehiclesCount"
               filter-key="classificationIn"
             />
@@ -21,18 +21,18 @@
               v-if="!mobile && (vehicles.length || fleetchartVehicles.length
                 || (!vehicles.length && !fleetchartVehicles.length && isFilterSelected))"
               :hangar-groups="hangarGroups"
-              :label="t('labels.groups')"
+              :label="$t('labels.groups')"
             />
           </div>
           <div class="page-actions">
             <Btn
-              v-tooltip="t('labels.poweredByStarship42')"
+              v-tooltip="$t('labels.poweredByStarship42')"
               :href="starship42Url"
             >
-              {{ t('labels.3dView') }}
+              {{ $t('labels.3dView') }}
             </Btn>
             <Btn :href="publicUrl">
-              {{ t('labels.publicUrl') }}
+              {{ $t('labels.publicUrl') }}
             </Btn>
           </div>
         </div>
@@ -43,34 +43,34 @@
           <div class="col-xs-12 hangar-metrics metrics-block">
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ t('labels.hangarMetrics.totalMoney') }}:
+                {{ $t('labels.hangarMetrics.totalMoney') }}:
               </div>
               <div class="metrics-value">
-                {{ toDollar(vehiclesCount.metrics.totalMoney) }}
+                {{ $toDollar(vehiclesCount.metrics.totalMoney) }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ t('labels.hangarMetrics.totalMinCrew') }}:
+                {{ $t('labels.hangarMetrics.totalMinCrew') }}:
               </div>
               <div class="metrics-value">
-                {{ toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
+                {{ $toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ t('labels.hangarMetrics.totalMaxCrew') }}:
+                {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
               </div>
               <div class="metrics-value">
-                {{ toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
+                {{ $toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
               <div class="metrics-label">
-                {{ t('labels.hangarMetrics.totalCargo') }}:
+                {{ $t('labels.hangarMetrics.totalCargo') }}:
               </div>
               <div class="metrics-value">
-                {{ toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
+                {{ $toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
               </div>
             </div>
           </div>
@@ -118,15 +118,15 @@
                 @click.native="toggleFleetchart"
               >
                 <template v-if="fleetchartVisible">
-                  {{ t('actions.hideFleetchart') }}
+                  {{ $t('actions.hideFleetchart') }}
                 </template>
                 <template v-else>
-                  {{ t('actions.showFleetchart') }}
+                  {{ $t('actions.showFleetchart') }}
                 </template>
               </Btn>
               <Btn
-                v-tooltip="t('actions.addVehicle')"
-                :aria-label="t('actions.addVehicle')"
+                v-tooltip="$t('actions.addVehicle')"
+                :aria-label="$t('actions.addVehicle')"
                 size="small"
                 @click.native="showNewModal"
               >
@@ -280,7 +280,6 @@ import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -304,7 +303,7 @@ export default {
     NewVehiclesModal,
     FleetchartSlider,
   },
-  mixins: [I18n, MetaInfo, Filters, Pagination, Hash],
+  mixins: [MetaInfo, Filters, Pagination, Hash],
   data() {
     return {
       loading: true,
@@ -350,21 +349,21 @@ export default {
     },
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
-        return this.t('actions.hideDetails')
+        return this.$t('actions.hideDetails')
       }
-      return this.t('actions.showDetails')
+      return this.$t('actions.showDetails')
     },
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
     toggleGuideTooltip() {
       if (this.guideVisible) {
-        return this.t('actions.hideGuide')
+        return this.$t('actions.hideGuide')
       }
-      return this.t('actions.showGuide')
+      return this.$t('actions.showGuide')
     },
     publicUrl() {
       if (!this.currentUser) {
@@ -497,7 +496,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.hangar'),
+      title: this.$t('title.hangar'),
     })
   },
 }

@@ -5,7 +5,7 @@
       class="col-xs-6 col-sm-4"
     >
       <div class="metrics-label">
-        {{ t('model.focus') }}:
+        {{ $t('model.focus') }}:
       </div>
       <div class="metrics-value">
         {{ model.focus }}
@@ -16,7 +16,7 @@
       class="col-xs-6 col-sm-4"
     >
       <div class="metrics-label">
-        {{ t('model.crew') }}:
+        {{ $t('model.crew') }}:
       </div>
       <div class="metrics-value">
         {{ crew }}
@@ -24,7 +24,7 @@
     </div>
     <div class="col-xs-12 col-sm-4">
       <div class="metrics-label">
-        {{ t('model.speed') }}:
+        {{ $t('model.speed') }}:
       </div>
       <div
         class="metrics-value"
@@ -35,10 +35,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     model: {
       type: Object,
@@ -61,18 +58,18 @@ export default {
       }
 
       if (minCrew === maxCrew) {
-        return this.toNumber(this.model.minCrew, 'people')
+        return this.$toNumber(this.model.minCrew, 'people')
       }
 
-      return this.toNumber([minCrew, maxCrew].filter(item => item).join(' - '), 'people')
+      return this.$toNumber([minCrew, maxCrew].filter(item => item).join(' - '), 'people')
     },
     speeds() {
       const speeds = []
       if (this.groundSpeeds || this.isGroundVehicle) {
-        speeds.push(this.toNumber(this.groundSpeeds, 'speed'))
+        speeds.push(this.$toNumber(this.groundSpeeds, 'speed'))
       }
       if (!this.isGroundVehicle) {
-        speeds.push(this.toNumber(this.airSpeeds, 'speed'))
+        speeds.push(this.$toNumber(this.airSpeeds, 'speed'))
       }
       return speeds.join('<br>')
     },

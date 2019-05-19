@@ -110,19 +110,19 @@
                   v-if="shop.selling"
                   class="price"
                 >
-                  {{ t('labels.shop.sellPrice') }}
+                  {{ $t('labels.shop.sellPrice') }}
                 </div>
                 <div
                   v-if="shop.buying"
                   class="price"
                 >
-                  {{ t('labels.shop.buyPrice') }}
+                  {{ $t('labels.shop.buyPrice') }}
                 </div>
                 <div
                   v-if="shop.rental"
                   class="rent-price"
                 >
-                  {{ t('labels.shop.rentPrice') }}
+                  {{ $t('labels.shop.rentPrice') }}
                 </div>
               </div>
             </div>
@@ -161,7 +161,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Hash from 'frontend/mixins/Hash'
@@ -185,7 +184,7 @@ export default {
     FilterForm,
     Btn,
   },
-  mixins: [I18n, MetaInfo, Filters, Hash, Pagination],
+  mixins: [MetaInfo, Filters, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -205,9 +204,9 @@ export default {
     ]),
     toggleFiltersTooltip() {
       if (this.filterVisible) {
-        return this.t('actions.hideFilter')
+        return this.$t('actions.hideFilter')
       }
-      return this.t('actions.showFilter')
+      return this.$t('actions.showFilter')
     },
     emptyBoxVisible() {
       return !this.loading && this.commodities.length === 0
@@ -216,7 +215,7 @@ export default {
       if (!this.shop) {
         return ''
       }
-      return this.t('title.shop', { shop: this.shop.name, station: this.shop.station.name })
+      return this.$t('title.shop', { shop: this.shop.name, station: this.shop.station.name })
     },
   },
   watch: {

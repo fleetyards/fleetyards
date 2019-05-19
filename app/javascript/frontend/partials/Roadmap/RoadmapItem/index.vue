@@ -7,7 +7,7 @@
       >
         <div
           v-if="recentlyUpdated"
-          v-tooltip="t('labels.roadmap.recentlyUpdated')"
+          v-tooltip="$t('labels.roadmap.recentlyUpdated')"
           class="roadmap-item-updated"
         />
       </div>
@@ -32,8 +32,8 @@
           {{ description }}
         </p>
         <h4>
-          {{ t('labels.roadmap.lastUpdate') }}
-          <small>{{ l(item.updatedAt) }}</small>
+          {{ $t('labels.roadmap.lastUpdate') }}
+          <small>{{ $l(item.updatedAt) }}</small>
         </h4>
         <ul v-if="item.lastVersion">
           <li
@@ -41,17 +41,17 @@
             :key="index"
           >
             <template v-if="update.key === 'tasks'">
-              {{ t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
+              {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
             </template>
             <template v-else-if="update.key === 'release' && !update.old">
-              {{ t('labels.roadmap.lastVersion.addedToRelease', {
+              {{ $t('labels.roadmap.lastVersion.addedToRelease', {
                 release: update.new,
               }) }}
             </template>
             <template v-else>
-              {{ t(`labels.roadmap.lastVersion.${update.key}`, {
+              {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
                 old: update.old,
                 new: update.new,
                 count: update.count,
@@ -61,11 +61,11 @@
         </ul>
         <b-progress :max="item.tasks">
           <div class="progress-label">
-            {{ completed }} {{ t('labels.roadmap.tasks', {
+            {{ completed }} {{ $t('labels.roadmap.tasks', {
               count: tasks,
             }) }}
             <template v-if="showInprogress">
-              {{ t('labels.roadmap.inprogress', {
+              {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
               }) }}
             </template>
@@ -90,14 +90,12 @@
 
 <script>
 import Panel from 'frontend/components/Panel'
-import I18n from 'frontend/mixins/I18n'
 import { isBefore, addHours } from 'date-fns'
 
 export default {
   components: {
     Panel,
   },
-  mixins: [I18n],
   props: {
     item: {
       type: Object,

@@ -30,10 +30,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     countData: {
       type: Object,
@@ -50,7 +47,7 @@ export default {
   },
   computed: {
     allLabel() {
-      return this.label || this.t('labels.fleet.size')
+      return this.label || this.$t('labels.fleet.size')
     },
   },
   methods: {

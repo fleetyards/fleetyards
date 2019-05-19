@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
-          {{ t('headlines.roadmap') }}
+          {{ $t('headlines.roadmap') }}
         </h1>
       </div>
     </div>
@@ -14,7 +14,7 @@
             Roadmap
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ t('labels.rsiRoadmap') }}
+            {{ $t('labels.rsiRoadmap') }}
           </Btn>
         </div>
       </div>
@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
@@ -64,7 +63,7 @@ export default {
     Btn,
     RoadmapItem,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       loading: true,
@@ -113,7 +112,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.roadmapChanges'),
+      title: this.$t('title.roadmapChanges'),
     })
   },
 }

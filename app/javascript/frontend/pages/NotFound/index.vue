@@ -4,12 +4,12 @@
       class="error"
       large
     >
-      <h1>{{ t('headlines.error') }}</h1>
-      <p>{{ t('texts.error') }}</p>
+      <h1>{{ $t('headlines.error') }}</h1>
+      <p>{{ $t('texts.error') }}</p>
       <template #footer>
         <Btn :to="{name: 'home', exact: true}">
           <i class="fa fa-chevron-left" />
-          {{ t('actions.backToHome').toUpperCase() }}
+          {{ $t('actions.backToHome').toUpperCase() }}
         </Btn>
       </template>
     </Box>
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Box from 'frontend/components/Box'
 import Btn from 'frontend/components/Btn'
@@ -27,10 +26,10 @@ export default {
     Box,
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.notFound'),
+      title: this.$t('title.notFound'),
     })
   },
 }

@@ -2,13 +2,13 @@
   <section>
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ t('headlines.account') }}</h1>
+        <h1>{{ $t('headlines.account') }}</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <p>
-          {{ t('labels.account.destroyInfo') }}
+          {{ $t('labels.account.destroyInfo') }}
         </p>
         <Btn
           :loading="deleting"
@@ -16,7 +16,7 @@
           size="large"
           @click.native="destroy"
         >
-          {{ t('actions.destroyAccount') }}
+          {{ $t('actions.destroyAccount') }}
         </Btn>
       </div>
     </div>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import { success, confirm, alert } from 'frontend/lib/Noty'
@@ -33,7 +32,7 @@ export default {
   components: {
     Btn,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       deleting: false,
@@ -42,14 +41,14 @@ export default {
   methods: {
     async destroy() {
       this.deleting = true
-      confirm(this.t('confirm.account.destroy'), async () => {
+      confirm(this.$t('confirm.account.destroy'), async () => {
         const response = await this.$api.destroy('users/current')
         if (!response.error) {
-          success(this.t('messages.account.destroy.success'))
+          success(this.$t('messages.account.destroy.success'))
           await this.$store.dispatch('session/logout')
           this.$router.push({ name: 'home' })
         } else {
-          alert(this.t('messages.account.destroy.error'))
+          alert(this.$t('messages.account.destroy.error'))
           this.deleting = false
         }
       }, () => {
@@ -59,7 +58,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.account'),
+      title: this.$t('title.account'),
     })
   },
 }

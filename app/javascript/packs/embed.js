@@ -4,10 +4,12 @@ import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
 import store from 'embed/lib/Store'
-import { apiClient } from 'frontend/lib/ApiClient'
+import ApiClient from 'frontend/lib/ApiClient'
+import I18n from 'frontend/lib/I18n'
 import 'frontend/lib/LazyLoad'
 
-Vue.prototype.$api = apiClient
+Vue.use(ApiClient)
+Vue.use(I18n)
 
 Vue.config.productionTip = false
 

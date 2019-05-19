@@ -11,7 +11,7 @@
           </router-link>
         </h3>
         <div class="subline">
-          {{ t('labels.fleet.memberCount', { count: fleet.memberCount }) }}
+          {{ $t('labels.fleet.memberCount', { count: fleet.memberCount }) }}
         </div>
         <div class="activities">
           <img
@@ -30,13 +30,11 @@
 
 <script>
 import Panel from 'frontend/components/Panel'
-import I18n from 'frontend/mixins/I18n'
 
 export default {
   components: {
     Panel,
   },
-  mixins: [I18n],
   props: {
     fleet: {
       type: Object,

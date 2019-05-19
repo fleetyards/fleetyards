@@ -47,7 +47,7 @@
         v-if="celestialObject && celestialObject.moons.length"
         class="col-xs-12"
       >
-        <h2>{{ t('headlines.moons') }}</h2>
+        <h2>{{ $t('headlines.moons') }}</h2>
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -77,7 +77,7 @@
       class="row"
     >
       <div class="col-xs-12 col-md-6">
-        <h2>{{ t('headlines.stations') }}</h2>
+        <h2>{{ $t('headlines.stations') }}</h2>
       </div>
       <div class="col-xs-12 col-md-6">
         <Paginator
@@ -110,17 +110,17 @@
             >
               <template #stats>
                 <dl class="dl-horizontal">
-                  <dt>{{ t('labels.station.type') }}:</dt>
+                  <dt>{{ $t('labels.station.type') }}:</dt>
                   <dd>{{ station.typeLabel }}</dd>
-                  <dt>{{ t('labels.station.location') }}:</dt>
+                  <dt>{{ $t('labels.station.location') }}:</dt>
                   <dd>{{ station.location }}</dd>
                   <dt v-if="station.shops.length">
-                    {{ t('labels.station.shops') }}:
+                    {{ $t('labels.station.shops') }}:
                   </dt>
                   <dd v-if="station.shops.length">
                     {{ station.shops.map(item => item.name).join(', ') }}
                   </dd>
-                  <dt>{{ t('labels.station.docks') }}:</dt>
+                  <dt>{{ $t('labels.station.docks') }}:</dt>
                   <dd>
                     <template v-if="station.docks.length">
                       <ul class="list-unstyled">
@@ -133,11 +133,11 @@
                       </ul>
                     </template>
                     <template v-else>
-                      {{ t('labels.none') }}
+                      {{ $t('labels.none') }}
                     </template>
                   </dd>
 
-                  <dt>{{ t('labels.station.habitation') }}:</dt>
+                  <dt>{{ $t('labels.station.habitation') }}:</dt>
                   <dd>
                     <template v-if="station.habitations.length">
                       <ul class="list-unstyled">
@@ -150,7 +150,7 @@
                       </ul>
                     </template>
                     <template v-else>
-                      {{ t('labels.none') }}
+                      {{ $t('labels.none') }}
                     </template>
                   </dd>
                 </dl>
@@ -177,7 +177,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
@@ -197,7 +196,7 @@ export default {
     ShopPanel,
     CelestialObjectMetrics,
   },
-  mixins: [I18n, MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Hash, Pagination],
   data() {
     return {
       loading: false,
@@ -213,7 +212,7 @@ export default {
       if (!this.celestialObject) {
         return null
       }
-      return this.t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
+      return this.$t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
     },
   },
   watch: {

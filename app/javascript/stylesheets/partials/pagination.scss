@@ -58,6 +58,9 @@ $innerBorderWidth: 2px;
       border-radius: 3px;
       padding: 3px 6px;
       display: block;
+      margin: 0;
+      float: none;
+      border: none;
     }
 
     &.active a,

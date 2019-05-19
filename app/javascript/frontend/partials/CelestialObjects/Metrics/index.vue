@@ -3,14 +3,14 @@
     <div class="row">
       <div class="col-xs-12 col-md-3">
         <div class="metrics-title">
-          {{ t('labels.metrics.base') }}
+          {{ $t('labels.metrics.base') }}
         </div>
       </div>
       <div class="col-xs-12 col-md-9 metrics-block">
         <div class="row">
           <div class="col-xs-6">
             <div class="metrics-label">
-              {{ t('celestialObject.type') }}:
+              {{ $t('celestialObject.type') }}:
             </div>
             <div
               v-tooltip="celestialObject.type"
@@ -21,7 +21,7 @@
           </div>
           <div class="col-xs-6">
             <div class="metrics-label">
-              {{ t('celestialObject.subType') }}:
+              {{ $t('celestialObject.subType') }}:
             </div>
             <div
               v-tooltip="celestialObject.subType"
@@ -32,24 +32,24 @@
           </div>
           <div class="col-xs-6">
             <div class="metrics-label">
-              {{ t('celestialObject.habitable') }}:
+              {{ $t('celestialObject.habitable') }}:
             </div>
             <div
               v-tooltip="celestialObject.habitable"
               class="metrics-value"
             >
-              {{ t(`labels.${!!celestialObject.habitable}`) }}
+              {{ $t(`labels.${!!celestialObject.habitable}`) }}
             </div>
           </div>
           <div class="col-xs-6">
             <div class="metrics-label">
-              {{ t('celestialObject.fairchanceakt') }}:
+              {{ $t('celestialObject.fairchanceakt') }}:
             </div>
             <div
               v-tooltip="celestialObject.fairchanceakt"
               class="metrics-value"
             >
-              {{ t(`labels.${!!celestialObject.fairchanceakt}`) }}
+              {{ $t(`labels.${!!celestialObject.fairchanceakt}`) }}
             </div>
           </div>
         </div>
@@ -59,14 +59,14 @@
     <div class="row">
       <div class="col-xs-12 col-md-3">
         <div class="metrics-title">
-          {{ t('labels.metrics.levels') }}
+          {{ $t('labels.metrics.levels') }}
         </div>
       </div>
       <div class="col-xs-12 col-md-9 metrics-block">
         <div class="row">
           <div class="col-xs-4">
             <div class="metrics-label">
-              {{ t('celestialObject.population') }}:
+              {{ $t('celestialObject.population') }}:
             </div>
             <div
               v-tooltip="celestialObject.population"
@@ -77,7 +77,7 @@
           </div>
           <div class="col-xs-4">
             <div class="metrics-label">
-              {{ t('celestialObject.economy') }}:
+              {{ $t('celestialObject.economy') }}:
             </div>
             <div
               v-tooltip="celestialObject.economy"
@@ -88,7 +88,7 @@
           </div>
           <div class="col-xs-4">
             <div class="metrics-label">
-              {{ t('celestialObject.danger') }}:
+              {{ $t('celestialObject.danger') }}:
             </div>
             <div
               v-tooltip="celestialObject.danger"
@@ -104,10 +104,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     celestialObject: {
       type: Object,

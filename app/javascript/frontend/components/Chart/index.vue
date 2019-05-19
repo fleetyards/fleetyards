@@ -10,11 +10,10 @@
 
 <script>
 import Highcharts from 'highcharts'
-import I18n from 'frontend/mixins/I18n'
 import HighchartSetup from 'frontend/mixins/HighchartSetup'
 
 export default {
-  mixins: [I18n, HighchartSetup],
+  mixins: [HighchartSetup],
   props: {
     type: {
       type: String,
@@ -101,7 +100,7 @@ export default {
         options.percentage = Math.round(tooltip.percentage)
       }
 
-      return this.t(`labels.charts.${this.tooltipType}`, options)
+      return this.$t(`labels.charts.${this.tooltipType}`, options)
     },
     async init() {
       this.loading = true

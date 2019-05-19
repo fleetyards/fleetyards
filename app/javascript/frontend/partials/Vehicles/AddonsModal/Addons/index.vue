@@ -23,7 +23,7 @@
             </div>
             <div
               v-if="selectedAddon(addon.id)"
-              v-tooltip="t('labels.selected')"
+              v-tooltip="$t('labels.selected')"
               class="model-panel-selected"
             >
               <i class="fa fa-check" />
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
 
@@ -69,7 +68,6 @@ export default {
     Btn,
     Panel,
   },
-  mixins: [I18n],
   props: {
     addons: {
       type: Array,
@@ -101,7 +99,7 @@ export default {
   methods: {
     selectTooltip(addonId) {
       if (this.availableAddons.includes(addonId)) {
-        return this.t('labels.deselect')
+        return this.$t('labels.deselect')
       }
       return null
     },

@@ -1,6 +1,6 @@
 
 import { mapGetters } from 'vuex'
-import I18n from 'frontend/lib/I18n'
+import { I18n } from 'frontend/lib/I18n'
 import { success } from 'frontend/lib/Noty'
 
 export default {

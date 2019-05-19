@@ -2,21 +2,21 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
-      :placeholder="t('placeholders.filters.shops.name')"
-      :aria-label="t('placeholders.filters.shops.name')"
+      :placeholder="$t('placeholders.filters.shops.name')"
+      :aria-label="$t('placeholders.filters.shops.name')"
     />
 
     <FormInput
       :id="idFor('shops-commodity-name')"
       v-model="form.commodityNameCont"
-      :label="t('labels.filters.shops.commodityName')"
-      :placeholder="t('placeholders.filters.shops.commodityName')"
-      :aria-label="t('placeholders.filters.shops.commodityName')"
+      :label="$t('labels.filters.shops.commodityName')"
+      :placeholder="$t('placeholders.filters.shops.commodityName')"
+      :aria-label="$t('placeholders.filters.shops.commodityName')"
     />
 
     <FilterGroup
       v-model="form.shopTypeIn"
-      :label="t('labels.filters.shops.type')"
+      :label="$t('labels.filters.shops.type')"
       :fetch="fetchShopTypes"
       name="type"
       multiple
@@ -24,7 +24,7 @@
 
     <FilterGroup
       v-model="form.stationIn"
-      :label="t('labels.filters.shops.station')"
+      :label="$t('labels.filters.shops.station')"
       :fetch="fetchStations"
       name="station"
       value-attr="slug"
@@ -35,7 +35,7 @@
 
     <FilterGroup
       v-model="form.celestialObjectIn"
-      :label="t('labels.filters.shops.celestialObject')"
+      :label="$t('labels.filters.shops.celestialObject')"
       :fetch="fetchCelestialObjects"
       name="celestial-object"
       value-attr="slug"
@@ -46,7 +46,7 @@
 
     <FilterGroup
       v-model="form.starsystemIn"
-      :label="t('labels.filters.shops.starsystem')"
+      :label="$t('labels.filters.shops.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
       value-attr="slug"
@@ -61,13 +61,12 @@
       @click.native="reset"
     >
       <i class="fal fa-times" />
-      {{ t('actions.resetFilter') }}
+      {{ $t('actions.resetFilter') }}
     </Btn>
   </form>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import FormInput from 'frontend/components/Form/FormInput'
@@ -79,7 +78,7 @@ export default {
     FormInput,
     Btn,
   },
-  mixins: [I18n, Filters],
+  mixins: [Filters],
   data() {
     const query = this.$route.query.q || {}
     return {

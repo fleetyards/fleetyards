@@ -14,13 +14,13 @@
       <router-link
         v-if="page > 1"
         :to="{ query: { page: page - 1, q }}"
-        :aria-label="t('pagination.previous')"
+        :aria-label="$t('pagination.previous')"
       >
         <i class="fa fa-chevron-left" />
       </router-link>
       <a
         v-else
-        :aria-label="t('pagination.previous')"
+        :aria-label="$t('pagination.previous')"
       >
         <i class="fa fa-chevron-left" />
       </a>
@@ -65,13 +65,13 @@
       <router-link
         v-if="page + 1 <= total"
         :to="{ query: { page: page + 1, q }}"
-        :aria-label="t('pagination.next')"
+        :aria-label="$t('pagination.next')"
       >
         <i class="fa fa-chevron-right" />
       </router-link>
       <a
         v-else
-        :aria-label="t('pagination.next')"
+        :aria-label="$t('pagination.next')"
       >
         <i class="fa fa-chevron-right" />
       </a>
@@ -81,15 +81,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import I18n from 'frontend/mixins/I18n'
 import Gap from 'frontend/components/Paginator/Gap'
 
 export default {
   components: {
     Gap,
   },
-  mixins: [I18n],
   props: {
     page: {
       type: Number,
@@ -113,9 +110,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    mobile() {
+      return document.documentElement.clientWidth < 992
+    },
     q() {
       return this.$route.query.q
     },

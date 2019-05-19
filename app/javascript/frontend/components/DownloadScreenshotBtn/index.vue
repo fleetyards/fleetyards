@@ -1,8 +1,8 @@
 <template>
   <Btn
-    v-tooltip="t('actions.saveScreenshot')"
+    v-tooltip="$t('actions.saveScreenshot')"
     :loading="downloading"
-    :aria-label="t('actions.saveScreenshot')"
+    :aria-label="$t('actions.saveScreenshot')"
     size="small"
     @click.native="download"
   >
@@ -13,13 +13,12 @@
       }"
       class="text"
     >
-      {{ t('actions.saveScreenshot') }}
+      {{ $t('actions.saveScreenshot') }}
     </span>
   </Btn>
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
 import Btn from 'frontend/components/Btn'
@@ -30,7 +29,6 @@ export default {
     SmallLoader,
     Btn,
   },
-  mixins: [I18n],
   props: {
     element: {
       type: String,

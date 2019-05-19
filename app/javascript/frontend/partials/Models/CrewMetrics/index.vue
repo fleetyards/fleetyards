@@ -8,7 +8,7 @@
       class="col-xs-12"
     >
       <div class="metrics-title">
-        {{ t('labels.metrics.crew') }}
+        {{ $t('labels.metrics.crew') }}
       </div>
     </div>
     <div
@@ -20,20 +20,20 @@
       <div class="row">
         <div class="col-xs-6 col-sm-6">
           <div class="metrics-label">
-            {{ t('model.minCrew') }}:
+            {{ $t('model.minCrew') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.minCrew, 'people') }}
+            {{ $toNumber(model.minCrew, 'people') }}
           </div>
         </div>
         <div
           class="col-xs-6 col-sm-6"
         >
           <div class="metrics-label">
-            {{ t('model.maxCrew') }}:
+            {{ $t('model.maxCrew') }}:
           </div>
           <div class="metrics-value">
-            {{ toNumber(model.maxCrew, 'people') }}
+            {{ $toNumber(model.maxCrew, 'people') }}
           </div>
         </div>
       </div>
@@ -42,10 +42,7 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
-  mixins: [I18n],
   props: {
     model: {
       type: Object,

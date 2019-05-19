@@ -2,7 +2,7 @@
   <Modal
     v-if="vehicle"
     ref="modal"
-    :title="t('headlines.myVehicle', { vehicle: vehicle.model.name })"
+    :title="$t('headlines.myVehicle', { vehicle: vehicle.model.name })"
     :visible="visible"
   >
     <form
@@ -24,14 +24,14 @@
           <Checkbox
             id="flagship"
             v-model="form.flagship"
-            :label="t('labels.vehicle.flagship')"
+            :label="$t('labels.vehicle.flagship')"
           />
         </div>
         <div class="col-xs-12 col-sm-6">
           <Checkbox
             id="purchased"
             v-model="form.purchased"
-            :label="t('labels.vehicle.purchased')"
+            :label="$t('labels.vehicle.purchased')"
           />
         </div>
         <div
@@ -41,7 +41,7 @@
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
-            :label="t('labels.vehicle.saleNotify')"
+            :label="$t('labels.vehicle.saleNotify')"
           />
         </div>
         <div
@@ -51,7 +51,7 @@
           <Checkbox
             id="public"
             v-model="form.public"
-            :label="t('labels.vehicle.public')"
+            :label="$t('labels.vehicle.public')"
           />
         </div>
         <div
@@ -61,7 +61,7 @@
           <Checkbox
             id="nameVisible"
             v-model="form.nameVisible"
-            :label="t('labels.vehicle.nameVisible')"
+            :label="$t('labels.vehicle.nameVisible')"
           />
         </div>
         <div
@@ -100,7 +100,7 @@
           type="submit"
           size="large"
         >
-          {{ t('actions.save') }}
+          {{ $t('actions.save') }}
         </Btn>
       </div>
     </template>
@@ -108,7 +108,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Modal from 'frontend/components/Modal'
 import { confirm } from 'frontend/lib/Noty'
 import Checkbox from 'frontend/components/Form/Checkbox'
@@ -120,7 +119,6 @@ export default {
     Checkbox,
     Btn,
   },
-  mixins: [I18n],
   props: {
     hangarGroups: {
       type: Array,
@@ -166,7 +164,7 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm(this.t('confirm.vehicle.destroy'), () => {
+      confirm(this.$t('confirm.vehicle.destroy'), () => {
         this.destroy()
       }, () => {
         this.deleting = false

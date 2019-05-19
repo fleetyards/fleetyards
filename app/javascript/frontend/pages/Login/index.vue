@@ -8,14 +8,14 @@
               to="/"
               exact
             >
-              {{ t('app') }}
+              {{ $t('app') }}
             </router-link>
           </h1>
           <div class="form-group">
             <input
               v-model="form.login"
               data-test="login"
-              :placeholder="t('labels.login')"
+              :placeholder="$t('labels.login')"
               type="text"
               autofocus
               class="form-control"
@@ -25,7 +25,7 @@
             <input
               v-model="form.password"
               data-test="password"
-              :placeholder="t('labels.password')"
+              :placeholder="$t('labels.password')"
               type="password"
               class="form-control"
             >
@@ -33,7 +33,7 @@
           <Checkbox
             id="rememberMe"
             v-model="form.rememberMe"
-            :label="t('labels.rememberMe')"
+            :label="$t('labels.rememberMe')"
           />
           <Btn
             :loading="submitting"
@@ -41,7 +41,7 @@
             size="large"
             block
           >
-            {{ t('actions.login') }}
+            {{ $t('actions.login') }}
           </Btn>
           <Btn
             :to="{
@@ -51,18 +51,18 @@
             size="small"
             block
           >
-            {{ t('actions.reset-password') }}
+            {{ $t('actions.reset-password') }}
           </Btn>
           <footer>
             <p class="text-center">
-              {{ t('labels.signUp') }}
+              {{ $t('labels.signUp') }}
             </p>
             <Btn
               :to="{name: 'signup'}"
               size="small"
               block
             >
-              {{ t('actions.signUp') }}
+              {{ $t('actions.signUp') }}
             </Btn>
           </footer>
         </form>
@@ -72,7 +72,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
@@ -83,7 +82,7 @@ export default {
     Btn,
     Checkbox,
   },
-  mixins: [I18n, MetaInfo],
+  mixins: [MetaInfo],
   data() {
     return {
       submitting: false,
@@ -113,7 +112,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.t('title.login'),
+      title: this.$t('title.login'),
     })
   },
 }

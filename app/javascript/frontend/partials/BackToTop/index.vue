@@ -2,7 +2,7 @@
   <transition name="back-to-top-fade">
     <div
       v-show="visible"
-      :title="t('actions.backToTop')"
+      :title="$t('actions.backToTop')"
       class="back-to-top"
       @click="backToTop"
     >
@@ -12,11 +12,8 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
-
 export default {
   name: 'BackToTop',
-  mixins: [I18n],
   props: {
     visibleOffset: {
       type: [String, Number],

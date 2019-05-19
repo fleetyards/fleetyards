@@ -43,10 +43,10 @@
                     class="hardpoint-labels"
                   >
                     <div class="hardpoint-quantity">
-                      - {{ t('labels.hardpoint.quantity') }}
+                      - {{ $t('labels.hardpoint.quantity') }}
                     </div>
                     <div class="hardpoint-size">
-                      - {{ t('labels.hardpoint.size') }}
+                      - {{ $t('labels.hardpoint.size') }}
                     </div>
                   </div>
                 </div>
@@ -62,10 +62,10 @@
                     class="hardpoint-labels"
                   >
                     <div class="hardpoint-quantity">
-                      - {{ t('labels.hardpoint.quantity') }}
+                      - {{ $t('labels.hardpoint.quantity') }}
                     </div>
                     <div class="hardpoint-size">
-                      - {{ t('labels.hardpoint.size') }}
+                      - {{ $t('labels.hardpoint.size') }}
                     </div>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
                       </div>
                     </div>
                     <div class="hardpoint-labels">
-                      {{ t('labels.hardpoint.categoryOrRackSize') }}
+                      {{ $t('labels.hardpoint.categoryOrRackSize') }}
                     </div>
                   </div>
                   <div class="hardpoint-legend-addition">
@@ -107,7 +107,7 @@
                       </div>
                     </div>
                     <div class="hardpoint-labels">
-                      {{ t('labels.hardpoint.mounts') }}
+                      {{ $t('labels.hardpoint.mounts') }}
                     </div>
                   </div>
                 </div>
@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import I18n from 'frontend/mixins/I18n'
 import Panel from 'frontend/components/Panel'
 import HardpointCategory from './Category'
 import HardpointIcon from './Icon'
@@ -132,7 +131,6 @@ export default {
     HardpointIcon,
     Panel,
   },
-  mixins: [I18n],
   props: {
     hardpoints: {
       type: Array,
