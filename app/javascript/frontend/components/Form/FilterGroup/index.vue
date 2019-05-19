@@ -47,7 +47,7 @@
     <FormInput
       v-if="searchable && visible"
       v-model="search"
-      :placeholder="searchLabel || t('actions.find')"
+      :placeholder="searchLabel || $t('actions.find')"
       class="filter-list-search"
       variant="clean"
       @input="onSearch"
