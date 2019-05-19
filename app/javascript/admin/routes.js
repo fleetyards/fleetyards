@@ -1,3 +1,5 @@
+import Images from 'admin/pages/Images'
+
 export const routes = [
   {
     path: '/models/:uuid/images',
@@ -10,7 +12,7 @@ export const routes = [
   }, {
     path: '/images',
     name: 'images',
-    component: () => import(/* webpackChunkName: "page.admin.images" */ 'admin/pages/Images'),
+    component: Images,
   },
 ]
 
