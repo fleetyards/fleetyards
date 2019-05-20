@@ -42,27 +42,23 @@ desc 'Deploys the current version to the server.'
 task :deploy do
   deploy do
     invoke :'git:clone'
+
     comment 'Install Latest Ruby Version'
     command %(rbenv install -s)
     comment 'Update Rubygems'
     command %(gem update --system)
     comment 'Update/Install Bundler'
     command %(gem install bundler -v 1.17.3 --conservative --silent)
+
     invoke :'deploy:link_shared_paths'
 
     invoke :'bundle:install'
 
     invoke :'rails:db_migrate'
 
-    comment %(Install JS Dependencies)
-    command %(yarn install)
-
-    command %(bundle exec thor assets:compile)
+    invoke :'rails:assets_precompile'
 
     invoke :'deploy:cleanup'
-
-    # comment 'bundle clean'
-    # command %(bundle clean)
 
     on :launch do
       invoke :'server:restart'
