@@ -184,7 +184,7 @@ jobs:
       - run: bundle --path vendor/bundle
       - run:
           name: Webpacker & Assets Compile
-          command: RAILS_ENV=production bundle exec thor assets:compile
+          command: RAILS_ENV=production bundle exec rails assets:precompile
       - persist_to_workspace:
           root: ~/app
           paths:
