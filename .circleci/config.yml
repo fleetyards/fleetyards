@@ -206,7 +206,7 @@ jobs:
           command: bundle exec rails db:create db:schema:load
       - run:
           name: Webpacker & Assets Compile
-          command: bundle exec thor assets:compile
+          command: bundle exec rails assets:precompile
       - run:
           name: Prefill DB
           command: bundle exec rails db:seed
