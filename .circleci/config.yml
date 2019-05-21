@@ -183,9 +183,11 @@ jobs:
           at: ~/app
       - run: bundle --path vendor/bundle
       - run:
-          name: Webpacker & Assets Compile
+          name: Webpacker Compile
+          command: RAILS_ENV=production NODE_ENV=production ./bin/webpack --progress --profile
+      - run:
+          name: Assets Compile
           command: RAILS_ENV=production bundle exec rails assets:precompile
-          no_output_timeout: 20m
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -304,7 +306,7 @@ workflows:
       - js-tests:
           requires:
             - yarn
-      - build:
+      - assets:
           requires:
             - bundle
             - yarn
@@ -323,7 +325,7 @@ workflows:
             - seeds
             - ruby-tests
             - js-tests
-            - build
+            - assets
           filters:
             branches:
               only: master
