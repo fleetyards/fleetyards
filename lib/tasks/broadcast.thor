@@ -5,6 +5,6 @@ class Broadcast < Thor
   desc 'version', 'Broadcast Version'
   def version
     require './config/environment'
-    AppVersionNotificationWorker.perform_in(10.seconds)
+    AppVersionNotificationWorker.perform_in(1.minute)
   end
 end

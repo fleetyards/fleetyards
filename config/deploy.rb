@@ -74,7 +74,7 @@ end
 task broadcast_version: :remote_environment do
   in_path fetch(:current_path).to_s do
     comment %(Broadcast Version)
-    # command %(bundle exec thor broadcast:version)
+    command %(bundle exec thor broadcast:version)
   end
 end
 
