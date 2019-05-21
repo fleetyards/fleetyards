@@ -172,7 +172,7 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
-  build:
+  assets:
     <<: *defaults
     steps:
       - restore_cache:
@@ -184,8 +184,8 @@ jobs:
       - run: bundle --path vendor/bundle
       - run:
           name: Webpacker & Assets Compile
-          # command: RAILS_ENV=production bundle exec rails assets:precompile
-          command: RAILS_ENV=production bin/webpack --profile
+          command: RAILS_ENV=production bundle exec rails assets:precompile
+          no_output_timeout: 20m
       - persist_to_workspace:
           root: ~/app
           paths:
