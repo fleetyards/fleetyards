@@ -204,6 +204,7 @@ jobs:
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
+      - run: mkdir -p tmp/cache && rm -f tmp/cache/*
       - run:
           name: Webpacker & Assets Compile
           command: bundle exec rails assets:precompile
