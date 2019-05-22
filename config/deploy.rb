@@ -57,7 +57,7 @@ task :deploy do
     comment %(Install JS Dependencies)
     command %(yarn install)
 
-    command %(bundle exec thor assets:compile)
+    command %(NODE_ENV=production bundle exec thor assets:compile)
 
     invoke :'deploy:cleanup'
 
