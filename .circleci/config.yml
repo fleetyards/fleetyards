@@ -172,7 +172,7 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
-  build:
+  assets:
     <<: *defaults
     steps:
       - restore_cache:
@@ -200,7 +200,7 @@ jobs:
       - attach_workspace:
           at: ~/app
       - run: bundle --path vendor/bundle
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
@@ -223,7 +223,6 @@ jobs:
                   printf '.'
                   sleep 5
               done
-      - run: yarn install
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
@@ -304,7 +303,7 @@ workflows:
       - js-tests:
           requires:
             - yarn
-      - build:
+      - assets:
           requires:
             - bundle
             - yarn
@@ -323,7 +322,7 @@ workflows:
             - seeds
             - ruby-tests
             - js-tests
-            - build
+            - assets
           filters:
             branches:
               only: master

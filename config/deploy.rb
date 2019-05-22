@@ -53,6 +53,9 @@ task :deploy do
     invoke :'bundle:install'
 
     invoke :'rails:db_migrate'
+
+    command %(yarn install --frozen-lockfile)
+
     invoke :'rails:assets_precompile'
 
     invoke :'deploy:cleanup'
