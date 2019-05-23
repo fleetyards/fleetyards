@@ -36,19 +36,4 @@ class Image < ApplicationRecord
   private def dimensions_missing?
     (width.blank? || height.blank?) && File.exist?(name.file.file)
   end
-
-  def to_jq_upload
-    {
-      'name' => self[:name],
-      'size' => name.size,
-      'url' => name.url,
-      'enabled' => enabled,
-      'background' => background,
-      'thumbnailUrl' => name.small.url,
-      'toggleUrl' => toggle_admin_image_path(id: id),
-      'toggleBackgroundUrl' => toggle_background_admin_image_path(id: id),
-      'deleteUrl' => admin_image_path(id: id),
-      'deleteType' => 'DELETE'
-    }
-  end
 end

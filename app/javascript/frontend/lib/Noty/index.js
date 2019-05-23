@@ -9,7 +9,7 @@ const notifyPermissionGranted = function notifyPermissionGranted() {
 const displayDesktopNotification = function displayDesktopNotification(message) {
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
-    icon: `https://www.fleetyards.net${require('images/favicon.png')}`,
+    icon: `${window.FRONTEND_ENDPOINT}${require('images/favicon.png')}`,
   })
 
   return notification
@@ -20,7 +20,7 @@ const displayNativeNotification = function displayNativeNotification(message) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.ready.then((registration) => {
       registration.showNotification(message, {
-        icon: 'https://www.fleetyards.net/images/favicon.png',
+        icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
         vibrate: [200, 100, 200, 100, 200, 100, 200],
       })
     }, () => {

@@ -45,12 +45,10 @@ class NullStorage
 end
 
 CarrierWave.configure do |config|
-  if Rails.env.production?
-    config.asset_host = 'https://fleetyards.net'
-  elsif Rails.env.test?
+  if Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
   else
-    config.asset_host = 'http://fleetyards.test'
+    config.asset_host = Rails.application.secrets[:frontend_endpoint]
   end
 end
