@@ -4,7 +4,7 @@ class StoreImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
   def default_url(*_args)
-    ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: Rails.application.secrets[:domain])
+    ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: Rails.application.secrets[:frontend_endpoint])
   end
 
   version :medium do
