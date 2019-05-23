@@ -172,7 +172,7 @@ jobs:
           name: Run Javascript Tests
           command: yarn test
 
-  build:
+  assets:
     <<: *defaults
     steps:
       - restore_cache:
@@ -184,7 +184,7 @@ jobs:
       - run: bundle --path vendor/bundle
       - run:
           name: Webpacker & Assets Compile
-          command: RAILS_ENV=production bundle exec thor assets:compile
+          command: RAILS_ENV=production bundle exec rails assets:precompile
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -206,7 +206,7 @@ jobs:
           command: bundle exec rails db:create db:schema:load
       - run:
           name: Webpacker & Assets Compile
-          command: bundle exec thor assets:compile
+          command: bundle exec rails assets:precompile
       - run:
           name: Prefill DB
           command: bundle exec rails db:seed
@@ -303,7 +303,7 @@ workflows:
       - js-tests:
           requires:
             - yarn
-      - build:
+      - assets:
           requires:
             - bundle
             - yarn
@@ -322,7 +322,7 @@ workflows:
             - seeds
             - ruby-tests
             - js-tests
-            - build
+            - assets
           filters:
             branches:
               only: master

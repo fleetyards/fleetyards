@@ -53,11 +53,7 @@ task :deploy do
     invoke :'bundle:install'
 
     invoke :'rails:db_migrate'
-
-    comment %(Install JS Dependencies)
-    command %(yarn install)
-
-    command %(bundle exec thor assets:compile)
+    invoke :'rails:assets_precompile'
 
     invoke :'deploy:cleanup'
 
