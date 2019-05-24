@@ -1,4 +1,4 @@
-FROM ruby:2.6.2
+FROM ruby:2.6.3
 
 RUN curl https://deb.nodesource.com/setup_10.x | bash - \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## install bundler
 RUN gem update --system
 RUN gem install bundler -v 1.17.3
+RUN gem install bundler -v 2.0.1
 
 RUN mkdir /app
 WORKDIR /app
