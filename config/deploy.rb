@@ -47,7 +47,7 @@ task :deploy do
     comment 'Update Rubygems'
     command %(gem update --system)
     comment 'Update/Install Bundler'
-    command %(gem install bundler -v 1.17.3 --conservative --silent)
+    command %(gem install bundler -v 2.0.1 --conservative --silent)
     invoke :'deploy:link_shared_paths'
 
     invoke :'bundle:install'
