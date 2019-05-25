@@ -153,7 +153,7 @@ export default {
         const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
         return {
           key,
-          change: (Math.sign(count) === -1) ? 'decreased' : 'increased',
+          change: (count < 0) ? 'decreased' : 'increased',
           old: lastVersion[key][0],
           new: lastVersion[key][1],
           count,
