@@ -99,6 +99,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
+
+  gem 'bcrypt_pbkdf', require: false
+  gem 'capistrano', '~> 3.11', require: false
+  gem 'capistrano-rails', '~> 1.4', require: false
+  gem 'capistrano-rails-console', require: false
+  gem 'capistrano-rbenv', '~> 2.1', require: false
+  gem 'ed25519', require: false
 end
 
 group :test do
