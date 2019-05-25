@@ -16,7 +16,7 @@
   ],
   "settings": {
     "html/indent": "tab",
-    "polyfills": ["promises"]
+    "polyfills": ["Promise", "Object.assign"]
   },
   "rules": {
     "compat/compat": "error",
