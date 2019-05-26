@@ -307,49 +307,91 @@ workflows:
             - yarn
   main:
     jobs:
-      - checkout-code
+      - checkout-code:
+          filters:
+            tags:
+              only: /^v.*/
       - bundle:
           requires:
             - checkout-code
+          filters:
+            tags:
+              only: /^v.*/
       - yarn:
           requires:
             - checkout-code
+          filters:
+            tags:
+              only: /^v.*/
       - bundle-audit:
           requires:
             - bundle
+          filters:
+            tags:
+              only: /^v.*/
       - yarn-audit:
           requires:
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - rubocop:
           requires:
             - bundle
+          filters:
+            tags:
+              only: /^v.*/
       - js-lint:
           requires:
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - vue-lint:
           requires:
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - style-lint:
           requires:
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - seeds:
           requires:
             - bundle
+          filters:
+            tags:
+              only: /^v.*/
       - ruby-tests:
           requires:
             - bundle
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - js-tests:
           requires:
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - assets:
           requires:
             - bundle
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - e2e-tests:
           requires:
             - bundle
             - yarn
+          filters:
+            tags:
+              only: /^v.*/
       - deploy-to-stage:
           requires:
             - e2e-tests
