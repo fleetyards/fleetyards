@@ -42,7 +42,7 @@
     "downloadjs": "1.4.7",
     "file-loader": "3.0.1",
     "highcharts": "6.1.4",
-    "html2canvas": "1.0.0-rc.1",
+    "html2canvas": "1.0.0-alpha.12",
     "i18n-js": "3.2.2",
     "jest-transform-stub": "2.0.0",
     "lodash.debounce": "4.0.8",
