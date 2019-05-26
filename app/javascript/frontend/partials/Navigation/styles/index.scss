@@ -8,6 +8,16 @@ nav {
   left: 0;
   right: 0;
 
+  .environment-label {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+
+    span {
+      font-size: 15px;
+    }
+  }
+
   .nav-toggle {
     transition: left ease .5s;
     position: absolute;

@@ -21,6 +21,13 @@
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
     </button>
+    <div
+      v-if="nodeEnv"
+      class="environment-label"
+    >
+      <span :class="environmentLabelClasses">{{ nodeEnv }}</span>
+      <span :class="environmentLabelClasses">{{ gitRevision }}</span>
+    </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
     <div class="nav-container">
       <img
@@ -254,6 +261,24 @@ export default {
       'citizen',
       'isAuthenticated',
     ]),
+    environmentLabelClasses() {
+      const cssClasses = ['label']
+      if (window.NODE_ENV === 'development') {
+        cssClasses.push('label-danger')
+      } else {
+        cssClasses.push('label-warning')
+      }
+      return cssClasses
+    },
+    nodeEnv() {
+      if (window.NODE_ENV === 'production') {
+        return null
+      }
+      return (window.NODE_ENV || '').toUpperCase()
+    },
+    gitRevision() {
+      return window.GIT_REVISION
+    },
   },
   watch: {
     $route() {
