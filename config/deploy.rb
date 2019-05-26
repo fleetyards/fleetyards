@@ -1,239 +1,235 @@
 # frozen_string_literal: true
 
-set :shared_dirs, [
+lock '~> 3.11'
+
+set :application, 'fleetyards'
+set :repo_url, 'https://github.com/fleetyards/app.git'
+
+set :keep_releases, 5
+set :keep_assets, 5
+
+set :conditionally_migrate, true
+
+set :rbenv_type, :user
+set :rbenv_ruby, File.read('.ruby-version').strip
+set :bundler_version, '2.0.1'
+
+set :initial_deploy, false
+
+set :linked_dirs, [
   'public/uploads',
   'public/packs',
-  'public/compare',
+  'log',
+  'tmp/cache',
   'tmp/pids',
   'tmp/sockets',
   'dumps'
 ]
 
-set :shared_files, [
+set :linked_files, [
   'config/database.yml',
   '.rbenv-vars',
   'blacklist.json'
 ]
 
-set :stages, %w[local live]
-set :default_stage, 'local'
+before :'rbenv:validate', :'ruby:prepare'
+before :'deploy:migrate', :'db:load_schema'
 
-require 'mina/multistage'
-require 'mina/bundler'
-require 'mina/rails'
-require 'mina/git'
-require 'mina/rbenv'
+namespace :deploy do
+  after :finished, :restart
 
-set :user, 'fleetyards'
-set :forward_agent, true
-
-set :domain, 'erelas.mortik.xyz'
-set :deploy_to, '/home/fleetyards'
-set :repository, 'https://github.com/fleetyards/app.git'
-set :rails_env, 'production'
-set :branch, 'master'
-set :version_scheme, :datetime
-
-task :remote_environment do
-  invoke :'rbenv:load'
+  desc 'Restart'
+  task :restart do
+    invoke :'server:restart_app'
+    invoke :'server:restart_worker'
+    invoke :'server:broadcast_version'
+  end
 end
 
-desc 'Deploys the current version to the server.'
-task :deploy do
-  deploy do
-    invoke :'git:clone'
-    comment 'Install Latest Ruby Version'
-    command %(rbenv install -s)
-    comment 'Update Rubygems'
-    command %(gem update --system)
-    comment 'Update/Install Bundler'
-    command %(gem install bundler -v 2.0.1 --conservative --silent)
-    invoke :'deploy:link_shared_paths'
-
-    invoke :'bundle:install'
-
-    invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
-
-    invoke :'deploy:cleanup'
-
-    # comment 'bundle clean'
-    # command %(bundle clean)
-
-    on :launch do
-      invoke :'server:restart'
-      invoke :broadcast_version
+namespace :ruby do
+  desc 'Prepare Ruby'
+  task :prepare do
+    on roles(:all) do
+      info 'Install Latest Ruby Version'
+      rbenv_path = '$HOME/.rbenv'
+      execute("#{rbenv_path}/bin/rbenv install #{fetch(:rbenv_ruby)} -s")
+      execute("#{rbenv_path}/bin/rbenv global #{fetch(:rbenv_ruby)}")
+      info 'Update Rubygems'
+      execute("#{rbenv_path}/shims/gem update --system")
+      info 'Update/Install Bundler'
+      execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent")
     end
-  end
-end
-
-task broadcast_version: :remote_environment do
-  in_path fetch(:current_path).to_s do
-    comment %(Broadcast Version)
-    command %(bundle exec thor broadcast:version)
-  end
-end
-
-task webpacker_compile: :remote_environment do
-  in_path fetch(:current_path).to_s do
-    comment %(Precompile Webpacker)
-    command %(#{fetch(:rails)} webpacker:compile)
-  end
-end
-
-task assets_precompile: :remote_environment do
-  in_path fetch(:current_path).to_s do
-    comment %(Precompile Assets)
-    command %(#{fetch(:rails)} assets:precompile)
-  end
-  invoke :'server:restart'
-end
-
-task recreate_images: :remote_environment do
-  in_path fetch(:current_path).to_s do
-    comment %(Recreate Images)
-    command %(bundle exec thor images:recreate)
-  end
-end
-
-task console: :remote_environment do
-  set :execution_mode, :exec
-  in_path fetch(:current_path).to_s do
-    command %(#{fetch(:rails)} console)
   end
 end
 
 namespace :server do
-  task :restart do
-    comment 'Restart Application'
-    command %(sudo service fleetyards-app restart)
-    command %(sudo systemctl is-active --quiet fleetyards-app.service)
-    comment 'App Restarted'
-    command %(sudo service fleetyards-worker restart)
-    command %(sudo systemctl is-active --quiet fleetyards-worker.service)
-    comment 'Worker Restarted'
+  desc 'Restart App'
+  task :restart_app do
+    on roles(:all) do
+      info 'Restart App'
+      execute(:sudo, :service, "#{fetch(:application)}-app", :restart)
+      execute(:sudo, :systemctl, 'is-active', '--quiet', "#{fetch(:application)}-app.service")
+      info 'App Restarted'
+    end
   end
 
-  task :stop do
-    comment 'Stopping Application'
-    command %(sudo service fleetyards-app stop)
-    command %(sudo service fleetyards-worker stop)
+  desc 'Restart Worker'
+  task :restart_worker do
+    on roles(:all) do
+      info 'Restart Worker'
+      execute(:sudo, :service, "#{fetch(:application)}-worker", :restart)
+      execute(:sudo, :systemctl, 'is-active', '--quiet', "#{fetch(:application)}-worker.service")
+      info 'Worker Restarted'
+    end
   end
 
-  task :start do
-    comment 'Starting Application'
-    command %(sudo service fleetyards-app start)
-    command %(sudo service fleetyards-worker start)
+  desc 'Broadcast version'
+  task :broadcast_version do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Broadcast Version'
+          execute(:bundle, :exec, :thor, 'broadcast:version')
+        end
+      end
+    end
+  end
+end
+
+desc 'Tail logs'
+task :logs do
+  on roles(:app) do
+    execute "tail -f #{shared_path}/log/*.log"
   end
 end
 
 namespace :uploads do
-  task :sync_to_local do
-    run :local do
-      comment %(Backup and Reimport to Local DB)
+  task :recreate_images do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Recreate Images'
+          execute(:bundle, :exec, :thor, 'images:recreate')
+        end
+      end
     end
+  end
+
+  task :sync_to_local do
     invoke :'uploads:backup'
     invoke :'uploads:download'
     invoke :'uploads:local_import'
   end
 
   task :backup do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        comment 'Creating Uploads Backup...'
-        command %(tar -zcvf dumps/uploads.tar.gz /home/fleetyards/shared/public/uploads)
-        comment 'Uploads Backup finished'
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Creating Uploads Backup...'
+          execute(:tar, '-zcvf', 'dumps/uploads.tar.gz', "#{fetch(:deploy_to)}/shared/public/uploads")
+          info 'Uploads Backup finished'
+        end
       end
     end
   end
 
   task :download do
-    run :local do
-      comment 'Downloading latest Uploads backup...'
-      system %(mkdir -p dumps)
-      system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz dumps/)
-      comment 'Download finished'
+    run_locally do
+      info 'Downloading latest Uploads backup...'
+      execute(:mkdir, '-p', 'dumps')
+      server = roles(:app).first
+      execute(:scp, "#{server.user}@#{server.hostname}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz", 'dumps/')
+      info 'Download finished'
     end
   end
 
   task :local_import do
-    run :local do
-      system %(mkdir -p public/uploads)
-      system %(tar --strip-components=5 -xvzf dumps/uploads.tar.gz -C public/uploads/ home/fleetyards/shared/public/uploads)
+    run_locally do
+      execute(:mkdir, '-p', 'public/uploads')
+      execute(:tar, '--strip-components=5', '-xvzf', 'dumps/uploads.tar.gz', '-C', 'public/uploads/', "#{fetch(:deploy_to)}/shared/public/uploads")
     end
   end
 end
 
 namespace :db do
-  task :sync_to_local do
-    run :local do
-      comment %(Backup and Reimport to Local DB)
+  task :load_schema do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          if fetch(:initial_deploy)
+            execute :rake, 'db:schema:load'
+          else
+            info 'Skipping Load Schema'
+          end
+        end
+      end
     end
+  end
+
+  task :sync_to_local do
     invoke :'db:backup'
     invoke :'db:download'
     invoke :'db:local_import'
   end
 
-  task load_schema: :remote_environment do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        invoke :'server:stop'
-        comment %(Loading Schema for database)
-        command %(#{fetch(:rake)} db:schema:load)
-        invoke :'server:start'
+  task :migration_status do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Migration Status'
+          execute(:rake, 'db:migrate:status')
+        end
       end
     end
   end
 
-  task migration_status: :remote_environment do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        comment %(Migration Status)
-        command %(#{fetch(:rake)} db:migrate:status)
+  task :seed do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Seeding database'
+          execute(:rake, 'db:seed')
+        end
       end
     end
   end
 
-  task seed: :remote_environment do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        comment %(Seeding database)
-        command %(#{fetch(:rake)} db:seed)
+  task :migrate do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Migrating database'
+          execute(:rake, 'db:migrate')
+        end
       end
     end
   end
 
-  task migrate: :remote_environment do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        comment %(Migrating database)
-        command %(#{fetch(:rake)} db:migrate)
-      end
-    end
-  end
-
-  task backup: :remote_environment do
-    run :remote do
-      in_path fetch(:current_path).to_s do
-        comment 'Creating DB Backup...'
-        command %(bundle exec thor db:dump)
-        comment 'DB Backup finished'
+  task :backup do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Creating DB Backup...'
+          execute(:bundle, :exec, :thor, 'db:dump')
+          info 'DB Backup finished'
+        end
       end
     end
   end
 
   task :download do
-    run :local do
-      comment 'Downloading latest backup...'
-      system %(mkdir -p dumps)
-      system %(scp #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:deploy_to)}/shared/dumps/latest.dump dumps/)
-      comment 'Download finished'
+    run_locally do
+      info 'Downloading latest backup...'
+      execute(:mkdir, '-p', 'dumps')
+      server = roles(:db).first
+      execute(:scp, "#{server.user}@#{server.hostname}:#{fetch(:deploy_to)}/shared/dumps/latest.dump", 'dumps/')
+      info 'Download finished'
     end
   end
 
   task :local_import do
-    run :local do
-      system %(pg_restore --verbose --clean --no-acl --no-owner -h localhost -d fleetyards_dev dumps/latest.dump)
+    run_locally do
+      execute(:pg_restore, '--verbose', '--clean', '--no-acl', '--no-owner', '-h', 'localhost', '-d', 'fleetyards_dev', 'dumps/latest.dump')
     end
   end
 end

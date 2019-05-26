@@ -244,7 +244,7 @@ jobs:
           path: ~/app/cypress/screenshots
           destination: e2e-screenshots
 
-  deploy:
+  deploy-to-stage:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -261,7 +261,26 @@ jobs:
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy
-          command: bundle exec mina live deploy
+          command: bundle exec cap stage deploy
+
+  deploy-to-live:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: bundle --path vendor/bundle
+      - add_ssh_keys:
+          fingerprints:
+            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+      - run:
+          name: Keyscan Erelas (HACK)
+          command: ssh-keyscan -H erelas.mortik.xyz >> ~/.ssh/known_hosts
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy
+          command: bundle exec cap live deploy
 
 workflows:
   version: 2
@@ -331,7 +350,23 @@ workflows:
           requires:
             - bundle
             - yarn
-      - deploy:
+      - deploy-to-stage:
+          requires:
+            - e2e-tests
+            - bundle-audit
+            - yarn-audit
+            - rubocop
+            - js-lint
+            - vue-lint
+            - style-lint
+            - seeds
+            - ruby-tests
+            - js-tests
+            - assets
+          filters:
+            branches:
+              only: development
+      - deploy-to-live:
           requires:
             - e2e-tests
             - bundle-audit
