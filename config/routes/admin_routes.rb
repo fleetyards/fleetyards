@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :admin, path: (ENV['CI'] ? 'admin' : ''), constraints: { subdomain: (ENV['CI'] ? '' : 'admin') } do
+namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: lambda { |req| ENV['ON_SUBDOMAIN'] || req.subdomain == 'admin' } do
   draw :admin_api_routes
 
   devise_for :users, skip: %i[registration]
