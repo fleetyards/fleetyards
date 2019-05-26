@@ -14,7 +14,7 @@ export default {
   },
 
   async fetch({ commit }) {
-    const response = await apiClient.get('vehicles/hangar-items')
+    const response = await apiClient.get('vehicles/hangar-items', null, true)
     if (!response.error) {
       commit('setShips', response.data)
     }

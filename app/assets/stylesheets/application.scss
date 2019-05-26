@@ -106,9 +106,14 @@ a.thumbnail.active {
   margin-bottom: 0;
 }
 
-.env-label {
-  font-size: 20px;
-  padding: 10px;
+.environment-label {
+  position: fixed;
+  right: 100px;
+  top: 15px;
+
+  span {
+    font-size: 15px;
+  }
 }
 
 .chart {

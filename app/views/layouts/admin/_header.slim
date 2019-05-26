@@ -14,7 +14,10 @@ nav#main-nav.navbar.navbar-default.navbar-fixed-top role="navigation"
       - if admin_user_signed_in?
         = render "layouts/admin/nav"
       = render "layouts/admin/user_nav"
-      - if Rails.env.development?
-        .nav.navbar-nav.navbar-right.env-label
-          span.label.label-danger
+      - unless Rails.env.production?
+        .environment-label
+          span.label class="#{Rails.env.development? ? 'label-danger' : 'label-warning'}"
             = Rails.env.upcase
+          '
+          span.label class="#{Rails.env.development? ? 'label-danger' : 'label-warning'}"
+            = Git.revision_short
