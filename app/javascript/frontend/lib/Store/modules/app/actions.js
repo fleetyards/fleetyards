@@ -14,7 +14,7 @@ export default {
   },
 
   async checkVersion({ dispatch }) {
-    const response = await apiClient.get('version')
+    const response = await apiClient.get('version', null, true)
     if (!response.error) {
       dispatch('updateVersion', response.data)
     }

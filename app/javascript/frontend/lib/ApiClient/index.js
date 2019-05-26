@@ -16,8 +16,6 @@ const client = axios.create({
   },
   transformRequest: axiosDefaults.transformRequest.concat(
     (data, headers) => {
-      nprogress.start()
-
       if (Store.getters['session/isAuthenticated']) {
         // eslint-disable-next-line no-param-reassign
         headers.Authorization = `Bearer ${Store.getters['session/authToken']}`
@@ -44,8 +42,10 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   return meta
 }
 
-const handleError = async function handleError(error) {
-  nprogress.done()
+const handleError = async function handleError(error, silent) {
+  if (!silent) {
+    nprogress.done()
+  }
 
   if (error.message !== 'cancel' && (!error.response || !error.response.data || !error.response.data.message)) {
     alert(I18n.t('messages.error.default'))
@@ -62,8 +62,10 @@ const handleError = async function handleError(error) {
   }
 }
 
-const handleResponse = function handleResponse(response, params) {
-  nprogress.done()
+const handleResponse = function handleResponse(response, params, silent) {
+  if (!silent) {
+    nprogress.done()
+  }
 
   const meta = extractMetaInfo(response.headers, params)
 
@@ -75,7 +77,10 @@ const handleResponse = function handleResponse(response, params) {
   }
 }
 
-export async function get(path, params = {}) {
+export async function get(path, params = {}, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
   try {
     return handleResponse(await client.get(path, {
       params,
@@ -85,33 +90,43 @@ export async function get(path, params = {}) {
         }
         cancelations[path] = c
       }),
+      silent,
     }), params)
   } catch (error) {
-    return handleError(error)
+    return handleError(error, silent)
   }
 }
 
-export async function post(path, body = {}) {
+export async function post(path, body = {}, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
   try {
-    return handleResponse(await client.post(path, body), body)
+    return handleResponse(await client.post(path, body), body, silent)
   } catch (error) {
-    return handleError(error)
+    return handleError(error, silent)
   }
 }
 
-export async function put(path, body = {}) {
+export async function put(path, body = {}, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
   try {
-    return handleResponse(await client.put(path, body), body)
+    return handleResponse(await client.put(path, body), body, silent)
   } catch (error) {
-    return handleError(error)
+    return handleError(error, silent)
   }
 }
 
-export async function destroy(path, data = {}) {
+export async function destroy(path, data = {}, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
   try {
-    return handleResponse(await client.delete(path, { data }))
+    return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {
-    return handleError(error)
+    return handleError(error, silent)
   }
 }
 
