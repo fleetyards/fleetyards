@@ -365,7 +365,7 @@ workflows:
             - assets
           filters:
             branches:
-              only: development
+              only: master
       - deploy-to-live:
           requires:
             - e2e-tests
@@ -380,5 +380,7 @@ workflows:
             - js-tests
             - assets
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: master
+              ignore: /.*/
