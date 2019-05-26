@@ -50,6 +50,16 @@
         </a>
         |
         <a
+          v-tooltip="'Discord'"
+          href="https://discord.gg/6EQKAsb"
+          target="_blank"
+          rel="noopener"
+          aria-label="Discrod"
+        >
+          <i class="fab fa-discord" />
+        </a>
+        |
+        <a
           href="https://api.fleetyards.net"
           target="_blank"
           rel="noopener"
