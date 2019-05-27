@@ -119,6 +119,10 @@ button {
       margin-right: 0;
     }
   }
+
+  .no-scroll {
+    overflow: auto !important;
+  }
 }
 
 @media (max-width: 370px) {

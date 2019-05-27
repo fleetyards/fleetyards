@@ -17,6 +17,10 @@ export default () => ({
       return state.codename
     },
 
+    gitRevision(state) {
+      return state.gitRevision
+    },
+
     isUpdateAvailable(state) {
       return state.version !== window.APP_VERSION
     },

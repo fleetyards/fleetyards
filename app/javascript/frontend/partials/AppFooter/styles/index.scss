@@ -16,6 +16,10 @@ $outerBorderWidth: 2px;
     right: 0;
   }
 
+  .git-revision {
+    cursor: pointer;
+  }
+
   .app-footer-border-left,
   .app-footer-border-right {
     position: absolute;

@@ -90,6 +90,11 @@
       <div class="app-community-logo" />
       <div class="app-version">
         {{ codename }} ({{ version }})
+        <i
+          v-tooltip="gitRevision"
+          class="far fa-fingerprint git-revision"
+          @click="copyGitRevision"
+        />
       </div>
     </div>
   </footer>
@@ -97,13 +102,24 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { success, alert } from 'frontend/lib/Noty'
 
 export default {
   computed: {
     ...mapGetters('app', [
       'version',
       'codename',
+      'gitRevision',
     ]),
+  },
+  methods: {
+    copyGitRevision() {
+      this.$copyText(this.gitRevision).then(() => {
+        success(this.$t('messages.copyGitRevision.success'))
+      }, () => {
+        alert(this.$t('messages.copyGitRevision.failure'))
+      })
+    },
   },
 }
 </script>

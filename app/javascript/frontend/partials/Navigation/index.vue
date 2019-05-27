@@ -33,7 +33,11 @@
         <i class="far fa-info-circle" />
         {{ nodeEnv }}
       </span>
-      <span :class="environmentLabelClasses">
+      <span
+        class="git-revision"
+        :class="environmentLabelClasses"
+        @click="copyGitRevision"
+      >
         <i class="far fa-fingerprint" />
         {{ gitRevision }}
       </span>
@@ -255,6 +259,7 @@
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
+import { success, alert } from 'frontend/lib/Noty'
 
 export default {
   name: 'Navigation',
@@ -282,6 +287,7 @@ export default {
     ...mapGetters('app', [
       'navCollapsed',
       'isUpdateAvailable',
+      'gitRevision',
     ]),
     ...mapGetters('session', [
       'currentUser',
@@ -302,9 +308,6 @@ export default {
         return null
       }
       return (window.NODE_ENV || '').toUpperCase()
-    },
-    gitRevision() {
-      return window.GIT_REVISION
     },
   },
   watch: {
@@ -353,6 +356,13 @@ export default {
     reload() {
       this.close()
       window.location.reload(true)
+    },
+    copyGitRevision() {
+      this.$copyText(this.gitRevision).then(() => {
+        success(this.$t('messages.copyGitRevision.success'))
+      }, () => {
+        alert(this.$t('messages.copyGitRevision.failure'))
+      })
     },
   },
 }

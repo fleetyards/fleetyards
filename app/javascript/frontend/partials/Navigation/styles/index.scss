@@ -12,6 +12,10 @@ nav {
     position: fixed;
     right: 20px;
     top: 20px;
+
+    .git-revision {
+      cursor: pointer;
+    }
   }
 
   .nav-toggle {
@@ -256,6 +260,10 @@ nav {
 
     .nav-container {
       left: 0;
+    }
+
+    .environment-label {
+      right: -280px;
     }
   }
 }

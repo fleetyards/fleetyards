@@ -636,6 +636,10 @@
       "success": "Text Copied!",
       "failure": "Could not copy Text"
     },
+    "copyGitRevision": {
+      "success": "Git Revision Copied!",
+      "failure": "Could not copy Git Revision"
+    },
     "signup": {
       "success": "<b>Welcome to FleetYards.net!</b> Your account has been created.<br>You will receive a confirmation email to activate your account.",
       "invalid": "Please resolve the errors before your account can be created.",
