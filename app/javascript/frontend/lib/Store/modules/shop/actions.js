@@ -1,8 +1,6 @@
-import getDefaultState from './state'
-
 export default {
-  reset({ state }) {
-    Object.assign(state, getDefaultState())
+  reset({ commit }) {
+    commit('reset')
   },
 
   toggleFilter({ commit, state }) {

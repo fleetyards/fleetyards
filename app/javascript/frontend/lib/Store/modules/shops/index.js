@@ -16,6 +16,10 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setFilterVisible(state, payload) {
       state.filterVisible = payload
     },

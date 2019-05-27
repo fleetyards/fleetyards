@@ -13,6 +13,9 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
   },
   /* eslint-enable no-param-reassign */
 })

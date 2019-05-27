@@ -25,15 +25,22 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setAuthToken(state, payload) {
       state.authToken = payload
     },
+
     setAuthTokenRenewAt(state, payload) {
       state.authTokenRenewAt = payload
     },
+
     setCurrentUser(state, payload) {
       state.currentUser = payload
     },
+
     setCitizen(state, payload) {
       state.citizen = payload
     },

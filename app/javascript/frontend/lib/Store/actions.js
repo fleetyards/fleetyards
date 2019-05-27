@@ -1,8 +1,6 @@
-import getDefaultState from './state'
-
 export default {
-  reset({ state, dispatch }) {
-    Object.assign(state, getDefaultState())
+  reset({ dispatch, commit }) {
+    commit('reset')
     dispatch('app/reset')
     dispatch('session/reset')
     dispatch('hangar/reset')

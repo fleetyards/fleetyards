@@ -8,6 +8,8 @@ import getStoreModules from './modules'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  strict: true,
+
   state: getDefaultState(),
 
   modules: getStoreModules(),
@@ -26,6 +28,10 @@ const store = new Vuex.Store({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setStoreVersion(state, payload) {
       state.storeVersion = payload
     },
