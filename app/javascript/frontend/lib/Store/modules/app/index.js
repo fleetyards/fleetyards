@@ -32,6 +32,10 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setCheckVersionIntervalHandle(state, payload) {
       state.checkVersionIntervalHandle = payload
     },

@@ -20,6 +20,10 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setPrices(state, payload) {
       state.prices = payload
     },

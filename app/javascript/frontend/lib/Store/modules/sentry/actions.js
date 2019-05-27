@@ -1,11 +1,9 @@
-import getDefaultState from './state'
-
 export default {
-  reset({ state }) {
-    Object.assign(state, getDefaultState())
+  reset({ commit }) {
+    commit('reset')
   },
 
-  add({ state }, payload) {
-    state.errors.push(payload)
+  add({ commit }, payload) {
+    commit('addError', payload)
   },
 }

@@ -2,7 +2,6 @@ import { apiClient } from 'frontend/lib/ApiClient'
 import {
   format, parse, differenceInMinutes, isBefore, subMinutes,
 } from 'date-fns'
-import getDefaultState from './state'
 
 const getLeeway = (expiresAt) => {
   const leewayAmount = differenceInMinutes(expiresAt, new Date()) / 3
@@ -10,8 +9,8 @@ const getLeeway = (expiresAt) => {
 }
 
 export default {
-  reset({ state }) {
-    Object.assign(state, getDefaultState())
+  reset({ commit }) {
+    commit('reset')
   },
 
   login({ commit }, payload) {

@@ -1,11 +1,10 @@
 import { apiClient } from 'frontend/lib/ApiClient'
-import getDefaultState from './state'
 
 const CHECK_VERSION_INTERVAL = 60 * 1000 // 60s
 
 export default {
-  reset({ state }) {
-    Object.assign(state, getDefaultState())
+  reset({ commit }) {
+    commit('reset')
   },
 
   async init({ commit, dispatch }) {
@@ -20,12 +19,12 @@ export default {
     }
   },
 
-  add({ state }, payload) {
-    state.ships.push(payload)
+  add({ commit }, payload) {
+    commit('add', payload)
   },
 
-  remove({ state }, payload) {
-    state.ships.splice(state.ships.indexOf(payload), 1)
+  remove({ commit }, payload) {
+    commit('remove', payload)
   },
 
   toggleDetails({ commit, state }) {

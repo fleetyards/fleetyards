@@ -20,6 +20,10 @@ export default () => ({
 
   /* eslint-disable no-param-reassign */
   mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
     setBackRoute(state, payload) {
       state.backRoute = payload
     },

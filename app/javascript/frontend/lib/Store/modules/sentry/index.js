@@ -10,5 +10,13 @@ export default () => ({
 
   getters: {},
 
-  mutations: {},
+  mutations: {
+    reset(state) {
+      Object.assign(state, getDefaultState())
+    },
+
+    addError(state, payload) {
+      state.errors.push(payload)
+    },
+  },
 })
