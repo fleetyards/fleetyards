@@ -96,8 +96,12 @@ console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach(registration => registration.unregister())
+    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+      // Registration was successful
+      console.info('ServiceWorker registration successful with scope: ', registration.scope)
+    }, (err) => {
+      // registration failed :(
+      console.error('ServiceWorker registration failed: ', err)
     })
   }
 
