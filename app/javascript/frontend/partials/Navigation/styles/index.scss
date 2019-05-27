@@ -12,11 +12,6 @@ nav {
     position: fixed;
     right: 20px;
     top: 20px;
-
-    span {
-      font-size: 15px;
-      padding: 6px 10px;
-    }
   }
 
   .nav-toggle {
@@ -54,6 +49,17 @@ nav {
       margin-top: 4px;
       transform: rotate(-45deg);
       transform-origin: 10% 90%;
+    }
+
+    .update-icon {
+      position: absolute;
+      top: 12px;
+      right: 8px;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background-color: $warning;
+      transition: all ease .5s;
     }
 
     &.collapsed {
@@ -123,6 +129,12 @@ nav {
           &::after {
             transition: all ease $transition-base-speed;
             opacity: 1;
+          }
+
+          &.reload {
+            color: $warning;
+            font-weight: bold;
+            text-align: center;
           }
         }
 

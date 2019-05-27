@@ -142,7 +142,8 @@
       "overview": "Overview",
       "starsystems": "By Starsystems",
       "shops": "Shops"
-    }
+    },
+    "reload": "Update available!"
   },
   "pagination": {
     "previous": "Previous Page",

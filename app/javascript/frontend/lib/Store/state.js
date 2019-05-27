@@ -7,6 +7,4 @@ export default () => ({
   previousRoute: null,
   online: true,
   filters: {},
-  navCollapsed: true,
-  overlayVisible: false,
 })

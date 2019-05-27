@@ -38,7 +38,7 @@
         </span>
       </h2>
       <div v-if="image.error">
-        <span class="label label-danger">
+        <span class="pill pill-danger">
           {{ $t('labels.image.error') }}
         </span>
       </div>

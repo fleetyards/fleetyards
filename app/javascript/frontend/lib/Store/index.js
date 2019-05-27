@@ -20,14 +20,6 @@ const store = new Vuex.Store({
     previousRoute(state) {
       return state.previousRoute
     },
-
-    navCollapsed(state) {
-      return state.navCollapsed
-    },
-
-    overlayVisible(state) {
-      return state.overlayVisible
-    },
   },
 
   actions,
@@ -64,26 +56,6 @@ const store = new Vuex.Store({
 
     setFilters(state, payload) {
       state.filters = Object.assign({}, state.filters, payload)
-    },
-
-    toggleNav(state) {
-      state.navCollapsed = !state.navCollapsed
-    },
-
-    showOverlay(state) {
-      state.overlayVisible = true
-    },
-
-    hideOverlay(state) {
-      state.overlayVisible = false
-    },
-
-    openNav(state) {
-      state.navCollapsed = false
-    },
-
-    closeNav(state) {
-      state.navCollapsed = true
     },
   },
   /* eslint-enable no-param-reassign */

@@ -12,11 +12,21 @@ export default () => ({
     version(state) {
       return state.version
     },
+
     codename(state) {
       return state.codename
     },
+
     isUpdateAvailable(state) {
       return state.version !== window.APP_VERSION
+    },
+
+    navCollapsed(state) {
+      return state.navCollapsed
+    },
+
+    overlayVisible(state) {
+      return state.overlayVisible
     },
   },
 
@@ -25,11 +35,33 @@ export default () => ({
     setCheckVersionIntervalHandle(state, payload) {
       state.checkVersionIntervalHandle = payload
     },
+
     setVersion(state, payload) {
       state.version = payload
     },
+
     setCodename(state, payload) {
       state.codename = payload
+    },
+
+    toggleNav(state) {
+      state.navCollapsed = !state.navCollapsed
+    },
+
+    openNav(state) {
+      state.navCollapsed = false
+    },
+
+    closeNav(state) {
+      state.navCollapsed = true
+    },
+
+    showOverlay(state) {
+      state.overlayVisible = true
+    },
+
+    hideOverlay(state) {
+      state.overlayVisible = false
     },
   },
   /* eslint-enable no-param-reassign */

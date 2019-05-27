@@ -311,6 +311,8 @@ export default {
   computed: {
     ...mapGetters([
       'previousRoute',
+    ]),
+    ...mapGetters('app', [
       'overlayVisible',
     ]),
     ...mapGetters('models', [

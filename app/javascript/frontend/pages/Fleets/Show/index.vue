@@ -4,15 +4,6 @@
       <div class="col-xs-12">
         <div class="row headlines">
           <div class="col-xs-12 col-md-8">
-            <router-link
-              :to="{ name: 'fleets' }"
-              class="to-fleetyards"
-            >
-              <i class="fal fa-chevron-left" />
-              <span class="brand">
-                {{ $t('app') }}
-              </span>
-            </router-link>
             <h1 v-if="fleet">
               <img :src="fleet.logo">
               <a
@@ -36,21 +27,21 @@
               </span>
             </h1>
             <h2 v-if="fleet">
-              <span class="label label-success">
+              <span class="pill pill-success">
                 {{ fleet.archetype }}
               </span>
-              <span class="label label-danger">
+              <span class="pill pill-danger">
                 {{ fleet.commitment }}
               </span>
               <span
                 v-if="fleet.rpg"
-                class="label label-info"
+                class="pill"
               >
                 {{ $t('labels.fleet.rpg') }}
               </span>
               <span
                 v-if="fleet.exclusive"
-                class="label label-info"
+                class="pill"
               >
                 {{ $t('labels.fleet.exclusive') }}
               </span>

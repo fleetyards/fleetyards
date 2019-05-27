@@ -54,7 +54,7 @@ export default {
   },
   mixins: [Updates, CurrentUser, RenewSession],
   computed: {
-    ...mapGetters([
+    ...mapGetters('app', [
       'navCollapsed',
       'overlayVisible',
     ]),

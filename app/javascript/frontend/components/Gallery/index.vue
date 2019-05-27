@@ -120,12 +120,12 @@ export default {
     },
     open(index = 0) {
       this.index = parseInt(index, 10)
-      this.$store.commit('showOverlay')
+      this.$store.commit('app/showOverlay')
       this.setup()
       this.gallery.init()
     },
     onClose() {
-      this.$store.commit('hideOverlay')
+      this.$store.commit('app/hideOverlay')
     },
     setup() {
       const pswpElement = document.querySelectorAll('.pswp')[0]

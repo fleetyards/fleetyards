@@ -20,6 +20,10 @@
       <span class="icon-bar top-bar" />
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
+      <i
+        v-if="isUpdateAvailable && navCollapsed"
+        class="update-icon"
+      />
     </button>
     <div
       v-if="nodeEnv"
@@ -121,6 +125,21 @@
               </li>
             </b-collapse>
           </li>
+        </ul>
+        <ul v-if="isUpdateAvailable">
+          <li
+            v-if="isAuthenticated"
+            class="divider"
+          />
+          <li>
+            <a
+              class="reload"
+              @click="reload"
+            >
+              {{ $t('nav.reload') }}
+            </a>
+          </li>
+          <li class="divider" />
         </ul>
         <ul>
           <router-link
@@ -258,8 +277,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'navCollapsed',
       'mobile',
+    ]),
+    ...mapGetters('app', [
+      'navCollapsed',
       'isUpdateAvailable',
     ]),
     ...mapGetters('session', [
@@ -269,11 +290,11 @@ export default {
     ]),
     environmentLabelClasses() {
       const cssClasses = {
-        development: 'success',
+        development: 'warning',
         staging: 'warning',
         production: 'danger',
       }
-      return `label label-${cssClasses[window.NODE_ENV]}`
+      return `pill pill-${cssClasses[window.NODE_ENV]}`
     },
     nodeEnv() {
       if (window.NODE_ENV === 'production') {
@@ -295,7 +316,7 @@ export default {
     this.checkRoutes()
   },
   beforeDestroy() {
-    this.$store.commit('closeNav')
+    this.$store.commit('app/closeNav')
   },
   methods: {
     toggleUserMenu() {
@@ -305,13 +326,13 @@ export default {
       this.stationMenuOpen = !this.stationMenuOpen
     },
     toggle() {
-      this.$store.commit('toggleNav')
+      this.$store.commit('app/toggleNav')
     },
     open() {
-      this.$store.commit('openNav')
+      this.$store.commit('app/openNav')
     },
     close() {
-      this.$store.commit('closeNav')
+      this.$store.commit('app/closeNav')
     },
     checkRoutes() {
       const { path } = this.$route

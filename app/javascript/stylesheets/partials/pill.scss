@@ -1,0 +1,24 @@
+.pill {
+  font-size: 15px;
+  padding: 6px 10px;
+  display: inline-block;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: $border-radius-base;
+  background-color: $primary;
+
+  &.pill-success {
+    background-color: $success;
+  }
+
+  &.pill-danger {
+    background-color: $danger;
+  }
+
+  &.pill-warning {
+    background-color: $warning;
+  }
+}
