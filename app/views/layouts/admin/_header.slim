@@ -14,10 +14,19 @@ nav#main-nav.navbar.navbar-default.navbar-fixed-top role="navigation"
       - if admin_user_signed_in?
         = render "layouts/admin/nav"
       = render "layouts/admin/user_nav"
-      - unless Rails.env.production?
-        .environment-label
-          span.label class="#{Rails.env.development? ? 'label-danger' : 'label-warning'}"
-            = Rails.env.upcase
+      ruby:
+        css_classes = {
+          development: 'success',
+          staging: 'warning',
+          production: 'danger'
+        }
+      .environment-label
+        span.label class="label-#{css_classes[Rails.env.to_sym]}"
+          i class="far fa-info-circle"
           '
-          span.label class="#{Rails.env.development? ? 'label-danger' : 'label-warning'}"
-            = Git.revision_short
+          = Rails.env.upcase
+        '
+        span.label class="label-#{css_classes[Rails.env.to_sym]}"
+          i class="far fa-fingerprint"
+          '
+          = Git.revision_short

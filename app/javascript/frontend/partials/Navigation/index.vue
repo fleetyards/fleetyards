@@ -25,8 +25,14 @@
       v-if="nodeEnv"
       class="environment-label"
     >
-      <span :class="environmentLabelClasses">{{ nodeEnv }}</span>
-      <span :class="environmentLabelClasses">{{ gitRevision }}</span>
+      <span :class="environmentLabelClasses">
+        <i class="far fa-info-circle" />
+        {{ nodeEnv }}
+      </span>
+      <span :class="environmentLabelClasses">
+        <i class="far fa-fingerprint" />
+        {{ gitRevision }}
+      </span>
     </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
     <div class="nav-container">
@@ -262,13 +268,12 @@ export default {
       'isAuthenticated',
     ]),
     environmentLabelClasses() {
-      const cssClasses = ['label']
-      if (window.NODE_ENV === 'development') {
-        cssClasses.push('label-danger')
-      } else {
-        cssClasses.push('label-warning')
+      const cssClasses = {
+        development: 'success',
+        staging: 'warning',
+        production: 'danger',
       }
-      return cssClasses
+      return `label label-${cssClasses[window.NODE_ENV]}`
     },
     nodeEnv() {
       if (window.NODE_ENV === 'production') {

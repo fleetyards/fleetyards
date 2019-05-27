@@ -109,10 +109,11 @@ a.thumbnail.active {
 .environment-label {
   position: fixed;
   right: 100px;
-  top: 15px;
+  top: 11px;
 
   span {
     font-size: 15px;
+    padding: 6px 10px;
   }
 }
 
