@@ -72,7 +72,7 @@ class Release < Thor
       next_version, name = update_version_file(type, next_name)
 
       run("git add #{version_file}")
-      run("git commit -m 'chore(release): new Version #{next_version} (#{name})'")
+      run("git commit -m 'chore(release): new Version #{next_version} (#{name}) [ci skip]' --no-verify")
       run("git tag #{next_version} -m 'Release #{next_version} (#{name})'")
     end
   end

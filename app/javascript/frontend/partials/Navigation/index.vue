@@ -289,12 +289,13 @@ export default {
       'isAuthenticated',
     ]),
     environmentLabelClasses() {
-      const cssClasses = {
-        development: 'warning',
-        staging: 'warning',
-        production: 'danger',
+      const cssClasses = ['pill']
+      if (window.NODE_ENV === 'staging') {
+        cssClasses.push('pill-warning')
+      } else if (window.NODE_ENV === 'production') {
+        cssClasses.push('pill-danger')
       }
-      return `pill pill-${cssClasses[window.NODE_ENV]}`
+      return cssClasses
     },
     nodeEnv() {
       if (window.NODE_ENV === 'production') {
