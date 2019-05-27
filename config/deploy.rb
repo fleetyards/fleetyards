@@ -18,6 +18,7 @@ set :initial_deploy, false
 
 set :linked_dirs, [
   'public/uploads',
+  'public/compare',
   'public/packs',
   'log',
   'tmp/cache',
