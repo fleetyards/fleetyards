@@ -44,7 +44,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
-    ahoy_matey (2.2.0)
+    ahoy_matey (2.2.1)
       addressable
       browser (~> 2.0)
       device_detector
@@ -287,7 +287,7 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-    public_suffix (3.0.3)
+    public_suffix (3.1.0)
     puma (3.12.1)
     raabro (1.1.6)
     rack (2.0.7)
