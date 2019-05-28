@@ -4,7 +4,7 @@ require 'mini_magick'
 
 module Frontend
   class BaseController < ApplicationController
-    protect_from_forgery except: %i[service_worker embed]
+    protect_from_forgery except: %i[service_worker embed precache_manifest]
 
     def index
       route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
@@ -170,10 +170,24 @@ module Frontend
       render 'frontend/embed_test', layout: 'embed_test'
     end
 
+    def precache_manifest
+      respond_to do |format|
+        format.js do
+          render 'frontend/precache_manifest', layout: false
+        end
+        format.all do
+          redirect_to '/404'
+        end
+      end
+    end
+
     def service_worker
       respond_to do |format|
         format.js do
           render 'frontend/service_worker', layout: false
+        end
+        format.all do
+          redirect_to '/404'
         end
       end
     end

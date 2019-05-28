@@ -55,6 +55,7 @@ namespace :frontend, path: '', constraints: lambda { |req| req.subdomain.blank? 
   get 'embed' => 'base#embed'
   get 'embed-test' => 'base#embed_test'
 
+  get 'precache-manifest.:id' => 'base#precache_manifest'
   get 'service-worker' => 'base#service_worker'
 
   match '404' => 'base#not_found', via: :all
