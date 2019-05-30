@@ -10,7 +10,7 @@
           v-model="newImages"
           :thread="3"
           :post-action="postAction"
-          drop="#dropzone"
+          drop="body"
           :headers="headers"
           :data="metaData"
           multiple
@@ -74,11 +74,10 @@
 
     <div
       v-if="isUploadActive"
-      id="dropzone"
       :class="{
-        in: $refs.upload && $refs.upload.dropActive
+        'dropzone-active': $refs.upload && $refs.upload.dropActive,
       }"
-      class="fade well drop-active"
+      class="dropzone"
     >
       <h3>{{ $t('labels.image.dropzone') }}</h3>
     </div>
@@ -222,7 +221,18 @@ export default {
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     },
   },
+  mounted() {
+    document.addEventListener('paste', this.addFileFromClipboard)
+  },
+  destroyed() {
+    document.removeEventListener('paste')
+  },
   methods: {
+    addFileFromClipboard(event) {
+      if (event.clipboardData && event.clipboardData.files.length > 0) {
+        this.$refs.upload.add(event.clipboardData.files[0])
+      }
+    },
     selectImages() {
       this.$refs.upload.$el.querySelector('input').click()
     },
@@ -273,6 +283,10 @@ export default {
         if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
           prevent()
         }
+      }
+
+      if (!newImage) {
+        return
       }
 
       /* eslint-disable no-param-reassign */

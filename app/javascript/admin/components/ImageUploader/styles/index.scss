@@ -1,5 +1,31 @@
+@import '~stylesheets/variables';
+
 .flex-list > .flex-list-heading > .flex-list-row {
   .actions {
     min-width: 245px;
+  }
+}
+
+.dropzone {
+  transition: opacity, background-color, height $transition-base-speed ease;
+  background-color: $gray-darker;
+  border: 1px solid $gray-darker;
+  border-radius: $border-radius-base;
+  text-align: center;
+  opacity: 0;
+  height: 0;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  &.dropzone-active {
+    opacity: 1;
+    height: 100px;
+    margin-bottom: 20px;
+    background-color: $success;
   }
 }
