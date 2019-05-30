@@ -16,7 +16,7 @@ en:
         new: New Manufacturer
       model:
         edit: Edit %{model}
-        images: Imageuplaod for %{model}
+        images: Imageupload for %{model}
         index: Models
         new: New Model
       user:
