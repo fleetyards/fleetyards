@@ -272,7 +272,7 @@ export default {
     async inputImage(newImage, oldImage) {
       if (newImage && oldImage && !newImage.active && oldImage.active) {
         if (newImage.xhr && newImage.xhr.status === 200) {
-          this.$emit('fileUploaded', newImage)
+          this.$emit('imageUploaded', newImage)
           const index = this.newImages.indexOf(newImage)
           this.newImages.splice(index, 1)
         }
