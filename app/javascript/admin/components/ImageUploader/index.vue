@@ -171,7 +171,7 @@ export default {
   data() {
     return {
       newImages: [],
-      postAction: '/api/v1/images',
+      postAction: `${window.API_ENDPOINT}/images`,
       uploadCount: 1,
       headers: {
         Accept: 'application/json',
