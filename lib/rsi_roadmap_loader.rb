@@ -10,7 +10,11 @@ class RsiRoadmapLoader < RsiBaseLoader
     begin
       roadmap_data = JSON.parse(response.body)
 
-      parse_roadmap(roadmap_data)
+      items = parse_roadmap(roadmap_data)
+
+      # cleanup_changes
+
+      items
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
       Rails.logger.error "Roadmap Data could not be parsed: #{response.body}"
@@ -24,8 +28,10 @@ class RsiRoadmapLoader < RsiBaseLoader
       release['cards'].each do |card|
         item = RoadmapItem.find_or_create_by(rsi_id: card['id'])
 
+        release_invalid = release['name'] == "#{item.release}.0" || item.release == "#{release['name']}.0"
+
         item.update!(
-          release: release['name'],
+          release: (release['name'] unless release_invalid),
           release_description: release['description'],
           rsi_release_id: release['id'],
           released: release['released'].zero? ? false : true,
@@ -65,5 +71,24 @@ class RsiRoadmapLoader < RsiBaseLoader
 
   private def strip_roadmap_name(name)
     strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
+  end
+
+  private def cleanup_changes
+    PaperTrail::Version.where(item_type: 'RoadmapItem').select do |item|
+      item.changeset.key?('release')
+    end.select do |item|
+      changes = item.changeset['release']
+      changes[0] == "#{changes[1]}.0"
+    end.each do |item|
+      if item.changeset.keys.count == 1
+        item.destroy
+      else
+        changes = item.changeset.except('release')
+        changes = changes.to_hash if changes.is_a?(HashWithIndifferentAccess)
+        changes = ::YAML.dump(changes)
+
+        item.update(object_changes: changes)
+      end
+    end
   end
 end
