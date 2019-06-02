@@ -28,10 +28,8 @@ class RsiRoadmapLoader < RsiBaseLoader
       release['cards'].each do |card|
         item = RoadmapItem.find_or_create_by(rsi_id: card['id'])
 
-        release_invalid = release['name'] == "#{item.release}.0" || item.release == "#{release['name']}.0"
-
         item.update!(
-          release: (release['name'] unless release_invalid),
+          release: release_name(item, release),
           release_description: release['description'],
           rsi_release_id: release['id'],
           released: release['released'].zero? ? false : true,
@@ -71,6 +69,12 @@ class RsiRoadmapLoader < RsiBaseLoader
 
   private def strip_roadmap_name(name)
     strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
+  end
+
+  private def release_name(item, release)
+    return item.release if release['name'] == "#{item.release}.0" || item.release == "#{release['name']}.0"
+
+    release['name']
   end
 
   private def cleanup_changes

@@ -60,10 +60,11 @@
           </li>
         </ul>
         <b-progress :max="item.tasks">
-          <div class="progress-label">
-            {{ completed }} {{ $t('labels.roadmap.tasks', {
-              count: tasks,
-            }) }}
+          <div
+            v-tooltip="progressLabel"
+            class="progress-label"
+          >
+            {{ completedPercent }} %
             <template v-if="showInprogress">
               {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
@@ -119,11 +120,20 @@ export default {
       }
       return 0
     },
+    completedPercent() {
+      if (!this.item.tasks) {
+        return '?'
+      }
+      return Math.round(100 * this.completed / this.tasks)
+    },
     inprogress() {
       if (this.item.inprogress) {
         return this.item.inprogress - this.completed
       }
       return 0
+    },
+    progressLabel() {
+      return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
     },
     storeImage() {
       if (this.item.storeImage) {

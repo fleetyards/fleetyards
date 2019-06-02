@@ -187,7 +187,10 @@
         "one": "of %{count} Task",
         "other": "of %{count} Tasks"
       },
-      "inprogress": "( %{count} in Progress )",
+      "inprogress": {
+        "one": "( %{count} Task in Progress )",
+        "other": "( %{count} Tasks in Progress )"
+      },
       "ships": {
         "one": "%{count} Ship",
         "other": "%{count} Ships"
