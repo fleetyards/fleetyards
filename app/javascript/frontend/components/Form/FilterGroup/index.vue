@@ -3,6 +3,7 @@
     <div
       :class="{
         active: visible,
+        disabled: disabled,
         selected: selectedOptions.length > 0,
       }"
       class="filter-list-title"
@@ -136,6 +137,10 @@ export default {
       default: 'icon',
     },
     multiple: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -308,6 +313,9 @@ export default {
       this.$emit('input', this.value.filter(item => item !== option))
     },
     toggle() {
+      if (this.disabled) {
+        return
+      }
       this.visible = !this.visible
       this.focusSearch()
     },

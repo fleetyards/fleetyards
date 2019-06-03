@@ -39,7 +39,7 @@ en:
     compare_ships:
       description:
         default: "Compare your favorite Ships."
-        vs: "Compare %{model_a} vs. %{model_b}."
+        vs: "Compare %{models}."
     ship_images:
       description: "%{model} Images"
     ship_videos:

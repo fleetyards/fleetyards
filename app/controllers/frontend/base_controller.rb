@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'mini_magick'
+require 'image_processing/mini_magick'
 
 module Frontend
   class BaseController < ApplicationController
@@ -81,18 +81,16 @@ module Frontend
     end
 
     def compare_models
-      @model_a = Model.find_by(['lower(slug) = :value', { value: (params[:shipA] || '').downcase }])
-      @model_b = Model.find_by(['lower(slug) = :value', { value: (params[:shipB] || '').downcase }])
+      @models = Model.where(slug: (compare_params[:models] || []).map(&:downcase)).order(name: :asc).limit(8).all
       @title = I18n.t('title.frontend.compare_ships')
       @description = I18n.t('meta.compare_ships.description.default')
       @og_type = 'article'
-      if @model_a.present? && @model_b.present?
+      if @models.present?
         @description = I18n.t(
           'meta.compare_ships.description.vs',
-          model_a: "#{@model_a.manufacturer.code} #{@model_a.name}",
-          model_b: "#{@model_b.manufacturer.code} #{@model_b.name}"
+          models: @models.map(&:name).join(' vs. ')
         )
-        @og_image = compare_image(@model_a, @model_b)
+        @og_image = compare_image(@models)
       end
       render 'frontend/index'
     end
@@ -203,35 +201,44 @@ module Frontend
       "#{name}'s"
     end
 
-    private def compare_image(model_a, model_b)
-      filename = "#{model_a.slug}-#{model_b.slug}.jpg"
+    private def compare_image(models)
+      filename_base = models.map(&:slug).join('-')
+      filename = "#{filename_base}.jpg"
       path = Rails.root.join('public', 'compare', filename)
       return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
 
-      FileUtils.cp(model_a.store_image.file.path, "/tmp/#{model_a.slug}")
-      FileUtils.cp(model_a.store_image.file.path, "/tmp/#{model_a.slug}-#{model_b.slug}-base")
-      FileUtils.cp(model_b.store_image.file.path, "/tmp/#{model_b.slug}")
-      base_image = MiniMagick::Image.new("/tmp/#{model_a.slug}-#{model_b.slug}-base")
-      first_image = MiniMagick::Image.new("/tmp/#{model_a.slug}")
-      second_image = MiniMagick::Image.new("/tmp/#{model_b.slug}")
-
-      first_image.crop "#{first_image.width / 2}x#{first_image.height}+#{(first_image.width / 2) / 2}+0"
-      second_image.crop "#{second_image.width / 2}x#{second_image.height}+#{(second_image.width / 2) / 2}+0"
-
-      composite = base_image.composite(first_image) do |c|
-        c.compose 'Over'
-        c.geometry '+0+0'
-      end
-      composite = composite.composite(second_image) do |c|
-        c.compose 'Over'
-        c.geometry "+#{base_image.width / 2}+0"
+      models.each_with_index do |model, index|
+        FileUtils.cp(model.store_image.file.path, "/tmp/#{model.slug}")
+        FileUtils.cp(model.store_image.file.path, "/tmp/#{filename_base}-base") if index.zero?
       end
 
-      composite.write(path)
+      base_image = MiniMagick::Image.new("/tmp/#{filename_base}-base")
+      base_image_pipeline = ImageProcessing::MiniMagick.source("/tmp/#{filename_base}-base")
+
+      images = models.map do |model|
+        image = MiniMagick::Image.new("/tmp/#{model.slug}")
+        ImageProcessing::MiniMagick
+          .source("/tmp/#{model.slug}")
+          .resize_to_fill!(image.width / models.size, image.height)
+      end
+
+      composite = base_image_pipeline.composite(images.first)
+
+      images.each_with_index do |image, index|
+        next if index.zero?
+
+        composite = composite.composite(image, offset: [(base_image.width / models.size) * index, 0])
+      end
+
+      composite.call(destination: path)
 
       File.chmod(0o644, path)
 
       "https://api.fleetyards.net/compare/#{filename}"
+    end
+
+    private def compare_params
+      @compare_params ||= params.permit(models: [])
     end
 
     private def model_record(slug = params[:slug])

@@ -246,8 +246,11 @@
       "totalMaxCrew": "Max. Crew",
       "totalCargo": "Total Cargo"
     },
+    "selectModel": "Select a Ship",
     "compare": {
-      "selectModel": "Select a Ship"
+      "removeModel": "Remove Ship",
+      "addModel": "Add a Ship",
+      "enough": "Don't you think 8 Ships are enough? ;)"
     },
     "cargoRoutes": "Cargo routes",
     "uecPerUnit": "aUEC / Unit",
@@ -300,6 +303,11 @@
       "size": "Size: %{size}"
     },
     "hardpoint": {
+      "legend": {
+        "headline": "Legend",
+        "slotTaken": "Slot taken",
+        "slotAvailable": "Slot available"
+      },
       "mounts": "Total Mounts",
       "quantity": "Per Mount",
       "size": "Size",
@@ -506,7 +514,6 @@
     "verify": "Verify",
     "findModel": "Type to find a Ship",
     "find": "Type to search",
-    "selectModel": "Select a Cargoship",
     "sortBy": "Sort by",
     "back": "Back",
     "open": "Open",
@@ -582,7 +589,7 @@
     },
     "compare": {
       "models": {
-        "info": "To start select two Ships you want to compare."
+        "info": "To start select at least two and not more than eight Ships you want to compare."
       }
     },
     "rsiVerification": {

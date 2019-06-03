@@ -1,38 +1,40 @@
 <template>
-  <div class="row flex-row">
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <HardpointCategory
-        v-for="category in ['RSIAvionic', 'RSIModular']"
-        :key="category"
-        :category="category"
-        :hardpoints="hardpointsForCategory(category)"
+  <div>
+    <div class="row compare-row compare-section">
+      <div class="col-xs-12 compare-row-label">
+        <div
+          :class="{
+            active: visible
+          }"
+          class="text-right metrics-title"
+          @click="toggle"
+        >
+          {{ $t('labels.hardpoint.legend.headline') }}
+          <i class="fa fa-chevron-right" />
+        </div>
+      </div>
+      <div
+        v-for="model in models"
+        :key="`${model.slug}-placeholder`"
+        class="col-xs-12 compare-row-item"
       />
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <HardpointCategory
-        v-for="category in ['RSIPropulsion', 'RSIThruster']"
-        :key="category"
-        :category="category"
-        :hardpoints="hardpointsForCategory(category)"
-      />
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <HardpointCategory
-        v-for="category in ['RSIWeapon']"
-        :key="category"
-        :category="category"
-        :hardpoints="hardpointsForCategory(category)"
-      />
-      <div class="row">
-        <div class="col-xs-12">
-          <h2 class="hardpoint-category-label">
-            Legend
-          </h2>
-          <Panel>
+    <b-collapse
+      id="legend"
+      :visible="visible"
+    >
+      <div class="row compare-row">
+        <div class="col-xs-12 compare-row-label text-right metrics-label" />
+        <div
+          v-for="(model, index) in models"
+          :key="`${model.slug}-legend`"
+          class="col-xs-6 text-center compare-row-item"
+        >
+          <Panel v-if="index === 0">
             <div class="hardpoint-category hardpoint-legend">
               <div class="row">
                 <div class="col-xs-12 col-md-6 test-hardpoint">
-                  <h3>Slot taken</h3>
+                  <h3>{{ $t('labels.hardpoint.legend.slotTaken') }}</h3>
                   <HardpointIcon
                     key="testHardpoint"
                     :hardpoint="testHardpoint"
@@ -51,7 +53,7 @@
                   </div>
                 </div>
                 <div class="col-xs-12 col-md-6 test-hardpoint-empty">
-                  <h3>Slot available</h3>
+                  <h3>{{ $t('labels.hardpoint.legend.slotAvailable') }}</h3>
                   <HardpointIcon
                     key="testHardpointEmpty"
                     :hardpoint="testHardpointEmpty"
@@ -116,29 +118,28 @@
           </Panel>
         </div>
       </div>
-    </div>
+    </b-collapse>
   </div>
 </template>
 
 <script>
 import Panel from 'frontend/components/Panel'
-import HardpointCategory from './Category'
-import HardpointIcon from './Icon'
+import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
 
 export default {
   components: {
-    HardpointCategory,
     HardpointIcon,
     Panel,
   },
   props: {
-    hardpoints: {
+    models: {
       type: Array,
       required: true,
     },
   },
   data() {
     return {
+      visible: this.models.length > 0,
       testHardpoint: {
         size: 'S',
         quantity: 6,
@@ -150,9 +151,14 @@ export default {
       },
     }
   },
+  watch: {
+    models() {
+      this.visible = this.models.length > 0
+    },
+  },
   methods: {
-    hardpointsForCategory(category) {
-      return this.hardpoints.filter(hardpoint => hardpoint.class === category)
+    toggle() {
+      this.visible = !this.visible
     },
   },
 }
