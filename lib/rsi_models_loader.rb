@@ -111,7 +111,7 @@ class RsiModelsLoader < RsiBaseLoader
       nil
     end
 
-    if model.last_updated_at.blank? || model.last_updated_at < new_time_modified
+    if model.last_updated_at.blank? || model.last_updated_at < new_time_modified || model.production_status.blank?
       model.update(
         production_status: data['production_status'],
         production_note: data['production_note']
