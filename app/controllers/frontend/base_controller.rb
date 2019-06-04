@@ -208,17 +208,17 @@ module Frontend
       return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|
-        FileUtils.cp(model.store_image.file.path, "/tmp/#{model.slug}")
-        FileUtils.cp(model.store_image.file.path, "/tmp/#{filename_base}-base") if index.zero?
+        FileUtils.cp(model.store_image.file.path, Rails.root.join('tmp', model.slug))
+        FileUtils.cp(model.store_image.file.path, Rails.root.join('tmp', "#{filename_base}-base")) if index.zero?
       end
 
-      base_image = MiniMagick::Image.new("/tmp/#{filename_base}-base")
-      base_image_pipeline = ImageProcessing::MiniMagick.source("/tmp/#{filename_base}-base")
+      base_image = MiniMagick::Image.new(Rails.root.join('tmp', "#{filename_base}-base"))
+      base_image_pipeline = ImageProcessing::MiniMagick.source(Rails.root.join('tmp', "#{filename_base}-base"))
 
       images = models.map do |model|
-        image = MiniMagick::Image.new("/tmp/#{model.slug}")
+        image = MiniMagick::Image.new(Rails.root.join('tmp', model.slug))
         ImageProcessing::MiniMagick
-          .source("/tmp/#{model.slug}")
+          .source(Rails.root.join('tmp', model.slug))
           .resize_to_fill!(image.width / models.size, image.height)
       end
 
@@ -233,6 +233,11 @@ module Frontend
       composite.call(destination: path)
 
       File.chmod(0o644, path)
+
+      FileUtils.rm(Rails.root.join('tmp', "#{filename_base}-base"))
+      models.each do |model|
+        FileUtils.rm(Rails.root.join('tmp', model.slug))
+      end
 
       "https://api.fleetyards.net/compare/#{filename}"
     end
