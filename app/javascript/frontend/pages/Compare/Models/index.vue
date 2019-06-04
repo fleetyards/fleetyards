@@ -28,7 +28,7 @@
                 />
               </div>
               <div
-                v-for="model in models"
+                v-for="model in sortedModels"
                 :key="`${model.slug}-image`"
                 class="col-xs-12 compare-row-item"
               >
@@ -55,7 +55,7 @@
             </div>
 
             <div
-              v-if="!models.length"
+              v-if="!sortedModels.length"
               class="row compare-row"
             >
               <div class="col-xs-12">
@@ -69,15 +69,15 @@
               </div>
             </div>
 
-            <BaseRows :models="models" />
+            <BaseRows :models="sortedModels" />
 
-            <CrewRows :models="models" />
+            <CrewRows :models="sortedModels" />
 
-            <SpeedRows :models="models" />
+            <SpeedRows :models="sortedModels" />
 
-            <CategoryRows :models="models" />
+            <CategoryRows :models="sortedModels" />
 
-            <Legend :models="models" />
+            <Legend :models="sortedModels" />
           </div>
         </div>
       </div>
@@ -117,6 +117,18 @@ export default {
     }
   },
   computed: {
+    sortedModels() {
+      const models = JSON.parse(JSON.stringify(this.models))
+      return models.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1
+        }
+        if (a.name > b.name) {
+          return 1
+        }
+        return 0
+      })
+    },
     selectDisabled() {
       return this.models.length > 7
     },
@@ -136,8 +148,8 @@ export default {
     },
   },
   mounted() {
-    this.form.models.forEach(async (item) => {
-      const model = await this.fetchModel(item)
+    this.form.models.forEach(async (slug) => {
+      const model = await this.fetchModel(slug)
       this.models.push(model)
     })
   },
