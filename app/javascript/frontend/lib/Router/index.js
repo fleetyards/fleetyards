@@ -25,7 +25,7 @@ const router = new Router({
     return qs.parse(query)
   },
   stringifyQuery(query) {
-    const result = qs.stringify(query)
+    const result = qs.stringify(query, { arrayFormat: 'brackets' })
     return result ? (`?${result}`) : ''
   },
   routes,

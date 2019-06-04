@@ -106,8 +106,8 @@ export default {
     },
     async fetchModel() {
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
-        without_images: true,
-        without_videos: true,
+        withoutImages: true,
+        withoutVideos: true,
       })
       if (!response.error) {
         this.model = response.data

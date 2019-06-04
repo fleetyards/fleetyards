@@ -395,8 +395,8 @@ export default {
 
       this.loading = true
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
-        without_images: true,
-        without_videos: true,
+        withoutImages: true,
+        withoutVideos: true,
       })
       this.loading = false
       if (!response.error) {

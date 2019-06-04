@@ -17,7 +17,7 @@
         <div class="col-xs-8 col-sm-10">
           <FilterGroup
             v-model="item.modelId"
-            :label="$t('labels.compare.selectModel')"
+            :label="$t('labels.selectModel')"
             :name="`model`"
             :search-label="$t('actions.findModel')"
             :fetch="fetchModels"

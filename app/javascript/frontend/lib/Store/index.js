@@ -8,7 +8,7 @@ import getStoreModules from './modules'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  strict: true,
+  // strict: true,
 
   state: getDefaultState(),
 

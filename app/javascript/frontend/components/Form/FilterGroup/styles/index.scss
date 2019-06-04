@@ -41,6 +41,11 @@
       }
     }
 
+    &.disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
     &.selected {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;

@@ -6,29 +6,7 @@
 @import 'bootstrap-custom';
 @import 'colors/dark_overrides';
 @import 'nprogress-custom';
-@import 'partials/typography';
-@import 'partials/transitions';
-@import 'partials/background';
-@import 'partials/flex';
-@import 'partials/media';
-@import 'partials/noty';
-@import 'partials/form';
-@import 'partials/form-input';
-@import 'partials/buttons';
-@import 'partials/slider';
-@import 'partials/tooltip';
-@import 'partials/loader';
-@import 'partials/hardpoint';
-@import 'partials/small-loader';
-@import 'partials/metrics';
-@import 'partials/labels';
-@import 'partials/tabs';
-@import 'partials/panel';
-@import 'partials/fleetchart';
-@import 'partials/pagination';
-@import 'partials/v-select-overrides';
-@import 'partials/roadmap';
-@import 'partials/pill';
+@import 'partials';
 
 .no-scroll {
   overflow: hidden !important;

@@ -184,6 +184,9 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
+    image_processing (1.9.0)
+      mini_magick (>= 4.9.3, < 5)
+      ruby-vips (>= 2.0.13, < 3)
     inky-rb (1.3.7.5)
       foundation_emails (~> 2)
       nokogiri
@@ -363,6 +366,8 @@ GEM
     ruby-graphviz (1.2.4)
     ruby-prof (0.18.0)
     ruby-progressbar (1.10.1)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_dep (1.5.0)
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
@@ -512,6 +517,7 @@ DEPENDENCIES
   highline
   i18n-js
   i18n-tasks (~> 0.9.18)
+  image_processing (~> 1.0)
   inky-rb
   jbuilder
   jquery-rails
