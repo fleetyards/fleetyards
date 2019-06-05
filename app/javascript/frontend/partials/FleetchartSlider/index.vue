@@ -1,5 +1,5 @@
 <template>
-  <vue-slider
+  <VueSlider
     ref="scaleSlider"
     :value="scale"
     :min="10"
