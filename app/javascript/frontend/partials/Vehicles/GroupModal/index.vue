@@ -60,7 +60,7 @@
             :class="{'has-error has-feedback': errors.has('color')}"
             class="form-group"
           >
-            <swatches
+            <Swatches
               v-model="form.color"
               v-tooltip.right="errors.first('color')"
               v-validate="'required'"
