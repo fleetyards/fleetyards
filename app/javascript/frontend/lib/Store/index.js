@@ -19,6 +19,10 @@ const store = new Vuex.Store({
       return state.mobile
     },
 
+    online(state) {
+      return state.online
+    },
+
     previousRoute(state) {
       return state.previousRoute
     },

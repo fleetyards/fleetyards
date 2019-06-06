@@ -7,8 +7,6 @@ import VueClipboard from 'vue-clipboard2'
 import App from 'frontend/App'
 import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
-import ActionCable from 'actioncable'
-import dataPrefill from 'frontend/lib/DataPrefill'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Ahoy'
@@ -23,6 +21,7 @@ import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
 import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
+import DataPrefetch from 'frontend/lib/DataPrefetch'
 
 console.info(`
 
@@ -40,13 +39,11 @@ TWITTER: https://twitter.com/FleetYardsNet
 
 `)
 
-Vue.prototype.$cable = ActionCable.createConsumer(window.CABLE_ENDPOINT)
-Vue.prototype.$dataPrefill = dataPrefill
-
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18n)
+Vue.use(DataPrefetch)
 
 Vue.use(VueClipboard)
 

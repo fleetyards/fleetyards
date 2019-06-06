@@ -388,7 +388,7 @@ export default {
       this.color3d = !this.color3d
     },
     async fetch() {
-      this.model = this.$dataPrefill('model')
+      this.model = this.$prefetch('model')
       if (this.model) {
         return
       }

@@ -651,12 +651,12 @@
       "failure": "Could not copy Git Revision"
     },
     "signup": {
-      "success": "<b>Welcome to FleetYards.net!</b> Your account has been created.<br>You will receive a confirmation email to activate your account.",
+      "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
       "invalid": "Please resolve the errors before your account can be created.",
       "failure": "We could not create your account. Please try again later."
     },
     "confirm": {
-      "success": "Your account was successfully confirmed.<br>You can now login.<br>Don't forget to add and verify your RSI handle.",
+      "success": "Your account was successfully confirmed.<br>You can now login. <br>Don't forget to add and verify your RSI handle.",
       "failure": "Your account could not be confirmed."
     },
     "requestPasswordChange": {
@@ -690,11 +690,11 @@
       "emailTaken": "E-Mail is already taken.",
       "orgNotFound": "RSI Org could not be found.",
       "handleNotFound": "RSI Citizen could not be found.",
-      "default": "<b>Something wrong happened.</b><br>Have you tried turning it off and on again?"
+      "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
     },
     "account": {
       "destroy": {
-        "success": "<b>Your Account has been destroyed.</b><br>Sad to see you go :'(",
+        "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
         "failure": "We could not destroy your Account! Please try again later."
       }
     }

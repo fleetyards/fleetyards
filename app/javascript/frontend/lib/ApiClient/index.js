@@ -47,7 +47,7 @@ const handleError = async function handleError(error, silent) {
     nprogress.done()
   }
 
-  if (error.message !== 'cancel' && (!error.response || !error.response.data || !error.response.data.message)) {
+  if (error.message !== 'cancel' && Store.getters.online && (!error.response || !error.response.data || !error.response.data.message)) {
     alert(I18n.t('messages.error.default'))
   }
 
