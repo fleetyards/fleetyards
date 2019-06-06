@@ -1,6 +1,9 @@
 @import '~stylesheets/variables';
 
 .compare-models {
+  overflow-x: auto;
+  overflow-y: scroll;
+
   .compare-image {
     height: 180px;
     position: relative;
