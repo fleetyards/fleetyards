@@ -174,7 +174,7 @@
           class="col-xs-6 text-center compare-row-item"
         >
           <span class="metrics-value">
-            {{ $toDollar(model.price) }}
+            {{ $toUEC(model.price) }}
           </span>
         </div>
       </div>
