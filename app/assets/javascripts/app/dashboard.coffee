@@ -1,10 +1,12 @@
 window.App.Dashboard ?= {}
 
+window.App.Dashboard.quickstats = {}
+
 window.App.Dashboard.checkQuickStats = (callback) ->
   $.ajax
     beforeSend: (request) ->
       request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
-    url: '/stats/quick-stats'
+    url: App.Dashboard.quickstats.url
     dataType: "JSON"
     success: (data) ->
       return unless data
