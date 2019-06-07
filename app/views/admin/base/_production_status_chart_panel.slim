@@ -8,7 +8,7 @@
         javascript:
           window.App.Dashboard.addChart({
             id: 'models-by-production-status-chart',
-            url: '#{models_by_production_status_api_v1_stats_url}',
+            url: '#{api_url(models_by_production_status_api_v1_stats_path)}',
             type: 'pie',
             height: '453px',
             tooltip: 'ship-pie',
