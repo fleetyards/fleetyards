@@ -18,6 +18,11 @@ $outerBorderWidth: 2px;
 
   .git-revision {
     cursor: pointer;
+    opacity: .5;
+
+    &.online {
+      opacity: 1;
+    }
   }
 
   .app-footer-border-left,

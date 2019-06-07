@@ -92,6 +92,9 @@
         {{ codename }} ({{ version }})
         <i
           v-tooltip="gitRevision"
+          :class="{
+            online: online,
+          }"
           class="far fa-fingerprint git-revision"
           @click="copyGitRevision"
         />
@@ -106,6 +109,9 @@ import { success, alert } from 'frontend/lib/Noty'
 
 export default {
   computed: {
+    ...mapGetters([
+      'online',
+    ]),
     ...mapGetters('app', [
       'version',
       'codename',

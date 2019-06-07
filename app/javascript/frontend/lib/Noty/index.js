@@ -49,13 +49,21 @@ const notyBackoff = function notyBackoff(text) {
   return true
 }
 
-const displayNotification = function displayNotification(text, type, timeout = 3000) {
-  if (!notyBackoff(text)) {
-    lastNotyAt = new Date()
-    lastNotyText = text
+const displayNotification = function displayNotification(overrides) {
+  const options = {
+    text: null,
+    type: 'info',
+    timeout: 3000,
+    notifyInBackground: true,
+    ...overrides,
+  }
 
-    let displayText = text
-    if (document.visibilityState !== 'visible' && notifyPermissionGranted()) {
+  if (options.text && !notyBackoff(options.text)) {
+    lastNotyAt = new Date()
+    lastNotyText = options.text
+
+    let displayText = options.text
+    if (document.visibilityState !== 'visible' && notifyPermissionGranted() && options.notifyInBackground) {
       notifyInBackground(displayText.replace(/(<([^>]+)>)/ig, ''))
     } else {
       if (Array.isArray(displayText)) {
@@ -63,8 +71,8 @@ const displayNotification = function displayNotification(text, type, timeout = 3
       }
       new Noty({
         text: displayText,
-        type,
-        timeout,
+        type: options.type,
+        timeout: options.timeout,
         layout: 'topRight',
         theme: 'metroui',
         closeWith: ['click', 'button'],
@@ -120,15 +128,26 @@ export function confirm(text, confirmCallback, closeCallback = () => {}) {
 }
 
 export function alert(text) {
-  displayNotification(text, 'error', false)
+  displayNotification({
+    text,
+    type: 'error',
+    timeout: 10000,
+    notifyInBackground: false,
+  })
 }
 
 export function success(text) {
-  displayNotification(text, 'success')
+  displayNotification({
+    text,
+    type: 'success',
+  })
 }
 
 export function info(text) {
-  displayNotification(text, 'info')
+  displayNotification({
+    text,
+    type: 'info',
+  })
 }
 
 export default {
