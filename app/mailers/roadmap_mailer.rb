@@ -7,8 +7,7 @@ class RoadmapMailer < ApplicationMailer
     @changes = changes
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
-      subject: I18n.t(:"mailer.roadmap.admin.subject"),
-      template_name: 'admin'
+      subject: I18n.t(:"mailer.roadmap.admin.subject")
     )
   end
 end
