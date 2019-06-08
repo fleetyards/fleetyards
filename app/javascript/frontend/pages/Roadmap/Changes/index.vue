@@ -35,10 +35,7 @@
             :key="item.id"
             class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
           >
-            <RoadmapItem
-              :item="item"
-              :show-more="false"
-            />
+            <RoadmapItem :item="item" />
           </div>
         </transition-group>
         <EmptyBox v-if="emptyBoxVisible" />
