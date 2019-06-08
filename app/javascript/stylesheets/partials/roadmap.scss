@@ -35,6 +35,36 @@
     }
   }
 
+  .progress {
+    position: relative;
+    margin: 0;
+
+    .progress-label {
+      color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      text-align: center;
+    }
+
+    .progress-bar {
+      background-color: $primary;
+
+      &.completed {
+        background-color: $success;
+      }
+
+      &.active {
+        background-color: $warning;
+      }
+    }
+  }
+
+  .release > .collapse > .progress {
+    margin-bottom: 20px;
+  }
+
   .roadmap-item {
     display: flex;
 
@@ -62,31 +92,6 @@
         border-radius: 50%;
         background-color: $success;
         box-shadow: 0 0 3px $gray-darker;
-      }
-    }
-
-    .progress {
-      position: relative;
-
-      .progress-label {
-        color: #fff;
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        text-align: center;
-      }
-
-      .progress-bar {
-        background-color: $primary;
-
-        &.completed {
-          background-color: $success;
-        }
-
-        &.active {
-          background-color: $warning;
-        }
       }
     }
 

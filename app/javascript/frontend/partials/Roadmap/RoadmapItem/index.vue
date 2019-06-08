@@ -27,15 +27,16 @@
           <template v-else>
             {{ item.name }}
           </template>
+          <small v-if="slim">{{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}</small>
         </h3>
-        <p v-if="!withoutDescription">
+        <p v-if="!withoutDescription && !slim">
           {{ description }}
         </p>
-        <h4>
+        <h4 v-if="!slim">
           {{ $t('labels.roadmap.lastUpdate') }}
           <small>{{ $l(item.updatedAt) }}</small>
         </h4>
-        <ul v-if="item.lastVersion">
+        <ul v-if="item.lastVersion && !slim">
           <li
             v-for="(update, index) in updates(item.lastVersion)"
             :key="index"
@@ -103,6 +104,10 @@ export default {
       required: true,
     },
     withoutDescription: {
+      type: Boolean,
+      default: false,
+    },
+    slim: {
       type: Boolean,
       default: false,
     },

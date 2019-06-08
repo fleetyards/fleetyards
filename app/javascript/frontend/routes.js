@@ -133,7 +133,11 @@ export const routes = [
   }, {
     path: '/roadmap/changes',
     name: 'roadmap-changes',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap-changes" */ 'frontend/pages/Roadmap/Changes'),
+  }, {
+    path: '/roadmap/releases',
+    name: 'roadmap-releases',
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap-releases" */ 'frontend/pages/Roadmap/Releases'),
   }, {
     path: '/settings',
     name: 'settings',

@@ -72,7 +72,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   private def release_name(item, release)
-    return item.release if release['name'] == "#{item.release}.0" || item.release == "#{release['name']}.0"
+    return item.release if release['name'].strip == "#{item.release.strip}.0" || item.release.strip == "#{release['name'].strip}.0"
 
     release['name']
   end
@@ -82,10 +82,13 @@ class RsiRoadmapLoader < RsiBaseLoader
       item.changeset.key?('release')
     end.select do |item|
       changes = item.changeset['release']
-      changes[0] == "#{changes[1]}.0"
+      changes[0] == "#{changes[1]}.0" || changes[1] == "#{changes[0]}.0"
     end.each do |item|
       if item.changeset.keys.count == 1
+        roadmap_item = item.item
         item.destroy
+        updated_at = roadmap_item.reload.versions.last&.created_at || (Time.zone.now - 8.days)
+        roadmap_item.update(updated_at: updated_at)
       else
         changes = item.changeset.except('release')
         changes = changes.to_hash if changes.is_a?(HashWithIndifferentAccess)

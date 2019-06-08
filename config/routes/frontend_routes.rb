@@ -35,6 +35,7 @@ namespace :frontend, path: '', constraints: lambda { |req| req.subdomain.blank? 
 
   get 'roadmap' => 'base#index'
   get 'roadmap/changes' => 'base#index'
+  get 'roadmap/releases' => 'base#index'
 
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'

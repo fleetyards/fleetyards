@@ -11,7 +11,10 @@
       <div class="col-xs-12">
         <div class="page-actions">
           <Btn :to="{ name: 'roadmap', exact: true }">
-            Roadmap
+            {{ $t('labels.roadmap.shipRoadmap') }}
+          </Btn>
+          <Btn :to="{ name: 'roadmap-releases' }">
+            {{ $t('labels.roadmap.releases') }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
@@ -54,7 +57,7 @@ import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import { subWeeks, format } from 'date-fns'
+import { subDays, format } from 'date-fns'
 
 export default {
   components: {
@@ -102,7 +105,7 @@ export default {
       const response = await this.$api.get('roadmap', {
         q: {
           releasedEq: false,
-          updatedAtGteq: format(subWeeks(new Date(), 1), 'YYYY-MM-DD'),
+          updatedAtGteq: format(subDays(new Date(), 6), 'YYYY-MM-DD'),
         },
       })
       this.loading = false
@@ -113,7 +116,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.$t('title.roadmapChanges'),
+      title: this.$t('title.roadmap.changes'),
     })
   },
 }
