@@ -99,7 +99,7 @@
                 >
                   <RoadmapItem
                     :item="item"
-                    slim
+                    :show-more="false"
                   />
                 </div>
               </div>

@@ -37,7 +37,7 @@
           >
             <RoadmapItem
               :item="item"
-              without-description
+              :show-more="false"
             />
           </div>
         </transition-group>
