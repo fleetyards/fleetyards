@@ -71,9 +71,11 @@
                   class="progress-label"
                 >
                   {{ completedPercent(items) }} %
-                  {{ $t('labels.roadmap.inprogress', {
-                    count: inprogress(items),
-                  }) }}
+                  <template v-if="showInprogress(items)">
+                    {{ $t('labels.roadmap.inprogress', {
+                      count: inprogress(items),
+                    }) }}
+                  </template>
                 </div>
                 <b-progress-bar
                   v-if="completed(items) !== 0"
@@ -83,6 +85,7 @@
                   }"
                 />
                 <b-progress-bar
+                  v-if="showInprogress(items)"
                   :value="inprogress(items)"
                   class="active"
                 />
@@ -182,14 +185,20 @@ export default {
     }
   },
   methods: {
+    showInprogress(items) {
+      return this.inprogress(items) !== 0 && this.completed(items) !== this.tasks(items)
+    },
     tasks(items) {
-      return items.reduce((ac, item) => ac + item.tasks, 0)
+      return items.map(item => Math.max(0, item.tasks))
+        .reduce((ac, count) => ac + count, 0)
     },
     inprogress(items) {
-      return items.reduce((ac, item) => ac + item.inprogress, 0)
+      return items.map(item => Math.max(0, item.inprogress - item.completed))
+        .reduce((ac, count) => ac + count, 0)
     },
     completed(items) {
-      return items.reduce((ac, item) => ac + item.completed, 0)
+      return items.map(item => Math.max(0, item.completed))
+        .reduce((ac, count) => ac + count, 0)
     },
     progressLabel(items) {
       return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', { count: this.tasks(items) })}`
