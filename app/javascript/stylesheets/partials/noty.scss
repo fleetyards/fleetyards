@@ -1,13 +1,6 @@
 .noty_buttons {
-  text-align: center;
-
-  .btn {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+  padding: 0 1.25em 1.25em !important;
+  text-align: right;
 }
 
 #noty-confirm {

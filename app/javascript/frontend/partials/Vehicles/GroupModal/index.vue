@@ -158,10 +158,14 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm(this.$t('confirm.hangarGroup.destroy'), () => {
-        this.destroy()
-      }, () => {
-        this.deleting = false
+      confirm({
+        text: this.$t('confirm.hangarGroup.destroy'),
+        onConfirm: () => {
+          this.destroy()
+        },
+        onClose: () => {
+          this.deleting = false
+        },
       })
     },
     async destroy() {

@@ -19,6 +19,10 @@ export const routes = [
     name: 'privacy-policy',
     component: () => import(/* webpackChunkName: "frontend.page.privacyPolicy" */ 'frontend/pages/PrivacyPolicy'),
   }, {
+    path: '/cookie-policy',
+    name: 'cookie-policy',
+    component: () => import(/* webpackChunkName: "frontend.page.cookiePolicy" */ 'frontend/pages/CookiePolicy'),
+  }, {
     path: '/ships',
     name: 'models',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),

@@ -98,30 +98,58 @@ export function requestPermission() {
   })
 }
 
-export function confirm(text, confirmCallback, closeCallback = () => {}) {
-  const n = new Noty({
-    text,
+export function confirm(overrides) {
+  const options = {
+    text: null,
     layout: 'center',
+    confirmBtnLayout: 'danger',
+    onConfirm: () => {},
+    onClose: () => {},
+    ...overrides,
+  }
+
+  const n = new Noty({
+    text: options.text,
+    layout: options.layout,
     theme: 'metroui',
     closeWith: ['click', 'button'],
     id: 'noty-confirm',
-    modal: true,
     animation: {
       open: 'noty_effects_open',
       close: 'noty_effects_close',
     },
     buttons: [
-      Noty.button(I18n.t('actions.confirm'), 'btn btn-danger', () => {
+      Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-large btn-${options.confirmBtnLayout}`, () => {
         n.close()
-        confirmCallback()
+        options.onConfirm()
       }, { 'data-status': 'ok' }),
-      Noty.button(I18n.t('actions.cancel'), 'btn btn-default', () => {
+      Noty.button(I18n.t('actions.cancel'), 'panel-btn', () => {
         n.close()
       }),
     ],
     callbacks: {
+      onTemplate() {
+        this.barDom.innerHTML = `
+          <div class="noty_body">${this.options.text}</div>
+          <div class="noty_buttons">
+            <button
+              id="${this.options.buttons[0].id}"
+              class="panel-btn panel-btn-inline panel-btn-${options.confirmBtnLayout}"
+              data-status="ok"
+            >
+              <div class="panel-btn-inner">${I18n.t('actions.confirm')}</div>
+            </button>
+            <button
+              id="${this.options.buttons[1].id}"
+              class="panel-btn panel-btn-inline"
+            >
+              <div class="panel-btn-inner">${I18n.t('actions.cancel')}</div>
+            </button>
+          </div>
+        `
+      },
       onClose() {
-        closeCallback()
+        options.onClose()
       },
     },
   }).show()

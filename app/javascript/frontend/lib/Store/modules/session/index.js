@@ -21,6 +21,9 @@ export default () => ({
     citizen(state) {
       return state.citizen
     },
+    cookiesAccepted(state) {
+      return state.cookiesAccepted
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -43,6 +46,10 @@ export default () => ({
 
     setCitizen(state, payload) {
       state.citizen = payload
+    },
+
+    acceptCookies(state) {
+      state.cookiesAccepted = true
     },
   },
   /* eslint-enable no-param-reassign */

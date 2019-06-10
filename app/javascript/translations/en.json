@@ -38,7 +38,8 @@
     "cargo": "Cargo",
     "commodities": "Commodities",
     "impressum": "Impressum",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy policy",
+    "cookiePolicy": "Cookie policy"
   },
   "meta": {
     "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
@@ -61,6 +62,7 @@
     "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
     "impressum": "Impressum",
     "privacy": "Privacy policy",
+    "cookie": "Cookie policy",
     "requestPassword": "Request Password",
     "changePassword": "Change Password",
     "settings": "Profile Settings",
@@ -95,7 +97,8 @@
     "shop": "%{shop} on %{station}",
     "commodities": "Commodities",
     "rsiVerification": "Verify your RSI-Account",
-    "hangarGuide": "Not much to see here?"
+    "hangarGuide": "Not much to see here?",
+    "support": "Support FleetYards.net"
   },
   "sublines": {
     "hangarGuide": {
@@ -127,7 +130,8 @@
     "login": "Login",
     "logout": "Logout",
     "signUp": "Sign up",
-    "privacyPolicy": "Privacy Policy",
+    "privacyPolicy": "Privacy policy",
+    "cookiePolicy": "Cookie policy",
     "impressum": "Impressum",
     "settings": "Settings",
     "admin": "Admin",
@@ -542,7 +546,8 @@
     "hideGuide": "Hide Guide",
     "showFleetchart": "Fleetchart",
     "hideFleetchart": "Default view",
-    "supportUs": "Support FleetYards via PayPal",
+    "supportUs": "Support FleetYards.net",
+    "supportUsPaypal": "Support FleetYards.net via PayPal",
     "login": "Login",
     "signUp": "Sign Up",
     "reset-password": "Forgot password?",
@@ -584,10 +589,14 @@
     }
   },
   "texts": {
-    "index": "Your database for all information about the upcoming “Star Citizen“ from Chris Roberts.",
+    "cookies": "<b>This website uses cookies.</b> Cookies improve the user experience and help make this website better. By continuing to use the site, you agree to our cookie policy: <a href=\"/cookie-policy\" target=\"_blank\" rel=\"noopener\"><b>Cookie policy</b></a>",
+    "index": "Your database for all information around Ships and Stations in Star Citizen.",
     "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
     "indexQuoteSource": "Author Unknown, Source:",
-    "indexSupport": "Support us and get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or:",
+    "support": {
+      "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or you can:",
+      "info": "If you like FleetYards.net and want to support the further development and maintenance of this project please upvote our <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> and our Post on the <a href=\"https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet\" target=\"_blank\" rel=\"noopener\"><b>Deep Space Radar</b></a>"
+    },
     "error": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
     "empty": {
       "info": "We could not find any Records.",
@@ -600,7 +609,7 @@
     },
     "rsiVerification": {
       "instructions": "To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href=\"https://robertsspaceindustries.com/account/profile\" target=\"_blank\" rel=\"noopener\">https://robertsspaceindustries.com/account/profile</a>:",
-      "verificationText": "https://www.fleetyards.net/hangar/%{username}#%{token}",
+      "verificationText": "https://fleetyards.net/hangar/%{username}#%{token}",
       "subline": "PS: When your Verification is done you can remove the Link from your Profile again if you don't like it."
     },
     "hangarGuide": {

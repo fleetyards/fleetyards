@@ -22,6 +22,10 @@
           {{ $t('nav.privacyPolicy') }}
         </router-link>
         |
+        <router-link :to="{ name: 'cookie-policy' }">
+          {{ $t('nav.cookiePolicy') }}
+        </router-link>
+        |
         <router-link :to="{ name: 'impressum' }">
           {{ $t('nav.impressum') }}
         </router-link>

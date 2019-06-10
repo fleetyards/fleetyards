@@ -32,6 +32,7 @@
     </div>
     <BackToTop visible-offset="500" />
     <AppFooter />
+    <CookiesBanner />
   </div>
 </template>
 
@@ -42,6 +43,7 @@ import CurrentUser from 'frontend/mixins/CurrentUser'
 import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
+import CookiesBanner from 'frontend/partials/CookiesBanner'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -51,6 +53,7 @@ export default {
     Navigation,
     AppFooter,
     BackToTop,
+    CookiesBanner,
   },
   mixins: [Updates, CurrentUser, RenewSession],
   computed: {

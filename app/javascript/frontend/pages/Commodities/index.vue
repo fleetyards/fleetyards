@@ -245,14 +245,17 @@ export default {
       }
     },
     resetPrices() {
-      confirm(this.$t('confirm.tradeRoutes.reset'), () => {
-        this.$store.dispatch('tradehubs/reset')
-        this.$router.replace({
-          name: 'commodities',
-          query: {
-            q: this.$route.query.q,
-          },
-        })
+      confirm({
+        text: this.$t('confirm.tradeRoutes.reset'),
+        onConfirm: () => {
+          this.$store.dispatch('tradehubs/reset')
+          this.$router.replace({
+            name: 'commodities',
+            query: {
+              q: this.$route.query.q,
+            },
+          })
+        },
       })
     },
     updatePrices(key) {

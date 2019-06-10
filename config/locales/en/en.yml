@@ -90,6 +90,7 @@ en:
       public_hangar: "%{user} Hangar"
       impressum: Impressum
       privacy-policy: Privacy Policy
+      cookie-policy: Cookie Policy
       login: Login
       sign-up: Sign Up
       password_request: Request Password

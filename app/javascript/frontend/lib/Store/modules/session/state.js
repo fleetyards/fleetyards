@@ -3,4 +3,5 @@ export default () => ({
   authTokenRenewAt: null,
   currentUser: null,
   citizen: null,
+  cookiesAccepted: false,
 })

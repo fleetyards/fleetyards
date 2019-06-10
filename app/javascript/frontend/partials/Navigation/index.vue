@@ -27,6 +27,9 @@
     </button>
     <div
       v-if="nodeEnv"
+      :class="{
+        'spacing-right': this.$route.name === 'home',
+      }"
       class="environment-label"
     >
       <span :class="environmentLabelClasses">

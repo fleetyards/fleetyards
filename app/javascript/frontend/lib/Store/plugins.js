@@ -12,6 +12,7 @@ export default function getStorePlugins() {
       'session.authToken',
       'session.currentUser',
       'session.citizen',
+      'session.cookiesAccepted',
       'hangar.ships',
       'hangar.detailsVisible',
       'hangar.filterVisible',

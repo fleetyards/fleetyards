@@ -52,4 +52,8 @@ export default {
   resetCitizen({ commit }) {
     commit('setCitizen', null)
   },
+
+  acceptCookies({ commit }) {
+    commit('acceptCookies')
+  },
 }

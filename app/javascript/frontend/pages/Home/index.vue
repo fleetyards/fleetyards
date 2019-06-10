@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Support />
     <div class="home-screen-intro">
       <section class="container">
         <div class="row">
@@ -13,6 +14,11 @@
                 >
                 {{ $t('app') }}
               </h1>
+              <!-- <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <p>{{ $t('texts.index') }}</p>
+                </div>
+              </div> -->
               <div class="row">
                 <div class="col-xs-12 col-md-offset-3 col-md-6">
                   <form @submit.prevent="search">
@@ -39,25 +45,6 @@
                   </form>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-xs-12 col-md-12">
-                  <p>{{ $t('texts.index') }}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <span v-html="$t('texts.indexSupport', { code: 'STAR-5F32-SJZ4'})" />
-                </div>
-              </div>
-              <br>
-              <br>
-              <Btn
-                href="https://paypal.me/pools/c/83jQLadz60"
-                size="large"
-              >
-                <i class="fab fa-paypal" />
-                {{ $t('actions.supportUs') }}
-              </Btn>
             </div>
           </div>
         </div>
@@ -167,6 +154,7 @@ import Panel from 'frontend/components/Panel'
 import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
+import Support from 'frontend/partials/Support'
 
 export default {
   components: {
@@ -175,6 +163,7 @@ export default {
     TeaserPanel,
     Btn,
     FormInput,
+    Support,
   },
   mixins: [MetaInfo],
   data() {

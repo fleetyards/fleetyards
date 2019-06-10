@@ -89,7 +89,7 @@
       <div class="pull-right">
         <Btn
           v-if="vehicle"
-          :disabled="deleting ? 'disabled' : null"
+          :disabled="deleting"
           @click.native="remove"
         >
           <i class="fal fa-trash" />
@@ -164,10 +164,14 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm(this.$t('confirm.vehicle.destroy'), () => {
-        this.destroy()
-      }, () => {
-        this.deleting = false
+      confirm({
+        text: this.$t('confirm.vehicle.destroy'),
+        onConfirm: () => {
+          this.destroy()
+        },
+        onClose: () => {
+          this.deleting = false
+        },
       })
     },
     async destroy() {
