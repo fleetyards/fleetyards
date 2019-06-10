@@ -71,7 +71,10 @@
                   :key="item.id"
                   class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
                 >
-                  <RoadmapItem :item="item" />
+                  <RoadmapItem
+                    :item="item"
+                    slim
+                  />
                 </div>
               </div>
             </b-collapse>

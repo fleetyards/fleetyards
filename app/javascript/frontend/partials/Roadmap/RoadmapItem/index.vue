@@ -27,53 +27,38 @@
           <template v-else>
             {{ item.name }}
           </template>
-          <small>{{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}</small>
+          <small class="pull-right">
+            {{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}
+          </small>
         </h3>
-        <i
-          v-if="!showMore"
-          :class="{
-            fa: visible,
-            fal: !visible,
-          }"
-          class="show-more fa-info-circle"
-          @click="toggleMore"
-        />
-        <b-collapse
-          :id="`${item.id}-info`"
-          :visible="visible"
-        >
-          <p>{{ description }}</p>
-          <ul v-if="item.lastVersion">
-            <li
-              v-for="(update, index) in updates(item.lastVersion)"
-              :key="index"
-            >
-              <template v-if="update.key === 'tasks'">
-                {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
-                  value: removeSign(update.count),
-                }) }}
-              </template>
-              <template v-else-if="update.key === 'release' && !update.old">
-                {{ $t('labels.roadmap.lastVersion.addedToRelease', {
-                  release: update.new,
-                }) }}
-              </template>
-              <template v-else>
-                {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
-                  old: update.old,
-                  new: update.new,
-                  count: update.count,
-                }) }}
-              </template>
-            </li>
-          </ul>
-        </b-collapse>
-        <b-progress :max="item.tasks">
-          <div
-            v-tooltip="progressLabel"
-            class="progress-label"
+        <p>{{ description }}</p>
+        <ul v-if="item.lastVersion && !slim">
+          <li
+            v-for="(update, index) in updates(item.lastVersion)"
+            :key="index"
           >
-            {{ completedPercent }} %
+            <template v-if="update.key === 'tasks'">
+              {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
+                value: removeSign(update.count),
+              }) }}
+            </template>
+            <template v-else-if="update.key === 'release' && !update.old">
+              {{ $t('labels.roadmap.lastVersion.addedToRelease', {
+                release: update.new,
+              }) }}
+            </template>
+            <template v-else>
+              {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
+                old: update.old,
+                new: update.new,
+                count: update.count,
+              }) }}
+            </template>
+          </li>
+        </ul>
+        <b-progress :max="item.tasks">
+          <div class="progress-label">
+            {{ progressLabel }} - {{ completedPercent }} %
             <template v-if="showInprogress">
               {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
@@ -111,15 +96,10 @@ export default {
       type: Object,
       required: true,
     },
-    showMore: {
+    slim: {
       type: Boolean,
-      default: true,
+      default: false,
     },
-  },
-  data() {
-    return {
-      visible: true,
-    }
   },
   computed: {
     tasks() {
@@ -168,13 +148,7 @@ export default {
       return isBefore(new Date(), addHours(new Date(this.item.updatedAt), 24))
     },
   },
-  mounted() {
-    this.visible = this.showMore
-  },
   methods: {
-    toggleMore() {
-      this.visible = !this.visible
-    },
     removeSign(number) {
       return (number < 0) ? number * -1 : number
     },

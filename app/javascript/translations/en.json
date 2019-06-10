@@ -193,6 +193,10 @@
         "release": "Item moved from release %{old} to %{new}",
         "addedToRelease": "Item new in release %{release}"
       },
+      "stories": {
+        "one": "%{count} Story",
+        "other": "%{count} Stories"
+      },
       "tasks": {
         "one": "of %{count} Task",
         "other": "of %{count} Tasks"

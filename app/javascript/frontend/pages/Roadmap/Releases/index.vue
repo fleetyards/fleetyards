@@ -57,7 +57,7 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
+              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
               <i class="fa fa-chevron-right" />
             </h2>
 
@@ -66,11 +66,8 @@
               :visible="visible.includes(release)"
             >
               <b-progress :max="tasks(items)">
-                <div
-                  v-tooltip="progressLabel(items)"
-                  class="progress-label"
-                >
-                  {{ completedPercent(items) }} %
+                <div class="progress-label">
+                  {{ progressLabel(items) }} - {{ completedPercent(items) }} %
                   <template v-if="showInprogress(items)">
                     {{ $t('labels.roadmap.inprogress', {
                       count: inprogress(items),
@@ -99,7 +96,7 @@
                 >
                   <RoadmapItem
                     :item="item"
-                    :show-more="false"
+                    slim
                   />
                 </div>
               </div>
