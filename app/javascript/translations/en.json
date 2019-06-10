@@ -686,7 +686,7 @@
     },
     "vehicle": {
       "add": {
-        "success": "Your new <b>%{model}</b> will be delivered to your Hangar"
+        "success": "Your new <b>%{model}</b> will be delivered to your <a href=\"/hangar\">Hangar</a>"
       }
     },
     "fleet": {

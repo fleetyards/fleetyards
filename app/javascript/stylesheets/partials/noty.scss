@@ -3,6 +3,19 @@
   text-align: right;
 }
 
+a {
+  color: white;
+  font-weight: bold;
+
+  &:hover {
+    color: $text-color;
+  }
+
+  &:focus {
+    color: white;
+  }
+}
+
 #noty-confirm {
   border-radius: $border-radius-base;
   background-color: #2e3338;
