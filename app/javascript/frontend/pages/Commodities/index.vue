@@ -179,7 +179,6 @@ import Panel from 'frontend/components/Panel'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Filters from 'frontend/mixins/Filters'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
-import { confirm } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -245,7 +244,7 @@ export default {
       }
     },
     resetPrices() {
-      confirm({
+      this.$confirm({
         text: this.$t('confirm.tradeRoutes.reset'),
         onConfirm: () => {
           this.$store.dispatch('tradehubs/reset')

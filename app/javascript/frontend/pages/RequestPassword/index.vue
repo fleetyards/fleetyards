@@ -72,7 +72,6 @@
 </template>
 
 <script>
-import { success } from 'frontend/lib/Noty'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 
@@ -98,7 +97,7 @@ export default {
       this.submitting = true
       await this.$api.post('password/request', this.form)
       this.submitting = false
-      success(this.$t('messages.requestPasswordChange.success'))
+      this.$success(this.$t('messages.requestPasswordChange.success'))
       this.$router.push('/')
     },
   },

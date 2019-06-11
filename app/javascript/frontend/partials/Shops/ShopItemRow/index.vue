@@ -9,16 +9,16 @@
         :to="link"
       >
         <div
-          :key="commodity.storeImageThumb"
-          v-lazy:background-image="commodity.storeImageThumb"
+          :key="commodity.storeImageSmall"
+          v-lazy:background-image="commodity.storeImageSmall"
           class="image lazy"
           alt="storeImage"
         />
       </router-link>
       <div
         v-else
-        :key="commodity.storeImageThumb"
-        v-lazy:background-image="commodity.storeImageThumb"
+        :key="commodity.storeImageSmall"
+        v-lazy:background-image="commodity.storeImageSmall"
         class="image lazy"
         alt="storeImage"
       />

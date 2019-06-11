@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import { success, alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { mapGetters } from 'vuex'
@@ -143,10 +142,10 @@ export default {
       const response = await this.$api.put(`password/update/${this.$route.params.token}`, this.form)
       this.submitting = false
       if (!response.error) {
-        success(this.$t('messages.changePassword.success'))
+        this.$success(this.$t('messages.changePassword.success'))
         this.$router.push('/')
       } else {
-        alert(this.$t('messages.changePassword.failure'))
+        this.$alert(this.$t('messages.changePassword.failure'))
       }
     },
   },

@@ -22,6 +22,7 @@ import OrgValidator from 'frontend/lib/validations/OrgValidator'
 import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
+import Noty from 'frontend/lib/Noty'
 
 console.info(`
 
@@ -44,6 +45,7 @@ Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18n)
 Vue.use(DataPrefetch)
+Vue.use(Noty)
 
 Vue.use(VueClipboard)
 

@@ -1,7 +1,6 @@
 
 import { mapGetters } from 'vuex'
 import { I18n } from 'frontend/lib/I18n'
-import { success } from 'frontend/lib/Noty'
 
 export default {
   mixins: [I18n],
@@ -98,7 +97,7 @@ export default {
       }, {
         received(data) {
           const vehicle = JSON.parse(data)
-          success(I18n.t('messages.model.onSale', { model: vehicle.model.name }))
+          this.$success(I18n.t('messages.model.onSale', { model: vehicle.model.name }))
         },
         connected: () => { this.connected('OnSaleHangarChannel') },
         disconnected: () => { this.disconnected('OnSaleHangarChannel') },
@@ -113,7 +112,7 @@ export default {
       }, {
         received(data) {
           const model = JSON.parse(data)
-          success(I18n.t('messages.model.onSale', { model: model.name }))
+          this.$success(I18n.t('messages.model.onSale', { model: model.name }))
         },
         connected: () => { this.connected('OnSaleChannel') },
         disconnected: () => { this.disconnected('OnSaleChannel') },

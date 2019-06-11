@@ -100,7 +100,6 @@
 
 <script>
 import Modal from 'frontend/components/Modal'
-import { confirm, alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
@@ -158,7 +157,7 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm({
+      this.$confirm({
         text: this.$t('confirm.hangarGroup.destroy'),
         onConfirm: () => {
           this.destroy()
@@ -196,7 +195,7 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        alert(response.error.response.data.message)
+        this.$alert(response.error.response.data.message)
       }
     },
     async create() {
@@ -206,7 +205,7 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        alert(response.error.response.data.message)
+        this.$alert(response.error.response.data.message)
       }
     },
   },

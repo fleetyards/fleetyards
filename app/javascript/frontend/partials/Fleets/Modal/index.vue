@@ -73,7 +73,6 @@
 <script>
 import Btn from 'frontend/components/Btn'
 import Modal from 'frontend/components/Modal'
-import { alert } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
 import FleetPanel from 'frontend/partials/Fleets/Panel'
 
@@ -137,7 +136,7 @@ export default {
         this.callback()
         this.$refs.modal.close()
       } else {
-        alert(this.$t('messages.fleet.create.failure'))
+        this.$alert(this.$t('messages.fleet.create.failure'))
       }
     },
   },

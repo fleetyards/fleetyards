@@ -1,7 +1,6 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
-import { alert } from 'frontend/lib/Noty'
 import { I18n } from 'frontend/lib/I18n'
 import linkHeaderParser from 'parse-link-header'
 import axiosDefaults from 'axios/lib/defaults'
@@ -48,7 +47,7 @@ const handleError = async function handleError(error, silent) {
   }
 
   if (error.message !== 'cancel' && Store.getters.online && (!error.response || !error.response.data || !error.response.data.message)) {
-    alert(I18n.t('messages.error.default'))
+    this.$alert(I18n.t('messages.error.default'))
   }
 
   if (error.response && error.response.status === 401 && Store.getters['session/isAuthenticated']) {

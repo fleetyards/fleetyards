@@ -6,4 +6,4 @@ json.description model_upgrade.description
 json.pledge_price model_upgrade.pledge_price
 json.store_image model_upgrade.store_image.url
 json.store_image_medium model_upgrade.store_image.medium.url
-json.store_image_thumb model_upgrade.store_image.small.url
+json.store_image_small model_upgrade.store_image.small.url

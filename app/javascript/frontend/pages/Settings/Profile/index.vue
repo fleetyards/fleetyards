@@ -184,7 +184,6 @@ import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
-import { success } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 
@@ -257,7 +256,7 @@ export default {
       this.submitting = false
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
-        success(this.$t('messages.updateProfile.success'))
+        this.$success(this.$t('messages.updateProfile.success'))
       }
     },
     async fetchCitizen() {

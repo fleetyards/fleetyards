@@ -73,7 +73,6 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import { alert } from 'frontend/lib/Noty'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
@@ -106,7 +105,7 @@ export default {
           this.$router.push('/')
         }
       } else {
-        alert(response.error.response.data.message)
+        this.$alert(response.error.response.data.message)
       }
     },
   },

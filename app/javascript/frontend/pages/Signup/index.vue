@@ -218,7 +218,6 @@
 </template>
 
 <script>
-import { success, alert } from 'frontend/lib/Noty'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
@@ -246,19 +245,19 @@ export default {
     async signup() {
       const result = await this.$validator.validateAll()
       if (!result) {
-        alert(this.$t('messages.signup.invalid'))
+        this.$alert(this.$t('messages.signup.invalid'))
         return
       }
       this.submitting = true
       const response = await this.$api.post('users/signup', this.form)
       this.submitting = false
       if (!response.error) {
-        success(this.$t('messages.signup.success'))
+        this.$success(this.$t('messages.signup.success'))
         this.$router.push('/')
       } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
-        alert(this.$t('texts.signup.blacklisted'))
+        this.$alert(this.$t('texts.signup.blacklisted'))
       } else {
-        alert(this.$t('messages.signup.failure'))
+        this.$alert(this.$t('messages.signup.failure'))
       }
     },
   },

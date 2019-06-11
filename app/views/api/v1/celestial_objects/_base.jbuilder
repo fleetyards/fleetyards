@@ -6,7 +6,7 @@ json.type celestial_object.object_type&.humanize
 json.designation celestial_object.designation
 json.store_image celestial_object.store_image.url
 json.store_image_medium celestial_object.store_image.medium.url
-json.store_image_thumb celestial_object.store_image.small.url
+json.store_image_small celestial_object.store_image.small.url
 json.description celestial_object.description
 json.habitable celestial_object.habitable
 json.fairchanceact celestial_object.fairchanceact

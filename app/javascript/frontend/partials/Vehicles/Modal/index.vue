@@ -109,7 +109,6 @@
 
 <script>
 import Modal from 'frontend/components/Modal'
-import { confirm } from 'frontend/lib/Noty'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
 
@@ -164,7 +163,7 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm({
+      this.$confirm({
         text: this.$t('confirm.vehicle.destroy'),
         onConfirm: () => {
           this.destroy()
