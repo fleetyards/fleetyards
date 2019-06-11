@@ -103,7 +103,7 @@ const displayNotification = function displayNotification(options) {
   const defaults = {
     text: null,
     type: 'info',
-    timeout: false,
+    timeout: 3000,
     icon: null,
     notifyInBackground: true,
     ...options,
