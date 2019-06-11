@@ -11,9 +11,13 @@ export default {
     async fetch() {
       const response = await this.$api.post('users/confirm', { token: this.$route.params.token })
       if (!response.error) {
-        this.$success(this.$t('messages.confirm.success'))
+        this.$success({
+          text: this.$t('messages.confirm.success'),
+        })
       } else {
-        this.$alert(this.$t('messages.confirm.failure'))
+        this.$alert({
+          text: this.$t('messages.confirm.failure'),
+        })
       }
       this.$router.push('/')
     },

@@ -97,7 +97,10 @@ export default {
       }, {
         received(data) {
           const vehicle = JSON.parse(data)
-          this.$success(I18n.t('messages.model.onSale', { model: vehicle.model.name }))
+          this.$info({
+            text: I18n.t('messages.model.onSale', { model: vehicle.model.name }),
+            icon: vehicle.model.storeImageSmall,
+          })
         },
         connected: () => { this.connected('OnSaleHangarChannel') },
         disconnected: () => { this.disconnected('OnSaleHangarChannel') },
@@ -112,7 +115,10 @@ export default {
       }, {
         received(data) {
           const model = JSON.parse(data)
-          this.$success(I18n.t('messages.model.onSale', { model: model.name }))
+          this.$info({
+            text: I18n.t('messages.model.onSale', { model: model.name }),
+            icon: model.storeImageSmall,
+          })
         },
         connected: () => { this.connected('OnSaleChannel') },
         disconnected: () => { this.disconnected('OnSaleChannel') },

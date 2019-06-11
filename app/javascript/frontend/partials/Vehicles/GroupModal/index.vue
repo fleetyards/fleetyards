@@ -195,7 +195,9 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        this.$alert(response.error.response.data.message)
+        this.$alert({
+          text: response.error.response.data.message,
+        })
       }
     },
     async create() {
@@ -205,7 +207,9 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        this.$alert(response.error.response.data.message)
+        this.$alert({
+          text: response.error.response.data.message,
+        })
       }
     },
   },

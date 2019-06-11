@@ -245,19 +245,27 @@ export default {
     async signup() {
       const result = await this.$validator.validateAll()
       if (!result) {
-        this.$alert(this.$t('messages.signup.invalid'))
+        this.$alert({
+          text: this.$t('messages.signup.invalid'),
+        })
         return
       }
       this.submitting = true
       const response = await this.$api.post('users/signup', this.form)
       this.submitting = false
       if (!response.error) {
-        this.$success(this.$t('messages.signup.success'))
+        this.$success({
+          text: this.$t('messages.signup.success'),
+        })
         this.$router.push('/')
       } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
-        this.$alert(this.$t('texts.signup.blacklisted'))
+        this.$alert({
+          text: this.$t('texts.signup.blacklisted'),
+        })
       } else {
-        this.$alert(this.$t('messages.signup.failure'))
+        this.$alert({
+          text: this.$t('messages.signup.failure'),
+        })
       }
     },
   },

@@ -94,9 +94,13 @@ export default {
     },
     copyToken() {
       this.$copyText(this.verificationText).then(() => {
-        this.$success(this.$t('messages.copy.success'))
+        this.$success({
+          text: this.$t('messages.copy.success'),
+        })
       }, () => {
-        this.$alert(this.$t('messages.copy.failure'))
+        this.$alert({
+          text: this.$t('messages.copy.failure'),
+        })
       })
     },
     async submit() {
@@ -104,11 +108,15 @@ export default {
       const response = await this.$api.post('users/finish-rsi-verification')
       this.submitting = false
       if (!response.error) {
-        this.$success(this.$t('messages.rsiVerification.success'))
+        this.$success({
+          text: this.$t('messages.rsiVerification.success'),
+        })
         this.$comlink.$emit('userUpdate')
         this.$router.push({ name: 'settings-profile' })
       } else {
-        this.$alert(this.$t('messages.rsiVerification.failure'))
+        this.$alert({
+          text: this.$t('messages.rsiVerification.failure'),
+        })
       }
     },
     async startRsiVerification() {

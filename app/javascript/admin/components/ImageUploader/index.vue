@@ -238,7 +238,10 @@ export default {
     },
     selectFolder() {
       if (!this.$refs.upload.features.directory) {
-        this.$alert('Your browser does not support')
+        this.$alert({
+          text: 'Your browser does not support',
+        })
+
         return
       }
       const input = this.$refs.upload.$el.querySelector('input')

@@ -256,7 +256,9 @@ export default {
       this.submitting = false
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
-        this.$success(this.$t('messages.updateProfile.success'))
+        this.$success({
+          text: this.$t('messages.updateProfile.success'),
+        })
       }
     },
     async fetchCitizen() {

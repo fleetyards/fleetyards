@@ -1,6 +1,5 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
-import { I18n } from 'frontend/lib/I18n'
 import linkHeaderParser from 'parse-link-header'
 import axiosDefaults from 'axios/lib/defaults'
 
@@ -40,10 +39,6 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
 
 const handleError = async function handleError(error) {
   nprogress.done()
-
-  if (error.message !== 'cancel' && (!error.response || !error.response.data || !error.response.data.message)) {
-    this.$alert(I18n.t('messages.error.default'))
-  }
 
   return {
     data: null,

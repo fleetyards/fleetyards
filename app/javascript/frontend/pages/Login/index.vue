@@ -105,7 +105,9 @@ export default {
           this.$router.push('/')
         }
       } else {
-        this.$alert(response.error.response.data.message)
+        this.$alert({
+          text: response.error.response.data.message,
+        })
       }
     },
   },

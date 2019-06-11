@@ -99,22 +99,22 @@ const notyBackoff = function notyBackoff(text) {
   return true
 }
 
-const displayNotification = function displayNotification(overrides) {
-  const options = {
+const displayNotification = function displayNotification(options) {
+  const defaults = {
     text: null,
     type: 'info',
     timeout: false,
     icon: null,
     notifyInBackground: true,
-    ...overrides,
+    ...options,
   }
 
-  if (options.text && !notyBackoff(options.text)) {
+  if (defaults.text && !notyBackoff(defaults.text)) {
     lastNotyAt = new Date()
-    lastNotyText = options.text
+    lastNotyText = defaults.text
 
-    let displayText = options.text
-    if (document.visibilityState !== 'visible' && notifyPermissionGranted() && options.notifyInBackground) {
+    let displayText = defaults.text
+    if (document.visibilityState !== 'visible' && notifyPermissionGranted() && defaults.notifyInBackground) {
       notifyInBackground(displayText.replace(/(<([^>]+)>)/ig, ''))
     } else {
       if (Array.isArray(displayText)) {
@@ -122,9 +122,9 @@ const displayNotification = function displayNotification(overrides) {
       }
       new Noty({
         text: displayText,
-        type: options.type,
-        icon: options.icon,
-        timeout: options.timeout,
+        type: defaults.type,
+        icon: defaults.icon,
+        timeout: defaults.timeout,
         category: 'notification',
         layout: 'topRight',
         theme: 'metroui',
@@ -137,6 +137,44 @@ const displayNotification = function displayNotification(overrides) {
       }).show()
     }
   }
+}
+
+const displayConfirm = function displayConfirm(options) {
+  const defaults = {
+    text: null,
+    layout: 'center',
+    confirmBtnLayout: 'danger',
+    onConfirm: () => {},
+    onClose: () => {},
+    ...options,
+  }
+
+  const n = new Noty({
+    text: defaults.text,
+    layout: defaults.layout,
+    theme: 'metroui',
+    closeWith: ['click', 'button'],
+    id: 'noty-confirm',
+    category: 'confirm',
+    animation: {
+      open: 'noty_effects_open',
+      close: 'noty_effects_close',
+    },
+    buttons: [
+      Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-inline btn-${defaults.confirmBtnLayout}`, () => {
+        n.close()
+        defaults.onConfirm()
+      }, { 'data-status': 'ok' }),
+      Noty.button(I18n.t('actions.cancel'), 'panel-btn panel-btn-inline', () => {
+        n.close()
+      }),
+    ],
+    callbacks: {
+      onClose() {
+        defaults.onClose()
+      },
+    },
+  }).show()
 }
 
 export function requestPermission() {
@@ -154,9 +192,9 @@ export function requestPermission() {
 export default {
   install(Vue) {
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$alert = function alert(text) {
+    Vue.prototype.$alert = function alert(options) {
       displayNotification({
-        text,
+        ...options,
         type: 'error',
         timeout: 10000,
         notifyInBackground: false,
@@ -164,60 +202,26 @@ export default {
     }
 
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$success = function success(text, icon = null) {
+    Vue.prototype.$success = function success(options) {
       displayNotification({
-        text,
-        icon,
+        ...options,
         type: 'success',
       })
     }
 
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$info = function info(text, icon = null) {
+    Vue.prototype.$info = function info(options) {
       displayNotification({
-        text,
-        icon,
+        ...options,
         type: 'info',
       })
     }
 
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$confirm = function confirm(overrides) {
-      const options = {
-        text: null,
-        layout: 'center',
-        confirmBtnLayout: 'danger',
-        onConfirm: () => {},
-        onClose: () => {},
-        ...overrides,
-      }
-
-      const n = new Noty({
-        text: options.text,
-        layout: options.layout,
-        theme: 'metroui',
-        closeWith: ['click', 'button'],
-        id: 'noty-confirm',
-        category: 'confirm',
-        animation: {
-          open: 'noty_effects_open',
-          close: 'noty_effects_close',
-        },
-        buttons: [
-          Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-inline btn-${options.confirmBtnLayout}`, () => {
-            n.close()
-            options.onConfirm()
-          }, { 'data-status': 'ok' }),
-          Noty.button(I18n.t('actions.cancel'), 'panel-btn panel-btn-inline', () => {
-            n.close()
-          }),
-        ],
-        callbacks: {
-          onClose() {
-            options.onClose()
-          },
-        },
-      }).show()
+    Vue.prototype.$confirm = function confirm(options) {
+      displayConfirm({
+        ...options,
+      })
     }
   },
 }

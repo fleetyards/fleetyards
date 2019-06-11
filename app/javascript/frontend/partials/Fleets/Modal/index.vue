@@ -136,7 +136,9 @@ export default {
         this.callback()
         this.$refs.modal.close()
       } else {
-        this.$alert(this.$t('messages.fleet.create.failure'))
+        this.$alert({
+          text: this.$t('messages.fleet.create.failure'),
+        })
       }
     },
   },

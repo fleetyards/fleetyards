@@ -142,10 +142,14 @@ export default {
       const response = await this.$api.put(`password/update/${this.$route.params.token}`, this.form)
       this.submitting = false
       if (!response.error) {
-        this.$success(this.$t('messages.changePassword.success'))
+        this.$success({
+          text: this.$t('messages.changePassword.success'),
+        })
         this.$router.push('/')
       } else {
-        this.$alert(this.$t('messages.changePassword.failure'))
+        this.$alert({
+          text: this.$t('messages.changePassword.failure'),
+        })
       }
     },
   },

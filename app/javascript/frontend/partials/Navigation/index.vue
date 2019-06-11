@@ -361,9 +361,13 @@ export default {
     },
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
-        this.$success(this.$t('messages.copyGitRevision.success'))
+        this.$success({
+          text: this.$t('messages.copyGitRevision.success'),
+        })
       }, () => {
-        this.$alert(this.$t('messages.copyGitRevision.failure'))
+        this.$alert({
+          text: this.$t('messages.copyGitRevision.failure'),
+        })
       })
     },
   },

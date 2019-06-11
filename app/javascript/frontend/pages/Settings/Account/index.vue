@@ -45,11 +45,15 @@ export default {
         onConfirm: async () => {
           const response = await this.$api.destroy('users/current')
           if (!response.error) {
-            this.$success(this.$t('messages.account.destroy.success'))
+            this.$success({
+              text: this.$t('messages.account.destroy.success'),
+            })
             await this.$store.dispatch('session/logout')
             this.$router.push({ name: 'home' })
           } else {
-            this.$alert(this.$t('messages.account.destroy.error'))
+            this.$alert({
+              text: this.$t('messages.account.destroy.error'),
+            })
             this.deleting = false
           }
         },
