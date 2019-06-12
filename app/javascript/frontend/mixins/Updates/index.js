@@ -81,6 +81,11 @@ export default {
     },
     updateHangar(data) {
       const vehicle = JSON.parse(data)
+
+      if (!vehicle.model) {
+        return
+      }
+
       if (vehicle.deleted) {
         this.$store.dispatch('hangar/remove', vehicle.model.slug)
       } else {
