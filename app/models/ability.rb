@@ -26,7 +26,7 @@ class Ability
     can %i[index], :api_images
     can %i[index], :api_trade_hubs
     can %i[index], :api_commodities
-    can %i[index], :api_hangar_groups
+    can %i[index sort], :api_hangar_groups
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
     can %i[index show], :api_fleets
