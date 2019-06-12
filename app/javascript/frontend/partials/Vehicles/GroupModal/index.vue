@@ -32,29 +32,6 @@
             </span>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-6">
-          <div
-            :class="{'has-error has-feedback': errors.has('sort')}"
-            class="form-group"
-          >
-            <input
-              v-model="form.sort"
-              v-tooltip.right="errors.first('sort')"
-              v-validate="'numeric'"
-              :data-vv-as="$t('labels.hangarGroup.sort')"
-              :placeholder="$t('labels.hangarGroup.sort')"
-              name="sort"
-              type="text"
-              class="form-control"
-            >
-            <span
-              v-show="errors.has('sort')"
-              class="form-control-feedback"
-            >
-              <i class="fal fa-exclamation-triangle" />
-            </span>
-          </div>
-        </div>
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
           <div
             :class="{'has-error has-feedback': errors.has('color')}"
@@ -127,7 +104,6 @@ export default {
       form: {
         name: this.group.name,
         color: this.group.color,
-        sort: this.group.sort,
       },
     }
   },
@@ -147,7 +123,6 @@ export default {
       this.form = {
         name: this.group.name,
         color: this.group.color,
-        sort: this.group.sort,
       }
     },
   },

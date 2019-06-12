@@ -1,47 +1,49 @@
 <template>
   <div class="labels">
-    <transition-group
-      name="fade-list"
-      appear
+    <h3 class="label-title">
+      Groups:
+    </h3>
+    <draggable
+      v-model="groups"
+      @start="drag=true"
+      @end="drag=false"
     >
-      <h3
-        key="all"
-        class="label-title fade-list-item"
+      <transition-group
+        name="fade-list"
+        appear
       >
-        Groups:
-      </h3>
-      <a
-        v-for="group in hangarGroups"
-        :key="group.id"
-        :class="{
-          'active': isActive(group.slug),
-          'inverted': isInverted(group.slug),
-        }"
-        class="label label-link fade-list-item"
-        @click.exact="filter(group.slug)"
-        @click.right.prevent="edit(group)"
-      >
-        <span class="label-inner">
-          <span
-            :style="{
-              'background-color': group.color
-            }"
-            class="label-color"
-          />
-          {{ group.name }}: {{ group.vehiclesCount }}
-        </span>
-      </a>
-      <a
-        key="add"
-        v-tooltip="$t('actions.addGroup')"
-        class="label label-link fade-list-item"
-        @click="add"
-      >
-        <span class="label-inner">
-          <i class="far fa-plus" />
-        </span>
-      </a>
-    </transition-group>
+        <a
+          v-for="group in groups"
+          :key="group.id"
+          :class="{
+            'active': isActive(group.slug),
+            'inverted': isInverted(group.slug),
+          }"
+          class="label label-link fade-list-item"
+          @click.exact="filter(group.slug)"
+          @click.right.prevent="edit(group)"
+        >
+          <span class="label-inner">
+            <span
+              :style="{
+                'background-color': group.color
+              }"
+              class="label-color"
+            />
+            {{ group.name }}: {{ group.vehiclesCount }}
+          </span>
+        </a>
+      </transition-group>
+    </draggable>
+    <a
+      v-tooltip="$t('actions.addGroup')"
+      class="label label-link"
+      @click="add"
+    >
+      <span class="label-inner">
+        <i class="far fa-plus" />
+      </span>
+    </a>
     <GroupModal
       ref="groupModal"
       :group="selectedGroup"
@@ -50,11 +52,13 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import GroupModal from 'frontend/partials/Vehicles/GroupModal'
 
 export default {
   components: {
     GroupModal,
+    draggable,
   },
   props: {
     hangarGroups: {
@@ -67,10 +71,26 @@ export default {
   data() {
     return {
       selectedGroup: {},
+      groups: this.hangarGroups,
       delay: 300,
       clicks: 0,
       timer: null,
     }
+  },
+  computed: {
+    sortIndex() {
+      return this.groups.map(item => item.id)
+    },
+  },
+  watch: {
+    hangarGroups() {
+      this.groups = this.hangarGroups
+    },
+    groups() {
+      if (this.groups !== this.hangarGroups) {
+        this.updateSort()
+      }
+    },
   },
   methods: {
     filter(filter) {
@@ -137,6 +157,17 @@ export default {
 
       return false
     },
+    async updateSort() {
+      const response = await this.$api.put('hangar-groups/sort', {
+        sorting: this.sortIndex,
+      })
+
+      if (response.error) {
+        this.$alert({
+          text: response.error.response.data.message,
+        })
+      }
+    },
     add() {
       this.selectedGroup = {}
       this.$refs.groupModal.open()
@@ -148,3 +179,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import 'styles/index.scss';
+</style>
