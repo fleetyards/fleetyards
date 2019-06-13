@@ -58,7 +58,7 @@
         </ul>
         <b-progress :max="item.tasks">
           <div class="progress-label">
-            {{ progressLabel }} - {{ completedPercent }} %
+            {{ progressLabel }} | {{ completedPercent }} %
             <template v-if="showInprogress">
               {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
