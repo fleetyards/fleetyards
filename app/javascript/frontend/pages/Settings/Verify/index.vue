@@ -50,7 +50,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import { success, alert } from 'frontend/lib/Noty'
 import Loader from 'frontend/components/Loader'
 import { mapGetters } from 'vuex'
 
@@ -95,9 +94,13 @@ export default {
     },
     copyToken() {
       this.$copyText(this.verificationText).then(() => {
-        success(this.$t('messages.copy.success'))
+        this.$success({
+          text: this.$t('messages.copy.success'),
+        })
       }, () => {
-        alert(this.$t('messages.copy.failure'))
+        this.$alert({
+          text: this.$t('messages.copy.failure'),
+        })
       })
     },
     async submit() {
@@ -105,11 +108,15 @@ export default {
       const response = await this.$api.post('users/finish-rsi-verification')
       this.submitting = false
       if (!response.error) {
-        success(this.$t('messages.rsiVerification.success'))
+        this.$success({
+          text: this.$t('messages.rsiVerification.success'),
+        })
         this.$comlink.$emit('userUpdate')
         this.$router.push({ name: 'settings-profile' })
       } else {
-        alert(this.$t('messages.rsiVerification.failure'))
+        this.$alert({
+          text: this.$t('messages.rsiVerification.failure'),
+        })
       }
     },
     async startRsiVerification() {

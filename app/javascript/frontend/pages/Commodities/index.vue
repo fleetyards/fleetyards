@@ -179,7 +179,6 @@ import Panel from 'frontend/components/Panel'
 import CargoRoutes from 'frontend/mixins/CargoRoutes'
 import Filters from 'frontend/mixins/Filters'
 import FilterForm from 'frontend/partials/CargoRoutes/FilterForm'
-import { confirm } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -245,14 +244,17 @@ export default {
       }
     },
     resetPrices() {
-      confirm(this.$t('confirm.tradeRoutes.reset'), () => {
-        this.$store.dispatch('tradehubs/reset')
-        this.$router.replace({
-          name: 'commodities',
-          query: {
-            q: this.$route.query.q,
-          },
-        })
+      this.$confirm({
+        text: this.$t('confirm.tradeRoutes.reset'),
+        onConfirm: () => {
+          this.$store.dispatch('tradehubs/reset')
+          this.$router.replace({
+            name: 'commodities',
+            query: {
+              q: this.$route.query.q,
+            },
+          })
+        },
       })
     },
     updatePrices(key) {

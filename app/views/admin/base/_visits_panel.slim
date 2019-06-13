@@ -10,7 +10,7 @@
             javascript:
               window.App.Dashboard.addChart({
                 id: 'visits-per-day-chart',
-                url: '/stats/visits-per-day',
+                url: '#{visits_per_day_admin_stats_url}',
                 type: 'area',
                 height: '250px',
                 tooltip: 'visit',
@@ -31,7 +31,7 @@
                 javascript:
                   window.App.Dashboard.addChart({
                     id: 'most-viewed-pages-chart',
-                    url: '/stats/most-viewed-pages',
+                    url: '#{most_viewed_pages_admin_stats_url}',
                     type: 'bar',
                     height: '344px',
                     tooltip: 'view',
@@ -50,7 +50,7 @@
                 javascript:
                   window.App.Dashboard.addChart({
                     id: 'visits-per-month-chart',
-                    url: '/stats/visits-per-month',
+                    url: '#{visits_per_month_admin_stats_url}',
                     type: 'column',
                     height: '344px',
                     tooltip: 'visit',

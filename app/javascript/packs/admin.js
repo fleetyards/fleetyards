@@ -10,11 +10,13 @@ import router from 'admin/lib/Router'
 import BootstrapVue from 'bootstrap-vue'
 import Comlink from 'frontend/lib/Comlink'
 import I18n from 'frontend/lib/I18n'
+import Noty from 'frontend/lib/Noty'
 
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18n)
+Vue.use(Noty)
 
 Vue.filter('formatSize', (size) => {
   if (size > 1024 * 1024 * 1024 * 1024) {

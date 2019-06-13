@@ -4,6 +4,9 @@
       v-show="visible"
       :title="$t('actions.backToTop')"
       class="back-to-top"
+      :class="{
+        'cookie-banner-present': !cookiesAccepted
+      }"
       @click="backToTop"
     >
       <i class="fal fa-chevron-up" />
@@ -12,6 +15,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'BackToTop',
   props: {
@@ -24,6 +29,11 @@ export default {
     return {
       visible: false,
     }
+  },
+  computed: {
+    ...mapGetters('session', [
+      'cookiesAccepted',
+    ]),
   },
   created() {
     const catchScroll = () => {

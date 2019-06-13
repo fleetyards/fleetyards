@@ -20,4 +20,4 @@ json.range equipment.range
 json.extras equipment.extras
 json.store_image equipment.store_image.url
 json.store_image_medium equipment.store_image.medium.url
-json.store_image_thumb equipment.store_image.small.url
+json.store_image_small equipment.store_image.small.url

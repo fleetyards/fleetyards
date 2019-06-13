@@ -8,7 +8,7 @@
         javascript:
           window.App.Dashboard.addChart({
             id: 'models-per-month-chart',
-            url: '#{models_per_month_api_v1_stats_url}',
+            url: '#{api_url(models_per_month_api_v1_stats_path)}',
             type: 'column',
             height: '344px',
             tooltip: 'ship',

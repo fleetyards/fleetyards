@@ -7,7 +7,7 @@ json.type station.station_type
 json.type_label station.station_type_label
 json.store_image station.store_image.url
 json.store_image_medium station.store_image.medium.url
-json.store_image_thumb station.store_image.small.url
+json.store_image_small station.store_image.small.url
 json.description station.description
 json.celestial_object do
   json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object

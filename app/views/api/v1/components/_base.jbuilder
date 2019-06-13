@@ -11,4 +11,4 @@ json.item_class component.item_class
 json.item_class_label component.item_class_label
 json.store_image component.store_image.url
 json.store_image_medium component.store_image.medium.url
-json.store_image_thumb component.store_image.small.url
+json.store_image_small component.store_image.small.url

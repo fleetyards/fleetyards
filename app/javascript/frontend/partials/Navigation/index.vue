@@ -27,6 +27,9 @@
     </button>
     <div
       v-if="nodeEnv"
+      :class="{
+        'spacing-right': this.$route.name === 'home',
+      }"
       class="environment-label"
     >
       <span :class="environmentLabelClasses">
@@ -259,7 +262,6 @@
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
-import { success, alert } from 'frontend/lib/Noty'
 
 export default {
   name: 'Navigation',
@@ -359,9 +361,13 @@ export default {
     },
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
-        success(this.$t('messages.copyGitRevision.success'))
+        this.$success({
+          text: this.$t('messages.copyGitRevision.success'),
+        })
       }, () => {
-        alert(this.$t('messages.copyGitRevision.failure'))
+        this.$alert({
+          text: this.$t('messages.copyGitRevision.failure'),
+        })
       })
     },
   },

@@ -10,8 +10,11 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="page-actions">
+          <Btn :to="{ name: 'roadmap-releases' }">
+            {{ $t('labels.roadmap.releases') }}
+          </Btn>
           <Btn :to="{ name: 'roadmap-changes' }">
-            Changes
+            {{ $t('labels.roadmap.changes') }}
           </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
@@ -68,7 +71,10 @@
                   :key="item.id"
                   class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
                 >
-                  <RoadmapItem :item="item" />
+                  <RoadmapItem
+                    :item="item"
+                    slim
+                  />
                 </div>
               </div>
             </b-collapse>
@@ -237,7 +243,7 @@ export default {
   },
   metaInfo() {
     return this.getMetaInfo({
-      title: this.$t('title.roadmap'),
+      title: this.$t('title.roadmap.shipRoadmap'),
     })
   },
 }

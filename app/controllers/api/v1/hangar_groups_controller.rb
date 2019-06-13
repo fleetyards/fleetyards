@@ -37,6 +37,21 @@ module Api
         render json: ValidationError.new('hangar_group.destroy', @hangar_group.errors), status: :bad_request
       end
 
+      def sort
+        authorize! :sort, :api_hangar_groups
+
+        sorting = params.permit(sorting: [])
+
+        (sorting[:sorting] || []).each_with_index do |id, index|
+          group = HangarGroup.where(user_id: current_user.id, id: id).first
+          next if group.blank?
+
+          group.update(sort: index)
+        end
+
+        render json: { succees: true }
+      end
+
       private def hangar_group
         @hangar_group ||= HangarGroup.find_by!(id: params[:id])
       end

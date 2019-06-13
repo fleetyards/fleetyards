@@ -89,7 +89,7 @@
       <div class="pull-right">
         <Btn
           v-if="vehicle"
-          :disabled="deleting ? 'disabled' : null"
+          :disabled="deleting"
           @click.native="remove"
         >
           <i class="fal fa-trash" />
@@ -109,7 +109,6 @@
 
 <script>
 import Modal from 'frontend/components/Modal'
-import { confirm } from 'frontend/lib/Noty'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
 
@@ -164,10 +163,14 @@ export default {
     },
     remove() {
       this.deleting = true
-      confirm(this.$t('confirm.vehicle.destroy'), () => {
-        this.destroy()
-      }, () => {
-        this.deleting = false
+      this.$confirm({
+        text: this.$t('confirm.vehicle.destroy'),
+        onConfirm: () => {
+          this.destroy()
+        },
+        onClose: () => {
+          this.deleting = false
+        },
       })
     },
     async destroy() {

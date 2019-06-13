@@ -22,6 +22,10 @@
           {{ $t('nav.privacyPolicy') }}
         </router-link>
         |
+        <router-link :to="{ name: 'cookie-policy' }">
+          {{ $t('nav.cookiePolicy') }}
+        </router-link>
+        |
         <router-link :to="{ name: 'impressum' }">
           {{ $t('nav.impressum') }}
         </router-link>
@@ -92,6 +96,9 @@
         {{ codename }} ({{ version }})
         <i
           v-tooltip="gitRevision"
+          :class="{
+            online: online,
+          }"
           class="far fa-fingerprint git-revision"
           @click="copyGitRevision"
         />
@@ -102,10 +109,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { success, alert } from 'frontend/lib/Noty'
 
 export default {
   computed: {
+    ...mapGetters([
+      'online',
+    ]),
     ...mapGetters('app', [
       'version',
       'codename',
@@ -115,9 +124,13 @@ export default {
   methods: {
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
-        success(this.$t('messages.copyGitRevision.success'))
+        this.$success({
+          text: this.$t('messages.copyGitRevision.success'),
+        })
       }, () => {
-        alert(this.$t('messages.copyGitRevision.failure'))
+        this.$alert({
+          text: this.$t('messages.copyGitRevision.failure'),
+        })
       })
     },
   },

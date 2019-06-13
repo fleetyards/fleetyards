@@ -63,4 +63,10 @@ module ApplicationHelper
   def og_description
     description
   end
+
+  def api_url(path)
+    uri = URI.parse(Rails.application.secrets[:api_endpoint])
+
+    "#{uri.scheme}://#{uri.host}#{path}"
+  end
 end

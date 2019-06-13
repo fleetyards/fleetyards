@@ -172,9 +172,11 @@ export default {
     },
     remove(model) {
       if (this.form.models.includes(model.slug)) {
-        let index = this.form.models.indexOf(model.slug)
+        const index = this.form.models.indexOf(model.slug)
         this.form.models.splice(index, 1)
-        index = this.models.indexOf(model)
+      }
+      if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
+        const index = this.models.findIndex(item => item.slug === model.slug)
         this.models.splice(index, 1)
       }
     },

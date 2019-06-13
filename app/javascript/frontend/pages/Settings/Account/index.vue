@@ -26,7 +26,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import { success, confirm, alert } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -41,18 +40,26 @@ export default {
   methods: {
     async destroy() {
       this.deleting = true
-      confirm(this.$t('confirm.account.destroy'), async () => {
-        const response = await this.$api.destroy('users/current')
-        if (!response.error) {
-          success(this.$t('messages.account.destroy.success'))
-          await this.$store.dispatch('session/logout')
-          this.$router.push({ name: 'home' })
-        } else {
-          alert(this.$t('messages.account.destroy.error'))
+      this.$confirm({
+        text: this.$t('confirm.account.destroy'),
+        onConfirm: async () => {
+          const response = await this.$api.destroy('users/current')
+          if (!response.error) {
+            this.$success({
+              text: this.$t('messages.account.destroy.success'),
+            })
+            await this.$store.dispatch('session/logout')
+            this.$router.push({ name: 'home' })
+          } else {
+            this.$alert({
+              text: this.$t('messages.account.destroy.error'),
+            })
+            this.deleting = false
+          }
+        },
+        onClose: () => {
           this.deleting = false
-        }
-      }, () => {
-        this.deleting = false
+        },
       })
     },
   },

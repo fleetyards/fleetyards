@@ -67,7 +67,7 @@ class Model < ApplicationRecord
   after_save :broadcast_update
   after_save :send_new_model_notification
 
-  ransack_alias :name, :name_or_slug
+  ransack_alias :name, :name_or_slug_or_manufacturer_slug
   ransack_alias :manufacturer, :manufacturer_slug
 
   def self.ordered_by_name

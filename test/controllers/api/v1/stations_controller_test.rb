@@ -23,7 +23,7 @@ module Api
           'typeLabel' => 'Spaceport',
           'storeImage' => portolisar.store_image.url,
           'storeImageMedium' => portolisar.store_image.medium.url,
-          'storeImageThumb' => portolisar.store_image.small.url,
+          'storeImageSmall' => portolisar.store_image.small.url,
           'description' => nil,
           'celestialObject' => {
             'name' => 'Crusader',
@@ -32,7 +32,7 @@ module Api
             'designation' => '2',
             'storeImage' => portolisar.celestial_object.store_image.url,
             'storeImageMedium' => portolisar.celestial_object.store_image.medium.url,
-            'storeImageThumb' => portolisar.celestial_object.store_image.small.url,
+            'storeImageSmall' => portolisar.celestial_object.store_image.small.url,
             'description' => nil,
             'habitable' => nil,
             'fairchanceact' => nil,
@@ -47,7 +47,7 @@ module Api
             'slug' => 'stanton',
             'storeImage' => portolisar.starsystem.store_image.url,
             'storeImageMedium' => portolisar.starsystem.store_image.medium.url,
-            'storeImageThumb' => portolisar.starsystem.store_image.small.url,
+            'storeImageSmall' => portolisar.starsystem.store_image.small.url,
             'mapX' => nil,
             'mapY' => nil,
             'description' => nil,
@@ -68,7 +68,7 @@ module Api
             'selling' => false,
             'storeImage' => portolisar.shops.first.store_image.url,
             'storeImageMedium' => portolisar.shops.first.store_image.medium.url,
-            'storeImageThumb' => portolisar.shops.first.store_image.small.url
+            'storeImageSmall' => portolisar.shops.first.store_image.small.url
           }, {
             'name' => 'New Deal',
             'slug' => 'new-deal',
@@ -79,7 +79,7 @@ module Api
             'selling' => false,
             'storeImage' => portolisar.shops.last.store_image.url,
             'storeImageMedium' => portolisar.shops.last.store_image.medium.url,
-            'storeImageThumb' => portolisar.shops.last.store_image.small.url
+            'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
           'dockCounts' => [{
             'size' => 'Large',
@@ -128,7 +128,7 @@ module Api
           'typeLabel' => 'Cargo Station',
           'storeImage' => corvolex.store_image.url,
           'storeImageMedium' => corvolex.store_image.medium.url,
-          'storeImageThumb' => corvolex.store_image.small.url,
+          'storeImageSmall' => corvolex.store_image.small.url,
           'description' => nil,
           'celestialObject' => {
             'name' => 'Daymar',
@@ -137,7 +137,7 @@ module Api
             'designation' => '4',
             'storeImage' => corvolex.celestial_object.store_image.url,
             'storeImageMedium' => corvolex.celestial_object.store_image.medium.url,
-            'storeImageThumb' => corvolex.celestial_object.store_image.small.url,
+            'storeImageSmall' => corvolex.celestial_object.store_image.small.url,
             'description' => nil,
             'habitable' => nil,
             'fairchanceact' => nil,
@@ -152,7 +152,7 @@ module Api
             'slug' => 'stanton',
             'storeImage' => corvolex.starsystem.store_image.url,
             'storeImageMedium' => corvolex.starsystem.store_image.medium.url,
-            'storeImageThumb' => corvolex.starsystem.store_image.small.url,
+            'storeImageSmall' => corvolex.starsystem.store_image.small.url,
             'mapX' => nil,
             'mapY' => nil,
             'description' => nil,
@@ -193,7 +193,7 @@ module Api
           'typeLabel' => 'Spaceport',
           'storeImage' => portolisar.store_image.url,
           'storeImageMedium' => portolisar.store_image.medium.url,
-          'storeImageThumb' => portolisar.store_image.small.url,
+          'storeImageSmall' => portolisar.store_image.small.url,
           'description' => nil,
           'celestialObject' => {
             'name' => 'Crusader',
@@ -202,7 +202,7 @@ module Api
             'designation' => '2',
             'storeImage' => portolisar.celestial_object.store_image.url,
             'storeImageMedium' => portolisar.celestial_object.store_image.medium.url,
-            'storeImageThumb' => portolisar.celestial_object.store_image.small.url,
+            'storeImageSmall' => portolisar.celestial_object.store_image.small.url,
             'description' => nil,
             'habitable' => nil,
             'fairchanceact' => nil,
@@ -217,7 +217,7 @@ module Api
             'slug' => 'stanton',
             'storeImage' => portolisar.starsystem.store_image.url,
             'storeImageMedium' => portolisar.starsystem.store_image.medium.url,
-            'storeImageThumb' => portolisar.starsystem.store_image.small.url,
+            'storeImageSmall' => portolisar.starsystem.store_image.small.url,
             'mapX' => nil,
             'mapY' => nil,
             'description' => nil,
@@ -238,7 +238,7 @@ module Api
             'selling' => false,
             'storeImage' => portolisar.shops.first.store_image.url,
             'storeImageMedium' => portolisar.shops.first.store_image.medium.url,
-            'storeImageThumb' => portolisar.shops.first.store_image.small.url
+            'storeImageSmall' => portolisar.shops.first.store_image.small.url
           }, {
             'name' => 'New Deal',
             'slug' => 'new-deal',
@@ -249,7 +249,7 @@ module Api
             'selling' => false,
             'storeImage' => portolisar.shops.last.store_image.url,
             'storeImageMedium' => portolisar.shops.last.store_image.medium.url,
-            'storeImageThumb' => portolisar.shops.last.store_image.small.url
+            'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
           'dockCounts' => [{
             'size' => 'Large',

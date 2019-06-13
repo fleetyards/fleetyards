@@ -9,4 +9,9 @@ class HangarGroup < ApplicationRecord
   validates :user_id, :name, :color, presence: true
 
   before_save :update_slugs
+  after_commit :broadcast_update
+
+  def broadcast_update
+    ActionCable.server.broadcast("hangar_#{user.username}", {}.to_json)
+  end
 end

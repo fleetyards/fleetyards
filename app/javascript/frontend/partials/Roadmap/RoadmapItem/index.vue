@@ -27,15 +27,12 @@
           <template v-else>
             {{ item.name }}
           </template>
+          <small class="pull-right">
+            {{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}
+          </small>
         </h3>
-        <p v-if="!withoutDescription">
-          {{ description }}
-        </p>
-        <h4>
-          {{ $t('labels.roadmap.lastUpdate') }}
-          <small>{{ $l(item.updatedAt) }}</small>
-        </h4>
-        <ul v-if="item.lastVersion">
+        <p>{{ description }}</p>
+        <ul v-if="item.lastVersion && !slim">
           <li
             v-for="(update, index) in updates(item.lastVersion)"
             :key="index"
@@ -60,11 +57,8 @@
           </li>
         </ul>
         <b-progress :max="item.tasks">
-          <div
-            v-tooltip="progressLabel"
-            class="progress-label"
-          >
-            {{ completedPercent }} %
+          <div class="progress-label">
+            {{ progressLabel }} - {{ completedPercent }} %
             <template v-if="showInprogress">
               {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
@@ -102,7 +96,7 @@ export default {
       type: Object,
       required: true,
     },
-    withoutDescription: {
+    slim: {
       type: Boolean,
       default: false,
     },

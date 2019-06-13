@@ -1,7 +1,6 @@
 
 import { mapGetters } from 'vuex'
 import { I18n } from 'frontend/lib/I18n'
-import { success } from 'frontend/lib/Noty'
 
 export default {
   mixins: [I18n],
@@ -82,6 +81,11 @@ export default {
     },
     updateHangar(data) {
       const vehicle = JSON.parse(data)
+
+      if (!vehicle.model) {
+        return
+      }
+
       if (vehicle.deleted) {
         this.$store.dispatch('hangar/remove', vehicle.model.slug)
       } else {
@@ -98,7 +102,10 @@ export default {
       }, {
         received(data) {
           const vehicle = JSON.parse(data)
-          success(I18n.t('messages.model.onSale', { model: vehicle.model.name }))
+          this.$info({
+            text: I18n.t('messages.model.onSale', { model: vehicle.model.name }),
+            icon: vehicle.model.storeImageSmall,
+          })
         },
         connected: () => { this.connected('OnSaleHangarChannel') },
         disconnected: () => { this.disconnected('OnSaleHangarChannel') },
@@ -113,7 +120,10 @@ export default {
       }, {
         received(data) {
           const model = JSON.parse(data)
-          success(I18n.t('messages.model.onSale', { model: model.name }))
+          this.$info({
+            text: I18n.t('messages.model.onSale', { model: model.name }),
+            icon: model.storeImageSmall,
+          })
         },
         connected: () => { this.connected('OnSaleChannel') },
         disconnected: () => { this.disconnected('OnSaleChannel') },

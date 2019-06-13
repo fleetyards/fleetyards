@@ -8,7 +8,7 @@
   window.CABLE_ENDPOINT = '<%= Rails.application.secrets[:cable_endpoint] %>'
   window.FRONTEND_ENDPOINT = '<%= Rails.application.secrets[:frontend_endpoint] %>'
   window.RSI_ENDPOINT = '<%= Rails.application.secrets[:rsi_endpoint] %>'
-  window.SENTRY_DSN = '<%= Rails.application.secrets[:sentry_dsn] %>'
+  window.SENTRY_DSN = '<%= Rails.application.secrets[:sentry_frontend_dsn] %>'
   window.DATA_PREFILL = <%= @data_prefill.to_json.html_safe %>
 </script>
 <%= javascript_packs_with_chunks_tag 'frontend' %>

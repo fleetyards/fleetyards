@@ -19,6 +19,10 @@ export const routes = [
     name: 'privacy-policy',
     component: () => import(/* webpackChunkName: "frontend.page.privacyPolicy" */ 'frontend/pages/PrivacyPolicy'),
   }, {
+    path: '/cookie-policy',
+    name: 'cookie-policy',
+    component: () => import(/* webpackChunkName: "frontend.page.cookiePolicy" */ 'frontend/pages/CookiePolicy'),
+  }, {
     path: '/ships',
     name: 'models',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),
@@ -133,7 +137,11 @@ export const routes = [
   }, {
     path: '/roadmap/changes',
     name: 'roadmap-changes',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap-changes" */ 'frontend/pages/Roadmap/Changes'),
+  }, {
+    path: '/roadmap/releases',
+    name: 'roadmap-releases',
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap-releases" */ 'frontend/pages/Roadmap/Releases'),
   }, {
     path: '/settings',
     name: 'settings',
