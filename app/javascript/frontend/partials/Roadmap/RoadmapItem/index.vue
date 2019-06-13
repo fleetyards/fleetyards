@@ -27,8 +27,12 @@
           <template v-else>
             {{ item.name }}
           </template>
-          <small class="pull-right">
-            {{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}
+          <small
+            v-tooltip="$t('labels.roadmap.lastUpdate')"
+            class="pull-right"
+          >
+            {{ $l(item.updatedAt) }}
+            <i class="far fa-clock" />
           </small>
         </h3>
         <p>{{ description }}</p>
