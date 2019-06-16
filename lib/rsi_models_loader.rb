@@ -232,6 +232,6 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   private def model_updated(model, data)
-    @model_updated ||= model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
+    model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
   end
 end
