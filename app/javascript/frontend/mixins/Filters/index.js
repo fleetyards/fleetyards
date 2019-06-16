@@ -128,7 +128,7 @@ export default {
     }, 500),
     fetchManufacturers({ page, search, missingValue }) {
       const query = {
-        with_model: true,
+        withModel: true,
         q: {},
       }
       if (search) {
@@ -151,6 +151,19 @@ export default {
     },
     fetchSize() {
       return this.$api.get('models/sizes')
+    },
+    fetchModelsWithDocks({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('models/with-docks', query)
     },
   },
 }

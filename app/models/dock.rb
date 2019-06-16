@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Dock < ApplicationRecord
-  belongs_to :station
+  belongs_to :station, optional: true
+  belongs_to :model, optional: true
 
   enum dock_type: %i[vehiclepad garage landingpad dockingport hangar]
   ransacker :dock_type, formatter: proc { |v| Dock.dock_types[v] } do |parent|
@@ -12,7 +13,7 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
-  validates :dock_type, :station_id, :ship_size, presence: true
+  validates :dock_type, :ship_size, presence: true
 
   def self.size_filters
     Dock.ship_sizes.map do |(item, _index)|

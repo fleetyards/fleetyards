@@ -102,47 +102,49 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
 
-    new_time_modified = begin
-      Time.zone.parse(data['time_modified.unfiltered'])
-    rescue ArgumentError
-      nil
+    updates = {}
+
+    if model_updated(model, data) || model.production_status.blank?
+      updates[:production_status] = data['production_status']
+      updates[:production_note] = data['production_note']
     end
 
-    if model.last_updated_at.blank? || model.last_updated_at < new_time_modified || model.production_status.blank?
-      model.update(
-        production_status: data['production_status'],
-        production_note: data['production_note']
-      )
-    end
+    updates[:length] = data['length'].to_f if model_updated(model, data) && data['length'] != model.rsi_length || model.length.blank?
+    updates[:beam] = data['beam'].to_f if model_updated(model, data) && data['beam'] != model.rsi_beam || model.beam.blank?
+    updates[:height] = data['height'].to_f if model_updated(model, data) && data['height'] != model.rsi_height || model.height.blank?
+    updates[:cargo] = nil_or_float(data['cargocapacity']) if model_updated(model, data) && data['cargocapacity'] != model.rsi_cargo || model.cargo.blank?
 
     model.update(
-      name: strip_name(data['name']),
-      rsi_chassis_id: data['chassis_id'],
-      rsi_name: data['name'],
-      description: data['description'],
-      length: data['length'].to_f,
-      beam: data['beam'].to_f,
-      height: data['height'].to_f,
-      mass: data['mass'].to_f,
-      size: data['size'],
-      cargo: nil_or_float(data['cargocapacity']),
-      max_crew: nil_or_int(data['max_crew']),
-      min_crew: nil_or_int(data['min_crew']),
-      scm_speed: nil_or_float(data['scm_speed']),
-      afterburner_speed: nil_or_float(data['afterburner_speed']),
-      pitch_max: nil_or_float(data['pitch_max']),
-      yaw_max: nil_or_float(data['yaw_max']),
-      roll_max: nil_or_float(data['roll_max']),
-      xaxis_acceleration: nil_or_float(data['xaxis_acceleration']),
-      yaxis_acceleration: nil_or_float(data['yaxis_acceleration']),
-      zaxis_acceleration: nil_or_float(data['zaxis_acceleration']),
-      classification: data['type'],
-      focus: data['focus'],
-      store_url: data['url'],
-      last_updated_at: new_time_modified
+      updates.merge(
+        name: strip_name(data['name']),
+        rsi_chassis_id: data['chassis_id'],
+        rsi_name: data['name'],
+        rsi_length: data['length'],
+        rsi_beam: data['beam'],
+        rsi_height: data['height'],
+        rsi_cargo: data['cargocapacity'],
+        description: data['description'],
+        mass: data['mass'].to_f,
+        size: data['size'],
+        max_crew: nil_or_int(data['max_crew']),
+        min_crew: nil_or_int(data['min_crew']),
+        scm_speed: nil_or_float(data['scm_speed']),
+        afterburner_speed: nil_or_float(data['afterburner_speed']),
+        pitch_max: nil_or_float(data['pitch_max']),
+        yaw_max: nil_or_float(data['yaw_max']),
+        roll_max: nil_or_float(data['roll_max']),
+        xaxis_acceleration: nil_or_float(data['xaxis_acceleration']),
+        yaxis_acceleration: nil_or_float(data['yaxis_acceleration']),
+        zaxis_acceleration: nil_or_float(data['zaxis_acceleration']),
+        classification: data['type'],
+        focus: data['focus'],
+        store_url: data['url'],
+        last_updated_at: new_time_modified(data)
+      )
     )
 
     # rubocop:disable Style/RescueModifier
@@ -161,6 +163,7 @@ class RsiModelsLoader < RsiBaseLoader
 
     model
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
 
   def create_or_update_manufacturer(manufacturer_data)
@@ -218,5 +221,17 @@ class RsiModelsLoader < RsiBaseLoader
     end
 
     component
+  end
+
+  private def new_time_modified(data)
+    @new_time_modified ||= begin
+      Time.zone.parse(data['time_modified.unfiltered'])
+    rescue ArgumentError
+      nil
+    end
+  end
+
+  private def model_updated(model, data)
+    @model_updated ||= model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
   end
 end

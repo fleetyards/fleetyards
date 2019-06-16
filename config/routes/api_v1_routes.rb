@@ -11,6 +11,7 @@ v1_api_routes = lambda do
   resources :models, param: :slug, only: %i[index show] do
     collection do
       get :fleetchart
+      get 'with-docks' => 'models#with_docks'
       get :unscheduled
       get :latest
       get :slugs
@@ -27,6 +28,7 @@ v1_api_routes = lambda do
       get :images
       get :videos
       get :variants
+      get 'snub-crafts' => 'models#snub_crafts'
       get :modules
       get :upgrades
       get :store_image, path: 'store-image'

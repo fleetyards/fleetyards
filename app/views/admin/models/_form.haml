@@ -280,4 +280,17 @@
         %i.fa.fa-plus
         = I18n.t(:"actions.add_video")
 
+  %fieldset
+    %legend
+      Docks:
+    #docks
+      - if model.docks.any?
+        = form.fields_for :docks, model.docks do |builder|
+          = render 'models/dock_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :docks, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#docks" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_dock")
+
   = render "shared/submit", path: admin_models_path

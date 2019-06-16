@@ -85,6 +85,9 @@ Style/SignalException:
 Style/TrivialAccessors:
   ExactNameMatch: true
 
+Rails/BulkChangeTable:
+  Enabled: false
+
 Rails/Delegate:
   Exclude:
     - lib/**/*

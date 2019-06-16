@@ -13,7 +13,7 @@
       "git add"
     ],
     "*.{rb,erb,haml,jbuilder}": [
-      "rubocop",
+      "bundle exec rubocop",
       "git add"
     ],
   },

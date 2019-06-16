@@ -53,7 +53,10 @@ class Model < ApplicationRecord
 
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
+  has_many :docks, dependent: :destroy
+
   accepts_nested_attributes_for :videos, allow_destroy: true
+  accepts_nested_attributes_for :docks, allow_destroy: true
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
@@ -126,6 +129,10 @@ class Model < ApplicationRecord
     where(active: true)
   end
 
+  def self.with_dock
+    includes(:docks).where.not(docks: { model_id: nil })
+  end
+
   %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed ground_speed afterburner_ground_speed].each do |method_name|
     define_method "display_#{method_name}" do
       display_value = try("fallback_#{method_name}")
@@ -137,6 +144,14 @@ class Model < ApplicationRecord
     end
   end
 
+  def dock_counts
+    docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
+      docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
+        OpenStruct.new(size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, count: docks_by_type.size)
+      end
+    end.flatten
+  end
+
   def price
     ShopCommodity.where(commodity_item_type: 'Model', commodity_item_id: id)
                  .order(sell_price: :desc)
@@ -145,6 +160,15 @@ class Model < ApplicationRecord
 
   def variants
     Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
+  end
+
+  def snub_crafts
+    Model.where(
+      'length <= :length and beam <= :beam and height <= :height',
+      length: docks.map(&:length).max,
+      beam: docks.map(&:beam).max,
+      height: docks.map(&:height).max
+    )
   end
 
   def in_hangar(user)

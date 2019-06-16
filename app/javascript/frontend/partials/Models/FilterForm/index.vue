@@ -60,6 +60,13 @@
       name="price"
       multiple
     />
+    <FilterGroup
+      v-model="form.willItFit"
+      :label="$t('labels.filters.models.willItFit')"
+      :fetch="fetchModelsWithDocks"
+      value-attr="slug"
+      name="will-it-fit"
+    />
     <div class="row">
       <div class="col-xs-6">
         <FormInput
@@ -154,6 +161,7 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        willItFit: query.willItFit,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
@@ -176,6 +184,7 @@ export default {
         pledgePriceGteq: query.pledgePriceGteq,
         lengthLteq: query.lengthLteq,
         lengthGteq: query.lengthGteq,
+        willItFit: query.willItFit,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],

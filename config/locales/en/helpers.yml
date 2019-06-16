@@ -26,6 +26,9 @@ en:
         hidden: hidden?
       dock:
         name: Name
+        length: Length
+        height: Height
+        beam: Beam
       shop_commodity:
         name: Name
         description: Description

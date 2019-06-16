@@ -4,7 +4,7 @@ module Api
   module V1
     class ModelsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
-      after_action -> { pagination_header(:models) }, only: [:index]
+      after_action -> { pagination_header(:models) }, only: %i[index with_docks]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -14,6 +14,18 @@ module Api
 
       def index
         authorize! :index, :api_models
+
+        @q = index_scope
+
+        @models = @q.result
+                    .page(params[:page])
+                    .per(per_page(Model))
+      end
+
+      def with_docks
+        authorize! :index, :api_models
+
+        params[:withDock] = true
 
         @q = index_scope
 
@@ -183,8 +195,6 @@ module Api
         @model_upgrades = model.upgrades
                                .visible
                                .active
-                               .page(params[:page])
-                               .per(per_page(ModelUpgrade))
       end
 
       def store_image
@@ -241,13 +251,30 @@ module Api
 
       private def index_scope
         scope = Model.visible.active
+
         if pledge_price_range.present?
           model_query_params['sorts'] = 'fallback_pledge_price asc'
           scope = scope.where(fallback_pledge_price: pledge_price_range)
         end
+
         if price_range.present?
           model_query_params['sorts'] = 'price asc'
           scope = scope.where(price: price_range)
+        end
+
+        scope = scope.with_dock if params[:withDock]
+
+        if model_query_params['will_it_fit'].present?
+          slug = model_query_params.delete('will_it_fit')
+          parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
+          if parent.present? && parent.docks.present?
+            scope = scope.where(
+              'length <= :length and beam <= :beam and height <= :height',
+              length: parent.docks.map(&:length).max,
+              beam: parent.docks.map(&:beam).max,
+              height: parent.docks.map(&:height).max
+            )
+          end
         end
 
         model_query_params['sorts'] = sort_by_name
@@ -284,7 +311,7 @@ module Api
         @model_query_params ||= query_params(
           :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq,
+          :pledge_price_lteq, :will_it_fit,
           manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
           id_not_in: []

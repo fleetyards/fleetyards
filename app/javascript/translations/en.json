@@ -469,7 +469,8 @@
         "pledgePriceLt": "Pledge Price <=",
         "pledgePriceGt": "Pledge Price >=",
         "priceLt": "Price <=",
-        "priceGt": "Price >="
+        "priceGt": "Price >=",
+        "willItFit": "Will it Fit?"
       },
       "images": {
         "station": "Station",

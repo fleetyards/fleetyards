@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_193502) do
+ActiveRecord::Schema.define(version: 2019_06_16_142057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -145,6 +145,10 @@ ActiveRecord::Schema.define(version: 2019_05_11_193502) do
     t.datetime "updated_at", null: false
     t.integer "ship_size"
     t.string "group"
+    t.uuid "model_id"
+    t.decimal "height", precision: 15, scale: 2
+    t.decimal "beam", precision: 15, scale: 2
+    t.decimal "length", precision: 15, scale: 2
     t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
@@ -374,6 +378,10 @@ ActiveRecord::Schema.define(version: 2019_05_11_193502) do
     t.decimal "price", precision: 15, scale: 2
     t.uuid "base_model_id"
     t.integer "rsi_chassis_id"
+    t.decimal "rsi_height", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "rsi_length", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "rsi_beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "rsi_cargo", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
