@@ -24,6 +24,9 @@ class Vehicle < ApplicationRecord
 
   ransack_alias :name, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
+  ransack_alias :length, :model_length
+  ransack_alias :price, :model_price
+  ransack_alias :pledge_price, :model_pledge_price
   ransack_alias :manufacturer, :model_manufacturer_slug
   ransack_alias :classification, :model_classification
   ransack_alias :focus, :model_focus

@@ -434,6 +434,12 @@
       },
       "vehicles": {
         "name": "Name or Ship name",
+        "lengthLt": "Length <=",
+        "lengthGt": "Length >=",
+        "pledgePriceLt": "Pledge Price <=",
+        "pledgePriceGt": "Pledge Price >=",
+        "priceLt": "Price <=",
+        "priceGt": "Price >=",
         "purchased": "Purchased",
         "group": "Group"
       },
@@ -457,7 +463,13 @@
         "size": "Size",
         "price": "Price",
         "pledgePrice": "Pledge Price",
-        "productionStatus": "Production Status"
+        "productionStatus": "Production Status",
+        "lengthLt": "Length <=",
+        "lengthGt": "Length >=",
+        "pledgePriceLt": "Pledge Price <=",
+        "pledgePriceGt": "Pledge Price >=",
+        "priceLt": "Price <=",
+        "priceGt": "Price >="
       },
       "images": {
         "station": "Station",
