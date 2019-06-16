@@ -164,7 +164,11 @@
       = form.text_field :max_crew, class: 'form-control'
       %small
         = form_errors model, :max_crew
-
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :dock_size)}
+      = form.label :dock_size
+      = form.select :dock_size, Model.dock_sizes.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.models.dock_size") }, {class: 'form-control'}
+      %small
+        = form_errors model, :dock_size
   .row
     .col-xs-12.col-md-4.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image

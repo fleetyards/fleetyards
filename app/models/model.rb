@@ -55,6 +55,8 @@ class Model < ApplicationRecord
 
   has_many :docks, dependent: :destroy
 
+  enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
+
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 

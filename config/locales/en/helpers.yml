@@ -52,6 +52,8 @@ en:
         station_type: Please select a Station Type
       trade_commodity:
         commodity: Commodity
+      models:
+        dock_size: Please select a Dock size
       docks:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size
