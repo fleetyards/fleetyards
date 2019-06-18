@@ -142,6 +142,11 @@ export default {
       groupedButton: false,
     }
   },
+  watch: {
+    ships() {
+      this.fetch()
+    },
+  },
   computed: {
     ...mapGetters([
       'fleetchartScale',
@@ -206,6 +211,9 @@ export default {
     this.fetch()
   },
   methods: {
+    updateShips(ships) {
+      this.ships = ships
+    },
     updateFleetchartScale(value) {
       this.$store.commit('setFleetChartScale', value)
     },

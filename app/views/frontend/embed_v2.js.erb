@@ -1,0 +1,27 @@
+window.FRONTEND_ENDPOINT = '<%= Rails.application.secrets[:frontend_endpoint] %>'
+window.API_ENDPOINT = '<%= Rails.application.secrets[:api_endpoint] %>'
+window.STORE_VERSION = '<%= Rails.application.secrets[:embed_store_version] %>'
+
+const d = document
+const styles = d.createElement('link')
+
+styles.href = '<%= Rails.application.secrets[:frontend_endpoint] %><%= ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed_v2.css')) %>'
+styles.rel = 'stylesheet'
+styles.type = 'text/css';
+(d.head || d.body).appendChild(styles)
+
+const fonts = d.createElement('link')
+fonts.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900'
+fonts.rel = 'stylesheet'
+fonts.media = 'all';
+(d.head || d.body).appendChild(fonts)
+
+const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed_v2', type: :javascript).flatten.uniq.to_json.html_safe %>
+
+chunks.forEach((chunkUrl) => {
+  const chunk = d.createElement('script')
+  chunk.src = '<%= Rails.application.secrets[:frontend_endpoint] %>' + chunkUrl
+  chunk.type = 'application/javascript'
+  const parent = d.head || d.body
+  parent.appendChild(chunk)
+})
