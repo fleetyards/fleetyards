@@ -232,6 +232,7 @@
                   :details="detailsVisible"
                   :on-edit="showEditModal"
                   :on-addons="showAddonsModal"
+                  is-my-ship
                 />
               </div>
             </transition-group>

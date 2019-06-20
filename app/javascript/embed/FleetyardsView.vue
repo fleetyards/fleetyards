@@ -142,11 +142,6 @@ export default {
       groupedButton: false,
     }
   },
-  watch: {
-    ships() {
-      this.fetch()
-    },
-  },
   computed: {
     ...mapGetters([
       'fleetchartScale',
@@ -202,6 +197,11 @@ export default {
         }
         return 0
       })
+    },
+  },
+  watch: {
+    ships() {
+      this.fetch()
     },
   },
   mounted() {

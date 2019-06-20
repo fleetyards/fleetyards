@@ -41,7 +41,7 @@
           </small>
 
           <Btn
-            v-if="isMyShip"
+            v-if="vehicle && onEdit"
             :title="$t('actions.edit')"
             :aria-label="$t('actions.edit')"
             class="panel-edit-button"
@@ -53,7 +53,7 @@
           </Btn>
 
           <AddToHangar
-            v-else
+            v-else-if="!isMyShip"
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
@@ -90,7 +90,7 @@
           </div>
         </router-link>
         <div
-          v-if="upgradable && onAddons"
+          v-if="upgradable && onAddons && vehicle"
           v-tooltip="$t('labels.model.addons')"
           class="addons"
           :class="{
@@ -157,21 +157,15 @@ export default {
     },
     vehicle: {
       type: Object,
-      default() {
-        return null
-      },
+      default: null,
     },
     onEdit: {
       type: Function,
-      default() {
-        return () => {}
-      },
+      default: null,
     },
     onAddons: {
       type: Function,
-      default() {
-        return () => {}
-      },
+      default: null,
     },
     details: {
       type: Boolean,
@@ -180,6 +174,10 @@ export default {
     count: {
       type: Number,
       default: null,
+    },
+    isMyShip: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -203,9 +201,6 @@ export default {
         return this.$t('labels.yourFlagship')
       }
       return this.$t('labels.flagship')
-    },
-    isMyShip() {
-      return this.vehicle && !!this.onEdit
     },
     upgradable() {
       return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)

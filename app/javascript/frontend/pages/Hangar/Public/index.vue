@@ -103,6 +103,7 @@
             <ModelPanel
               :model="vehicle.model"
               :vehicle="vehicle"
+              :is-my-ship="isMyShip"
             />
           </div>
         </transition-group>
@@ -160,13 +161,24 @@ export default {
       'publicFleetchartVisible',
       'publicFleetchartScale',
     ]),
+    ...mapGetters('session', [
+      'currentUser',
+    ]),
     username() {
       return this.$route.params.user
+    },
+    isMyShip() {
+      if (!this.currentUser) {
+        return false
+      }
+
+      return (this.username || '').toLowerCase() === this.currentUser.username.toLowerCase()
     },
     usernamePlural() {
       if (this.user.endsWith('s') || this.user.endsWith('x') || this.user.endsWith('z')) {
         return this.user
       }
+
       return `${this.user}'s`
     },
     user() {
