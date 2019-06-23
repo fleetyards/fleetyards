@@ -14530,10 +14530,10 @@ vue@2.6.10, vue@^2.5.16, vue@^2.6.9:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vuedraggable@^2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-2.21.0.tgz#30c485ed737a9a6a73ea8f21cc8e1ed59aaddc92"
-  integrity sha512-UDp0epjaZikuInoJA9rlEIJaSTQThabq0R9x7TqBdl0qGVFKKzo6glP6ubfzWBmV4iRIfbSOs2DV06s3B5h5tA==
+vuedraggable@^2.22.0:
+  version "2.22.0"
+  resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-2.22.0.tgz#2d9b5ae031fce584c3232357df6d0251cf80f48d"
+  integrity sha512-5AxSCsmdptB8Gpy/8yDdW3FjnQI5unx+FkBKipZwfXyxvlxhZE6XPLD6SE8Ti5b+0uYqeKoYVpB2fcjgUY6gGw==
   dependencies:
     sortablejs "^1.9.0"
 
