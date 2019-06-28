@@ -134,8 +134,8 @@ export default {
       return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
     },
     storeImage() {
-      if (this.item.storeImage) {
-        return this.item.storeImage
+      if (this.item.storeImageSmall) {
+        return this.item.storeImageSmall
       }
       return `https://robertsspaceindustries.com${this.item.image}`
     },
