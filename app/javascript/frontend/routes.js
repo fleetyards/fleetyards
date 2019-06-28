@@ -9,6 +9,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-6.jpg'),
+      title: 'title.home',
     },
   }, {
     path: '/impressum',
@@ -22,6 +23,9 @@ export const routes = [
     path: '/cookie-policy',
     name: 'cookie-policy',
     component: () => import(/* webpackChunkName: "frontend.page.cookiePolicy" */ 'frontend/pages/CookiePolicy'),
+    meta: {
+      title: 'title.cookiePolicy',
+    },
   }, {
     path: '/ships',
     name: 'models',
@@ -38,6 +42,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
+      title: 'title.compare.models',
     },
   }, {
     path: '/ships/:slug',
@@ -71,6 +76,9 @@ export const routes = [
     path: '/images',
     name: 'images',
     component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
+    meta: {
+      title: 'title.images',
+    },
   }, {
     path: '/hangar',
     name: 'hangar',
@@ -80,6 +88,7 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
       quickSearch: 'nameCont',
+      title: 'title.hangar',
     },
   }, {
     path: '/hangar/:user',
@@ -92,6 +101,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
+      title: 'title.fleets',
     },
   }, {
     path: '/fleets/:sid',
@@ -113,6 +123,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
+      title: 'title.cargo',
     },
   }, {
     path: '/commodities',
@@ -121,6 +132,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
+      title: 'title.commodities',
     },
   }, {
     path: '/commodities/:id',
@@ -169,6 +181,9 @@ export const routes = [
     path: '/password/update/:token',
     name: 'change-password',
     component: () => import(/* webpackChunkName: "frontend.page.change-password" */ 'frontend/pages/ChangePassword'),
+    meta: {
+      title: 'title.changePassword',
+    },
   }, {
     path: '/confirm/:token',
     name: 'confirm',

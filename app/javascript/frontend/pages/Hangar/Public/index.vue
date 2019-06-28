@@ -164,6 +164,9 @@ export default {
     ...mapGetters('session', [
       'currentUser',
     ]),
+    metaTitle() {
+      return this.$t('title.hangarPublic', { user: this.usernamePlural })
+    },
     username() {
       return this.$route.params.user
     },
@@ -243,11 +246,6 @@ export default {
         this.fleetchartVehicles = response.data
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.hangarPublic', { user: this.usernamePlural }),
-    })
   },
 }
 </script>

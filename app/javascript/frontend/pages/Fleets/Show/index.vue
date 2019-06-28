@@ -186,7 +186,7 @@ export default {
     ...mapGetters('session', [
       'currentUser',
     ]),
-    fleetTitle() {
+    metaTitle() {
       if (!this.fleet || !this.fleet.sid) {
         return ''
       }
@@ -259,11 +259,6 @@ export default {
         this.fleetCount = response.data
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.fleetTitle,
-    })
   },
 }
 </script>

@@ -204,10 +204,5 @@ export default {
       return null
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.compare.models'),
-    })
-  },
 }
 </script>

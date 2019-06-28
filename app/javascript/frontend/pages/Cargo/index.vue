@@ -275,11 +275,6 @@ export default {
       })
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.cargo'),
-    })
-  },
 }
 </script>
 

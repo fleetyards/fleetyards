@@ -14,11 +14,6 @@
                 >
                 {{ $t('app') }}
               </h1>
-              <!-- <div class="row">
-                <div class="col-xs-12 col-md-12">
-                  <p>{{ $t('texts.index') }}</p>
-                </div>
-              </div> -->
               <div class="row">
                 <div class="col-xs-12 col-md-offset-3 col-md-6">
                   <form @submit.prevent="search">
@@ -226,12 +221,6 @@ export default {
     scrollDown() {
       this.$scrollTo('.home-ships')
     },
-  },
-
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.home'),
-    })
   },
 }
 </script>

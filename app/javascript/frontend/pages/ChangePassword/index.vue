@@ -153,11 +153,6 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.changePassword'),
-    })
-  },
 }
 </script>
 

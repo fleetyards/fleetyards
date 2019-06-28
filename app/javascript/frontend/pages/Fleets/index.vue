@@ -167,11 +167,6 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.fleets'),
-    })
-  },
 }
 </script>
 

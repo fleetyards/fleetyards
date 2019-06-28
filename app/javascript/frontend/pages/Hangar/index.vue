@@ -495,11 +495,6 @@ export default {
       }, 300)
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.hangar'),
-    })
-  },
 }
 </script>
 

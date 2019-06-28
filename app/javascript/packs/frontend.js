@@ -62,7 +62,7 @@ Vue.use(VueScrollTo, {
 })
 
 Vue.use(Meta, {
-  keyName: 'metaInfo',
+  keyName: 'head',
   attribute: 'data-vue-meta',
   ssrAttribute: 'data-vue-meta-server-rendered',
   tagIDKeyName: 'vmid',

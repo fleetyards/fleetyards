@@ -292,11 +292,6 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.commodities'),
-    })
-  },
 }
 </script>
 
