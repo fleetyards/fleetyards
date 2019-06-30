@@ -24,6 +24,12 @@
             title="Share"
           />
           <button
+            class="pswp__button pswp__button--copy"
+            @click="copyUrl"
+          >
+            <i class="fa fa-copy" />
+          </button>
+          <button
             class="pswp__button pswp__button--fs"
             title="Toggle fullscreen"
           />
@@ -88,8 +94,8 @@ export default {
     },
     shareButtons() {
       return [
-        { id: 'twitter', label: 'Tweet', url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}' },
-        { id: 'pinterest', label: 'Pin it', url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}' },
+        { id: 'twitter', label: 'Tweet', url: 'https://twitter.com/intent/tweet?text={{text}}&url={{raw_image_url}}' },
+        { id: 'pinterest', label: 'Pin it', url: 'http://www.pinterest.com/pin/create/button/?url={{raw_image_url}}&media={{raw_image_url}}&description={{text}}' },
         {
           id: 'download', label: 'Download image', url: '{{raw_image_url}}', download: true,
         },
@@ -108,6 +114,18 @@ export default {
     },
   },
   methods: {
+    copyUrl(_event) {
+      const element = document.getElementsByClassName('pswp__img')[0]
+      this.$copyText(element.src).then(() => {
+        this.$success({
+          text: this.$t('messages.copyImageUrl.success'),
+        })
+      }, () => {
+        this.$alert({
+          text: this.$t('messages.copyImageUrl.failure'),
+        })
+      })
+    },
     getThumbBounds(index) {
       if (!this.galleryItems[index].el) {
         return { x: 0, y: 0, w: 0 }

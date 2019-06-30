@@ -683,6 +683,10 @@
       "success": "Git Revision Copied!",
       "failure": "Could not copy Git Revision"
     },
+    "copyImageUrl": {
+      "success": "Image URL Copied!",
+      "failure": "Could not copy Image URL"
+    },
     "signup": {
       "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
       "invalid": "Please resolve the errors before your account can be created.",
