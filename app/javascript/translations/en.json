@@ -587,7 +587,8 @@
       "models": "Compare"
     },
     "empty": {
-      "reset": "Reset Filters/Pages"
+      "reset": "Reset Filters/Pages",
+      "resetPage": "Go to First Page"
     },
     "fleet": {
       "create": "Create a new Fleet",

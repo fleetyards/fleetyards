@@ -79,6 +79,9 @@ export default {
     }
   },
   computed: {
+    isPagePresent() {
+      return !!this.$route.query.page
+    },
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
       Object.keys(query)
@@ -108,6 +111,14 @@ export default {
       this.$router.replace({
         name: this.$route.name,
         query: {},
+      })
+    },
+    resetPage() {
+      this.$router.replace({
+        name: this.$route.name,
+        query: {
+          q: this.$route.query.q || {},
+        },
       })
     },
     filter: debounce(function debounced() {

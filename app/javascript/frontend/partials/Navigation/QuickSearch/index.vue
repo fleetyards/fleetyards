@@ -21,26 +21,34 @@ export default {
   },
   mixins: [Filters],
   data() {
-    const query = this.$route.query.q || {}
-    const form = {}
-    form[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch]
+    const query = this.queryParams()
+
+    query[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch] || null
+
     return {
-      form,
+      form: query,
     }
   },
+
   watch: {
     $route() {
-      const query = this.$route.query.q || {}
-      const form = {}
-      form[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch]
-      this.form = form
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
+      const query = this.queryParams()
+
+      query[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch] || null
+
+      this.form = query
     },
     form: {
       handler() {
         this.filter()
       },
       deep: true,
+    },
+  },
+
+  methods: {
+    queryParams() {
+      return JSON.parse(JSON.stringify(this.$route.query.q || {}))
     },
   },
 }

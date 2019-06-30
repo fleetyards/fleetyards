@@ -175,6 +175,7 @@ export default {
   watch: {
     $route() {
       const query = this.$route.query.q || {}
+
       this.form = {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
@@ -193,6 +194,7 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       }
+
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
     form: {
