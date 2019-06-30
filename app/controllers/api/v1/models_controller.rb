@@ -272,7 +272,7 @@ module Api
               'length <= :length and beam <= :beam and height <= :height',
               length: parent.docks.map(&:length).max - 2.0,
               beam: parent.docks.map(&:beam).max - 2.0,
-              height: parent.docks.map(&:height).max - 2.0
+              height: parent.docks.map(&:height).max - 1.0
             )
           end
         end

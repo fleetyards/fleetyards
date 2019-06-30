@@ -18,17 +18,17 @@
     .row
       .col-xs-4
         .form-group{class: form_error?(fields.object, :length)}
-          = fields.number_field :length, placeholder: I18n.t(:"helpers.placeholder.dock.length"), class: 'form-control'
+          = fields.number_field :length, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.length"), class: 'form-control'
           = form_errors fields.object, :length
 
       .col-xs-4
         .form-group{class: form_error?(fields.object, :beam)}
-          = fields.number_field :beam, placeholder: I18n.t(:"helpers.placeholder.dock.beam"), class: 'form-control'
+          = fields.number_field :beam, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.beam"), class: 'form-control'
           = form_errors fields.object, :beam
 
       .col-xs-4
         .form-group{class: form_error?(fields.object, :height)}
-          = fields.number_field :height, placeholder: I18n.t(:"helpers.placeholder.dock.height"), class: 'form-control'
+          = fields.number_field :height, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.height"), class: 'form-control'
           = form_errors fields.object, :height
 
   .col-xs-12.col-md-1
