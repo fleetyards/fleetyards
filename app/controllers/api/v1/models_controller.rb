@@ -263,19 +263,19 @@ module Api
         end
 
         scope = scope.with_dock if params[:withDock]
-
-        if model_query_params['will_it_fit'].present?
-          slug = model_query_params.delete('will_it_fit')
-          parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
-          scope = will_it_fit?(parent) if parent.present? && parent.docks.present?
-        end
+        scope = will_it_fit?(scope) if model_query_params['will_it_fit'].present?
 
         model_query_params['sorts'] = sort_by_name
 
         scope.ransack(model_query_params)
       end
 
-      private def will_it_fit?(parent)
+      private def will_it_fit?(scope)
+        slug = model_query_params.delete('will_it_fit')
+        parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
+
+        return if parent.blank? || parent.docks.blank?
+
         vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
         ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
 
