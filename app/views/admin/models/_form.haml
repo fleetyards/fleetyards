@@ -12,17 +12,25 @@
         = form_errors model, :description
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.model.hidden")
+    .col-xs-12.col-sm-6.col-md-8.form-group
+      .row
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+            = form.label :hidden do
+              = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
-        = form.label :active do
-          = I18n.t(:"activerecord.attributes.model.active")
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
+            = form.label :active do
+              = I18n.t(:"activerecord.attributes.model.active")
+
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :ground, placeholder: I18n.t(:"helpers.placeholder.model.ground")
+            = form.label :ground do
+              = I18n.t(:"activerecord.attributes.model.ground")
 
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :base_model_id)}
       = form.label :base_model_id

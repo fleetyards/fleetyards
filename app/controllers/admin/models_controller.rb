@@ -86,7 +86,7 @@ module Admin
 
     private def model_params
       @model_params ||= params.require(:model).permit(
-        :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
+        :name, :hidden, :active, :ground, :store_image, :store_image_cache, :remove_store_image,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
         :brochure, :brochure_cache, :remove_brochure, :store_url, :base_model_id,
         :beam, :length, :height, :mass, :cargo, :pledge_price, :on_sale, :manufacturer_id, :focus,

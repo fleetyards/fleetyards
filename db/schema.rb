@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_16_184414) do
+ActiveRecord::Schema.define(version: 2019_07_01_120918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -383,6 +383,7 @@ ActiveRecord::Schema.define(version: 2019_06_16_184414) do
     t.decimal "rsi_beam", precision: 15, scale: 2, default: "0.0", null: false
     t.decimal "rsi_cargo", precision: 15, scale: 2
     t.integer "dock_size"
+    t.boolean "ground", default: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

@@ -117,6 +117,7 @@ class RsiModelsLoader < RsiBaseLoader
     updates[:beam] = data['beam'].to_f if model_updated(model, data) && data['beam'].to_f != model.rsi_beam || model.beam.blank?
     updates[:height] = data['height'].to_f if model_updated(model, data) && data['height'].to_f != model.rsi_height || model.height.blank?
     updates[:cargo] = nil_or_float(data['cargocapacity']) if model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo || model.cargo.blank?
+    updates[:ground] = (data['type'] == 'ground') if model_updated(model, data) && (data['type'] != model.classification || (data['type'] == 'ground') != model.ground)
 
     model.update(
       updates.merge(
