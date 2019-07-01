@@ -294,7 +294,7 @@ module Api
           )
         elsif ship_dock
           scope.where(
-            'ground = FALSE and length <= :length and beam <= :beam and height <= :height',
+            '(ground = FALSE or ground IS NULL) and length <= :length and beam <= :beam and height <= :height',
             length: ship_dock.length - 2.0,
             beam: ship_dock.beam - 2.0,
             height: ship_dock.height - 1.0
