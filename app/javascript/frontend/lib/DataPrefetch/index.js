@@ -10,7 +10,7 @@ const cleanData = function cleanData(key) {
   window.DATA_PREFILL[key] = null
 }
 
-const prefetch = function getData(key) {
+const prefetch = function prefetch(key) {
   const json = getByKey(key)
   cleanData(key)
 
