@@ -282,7 +282,7 @@ module Api
         if ship_dock && vehicle_dock
           scope.where(
             %{
-              (ground = FALSE and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
+              ((ground = FALSE or ground IS NULL) and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
               (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
             },
             ship_length: ship_dock.length - 2.0,
