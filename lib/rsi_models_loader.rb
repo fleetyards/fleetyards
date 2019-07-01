@@ -113,11 +113,10 @@ class RsiModelsLoader < RsiBaseLoader
       updates[:production_note] = data['production_note']
     end
 
-    updates[:length] = data['length'].to_f if model_updated(model, data) && data['length'].to_f != model.rsi_length || model.length.blank?
-    updates[:beam] = data['beam'].to_f if model_updated(model, data) && data['beam'].to_f != model.rsi_beam || model.beam.blank?
-    updates[:height] = data['height'].to_f if model_updated(model, data) && data['height'].to_f != model.rsi_height || model.height.blank?
-    updates[:cargo] = nil_or_float(data['cargocapacity']) if model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo || model.cargo.blank?
-    updates[:ground] = (data['type'] == 'ground') if model_updated(model, data) && (data['type'] != model.classification || (data['type'] == 'ground') != model.ground)
+    updates[:length] = data['length'].to_f if (model_updated(model, data) && data['length'].to_f != model.rsi_length) || model.length.blank?
+    updates[:beam] = data['beam'].to_f if (model_updated(model, data) && data['beam'].to_f != model.rsi_beam) || model.beam.blank?
+    updates[:height] = data['height'].to_f if (model_updated(model, data) && data['height'].to_f != model.rsi_height) || model.height.blank?
+    updates[:cargo] = nil_or_float(data['cargocapacity']) if (model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo) || model.cargo.blank?
 
     model.update(
       updates.merge(
@@ -129,6 +128,7 @@ class RsiModelsLoader < RsiBaseLoader
         rsi_height: data['height'].to_f,
         rsi_cargo: nil_or_float(data['cargocapacity']),
         description: data['description'],
+        ground: (true if data['type'] == 'ground'),
         mass: data['mass'].to_f,
         size: data['size'],
         max_crew: nil_or_int(data['max_crew']),
