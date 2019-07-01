@@ -267,19 +267,46 @@ module Api
         if model_query_params['will_it_fit'].present?
           slug = model_query_params.delete('will_it_fit')
           parent = Model.visible.active.where(slug: slug).or(Model.where(rsi_slug: slug)).first
-          if parent.present? && parent.docks.present?
-            scope = scope.where(
-              'length <= :length and beam <= :beam and height <= :height',
-              length: parent.docks.map(&:length).max - 2.0,
-              beam: parent.docks.map(&:beam).max - 2.0,
-              height: parent.docks.map(&:height).max - 1.0
-            )
-          end
+          scope = will_it_fit?(parent) if parent.present? && parent.docks.present?
         end
 
         model_query_params['sorts'] = sort_by_name
 
         scope.ransack(model_query_params)
+      end
+
+      private def will_it_fit?(parent)
+        vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
+        ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
+
+        if ship_dock && vehicle_dock
+          scope.where(
+            %{
+              (ground = FALSE and length <= :ship_length and beam <= :ship_beam and height <= :ship_height) or
+              (ground = TRUE and length <= :vehicle_length and beam <= :vehicle_beam and height <= :vehicle_height)
+            },
+            ship_length: ship_dock.length - 2.0,
+            ship_beam: ship_dock.beam - 2.0,
+            ship_height: ship_dock.height - 1.0,
+            vehicle_length: vehicle_dock.length - 1.0,
+            vehicle_beam: vehicle_dock.beam - 1.0,
+            vehicle_height: vehicle_dock.height - 0.5
+          )
+        elsif ship_dock
+          scope.where(
+            'ground = FALSE and length <= :length and beam <= :beam and height <= :height',
+            length: ship_dock.length - 2.0,
+            beam: ship_dock.beam - 2.0,
+            height: ship_dock.height - 1.0
+          )
+        else
+          scope.where(
+            'ground = TRUE and length <= :length and beam <= :beam and height <= :height',
+            length: vehicle_dock.length - 1.0,
+            beam: vehicle_dock.beam - 1.0,
+            height: vehicle_dock.height - 0.5
+          )
+        end
       end
 
       private def pledge_price_in
