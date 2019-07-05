@@ -174,6 +174,7 @@
               <i class="fal fa-exclamation-triangle" />
             </span>
           </div>
+
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
@@ -263,9 +264,28 @@ export default {
           text: this.$t('texts.signup.blacklisted'),
         })
       } else {
-        this.$alert({
-          text: this.$t('messages.signup.failure'),
-        })
+        const { error } = response
+        if (error.response && error.response.data) {
+          const { data } = error.response
+
+          data.errors.map(item => ({
+            field: item[0],
+            errors: item[1],
+          })).forEach((item) => {
+            item.errors.forEach(errorItem => this.errors.add({
+              field: item.field,
+              msg: errorItem,
+            }))
+          })
+
+          this.$alert({
+            text: data.message,
+          })
+        } else {
+          this.$alert({
+            text: this.$t('messages.signup.failure'),
+          })
+        }
       }
     },
   },
