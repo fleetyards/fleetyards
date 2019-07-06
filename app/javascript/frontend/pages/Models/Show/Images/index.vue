@@ -58,6 +58,7 @@
         <Loader :loading="loading" />
       </div>
     </div>
+
     <Gallery
       ref="gallery"
       :items="images"
@@ -76,7 +77,12 @@ export default {
     Loader,
     Gallery,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
       title: null,
@@ -85,10 +91,12 @@ export default {
       loading: false,
     }
   },
+
   watch: {
     $route() {
       this.fetch()
     },
+
     model() {
       this.title = this.$t('title.modelImages', {
         name: this.model.name,
@@ -96,15 +104,18 @@ export default {
       this.$store.commit('setBackgroundImage', this.model.backgroundImage)
     },
   },
+
   created() {
     this.fetchModel()
     this.fetch()
   },
+
   methods: {
     openGallery(index, event) {
       event.preventDefault()
       this.$refs.gallery.open(index)
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/images`, {
@@ -116,6 +127,7 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchModel() {
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
         withoutImages: true,
@@ -128,6 +140,7 @@ export default {
       }
     },
   },
+
   metaInfo() {
     return this.getMetaInfo({
       title: this.title,

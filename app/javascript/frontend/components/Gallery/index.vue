@@ -76,12 +76,14 @@ export default {
       default() { return [] },
     },
   },
+
   data() {
     return {
       gallery: null,
       index: 0,
     }
   },
+
   computed: {
     galleryItems() {
       return this.items.map(item => ({
@@ -92,31 +94,23 @@ export default {
         el: document.querySelector(`[href="${item.url}"]`),
       }))
     },
-    shareButtons() {
-      return [
-        { id: 'twitter', label: 'Tweet', url: 'https://twitter.com/intent/tweet?text={{text}}&url={{raw_image_url}}' },
-        { id: 'pinterest', label: 'Pin it', url: 'http://www.pinterest.com/pin/create/button/?url={{raw_image_url}}&media={{raw_image_url}}&description={{text}}' },
-        {
-          id: 'download', label: 'Download image', url: '{{raw_image_url}}', download: true,
-        },
-      ]
-    },
+
     options() {
       return {
         getThumbBoundsFn: this.getThumbBounds,
         index: this.index,
         showHideOpacity: true,
-        loop: false,
+        loop: true,
         history: false,
         counterEl: false,
-        shareButtons: this.shareButtons,
+        shareEl: false,
       }
     },
   },
+
   methods: {
     copyUrl(_event) {
-      const element = document.getElementsByClassName('pswp__img')[0]
-      this.$copyText(element.src).then(() => {
+      this.$copyText(this.gallery.currItem.src).then(() => {
         this.$success({
           text: this.$t('messages.copyImageUrl.success'),
         })
@@ -126,8 +120,9 @@ export default {
         })
       })
     },
+
     getThumbBounds(index) {
-      if (!this.galleryItems[index].el) {
+      if (!this.galleryItems[index] || !this.galleryItems[index].el) {
         return { x: 0, y: 0, w: 0 }
       }
 
@@ -136,15 +131,18 @@ export default {
 
       return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
     },
+
     open(index = 0) {
       this.index = parseInt(index, 10)
       this.$store.commit('app/showOverlay')
       this.setup()
       this.gallery.init()
     },
+
     onClose() {
       this.$store.commit('app/hideOverlay')
     },
+
     setup() {
       const pswpElement = document.querySelectorAll('.pswp')[0]
 

@@ -290,7 +290,9 @@ export default {
     ModelSpeedMetrics,
     ModelPanel,
   },
+
   mixins: [MetaInfo],
+
   data() {
     return {
       loading: false,
@@ -308,16 +310,20 @@ export default {
       ],
     }
   },
+
   computed: {
     ...mapGetters([
       'previousRoute',
     ]),
+
     ...mapGetters('app', [
       'overlayVisible',
     ]),
+
     ...mapGetters('models', [
       'backRoute',
     ]),
+
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
       if (this.color3d) {
@@ -326,6 +332,7 @@ export default {
       const startship42Params = qs.stringify(data)
       return `https://starship42.com/fleetview/single?${startship42Params}`
     },
+
     title() {
       if (!this.model) {
         return null
@@ -336,6 +343,7 @@ export default {
       })
     },
   },
+
   watch: {
     $route() {
       this.fetch()
@@ -343,6 +351,7 @@ export default {
       this.fetchUpgrades()
       this.fetchVariants()
     },
+
     model() {
       if (!this.model) {
         return
@@ -355,12 +364,14 @@ export default {
       }
     },
   },
+
   created() {
     this.fetch()
     this.fetchModules()
     this.fetchUpgrades()
     this.fetchVariants()
   },
+
   methods: {
     setBackRoute() {
       if (this.backRoute && this.previousRoute
@@ -381,12 +392,15 @@ export default {
 
       this.$store.commit('models/setBackRoute', route)
     },
+
     toggle3d() {
       this.show3d = !this.show3d
     },
+
     toggle3dColor() {
       this.color3d = !this.color3d
     },
+
     async fetch() {
       this.model = this.$prefetch('model')
       if (this.model) {
@@ -405,6 +419,7 @@ export default {
         this.$router.replace({ name: '404' })
       }
     },
+
     async fetchModules() {
       this.loadingModules = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/modules`)
@@ -413,6 +428,7 @@ export default {
         this.modules = response.data
       }
     },
+
     async fetchUpgrades() {
       this.loadingUpgrades = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/upgrades`)
@@ -430,6 +446,7 @@ export default {
       }
     },
   },
+
   metaInfo() {
     return this.getMetaInfo({
       title: this.title,
