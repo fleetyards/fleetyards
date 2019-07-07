@@ -2,7 +2,7 @@
   <Panel>
     <div class="panel-fleet">
       <div class="logo">
-        <img :src="fleet.logo">
+        <img v-lazy="fleet.logo">
       </div>
       <div class="inner">
         <h3>
@@ -16,11 +16,11 @@
         <div class="activities">
           <img
             v-tooltip="fleet.mainActivity"
-            :src="acitivtyIcons[fleet.mainActivity]"
+            v-lazy="acitivtyIcons[fleet.mainActivity]"
           >
           <img
             v-tooltip="fleet.secondaryActivity"
-            :src="acitivtyIcons[fleet.secondaryActivity]"
+            v-lazy="acitivtyIcons[fleet.secondaryActivity]"
           >
         </div>
       </div>

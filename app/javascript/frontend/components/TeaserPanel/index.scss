@@ -4,15 +4,19 @@
   display: flex;
 
   .teaser-panel-body {
+    height: 210px;
     padding: 15px;
     flex: .5;
+
+    p {
+      overflow: hidden;
+      height: 140px;
+    }
   }
 
   .teaser-panel-image {
+    height: 210px;
     flex: .5;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: .8;

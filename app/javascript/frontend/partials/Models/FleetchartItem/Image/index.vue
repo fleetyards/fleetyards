@@ -1,11 +1,11 @@
 <template>
   <img
     v-if="model.fleetchartImage"
+    v-lazy="model.fleetchartImage"
     :style="{
       height: `${model.length * lengthMultiplicator}px`,
     }"
-    :src="model.fleetchartImage"
-    :alt="model.slug"
+    :alt="model.name"
     class="fleetchart-item-image"
   >
   <span v-else>
@@ -16,16 +16,20 @@
 
 <script>
 export default {
+  name: 'FleetchartItem',
+
   props: {
     model: {
       type: Object,
       required: true,
     },
+
     scale: {
       type: Number,
       required: true,
     },
   },
+
   computed: {
     lengthMultiplicator() {
       return (this.scale / 100) * 4

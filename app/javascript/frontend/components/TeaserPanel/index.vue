@@ -6,9 +6,9 @@
         'teaser-panel-text': variant === 'text',
       }"
     >
-      <div
-        v-lazy:background-image="image"
-        class="teaser-panel-image lazy"
+      <LazyImage
+        :src="image"
+        class="teaser-panel-image"
       />
       <div class="teaser-panel-body">
         <router-link
@@ -33,12 +33,16 @@
 
 <script>
 import Panel from 'frontend/components/Panel'
+import LazyImage from 'frontend/components/LazyImage'
 
 export default {
   name: 'TeaserPanel',
+
   components: {
     Panel,
+    LazyImage,
   },
+
   props: {
     item: {
       type: Object,
@@ -56,6 +60,7 @@ export default {
       },
     },
   },
+
   computed: {
     image() {
       return this.item.storeImageMedium
@@ -72,7 +77,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

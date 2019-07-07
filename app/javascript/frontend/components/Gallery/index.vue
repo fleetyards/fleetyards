@@ -20,10 +20,6 @@
             title="Close (Esc)"
           />
           <button
-            class="pswp__button pswp__button--share"
-            title="Share"
-          />
-          <button
             class="pswp__button pswp__button--copy"
             @click="copyUrl"
           >

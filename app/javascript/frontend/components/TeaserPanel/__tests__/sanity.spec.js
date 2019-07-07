@@ -4,7 +4,8 @@ import Component from 'frontend/components/TeaserPanel'
 const item = {
   name: 'Enterprise',
   description: '',
-  storeImage: '',
+  storeImage: 'TestImage',
+  storeImageMedium: 'TestImage',
 }
 
 sanityTest(Component, { item })
