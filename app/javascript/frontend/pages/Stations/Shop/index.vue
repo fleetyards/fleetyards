@@ -184,7 +184,14 @@ export default {
     FilterForm,
     Btn,
   },
-  mixins: [MetaInfo, Filters, Hash, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Filters,
+    Hash,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -193,24 +200,29 @@ export default {
       fullscreen: false,
     }
   },
+
   computed: {
     ...mapGetters([
       'previousRoute',
       'mobile',
     ]),
+
     ...mapGetters('shop', [
       'backRoute',
       'filterVisible',
     ]),
+
     toggleFiltersTooltip() {
       if (this.filterVisible) {
         return this.$t('actions.hideFilter')
       }
       return this.$t('actions.showFilter')
     },
+
     emptyBoxVisible() {
       return !this.loading && this.commodities.length === 0
     },
+
     title() {
       if (!this.shop) {
         return ''
@@ -218,10 +230,12 @@ export default {
       return this.$t('title.shop', { shop: this.shop.name, station: this.shop.station.name })
     },
   },
+
   watch: {
     $route() {
       this.fetchCommodities()
     },
+
     shop() {
       this.setBackRoute()
       if (this.shop.storeImage) {
@@ -229,6 +243,7 @@ export default {
       }
     },
   },
+
   created() {
     this.fetch()
     if (this.mobile) {
@@ -237,6 +252,7 @@ export default {
     this.fetchCommodities()
     this.toggleFullscreen()
   },
+
   methods: {
     setBackRoute() {
       if (this.shopBackRoute && this.previousRoute
@@ -257,18 +273,22 @@ export default {
 
       this.$store.commit('shop/setBackRoute', route)
     },
+
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFilter() {
       this.$store.dispatch('shop/toggleFilter')
     },
+
     async fetch() {
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)
       if (!response.error) {
         this.shop = response.data
       }
     },
+
     async fetchCommodities() {
       this.loading = true
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`, {
@@ -282,11 +302,6 @@ export default {
       }
       this.setPages(response.meta)
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>

@@ -275,14 +275,9 @@ export default {
       })
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.cargo'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

@@ -41,7 +41,7 @@
           </small>
 
           <Btn
-            v-if="isMyShip"
+            v-if="vehicle && onEdit"
             :title="$t('actions.edit')"
             :aria-label="$t('actions.edit')"
             class="panel-edit-button"
@@ -53,7 +53,7 @@
           </Btn>
 
           <AddToHangar
-            v-else
+            v-else-if="!isMyShip"
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
@@ -67,12 +67,13 @@
         class="panel-image text-center"
       >
         <router-link
-          :key="model.storeImageMedium"
-          v-lazy:background-image="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
-          class="lazy"
         >
+          <LazyImage
+            :src="model.storeImageMedium"
+            :alt="model.name"
+          />
           <div
             v-if="isMyShip"
             v-show="vehicle.purchased"
@@ -90,7 +91,7 @@
           </div>
         </router-link>
         <div
-          v-if="upgradable && onAddons"
+          v-if="upgradable && onAddons && vehicle"
           v-tooltip="$t('labels.model.addons')"
           class="addons"
           :class="{
@@ -137,51 +138,60 @@
 <script>
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
+import LazyImage from 'frontend/components/LazyImage'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
   name: 'ModelPanel',
+
   components: {
     Panel,
     Btn,
+    LazyImage,
     AddToHangar,
     ModelTopMetrics,
     ModelBaseMetrics,
   },
+
   props: {
     model: {
       type: Object,
       required: true,
     },
+
     vehicle: {
       type: Object,
-      default() {
-        return null
-      },
+      default: null,
     },
+
     onEdit: {
       type: Function,
-      default() {
-        return () => {}
-      },
+      default: null,
     },
+
     onAddons: {
       type: Function,
-      default() {
-        return () => {}
-      },
+      default: null,
     },
+
     details: {
       type: Boolean,
       default: false,
     },
+
     count: {
       type: Number,
       default: null,
     },
+
+    isMyShip: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
     customName() {
       if (this.vehicle && this.vehicle.name && (this.$route.name !== 'hangar-public' || this.vehicle.nameVisible)) {
@@ -189,12 +199,14 @@ export default {
       }
       return null
     },
+
     countLabel() {
       if (!this.count) {
         return ''
       }
       return `${this.count}x `
     },
+
     flagshipTooltip() {
       if (!this.vehicle) {
         return ''
@@ -204,13 +216,12 @@ export default {
       }
       return this.$t('labels.flagship')
     },
-    isMyShip() {
-      return this.vehicle && !!this.onEdit
-    },
+
     upgradable() {
       return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)
     },
   },
+
   methods: {
     filterManufacturerQuery(manufacturer) {
       return { manufacturerIn: [manufacturer] }
@@ -220,5 +231,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

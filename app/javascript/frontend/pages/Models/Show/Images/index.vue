@@ -36,13 +36,11 @@
             :key="image.id"
             class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
           >
-            <a
-              :key="image.smallUrl"
-              v-lazy:background-image="image.smallUrl"
-              :title="image.name"
+            <GalleryImage
+              :src="image.smallUrl"
               :href="image.url"
-              class="image lazy"
-              @click="openGallery(index, $event)"
+              :alt="image.name"
+              @click.native.prevent.exact="openGallery(index)"
             />
           </div>
         </transition-group>
@@ -58,6 +56,7 @@
         <Loader :loading="loading" />
       </div>
     </div>
+
     <Gallery
       ref="gallery"
       :items="images"
@@ -69,42 +68,51 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
-import Gallery from 'frontend/components/Gallery'
+import GalleryHelpers from 'frontend/mixins/GalleryHelpers'
 
 export default {
   components: {
     Loader,
-    Gallery,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    GalleryHelpers,
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
-      title: null,
       images: [],
       model: null,
       loading: false,
     }
   },
+
+  computed: {
+    metaTitle() {
+      if (!this.model) {
+        return null
+      }
+
+      return this.$t('title.modelImages', {
+        name: this.model.name,
+      })
+    },
+  },
+
   watch: {
     $route() {
       this.fetch()
     },
-    model() {
-      this.title = this.$t('title.modelImages', {
-        name: this.model.name,
-      })
-      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
-    },
   },
+
   created() {
     this.fetchModel()
     this.fetch()
   },
+
   methods: {
-    openGallery(index, event) {
-      event.preventDefault()
-      this.$refs.gallery.open(index)
-    },
     async fetch() {
       this.loading = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/images`, {
@@ -116,22 +124,20 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchModel() {
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
         withoutImages: true,
         withoutVideos: true,
       })
+
       if (!response.error) {
         this.model = response.data
+        this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>

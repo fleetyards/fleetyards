@@ -79,6 +79,9 @@ export default {
     }
   },
   computed: {
+    isPagePresent() {
+      return !!this.$route.query.page
+    },
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
       Object.keys(query)
@@ -110,6 +113,14 @@ export default {
         query: {},
       })
     },
+    resetPage() {
+      this.$router.replace({
+        name: this.$route.name,
+        query: {
+          q: this.$route.query.q || {},
+        },
+      })
+    },
     filter: debounce(function debounced() {
       const query = {
         q: JSON.parse(JSON.stringify(this.q)),
@@ -128,7 +139,7 @@ export default {
     }, 500),
     fetchManufacturers({ page, search, missingValue }) {
       const query = {
-        with_model: true,
+        withModel: true,
         q: {},
       }
       if (search) {
@@ -151,6 +162,19 @@ export default {
     },
     fetchSize() {
       return this.$api.get('models/sizes')
+    },
+    fetchModelsWithDocks({ page, search, missingValue }) {
+      const query = {
+        q: {},
+      }
+      if (search) {
+        query.q.nameCont = search
+      } else if (missingValue) {
+        query.q.nameIn = missingValue
+      } else if (page) {
+        query.page = page
+      }
+      return this.$api.get('models/with-docks', query)
     },
   },
 }

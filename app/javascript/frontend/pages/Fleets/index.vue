@@ -110,7 +110,12 @@ export default {
     Btn,
     EmptyBox,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
       fetchMoreQuery: 'fleets',
@@ -120,25 +125,31 @@ export default {
       myFleets: [],
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'isAuthenticated',
     ]),
   },
+
   watch: {
     isAuthenticated() {
       this.refetch()
     },
+
     $route() {
       this.fetch()
     },
   },
+
   created() {
     this.fetch()
+
     if (this.isAuthenticated) {
       this.fetchMyFleets()
     }
   },
+
   methods: {
     refetch() {
       this.fetch()
@@ -146,9 +157,11 @@ export default {
         this.fetchMyFleets()
       }
     },
+
     create() {
       this.$refs.fleetModal.open()
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get('fleets', {
@@ -160,6 +173,7 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchMyFleets() {
       const response = await this.$api.get('fleets/my')
       if (!response.error) {
@@ -167,14 +181,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.fleets'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

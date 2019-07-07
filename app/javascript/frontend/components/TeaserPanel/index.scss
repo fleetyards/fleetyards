@@ -1,0 +1,51 @@
+@import '~stylesheets/variables';
+
+.teaser-panel {
+  display: flex;
+
+  .teaser-panel-body {
+    height: 210px;
+    padding: 15px;
+    flex: .5;
+
+    p {
+      overflow: hidden;
+      height: 140px;
+    }
+  }
+
+  .teaser-panel-image {
+    height: 210px;
+    flex: .5;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+    opacity: .8;
+    position: relative;
+  }
+
+  a {
+    color: $text-color;
+  }
+
+  h3 {
+    text-align: right;
+    font-size: 20px;
+    font-family: 'Orbitron', tahoma, sans-serif;
+    font-weight: 400;
+  }
+
+  p {
+    z-index: 20;
+    position: relative;
+  }
+
+  &.teaser-panel-text {
+    .teaser-panel-body {
+      flex: .66;
+    }
+
+    .teaser-panel-image {
+      flex: .33;
+    }
+  }
+}

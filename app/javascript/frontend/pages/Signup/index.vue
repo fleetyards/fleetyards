@@ -174,6 +174,7 @@
               <i class="fal fa-exclamation-triangle" />
             </span>
           </div>
+
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
@@ -223,11 +224,17 @@ import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
+  name: 'Signup',
+
   components: {
     Btn,
     Checkbox,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -241,6 +248,7 @@ export default {
       },
     }
   },
+
   methods: {
     async signup() {
       const result = await this.$validator.validateAll()
@@ -250,9 +258,11 @@ export default {
         })
         return
       }
+
       this.submitting = true
       const response = await this.$api.post('users/signup', this.form)
       this.submitting = false
+
       if (!response.error) {
         this.$success({
           text: this.$t('messages.signup.success'),
@@ -263,20 +273,34 @@ export default {
           text: this.$t('texts.signup.blacklisted'),
         })
       } else {
-        this.$alert({
-          text: this.$t('messages.signup.failure'),
-        })
+        const { error } = response
+        if (error.response && error.response.data) {
+          const { data } = error.response
+
+          data.errors.map(item => ({
+            field: item[0],
+            errors: item[1],
+          })).forEach((item) => {
+            item.errors.forEach(errorItem => this.errors.add({
+              field: item.field,
+              msg: errorItem,
+            }))
+          })
+
+          this.$alert({
+            text: data.message,
+          })
+        } else {
+          this.$alert({
+            text: this.$t('messages.signup.failure'),
+          })
+        }
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.signUp'),
-    })
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

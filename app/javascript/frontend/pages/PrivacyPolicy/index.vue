@@ -236,11 +236,9 @@ export default {
   components: {
     Panel,
   },
-  mixins: [MetaInfo],
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.privacyPolicy'),
-    })
-  },
+
+  mixins: [
+    MetaInfo,
+  ],
 }
 </script>

@@ -245,7 +245,7 @@ export default {
     },
     resetPrices() {
       this.$confirm({
-        text: this.$t('confirm.tradeRoutes.reset'),
+        text: this.$t('messages.confirm.tradeRoutes.reset'),
         onConfirm: () => {
           this.$store.dispatch('tradehubs/reset')
           this.$router.replace({
@@ -292,14 +292,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.commodities'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

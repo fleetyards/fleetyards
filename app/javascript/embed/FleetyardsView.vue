@@ -199,6 +199,11 @@ export default {
       })
     },
   },
+  watch: {
+    ships() {
+      this.fetch()
+    },
+  },
   mounted() {
     this.ships = this.$root.ships
     this.slider = this.$root.fleetchartSlider
@@ -206,8 +211,11 @@ export default {
     this.fetch()
   },
   methods: {
+    updateShips(ships) {
+      this.ships = ships
+    },
     updateFleetchartScale(value) {
-      this.$store.commit('setFleetChartScale', value)
+      this.$store.commit('setFleetchartScale', value)
     },
     toggleDetails() {
       this.$store.commit('toggleDetails')

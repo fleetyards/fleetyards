@@ -54,11 +54,17 @@ import Loader from 'frontend/components/Loader'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Verify',
+
   components: {
     Loader,
     Btn,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -66,11 +72,13 @@ export default {
       rsiVerificationToken: null,
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'currentUser',
       'citizen',
     ]),
+
     verificationText() {
       if (!this.currentUser || !this.rsiVerificationToken) {
         return ''
@@ -78,12 +86,15 @@ export default {
       return this.$t('texts.rsiVerification.verificationText', { username: this.currentUser.username, token: this.rsiVerificationToken })
     },
   },
+
   watch: {
     currentUser: 'checkVerification',
   },
+
   mounted() {
     this.checkVerification()
   },
+
   methods: {
     checkVerification() {
       if (this.currentUser && this.currentUser.rsiVerified) {
@@ -92,6 +103,7 @@ export default {
         this.startRsiVerification()
       }
     },
+
     copyToken() {
       this.$copyText(this.verificationText).then(() => {
         this.$success({
@@ -103,6 +115,7 @@ export default {
         })
       })
     },
+
     async submit() {
       this.submitting = true
       const response = await this.$api.post('users/finish-rsi-verification')
@@ -119,6 +132,7 @@ export default {
         })
       }
     },
+
     async startRsiVerification() {
       this.fetchRsiVerificationToken = true
       const response = await this.$api.post('users/start-rsi-verification', {})
@@ -127,11 +141,6 @@ export default {
         this.rsiVerificationToken = response.data.token
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.verify'),
-    })
   },
 }
 </script>

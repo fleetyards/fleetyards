@@ -55,7 +55,9 @@ namespace :frontend, path: '', constraints: lambda { |req| req.subdomain.blank? 
   get 'confirm/:token' => 'base#confirm'
 
   get 'embed' => 'base#embed'
+  get 'embed-v2' => 'base#embed_v2'
   get 'embed-test' => 'base#embed_test'
+  get 'embed-v2-test' => 'base#embed_v2_test'
 
   get 'precache-manifest.:id' => 'base#precache_manifest'
   get 'service-worker' => 'base#service_worker'

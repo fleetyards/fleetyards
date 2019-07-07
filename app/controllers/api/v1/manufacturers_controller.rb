@@ -14,7 +14,7 @@ module Api
         authorize! :index, :api_manufacturers
         scope = Manufacturer.with_name
 
-        scope = scope.with_model if params[:with_model]
+        scope = scope.with_model if params[:withModel]
 
         manufacturer_query_params['sorts'] = sort_by_name
 

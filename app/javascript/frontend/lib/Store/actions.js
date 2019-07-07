@@ -1,8 +1,12 @@
 export default {
-  reset({ dispatch, commit }) {
+  reset({ dispatch, commit }, hard = false) {
     commit('reset')
     dispatch('app/reset')
-    dispatch('session/reset')
+
+    if (hard) {
+      dispatch('session/reset')
+    }
+
     dispatch('hangar/reset')
     dispatch('models/reset')
     dispatch('tradehubs/reset')

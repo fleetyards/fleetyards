@@ -101,16 +101,17 @@ import Chart from 'frontend/components/Chart'
 import Panel from 'frontend/components/Panel'
 
 export default {
+  name: 'Stats',
+
   components: {
     Chart,
     Panel,
   },
-  mixins: [MetaInfo],
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.stats'),
-    })
-  },
+
+  mixins: [
+    MetaInfo,
+  ],
+
   methods: {
     async loadModelsByClassification() {
       const response = await this.$api.get('stats/models-by-classification')
@@ -119,6 +120,7 @@ export default {
       }
       return []
     },
+
     async loadModelsBySize() {
       const response = await this.$api.get('stats/models-by-size')
       if (!response.error) {
@@ -126,6 +128,7 @@ export default {
       }
       return []
     },
+
     async loadModelsPerMonth() {
       const response = await this.$api.get('stats/models-per-month')
       if (!response.error) {
@@ -133,6 +136,7 @@ export default {
       }
       return []
     },
+
     async loadModelsByManufacturer() {
       const response = await this.$api.get('stats/models-by-manufacturer')
       if (!response.error) {
@@ -140,6 +144,7 @@ export default {
       }
       return []
     },
+
     async loadModelsByProductionStatus() {
       const response = await this.$api.get('stats/models-by-production-status')
       if (!response.error) {

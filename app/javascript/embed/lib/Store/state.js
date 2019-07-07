@@ -1,6 +1,13 @@
 export default () => {
-  // eslint-disable-next-line no-undef
-  const config = fleetyards_config()
+  let config = {}
+  // eslint-disable-next-line camelcase
+  if (typeof fleetyards_config !== 'undefined') {
+    // eslint-disable-next-line no-undef
+    config = fleetyards_config()
+  } else {
+    config = window.FleetYardsFleetchartConfig || {}
+  }
+
   const scale = Math.max(config.fleetchartScale || 0, 10)
 
   return {

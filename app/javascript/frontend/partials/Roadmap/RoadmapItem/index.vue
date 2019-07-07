@@ -27,8 +27,12 @@
           <template v-else>
             {{ item.name }}
           </template>
-          <small class="pull-right">
-            {{ $t('labels.roadmap.lastUpdate') }} {{ $l(item.updatedAt) }}
+          <small
+            v-tooltip="$t('labels.roadmap.lastUpdate')"
+            class="pull-right"
+          >
+            {{ $l(item.updatedAt) }}
+            <i class="far fa-clock" />
           </small>
         </h3>
         <p>{{ description }}</p>
@@ -58,7 +62,7 @@
         </ul>
         <b-progress :max="item.tasks">
           <div class="progress-label">
-            {{ progressLabel }} - {{ completedPercent }} %
+            {{ progressLabel }} | {{ completedPercent }} %
             <template v-if="showInprogress">
               {{ $t('labels.roadmap.inprogress', {
                 count: inprogress,
@@ -130,8 +134,8 @@ export default {
       return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
     },
     storeImage() {
-      if (this.item.storeImage) {
-        return this.item.storeImage
+      if (this.item.storeImageSmall) {
+        return this.item.storeImageSmall
       }
       return `https://robertsspaceindustries.com${this.item.image}`
     },

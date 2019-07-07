@@ -26,6 +26,9 @@ en:
         hidden: hidden?
       dock:
         name: Name
+        length: Length
+        height: Height
+        beam: Beam
       shop_commodity:
         name: Name
         description: Description
@@ -49,6 +52,8 @@ en:
         station_type: Please select a Station Type
       trade_commodity:
         commodity: Commodity
+      models:
+        dock_size: Please select a Dock size
       docks:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size

@@ -26,6 +26,7 @@ en:
         weapons: Weapons
         hidden: hidden?
         active: active?
+        ground: Ground Vehicle?
       setting:
         base:
           registration: Registration active?

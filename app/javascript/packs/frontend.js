@@ -1,4 +1,4 @@
-import 'stylesheets/main'
+import 'stylesheets/frontend'
 import '@babel/polyfill'
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
@@ -64,7 +64,7 @@ Vue.use(VueScrollTo, {
 })
 
 Vue.use(Meta, {
-  keyName: 'metaInfo',
+  keyName: 'head',
   attribute: 'data-vue-meta',
   ssrAttribute: 'data-vue-meta-server-rendered',
   tagIDKeyName: 'vmid',

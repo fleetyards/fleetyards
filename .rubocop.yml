@@ -1,6 +1,7 @@
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
 require:
   - rubocop-performance
+  - rubocop-rails
 
 AllCops:
   Exclude:
@@ -84,6 +85,9 @@ Style/SignalException:
 # Would complain about `new_record?` otherwise
 Style/TrivialAccessors:
   ExactNameMatch: true
+
+Rails/BulkChangeTable:
+  Enabled: false
 
 Rails/Delegate:
   Exclude:

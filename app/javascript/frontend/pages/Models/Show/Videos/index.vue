@@ -68,30 +68,43 @@ export default {
   components: {
     Loader,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
-      title: null,
       videos: [],
       model: null,
       loading: false,
     }
   },
+
+  computed: {
+    metaTitle() {
+      if (!this.model) {
+        return null
+      }
+
+      return this.$t('title.modelVideos', {
+        name: this.model.name,
+      })
+    },
+  },
+
   watch: {
     $route() {
       this.fetch()
     },
-    model() {
-      this.title = this.$t('title.modelVideos', {
-        name: this.model.name,
-      })
-      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
-    },
   },
+
   created() {
     this.fetchModel()
     this.fetch()
   },
+
   methods: {
     async fetch() {
       this.loading = true
@@ -104,22 +117,20 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchModel() {
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
         withoutImages: true,
         withoutVideos: true,
       })
+
       if (!response.error) {
         this.model = response.data
+        this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>

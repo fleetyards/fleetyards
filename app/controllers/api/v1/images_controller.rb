@@ -22,7 +22,7 @@ module Api
                        .in_gallery
                        .with_uniq_name
                        .order(Arel.sql('RANDOM()'))
-                       .first(16)
+                       .first(18)
       end
     end
   end

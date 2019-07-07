@@ -73,6 +73,54 @@
       name="hangar-group"
       multiple
     />
+    <div class="row">
+      <div class="col-xs-6">
+        <FormInput
+          v-model="form.lengthGteq"
+          type="number"
+          :label="$t('labels.filters.vehicles.lengthGt')"
+          :aria-label="$t('labels.filters.vehicles.lengthGt')"
+        />
+      </div>
+      <div class="col-xs-6">
+        <FormInput
+          v-model="form.lengthLteq"
+          type="number"
+          :label="$t('labels.filters.vehicles.lengthLt')"
+          :aria-label="$t('labels.filters.vehicles.lengthLt')"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <FormInput
+          v-model="form.pledgePriceGteq"
+          type="number"
+          :label="$t('labels.filters.vehicles.pledgePriceGt')"
+          :aria-label="$t('labels.filters.vehicles.pledgePriceGt')"
+        />
+      </div>
+      <div class="col-xs-6">
+        <FormInput
+          v-model="form.pledgePriceLteq"
+          type="number"
+          :label="$t('labels.filters.vehicles.pledgePriceLt')"
+          :aria-label="$t('labels.filters.vehicles.pledgePriceLt')"
+        />
+      </div>
+    </div>
+    <FormInput
+      v-model="form.priceGteq"
+      type="number"
+      :label="$t('labels.filters.vehicles.priceGt')"
+      :aria-label="$t('labels.filters.vehicles.priceGt')"
+    />
+    <FormInput
+      v-model="form.priceLteq"
+      type="number"
+      :label="$t('labels.filters.vehicles.priceLt')"
+      :aria-label="$t('labels.filters.vehicles.priceLt')"
+    />
     <RadioList
       v-if="$route.name === 'hangar'"
       v-model="form.purchasedEq"
@@ -129,6 +177,12 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        priceLteq: query.priceLteq,
+        priceGteq: query.priceGteq,
+        pledgePriceLteq: query.pledgePriceLteq,
+        pledgePriceGteq: query.pledgePriceGteq,
+        lengthLteq: query.lengthLteq,
+        lengthGteq: query.lengthGteq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],
@@ -148,6 +202,12 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        priceLteq: query.priceLteq,
+        priceGteq: query.priceGteq,
+        pledgePriceLteq: query.pledgePriceLteq,
+        pledgePriceGteq: query.pledgePriceGteq,
+        lengthLteq: query.lengthLteq,
+        lengthGteq: query.lengthGteq,
         manufacturerIn: query.manufacturerIn || [],
         classificationIn: query.classificationIn || [],
         focusIn: query.focusIn || [],

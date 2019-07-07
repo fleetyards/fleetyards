@@ -2,7 +2,9 @@
 
 module RansackHelper
   def query_params(*filters)
+    # rubocop:disable Rails/HelperInstanceVariable
     @query_params ||= ActionController::Parameters.new(parse_query_params).permit(filters)
+    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def per_page(model)

@@ -72,7 +72,9 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   private def release_name(item, release)
-    return item.release if release['name'].strip == "#{item.release.strip}.0" || item.release.strip == "#{release['name'].strip}.0"
+    new_release_name = release['name'].strip
+    old_release_name = (item.release || '').strip
+    return item.release if new_release_name == "#{old_release_name}.0" || old_release_name == "#{new_release_name}.0"
 
     release['name']
   end

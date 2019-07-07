@@ -96,10 +96,5 @@ export default {
     Panel,
   },
   mixins: [MetaInfo],
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.cookiePolicy'),
-    })
-  },
 }
 </script>

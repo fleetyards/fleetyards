@@ -7,10 +7,10 @@
     class="app-body"
   >
     <div
-      v-if="$store.state.backgroundImage"
-      :key="$store.state.backgroundImage"
-      v-lazy:background-image="$store.state.backgroundImage"
-      class="background-image lazy"
+      v-if="backgroundImage"
+      :key="backgroundImage"
+      v-lazy:background-image="backgroundImage"
+      class="background-image"
     />
     <transition
       name="fade"
@@ -50,22 +50,35 @@ import { requestPermission } from 'frontend/lib/Noty'
 
 export default {
   name: 'FrontendApp',
+
   components: {
     Navigation,
     AppFooter,
     BackToTop,
     CookiesBanner,
   },
-  mixins: [Updates, CurrentUser, RenewSession],
+
+  mixins: [
+    Updates,
+    CurrentUser,
+    RenewSession,
+  ],
+
   computed: {
+    ...mapGetters([
+      'backgroundImage',
+    ]),
+
     ...mapGetters('app', [
       'navCollapsed',
       'overlayVisible',
     ]),
+
     ...mapGetters('session', [
       'isAuthenticated',
     ]),
   },
+
   watch: {
     $route() {
       this.setBackground()
@@ -73,8 +86,12 @@ export default {
         this.fetchHangar()
       }
     },
+
+
     navCollapsed: 'setNoScroll',
+
     overlayVisible: 'setNoScroll',
+
     isAuthenticated() {
       if (this.isAuthenticated) {
         requestPermission()
@@ -84,6 +101,7 @@ export default {
       }
     },
   },
+
   created() {
     this.setNoScroll()
     this.setBackground()
@@ -99,27 +117,34 @@ export default {
     window.addEventListener('resize', this.checkMobile)
     window.addEventListener('resize', this.checkMobile)
   },
+
   beforeDestroy() {
     window.removeEventListener('resize', this.checkMobile)
     window.removeEventListener('online', this.online)
     window.removeEventListener('offline', this.offline)
   },
+
   methods: {
     closeNavigation() {
       this.$refs.navigation.close()
     },
+
     openNavigation() {
       this.$refs.navigation.open()
     },
+
     offline() {
       this.$store.commit('setOnlineStatus', false)
     },
+
     online() {
       this.$store.commit('setOnlineStatus', true)
     },
+
     checkMobile() {
       this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
     },
+
     setNoScroll() {
       if (!this.navCollapsed || this.overlayVisible) {
         document.documentElement.classList.add('no-scroll')
@@ -129,6 +154,7 @@ export default {
         document.body.classList.remove('no-scroll')
       }
     },
+
     setBackground() {
       let { backgroundImage } = this.$route.meta
       if (!backgroundImage) {
@@ -137,6 +163,7 @@ export default {
       }
       this.$store.commit('setBackgroundImage', backgroundImage)
     },
+
     async fetchHangar() {
       if (!['models', 'model', 'fleet', 'hangar'].includes(this.$route.name)) {
         return

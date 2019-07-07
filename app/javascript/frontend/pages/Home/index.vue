@@ -14,11 +14,6 @@
                 >
                 {{ $t('app') }}
               </h1>
-              <!-- <div class="row">
-                <div class="col-xs-12 col-md-12">
-                  <p>{{ $t('texts.index') }}</p>
-                </div>
-              </div> -->
               <div class="row">
                 <div class="col-xs-12 col-md-offset-3 col-md-6">
                   <form @submit.prevent="search">
@@ -133,7 +128,7 @@
                     v-lazy:background-image="image.smallUrl"
                     :data-index="index"
                     :title="image.name"
-                    :to="{name: 'model', params: { slug: image.model.slug }}"
+                    :to="{name: 'model-images', params: { slug: image.model.slug }}"
                     class="image lazy"
                   />
                 </div>
@@ -165,7 +160,11 @@ export default {
     FormInput,
     Support,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       models: [],
@@ -176,6 +175,7 @@ export default {
       showScrollDown: false,
     }
   },
+
   created () {
     this.fetchImages()
     this.fetchModels()
@@ -184,6 +184,7 @@ export default {
       this.showScrollDown = true
     }, 2000)
   },
+
   methods: {
     search() {
       if (!this.searchQuery) {
@@ -198,6 +199,7 @@ export default {
         },
       })
     },
+
     async fetchModels() {
       this.modelsLoading = true
       const response = await this.$api.get('models/latest')
@@ -206,6 +208,7 @@ export default {
         this.models = response.data
       }
     },
+
     async fetchImages() {
       this.imagesLoading = true
       const response = await this.$api.get('images/random')
@@ -214,18 +217,14 @@ export default {
         this.images = response.data
       }
     },
+
     scrollDown() {
       this.$scrollTo('.home-ships')
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.home'),
-    })
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

@@ -52,15 +52,19 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Settings',
+
   data() {
     return {
       rsiVerificationToken: null,
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'currentUser',
     ]),
+
     rsiVerificationDisabled() {
       return this.currentUser.rsiVerified
     },

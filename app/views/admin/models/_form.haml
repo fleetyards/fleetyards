@@ -12,17 +12,25 @@
         = form_errors model, :description
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
-        = form.label :hidden do
-          = I18n.t(:"activerecord.attributes.model.hidden")
+    .col-xs-12.col-sm-6.col-md-8.form-group
+      .row
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+            = form.label :hidden do
+              = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
-        = form.label :active do
-          = I18n.t(:"activerecord.attributes.model.active")
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
+            = form.label :active do
+              = I18n.t(:"activerecord.attributes.model.active")
+
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :ground, placeholder: I18n.t(:"helpers.placeholder.model.ground")
+            = form.label :ground do
+              = I18n.t(:"activerecord.attributes.model.ground")
 
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :base_model_id)}
       = form.label :base_model_id
@@ -164,7 +172,11 @@
       = form.text_field :max_crew, class: 'form-control'
       %small
         = form_errors model, :max_crew
-
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :dock_size)}
+      = form.label :dock_size
+      = form.select :dock_size, Model.dock_sizes.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.models.dock_size") }, {class: 'form-control'}
+      %small
+        = form_errors model, :dock_size
   .row
     .col-xs-12.col-md-4.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image
@@ -279,5 +291,18 @@
       = link_to_add_fields form, :videos, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#videos" do
         %i.fa.fa-plus
         = I18n.t(:"actions.add_video")
+
+  %fieldset
+    %legend
+      Docks:
+    #docks
+      - if model.docks.any?
+        = form.fields_for :docks, model.docks do |builder|
+          = render 'models/dock_fields', fields: builder
+
+    .btn-group-responsive.pull-right
+      = link_to_add_fields form, :docks, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#docks" do
+        %i.fa.fa-plus
+        = I18n.t(:"actions.add_dock")
 
   = render "shared/submit", path: admin_models_path

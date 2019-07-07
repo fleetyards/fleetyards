@@ -126,32 +126,44 @@ import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
+  name: 'Starsystems',
+
   components: {
     Loader,
     EmptyBox,
     StarsystemList,
     PlanetPanel,
   },
-  mixins: [MetaInfo, Hash, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
       starsystems: [],
     }
   },
+
   computed: {
     emptyBoxVisible() {
       return !this.loading && !this.starsystems.length
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   created() {
     this.fetch()
   },
+
   methods: {
     async fetch() {
       this.loading = true
@@ -167,14 +179,9 @@ export default {
       this.setPages(response.meta)
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.starsystems'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index.scss';
+  @import 'index';
 </style>

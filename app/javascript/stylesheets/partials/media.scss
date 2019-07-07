@@ -1,7 +1,7 @@
 .lazy {
   &[lazy='loading']::before {
     content: '';
-    background-image: url('~images/loading.gif');
+    background-image: url('~images/loading.svg');
     background-size: 100%;
     background-position: center;
     position: absolute;

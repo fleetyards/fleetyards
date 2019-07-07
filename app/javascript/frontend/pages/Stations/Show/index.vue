@@ -100,6 +100,8 @@ import StationHabitations from 'frontend/partials/Stations/Habitations'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Station',
+
   components: {
     Loader,
     EmptyBox,
@@ -109,34 +111,45 @@ export default {
     StationDocks,
     StationHabitations,
   },
-  mixins: [MetaInfo, Hash],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+  ],
+
   data() {
     return {
       loading: false,
       station: null,
     }
   },
+
   computed: {
     ...mapGetters([
       'previousRoute',
     ]),
+
     ...mapGetters('stations', [
       'backRoute',
     ]),
+
     emptyBoxVisible() {
       return !this.loading && (!this.station || this.station.shops.length === 0)
     },
-    title() {
+
+    metaTitle() {
       if (!this.station) {
         return null
       }
       return this.$t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
+
     station() {
       this.setBackRoute()
       if (this.station.storeImage) {
@@ -144,9 +157,11 @@ export default {
       }
     },
   },
+
   created() {
     this.fetch()
   },
+
   methods: {
     setBackRoute() {
       const route = {
@@ -162,6 +177,7 @@ export default {
 
       this.$store.commit('stations/setBackRoute', route)
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get(`stations/${this.$route.params.slug}`)
@@ -171,14 +187,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index.scss';
+  @import 'index';
 </style>
