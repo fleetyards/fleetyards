@@ -364,6 +364,9 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.7)
     rubocop-performance (1.4.0)
       rubocop (>= 0.71.0)
+    rubocop-rails (2.2.0)
+      rack (>= 1.1)
+      rubocop (>= 0.72.0)
     ruby-graphviz (1.2.4)
     ruby-prof (0.18.0)
     ruby-progressbar (1.10.1)
@@ -551,6 +554,7 @@ DEPENDENCIES
   redcarpet
   rubocop
   rubocop-performance
+  rubocop-rails
   ruby-prof
   sass-rails
   sentry-raven
