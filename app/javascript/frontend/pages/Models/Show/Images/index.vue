@@ -36,13 +36,11 @@
             :key="image.id"
             class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
           >
-            <a
-              :key="image.smallUrl"
-              v-lazy:background-image="image.smallUrl"
-              :title="image.name"
+            <GalleryImage
+              :src="image.smallUrl"
               :href="image.url"
-              class="image lazy"
-              @click="openGallery(index, $event)"
+              :alt="image.name"
+              @click.native.prevent.exact="openGallery(index)"
             />
           </div>
         </transition-group>
@@ -70,15 +68,15 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
-import Gallery from 'frontend/components/Gallery'
+import GalleryHelpers from 'frontend/mixins/GalleryHelpers'
 
 export default {
   components: {
     Loader,
-    Gallery,
   },
 
   mixins: [
+    GalleryHelpers,
     MetaInfo,
     Pagination,
   ],
@@ -111,11 +109,6 @@ export default {
   },
 
   methods: {
-    openGallery(index, event) {
-      event.preventDefault()
-      this.$refs.gallery.open(index)
-    },
-
     async fetch() {
       this.loading = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/images`, {

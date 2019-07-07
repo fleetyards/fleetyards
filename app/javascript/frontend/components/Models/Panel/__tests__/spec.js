@@ -10,6 +10,7 @@ describe('ShipPanel', () => {
     model = {
       name: 'Enterprise',
       slug: 'enterprise',
+      storeImageMedium: 'TestImage',
       manufacturer: {
         name: 'Utopia Planitia',
       },

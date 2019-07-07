@@ -30,6 +30,6 @@ describe('Home', () => {
   })
 
   it('Shows Random Images', () => {
-    cy.get('.home-images .image').should('have.length', 16)
+    cy.get('.home-images .image').should('have.length', 18)
   })
 })

@@ -23,7 +23,7 @@
                 <span v-html="model.manufacturer.name" />
                 <img
                   v-if="model.manufacturer && model.manufacturer.logo"
-                  :src="model.manufacturer.logo"
+                  v-lazy="model.manufacturer.logo"
                   class="manufacturer-logo"
                 >
               </small>
@@ -62,7 +62,7 @@
               </div>
               <img
                 v-else
-                :src="model.storeImage"
+                v-lazy="model.storeImage"
                 class="image"
                 alt="model image"
               >

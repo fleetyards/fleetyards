@@ -67,12 +67,13 @@
         class="panel-image text-center"
       >
         <router-link
-          :key="model.storeImageMedium"
-          v-lazy:background-image="model.storeImageMedium"
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
-          class="lazy"
         >
+          <LazyImage
+            :src="model.storeImageMedium"
+            :alt="model.name"
+          />
           <div
             v-if="isMyShip"
             v-show="vehicle.purchased"
@@ -137,6 +138,7 @@
 <script>
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
+import LazyImage from 'frontend/components/LazyImage'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
@@ -146,6 +148,7 @@ export default {
   components: {
     Panel,
     Btn,
+    LazyImage,
     AddToHangar,
     ModelTopMetrics,
     ModelBaseMetrics,

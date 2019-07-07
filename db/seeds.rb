@@ -7,7 +7,7 @@ if ENV['TEST_SEEDS'].present?
   RsiModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]).all
 
   model = Model.first
-  16.times do |index|
+  20.times do |index|
     model.images << Image.new(name: Rails.root.join("db/seeds/images/models/stub-#{index}.jpg").open, enabled: true)
   end
 
