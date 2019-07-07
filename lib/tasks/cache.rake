@@ -20,7 +20,9 @@ namespace :cache do
     puts '=> Rails cache stats:'
     if Rails.cache.respond_to? :stats
       Rails.cache.stats.each do |host, stats|
-        utilization = (stats['bytes'].to_f / stats['engine_maxbytes'].to_f) * 100
+        bytes = stats['bytes'].to_f
+        maxbytes = stats['engine_maxbytes'].to_f
+        utilization = (bytes / maxbytes) * 100.to_f
         puts "   #{host}:"
         puts "   > items: #{stats['total_items']}"
         puts "   > utilization: #{number_to_human_size(stats['bytes'])} (~#{number_to_percentage(utilization, precision: 0)})"
