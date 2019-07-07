@@ -145,6 +145,7 @@ import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 
 export default {
   name: 'ModelPanel',
+
   components: {
     Panel,
     Btn,
@@ -153,36 +154,44 @@ export default {
     ModelTopMetrics,
     ModelBaseMetrics,
   },
+
   props: {
     model: {
       type: Object,
       required: true,
     },
+
     vehicle: {
       type: Object,
       default: null,
     },
+
     onEdit: {
       type: Function,
       default: null,
     },
+
     onAddons: {
       type: Function,
       default: null,
     },
+
     details: {
       type: Boolean,
       default: false,
     },
+
     count: {
       type: Number,
       default: null,
     },
+
     isMyShip: {
       type: Boolean,
       default: false,
     },
   },
+
   computed: {
     customName() {
       if (this.vehicle && this.vehicle.name && (this.$route.name !== 'hangar-public' || this.vehicle.nameVisible)) {
@@ -190,12 +199,14 @@ export default {
       }
       return null
     },
+
     countLabel() {
       if (!this.count) {
         return ''
       }
       return `${this.count}x `
     },
+
     flagshipTooltip() {
       if (!this.vehicle) {
         return ''
@@ -205,10 +216,12 @@ export default {
       }
       return this.$t('labels.flagship')
     },
+
     upgradable() {
       return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)
     },
   },
+
   methods: {
     filterManufacturerQuery(manufacturer) {
       return { manufacturerIn: [manufacturer] }
@@ -218,5 +231,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

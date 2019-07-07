@@ -28,20 +28,27 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 
 export default {
+  name: 'SettingsAccount',
+
   components: {
     Btn,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       deleting: false,
     }
   },
+
   methods: {
     async destroy() {
       this.deleting = true
       this.$confirm({
-        text: this.$t('confirm.account.destroy'),
+        text: this.$t('messages.confirm.account.destroy'),
         onConfirm: async () => {
           const response = await this.$api.destroy('users/current')
           if (!response.error) {
@@ -62,11 +69,6 @@ export default {
         },
       })
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.account'),
-    })
   },
 }
 </script>

@@ -26,19 +26,13 @@ export default {
     Box,
     Btn,
   },
-  mixins: [MetaInfo],
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.notFound'),
-    })
-  },
+
+  mixins: [
+    MetaInfo,
+  ],
 }
 </script>
 
 <style lang="scss" scoped>
-.error {
-  p {
-    color: darken(red, 10%);
-  }
-}
+  @import 'index';
 </style>

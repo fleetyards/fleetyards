@@ -9,28 +9,35 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-6.jpg'),
-      title: 'title.home',
+      title: 'home',
     },
   }, {
     path: '/impressum',
     name: 'impressum',
     component: () => import(/* webpackChunkName: "frontend.page.impressum" */ 'frontend/pages/Impressum'),
+    meta: {
+      title: 'impressum',
+    },
   }, {
     path: '/privacy-policy',
     name: 'privacy-policy',
     component: () => import(/* webpackChunkName: "frontend.page.privacyPolicy" */ 'frontend/pages/PrivacyPolicy'),
+    meta: {
+      title: 'privacyPolicy',
+    },
   }, {
     path: '/cookie-policy',
     name: 'cookie-policy',
     component: () => import(/* webpackChunkName: "frontend.page.cookiePolicy" */ 'frontend/pages/CookiePolicy'),
     meta: {
-      title: 'title.cookiePolicy',
+      title: 'cookiePolicy',
     },
   }, {
     path: '/ships',
     name: 'models',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),
     meta: {
+      title: 'models',
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
       quickSearch: 'nameCont',
@@ -42,7 +49,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
-      title: 'title.compare.models',
+      title: 'compare.models',
     },
   }, {
     path: '/ships/:slug',
@@ -72,12 +79,15 @@ export const routes = [
     path: '/stats',
     name: 'stats',
     component: () => import(/* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats'),
+    meta: {
+      title: 'stats',
+    },
   }, {
     path: '/images',
     name: 'images',
     component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
     meta: {
-      title: 'title.images',
+      title: 'images',
     },
   }, {
     path: '/hangar',
@@ -88,7 +98,7 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
       quickSearch: 'nameCont',
-      title: 'title.hangar',
+      title: 'hangar',
     },
   }, {
     path: '/hangar/:user',
@@ -101,7 +111,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
-      title: 'title.fleets',
+      title: 'fleets',
     },
   }, {
     path: '/fleets/:sid',
@@ -116,6 +126,9 @@ export const routes = [
     name: 'stations',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations'),
     children: StationsRoutes,
+    meta: {
+      title: 'stations',
+    },
   }, {
     path: '/cargo',
     name: 'cargo',
@@ -123,7 +136,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
-      title: 'title.cargo',
+      title: 'cargo',
     },
   }, {
     path: '/commodities',
@@ -132,7 +145,7 @@ export const routes = [
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
-      title: 'title.commodities',
+      title: 'commodities',
     },
   }, {
     path: '/commodities/:id',
@@ -146,14 +159,23 @@ export const routes = [
     path: '/roadmap',
     name: 'roadmap',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap'),
+    meta: {
+      title: 'roadmap.shipRoadmap',
+    },
   }, {
     path: '/roadmap/changes',
     name: 'roadmap-changes',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap-changes" */ 'frontend/pages/Roadmap/Changes'),
+    meta: {
+      title: 'roadmap.changes',
+    },
   }, {
     path: '/roadmap/releases',
     name: 'roadmap-releases',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap-releases" */ 'frontend/pages/Roadmap/Releases'),
+    meta: {
+      title: 'roadmap.releases',
+    },
   }, {
     path: '/settings',
     name: 'settings',
@@ -169,20 +191,29 @@ export const routes = [
     path: '/sign-up',
     name: 'signup',
     component: () => import(/* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Signup'),
+    meta: {
+      title: 'signUp',
+    },
   }, {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "frontend.page.login" */ 'frontend/pages/Login'),
+    meta: {
+      title: 'login',
+    },
   }, {
     path: '/password/request',
     name: 'request-password',
     component: () => import(/* webpackChunkName: "frontend.page.request-password" */ 'frontend/pages/RequestPassword'),
+    meta: {
+      title: 'requestPassword',
+    },
   }, {
     path: '/password/update/:token',
     name: 'change-password',
     component: () => import(/* webpackChunkName: "frontend.page.change-password" */ 'frontend/pages/ChangePassword'),
     meta: {
-      title: 'title.changePassword',
+      title: 'changePassword',
     },
   }, {
     path: '/confirm/:token',
@@ -193,6 +224,7 @@ export const routes = [
     name: '404',
     component: () => import(/* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'),
     meta: {
+      title: 'notFound',
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-404.jpg'),
     },

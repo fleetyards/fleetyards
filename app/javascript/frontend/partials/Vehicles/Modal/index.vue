@@ -164,7 +164,7 @@ export default {
     remove() {
       this.deleting = true
       this.$confirm({
-        text: this.$t('confirm.vehicle.destroy'),
+        text: this.$t('messages.confirm.vehicle.destroy'),
         onConfirm: () => {
           this.destroy()
         },

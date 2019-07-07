@@ -1,10 +1,13 @@
 import I18n from 'i18n-js'
-import en from 'translations/en.json'
+import en from 'translations/en'
+import de from 'translations/de'
 
-I18n.fallbacks = true
+I18n.availableLocales = ['en', 'de']
 I18n.defaultLocale = 'en'
 I18n.locale = 'en'
+I18n.fallbacks = true
 I18n.translations.en = en
+I18n.translations.de = de
 
 const methods = {
   t(key, options) {

@@ -3,7 +3,7 @@ export default {
     metaTitle() {
       const { title } = this.$route.meta
       if (title) {
-        return `${this.$t(title)} | ${this.$t('app')}`
+        return this.$t(`title.${title}`)
       }
 
       return null

@@ -77,11 +77,17 @@ import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
+  name: 'Login',
+
   components: {
     Btn,
     Checkbox,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -92,11 +98,13 @@ export default {
       },
     }
   },
+
   methods: {
     async login() {
       this.submitting = true
       const response = await this.$api.post('sessions', this.form)
       this.submitting = false
+
       if (!response.error) {
         this.$store.dispatch('session/login', response.data)
         if (this.$route.params.redirectToRoute) {
@@ -111,14 +119,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.login'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

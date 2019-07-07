@@ -291,7 +291,9 @@ export default {
     ModelPanel,
   },
 
-  mixins: [MetaInfo],
+  mixins: [
+    MetaInfo,
+  ],
 
   data() {
     return {
@@ -333,7 +335,7 @@ export default {
       return `https://starship42.com/fleetview/single?${startship42Params}`
     },
 
-    title() {
+    metaTitle() {
       if (!this.model) {
         return null
       }
@@ -437,6 +439,7 @@ export default {
         this.upgrades = response.data
       }
     },
+
     async fetchVariants() {
       this.loadingVariants = true
       const response = await this.$api.get(`models/${this.$route.params.slug}/variants`)
@@ -446,15 +449,9 @@ export default {
       }
     },
   },
-
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

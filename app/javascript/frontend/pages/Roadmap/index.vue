@@ -128,13 +128,19 @@ import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 
 export default {
+  name: 'Roadmap',
+
   components: {
     Loader,
     EmptyBox,
     RoadmapItem,
     Btn,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       loading: true,
@@ -145,6 +151,7 @@ export default {
       roadmapChannel: null,
     }
   },
+
   computed: {
     releasedToggleLabel() {
       if (this.onlyReleased) {
@@ -152,15 +159,18 @@ export default {
       }
       return this.$t('actions.hideReleased')
     },
+
     emptyBoxVisible() {
       return !this.loading && this.roadmapItems.length === 0
     },
+
     filteredItems() {
       if (this.onlyReleased) {
         return this.roadmapItems.filter(item => !item.released)
       }
       return this.roadmapItems
     },
+
     groupedByRelease() {
       return this.filteredItems.reduce((rv, x) => {
         const value = JSON.parse(JSON.stringify(rv))
@@ -171,24 +181,29 @@ export default {
         return value
       }, {})
     },
+
     otherModels() {
       return this.models
     },
+
     modelsOnRoadmap() {
       return this.roadmapItems.filter(item => item.model)
         .map(item => item.model.id)
         .filter(item => item)
     },
   },
+
   mounted() {
     this.fetch()
     this.setupUpdates()
   },
+
   beforeDestroy() {
     if (this.roadmapChannel) {
       this.roadmapChannel.unsubscribe()
     }
   },
+
   methods: {
     setupUpdates() {
       if (this.roadmapChannel) {
@@ -201,9 +216,11 @@ export default {
         received: this.fetch,
       })
     },
+
     toggleReleased() {
       this.onlyReleased = !this.onlyReleased
     },
+
     toggle(release) {
       if (this.visible.includes(release)) {
         const index = this.visible.indexOf(release)
@@ -212,6 +229,7 @@ export default {
       }
       return this.visible.push(release)
     },
+
     openReleased() {
       Object.keys(this.groupedByRelease).forEach((release) => {
         const items = this.groupedByRelease[release]
@@ -220,6 +238,7 @@ export default {
         }
       })
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get('roadmap', {
@@ -234,17 +253,13 @@ export default {
         this.openReleased()
       }
     },
+
     async fetchModels() {
       const response = await this.$api.get('models/unscheduled')
       if (!response.error) {
         this.unscheduledModels = response.data
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.roadmap.shipRoadmap'),
-    })
   },
 }
 </script>

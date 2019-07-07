@@ -133,7 +133,7 @@ export default {
     remove() {
       this.deleting = true
       this.$confirm({
-        text: this.$t('confirm.hangarGroup.destroy'),
+        text: this.$t('messages.confirm.hangarGroup.destroy'),
         onConfirm: () => {
           this.destroy()
         },

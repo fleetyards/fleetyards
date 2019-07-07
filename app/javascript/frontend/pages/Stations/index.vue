@@ -161,6 +161,8 @@ import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Stations',
+
   components: {
     Loader,
     EmptyBox,
@@ -168,7 +170,14 @@ export default {
     FilterForm,
     Btn,
   },
-  mixins: [MetaInfo, Hash, Filters, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+    Filters,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -176,31 +185,38 @@ export default {
       fullscreen: false,
     }
   },
+
   computed: {
     ...mapGetters([
       'mobile',
     ]),
+
     ...mapGetters('stations', [
       'filterVisible',
     ]),
+
     isSubRoute() {
       return this.$route.name !== 'stations'
     },
+
     toggleFiltersTooltip() {
       if (this.filterVisible) {
         return this.$t('actions.hideFilter')
       }
       return this.$t('actions.showFilter')
     },
+
     emptyBoxVisible() {
       return !this.loading && this.stations.length === 0
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   created() {
     this.fetch()
     if (this.mobile) {
@@ -208,34 +224,36 @@ export default {
     }
     this.toggleFullscreen()
   },
+
   methods: {
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFilter() {
       this.$store.dispatch('stations/toggleFilter')
     },
+
     async fetch() {
       if (this.isSubRoute) {
         return
       }
+
       this.loading = true
       const response = await this.$api.get('stations', {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
+
       this.loading = false
+
       if (!response.error) {
         this.stations = response.data
         this.scrollToAnchor()
       }
+
       this.setPages(response.meta)
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.stations'),
-    })
   },
 }
 </script>

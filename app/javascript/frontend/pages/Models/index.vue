@@ -192,6 +192,8 @@ import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
 
 export default {
+  name: 'Models',
+
   components: {
     Btn,
     DownloadScreenshotBtn,
@@ -202,7 +204,14 @@ export default {
     FleetchartItem,
     FleetchartSlider,
   },
-  mixins: [MetaInfo, Filters, Pagination, Hash],
+
+  mixins: [
+    MetaInfo,
+    Filters,
+    Pagination,
+    Hash,
+  ],
+
   data() {
     return {
       loading: true,
@@ -211,26 +220,31 @@ export default {
       fleetchartModels: [],
     }
   },
+
   computed: {
     ...mapGetters([
       'mobile',
     ]),
+
     ...mapGetters('models', [
       'detailsVisible',
       'filterVisible',
       'fleetchartVisible',
       'fleetchartScale',
     ]),
+
     emptyBoxVisible() {
       return !this.loading && !this.models.length && (this.isFilterSelected
         || this.$route.query.page)
     },
+
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
     },
+
     toggleFiltersTooltip() {
       if (this.filterVisible) {
         return this.$t('actions.hideFilter')
@@ -238,11 +252,13 @@ export default {
       return this.$t('actions.showFilter')
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   created() {
     this.fetch()
 
@@ -256,17 +272,21 @@ export default {
 
     this.toggleFullscreen()
   },
+
   methods: {
     updateScale(value) {
       this.$store.commit('models/setFleetchartScale', value)
     },
+
     fetch() {
       this.fetchModels()
       this.fetchFleetchart()
     },
+
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFleetchart() {
       this.$store.dispatch('models/toggleFleetchart')
 
@@ -281,12 +301,15 @@ export default {
         })
       }
     },
+
     toggleFilter() {
       this.$store.dispatch('models/toggleFilter')
     },
+
     toggleDetails() {
       this.$store.dispatch('models/toggleDetails')
     },
+
     async fetchModels() {
       this.loading = true
       const response = await this.$api.get('models', {
@@ -300,6 +323,7 @@ export default {
       this.setPages(response.meta)
       this.resetLoading()
     },
+
     async fetchFleetchart() {
       this.loading = true
       const response = await this.$api.get('models/fleetchart', {
@@ -310,16 +334,12 @@ export default {
       }
       this.resetLoading()
     },
+
     resetLoading() {
       setTimeout(() => {
         this.loading = false
       }, 300)
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.models'),
-    })
   },
 }
 </script>

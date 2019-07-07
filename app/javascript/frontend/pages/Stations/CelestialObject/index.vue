@@ -196,7 +196,13 @@ export default {
     ShopPanel,
     CelestialObjectMetrics,
   },
-  mixins: [MetaInfo, Hash, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -204,30 +210,36 @@ export default {
       stations: [],
     }
   },
+
   computed: {
     emptyBoxVisible() {
       return !this.loading && this.stations.length === 0
     },
-    title() {
+
+    metaTitle() {
       if (!this.celestialObject) {
         return null
       }
       return this.$t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
+
     celestialObject() {
       if (this.celestialObject.storeImage) {
         this.$store.commit('setBackgroundImage', this.celestialObject.storeImage)
       }
     },
   },
+
   created() {
     this.fetch()
   },
+
   methods: {
     async fetch() {
       this.loading = true
@@ -238,6 +250,7 @@ export default {
         this.fetchStations()
       }
     },
+
     async fetchStations() {
       this.loading = true
       const response = await this.$api.get('stations', {
@@ -247,22 +260,19 @@ export default {
         },
         page: this.$route.query.page,
       })
+
       this.loading = false
       if (!response.error) {
         this.stations = response.data
         this.scrollToAnchor()
       }
+
       this.setPages(response.meta)
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index.scss';
+  @import 'index';
 </style>

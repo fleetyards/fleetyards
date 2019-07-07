@@ -105,10 +105,16 @@ import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'ChangePassword',
+
   components: {
     Btn,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -119,11 +125,13 @@ export default {
       },
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'isAuthenticated',
     ]),
   },
+
   methods: {
     async changePassword() {
       const result = await this.$validator.validateAll()
@@ -145,14 +153,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.changePassword'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

@@ -133,6 +133,8 @@ import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
+  name: 'Starsystem',
+
   components: {
     Loader,
     EmptyBox,
@@ -142,7 +144,13 @@ export default {
     StarsystemLevelsMetrics,
     Panel,
   },
-  mixins: [MetaInfo, Hash, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -150,37 +158,44 @@ export default {
       celestialObjects: [],
     }
   },
+
   computed: {
     emptyBoxVisible() {
       return !this.loading && !this.celestialObjects.length
     },
+
     starsystemName() {
       if (this.celestialObjects.length === 0) {
         return ''
       }
       return this.celestialObjects[0].starsystem.name
     },
-    title() {
+
+    metaTitle() {
       if (!this.starsystem) {
         return null
       }
       return this.$t('title.starsystem', { starsystem: this.starsystem.name })
     },
   },
+
   watch: {
     $route() {
       this.fetchCelestialObjects()
     },
+
     starsystem() {
       if (this.starsystem.storeImage) {
         this.$store.commit('setBackgroundImage', this.starsystem.storeImage)
       }
     },
   },
+
   created() {
     this.fetch()
     this.fetchCelestialObjects()
   },
+
   methods: {
     async fetch() {
       const response = await this.$api.get(`starsystems/${this.$route.params.slug}`)
@@ -188,6 +203,7 @@ export default {
         this.starsystem = response.data
       }
     },
+
     async fetchCelestialObjects() {
       this.loading = true
       const response = await this.$api.get('celestial-objects', {
@@ -205,11 +221,6 @@ export default {
       }
       this.setPages(response.meta)
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>
