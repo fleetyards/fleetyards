@@ -57,13 +57,19 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import { subDays, format } from 'date-fns'
 
 export default {
+  name: 'RoadmapChanges',
+
   components: {
     Loader,
     EmptyBox,
     Btn,
     RoadmapItem,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       loading: true,
@@ -71,20 +77,24 @@ export default {
       roadmapChannel: null,
     }
   },
+
   computed: {
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
     },
   },
+
   mounted() {
     this.fetch()
     this.setupUpdates()
   },
+
   beforeDestroy() {
     if (this.roadmapChannel) {
       this.roadmapChannel.unsubscribe()
     }
   },
+
   methods: {
     setupUpdates() {
       if (this.roadmapChannel) {
@@ -97,6 +107,7 @@ export default {
         received: this.fetch,
       })
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get('roadmap', {
@@ -105,16 +116,13 @@ export default {
           updatedAtGteq: format(subDays(new Date(), 6), 'YYYY-MM-DD'),
         },
       })
+
       this.loading = false
+
       if (!response.error) {
         this.roadmapChanges = response.data.filter(item => item.lastVersion)
       }
     },
-  },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.roadmap.changes'),
-    })
   },
 }
 </script>

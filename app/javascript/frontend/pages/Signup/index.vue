@@ -224,11 +224,17 @@ import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
+  name: 'Signup',
+
   components: {
     Btn,
     Checkbox,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -242,6 +248,7 @@ export default {
       },
     }
   },
+
   methods: {
     async signup() {
       const result = await this.$validator.validateAll()
@@ -251,9 +258,11 @@ export default {
         })
         return
       }
+
       this.submitting = true
       const response = await this.$api.post('users/signup', this.form)
       this.submitting = false
+
       if (!response.error) {
         this.$success({
           text: this.$t('messages.signup.success'),
@@ -289,14 +298,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.signUp'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

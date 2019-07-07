@@ -105,11 +105,5 @@ export default {
       this.setPages(response.meta)
     },
   },
-
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.images'),
-    })
-  },
 }
 </script>

@@ -155,7 +155,12 @@ export default {
     Btn,
     Box,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -182,22 +187,26 @@ export default {
       },
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'currentUser',
     ]),
-    fleetTitle() {
+
+    metaTitle() {
       if (!this.fleet || !this.fleet.sid) {
         return ''
       }
       return `${this.fleet.name} (${this.fleet.sid.toUpperCase()})`
     },
+
     myFleet() {
       if (!this.currentUser || !this.$route.params.sid) {
         return false
       }
       return (this.currentUser.fleets || []).includes(this.$route.params.sid.toUpperCase())
     },
+
     isMember() {
       if (!this.currentUser) {
         return false
@@ -206,10 +215,12 @@ export default {
       return this.myFleet && this.currentUser.rsiVerified
     },
   },
+
   watch: {
     $route() {
       this.fetchModels()
     },
+
     currentUser() {
       if (this.isMember) {
         this.fetchModels()
@@ -217,13 +228,16 @@ export default {
       }
     },
   },
+
   created() {
     this.fetch()
+
     if (this.isMember) {
       this.fetchModels()
       this.fetchCount()
     }
   },
+
   methods: {
     count(slug) {
       if (!this.fleetCount) {
@@ -231,6 +245,7 @@ export default {
       }
       return this.fleetCount.models[slug]
     },
+
     async fetch() {
       const response = await this.$api.get(`fleets/${this.$route.params.sid}`)
       this.loading = false
@@ -241,6 +256,7 @@ export default {
         }
       }
     },
+
     async fetchModels() {
       this.loading = true
       const response = await this.$api.get(`fleets/${this.$route.params.sid}/models`, {
@@ -253,6 +269,7 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchCount() {
       const response = await this.$api.get(`fleets/${this.$route.params.sid}/count`)
       if (!response.error) {
@@ -260,14 +277,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.fleetTitle,
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

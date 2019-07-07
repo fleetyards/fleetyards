@@ -188,13 +188,19 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 
 export default {
+  name: 'Profile',
+
   components: {
     Btn,
     Checkbox,
     Loader,
     Panel,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       form: {
@@ -210,26 +216,32 @@ export default {
       submitting: false,
     }
   },
+
   computed: {
     ...mapGetters('session', [
       'currentUser',
       'citizen',
     ]),
   },
+
   watch: {
     currentUser: 'setupForm',
+
     citizen() {
       this.rsiCitizen = this.citizen
     },
   },
+
   created() {
     if (this.currentUser) {
       this.setupForm()
     }
+
     if (this.citizen) {
       this.rsiCitizen = this.citizen
     }
   },
+
   methods: {
     changeHandle() {
       if (this.rsiFetchTimeout) {
@@ -239,6 +251,7 @@ export default {
         this.fetchCitizen()
       }, 300)
     },
+
     setupForm() {
       this.form.rsiHandle = this.currentUser.rsiHandle
       this.form.username = this.currentUser.username
@@ -246,6 +259,7 @@ export default {
       this.form.saleNotify = !!this.currentUser.saleNotify
       this.form.publicHangar = !!this.currentUser.publicHangar
     },
+
     async submit() {
       const result = await this.$validator.validateAll()
       if (!result) {
@@ -261,6 +275,7 @@ export default {
         })
       }
     },
+
     async fetchCitizen() {
       this.rsiCitizen = null
 
@@ -276,14 +291,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.settings'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

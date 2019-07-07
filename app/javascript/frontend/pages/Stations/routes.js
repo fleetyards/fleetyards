@@ -3,6 +3,9 @@ export const routes = [
     path: '/starsystems',
     name: 'starsystems',
     component: () => import(/* webpackChunkName: "frontend.page.starsystems" */ 'frontend/pages/Stations/Starsystems'),
+    meta: {
+      title: 'starsystems',
+    },
   }, {
     path: '/starsystems/:slug',
     name: 'starsystem',
@@ -15,6 +18,9 @@ export const routes = [
     path: '/shops',
     name: 'shops',
     component: () => import(/* webpackChunkName: "frontend.page.station.shops" */ 'frontend/pages/Stations/ShopList'),
+    meta: {
+      title: 'shops',
+    },
   }, {
     path: ':slug',
     name: 'station',

@@ -140,7 +140,14 @@ export default {
     FilterForm,
     Btn,
   },
-  mixins: [MetaInfo, Hash, Filters, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Hash,
+    Filters,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -148,28 +155,34 @@ export default {
       fullscreen: false,
     }
   },
+
   computed: {
     ...mapGetters([
       'mobile',
     ]),
+
     ...mapGetters('shops', [
       'filterVisible',
     ]),
+
     toggleFiltersTooltip() {
       if (this.filterVisible) {
         return this.$t('actions.hideFilter')
       }
       return this.$t('actions.showFilter')
     },
+
     emptyBoxVisible() {
       return !this.loading && this.shops.length === 0
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   created() {
     this.fetch()
     if (this.mobile) {
@@ -177,13 +190,16 @@ export default {
     }
     this.toggleFullscreen()
   },
+
   methods: {
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFilter() {
       this.$store.dispatch('shops/toggleFilter')
     },
+
     async fetch() {
       this.loading = true
       const response = await this.$api.get('shops', {
@@ -198,14 +214,9 @@ export default {
       this.setPages(response.meta)
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.shops'),
-    })
-  },
 }
 </script>
 
 <style lang="scss">
-  @import './styles/index.scss';
+  @import 'index';
 </style>

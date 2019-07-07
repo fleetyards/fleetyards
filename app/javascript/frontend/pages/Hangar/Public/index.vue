@@ -138,6 +138,8 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
+  name: 'PublicHangar',
+
   components: {
     Btn,
     Loader,
@@ -147,7 +149,12 @@ export default {
     ModelClassLabels,
     FleetchartSlider,
   },
-  mixins: [MetaInfo, Pagination],
+
+  mixins: [
+    MetaInfo,
+    Pagination,
+  ],
+
   data() {
     return {
       loading: false,
@@ -156,17 +163,25 @@ export default {
       vehiclesCount: null,
     }
   },
+
   computed: {
     ...mapGetters('hangar', [
       'publicFleetchartVisible',
       'publicFleetchartScale',
     ]),
+
     ...mapGetters('session', [
       'currentUser',
     ]),
+
+    metaTitle() {
+      return this.$t('title.hangarPublic', { user: this.usernamePlural })
+    },
+
     username() {
       return this.$route.params.user
     },
+
     isMyShip() {
       if (!this.currentUser) {
         return false
@@ -174,6 +189,7 @@ export default {
 
       return (this.username || '').toLowerCase() === this.currentUser.username.toLowerCase()
     },
+
     usernamePlural() {
       if (this.user.endsWith('s') || this.user.endsWith('x') || this.user.endsWith('z')) {
         return this.user
@@ -181,18 +197,22 @@ export default {
 
       return `${this.user}'s`
     },
+
     user() {
       return this.username[0].toUpperCase() + this.username.slice(1)
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
+
     publicFleetchartVisible() {
       this.fetch()
     },
   },
+
   created() {
     if (this.$route.query.fleetchart && !this.publicFleetchartVisible) {
       this.$store.dispatch('hangar/togglePublicFleetchart')
@@ -200,13 +220,16 @@ export default {
 
     this.fetch()
   },
+
   methods: {
     updateScale(value) {
       this.$store.commit('hangar/setPublicFleetchartScale', value)
     },
+
     toggleFleetchart() {
       this.$store.dispatch('hangar/togglePublicFleetchart')
     },
+
     fetch() {
       if (this.publicFleetchartVisible) {
         this.fetchFleetchart()
@@ -214,6 +237,7 @@ export default {
         this.fetchVehicles()
       }
     },
+
     async fetchVehicles() {
       this.loading = true
 
@@ -229,12 +253,14 @@ export default {
       }
       this.setPages(response.meta)
     },
+
     async fetchCount() {
       const response = await this.$api.get(`vehicles/${this.username}/count`)
       if (!response.error) {
         this.vehiclesCount = response.data
       }
     },
+
     async fetchFleetchart() {
       this.loading = true
       const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
@@ -244,14 +270,9 @@ export default {
       }
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.hangarPublic', { user: this.usernamePlural }),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

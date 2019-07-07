@@ -83,23 +83,27 @@ export default {
 
   data() {
     return {
-      title: null,
       images: [],
       model: null,
       loading: false,
     }
   },
 
+  computed: {
+    metaTitle() {
+      if (!this.model) {
+        return null
+      }
+
+      return this.$t('title.modelImages', {
+        name: this.model.name,
+      })
+    },
+  },
+
   watch: {
     $route() {
       this.fetch()
-    },
-
-    model() {
-      this.title = this.$t('title.modelImages', {
-        name: this.model.name,
-      })
-      this.$store.commit('setBackgroundImage', this.model.backgroundImage)
     },
   },
 
@@ -126,18 +130,14 @@ export default {
         withoutImages: true,
         withoutVideos: true,
       })
+
       if (!response.error) {
         this.model = response.data
+        this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
     },
-  },
-
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.title,
-    })
   },
 }
 </script>

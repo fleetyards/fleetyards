@@ -288,6 +288,7 @@ import Hash from 'frontend/mixins/Hash'
 
 export default {
   name: 'Hangar',
+
   components: {
     Loader,
     Btn,
@@ -304,7 +305,14 @@ export default {
     NewVehiclesModal,
     FleetchartSlider,
   },
-  mixins: [MetaInfo, Filters, Pagination, Hash],
+
+  mixins: [
+    MetaInfo,
+    Filters,
+    Pagination,
+    Hash,
+  ],
+
   data() {
     return {
       loading: true,
@@ -319,13 +327,16 @@ export default {
       vehiclesChannel: null,
     }
   },
+
   computed: {
     ...mapGetters([
       'mobile',
     ]),
+
     ...mapGetters('session', [
       'currentUser',
     ]),
+
     ...mapGetters('hangar', [
       'ships',
       'detailsVisible',
@@ -333,45 +344,55 @@ export default {
       'fleetchartVisible',
       'fleetchartScale',
     ]),
+
     emptyBoxVisible() {
       return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
     },
+
     guideVisible() {
       return !this.ships.length || this.showGuide
     },
+
     noVehicles() {
       return !this.vehicles.length && !this.fleetchartVisible
     },
+
     noFleetchartVehicles() {
       return !this.fleetchartVehicles.length && this.fleetchartVisible
     },
+
     filterPresent() {
       return this.isFilterSelected || this.$route.query.page
     },
+
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
     },
+
     toggleFiltersTooltip() {
       if (this.filterVisible) {
         return this.$t('actions.hideFilter')
       }
       return this.$t('actions.showFilter')
     },
+
     toggleGuideTooltip() {
       if (this.guideVisible) {
         return this.$t('actions.hideGuide')
       }
       return this.$t('actions.showGuide')
     },
+
     publicUrl() {
       if (!this.currentUser) {
         return ''
       }
       return `/hangar/${this.currentUser.username}`
     },
+
     starship42Url() {
       const shipList = this.fleetchartVehicles.map(vehicle => vehicle.model.rsiName)
       const data = { source: 'FleetYards', type: 'matrix', s: shipList }
@@ -379,11 +400,13 @@ export default {
       return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   mounted() {
     this.fetch()
     this.setupUpdates()
@@ -399,47 +422,60 @@ export default {
     if (this.mobile) {
       this.$store.commit('hangar/setFilterVisible', false)
     }
+
     this.toggleFullscreen()
   },
+
   beforeDestroy() {
     if (this.vehiclesChannel) {
       this.vehiclesChannel.unsubscribe()
     }
   },
+
   methods: {
     toggleGuide() {
       this.showGuide = !this.showGuide
     },
+
     showEditModal(vehicle) {
       this.$refs.vehicleModal.open(vehicle)
     },
+
     updateScale(value) {
       this.$store.commit('hangar/setFleetchartScale', value)
     },
+
     showNewModal() {
       this.$refs.newVehiclesModal.open()
     },
+
     showAddonsModal(vehicle) {
       this.$refs.addonsModal.open(vehicle)
     },
+
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFilter() {
       this.$store.dispatch('hangar/toggleFilter')
     },
+
     toggleDetails() {
       this.$store.dispatch('hangar/toggleDetails')
     },
+
     toggleFleetchart() {
       this.$store.dispatch('hangar/toggleFleetchart')
     },
+
     fetch() {
       this.fetchFleetchart()
       this.fetchVehicles()
       this.fetchGroups()
       this.fetchCount()
     },
+
     async fetchVehicles() {
       this.loading = true
       const response = await this.$api.get('vehicles', {
@@ -453,6 +489,7 @@ export default {
       this.setPages(response.meta)
       this.resetLoading()
     },
+
     async fetchCount() {
       const response = await this.$api.get('vehicles/count', {
         q: this.$route.query.q,
@@ -461,6 +498,7 @@ export default {
         this.vehiclesCount = response.data
       }
     },
+
     async fetchFleetchart() {
       this.loading = true
       const response = await this.$api.get('vehicles/fleetchart', {
@@ -471,6 +509,7 @@ export default {
       }
       this.resetLoading()
     },
+
     setupUpdates() {
       if (this.vehiclesChannel) {
         this.vehiclesChannel.unsubscribe()
@@ -483,26 +522,23 @@ export default {
         received: this.fetch,
       })
     },
+
     async fetchGroups() {
       const response = await this.$api.get('hangar-groups')
       if (!response.error) {
         this.hangarGroups = response.data
       }
     },
+
     resetLoading() {
       setTimeout(() => {
         this.loading = false
       }, 300)
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.hangar'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

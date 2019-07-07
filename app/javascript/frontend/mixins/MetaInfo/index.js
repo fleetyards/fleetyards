@@ -1,15 +1,25 @@
 export default {
-  methods: {
-    getMetaInfo(tags) {
-      return {
-        title: this.getMetaTitle(tags.title),
+  computed: {
+    metaTitle() {
+      const { title } = this.$route.meta
+      if (title) {
+        return this.$t(`title.${title}`)
       }
+
+      return null
     },
-    getMetaTitle(title) {
-      if (!title) {
+  },
+
+  head() {
+    return {
+      title: this.metaTitle,
+      titleTemplate(title) {
+        if (title) {
+          return `${title} | ${this.$t('app')}`
+        }
+
         return this.$t('app')
-      }
-      return this.$t('title.main', { title })
-    },
+      },
+    }
   },
 }

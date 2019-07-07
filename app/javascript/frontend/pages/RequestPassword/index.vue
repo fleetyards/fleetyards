@@ -79,7 +79,11 @@ export default {
   components: {
     Btn,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     return {
       submitting: false,
@@ -88,6 +92,7 @@ export default {
       },
     }
   },
+
   methods: {
     async requestPassword() {
       const result = await this.$validator.validateAll()
@@ -103,14 +108,9 @@ export default {
       this.$router.push('/')
     },
   },
-  metaInfo() {
-    return this.getMetaInfo({
-      title: this.$t('title.requestPassword'),
-    })
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>
