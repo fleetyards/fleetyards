@@ -81,7 +81,7 @@ module Api
             'storeImageMedium' => portolisar.shops.last.store_image.medium.url,
             'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
-          'docks' => [{
+          'dockCounts' => [{
             'size' => 'Large',
             'count' => 1,
             'type' => 'landingpad',
@@ -92,8 +92,29 @@ module Api
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }],
-          'habitations' => [{
+          'docks' => [{
+            'name' => 'Landingpad One',
+            'group' => nil,
+            'size' => 'large',
+            'sizeLabel' => 'Large',
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
+          }, {
+            'name' => 'Dockingport One',
+            'group' => nil,
+            'size' => 'medium',
+            'sizeLabel' => 'Medium',
+            'type' => 'dockingport',
+            'typeLabel' => 'Dockingport'
+          }],
+          'habitationCounts' => [{
             'count' => 1,
+            'type' => 'container',
+            'typeLabel' => 'Container'
+          }],
+          'habitations' => [{
+            'name' => 'Hab 1',
+            'habitationName' => nil,
             'type' => 'container',
             'typeLabel' => 'Container'
           }],
@@ -143,12 +164,21 @@ module Api
             'status' => nil
           },
           'shops' => [],
-          'docks' => [{
+          'dockCounts' => [{
             'size' => 'Small',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }],
+          'docks' => [{
+            'name' => 'Dockingport one',
+            'group' => nil,
+            'size' => 'small',
+            'sizeLabel' => 'Small',
+            'type' => 'dockingport',
+            'typeLabel' => 'Dockingport'
+          }],
+          'habitationCounts' => [],
           'habitations' => [],
           'createdAt' => corvolex.created_at.to_time.iso8601,
           'updatedAt' => corvolex.updated_at.to_time.iso8601
@@ -161,10 +191,10 @@ module Api
           'location' => nil,
           'type' => 'spaceport',
           'typeLabel' => 'Spaceport',
-          'description' => nil,
           'storeImage' => portolisar.store_image.url,
           'storeImageMedium' => portolisar.store_image.medium.url,
           'storeImageSmall' => portolisar.store_image.small.url,
+          'description' => nil,
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
@@ -221,7 +251,7 @@ module Api
             'storeImageMedium' => portolisar.shops.last.store_image.medium.url,
             'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
-          'docks' => [{
+          'dockCounts' => [{
             'size' => 'Large',
             'count' => 1,
             'type' => 'landingpad',
@@ -232,8 +262,29 @@ module Api
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
           }],
-          'habitations' => [{
+          'docks' => [{
+            'name' => 'Landingpad One',
+            'group' => nil,
+            'size' => 'large',
+            'sizeLabel' => 'Large',
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
+          }, {
+            'name' => 'Dockingport One',
+            'group' => nil,
+            'size' => 'medium',
+            'sizeLabel' => 'Medium',
+            'type' => 'dockingport',
+            'typeLabel' => 'Dockingport'
+          }],
+          'habitationCounts' => [{
             'count' => 1,
+            'type' => 'container',
+            'typeLabel' => 'Container'
+          }],
+          'habitations' => [{
+            'name' => 'Hab 1',
+            'habitationName' => nil,
             'type' => 'container',
             'typeLabel' => 'Container'
           }],

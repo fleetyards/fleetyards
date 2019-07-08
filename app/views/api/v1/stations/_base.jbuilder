@@ -18,9 +18,15 @@ end
 json.shops do
   json.array! station.shops.visible.order(:name), partial: 'api/v1/shops/base', as: :shop
 end
+json.dock_counts do
+  json.array! station.dock_counts, partial: 'api/v1/stations/dock_count', as: :dock_count
+end
 json.docks do
-  json.array! station.dock_counts, partial: 'api/v1/stations/dock', as: :dock_count
+  json.array! station.docks, partial: 'api/v1/stations/dock', as: :dock
+end
+json.habitation_counts do
+  json.array! station.habitation_counts, partial: 'api/v1/stations/habitation_count', as: :habitation_count
 end
 json.habitations do
-  json.array! station.habitation_counts, partial: 'api/v1/stations/habitation', as: :habitation_count
+  json.array! station.habitations, partial: 'api/v1/stations/habitation', as: :habitation
 end

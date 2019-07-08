@@ -94,10 +94,10 @@
                   </dd>
                   <dt>{{ $t('labels.station.docks') }}:</dt>
                   <dd>
-                    <template v-if="station.docks.length">
+                    <template v-if="station.dockCounts.length">
                       <ul class="list-unstyled">
                         <li
-                          v-for="(dock, index) in station.docks"
+                          v-for="(dock, index) in station.dockCounts"
                           :key="index"
                         >
                           {{ dock.size }} {{ dock.typeLabel }}: {{ dock.count }}
@@ -111,10 +111,10 @@
 
                   <dt>{{ $t('labels.station.habitation') }}:</dt>
                   <dd>
-                    <template v-if="station.habitations.length">
+                    <template v-if="station.habitationCounts.length">
                       <ul class="list-unstyled">
                         <li
-                          v-for="(habitation, index) in station.habitations"
+                          v-for="(habitation, index) in station.habitationCounts"
                           :key="index"
                         >
                           {{ habitation.typeLabel }}: {{ habitation.count }}

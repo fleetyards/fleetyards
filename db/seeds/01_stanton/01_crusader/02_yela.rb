@@ -11,7 +11,7 @@ pad = 1
 { extra_small: 3, small: 2, medium: 1 }.each do |ship_size, count|
   count.times do
     grimhex.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
@@ -25,7 +25,8 @@ grimhex.habitations.destroy_all
   { container: 8 }.each do |ship_size, count|
     count.times do
       grimhex.habitations << Habitation.new(
-        name: "#{wing} #{"%02d" % pad}",
+        name: ("%02d" % pad),
+        habitation_name: "Wing #{wing}",
         habitation_type: :container
       )
       pad += 1
@@ -54,7 +55,7 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     deakins_research_outpost.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
@@ -65,7 +66,7 @@ pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do
     deakins_research_outpost.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
@@ -88,7 +89,7 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     arc_corp_mining_area_157.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
@@ -99,7 +100,7 @@ pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do
     arc_corp_mining_area_157.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )

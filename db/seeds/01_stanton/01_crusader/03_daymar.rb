@@ -16,7 +16,7 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     shubin.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
@@ -27,7 +27,7 @@ pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |index|
     shubin.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
@@ -45,7 +45,7 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     arccorp.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
@@ -56,7 +56,7 @@ pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |index|
     arccorp.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )

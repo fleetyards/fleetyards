@@ -10,21 +10,39 @@
     </div>
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
+        <template v-if="hasGroup">
+          <div
+            v-for="(groupDocks, group) in docksByGroup"
+            :key="`docks-${group}`"
+            class="col-xs-12"
+          >
+            <div class="metrics-label">
+              <b>{{ group }}:</b>
+            </div>
+            <div class="row">
+              <div
+                v-for="(docks, size) in groupBy(groupDocks, 'sizeLabel')"
+                :key="`dock-${size}`"
+                class="col-xs-6"
+              >
+                <DockItem
+                  :docks="docks"
+                  :size="size"
+                />
+              </div>
+            </div>
+          </div>
+        </template>
         <div
-          v-for="(dock, index) in station.docks"
-          :key="index"
+          v-for="(docks, size) in docksBySize"
+          v-else
+          :key="`docks-${size}`"
           class="col-xs-6"
         >
-          <div class="metrics-label">
-            {{ dock.size }} {{ dock.typeLabel }}:
-          </div>
-          <div
-            :key="index"
-            v-tooltip="`${dock.size} ${dock.typeLabel}`"
-            class="metrics-value"
-          >
-            {{ dock.count }}
-          </div>
+          <DockItem
+            :docks="docks"
+            :size="size"
+          />
         </div>
       </div>
     </div>
@@ -32,11 +50,27 @@
 </template>
 
 <script>
+import DockItem from './Item'
+
 export default {
+  components: {
+    DockItem,
+  },
   props: {
     station: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    hasGroup() {
+      return this.station.docks.some(dock => !!dock.group)
+    },
+    docksBySize() {
+      return this.groupBy(this.station.docks, 'sizeLabel')
+    },
+    docksByGroup() {
+      return this.groupBy(this.sortBy(this.station.docks, 'group'), 'group')
     },
   },
 }
