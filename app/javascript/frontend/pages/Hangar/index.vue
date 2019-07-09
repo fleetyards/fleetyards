@@ -430,6 +430,11 @@ export default {
     if (this.vehiclesChannel) {
       this.vehiclesChannel.unsubscribe()
     }
+
+    this.$comlink.$off('vehicleSave')
+    this.$comlink.$off('vehicleDelete')
+    this.$comlink.$off('hangarGroupDelete')
+    this.$comlink.$off('hangarGroupSave')
   },
 
   methods: {

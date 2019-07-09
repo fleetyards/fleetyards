@@ -55,6 +55,9 @@ CarrierWave.configure do |config|
   config.asset_host = Rails.application.secrets[:frontend_endpoint] if Rails.env.development?
 
   if Rails.env.production? || Rails.env.staging?
+    config.storage = :fog
+    config.fog_provider = 'fog/aws'
+
     config.fog_credentials = {
       provider: 'AWS',
       aws_access_key_id: Rails.application.secrets.aws_access_key_id,
