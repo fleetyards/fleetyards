@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'fog/aws'
+
 module CarrierWave
   module MiniMagick
     def quality(percentage)
