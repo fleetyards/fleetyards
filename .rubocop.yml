@@ -92,3 +92,11 @@ Rails/BulkChangeTable:
 Rails/Delegate:
   Exclude:
     - lib/**/*
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - test
+    - development
+    - ci

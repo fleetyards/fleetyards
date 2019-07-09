@@ -73,6 +73,7 @@ gem 'highline'
 gem 'thor'
 
 gem 'carrierwave'
+gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
