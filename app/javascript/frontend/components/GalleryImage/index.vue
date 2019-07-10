@@ -5,7 +5,6 @@
     :alt="alt"
     :title="alt"
     :href="href"
-    element="a"
     class="image gallery-image"
     @click.native.ctrl.prevent="openInNewTab(href)"
     @click.native.meta.prevent="openInNewTab(href)"

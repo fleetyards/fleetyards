@@ -15,7 +15,7 @@
   }
 
   .teaser-panel-image {
-    height: 210px;
+    height: 210px !important;
     flex: .5;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;

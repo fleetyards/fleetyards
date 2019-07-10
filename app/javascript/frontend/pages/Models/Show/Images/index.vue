@@ -11,7 +11,7 @@
               >
                 <i class="fal fa-chevron-left" />
               </router-link>
-              {{ title }}
+              {{ metaTitle }}
             </h1>
           </div>
         </div>

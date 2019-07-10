@@ -11,7 +11,7 @@
                 target="_blank"
                 rel="noopener"
               >
-                {{ fleetTitle }}
+                {{ metaTitle }}
               </a>
               <span class="activities">
                 <img

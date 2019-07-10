@@ -119,17 +119,16 @@
                 appear
               >
                 <div
-                  v-for="(image, index) in images"
+                  v-for="image in images"
                   :key="image.id"
                   class="col-xs-12 col-sm-6 col-md-6"
                 >
-                  <router-link
-                    :key="image.smallUrl"
-                    v-lazy:background-image="image.smallUrl"
-                    :data-index="index"
+                  <LazyImage
+                    :src="image.smallUrl"
+                    :alt="image.name"
                     :title="image.name"
                     :to="{name: 'model-images', params: { slug: image.model.slug }}"
-                    class="image lazy"
+                    class="home-image"
                   />
                 </div>
               </transition-group>
@@ -150,6 +149,7 @@ import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Support from 'frontend/partials/Support'
+import LazyImage from 'frontend/components/LazyImage'
 
 export default {
   components: {
@@ -159,6 +159,7 @@ export default {
     Btn,
     FormInput,
     Support,
+    LazyImage,
   },
 
   mixins: [

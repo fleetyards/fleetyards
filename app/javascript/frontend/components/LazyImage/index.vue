@@ -1,10 +1,11 @@
 <template>
   <component
     :is="componentType"
-    :href="href"
+    v-bind="componentArgs"
     class="lazy-image"
   >
     <img
+      :key="src"
       v-lazy="image"
       :alt="alt"
     >
@@ -31,6 +32,10 @@ export default {
       type: String,
       default: null,
     },
+    to: {
+      type: Object,
+      default: null,
+    },
   },
 
   computed: {
@@ -43,10 +48,29 @@ export default {
     },
 
     componentType() {
+      if (this.to) {
+        return 'router-link'
+      }
       if (this.href) {
         return 'a'
       }
       return 'div'
+    },
+
+    componentArgs() {
+      if (this.to) {
+        return {
+          to: this.to,
+        }
+      }
+
+      if (this.href) {
+        return {
+          href: this.href,
+        }
+      }
+
+      return {}
     },
   },
 }
