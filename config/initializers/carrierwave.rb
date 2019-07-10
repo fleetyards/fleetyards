@@ -51,6 +51,7 @@ CarrierWave.configure do |config|
     config.storage NullStorage
     config.enable_processing = false
   elsif Rails.env.development? || ENV['CI'].present?
+    config.storage :file
     config.asset_host = Rails.application.secrets[:frontend_endpoint]
   else
     config.fog_provider = 'fog/aws'
@@ -63,7 +64,7 @@ CarrierWave.configure do |config|
       endpoint: 'https://s3.amazonaws.com'
     }
 
-    config.storage = :fog
+    config.storage :fog
     config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
 
     config.fog_directory = Rails.application.secrets.aws_s3_bucket
