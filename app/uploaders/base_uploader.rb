@@ -6,9 +6,13 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    return if original_filename.blank? || Rails.env.test?
+    return if original_filename.blank?
 
-    "#{File.basename(original_filename, File.extname(original_filename))}-#{secure_token}.#{file.extension}"
+    if Rails.env.test?
+      super
+    else
+      "#{File.basename(original_filename, File.extname(original_filename))}-#{secure_token}.#{file.extension}"
+    end
   end
 
   private def uuid_path
