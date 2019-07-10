@@ -51,6 +51,7 @@ CarrierWave.configure do |config|
     config.storage NullStorage
     config.enable_processing = false
   elsif Rails.env.development?
+    config.storage = :file
     config.asset_host = Rails.application.secrets[:frontend_endpoint]
   else
     config.fog_provider = 'fog/aws'
