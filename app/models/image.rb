@@ -25,15 +25,9 @@ class Image < ApplicationRecord
   end
 
   def dimensions
-    dimensions = []
-    dimensions = ::MiniMagick::Image.open(name.file.file)[:dimensions] if dimensions_missing?
     OpenStruct.new(
-      width: width || dimensions[0],
-      height: height || dimensions[1]
+      width: width,
+      height: height
     )
-  end
-
-  private def dimensions_missing?
-    (width.blank? || height.blank?) && File.exist?(name.file.file)
   end
 end
