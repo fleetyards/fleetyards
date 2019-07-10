@@ -23,11 +23,4 @@ class Image < ApplicationRecord
   def self.background
     where(background: true)
   end
-
-  def dimensions
-    OpenStruct.new(
-      width: width,
-      height: height
-    )
-  end
 end

@@ -17,7 +17,6 @@ set :bundler_version, '2.0.1'
 set :initial_deploy, false
 
 set :linked_dirs, [
-  'public/uploads',
   'public/compare',
   'public/packs',
   'log',

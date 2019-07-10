@@ -8,6 +8,7 @@ class Images < Thor
   desc 'recreate', 'Recreate Versions'
   def recreate
     require './config/environment'
+
     Image.find_each do |image|
       image.name.cache_stored_file!
       image.name.retrieve_from_cache!(image.name.cache_name)
@@ -22,6 +23,23 @@ class Images < Thor
       model.store_image.retrieve_from_cache!(model.store_image.cache_name)
       model.store_image.recreate_versions!(:dark, :big, :small)
       model.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+    end
+  end
+
+  desc 'set_dimensions', 'Set Dimensions'
+  def set_dimensions
+    require './config/environment'
+
+    Image.find_each do |image|
+      next if image.width.present? && image.height.present?
+      image.name.cache_stored_file!
+      image.name.retrieve_from_cache!(image.name.cache_name)
+      dimensions = image.dimensions
+      image.width = dimensions.width
+      image.height = dimensions.height
+      image.save!
     rescue StandardError => e
       puts "ERROR: YourModel: #{ym.id} -> #{e}"
     end
