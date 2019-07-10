@@ -60,15 +60,15 @@ CarrierWave.configure do |config|
       aws_access_key_id: Rails.application.secrets.aws_access_key_id,
       aws_secret_access_key: Rails.application.secrets.aws_secret_access_key,
       region: Rails.application.secrets.aws_s3_region,
-      host: 's3.amazonaws.com',
-      endpoint: 'https://s3.amazonaws.com'
+      host: "#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com"
     }
 
     config.storage :fog
-    config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
 
     config.fog_directory = Rails.application.secrets.aws_s3_bucket
     config.fog_public = true
-    config.fog_attributes = { cache_control: "public, max-age=#{365.days.to_i}" }
+
+    config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
+    config.asset_host = 'https://fleetyards-stage.s3.eu-central-1.amazonaws.com' if Rails.env.staging?
   end
 end
