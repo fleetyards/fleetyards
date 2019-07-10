@@ -58,7 +58,6 @@ CarrierWave.configure do |config|
       provider: 'AWS',
       aws_access_key_id: Rails.application.secrets.aws_access_key_id,
       aws_secret_access_key: Rails.application.secrets.aws_secret_access_key,
-      use_iam_profile: true,
       region: Rails.application.secrets.aws_s3_region,
       host: 's3.amazonaws.com',
       endpoint: 'https://s3.amazonaws.com'
