@@ -59,8 +59,7 @@ CarrierWave.configure do |config|
       provider: 'AWS',
       aws_access_key_id: Rails.application.secrets.aws_access_key_id,
       aws_secret_access_key: Rails.application.secrets.aws_secret_access_key,
-      region: Rails.application.secrets.aws_s3_region,
-      host: "#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com"
+      region: Rails.application.secrets.aws_s3_region
     }
 
     config.storage :fog
