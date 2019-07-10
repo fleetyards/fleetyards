@@ -55,9 +55,7 @@ CarrierWave.configure do |config|
   config.asset_host = Rails.application.secrets[:frontend_endpoint] if Rails.env.development?
 
   if Rails.env.production? || Rails.env.staging?
-    config.storage = :fog
     config.fog_provider = 'fog/aws'
-
     config.fog_credentials = {
       provider: 'AWS',
       aws_access_key_id: Rails.application.secrets.aws_access_key_id,
@@ -68,9 +66,10 @@ CarrierWave.configure do |config|
       endpoint: 'https://s3.amazonaws.com'
     }
 
+    config.storage = :fog
     config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
-    config.fog_directory = Rails.application.secrets.aws_s3_bucket
 
+    config.fog_directory = Rails.application.secrets.aws_s3_bucket
     config.fog_public = true
     config.fog_attributes = { cache_control: "public, max-age=#{365.days.to_i}" }
   end
