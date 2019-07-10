@@ -34,6 +34,7 @@ class Images < Thor
 
     Image.find_each do |image|
       next if image.width.present? && image.height.present?
+
       image.name.cache_stored_file!
       image.name.retrieve_from_cache!(image.name.cache_name)
       dimensions = image.dimensions
