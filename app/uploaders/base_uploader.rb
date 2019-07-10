@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseUploader < CarrierWave::Uploader::Base
+  storage Rails.application.secrets.file_storage.to_sym
+
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{uuid_path}"
   end

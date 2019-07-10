@@ -47,11 +47,10 @@ class NullStorage
 end
 
 CarrierWave.configure do |config|
-  if Rails.env.test? || ENV['CI'].present?
+  if Rails.env.test?
     config.storage NullStorage
     config.enable_processing = false
-  elsif Rails.env.development?
-    config.storage = :file
+  elsif Rails.env.development? || ENV['CI'].present?
     config.asset_host = Rails.application.secrets[:frontend_endpoint]
   else
     config.fog_provider = 'fog/aws'
