@@ -104,7 +104,7 @@
     "lint-staged": "8.1.7",
     "storybook-addon-vue-info": "1.2.1",
     "storybook-vue-router": "1.0.3",
-    "stylelint": "10.0.1",
+    "stylelint": "10.1.0",
     "stylelint-config-prettier": "5.2.0",
     "stylelint-config-standard": "18.3.0",
     "typescript": "3.5.3",
