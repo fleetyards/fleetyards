@@ -54,7 +54,7 @@
     "regenerator-runtime": "0.13.2",
     "sass-loader": "7.1.0",
     "v-tooltip": "2.0.2",
-    "vee-validate": "2.2.9",
+    "vee-validate": "2.2.12",
     "vue": "2.6.10",
     "vue-clipboard2": "0.3.0",
     "vue-infinite-loading": "2.4.4",
