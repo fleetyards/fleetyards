@@ -72,7 +72,7 @@
     "vuex": "3.1.1",
     "vuex-persistedstate": "2.5.4",
     "webpack": "4.32.2",
-    "webpack-cli": "3.3.2"
+    "webpack-cli": "3.3.5"
   },
   "devDependencies": {
     "@commitlint/cli": "7.6.1",
