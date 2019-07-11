@@ -13100,10 +13100,10 @@ stealthy-require@^1.1.1:
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
 
-storybook-addon-vue-info@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/storybook-addon-vue-info/-/storybook-addon-vue-info-1.2.0.tgz#3eef6a9d5e09a7a077c0c94fed65e2cf132fcf6b"
-  integrity sha512-ioAsqPxUToC2xws40I1mE7a15S8EpJXlf6tdTbvUBNB/QXIaDXR/NFnCwx5MO/P2FwmYRUDeHWxOCA3yDPOTRw==
+storybook-addon-vue-info@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/storybook-addon-vue-info/-/storybook-addon-vue-info-1.2.1.tgz#41dc5b16392640866878441abb8c060414803c78"
+  integrity sha512-B4l93SBHjVilrbzZ7sFMyfBlwm5nCuecU+ZOhpeci5zOK0ixTgCAwg/zIWBpCT9yI0iUAZv70xaIO9ICxm3vOQ==
   dependencies:
     clone "^2.1.2"
     dedent-tabs "^0.8.0"
