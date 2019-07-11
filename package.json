@@ -110,7 +110,7 @@
     "typescript": "3.5.3",
     "vue-eslint-parser": "6.0.4",
     "vue-jest": "3.0.4",
-    "webpack-dev-server": "3.5.1",
+    "webpack-dev-server": "3.7.2",
     "yorkie": "2.0.0"
   },
   "config": {
