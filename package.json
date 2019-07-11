@@ -25,7 +25,7 @@
     "@babel/plugin-transform-regenerator": "7.4.5",
     "@babel/plugin-transform-runtime": "7.5.0",
     "@babel/polyfill": "7.4.4",
-    "@babel/preset-env": "7.5.0",
+    "@babel/preset-env": "7.5.4",
     "@rails/webpacker": "4.0.7",
     "@sentry/browser": "5.5.0",
     "@sentry/integrations": "5.5.0",
