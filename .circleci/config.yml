@@ -323,18 +323,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - bundle-audit:
-          requires:
-            - bundle
-          filters:
-            tags:
-              only: /^v.*/
-      - yarn-audit:
-          requires:
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
       - rubocop:
           requires:
             - bundle
