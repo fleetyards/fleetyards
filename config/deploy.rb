@@ -3,7 +3,7 @@
 lock '~> 3.11'
 
 set :application, 'fleetyards'
-set :repo_url, 'https://github.com/fleetyards/app.git'
+set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
 set :keep_releases, 5
 set :keep_assets, 5
