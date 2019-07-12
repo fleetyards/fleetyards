@@ -35,7 +35,7 @@
     "babel-loader": "8.0.6",
     "bootstrap": "4.3.1",
     "bootstrap-sass": "3.4.1",
-    "bootstrap-vue": "2.0.0-rc.22",
+    "bootstrap-vue": "2.0.0-rc.26",
     "css-loader": "2.1.1",
     "date-fns": "1.30.1",
     "debounce": "1.2.0",
@@ -60,7 +60,7 @@
     "vue-infinite-loading": "2.4.4",
     "vue-lazyload": "1.3.1",
     "vue-loader": "15.7.0",
-    "vue-meta": "2.0.4",
+    "vue-meta": "2.0.5",
     "vue-router": "3.0.7",
     "vue-scrollto": "2.15.0",
     "vue-slider-component": "3.0.33",
@@ -101,7 +101,6 @@
     "eslint-plugin-vue": "5.2.3",
     "jest": "24.8.0",
     "jest-serializer-vue": "2.0.2",
-    "lint-staged": "9.2.0",
     "storybook-addon-vue-info": "1.2.1",
     "storybook-vue-router": "1.0.3",
     "stylelint": "10.1.0",
@@ -120,10 +119,6 @@
     }
   },
   "gitHooks": {
-    "commit-msg": "commitlint -E GIT_PARAMS",
-    "post-merge": "yarn run check-for-reinstalling",
-    "post-rewrite": "yarn run check-for-reinstalling",
-    "post-checkout": "yarn run check-for-reinstalling",
-    "pre-commit": "lint-staged"
+    "commit-msg": "commitlint -E GIT_PARAMS"
   }
 }
