@@ -128,7 +128,7 @@
                     :alt="image.name"
                     :title="image.name"
                     :to="{name: 'model-images', params: { slug: image.model.slug }}"
-                    class="home-image"
+                    class="home-image image"
                   />
                 </div>
               </transition-group>

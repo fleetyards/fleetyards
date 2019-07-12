@@ -1,20 +1,27 @@
 .lazy-image {
-  justify-content: center;
-  align-items: center;
-  display: flex;
   overflow: hidden;
   height: 100%;
   width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    &[lazy='loading'] {
-      width: 40px !important;
-      margin: auto;
-      height: auto;
-    }
+  &[lazy='loading']::before,
+  &.loading::before {
+    content: '';
+    background-image: url('~images/loading.svg');
+    background-size: 100%;
+    background-position: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    width: 50px;
+    height: 50px;
   }
+
+  // &[lazy='error'] {
+  //   background-image: url('~images/store_image.jpg') !important;
+  // }
 }

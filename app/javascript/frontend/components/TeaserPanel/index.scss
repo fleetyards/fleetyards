@@ -4,23 +4,17 @@
   display: flex;
 
   .teaser-panel-body {
-    height: 210px;
     padding: 15px;
     flex: .5;
-
-    p {
-      overflow: hidden;
-      height: 140px;
-    }
   }
 
   .teaser-panel-image {
-    height: 210px !important;
     flex: .5;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: .8;
     position: relative;
+    height: auto;
   }
 
   a {
