@@ -383,8 +383,6 @@ workflows:
       - deploy-to-stage:
           requires:
             - e2e-tests
-            - bundle-audit
-            - yarn-audit
             - rubocop
             - js-lint
             - vue-lint
@@ -399,8 +397,6 @@ workflows:
       - deploy-to-live:
           requires:
             - e2e-tests
-            - bundle-audit
-            - yarn-audit
             - rubocop
             - js-lint
             - vue-lint
