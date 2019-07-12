@@ -126,7 +126,7 @@ export default {
     },
     inprogress() {
       if (this.item.inprogress) {
-        return this.item.inprogress - this.completed
+        return Math.max(this.item.inprogress - this.completed, 0)
       }
       return 0
     },
