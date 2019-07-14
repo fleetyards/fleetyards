@@ -1,6 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
+  "version": "3.2.58",
   "scripts": {
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
@@ -101,6 +102,7 @@
     "eslint-plugin-vue": "5.2.3",
     "jest": "24.8.0",
     "jest-serializer-vue": "2.0.2",
+    "standard-version": "6.0.1",
     "storybook-addon-vue-info": "1.2.1",
     "storybook-vue-router": "1.0.3",
     "stylelint": "10.1.0",
