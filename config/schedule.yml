@@ -2,23 +2,23 @@
 
 production: &production
   models_worker_job:
-    cron: '*/10 * * * *'
+    cron: '*/10 * * * *' # Every 10 Minutes
     class: 'ModelsWorker'
   roadmap_worker_job:
-    cron: '0 */1 * * *'
+    cron: '0 */1 * * *' # Every Hour
     class: 'RoadmapWorker'
   citizen_worker_job:
-    cron: '0 */2 * * *'
+    cron: '0 */2 * * *' # Every 2 Hours
     class: 'CitizenWorker'
   fleets_worker_job:
-    cron: '0 1 * * *'
+    cron: '0 1 * * *' # Daily at 1:00
     class: 'FleetsWorker'
   cleanup_auth_tokens_worker:
-    cron: '0 2 * * *'
+    cron: '0 2 * * *' # Daily at 2:00
     class: 'CleanupAuthTokensWorker'
   locations_worker_job:
-    cron: '0 3 * * 0'
+    cron: '0 3 * * 0' # Weekly on Sunday 3:00
     class: 'LocationsWorker'
   admin_notifier_worker_job:
-    cron: '0 20 * * 0'
+    cron: '0 20 * * 0' # Weekly on Sunday 20:00
     class: 'AdminNotifierWorker'
