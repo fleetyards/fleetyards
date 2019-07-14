@@ -7,13 +7,26 @@
   color: $gray-light;
   padding: 4px 6px;
   border-bottom: 1px solid rgba(0, 0, 0, .6);
-
-  &.no-details {
-    border-bottom: none;
-  }
 }
 
 .panel-image {
+  &.no-details {
+    overflow: hidden;
+    border-bottom: none;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
   .on-sale {
     position: absolute;
     top: 0;

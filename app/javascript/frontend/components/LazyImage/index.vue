@@ -6,7 +6,9 @@
     v-lazy:background-image="src"
     v-bind="componentArgs"
     class="lazy-image"
-  />
+  >
+    <slot />
+  </component>
 </template>
 
 <script>

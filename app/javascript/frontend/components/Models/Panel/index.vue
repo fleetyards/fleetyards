@@ -60,15 +60,19 @@
           />
         </h2>
       </div>
-      <div class="panel-image text-center">
-        <router-link
+      <div
+        :class="{
+          'no-details': !details,
+        }"
+        class="panel-image text-center"
+      >
+        <LazyImage
           :to="{ name: 'model', params: { slug: model.slug }}"
           :aria-label="model.name"
+          :src="model.storeImageMedium"
+          :alt="model.name"
+          class="image"
         >
-          <LazyImage
-            :src="model.storeImageMedium"
-            :alt="model.name"
-          />
           <div
             v-if="isMyShip"
             v-show="vehicle.purchased"
@@ -84,7 +88,7 @@
           >
             <i class="fal fa-dollar-sign" />
           </div>
-        </router-link>
+        </LazyImage>
         <div
           v-if="upgradable && onAddons && vehicle"
           v-tooltip="$t('labels.model.addons')"
@@ -103,25 +107,20 @@
           />
         </div>
       </div>
-      <div
-        :class="{
-          'no-details': !details,
-        }"
-        class="production-status"
-      >
-        <strong class="text-uppercase">
-          <template v-if="model.productionStatus">
-            {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
-          </template>
-          <template v-else>
-            {{ $t(`labels.not-available`) }}
-          </template>
-        </strong>
-      </div>
       <b-collapse
         :id="`details-${model.slug}-wrapper`"
         :visible="details"
       >
+        <div class="production-status">
+          <strong class="text-uppercase">
+            <template v-if="model.productionStatus">
+              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
+            </template>
+            <template v-else>
+              {{ $t(`labels.not-available`) }}
+            </template>
+          </strong>
+        </div>
         <ul class="list-group">
           <li class="list-group-item">
             <ModelTopMetrics :model="model" />
