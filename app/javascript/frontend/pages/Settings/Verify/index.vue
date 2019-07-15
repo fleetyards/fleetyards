@@ -2,7 +2,7 @@
   <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ $t('headlines.verify') }}</h1>
+        <h1>{{ $t('headlines.settings.verify') }}</h1>
       </div>
     </div>
     <div class="row">

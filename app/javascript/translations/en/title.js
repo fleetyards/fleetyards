@@ -26,9 +26,12 @@ export default {
     changes: 'Roadmap Changes',
     releases: 'Roadmap Releases',
   },
-  settings: 'Settings',
   verify: 'Verify your RSI Handle',
-  account: 'Account',
+  settings: {
+    index: 'Profile Settings',
+    account: 'Account',
+    hangar: 'Hangar Settings',
+  },
   compare: {
     models: 'Compare Ships',
   },

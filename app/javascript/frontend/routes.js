@@ -14,21 +14,21 @@ export const routes = [
   }, {
     path: '/impressum',
     name: 'impressum',
-    component: () => import(/* webpackChunkName: "frontend.page.impressum" */ 'frontend/pages/Impressum'),
+    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Impressum'),
     meta: {
       title: 'impressum',
     },
   }, {
     path: '/privacy-policy',
     name: 'privacy-policy',
-    component: () => import(/* webpackChunkName: "frontend.page.privacyPolicy" */ 'frontend/pages/PrivacyPolicy'),
+    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/PrivacyPolicy'),
     meta: {
       title: 'privacyPolicy',
     },
   }, {
     path: '/cookie-policy',
     name: 'cookie-policy',
-    component: () => import(/* webpackChunkName: "frontend.page.cookiePolicy" */ 'frontend/pages/CookiePolicy'),
+    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/CookiePolicy'),
     meta: {
       title: 'cookiePolicy',
     },
@@ -45,7 +45,7 @@ export const routes = [
   }, {
     path: '/compare/ships',
     name: 'compare-models',
-    component: () => import(/* webpackChunkName: "frontend.page.compare-ships" */ 'frontend/pages/Compare/Models'),
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Compare/Models'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -54,7 +54,7 @@ export const routes = [
   }, {
     path: '/ships/:slug',
     name: 'model',
-    component: () => import(/* webpackChunkName: "frontend.page.ship" */ 'frontend/pages/Models/Show'),
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -62,7 +62,7 @@ export const routes = [
   }, {
     path: '/ships/:slug/images',
     name: 'model-images',
-    component: () => import(/* webpackChunkName: "frontend.page.ship-images" */ 'frontend/pages/Models/Show/Images'),
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -70,7 +70,7 @@ export const routes = [
   }, {
     path: '/ships/:slug/videos',
     name: 'model-videos',
-    component: () => import(/* webpackChunkName: "frontend.page.ship-videos" */ 'frontend/pages/Models/Show/Videos'),
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
@@ -103,7 +103,7 @@ export const routes = [
   }, {
     path: '/hangar/:user',
     name: 'hangar-public',
-    component: () => import(/* webpackChunkName: "frontend.page.hangar-public" */ 'frontend/pages/Hangar/Public'),
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
     path: '/fleets',
     name: 'fleets',
@@ -116,7 +116,7 @@ export const routes = [
   }, {
     path: '/fleets/:sid',
     name: 'fleet',
-    component: () => import(/* webpackChunkName: "frontend.page.fleet" */ 'frontend/pages/Fleets/Show'),
+    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-2.jpg'),
@@ -132,7 +132,7 @@ export const routes = [
   }, {
     path: '/cargo',
     name: 'cargo',
-    component: () => import(/* webpackChunkName: "frontend.page.cargo" */ 'frontend/pages/Cargo'),
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Cargo'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -141,7 +141,7 @@ export const routes = [
   }, {
     path: '/commodities',
     name: 'commodities',
-    component: () => import(/* webpackChunkName: "frontend.page.commodities" */ 'frontend/pages/Commodities'),
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Commodities'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -150,7 +150,7 @@ export const routes = [
   }, {
     path: '/commodities/:id',
     name: 'commoditiesSaved',
-    component: () => import(/* webpackChunkName: "frontend.page.commodities" */ 'frontend/pages/Commodities'),
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Commodities'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
@@ -165,14 +165,14 @@ export const routes = [
   }, {
     path: '/roadmap/changes',
     name: 'roadmap-changes',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap-changes" */ 'frontend/pages/Roadmap/Changes'),
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
     meta: {
       title: 'roadmap.changes',
     },
   }, {
     path: '/roadmap/releases',
     name: 'roadmap-releases',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap-releases" */ 'frontend/pages/Roadmap/Releases'),
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Releases'),
     meta: {
       title: 'roadmap.releases',
     },
@@ -204,21 +204,21 @@ export const routes = [
   }, {
     path: '/password/request',
     name: 'request-password',
-    component: () => import(/* webpackChunkName: "frontend.page.request-password" */ 'frontend/pages/RequestPassword'),
+    component: () => import(/* webpackChunkName: "frontend.page.password" */ 'frontend/pages/RequestPassword'),
     meta: {
       title: 'requestPassword',
     },
   }, {
     path: '/password/update/:token',
     name: 'change-password',
-    component: () => import(/* webpackChunkName: "frontend.page.change-password" */ 'frontend/pages/ChangePassword'),
+    component: () => import(/* webpackChunkName: "frontend.page.password" */ 'frontend/pages/ChangePassword'),
     meta: {
       title: 'changePassword',
     },
   }, {
     path: '/confirm/:token',
     name: 'confirm',
-    component: () => import(/* webpackChunkName: "frontend.page.confirm" */ 'frontend/pages/Confirm'),
+    component: () => import(/* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Confirm'),
   }, {
     path: '/404',
     name: '404',

@@ -2,7 +2,7 @@
   <section>
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ $t('headlines.account') }}</h1>
+        <h1>{{ $t('headlines.settings.account') }}</h1>
       </div>
     </div>
     <div class="row">

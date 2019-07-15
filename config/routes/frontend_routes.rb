@@ -49,6 +49,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
   get 'settings/verify' => 'base#index'
+  get 'settings/hangar' => 'base#index'
 
   get 'password/request' => 'base#index'
   get 'password/update/:token' => 'base#password'

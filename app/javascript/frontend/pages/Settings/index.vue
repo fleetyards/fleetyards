@@ -7,13 +7,19 @@
             :to="{ name: 'settings-profile' }"
             tag="li"
           >
-            <a>{{ $t('nav.profile') }}</a>
+            <a>{{ $t('nav.settings.profile') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'settings-account' }"
             tag="li"
           >
-            <a>{{ $t('nav.account') }}</a>
+            <a>{{ $t('nav.settings.account') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'settings-hangar' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.settings.hangar') }}</a>
           </router-link>
           <li
             v-if="rsiVerificationDisabled"

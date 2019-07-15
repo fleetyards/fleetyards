@@ -113,7 +113,7 @@
                 :to="{ name: 'settings' }"
                 tag="li"
               >
-                <a>{{ $t('nav.settings') }}</a>
+                <a>{{ $t('nav.settings.index') }}</a>
               </router-link>
               <li v-if="currentUser.rsiHandle">
                 <a

@@ -10,7 +10,6 @@ export default {
   privacyPolicy: 'Privacy policy',
   cookiePolicy: 'Cookie policy',
   impressum: 'Impressum',
-  settings: 'Settings',
   admin: 'Admin',
   fleets: 'Fleets',
   rsiProfile: 'RSI Profile',
@@ -18,9 +17,13 @@ export default {
   api: 'API Docs',
   stats: 'Stats',
   roadmap: 'Ship-Roadmap',
-  profile: 'Profile',
-  account: 'Account',
   rsiVerification: 'RSI Verification',
+  settings: {
+    index: 'Settings',
+    profile: 'Profile',
+    account: 'Account',
+    hangar: 'Hangar',
+  },
   stations: {
     index: 'Stations',
     overview: 'Overview',

@@ -13,6 +13,10 @@ export default () => ({
       return state.ships
     },
 
+    empty(state) {
+      return state.ships.length === 0
+    },
+
     detailsVisible(state) {
       return state.detailsVisible
     },

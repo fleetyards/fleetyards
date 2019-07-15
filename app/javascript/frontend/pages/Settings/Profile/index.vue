@@ -2,7 +2,7 @@
   <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-12">
-        <h1>{{ $t('headlines.settings') }}</h1>
+        <h1>{{ $t('headlines.settings.profile') }}</h1>
       </div>
     </div>
     <div class="row">
@@ -64,16 +64,6 @@
             />
           </span>
         </div>
-        <Checkbox
-          id="saleNotify"
-          v-model="form.saleNotify"
-          :label="$t('labels.user.saleNotify')"
-        />
-        <Checkbox
-          id="publicHangar"
-          v-model="form.publicHangar"
-          :label="$t('labels.user.publicHangar')"
-        />
         <div
           :class="{'has-error has-feedback': errors.has('rsiHandle')}"
           class="form-group"
@@ -183,7 +173,6 @@
 import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import Checkbox from 'frontend/components/Form/Checkbox'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 
@@ -192,7 +181,6 @@ export default {
 
   components: {
     Btn,
-    Checkbox,
     Loader,
     Panel,
   },
@@ -207,8 +195,6 @@ export default {
         rsiHandle: null,
         username: null,
         email: null,
-        saleNotify: false,
-        publicHangar: true,
       },
       loading: false,
       rsiCitizen: null,
@@ -256,8 +242,6 @@ export default {
       this.form.rsiHandle = this.currentUser.rsiHandle
       this.form.username = this.currentUser.username
       this.form.email = this.currentUser.email
-      this.form.saleNotify = !!this.currentUser.saleNotify
-      this.form.publicHangar = !!this.currentUser.publicHangar
     },
 
     async submit() {

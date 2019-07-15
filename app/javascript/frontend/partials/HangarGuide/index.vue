@@ -1,8 +1,13 @@
 <template>
   <div class="hangar-guide">
     <h1>
-      {{ $t('headlines.hangarGuide') }}
-      <small>{{ $t('sublines.hangarGuide.headline') }}</small>
+      <template v-if="empty">
+        {{ $t('headlines.hangarGuideEmpty') }}
+        <small>{{ $t('sublines.hangarGuide.headline') }}</small>
+      </template>
+      <template v-else>
+        {{ $t('headlines.hangarGuide') }}
+      </template>
     </h1>
     <h2>{{ $t('sublines.hangarGuide.add') }}</h2>
     <div class="hangar-guide-topic">
@@ -71,7 +76,15 @@
 </template>
 
 <script>
-export default {}
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters('hangar', [
+      'empty',
+    ]),
+  },
+}
 </script>
 
 <style lang="scss" scoped>

@@ -18,9 +18,6 @@ export default {
   cookie: 'Cookie policy',
   requestPassword: 'Request Password',
   changePassword: 'Change Password',
-  settings: 'Profile Settings',
-  verify: 'Verify your RSI Handle',
-  account: 'Account',
   settingsRsiVerification: 'RSI Verification',
   filterModels: 'Filter Ships',
   filterVehicles: 'Filter Hangar',
@@ -30,12 +27,18 @@ export default {
   fleetMembers: 'Setup Members',
   newFleet: 'Setup Your Fleet',
   empty: "There's nothing to see here...",
+  verify: 'Verify your RSI Handle',
   hangarGroup: {
     create: 'Create Group',
     edit: 'Edit Group',
   },
   compare: {
     models: 'Compare Ships',
+  },
+  settings: {
+    account: 'Account',
+    profile: 'Profile Settings',
+    hangar: 'Hangar Settings',
   },
   roadmap: 'Ship-Roadmap',
   cargo: 'Cargo',
@@ -50,6 +53,7 @@ export default {
   shop: '%{shop} on %{station}',
   commodities: 'Commodities',
   rsiVerification: 'Verify your RSI-Account',
-  hangarGuide: 'Not much to see here?',
+  hangarGuideEmpty: 'Not much to see here?',
+  hangarGuide: 'Hangar Guide',
   support: 'Support FleetYards.net',
 }
