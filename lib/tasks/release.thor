@@ -14,9 +14,9 @@ class Release < Thor
   option :push, type: :boolean, default: false, aliases: :p
   def new(name = nil)
     if name.nil?
-      run('yarn run standard-version --skip.commit=true --skip.tag=true')
+      run('yarn run standard-version')
     else
-      run('yarn run standard-version --skip.commit=true --skip.tag=true --release-as major')
+      run('yarn run standard-version --release-as major')
     end
 
     bump_version(name)
