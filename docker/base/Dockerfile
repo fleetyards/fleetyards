@@ -13,9 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /tmp/* /var/lib/apt/lists/*
 
+RUN npm install -g npm@6.9.0
+
 ## install bundler
 RUN gem update --system
-RUN gem install bundler -v 1.17.3
 RUN gem install bundler -v 2.0.1
 
 RUN mkdir /app
