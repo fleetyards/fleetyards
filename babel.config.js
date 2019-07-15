@@ -29,9 +29,9 @@ module.exports = function(api) {
         require.resolve('@babel/preset-env'),
         {
           forceAllTransforms: true,
-          useBuiltIns: 'entry',
+          useBuiltIns: 'usage',
           modules: false,
-          corejs: "2",
+          corejs: "3",
           exclude: ['transform-typeof-symbol']
         }
       ]
