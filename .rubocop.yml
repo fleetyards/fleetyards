@@ -20,14 +20,8 @@ Rails:
 Style/Documentation:
   Enabled: false # for now
 
-Style/Lambda:
-  Enabled: false
-
-Style/RaiseArgs:
-  Enabled: false
-
-Naming/FileName:
-  Enabled: false
+# Style/Lambda:
+#   Enabled: false
 
 # User.all.map do |user|
 #   [user.name, user.children.map(&:names)]
