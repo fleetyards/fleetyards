@@ -1,5 +1,4 @@
 import 'stylesheets/admin'
-import '@babel/polyfill'
 import Vue from 'vue'
 import App from 'admin/App'
 import ApiClient from 'admin/lib/ApiClient'

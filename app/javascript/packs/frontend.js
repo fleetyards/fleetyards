@@ -1,5 +1,4 @@
 import 'stylesheets/frontend'
-import '@babel/polyfill'
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
 import VTooltip from 'v-tooltip'
