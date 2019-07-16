@@ -55,13 +55,13 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'password/update/:token' => 'base#password'
   get 'confirm/:token' => 'base#confirm'
 
-  get 'embed' => 'base#embed'
-  get 'embed-v2' => 'base#embed_v2'
-  get 'embed-test' => 'base#embed_test'
-  get 'embed-v2-test' => 'base#embed_v2_test'
+  get 'embed' => 'embed#embed'
+  get 'embed-v2' => 'embed#embed_v2'
+  get 'embed-test' => 'embed#embed_test'
+  get 'embed-v2-test' => 'embed#embed_v2_test'
 
-  get 'precache-manifest.:id' => 'base#precache_manifest'
-  get 'service-worker' => 'base#service_worker'
+  get 'precache-manifest.:id' => 'service_worker#precache_manifest'
+  get 'service-worker' => 'service_worker#service_worker'
 
   match '404' => 'base#not_found', via: :all
 

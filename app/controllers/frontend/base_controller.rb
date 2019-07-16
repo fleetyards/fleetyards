@@ -4,7 +4,7 @@ require 'image_processing/mini_magick'
 
 module Frontend
   class BaseController < ApplicationController
-    protect_from_forgery except: %i[service_worker embed embed_v2 precache_manifest]
+    include PrefetchHelper
 
     def index
       route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
@@ -53,7 +53,7 @@ module Frontend
         @description = @model.description
         @og_type = 'article'
         @og_image = @model.store_image.url
-        add_to_data_prefill(:model, @model.to_json)
+        add_to_prefetch(:model, @model.to_json)
       end
       render 'frontend/index'
     end
@@ -151,63 +151,6 @@ module Frontend
           redirect_to '/404'
         end
       end
-    end
-
-    def embed
-      respond_to do |format|
-        format.js do
-          render 'frontend/embed', layout: false
-        end
-        format.all do
-          redirect_to '/404'
-        end
-      end
-    end
-
-    def embed_test
-      render 'frontend/embed_test', layout: 'embed_test'
-    end
-
-    def embed_v2
-      respond_to do |format|
-        format.js do
-          render 'frontend/embed_v2', layout: false
-        end
-        format.all do
-          redirect_to '/404'
-        end
-      end
-    end
-
-    def embed_v2_test
-      render 'frontend/embed_test', layout: 'embed_v2_test'
-    end
-
-    def precache_manifest
-      respond_to do |format|
-        format.js do
-          render 'frontend/precache_manifest', layout: false
-        end
-        format.all do
-          redirect_to '/404'
-        end
-      end
-    end
-
-    def service_worker
-      respond_to do |format|
-        format.js do
-          render 'frontend/service_worker', layout: false
-        end
-        format.all do
-          redirect_to '/404'
-        end
-      end
-    end
-
-    private def add_to_data_prefill(key, data)
-      @data_prefill ||= {}
-      @data_prefill[key] = data
     end
 
     private def username(name)
