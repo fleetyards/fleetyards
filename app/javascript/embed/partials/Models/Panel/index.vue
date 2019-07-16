@@ -18,13 +18,23 @@
         </h2>
       </div>
       <div class="panel-image text-center">
-        <a
-          v-lazy:background-image="model.storeImage"
+        <LazyImage
           :href="url"
           target="_blank"
           rel="noopener"
-          class="lazy"
-        />
+          :aria-label="model.name"
+          :src="model.storeImageMedium"
+          :alt="model.name"
+          class="image"
+        >
+          <div
+            v-show="model.onSale"
+            v-tooltip="$t('labels.model.onSale')"
+            class="on-sale"
+          >
+            <i class="fal fa-dollar-sign" />
+          </div>
+        </LazyImage>
       </div>
       <div
         v-if="details"
@@ -58,31 +68,38 @@
 import Panel from 'frontend/components/Panel'
 import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
+import LazyImage from 'frontend/components/LazyImage'
 
 export default {
   components: {
     Panel,
     ModelTopMetrics,
     ModelBaseMetrics,
+    LazyImage,
   },
+
   props: {
     model: {
       type: Object,
       required: true,
     },
+
     details: {
       type: Boolean,
       default: false,
     },
+
     count: {
       type: Number,
       default: null,
     },
   },
+
   computed: {
     url() {
       return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
     },
+
     countLabel() {
       if (!this.count) {
         return ''
@@ -94,5 +111,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>
