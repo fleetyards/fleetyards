@@ -84,8 +84,7 @@ export async function get(path, params = {}, silent = false) {
         }
         cancelations[path] = c
       }),
-      silent,
-    }), params)
+    }), params, silent)
   } catch (error) {
     return handleError(error, silent)
   }
@@ -124,8 +123,21 @@ export async function destroy(path, data = {}, silent = false) {
   }
 }
 
+export async function download(path, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
+  try {
+    return handleResponse(await client.get(path, {
+      responseType: 'blob',
+    }), {}, silent)
+  } catch (error) {
+    return handleError(error, silent)
+  }
+}
+
 const apiClient = {
-  get, post, put, destroy, client,
+  get, post, put, destroy, download, client,
 }
 
 export { apiClient }

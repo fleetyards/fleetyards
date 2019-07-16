@@ -32,7 +32,7 @@
             v-tooltip="$t('labels.model.onSale')"
             class="on-sale"
           >
-            <i class="fal fa-dollar-sign" />
+            <i class="fal fa-dollar-sign" />$
           </div>
         </LazyImage>
       </div>

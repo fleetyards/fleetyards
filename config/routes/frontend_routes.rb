@@ -12,7 +12,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'fleets/:sid' => 'base#fleet'
 
   get 'hangar' => 'base#index'
-  get 'hangar/:username' => 'base#hangar'
+  get 'hangar/:username' => 'hangar#index'
 
   get 'compare/ships' => 'base#compare_models'
 
@@ -55,13 +55,13 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'password/update/:token' => 'base#password'
   get 'confirm/:token' => 'base#confirm'
 
-  get 'embed' => 'embed#embed'
-  get 'embed-v2' => 'embed#embed_v2'
-  get 'embed-test' => 'embed#embed_test'
-  get 'embed-v2-test' => 'embed#embed_v2_test'
+  get 'embed' => 'embed#index'
+  get 'embed-v2' => 'embed#index_v2'
+  get 'embed-test' => 'embed#test'
+  get 'embed-v2-test' => 'embed#test_v2'
 
+  get 'service-worker' => 'service_worker#index'
   get 'precache-manifest.:id' => 'service_worker#precache_manifest'
-  get 'service-worker' => 'service_worker#service_worker'
 
   match '404' => 'base#not_found', via: :all
 

@@ -32,6 +32,19 @@ module Api
                       .per(per_page(Vehicle))
       end
 
+      def export
+        authorize! :index, :api_hangar
+
+        respond_to do |format|
+          format.csv do
+            send_data current_user.vehicles.to_csv, filename: "fleetyards-#{current_user.username}-hangar-#{Time.zone.now.iso8601}.csv"
+          end
+          format.all do
+            render status: :not_found
+          end
+        end
+      end
+
       def fleetchart
         authorize! :index, :api_hangar
         @q = current_user.vehicles

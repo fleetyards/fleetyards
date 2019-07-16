@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 class Vehicle < ApplicationRecord
   paginates_per 30
 
@@ -34,6 +36,8 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
+  delegate :name, :slug, to: :model, prefix: true
+
   def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_json)
   end
@@ -44,6 +48,18 @@ class Vehicle < ApplicationRecord
 
   def self.public
     purchased.where(purchased: true, public: true)
+  end
+
+  def self.to_csv
+    attributes = %w[model_name model_slug name purchased sale_notify flagship name_visible public]
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.find_each do |vehicle|
+        csv << attributes.map { |attr| vehicle.send(attr) }
+      end
+    end
   end
 
   def set_flagship

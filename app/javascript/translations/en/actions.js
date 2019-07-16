@@ -16,6 +16,7 @@ export default {
   open: 'Open',
   copy: 'Copy',
   more: 'More...',
+  export: 'Export',
   here: 'here',
   backToTop: 'Back to Top',
   cancel: 'Cancel',
