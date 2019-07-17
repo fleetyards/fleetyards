@@ -31,6 +31,12 @@
             >
               {{ $t('labels.3dView') }}
             </Btn>
+            <Btn
+              v-tooltip="$t('actions.export')"
+              @click.native="exportCsv"
+            >
+              <i class="fal fa-download" />
+            </Btn>
             <Btn :href="publicUrl">
               {{ $t('labels.publicUrl') }}
             </Btn>
@@ -285,6 +291,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
+import { format } from 'date-fns'
 
 export default {
   name: 'Hangar',
@@ -539,6 +546,16 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 300)
+    },
+
+    async exportCsv() {
+      const response = await this.$api.download('vehicles/export.csv')
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([response.data]))
+      link.setAttribute('download', `fleetyards-${this.currentUser.username}-hangar-${format(new Date(), 'YYYY-MM-DD-HH-mm')}.csv`)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     },
   },
 }

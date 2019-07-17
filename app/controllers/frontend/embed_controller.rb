@@ -2,9 +2,9 @@
 
 module Frontend
   class EmbedController < ApplicationController
-    protect_from_forgery except: %i[embed embed_v2]
+    protect_from_forgery except: %i[index index_v2]
 
-    def embed
+    def index
       respond_to do |format|
         format.js do
           render 'frontend/embed', layout: false
@@ -15,11 +15,11 @@ module Frontend
       end
     end
 
-    def embed_test
+    def test
       render 'frontend/embed_test', layout: 'embed_test'
     end
 
-    def embed_v2
+    def index_v2
       respond_to do |format|
         format.js do
           render 'frontend/embed_v2', layout: false
@@ -30,19 +30,8 @@ module Frontend
       end
     end
 
-    def embed_v2_test
+    def test_v2
       render 'frontend/embed_test', layout: 'embed_v2_test'
-    end
-
-    def precache_manifest
-      respond_to do |format|
-        format.js do
-          render 'frontend/precache_manifest', layout: false
-        end
-        format.all do
-          redirect_to '/404'
-        end
-      end
     end
   end
 end

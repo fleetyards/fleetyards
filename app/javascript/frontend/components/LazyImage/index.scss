@@ -6,8 +6,7 @@
   background-repeat: no-repeat;
   background-position: center;
 
-  &[lazy='loading']::before,
-  &.loading::before {
+  &[lazy='loading']::before {
     content: '';
     background-image: url('~images/loading.svg');
     background-size: 100%;
@@ -21,7 +20,7 @@
     height: 50px;
   }
 
-  // &[lazy='error'] {
-  //   background-image: url('~images/store_image.jpg') !important;
-  // }
+  &[lazy='error'] {
+    background-image: url('~images/store_image.jpg') !important;
+  }
 }
