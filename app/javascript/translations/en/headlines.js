@@ -8,8 +8,11 @@ export default {
   error: 'Navigation Error',
   comments: 'Comments',
   login: 'Login',
-  hangar: 'My Hangar',
-  hangarPublic: '%{user} Hangar',
+  hangar: {
+    index: 'My Hangar',
+    public: '%{user} Hangar',
+    import: 'Import',
+  },
   myVehicle: 'My %{vehicle}',
   newVehicles: 'Add Ships',
   myVehicleAddons: 'Add Modules / Upgrades for %{vehicle}',

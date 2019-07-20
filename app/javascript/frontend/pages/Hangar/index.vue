@@ -31,12 +31,12 @@
             >
               {{ $t('labels.3dView') }}
             </Btn>
-            <Btn
+            <!-- <Btn
               v-tooltip="$t('actions.export')"
               @click.native="exportCsv"
             >
               <i class="fal fa-download" />
-            </Btn>
+            </Btn> -->
             <Btn :href="publicUrl">
               {{ $t('labels.publicUrl') }}
             </Btn>
@@ -418,7 +418,7 @@ export default {
     this.fetch()
     this.setupUpdates()
     this.$comlink.$on('vehicleSave', this.fetch)
-    this.$comlink.$on('vehicleDelete', this.fetch)
+    this.$comlink.$on('vehicleDelete', this.removeVehicle)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
     this.$comlink.$on('hangarGroupSave', this.fetchGroups)
 
@@ -500,6 +500,13 @@ export default {
       }
       this.setPages(response.meta)
       this.resetLoading()
+    },
+
+    removeVehicle(vehicle) {
+      const index = this.vehicles.findIndex(item => item.id === vehicle.id)
+      if (index >= 0) {
+        this.vehicles.splice(index, 1)
+      }
     },
 
     async fetchCount() {

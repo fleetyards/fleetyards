@@ -40,7 +40,7 @@ module Api
         @q = index_scope
 
         @models = @q.result
-                    .sort_by { |model| [-model.display_length, model.name] }
+                    .sort_by { |model| [-model.length, model.name] }
       end
 
       def unscheduled

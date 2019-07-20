@@ -98,8 +98,18 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
       quickSearch: 'nameCont',
-      title: 'hangar',
+      title: 'hangar.index',
     },
+  // }, {
+  //   path: '/hangar/import',
+  //   name: 'hangar-import',
+  //   component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Import'),
+  //   meta: {
+  //     needsAuthentication: true,
+  //     // eslint-disable-next-line global-require
+  //     backgroundImage: require('images/bg-5.jpg'),
+  //     title: 'hangar.import',
+  //   },
   }, {
     path: '/hangar/:user',
     name: 'hangar-public',

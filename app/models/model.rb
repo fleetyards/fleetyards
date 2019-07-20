@@ -135,17 +135,6 @@ class Model < ApplicationRecord
     includes(:docks).where.not(docks: { model_id: nil })
   end
 
-  %i[height beam length mass cargo min_crew price max_crew scm_speed afterburner_speed ground_speed afterburner_ground_speed].each do |method_name|
-    define_method "display_#{method_name}" do
-      display_value = try("fallback_#{method_name}")
-      if display_value.present? && !display_value.zero?
-        display_value
-      else
-        try(method_name)
-      end
-    end
-  end
-
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
@@ -187,17 +176,11 @@ class Model < ApplicationRecord
     images.enabled.background.order(Arel.sql('RANDOM()')).first
   end
 
-  def human_display_cargo
-    return if display_cargo.blank? || display_cargo.zero?
-
-    number_with_precision(display_cargo, precision: 2, strip_insignificant_zeros: true)
-  end
-
   def cargo_label
-    return if display_cargo.blank? || display_cargo.zero?
+    return if cargo.blank? || cargo.zero?
 
     human_cargo = number_with_precision(
-      display_cargo,
+      cargo,
       precision: 2,
       strip_insignificant_zeros: true
     )

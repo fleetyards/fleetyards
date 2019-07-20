@@ -64,6 +64,18 @@
     background-color: $gray;
   }
 
+  .id {
+    width: 350px;
+  }
+
+  .name {
+    width: 300px;
+  }
+
+  .manufacturer {
+    flex-grow: 1;
+  }
+
   .store-image {
     width: 178px;
     max-width: 100%;
@@ -147,6 +159,12 @@
 
   .rent-price {
     min-width: 170px;
+  }
+}
+
+.flex-list > .flex-list-item > .flex-list-row {
+  .name {
+    min-height: 100px;
   }
 }
 

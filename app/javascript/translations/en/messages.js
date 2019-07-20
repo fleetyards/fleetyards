@@ -39,6 +39,10 @@ export default {
       success: 'Your new <b>%{model}</b> will be delivered to your <a href="/hangar">Hangar</a>',
     },
   },
+  hangarImport: {
+    wrongFileType: 'Only JSON and CSV is supported.',
+    wrongStructure: 'The Import needs to contain a list of ships with at least a name or model field/col.',
+  },
   fleet: {
     create: {
       failure: 'We could not create your Fleet.',

@@ -142,12 +142,6 @@ module Frontend
       end
     end
 
-    private def username(name)
-      return name if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
-
-      "#{name}'s"
-    end
-
     private def compare_image(models)
       filename_base = models.map(&:slug).join('-')
       filename = "#{filename_base}.jpg"

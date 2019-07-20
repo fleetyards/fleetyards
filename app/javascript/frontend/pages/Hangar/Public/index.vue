@@ -7,7 +7,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <h1>{{ $t('headlines.hangarPublic', { user: usernamePlural }) }}</h1>
+            <h1>{{ $t('headlines.hangar.public', { user: usernamePlural }) }}</h1>
           </div>
         </div>
         <div class="row">
@@ -175,7 +175,7 @@ export default {
     ]),
 
     metaTitle() {
-      return this.$t('title.hangarPublic', { user: this.usernamePlural })
+      return this.$t('title.hangar.public', { user: this.usernamePlural })
     },
 
     username() {

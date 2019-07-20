@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_01_120918) do
+ActiveRecord::Schema.define(version: 2019_07_20_211229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -384,6 +384,22 @@ ActiveRecord::Schema.define(version: 2019_07_01_120918) do
     t.decimal "rsi_cargo", precision: 15, scale: 2
     t.integer "dock_size"
     t.boolean "ground", default: false
+    t.integer "rsi_max_crew"
+    t.integer "rsi_min_crew"
+    t.decimal "rsi_scm_speed", precision: 15, scale: 2
+    t.decimal "rsi_afterburner_speed", precision: 15, scale: 2
+    t.decimal "rsi_pitch_max", precision: 15, scale: 2
+    t.decimal "rsi_yaw_max", precision: 15, scale: 2
+    t.decimal "rsi_roll_max", precision: 15, scale: 2
+    t.decimal "rsi_xaxis_acceleration", precision: 15, scale: 2
+    t.decimal "rsi_yaxis_acceleration", precision: 15, scale: 2
+    t.decimal "rsi_zaxis_acceleration", precision: 15, scale: 2
+    t.text "rsi_description"
+    t.string "rsi_size"
+    t.string "rsi_focus"
+    t.string "rsi_classification"
+    t.string "rsi_store_url"
+    t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

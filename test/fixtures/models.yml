@@ -4,12 +4,12 @@ andromeda:
   classification: multi_role
   manufacturer: rsi
   length: 61.2
-  fallback_beam: 10.2
-  fallback_height: 10.2
-  fallback_mass: 1000.02
-  fallback_cargo: 90
-  fallback_min_crew: 3
-  fallback_max_crew: 5
+  beam: 10.2
+  height: 10.2
+  mass: 1000.02
+  cargo: 90
+  min_crew: 3
+  max_crew: 5
   fallback_pledge_price: 225
   hidden: false
 
@@ -20,8 +20,8 @@ explorer:
   manufacturer: origin
   classification: explorer
   length: 20
-  fallback_cargo: 40
-  fallback_min_crew: 2
-  fallback_max_crew: 5
+  cargo: 40
+  min_crew: 2
+  max_crew: 5
   fallback_pledge_price: 400
   hidden: false

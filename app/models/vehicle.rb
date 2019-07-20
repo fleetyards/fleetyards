@@ -51,15 +51,29 @@ class Vehicle < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w[model_name model_slug name purchased sale_notify flagship name_visible public]
+    attributes = [
+      { key: 'name', value: 'name' },
+      { key: 'model', value: 'model_name' },
+      { key: 'modelSlug', value: 'model_slug' },
+      { key: 'manufacturer', value: 'model_manufacturer' },
+      { key: 'purchased', value: 'purchased' },
+      { key: 'saleNotify', value: 'sale_notify' },
+      { key: 'flagship', value: 'flagship' },
+      { key: 'nameVisible', value: 'name_visible' },
+      { key: 'public', value: 'public' }
+    ]
 
     CSV.generate(headers: true) do |csv|
-      csv << attributes
+      csv << attributes.map { |item| item[:key] }
 
       all.find_each do |vehicle|
-        csv << attributes.map { |attr| vehicle.send(attr) }
+        csv << attributes.map { |attr| vehicle.send(attr[:value]) }
       end
     end
+  end
+
+  def model_manufacturer
+    model.manufacturer.name
   end
 
   def set_flagship

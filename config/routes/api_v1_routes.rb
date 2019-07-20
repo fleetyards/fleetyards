@@ -86,6 +86,7 @@ v1_api_routes = lambda do
       get :fleetchart
       get :export
       get 'hangar-items' => 'vehicles#hangar_items'
+      get :hangar
       get ':username' => 'vehicles#public', as: :public
       get ':username/count' => 'vehicles#public_count', as: :public_count
       get ':username/fleetchart' => 'vehicles#public_fleetchart', as: :public_fleetchart

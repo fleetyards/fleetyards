@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Frontend
-  class HangarWorker < ApplicationController
+  class HangarController < ApplicationController
     def index
       @user = User.find_by(['lower(username) = :value', { value: params[:username].downcase }])
       if @user.present?
@@ -11,6 +11,12 @@ module Frontend
         @og_image = vehicle.model.store_image.url if vehicle.present?
       end
       render 'frontend/index'
+    end
+
+    private def username(name)
+      return name if name.ends_with?('s') || name.ends_with?('x') || name.ends_with?('z')
+
+      "#{name}'s"
     end
   end
 end

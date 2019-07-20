@@ -53,7 +53,7 @@ module Api
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
+                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       def count
@@ -79,9 +79,9 @@ module Api
           end,
           metrics: {
             total_money: models.map(&:fallback_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
-            total_min_crew: models.map(&:display_min_crew).sum(&:to_i),
-            total_max_crew: models.map(&:display_max_crew).sum(&:to_i),
-            total_cargo: models.map(&:display_cargo).sum(&:to_i)
+            total_min_crew: models.map(&:min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:max_crew).sum(&:to_i),
+            total_cargo: models.map(&:cargo).sum(&:to_i)
           }
         )
       end
@@ -115,7 +115,7 @@ module Api
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by { |vehicle| [-vehicle.model.display_length, vehicle.model.name] }
+                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       def public_count
@@ -139,6 +139,11 @@ module Api
         authorize! :index, :api_hangar
         model_ids = current_user.vehicles.pluck(:model_id)
         @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
+      end
+
+      def hangar
+        authorize! :index, :api_hangar
+        @vehicles = current_user.vehicles
       end
 
       def create

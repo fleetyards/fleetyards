@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# [...document.querySelectorAll('picture.c-slide__media img')].map(item => item.getAttribute('src')).forEach((item) => window.open(item, '_blank'))
+
 require 'rsi_base_loader'
 
 class RsiModelsLoader < RsiBaseLoader
@@ -113,37 +115,40 @@ class RsiModelsLoader < RsiBaseLoader
       updates[:production_note] = data['production_note']
     end
 
-    updates[:length] = data['length'].to_f if (model_updated(model, data) && data['length'].to_f != model.rsi_length) || model.length.blank?
-    updates[:beam] = data['beam'].to_f if (model_updated(model, data) && data['beam'].to_f != model.rsi_beam) || model.beam.blank?
-    updates[:height] = data['height'].to_f if (model_updated(model, data) && data['height'].to_f != model.rsi_height) || model.height.blank?
-    updates[:cargo] = nil_or_float(data['cargocapacity']) if (model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo) || model.cargo.blank?
+    %w[length beam height mass].each do |attr|
+      updates["rsi_#{attr}"] = data[attr].to_f
+      updates[attr.to_sym] = data[attr].to_f if (model_updated(model, data) && data[attr].to_f != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+    end
+
+    updates[:rsi_description] = data['description']
+    updates[:description] = data['description'] if (model_updated(model, data) && data['description'] != model.rsi_description) || model.description.blank?
+
+    updates[:rsi_cargo] = nil_or_float(data['cargocapacity'])
+    updates[:cargo] = nil_or_float(data['cargocapacity']) if (model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
+
+    %w[max_crew min_crew scm_speed afterburner_speed pitch_max yaw_max roll_max xaxis_acceleration yaxis_acceleration zaxis_acceleration].each do |attr|
+      updates["rsi_#{attr}"] = nil_or_float(data[attr])
+      updates[attr.to_sym] = nil_or_float(data[attr]) if (model_updated(model, data) && nil_or_float(data[attr]) != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+    end
+
+    updates[:ground] = true if data['type'] == 'ground' && model_updated(model, data) && data['type'] != model.classification
+
+    %w[size focus].each do |attr|
+      updates["rsi_#{attr}"] = data[attr]
+      updates[attr] = data[attr] if (model_updated(model, data) && data[attr] != model.send("rsi_#{attr}")) || model.send("rsi_#{attr}").blank?
+    end
+
+    updates[:rsi_classification] = data['type']
+    updates[:classification] = data['type'] if (model_updated(model, data) && data['type'] != model.rsi_classification) || model.classification.blank?
+
+    updates[:rsi_store_url] = data['url']
+    updates[:store_url] = data['url'] if (model_updated(model, data) && data['url'] != model.rsi_store_url) || model.store_url.blank?
 
     model.update(
       updates.merge(
         name: strip_name(data['name']),
         rsi_chassis_id: data['chassis_id'],
         rsi_name: data['name'],
-        rsi_length: data['length'].to_f,
-        rsi_beam: data['beam'].to_f,
-        rsi_height: data['height'].to_f,
-        rsi_cargo: nil_or_float(data['cargocapacity']),
-        description: data['description'],
-        ground: (true if data['type'] == 'ground'),
-        mass: data['mass'].to_f,
-        size: data['size'],
-        max_crew: nil_or_int(data['max_crew']),
-        min_crew: nil_or_int(data['min_crew']),
-        scm_speed: nil_or_float(data['scm_speed']),
-        afterburner_speed: nil_or_float(data['afterburner_speed']),
-        pitch_max: nil_or_float(data['pitch_max']),
-        yaw_max: nil_or_float(data['yaw_max']),
-        roll_max: nil_or_float(data['roll_max']),
-        xaxis_acceleration: nil_or_float(data['xaxis_acceleration']),
-        yaxis_acceleration: nil_or_float(data['yaxis_acceleration']),
-        zaxis_acceleration: nil_or_float(data['zaxis_acceleration']),
-        classification: data['type'],
-        focus: data['focus'],
-        store_url: data['url'],
         last_updated_at: new_time_modified(data)
       )
     )
