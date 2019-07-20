@@ -103,7 +103,8 @@ export const routes = [
   // }, {
   //   path: '/hangar/import',
   //   name: 'hangar-import',
-  //   component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Import'),
+  //   component: () =>
+  //     import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Import'),
   //   meta: {
   //     needsAuthentication: true,
   //     // eslint-disable-next-line global-require
