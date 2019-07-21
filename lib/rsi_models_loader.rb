@@ -10,7 +10,7 @@ class RsiModelsLoader < RsiBaseLoader
   def initialize(options = {})
     super
     @json_file_path = 'public/models.json'
-    @vat_percent = options[:vat_percent] || 23
+    @vat_percent = options[:vat_percent] || 19
   end
 
   def all
