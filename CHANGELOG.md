@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.1](https://github.com/fleetyards/app/compare/v3.4.0...v3.4.1) (2019-07-21)
+
+
+### Bug Fixes
+
+* **models:** update last_updated_at ([5aa133b](https://github.com/fleetyards/app/commit/5aa133b))
+
+
+### Refactorings
+
+* **models:** remove fallback fields and update admin form ([54965c2](https://github.com/fleetyards/app/commit/54965c2))
+
+
+
 ## [3.4.0](https://github.com/fleetyards/app/compare/v3.3.1...v3.4.0) (2019-07-20)
 
 
