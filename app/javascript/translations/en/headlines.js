@@ -10,6 +10,7 @@ export default {
   login: 'Login',
   hangar: {
     index: 'My Hangar',
+    stats: 'My Hangar Stats',
     public: '%{user} Hangar',
     import: 'Import',
   },

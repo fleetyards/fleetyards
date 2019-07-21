@@ -21,16 +21,16 @@ module Api
           assert_equal 'unauthorized', json['code']
         end
 
-        it 'should render 403 for count' do
-          get :count
+        it 'should render 403 for quick-stats' do
+          get :quick_stats
 
           assert_response :unauthorized
           json = JSON.parse response.body
           assert_equal 'unauthorized', json['code']
         end
 
-        it 'should render 200 for public count' do
-          get :public_count, params: { username: 'data' }
+        it 'should render 200 for public quick-stats' do
+          get :public_quick_stats, params: { username: 'data' }
 
           assert_response :ok
           json = JSON.parse response.body
@@ -299,8 +299,8 @@ module Api
           assert_equal expected, json
         end
 
-        it 'should return counts for count' do
-          get :count
+        it 'should return counts for quick-stats' do
+          get :quick_stats
 
           assert_response :ok
           json = JSON.parse response.body
@@ -326,8 +326,8 @@ module Api
           assert_equal expected, json
         end
 
-        it 'should return counts for count' do
-          get :count, params: { q: '{ "classificationIn": ["combat"] }' }
+        it 'should return counts for quick-stats' do
+          get :quick_stats, params: { q: '{ "classificationIn": ["combat"] }' }
 
           assert_response :ok
           json = JSON.parse response.body

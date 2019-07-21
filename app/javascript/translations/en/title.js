@@ -11,6 +11,7 @@ export default {
   signUp: 'Sign Up',
   hangar: {
     index: 'My Hangar',
+    stats: 'My Hangar Stats',
     import: 'Import',
     public: '%{user} Hangar',
   },

@@ -10,6 +10,8 @@ class User < ApplicationRecord
            dependent: :destroy
   has_many :models,
            through: :vehicles
+  has_many :manufacturers,
+           through: :models
   has_many :public_vehicles,
            -> { where(purchased: true, public: true) },
            class_name: 'Vehicle',

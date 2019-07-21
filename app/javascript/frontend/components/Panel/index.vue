@@ -5,7 +5,12 @@
     }"
     class="panel-wrapper"
   >
-    <div class="panel">
+    <div
+      :class="{
+        [variantClass]: true,
+      }"
+      class="panel"
+    >
       <div class="panel-inner">
         <slot />
       </div>
@@ -19,6 +24,19 @@ export default {
     outerSpacing: {
       type: Boolean,
       default: true,
+    },
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'primary'].indexOf(value) !== -1
+      },
+    },
+  },
+
+  computed: {
+    variantClass() {
+      return `panel-${this.variant}`
     },
   },
 }
