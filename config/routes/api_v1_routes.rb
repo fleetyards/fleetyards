@@ -82,14 +82,18 @@ v1_api_routes = lambda do
 
   resources :vehicles, except: [:show] do
     collection do
-      get :count
+      get 'quick-stats' => 'vehicles#quick_stats'
       get :fleetchart
       get :export
       get 'hangar-items' => 'vehicles#hangar_items'
       get :hangar
       get ':username' => 'vehicles#public', as: :public
-      get ':username/count' => 'vehicles#public_count', as: :public_count
+      get ':username/quick_stats' => 'vehicles#public_quick_stats', as: :public_quick_stats
       get ':username/fleetchart' => 'vehicles#public_fleetchart', as: :public_fleetchart
+      get 'stats/models-by-size' => 'vehicles#models_by_size'
+      get 'stats/models-by-production-status' => 'vehicles#models_by_production_status'
+      get 'stats/models-by-manufacturer' => 'vehicles#models_by_manufacturer'
+      get 'stats/models-by-classification' => 'vehicles#models_by_classification'
     end
   end
 
@@ -129,6 +133,7 @@ v1_api_routes = lambda do
   end
 
   resource :stats, only: [] do
+    get 'quick-stats' => 'stats#quick_stats'
     get 'models-per-month' => 'stats#models_per_month'
     get 'models-by-size' => 'stats#models_by_size'
     get 'models-by-production-status' => 'stats#models_by_production_status'

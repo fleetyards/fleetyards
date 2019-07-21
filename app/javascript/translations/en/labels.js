@@ -9,6 +9,10 @@ export default {
     buyPrice: 'buying price',
   },
   stats: {
+    quickStats: {
+      newShips: 'New Ships in %{year}',
+      totalShips: 'Total Ships',
+    },
     modelsByClassification: 'Models by Classification',
     modelsBySize: 'Models by Size',
     modelsPerMonth: 'Models per Month',
@@ -95,6 +99,7 @@ export default {
   filter: 'Filter',
   taxExcluded: 'excl. VAT',
   hangar: 'Hangar',
+  hangarStats: 'Stats',
   hangarMetrics: {
     totalMoney: 'Money Value',
     totalMinCrew: 'Min. Crew',

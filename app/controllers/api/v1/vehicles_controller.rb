@@ -3,8 +3,10 @@
 module Api
   module V1
     class VehiclesController < ::Api::V1::BaseController
-      skip_authorization_check only: %i[public public_count public_fleetchart]
-      before_action :authenticate_api_user!, except: %i[public public_count public_fleetchart]
+      include ChartHelper
+
+      skip_authorization_check only: %i[public public_quick_stats public_fleetchart]
+      before_action :authenticate_api_user!, except: %i[public public_quick_stats public_fleetchart]
       after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
@@ -56,7 +58,7 @@ module Api
                       .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
-      def count
+      def quick_stats
         authorize! :index, :api_hangar
         @q = current_user.vehicles
                          .ransack(vehicle_query_params)
@@ -68,7 +70,7 @@ module Api
         upgrades = vehicles.map(&:model_upgrades).flatten
         modules = vehicles.map(&:model_modules).flatten
 
-        @count = OpenStruct.new(
+        @quick_stats = OpenStruct.new(
           total: vehicles.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
@@ -118,12 +120,12 @@ module Api
                       .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
-      def public_count
+      def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
         models = []
         models = user.public_models.order(classification: :asc) if user.public_hangar?
 
-        @count = OpenStruct.new(
+        @quick_stats = OpenStruct.new(
           total: models.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
@@ -174,6 +176,57 @@ module Api
         return if vehicle.destroy
 
         render json: ValidationError.new('vehicle.destroy', @vehicle.errors), status: :bad_request
+      end
+
+      def models_by_size
+        authorize! :read, :api_stats
+
+        models_by_size = transform_for_pie_chart(
+          current_user.models.visible.active
+               .group(:size).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge)
+        )
+
+        render json: models_by_size.to_json
+      end
+
+      def models_by_production_status
+        authorize! :read, :api_stats
+
+        models_by_production_status = transform_for_pie_chart(
+          current_user.models.visible.active
+               .group(:production_status).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge)
+        )
+
+        render json: models_by_production_status.to_json
+      end
+
+      def models_by_manufacturer
+        authorize! :read, :api_stats
+
+        models_by_manufacturer = transform_for_pie_chart(
+          current_user.manufacturers.uniq
+              .map { |m| { m.name => m.models.count } }
+              .reduce(:merge)
+        )
+
+        render json: models_by_manufacturer.to_json
+      end
+
+      def models_by_classification
+        authorize! :read, :api_stats
+
+        models_by_classification = transform_for_pie_chart(
+          current_user.models.visible.active
+               .group(:classification).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge)
+        )
+
+        render json: models_by_classification.to_json
       end
 
       private def vehicle

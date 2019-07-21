@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1 class="sr-only">
-              {{ $t('headlines.hangar') }}
+              {{ $t('headlines.hangar.index') }}
             </h1>
           </div>
         </div>
@@ -37,6 +37,12 @@
             >
               <i class="fal fa-download" />
             </Btn> -->
+            <Btn
+              v-tooltip="$t('labels.hangarStats')"
+              :to="{ name: 'hangar-stats' }"
+            >
+              <i class="fal fa-chart-bar" />
+            </Btn>
             <Btn :href="publicUrl">
               {{ $t('labels.publicUrl') }}
             </Btn>
@@ -510,7 +516,7 @@ export default {
     },
 
     async fetchCount() {
-      const response = await this.$api.get('vehicles/count', {
+      const response = await this.$api.get('vehicles/quick-stats', {
         q: this.$route.query.q,
       })
       if (!response.error) {

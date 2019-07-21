@@ -89,6 +89,7 @@ en:
       roadmap_releases: Roadmap Releases
       hangar: My Hangar
       hangar_import: Import
+      hangar_stats: My Hangar Stats
       public_hangar: "%{user} Hangar"
       impressum: Impressum
       privacy-policy: Privacy Policy

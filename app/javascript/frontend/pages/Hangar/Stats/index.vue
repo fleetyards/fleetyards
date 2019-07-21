@@ -4,25 +4,28 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <h1 class="sr-only">
-              {{ $t('headlines.stats') }}
+            <h1>
+              <router-link
+                :to="{ name: 'hangar' }"
+                class="back-button"
+              >
+                <i class="fal fa-chevron-left" />
+              </router-link>
+              {{ $t('headlines.hangar.stats') }}
             </h1>
           </div>
         </div>
-        <div
-          v-if="quickStats"
-          class="row"
-        >
+        <div class="row">
           <div class="col-xs-12 col-sm-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-rocket fa-4x" />
+                  <i class="fa fa-dollar-sign fa-4x" />
                 </div>
                 <div class="panel-box-text">
-                  {{ quickStats.shipsCountYear }}
+                  {{ totalMoney }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.newShips', { year: new Date().getFullYear() }) }}
+                    {{ $t('labels.hangarMetrics.totalMoney') }}
                   </div>
                 </div>
               </div>
@@ -42,9 +45,39 @@
                   </div>
                 </div>
                 <div class="panel-box-text">
-                  {{ quickStats.shipsCountTotal }}
+                  {{ totalCount }}
                   <div class="panel-box-text-info">
                     {{ $t('labels.stats.quickStats.totalShips') }}
+                  </div>
+                </div>
+              </div>
+            </Panel>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <Panel variant="primary">
+              <div class="panel-box">
+                <div class="panel-box-icon">
+                  <i class="fa fa-user fa-4x" />
+                </div>
+                <div class="panel-box-text">
+                  {{ maxCrew }}
+                  <div class="panel-box-text-info">
+                    {{ $t('labels.hangarMetrics.totalMaxCrew') }}
+                  </div>
+                </div>
+              </div>
+            </Panel>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <Panel variant="primary">
+              <div class="panel-box">
+                <div class="panel-box-icon">
+                  <i class="fa fa-box-open fa-4x" />
+                </div>
+                <div class="panel-box-text">
+                  {{ totalCargo }}
+                  <div class="panel-box-text-info">
+                    {{ $t('labels.hangarMetrics.totalCargo') }}
                   </div>
                 </div>
               </div>
@@ -99,23 +132,6 @@
               />
             </Panel>
           </div>
-          <div class="col-xs-12 col-md-8">
-            <Panel>
-              <div class="panel-heading">
-                <h2 class="panel-title">
-                  {{ $t('labels.stats.modelsPerMonth') }}
-                </h2>
-              </div>
-              <Chart
-                key="models-per-month"
-                :load-data="loadModelsPerMonth"
-                tooltip-type="ship"
-                type="column"
-              />
-            </Panel>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-xs-12 col-md-6">
             <Panel>
               <div class="panel-heading">
@@ -160,19 +176,53 @@ export default {
     }
   },
 
+  computed: {
+    totalMoney() {
+      if (!this.quickStats) {
+        return this.$toDollar(0)
+      }
+
+      return this.$toDollar(this.quickStats.metrics.totalMoney)
+    },
+
+    totalCount() {
+      if (!this.quickStats) {
+        return 0
+      }
+
+      return this.quickStats.total
+    },
+
+    maxCrew() {
+      if (!this.quickStats) {
+        return this.$toNumber(0, 'people')
+      }
+
+      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, 'people')
+    },
+
+    totalCargo() {
+      if (!this.quickStats) {
+        return this.$toNumber(0, 'cargo')
+      }
+
+      return this.$toNumber(this.quickStats.metrics.totalCargo, 'cargo')
+    },
+  },
+
   mounted() {
     this.loadQuickStats()
   },
 
   methods: {
     async loadQuickStats() {
-      const response = await this.$api.get('stats/quick-stats')
+      const response = await this.$api.get('vehicles/quick-stats')
       if (!response.error) {
         this.quickStats = response.data
       }
     },
     async loadModelsByClassification() {
-      const response = await this.$api.get('stats/models-by-classification')
+      const response = await this.$api.get('vehicles/stats/models-by-classification')
       if (!response.error) {
         return response.data
       }
@@ -180,15 +230,7 @@ export default {
     },
 
     async loadModelsBySize() {
-      const response = await this.$api.get('stats/models-by-size')
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
-
-    async loadModelsPerMonth() {
-      const response = await this.$api.get('stats/models-per-month')
+      const response = await this.$api.get('vehicles/stats/models-by-size')
       if (!response.error) {
         return response.data
       }
@@ -196,7 +238,7 @@ export default {
     },
 
     async loadModelsByManufacturer() {
-      const response = await this.$api.get('stats/models-by-manufacturer')
+      const response = await this.$api.get('vehicles/stats/models-by-manufacturer')
       if (!response.error) {
         return response.data
       }
@@ -204,7 +246,7 @@ export default {
     },
 
     async loadModelsByProductionStatus() {
-      const response = await this.$api.get('stats/models-by-production-status')
+      const response = await this.$api.get('vehicles/stats/models-by-production-status')
       if (!response.error) {
         return response.data
       }

@@ -255,7 +255,7 @@ export default {
     },
 
     async fetchCount() {
-      const response = await this.$api.get(`vehicles/${this.username}/count`)
+      const response = await this.$api.get(`vehicles/${this.username}/quick-stats`)
       if (!response.error) {
         this.vehiclesCount = response.data
       }

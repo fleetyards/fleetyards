@@ -73,6 +73,36 @@ $contentBorderRadius: $panelContentBorderRadius;
     color: white;
   }
 
+  .text-huge {
+    font-size: 40px;
+  }
+
+  .panel-box {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    .panel-box-icon {
+      display: flex;
+      justify-content: center;
+      flex-flow: column;
+
+      div {
+        margin-bottom: 2px;
+      }
+    }
+
+    .panel-box-text {
+      text-align: right;
+      font-size: 40px;
+
+      .panel-box-text-info {
+        font-size: 15px;
+      }
+    }
+  }
+
   .panel-heading {
     padding: 10px 15px;
 

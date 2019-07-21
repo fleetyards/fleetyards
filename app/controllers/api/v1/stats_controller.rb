@@ -3,7 +3,18 @@
 module Api
   module V1
     class StatsController < ::Api::V1::BaseController
+      include ChartHelper
+
       before_action :authenticate_api_user!, only: []
+
+      def quick_stats
+        authorize! :read, :api_stats
+
+        @quick_stats = {
+          ships_count_year: Model.visible.active.year(Time.current.year).count,
+          ships_count_total: Model.visible.active.count,
+        }
+      end
 
       def components_by_class
         authorize! :read, :api_stats
@@ -84,21 +95,6 @@ module Api
                                 end
 
         render json: models_per_month.to_json
-      end
-
-      private def transform_for_pie_chart(data)
-        data.sort_by { |_label, count| count }.reverse
-            .each_with_index.map do |(label, count), index|
-              point = {
-                name: label,
-                y: count
-              }
-              if index.zero?
-                point[:selected] = true
-                point[:sliced] = true
-              end
-              point
-            end
       end
     end
   end
