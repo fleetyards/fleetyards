@@ -68,36 +68,19 @@
         = form_errors model, :production_note
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :price)}
-      = form.label :price
-      = form.text_field :price, class: 'form-control'
-      %small
-        = form_errors model, :price
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :on_sale, placeholder: I18n.t(:"helpers.placeholder.model.on_sale")
-        = form.label :on_sale do
-          = I18n.t(:"activerecord.attributes.model.on_sale")
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :store_url)}
-      = form.label :store_url
-      = form.text_field :store_url, class: 'form-control'
-      %small
-        = form_errors model, :store_url
-
-  .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :beam)}
       = form.label :beam
-      = form.text_field :beam, class: 'form-control'
+      = form.number_field :beam, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :beam
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :length)}
       = form.label :length
-      = form.text_field :length, class: 'form-control'
+      = form.number_field :length, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :length
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :height)}
       = form.label :height
-      = form.text_field :height, class: 'form-control'
+      = form.number_field :height, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :height
 
@@ -109,67 +92,67 @@
         = form_errors model, :size
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :mass)}
       = form.label :mass
-      = form.text_field :mass, class: 'form-control'
+      = form.number_field :mass, required: true, min: 0, step: 'any', class: 'form-control'
       %small
         = form_errors model, :mass
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :cargo)}
       = form.label :cargo
-      = form.text_field :cargo, class: 'form-control'
+      = form.number_field :cargo, step: 'any', class: 'form-control'
       %small
         = form_errors model, :cargo
 
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :scm_speed)}
       = form.label :scm_speed
-      = form.text_field :scm_speed, class: 'form-control'
+      = form.number_field :scm_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :scm_speed
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_speed)}
       = form.label :afterburner_speed
-      = form.text_field :afterburner_speed, class: 'form-control'
+      = form.number_field :afterburner_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :afterburner_speed
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :cruise_speed)}
       = form.label :cruise_speed
-      = form.text_field :cruise_speed, class: 'form-control'
+      = form.number_field :cruise_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :cruise_speed
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :ground_speed)}
       = form.label :ground_speed
-      = form.text_field :ground_speed, class: 'form-control'
+      = form.number_field :ground_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :ground_speed
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :afterburner_ground_speed)}
       = form.label :afterburner_ground_speed
-      = form.text_field :afterburner_ground_speed, class: 'form-control'
+      = form.number_field :afterburner_ground_speed, step: 'any', class: 'form-control'
       %small
         = form_errors model, :afterburner_ground_speed
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :pitch_max)}
       = form.label :pitch_max
-      = form.text_field :pitch_max, class: 'form-control'
+      = form.number_field :pitch_max, step: 'any', class: 'form-control'
       %small
         = form_errors model, :pitch_max
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :yaw_max)}
       = form.label :yaw_max
-      = form.text_field :yaw_max, class: 'form-control'
+      = form.number_field :yaw_max, step: 'any', class: 'form-control'
       %small
         = form_errors model, :yaw_max
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :roll_max)}
       = form.label :roll_max
-      = form.text_field :roll_max, class: 'form-control'
+      = form.number_field :roll_max, step: 'any', class: 'form-control'
       %small
         = form_errors model, :roll_max
 
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :min_crew)}
       = form.label :min_crew
-      = form.text_field :min_crew, class: 'form-control'
+      = form.number_field :min_crew, class: 'form-control'
       %small
         = form_errors model, :min_crew
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :max_crew)}
       = form.label :max_crew
-      = form.text_field :max_crew, class: 'form-control'
+      = form.number_field :max_crew, class: 'form-control'
       %small
         = form_errors model, :max_crew
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :dock_size)}
@@ -222,62 +205,38 @@
 
   %fieldset
     %legend
-      Additions:
+      Prices:
     #addition
       .row.fields
         .col-xs-12.col-sm-6.col-md-4
           .form-group{class: form_error?(model, :price)}
             = form.label :price
-            = form.number_field :price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
+            = form.number_field :price, step: 'any', placeholder: model.price.to_s, class: 'form-control'
             = form_errors model, :price
 
         .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_pledge_price)}
-            = form.label :fallback_pledge_price
-            = form.number_field :fallback_pledge_price, step: '0.01', placeholder: model.price.to_s, class: 'form-control'
-            = form_errors model, :fallback_pledge_price
+          .form-group{class: form_error?(model, :pledge_price)}
+            = form.label :pledge_price
+            = form.number_field :pledge_price, step: 'any', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :pledge_price
 
         .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_beam)}
-            = form.label :fallback_beam
-            = form.number_field :fallback_beam, step: '0.01', placeholder: model.beam, class: 'form-control'
-            = form_errors model, :fallback_beam
+          .form-group{class: form_error?(model, :last_pledge_price)}
+            = form.label :last_pledge_price
+            = form.number_field :last_pledge_price, step: 'any', placeholder: model.price.to_s, class: 'form-control'
+            = form_errors model, :last_pledge_price
 
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_length)}
-            = form.label :fallback_length
-            = form.number_field :fallback_length, step: '0.01', placeholder: model.length, class: 'form-control'
-            = form_errors model, :fallback_length
-
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_height)}
-            = form.label :fallback_height
-            = form.number_field :fallback_height, step: '0.01', placeholder: model.height, class: 'form-control'
-            = form_errors model, :fallback_height
-
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_mass)}
-            = form.label :fallback_mass
-            = form.number_field :fallback_mass, step: '0.01', placeholder: model.mass, class: 'form-control'
-            = form_errors model, :fallback_mass
-
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_cargo)}
-            = form.label :fallback_cargo
-            = form.number_field :fallback_cargo, placeholder: model.cargo, class: 'form-control'
-            = form_errors model, :fallback_cargo
-
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_min_crew)}
-            = form.label :fallback_min_crew
-            = form.number_field :fallback_min_crew, class: 'form-control'
-            = form_errors model, :fallback_min_crew
-
-        .col-xs-12.col-sm-6.col-md-4
-          .form-group{class: form_error?(model, :fallback_max_crew)}
-            = form.label :fallback_max_crew
-            = form.number_field :fallback_max_crew, class: 'form-control'
-            = form_errors model, :fallback_max_crew
+      .row.fields
+        .col-xs-12.col-sm-6.col-md-4.form-group
+          .checkbox
+            = form.check_box :on_sale, placeholder: I18n.t(:"helpers.placeholder.model.on_sale")
+            = form.label :on_sale do
+              = I18n.t(:"activerecord.attributes.model.on_sale")
+        .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :store_url)}
+          = form.label :store_url
+          = form.text_field :store_url, class: 'form-control'
+          %small
+            = form_errors model, :store_url
 
   %fieldset
     %legend

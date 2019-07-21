@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_20_211229) do
+ActiveRecord::Schema.define(version: 2019_07_21_070133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -357,17 +357,7 @@ ActiveRecord::Schema.define(version: 2019_07_20_211229) do
     t.datetime "store_images_updated_at"
     t.boolean "hidden", default: true
     t.datetime "last_updated_at"
-    t.decimal "fallback_beam", precision: 15, scale: 2
-    t.decimal "fallback_length", precision: 15, scale: 2
-    t.decimal "fallback_height", precision: 15, scale: 2
-    t.decimal "fallback_mass", precision: 15, scale: 2
-    t.decimal "fallback_cargo", precision: 15, scale: 2
-    t.decimal "fallback_scm_speed", precision: 15, scale: 2
-    t.decimal "fallback_afterburner_speed", precision: 15, scale: 2
-    t.decimal "fallback_cruise_speed", precision: 15, scale: 2
-    t.integer "fallback_min_crew"
-    t.integer "fallback_max_crew"
-    t.decimal "fallback_pledge_price", precision: 15, scale: 2
+    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "rsi_name"
     t.string "rsi_slug"
     t.string "brochure"

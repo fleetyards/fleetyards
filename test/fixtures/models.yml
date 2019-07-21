@@ -10,7 +10,7 @@ andromeda:
   cargo: 90
   min_crew: 3
   max_crew: 5
-  fallback_pledge_price: 225
+  last_pledge_price: 225
   hidden: false
 
 explorer:
@@ -23,5 +23,5 @@ explorer:
   cargo: 40
   min_crew: 2
   max_crew: 5
-  fallback_pledge_price: 400
+  last_pledge_price: 400
   hidden: false

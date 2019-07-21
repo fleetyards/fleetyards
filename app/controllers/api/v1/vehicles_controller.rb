@@ -17,8 +17,8 @@ module Api
         end
 
         if pledge_price_range.present?
-          vehicle_query_params['sorts'] = 'fallback_pledge_price asc'
-          scope = scope.includes(:model).where(models: { fallback_pledge_price: pledge_price_range })
+          vehicle_query_params['sorts'] = 'last_pledge_price asc'
+          scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
@@ -78,7 +78,7 @@ module Api
             )
           end,
           metrics: {
-            total_money: models.map(&:fallback_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
+            total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
             total_min_crew: models.map(&:min_crew).sum(&:to_i),
             total_max_crew: models.map(&:max_crew).sum(&:to_i),
             total_cargo: models.map(&:cargo).sum(&:to_i)
