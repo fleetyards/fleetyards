@@ -230,11 +230,9 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   private def new_time_modified(data)
-    @new_time_modified ||= begin
-      Time.zone.parse(data['time_modified.unfiltered'])
-    rescue ArgumentError
-      nil
-    end
+    Time.zone.parse(data['time_modified.unfiltered'])
+  rescue ArgumentError
+    nil
   end
 
   private def model_updated(model, data)

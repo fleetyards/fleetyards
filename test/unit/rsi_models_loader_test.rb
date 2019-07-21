@@ -19,10 +19,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 1987,
-        components: 116,
-        models: 129,
-        manufacturers: 44
+        hardpoints: 2170,
+        components: 122,
+        models: 144,
+        manufacturers: 45
       }
 
       assert_equal(expectations,
@@ -47,7 +47,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       model.reload
 
       assert(model.updated_at.day != Time.zone.now.day)
-      assert_equal(23.0, model.length.to_f)
+      assert_equal(27.0, model.length.to_f)
     end
   end
 
