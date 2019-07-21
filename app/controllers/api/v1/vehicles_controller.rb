@@ -184,10 +184,10 @@ module Api
       private def vehicle_params
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
-            .permit(
-              :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship,
-              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
-            ).merge(user_id: current_user.id)
+                .permit(
+                  :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship,
+                  hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
+                ).merge(user_id: current_user.id)
         end
       end
 
