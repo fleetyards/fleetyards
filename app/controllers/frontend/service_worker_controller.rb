@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Frontend
-  class ServiceWorker < ApplicationController
+  class ServiceWorkerController < ApplicationController
     protect_from_forgery except: %i[index precache_manifest]
 
     def index

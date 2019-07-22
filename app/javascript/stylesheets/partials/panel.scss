@@ -112,12 +112,7 @@ $contentBorderRadius: $panelContentBorderRadius;
       overflow: hidden;
       text-overflow: ellipsis;
       padding-right: 30px;
-
-      > a {
-        display: inline-block;
-        padding-top: 5px;
-        padding-bottom: 5px;
-      }
+      padding-top: 5px;
 
       small {
         color: darken($text-color, 20%);
