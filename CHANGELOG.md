@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.2](https://github.com/fleetyards/app/compare/v3.5.1...v3.5.2) (2019-07-22)
+
+
+### Bug Fixes
+
+* **service-worker:** correct controller name ([5ba576e](https://github.com/fleetyards/app/commit/5ba576e))
+
+
+
 ### [3.5.1](https://github.com/fleetyards/app/compare/v3.5.0...v3.5.1) (2019-07-21)
 
 
