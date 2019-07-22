@@ -9,6 +9,7 @@ class RsiModelsLoader < RsiBaseLoader
 
   def initialize(options = {})
     super
+
     @json_file_path = 'public/models.json'
     @vat_percent = options[:vat_percent] || 19
   end
@@ -108,7 +109,10 @@ class RsiModelsLoader < RsiBaseLoader
   private def create_or_update_model(data)
     model = Model.find_or_create_by!(rsi_id: data['id'])
 
-    updates = {}
+    updates = {
+      rsi_chassis_id: data['chassis_id'],
+      last_updated_at: new_time_modified(data)
+    }
 
     if model_updated(model, data) || model.production_status.blank?
       updates[:production_status] = data['production_status']
@@ -144,14 +148,10 @@ class RsiModelsLoader < RsiBaseLoader
     updates[:rsi_store_url] = data['url']
     updates[:store_url] = data['url'] if (model_updated(model, data) && data['url'] != model.rsi_store_url) || model.store_url.blank?
 
-    model.update(
-      updates.merge(
-        name: strip_name(data['name']),
-        rsi_chassis_id: data['chassis_id'],
-        rsi_name: data['name'],
-        last_updated_at: new_time_modified(data)
-      )
-    )
+    updates[:rsi_name] = data['name']
+    updates[:name] = strip_name(data['name']) if (model_updated(model, data) && data['name'] != model.rsi_name) || model.name.blank?
+
+    model.update(updates)
 
     # rubocop:disable Style/RescueModifier
     store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil

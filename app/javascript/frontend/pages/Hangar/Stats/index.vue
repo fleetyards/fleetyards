@@ -20,21 +20,6 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-dollar-sign fa-4x" />
-                </div>
-                <div class="panel-box-text">
-                  {{ totalMoney }}
-                  <div class="panel-box-text-info">
-                    {{ $t('labels.hangarMetrics.totalMoney') }}
-                  </div>
-                </div>
-              </div>
-            </Panel>
-          </div>
-          <div class="col-xs-12 col-sm-3">
-            <Panel variant="primary">
-              <div class="panel-box">
-                <div class="panel-box-icon">
                   <div>
                     <i class="fa fa-rocket fa-2x" />
                     <i class="fa fa-rocket fa-2x" />
@@ -58,6 +43,28 @@
               <div class="panel-box">
                 <div class="panel-box-icon">
                   <i class="fa fa-user fa-4x" />
+                </div>
+                <div class="panel-box-text">
+                  {{ minCrew }}
+                  <div class="panel-box-text-info">
+                    {{ $t('labels.hangarMetrics.totalMinCrew') }}
+                  </div>
+                </div>
+              </div>
+            </Panel>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <Panel variant="primary">
+              <div class="panel-box">
+                <div class="panel-box-icon">
+                  <div>
+                    <i class="fa fa-user fa-2x" />
+                    <i class="fa fa-user fa-2x" />
+                  </div>
+                  <div>
+                    <i class="fa fa-user fa-2x" />
+                    <i class="fa fa-user fa-2x" />
+                  </div>
                 </div>
                 <div class="panel-box-text">
                   {{ maxCrew }}
@@ -177,20 +184,20 @@ export default {
   },
 
   computed: {
-    totalMoney() {
-      if (!this.quickStats) {
-        return this.$toDollar(0)
-      }
-
-      return this.$toDollar(this.quickStats.metrics.totalMoney)
-    },
-
     totalCount() {
       if (!this.quickStats) {
         return 0
       }
 
       return this.quickStats.total
+    },
+
+    minCrew() {
+      if (!this.quickStats) {
+        return this.$toNumber(0, 'people')
+      }
+
+      return this.$toNumber(this.quickStats.metrics.totalMinCrew, 'people')
     },
 
     maxCrew() {
