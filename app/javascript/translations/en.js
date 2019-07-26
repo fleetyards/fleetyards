@@ -81,6 +81,7 @@ export default {
     propulsion: 'Propulsion',
     ordnance: 'Ordnance',
     modular: 'Modular',
+    soldAt: 'Sold at?',
   },
   component: {
     manufacturer: 'Manufacturer',
@@ -123,6 +124,7 @@ export default {
     celestialObject: 'Location',
     station: 'Station',
     rentalPrice: '%{price} / day',
+    location: '%{name} at %{location}',
   },
   commodityItem: {
     grade: 'Grade',

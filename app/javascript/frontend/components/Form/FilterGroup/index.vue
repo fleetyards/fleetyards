@@ -104,6 +104,7 @@ export default {
     InfiniteLoading,
     FormInput,
   },
+
   props: {
     name: {
       type: String,
@@ -160,11 +161,16 @@ export default {
       type: Function,
       default: null,
     },
+    fetchPath: {
+      type: String,
+      default: null,
+    },
     searchLabel: {
       type: String,
       default: null,
     },
   },
+
   data() {
     return {
       visible: false,
@@ -176,12 +182,18 @@ export default {
       id: this._uid.toString(),
     }
   },
+
   computed: {
+    shouldFetch() {
+      return this.fetch || this.fetchPath
+    },
+
     groupID() {
       return `${this.name}-${this._uid.toString()}`
     },
+
     availableOptions() {
-      if (this.fetch) {
+      if (this.shouldFetch) {
         if (this.paginated) {
           return this.sort(this.fetchedOptions)
         }
@@ -192,6 +204,7 @@ export default {
       }
       return this.options
     },
+
     selectedOptions() {
       if (this.multiple) {
         return this.availableOptions.filter(item => this.value.includes(item[this.valueAttr]))
@@ -199,6 +212,7 @@ export default {
       const selectedOption = this.availableOptions.find(item => item[this.valueAttr] === this.value)
       return selectedOption ? [selectedOption] : []
     },
+
     filteredOptions() {
       if (this.search) {
         return this.availableOptions.filter(
@@ -208,11 +222,13 @@ export default {
       return this.availableOptions
     },
   },
+
   mounted() {
-    if (this.fetch) {
+    if (this.shouldFetch) {
       this.fetchOptions()
     }
   },
+
   methods: {
     onSearch: debounce(function debounced() {
       if (this.paginated && this.search) {
@@ -220,12 +236,31 @@ export default {
         this.fetchOptions()
       }
     }, 300),
+
+    internalFetch(args) {
+      if (this.fetch) {
+        return this.fetch(args)
+      }
+
+      const query = {
+        q: {},
+      }
+      if (args.search) {
+        query.q.nameCont = args.search
+      } else if (args.missingValue) {
+        query.q.nameIn = args.missingValue
+      } else if (args.page) {
+        query.page = args.page
+      }
+      return this.$api.get(this.fetchPath, query)
+    },
+
     async fetchOptions() {
-      if (!this.fetch) {
+      if (!this.shouldFetch) {
         return
       }
       this.loading = true
-      const response = await this.fetch({ page: this.page, search: this.search })
+      const response = await this.internalFetch({ page: this.page, search: this.search })
       this.loading = false
       if (this.$refs.infiniteLoading) {
         this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
@@ -235,6 +270,7 @@ export default {
         this.fetchMissingOption()
       }
     },
+
     async fetchMissingOption() {
       if ((this.multiple && this.selectedOptions.length === this.value.length)
         || (!this.multiple && this.selectedOptions[0] === this.value)) {
@@ -242,16 +278,17 @@ export default {
       }
 
       this.loading = true
-      const response = await this.fetch({ page: this.page, missingValue: this.value })
+      const response = await this.internalFetch({ page: this.page, missingValue: this.value })
       this.loading = false
       if (!response.error) {
         this.addOptions(response.data)
       }
     },
+
     async fetchMore($state) {
       this.loading = true
       this.page += 1
-      const response = await this.fetch({ page: this.page })
+      const response = await this.internalFetch({ page: this.page })
       $state.loaded()
       this.loading = false
       if (!response.error) {
@@ -261,6 +298,7 @@ export default {
         this.addOptions(response.data)
       }
     },
+
     sort(options) {
       const sortedOptions = JSON.parse(JSON.stringify(options))
       return sortedOptions.sort((a, b) => {
@@ -273,6 +311,7 @@ export default {
         return 0
       })
     },
+
     addOptions(newOptions) {
       newOptions.forEach((item) => {
         if (!this.availableOptions.find(
@@ -282,17 +321,22 @@ export default {
         }
       })
     },
+
     clearSearch() {
       this.search = null
     },
+
     selected(option) {
       if (this.multiple) {
         return this.value.includes(option)
       }
+
       return this.value === option
     },
+
     select(option) {
       this.clearSearch()
+
       if (this.selected(option)) {
         if (this.multiple) {
           this.$emit('input', this.value.filter(item => item !== option))
@@ -309,16 +353,20 @@ export default {
         this.toggle()
       }
     },
+
     unselect(option) {
       this.$emit('input', this.value.filter(item => item !== option))
     },
+
     toggle() {
       if (this.disabled) {
         return
       }
+
       this.visible = !this.visible
       this.focusSearch()
     },
+
     focusSearch() {
       if (this.searchable && this.visible) {
         this.$nextTick(() => this.$refs.searchInput.setFocus())

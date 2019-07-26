@@ -18,7 +18,10 @@ class Shop < ApplicationRecord
   end
 
   ransack_alias :name, :name_or_slug
-  ransack_alias :commodity_name, :shop_commodities_commodity_item_of_Model_type_name_or_shop_commodities_commodity_item_of_Component_type_name_or_shop_commodities_commodity_item_of_Commodity_type_name_or_shop_commodities_commodity_item_of_Equipment_type_name
+  ransack_alias :model, :shop_commodities_commodity_item_of_Model_type_slug
+  ransack_alias :component, :shop_commodities_commodity_item_of_Component_type_slug
+  ransack_alias :commodity, :shop_commodities_commodity_item_of_Commodity_type_slug
+  ransack_alias :equipment, :shop_commodities_commodity_item_of_Equipment_type_slug
   ransack_alias :commodity_category, :shop_commodities_commodity_item_type
   ransack_alias :station, :station_slug
   ransack_alias :celestial_object, :station_celestial_object_slug
@@ -26,10 +29,6 @@ class Shop < ApplicationRecord
 
   before_save :update_slugs
   before_validation :update_shop_commodities
-
-  def shop_type_label
-    Shop.human_enum_name(:shop_type, shop_type)
-  end
 
   def self.visible
     where(hidden: false)
@@ -43,6 +42,10 @@ class Shop < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def shop_type_label
+    Shop.human_enum_name(:shop_type, shop_type)
   end
 
   private def update_shop_commodities

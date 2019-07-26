@@ -3,6 +3,7 @@
 json.name station.name
 json.slug station.slug
 json.location station.location
+json.location_label station.location_label
 json.type station.station_type
 json.type_label station.station_type_label
 json.store_image station.store_image.url

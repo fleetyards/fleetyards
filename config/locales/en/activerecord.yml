@@ -158,6 +158,10 @@ en:
         hidden: hidden?
       station:
         hidden: hidden?
+        location_prefix:
+          default: 'on'
+          asteriod: 'on asteroid near'
+          orbit: 'in orbit around'
         station_types:
           spaceport: Spaceport
           station: Station

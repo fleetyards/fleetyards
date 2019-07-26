@@ -6,12 +6,48 @@
       :aria-label="$t('placeholders.filters.shops.name')"
     />
 
-    <FormInput
-      :id="idFor('shops-commodity-name')"
-      v-model="form.commodityNameCont"
-      :label="$t('labels.filters.shops.commodityName')"
-      :placeholder="$t('placeholders.filters.shops.commodityName')"
-      :aria-label="$t('placeholders.filters.shops.commodityName')"
+    <FilterGroup
+      v-model="form.modelIn"
+      :label="$t('labels.filters.shops.model')"
+      fetch-path="models"
+      name="model"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
+
+    <FilterGroup
+      v-model="form.commodityIn"
+      :label="$t('labels.filters.shops.commodity')"
+      fetch-path="commodities"
+      name="commodity"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
+
+    <FilterGroup
+      v-model="form.equipmentIn"
+      :label="$t('labels.filters.shops.equipment')"
+      fetch-path="equipment"
+      name="equipment"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
+
+    <FilterGroup
+      v-model="form.componentIn"
+      :label="$t('labels.filters.shops.component')"
+      fetch-path="components"
+      name="component"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
     />
 
     <FilterGroup
@@ -25,7 +61,7 @@
     <FilterGroup
       v-model="form.stationIn"
       :label="$t('labels.filters.shops.station')"
-      :fetch="fetchStations"
+      fetch-path="stations"
       name="station"
       value-attr="slug"
       paginated
@@ -36,7 +72,7 @@
     <FilterGroup
       v-model="form.celestialObjectIn"
       :label="$t('labels.filters.shops.celestialObject')"
-      :fetch="fetchCelestialObjects"
+      fetch-path="celestial-objects"
       name="celestial-object"
       value-attr="slug"
       paginated
@@ -47,7 +83,7 @@
     <FilterGroup
       v-model="form.starsystemIn"
       :label="$t('labels.filters.shops.starsystem')"
-      :fetch="fetchStarsystems"
+      fetch-path="starsystems"
       name="starsystem"
       value-attr="slug"
       paginated
@@ -85,7 +121,10 @@ export default {
       loading: false,
       form: {
         nameCont: query.nameCont,
-        commodityNameCont: query.commodityNameCont,
+        modelIn: query.modelIn || [],
+        commodityIn: query.commodityIn || [],
+        equipmentIn: query.equipmentIn || [],
+        componentIn: query.componentIn || [],
         stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
@@ -98,7 +137,10 @@ export default {
       const query = this.$route.query.q || {}
       this.form = {
         nameCont: query.nameCont,
-        commodityNameCont: query.commodityNameCont,
+        modelIn: query.modelIn || [],
+        commodityIn: query.commodityIn || [],
+        equipmentIn: query.equipmentIn || [],
+        componentIn: query.componentIn || [],
         stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
@@ -114,45 +156,6 @@ export default {
     },
   },
   methods: {
-    fetchStations({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameIn = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('stations', query)
-    },
-    fetchCelestialObjects({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameIn = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('celestial-objects', query)
-    },
-    fetchStarsystems({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameIn = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('starsystems', query)
-    },
     fetchShopTypes() {
       return this.$api.get('shops/shop-types')
     },
