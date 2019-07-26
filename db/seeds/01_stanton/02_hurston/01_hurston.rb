@@ -55,7 +55,11 @@ l19.update!(
 )
 
 admin = Shop.find_or_initialize_by(name: 'Admin Office', station: l19)
-admin.update!((shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19_admin.jpg').open, hidden: false)
+admin.update!(
+  shop_type: :admin,
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19_admin.jpg').open,
+  hidden: true
+)
 
 tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station: l19)
 tammany_and_sons.update!(
