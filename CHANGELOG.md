@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.5](https://github.com/fleetyards/app/compare/v3.5.4...v3.5.5) (2019-07-26)
+
+
+### Bug Fixes
+
+* **equipment:** add missing slots ([b3f04f2](https://github.com/fleetyards/app/commit/b3f04f2))
+* **seeds:** disable unfinished entry ([c1d46f8](https://github.com/fleetyards/app/commit/c1d46f8))
+
+
+### Refactorings
+
+* **image-upload:** update dropbox ([92ca80c](https://github.com/fleetyards/app/commit/92ca80c))
+
+
+
 ### [3.5.4](https://github.com/fleetyards/app/compare/v3.5.3...v3.5.4) (2019-07-26)
 
 
