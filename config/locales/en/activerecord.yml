@@ -108,6 +108,12 @@ en:
           helmet: Helmet
           torso: Torso
           legs: Legs
+          footwear: Footwear
+          hat: Hat
+          gloves: Gloves
+          pants: Pants
+          shirt: Shirt
+          jacket: Jacket
         equipment_types:
           undersuit: Undersuit
           armor: Armor
@@ -135,6 +141,7 @@ en:
           sniper_rifle: Sniper Rifle
           special_railgun: Special - Railgun
           assault_rifle: Assault Rifle
+          scope: Scope
       shop:
         hidden: hidden?
         rental: Does offer Rentals?

@@ -23,7 +23,7 @@ class Equipment < ApplicationRecord
 
   enum item_type: %i[
     flightsuit light_armor medium_armor heavy_armor magazine battery pistol grenade smg rifle
-    shotgun lmg sniper_rifle special_railgun assault_rifle
+    shotgun lmg sniper_rifle special_railgun assault_rifle scope
   ]
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
