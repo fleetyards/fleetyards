@@ -72,15 +72,17 @@
 
     <slot name="header" />
 
-    <div
+    <Panel
       v-if="isUploadActive"
-      :class="{
-        'dropzone-active': $refs.upload && $refs.upload.dropActive,
-      }"
-      class="dropzone"
+      @click="selectImages"
     >
-      <h3>{{ $t('labels.image.dropzone') }}</h3>
-    </div>
+      <div class="dropzone">
+        <i class="fal fa-file-plus fa-2x" />
+        <h3>
+          {{ $t('labels.image.dropzone') }}
+        </h3>
+      </div>
+    </Panel>
 
     <Panel v-if="allImages.length">
       <transition-group
