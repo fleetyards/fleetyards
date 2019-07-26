@@ -16,7 +16,7 @@ class Equipment < ApplicationRecord
     parent.table[:equipment_type]
   end
 
-  enum slot: %i[undersuit arms helmet torso legs], _suffix: true
+  enum slot: %i[undersuit arms helmet torso legs footwear hat gloves pants shirt jacket], _suffix: true
   ransacker :slot, formatter: proc { |v| Equipment.slots[v] } do |parent|
     parent.table[:slot]
   end
