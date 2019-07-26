@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.4](https://github.com/fleetyards/app/compare/v3.5.3...v3.5.4) (2019-07-26)
+
+
+### Bug Fixes
+
+* **shop-commodities:** update filter ([#725](https://github.com/fleetyards/app/issues/725)) ([7619cd3](https://github.com/fleetyards/app/commit/7619cd3))
+
+
+
 ### [3.5.3](https://github.com/fleetyards/app/compare/v3.5.2...v3.5.3) (2019-07-22)
 
 
