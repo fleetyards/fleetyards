@@ -9,7 +9,7 @@ cru_l1.update!(
   celestial_object: crusader,
   station_type: :rest_stop,
   location: 'CRU-L1',
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l1/cru-l1.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l1/cru-l1-a.jpg').open,
   hidden: hidden
 )
 
