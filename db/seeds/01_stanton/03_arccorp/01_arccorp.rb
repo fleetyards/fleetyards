@@ -9,22 +9,13 @@ arccorp.update!(
 area18 = Station.find_or_initialize_by(name: 'Area 18')
 area18.update!(
   celestial_object: arccorp,
-  station_type: :spaceport,
+  station_type: :district,
   location: 'Area 18',
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18-1.jpg').open,
   hidden: false
 )
 
 area18.docks.destroy_all
-{ small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|
-  hangars.each do |hangar|
-    area18.docks << Dock.new(
-      name: ("%02d" % hangar),
-      dock_type: :hangar,
-      ship_size: ship_size,
-    )
-  end
-end
 
 area18.habitations.destroy_all
 %w[1 2 3 4 5 6].each do |level|
@@ -79,3 +70,33 @@ gloc.update!(
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/g-loc.jpg').open,
   hidden: false
 )
+
+centermass = Shop.find_or_initialize_by(name: 'CenterMass', station: area18)
+centermass.update!(
+  shop_type: :weapons,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
+  hidden: false
+)
+
+rikerMemorial = Station.find_or_initialize_by(name: 'Riker Memorial Spaceport')
+rikerMemorial.update!(
+  celestial_object: arccorp,
+  station_type: :spaceport,
+  location: 'Area 18',
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial.jpg').open,
+  hidden: false
+)
+
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rikerMemorial)
+admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial/admin.jpg').open, hidden: false)
+
+rikerMemorial.docks.destroy_all
+{ small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|
+  hangars.each do |hangar|
+    rikerMemorial.docks << Dock.new(
+      name: ("%02d" % hangar),
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+  end
+end
