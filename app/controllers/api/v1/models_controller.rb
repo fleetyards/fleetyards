@@ -57,7 +57,7 @@ module Api
 
       def slugs
         authorize! :index, :api_models
-        render json: Model.all.pluck(:slug)
+        render json: Model.order(slug: :asc).all.pluck(:slug)
       end
 
       def production_states
