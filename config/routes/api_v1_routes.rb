@@ -106,6 +106,8 @@ v1_api_routes = lambda do
   resources :trade_hubs, path: 'trade-hubs', only: [:index]
   resources :commodities, only: [:index]
   resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
+  resources :equipment, only: [:index]
+  resources :components, only: [:index]
 
   resources :starsystems, param: :slug, only: %i[index show]
   resources :celestial_objects, path: 'celestial-objects', param: :slug, only: %i[index show]

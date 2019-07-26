@@ -96,6 +96,38 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="detailed && model.soldAt && model.soldAt.length"
+          class="col-xs-12"
+        >
+          <div class="row">
+            <div class="col-md-12">
+              <div class="metrics-label">
+                {{ $t('model.soldAt') }}:
+              </div>
+              <div class="metrics-value">
+                <ul class="list-unstyled">
+                  <li
+                    v-for="shop in model.soldAt"
+                    :key="shop.slug"
+                  >
+                    <router-link
+                      :to="{
+                        name: 'shop',
+                        params: {
+                          station: shop.stationSlug,
+                          slug: shop.slug,
+                        },
+                      }"
+                    >
+                      {{ shop.name }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -88,7 +88,7 @@ rikerMemorial.update!(
 )
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rikerMemorial)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial/admin.jpg').open, hidden: false)
+admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial/admin.jpg').open, hidden: true)
 
 rikerMemorial.docks.destroy_all
 { small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|

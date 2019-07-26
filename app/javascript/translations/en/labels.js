@@ -255,9 +255,12 @@ export default {
   filters: {
     shops: {
       name: 'Name',
-      commodityName: 'Commodity Name',
       type: 'Type',
       celestialObject: 'Celestial object',
+      model: 'Ship',
+      equipment: 'Equipment',
+      component: 'Component',
+      commodity: 'Commodity',
       starsystem: 'Starsystem',
       station: 'Station',
     },

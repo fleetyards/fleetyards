@@ -12,6 +12,9 @@ json.cache! ['v1', model] do
   json.hardpoints do
     json.array! model.hardpoints, partial: 'api/v1/models/hardpoint', as: :hardpoint
   end
+  json.sold_at do
+    json.array! model.shop_commodities.uniq { |item| item.shop.slug }, partial: 'api/v1/models/shop', as: :shop_commodity
+  end
   unless without_images?
     json.images do
       json.array! model.images.enabled, partial: 'api/v1/images/base', as: :image

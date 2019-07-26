@@ -144,9 +144,7 @@ class Model < ApplicationRecord
   end
 
   def price
-    ShopCommodity.where(commodity_item_type: 'Model', commodity_item_id: id)
-                 .order(sell_price: :desc)
-                 .first&.sell_price
+    shop_commodities.order(sell_price: :desc).first&.sell_price
   end
 
   def variants
@@ -166,10 +164,6 @@ class Model < ApplicationRecord
     return if user.blank?
 
     user.models.exists?(id)
-  end
-
-  def on_sale_with_price?
-    on_sale? && !price.zero?
   end
 
   def random_image

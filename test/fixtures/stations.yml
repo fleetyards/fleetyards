@@ -4,7 +4,7 @@ portolisar:
   name: Port Olisar
   slug: port-olisar
   celestial_object: crusader
-  station_type: spaceport
+  station_type: hub
   hidden: false
 
 corvolex:

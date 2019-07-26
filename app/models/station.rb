@@ -48,6 +48,21 @@ class Station < ApplicationRecord
     end
   end
 
+  def location_label
+    "#{location_prefix} #{celestial_object.name}"
+  end
+
+  def location_prefix
+    case station_type
+    when 'asteroid-station'
+      I18n.t('activerecord.attributes.station.location_prefix.asteriod')
+    when 'hub', 'rest_stop', 'station', 'cargo-station', 'mining-station'
+      I18n.t('activerecord.attributes.station.location_prefix.orbit')
+    else
+      I18n.t('activerecord.attributes.station.location_prefix.default')
+    end
+  end
+
   def image
     images.first
   end

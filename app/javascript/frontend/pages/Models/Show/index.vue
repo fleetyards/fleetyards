@@ -369,9 +369,6 @@ export default {
 
   created() {
     this.fetch()
-    this.fetchModules()
-    this.fetchUpgrades()
-    this.fetchVariants()
   },
 
   methods: {
@@ -410,16 +407,26 @@ export default {
       }
 
       this.loading = true
+
       const response = await this.$api.get(`models/${this.$route.params.slug}`, {
         withoutImages: true,
         withoutVideos: true,
       })
+
       this.loading = false
+
       if (!response.error) {
         this.model = response.data
+        this.fetchExtras()
       } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
+    },
+
+    fetchExtras() {
+      this.fetchModules()
+      this.fetchUpgrades()
+      this.fetchVariants()
     },
 
     async fetchModules() {
