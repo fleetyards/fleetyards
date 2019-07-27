@@ -41,6 +41,7 @@ en:
     confirm: Confirm Account
     delete: Delete
     edit: Edit
+    copy: Copy
     loading: Please wait...
     model:
       images: Images

@@ -6,7 +6,7 @@
         %th=sort_link(@q, :name)
         %th=sort_link(@q, :equipment_type)
         %th=sort_link(@q, :hidden)
-        %th.actions.actions-two=I18n.t(:"labels.table.actions")
+        %th.actions.actions-three=I18n.t(:"labels.table.actions")
     %tbody
       = render partial: "admin/equipment/show", collection: @equipment_list, as: :equipment
 

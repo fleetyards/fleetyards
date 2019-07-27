@@ -16,7 +16,11 @@ module Admin
 
     def new
       authorize! :create, :admin_equipment
-      @equipment = Equipment.new
+
+      prefill = Equipment.find_by(id: params[:prefill_from]) if params[:prefill_from].present?
+      prefill = prefill.attributes.slice!('created_at', 'updated_at', 'id', 'store_image') if prefill.present?
+
+      @equipment = Equipment.new(prefill)
     end
 
     def create
