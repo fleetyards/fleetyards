@@ -4,8 +4,14 @@ class Station < ApplicationRecord
   paginates_per 10
 
   has_many :shops, dependent: :destroy
-  has_many :docks, dependent: :destroy
-  has_many :habitations, dependent: :destroy
+  has_many :docks,
+           -> { order(ship_size: :desc) },
+           dependent: :destroy,
+           inverse_of: :station
+  has_many :habitations,
+           -> { order(habitation_type: :desc) },
+           dependent: :destroy,
+           inverse_of: :station
 
   has_many :images,
            as: :gallery,

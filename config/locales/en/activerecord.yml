@@ -141,7 +141,7 @@ en:
           sniper_rifle: Sniper Rifle
           special_railgun: Special - Railgun
           assault_rifle: Assault Rifle
-          scope: Scope
+          weapon_scope: Scope
       shop:
         hidden: hidden?
         rental: Does offer Rentals?
