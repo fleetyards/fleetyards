@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: update screenshot and docks
+
 crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
 
 hidden = false

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: update docks
+
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 
 hidden = false
