@@ -9,7 +9,7 @@ hur_l1.update!(
   celestial_object: hurston,
   station_type: :rest_stop,
   location: 'HUR-L1',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1.jpg').open,
   hidden: hidden
 )
 

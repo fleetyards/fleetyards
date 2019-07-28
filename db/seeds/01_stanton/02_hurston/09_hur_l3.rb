@@ -5,11 +5,11 @@ hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 hidden = false
 
 hur_l3 = Station.find_or_initialize_by(name: 'Rest & Relax (HUR-L3)')
-hur_l3.update!(celestial_object: hurston, station_type: :rest_stop, location: 'HUR-L3', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l3/hur-l3.jpg').open, hidden: false)
+hur_l3.update!(celestial_object: hurston, station_type: :rest_stop, location: 'HUR-L3', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l3/hur-l3-a.jpg').open, hidden: false)
 
 hur_l3.docks.destroy_all
 pad = 1
-{ small: 3, medium: 1 }.each do |ship_size, count|
+{ medium: 4 }.each do |ship_size, count|
   count.times do |index|
     hur_l3.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",
