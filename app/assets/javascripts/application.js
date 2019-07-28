@@ -9,6 +9,7 @@
 //= require noty
 //= require dynamic_fields_for
 //= require nprogress
+//= require select2
 //= require vendor/date_fns.min
 //= require vendor/highcharts
 //= require vendor/highcharts-theme

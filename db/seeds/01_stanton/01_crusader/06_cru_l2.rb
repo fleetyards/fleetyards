@@ -2,7 +2,7 @@
 
 crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
 
-hidden = true
+hidden = true # currently not present 2019-07-28
 
 cru_l2 = Station.find_or_initialize_by(name: 'Rest & Relax (CRU-L2)')
 cru_l2.update!(
@@ -40,3 +40,23 @@ platinum_bay.update!(
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/platinum_bay.jpg').open,
   hidden: hidden
 )
+
+# cru_l2.docks.destroy_all
+# { small: [1, 3], large: [2, 4]}.each do |ship_size, pads|
+#   pads.each do |pad|
+#     cru_l2.docks << Dock.new(
+#       name: "Landingpad #{"%02d" % pad}",
+#       dock_type: :landingpad,
+#       ship_size: ship_size,
+#     )
+#   end
+# end
+# { large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+#   hangars.each do |hangar|
+#     cru_l2.docks << Dock.new(
+#       name: "Hangar #{"%02d" % hangar}",
+#       dock_type: :hangar,
+#       ship_size: ship_size,
+#     )
+#   end
+# end

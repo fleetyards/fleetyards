@@ -102,3 +102,27 @@ form {
     }
   }
 }
+
+.select2 {
+  .select2-selection {
+    background-color: #3a3f44;
+    border: 1px solid #272b30;
+    height: 43px;
+
+    span:first-child {
+      padding: 4px 0;
+      color: #c8c8c8;
+    }
+  }
+}
+
+.select2-container--bootstrap .select2-dropdown,
+.select2-dropdown {
+  background-color: #3a3f44;
+
+  .select2-search__field {
+    background-color: darken(#3a3f44, 10%);
+    border: 1px solid #272b30;
+    color: #c8c8c8;
+  }
+}

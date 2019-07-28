@@ -9,12 +9,12 @@ cru_l4.update!(
   celestial_object: crusader,
   station_type: :rest_stop,
   location: 'CRU-L4',
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/cru-l4.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/cru-l4-a.jpg').open,
   hidden: hidden
 )
 
 cru_l4.docks.destroy_all
-{ small: [1], medium: [2, 3, 4] }.each do |ship_size, pads|
+{ small: [3, 4, 5, 6], medium: [1, 2, 7, 8] }.each do |ship_size, pads|
   pads.each do |pad|
     cru_l4.docks << Dock.new(
       name: ("%02d" % pad),
@@ -23,7 +23,7 @@ cru_l4.docks.destroy_all
     )
   end
 end
-{ large: [5] }.each do |ship_size, hangars|
+{ large: [1, 2] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     cru_l4.docks << Dock.new(
       name: ("%02d" % hangar),

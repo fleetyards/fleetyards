@@ -17,6 +17,8 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'select2-rails'
+
 gem 'ahoy_matey'
 gem 'groupdate'
 
