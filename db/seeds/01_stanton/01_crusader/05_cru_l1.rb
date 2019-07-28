@@ -14,7 +14,7 @@ cru_l1.update!(
 )
 
 cru_l1.docks.destroy_all
-{ small: [1, 2, 3], large: [4] }.each do |ship_size, pads|
+{ small: [1, 2, 3, 4], large: [4] }.each do |ship_size, pads|
   pads.each do |pad|
     cru_l1.docks << Dock.new(
       name: ("%02d" % pad),
@@ -23,7 +23,7 @@ cru_l1.docks.destroy_all
     )
   end
 end
-{ large: [5, 6] }.each do |ship_size, hangars|
+{ large: [5, 6, 7, 8] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     cru_l1.docks << Dock.new(
       name: ("%02d" % hangar),
@@ -32,15 +32,15 @@ end
     )
   end
 end
-{ extra_large: [7] }.each do |ship_size, docks|
-  docks.each do |dock|
-    cru_l1.docks << Dock.new(
-      name: ("%02d" % dock),
-      dock_type: :dockingport,
-      ship_size: ship_size,
-    )
-  end
-end
+# { extra_large: [7] }.each do |ship_size, docks|
+#   docks.each do |dock|
+#     cru_l1.docks << Dock.new(
+#       name: ("%02d" % dock),
+#       dock_type: :dockingport,
+#       ship_size: ship_size,
+#     )
+#   end
+# end
 
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l1)
 admin_office.update!(

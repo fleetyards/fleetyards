@@ -9,13 +9,13 @@ hur_l1.update!(
   celestial_object: hurston,
   station_type: :rest_stop,
   location: 'HUR-L1',
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg').open,
   hidden: hidden
 )
 
 hur_l1.docks.destroy_all
 pad = 1
-{ small: 2, medium: 2 }.each do |ship_size, count|
+{ medium: 4 }.each do |ship_size, count|
   count.times do |index|
     hur_l1.docks << Dock.new(
       name: "Ladingpad #{"%02d" % pad}",
