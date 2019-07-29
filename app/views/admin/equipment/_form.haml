@@ -57,19 +57,19 @@
 
     .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :damage_reduction)}
       = form.label :damage_reduction
-      = form.number_field :damage_reduction, placeholder: I18n.t(:"helpers.placeholder.equipment.damage_reduction"), class: 'form-control'
+      = form.number_field :damage_reduction, step: 'any', placeholder: I18n.t(:"helpers.placeholder.equipment.damage_reduction"), class: 'form-control'
       %small
         = form_errors equipment, :damage_reduction
 
     .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :rate_of_fire)}
       = form.label :rate_of_fire
-      = form.number_field :rate_of_fire, placeholder: I18n.t(:"helpers.placeholder.equipment.rate_of_fire"), class: 'form-control'
+      = form.number_field :rate_of_fire, step: 'any', placeholder: I18n.t(:"helpers.placeholder.equipment.rate_of_fire"), class: 'form-control'
       %small
         = form_errors equipment, :rate_of_fire
 
     .col-xs-12.col-md-3.form-group{class: form_error?(equipment, :range)}
       = form.label :range
-      = form.number_field :range, placeholder: I18n.t(:"helpers.placeholder.equipment.range"), class: 'form-control'
+      = form.number_field :range, step: 'any', placeholder: I18n.t(:"helpers.placeholder.equipment.range"), class: 'form-control'
       %small
         = form_errors equipment, :range
 

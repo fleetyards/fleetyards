@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_21_070133) do
+ActiveRecord::Schema.define(version: 2019_07_29_224613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -165,9 +165,9 @@ ActiveRecord::Schema.define(version: 2019_07_21_070133) do
     t.integer "item_type"
     t.string "size"
     t.string "grade"
-    t.integer "damage_reduction"
-    t.integer "rate_of_fire"
-    t.integer "range"
+    t.decimal "damage_reduction", precision: 15, scale: 2
+    t.decimal "rate_of_fire", precision: 15, scale: 2
+    t.decimal "range", precision: 15, scale: 2
     t.string "extras"
     t.integer "weapon_class"
     t.integer "slot"
