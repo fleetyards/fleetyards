@@ -8,7 +8,7 @@
 
     .col-xs-12.col-md-6.form-group{class: form_error?(shop, :station_id)}
       = form.label :station_id
-      = form.select :station_id, Station.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.shops.station") }, { class: 'form-control' }
+      = form.select :station_id, Station.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.shops.station") }, { class: 'form-control select2' }
       %small
         = form_errors shop, :station_id
 
@@ -59,13 +59,24 @@
     %legend
       Commodities:
     #commodities
-      - if shop.shop_commodities.any?
-        = form.fields_for :shop_commodities, shop.shop_commodities.sort_by { |item| [item.commodity_item_type, item.commodity_item.name, item.created_at] } do |builder|
+      - if shop_commodities.any?
+        = form.fields_for :shop_commodities, shop_commodities do |builder|
           = render 'shops/shop_commodity_fields', fields: builder
 
     .btn-group-responsive.pull-right
       = link_to_add_fields form, :shop_commodities, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#commodities" do
         %i.fa.fa-plus
-        = I18n.t(:"actions.add_commodity")
+        = I18n.t("actions.add_commodity")
+      &nbsp
+      &nbsp
+      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: attachments_admin_api_v1_equipment_url }}
+        %i.fa.fa-plus
+        = I18n.t("actions.prefill_attachments")
+      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: utilities_admin_api_v1_equipment_url }}
+        %i.fa.fa-plus
+        = I18n.t("actions.prefill_utilities")
+      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: weapons_admin_api_v1_equipment_url }}
+        %i.fa.fa-plus
+        = I18n.t("actions.prefill_weapons")
 
   = render "shared/submit", path: admin_shops_path

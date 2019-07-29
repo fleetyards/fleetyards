@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: update screenshot and docks
-
 crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
 
 hidden = false
@@ -11,12 +9,12 @@ cru_l5.update!(
   celestial_object: crusader,
   station_type: :rest_stop,
   location: 'CRU-L5',
-  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/cru-l5.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/cru-l5-a.jpg').open,
   hidden: hidden
 )
 
 cru_l5.docks.destroy_all
-{ medium: [1, 2, 3, 4] }.each do |ship_size, pads|
+{ small: [1, 3], medium: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     cru_l5.docks << Dock.new(
       name: ("%02d" % pad),
@@ -25,7 +23,7 @@ cru_l5.docks.destroy_all
     )
   end
 end
-{ large: [5, 6] }.each do |ship_size, hangars|
+{ large: [1, 2] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     cru_l5.docks << Dock.new(
       name: ("%02d" % hangar),

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: update screenshot and docks
-
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 
 hidden = false
@@ -10,26 +8,22 @@ hur_l3 = Station.find_or_initialize_by(name: 'Rest & Relax (HUR-L3)')
 hur_l3.update!(celestial_object: hurston, station_type: :rest_stop, location: 'HUR-L3', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l3/hur-l3-a.jpg').open, hidden: false)
 
 hur_l3.docks.destroy_all
-pad = 1
-{ medium: 4 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [2, 3, 4], large: [1] }.each do |ship_size, pads|
+  pads.each do |pad|
     hur_l3.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ large: 2 }.each do |ship_size, count|
-  count.times do |index|
+{ large: [1, 2, 3, 4] }.each do |ship_size, hangars|
+  hangars.each do |hangar|
     hur_l3.docks << Dock.new(
-      name: "Hangar #{"%02d" % pad}",
+      name: ("%02d" % hangar),
       dock_type: :hangar,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 

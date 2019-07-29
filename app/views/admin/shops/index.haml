@@ -33,7 +33,7 @@
             = f.search_field :name_or_slug_cont, class: 'form-control'
           .form-group
             = f.label :station_id_eq
-            = f.select :station_id_eq, Station.all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+            = f.select :station_id_eq, Station.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control select2' }
 
           .btn-group
             %button.btn.btn-primary

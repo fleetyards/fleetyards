@@ -62,6 +62,7 @@ en:
         celestial_object: Please select a Celestial Object
       shops:
         station: Please select a Station
+        shop_type: Plase select a Shop Type
       shop_commodities:
         commodity_item: Please select a Model/Component
       celestial_object:

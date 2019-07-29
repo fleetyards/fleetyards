@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: update docks
-
 crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
 
 hidden = false
@@ -16,7 +14,7 @@ cru_l1.update!(
 )
 
 cru_l1.docks.destroy_all
-{ small: [1, 2, 3, 4], large: [4] }.each do |ship_size, pads|
+{ small: [2, 3, 4], large: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     cru_l1.docks << Dock.new(
       name: ("%02d" % pad),
@@ -25,7 +23,7 @@ cru_l1.docks.destroy_all
     )
   end
 end
-{ large: [5, 6, 7, 8] }.each do |ship_size, hangars|
+{ large: [1, 2, 3, 4] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     cru_l1.docks << Dock.new(
       name: ("%02d" % hangar),

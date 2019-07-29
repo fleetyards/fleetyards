@@ -76,6 +76,17 @@ module Admin
     end
     helper_method :index_back_params
 
+    private def shop_commodities
+      @shop_commodities ||= shop.shop_commodities.sort_by do |item|
+        if item.commodity_item_type == 'Equipment'
+          [item.commodity_item_type, item.commodity_item.equipment_type, item.commodity_item.name, item.created_at]
+        else
+          [item.commodity_item_type, nil, item.commodity_item.name, item.created_at]
+        end
+      end
+    end
+    helper_method :shop_commodities
+
     private def shop
       @shop ||= Shop.where(id: params.fetch(:id, nil)).first
     end

@@ -55,3 +55,6 @@ en:
     sign_in: Login
     sign_out: Logout
     unlock: Unlock Account
+    prefill_attachments: Add all Attachments
+    prefill_weapons: Add all Weapons
+    prefill_utilities: Add all Utilities

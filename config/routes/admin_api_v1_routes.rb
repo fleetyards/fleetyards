@@ -11,6 +11,12 @@ v1_admin_api_routes = lambda do
     get :images, on: :member
   end
 
+  resource :equipment, only: [] do
+    get :weapons, on: :collection
+    get :attachments, on: :collection
+    get :utilities, on: :collection
+  end
+
   resources :images, only: %i[index create destroy update]
 end
 

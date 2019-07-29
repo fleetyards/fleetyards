@@ -34,7 +34,7 @@
 
           .form-group
             = f.label :manufacturer_id_eq
-            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, {class: 'form-control'}
+            = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, { class: 'form-control select2' }
 
           .btn-group
             %button.btn.btn-primary
