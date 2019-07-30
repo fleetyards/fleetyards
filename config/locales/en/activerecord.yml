@@ -187,7 +187,10 @@ en:
           metal: Metal
           mineral: Mineral
           non_metals: Non-Metals
-          agricultural: Agricultural
+          agricultural_supply: Agricultural Supply
+          food: Food
+          medical_supply: Medical Supply
+          processed_goods: Processed Goods
           waste: Waste
           scrap: Scrap
           vice: Vice

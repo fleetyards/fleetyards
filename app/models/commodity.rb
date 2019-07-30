@@ -8,7 +8,7 @@ class Commodity < ApplicationRecord
 
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
-  enum commodity_type: %i[gas metal mineral non_metals agricultural waste scrap vice]
+  enum commodity_type: %i[gas metal mineral non_metals agricultural_supply food medical_supply processed_goods waste scrap vice]
 
   ransacker :commodity_type, formatter: proc { |v| Commodity.commodity_types[v] } do |parent|
     parent.table[:commodity_type]
