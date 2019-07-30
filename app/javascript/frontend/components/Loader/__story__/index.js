@@ -3,10 +3,6 @@ import { withInfo } from 'storybook-addon-vue-info'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import Loader from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 storiesOf('Loader', module)
   .addDecorator(withInfo)
   .addDecorator(withKnobs)
@@ -26,4 +22,4 @@ storiesOf('Loader', module)
         :loading="loading"
       />
     `,
-  }), { info })
+  }))

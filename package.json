@@ -103,7 +103,6 @@
     "jest": "24.8.0",
     "jest-serializer-vue": "2.0.2",
     "standard-version": "6.0.1",
-    "storybook-addon-vue-info": "1.2.2",
     "storybook-vue-router": "1.0.3",
     "stylelint": "10.1.0",
     "stylelint-config-prettier": "5.2.0",

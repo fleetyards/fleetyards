@@ -3,10 +3,6 @@ import { withInfo } from 'storybook-addon-vue-info'
 import { withKnobs, select, number } from '@storybook/addon-knobs'
 import Chart from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 const chartTypes = {
   label: 'Type',
   options: ['pie', 'bar', 'line', 'column', 'area'],
@@ -51,4 +47,4 @@ storiesOf('Chart', module)
         :height="height"
       />
     `,
-  }), { info })
+  }))

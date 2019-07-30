@@ -3,10 +3,6 @@ import { withInfo } from 'storybook-addon-vue-info'
 import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 import Panel from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 storiesOf('Panel', module)
   .addDecorator(withInfo)
   .addDecorator(withKnobs)
@@ -24,4 +20,4 @@ storiesOf('Panel', module)
         <div style="padding: 60px;">${text('Content', 'Test Content')}</div>
       </Panel>
     `,
-  }), { info })
+  }))

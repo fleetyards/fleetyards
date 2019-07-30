@@ -4,10 +4,6 @@ import StoryRouter from 'storybook-vue-router'
 import { withKnobs, boolean, select } from '@storybook/addon-knobs'
 import ModelPanel from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 storiesOf('ModelPanel', module)
   .addDecorator(withInfo)
   .addDecorator(withKnobs)
@@ -50,4 +46,4 @@ storiesOf('ModelPanel', module)
         :count="count"
       />
     `,
-  }), { info })
+  }))

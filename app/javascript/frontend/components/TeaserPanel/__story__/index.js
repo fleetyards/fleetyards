@@ -3,10 +3,6 @@ import { withInfo } from 'storybook-addon-vue-info'
 import { withKnobs, select } from '@storybook/addon-knobs'
 import TeaserPanel from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 const teaserVariants = {
   label: 'Variant',
   options: ['default', 'text'],
@@ -33,4 +29,4 @@ storiesOf('TeaserPanel', module)
         :variant="variant"
       />
     `,
-  }), { info })
+  }))

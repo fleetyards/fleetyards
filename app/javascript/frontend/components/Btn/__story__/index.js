@@ -6,10 +6,6 @@ import {
 import notes from './notes.md'
 import Btn from '../index'
 
-const info = {
-  // https://github.com/pocka/storybook-addon-vue-info
-}
-
 const buttonVariants = {
   label: 'Variant',
   options: ['default', 'danger', 'link', 'transparent'],
@@ -67,4 +63,4 @@ storiesOf('Btn', module)
         ${text('Label', 'Test Button')}
       </Btn>
     `,
-  }), { notes, info })
+  }), { notes })
