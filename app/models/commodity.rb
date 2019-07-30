@@ -8,11 +8,29 @@ class Commodity < ApplicationRecord
 
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
+  enum commodity_type: %i[gas metal mineral non_metals agricultural waste scrap vice]
+
+  ransacker :commodity_type, formatter: proc { |v| Commodity.commodity_types[v] } do |parent|
+    parent.table[:commodity_type]
+  end
+
+  ransack_alias :type, :commodity_type
+
   validates :name, presence: true, uniqueness: true
 
   before_save :update_slugs
 
   mount_uploader :store_image, StoreImageUploader
+
+  def self.type_filters
+    Commodity.commodity_types.map do |(item, _index)|
+      Filter.new(
+        category: 'commodity_type',
+        name: Commodity.human_enum_name(:commodity_type, item),
+        value: item
+      )
+    end
+  end
 
   def self.ordered_by_name
     order(name: :asc)

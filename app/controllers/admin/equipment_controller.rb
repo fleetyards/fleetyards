@@ -7,8 +7,10 @@ module Admin
 
     def index
       authorize! :index, :admin_equipment
-      @q = Equipment.order(name: :asc)
-                    .ransack(params[:q])
+      @q = Equipment.ransack(params[:q])
+
+      @q.sorts = 'name asc' if @q.sorts.empty?
+
       @equipment_list = @q.result
                           .page(params.fetch(:page) { nil })
                           .per(40)

@@ -72,6 +72,8 @@ en:
         item_type: Please select a Item Type
         component_class: Please select a Component Class
         item_class: Please select a Item Class
+      commodity:
+        commodity_type: Please select a Type
       equipment:
         slot: Please select a Slot
         equipment_type: Please select a Type

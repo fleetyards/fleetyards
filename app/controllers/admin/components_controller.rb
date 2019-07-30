@@ -8,6 +8,9 @@ module Admin
     def index
       authorize! :index, :admin_components
       @q = Component.ransack(params[:q])
+
+      @q.sorts = 'name asc' if @q.sorts.empty?
+
       @components = @q.result
                       .page(params.fetch(:page) { nil })
                       .per(40)

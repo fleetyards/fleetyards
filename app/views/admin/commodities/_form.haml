@@ -6,6 +6,12 @@
       %small
         = form_errors commodity, :name
 
+    .col-xs-12.col-md-6.form-group{class: form_error?(commodity, :commodity_type)}
+      = form.label :commodity_type
+      = form.select :commodity_type, Commodity.commodity_types.keys.map { |w| [Commodity.human_enum_name(:commodity_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.commodity.commodity_type") }, { class: 'form-control' }
+      %small
+        = form_errors commodity, :commodity_type
+
     .col-xs-12.col-md-6.form-group{class: form_error?(commodity, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'

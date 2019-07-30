@@ -2,13 +2,6 @@
 en:
   activerecord:
     attributes:
-      equipment:
-        types:
-          additional: Additional Equipment
-          powerplant: Powerplant
-          primary_thrusters: Primary Thrusters
-          shield: Shields
-          thrusters: Maneuvering Thrusters
       model:
         beam: Beam
         on_sale: On sale?
@@ -101,6 +94,12 @@ en:
           RSIPropulsion: Propulsion
           RSIThruster: Thruster
       equipment:
+        types:
+          additional: Additional Equipment
+          powerplant: Powerplant
+          primary_thrusters: Primary Thrusters
+          shield: Shields
+          thrusters: Maneuvering Thrusters
         hidden: hidden?
         slots:
           undersuit: Undersuit
@@ -182,7 +181,16 @@ en:
           outpost: Outpost
           aid_shelter: Aid Shelter
           gate: Gate
-
+      commodity:
+        commodity_types:
+          gas: Gas
+          metal: Metal
+          mineral: Mineral
+          non_metals: Non-Metals
+          agricultural: Agricultural
+          waste: Waste
+          scrap: Scrap
+          vice: Vice
     errors:
       messages:
         blank: Please fill out the Field
