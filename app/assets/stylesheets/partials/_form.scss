@@ -103,26 +103,58 @@ form {
   }
 }
 
-.select2 {
-  .select2-selection {
-    background-color: #3a3f44;
+.selectize-control,
+.selectize-control.single {
+  .selectize-input {
+    background: #3a3f44;
     border: 1px solid #272b30;
     height: 43px;
+    box-shadow: none;
 
-    span:first-child {
-      padding: 4px 0;
-      color: #c8c8c8;
+    &::after {
+      border-color: #c8c8c8 transparent transparent transparent;
+    }
+
+    &.dropdown-active::after {
+      border-color: transparent transparent #c8c8c8 transparent;
     }
   }
-}
 
-.select2-container--bootstrap .select2-dropdown,
-.select2-dropdown {
-  background-color: #3a3f44;
+  .selectize-dropdown,
+  .selectize-input,
+  .selectize-input input {
+    line-height: 28px;
+    color: #c8c8c8;
 
-  .select2-search__field {
-    background-color: darken(#3a3f44, 10%);
+    &.input-active {
+      background: #3a3f44;
+    }
+  }
+
+  .selectize-dropdown .optgroup-header {
+    background: #3a3f44;
+    color: #c8c8c8;
+    font-size: 120%;
+    text-align: center;
+  }
+
+  .selectize-dropdown .optgroup::before {
+    display: none;
+  }
+
+  .selectize-dropdown .optgroup {
     border: 1px solid #272b30;
+  }
+
+  .selectize-dropdown,
+  .selectize-dropdown.form-control {
+    background: darken(#3a3f44, 10%);
+    border: 1px solid #272b30;
+    color: #c8c8c8;
+  }
+
+  .selectize-dropdown .active {
+    background-color: $primary;
     color: #c8c8c8;
   }
 }

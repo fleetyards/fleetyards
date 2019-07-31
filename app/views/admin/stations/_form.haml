@@ -15,7 +15,7 @@
   .row
     .col-xs-12.col-md-6.form-group{class: form_error?(station, :celestial_object_id)}
       = form.label :celestial_object_id
-      = form.select :celestial_object_id, CelestialObject.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.celestial_object") }, { class: 'form-control select2' }
+      = form.select :celestial_object_id, CelestialObject.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.celestial_object") }, { class: 'form-control' }
       %small
         = form_errors station, :celestial_object_id
 

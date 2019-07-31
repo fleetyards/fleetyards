@@ -14,7 +14,7 @@
 
     .col-xs-12.col-md-6.form-group{class: form_error?(equipment, :manufacturer_id)}
       = form.label :manufacturer_id
-      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, equipment.manufacturer_id), { include_blank: true }, {class: 'form-control select2'}
+      = form.select :manufacturer_id, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, equipment.manufacturer_id), { include_blank: true }, {class: 'form-control'}
       %small
         = form_errors equipment, :manufacturer_id
 

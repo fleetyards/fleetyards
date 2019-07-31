@@ -8,7 +8,7 @@
 
     .col-xs-12.col-md-6.form-group{class: form_error?(shop, :station_id)}
       = form.label :station_id
-      = form.select :station_id, Station.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.shops.station") }, { class: 'form-control select2' }
+      = form.select :station_id, Station.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.shops.station") }, { class: 'form-control' }
       %small
         = form_errors shop, :station_id
 

@@ -38,7 +38,7 @@
 
           .form-group
             = f.label :celestial_object_id_eq
-            = f.select :celestial_object_id_eq, CelestialObject.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control select2' }
+            = f.select :celestial_object_id_eq, CelestialObject.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
 
           .btn-group
             %button.btn.btn-primary

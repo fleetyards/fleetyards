@@ -31,9 +31,14 @@
           .form-group
             = f.label :name_or_slug_cont
             = f.search_field :name_or_slug_cont, class: 'form-control'
+
           .form-group
             = f.label :station_id_eq
-            = f.select :station_id_eq, Station.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control select2' }
+            = f.select :station_id_eq, Station.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+
+          .form-group
+            = f.label :shop_type_eq
+            = f.select :shop_type_eq, Shop.shop_types.keys.map { |w| [Shop.human_enum_name(:shop_type, w), w] }, { include_blank: true }, { class: 'form-control' }
 
           .btn-group
             %button.btn.btn-primary

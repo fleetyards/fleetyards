@@ -2,15 +2,14 @@ window.laddaButton ?= {}
 
 window.App ?= {}
 
-window.App.initSelect2 = () ->
-  $(".select2").select2
-    theme: "bootstrap"
+window.App.initSelect = () ->
+  $('select').selectize()
 
 $(document).on 'click', 'a.disabled', (evt) ->
   false
 
 $(document).on 'dynamicFieldsFor.add', () ->
-  App.initSelect2()
+  App.initSelect()
 
 document.addEventListener 'turbolinks:load', ->
   $('[data-toggle=tooltip]').tooltip()
@@ -27,4 +26,4 @@ document.addEventListener 'turbolinks:load', ->
   if warning = $('body').attr('data-warning')
     displayWarning warning
 
-  App.initSelect2()
+  App.initSelect()
