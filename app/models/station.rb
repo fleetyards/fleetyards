@@ -5,7 +5,7 @@ class Station < ApplicationRecord
 
   has_many :shops, dependent: :destroy
   has_many :docks,
-           -> { order(ship_size: :desc) },
+           -> { order(ship_size: :asc) },
            dependent: :destroy,
            inverse_of: :station
   has_many :habitations,

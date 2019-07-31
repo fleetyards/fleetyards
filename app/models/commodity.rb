@@ -20,7 +20,7 @@ class Commodity < ApplicationRecord
 
   before_save :update_slugs
 
-  mount_uploader :store_image, StoreImageUploader
+  mount_uploader :store_image, CommodityStoreImageUploader
 
   def self.type_filters
     Commodity.commodity_types.map do |(item, _index)|

@@ -28,6 +28,10 @@
             = f.label :name_cont
             = f.search_field :name_cont, class: 'form-control'
 
+          .form-group
+            = f.label :commodity_type_eq
+            = f.select :commodity_type_eq, options_from_collection_for_select(Commodity.type_filters, :value, :name, @q.commodity_type_eq), { include_blank: true }, {class: 'form-control'}
+
           .btn-group
             %button.btn.btn-primary
               Filter

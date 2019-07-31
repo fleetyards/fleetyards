@@ -3,6 +3,8 @@
     = image_tag commodity.store_image.url
   %td
     = commodity.name
+  %td
+    = Commodity.human_enum_name(:commodity_type, commodity.commodity_type) if commodity.commodity_type.present?
   %td.text-right
     .btn-group
       = link_to edit_admin_commodity_path(commodity), title: I18n.t(:"actions.edit"), class: "btn btn-default" do

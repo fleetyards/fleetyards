@@ -70,7 +70,7 @@ export default {
       return this.groupBy(this.station.docks, 'sizeLabel')
     },
     docksByGroup() {
-      return this.groupBy(this.sortBy(this.station.docks, 'group'), 'group')
+      return this.groupBy(this.sortBy(this.station.docks, 'name'), 'group')
     },
   },
 }
