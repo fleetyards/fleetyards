@@ -83,30 +83,37 @@ module Api
             'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
           'dockCounts' => [{
-            'size' => 'Large',
-            'count' => 1,
-            'type' => 'landingpad',
-            'typeLabel' => 'Landingpad'
-          }, {
             'size' => 'Medium',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
+          }, {
+            'size' => 'Large',
+            'count' => 2,
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
           }],
           'docks' => [{
-            'name' => 'Landingpad One',
+            'name' => 'Dockingport 01',
+            'group' => nil,
+            'size' => 'medium',
+            'sizeLabel' => 'Medium',
+            'type' => 'dockingport',
+            'typeLabel' => 'Dockingport'
+          }, {
+            'name' => 'Landingpad 01',
             'group' => nil,
             'size' => 'large',
             'sizeLabel' => 'Large',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }, {
-            'name' => 'Dockingport One',
+            'name' => 'Landingpad 02',
             'group' => nil,
-            'size' => 'medium',
-            'sizeLabel' => 'Medium',
-            'type' => 'dockingport',
-            'typeLabel' => 'Dockingport'
+            'size' => 'large',
+            'sizeLabel' => 'Large',
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
           }],
           'habitationCounts' => [{
             'count' => 1,
@@ -173,7 +180,7 @@ module Api
             'typeLabel' => 'Dockingport'
           }],
           'docks' => [{
-            'name' => 'Dockingport one',
+            'name' => 'Dockingport 01',
             'group' => nil,
             'size' => 'small',
             'sizeLabel' => 'Small',
@@ -255,30 +262,37 @@ module Api
             'storeImageSmall' => portolisar.shops.last.store_image.small.url
           }],
           'dockCounts' => [{
-            'size' => 'Large',
-            'count' => 1,
-            'type' => 'landingpad',
-            'typeLabel' => 'Landingpad'
-          }, {
             'size' => 'Medium',
             'count' => 1,
             'type' => 'dockingport',
             'typeLabel' => 'Dockingport'
+          }, {
+            'size' => 'Large',
+            'count' => 2,
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
           }],
           'docks' => [{
-            'name' => 'Landingpad One',
+            'name' => 'Dockingport 01',
+            'group' => nil,
+            'size' => 'medium',
+            'sizeLabel' => 'Medium',
+            'type' => 'dockingport',
+            'typeLabel' => 'Dockingport'
+          }, {
+            'name' => 'Landingpad 01',
             'group' => nil,
             'size' => 'large',
             'sizeLabel' => 'Large',
             'type' => 'landingpad',
             'typeLabel' => 'Landingpad'
           }, {
-            'name' => 'Dockingport One',
+            'name' => 'Landingpad 02',
             'group' => nil,
-            'size' => 'medium',
-            'sizeLabel' => 'Medium',
-            'type' => 'dockingport',
-            'typeLabel' => 'Dockingport'
+            'size' => 'large',
+            'sizeLabel' => 'Large',
+            'type' => 'landingpad',
+            'typeLabel' => 'Landingpad'
           }],
           'habitationCounts' => [{
             'count' => 1,

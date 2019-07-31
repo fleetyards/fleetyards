@@ -3,17 +3,23 @@
 portolisar-pad-one:
   dock_type: landingpad
   station: portolisar
-  name: Landingpad One
+  name: Landingpad 01
+  ship_size: large
+
+portolisar-pad-two:
+  dock_type: landingpad
+  station: portolisar
+  name: Landingpad 02
   ship_size: large
 
 portolisar-dock-one:
   dock_type: dockingport
   station: portolisar
-  name: Dockingport One
+  name: Dockingport 01
   ship_size: medium
 
 corvolex-dock-one:
   dock_type: dockingport
   station: corvolex
-  name: Dockingport one
+  name: Dockingport 01
   ship_size: small
