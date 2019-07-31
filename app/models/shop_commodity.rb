@@ -66,6 +66,8 @@ class ShopCommodity < ApplicationRecord
       commodity_item.component_class
     when 'Equipment'
       commodity_item.equipment_type
+    when 'Commodity'
+      commodity_item.commodity_type
     end
   end
 
@@ -77,6 +79,8 @@ class ShopCommodity < ApplicationRecord
       commodity_item.component_class_label
     when 'Equipment'
       commodity_item.equipment_type_label
+    when 'Commodity'
+      commodity_item.commodity_type_label
     end
   end
 end

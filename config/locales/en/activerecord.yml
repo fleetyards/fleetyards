@@ -194,6 +194,8 @@ en:
           waste: Waste
           scrap: Scrap
           vice: Vice
+      shop_commodity:
+        price_per_unit: Price per Unit?
     errors:
       messages:
         blank: Please fill out the Field

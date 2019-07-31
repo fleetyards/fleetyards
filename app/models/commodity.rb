@@ -35,4 +35,8 @@ class Commodity < ApplicationRecord
   def self.ordered_by_name
     order(name: :asc)
   end
+
+  def commodity_type_label
+    Commodity.human_enum_name(:commodity_type, commodity_type)
+  end
 end
