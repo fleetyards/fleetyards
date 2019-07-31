@@ -20,10 +20,10 @@
       <span class="icon-bar top-bar" />
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
-      <i
+      <!-- <i
         v-if="isUpdateAvailable && navCollapsed"
         class="update-icon"
-      />
+      /> -->
     </button>
     <div
       v-if="nodeEnv"
@@ -133,7 +133,7 @@
             </b-collapse>
           </li>
         </ul>
-        <ul v-if="isUpdateAvailable">
+        <!-- <ul v-if="isUpdateAvailable">
           <li
             v-if="isAuthenticated"
             class="divider"
@@ -147,7 +147,7 @@
             </a>
           </li>
           <li class="divider" />
-        </ul>
+        </ul> -->
         <ul>
           <router-link
             :to="{ name: 'home' }"
