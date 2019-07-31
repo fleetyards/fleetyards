@@ -29,7 +29,7 @@ export default {
       type: String,
       default: 'default',
       validator(value) {
-        return ['default', 'primary'].indexOf(value) !== -1
+        return ['default', 'primary', 'success'].indexOf(value) !== -1
       },
     },
   },

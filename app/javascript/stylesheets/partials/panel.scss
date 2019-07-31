@@ -73,6 +73,11 @@ $contentBorderRadius: $panelContentBorderRadius;
     color: white;
   }
 
+  &.panel-success {
+    background-color: $success;
+    color: white;
+  }
+
   .text-huge {
     font-size: 40px;
   }

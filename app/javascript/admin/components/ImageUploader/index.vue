@@ -74,7 +74,8 @@
 
     <Panel
       v-if="isUploadActive"
-      @click="selectImages"
+      :variant="$refs.upload && $refs.upload.dropActive ? 'success' : null"
+      @click.native="selectImages"
     >
       <div class="dropzone">
         <i class="fal fa-file-plus fa-2x" />
@@ -144,6 +145,7 @@ import Panel from 'frontend/components/Panel'
 
 export default {
   name: 'ImageUploader',
+
   components: {
     Loader,
     VueUploadComponent,
@@ -152,24 +154,29 @@ export default {
     Btn,
     Panel,
   },
+
   props: {
     images: {
       type: Array,
       required: true,
     },
+
     galleryId: {
       type: String,
       default: null,
     },
+
     galleryType: {
       type: String,
       default: null,
     },
+
     loading: {
       type: Boolean,
       default: false,
     },
   },
+
   data() {
     return {
       newImages: [],
@@ -181,16 +188,19 @@ export default {
       },
     }
   },
+
   computed: {
     isUploadActive() {
       return !!this.galleryId && !!this.galleryType
     },
+
     allImages() {
       return [
         ...this.newImages,
         ...this.images,
       ]
     },
+
     metaData() {
       return {
         galleryId: this.galleryId,
@@ -223,21 +233,26 @@ export default {
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     },
   },
+
   mounted() {
     document.addEventListener('paste', this.addFileFromClipboard)
   },
+
   destroyed() {
     document.removeEventListener('paste')
   },
+
   methods: {
     addFileFromClipboard(event) {
       if (event.clipboardData && event.clipboardData.files.length > 0) {
         this.$refs.upload.add(event.clipboardData.files[0])
       }
     },
+
     selectImages() {
       this.$refs.upload.$el.querySelector('input').click()
     },
+
     selectFolder() {
       if (!this.$refs.upload.features.directory) {
         this.$alert({
@@ -258,22 +273,28 @@ export default {
         input.webkitdirectory = false
       }
     },
+
     setUploadCount() {
       this.uploadCount = this.newImages.length
     },
+
     startUpload() {
       this.setUploadCount()
       this.$refs.upload.active = true
     },
+
     startSingleUpload(image) {
       this.$refs.upload.update(image, { active: true })
     },
+
     cancelUpload() {
       this.newImages = []
     },
+
     cancelSingleUpload(image) {
       this.$refs.upload.remove(image)
     },
+
     async inputImage(newImage, oldImage) {
       if (newImage && oldImage && !newImage.active && oldImage.active) {
         if (newImage.xhr && newImage.xhr.status === 200) {
@@ -283,6 +304,7 @@ export default {
         }
       }
     },
+
     inputFilter(newImage, oldImage, prevent) {
       if (newImage && !oldImage) {
         if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
