@@ -173,7 +173,7 @@ GEM
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
       railties (>= 5.1)
-    hashdiff (0.4.0)
+    hashdiff (1.0.0)
     highline (2.0.2)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
@@ -487,7 +487,7 @@ GEM
       multi_json
       multipart-post (~> 2.0)
       optimist (~> 3.0)
-    webmock (3.6.0)
+    webmock (3.6.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
