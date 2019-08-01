@@ -3,7 +3,12 @@ window.laddaButton ?= {}
 window.App ?= {}
 
 window.App.initSelect = () ->
-  $('select').selectize()
+  $('select:not(.selectized)').selectize()
+
+window.App.unloadSelect = () ->
+  $selectize = $('select.selectized')
+  selectize = $selectize[0].selectize if $selectize
+  selectize.destroy() if selectize
 
 $(document).on 'click', 'a.disabled', (evt) ->
   false
@@ -27,3 +32,6 @@ document.addEventListener 'turbolinks:load', ->
     displayWarning warning
 
   App.initSelect()
+
+document.addEventListener 'turbolinks:before-cache', ->
+  App.unloadSelect()
