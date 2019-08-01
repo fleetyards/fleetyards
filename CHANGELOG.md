@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.20](https://github.com/fleetyards/app/compare/v3.5.19...v3.5.20) (2019-08-01)
+
+
+### Bug Fixes
+
+* **stations:** add missing label ([0225a92](https://github.com/fleetyards/app/commit/0225a92))
+
 ### [3.5.19](https://github.com/fleetyards/app/compare/v3.5.18...v3.5.19) (2019-08-01)
 
 ### [3.5.18](https://github.com/fleetyards/app/compare/v3.5.17...v3.5.18) (2019-07-31)
