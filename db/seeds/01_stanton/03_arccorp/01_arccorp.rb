@@ -10,7 +10,7 @@ area18 = Station.find_or_initialize_by(name: 'Area 18')
 area18.update!(
   celestial_object: arccorp,
   station_type: :district,
-  location: 'Area 18',
+  location: 'ArcCorp',
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18-1.jpg').open,
   hidden: false
 )
@@ -35,7 +35,7 @@ end
 astro = Shop.find_or_initialize_by(name: 'Astro Armada', station: area18)
 astro.update!(
   shop_type: :ships,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/astro.png').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/astro.jpg').open,
   selling: true,
   hidden: false
 )
@@ -43,7 +43,7 @@ astro.update!(
 dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: area18)
 dumpers_depot.update!(
   shop_type: :components,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/dumpers_depot.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/dumpers_depot.jpg').open,
   selling: true,
   hidden: false
 )
@@ -51,7 +51,7 @@ dumpers_depot.update!(
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: area18)
 casaba.update!(
   shop_type: :clothing,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/casaba.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/casaba.jpg').open,
   selling: true,
   hidden: false
 )
@@ -59,7 +59,7 @@ casaba.update!(
 cubby_blast = Shop.find_or_initialize_by(name: 'Cubby Blast', station: area18)
 cubby_blast.update!(
   shop_type: :armor_and_weapons,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/weapons.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/weapons.jpg').open,
   selling: true,
   hidden: false
 )
@@ -67,14 +67,28 @@ cubby_blast.update!(
 gloc = Shop.find_or_initialize_by(name: 'G-LOC Bar', station: area18)
 gloc.update!(
   shop_type: :bar,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/g-loc.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/g-loc.jpg').open,
+  hidden: false
+)
+
+tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division - Jobwell', station: area18)
+tdd.update!(
+  shop_type: :resources,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/jobwell.jpg').open,
+  hidden: false
+)
+
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: area18)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,
   hidden: false
 )
 
 centermass = Shop.find_or_initialize_by(name: 'CenterMass', station: area18)
 centermass.update!(
   shop_type: :weapons,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
   hidden: false
 )
 
@@ -87,9 +101,6 @@ rikerMemorial.update!(
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rikerMemorial)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial/admin.jpg').open, hidden: true)
-
 rikerMemorial.docks.destroy_all
 { small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|
   hangars.each do |hangar|
@@ -100,3 +111,48 @@ rikerMemorial.docks.destroy_all
     )
   end
 end
+
+area04 = Station.find_or_initialize_by(name: 'Area 04')
+area04.update!(
+  celestial_object: arccorp,
+  station_type: :district,
+  location: 'ArcCorp',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area04.jpg').open,
+  hidden: true
+)
+
+area06 = Station.find_or_initialize_by(name: 'Area 06')
+area06.update!(
+  celestial_object: arccorp,
+  station_type: :district,
+  location: 'ArcCorp',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area06.jpg').open,
+  hidden: true
+)
+
+area11 = Station.find_or_initialize_by(name: 'Area 11')
+area11.update!(
+  celestial_object: arccorp,
+  station_type: :district,
+  location: 'ArcCorp',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area11.jpg').open,
+  hidden: true
+)
+
+area17 = Station.find_or_initialize_by(name: 'Area 17')
+area17.update!(
+  celestial_object: arccorp,
+  station_type: :district,
+  location: 'ArcCorp',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area17.jpg').open,
+  hidden: true
+)
+
+area20 = Station.find_or_initialize_by(name: 'Area 20')
+area20.update!(
+  celestial_object: arccorp,
+  station_type: :district,
+  location: 'ArcCorp',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area20.jpg').open,
+  hidden: true
+)

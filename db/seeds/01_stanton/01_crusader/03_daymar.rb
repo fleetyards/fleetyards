@@ -24,7 +24,7 @@ pad = 1
   end
 end
 pad = 1
-{ medium: 1, large: 1 }.each do |ship_size, count|
+{ small: 1, medium: 1 }.each do |ship_size, count|
   count.times do |index|
     shubin.docks << Dock.new(
       name: ("%02d" % pad),
@@ -53,7 +53,7 @@ pad = 1
   end
 end
 pad = 1
-{ medium: 1, large: 1 }.each do |ship_size, count|
+{ small: 1, medium: 1 }.each do |ship_size, count|
   count.times do |index|
     arccorp.docks << Dock.new(
       name: ("%02d" % pad),
@@ -85,3 +85,18 @@ tamdon_plains.update!(celestial_object: daymar, station_type: :aid_shelter, loca
 
 dunlow_ridge = Station.find_or_initialize_by(name: 'Dunlow Ridge Aid Shelter')
 dunlow_ridge.update!(celestial_object: daymar, station_type: :aid_shelter, location: 'Daymar', store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/dunlow_ridge.jpg').open, hidden: false)
+
+nuen = Station.find_or_initialize_by(name: 'Nuen Waste Management')
+nuen.update!(
+  celestial_object: daymar,
+  station_type: :drug_lab,
+  location: 'Daymar',
+  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/nuen.jpg').open,
+  hidden: true
+)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: nuen)
+admin_office.update!(
+  shop_type: :admin,
+  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/nuen_admin.jpg').open,
+  hidden: true
+)

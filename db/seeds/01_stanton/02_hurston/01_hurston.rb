@@ -50,42 +50,42 @@ new_deal.update!(
 l19 = Station.find_or_initialize_by(name: 'L19 District', celestial_object: hurston, location: 'Lorville')
 l19.update!(
   station_type: :district,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/l19.jpg').open,
   hidden: false
 )
 
 admin = Shop.find_or_initialize_by(name: 'Admin Office', station: l19)
 admin.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19_admin.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/admin.jpg').open,
   hidden: true
 )
 
 tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station: l19)
 tammany_and_sons.update!(
   shop_type: :superstore,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/tammany_and_sons.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/tammany_and_sons.jpg').open,
   hidden: false
 )
 
 reclamation_n_disposal = Shop.find_or_initialize_by(name: 'Reclamation & Disposal', station: l19)
 reclamation_n_disposal.update!(
   shop_type: :salvage,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation_n_disposal.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/reclamation_n_disposal.jpg').open,
   hidden: false
 )
 
 m_n_v = Shop.find_or_initialize_by(name: 'M & V', station: l19)
 m_n_v.update!(
   shop_type: :bar,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/m_n_v.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/m_n_v.jpg').open,
   hidden: false
 )
 
 maria_pure_of_heart = Shop.find_or_initialize_by(name: 'MARIA - Pure of Heart', station: l19)
 maria_pure_of_heart.update!(
   shop_type: :hospital,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/maria_pure_of_heart.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/maria_pure_of_heart.jpg').open,
   hidden: false
 )
 
@@ -93,7 +93,7 @@ maria_pure_of_heart.update!(
   gate = Station.find_or_initialize_by(name: "Gate #{("%02d" % gateNumber)}", location: 'Lorville', celestial_object: hurston)
   gate.update!(
     station_type: :gate,
-    # store_image: Rails.root.join("db/seeds/images/stanton/hurston/gate-#{gateNumber}.jpg").open,
+    store_image: Rails.root.join("db/seeds/images/stanton/hurston/gate-#{gateNumber}.jpg").open,
     hidden: false
   )
   gate.docks.destroy_all
@@ -107,3 +107,24 @@ maria_pure_of_heart.update!(
     end
   end
 end
+
+business_district = Station.find_or_initialize_by(name: 'Central Business District', celestial_object: hurston, location: 'Lorville')
+business_district.update!(
+  station_type: :district,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/business/business.jpg').open,
+  hidden: false
+)
+
+transfers = Shop.find_or_initialize_by(name: 'CBD Transfers', station: business_district)
+transfers.update!(
+  shop_type: :resources,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/business/transfers.jpg').open,
+  hidden: false
+)
+
+showcase = Shop.find_or_initialize_by(name: 'HD Showcase', station: business_district)
+showcase.update!(
+  shop_type: :weapons,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/business/showcase.jpg').open,
+  hidden: false
+)

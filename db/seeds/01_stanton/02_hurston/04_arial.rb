@@ -21,7 +21,7 @@ pad = 1
   end
 end
 pad = 1
-{ medium: 1, large: 1 }.each do |ship_size, count|
+{ small: 1, medium: 1 }.each do |ship_size, count|
   count.times do |index|
     lathan.docks << Dock.new(
       name: ("%02d" % pad),
@@ -50,7 +50,7 @@ pad = 1
   end
 end
 pad = 1
-{ medium: 1, large: 1 }.each do |ship_size, count|
+{ small: 1, medium: 1 }.each do |ship_size, count|
   count.times do |index|
     bezdek.docks << Dock.new(
       name: ("%02d" % pad),
