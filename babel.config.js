@@ -65,7 +65,9 @@ module.exports = function(api) {
         {
           async: false
         }
-      ]
+      ],
+      require('@babel/plugin-proposal-optional-chaining'),
+      require('@babel/plugin-proposal-nullish-coalescing-operator'),
     ].filter(Boolean)
   }
 }
