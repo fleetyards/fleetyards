@@ -1,0 +1,26 @@
+@import '~stylesheets/variables';
+
+.station-item {
+  > .panel {
+    .panel-image {
+      height: 350px;
+      opacity: .8;
+      border-bottom: none;
+      -webkit-border-radius: $panelContentBorderRadius;
+      border-radius: $panelContentBorderRadius;
+
+      img {
+        -webkit-border-radius: $panelContentBorderRadius;
+        border-radius: $panelContentBorderRadius;
+      }
+    }
+
+    .panel-title {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      margin-bottom: 0;
+      text-shadow: 0 0 2px black;
+    }
+  }
+}

@@ -119,8 +119,8 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import StarsystemList from 'frontend/partials/Stations/List'
-import PlanetPanel from 'frontend/partials/Stations/Panel'
+import StarsystemList from 'frontend/partials/Starsystems/List'
+import PlanetPanel from 'frontend/partials/Planets/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'

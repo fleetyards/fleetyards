@@ -1,0 +1,74 @@
+@import '~stylesheets/variables';
+
+$borderRadius: 16px;
+
+.station-list {
+  > .panel {
+    min-height: 400px;
+    background-color: black;
+
+    .panel-heading .panel-title {
+      font-size: 30px;
+      margin-top: 10px;
+      text-shadow: 0 0 2px black;
+    }
+
+    > .panel-inner {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+  .panel-bg {
+    border-radius: $borderRadius;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .6);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity: .7;
+  }
+
+  .panel-stats {
+    dd,
+    dt {
+      text-shadow: 0 0 2px black;
+    }
+  }
+
+  .items {
+    margin-top: 140px;
+
+    h3 {
+      margin: 10px;
+      text-align: right;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 2px black;
+    }
+
+    .flex-row {
+      justify-content: flex-end;
+      flex-wrap: wrap-reverse;
+    }
+
+    .station-item {
+      > .panel {
+        .panel-image {
+          height: 160px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .station-list {
+    .items {
+      position: relative;
+    }
+  }
+}

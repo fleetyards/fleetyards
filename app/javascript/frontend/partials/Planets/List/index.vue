@@ -23,11 +23,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-lg-4">
-        <div class="panel-stats">
-          <Stats :station="item" />
-        </div>
-      </div>
+      <div class="col-xs-12 col-sm-6 col-lg-4" />
       <div class="col-xs-12 col-sm-6 col-lg-8 items">
         <slot />
       </div>
@@ -37,12 +33,10 @@
 
 <script>
 import Panel from 'frontend/components/Panel'
-import Stats from 'frontend/partials/Stations/ListStats'
 
 export default {
   components: {
     Panel,
-    Stats,
   },
 
   props: {
