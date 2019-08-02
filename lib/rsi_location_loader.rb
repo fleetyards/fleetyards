@@ -3,11 +3,17 @@
 require 'rsi_base_loader'
 
 class RsiLocationLoader < RsiBaseLoader
+  def initialize(options = {})
+    super
+
+    @locations = options[:locations] || %w[Stanton Nyx Pyro]
+  end
+
   def all
     starsystems = load_starsysyems
 
     starsystems.select do |starsystem|
-      %w[Stanton Nyx].include?(starsystem['name'])
+      locations.include?(starsystem['name'])
     end.each do |data|
       starsystem = sync_starsystem(data)
 

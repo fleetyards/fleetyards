@@ -7,7 +7,7 @@
         </h1>
       </div>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-xs-12">
         <Panel>
           <div class="starmap">
@@ -33,7 +33,7 @@
           </div>
         </Panel>
       </div>
-    </div> -->
+    </div>
     <div class="row">
       <div class="col-xs-12">
         <Paginator
@@ -118,6 +118,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
 import StarsystemList from 'frontend/partials/Starsystems/List'
 import PlanetPanel from 'frontend/partials/Planets/Panel'
 import Hash from 'frontend/mixins/Hash'
@@ -128,6 +129,7 @@ export default {
 
   components: {
     Loader,
+    Panel,
     StarsystemList,
     PlanetPanel,
   },
