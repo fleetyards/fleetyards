@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/fleetyards/app/compare/v3.5.21...v3.6.0) (2019-08-02)
+
+
+### Bug Fixes
+
+* **stations:** reorder partials and fix stations list ([0804e3d](https://github.com/fleetyards/app/commit/0804e3d))
+
+
+### Features
+
+* **stations:** remove empty info ([22c3fce](https://github.com/fleetyards/app/commit/22c3fce))
+
 ### [3.5.21](https://github.com/fleetyards/app/compare/v3.5.20...v3.5.21) (2019-08-02)
 
 ### [3.5.20](https://github.com/fleetyards/app/compare/v3.5.19...v3.5.20) (2019-08-01)
