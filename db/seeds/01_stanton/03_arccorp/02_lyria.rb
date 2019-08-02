@@ -97,7 +97,7 @@ end
 admin_office_shubin_sal_2 = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sal_2)
 admin_office_shubin_sal_2.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2_admin.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2_admin.jpg').open,
   hidden: false
 )
 
