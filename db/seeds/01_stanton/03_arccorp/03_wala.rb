@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 wala = CelestialObject.find_or_create_by!(name: 'Wala')
-wala.update!(hidden: false)
+wala.update!(store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/wala.jpg').open, hidden: false)
 
 area_061 = Station.find_or_initialize_by(name: 'ArcCrop Mining Area 061')
 area_061.update!(

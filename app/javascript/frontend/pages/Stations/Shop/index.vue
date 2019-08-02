@@ -140,7 +140,6 @@
             </div>
           </transition-group>
         </Panel>
-        <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"
           fixed
@@ -168,7 +167,6 @@ import Panel from 'frontend/components/Panel'
 import ShopBaseMetrics from 'frontend/partials/Shops/BaseMetrics'
 import ShopItemRow from 'frontend/partials/Shops/ShopItemRow'
 import FilterForm from 'frontend/partials/Shops/ShopItemFilterForm'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/components/Btn'
@@ -177,7 +175,6 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Loader,
-    EmptyBox,
     Panel,
     ShopBaseMetrics,
     ShopItemRow,
@@ -217,10 +214,6 @@ export default {
         return this.$t('actions.hideFilter')
       }
       return this.$t('actions.showFilter')
-    },
-
-    emptyBoxVisible() {
-      return !this.loading && this.commodities.length === 0
     },
 
     title() {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 lyria = CelestialObject.find_or_create_by!(name: 'Lyria')
-lyria.update!(hidden: false)
+lyria.update!(store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/lyria.jpg').open, hidden: false)
 
 humboldt_mines = Station.find_or_initialize_by(name: 'Humboldt Mines')
 humboldt_mines.update!(

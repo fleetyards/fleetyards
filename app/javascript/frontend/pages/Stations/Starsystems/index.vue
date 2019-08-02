@@ -96,7 +96,6 @@
             </StarsystemList>
           </div>
         </transition-group>
-        <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"
           fixed
@@ -121,7 +120,6 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import StarsystemList from 'frontend/partials/Starsystems/List'
 import PlanetPanel from 'frontend/partials/Planets/Panel'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 
@@ -130,7 +128,6 @@ export default {
 
   components: {
     Loader,
-    EmptyBox,
     StarsystemList,
     PlanetPanel,
   },
@@ -146,12 +143,6 @@ export default {
       loading: false,
       starsystems: [],
     }
-  },
-
-  computed: {
-    emptyBoxVisible() {
-      return !this.loading && !this.starsystems.length
-    },
   },
 
   watch: {

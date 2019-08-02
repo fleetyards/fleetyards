@@ -73,7 +73,7 @@
       </div>
     </div>
     <div
-      v-if="celestialObject"
+      v-if="celestialObject && stations.length"
       class="row"
     >
       <div class="col-xs-12 col-md-6">
@@ -110,7 +110,6 @@
             />
           </div>
         </transition-group>
-        <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"
           fixed
@@ -134,7 +133,6 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import StationList from 'frontend/partials/Stations/List'
 import ShopPanel from 'frontend/partials/Stations/Panel'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 import CelestialObjectMetrics from 'frontend/partials/CelestialObjects/Metrics'
@@ -143,7 +141,6 @@ export default {
   components: {
     Loader,
     Panel,
-    EmptyBox,
     StationList,
     ShopPanel,
     CelestialObjectMetrics,
@@ -164,10 +161,6 @@ export default {
   },
 
   computed: {
-    emptyBoxVisible() {
-      return !this.loading && this.stations.length === 0
-    },
-
     metaTitle() {
       if (!this.celestialObject) {
         return null

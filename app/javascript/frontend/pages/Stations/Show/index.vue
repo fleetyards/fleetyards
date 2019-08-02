@@ -51,7 +51,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <template v-if="station">
+        <template v-if="station && station.shops.length">
           <h2>{{ $t('headlines.shops') }}</h2>
           <transition-group
             name="fade-list"
@@ -76,7 +76,6 @@
               />
             </div>
           </transition-group>
-          <EmptyBox v-if="emptyBoxVisible" />
           <Loader
             :loading="loading"
             fixed
@@ -90,7 +89,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/components/Panel'
 import ShopPanel from 'frontend/partials/Stations/Panel'
@@ -104,7 +102,6 @@ export default {
 
   components: {
     Loader,
-    EmptyBox,
     Panel,
     ShopPanel,
     StationBaseMetrics,
@@ -132,10 +129,6 @@ export default {
     ...mapGetters('stations', [
       'backRoute',
     ]),
-
-    emptyBoxVisible() {
-      return !this.loading && (!this.station || this.station.shops.length === 0)
-    },
 
     metaTitle() {
       if (!this.station) {

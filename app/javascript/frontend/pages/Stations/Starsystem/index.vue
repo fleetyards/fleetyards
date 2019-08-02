@@ -100,7 +100,6 @@
             </PlanetList>
           </div>
         </transition-group>
-        <EmptyBox v-if="emptyBoxVisible" />
         <Loader
           :loading="loading"
           fixed
@@ -126,7 +125,6 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import PlanetList from 'frontend/partials/Planets/List'
 import MoonPanel from 'frontend/partials/Planets/Panel'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
 import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
 import Hash from 'frontend/mixins/Hash'
@@ -137,7 +135,6 @@ export default {
 
   components: {
     Loader,
-    EmptyBox,
     PlanetList,
     MoonPanel,
     StarsystemBaseMetrics,
@@ -160,10 +157,6 @@ export default {
   },
 
   computed: {
-    emptyBoxVisible() {
-      return !this.loading && !this.celestialObjects.length
-    },
-
     starsystemName() {
       if (this.celestialObjects.length === 0) {
         return ''
