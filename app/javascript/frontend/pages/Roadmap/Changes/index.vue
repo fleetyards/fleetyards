@@ -113,7 +113,7 @@ export default {
       const response = await this.$api.get('roadmap', {
         q: {
           releasedEq: false,
-          updatedAtGteq: format(subDays(new Date(), 6), 'YYYY-MM-DD'),
+          lastUpdatedAtGteq: format(subDays(new Date(), 6), 'YYYY-MM-DD'),
         },
       })
 
