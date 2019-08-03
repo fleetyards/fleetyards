@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/fleetyards/app/compare/v3.6.1...v3.7.0) (2019-08-03)
+
+
+### Bug Fixes
+
+* **roadmap:** update specs ([ee61155](https://github.com/fleetyards/app/commit/ee61155))
+* **roadmap:** update specs ([274ce39](https://github.com/fleetyards/app/commit/274ce39))
+* **stations:** rubocoptering and update specs ([2126af1](https://github.com/fleetyards/app/commit/2126af1))
+
+
+### Features
+
+* **station:** add images and fix location worker ([e6d4c53](https://github.com/fleetyards/app/commit/e6d4c53))
+
 ### [3.6.1](https://github.com/fleetyards/app/compare/v3.6.0...v3.6.1) (2019-08-02)
 
 ## [3.6.0](https://github.com/fleetyards/app/compare/v3.5.21...v3.6.0) (2019-08-02)
