@@ -5,6 +5,7 @@ module Api
     class StationsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:stations) }, only: [:index]
+      after_action -> { pagination_header(:images) }, only: [:images]
 
       def index
         authorize! :index, :api_stations
@@ -38,6 +39,17 @@ module Api
 
         render 'api/v1/shared/filters'
       end
+
+      def images
+        authorize! :show, :api_models
+        station = Station.visible.find_by!(slug: params[:slug])
+        @images = station.images
+                         .enabled
+                         .order('images.created_at desc')
+                         .page(params[:page])
+                         .per(per_page(Image))
+      end
+
 
       private def station_query_params
         @station_query_params ||= query_params(

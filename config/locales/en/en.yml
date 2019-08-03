@@ -71,6 +71,7 @@ en:
       starsystem: "%{starsystem} Starsystem"
       celestial_object: "%{celestial_object} in the %{starsystem} System"
       station: "%{station} near %{celestial_object}"
+      station_images: "Images of %{station} near %{celestial_object}"
       shop: "%{shop} - %{station}"
       ship_images: "%{model} Images"
       ship_videos: "%{model} Videos"

@@ -5,17 +5,20 @@
   >
     <dt>{{ $t('labels.station.type') }}:</dt>
     <dd>{{ station.typeLabel }}</dd>
+
     <dt>{{ $t('labels.station.location') }}:</dt>
     <dd>{{ station.location }}</dd>
+
     <dt v-if="station.shops.length">
       {{ $t('labels.station.shops') }}:
     </dt>
     <dd v-if="station.shops.length">
       {{ station.shops.map(item => item.name).join(', ') }}
     </dd>
-    <dt>{{ $t('labels.station.docks') }}:</dt>
-    <dd>
-      <template v-if="station.dockCounts.length">
+
+    <template v-if="station.dockCounts.length">
+      <dt>{{ $t('labels.station.docks') }}:</dt>
+      <dd>
         <ul class="list-unstyled">
           <li
             v-for="(dock, index) in station.dockCounts"
@@ -24,15 +27,12 @@
             {{ dock.size }} {{ dock.typeLabel }}: {{ dock.count }}
           </li>
         </ul>
-      </template>
-      <template v-else>
-        {{ $t('labels.none') }}
-      </template>
-    </dd>
+      </dd>
+    </template>
 
-    <dt>{{ $t('labels.station.habitation') }}:</dt>
-    <dd>
-      <template v-if="station.habitationCounts.length">
+    <template v-if="station.habitationCounts.length">
+      <dt>{{ $t('labels.station.habitation') }}:</dt>
+      <dd>
         <ul class="list-unstyled">
           <li
             v-for="(habitation, index) in station.habitationCounts"
@@ -41,11 +41,8 @@
             {{ habitation.typeLabel }}: {{ habitation.count }}
           </li>
         </ul>
-      </template>
-      <template v-else>
-        {{ $t('labels.none') }}
-      </template>
-    </dd>
+      </dd>
+    </template>
   </dl>
 </template>
 

@@ -26,9 +26,13 @@ export const routes = [
     name: 'station',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show'),
   }, {
+    path: ':slug/images',
+    name: 'station-images',
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show/Images'),
+  }, {
     path: ':station/shops/:slug',
     name: 'shop',
-    component: () => import(/* webpackChunkName: "frontend.page.stationss" */ 'frontend/pages/Stations/Shop'),
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Shop'),
   },
 ]
 

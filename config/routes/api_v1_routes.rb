@@ -116,6 +116,9 @@ v1_api_routes = lambda do
       get 'ship-sizes' => 'stations#ship_sizes'
       get 'station-types' => 'stations#station_types'
     end
+    member do
+      get :images
+    end
     resources :shops, param: :slug, only: %i[show] do
       resources :shop_commodities, path: 'shop-commodities', only: %i[index]
     end

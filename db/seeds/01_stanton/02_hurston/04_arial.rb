@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: take new image of Arial
+
 arial = CelestialObject.find_or_create_by!(name: 'Arial')
 arial.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/arial.jpg').open, hidden: false)
 

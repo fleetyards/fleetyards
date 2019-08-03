@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: take new image of Cellin
+
 cellin = CelestialObject.find_or_create_by!(name: 'Cellin')
 cellin.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/cellin.jpg').open, hidden: false)
 

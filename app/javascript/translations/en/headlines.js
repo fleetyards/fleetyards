@@ -53,6 +53,7 @@ export default {
   moons: 'Moons',
   stations: 'Stations',
   station: '%{station} near %{celestialObject}',
+  stationImages: 'Images of %{station} near %{celestialObject}',
   shops: 'Shops',
   shop: '%{shop} on %{station}',
   commodities: 'Commodities',

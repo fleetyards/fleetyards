@@ -73,6 +73,10 @@ class Station < ApplicationRecord
     images.first
   end
 
+  def random_image
+    images.enabled.background.order(Arel.sql('RANDOM()')).first
+  end
+
   def habitation_counts
     habitations.group_by(&:habitation_type).map do |habitation_type, habitations_by_type|
       OpenStruct.new(habitation_type: habitation_type, habitation_type_label: habitations_by_type.first.habitation_type_label, count: habitations_by_type.size)

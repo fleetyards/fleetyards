@@ -7,6 +7,6 @@ class LocationsWorker
   sidekiq_options retry: false, queue: (ENV['LOCATION_LOADER_QUEUE'] || 'fleetyards_location_loader').to_sym
 
   def perform
-    RsiLocationLoader.new.all(locations: Starsystem.all.map(&:name))
+    RsiLocationLoader.new(locations: Starsystem.all.map(&:name)).all
   end
 end

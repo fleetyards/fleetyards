@@ -47,6 +47,16 @@
             </li>
           </ul>
         </Panel>
+        <div class="text-right">
+          <div class="page-actions">
+            <Btn
+              v-if="station.hasImages"
+              :to="{ name: 'station-images', params: { slug: station.slug }}"
+            >
+              <i class="fa fa-images" />
+            </Btn>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -89,6 +99,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import Btn from 'frontend/components/Btn'
 import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/components/Panel'
 import ShopPanel from 'frontend/partials/Stations/Panel'
@@ -102,6 +113,7 @@ export default {
 
   components: {
     Loader,
+    Btn,
     Panel,
     ShopPanel,
     StationBaseMetrics,
@@ -134,6 +146,7 @@ export default {
       if (!this.station) {
         return null
       }
+
       return this.$t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
     },
   },
@@ -145,8 +158,9 @@ export default {
 
     station() {
       this.setBackRoute()
-      if (this.station.storeImage) {
-        this.$store.commit('setBackgroundImage', this.station.storeImage)
+
+      if (this.station.backgroundImage) {
+        this.$store.commit('setBackgroundImage', this.station.backgroundImage)
       }
     },
   },

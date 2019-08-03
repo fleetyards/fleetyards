@@ -231,9 +231,6 @@ export default {
 
     shop() {
       this.setBackRoute()
-      if (this.shop.storeImage) {
-        this.$store.commit('setBackgroundImage', this.shop.storeImage)
-      }
     },
   },
 

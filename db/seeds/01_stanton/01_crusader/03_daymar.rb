@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: take new image of Daymar
+
 daymar = CelestialObject.find_or_create_by!(name: 'Daymar')
 daymar.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/daymar.jpg').open, hidden: false)
 

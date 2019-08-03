@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: take new image of Aberdeen
+
 aberdeen = CelestialObject.find_or_create_by!(name: 'Aberdeen')
 aberdeen.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/aberdeen/aberdeen.jpg').open, hidden: false)
 

@@ -10,6 +10,7 @@ json.store_image station.store_image.url
 json.store_image_medium station.store_image.medium.url
 json.store_image_small station.store_image.small.url
 json.description station.description
+json.background_image station.random_image&.name&.url
 json.celestial_object do
   json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
 end
@@ -31,3 +32,4 @@ end
 json.habitations do
   json.array! station.habitations, partial: 'api/v1/stations/habitation', as: :habitation
 end
+json.has_images station.images.count.positive?

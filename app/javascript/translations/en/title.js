@@ -21,6 +21,7 @@ export default {
   starsystem: '%{starsystem} Starsystem',
   celestialObject: '%{celestialObject} in the %{starsystem} System',
   station: '%{station} near %{celestialObject}',
+  stationImages: 'Images of %{station} near %{celestialObject}',
   shop: '%{shop} - %{station}',
   requestPassword: 'Request Password',
   changePassword: 'Change Password',

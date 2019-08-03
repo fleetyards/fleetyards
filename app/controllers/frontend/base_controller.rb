@@ -106,6 +106,17 @@ module Frontend
       render 'frontend/index'
     end
 
+    def station_images
+      @station = Station.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
+      if @station.present?
+        @title = I18n.t('title.frontend.station_images', station: @station.name, celestial_object: @station.celestial_object.name)
+        # @description = @station.description
+        @og_type = 'article'
+        @og_image = @station.store_image.url
+      end
+      render 'frontend/index'
+    end
+
     def celestial_object
       @celestial_object = CelestialObject.find_by(['lower(slug) = :value', { value: (params[:slug] || '').downcase }])
       if @celestial_object.present?
