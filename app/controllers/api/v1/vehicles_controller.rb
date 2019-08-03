@@ -14,12 +14,12 @@ module Api
         scope = current_user.vehicles
 
         if price_range.present?
-          vehicle_query_params['sorts'] = 'price asc'
+          vehicle_query_params['sorts'] = 'model_price asc'
           scope = scope.includes(:model).where(models: { price: price_range })
         end
 
         if pledge_price_range.present?
-          vehicle_query_params['sorts'] = 'last_pledge_price asc'
+          vehicle_query_params['sorts'] = 'model_last_pledge_price asc'
           scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 

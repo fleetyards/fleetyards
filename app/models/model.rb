@@ -143,10 +143,6 @@ class Model < ApplicationRecord
     end.flatten
   end
 
-  def price
-    shop_commodities.order(sell_price: :desc).first&.sell_price
-  end
-
   def variants
     Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
   end

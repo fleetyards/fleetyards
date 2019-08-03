@@ -39,6 +39,7 @@ class ShopCommodity < ApplicationRecord
   validates :commodity_item, presence: true
 
   before_validation :set_commodity_item
+  after_save :update_model_price
 
   attr_accessor :commodity_item_selected
 
@@ -52,6 +53,12 @@ class ShopCommodity < ApplicationRecord
     return if commodity_item_selected.blank?
 
     self.commodity_item = GlobalID::Locator.locate(commodity_item_selected)
+  end
+
+  def update_model_price
+    return if model.blank?
+
+    model.update(price: ShopCommodity.where(commodity_item_id: model.id, commodity_item_type: 'Model').order(sell_price: :desc).first&.sell_price)
   end
 
   def category
