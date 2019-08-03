@@ -3,6 +3,8 @@
 require 'rsi_base_loader'
 
 class RsiLocationLoader < RsiBaseLoader
+  attr_accessor :locations
+
   def initialize(options = {})
     super
 
