@@ -116,12 +116,22 @@
           </Panel>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <Btn
+            block
+          >
+            Erkul DPS Calculator
+          </Btn>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Panel from 'frontend/components/Panel'
+import Btn from 'frontend/components/Btn'
 import HardpointCategory from './Category'
 import HardpointIcon from './Icon'
 
@@ -130,6 +140,7 @@ export default {
     HardpointCategory,
     HardpointIcon,
     Panel,
+    Btn,
   },
   props: {
     hardpoints: {
