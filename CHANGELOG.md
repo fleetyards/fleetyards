@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.3](https://github.com/fleetyards/app/compare/v3.7.2...v3.7.3) (2019-08-03)
+
+
+### Bug Fixes
+
+* **roadmap:** filter by last version created_at ([fe5e5d2](https://github.com/fleetyards/app/commit/fe5e5d2))
+* **ships-compare:** download s3 image before composing compare image ([55d6c6e](https://github.com/fleetyards/app/commit/55d6c6e))
+
 ### [3.7.2](https://github.com/fleetyards/app/compare/v3.7.1...v3.7.2) (2019-08-03)
 
 
