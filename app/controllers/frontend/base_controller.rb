@@ -160,8 +160,9 @@ module Frontend
       return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|
-        FileUtils.cp(model.store_image.file.path, Rails.root.join('tmp', model.slug))
-        FileUtils.cp(model.store_image.file.path, Rails.root.join('tmp', "#{filename_base}-base")) if index.zero?
+        image = MiniMagick::Image.open(model.store_image.to_s)
+        image.write(Rails.root.join('tmp', model.slug))
+        image.write(Rails.root.join('tmp', "#{filename_base}-base")) if index.zero?
       end
 
       base_image = MiniMagick::Image.new(Rails.root.join('tmp', "#{filename_base}-base"))
