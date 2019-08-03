@@ -12,4 +12,8 @@ class RoadmapItem < ApplicationRecord
   def self.active
     where(active: true)
   end
+
+  def last_version_changed_at
+    versions.last&.created_at || updated_at
+  end
 end
