@@ -41,14 +41,19 @@
             v-for="(update, index) in updates(item.lastVersion)"
             :key="index"
           >
-            <template v-if="update.key === 'tasks'">
+            <template v-if="update.key === 'release' && !update.old">
+              {{ $t('labels.roadmap.lastVersion.addedToRelease', {
+                release: update.new,
+              }) }}
+            </template>
+            <template v-else-if="update.key === 'tasks'">
               {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
             </template>
-            <template v-else-if="update.key === 'release' && !update.old">
-              {{ $t('labels.roadmap.lastVersion.addedToRelease', {
-                release: update.new,
+            <template v-else-if="update.key === 'inprogress'">
+              {{ $t(`labels.roadmap.lastVersion.inprogress.${update.change}`, {
+                value: removeSign(update.count),
               }) }}
             </template>
             <template v-else>
@@ -127,12 +132,12 @@ export default {
       if (!this.item.tasks) {
         return '?'
       }
-      return Math.round(100 * this.completed / this.tasks)
+      return Math.round(100 * this.completed / this.item.tasks)
     },
 
     inprogress() {
       if (this.item.inprogress) {
-        return Math.max(this.item.inprogress - this.completed, 0)
+        return Math.min(this.item.inprogress, this.item.tasks)
       }
       return 0
     },
@@ -165,13 +170,14 @@ export default {
       return isBefore(new Date(), addHours(new Date(this.item.lastVersionChangedAt), 24))
     },
   },
+
   methods: {
     removeSign(number) {
       return (number < 0) ? number * -1 : number
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map((key) => {
+      return ['tasks', 'completed', 'release', 'inprogress'].filter(key => lastVersion[key]).map((key) => {
         const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
         return {
           key,

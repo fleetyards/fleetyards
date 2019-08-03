@@ -31,6 +31,10 @@ export default {
         one: 'Completed %{count} Task',
         other: 'Completed %{count} Tasks',
       },
+      inprogress: {
+        decreased: 'Decreased Tasks in Progress by %{value}',
+        increased: 'Increased Tasks in Progress by %{value}',
+      },
       tasks: {
         decreased: 'Decreased Tasks by %{value}',
         increased: 'Increased Tasks by %{value}',
