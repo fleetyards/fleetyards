@@ -50,7 +50,6 @@ module Api
                          .per(per_page(Image))
       end
 
-
       private def station_query_params
         @station_query_params ||= query_params(
           :celestial_object_eq, :name_cont, :habs_not_null,

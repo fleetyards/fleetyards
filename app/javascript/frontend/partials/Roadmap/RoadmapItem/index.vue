@@ -31,7 +31,7 @@
             v-tooltip="$t('labels.roadmap.lastUpdate')"
             class="pull-right"
           >
-            {{ $l(item.updatedAt) }}
+            {{ $l(item.lastVersionChangedAt) }}
             <i class="far fa-clock" />
           </small>
         </h3>
@@ -95,16 +95,19 @@ export default {
   components: {
     Panel,
   },
+
   props: {
     item: {
       type: Object,
       required: true,
     },
+
     slim: {
       type: Boolean,
       default: false,
     },
   },
+
   computed: {
     tasks() {
       if (this.item.tasks) {
@@ -112,50 +115,61 @@ export default {
       }
       return '?'
     },
+
     completed() {
       if (this.item.completed) {
         return this.item.completed
       }
       return 0
     },
+
     completedPercent() {
       if (!this.item.tasks) {
         return '?'
       }
       return Math.round(100 * this.completed / this.tasks)
     },
+
     inprogress() {
       if (this.item.inprogress) {
         return Math.max(this.item.inprogress - this.completed, 0)
       }
       return 0
     },
+
     progressLabel() {
       return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
     },
+
     storeImage() {
       if (this.item.storeImageSmall) {
         return this.item.storeImageSmall
       }
+
       return `https://robertsspaceindustries.com${this.item.image}`
     },
+
     description() {
       if (this.item.body) {
         return this.item.body
       }
+
       return this.item.description
     },
+
     showInprogress() {
       return this.inprogress !== 0 && this.completed !== this.item.tasks
     },
+
     recentlyUpdated() {
-      return isBefore(new Date(), addHours(new Date(this.item.updatedAt), 24))
+      return isBefore(new Date(), addHours(new Date(this.item.lastVersionChangedAt), 24))
     },
   },
   methods: {
     removeSign(number) {
       return (number < 0) ? number * -1 : number
     },
+
     updates(lastVersion) {
       return ['tasks', 'completed', 'release'].filter(key => lastVersion[key]).map((key) => {
         const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)

@@ -26,6 +26,7 @@ module Api
           'storeImageMedium' => portolisar.store_image.medium.url,
           'storeImageSmall' => portolisar.store_image.small.url,
           'description' => nil,
+          'backgroundImage' => nil,
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
@@ -126,6 +127,7 @@ module Api
             'type' => 'container',
             'typeLabel' => 'Container'
           }],
+          'hasImages' => false,
           'createdAt' => portolisar.created_at.to_time.iso8601,
           'updatedAt' => portolisar.updated_at.to_time.iso8601
         }, {
@@ -139,6 +141,7 @@ module Api
           'storeImageMedium' => corvolex.store_image.medium.url,
           'storeImageSmall' => corvolex.store_image.small.url,
           'description' => nil,
+          'backgroundImage' => nil,
           'celestialObject' => {
             'name' => 'Daymar',
             'slug' => 'daymar',
@@ -189,6 +192,7 @@ module Api
           }],
           'habitationCounts' => [],
           'habitations' => [],
+          'hasImages' => false,
           'createdAt' => corvolex.created_at.to_time.iso8601,
           'updatedAt' => corvolex.updated_at.to_time.iso8601
         }]
@@ -205,6 +209,7 @@ module Api
           'storeImageMedium' => portolisar.store_image.medium.url,
           'storeImageSmall' => portolisar.store_image.small.url,
           'description' => nil,
+          'backgroundImage' => nil,
           'celestialObject' => {
             'name' => 'Crusader',
             'slug' => 'crusader',
@@ -305,6 +310,7 @@ module Api
             'type' => 'container',
             'typeLabel' => 'Container'
           }],
+          'hasImages' => false,
           'images' => [],
           'createdAt' => portolisar.created_at.to_time.iso8601,
           'updatedAt' => portolisar.updated_at.to_time.iso8601

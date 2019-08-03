@@ -4,7 +4,7 @@ one:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1
-  release: MyString
+  release: 4.1
   name: MyString
   body: MyText
   description: MyText
@@ -13,12 +13,13 @@ one:
   tasks: 1
   inprogress: 1
   completed: 1
+  active: true
 
 two:
   rsi_id: 1
   rsi_category_id: 1
   rsi_release_id: 1
-  release: MyString
+  release: 4.0
   name: MyString
   body: MyText
   description: MyText
@@ -27,3 +28,4 @@ two:
   tasks: 1
   inprogress: 1
   completed: 1
+  active: true
