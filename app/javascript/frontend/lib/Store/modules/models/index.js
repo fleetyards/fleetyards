@@ -13,10 +13,6 @@ export default () => ({
       return state.detailsVisible
     },
 
-    filterVisible(state) {
-      return state.filterVisible
-    },
-
     fleetchartVisible(state) {
       return state.fleetchartVisible
     },
@@ -34,10 +30,6 @@ export default () => ({
   mutations: {
     reset(state) {
       Object.assign(state, getDefaultState())
-    },
-
-    setFilterVisible(state, payload) {
-      state.filterVisible = payload
     },
 
     setDetailsVisible(state, payload) {
