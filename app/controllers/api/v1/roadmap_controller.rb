@@ -12,7 +12,7 @@ module Api
 
         @q = RoadmapItem.active.ransack(roadmap_query_params)
 
-        @roadmap_items = @q.result
+        @roadmap_items = @q.result(distinct: true)
       end
 
       private def roadmap_query_params

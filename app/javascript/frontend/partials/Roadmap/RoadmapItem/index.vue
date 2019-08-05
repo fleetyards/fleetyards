@@ -177,7 +177,7 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'inprogress'].filter(key => lastVersion[key]).map((key) => {
+      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter(key => lastVersion[key]).map((key) => {
         const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
         return {
           key,

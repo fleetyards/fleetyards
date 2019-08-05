@@ -39,6 +39,7 @@ export default {
         decreased: 'Decreased Tasks by %{value}',
         increased: 'Increased Tasks by %{value}',
       },
+      released: 'Item was released to PU',
       release: 'Item moved from release %{old} to %{new}',
       addedToRelease: 'Item new in release %{release}',
     },
