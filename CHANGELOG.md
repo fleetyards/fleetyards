@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://github.com/fleetyards/app/compare/v3.7.4...v3.8.0) (2019-08-05)
+
+
+### Bug Fixes
+
+* **roadmap:** add released to versioning ([499e373](https://github.com/fleetyards/app/commit/499e373))
+
+
+### Features
+
+* **trade-routes:** add shop based commodity trade routes ([#746](https://github.com/fleetyards/app/issues/746)) ([eb27f7d](https://github.com/fleetyards/app/commit/eb27f7d))
+
 ### [3.7.4](https://github.com/fleetyards/app/compare/v3.7.3...v3.7.4) (2019-08-03)
 
 
