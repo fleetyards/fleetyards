@@ -230,16 +230,15 @@
             <a>{{ $t('nav.fleets') }}</a>
           </router-link>
           <router-link
-            :class="{ active: cargoRouteActive }"
             :to="{
-              name: 'cargo',
+              name: 'trade-routes',
               query: {
-                q: $store.state.filters['cargo'],
+                q: $store.state.filters['trade-routes'],
               },
             }"
             tag="li"
           >
-            <a>{{ $t('nav.cargo') }}</a>
+            <a>{{ $t('nav.tradeRoutes') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'stats' }"

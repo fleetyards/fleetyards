@@ -49,7 +49,7 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics"
+          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics && !mobile"
           class="row"
         >
           <div class="col-xs-12 hangar-metrics metrics-block">
@@ -87,191 +87,171 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-6">
-            <div class="page-actions page-actions-left">
-              <Btn
-                v-show="!fleetchartVisible && vehicles.length"
-                v-tooltip="toggleDetailsTooltip"
-                :active="detailsVisible"
-                :aria-label="toggleDetailsTooltip"
-                size="small"
-                @click.native="toggleDetails"
-              >
-                <i
-                  :class="{
-                    'fa fa-chevron-up': detailsVisible,
-                    'far fa-chevron-down': !detailsVisible,
-                  }"
-                />
-              </Btn>
-              <Btn
-                v-tooltip="toggleFiltersTooltip"
-                :active="filterVisible"
-                :aria-label="toggleFiltersTooltip"
-                size="small"
-                @click.native="toggleFilter"
-              >
-                <i
-                  :class="{
-                    fas: isFilterSelected,
-                    far: !isFilterSelected,
-                  }"
-                  class="fa-filter"
-                />
-              </Btn>
-              <DownloadScreenshotBtn
-                v-if="fleetchartVisible"
-                element="#fleetchart"
-                filename="my-hangar-fleetchart"
-              />
-              <Btn
-                size="small"
-                @click.native="toggleFleetchart"
-              >
-                <template v-if="fleetchartVisible">
-                  {{ $t('actions.hideFleetchart') }}
-                </template>
-                <template v-else>
-                  {{ $t('actions.showFleetchart') }}
-                </template>
-              </Btn>
-              <Btn
-                v-tooltip="$t('actions.addVehicle')"
-                :aria-label="$t('actions.addVehicle')"
-                size="small"
-                @click.native="showNewModal"
-              >
-                <i class="fa fa-plus" />
-              </Btn>
-              <Btn
-                v-tooltip="toggleGuideTooltip"
-                :active="guideVisible"
-                :aria-label="toggleGuideTooltip"
-                size="small"
-                @click.native="toggleGuide"
-              >
-                <i class="fa fa-question" />
-              </Btn>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6">
-            <Paginator
-              v-if="!fleetchartVisible && vehicles.length"
-              :page="currentPage"
-              :total="totalPages"
-              right
-            />
-          </div>
-        </div>
-        <div class="row">
-          <transition
-            name="slide"
-            appear
-            @before-enter="toggleFullscreen"
-            @after-leave="toggleFullscreen"
-          >
-            <div
-              v-show="filterVisible"
-              class="col-md-3 col-xlg-2"
-            >
-              <VehiclesFilterForm :hangar-groups-options="hangarGroups" />
-            </div>
-          </transition>
-          <div
+      </div>
+    </div>
+
+    <FilteredList>
+      <template slot="actions">
+        <Btn
+          v-show="!fleetchartVisible && vehicles.length"
+          v-tooltip="toggleDetailsTooltip"
+          :active="detailsVisible"
+          :aria-label="toggleDetailsTooltip"
+          size="small"
+          @click.native="toggleDetails"
+        >
+          <i
             :class="{
-              'col-md-9 col-xlg-10': !fullscreen,
+              'fa fa-chevron-up': detailsVisible,
+              'far fa-chevron-down': !detailsVisible,
             }"
-            class="col-xs-12 col-animated"
+          />
+        </Btn>
+
+        <DownloadScreenshotBtn
+          v-if="fleetchartVisible"
+          element="#fleetchart"
+          filename="my-hangar-fleetchart"
+        />
+
+        <Btn
+          size="small"
+          @click.native="toggleFleetchart"
+        >
+          <template v-if="fleetchartVisible">
+            {{ $t('actions.hideFleetchart') }}
+          </template>
+          <template v-else>
+            {{ $t('actions.showFleetchart') }}
+          </template>
+        </Btn>
+
+        <Btn
+          v-tooltip="$t('actions.addVehicle')"
+          :aria-label="$t('actions.addVehicle')"
+          size="small"
+          @click.native="showNewModal"
+        >
+          <i class="fa fa-plus" />
+        </Btn>
+
+        <Btn
+          v-tooltip="toggleGuideTooltip"
+          :active="guideVisible"
+          :aria-label="toggleGuideTooltip"
+          size="small"
+          @click.native="toggleGuide"
+        >
+          <i class="fa fa-question" />
+        </Btn>
+      </template>
+
+      <Paginator
+        v-if="!fleetchartVisible && vehicles.length"
+        slot="pagination-top"
+        :page="currentPage"
+        :total="totalPages"
+        right
+      />
+
+      <VehiclesFilterForm
+        slot="filter"
+        :hangar-groups-options="hangarGroups"
+      />
+
+      <template v-slot:default="{ filterVisible }">
+        <transition
+          name="fade"
+          appear
+        >
+          <div
+            v-if="fleetchartVisible && fleetchartVehicles.length"
+            class="row"
           >
-            <transition
-              name="fade"
-              appear
-            >
-              <div
-                v-if="fleetchartVisible && fleetchartVehicles.length"
-                class="row"
-              >
-                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                  <FleetchartSlider
-                    :initial-scale="fleetchartScale"
-                    @change="updateScale"
-                  />
-                </div>
-              </div>
-            </transition>
-            <HangarGuideBox v-if="guideVisible" />
-            <div
-              v-else-if="fleetchartVisible"
-              class="row"
-            >
-              <div class="col-xs-12 fleetchart-wrapper">
-                <transition-group
-                  id="fleetchart"
-                  name="fade-list"
-                  class="flex-row fleetchart"
-                  tag="div"
-                  appear
-                >
-                  <FleetchartItem
-                    v-for="vehicle in fleetchartVehicles"
-                    :key="vehicle.id"
-                    :model="vehicle.model"
-                    :scale="fleetchartScale"
-                  />
-                </transition-group>
-              </div>
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+              <FleetchartSlider
+                :initial-scale="fleetchartScale"
+                @change="updateScale"
+              />
             </div>
+          </div>
+        </transition>
+
+        <HangarGuideBox v-if="guideVisible" />
+
+        <div
+          v-else-if="fleetchartVisible"
+          class="row"
+        >
+          <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
-              v-else
+              id="fleetchart"
               name="fade-list"
-              class="flex-row"
+              class="flex-row fleetchart"
               tag="div"
               appear
             >
-              <div
-                v-for="vehicle in vehicles"
+              <FleetchartItem
+                v-for="vehicle in fleetchartVehicles"
                 :key="vehicle.id"
-                :class="{
-                  'col-lg-4': fullscreen,
-                  'col-xlg-4': !fullscreen,
-                }"
-                class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-              >
-                <ModelPanel
-                  :model="vehicle.model"
-                  :vehicle="vehicle"
-                  :details="detailsVisible"
-                  :on-edit="showEditModal"
-                  :on-addons="showAddonsModal"
-                  is-my-ship
-                />
-              </div>
+                :model="vehicle.model"
+                :scale="fleetchartScale"
+              />
             </transition-group>
-            <EmptyBox v-if="emptyBoxVisible" />
-            <Loader
-              :loading="loading"
-              fixed
-            />
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <Paginator
-              v-if="!fleetchartVisible && vehicles.length"
-              :page="currentPage"
-              :total="totalPages"
-              right
+
+        <transition-group
+          v-else
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="vehicle in vehicles"
+            :key="vehicle.id"
+            :class="{
+              'col-lg-4': filterVisible,
+              'col-xlg-4': !filterVisible,
+            }"
+            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel
+              :model="vehicle.model"
+              :vehicle="vehicle"
+              :details="detailsVisible"
+              :on-edit="showEditModal"
+              :on-addons="showAddonsModal"
+              is-my-ship
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </transition-group>
+
+        <EmptyBox v-if="emptyBoxVisible" />
+
+        <Loader
+          :loading="loading"
+          fixed
+        />
+      </template>
+
+      <Paginator
+        v-if="!fleetchartVisible && vehicles.length"
+        slot="pagination-bottom"
+        :page="currentPage"
+        :total="totalPages"
+        right
+      />
+    </FilteredList>
+
     <VehicleModal
       ref="vehicleModal"
       :hangar-groups="hangarGroups"
     />
+
     <AddonsModal ref="addonsModal" />
+
     <NewVehiclesModal ref="newVehiclesModal" />
   </section>
 </template>
@@ -280,6 +260,7 @@
 import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
+import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
@@ -304,6 +285,7 @@ export default {
 
   components: {
     Loader,
+    FilteredList,
     Btn,
     DownloadScreenshotBtn,
     ModelPanel,
@@ -330,10 +312,8 @@ export default {
     return {
       loading: true,
       vehicles: [],
-      filters: [],
       fleetchartVehicles: [],
       hangarGroups: [],
-      fullscreen: false,
       vehiclesCount: null,
       tooltipTrigger: 'click',
       showGuide: false,
@@ -353,13 +333,13 @@ export default {
     ...mapGetters('hangar', [
       'ships',
       'detailsVisible',
-      'filterVisible',
       'fleetchartVisible',
       'fleetchartScale',
     ]),
 
     emptyBoxVisible() {
-      return !this.loading && (this.noVehicles || this.noFleetchartVehicles) && this.filterPresent
+      return !this.loading && (this.noVehicles || this.noFleetchartVehicles)
+        && this.isFilterSelected
     },
 
     guideVisible() {
@@ -374,22 +354,11 @@ export default {
       return !this.fleetchartVehicles.length && this.fleetchartVisible
     },
 
-    filterPresent() {
-      return this.isFilterSelected || this.$route.query.page
-    },
-
     toggleDetailsTooltip() {
       if (this.detailsVisible) {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
-    },
-
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
     },
 
     toggleGuideTooltip() {
@@ -431,12 +400,6 @@ export default {
     if (this.$route.query.fleetchart && !this.fleetchartVisible) {
       this.$store.dispatch('hangar/toggleFleetchart')
     }
-
-    if (this.mobile) {
-      this.$store.commit('hangar/setFilterVisible', false)
-    }
-
-    this.toggleFullscreen()
   },
 
   beforeDestroy() {
@@ -469,14 +432,6 @@ export default {
 
     showAddonsModal(vehicle) {
       this.$refs.addonsModal.open(vehicle)
-    },
-
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
-    },
-
-    toggleFilter() {
-      this.$store.dispatch('hangar/toggleFilter')
     },
 
     toggleDetails() {

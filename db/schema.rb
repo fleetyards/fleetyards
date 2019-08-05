@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_103414) do
+ActiveRecord::Schema.define(version: 2019_08_05_101732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -113,13 +113,6 @@ ActiveRecord::Schema.define(version: 2019_08_03_103414) do
     t.integer "commodity_type"
   end
 
-  create_table "commodity_prices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "key"
-    t.json "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "size", limit: 255
@@ -145,11 +138,11 @@ ActiveRecord::Schema.define(version: 2019_08_03_103414) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ship_size"
-    t.string "group"
     t.uuid "model_id"
     t.decimal "height", precision: 15, scale: 2
     t.decimal "beam", precision: 15, scale: 2
     t.decimal "length", precision: 15, scale: 2
+    t.string "group"
     t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
@@ -504,26 +497,27 @@ ActiveRecord::Schema.define(version: 2019_08_03_103414) do
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
 
-  create_table "trade_commodities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "trade_hub_id"
-    t.uuid "commodity_id"
-    t.decimal "buy_price", precision: 15, scale: 2, default: "0.0"
-    t.decimal "sell_price", precision: 15, scale: 2, default: "0.0"
-    t.boolean "buy"
-    t.boolean "sell"
+  create_table "trade_routes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "origin_id"
+    t.uuid "origin_station_id"
+    t.uuid "origin_celestial_object_id"
+    t.uuid "origin_starsystem_id"
+    t.uuid "destination_id"
+    t.uuid "destination_station_id"
+    t.uuid "destination_celestial_object_id"
+    t.uuid "destination_starsystem_id"
+    t.decimal "profit_per_unit", precision: 15, scale: 2
+    t.decimal "profit_per_unit_percent", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["trade_hub_id"], name: "index_trade_commodities_on_trade_hub_id"
-  end
-
-  create_table "trade_hubs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "planet"
-    t.string "system"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "station_type"
+    t.index ["destination_celestial_object_id"], name: "index_trade_routes_on_destination_celestial_object_id"
+    t.index ["destination_id"], name: "index_trade_routes_on_destination_id"
+    t.index ["destination_starsystem_id"], name: "index_trade_routes_on_destination_starsystem_id"
+    t.index ["destination_station_id"], name: "index_trade_routes_on_destination_station_id"
+    t.index ["origin_celestial_object_id"], name: "index_trade_routes_on_origin_celestial_object_id"
+    t.index ["origin_id"], name: "index_trade_routes_on_origin_id"
+    t.index ["origin_starsystem_id"], name: "index_trade_routes_on_origin_starsystem_id"
+    t.index ["origin_station_id"], name: "index_trade_routes_on_origin_station_id"
   end
 
   create_table "upgrade_kits", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

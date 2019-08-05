@@ -2,183 +2,148 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <div class="row">
-          <div class="col-xs-12">
-            <h1 class="sr-only">
-              {{ $t('headlines.models') }}
-            </h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-6">
-            <div class="page-actions page-actions-left">
-              <Btn
-                v-if="!fleetchartVisible"
-                v-tooltip="toggleDetailsTooltip"
-                :active="detailsVisible"
-                :aria-label="toggleDetailsTooltip"
-                size="small"
-                @click.native="toggleDetails"
-              >
-                <i
-                  :class="{
-                    'fa fa-chevron-up': detailsVisible,
-                    'far fa-chevron-down': !detailsVisible,
-                  }"
-                />
-              </Btn>
-              <Btn
-                v-tooltip="toggleFiltersTooltip"
-                :active="filterVisible"
-                :aria-label="toggleFiltersTooltip"
-                size="small"
-                @click.native="toggleFilter"
-              >
-                <i
-                  :class="{
-                    fas: isFilterSelected,
-                    far: !isFilterSelected,
-                  }"
-                  class="fa-filter"
-                />
-              </Btn>
-              <Btn
-                :to="{name: 'compare-models'}"
-                size="small"
-              >
-                {{ $t('actions.compare.models') }}
-              </Btn>
-              <DownloadScreenshotBtn
-                v-if="fleetchartVisible"
-                element="#fleetchart"
-                filename="ships-fleetchart"
-              />
-              <Btn
-                size="small"
-                @click.native="toggleFleetchart"
-              >
-                <template v-if="fleetchartVisible">
-                  {{ $t('actions.hideFleetchart') }}
-                </template>
-                <template v-else>
-                  {{ $t('actions.showFleetchart') }}
-                </template>
-              </Btn>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6">
-            <Paginator
-              v-if="!fleetchartVisible && models.length"
-              :page="currentPage"
-              :total="totalPages"
-              right
-            />
-          </div>
-        </div>
-        <div class="row">
-          <transition
-            name="slide"
-            appear
-            @before-enter="toggleFullscreen"
-            @after-leave="toggleFullscreen"
-          >
-            <div
-              v-show="filterVisible"
-              class="col-xs-12 col-md-3 col-xlg-2"
-            >
-              <ModelsFilterForm />
-            </div>
-          </transition>
-          <div
+        <h1 class="sr-only">
+          {{ $t('headlines.models') }}
+        </h1>
+      </div>
+    </div>
+    <FilteredList>
+      <template slot="actions">
+        <Btn
+          v-if="!fleetchartVisible"
+          v-tooltip="toggleDetailsTooltip"
+          :active="detailsVisible"
+          :aria-label="toggleDetailsTooltip"
+          size="small"
+          @click.native="toggleDetails"
+        >
+          <i
             :class="{
-              'col-md-9 col-xlg-10': !fullscreen,
+              'fa fa-chevron-up': detailsVisible,
+              'far fa-chevron-down': !detailsVisible,
             }"
-            class="col-xs-12 col-animated"
+          />
+        </Btn>
+        <Btn
+          :to="{name: 'compare-models'}"
+          size="small"
+        >
+          {{ $t('actions.compare.models') }}
+        </Btn>
+        <DownloadScreenshotBtn
+          v-if="fleetchartVisible"
+          element="#fleetchart"
+          filename="ships-fleetchart"
+        />
+        <Btn
+          size="small"
+          @click.native="toggleFleetchart"
+        >
+          <template v-if="fleetchartVisible">
+            {{ $t('actions.hideFleetchart') }}
+          </template>
+          <template v-else>
+            {{ $t('actions.showFleetchart') }}
+          </template>
+        </Btn>
+      </template>
+
+      <Paginator
+        v-if="!fleetchartVisible && models.length"
+        slot="pagination-top"
+        :page="currentPage"
+        :total="totalPages"
+        right
+      />
+
+      <ModelsFilterForm slot="filter" />
+
+      <template v-slot:default="{ filterVisible }">
+        <transition
+          name="fade"
+          appear
+        >
+          <div
+            v-if="fleetchartVisible && fleetchartModels.length"
+            class="row"
           >
-            <transition
-              name="fade"
-              appear
-            >
-              <div
-                v-if="fleetchartVisible && fleetchartModels.length"
-                class="row"
-              >
-                <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-                  <FleetchartSlider
-                    :initial-scale="fleetchartScale"
-                    @change="updateScale"
-                  />
-                </div>
-              </div>
-            </transition>
-            <div
-              v-if="fleetchartVisible"
-              class="row"
-            >
-              <div class="col-xs-12 fleetchart-wrapper">
-                <transition-group
-                  id="fleetchart"
-                  name="fade-list"
-                  class="flex-row fleetchart"
-                  tag="div"
-                  appear
-                >
-                  <FleetchartItem
-                    v-for="model in fleetchartModels"
-                    :key="`fleetchart-${model.slug}`"
-                    :model="model"
-                    :scale="fleetchartScale"
-                  />
-                </transition-group>
-              </div>
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+              <FleetchartSlider
+                :initial-scale="fleetchartScale"
+                @change="updateScale"
+              />
             </div>
+          </div>
+        </transition>
+
+        <div
+          v-if="fleetchartVisible"
+          class="row"
+        >
+          <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
-              v-else
+              id="fleetchart"
               name="fade-list"
-              class="flex-row"
+              class="flex-row fleetchart"
               tag="div"
               appear
             >
-              <div
-                v-for="model in models"
-                :key="model.slug"
-                :class="{
-                  'col-lg-4': fullscreen,
-                  'col-xlg-4': !fullscreen,
-                }"
-                class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-              >
-                <ModelPanel
-                  :model="model"
-                  :details="detailsVisible"
-                />
-              </div>
+              <FleetchartItem
+                v-for="model in fleetchartModels"
+                :key="`fleetchart-${model.slug}`"
+                :model="model"
+                :scale="fleetchartScale"
+              />
             </transition-group>
-            <EmptyBox v-if="emptyBoxVisible" />
-            <Loader
-              :loading="loading"
-              fixed
-            />
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <Paginator
-              v-if="!fleetchartVisible && models.length"
-              :page="currentPage"
-              :total="totalPages"
-              right
+
+        <transition-group
+          v-else
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="model in models"
+            :key="model.slug"
+            :class="{
+              'col-lg-4': filterVisible,
+              'col-xlg-4': !filterVisible,
+            }"
+            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel
+              :model="model"
+              :details="detailsVisible"
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </transition-group>
+
+        <EmptyBox v-if="emptyBoxVisible" />
+
+        <Loader
+          :loading="loading"
+          fixed
+        />
+      </template>
+
+      <Paginator
+        v-if="!fleetchartVisible && models.length"
+        slot="pagination-bottom"
+        :page="currentPage"
+        :total="totalPages"
+        right
+      />
+    </FilteredList>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
+import FilteredList from 'frontend/components/FilteredList'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/components/Models/Panel'
@@ -196,6 +161,7 @@ export default {
 
   components: {
     Btn,
+    FilteredList,
     DownloadScreenshotBtn,
     Loader,
     ModelPanel,
@@ -216,19 +182,13 @@ export default {
     return {
       loading: true,
       models: [],
-      fullscreen: false,
       fleetchartModels: [],
     }
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
-
     ...mapGetters('models', [
       'detailsVisible',
-      'filterVisible',
       'fleetchartVisible',
       'fleetchartScale',
     ]),
@@ -244,13 +204,6 @@ export default {
       }
       return this.$t('actions.showDetails')
     },
-
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
   },
 
   watch: {
@@ -265,12 +218,6 @@ export default {
     if (this.$route.query.fleetchart && !this.fleetchartVisible) {
       this.$store.dispatch('models/toggleFleetchart')
     }
-
-    if (this.mobile) {
-      this.$store.commit('models/setFilterVisible', false)
-    }
-
-    this.toggleFullscreen()
   },
 
   methods: {
@@ -281,10 +228,6 @@ export default {
     fetch() {
       this.fetchModels()
       this.fetchFleetchart()
-    },
-
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
     },
 
     toggleFleetchart() {
@@ -302,24 +245,23 @@ export default {
       }
     },
 
-    toggleFilter() {
-      this.$store.dispatch('models/toggleFilter')
-    },
-
     toggleDetails() {
       this.$store.dispatch('models/toggleDetails')
     },
 
     async fetchModels() {
       this.loading = true
+
       const response = await this.$api.get('models', {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
+
       if (!response.error) {
         this.models = response.data
         this.scrollToAnchor()
       }
+
       this.setPages(response.meta)
       this.resetLoading()
     },

@@ -4,6 +4,9 @@ production: &production
   models_worker_job:
     cron: '*/10 * * * *' # Every 10 Minutes
     class: 'ModelsWorker'
+  trade_route_calculator_job:
+    cron: '*/30 * * * *' # Every 30 Minutes
+    class: 'TradeRoutesWorker'
   roadmap_worker_job:
     cron: '0 */1 * * *' # Every Hour
     class: 'RoadmapWorker'

@@ -18,7 +18,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
 
   get 'compare/ships' => 'base#compare_models'
 
-  get 'cargo' => 'base#index'
+  get 'trade-routes' => 'base#index'
 
   get 'stations' => 'base#index'
   get 'shops' => 'base#index'

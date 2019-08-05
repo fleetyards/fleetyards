@@ -10,6 +10,7 @@ export default {
         name: 'Yes',
         value: 'true',
       }],
+
       priceOptions: [
         {
           value: '-200000',
@@ -43,6 +44,7 @@ export default {
           name: `500M ${this.$t('labels.uec')} - 1B ${this.$t('labels.uec')}`,
         },
       ],
+
       pledgePriceOptions: [
         {
           value: '-25',
@@ -82,13 +84,15 @@ export default {
     isPagePresent() {
       return !!this.$route.query.page
     },
+
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
       Object.keys(query)
         .filter(key => !query[key] || query[key].length === 0)
         .forEach(key => delete query[key])
-      return Object.keys(query).length > 0
+      return Object.keys(query).length > 0 || this.$route.query.page
     },
+
     q() {
       const q = JSON.parse(JSON.stringify(this.form))
 
@@ -99,6 +103,7 @@ export default {
       return q
     },
   },
+
   methods: {
     idFor(name) {
       const parts = name.split('-')
@@ -107,12 +112,14 @@ export default {
       }
       return parts.join('-')
     },
+
     reset() {
       this.$router.replace({
         name: this.$route.name,
         query: {},
       })
     },
+
     resetPage() {
       this.$router.replace({
         name: this.$route.name,
@@ -121,6 +128,7 @@ export default {
         },
       })
     },
+
     filter: debounce(function debounced() {
       const query = {
         q: JSON.parse(JSON.stringify(this.q)),
@@ -137,44 +145,5 @@ export default {
         query,
       })
     }, 500),
-    fetchManufacturers({ page, search, missingValue }) {
-      const query = {
-        withModel: true,
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameIn = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('manufacturers', query)
-    },
-    fetchClassifications() {
-      return this.$api.get('models/classifications')
-    },
-    fetchFocus() {
-      return this.$api.get('models/focus')
-    },
-    fetchProductionStatus() {
-      return this.$api.get('models/production-states')
-    },
-    fetchSize() {
-      return this.$api.get('models/sizes')
-    },
-    fetchModelsWithDocks({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameIn = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('models/with-docks', query)
-    },
   },
 }

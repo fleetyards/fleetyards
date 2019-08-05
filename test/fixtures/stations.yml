@@ -13,3 +13,18 @@ corvolex:
   celestial_object: daymar
   station_type: cargo-station
   hidden: false
+
+arccorp_daymar:
+  name: ArcCorp
+  slug: arccorp
+  celestial_object: daymar
+  station_type: outpost
+  hidden: false
+
+arccorp_yela:
+  name: ArcCorp
+  slug: arccorp
+  celestial_object: yela
+  station_type: outpost
+  hidden: false
+

@@ -37,7 +37,6 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resources :celestial_objects, path: 'celestial-objects', except: [:show]
   resources :starsystems, except: [:show]
-  resources :trade_hubs, except: [:show]
   resources :commodities, except: [:show]
   resources :equipment, except: [:show]
   resources :stations, except: [:show] do

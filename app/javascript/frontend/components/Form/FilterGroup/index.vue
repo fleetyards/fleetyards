@@ -80,7 +80,7 @@
         </span>
       </a>
       <InfiniteLoading
-        v-if="fetch && fetchedOptions.length && !search && paginated"
+        v-if="shouldFetch && fetchedOptions.length && !search && paginated"
         ref="infiniteLoading"
         :distance="100"
         @infinite="fetchMore"
@@ -110,12 +110,14 @@ export default {
       type: String,
       required: true,
     },
+
     options: {
       type: Array,
       default() {
         return []
       },
     },
+
     value: {
       type: [Array, String],
       default() {
@@ -125,46 +127,57 @@ export default {
         return null
       },
     },
+
     valueAttr: {
       type: String,
       default: 'value',
     },
+
     labelAttr: {
       type: String,
       default: 'name',
     },
+
     iconAttr: {
       type: String,
       default: 'icon',
     },
+
     multiple: {
       type: Boolean,
       default: false,
     },
+
     disabled: {
       type: Boolean,
       default: false,
     },
+
     searchable: {
       type: Boolean,
       default: false,
     },
+
     paginated: {
       type: Boolean,
       default: false,
     },
+
     label: {
       type: String,
       default: '',
     },
+
     fetch: {
       type: Function,
       default: null,
     },
+
     fetchPath: {
       type: String,
       default: null,
     },
+
     searchLabel: {
       type: String,
       default: null,
@@ -245,11 +258,11 @@ export default {
       const query = {
         q: {},
       }
-      if (args.search) {
+      if (args.search && this.searchable) {
         query.q.nameCont = args.search
-      } else if (args.missingValue) {
+      } else if (args.missingValue && this.paginated) {
         query.q.nameIn = args.missingValue
-      } else if (args.page) {
+      } else if (args.page && this.paginated) {
         query.page = args.page
       }
       return this.$api.get(this.fetchPath, query)
@@ -259,12 +272,17 @@ export default {
       if (!this.shouldFetch) {
         return
       }
+
       this.loading = true
+
       const response = await this.internalFetch({ page: this.page, search: this.search })
+
       this.loading = false
+
       if (this.$refs.infiniteLoading) {
         this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
       }
+
       if (!response.error) {
         this.addOptions(response.data)
         this.fetchMissingOption()
@@ -377,5 +395,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

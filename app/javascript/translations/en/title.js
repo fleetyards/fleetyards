@@ -41,7 +41,7 @@ export default {
     models: 'Compare Ships',
   },
   notFound: '404',
-  cargo: 'Cargo',
+  tradeRoutes: 'Trade Routes',
   commodities: 'Commodities',
   impressum: 'Impressum',
   privacyPolicy: 'Privacy policy',

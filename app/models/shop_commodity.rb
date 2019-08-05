@@ -34,6 +34,8 @@ class ShopCommodity < ApplicationRecord
              inverse_of: :shop_commodities,
              required: false
 
+  has_many :trade_routes, dependent: :destroy
+
   belongs_to :shop
 
   validates :commodity_item, presence: true
@@ -48,6 +50,10 @@ class ShopCommodity < ApplicationRecord
   ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
   ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
   ransack_alias :price, :sell_price_or_buy_price_or_rent_price
+
+  def self.commodity
+    where(commodity_item_type: ['Commodity'])
+  end
 
   def set_commodity_item
     return if commodity_item_selected.blank?

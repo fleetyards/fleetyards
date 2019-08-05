@@ -12,17 +12,32 @@ module Api
 
       def index
         authorize! :index, :api_manufacturers
-        scope = Manufacturer.with_name
 
-        scope = scope.with_model if params[:withModel]
-
-        manufacturer_query_params['sorts'] = sort_by_name
-
-        @q = scope.ransack(manufacturer_query_params)
+        @q = index_scope
 
         @manufacturers = @q.result(distinct: true)
                            .page(params[:page])
                            .per(per_page(Manufacturer))
+      end
+
+      def with_models
+        authorize! :index, :api_manufacturers
+
+        @q = index_scope(true)
+
+        @manufacturers = @q.result(distinct: true)
+                           .page(params[:page])
+                           .per(per_page(Manufacturer))
+      end
+
+      private def index_scope(with_model = false)
+        scope = Manufacturer.with_name
+
+        scope = scope.with_model if with_model
+
+        manufacturer_query_params['sorts'] = sort_by_name
+
+        scope.ransack(manufacturer_query_params)
       end
 
       private def manufacturer_query_params

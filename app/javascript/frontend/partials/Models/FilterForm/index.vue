@@ -5,10 +5,11 @@
       :placeholder="$t('placeholders.filters.models.name')"
       :aria-label="$t('placeholders.filters.models.name')"
     />
+
     <FilterGroup
       v-model="form.manufacturerIn"
       :label="$t('labels.filters.models.manufacturer')"
-      :fetch="fetchManufacturers"
+      fetch-path="manufacturers/with-models"
       name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
@@ -16,36 +17,41 @@
       searchable
       multiple
     />
+
     <FilterGroup
       v-model="form.productionStatusIn"
       :label="$t('labels.filters.models.productionStatus')"
-      :fetch="fetchProductionStatus"
+      fetch-path="models/production-states"
       name="production-status"
       multiple
     />
+
     <FilterGroup
       v-model="form.classificationIn"
       :label="$t('labels.filters.models.classification')"
-      :fetch="fetchClassifications"
+      fetch-path="models/classifications"
       name="classification"
       searchable
       multiple
     />
+
     <FilterGroup
       v-model="form.focusIn"
       :label="$t('labels.filters.models.focus')"
-      :fetch="fetchFocus"
+      fetch-path="models/focus"
       name="focus"
       searchable
       multiple
     />
+
     <FilterGroup
       v-model="form.sizeIn"
       :label="$t('labels.filters.models.size')"
-      :fetch="fetchSize"
+      fetch-path="models/sizes"
       name="size"
       multiple
     />
+
     <FilterGroup
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
@@ -53,6 +59,7 @@
       name="pldege-price"
       multiple
     />
+
     <FilterGroup
       v-model="form.priceIn"
       :options="priceOptions"
@@ -60,13 +67,15 @@
       name="price"
       multiple
     />
+
     <FilterGroup
       v-model="form.willItFit"
       :label="$t('labels.filters.models.willItFit')"
-      :fetch="fetchModelsWithDocks"
+      fetch-path="models/with-docks"
       value-attr="slug"
       name="will-it-fit"
     />
+
     <div class="row">
       <div class="col-xs-6">
         <FormInput
@@ -76,6 +85,7 @@
           :aria-label="$t('labels.filters.models.lengthGt')"
         />
       </div>
+
       <div class="col-xs-6">
         <FormInput
           v-model="form.lengthLteq"
@@ -85,6 +95,7 @@
         />
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-6">
         <FormInput
@@ -103,18 +114,21 @@
         />
       </div>
     </div>
+
     <FormInput
       v-model="form.priceGteq"
       type="number"
       :label="$t('labels.filters.models.priceGt')"
       :aria-label="$t('labels.filters.models.priceGt')"
     />
+
     <FormInput
       v-model="form.priceLteq"
       type="number"
       :label="$t('labels.filters.models.priceLt')"
       :aria-label="$t('labels.filters.models.priceLt')"
     />
+
     <RadioList
       v-model="form.onSaleEq"
       :label="$t('labels.filters.models.onSale')"
@@ -122,6 +136,7 @@
       :options="booleanOptions"
       name="sale"
     />
+
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -147,7 +162,11 @@ export default {
     Btn,
     FormInput,
   },
-  mixins: [Filters],
+
+  mixins: [
+    Filters,
+  ],
+
   data() {
     const query = this.$route.query.q || {}
     return {
@@ -172,6 +191,7 @@ export default {
       },
     }
   },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -197,6 +217,7 @@ export default {
 
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
+
     form: {
       handler() {
         this.filter()

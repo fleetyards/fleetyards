@@ -13,7 +13,7 @@ export default {
   admin: 'Admin',
   fleets: 'Fleets',
   rsiProfile: 'RSI Profile',
-  cargo: 'Cargo',
+  tradeRoutes: 'Trade Routes',
   api: 'API Docs',
   stats: 'Stats',
   roadmap: 'Ship-Roadmap',
