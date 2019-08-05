@@ -343,5 +343,6 @@ export default {
   tradeRoutes: {
     buy: 'Buy for: %{uec}',
     sell: 'Sell for: %{uec}',
+    cargoShip: 'for %{cargo} SCU',
   },
 }

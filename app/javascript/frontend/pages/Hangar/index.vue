@@ -93,7 +93,7 @@
     <FilteredList>
       <template slot="actions">
         <Btn
-          v-show="!fleetchartVisible && vehicles.length"
+          v-show="!fleetchartVisible"
           v-tooltip="toggleDetailsTooltip"
           :active="detailsVisible"
           :aria-label="toggleDetailsTooltip"

@@ -48,13 +48,19 @@ const methods = {
       format: '%n %u',
     })
   },
-  toUEC(value) {
+  toUEC(value, unit) {
+    if (!unit) {
+      // eslint-disable-next-line no-param-reassign
+      unit = I18n.t('labels.uec')
+    }
+
     if (!value) {
       return '-'
     }
+
     return I18n.toCurrency(value, {
       precision: 2,
-      unit: I18n.t('labels.uec'),
+      unit,
       format: '%n %u',
     })
   },

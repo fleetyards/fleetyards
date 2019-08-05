@@ -45,7 +45,10 @@ export default {
     hangar: 'Hangar Settings',
   },
   roadmap: 'Ship-Roadmap',
-  cargo: 'Cargo',
+  tradeRoutes: {
+    index: 'Trade Routes',
+    withShip: 'Trade Routes for %{name} (%{cargo})',
+  },
   starsystems: 'Starsystems',
   starsystem: '%{starsystem} Starsystem',
   celestialObjects: 'Celestial Objects',

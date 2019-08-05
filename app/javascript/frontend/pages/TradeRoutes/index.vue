@@ -2,7 +2,7 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1>{{ $t('headlines.cargo') }}</h1>
+        <h1>{{ title }}</h1>
       </div>
     </div>
     <FilteredList>
@@ -36,7 +36,7 @@
                       {{ route.origin.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.buy', { uec: $toUEC(route.sellPrice) }) }}
+                  {{ $t('labels.tradeRoutes.buy', { uec: profit(route.sellPrice) }) }}
                 </div>
               </Panel>
             </div>
@@ -46,7 +46,7 @@
               </h2>
               <i class="fa fa-angle-double-right" />
               <div class="profit">
-                {{ $toUEC(route.profitPerUnit) }}
+                {{ profit(route.profitPerUnit) }}
                 <small class="profit-percent">
                   ({{ route.profitPerUnitPercent }} %)
                 </small>
@@ -62,7 +62,7 @@
                       {{ route.destination.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.sell', { uec: $toUEC(route.buyPrice) }) }}
+                  {{ $t('labels.tradeRoutes.sell', { uec: profit(route.buyPrice) }) }}
                 </div>
               </Panel>
             </div>
@@ -112,6 +112,16 @@ export default {
   },
 
   computed: {
+    title() {
+      if (this.cargoShip) {
+        return this.$t('headlines.tradeRoutes.withShip', {
+          name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
+          cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
+        })
+      }
+      return this.$t('headlines.tradeRoutes.index')
+    },
+
     avaiableCargo() {
       return this.cargoShip ? this.cargoShip.cargo * 100 : 1
     },
@@ -135,7 +145,17 @@ export default {
   },
 
   methods: {
+    profit(value) {
+      if (this.cargoShip) {
+        return this.$toUEC(value * (this.cargoShip.cargo * 100))
+      }
+
+      return this.$toUEC(value, this.$t('labels.uecPerUnit'))
+    },
+
     async fetchCargoShip() {
+      this.cargoShip = null
+
       const query = this.$route.query.q || {}
 
       if (!query.cargoShip) {

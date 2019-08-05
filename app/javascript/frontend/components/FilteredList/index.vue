@@ -34,7 +34,7 @@
           @after-leave="toggleFullscreen"
         >
           <div
-            v-show="filterVisible"
+            v-if="filterVisible"
             class="col-xs-12 col-md-3 col-xlg-2"
           >
             <slot name="filter" />
