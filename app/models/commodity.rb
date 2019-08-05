@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Commodity < ApplicationRecord
+  paginates_per 50
+
   has_many :trade_commodities,
            dependent: :nullify
   has_many :trade_hubs,

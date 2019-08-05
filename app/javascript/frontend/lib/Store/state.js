@@ -6,5 +6,6 @@ export default () => ({
   lastRoute: null,
   previousRoute: null,
   online: true,
+  filtersVisible: {},
   filters: {},
 })

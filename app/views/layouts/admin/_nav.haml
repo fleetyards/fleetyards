@@ -26,20 +26,17 @@
     %ul.dropdown-menu
       %li{class: active_nav?('admin-stations')}
         = link_to Station.name.humanize.pluralize, admin_stations_path
+      %li{class: active_nav?('admin-celestial_objects')}
+        = link_to I18n.t(:"nav.celestial_objects"), admin_celestial_objects_path
+      %li{class: active_nav?('admin-starsystems')}
+        = link_to I18n.t(:"nav.starsystems"), admin_starsystems_path
+      %li.divider
       %li{class: active_nav?('admin-shops')}
         = link_to Shop.name.humanize.pluralize, admin_shops_path
       %li{class: active_nav?('admin-commodities')}
         = link_to I18n.t(:"nav.commodities"), admin_commodities_path
       %li{class: active_nav?('admin-equipment')}
         = link_to I18n.t(:"nav.equipment"), admin_equipment_index_path
-      %li.divider
-      %li{class: active_nav?('admin-trade-hubs')}
-        = link_to I18n.t(:"nav.trade_hubs"), admin_trade_hubs_path
-      %li.divider
-      %li{class: active_nav?('admin-celestial_objects')}
-        = link_to I18n.t(:"nav.celestial_objects"), admin_celestial_objects_path
-      %li{class: active_nav?('admin-starsystems')}
-        = link_to I18n.t(:"nav.starsystems"), admin_starsystems_path
   %li{class: active_nav?('admin-images')}
     = link_to I18n.t(:"nav.images"), admin_images_path, 'data-turbolinks': "false"
   %li{class: active_nav?('admin-users')}

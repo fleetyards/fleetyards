@@ -202,6 +202,7 @@ export default {
         q: {
           ...this.$route.query.q,
           celestialObjectEq: this.$route.params.slug,
+          sorts: ['station_type asc', 'name asc'],
         },
         page: this.$route.query.page,
       })

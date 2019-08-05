@@ -9,7 +9,7 @@ module Api
 
       def index
         authorize! :index, :api_stations
-        station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
+        station_query_params['sorts'] = sort_by_name if station_query_params['sorts'].blank?
 
         @q = Station.visible
                     .ransack(station_query_params)
@@ -54,7 +54,7 @@ module Api
         @station_query_params ||= query_params(
           :celestial_object_eq, :name_cont, :habs_not_null,
           celestial_object_in: [], starsystem_in: [], station_type_in: [],
-          shops_shop_type_in: [], docks_ship_size_in: []
+          shops_shop_type_in: [], docks_ship_size_in: [], sorts: []
         )
       end
     end

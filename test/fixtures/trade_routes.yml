@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+gold_yela_daymar:
+  origin: commodity_gold_yela
+  origin_station: arccorp_yela
+  origin_celestial_object: yela
+  origin_starsystem: stanton
+  destination: commodity_gold_daymar
+  destination_station: arccorp_daymar
+  destination_celestial_object: daymar
+  destination_starsystem: stanton
+  profit_per_unit: 5
+  profit_per_unit_percent: 50
+
+titan_daymar_yela:
+  origin: commodity_titan_daymar
+  origin_station: arccorp_daymar
+  origin_celestial_object: daymar
+  origin_starsystem: stanton
+  destination: commodity_titan_yela
+  destination_station: arccorp_yela
+  destination_celestial_object: yela
+  destination_starsystem: stanton
+  profit_per_unit: 10
+  profit_per_unit_percent: 50
+
+titan_daymar_olisar:
+  origin: commodity_titan_daymar
+  origin_station: arccorp_daymar
+  origin_celestial_object: daymar
+  origin_starsystem: stanton
+  destination: commodity_titan_olisar
+  destination_station: portolisar
+  destination_celestial_object: crusader
+  destination_starsystem: stanton
+  profit_per_unit: 7
+  profit_per_unit_percent: 70

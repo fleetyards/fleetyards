@@ -265,6 +265,7 @@ export default {
       equipment: 'Equipment',
       component: 'Component',
       commodity: 'Commodity',
+      commodityType: 'Commodity Type',
       starsystem: 'Starsystem',
       station: 'Station',
     },
@@ -337,5 +338,9 @@ export default {
     habitation: 'Habitation',
     habs: 'Habs',
     shops: 'Shops',
+  },
+  tradeRoutes: {
+    buy: 'Buy for: %{uec}',
+    sell: 'Sell for: %{uec}',
   },
 }

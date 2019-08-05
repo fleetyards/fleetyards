@@ -14,6 +14,9 @@ module Api
 
       let(:new_deal) { shops :new_deal }
       let(:dumpers) { shops :dumpers }
+      let(:admin_olisar) { shops :admin_olisar }
+      let(:admin_daymar) { shops :admin_daymar }
+      let(:admin_yela) { shops :admin_yela }
       let(:show_result) do
         {
           'name' => 'New Deal',
@@ -40,6 +43,69 @@ module Api
       end
       let(:index_result) do
         [{
+          'name' => 'Admin Office',
+          'slug' => 'admin-office',
+          'type' => 'admin',
+          'typeLabel' => 'Admin Office',
+          'rental' => false,
+          'buying' => false,
+          'selling' => false,
+          'storeImage' => admin_daymar.store_image.url,
+          'storeImageMedium' => admin_daymar.store_image.medium.url,
+          'storeImageSmall' => admin_daymar.store_image.small.url,
+          'station' => {
+            'name' => 'ArcCorp',
+            'slug' => 'arccorp'
+          },
+          'celestialObject' => {
+            'name' => 'Daymar',
+            'slug' => 'daymar'
+          },
+          'createdAt' => admin_daymar.created_at.to_time.iso8601,
+          'updatedAt' => admin_daymar.updated_at.to_time.iso8601
+        }, {
+          'name' => 'Admin Office',
+          'slug' => 'admin-office',
+          'type' => 'admin',
+          'typeLabel' => 'Admin Office',
+          'rental' => false,
+          'buying' => false,
+          'selling' => false,
+          'storeImage' => admin_yela.store_image.url,
+          'storeImageMedium' => admin_yela.store_image.medium.url,
+          'storeImageSmall' => admin_yela.store_image.small.url,
+          'station' => {
+            'name' => 'ArcCorp',
+            'slug' => 'arccorp'
+          },
+          'celestialObject' => {
+            'name' => 'Yela',
+            'slug' => 'yela'
+          },
+          'createdAt' => admin_yela.created_at.to_time.iso8601,
+          'updatedAt' => admin_yela.updated_at.to_time.iso8601
+        }, {
+          'name' => 'Admin Office',
+          'slug' => 'admin-office',
+          'type' => 'admin',
+          'typeLabel' => 'Admin Office',
+          'rental' => false,
+          'buying' => false,
+          'selling' => false,
+          'storeImage' => admin_olisar.store_image.url,
+          'storeImageMedium' => admin_olisar.store_image.medium.url,
+          'storeImageSmall' => admin_olisar.store_image.small.url,
+          'station' => {
+            'name' => 'Port Olisar',
+            'slug' => 'port-olisar'
+          },
+          'celestialObject' => {
+            'name' => 'Crusader',
+            'slug' => 'crusader'
+          },
+          'createdAt' => admin_olisar.created_at.to_time.iso8601,
+          'updatedAt' => admin_olisar.updated_at.to_time.iso8601
+        }, {
           'name' => 'Dumpers Depot',
           'slug' => 'dumpers-depot',
           'type' => 'components',

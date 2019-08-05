@@ -30,6 +30,14 @@ const store = new Vuex.Store({
     backgroundImage(state) {
       return state.backgroundImage
     },
+
+    filters(state) {
+      return state.filters
+    },
+
+    filtersVisible(state) {
+      return state.filtersVisible
+    },
   },
 
   actions,
@@ -70,6 +78,10 @@ const store = new Vuex.Store({
 
     setFilters(state, payload) {
       state.filters = Object.assign({}, state.filters, payload)
+    },
+
+    setFiltersVisible(state, payload) {
+      state.filtersVisible = Object.assign({}, state.filtersVisible, payload)
     },
   },
   /* eslint-enable no-param-reassign */

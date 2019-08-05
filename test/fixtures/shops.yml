@@ -13,3 +13,24 @@ new_deal:
   station: portolisar
   shop_type: ships
   hidden: false
+
+admin_olisar:
+  name: Admin Office
+  slug: admin-office
+  station: portolisar
+  shop_type: admin
+  hidden: false
+
+admin_daymar:
+  name: Admin Office
+  slug: admin-office
+  station: arccorp_daymar
+  shop_type: admin
+  hidden: false
+
+admin_yela:
+  name: Admin Office
+  slug: admin-office
+  station: arccorp_yela
+  shop_type: admin
+  hidden: false

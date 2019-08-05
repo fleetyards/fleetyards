@@ -193,7 +193,10 @@ export default {
 
       this.loading = true
       const response = await this.$api.get('stations', {
-        q: this.$route.query.q,
+        q: {
+          ...this.$route.query.q,
+          sorts: ['station_type asc', 'name asc'],
+        },
         page: this.$route.query.page,
       })
 

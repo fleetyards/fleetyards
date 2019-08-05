@@ -4,6 +4,7 @@ module Api
   module V1
     class CommoditiesController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:commodities) }, only: [:index]
 
       def index
         authorize! :index, :api_commodities
@@ -12,7 +13,14 @@ module Api
 
         @q = Commodity.ransack(commodity_query_params)
 
-        @commodities = @q.result.offset(params[:offset]).limit(params[:limit])
+        @commodities = @q.result
+                         .page(params[:page])
+                         .per(per_page(Commodity))
+      end
+
+      def commodity_types
+        authorize! :index, :api_commodities
+        @commodity_types = Commodity.type_filters
       end
 
       private def commodity_query_params

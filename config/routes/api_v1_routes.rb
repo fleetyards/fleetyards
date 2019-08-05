@@ -36,7 +36,11 @@ v1_api_routes = lambda do
     end
   end
 
-  resources :manufacturers, param: :slug, only: %i[index]
+  resources :manufacturers, param: :slug, only: %i[index] do
+    collection do
+      get 'with-models' => 'manufacturers#with_models'
+    end
+  end
 
   resources :images, only: %i[index] do
     get :random, on: :collection
@@ -103,9 +107,12 @@ v1_api_routes = lambda do
     end
   end
 
-  resources :trade_hubs, path: 'trade-hubs', only: [:index]
-  resources :commodities, only: [:index]
-  resources :commodity_prices, path: 'commodity-prices', only: %i[show create]
+  resources :trade_routes, path: 'trade-routes', only: [:index]
+  resources :commodities, only: [:index] do
+    collection do
+      get 'types' => 'commodities#commodity_types'
+    end
+  end
   resources :equipment, only: [:index]
   resources :components, only: [:index]
 

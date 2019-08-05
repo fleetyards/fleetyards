@@ -140,30 +140,13 @@ export const routes = [
       title: 'stations',
     },
   }, {
-    path: '/cargo',
-    name: 'cargo',
-    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Cargo'),
+    path: '/trade-routes',
+    name: 'trade-routes',
+    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/TradeRoutes'),
     meta: {
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-7.jpg'),
-      title: 'cargo',
-    },
-  }, {
-    path: '/commodities',
-    name: 'commodities',
-    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Commodities'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-7.jpg'),
-      title: 'commodities',
-    },
-  }, {
-    path: '/commodities/:id',
-    name: 'commoditiesSaved',
-    component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Commodities'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-7.jpg'),
+      title: 'tradeRoutes',
     },
   }, {
     path: '/roadmap',
