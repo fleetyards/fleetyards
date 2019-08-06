@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://github.com/fleetyards/app/compare/v3.9.0...v3.10.0) (2019-08-06)
+
+
+### Bug Fixes
+
+* **admin:** update components form ([373fc21](https://github.com/fleetyards/app/commit/373fc21))
+* **filters:** update components and equipment ([4b29624](https://github.com/fleetyards/app/commit/4b29624))
+
+
+### Features
+
+* **trade-routes:** add links to stations ([b92e692](https://github.com/fleetyards/app/commit/b92e692))
+
 ## [3.9.0](https://github.com/fleetyards/app/compare/v3.8.1...v3.9.0) (2019-08-05)
 
 
