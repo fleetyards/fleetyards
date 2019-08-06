@@ -6,7 +6,7 @@
   %td
     = component.size
   %td
-    = component.manufacturer.name
+    = component.manufacturer.name if component.manufacturer.present?
   %td
     = I18n.t("filter.component.class.items.#{component.component_class.downcase}")
   %td.text-right

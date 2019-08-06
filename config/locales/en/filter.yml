@@ -13,5 +13,8 @@ en:
     component:
       class:
         items:
-          rsimodular: "System"
-          rsiweapon: "Weapon"
+          rsimodular: System
+          rsiweapon: Weapon
+          rsiavionic: Avionic
+          rsipropulsion: Propulsion
+          rsithruster: Thruster
