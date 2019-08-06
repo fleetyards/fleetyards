@@ -30,7 +30,16 @@
               <Panel :outer-spacing="false">
                 <div class="cargo-route-point">
                   <h3>
-                    {{ route.origin.name }}
+                    <router-link
+                      :to="{
+                        name: 'station',
+                        params: {
+                          slug: route.origin.slug,
+                        }
+                      }"
+                    >
+                      {{ route.origin.name }}
+                    </router-link>
                     <br>
                     <small>
                       {{ route.origin.locationLabel }}
@@ -56,7 +65,16 @@
               <Panel :outer-spacing="false">
                 <div class="cargo-route-point">
                   <h3>
-                    {{ route.destination.name }}
+                    <router-link
+                      :to="{
+                        name: 'station',
+                        params: {
+                          slug: route.destination.slug,
+                        }
+                      }"
+                    >
+                      {{ route.destination.name }}
+                    </router-link>
                     <br>
                     <small>
                       {{ route.destination.locationLabel }}
