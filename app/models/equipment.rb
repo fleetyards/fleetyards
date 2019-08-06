@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Equipment < ApplicationRecord
+  paginates_per 50
+
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 

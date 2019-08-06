@@ -36,7 +36,7 @@
                       {{ route.origin.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.buy', { uec: profit(route.sellPrice) }) }}
+                  {{ $t('labels.tradeRoutes.buy', { uec: profit(route.buyPrice) }) }}
                 </div>
               </Panel>
             </div>
@@ -62,7 +62,7 @@
                       {{ route.destination.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.sell', { uec: profit(route.buyPrice) }) }}
+                  {{ $t('labels.tradeRoutes.sell', { uec: profit(route.sellPrice) }) }}
                 </div>
               </Panel>
             </div>

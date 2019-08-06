@@ -4,6 +4,7 @@ module Api
   module V1
     class EquipmentController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
+      after_action -> { pagination_header(:equipment) }, only: [:index]
 
       def index
         authorize! :index, :api_equipment
@@ -12,7 +13,9 @@ module Api
 
         @q = Equipment.ransack(equipment_query_params)
 
-        @equipment = @q.result.offset(params[:offset]).limit(params[:limit])
+        @equipment = @q.result
+                       .page(params[:page])
+                       .per(per_page(Equipment))
       end
 
       private def equipment_query_params

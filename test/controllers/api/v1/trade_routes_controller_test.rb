@@ -46,8 +46,8 @@ module Api
             'slug' => 'titan',
             'type' => nil
           },
-          'sellPrice' => '10.0',
-          'buyPrice' => '20.0',
+          'buyPrice' => '10.0',
+          'sellPrice' => '20.0',
           'profitPerUnit' => '10.0',
           'profitPerUnitPercent' => '50.0',
           'createdAt' => titan_daymar_yela.created_at.to_time.iso8601,
@@ -82,8 +82,8 @@ module Api
             'slug' => 'titan',
             'type' => nil
           },
-          'sellPrice' => '10.0',
-          'buyPrice' => '17.0',
+          'buyPrice' => '10.0',
+          'sellPrice' => '17.0',
           'profitPerUnit' => '7.0',
           'profitPerUnitPercent' => '70.0',
           'createdAt' => titan_daymar_olisar.created_at.to_time.iso8601,
@@ -118,8 +118,8 @@ module Api
             'slug' => 'gold',
             'type' => nil
           },
-          'sellPrice' => '5.0',
-          'buyPrice' => '10.0',
+          'buyPrice' => '5.0',
+          'sellPrice' => '10.0',
           'profitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
           'createdAt' => gold_yela_daymar.created_at.to_time.iso8601,
@@ -157,8 +157,8 @@ module Api
             'slug' => 'gold',
             'type' => nil
           },
-          'sellPrice' => '5.0',
-          'buyPrice' => '10.0',
+          'buyPrice' => '5.0',
+          'sellPrice' => '10.0',
           'profitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
           'createdAt' => gold_yela_daymar.created_at.to_time.iso8601,
