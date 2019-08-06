@@ -18,7 +18,7 @@
     .btn-group
       = link_to images_admin_station_path(station), 'data-turbolinks': "false", title: I18n.t(:"actions.station.images"), class: "btn btn-default" do
         %i.fa.fa-image
-      = link_to edit_admin_station_path(station), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+      = link_to edit_admin_station_path(station), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-default" do
         %i.fa.fa-edit
       = confirm_link_to admin_station_path(station), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
         %i.fa.fa-trash

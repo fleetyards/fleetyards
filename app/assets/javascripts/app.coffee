@@ -14,7 +14,6 @@ $(document).on 'click', 'a.disabled', (evt) ->
   false
 
 $(document).on 'dynamicFieldsFor.add', () ->
-  App.unloadSelect()
   App.initSelect()
 
 document.addEventListener 'turbolinks:load', ->

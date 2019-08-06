@@ -19,7 +19,7 @@
       %i.fa.fa-square
   %td.text-right
     .btn-group
-      = link_to edit_admin_model_upgrade_path(model_upgrade), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+      = link_to edit_admin_model_upgrade_path(model_upgrade), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-default" do
         %i.fa.fa-edit
       = confirm_link_to admin_model_upgrade_path(model_upgrade), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
         %i.fa.fa-trash
