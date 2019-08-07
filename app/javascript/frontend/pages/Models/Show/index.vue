@@ -169,7 +169,10 @@
         </div>
         <div class="row components">
           <div class="col-xs-12">
-            <ModelHardpoints :hardpoints="model.hardpoints" />
+            <ModelHardpoints
+              :hardpoints="model.hardpoints"
+              :erkul-url="erkulUrl"
+            />
           </div>
         </div>
       </div>
@@ -333,6 +336,14 @@ export default {
       }
       const startship42Params = qs.stringify(data)
       return `https://starship42.com/fleetview/single?${startship42Params}`
+    },
+
+    erkulUrl() {
+      if (!this.model || this.model.productionStatus !== 'flight-ready') {
+        return null
+      }
+
+      return `https://www.erkul.games/calculator/fleetyardsnet/${this.$route.params.slug}`
     },
 
     metaTitle() {

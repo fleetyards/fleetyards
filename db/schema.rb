@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_101732) do
+ActiveRecord::Schema.define(version: 2019_08_07_120124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -384,6 +384,7 @@ ActiveRecord::Schema.define(version: 2019_08_05_101732) do
     t.string "rsi_classification"
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
+    t.string "erkuls_slug"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

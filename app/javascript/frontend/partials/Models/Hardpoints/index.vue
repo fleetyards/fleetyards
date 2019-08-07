@@ -116,12 +116,19 @@
           </Panel>
         </div>
       </div>
-      <div class="row">
+      <div
+        v-if="erkulUrl"
+        class="row"
+      >
         <div class="col-xs-12">
           <Btn
+            :href="erkulUrl"
             block
+            class="erkul-link"
           >
-            Erkul DPS Calculator
+            <small>{{ $t('labels.erkul.prefix') }}</small>
+            <i />
+            {{ $t('labels.erkul.link' ) }}
           </Btn>
         </div>
       </div>
@@ -142,18 +149,26 @@ export default {
     Panel,
     Btn,
   },
+
   props: {
     hardpoints: {
       type: Array,
       required: true,
     },
+
+    erkulUrl: {
+      type: String,
+      default: null,
+    },
   },
+
   data() {
     return {
       testHardpoint: {
         size: 'S',
         quantity: 6,
       },
+
       testHardpointEmpty: {
         size: 'S',
         quantity: 6,
@@ -161,6 +176,7 @@ export default {
       },
     }
   },
+
   methods: {
     hardpointsForCategory(category) {
       return this.hardpoints.filter(hardpoint => hardpoint.class === category)

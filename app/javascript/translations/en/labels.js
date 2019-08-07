@@ -345,4 +345,8 @@ export default {
     sell: 'Sell for: %{uec}',
     cargoShip: 'for %{cargo} SCU',
   },
+  erkul: {
+    prefix: 'Tryout Loadouts with',
+    link: 'Erkul\'s DPS Calculator',
+  },
 }
