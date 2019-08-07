@@ -58,6 +58,9 @@
             <li v-if="commodity.item.weaponClassLabel">
               <b>{{ $t('commodityItem.weaponClass') }}:</b> {{ commodity.item.weaponClassLabel }}
             </li>
+            <li v-if="commodity.item.itemClassLabel">
+              <b>{{ $t('commodityItem.itemClass') }}:</b> {{ commodity.item.itemClassLabel }}
+            </li>
           </ul>
         </div>
         <div class="col-xs-12 col-md-6">

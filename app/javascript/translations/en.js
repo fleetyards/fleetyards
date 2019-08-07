@@ -130,7 +130,7 @@ export default {
     grade: 'Grade',
     type: 'Type',
     itemType: 'Item Type',
-    class: 'Item Class',
+    itemClass: 'Item Class',
     weaponClass: 'Weapon Class',
     size: 'Size',
     range: 'Range',
