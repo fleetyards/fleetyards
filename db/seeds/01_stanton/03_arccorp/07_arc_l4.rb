@@ -17,7 +17,7 @@ arc_l4.update!(
 # { small: [1, 3], large: [2, 4]}.each do |ship_size, pads|
 #   pads.each do |pad|
 #     arc_l4.docks << Dock.new(
-#       name: "Landingpad #{"%02d" % pad}",
+#       name: ("%02d" % pad),
 #       dock_type: :landingpad,
 #       ship_size: ship_size,
 #     )
@@ -26,7 +26,7 @@ arc_l4.update!(
 # { large: [1, 2, 3, 4]}.each do |ship_size, hangars|
 #   hangars.each do |hangar|
 #     arc_l4.docks << Dock.new(
-#       name: "Hangar #{"%02d" % hangar}",
+#       name: ("%02d" % hangar),
 #       dock_type: :hangar,
 #       ship_size: ship_size,
 #     )

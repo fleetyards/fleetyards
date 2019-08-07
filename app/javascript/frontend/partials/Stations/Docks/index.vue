@@ -16,33 +16,55 @@
             :key="`docks-${group}`"
             class="col-xs-12"
           >
-            <div class="metrics-label">
+            <div class="metrics-group-label">
               <b>{{ group }}:</b>
             </div>
             <div class="row">
               <div
-                v-for="(docks, size) in groupBy(groupDocks, 'sizeLabel')"
-                :key="`dock-${size}`"
-                class="col-xs-6"
+                v-for="(typedDocks, type) in groupBy(groupDocks, 'typeLabel')"
+                :key="`docks-${group}-${type}`"
+                class="col-xs-12"
               >
-                <DockItem
-                  :docks="docks"
-                  :size="size"
-                />
+                <div class="metrics-label">
+                  <b>{{ type }}:</b>
+                </div>
+                <div class="row">
+                  <div
+                    v-for="(docks, size) in groupBy(typedDocks, 'sizeLabel')"
+                    :key="`dock-${size}`"
+                    class="col-xs-6"
+                  >
+                    <DockItem
+                      :docks="docks"
+                      :size="size"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </template>
         <div
-          v-for="(docks, size) in docksBySize"
+          v-for="(groupDocks, group) in docksByType"
           v-else
-          :key="`docks-${size}`"
-          class="col-xs-6"
+          :key="`docks-${group}`"
+          class="col-xs-12"
         >
-          <DockItem
-            :docks="docks"
-            :size="size"
-          />
+          <div class="metrics-label">
+            <b>{{ group }}:</b>
+          </div>
+          <div class="row">
+            <div
+              v-for="(docks, size) in groupBy(groupDocks, 'sizeLabel')"
+              :key="`dock-${size}`"
+              class="col-xs-6"
+            >
+              <DockItem
+                :docks="docks"
+                :size="size"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -68,6 +90,9 @@ export default {
     },
     docksBySize() {
       return this.groupBy(this.station.docks, 'sizeLabel')
+    },
+    docksByType() {
+      return this.groupBy(this.station.docks, 'typeLabel')
     },
     docksByGroup() {
       return this.groupBy(this.sortBy(this.station.docks, 'name'), 'group')
