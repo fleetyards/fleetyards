@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="metrics-label">
-      {{ docks.length }}x {{ size }} {{ docks[0].typeLabel }}:
+      {{ docks.length }}x {{ size }}:
     </div>
     <div class="metrics-value">
       {{ docks.map(dock => dock.name).join(', ') }}
