@@ -55,6 +55,10 @@ class ShopCommodity < ApplicationRecord
     where(commodity_item_type: ['Commodity'])
   end
 
+  def self.visible
+    includes(:shop).where(shop: { hidden: false })
+  end
+
   def set_commodity_item
     return if commodity_item_selected.blank?
 
