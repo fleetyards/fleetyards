@@ -80,8 +80,10 @@ module Admin
       @shop_commodities ||= shop.shop_commodities.sort_by do |item|
         if item.commodity_item_type == 'Equipment'
           [item.commodity_item_type, item.commodity_item.equipment_type, item.commodity_item.name, item.created_at]
-        else
+        elsif item.commodity_item_type.present?
           [item.commodity_item_type, nil, item.commodity_item.name, item.created_at]
+        else
+          []
         end
       end
     end

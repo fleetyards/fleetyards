@@ -12,6 +12,10 @@ input[type='radio'].styled:checked + label::after {
   content: '\f00c';
 }
 
+.has-feedback .form-control.selectize-control {
+  padding-right: 0;
+}
+
 form {
   .tab-content {
     padding-top: 20px;
