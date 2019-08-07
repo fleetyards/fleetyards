@@ -23,21 +23,6 @@ teasa_spaceport.docks.destroy_all
 end
 
 teasa_spaceport.habitations.destroy_all
-%w[1 2 3 4 5 6].each do |level|
-  [['C', 6], ['B', 4]].each do |prefix|
-    pad = 1
-    { small_apartment: prefix[1] }.each do |apartment_size, count|
-      count.times do
-        teasa_spaceport.habitations << Habitation.new(
-          name: "Level #{"%02d" % level} Apartment #{prefix[0]}#{"%02d" % pad}",
-          habitation_name: 'L19 Habitations',
-          habitation_type: apartment_size
-        )
-        pad += 1
-      end
-    end
-  end
-end
 
 new_deal = Shop.find_or_initialize_by(name: 'New Deal', station: teasa_spaceport)
 new_deal.update!(
@@ -53,6 +38,23 @@ l19.update!(
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/l19.jpg').open,
   hidden: false
 )
+
+l19.habitations.destroy_all
+%w[1 2 3 4 5 6].each do |level|
+  [['C', 6], ['B', 4]].each do |prefix|
+    pad = 1
+    { small_apartment: prefix[1] }.each do |apartment_size, count|
+      count.times do
+        l19.habitations << Habitation.new(
+          name: "Level #{"%02d" % level} Apartment #{prefix[0]}#{"%02d" % pad}",
+          habitation_name: 'L19 Habitations',
+          habitation_type: apartment_size
+        )
+        pad += 1
+      end
+    end
+  end
+end
 
 admin = Shop.find_or_initialize_by(name: 'Admin Office', station: l19)
 admin.update!(
