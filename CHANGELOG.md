@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0](https://github.com/fleetyards/app/compare/v3.10.2...v3.11.0) (2019-08-07)
+
+
+### Bug Fixes
+
+* **pagination:** remove check for page where it didn't belong ([b82efbf](https://github.com/fleetyards/app/commit/b82efbf))
+
+
+### Features
+
+* **erkul:** add links to Erkuls DPS Calculator ([#745](https://github.com/fleetyards/app/issues/745)) ([6df6d09](https://github.com/fleetyards/app/commit/6df6d09))
+
 ### [3.10.2](https://github.com/fleetyards/app/compare/v3.10.1...v3.10.2) (2019-08-07)
 
 
