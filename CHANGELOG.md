@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.10.2](https://github.com/fleetyards/app/compare/v3.10.1...v3.10.2) (2019-08-07)
+
+
+### Bug Fixes
+
+* **shop:** resolve server error on invalid form submit ([ef94b3a](https://github.com/fleetyards/app/commit/ef94b3a))
+* **trade-routes:** only calculate routes for visible shops ([75379d4](https://github.com/fleetyards/app/commit/75379d4))
+
 ### [3.10.1](https://github.com/fleetyards/app/compare/v3.10.0...v3.10.1) (2019-08-06)
 
 
