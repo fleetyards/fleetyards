@@ -80,6 +80,7 @@ export default {
       ],
     }
   },
+
   computed: {
     isPagePresent() {
       return !!this.$route.query.page
@@ -90,7 +91,7 @@ export default {
       Object.keys(query)
         .filter(key => !query[key] || query[key].length === 0)
         .forEach(key => delete query[key])
-      return Object.keys(query).length > 0 || this.$route.query.page
+      return Object.keys(query).length > 0
     },
 
     q() {
