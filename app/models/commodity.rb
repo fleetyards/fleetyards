@@ -3,11 +3,6 @@
 class Commodity < ApplicationRecord
   paginates_per 50
 
-  has_many :trade_commodities,
-           dependent: :nullify
-  has_many :trade_hubs,
-           through: :trade_commodities
-
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   enum commodity_type: %i[gas metal mineral non_metals agricultural_supply food medical_supply processed_goods waste scrap vice]

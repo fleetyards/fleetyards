@@ -55,7 +55,6 @@ en:
     models: Models
     users: Users
     workers: Workers
-    trade_hubs: Trade Hubs
     commodities: Commodities
     celestial_objects: Celestial Objects
     starsystems: Starsystems
@@ -126,10 +125,6 @@ en:
       edit: Edit Shop
       index: Shops
       new: New Shop
-    trade_hub:
-      edit: Edit Trade Hub
-      index: Trade Hubs
-      new: New Trade Hub
     commodity:
       edit: Edit Commodity
       index: Commodities

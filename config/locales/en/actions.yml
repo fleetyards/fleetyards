@@ -20,8 +20,6 @@ en:
         new: Create new Model
       user:
         new: Create new User
-      trade_hub:
-        new: Create new Trade Hub
       commodity:
         new: Create new Commodity
       station:

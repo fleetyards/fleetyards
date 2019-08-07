@@ -23,10 +23,6 @@ en:
         edit: Edit %{user}
         index: Users
         new: New User
-      trade_hub:
-        edit: Trade Hub %{trade_hub}
-        index: Trade Hubs
-        new: New Trade Hub
       commodity:
         edit: Commodity %{commodity}
         index: Commodities
