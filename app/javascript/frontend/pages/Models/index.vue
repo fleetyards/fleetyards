@@ -268,12 +268,15 @@ export default {
 
     async fetchFleetchart() {
       this.loading = true
+
       const response = await this.$api.get('models/fleetchart', {
         q: this.$route.query.q,
       })
+
       if (!response.error) {
         this.fleetchartModels = response.data
       }
+
       this.resetLoading()
     },
 

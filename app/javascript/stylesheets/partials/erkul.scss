@@ -1,0 +1,27 @@
+.erkul-link {
+  small {
+    transition: all ease .5s;
+    color: darken($text-color, 20%);
+  }
+
+  i {
+    transition: all ease .5s;
+    background-image: url('~images/sc_dps_calculator.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+  }
+
+  &:hover {
+    small {
+      color: $gray-darker;
+    }
+
+    i {
+      background-image: url('~images/sc_dps_calculator_black.png');
+    }
+  }
+}

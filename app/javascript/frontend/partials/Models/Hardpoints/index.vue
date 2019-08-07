@@ -116,12 +116,29 @@
           </Panel>
         </div>
       </div>
+      <div
+        v-if="erkulUrl"
+        class="row"
+      >
+        <div class="col-xs-12">
+          <Btn
+            :href="erkulUrl"
+            block
+            class="erkul-link"
+          >
+            <small>{{ $t('labels.erkul.prefix') }}</small>
+            <i />
+            {{ $t('labels.erkul.link' ) }}
+          </Btn>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Panel from 'frontend/components/Panel'
+import Btn from 'frontend/components/Btn'
 import HardpointCategory from './Category'
 import HardpointIcon from './Icon'
 
@@ -130,19 +147,28 @@ export default {
     HardpointCategory,
     HardpointIcon,
     Panel,
+    Btn,
   },
+
   props: {
     hardpoints: {
       type: Array,
       required: true,
     },
+
+    erkulUrl: {
+      type: String,
+      default: null,
+    },
   },
+
   data() {
     return {
       testHardpoint: {
         size: 'S',
         quantity: 6,
       },
+
       testHardpointEmpty: {
         size: 'S',
         quantity: 6,
@@ -150,6 +176,7 @@ export default {
       },
     }
   },
+
   methods: {
     hardpointsForCategory(category) {
       return this.hardpoints.filter(hardpoint => hardpoint.class === category)

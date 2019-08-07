@@ -26,6 +26,14 @@
                   searchable
                   @input="add"
                 />
+                <Btn
+                  :href="erkulUrl"
+                  block
+                  class="erkul-link"
+                >
+                  <i />
+                  {{ $t('labels.erkul.link' ) }}
+                </Btn>
               </div>
               <div
                 v-for="model in sortedModels"
@@ -89,6 +97,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Box from 'frontend/components/Box'
+import Btn from 'frontend/components/Btn'
 import BaseRows from 'frontend/partials/Compare/Models/Base'
 import CrewRows from 'frontend/partials/Compare/Models/Crew'
 import SpeedRows from 'frontend/partials/Compare/Models/Speed'
@@ -99,15 +108,21 @@ export default {
   components: {
     FilterGroup,
     Box,
+    Btn,
     BaseRows,
     CrewRows,
     SpeedRows,
     CategoryRows,
     Legend,
   },
-  mixins: [MetaInfo],
+
+  mixins: [
+    MetaInfo,
+  ],
+
   data() {
     const query = JSON.parse(JSON.stringify(this.$route.query || {}))
+
     return {
       newModel: null,
       form: {
@@ -116,29 +131,37 @@ export default {
       models: [],
     }
   },
+
   computed: {
     sortedModels() {
       const models = JSON.parse(JSON.stringify(this.models))
+
       return models.sort((a, b) => {
         if (a.name < b.name) {
           return -1
         }
+
         if (a.name > b.name) {
           return 1
         }
+
         return 0
       })
     },
+
     selectDisabled() {
       return this.models.length > 7
     },
+
     disabledTooltip() {
       if (this.selectDisabled) {
         return this.$t('labels.compare.enough')
       }
+
       return null
     },
   },
+
   watch: {
     form: {
       handler() {
@@ -147,12 +170,14 @@ export default {
       deep: true,
     },
   },
+
   mounted() {
     this.form.models.forEach(async (slug) => {
       const model = await this.fetchModel(slug)
       this.models.push(model)
     })
   },
+
   methods: {
     update() {
       this.$router.replace({
@@ -162,6 +187,7 @@ export default {
         },
       })
     },
+
     async add() {
       if (this.newModel && !this.form.models.includes(this.newModel)) {
         const model = await this.fetchModel(this.newModel)
@@ -170,20 +196,24 @@ export default {
         this.newModel = null
       }
     },
+
     remove(model) {
       if (this.form.models.includes(model.slug)) {
         const index = this.form.models.indexOf(model.slug)
         this.form.models.splice(index, 1)
       }
+
       if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
         const index = this.models.findIndex(item => item.slug === model.slug)
         this.models.splice(index, 1)
       }
     },
+
     fetchModels({ page, search, missingValue }) {
       const query = {
         q: {},
       }
+
       if (search) {
         query.q.nameCont = search
       } else if (missingValue) {
@@ -191,16 +221,20 @@ export default {
       } else if (page) {
         query.page = page
       }
+
       return this.$api.get('models', query)
     },
+
     async fetchModel(slug) {
       const response = await this.$api.get(`models/${slug}`, {
         withoutImages: true,
         withoutVideos: true,
       })
+
       if (!response.error) {
         return response.data
       }
+
       return null
     },
   },

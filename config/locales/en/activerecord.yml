@@ -87,6 +87,7 @@ en:
           civilian: Civilian
           industrial: Industrial
           military: Military
+          competition: Competition
         component_classes:
           RSIModular: Modular
           RSIWeapon: Weapon
