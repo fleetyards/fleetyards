@@ -156,7 +156,8 @@ export default {
     format: {
       precision: 2,
       strip_insignificant_zeros: true,
-      delimiter: '',
+      delimiter: '.',
+      separator: ',',
     },
     percent: '%{count} %',
     distance: '%{count} m',
