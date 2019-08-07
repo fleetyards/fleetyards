@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.12.0](https://github.com/fleetyards/app/compare/v3.11.0...v3.12.0) (2019-08-07)
+
+
+### Features
+
+* **components:** add item class to shop list ([4efccf3](https://github.com/fleetyards/app/commit/4efccf3))
+
 ## [3.11.0](https://github.com/fleetyards/app/compare/v3.10.2...v3.11.0) (2019-08-07)
 
 
