@@ -6,6 +6,32 @@
       </div>
     </div>
     <FilteredList>
+      <template slot="actions">
+        <Toggle
+          v-tooltip="sortByTooltip"
+          size="small"
+          :aria-label="sortByTooltip"
+          :active-left="sortByProfit"
+          :active-right="sortByPercent"
+          @toggle:left="sortBy('profit')"
+          @toggle:right="sortBy('percent')"
+        >
+          <i
+            slot="left"
+            :class="{
+              'fa fa-dollar-sign': sortByProfit,
+              'far fa-dollar-sign': !sortByProfit,
+            }"
+          />
+          <i
+            slot="right"
+            :class="{
+              'fa fa-percent': sortByPercent,
+              'far fa-percent': !sortByPercent,
+            }"
+          />
+        </Toggle>
+      </template>
       <Paginator
         v-if="tradeRoutes.length"
         slot="pagination"
@@ -99,6 +125,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
+import Toggle from 'frontend/components/Toggle'
 import Filters from 'frontend/mixins/Filters'
 import Panel from 'frontend/components/Panel'
 import Loader from 'frontend/components/Loader'
@@ -109,6 +136,7 @@ import Pagination from 'frontend/mixins/Pagination'
 export default {
   components: {
     FilteredList,
+    Toggle,
     Panel,
     Loader,
     EmptyBox,
@@ -126,6 +154,7 @@ export default {
       cargoShip: null,
       tradeRoutes: [],
       loading: true,
+      sort: 'profit',
     }
   },
 
@@ -148,21 +177,42 @@ export default {
       return !this.loading && !this.tradeRoutes.length && (this.isFilterSelected
         || this.$route.query.page)
     },
+
+    sortByTooltip() {
+      if (this.sortByPercent) {
+        return this.$t('labels.tradeRoutes.sortByPercent')
+      }
+      return this.$t('labels.tradeRoutes.sortByProfit')
+    },
+
+    sortByPercent() {
+      return this.sort === 'percent'
+    },
+
+    sortByProfit() {
+      return this.sort === 'profit'
+    },
   },
 
   watch: {
     $route() {
-      this.fetchTradeRoutes()
+      this.fetch()
       this.fetchCargoShip()
     },
   },
 
   mounted() {
-    this.fetchTradeRoutes()
+    this.fetch()
     this.fetchCargoShip()
   },
 
   methods: {
+    sortBy(sort) {
+      this.sort = sort
+
+      this.fetch()
+    },
+
     profit(value) {
       if (this.cargoShip) {
         return this.$toUEC(value * (this.cargoShip.cargo * 100))
@@ -189,11 +239,14 @@ export default {
       this.setPages(response.meta)
     },
 
-    async fetchTradeRoutes() {
+    async fetch() {
       this.loading = true
 
       const response = await this.$api.get('trade-routes', {
-        q: this.$route.query.q,
+        q: {
+          ...this.$route.query.q,
+        },
+        sort: this.sort,
         page: this.$route.query.page,
       })
 

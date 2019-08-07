@@ -343,7 +343,7 @@ export default {
         return null
       }
 
-      return `https://www.erkul.games/calculator/fleetyardsnet/${this.$route.params.slug}`
+      return `https://www.erkul.games/calculator/fleetyardsnet/${this.model.erkulsSlug}`
     },
 
     metaTitle() {

@@ -9,7 +9,7 @@ module Api
       def index
         authorize! :index, :api_trade_routes
 
-        trade_routes_query_params['sorts'] = ['profit_per_unit desc', 'origin_shop_station_name asc']
+        trade_routes_query_params['sorts'] = sort_trade_routes
 
         @q = TradeRoute.with_profit.ransack(trade_routes_query_params)
 
@@ -22,6 +22,20 @@ module Api
         @trade_routes_query_params ||= query_params(
           station_in: [], celestial_object_in: [], starsystem_in: [], commodity_in: [], commodity_type_in: []
         )
+      end
+
+      private def sort_trade_routes
+        sorting = []
+
+        sorting << if params[:sort].present? && params[:sort] == 'percent'
+                     'profit_per_unit_percent desc'
+                   else
+                     'profit_per_unit desc'
+                   end
+
+        sorting << 'origin_shop_station_name asc'
+
+        sorting
       end
     end
   end
