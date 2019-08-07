@@ -11,26 +11,22 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: lathan)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/lathan_admin.jpg').open, hidden: false)
 
 lathan.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     lathan.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     lathan.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -40,25 +36,21 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: bezdek)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/bezdek_admin.jpg').open, hidden: false)
 
 bezdek.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     bezdek.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     bezdek.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end

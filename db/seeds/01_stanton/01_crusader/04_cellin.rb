@@ -7,16 +7,15 @@ cellin.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/ce
 
 kareah = Station.find_or_initialize_by(name: 'Security Post Kareah')
 kareah.update!(celestial_object: cellin, station_type: :station, location: 'Orbit', store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/kareah.jpg').open, hidden: false)
+
 kareah.docks.destroy_all
-pad = 1
-{ small: 6, medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do
+{ small: [2, 3, 4, 6, 7, 8],  medium: [1, 5] }.each do |ship_size, pads|
+  pads.each do |pad|
     kareah.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -31,26 +30,22 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hickes)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes_admin.jpg').open, hidden: false)
 
 hickes.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     hickes.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     hickes.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -60,26 +55,22 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: terra_m
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills_admin.jpg').open, hidden: false)
 
 terra_mills.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     terra_mills.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     terra_mills.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
