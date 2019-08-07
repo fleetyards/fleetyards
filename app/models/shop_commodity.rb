@@ -56,7 +56,7 @@ class ShopCommodity < ApplicationRecord
   end
 
   def self.visible
-    includes(:shop).where(shop: { hidden: false })
+    includes(:shop).where(shops: { hidden: false })
   end
 
   def set_commodity_item
