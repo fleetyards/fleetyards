@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.13.0](https://github.com/fleetyards/app/compare/v3.12.2...v3.13.0) (2019-08-07)
+
+
+### Features
+
+* **stations:** update docks ([2cf0525](https://github.com/fleetyards/app/commit/2cf0525))
+
 ### [3.12.2](https://github.com/fleetyards/app/compare/v3.12.1...v3.12.2) (2019-08-07)
 
 
