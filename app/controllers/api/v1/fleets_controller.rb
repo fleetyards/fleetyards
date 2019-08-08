@@ -11,7 +11,8 @@ module Api
         authorize! :index, :api_fleets
 
         scope = Fleet
-        scope = scope.where.not(sid: current_user.rsi_orgs.map(&:downcase)) if current_user.present? && current_user.rsi_verified?
+
+        scope = scope.where(['lower(sid) not in (:sid)', { sid: current_user.rsi_orgs.map(&:downcase) }]) if current_user.present? && current_user.rsi_verified?
 
         @fleets = scope.order(name: :asc)
                        .page(params[:page])
@@ -22,7 +23,7 @@ module Api
         authorize! :my, :api_fleets
 
         @fleets = if current_user.rsi_verified?
-                    Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).order(name: :asc).all
+                    Fleet.where(['lower(sid) in (:sid)', { sid: current_user.rsi_orgs.map(&:downcase) }]).order(name: :asc).all
                   else
                     []
                   end
@@ -79,12 +80,12 @@ module Api
       private def fleet
         return unless current_user.rsi_verified?
 
-        @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:downcase)).find_by(sid: params[:sid])
+        @fleet = Fleet.where(['lower(sid) in (:sid)', { sid: current_user.rsi_orgs.map(&:downcase) }]).find_by(sid: params[:sid])
       end
 
       private def fleet_vehicles
         @fleet_vehicles ||= begin
-          member_ids = User.where(rsi_verified: true).where('lower(rsi_orgs) like ?', "% #{fleet&.sid}\n%").map(&:id)
+          member_ids = User.where(rsi_verified: true).where('lower(rsi_orgs) like ?', "% #{fleet&.sid&.downcase}\n%").map(&:id)
           Vehicle.where(user_id: member_ids)
         end
       end
