@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.15.3](https://github.com/fleetyards/app/compare/v3.15.2...v3.15.3) (2019-08-08)
+
+
+### Bug Fixes
+
+* **models:** update admin form ([87473c2](https://github.com/fleetyards/app/commit/87473c2))
+
 ### [3.15.2](https://github.com/fleetyards/app/compare/v3.15.1...v3.15.2) (2019-08-08)
 
 
