@@ -33,7 +33,7 @@
               = I18n.t(:"activerecord.attributes.model.ground")
 
     .col-xs-12.col-sm-6.col-md-4
-    .row
+      .row
         .col-xs-12.col-sm-6.form-group{class: form_error?(model, :base_model_id)}
           = form.label :base_model_id
           = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
