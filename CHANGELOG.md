@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.15.0](https://github.com/fleetyards/app/compare/v3.14.1...v3.15.0) (2019-08-08)
+
+
+### Features
+
+* **trade-routes:** paginate cargo ship filter ([712e9cd](https://github.com/fleetyards/app/commit/712e9cd))
+
 ### [3.14.1](https://github.com/fleetyards/app/compare/v3.14.0...v3.14.1) (2019-08-08)
 
 
