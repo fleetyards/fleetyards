@@ -29,6 +29,15 @@
     />
 
     <FilterGroup
+      v-model="form.commodityTypeNotIn"
+      :label="$t('labels.filters.shops.excludeCommodityType')"
+      fetch-path="commodities/types"
+      name="exclude-commodity-types"
+      searchable
+      multiple
+    />
+
+    <FilterGroup
       v-model="form.stationIn"
       :label="$t('labels.filters.shops.station')"
       fetch-path="stations"
@@ -94,6 +103,7 @@ export default {
         cargoShip: query.cargoShip || null,
         commodityIn: query.commodityIn || [],
         commodityTypeIn: query.commodityTypeIn || [],
+        commodityTypeNotIn: query.commodityTypeNotIn || [],
         stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
@@ -109,6 +119,7 @@ export default {
         cargoShip: query.cargoShip || null,
         commodityIn: query.commodityIn || [],
         commodityTypeIn: query.commodityTypeIn || [],
+        commodityTypeNotIn: query.commodityTypeNotIn || [],
         stationIn: query.stationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],

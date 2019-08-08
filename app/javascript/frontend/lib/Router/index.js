@@ -59,7 +59,9 @@ router.beforeEach((to, from, next) => {
   }
 
   // check if update is available
-  if (Store.getters['app/isUpdateAvailable']) {
+  if (Store.getters['app/isUpdateAvailable']
+    && Object.keys(to.query).length === 0 && to.query.constructor === Object
+    && Object.keys(to.params).length === 0 && to.params.constructor === Object) {
     window.location.href = to.path
     return
   }

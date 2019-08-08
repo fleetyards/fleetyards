@@ -267,6 +267,7 @@ export default {
       component: 'Component',
       commodity: 'Commodity',
       commodityType: 'Commodity Type',
+      excludeCommodityType: 'Exclude Commodity Type',
       starsystem: 'Starsystem',
       station: 'Station',
     },
@@ -344,6 +345,8 @@ export default {
     buy: 'Buy for: %{uec}',
     sell: 'Sell for: %{uec}',
     cargoShip: 'for %{cargo} SCU',
+    sortByPercent: 'Sort by Profit Percent',
+    sortByProfit: 'Sort by Profit Value',
   },
   erkul: {
     prefix: 'Tryout Loadouts with',

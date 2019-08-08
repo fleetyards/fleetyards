@@ -8,9 +8,7 @@
     <FilteredList>
       <template slot="actions">
         <Toggle
-          v-tooltip="sortByTooltip"
           size="small"
-          :aria-label="sortByTooltip"
           :active-left="sortByProfit"
           :active-right="sortByPercent"
           @toggle:left="sortBy('profit')"
@@ -18,6 +16,7 @@
         >
           <i
             slot="left"
+            v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
             :class="{
               'fa fa-dollar-sign': sortByProfit,
               'far fa-dollar-sign': !sortByProfit,
@@ -25,6 +24,7 @@
           />
           <i
             slot="right"
+            v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
             :class="{
               'fa fa-percent': sortByPercent,
               'far fa-percent': !sortByPercent,
@@ -176,13 +176,6 @@ export default {
     emptyBoxVisible() {
       return !this.loading && !this.tradeRoutes.length && (this.isFilterSelected
         || this.$route.query.page)
-    },
-
-    sortByTooltip() {
-      if (this.sortByPercent) {
-        return this.$t('labels.tradeRoutes.sortByPercent')
-      }
-      return this.$t('labels.tradeRoutes.sortByProfit')
     },
 
     sortByPercent() {
