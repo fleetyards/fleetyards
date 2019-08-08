@@ -1,31 +1,34 @@
 <template>
-  <div class="panel-btn-toggle">
-    <Btn
-      :size="size"
-      :active="activeLeft"
-      @click.native="toggle"
-    >
+  <button
+    type="button"
+    :class="cssClasses"
+    :disabled="disabled || loading"
+    @click="toggle"
+  >
+    <BtnInner :loading="loading">
       <slot name="left" />
-    </Btn>
-    <Btn
-      :size="size"
-      :active="activeRight"
-      @click.native="toggle"
-    >
+    </BtnInner><BtnInner :loading="loading">
       <slot name="right" />
-    </Btn>
-  </div>
+    </BtnInner>
+  </button>
 </template>
 
 <script>
-import Btn from 'frontend/components/Btn'
+import BtnInner from 'frontend/components/Btn/Inner'
 
 export default {
+  name: 'Btn',
+
   components: {
-    Btn,
+    BtnInner,
   },
 
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+
     activeLeft: {
       type: Boolean,
       default: true,
@@ -36,12 +39,44 @@ export default {
       default: false,
     },
 
+    variant: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'danger'].indexOf(value) !== -1
+      },
+    },
+
     size: {
       type: String,
       default: 'default',
       validator(value) {
         return ['default', 'small', 'large'].indexOf(value) !== -1
       },
+    },
+
+    inline: {
+      type: Boolean,
+      default: false,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    cssClasses() {
+      return {
+        'panel-btn': true,
+        'panel-btn-toggle': true,
+        'panel-btn-danger': this.variant === 'danger',
+        'panel-btn-small': this.size === 'small',
+        'panel-btn-large': this.size === 'large',
+        'panel-btn-inline': this.inline,
+        'active-left': this.activeLeft,
+        'active-right': this.activeRight,
+      }
     },
   },
 

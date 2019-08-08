@@ -160,40 +160,45 @@ $panel-content-border-radius: 6px;
 }
 
 .panel-btn-toggle {
-  display: inline-block;
+  .panel-btn-inner {
+    display: inline-block;
+    box-sizing: border-box;
+    min-width: 32px;
 
-  button {
-    &:hover:not(.active) {
-      .panel-btn-inner {
-        background-color: transparent !important;
-        color: $text-color !important;
-      }
-    }
-  }
-
-  button:first-child {
-    margin-right: -4px;
-    border-right: none;
-    padding-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-
-    .panel-btn-inner {
+    &:first-child {
+      margin-right: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-  }
 
-  button:last-child {
-    margin-left: 0;
-    border-left: none;
-    padding-left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-
-    .panel-btn-inner {
+    &:last-child {
+      margin-left: 0;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+    }
+  }
+
+  &.active-left {
+    .panel-btn-inner:first-child {
+      background-color: $panel-inner-border;
+      color: invert($text-color);
+    }
+
+    .panel-btn-inner:last-child {
+      background-color: transparent;
+      color: $text-color;
+    }
+  }
+
+  &.active-right {
+    .panel-btn-inner:first-child {
+      background-color: transparent;
+      color: $text-color;
+    }
+
+    .panel-btn-inner:last-child {
+      background-color: $panel-inner-border;
+      color: invert($text-color);
     }
   }
 }
