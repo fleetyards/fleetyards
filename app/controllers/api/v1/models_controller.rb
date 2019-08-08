@@ -4,7 +4,7 @@ module Api
   module V1
     class ModelsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
-      after_action -> { pagination_header(:models) }, only: %i[index with_docks]
+      after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -101,7 +101,8 @@ module Api
                        .active
                        .where('cargo > 0')
                        .order(name: :asc)
-                       .all
+                       .page(params[:page])
+                       .per(per_page(Model))
       end
 
       def latest

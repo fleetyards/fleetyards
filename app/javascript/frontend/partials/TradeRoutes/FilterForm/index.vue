@@ -5,6 +5,7 @@
       fetch-path="models/cargo-options"
       :label="$t('labels.filters.cargoRoutes.cargoShip')"
       name="models"
+      paginated
       searchable
     />
 
