@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.14.1](https://github.com/fleetyards/app/compare/v3.14.0...v3.14.1) (2019-08-08)
+
+
+### Bug Fixes
+
+* **trade-routes:** add missing labels ([3e52a7e](https://github.com/fleetyards/app/commit/3e52a7e))
+
 ## [3.14.0](https://github.com/fleetyards/app/compare/v3.13.2...v3.14.0) (2019-08-07)
 
 
