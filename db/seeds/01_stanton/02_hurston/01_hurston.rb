@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
-hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston.png').open, hidden: false)
+hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston-a.jpg').open, hidden: false)
 
 teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
 teasa_spaceport.update!(

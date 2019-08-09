@@ -136,8 +136,11 @@ export default {
     },
 
     inprogress() {
+      if (this.item.inprogress && this.item.inprogress < this.item.completed) {
+        return this.item.inprogress
+      }
       if (this.item.inprogress) {
-        return Math.min(this.item.inprogress, this.item.tasks)
+        return this.item.inprogress - this.item.completed
       }
       return 0
     },
@@ -177,16 +180,17 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter(key => lastVersion[key]).map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
-        return {
-          key,
-          change: (count < 0) ? 'decreased' : 'increased',
-          old: lastVersion[key][0],
-          new: lastVersion[key][1],
-          count,
-        }
-      })
+      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter(key => lastVersion[key])
+        .map((key) => {
+          const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+          return {
+            key,
+            change: (count < 0) ? 'decreased' : 'increased',
+            old: lastVersion[key][0],
+            new: lastVersion[key][1],
+            count,
+          }
+        })
     },
   },
 }
