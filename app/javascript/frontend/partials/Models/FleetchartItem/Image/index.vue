@@ -1,7 +1,7 @@
 <template>
   <img
     v-if="model.fleetchartImage"
-    v-lazy="model.fleetchartImage"
+    :src="model.fleetchartImage"
     :style="{
       height: `${model.length * lengthMultiplicator}px`,
     }"
