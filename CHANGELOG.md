@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.15.4](https://github.com/fleetyards/app/compare/v3.15.3...v3.15.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **model:** dont lazy load fleetchart images ([917eced](https://github.com/fleetyards/app/commit/917eced))
+
 ### [3.15.3](https://github.com/fleetyards/app/compare/v3.15.2...v3.15.3) (2019-08-08)
 
 
