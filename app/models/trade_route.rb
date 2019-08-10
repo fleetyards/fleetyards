@@ -18,6 +18,8 @@ class TradeRoute < ApplicationRecord
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type
   ransack_alias :station, :origin_station_slug_or_destination_station_slug
+  ransack_alias :origin, :origin_station_slug
+  ransack_alias :destination, :destination_station_slug
   ransack_alias :celestial_object, :origin_celestial_object_slug_or_destination_celestial_object_slug
   ransack_alias :starsystem, :origin_starsystem_slug_or_destination_starsystem_slug
 

@@ -267,7 +267,6 @@ export default {
       component: 'Component',
       commodity: 'Commodity',
       commodityType: 'Commodity Type',
-      excludeCommodityType: 'Exclude Commodity Type',
       starsystem: 'Starsystem',
       station: 'Station',
     },
@@ -299,16 +298,16 @@ export default {
       purchased: 'Purchased',
       group: 'Group',
     },
-    cargoRoutes: {
+    tradeRoutes: {
       sortBy: 'Sort by',
       sortByValues: {
         percent: 'Max. Percent',
         profit: 'Max. Profit',
       },
       cargoShip: 'Cargoship',
-      tradeHub: 'Trade Hub',
-      commodity: 'Commodity',
-      planet: 'Planet',
+      origin: 'Origin',
+      destination: 'Destination',
+      excludeCommodityType: 'Exclude Commodity Type',
     },
     models: {
       shipRole: 'Ship Role',

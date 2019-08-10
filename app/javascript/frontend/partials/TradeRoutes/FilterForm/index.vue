@@ -1,9 +1,31 @@
 <template>
   <form @submit.prevent="filter">
     <FilterGroup
+      v-model="form.originIn"
+      :label="$t('labels.filters.tradeRoutes.origin')"
+      fetch-path="stations?origin"
+      name="origin"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
+
+    <FilterGroup
+      v-model="form.destinationIn"
+      :label="$t('labels.filters.tradeRoutes.destination')"
+      fetch-path="stations?destination"
+      name="destination"
+      value-attr="slug"
+      paginated
+      searchable
+      multiple
+    />
+
+    <FilterGroup
       v-model="form.cargoShip"
       fetch-path="models/cargo-options"
-      :label="$t('labels.filters.cargoRoutes.cargoShip')"
+      :label="$t('labels.filters.tradeRoutes.cargoShip')"
       name="models"
       paginated
       searchable
@@ -31,20 +53,9 @@
 
     <FilterGroup
       v-model="form.commodityTypeNotIn"
-      :label="$t('labels.filters.shops.excludeCommodityType')"
+      :label="$t('labels.filters.tradeRoutes.excludeCommodityType')"
       fetch-path="commodities/types"
       name="exclude-commodity-types"
-      searchable
-      multiple
-    />
-
-    <FilterGroup
-      v-model="form.stationIn"
-      :label="$t('labels.filters.shops.station')"
-      fetch-path="stations"
-      name="station"
-      value-attr="slug"
-      paginated
       searchable
       multiple
     />
@@ -105,7 +116,8 @@ export default {
         commodityIn: query.commodityIn || [],
         commodityTypeIn: query.commodityTypeIn || [],
         commodityTypeNotIn: query.commodityTypeNotIn || [],
-        stationIn: query.stationIn || [],
+        originIn: query.originIn || [],
+        destinationIn: query.destinationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
       },
@@ -121,7 +133,8 @@ export default {
         commodityIn: query.commodityIn || [],
         commodityTypeIn: query.commodityTypeIn || [],
         commodityTypeNotIn: query.commodityTypeNotIn || [],
-        stationIn: query.stationIn || [],
+        originIn: query.originIn || [],
+        destinationIn: query.destinationIn || [],
         celestialObjectIn: query.celestialObjectIn || [],
         starsystemIn: query.starsystemIn || [],
       }
