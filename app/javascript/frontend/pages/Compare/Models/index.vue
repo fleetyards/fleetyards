@@ -133,6 +133,10 @@ export default {
   },
 
   computed: {
+    erkulUrl() {
+      return 'https://www.erkul.games/calculator'
+    },
+
     sortedModels() {
       const models = JSON.parse(JSON.stringify(this.models))
 
@@ -193,8 +197,8 @@ export default {
         const model = await this.fetchModel(this.newModel)
         this.models.push(model)
         this.form.models.push(this.newModel)
-        this.newModel = null
       }
+      this.newModel = null
     },
 
     remove(model) {

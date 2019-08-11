@@ -53,9 +53,6 @@
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, .9);
-    border-bottom-left-radius: $border-radius-base;
-    border-bottom-right-radius: $border-radius-base;
   }
 
   .filter-list-items-wrapper {
@@ -63,6 +60,10 @@
     position: absolute;
     left: 0;
     right: 0;
+    background-color: rgba($gray-darker, .9);
+    border-bottom-left-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
+    box-shadow: 0 1px 3px rgba(black, .9);
   }
 
   .filter-list-item {
