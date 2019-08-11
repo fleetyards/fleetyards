@@ -54,6 +54,7 @@ export default {
   addAnother: 'Add another',
   addVehicle: 'Add Ships',
   addGroup: 'Add Group',
+  addAddonModule: 'Add another Addon/Module',
   compare: {
     models: 'Compare',
   },

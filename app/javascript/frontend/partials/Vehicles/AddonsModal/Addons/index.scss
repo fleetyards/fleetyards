@@ -8,7 +8,12 @@
   }
 }
 
-.addons {
+.addons-wrapper {
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+.addon {
   .model-panel {
     cursor: pointer;
     display: flex;
@@ -61,5 +66,12 @@
       font-family: 'Orbitron', tahoma, sans-serif;
       font-weight: 400;
     }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .add-addons,
+  .addon {
+    margin: 0;
   }
 }

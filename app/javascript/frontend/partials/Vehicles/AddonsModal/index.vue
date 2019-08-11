@@ -72,12 +72,14 @@ export default {
     Loader,
     Addons,
   },
+
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
   },
+
   data() {
     return {
       modules: [],
@@ -89,6 +91,7 @@ export default {
       form: {},
     }
   },
+
   watch: {
     vehicle() {
       this.form = {
@@ -97,10 +100,12 @@ export default {
       }
     },
   },
+
   methods: {
     selectedUpgrade(upgradeId) {
       return this.form.modelUpgradeIds.includes(upgradeId)
     },
+
     open(vehicle) {
       this.vehicle = vehicle
       this.form = {
@@ -111,6 +116,7 @@ export default {
         this.$refs.modal.open()
       })
     },
+
     changeUpgrade(upgrade) {
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {
         const index = this.form.modelUpgradeIds.findIndex(upgradeId => upgradeId === upgrade.id)
@@ -121,6 +127,7 @@ export default {
         this.form.modelUpgradeIds.push(upgrade.id)
       }
     },
+
     async save() {
       this.submitting = true
       const response = await this.$api.put(`vehicles/${this.vehicle.id}`, this.form)
@@ -130,10 +137,12 @@ export default {
         this.$comlink.$emit('vehicleSave', response.data)
       }
     },
+
     async fetch() {
       await this.fetchModules()
       await this.fetchUpgrades()
     },
+
     async fetchModules() {
       this.loadingModules = true
       const response = await this.$api.get(`models/${this.vehicle.model.slug}/modules`)
@@ -142,6 +151,7 @@ export default {
         this.modules = response.data
       }
     },
+
     async fetchUpgrades() {
       this.loadingUpgrades = true
       const response = await this.$api.get(`models/${this.vehicle.model.slug}/upgrades`)
@@ -155,5 +165,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>
