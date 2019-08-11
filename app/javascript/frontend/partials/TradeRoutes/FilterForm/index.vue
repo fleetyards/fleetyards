@@ -1,26 +1,41 @@
 <template>
   <form @submit.prevent="filter">
-    <FilterGroup
-      v-model="form.originIn"
-      :label="$t('labels.filters.tradeRoutes.origin')"
-      fetch-path="stations?origin"
-      name="origin"
-      value-attr="slug"
-      paginated
-      searchable
-      multiple
-    />
+    <template v-if="mobile">
+      <FilterGroup
+        v-model="form.originIn"
+        :label="$t('labels.filters.tradeRoutes.origin')"
+        fetch-path="stations?origin"
+        name="origin"
+        value-attr="slug"
+        paginated
+        searchable
+        multiple
+      />
 
-    <FilterGroup
-      v-model="form.destinationIn"
-      :label="$t('labels.filters.tradeRoutes.destination')"
-      fetch-path="stations?destination"
-      name="destination"
-      value-attr="slug"
-      paginated
-      searchable
-      multiple
-    />
+      <FilterGroup
+        v-model="form.destinationIn"
+        :label="$t('labels.filters.tradeRoutes.destination')"
+        fetch-path="stations?destination"
+        name="destination"
+        value-attr="slug"
+        paginated
+        searchable
+        multiple
+      />
+
+      <FilterGroup
+        v-model="form.commodityIn"
+        :label="$t('labels.filters.shops.commodity')"
+        fetch-path="commodities"
+        name="commodity"
+        value-attr="slug"
+        paginated
+        searchable
+        multiple
+      />
+
+      <hr>
+    </template>
 
     <FilterGroup
       v-model="form.cargoShip"
@@ -29,26 +44,6 @@
       name="models"
       paginated
       searchable
-    />
-
-    <FilterGroup
-      v-model="form.commodityIn"
-      :label="$t('labels.filters.shops.commodity')"
-      fetch-path="commodities"
-      name="commodity"
-      value-attr="slug"
-      paginated
-      searchable
-      multiple
-    />
-
-    <FilterGroup
-      v-model="form.commodityTypeIn"
-      :label="$t('labels.filters.shops.commodityType')"
-      fetch-path="commodities/types"
-      name="commodity-types"
-      searchable
-      multiple
     />
 
     <FilterGroup
@@ -94,6 +89,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Btn from 'frontend/components/Btn'
@@ -114,7 +111,6 @@ export default {
       form: {
         cargoShip: query.cargoShip || null,
         commodityIn: query.commodityIn || [],
-        commodityTypeIn: query.commodityTypeIn || [],
         commodityTypeNotIn: query.commodityTypeNotIn || [],
         originIn: query.originIn || [],
         destinationIn: query.destinationIn || [],
@@ -124,6 +120,12 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+  },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -131,7 +133,6 @@ export default {
       this.form = {
         cargoShip: query.cargoShip || null,
         commodityIn: query.commodityIn || [],
-        commodityTypeIn: query.commodityTypeIn || [],
         commodityTypeNotIn: query.commodityTypeNotIn || [],
         originIn: query.originIn || [],
         destinationIn: query.destinationIn || [],

@@ -304,9 +304,9 @@ export default {
         percent: 'Max. Percent',
         profit: 'Max. Profit',
       },
-      cargoShip: 'Cargoship',
-      origin: 'Origin',
-      destination: 'Destination',
+      cargoShip: 'With Cargoship?',
+      origin: 'From?',
+      destination: 'To?',
       excludeCommodityType: 'Exclude Commodity Type',
     },
     models: {

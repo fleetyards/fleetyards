@@ -46,6 +46,10 @@
         tag="div"
         appear
       >
+        <QuickFilter
+          v-if="!mobile"
+          key="quickfilter"
+        />
         <div
           v-for="route in tradeRoutes"
           :key="`${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`"
@@ -130,6 +134,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
 import Toggle from 'frontend/components/Toggle'
@@ -138,6 +144,7 @@ import Panel from 'frontend/components/Panel'
 import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import FilterForm from 'frontend/partials/TradeRoutes/FilterForm'
+import QuickFilter from 'frontend/partials/TradeRoutes/QuickFilter'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
@@ -148,6 +155,7 @@ export default {
     Loader,
     EmptyBox,
     FilterForm,
+    QuickFilter,
   },
 
   mixins: [
@@ -166,6 +174,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+
     title() {
       if (this.cargoShip) {
         return this.$t('headlines.tradeRoutes.withShip', {

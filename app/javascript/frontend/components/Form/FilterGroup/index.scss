@@ -2,10 +2,7 @@
 
 .filter-list {
   margin-bottom: 15px;
-
-  .filter-list-search {
-    margin-bottom: 0;
-  }
+  position: relative;
 
   .filter-list-title,
   .filter-list-item {
@@ -56,9 +53,16 @@
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, .8);
+    background-color: rgba($gray-darker, .9);
     border-bottom-left-radius: $border-radius-base;
     border-bottom-right-radius: $border-radius-base;
+  }
+
+  .filter-list-items-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    right: 0;
   }
 
   .filter-list-item {

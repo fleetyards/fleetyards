@@ -39,49 +39,52 @@
         </span>
       </a>
     </b-collapse>
-    <FormInput
-      v-show="searchable && visible"
-      ref="searchInput"
-      v-model="search"
-      :placeholder="searchLabel || $t('actions.find')"
-      class="filter-list-search"
-      variant="clean"
-      @input="onSearch"
-    />
     <b-collapse
       :id="`${groupID}-${id}`"
       :visible="visible"
-      class="filter-list-items"
+      class="filter-list-items-wrapper"
     >
-      <a
-        v-for="(option, index) in filteredOptions"
-        :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
-        :class="{
-          active: selected(option[valueAttr]),
-        }"
-        class="filter-list-item fade-list-item"
-        @click="select(option[valueAttr])"
-      >
-        <span
-          v-if="option[iconAttr]"
-          class="filter-list-item-icon"
+      <FormInput
+        v-if="searchable"
+        ref="searchInput"
+        v-model="search"
+        :placeholder="searchLabel || $t('actions.find')"
+        class="filter-list-search"
+        variant="clean"
+        @input="onSearch"
+      />
+      <div class="filter-list-items">
+        <a
+          v-for="(option, index) in filteredOptions"
+          :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
+          :class="{
+            active: selected(option[valueAttr]),
+          }"
+          class="filter-list-item fade-list-item"
+          @click="select(option[valueAttr])"
         >
-          <img :src="option[iconAttr]">
-        </span>
-        <span v-html="option[labelAttr]" />
-        <span v-if="multiple">
-          <i class="fal fa-plus" />
-        </span>
-      </a>
-      <InfiniteLoading
-        v-if="shouldFetch && fetchedOptions.length && !search && paginated"
-        ref="infiniteLoading"
-        :distance="100"
-        @infinite="fetchMore"
-      >
-        <span slot="no-more" />
-        <span slot="spinner" />
-      </InfiniteLoading>
+          <span
+            v-if="option[iconAttr]"
+            class="filter-list-item-icon"
+          >
+            <img :src="option[iconAttr]">
+          </span>
+          <span v-html="option[labelAttr]" />
+          <span v-if="multiple">
+            <i class="fal fa-plus" />
+          </span>
+        </a>
+
+        <InfiniteLoading
+          v-if="shouldFetch && fetchedOptions.length && !search && paginated"
+          ref="infiniteLoading"
+          :distance="100"
+          @infinite="fetchMore"
+        >
+          <span slot="no-more" />
+          <span slot="spinner" />
+        </InfiniteLoading>
+      </div>
     </b-collapse>
   </div>
 </template>
