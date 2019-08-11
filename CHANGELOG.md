@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.1](https://github.com/fleetyards/app/compare/v3.17.0...v3.17.1) (2019-08-11)
+
+
+### Refactorings
+
+* **click-handler:** update global document click ([308b045](https://github.com/fleetyards/app/commit/308b045))
+
 ## [3.17.0](https://github.com/fleetyards/app/compare/v3.16.2...v3.17.0) (2019-08-11)
 
 
