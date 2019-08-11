@@ -34,7 +34,7 @@
       </template>
       <Paginator
         v-if="tradeRoutes.length"
-        slot="pagination"
+        slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
         right
@@ -117,6 +117,13 @@
       <Loader
         :loading="loading"
         fixed
+      />
+      <Paginator
+        v-if="tradeRoutes.length"
+        slot="pagination-bottom"
+        :page="currentPage"
+        :total="totalPages"
+        right
       />
     </FilteredList>
   </section>
@@ -228,8 +235,6 @@ export default {
       if (!response.errors) {
         this.cargoShip = response.data
       }
-
-      this.setPages(response.meta)
     },
 
     async fetch() {
@@ -248,6 +253,8 @@ export default {
       if (!response.errors) {
         this.tradeRoutes = response.data
       }
+
+      this.setPages(response.meta)
     },
   },
 }
