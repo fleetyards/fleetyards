@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.3](https://github.com/fleetyards/app/compare/v3.17.2...v3.17.3) (2019-08-11)
+
+
+### Bug Fixes
+
+* **filter-group:** update selection styles ([e168a6a](https://github.com/fleetyards/app/commit/e168a6a))
+
 ### [3.17.2](https://github.com/fleetyards/app/compare/v3.17.1...v3.17.2) (2019-08-11)
 
 
