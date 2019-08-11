@@ -1,5 +1,8 @@
 <template>
-  <div class="filter-list">
+  <div
+    ref="filterGroup"
+    class="filter-list"
+  >
     <div
       :class="{
         active: visible,
@@ -239,7 +242,24 @@ export default {
     }
   },
 
+  created() {
+    document.addEventListener('click', this.documentClick)
+  },
+
+  destroyed () {
+    document.removeEventListener('click', this.documentClick)
+  },
+
   methods: {
+    documentClick(event) {
+      const element = this.$refs.filterGroup
+      const { target } = event
+
+      if (element !== target && !element.contains(target)) {
+        this.visible = false
+      }
+    },
+
     onSearch: debounce(function debounced() {
       if (this.paginated && this.search) {
         this.page = 1
