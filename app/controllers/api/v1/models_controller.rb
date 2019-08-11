@@ -97,12 +97,16 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        @models = Model.visible
-                       .active
-                       .where('cargo > 0')
-                       .order(name: :asc)
-                       .page(params[:page])
-                       .per(per_page(Model))
+        model_query_params['sorts'] = sort_by_name
+
+        @q = Model.visible
+                  .active
+                  .where('cargo > 0')
+                  .ransack(model_query_params)
+
+        @models = @q.result
+                    .page(params[:page])
+                    .per(per_page(Model))
       end
 
       def latest
