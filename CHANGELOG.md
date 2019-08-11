@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.2](https://github.com/fleetyards/app/compare/v3.17.1...v3.17.2) (2019-08-11)
+
+
+### Bug Fixes
+
+* **addons:** update modal and use filterGroup ([1729425](https://github.com/fleetyards/app/commit/1729425))
+
 ### [3.17.1](https://github.com/fleetyards/app/compare/v3.17.0...v3.17.1) (2019-08-11)
 
 
