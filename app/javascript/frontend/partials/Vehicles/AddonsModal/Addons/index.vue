@@ -51,13 +51,11 @@
 </template>
 
 <script>
-import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 
 export default {
   components: {
-    Btn,
     Panel,
     FilterGroup,
   },
