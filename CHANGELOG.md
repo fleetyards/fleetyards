@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.4](https://github.com/fleetyards/app/compare/v3.17.3...v3.17.4) (2019-08-11)
+
+
+### Bug Fixes
+
+* **addons:** remove unused component ([2c8f5db](https://github.com/fleetyards/app/commit/2c8f5db))
+
 ### [3.17.3](https://github.com/fleetyards/app/compare/v3.17.2...v3.17.3) (2019-08-11)
 
 
