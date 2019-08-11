@@ -14,6 +14,12 @@
     }
   }
 
+  .filter-list-search {
+    border: 1px solid $input-border;
+    border-top: none;
+    border-bottom: none;
+  }
+
   .filter-list-title {
     font-weight: bold;
     position: relative;
@@ -53,6 +59,11 @@
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
+    background-color: rgba($gray-darker, .95);
+    border-bottom-left-radius: $border-radius-base;
+    border-bottom-right-radius: $border-radius-base;
+    border: 1px solid $input-border;
+    border-top: none;
   }
 
   .filter-list-items-wrapper {
@@ -60,9 +71,6 @@
     position: absolute;
     left: 0;
     right: 0;
-    background-color: rgba($gray-darker, .9);
-    border-bottom-left-radius: $border-radius-base;
-    border-bottom-right-radius: $border-radius-base;
     box-shadow: 0 1px 3px rgba(black, .9);
   }
 
