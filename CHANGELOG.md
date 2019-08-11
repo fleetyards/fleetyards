@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.16.2](https://github.com/fleetyards/app/compare/v3.16.1...v3.16.2) (2019-08-11)
+
+
+### Bug Fixes
+
+* **trade-routes:** allow search of cargo ships ([43d8be9](https://github.com/fleetyards/app/commit/43d8be9))
+
 ### [3.16.1](https://github.com/fleetyards/app/compare/v3.16.0...v3.16.1) (2019-08-11)
 
 
