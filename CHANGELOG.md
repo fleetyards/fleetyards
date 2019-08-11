@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.16.1](https://github.com/fleetyards/app/compare/v3.16.0...v3.16.1) (2019-08-11)
+
+
+### Bug Fixes
+
+* **trade-routes:** update pagination ([3bc8be2](https://github.com/fleetyards/app/commit/3bc8be2))
+
 ## [3.16.0](https://github.com/fleetyards/app/compare/v3.15.6...v3.16.0) (2019-08-10)
 
 
