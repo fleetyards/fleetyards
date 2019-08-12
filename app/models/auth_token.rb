@@ -10,6 +10,8 @@ class AuthToken < ApplicationRecord
   before_create :set_expires_at
   before_create :generate_client_key
 
+  ransack_alias :name, :name_or_slug
+
   def self.expired
     where('expires_at < ?', Time.zone.now)
   end

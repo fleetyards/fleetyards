@@ -38,7 +38,7 @@ module Api
       private def shop_query_params
         @shop_query_params ||= query_params(
           :name_cont, :commodity_name_cont,
-          model_in: [], equipment_in: [], component_in: [], commodity_in: [],
+          name_in: [], model_in: [], equipment_in: [], component_in: [], commodity_in: [],
           shop_type_in: [], commodity_category_in: [], station_in: [], celestial_object_in: [],
           starsystem_in: []
         )

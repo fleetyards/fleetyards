@@ -78,6 +78,7 @@ export default {
 
       this.form = query
     },
+
     form: {
       handler() {
         this.filter()

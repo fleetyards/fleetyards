@@ -23,6 +23,8 @@ class Starsystem < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  ransack_alias :name, :name_or_slug
+
   def self.visible
     where(hidden: false)
   end

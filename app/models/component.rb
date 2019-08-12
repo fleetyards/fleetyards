@@ -22,6 +22,8 @@ class Component < ApplicationRecord
     parent.table[:item_class]
   end
 
+  ransack_alias :name, :name_or_slug
+
   def self.item_types
     %w[
       weapons

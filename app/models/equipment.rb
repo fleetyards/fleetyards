@@ -13,6 +13,8 @@ class Equipment < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  ransack_alias :name, :name_or_slug
+
   enum equipment_type: %i[undersuit armor weapon tool clothing medical weapon_attachment]
   ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
     parent.table[:equipment_type]

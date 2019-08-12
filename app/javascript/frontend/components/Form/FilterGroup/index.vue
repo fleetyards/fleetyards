@@ -312,13 +312,14 @@ export default {
     },
 
     async fetchMissingOption() {
-      if ((this.multiple && this.selectedOptions.length === this.value.length)
+      if (!this.value || (this.multiple && this.selectedOptions.length === this.value.length)
         || (!this.multiple && this.selectedOptions[0] === this.value)) {
         return
       }
 
       this.loading = true
-      const response = await this.internalFetch({ page: this.page, missingValue: this.value })
+      console.log(this.value)
+      const response = await this.internalFetch({ missingValue: this.value })
       this.loading = false
       if (!response.error) {
         this.addOptions(response.data)

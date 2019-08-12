@@ -14,10 +14,12 @@ class Commodity < ApplicationRecord
   ransack_alias :type, :commodity_type
 
   validates :name, presence: true, uniqueness: true
+  ransack_alias :name, :name_or_slug
 
   before_save :update_slugs
 
   mount_uploader :store_image, CommodityStoreImageUploader
+
 
   def self.type_filters
     Commodity.commodity_types.map do |(item, _index)|

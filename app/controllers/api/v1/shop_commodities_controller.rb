@@ -46,7 +46,7 @@ module Api
       private def shop_commodities_query_params
         @shop_commodities_query_params ||= query_params(
           :name_cont, :price_gteq, :price_lteq,
-          category_in: [], sub_category_in: [], manufacturer_in: []
+          name_in: [], category_in: [], sub_category_in: [], manufacturer_in: []
         )
       end
     end
