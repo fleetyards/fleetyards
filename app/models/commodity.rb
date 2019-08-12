@@ -20,7 +20,6 @@ class Commodity < ApplicationRecord
 
   mount_uploader :store_image, CommodityStoreImageUploader
 
-
   def self.type_filters
     Commodity.commodity_types.map do |(item, _index)|
       Filter.new(

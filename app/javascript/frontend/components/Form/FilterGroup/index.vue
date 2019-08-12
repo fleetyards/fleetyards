@@ -318,7 +318,7 @@ export default {
       }
 
       this.loading = true
-      console.log(this.value)
+
       const response = await this.internalFetch({ missingValue: this.value })
       this.loading = false
       if (!response.error) {
