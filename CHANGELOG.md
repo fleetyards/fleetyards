@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.7](https://github.com/fleetyards/app/compare/v3.17.6...v3.17.7) (2019-08-12)
+
+
+### Bug Fixes
+
+* **filter-group:** linting ([80e5422](https://github.com/fleetyards/app/commit/80e5422))
+
 ### [3.17.6](https://github.com/fleetyards/app/compare/v3.17.5...v3.17.6) (2019-08-12)
 
 
