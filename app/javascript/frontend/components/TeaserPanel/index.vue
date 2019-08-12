@@ -16,13 +16,13 @@
           :to="to"
         >
           <h3>{{ title }}</h3>
-          <p>
+          <p v-if="withDescription">
             {{ item.description }}
           </p>
         </router-link>
         <template v-else>
           <h3>{{ title }}</h3>
-          <p>
+          <p v-if="withDescription">
             {{ item.description }}
           </p>
         </template>
@@ -48,10 +48,17 @@ export default {
       type: Object,
       required: true,
     },
+
     to: {
       type: Object,
       default: null,
     },
+
+    withDescription: {
+      type: Boolean,
+      default: true,
+    },
+
     variant: {
       type: String,
       default: 'default',

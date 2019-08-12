@@ -20,6 +20,7 @@
             <Addons
               v-model="form.modelModuleIds"
               :addons="modules"
+              :label="$t('actions.addModule')"
               :initial-addons="vehicle.modelModuleIds"
             />
           </fieldset>
@@ -37,6 +38,7 @@
             <Addons
               v-model="form.modelUpgradeIds"
               :addons="upgrades"
+              :label="$t('actions.addUpgrade')"
               :initial-addons="vehicle.modelModuleIds"
             />
           </fieldset>

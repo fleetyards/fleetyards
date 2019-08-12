@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="addons-wrapper col-xs-12">
+    <div class="col-xs-12">
       <div class="flex-row">
         <template v-for="addon in addons">
           <div
@@ -39,7 +39,7 @@
     <div class="col-xs-12 col-sm-6 add-addons">
       <FilterGroup
         v-model="addonToAdd"
-        :label="$t('actions.addAddonModule')"
+        :label="label"
         :options="addons"
         name="addons"
         value-attr="id"
@@ -63,6 +63,11 @@ export default {
   props: {
     addons: {
       type: Array,
+      required: true,
+    },
+
+    label: {
+      type: String,
       required: true,
     },
 

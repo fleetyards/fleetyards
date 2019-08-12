@@ -64,7 +64,7 @@
             active: selected(option[valueAttr]),
           }"
           class="filter-list-item fade-list-item"
-          @click="select(option[valueAttr])"
+          @click="select(returnObject ? option : option[valueAttr])"
         >
           <span
             v-if="option[iconAttr]"
@@ -154,6 +154,11 @@ export default {
     },
 
     searchable: {
+      type: Boolean,
+      default: false,
+    },
+
+    returnObject: {
       type: Boolean,
       default: false,
     },
