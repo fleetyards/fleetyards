@@ -74,13 +74,7 @@
       <div class="app-footer-item">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
-          <a
-            href="mailto:info@mortik.de"
-            target="_blank"
-            rel="noopener"
-          >
-            Marten Klitzke - mortik.
-          </a>
+          Torlek Maru
         </p>
         <p class="rsi-disclaimer">
           This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group
@@ -115,12 +109,14 @@ export default {
     ...mapGetters([
       'online',
     ]),
+
     ...mapGetters('app', [
       'version',
       'codename',
       'gitRevision',
     ]),
   },
+
   methods: {
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
@@ -138,5 +134,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>
