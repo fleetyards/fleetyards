@@ -66,7 +66,7 @@ gem 'uglifier'
 gem 'metadown'
 gem 'redcarpet'
 
-gem 'puma'
+gem 'puma', '4.0.1'
 gem 'rack-attack'
 
 gem 'bower-rails'
