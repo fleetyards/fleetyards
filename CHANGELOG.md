@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.18.0](https://github.com/fleetyards/app/compare/v3.17.8...v3.18.0) (2019-08-13)
+
+
+### Features
+
+* **public-hangar:** add avatar and link to rsi profile ([#772](https://github.com/fleetyards/app/issues/772)) ([31aec7d](https://github.com/fleetyards/app/commit/31aec7d))
+
 ### [3.17.8](https://github.com/fleetyards/app/compare/v3.17.7...v3.17.8) (2019-08-13)
 
 
