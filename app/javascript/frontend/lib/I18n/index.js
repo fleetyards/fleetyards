@@ -25,7 +25,7 @@ const methods = {
       count = value
     }
     if (units === 'speed' && value) {
-      count = value.split(' - ').map(item => I18n.l('number', item)).join(' - ')
+      count = value.split(' - ').map((item) => I18n.l('number', item)).join(' - ')
     }
     if (!value || (['speed', 'rotation'].includes(units) && value <= 0)) {
       return I18n.t('labels.not-available')

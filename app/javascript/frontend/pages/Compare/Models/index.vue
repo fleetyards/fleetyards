@@ -207,8 +207,8 @@ export default {
         this.form.models.splice(index, 1)
       }
 
-      if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
-        const index = this.models.findIndex(item => item.slug === model.slug)
+      if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
+        const index = this.models.findIndex((item) => item.slug === model.slug)
         this.models.splice(index, 1)
       }
     },

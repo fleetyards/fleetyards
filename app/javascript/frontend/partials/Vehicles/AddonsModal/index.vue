@@ -121,7 +121,7 @@ export default {
 
     changeUpgrade(upgrade) {
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {
-        const index = this.form.modelUpgradeIds.findIndex(upgradeId => upgradeId === upgrade.id)
+        const index = this.form.modelUpgradeIds.findIndex((upgradeId) => upgradeId === upgrade.id)
         if (index > -1) {
           this.form.modelUpgradeIds.splice(index, 1)
         }

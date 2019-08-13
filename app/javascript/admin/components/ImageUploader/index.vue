@@ -211,14 +211,14 @@ export default {
       return !this.loading && !this.allImages.length
     },
     activeImages() {
-      return this.newImages.filter(item => item.active)
+      return this.newImages.filter((item) => item.active)
     },
     progress() {
       if (!this.newImages.length) {
         return 0
       }
 
-      const pendingProgress = this.newImages.map(item => parseFloat(item.progress))
+      const pendingProgress = this.newImages.map((item) => parseFloat(item.progress))
         .reduce((pv, cv) => pv + cv, 0)
       const completedUploads = this.uploadCount - this.newImages.length
 
@@ -229,7 +229,7 @@ export default {
         return 0
       }
 
-      return this.activeImages.map(item => parseFloat(item.speed))
+      return this.activeImages.map((item) => parseFloat(item.speed))
         .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
     },
   },

@@ -116,7 +116,7 @@ export default {
     },
 
     idsForAddon(addonId) {
-      const ids = this.availableAddons.filter(item => item === addonId)
+      const ids = this.availableAddons.filter((item) => item === addonId)
       if (ids.length) {
         return ids
       }
@@ -125,7 +125,7 @@ export default {
 
     changeAddon(addonId) {
       if (this.availableAddons.includes(addonId)) {
-        const index = this.availableAddons.findIndex(itemId => itemId === addonId)
+        const index = this.availableAddons.findIndex((itemId) => itemId === addonId)
         if (index > -1) {
           this.availableAddons.splice(index, 1)
         }

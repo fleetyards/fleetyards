@@ -277,11 +277,11 @@ export default {
         if (error.response && error.response.data) {
           const { data } = error.response
 
-          data.errors.map(item => ({
+          data.errors.map((item) => ({
             field: item[0],
             errors: item[1],
           })).forEach((item) => {
-            item.errors.forEach(errorItem => this.errors.add({
+            item.errors.forEach((errorItem) => this.errors.add({
               field: item.field,
               msg: errorItem,
             }))

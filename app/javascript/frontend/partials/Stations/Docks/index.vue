@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     hasGroup() {
-      return this.station.docks.some(dock => !!dock.group)
+      return this.station.docks.some((dock) => !!dock.group)
     },
     docksBySize() {
       return this.groupBy(this.station.docks, 'sizeLabel')

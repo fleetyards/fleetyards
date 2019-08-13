@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach(registration => registration.unregister())
+      registrations.forEach((registration) => registration.unregister())
     })
   }
 
@@ -65,6 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
     router,
-    render: h => h(App),
+    render: (h) => h(App),
   })
 })

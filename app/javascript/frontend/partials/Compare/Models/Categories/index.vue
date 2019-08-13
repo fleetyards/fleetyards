@@ -89,16 +89,16 @@ export default {
       this[`${category}Visible`] = !this[`${category}Visible`]
     },
     modularHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'modular')
+      return model.hardpoints.filter((item) => item.categorySlug === 'modular')
     },
     ordnanceHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'ordnance')
+      return model.hardpoints.filter((item) => item.categorySlug === 'ordnance')
     },
     propulsionHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'propulsion')
+      return model.hardpoints.filter((item) => item.categorySlug === 'propulsion')
     },
     hardpointsForCategory(category, hardpoints) {
-      return hardpoints.filter(hardpoint => hardpoint.class === category)
+      return hardpoints.filter((hardpoint) => hardpoint.class === category)
     },
   },
 }

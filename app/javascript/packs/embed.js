@@ -40,6 +40,6 @@ setTimeout(() => {
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
     },
-    render: h => h(FleetyardsView),
+    render: (h) => h(FleetyardsView),
   })
 }, 2000)
