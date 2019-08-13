@@ -34,6 +34,8 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_trade_routes
 
+    can %i[read_public], :user
+
     return if user.id.blank?
 
     can :index, :api_hangar

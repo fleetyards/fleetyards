@@ -1,13 +1,23 @@
 @import '~stylesheets/variables';
 
-.to-fleetyards {
-  position: absolute;
-  top: -40px;
-  color: $text-color;
-  transition: all ease .5s;
+h1 {
+  padding-left: 50px;
+  position: relative;
 
-  .brand {
-    font-family: 'Orbitron', sans-serif;
+  .avatar {
+    position: absolute;
+    top: -5px;
+    left: 0;
+
+    img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+    }
+
+    .no-avatar {
+      padding: 6px 9px 5px 8px;
+    }
   }
 }
 

@@ -11,6 +11,11 @@ module Api
         @user = current_user
       end
 
+      def public
+        authorize! :read_public, :user
+        @user = User.find_by!(username: params[:username])
+      end
+
       def update
         authorize! :update, current_user
 

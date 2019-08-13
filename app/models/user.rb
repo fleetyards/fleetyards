@@ -86,8 +86,4 @@ class User < ApplicationRecord
 
     self.rsi_handle = rsi_handle.strip.downcase
   end
-
-  def avatar(size = 24)
-    "https://www.gravatar.com/avatar/#{gravatar_hash}?s=#{size}&d=https%3A%2F%2Fidenticons.github.com%2F#{gravatar_hash}.png&amp;r=x&amp;s=#{size}"
-  end
 end
