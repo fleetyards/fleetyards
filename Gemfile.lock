@@ -483,7 +483,7 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    web_translate_it (2.4.8)
+    web_translate_it (2.4.9)
       multi_json
       multipart-post (~> 2.0)
       optimist (~> 3.0)
