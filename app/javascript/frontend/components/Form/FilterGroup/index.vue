@@ -225,16 +225,17 @@ export default {
 
     selectedOptions() {
       if (this.multiple) {
-        return this.availableOptions.filter(item => this.value.includes(item[this.valueAttr]))
+        return this.availableOptions.filter((item) => this.value.includes(item[this.valueAttr]))
       }
-      const selectedOption = this.availableOptions.find(item => item[this.valueAttr] === this.value)
+      const selectedOption = this.availableOptions
+        .find((item) => item[this.valueAttr] === this.value)
       return selectedOption ? [selectedOption] : []
     },
 
     filteredOptions() {
       if (this.search) {
         return this.availableOptions.filter(
-          item => item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
+          (item) => item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
         )
       }
       return this.availableOptions
@@ -356,7 +357,7 @@ export default {
     addOptions(newOptions) {
       newOptions.forEach((item) => {
         if (!this.availableOptions.find(
-          option => option[this.valueAttr] === item[this.valueAttr],
+          (option) => option[this.valueAttr] === item[this.valueAttr],
         )) {
           this.fetchedOptions.push(item)
         }
@@ -380,7 +381,7 @@ export default {
 
       if (this.selected(option)) {
         if (this.multiple) {
-          this.$emit('input', this.value.filter(item => item !== option))
+          this.$emit('input', this.value.filter((item) => item !== option))
         } else {
           this.$emit('input', null)
         }
@@ -396,7 +397,7 @@ export default {
     },
 
     unselect(option) {
-      this.$emit('input', this.value.filter(item => item !== option))
+      this.$emit('input', this.value.filter((item) => item !== option))
     },
 
     toggle() {

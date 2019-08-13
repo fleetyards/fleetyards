@@ -69,19 +69,19 @@ const store = new Vuex.Store({
     },
 
     setLastRoute(state, payload) {
-      state.lastRoute = Object.assign({}, state.lastRoute, payload)
+      state.lastRoute = { ...state.lastRoute, ...payload }
     },
 
     setPreviousRoute(state, payload) {
-      state.previousRoute = Object.assign({}, state.previousRoute, payload)
+      state.previousRoute = { ...state.previousRoute, ...payload }
     },
 
     setFilters(state, payload) {
-      state.filters = Object.assign({}, state.filters, payload)
+      state.filters = { ...state.filters, ...payload }
     },
 
     setFiltersVisible(state, payload) {
-      state.filtersVisible = Object.assign({}, state.filtersVisible, payload)
+      state.filtersVisible = { ...state.filtersVisible, ...payload }
     },
   },
   /* eslint-enable no-param-reassign */

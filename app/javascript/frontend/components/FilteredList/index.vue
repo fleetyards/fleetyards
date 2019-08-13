@@ -93,8 +93,8 @@ export default {
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
       Object.keys(query)
-        .filter(key => !query[key] || query[key].length === 0)
-        .forEach(key => delete query[key])
+        .filter((key) => !query[key] || query[key].length === 0)
+        .forEach((key) => delete query[key])
       return Object.keys(query).length > 0
     },
   },

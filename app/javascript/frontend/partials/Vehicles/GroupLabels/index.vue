@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     sortIndex() {
-      return this.groups.map(item => item.id)
+      return this.groups.map((item) => item.id)
     },
   },
   watch: {
@@ -102,12 +102,12 @@ export default {
         }
         query.hangarGroupsNotIn.push(filter)
 
-        const index = query.hangarGroupsIn.findIndex(item => item === filter)
+        const index = query.hangarGroupsIn.findIndex((item) => item === filter)
         if (index > -1) {
           query.hangarGroupsIn.splice(index, 1)
         }
       } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-        const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
+        const index = query.hangarGroupsNotIn.findIndex((item) => item === filter)
         if (index > -1) {
           query.hangarGroupsNotIn.splice(index, 1)
         }

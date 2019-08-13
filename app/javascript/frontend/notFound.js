@@ -1,6 +1,6 @@
 import ViewNotFound from 'frontend/pages/NotFound'
 
-export default componentImport => async () => {
+export default (componentImport) => async () => {
   const { default: component } = await componentImport()
 
   const props = component.props || {}

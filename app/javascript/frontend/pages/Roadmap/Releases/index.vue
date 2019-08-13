@@ -158,7 +158,7 @@ export default {
 
     filteredItems() {
       if (this.onlyReleased) {
-        return this.roadmapItems.filter(item => !item.released)
+        return this.roadmapItems.filter((item) => !item.released)
       }
       return this.roadmapItems
     },
@@ -179,9 +179,9 @@ export default {
     },
 
     modelsOnRoadmap() {
-      return this.roadmapItems.filter(item => item.model)
-        .map(item => item.model.id)
-        .filter(item => item)
+      return this.roadmapItems.filter((item) => item.model)
+        .map((item) => item.model.id)
+        .filter((item) => item)
     },
   },
 
@@ -202,17 +202,17 @@ export default {
     },
 
     tasks(items) {
-      return items.map(item => Math.max(0, item.tasks))
+      return items.map((item) => Math.max(0, item.tasks))
         .reduce((ac, count) => ac + count, 0)
     },
 
     inprogress(items) {
-      return items.map(item => Math.max(0, item.inprogress - item.completed))
+      return items.map((item) => Math.max(0, item.inprogress - item.completed))
         .reduce((ac, count) => ac + count, 0)
     },
 
     completed(items) {
-      return items.map(item => Math.max(0, item.completed))
+      return items.map((item) => Math.max(0, item.completed))
         .reduce((ac, count) => ac + count, 0)
     },
 
@@ -224,7 +224,7 @@ export default {
       if (!this.tasks(items)) {
         return '?'
       }
-      return Math.round(100 * this.completed(items) / this.tasks(items))
+      return Math.round((100 * this.completed(items)) / this.tasks(items))
     },
 
     setupUpdates() {

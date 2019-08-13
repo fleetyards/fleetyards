@@ -44,7 +44,7 @@ export default {
       'ships',
     ]),
     inHangar() {
-      return !!(this.ships || []).find(item => item === this.model.slug)
+      return !!(this.ships || []).find((item) => item === this.model.slug)
     },
   },
   methods: {

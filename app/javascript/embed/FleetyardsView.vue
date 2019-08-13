@@ -151,9 +151,9 @@ export default {
       'fleetchart',
     ]),
     ungroupedModels() {
-      return this.ships.map(slug => ({
+      return this.ships.map((slug) => ({
         slug,
-        model: this.models.find(model => model.slug === slug),
+        model: this.models.find((model) => model.slug === slug),
       }))
         .map((item) => {
           if (!item.model) {
@@ -233,7 +233,7 @@ export default {
       if (!this.grouping) {
         return null
       }
-      return this.ships.filter(item => item === slug).length
+      return this.ships.filter((item) => item === slug).length
     },
     async fetch() {
       this.loading = true

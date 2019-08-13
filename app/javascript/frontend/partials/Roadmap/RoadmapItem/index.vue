@@ -132,7 +132,7 @@ export default {
       if (!this.item.tasks) {
         return '?'
       }
-      return Math.round(100 * this.completed / this.item.tasks)
+      return Math.round((100 * this.completed) / this.item.tasks)
     },
 
     inprogress() {
@@ -180,7 +180,7 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter(key => lastVersion[key])
+      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter((key) => lastVersion[key])
         .map((key) => {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
           return {

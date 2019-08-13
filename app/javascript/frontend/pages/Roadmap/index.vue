@@ -166,7 +166,7 @@ export default {
 
     filteredItems() {
       if (this.onlyReleased) {
-        return this.roadmapItems.filter(item => !item.released)
+        return this.roadmapItems.filter((item) => !item.released)
       }
       return this.roadmapItems
     },
@@ -187,9 +187,9 @@ export default {
     },
 
     modelsOnRoadmap() {
-      return this.roadmapItems.filter(item => item.model)
-        .map(item => item.model.id)
-        .filter(item => item)
+      return this.roadmapItems.filter((item) => item.model)
+        .map((item) => item.model.id)
+        .filter((item) => item)
     },
   },
 

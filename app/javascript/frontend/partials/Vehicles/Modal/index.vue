@@ -184,7 +184,7 @@ export default {
     },
     changeGroup(group) {
       if (this.form.hangarGroupIds.includes(group.id)) {
-        const index = this.form.hangarGroupIds.findIndex(groupId => groupId === group.id)
+        const index = this.form.hangarGroupIds.findIndex((groupId) => groupId === group.id)
         if (index > -1) {
           this.form.hangarGroupIds.splice(index, 1)
         }

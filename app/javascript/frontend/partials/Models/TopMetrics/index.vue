@@ -61,7 +61,7 @@ export default {
         return this.$toNumber(this.model.minCrew, 'people')
       }
 
-      return this.$toNumber([minCrew, maxCrew].filter(item => item).join(' - '), 'people')
+      return this.$toNumber([minCrew, maxCrew].filter((item) => item).join(' - '), 'people')
     },
     speeds() {
       const speeds = []
@@ -84,7 +84,7 @@ export default {
         afterburnerSpeed = null
       }
 
-      return [scmSpeed, afterburnerSpeed].filter(item => item).join(' - ')
+      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
     },
     groundSpeeds() {
       let { groundSpeed, afterburnerGroundSpeed } = this.model
@@ -97,7 +97,7 @@ export default {
         afterburnerGroundSpeed = null
       }
 
-      return [groundSpeed, afterburnerGroundSpeed].filter(item => item).join(' - ')
+      return [groundSpeed, afterburnerGroundSpeed].filter((item) => item).join(' - ')
     },
   },
 }
