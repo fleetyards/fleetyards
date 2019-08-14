@@ -1,6 +1,6 @@
 export const routes = [
   {
-    path: '/profile/',
+    path: 'profile/',
     name: 'settings-profile',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Profile'),
     meta: {
@@ -8,7 +8,7 @@ export const routes = [
       needsAuthentication: true,
     },
   }, {
-    path: '/verify/',
+    path: 'verify/',
     name: 'settings-verify',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Verify'),
     meta: {
@@ -16,7 +16,7 @@ export const routes = [
       needsAuthentication: true,
     },
   }, {
-    path: '/account/',
+    path: 'account/',
     name: 'settings-account',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Account'),
     meta: {
@@ -24,7 +24,7 @@ export const routes = [
       needsAuthentication: true,
     },
   }, {
-    path: '/hangar/',
+    path: 'hangar/',
     name: 'settings-hangar',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Hangar'),
     meta: {
@@ -32,7 +32,7 @@ export const routes = [
       needsAuthentication: true,
     },
   }, {
-    path: '/change-password/',
+    path: 'change-password/',
     name: 'settings-change-password',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/ChangePassword'),
     meta: {
