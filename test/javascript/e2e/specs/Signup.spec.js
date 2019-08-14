@@ -6,6 +6,7 @@ describe('Signup', () => {
 
     cy.url().should('include', '/sign-up')
 
+    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.select('username').type(userData.new.username)
       cy.select('rsi-handle').type(userData.new.handle)
@@ -56,6 +57,7 @@ describe('Signup', () => {
   it('Validates all fields', () => {
     cy.visit('/sign-up')
 
+    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.select('username').type(userData.test.username)
       cy.select('username').parent().should('have.class', 'has-error')
