@@ -5,7 +5,7 @@ class Video < ApplicationRecord
 
   belongs_to :model, optional: false
 
-  enum video_type: %i[youtube]
+  enum video_type: { youtube: 0 }
 
   validates :url, :video_type, presence: true
 
