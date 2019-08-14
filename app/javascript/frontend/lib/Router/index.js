@@ -7,7 +7,7 @@ import { routes } from 'frontend/routes'
 Vue.use(Router)
 
 const addStrictMode = function addStrictMode(routeItems) {
-  return routeItems.map((item) => {
+  return [].concat(...routeItems.map((item) => {
     const path = item.path.replace(/\/$/, '')
 
     const items = [{
@@ -28,13 +28,14 @@ const addStrictMode = function addStrictMode(routeItems) {
     }
 
     return items
-  })
+  }))
 }
 
 const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
+
   scrollBehavior: (to, _from, savedPosition) => new Promise((resolve) => {
     setTimeout(() => {
       if (to.hash) {
@@ -46,14 +47,17 @@ const router = new Router({
       }
     }, 600)
   }),
+
   parseQuery(query) {
     return qs.parse(query)
   },
+
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: 'brackets' })
     return result ? (`?${result}`) : ''
   },
-  routes: addStrictMode(routes).flat(),
+
+  routes: addStrictMode(routes),
 })
 
 const validateAndResolveNewRoute = (to) => {
