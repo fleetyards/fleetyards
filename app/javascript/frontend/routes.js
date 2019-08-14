@@ -12,28 +12,28 @@ export const routes = [
       title: 'home',
     },
   }, {
-    path: '/impressum',
+    path: '/impressum/',
     name: 'impressum',
     component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Impressum'),
     meta: {
       title: 'impressum',
     },
   }, {
-    path: '/privacy-policy',
+    path: '/privacy-policy/',
     name: 'privacy-policy',
     component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/PrivacyPolicy'),
     meta: {
       title: 'privacyPolicy',
     },
   }, {
-    path: '/cookie-policy',
+    path: '/cookie-policy/',
     name: 'cookie-policy',
     component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/CookiePolicy'),
     meta: {
       title: 'cookiePolicy',
     },
   }, {
-    path: '/ships',
+    path: '/ships/',
     name: 'models',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),
     meta: {
@@ -43,7 +43,7 @@ export const routes = [
       quickSearch: 'nameCont',
     },
   }, {
-    path: '/compare/ships',
+    path: '/compare/ships/',
     name: 'compare-models',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Compare/Models'),
     meta: {
@@ -52,7 +52,7 @@ export const routes = [
       title: 'compare.models',
     },
   }, {
-    path: '/ships/:slug',
+    path: '/ships/:slug/',
     name: 'model',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'),
     meta: {
@@ -60,7 +60,7 @@ export const routes = [
       backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
-    path: '/ships/:slug/images',
+    path: '/ships/:slug/images/',
     name: 'model-images',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'),
     meta: {
@@ -68,7 +68,7 @@ export const routes = [
       backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
-    path: '/ships/:slug/videos',
+    path: '/ships/:slug/videos/',
     name: 'model-videos',
     component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'),
     meta: {
@@ -76,21 +76,21 @@ export const routes = [
       backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
-    path: '/stats',
+    path: '/stats/',
     name: 'stats',
     component: () => import(/* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats'),
     meta: {
       title: 'stats',
     },
   }, {
-    path: '/images',
+    path: '/images/',
     name: 'images',
     component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
     meta: {
       title: 'images',
     },
   }, {
-    path: '/hangar',
+    path: '/hangar/',
     name: 'hangar',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'),
     meta: {
@@ -101,7 +101,7 @@ export const routes = [
       title: 'hangar.index',
     },
   }, {
-    path: '/hangar/stats',
+    path: '/hangar/stats/',
     name: 'hangar-stats',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Stats'),
     meta: {
@@ -111,11 +111,11 @@ export const routes = [
       title: 'hangar.stats',
     },
   }, {
-    path: '/hangar/:user',
+    path: '/hangar/:user/',
     name: 'hangar-public',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
-    path: '/fleets',
+    path: '/fleets/',
     name: 'fleets',
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'),
     meta: {
@@ -124,7 +124,7 @@ export const routes = [
       title: 'fleets',
     },
   }, {
-    path: '/fleets/:sid',
+    path: '/fleets/:sid/',
     name: 'fleet',
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
     meta: {
@@ -132,7 +132,7 @@ export const routes = [
       backgroundImage: require('images/bg-2.jpg'),
     },
   }, {
-    path: '/stations',
+    path: '/stations/',
     name: 'stations',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations'),
     children: StationsRoutes,
@@ -140,7 +140,7 @@ export const routes = [
       title: 'stations',
     },
   }, {
-    path: '/trade-routes',
+    path: '/trade-routes/',
     name: 'trade-routes',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/TradeRoutes'),
     meta: {
@@ -149,28 +149,28 @@ export const routes = [
       title: 'tradeRoutes',
     },
   }, {
-    path: '/roadmap',
+    path: '/roadmap/',
     name: 'roadmap',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap'),
     meta: {
       title: 'roadmap.shipRoadmap',
     },
   }, {
-    path: '/roadmap/changes',
+    path: '/roadmap/changes/',
     name: 'roadmap-changes',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
     meta: {
       title: 'roadmap.changes',
     },
   }, {
-    path: '/roadmap/releases',
+    path: '/roadmap/releases/',
     name: 'roadmap-releases',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Releases'),
     meta: {
       title: 'roadmap.releases',
     },
   }, {
-    path: '/settings',
+    path: '/settings/',
     name: 'settings',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings'),
     meta: {
@@ -181,39 +181,39 @@ export const routes = [
     },
     children: SettingsRoutes,
   }, {
-    path: '/sign-up',
+    path: '/sign-up/',
     name: 'signup',
     component: () => import(/* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Signup'),
     meta: {
       title: 'signUp',
     },
   }, {
-    path: '/login',
+    path: '/login/',
     name: 'login',
     component: () => import(/* webpackChunkName: "frontend.page.login" */ 'frontend/pages/Login'),
     meta: {
       title: 'login',
     },
   }, {
-    path: '/password/request',
+    path: '/password/request/',
     name: 'request-password',
     component: () => import(/* webpackChunkName: "frontend.page.password" */ 'frontend/pages/RequestPassword'),
     meta: {
       title: 'requestPassword',
     },
   }, {
-    path: '/password/update/:token',
+    path: '/password/update/:token/',
     name: 'change-password',
     component: () => import(/* webpackChunkName: "frontend.page.password" */ 'frontend/pages/ChangePassword'),
     meta: {
       title: 'changePassword',
     },
   }, {
-    path: '/confirm/:token',
+    path: '/confirm/:token/',
     name: 'confirm',
     component: () => import(/* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Confirm'),
   }, {
-    path: '/404',
+    path: '/404/',
     name: '404',
     component: () => import(/* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'),
     meta: {

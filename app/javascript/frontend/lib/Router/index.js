@@ -6,6 +6,31 @@ import { routes } from 'frontend/routes'
 
 Vue.use(Router)
 
+const addStrictMode = function addStrictMode(routeItems) {
+  return routeItems.map((item) => {
+    const path = item.path.replace(/\/$/, '')
+
+    const items = [{
+      ...item,
+      path: `${path}/`,
+      pathToRegexpOptions: { strict: true },
+    }]
+
+    if (!['/', '*'].includes(item.path)) {
+      items.push({
+        path,
+        redirect: (to) => ({
+          name: item.name,
+          params: to.params || null,
+          query: to.query || null,
+        }),
+      })
+    }
+
+    return items
+  })
+}
+
 const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
@@ -28,7 +53,7 @@ const router = new Router({
     const result = qs.stringify(query, { arrayFormat: 'brackets' })
     return result ? (`?${result}`) : ''
   },
-  routes,
+  routes: addStrictMode(routes).flat(),
 })
 
 const validateAndResolveNewRoute = (to) => {
