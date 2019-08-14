@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.18.2](https://github.com/fleetyards/app/compare/v3.18.1...v3.18.2) (2019-08-14)
+
+
+### Bug Fixes
+
+* **admin:** prefill selectize inputs ([1fdbacc](https://github.com/fleetyards/app/commit/1fdbacc))
+
 ### [3.18.1](https://github.com/fleetyards/app/compare/v3.18.0...v3.18.1) (2019-08-14)
 
 
