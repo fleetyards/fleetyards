@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.18.1](https://github.com/fleetyards/app/compare/v3.18.0...v3.18.1) (2019-08-14)
+
+
+### Bug Fixes
+
+* **seeds:** update image paths ([64dbde6](https://github.com/fleetyards/app/commit/64dbde6))
+
 ## [3.18.0](https://github.com/fleetyards/app/compare/v3.17.8...v3.18.0) (2019-08-13)
 
 
