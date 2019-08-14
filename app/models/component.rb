@@ -17,7 +17,7 @@ class Component < ApplicationRecord
     order(name: :asc)
   end
 
-  enum item_class: %i[stealth civilian industrial military competition]
+  enum item_class: { stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4 }
   ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do |parent|
     parent.table[:item_class]
   end

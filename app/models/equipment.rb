@@ -15,25 +15,22 @@ class Equipment < ApplicationRecord
 
   ransack_alias :name, :name_or_slug
 
-  enum equipment_type: %i[undersuit armor weapon tool clothing medical weapon_attachment]
+  enum equipment_type: { undersuit: 0, armor: 1, weapon: 2, tool: 3, clothing: 4, medical: 5, weapon_attachment: 6 }
   ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
     parent.table[:equipment_type]
   end
 
-  enum slot: %i[undersuit arms helmet torso legs footwear hat gloves pants shirt jacket], _suffix: true
+  enum slot: { undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7, pants: 8, shirt: 9, jacket: 10 }, _suffix: true
   ransacker :slot, formatter: proc { |v| Equipment.slots[v] } do |parent|
     parent.table[:slot]
   end
 
-  enum item_type: %i[
-    flightsuit light_armor medium_armor heavy_armor magazine battery pistol grenade smg rifle
-    shotgun lmg sniper_rifle special_railgun assault_rifle weapon_scope
-  ]
+  enum item_type: { flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5, pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12, special_railgun: 13, assault_rifle: 14, weapon_scope: 15 }
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
   end
 
-  enum weapon_class: %i[energy ballistic]
+  enum weapon_class: { energy: 0, ballistic: 1 }
   ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
     parent.table[:weapon_class]
   end
