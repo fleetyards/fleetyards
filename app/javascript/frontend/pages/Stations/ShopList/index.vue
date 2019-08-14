@@ -90,11 +90,11 @@
                         }"
                         :aria-label="shop.name"
                       >
+                        <small>
+                          {{ shop.station.name }}
+                        </small>
                         {{ shop.name }}
                       </router-link>
-                      <small>
-                        {{ shop.station.name }}
-                      </small>
                     </h2>
                   </div>
                 </div>

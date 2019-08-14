@@ -19,6 +19,12 @@ $borderRadius: 16px;
     }
   }
 
+  h2 {
+    small {
+      font-size: 20px;
+    }
+  }
+
   .panel-bg {
     border-radius: $borderRadius;
     position: absolute;
