@@ -25,7 +25,7 @@ class Equipment < ApplicationRecord
     parent.table[:slot]
   end
 
-  enum item_type: { flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5, pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12, special_railgun: 13, assault_rifle: 14, weapon_scope: 15 }
+  enum item_type: { flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5, pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12, special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16 }
   ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
     parent.table[:item_type]
   end

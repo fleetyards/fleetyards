@@ -87,8 +87,6 @@
     .modal-dialog {
       width: 100%;
       margin: 0;
-      bottom: 0;
-      position: absolute;
 
       .modal-content {
         border-width: 1px 0 0;
@@ -97,8 +95,16 @@
       }
     }
 
-    &.fade .modal-dialog {
-      transform: translate(0, 25%);
+    &.fade {
+      .modal-dialog {
+        transform: translate(0, 25%);
+      }
+
+      &.in {
+        .modal-dialog {
+          transform: translate(0, 5%);
+        }
+      }
     }
   }
 }
