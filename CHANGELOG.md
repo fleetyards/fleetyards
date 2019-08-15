@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.20.1](https://github.com/fleetyards/app/compare/v3.20.0...v3.20.1) (2019-08-15)
+
+
+### Bug Fixes
+
+* **modal:** update mobile styles ([ca2c529](https://github.com/fleetyards/app/commit/ca2c529))
+
 ## [3.20.0](https://github.com/fleetyards/app/compare/v3.19.0...v3.20.0) (2019-08-15)
 
 
