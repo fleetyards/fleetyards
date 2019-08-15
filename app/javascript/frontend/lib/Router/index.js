@@ -2,34 +2,44 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import qs from 'qs'
 import Store from 'frontend/lib/Store'
-import { routes } from 'frontend/routes'
+import { routes as initialRoutes } from 'frontend/routes'
 
 Vue.use(Router)
 
-const addStrictMode = function addStrictMode(routeItems) {
-  return [].concat(...routeItems.map((item) => {
-    const path = item.path.replace(/\/$/, '')
+const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) => {
+  const { pathToRegexpOptions = {} } = route
 
-    const items = [{
-      ...item,
-      path: `${path}/`,
-      pathToRegexpOptions: { strict: true },
-    }]
+  const path = route.path.replace(/\/$/, '')
 
-    if (!['/', '*'].includes(item.path)) {
-      items.push({
-        path,
-        redirect: (to) => ({
-          name: item.name,
-          params: to.params || null,
-          query: to.query || null,
-        }),
-      })
-    }
+  const modifiedRoute = {
+    ...route,
+    pathToRegexpOptions: {
+      ...pathToRegexpOptions,
+      strict: true,
+    },
+    path: `${path}/`,
+  }
 
-    return items
-  }))
-}
+  if (route.children && route.children.length > 0) {
+    modifiedRoute.children = addTrailingSlashToAllRoutes(route.children)
+  }
+
+  if (route.path === '*' || route.path === '/') {
+    return [modifiedRoute]
+  }
+
+  return [
+    modifiedRoute,
+    {
+      path,
+      redirect: (to) => ({
+        name: route.name,
+        params: to.params || null,
+        query: to.query || null,
+      }),
+    },
+  ]
+}))
 
 const router = new Router({
   mode: 'history',
@@ -57,7 +67,7 @@ const router = new Router({
     return result ? (`?${result}`) : ''
   },
 
-  routes: addStrictMode(routes),
+  routes: addTrailingSlashToAllRoutes(initialRoutes),
 })
 
 const validateAndResolveNewRoute = (to) => {
