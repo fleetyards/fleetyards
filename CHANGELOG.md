@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.20.0](https://github.com/fleetyards/app/compare/v3.19.0...v3.20.0) (2019-08-15)
+
+
+### Features
+
+* **hangar:** fix stats loading ([2703e11](https://github.com/fleetyards/app/commit/2703e11))
+
 ## [3.19.0](https://github.com/fleetyards/app/compare/v3.18.2...v3.19.0) (2019-08-15)
 
 
