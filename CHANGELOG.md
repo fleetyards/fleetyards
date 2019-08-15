@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.0](https://github.com/fleetyards/app/compare/v3.18.2...v3.19.0) (2019-08-15)
+
+
+### Bug Fixes
+
+* **router:** replace flat() with concat spread ([5218890](https://github.com/fleetyards/app/commit/5218890))
+* **routes:** for child routes ([383aabf](https://github.com/fleetyards/app/commit/383aabf))
+* **routes:** update settings child routes ([4d7c44e](https://github.com/fleetyards/app/commit/4d7c44e))
+
+
+### Features
+
+* **filter:** add searchable to will it fit ([98a3b87](https://github.com/fleetyards/app/commit/98a3b87))
+* **shops:** update labels ([e44a10b](https://github.com/fleetyards/app/commit/e44a10b))
+
 ### [3.18.2](https://github.com/fleetyards/app/compare/v3.18.1...v3.18.2) (2019-08-14)
 
 
