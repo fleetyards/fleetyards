@@ -7,6 +7,10 @@ import { routes as initialRoutes } from 'frontend/routes'
 Vue.use(Router)
 
 const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) => {
+  if (['*', '/'].includes(route.path)) {
+    return [route]
+  }
+
   const { pathToRegexpOptions = {} } = route
 
   const path = route.path.replace(/\/$/, '')
@@ -22,10 +26,6 @@ const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) 
 
   if (route.children && route.children.length > 0) {
     modifiedRoute.children = addTrailingSlashToAllRoutes(route.children)
-  }
-
-  if (route.path === '*' || route.path === '/') {
-    return [modifiedRoute]
   }
 
   return [

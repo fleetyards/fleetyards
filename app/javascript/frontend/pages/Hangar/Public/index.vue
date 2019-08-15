@@ -253,11 +253,9 @@ export default {
 
     fetch() {
       this.fetchUser()
-      if (this.publicFleetchartVisible) {
-        this.fetchFleetchart()
-      } else {
-        this.fetchVehicles()
-      }
+      this.fetchFleetchart()
+      this.fetchVehicles()
+      this.fetchCount()
     },
 
     async fetchUser() {
@@ -265,6 +263,7 @@ export default {
 
       if (!response.error) {
         this.user = response.data
+
         this.fetchCitizen()
       }
     },
@@ -275,6 +274,7 @@ export default {
       }
 
       const response = await this.$api.get(`rsi/citizens/${this.user.rsiHandle}`)
+
       if (!response.error) {
         this.citizen = response.data
       }
@@ -283,21 +283,22 @@ export default {
     async fetchVehicles() {
       this.loading = true
 
-      this.fetchCount()
-
       const response = await this.$api.get(`vehicles/${this.username}`, {
         page: this.$route.query.page,
       })
+
       this.loading = false
 
       if (!response.error) {
         this.vehicles = response.data
       }
+
       this.setPages(response.meta)
     },
 
     async fetchCount() {
       const response = await this.$api.get(`vehicles/${this.username}/quick-stats`)
+
       if (!response.error) {
         this.vehiclesCount = response.data
       }
@@ -305,8 +306,11 @@ export default {
 
     async fetchFleetchart() {
       this.loading = true
+
       const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
+
       this.loading = false
+
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
