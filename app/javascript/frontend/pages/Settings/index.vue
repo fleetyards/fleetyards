@@ -21,23 +21,11 @@
           >
             <a>{{ $t('nav.settings.hangar') }}</a>
           </router-link>
-          <li
-            v-if="rsiVerificationDisabled"
-            class="disabled"
-          >
-            <a>
-              {{ $t('labels.rsiVerifiedLong') }}
-              <span class="verified">
-                <i class="fa fa-check" />
-              </span>
-            </a>
-          </li>
           <router-link
-            v-else
             :to="{ name: 'settings-verify' }"
             tag="li"
           >
-            <a>{{ $t('actions.startRsiVerification') }}</a>
+            <a>{{ $t('nav.settings.verify') }}</a>
           </router-link>
           <router-link
             :to="{ name: 'settings-change-password' }"
@@ -55,25 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Settings',
-
-  data() {
-    return {
-      rsiVerificationToken: null,
-    }
-  },
-
-  computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
-
-    rsiVerificationDisabled() {
-      return this.currentUser.rsiVerified
-    },
-  },
 }
 </script>

@@ -103,18 +103,42 @@
                     v-else-if="!loading"
                     for-text
                   >
-                    {{ $t('labels.blank.rsiCitizen') }}
+                    <div class="text-center">
+                      {{ $t('labels.blank.rsiCitizen') }}
+                    </div>
                   </Panel>
                 </transition>
               </div>
             </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <Btn
+                  :loading="submitting"
+                  type="submit"
+                  size="large"
+                >
+                  {{ $t('actions.save') }}
+                </Btn>
+              </div>
+            </div>
           </form>
-          <form @submit.prevent="verify">
+          <form
+            v-if="!currentUser.rsiVerified"
+            @submit.prevent="verify"
+          >
             <div class="row">
               <div class="col-xs-12">
                 <hr>
                 <p v-html="$t('texts.rsiVerification.instructions')" />
                 <br>
+                <Panel
+                  v-if="verificationDisabled"
+                  for-text
+                >
+                  <div class="text-warning text-center">
+                    {{ rsiHandleMandatory }}
+                  </div>
+                </Panel>
                 <div
                   :class="{'has-error has-feedback': errors.has('username')}"
                   class="form-group"
@@ -127,6 +151,7 @@
                     >
                     <Btn
                       size="small"
+                      :disabled="verificationDisabled"
                       @click.native="copyToken"
                     >
                       <i class="fa fa-copy" />
@@ -139,17 +164,11 @@
                 />
                 <br>
                 <div class="text-center">
-                  <Panel
-                    v-if="rsiHandleMandatory"
-                    for-text
-                  >
-                    <span class="text-warning">{{ rsiHandleMandatory }}</span>
-                  </Panel>
                   <Btn
                     :loading="fetchRsiVerificationToken || verifying"
                     type="submit"
                     size="large"
-                    :disabled="!rsiCitizen"
+                    :disabled="verificationDisabled"
                   >
                     {{ $t('actions.verify') }}
                   </Btn>
@@ -159,6 +178,22 @@
               </div>
             </div>
           </form>
+          <div
+            v-else
+            class="row"
+          >
+            <div class="col-xs-12">
+              <Panel
+                variant="success"
+                for-text
+              >
+                <div class="text-center">
+                  {{ $t('labels.rsiVerifiedLong') }}
+                  <i class="fa fa-check-circle" />
+                </div>
+              </Panel>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -206,8 +241,12 @@ export default {
       'citizen',
     ]),
 
+    verificationDisabled() {
+      return !this.citizen || !this.currentUser.rsiHandle
+    },
+
     rsiHandleMandatory() {
-      if (this.currentUser.rsiHandle) {
+      if (!this.verificationDisabled) {
         return null
       }
 
@@ -294,8 +333,8 @@ export default {
         this.$success({
           text: this.$t('messages.rsiVerification.success'),
         })
+
         this.$comlink.$emit('userUpdate')
-        this.$router.push({ name: 'settings-profile' })
       } else {
         this.$alert({
           text: this.$t('messages.rsiVerification.failure'),
@@ -311,6 +350,10 @@ export default {
       this.submitting = false
 
       if (!response.error) {
+        this.$success({
+          text: this.$t('messages.rsiVerification.saveHandleSuccess'),
+        })
+
         this.$comlink.$emit('userUpdate')
       }
     },
@@ -342,7 +385,6 @@ export default {
 
       if (!response.error) {
         this.rsiCitizen = response.data
-        this.saveHandle()
       }
     },
   },

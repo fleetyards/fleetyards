@@ -4,7 +4,8 @@ export default {
     failure: 'We could not find the Verification Token. Please try again.',
     handleMissing: 'Please add your RSI Handle to your Account first.',
     copySuccess: 'Verification Token copied to your Clipboard. Click Confirm to open automatically open a new Tab with the RSI Settings page to paste the Tomen in your Short Bio.',
-    rsiHandleMandatory: 'You need to enter your RSI Handle before starting the verification process.',
+    rsiHandleMandatory: 'You need to enter a valid RSI Handle before you can start the verification process.',
+    saveHandleSuccess: 'Your RSI Handle was saved.',
   },
   copy: {
     success: 'Text Copied!',

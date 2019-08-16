@@ -128,14 +128,20 @@ export default {
 
     async submit() {
       const result = await this.$validator.validateAll()
+
       if (!result) {
         return
       }
+
       this.submitting = true
+
       const response = await this.$api.put('users/current', this.form)
+
       this.submitting = false
+
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
+
         this.$success({
           text: this.$t('messages.updateProfile.success'),
         })

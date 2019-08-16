@@ -23,6 +23,7 @@ export default {
     profile: 'Profile',
     account: 'Account',
     hangar: 'Hangar',
+    verify: 'RSI Account Verification',
   },
   stations: {
     index: 'Stations',
