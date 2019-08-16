@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.20.2](https://github.com/fleetyards/app/compare/v3.20.1...v3.20.2) (2019-08-16)
+
+
+### Bug Fixes
+
+* **verification:** update process for rsi verification ([355bbc6](https://github.com/fleetyards/app/commit/355bbc6))
+* **verification:** update workflow ([fbf3eac](https://github.com/fleetyards/app/commit/fbf3eac))
+
 ### [3.20.1](https://github.com/fleetyards/app/compare/v3.20.0...v3.20.1) (2019-08-15)
 
 
