@@ -64,98 +64,6 @@
             />
           </span>
         </div>
-        <div
-          :class="{'has-error has-feedback': errors.has('rsiHandle')}"
-          class="form-group"
-        >
-          <label for="rsi-handle">
-            {{ $t('labels.rsiHandle') }}
-          </label>
-          <div class="input-group">
-            <span class="input-group-addon">
-              https://robertsspaceindustries.com/citizens/
-            </span>
-            <input
-              id="rsi-handle"
-              v-model="form.rsiHandle"
-              v-tooltip.bottom-end="errors.first('rsiHandle')"
-              v-validate="'alpha_dash'"
-              data-test="rsi-handle"
-              :data-vv-as="$t('labels.rsiHandle')"
-              name="rsiHandle"
-              type="text"
-              class="form-control"
-              @input="changeHandle"
-            >
-          </div>
-          <span
-            v-show="errors.has('rsiHandle')"
-            class="form-control-feedback"
-          >
-            <i
-              :title="errors.first('handle')"
-              class="fal fa-exclamation-triangle"
-            />
-          </span>
-        </div>
-      </div>
-      <div class="col-md-12 col-lg-6">
-        <Loader :loading="loading" />
-        <transition name="fade">
-          <Panel v-if="rsiCitizen">
-            <table class="table table-striped">
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.username') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.username }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.handle') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.handle }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.title') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.title }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.citizenRecord') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.citizenRecord }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.enlisted') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.enlisted }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.languages') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.languages }}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{{ $t('user.rsi.location') }}</strong>
-                  </td>
-                  <td>{{ rsiCitizen.location }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Panel>
-          <Panel v-else-if="!loading">
-            <div class="empty-citizen">
-              {{ $t('labels.blank.rsiCitizen') }}
-            </div>
-          </Panel>
-        </transition>
       </div>
     </div>
     <br>
@@ -173,16 +81,12 @@
 import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
-import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
 
 export default {
   name: 'Profile',
 
   components: {
     Btn,
-    Loader,
-    Panel,
   },
 
   mixins: [
@@ -192,13 +96,9 @@ export default {
   data() {
     return {
       form: {
-        rsiHandle: null,
         username: null,
         email: null,
       },
-      loading: false,
-      rsiCitizen: null,
-      rsiFetchTimeout: null,
       submitting: false,
     }
   },
@@ -212,34 +112,16 @@ export default {
 
   watch: {
     currentUser: 'setupForm',
-
-    citizen() {
-      this.rsiCitizen = this.citizen
-    },
   },
 
   created() {
     if (this.currentUser) {
       this.setupForm()
     }
-
-    if (this.citizen) {
-      this.rsiCitizen = this.citizen
-    }
   },
 
   methods: {
-    changeHandle() {
-      if (this.rsiFetchTimeout) {
-        clearTimeout(this.rsiFetchTimeout)
-      }
-      this.rsiFetchTimeout = setTimeout(() => {
-        this.fetchCitizen()
-      }, 300)
-    },
-
     setupForm() {
-      this.form.rsiHandle = this.currentUser.rsiHandle
       this.form.username = this.currentUser.username
       this.form.email = this.currentUser.email
     },
@@ -259,25 +141,6 @@ export default {
         })
       }
     },
-
-    async fetchCitizen() {
-      this.rsiCitizen = null
-
-      if (!this.form.rsiHandle) {
-        return
-      }
-
-      this.loading = true
-      const response = await this.$api.get(`rsi/citizens/${this.form.rsiHandle}`, {})
-      this.loading = false
-      if (!response.error) {
-        this.rsiCitizen = response.data
-      }
-    },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  @import 'index';
-</style>

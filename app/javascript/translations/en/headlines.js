@@ -31,7 +31,6 @@ export default {
   fleetMembers: 'Setup Members',
   newFleet: 'Setup Your Fleet',
   empty: "There's nothing to see here...",
-  verify: 'Verify your RSI Handle',
   hangarGroup: {
     create: 'Create Group',
     edit: 'Edit Group',
@@ -43,6 +42,7 @@ export default {
     account: 'Account',
     profile: 'Profile Settings',
     hangar: 'Hangar Settings',
+    verify: 'Verify your RSI Account',
   },
   roadmap: 'Ship-Roadmap',
   tradeRoutes: {

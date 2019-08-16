@@ -185,7 +185,7 @@ module Api
           current_user.models.visible.active
                .group(:size).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_size.to_json
@@ -198,7 +198,7 @@ module Api
           current_user.models.visible.active
                .group(:production_status).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_production_status.to_json
@@ -210,7 +210,7 @@ module Api
         models_by_manufacturer = transform_for_pie_chart(
           current_user.manufacturers.uniq
               .map { |m| { m.name => m.models.where(id: current_user.models.pluck(:id)).count } }
-              .reduce(:merge)
+              .reduce(:merge) || []
         )
 
         render json: models_by_manufacturer.to_json
@@ -223,7 +223,7 @@ module Api
           current_user.models.visible.active
                .group(:classification).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_classification.to_json
