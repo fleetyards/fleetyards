@@ -35,6 +35,11 @@ describe('Signup', () => {
 
       cy.select('username').should('have.value', userData.new.username)
       cy.select('email').should('have.value', userData.new.email)
+
+      cy.get('.tabs a').contains('RSI Account Verification').click()
+
+      cy.url().should('include', '/settings/verify')
+
       cy.select('rsi-handle').should('have.value', userData.new.handle)
 
       cy.get('.tabs a').contains('Account').click()
