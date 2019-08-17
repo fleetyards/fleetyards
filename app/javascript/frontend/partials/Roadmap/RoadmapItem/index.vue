@@ -51,11 +51,6 @@
                 value: removeSign(update.count),
               }) }}
             </template>
-            <template v-else-if="update.key === 'inprogress'">
-              {{ $t(`labels.roadmap.lastVersion.inprogress.${update.change}`, {
-                value: removeSign(update.count),
-              }) }}
-            </template>
             <template v-else>
               {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
                 old: update.old,
@@ -68,11 +63,6 @@
         <b-progress :max="item.tasks">
           <div class="progress-label">
             {{ progressLabel }} | {{ completedPercent }} %
-            <template v-if="showInprogress">
-              {{ $t('labels.roadmap.inprogress', {
-                count: inprogress,
-              }) }}
-            </template>
           </div>
           <b-progress-bar
             v-if="completed !== 0"
@@ -80,11 +70,6 @@
             :class="{
               completed: completed === item.tasks
             }"
-          />
-          <b-progress-bar
-            v-if="showInprogress"
-            :value="inprogress"
-            class="active"
           />
         </b-progress>
       </div>
@@ -135,16 +120,6 @@ export default {
       return Math.round((100 * this.completed) / this.item.tasks)
     },
 
-    inprogress() {
-      if (this.item.inprogress && this.item.inprogress < this.item.completed) {
-        return this.item.inprogress
-      }
-      if (this.item.inprogress) {
-        return this.item.inprogress - this.item.completed
-      }
-      return 0
-    },
-
     progressLabel() {
       return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
     },
@@ -165,10 +140,6 @@ export default {
       return this.item.description
     },
 
-    showInprogress() {
-      return this.inprogress !== 0 && this.completed !== this.item.tasks
-    },
-
     recentlyUpdated() {
       return isBefore(new Date(), addHours(new Date(this.item.lastVersionChangedAt), 24))
     },
@@ -180,7 +151,7 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter((key) => lastVersion[key])
+      return ['tasks', 'completed', 'release', 'released'].filter((key) => lastVersion[key])
         .map((key) => {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
           return {
