@@ -4,7 +4,7 @@
       {{ docks.length }}x {{ size }}:
     </div>
     <div class="metrics-value">
-      {{ docks.map(dock => dock.name).join(', ') }}
+      {{ sortedDocks.map(dock => dock.name).join(', ') }}
     </div>
   </div>
 </template>
@@ -16,9 +16,16 @@ export default {
       type: Array,
       required: true,
     },
+
     size: {
       type: String,
       required: true,
+    },
+  },
+
+  computed: {
+    sortedDocks() {
+      return this.sortBy(this.docks, 'name')
     },
   },
 }
