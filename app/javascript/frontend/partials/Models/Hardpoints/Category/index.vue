@@ -71,6 +71,7 @@
           </div>
         </div>
       </div>
+      <div class="clearfix" />
     </Modal>
   </div>
 </template>

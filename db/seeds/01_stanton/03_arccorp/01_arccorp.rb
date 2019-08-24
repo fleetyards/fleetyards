@@ -102,7 +102,7 @@ rikerMemorial.update!(
 )
 
 rikerMemorial.docks.destroy_all
-{ small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|
+{ small: [1, 2, 3], medium: [4, 5, 6], large: [7, 8], capital: [9, 10, 11, 12] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     rikerMemorial.docks << Dock.new(
       name: ("%02d" % hangar),

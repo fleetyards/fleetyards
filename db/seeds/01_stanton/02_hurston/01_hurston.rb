@@ -12,7 +12,7 @@ teasa_spaceport.update!(
   hidden: false
 )
 teasa_spaceport.docks.destroy_all
-{ capital: [1], medium: [2, 3, 7], small: [6, 8, 9], large: [4, 5] }.each do |ship_size, hangars|
+{ capital: [1, 10, 11], medium: [2, 3, 7], small: [6, 8, 9], large: [4, 5] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     teasa_spaceport.docks << Dock.new(
       name: ("%02d" % hangar),
