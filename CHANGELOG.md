@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.21.3](https://github.com/fleetyards/app/compare/v3.21.2...v3.21.3) (2019-08-25)
+
+
+### Bug Fixes
+
+* **admin:** update for latest carrierwave changes ([d858d9d](https://github.com/fleetyards/app/commit/d858d9d))
+
 ### [3.21.2](https://github.com/fleetyards/app/compare/v3.21.1...v3.21.2) (2019-08-24)
 
 
