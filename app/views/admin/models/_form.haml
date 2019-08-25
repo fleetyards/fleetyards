@@ -171,7 +171,8 @@
     .col-xs-12.col-md-4.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
-      = form.hidden_field :store_image_cache
+      - if model.store_image_cache
+        = form.hidden_field :store_image_cache
       %br
       - if model.store_image?
         = image_tag(model.store_image.url)
@@ -182,7 +183,8 @@
     .col-xs-12.col-md-4.form-group{class: form_error?(model, :brochure)}
       = form.label :brochure
       = form.file_field :brochure, class: 'form-control'
-      = form.hidden_field :brochure_cache
+      - if model.brochure_cache
+        = form.hidden_field :brochure_cache
       %br
       - if model.brochure?
         %a{href: model.brochure.url}
@@ -194,7 +196,8 @@
     .col-xs-12.col-md-4.form-group{class: form_error?(model, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
-      = form.hidden_field :fleetchart_image_cache
+      - if model.fleetchart_image_cache
+        = form.hidden_field :fleetchart_image_cache
       %br
       - if model.fleetchart_image?
         = image_tag(model.fleetchart_image.url)
