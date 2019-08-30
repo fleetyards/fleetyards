@@ -2,6 +2,7 @@ export default {
   true: 'Yes',
   false: 'No',
   selected: 'Selected',
+  or: 'or',
   deselect: 'Click to deselect',
   shop: {
     rentPrice: 'rent / day',
@@ -246,6 +247,7 @@ export default {
   rememberMe: 'Remember me',
   emptyList: 'No %{name} present',
   all: 'All',
+  supportUs: 'Support FleetYards.net via',
   account: {
     destroyInfo: "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
   },

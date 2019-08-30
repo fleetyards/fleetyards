@@ -71,6 +71,26 @@
           {{ $t('nav.api') }}
         </a>
       </div>
+      <div class="app-footer-support">
+        {{ $t('labels.supportUs') }}
+        <a
+          href="https://paypal.me/pools/c/83jQLadz60"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-paypal" />
+          PayPal
+        </a>
+        {{ $t('labels.or') }}
+        <a
+          href="https://www.patreon.com/fleetyards"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-patreon" />
+          Patreon
+        </a>
+      </div>
       <div class="app-footer-item">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
