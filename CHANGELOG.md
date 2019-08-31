@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.22.1](https://github.com/fleetyards/app/compare/v3.22.0...v3.22.1) (2019-08-31)
+
+
+### Bug Fixes
+
+* **models:** strip rsi name of whitespace ([b9f39b6](https://github.com/fleetyards/app/commit/b9f39b6))
+
 ## [3.22.0](https://github.com/fleetyards/app/compare/v3.21.6...v3.22.0) (2019-08-31)
 
 
