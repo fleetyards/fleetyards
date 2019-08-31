@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.22.0](https://github.com/fleetyards/app/compare/v3.21.6...v3.22.0) (2019-08-31)
+
+
+### Features
+
+* **roadmap:** add removals and fix empty labels ([92048f0](https://github.com/fleetyards/app/commit/92048f0))
+
 ### [3.21.6](https://github.com/fleetyards/app/compare/v3.21.5...v3.21.6) (2019-08-30)
 
 
