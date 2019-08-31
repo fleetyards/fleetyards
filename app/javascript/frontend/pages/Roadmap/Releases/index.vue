@@ -51,6 +51,7 @@
               :class="{
                 open: visible.includes(release),
               }"
+              class="toggleable"
               @click="toggle(release)"
             >
               <span class="title">{{ release }}</span>

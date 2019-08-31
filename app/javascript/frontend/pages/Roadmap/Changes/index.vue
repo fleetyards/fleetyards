@@ -31,11 +31,27 @@
           appear
         >
           <div
-            v-for="item in roadmapChanges"
-            :key="item.id"
-            class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+            v-for="(items, release) in groupedByRelease"
+            :key="`releases-${release}`"
+            class="col-xs-12 fade-list-item release"
           >
-            <RoadmapItem :item="item" />
+            <h2>
+              <span class="title">{{ release }}</span>
+              <span class="released-label">
+                ({{ items[0].releaseDescription }})
+              </span>
+              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
+            </h2>
+
+            <div class="flex-row">
+              <div
+                v-for="item in items"
+                :key="item.id"
+                class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+              >
+                <RoadmapItem :item="item" />
+              </div>
+            </div>
           </div>
         </transition-group>
         <EmptyBox v-if="emptyBoxVisible" />
@@ -81,6 +97,17 @@ export default {
   computed: {
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
+    },
+
+    groupedByRelease() {
+      return this.roadmapChanges.reduce((rv, x) => {
+        const value = JSON.parse(JSON.stringify(rv))
+
+        value[x.release] = rv[x.release] || []
+        value[x.release].push(x)
+
+        return value
+      }, {})
     },
   },
 

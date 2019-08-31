@@ -51,6 +51,7 @@
               :class="{
                 open: visible.includes(release),
               }"
+              class="toggleable"
               @click="toggle(release)"
             >
               <span class="title">{{ release }}</span>
@@ -91,6 +92,7 @@
               :class="{
                 open: visible.includes('unscheduled'),
               }"
+              class="toggleable"
               @click="toggle('unscheduled')"
             >
               <span class="title">
