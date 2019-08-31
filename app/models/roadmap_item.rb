@@ -3,7 +3,7 @@
 class RoadmapItem < ApplicationRecord
   MODELS_CATEGORY = 6
 
-  has_paper_trail on: [:update], only: %i[release released tasks completed]
+  has_paper_trail on: [:update], only: %i[release released tasks completed active]
 
   belongs_to :model, optional: true
 
@@ -11,7 +11,7 @@ class RoadmapItem < ApplicationRecord
 
   ransack_alias :last_updated_at, :versions_created_at
 
-  def self.active
+  def self.activen
     where(active: true)
   end
 

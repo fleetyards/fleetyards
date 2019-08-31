@@ -46,10 +46,21 @@
                 release: update.new,
               }) }}
             </template>
+            <template v-else-if="update.key === 'released'">
+              {{ $t(`labels.roadmap.lastVersion.released`) }}
+            </template>
             <template v-else-if="update.key === 'tasks'">
               {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
+            </template>
+            <template v-else-if="update.key === 'completed'">
+              {{ $t(`labels.roadmap.lastVersion.completed.${update.change}`, {
+                value: removeSign(update.count),
+              }) }}
+            </template>
+            <template v-else-if="update.key === 'active'">
+              {{ $t(`labels.roadmap.lastVersion.active.${update.change}`) }}
             </template>
             <template v-else>
               {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
@@ -103,6 +114,7 @@ export default {
       if (this.item.tasks) {
         return this.item.tasks
       }
+
       return '?'
     },
 
@@ -110,6 +122,7 @@ export default {
       if (this.item.completed) {
         return this.item.completed
       }
+
       return 0
     },
 
@@ -117,6 +130,7 @@ export default {
       if (!this.item.tasks) {
         return '?'
       }
+
       return Math.round((100 * this.completed) / this.item.tasks)
     },
 
@@ -151,9 +165,10 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'released'].filter((key) => lastVersion[key])
+      return ['tasks', 'completed', 'release', 'released', 'active'].filter((key) => lastVersion[key])
         .map((key) => {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+
           return {
             key,
             change: (count < 0) ? 'decreased' : 'increased',
@@ -162,6 +177,9 @@ export default {
             count,
           }
         })
+        .filter((update) => update.key !== 'released' || (update.key === 'released' && update.old))
+        .filter((update) => update.key !== 'tasks' || (update.key === 'tasks' && update.count !== 0))
+        .filter((update) => update.key !== 'completed' || (update.key === 'completed' && update.count !== 0))
     },
   },
 }

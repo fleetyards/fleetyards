@@ -139,6 +139,7 @@ export default {
       if (this.onlyReleased) {
         return this.$t('actions.showReleased')
       }
+
       return this.$t('actions.hideReleased')
     },
 
@@ -150,6 +151,7 @@ export default {
       if (this.onlyReleased) {
         return this.roadmapItems.filter((item) => !item.released)
       }
+
       return this.roadmapItems
     },
 
@@ -205,6 +207,7 @@ export default {
       if (!this.tasks(items)) {
         return '?'
       }
+
       return Math.round((100 * this.completed(items)) / this.tasks(items))
     },
 
@@ -228,14 +231,17 @@ export default {
       if (this.visible.includes(release)) {
         const index = this.visible.indexOf(release)
         this.visible.splice(index, 1)
+
         return null
       }
+
       return this.visible.push(release)
     },
 
     openReleased() {
       Object.keys(this.groupedByRelease).forEach((release) => {
         const items = this.groupedByRelease[release]
+
         if (items.length && !items[0].released) {
           this.visible.push(release)
         }
@@ -244,7 +250,13 @@ export default {
 
     async fetch() {
       this.loading = true
-      const response = await this.$api.get('roadmap')
+
+      const response = await this.$api.get('roadmap', {
+        q: {
+          activeEq: true,
+        },
+      })
+
       this.loading = false
 
       if (!response.error) {

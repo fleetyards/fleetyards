@@ -244,9 +244,11 @@ export default {
       const response = await this.$api.get('roadmap', {
         q: {
           rsiCategoryIdIn: [6],
+          activeEq: true,
         },
       })
       this.loading = false
+
       if (!response.error) {
         this.roadmapItems = response.data
         await this.fetchModels()
