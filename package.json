@@ -29,7 +29,7 @@
     "@babel/plugin-transform-runtime": "7.5.5",
     "@babel/preset-env": "7.5.5",
     "@rails/webpacker": "4.0.7",
-    "@sentry/browser": "5.6.2",
+    "@sentry/browser": "5.6.3",
     "@sentry/integrations": "5.6.1",
     "actioncable": "5.2.3",
     "ahoy.js": "0.3.4",
