@@ -40,7 +40,7 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
+              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
             </h2>
 
             <div class="flex-row">
