@@ -44,7 +44,7 @@
     "debounce": "1.2.0",
     "downloadjs": "1.4.7",
     "file-loader": "4.2.0",
-    "highcharts": "7.1.3",
+    "highcharts": "7.2.0",
     "html2canvas": "1.0.0-alpha.12",
     "i18n-js": "3.3.0",
     "jest-transform-stub": "2.0.0",
