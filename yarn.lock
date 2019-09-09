@@ -13602,10 +13602,10 @@ store2@^2.7.1:
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.7.1.tgz#22070b7dc04748a792fc6912a58ab99d3a21d788"
   integrity sha512-zzzP5ZY6QWumnAFV6kBRbS44pUMcpZBNER5DWUe1HETlaKXqLcCQxbNu6IHaKr1pUsjuhUGBdOy8sWKmMkL6pQ==
 
-storybook-vue-router@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/storybook-vue-router/-/storybook-vue-router-1.0.3.tgz#b8fb690abab470f62d848b7c53cc90132eef94eb"
-  integrity sha512-g2e3hJGTbX+5J+chBy777y9TGcHW3Pra9P4MWy/1d7VQ+9D1qGPpy6uAl8VUE13avNQBSia0GWf2rHQwa+Fszw==
+storybook-vue-router@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/storybook-vue-router/-/storybook-vue-router-1.0.7.tgz#366451212149d9d0a32557545b244667bb01768e"
+  integrity sha512-R+DYARQ40YVbMbV5moLDmQvodJX5FQPVy5cULb782P1gD5rAkulWtgt8yrM7pmjYru+LTPdLS4blrFPnWlb0sQ==
 
 stream-browserify@^2.0.1:
   version "2.0.2"
