@@ -78,17 +78,18 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'lastUpdatedAt' => explorer.commodity_item.last_updated_at&.iso8601,
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
               'code' => nil,
               'logo' => nil
             },
-            'createdAt' => explorer.commodity_item.created_at.to_time.iso8601,
-            'updatedAt' => explorer.commodity_item.updated_at.to_time.iso8601
+            'createdAt' => explorer.commodity_item.created_at.iso8601,
+            'updatedAt' => explorer.commodity_item.updated_at.iso8601
           },
-          'createdAt' => explorer.created_at.to_time.iso8601,
-          'updatedAt' => explorer.updated_at.to_time.iso8601
+          'createdAt' => explorer.created_at.iso8601,
+          'updatedAt' => explorer.updated_at.iso8601
         }, {
           'name' => 'Andromeda',
           'slug' => 'andromeda',
@@ -151,17 +152,18 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'lastUpdatedAt' => andromeda.commodity_item.last_updated_at&.iso8601,
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',
               'code' => nil,
               'logo' => nil
             },
-            'createdAt' => andromeda.commodity_item.created_at.to_time.iso8601,
-            'updatedAt' => andromeda.commodity_item.updated_at.to_time.iso8601
+            'createdAt' => andromeda.commodity_item.created_at.iso8601,
+            'updatedAt' => andromeda.commodity_item.updated_at.iso8601
           },
-          'createdAt' => andromeda.created_at.to_time.iso8601,
-          'updatedAt' => andromeda.updated_at.to_time.iso8601
+          'createdAt' => andromeda.created_at.iso8601,
+          'updatedAt' => andromeda.updated_at.iso8601
         }]
       end
 

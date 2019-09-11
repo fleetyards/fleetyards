@@ -37,8 +37,8 @@ module Api
             'name' => 'Crusader',
             'slug' => 'crusader'
           },
-          'createdAt' => new_deal.created_at.to_time.iso8601,
-          'updatedAt' => new_deal.updated_at.to_time.iso8601
+          'createdAt' => new_deal.created_at.iso8601,
+          'updatedAt' => new_deal.updated_at.iso8601
         }
       end
       let(:index_result) do
@@ -61,8 +61,8 @@ module Api
             'name' => 'Daymar',
             'slug' => 'daymar'
           },
-          'createdAt' => admin_daymar.created_at.to_time.iso8601,
-          'updatedAt' => admin_daymar.updated_at.to_time.iso8601
+          'createdAt' => admin_daymar.created_at.iso8601,
+          'updatedAt' => admin_daymar.updated_at.iso8601
         }, {
           'name' => 'Admin Office',
           'slug' => 'admin-office',
@@ -82,8 +82,8 @@ module Api
             'name' => 'Yela',
             'slug' => 'yela'
           },
-          'createdAt' => admin_yela.created_at.to_time.iso8601,
-          'updatedAt' => admin_yela.updated_at.to_time.iso8601
+          'createdAt' => admin_yela.created_at.iso8601,
+          'updatedAt' => admin_yela.updated_at.iso8601
         }, {
           'name' => 'Admin Office',
           'slug' => 'admin-office',
@@ -103,8 +103,8 @@ module Api
             'name' => 'Crusader',
             'slug' => 'crusader'
           },
-          'createdAt' => admin_olisar.created_at.to_time.iso8601,
-          'updatedAt' => admin_olisar.updated_at.to_time.iso8601
+          'createdAt' => admin_olisar.created_at.iso8601,
+          'updatedAt' => admin_olisar.updated_at.iso8601
         }, {
           'name' => 'Dumpers Depot',
           'slug' => 'dumpers-depot',
@@ -124,8 +124,8 @@ module Api
             'name' => 'Crusader',
             'slug' => 'crusader'
           },
-          'createdAt' => dumpers.created_at.to_time.iso8601,
-          'updatedAt' => dumpers.updated_at.to_time.iso8601
+          'createdAt' => dumpers.created_at.iso8601,
+          'updatedAt' => dumpers.updated_at.iso8601
         }, {
           'name' => 'New Deal',
           'slug' => 'new-deal',
@@ -145,8 +145,8 @@ module Api
             'name' => 'Crusader',
             'slug' => 'crusader'
           },
-          'createdAt' => new_deal.created_at.to_time.iso8601,
-          'updatedAt' => new_deal.updated_at.to_time.iso8601
+          'createdAt' => new_deal.created_at.iso8601,
+          'updatedAt' => new_deal.updated_at.iso8601
         }]
       end
 

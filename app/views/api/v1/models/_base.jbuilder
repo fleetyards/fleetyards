@@ -47,4 +47,4 @@ json.has_images model.images.count.positive?
 json.has_videos model.videos.count.positive?
 json.has_modules model.modules.count.positive?
 json.has_upgrades model.upgrades.count.positive?
-json.last_updated_at model.last_updated_at
+json.last_updated_at model.last_updated_at&.iso8601

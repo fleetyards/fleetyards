@@ -66,14 +66,15 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
+          'lastUpdatedAt' => Model.first.last_updated_at&.iso8601,
           'manufacturer' => {
             'name' => 'Origin',
             'slug' => 'origin',
             'code' => nil,
             'logo' => nil
           },
-          'createdAt' => Model.first.created_at.to_time.iso8601,
-          'updatedAt' => Model.first.updated_at.to_time.iso8601
+          'createdAt' => Model.first.created_at.iso8601,
+          'updatedAt' => Model.first.updated_at.iso8601
         }, {
           'id' => Model.last.id,
           'name' => 'Andromeda',
@@ -122,14 +123,15 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
+          'lastUpdatedAt' => Model.last.last_updated_at&.iso8601,
           'manufacturer' => {
             'name' => 'RSI',
             'slug' => 'rsi',
             'code' => nil,
             'logo' => nil
           },
-          'createdAt' => Model.last.created_at.to_time.iso8601,
-          'updatedAt' => Model.last.updated_at.to_time.iso8601
+          'createdAt' => Model.last.created_at.iso8601,
+          'updatedAt' => Model.last.updated_at.iso8601
         }]
         assert_equal expected, json
       end

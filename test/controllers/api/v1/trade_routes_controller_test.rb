@@ -50,8 +50,8 @@ module Api
           'sellPrice' => '20.0',
           'profitPerUnit' => '10.0',
           'profitPerUnitPercent' => '50.0',
-          'createdAt' => titan_daymar_yela.created_at.to_time.iso8601,
-          'updatedAt' => titan_daymar_yela.updated_at.to_time.iso8601
+          'createdAt' => titan_daymar_yela.created_at.iso8601,
+          'updatedAt' => titan_daymar_yela.updated_at.iso8601
         }, {
           'origin' => {
             'name' => 'ArcCorp',
@@ -86,8 +86,8 @@ module Api
           'sellPrice' => '17.0',
           'profitPerUnit' => '7.0',
           'profitPerUnitPercent' => '70.0',
-          'createdAt' => titan_daymar_olisar.created_at.to_time.iso8601,
-          'updatedAt' => titan_daymar_olisar.updated_at.to_time.iso8601
+          'createdAt' => titan_daymar_olisar.created_at.iso8601,
+          'updatedAt' => titan_daymar_olisar.updated_at.iso8601
         }, {
           'origin' => {
             'name' => 'ArcCorp',
@@ -122,8 +122,8 @@ module Api
           'sellPrice' => '10.0',
           'profitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
-          'createdAt' => gold_yela_daymar.created_at.to_time.iso8601,
-          'updatedAt' => gold_yela_daymar.updated_at.to_time.iso8601
+          'createdAt' => gold_yela_daymar.created_at.iso8601,
+          'updatedAt' => gold_yela_daymar.updated_at.iso8601
         }]
       end
       let(:filtered_index_result) do
@@ -161,8 +161,8 @@ module Api
           'sellPrice' => '10.0',
           'profitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
-          'createdAt' => gold_yela_daymar.created_at.to_time.iso8601,
-          'updatedAt' => gold_yela_daymar.updated_at.to_time.iso8601
+          'createdAt' => gold_yela_daymar.created_at.iso8601,
+          'updatedAt' => gold_yela_daymar.updated_at.iso8601
         }]
       end
 
