@@ -82,6 +82,7 @@ export default {
     ordnance: 'Ordnance',
     modular: 'Modular',
     soldAt: 'Sold at?',
+    lastUpdatedAt: 'Last updated at?',
   },
   component: {
     manufacturer: 'Manufacturer',
@@ -149,7 +150,8 @@ export default {
   },
   datetime: {
     formats: {
-      default: '%e %B %Y at %H:%M',
+      default: "L MMMM y 'at' HH:mm z",
+      iso: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
     },
   },
   number: {

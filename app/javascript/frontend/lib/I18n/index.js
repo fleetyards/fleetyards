@@ -1,6 +1,7 @@
 import I18n from 'i18n-js'
 import en from 'translations/en'
 import de from 'translations/de'
+import { format, parseISO } from 'date-fns'
 
 I18n.availableLocales = ['en', 'de']
 I18n.defaultLocale = 'en'
@@ -13,8 +14,8 @@ const methods = {
   t(key, options) {
     return I18n.t(key, options)
   },
-  l(value, format = 'datetime.formats.default') {
-    return I18n.toTime(format, value)
+  l(value, dateFormat = 'datetime.formats.default') {
+    return format(parseISO(value), I18n.t(dateFormat))
   },
   toNumber(value, units) {
     let count = I18n.l('number', value)

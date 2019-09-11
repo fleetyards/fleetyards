@@ -2,16 +2,16 @@
 
 json.id model.id
 json.name model.name
-json.rsiName model.rsi_name
+json.rsi_name model.rsi_name
 json.slug model.slug
-json.rsiSlug model.rsi_slug
+json.rsi_slug model.rsi_slug
 json.description model.description
 json.length model.length.to_f
 json.beam model.beam.to_f
 json.height model.height.to_f
 json.mass model.mass.to_f
 json.cargo model.cargo.to_f
-json.cargoLabel model.cargo_label
+json.cargo_label model.cargo_label
 json.min_crew model.min_crew
 json.max_crew model.max_crew
 json.scm_speed model.scm_speed
@@ -47,3 +47,4 @@ json.has_images model.images.count.positive?
 json.has_videos model.videos.count.positive?
 json.has_modules model.modules.count.positive?
 json.has_upgrades model.upgrades.count.positive?
+json.last_updated_at model.last_updated_at

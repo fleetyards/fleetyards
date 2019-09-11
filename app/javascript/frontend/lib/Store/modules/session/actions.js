@@ -1,7 +1,8 @@
 import { apiClient } from 'frontend/lib/ApiClient'
 import {
-  format, parse, differenceInMinutes, isBefore, subMinutes,
+  format, parseISO, differenceInMinutes, isBefore, subMinutes,
 } from 'date-fns'
+import { I18n } from 'frontend/lib/I18n'
 
 const getLeeway = (expiresAt) => {
   const leewayAmount = differenceInMinutes(expiresAt, new Date()) / 3
@@ -15,8 +16,8 @@ export default {
 
   login({ commit }, payload) {
     commit('setAuthToken', payload.token)
-    const renewAt = getLeeway(parse(payload.expires))
-    commit('setAuthTokenRenewAt', format(renewAt))
+    const renewAt = getLeeway(parseISO(payload.expires))
+    commit('setAuthTokenRenewAt', format(renewAt, I18n.t('datetime.format.iso')))
   },
 
   async logout({ commit }, fromError = false) {
@@ -35,7 +36,7 @@ export default {
   },
 
   async renew({ dispatch, state }) {
-    if (state.authTokenRenewAt && isBefore(new Date(), parse(state.authTokenRenewAt))) {
+    if (state.authTokenRenewAt && isBefore(new Date(), parseISO(state.authTokenRenewAt))) {
       return
     }
 
