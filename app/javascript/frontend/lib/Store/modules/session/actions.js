@@ -17,7 +17,7 @@ export default {
   login({ commit }, payload) {
     commit('setAuthToken', payload.token)
     const renewAt = getLeeway(parseISO(payload.expires))
-    commit('setAuthTokenRenewAt', format(renewAt, I18n.t('datetime.format.iso')))
+    commit('setAuthTokenRenewAt', format(renewAt, I18n.t('datetime.formats.iso')))
   },
 
   async logout({ commit }, fromError = false) {
