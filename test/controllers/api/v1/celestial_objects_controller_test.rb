@@ -50,8 +50,8 @@ module Api
             'danger' => nil,
             'status' => nil,
           },
-          'createdAt' => hurston.created_at.iso8601,
-          'updatedAt' => hurston.updated_at.iso8601
+          'createdAt' => hurston.created_at.utc.iso8601,
+          'updatedAt' => hurston.updated_at.utc.iso8601
         }, {
           'name' => 'Crusader',
           'slug' => 'crusader',
@@ -117,8 +117,8 @@ module Api
             'danger' => nil,
             'status' => nil,
           },
-          'createdAt' => crusader.created_at.iso8601,
-          'updatedAt' => crusader.updated_at.iso8601
+          'createdAt' => crusader.created_at.utc.iso8601,
+          'updatedAt' => crusader.updated_at.utc.iso8601
         }, {
           'name' => 'Yela',
           'slug' => 'yela',
@@ -152,8 +152,8 @@ module Api
             'danger' => nil,
             'status' => nil,
           },
-          'createdAt' => yela.created_at.iso8601,
-          'updatedAt' => yela.updated_at.iso8601
+          'createdAt' => yela.created_at.utc.iso8601,
+          'updatedAt' => yela.updated_at.utc.iso8601
         }, {
           'name' => 'Daymar',
           'slug' => 'daymar',
@@ -187,8 +187,8 @@ module Api
             'danger' => nil,
             'status' => nil,
           },
-          'createdAt' => daymar.created_at.iso8601,
-          'updatedAt' => daymar.updated_at.iso8601
+          'createdAt' => daymar.created_at.utc.iso8601,
+          'updatedAt' => daymar.updated_at.utc.iso8601
         }]
       end
       let(:show_result) do
@@ -257,8 +257,8 @@ module Api
             'danger' => nil,
             'status' => nil,
           },
-          'createdAt' => crusader.created_at.iso8601,
-          'updatedAt' => crusader.updated_at.iso8601
+          'createdAt' => crusader.created_at.utc.iso8601,
+          'updatedAt' => crusader.updated_at.utc.iso8601
         }
       end
 

@@ -34,8 +34,8 @@ module Api
           'model' => nil,
           'lastVersionChangedAt' => second_roadmap_item.last_version_changed_at.iso8601,
           'lastVersion' => nil,
-          'createdAt' => second_roadmap_item.created_at.iso8601,
-          'updatedAt' => second_roadmap_item.updated_at.iso8601
+          'createdAt' => second_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => second_roadmap_item.updated_at.utc.iso8601
         }, {
           'id' => first_roadmap_item.id,
           'name' => 'MyString',
@@ -55,8 +55,8 @@ module Api
           'model' => nil,
           'lastVersionChangedAt' => first_roadmap_item.last_version_changed_at.iso8601,
           'lastVersion' => nil,
-          'createdAt' => first_roadmap_item.created_at.iso8601,
-          'updatedAt' => first_roadmap_item.updated_at.iso8601
+          'createdAt' => first_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => first_roadmap_item.updated_at.utc.iso8601
         }]
       end
 

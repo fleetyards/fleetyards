@@ -79,7 +79,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       )
 
       assert_equal(20.0, model_polaris.length.to_f)
-      assert_equal(model_polaris.last_updated_at.iso8601, model_polaris.created_at.iso8601)
+      assert_equal(model_polaris.last_updated_at.utc.iso8601, model_polaris.created_at.utc.iso8601)
 
       Timecop.travel(1.day)
 
@@ -88,7 +88,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       model_polaris.reload
 
       assert_equal(155.0, model_polaris.length.to_f)
-      assert_equal('2017-10-24T14:38:57+02:00', model_polaris.last_updated_at.iso8601)
+      assert_equal('2017-10-24T12:38:57Z', model_polaris.last_updated_at.utc.iso8601)
     end
   end
 end

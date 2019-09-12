@@ -31,8 +31,8 @@ module Api
           'danger' => nil,
           'status' => nil,
           'celestialObjects' => [],
-          'createdAt' => oberon.created_at.iso8601,
-          'updatedAt' => oberon.updated_at.iso8601
+          'createdAt' => oberon.created_at.utc.iso8601,
+          'updatedAt' => oberon.updated_at.utc.iso8601
         }, {
           'name' => 'Stanton',
           'slug' => 'stanton',
@@ -81,8 +81,8 @@ module Api
             'economy' => nil,
             'population' => nil
           }],
-          'createdAt' => stanton.created_at.iso8601,
-          'updatedAt' => stanton.updated_at.iso8601
+          'createdAt' => stanton.created_at.utc.iso8601,
+          'updatedAt' => stanton.updated_at.utc.iso8601
         }]
       end
       let(:show_result) do
@@ -134,8 +134,8 @@ module Api
             'economy' => nil,
             'population' => nil
           }],
-          'createdAt' => stanton.created_at.iso8601,
-          'updatedAt' => stanton.updated_at.iso8601
+          'createdAt' => stanton.created_at.utc.iso8601,
+          'updatedAt' => stanton.updated_at.utc.iso8601
         }
       end
 

@@ -79,8 +79,8 @@ module Api
           'habitationCounts' => [],
           'habitations' => [],
           'hasImages' => false,
-          'createdAt' => arccorp_yela.created_at.iso8601,
-          'updatedAt' => arccorp_yela.updated_at.iso8601
+          'createdAt' => arccorp_yela.created_at.utc.iso8601,
+          'updatedAt' => arccorp_yela.updated_at.utc.iso8601
         }, {
           'name' => 'ArcCorp',
           'slug' => 'arccorp',
@@ -143,8 +143,8 @@ module Api
           'habitationCounts' => [],
           'habitations' => [],
           'hasImages' => false,
-          'createdAt' => arccorp_daymar.created_at.iso8601,
-          'updatedAt' => arccorp_daymar.updated_at.iso8601
+          'createdAt' => arccorp_daymar.created_at.utc.iso8601,
+          'updatedAt' => arccorp_daymar.updated_at.utc.iso8601
         }, {
           'name' => 'Corvolex Shipping Hub',
           'slug' => 'corvolex',
@@ -208,8 +208,8 @@ module Api
           'habitationCounts' => [],
           'habitations' => [],
           'hasImages' => false,
-          'createdAt' => corvolex.created_at.iso8601,
-          'updatedAt' => corvolex.updated_at.iso8601
+          'createdAt' => corvolex.created_at.utc.iso8601,
+          'updatedAt' => corvolex.updated_at.utc.iso8601
         }, {
           'name' => 'Port Olisar',
           'slug' => 'port-olisar',
@@ -334,8 +334,8 @@ module Api
             'typeLabel' => 'Container'
           }],
           'hasImages' => false,
-          'createdAt' => portolisar.created_at.iso8601,
-          'updatedAt' => portolisar.updated_at.iso8601
+          'createdAt' => portolisar.created_at.utc.iso8601,
+          'updatedAt' => portolisar.updated_at.utc.iso8601
         }]
       end
       let(:show_result) do
@@ -464,8 +464,8 @@ module Api
           }],
           'hasImages' => false,
           'images' => [],
-          'createdAt' => portolisar.created_at.iso8601,
-          'updatedAt' => portolisar.updated_at.iso8601
+          'createdAt' => portolisar.created_at.utc.iso8601,
+          'updatedAt' => portolisar.updated_at.utc.iso8601
         }
       end
 
