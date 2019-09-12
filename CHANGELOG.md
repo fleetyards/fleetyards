@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.24.1](https://github.com/fleetyards/app/compare/v3.24.0...v3.24.1) (2019-09-12)
+
+
+### Bug Fixes
+
+* **test:** update times ([c019b27](https://github.com/fleetyards/app/commit/c019b27))
+
 ## [3.24.0](https://github.com/fleetyards/app/compare/v3.23.1...v3.24.0) (2019-09-11)
 
 
