@@ -1,7 +1,8 @@
 import I18n from 'i18n-js'
 import en from 'translations/en'
 import de from 'translations/de'
-import { format, parseISO } from 'date-fns'
+import { parseISO } from 'date-fns'
+import { format } from 'date-fns-tz'
 
 I18n.availableLocales = ['en', 'de']
 I18n.defaultLocale = 'en'
