@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.25.1](https://github.com/fleetyards/app/compare/v3.25.0...v3.25.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* **roadmap:** use correct format for dates ([57de7c0](https://github.com/fleetyards/app/commit/57de7c0))
+
 ## [3.25.0](https://github.com/fleetyards/app/compare/v3.24.1...v3.25.0) (2019-09-13)
 
 
