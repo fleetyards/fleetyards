@@ -3,7 +3,7 @@
 class RoadmapItem < ApplicationRecord
   MODELS_CATEGORY = 6
 
-  has_paper_trail on: [:update], only: %i[release released tasks completed active]
+  has_paper_trail on: [:update], only: %i[release tasks completed active]
 
   belongs_to :model, optional: true
 
