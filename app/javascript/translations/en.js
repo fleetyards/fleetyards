@@ -150,7 +150,7 @@ export default {
   },
   datetime: {
     formats: {
-      default: "L MMMM y 'at' HH:mm z",
+      default: "d MMMM y 'at' HH:mm z",
       iso: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
     },
   },
