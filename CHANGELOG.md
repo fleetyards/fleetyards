@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.25.0](https://github.com/fleetyards/app/compare/v3.24.1...v3.25.0) (2019-09-13)
+
+
+### Features
+
+* **hangar:** show addons on public hangar ([b92cc6e](https://github.com/fleetyards/app/commit/b92cc6e))
+
 ### [3.24.1](https://github.com/fleetyards/app/compare/v3.24.0...v3.24.1) (2019-09-12)
 
 
