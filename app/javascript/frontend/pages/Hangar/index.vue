@@ -523,7 +523,7 @@ export default {
       const response = await this.$api.download('vehicles/export.csv')
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(new Blob([response.data]))
-      link.setAttribute('download', `fleetyards-${this.currentUser.username}-hangar-${format(new Date(), 'YYYY-MM-DD-HH-mm')}.csv`)
+      link.setAttribute('download', `fleetyards-${this.currentUser.username}-hangar-${format(new Date(), 'yyyy-MM-dd-HH-mm')}.csv`)
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
