@@ -250,7 +250,10 @@
       :hangar-groups="hangarGroups"
     />
 
-    <AddonsModal ref="addonsModal" />
+    <AddonsModal
+      ref="addonsModal"
+      modifiable
+    />
 
     <NewVehiclesModal ref="newVehiclesModal" />
   </section>

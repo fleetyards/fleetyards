@@ -10,10 +10,13 @@
 
 .addon {
   .model-panel {
-    cursor: pointer;
     display: flex;
     position: relative;
     overflow: hidden;
+
+    &.modifiable {
+      cursor: pointer;
+    }
 
     .model-panel-selected {
       position: absolute;

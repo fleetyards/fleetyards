@@ -131,6 +131,7 @@
             <ModelPanel
               :model="vehicle.model"
               :vehicle="vehicle"
+              :on-addons="showAddonsModal"
             />
           </div>
         </transition-group>
@@ -149,6 +150,8 @@
         />
       </div>
     </div>
+
+    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -163,12 +166,14 @@ import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
+import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 
 export default {
   name: 'PublicHangar',
 
   components: {
     Btn,
+    AddonsModal,
     Loader,
     DownloadScreenshotBtn,
     ModelPanel,
@@ -243,6 +248,10 @@ export default {
   },
 
   methods: {
+    showAddonsModal(vehicle) {
+      this.$refs.addonsModal.open(vehicle)
+    },
+
     updateScale(value) {
       this.$store.commit('hangar/setPublicFleetchartScale', value)
     },

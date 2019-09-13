@@ -22,6 +22,7 @@
               :addons="modules"
               :label="$t('actions.addModule')"
               :initial-addons="vehicle.modelModuleIds"
+              :modifiable="modifiable"
             />
           </fieldset>
           <Loader :loading="loadingModules" />
@@ -40,13 +41,17 @@
               :addons="upgrades"
               :label="$t('actions.addUpgrade')"
               :initial-addons="vehicle.modelModuleIds"
+              :modifiable="modifiable"
             />
           </fieldset>
         </div>
         <Loader :loading="loadingUpgrades" />
       </div>
     </form>
-    <template #footer>
+    <template
+      v-if="modifiable"
+      #footer
+    >
       <div class="pull-right">
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
@@ -77,6 +82,11 @@ export default {
 
   props: {
     visible: {
+      type: Boolean,
+      default: false,
+    },
+
+    modifiable: {
       type: Boolean,
       default: false,
     },
@@ -120,6 +130,10 @@ export default {
     },
 
     changeUpgrade(upgrade) {
+      if (!this.modifiable) {
+        return
+      }
+
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {
         const index = this.form.modelUpgradeIds.findIndex((upgradeId) => upgradeId === upgrade.id)
         if (index > -1) {
@@ -131,6 +145,10 @@ export default {
     },
 
     async save() {
+      if (!this.modifiable) {
+        return
+      }
+
       this.submitting = true
       const response = await this.$api.put(`vehicles/${this.vehicle.id}`, this.form)
       this.submitting = false
