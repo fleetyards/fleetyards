@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.26.0](https://github.com/fleetyards/app/compare/v3.25.3...v3.26.0) (2019-09-15)
+
+
+### Features
+
+* **shop:** add quick filter for sub categories ([b36e576](https://github.com/fleetyards/app/commit/b36e576))
+
 ### [3.25.3](https://github.com/fleetyards/app/compare/v3.25.2...v3.25.3) (2019-09-13)
 
 ### [3.25.2](https://github.com/fleetyards/app/compare/v3.25.1...v3.25.2) (2019-09-13)
