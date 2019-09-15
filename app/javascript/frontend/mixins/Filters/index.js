@@ -88,9 +88,11 @@ export default {
 
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+
       Object.keys(query)
         .filter((key) => !query[key] || query[key].length === 0)
         .forEach((key) => delete query[key])
+
       return Object.keys(query).length > 0
     },
 
@@ -118,33 +120,35 @@ export default {
       this.$router.replace({
         name: this.$route.name,
         query: {},
-      })
+      }).catch((_err) => {})
     },
 
     resetPage() {
+      const query = {
+        ...JSON.parse(JSON.stringify(this.$route.query)),
+      }
+
+      if (query.page) {
+        delete query.page
+      }
+
       this.$router.replace({
         name: this.$route.name,
         query: {
+          ...query,
           q: this.$route.query.q || {},
         },
-      })
+      }).catch((_err) => {})
     },
 
     filter: debounce(function debounced() {
-      const query = {
-        q: JSON.parse(JSON.stringify(this.q)),
-      }
-
-      if (((this.isFilterSelected && Object.keys(this.q).length > 0)
-        || (!this.isFilterSelected && Object.keys(this.q).length === 0))
-        && this.$route.query.page) {
-        query.page = this.$route.query.page
-      }
-
       this.$router.replace({
         name: this.$route.name,
-        query,
-      })
+        query: {
+          ...this.$route.query,
+          q: JSON.parse(JSON.stringify(this.q)),
+        },
+      }).catch((_err) => {})
     }, 500),
   },
 }
