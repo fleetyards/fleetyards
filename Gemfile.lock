@@ -44,7 +44,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ahoy_matey (3.0.0)
+    ahoy_matey (3.0.1)
       activesupport (>= 5)
       device_detector
       geocoder (>= 1.4.5)
@@ -116,7 +116,7 @@ GEM
     css_parser (1.7.0)
       addressable
     dalli (2.7.10)
-    device_detector (1.0.1)
+    device_detector (1.0.2)
     devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -263,7 +263,7 @@ GEM
     mini_magick (4.9.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.12.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
     minitest-rails (5.2.0)
@@ -393,8 +393,8 @@ GEM
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
     safe_yaml (1.0.5)
-    safely_block (0.2.1)
-      errbase
+    safely_block (0.2.2)
+      errbase (>= 0.1.1)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.0.1)
