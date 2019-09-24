@@ -110,7 +110,7 @@
     "stylelint": "10.1.0",
     "stylelint-config-prettier": "5.2.0",
     "stylelint-config-standard": "18.3.0",
-    "typescript": "3.6.2",
+    "typescript": "3.6.3",
     "vue-eslint-parser": "6.0.4",
     "vue-jest": "3.0.5",
     "webpack-dev-server": "3.8.0",
