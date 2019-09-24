@@ -3765,10 +3765,10 @@ bootstrap-sass@3.4.1:
   resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.1.tgz#6843c73b1c258a0ac5cb2cc6f6f5285b664a8e9a"
   integrity sha512-p5rxsK/IyEDQm2CwiHxxUi0MZZtvVFbhWmyMOt4lLkA4bujDA1TGoKT0i1FKIWiugAdP+kK8T5KMDFIKQCLYIA==
 
-bootstrap-vue@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.0.0.tgz#2270342fc5749c05b91af70d9e28d0a4c22b7a33"
-  integrity sha512-lBqkMtkXMqdIwMSDnWydVb38sOIQ0v+RRn/H0PEcLNd2OFarh81mHzGR+ARofGnO9Ubt0o1WJDRWk8RsNK2JfA==
+bootstrap-vue@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.0.2.tgz#92082574e0fe34a65ce4c07b8777471b7a1402dd"
+  integrity sha512-hbGJjc/om9JfVNUFK76dnh+YutlZdZlKbpWw6OE9gHTkmbwstP/KxxELpZZgK/4SYtdxUPt/6W1CvdaeT1bNvQ==
   dependencies:
     "@nuxt/opencollective" "^0.3.0"
     bootstrap ">=4.3.1 <5.0.0"
