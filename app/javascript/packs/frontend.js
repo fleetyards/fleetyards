@@ -9,10 +9,10 @@ import store from 'frontend/lib/Store'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Ahoy'
+import 'frontend/lib/Bootstrap'
 import I18n from 'frontend/lib/I18n'
 import ApiClient from 'frontend/lib/ApiClient'
 import Subscriptions from 'frontend/lib/Subscriptions'
-import BootstrapVue from 'bootstrap-vue'
 import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
 import EmailValidator from 'frontend/lib/validations/EmailValidator'
@@ -68,17 +68,6 @@ Vue.use(Meta, {
   ssrAttribute: 'data-vue-meta-server-rendered',
   tagIDKeyName: 'vmid',
 })
-
-const originalVueComponent = Vue.component
-Vue.component = function bootstrapFix(name, definition) {
-  if (name === 'bFormCheckboxGroup' || name === 'bCheckboxGroup'
-      || name === 'bCheckGroup' || name === 'bFormRadioGroup') {
-    // eslint-disable-next-line no-param-reassign
-    definition.components = { bFormCheckbox: definition.components[0] }
-  }
-  originalVueComponent.apply(this, [name, definition])
-}
-Vue.use(BootstrapVue)
 
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true
