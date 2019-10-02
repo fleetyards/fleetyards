@@ -16,7 +16,8 @@
     "lint:js": "eslint --ext .js --fix --cache app/javascript test/javascript",
     "lint:vue": "eslint --ext .vue --fix --cache app/javascript test/javascript",
     "lint:style": "stylelint \"app/javascript/**/*.scss\" \"app/javascript/**/*.vue\" \"app/assets/**/*.scss\" --fix",
-    "test:e2e": "cypress run"
+    "test:e2e": "cypress run",
+    "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
   },
   "dependencies": {
     "@babel/core": "7.6.0",
@@ -113,6 +114,7 @@
     "typescript": "3.6.3",
     "vue-eslint-parser": "6.0.4",
     "vue-jest": "3.0.5",
+    "webpack-bundle-analyzer": "^3.5.2",
     "webpack-dev-server": "3.8.1",
     "yorkie": "2.0.0"
   },
