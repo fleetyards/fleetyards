@@ -107,32 +107,64 @@
             {{ $l(model.lastUpdatedAt) }}
           </div>
         </div>
-        <div
-          v-if="detailed && model.soldAt && model.soldAt.length"
-          class="col-xs-12"
-        >
-          <div class="metrics-label">
-            {{ $t('model.soldAt') }}:
-          </div>
-          <div class="metrics-value">
-            <ul class="list-unstyled">
-              <li
-                v-for="shop in model.soldAt"
-                :key="shop.slug"
-              >
-                <router-link
-                  :to="{
-                    name: 'shop',
-                    params: {
-                      station: shop.stationSlug,
-                      slug: shop.slug,
-                    },
-                  }"
-                >
-                  {{ shop.name }}
-                </router-link>
-              </li>
-            </ul>
+        <div class="col-xs-12">
+          <div class="row">
+            <div
+              v-if="detailed && model.soldAt && model.soldAt.length"
+              class="col-xs-12 col-md-6"
+            >
+              <div class="metrics-label">
+                {{ $t('model.soldAt') }}:
+              </div>
+              <div class="metrics-value">
+                <ul class="list-unstyled">
+                  <li
+                    v-for="shop in model.soldAt"
+                    :key="shop.slug"
+                  >
+                    <router-link
+                      :to="{
+                        name: 'shop',
+                        params: {
+                          station: shop.stationSlug,
+                          slug: shop.slug,
+                        },
+                      }"
+                    >
+                      {{ shop.name }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              v-if="detailed && model.rentalAt && model.rentalAt.length"
+              class="col-xs-12 col-md-6"
+            >
+              <div class="metrics-label">
+                {{ $t('model.rentalAt') }}:
+              </div>
+              <div class="metrics-value">
+                <ul class="list-unstyled">
+                  <li
+                    v-for="shop in model.rentalAt"
+                    :key="shop.slug"
+                  >
+                    <router-link
+                      :to="{
+                        name: 'shop',
+                        params: {
+                          station: shop.stationSlug,
+                          slug: shop.slug,
+                        },
+                      }"
+                    >
+                      {{ shop.name }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

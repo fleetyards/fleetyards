@@ -14,7 +14,13 @@ json.cache! ['v1', model] do
     json.array! model.hardpoints, partial: 'api/v1/models/hardpoint', as: :hardpoint
   end
   json.sold_at do
-    json.array! model.shop_commodities.uniq { |item| item.shop.slug }, partial: 'api/v1/models/shop', as: :shop_commodity
+    json.array! model.sold_at, partial: 'api/v1/models/shop', as: :shop_commodity
+  end
+  json.bought_at do
+    json.array! model.bought_at, partial: 'api/v1/models/shop', as: :shop_commodity
+  end
+  json.rental_at do
+    json.array! model.rental_at, partial: 'api/v1/models/shop', as: :shop_commodity
   end
   unless without_images?
     json.images do

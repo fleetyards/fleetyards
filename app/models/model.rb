@@ -135,6 +135,18 @@ class Model < ApplicationRecord
     includes(:docks).where.not(docks: { model_id: nil })
   end
 
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def rental_at
+    shop_commodities.where.not(rent_price: nil).uniq { |item| item.shop.slug }
+  end
+
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|

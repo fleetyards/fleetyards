@@ -82,6 +82,7 @@ export default {
     ordnance: 'Ordnance',
     modular: 'Modular',
     soldAt: 'Sold at?',
+    rentalAt: 'Rental at?',
     lastUpdatedAt: 'Last updated at?',
   },
   component: {
