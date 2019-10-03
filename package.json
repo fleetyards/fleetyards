@@ -118,6 +118,9 @@
     "webpack-dev-server": "3.8.1",
     "yorkie": "2.0.0"
   },
+  "resolutions": {
+    "handlebars": ">=4.3.0"
+  },
   "config": {
     "storybook": {
       "port": "-p 6006",
