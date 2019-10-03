@@ -12,7 +12,7 @@ set :conditionally_migrate, true
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
-set :bundler_version, '2.0.1'
+set :bundler_version, '2.0.2'
 
 set :initial_deploy, false
 

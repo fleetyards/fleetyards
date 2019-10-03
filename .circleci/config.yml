@@ -3,7 +3,7 @@ version: 2.0
 defaults: &defaults
   working_directory: ~/app
   docker:
-    - image: fleetyards/base:2.6.3
+    - image: fleetyards/base:2.6.4
       environment:
         RAILS_ENV: test
         DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
@@ -20,7 +20,7 @@ defaults: &defaults
 e2e: &e2e
   working_directory: ~/app
   docker:
-    - image: fleetyards/ci:2.6.3
+    - image: fleetyards/ci:2.6.4
       environment:
         DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
         TEST_SEEDS: 1
