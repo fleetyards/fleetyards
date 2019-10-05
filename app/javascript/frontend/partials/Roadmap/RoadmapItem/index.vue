@@ -31,7 +31,7 @@
             v-tooltip="$t('labels.roadmap.lastUpdate')"
             class="pull-right"
           >
-            {{ $l(item.lastVersionChangedAt) }}
+            {{ item.lastVersionChangedAtDisplay }}
             <i class="far fa-clock" />
           </small>
         </h3>
