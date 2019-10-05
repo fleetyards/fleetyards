@@ -48,4 +48,4 @@ json.has_videos model.videos.count.positive?
 json.has_modules model.modules.count.positive?
 json.has_upgrades model.upgrades.count.positive?
 json.last_updated_at model.last_updated_at&.utc&.iso8601
-json.last_updated_at_display I18n.l(model.last_updated_at.utc, format: :display) if model.last_updated_at.present?
+json.last_updated_at_display((I18n.l(model.last_updated_at.utc, format: :display) if model.last_updated_at.present?))

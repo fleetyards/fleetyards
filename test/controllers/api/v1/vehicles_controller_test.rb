@@ -129,6 +129,7 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :display) if data.vehicles.first.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
@@ -200,6 +201,7 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -210,8 +212,8 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.first.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
+            'modelModuleIds' => data.vehicles.last.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
             'createdAt' => data.vehicles.last.created_at.utc.iso8601,
             'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
           }]
@@ -284,6 +286,7 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -294,8 +297,8 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.first.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
+            'modelModuleIds' => data.vehicles.last.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
             'createdAt' => data.vehicles.last.created_at.utc.iso8601,
             'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
           }]
