@@ -112,6 +112,14 @@ rikerMemorial.docks.destroy_all
   end
 end
 
+vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: rikerMemorial)
+vantage_rentals.update!(
+  shop_type: :ships,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/vantage.png').open,
+  rental: true,
+  hidden: false
+)
+
 area04 = Station.find_or_initialize_by(name: 'Area 04')
 area04.update!(
   celestial_object: arccorp,

@@ -10,6 +10,7 @@ json.cache! ['v1', item] do
     end
   end
   json.last_version_changed_at item.last_version_changed_at.iso8601
+  json.last_version_changed_at_display I18n.l(item.last_version_changed_at.utc, format: :display)
   json.last_version do
     if item.versions.count.zero?
       json.null!

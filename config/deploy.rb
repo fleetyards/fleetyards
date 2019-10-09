@@ -57,7 +57,7 @@ namespace :ruby do
       info 'Update Rubygems'
       execute("#{rbenv_path}/shims/gem update --system")
       info 'Update/Install Bundler'
-      execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent")
+      execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent --force")
     end
   end
 end
