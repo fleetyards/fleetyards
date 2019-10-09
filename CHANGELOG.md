@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.27.0](https://github.com/fleetyards/app/compare/v3.26.0...v3.27.0) (2019-10-06)
+
+
+### Bug Fixes
+
+* **specs:** add new date fields ([4f58b28](https://github.com/fleetyards/app/commit/4f58b28))
+
+
+### Features
+
+* **rentals:** add rental information to ship detail page ([0e32a5b](https://github.com/fleetyards/app/commit/0e32a5b))
+* **shops:** add rental shops ([25cd1ac](https://github.com/fleetyards/app/commit/25cd1ac))
+
 ## [3.26.0](https://github.com/fleetyards/app/compare/v3.25.3...v3.26.0) (2019-09-15)
 
 

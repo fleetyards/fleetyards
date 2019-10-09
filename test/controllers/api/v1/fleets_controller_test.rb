@@ -293,6 +293,7 @@ module Api
             'hasModules' => false,
             'hasUpgrades' => false,
             'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :display) if data.vehicles.first.model.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
@@ -350,6 +351,7 @@ module Api
             'hasModules' => false,
             'hasUpgrades' => false,
             'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',

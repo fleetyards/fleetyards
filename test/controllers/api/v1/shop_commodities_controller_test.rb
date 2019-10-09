@@ -79,6 +79,7 @@ module Api
             'hasModules' => false,
             'hasUpgrades' => false,
             'lastUpdatedAt' => explorer.commodity_item.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(explorer.commodity_item.last_updated_at&.utc, format: :display) if explorer.commodity_item.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
@@ -153,6 +154,7 @@ module Api
             'hasModules' => false,
             'hasUpgrades' => false,
             'lastUpdatedAt' => andromeda.commodity_item.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(andromeda.commodity_item.last_updated_at&.utc, format: :display) if andromeda.commodity_item.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',

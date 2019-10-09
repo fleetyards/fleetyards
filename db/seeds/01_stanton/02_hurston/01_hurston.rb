@@ -32,6 +32,14 @@ new_deal.update!(
   hidden: false
 )
 
+vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: teasa_spaceport)
+vantage_rentals.update!(
+  shop_type: :ships,
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/vantage.png').open,
+  rental: true,
+  hidden: false
+)
+
 l19 = Station.find_or_initialize_by(name: 'L19 District', celestial_object: hurston, location: 'Lorville')
 l19.update!(
   station_type: :district,
