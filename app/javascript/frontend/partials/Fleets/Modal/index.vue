@@ -136,8 +136,16 @@ export default {
         this.callback()
         this.$refs.modal.close()
       } else {
+        let errors = ''
+        if (response.error.response && response.error.response.data
+          && response.error.response.data.errors) {
+          errors = response.error.response.data.errors.join(', ')
+        }
         this.$alert({
-          text: this.$t('messages.fleet.create.failure'),
+          text: [
+            this.$t('messages.fleet.create.failure'),
+            errors,
+          ],
         })
       }
     },
