@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.27.1](https://github.com/fleetyards/app/compare/v3.27.0...v3.27.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* **fleet:** update specs ([336d8c3](https://github.com/fleetyards/app/commit/336d8c3))
+* **fleets:** save and validate sid for upcase ([1aae94a](https://github.com/fleetyards/app/commit/1aae94a))
+
 ## [3.27.0](https://github.com/fleetyards/app/compare/v3.26.0...v3.27.0) (2019-10-06)
 
 
