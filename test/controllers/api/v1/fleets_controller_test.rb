@@ -21,7 +21,7 @@ module Api
 
           expected = [{
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -37,7 +37,7 @@ module Api
             'updatedAt' => Fleet.first.updated_at.utc.iso8601
           }, {
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -64,7 +64,7 @@ module Api
 
           expected = {
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -123,7 +123,7 @@ module Api
 
           expected = [{
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -150,7 +150,7 @@ module Api
 
           expected = [{
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -177,7 +177,7 @@ module Api
 
           expected = {
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,

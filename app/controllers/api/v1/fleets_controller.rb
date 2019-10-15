@@ -80,12 +80,12 @@ module Api
       private def fleet
         return unless current_user.rsi_verified?
 
-        @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:upcase)).find_by(sid: params[:sid])
+        @fleet = Fleet.where(sid: current_user.rsi_orgs.map(&:upcase)).find_by(sid: (params[:sid] || '').upcase)
       end
 
       private def fleet_vehicles
         @fleet_vehicles ||= begin
-          member_ids = User.where(rsi_verified: true).where('rsi_orgs like ?', "% #{fleet&.sid}\n%").map(&:id)
+          member_ids = User.where(rsi_verified: true).where('rsi_orgs ilike ?', "% #{fleet&.sid}\n%").map(&:id)
           Vehicle.where(user_id: member_ids)
         end
       end
