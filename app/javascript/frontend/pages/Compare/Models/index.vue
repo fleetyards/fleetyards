@@ -1,5 +1,11 @@
 <template>
-  <section class="container compare-models">
+  <section
+    :class="{
+      'scrolled-top': scrolledTop,
+      'scrolled-left': scrolledLeft,
+    }"
+    class="container compare-models"
+  >
     <div class="row">
       <div class="col-xs-12">
         <div class="row">
@@ -11,7 +17,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <div class="row compare-row">
+            <div class="row compare-row compare-row-headline">
               <div class="col-xs-12 compare-row-label">
                 <FilterGroup
                   v-model="newModel"
@@ -56,7 +62,12 @@
                     <i class="fal fa-times" />
                   </div>
                 </div>
-                <div class="text-center">
+                <div
+                  :style="{
+                    top: `${scrolledTopOffset - 81}px`,
+                  }"
+                  class="text-center compare-title"
+                >
                   <strong>{{ model.name }}</strong>
                 </div>
               </div>
@@ -76,16 +87,29 @@
                 </Box>
               </div>
             </div>
+            <div class="compare-wrapper">
+              <BaseRows
+                :models="sortedModels"
+                :scroll-left="scrolledLeftOffset"
+              />
 
-            <BaseRows :models="sortedModels" />
+              <CrewRows
+                :models="sortedModels"
+                :scroll-left="scrolledLeftOffset"
+              />
 
-            <CrewRows :models="sortedModels" />
+              <SpeedRows
+                :models="sortedModels"
+                :scroll-left="scrolledLeftOffset"
+              />
 
-            <SpeedRows :models="sortedModels" />
+              <CategoryRows
+                :models="sortedModels"
+                :scroll-left="scrolledLeftOffset"
+              />
 
-            <CategoryRows :models="sortedModels" />
-
-            <Legend :models="sortedModels" />
+              <Legend :models="sortedModels" />
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +148,10 @@ export default {
     const query = JSON.parse(JSON.stringify(this.$route.query || {}))
 
     return {
+      scrolledTop: false,
+      scrolledLeft: false,
+      scrolledTopOffset: 0,
+      scrolledLeftOffset: 0,
       newModel: null,
       form: {
         models: query.models || [],
@@ -175,6 +203,14 @@ export default {
     },
   },
 
+  created () {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+
   mounted() {
     this.form.models.forEach(async (slug) => {
       const model = await this.fetchModel(slug)
@@ -183,6 +219,13 @@ export default {
   },
 
   methods: {
+    handleScroll() {
+      this.scrolledTop = document.documentElement.scrollTop > 261
+      this.scrolledLeft = document.documentElement.scrollLeft > 0
+      this.scrolledTopOffset = document.documentElement.scrollTop
+      this.scrolledLeftOffset = document.documentElement.scrollLeft
+    },
+
     update() {
       this.$router.replace({
         name: this.$route.name,

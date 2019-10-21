@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div class="col-xs-12 compare-row-label">
+      <div
+        :style="{
+          left: `${scrollLeft}px`,
+        }"
+        class="col-xs-12 compare-row-label"
+      >
         <div
           :class="{
             active: visible
@@ -24,7 +29,12 @@
       :visible="visible"
     >
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.minCrew') }}
         </div>
         <div
@@ -38,7 +48,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.maxCrew') }}
         </div>
         <div
@@ -62,17 +77,25 @@ export default {
       type: Array,
       required: true,
     },
+
+    scrollLeft: {
+      type: Number,
+      required: true,
+    },
   },
+
   data() {
     return {
       visible: this.models.length > 0,
     }
   },
+
   watch: {
     models() {
       this.visible = this.models.length > 0
     },
   },
+
   methods: {
     toggle() {
       this.visible = !this.visible

@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div class="col-xs-12 compare-row-label">
+      <div
+        :style="{
+          left: `${scrollLeft}px`,
+        }"
+        class="col-xs-12 compare-row-label"
+      >
         <div
           :class="{
             active: visible
@@ -24,7 +29,12 @@
       :visible="visible"
     >
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.manufacturer') }}
         </div>
         <div
@@ -39,7 +49,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.productionStatus') }}
         </div>
         <div
@@ -53,7 +68,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.focus') }}
         </div>
         <div
@@ -67,7 +87,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.classification') }}
         </div>
         <div
@@ -81,7 +106,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.size') }}
         </div>
         <div
@@ -95,7 +125,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.length') }}
         </div>
         <div
@@ -109,7 +144,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.beam') }}
         </div>
         <div
@@ -123,7 +163,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.height') }}
         </div>
         <div
@@ -137,7 +182,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.mass') }}
         </div>
         <div
@@ -151,7 +201,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.cargo') }}
         </div>
         <div
@@ -165,7 +220,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.price') }}
         </div>
         <div
@@ -179,7 +239,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.pledgePrice') }}
         </div>
         <div
@@ -203,17 +268,25 @@ export default {
       type: Array,
       required: true,
     },
+
+    scrollLeft: {
+      type: Number,
+      required: true,
+    },
   },
+
   data() {
     return {
       visible: this.models.length > 0,
     }
   },
+
   watch: {
     models() {
       this.visible = this.models.length > 0
     },
   },
+
   methods: {
     toggle() {
       this.visible = !this.visible
