@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.28.0](https://github.com/fleetyards/app/compare/v3.27.1...v3.28.0) (2019-10-22)
+
+
+### Features
+
+* **compare:** update scrolling ([87ab830](https://github.com/fleetyards/app/commit/87ab830))
+* **compare:** update scrolling ([e232bcb](https://github.com/fleetyards/app/commit/e232bcb))
+
 ### [3.27.1](https://github.com/fleetyards/app/compare/v3.27.0...v3.27.1) (2019-10-15)
 
 
