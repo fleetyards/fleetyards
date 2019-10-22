@@ -221,9 +221,9 @@ export default {
   methods: {
     handleScroll() {
       this.scrolledTop = document.documentElement.scrollTop > 261
-      this.scrolledLeft = document.documentElement.scrollLeft > 0
+      this.scrolledLeft = document.documentElement.scrollLeft > 200
       this.scrolledTopOffset = document.documentElement.scrollTop
-      this.scrolledLeftOffset = document.documentElement.scrollLeft
+      this.scrolledLeftOffset = this.scrolledLeft ? document.documentElement.scrollLeft : 0
     },
 
     update() {

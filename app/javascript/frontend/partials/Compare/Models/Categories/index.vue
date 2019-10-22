@@ -33,7 +33,12 @@
         :visible="isVisible(category.toLowerCase())"
       >
         <div class="row compare-row">
-          <div class="col-xs-12 compare-row-label text-right metrics-label" />
+          <div
+            :style="{
+              left: `${scrollLeft}px`,
+            }"
+            class="col-xs-12 compare-row-label text-right metrics-label"
+          />
           <div
             v-for="model in models"
             :key="`${model.slug}-${category}`"
