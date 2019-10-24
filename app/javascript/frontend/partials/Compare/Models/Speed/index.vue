@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div class="col-xs-12 compare-row-label">
+      <div
+        :style="{
+          left: `${scrollLeft}px`,
+        }"
+        class="col-xs-12 compare-row-label"
+      >
         <div
           :class="{
             active: visible
@@ -24,7 +29,12 @@
       :visible="visible"
     >
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.scmSpeed') }}
         </div>
         <div
@@ -38,7 +48,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.afterburnerSpeed') }}
         </div>
         <div
@@ -52,7 +67,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.groundSpeed') }}
         </div>
         <div
@@ -66,7 +86,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.afterburnerGroundSpeed') }}
         </div>
         <div
@@ -80,7 +105,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.pitchMax') }}
         </div>
         <div
@@ -94,7 +124,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.yawMax') }}
         </div>
         <div
@@ -108,7 +143,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.rollMax') }}
         </div>
         <div
@@ -122,7 +162,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.xaxisAcceleration') }}
         </div>
         <div
@@ -136,7 +181,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.yaxisAcceleration') }}
         </div>
         <div
@@ -150,7 +200,12 @@
         </div>
       </div>
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label text-right metrics-label"
+        >
           {{ $t('model.zaxisAcceleration') }}
         </div>
         <div
@@ -174,17 +229,25 @@ export default {
       type: Array,
       required: true,
     },
+
+    scrollLeft: {
+      type: Number,
+      required: true,
+    },
   },
+
   data() {
     return {
       visible: this.models.length > 0,
     }
   },
+
   watch: {
     models() {
       this.visible = this.models.length > 0
     },
   },
+
   methods: {
     toggle() {
       this.visible = !this.visible

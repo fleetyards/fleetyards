@@ -2,8 +2,8 @@
 
 tmi:
   name: TMI
-  sid: tmi
+  sid: TMI
 
 rsi:
   name: RSI
-  sid: rsi
+  sid: RSI

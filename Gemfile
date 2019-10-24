@@ -82,8 +82,6 @@ gem 'mini_magick'
 gem 'nokogiri', '>= 1.7.1'
 gem 'typhoeus'
 
-gem 'web_translate_it'
-
 gem 'rack-cors', require: 'rack/cors'
 
 gem 'sentry-raven'

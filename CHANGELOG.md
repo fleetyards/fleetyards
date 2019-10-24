@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.29.0](https://github.com/fleetyards/app/compare/v3.28.0...v3.29.0) (2019-10-24)
+
+
+### Features
+
+* **roadmap:** update navigation ([553672e](https://github.com/fleetyards/app/commit/553672e))
+* **roadmap:** update navigation ([4615b2a](https://github.com/fleetyards/app/commit/4615b2a))
+
+## [3.28.0](https://github.com/fleetyards/app/compare/v3.27.1...v3.28.0) (2019-10-22)
+
+
+### Features
+
+* **compare:** update scrolling ([87ab830](https://github.com/fleetyards/app/commit/87ab830))
+* **compare:** update scrolling ([e232bcb](https://github.com/fleetyards/app/commit/e232bcb))
+
+### [3.27.1](https://github.com/fleetyards/app/compare/v3.27.0...v3.27.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* **fleet:** update specs ([336d8c3](https://github.com/fleetyards/app/commit/336d8c3))
+* **fleets:** save and validate sid for upcase ([1aae94a](https://github.com/fleetyards/app/commit/1aae94a))
+
 ## [3.27.0](https://github.com/fleetyards/app/compare/v3.26.0...v3.27.0) (2019-10-06)
 
 

@@ -7,8 +7,6 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resource :password, only: %i[edit update]
 
-  put '/locales/fetch' => 'locales#fetch', as: :update_locales
-
   resources :users, except: [:show]
   resources :vehicles, only: [:index]
 

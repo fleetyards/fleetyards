@@ -8,6 +8,11 @@ class Fleet < ApplicationRecord
   validates :sid, presence: true, uniqueness: true
 
   before_create :fetch_rsi_org
+  before_validation :transform_sid
+
+  def transform_sid
+    self.sid = sid.upcase
+  end
 
   def fetch_rsi_org
     success, org = RsiOrgsLoader.new.fetch(sid.downcase)

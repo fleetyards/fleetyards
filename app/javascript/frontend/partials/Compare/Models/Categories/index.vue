@@ -5,7 +5,12 @@
       :key="category"
     >
       <div class="row compare-row compare-section">
-        <div class="col-xs-12 compare-row-label">
+        <div
+          :style="{
+            left: `${scrollLeft}px`,
+          }"
+          class="col-xs-12 compare-row-label"
+        >
           <div
             :class="{
               active: isVisible(category.toLowerCase())
@@ -28,7 +33,12 @@
         :visible="isVisible(category.toLowerCase())"
       >
         <div class="row compare-row">
-          <div class="col-xs-12 compare-row-label text-right metrics-label" />
+          <div
+            :style="{
+              left: `${scrollLeft}px`,
+            }"
+            class="col-xs-12 compare-row-label text-right metrics-label"
+          />
           <div
             v-for="model in models"
             :key="`${model.slug}-${category}`"
@@ -56,12 +66,19 @@ export default {
   components: {
     HardpointCategory,
   },
+
   props: {
     models: {
       type: Array,
       required: true,
     },
+
+    scrollLeft: {
+      type: Number,
+      required: true,
+    },
   },
+
   data() {
     return {
       rsiavionicVisible: this.models.length > 0,
@@ -72,6 +89,7 @@ export default {
       categories: ['RSIAvionic', 'RSIModular', 'RSIPropulsion', 'RSIThruster', 'RSIWeapon'],
     }
   },
+
   watch: {
     models() {
       this.rsiavionicVisible = this.models.length > 0
@@ -81,22 +99,28 @@ export default {
       this.rsiweaponVisible = this.models.length > 0
     },
   },
+
   methods: {
     isVisible(category) {
       return this[`${category}Visible`]
     },
+
     toggle(category) {
       this[`${category}Visible`] = !this[`${category}Visible`]
     },
+
     modularHardpoints(model) {
       return model.hardpoints.filter((item) => item.categorySlug === 'modular')
     },
+
     ordnanceHardpoints(model) {
       return model.hardpoints.filter((item) => item.categorySlug === 'ordnance')
     },
+
     propulsionHardpoints(model) {
       return model.hardpoints.filter((item) => item.categorySlug === 'propulsion')
     },
+
     hardpointsForCategory(category, hardpoints) {
       return hardpoints.filter((hardpoint) => hardpoint.class === category)
     },

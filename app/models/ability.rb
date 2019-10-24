@@ -41,7 +41,7 @@ class Ability
     can :index, :api_hangar
     can %i[my create], :api_fleets
     can %i[models count], Fleet do |fleet|
-      user.rsi_orgs.map(&:downcase).include?(fleet.sid.downcase)
+      user.rsi_orgs.map(&:upcase).include?(fleet.sid.upcase)
     end
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id

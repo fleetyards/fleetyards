@@ -153,7 +153,7 @@ export const routes = [
     name: 'roadmap',
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap'),
     meta: {
-      title: 'roadmap.shipRoadmap',
+      title: 'roadmap.index',
     },
   }, {
     path: '/roadmap/changes/',
@@ -163,11 +163,11 @@ export const routes = [
       title: 'roadmap.changes',
     },
   }, {
-    path: '/roadmap/releases/',
-    name: 'roadmap-releases',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Releases'),
+    path: '/roadmap/ships/',
+    name: 'roadmap-ships',
+    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Ships'),
     meta: {
-      title: 'roadmap.releases',
+      title: 'roadmap.ships',
     },
   }, {
     path: '/settings/',
