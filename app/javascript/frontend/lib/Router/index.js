@@ -70,7 +70,7 @@ const router = new Router({
   routes: addTrailingSlashToAllRoutes(initialRoutes),
 })
 
-const validateAndResolveNewRoute = (to) => {
+const validateAndResolveNewRoute = (to, from) => {
   if (to.meta.needsAuthentication && !Store.getters['session/isAuthenticated']) {
     return {
       routeName: 'login',
@@ -83,9 +83,11 @@ const validateAndResolveNewRoute = (to) => {
 }
 
 router.beforeResolve((to, from, next) => {
-  const newRoute = validateAndResolveNewRoute(to)
+  const newRoute = validateAndResolveNewRoute(to, from)
   if (newRoute) {
-    router.push({ name: newRoute.routeName, params: newRoute.routeParams })
+    router.push({ name: newRoute.routeName, params: newRoute.routeParams }).catch(() => {
+      window.location.reload()
+    })
   } else {
     next()
   }

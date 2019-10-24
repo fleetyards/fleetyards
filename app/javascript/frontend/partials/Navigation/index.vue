@@ -206,12 +206,6 @@
             <a>{{ $t('nav.images') }}</a>
           </router-link>
           <router-link
-            :to="{ name: 'fleets' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.fleets') }}</a>
-          </router-link>
-          <router-link
             :to="{
               name: 'trade-routes',
               query: {
@@ -221,12 +215,6 @@
             tag="li"
           >
             <a>{{ $t('nav.tradeRoutes') }}</a>
-          </router-link>
-          <router-link
-            :to="{ name: 'stats' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.stats') }}</a>
           </router-link>
           <li
             :class="{
@@ -276,6 +264,18 @@
               </router-link>
             </b-collapse>
           </li>
+          <router-link
+            :to="{ name: 'fleets' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.fleets') }}</a>
+          </router-link>
+          <router-link
+            :to="{ name: 'stats' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.stats') }}</a>
+          </router-link>
         </ul>
       </div>
     </div>
