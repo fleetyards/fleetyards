@@ -74,7 +74,9 @@ module Api
           total: vehicles.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              count: models.select { |model| model.classification == classification }.count,
+              # rubocop:disable Performance/Count
+              count: models.select { |model| model.classification == classification }.size,
+              # rubocop:enable Performance/Count
               name: classification,
               label: classification.humanize
             )
