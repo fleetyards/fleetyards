@@ -3,11 +3,10 @@ export default {
     sid: 'Your Orgs Spectrum ID (SID) from robertsspaceindustries.com',
   },
   quicksearch: {
-    models: 'Gladius, Andromeda...',
-    model: 'Gladius, Andromeda...',
+    model: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',
   },
-  nav: {
+  home: {
     search: 'Search for Ships...',
   },
   filters: {

@@ -10,27 +10,9 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="page-actions">
-          <Btn :to="{ name: 'roadmap', exact: true }">
-            {{ $t('labels.roadmap.shipRoadmap') }}
-          </Btn>
-          <Btn :to="{ name: 'roadmap-changes' }">
-            {{ $t('labels.roadmap.changes') }}
-          </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="text-center">
-          <a
-            class="show-released"
-            @click="toggleReleased"
-          >
-            - {{ releasedToggleLabel }} -
-          </a>
         </div>
       </div>
     </div>
@@ -58,7 +40,7 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
+              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
               <i class="fa fa-chevron-right" />
             </h2>
 
@@ -66,24 +48,11 @@
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
             >
-              <b-progress :max="tasks(items)">
-                <div class="progress-label">
-                  {{ progressLabel(items) }} | {{ completedPercent(items) }} %
-                </div>
-                <b-progress-bar
-                  v-if="completed(items) !== 0"
-                  :value="completed(items)"
-                  :class="{
-                    completed: completed(items) === tasks(items)
-                  }"
-                />
-              </b-progress>
-
               <div class="flex-row">
                 <div
                   v-for="item in items"
                   :key="item.id"
-                  class="col-xs-12 col-xxlg-4 fade-list-item"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
                 >
                   <RoadmapItem
                     :item="item"
@@ -99,6 +68,37 @@
           :loading="loading"
           fixed
         />
+        <div class="row">
+          <div class="col-xs-12 fade-list-item release">
+            <h2
+              :class="{
+                open: visible.includes('unscheduled'),
+              }"
+              class="toggleable"
+              @click="toggle('unscheduled')"
+            >
+              <span class="title">
+                {{ $t('labels.roadmap.unscheduled') }}
+              </span>
+              <small>{{ $t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
+              <i class="fa fa-chevron-right" />
+            </h2>
+            <b-collapse
+              id="unscheduled-cards"
+              :visible="visible.includes('unscheduled')"
+            >
+              <div class="flex-row">
+                <div
+                  v-for="model in unscheduledModels"
+                  :key="model.slug"
+                  class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                >
+                  <RoadmapItem :item="model" />
+                </div>
+              </div>
+            </b-collapse>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -112,7 +112,7 @@ import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 
 export default {
-  name: 'RoadmapReleases',
+  name: 'Roadmap',
 
   components: {
     Loader,
@@ -131,6 +131,7 @@ export default {
       onlyReleased: true,
       roadmapItems: [],
       visible: [],
+      unscheduledModels: [],
       roadmapChannel: null,
     }
   },
@@ -140,7 +141,6 @@ export default {
       if (this.onlyReleased) {
         return this.$t('actions.showReleased')
       }
-
       return this.$t('actions.hideReleased')
     },
 
@@ -152,7 +152,6 @@ export default {
       if (this.onlyReleased) {
         return this.roadmapItems.filter((item) => !item.released)
       }
-
       return this.roadmapItems
     },
 
@@ -190,28 +189,6 @@ export default {
   },
 
   methods: {
-    tasks(items) {
-      return items.map((item) => Math.max(0, item.tasks))
-        .reduce((ac, count) => ac + count, 0)
-    },
-
-    completed(items) {
-      return items.map((item) => Math.max(0, item.completed))
-        .reduce((ac, count) => ac + count, 0)
-    },
-
-    progressLabel(items) {
-      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', { count: this.tasks(items) })}`
-    },
-
-    completedPercent(items) {
-      if (!this.tasks(items)) {
-        return '?'
-      }
-
-      return Math.round((100 * this.completed(items)) / this.tasks(items))
-    },
-
     setupUpdates() {
       if (this.roadmapChannel) {
         this.roadmapChannel.unsubscribe()
@@ -232,17 +209,14 @@ export default {
       if (this.visible.includes(release)) {
         const index = this.visible.indexOf(release)
         this.visible.splice(index, 1)
-
         return null
       }
-
       return this.visible.push(release)
     },
 
     openReleased() {
       Object.keys(this.groupedByRelease).forEach((release) => {
         const items = this.groupedByRelease[release]
-
         if (items.length && !items[0].released) {
           this.visible.push(release)
         }
@@ -251,18 +225,25 @@ export default {
 
     async fetch() {
       this.loading = true
-
       const response = await this.$api.get('roadmap', {
         q: {
+          rsiCategoryIdIn: [6],
           activeEq: true,
         },
       })
-
       this.loading = false
 
       if (!response.error) {
         this.roadmapItems = response.data
+        await this.fetchModels()
         this.openReleased()
+      }
+    },
+
+    async fetchModels() {
+      const response = await this.$api.get('models/unscheduled')
+      if (!response.error) {
+        this.unscheduledModels = response.data
       }
     },
   },

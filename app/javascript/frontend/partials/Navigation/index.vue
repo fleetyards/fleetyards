@@ -146,7 +146,7 @@
           </router-link>
           <li
             :class="{
-              active: stationRouteActive,
+              active: stationsRouteActive,
               open: stationMenuOpen,
             }"
             class="sub-menu"
@@ -228,12 +228,54 @@
           >
             <a>{{ $t('nav.stats') }}</a>
           </router-link>
-          <router-link
-            :to="{ name: 'roadmap' }"
-            tag="li"
+          <li
+            :class="{
+              active: roadmapsRouteActive,
+              open: roadmapMenuOpen,
+            }"
+            class="sub-menu"
           >
-            <a>{{ $t('nav.roadmap') }}</a>
-          </router-link>
+            <a @click="toggleRoadmapMenu">
+              {{ $t('nav.roadmap.index') }}
+              <i class="fa fa-chevron-right" />
+            </a>
+            <b-collapse
+              :id="`roadmap-sub-menu`"
+              :visible="roadmapMenuOpen"
+              tag="ul"
+            >
+              <router-link
+                :to="{ name: 'roadmap' }"
+                :class="{
+                  active: roadmapRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.overview') }}</a>
+              </router-link>
+              <router-link
+                :to="{ name: 'roadmap-changes' }"
+                :class="{
+                  active: roadmapChangesRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.changes') }}</a>
+              </router-link>
+              <router-link
+                :to="{ name: 'roadmap-ships' }"
+                :class="{
+                  active: roadmapShipsRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.ships') }}</a>
+              </router-link>
+            </b-collapse>
+          </li>
         </ul>
       </div>
     </div>
@@ -263,6 +305,11 @@ export default {
       userMenuOpen: false,
       stationMenuOpen: false,
       searchQuery: null,
+      roadmapMenuOpen: false,
+      roadmapsRouteActive: false,
+      roadmapRouteActive: false,
+      roadmapChangesRouteActive: false,
+      roadmapShipsRouteActive: false,
     }
   },
 
@@ -342,6 +389,10 @@ export default {
       this.stationMenuOpen = !this.stationMenuOpen
     },
 
+    toggleRoadmapMenu() {
+      this.roadmapMenuOpen = !this.roadmapMenuOpen
+    },
+
     toggle() {
       this.$store.commit('app/toggleNav')
     },
@@ -365,6 +416,8 @@ export default {
       this.stationMenuOpen = this.stationsRouteActive
       this.shopRouteActive = path.includes('shops')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
+      this.roadmapsRouteActive = path.includes('roadmap')
+      this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
     },
 
     async logout() {

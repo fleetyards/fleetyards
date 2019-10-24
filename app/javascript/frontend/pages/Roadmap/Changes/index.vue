@@ -9,21 +9,6 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="page-actions">
-          <Btn :to="{ name: 'roadmap', exact: true }">
-            {{ $t('labels.roadmap.shipRoadmap') }}
-          </Btn>
-          <Btn :to="{ name: 'roadmap-releases' }">
-            {{ $t('labels.roadmap.releases') }}
-          </Btn>
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t('labels.rsiRoadmap') }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -67,7 +52,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import { subDays, format } from 'date-fns'
@@ -78,7 +62,6 @@ export default {
   components: {
     Loader,
     EmptyBox,
-    Btn,
     RoadmapItem,
   },
 
