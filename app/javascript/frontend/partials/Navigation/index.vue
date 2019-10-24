@@ -102,7 +102,7 @@
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
-              :id="`user-sub-menu`"
+              id="user-sub-menu"
               :visible="userMenuOpen"
               tag="ul"
             >
@@ -156,7 +156,7 @@
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
-              :id="`stations-sub-menu`"
+              id="stations-sub-menu"
               :visible="stationMenuOpen"
               tag="ul"
             >
@@ -240,7 +240,7 @@
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
-              :id="`roadmap-sub-menu`"
+              id="roadmap-sub-menu"
               :visible="roadmapMenuOpen"
               tag="ul"
             >

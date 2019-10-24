@@ -3,7 +3,7 @@ export default {
     sid: 'Your Orgs Spectrum ID (SID) from robertsspaceindustries.com',
   },
   quicksearch: {
-    model: 'Avenger, Carrack, Cutlass...',
+    models: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',
   },
   home: {
