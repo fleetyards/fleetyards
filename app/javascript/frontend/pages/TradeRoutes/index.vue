@@ -6,9 +6,35 @@
       </div>
     </div>
     <FilteredList>
+      <template slot="actions">
+        <Toggle
+          size="small"
+          :active-left="sortByProfit"
+          :active-right="sortByPercent"
+          @toggle:left="sortBy('profit')"
+          @toggle:right="sortBy('percent')"
+        >
+          <i
+            slot="left"
+            v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
+            :class="{
+              'fa fa-dollar-sign': sortByProfit,
+              'far fa-dollar-sign': !sortByProfit,
+            }"
+          />
+          <i
+            slot="right"
+            v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
+            :class="{
+              'fa fa-percent': sortByPercent,
+              'far fa-percent': !sortByPercent,
+            }"
+          />
+        </Toggle>
+      </template>
       <Paginator
         v-if="tradeRoutes.length"
-        slot="pagination"
+        slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
         right
@@ -20,6 +46,10 @@
         tag="div"
         appear
       >
+        <QuickFilter
+          v-if="!mobile"
+          key="quickfilter"
+        />
         <div
           v-for="route in tradeRoutes"
           :key="`${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`"
@@ -92,27 +122,40 @@
         :loading="loading"
         fixed
       />
+      <Paginator
+        v-if="tradeRoutes.length"
+        slot="pagination-bottom"
+        :page="currentPage"
+        :total="totalPages"
+        right
+      />
     </FilteredList>
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
+import Toggle from 'frontend/components/Toggle'
 import Filters from 'frontend/mixins/Filters'
 import Panel from 'frontend/components/Panel'
 import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import FilterForm from 'frontend/partials/TradeRoutes/FilterForm'
+import QuickFilter from 'frontend/partials/TradeRoutes/QuickFilter'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   components: {
     FilteredList,
+    Toggle,
     Panel,
     Loader,
     EmptyBox,
     FilterForm,
+    QuickFilter,
   },
 
   mixins: [
@@ -126,10 +169,15 @@ export default {
       cargoShip: null,
       tradeRoutes: [],
       loading: true,
+      sort: 'profit',
     }
   },
 
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+
     title() {
       if (this.cargoShip) {
         return this.$t('headlines.tradeRoutes.withShip', {
@@ -148,21 +196,35 @@ export default {
       return !this.loading && !this.tradeRoutes.length && (this.isFilterSelected
         || this.$route.query.page)
     },
+
+    sortByPercent() {
+      return this.sort === 'percent'
+    },
+
+    sortByProfit() {
+      return this.sort === 'profit'
+    },
   },
 
   watch: {
     $route() {
-      this.fetchTradeRoutes()
+      this.fetch()
       this.fetchCargoShip()
     },
   },
 
   mounted() {
-    this.fetchTradeRoutes()
+    this.fetch()
     this.fetchCargoShip()
   },
 
   methods: {
+    sortBy(sort) {
+      this.sort = sort
+
+      this.fetch()
+    },
+
     profit(value) {
       if (this.cargoShip) {
         return this.$toUEC(value * (this.cargoShip.cargo * 100))
@@ -185,15 +247,16 @@ export default {
       if (!response.errors) {
         this.cargoShip = response.data
       }
-
-      this.setPages(response.meta)
     },
 
-    async fetchTradeRoutes() {
+    async fetch() {
       this.loading = true
 
       const response = await this.$api.get('trade-routes', {
-        q: this.$route.query.q,
+        q: {
+          ...this.$route.query.q,
+        },
+        sort: this.sort,
         page: this.$route.query.page,
       })
 
@@ -202,6 +265,8 @@ export default {
       if (!response.errors) {
         this.tradeRoutes = response.data
       }
+
+      this.setPages(response.meta)
     },
   },
 }

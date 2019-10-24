@@ -47,37 +47,45 @@ export default {
   components: {
     Panel,
   },
+
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
+
     wide: {
       type: Boolean,
       default: false,
     },
+
     title: {
       type: String,
       required: true,
     },
   },
+
   data() {
     return {
       isShow: this.visible,
       isOpen: this.visible,
     }
   },
+
   methods: {
     open() {
       this.isShow = true
+
       this.$nextTick(function onOpen() {
         this.isOpen = true
         this.$refs.modal.focus()
         this.$emit('open')
       })
     },
+
     close() {
       this.isOpen = false
+
       this.$nextTick(function onClose() {
         setTimeout(() => {
           this.isShow = false
@@ -90,5 +98,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

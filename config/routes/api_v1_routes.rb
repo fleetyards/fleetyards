@@ -67,6 +67,7 @@ v1_api_routes = lambda do
       put 'current' => 'users#update'
       patch 'current' => 'users#update'
       delete 'current' => 'users#destroy'
+      get ':username' => 'users#public'
       post 'check-email'
       post 'check-username'
       post 'start-rsi-verification'
@@ -92,7 +93,7 @@ v1_api_routes = lambda do
       get 'hangar-items' => 'vehicles#hangar_items'
       get :hangar
       get ':username' => 'vehicles#public', as: :public
-      get ':username/quick_stats' => 'vehicles#public_quick_stats', as: :public_quick_stats
+      get ':username/quick-stats' => 'vehicles#public_quick_stats', as: :public_quick_stats
       get ':username/fleetchart' => 'vehicles#public_fleetchart', as: :public_fleetchart
       get 'stats/models-by-size' => 'vehicles#models_by_size'
       get 'stats/models-by-production-status' => 'vehicles#models_by_production_status'

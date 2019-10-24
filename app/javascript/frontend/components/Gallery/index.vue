@@ -82,7 +82,7 @@ export default {
 
   computed: {
     galleryItems() {
-      return this.items.map(item => ({
+      return this.items.map((item) => ({
         src: item.url,
         w: item.width,
         h: item.height,

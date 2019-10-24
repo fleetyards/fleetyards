@@ -74,6 +74,7 @@
       fetch-path="models/with-docks"
       value-attr="slug"
       name="will-it-fit"
+      searchable
     />
 
     <div class="row">

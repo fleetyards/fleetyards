@@ -17,7 +17,7 @@
       mode="out-in"
       appear
     >
-      <Navigation ref="navigation" />
+      <Navigation />
     </transition>
     <div class="main-wrapper">
       <transition
@@ -25,10 +25,7 @@
         mode="out-in"
         appear
       >
-        <router-view
-          class="main"
-          @click.native="closeNavigation"
-        />
+        <router-view class="main" />
       </transition>
     </div>
     <BackToTop visible-offset="500" />
@@ -115,7 +112,6 @@ export default {
     window.addEventListener('online', this.online)
     window.addEventListener('offline', this.offline)
     window.addEventListener('resize', this.checkMobile)
-    window.addEventListener('resize', this.checkMobile)
   },
 
   beforeDestroy() {
@@ -125,14 +121,6 @@ export default {
   },
 
   methods: {
-    closeNavigation() {
-      this.$refs.navigation.close()
-    },
-
-    openNavigation() {
-      this.$refs.navigation.open()
-    },
-
     offline() {
       this.$store.commit('setOnlineStatus', false)
     },

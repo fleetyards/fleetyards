@@ -2,14 +2,50 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import qs from 'qs'
 import Store from 'frontend/lib/Store'
-import { routes } from 'frontend/routes'
+import { routes as initialRoutes } from 'frontend/routes'
 
 Vue.use(Router)
+
+const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) => {
+  if (['*', '/'].includes(route.path)) {
+    return [route]
+  }
+
+  const { pathToRegexpOptions = {} } = route
+
+  const path = route.path.replace(/\/$/, '')
+
+  const modifiedRoute = {
+    ...route,
+    pathToRegexpOptions: {
+      ...pathToRegexpOptions,
+      strict: true,
+    },
+    path: `${path}/`,
+  }
+
+  if (route.children && route.children.length > 0) {
+    modifiedRoute.children = addTrailingSlashToAllRoutes(route.children)
+  }
+
+  return [
+    modifiedRoute,
+    {
+      path,
+      redirect: (to) => ({
+        name: route.name,
+        params: to.params || null,
+        query: to.query || null,
+      }),
+    },
+  ]
+}))
 
 const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
+
   scrollBehavior: (to, _from, savedPosition) => new Promise((resolve) => {
     setTimeout(() => {
       if (to.hash) {
@@ -21,14 +57,17 @@ const router = new Router({
       }
     }, 600)
   }),
+
   parseQuery(query) {
     return qs.parse(query)
   },
+
   stringifyQuery(query) {
     const result = qs.stringify(query, { arrayFormat: 'brackets' })
     return result ? (`?${result}`) : ''
   },
-  routes,
+
+  routes: addTrailingSlashToAllRoutes(initialRoutes),
 })
 
 const validateAndResolveNewRoute = (to) => {
@@ -59,7 +98,9 @@ router.beforeEach((to, from, next) => {
   }
 
   // check if update is available
-  if (Store.getters['app/isUpdateAvailable']) {
+  if (Store.getters['app/isUpdateAvailable']
+    && Object.keys(to.query).length === 0 && to.query.constructor === Object
+    && Object.keys(to.params).length === 0 && to.params.constructor === Object) {
     window.location.href = to.path
     return
   }

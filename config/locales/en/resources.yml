@@ -10,7 +10,6 @@ en:
     model: Model
     models: Models
     user: User
-    trade_hub: Trade Hub
     commodity: Commodity
     station: Station
     shop: Shop

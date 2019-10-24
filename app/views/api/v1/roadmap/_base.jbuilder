@@ -14,5 +14,4 @@ json.store_image_medium item.store_image.medium.url
 json.store_image_small item.store_image.small.url
 json.released item.released
 json.tasks item.tasks
-json.inprogress item.inprogress
 json.completed item.completed

@@ -102,7 +102,7 @@ rikerMemorial.update!(
 )
 
 rikerMemorial.docks.destroy_all
-{ small: [1, 6, 10], medium: [2, 7, 9], large: [4, 5], capital: [3, 8] }.each do |ship_size, hangars|
+{ small: [1, 2, 3], medium: [4, 5, 6], large: [7, 8], capital: [9, 10, 11, 12] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     rikerMemorial.docks << Dock.new(
       name: ("%02d" % hangar),
@@ -111,6 +111,14 @@ rikerMemorial.docks.destroy_all
     )
   end
 end
+
+vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: rikerMemorial)
+vantage_rentals.update!(
+  shop_type: :ships,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/vantage.png').open,
+  rental: true,
+  hidden: false
+)
 
 area04 = Station.find_or_initialize_by(name: 'Area 04')
 area04.update!(

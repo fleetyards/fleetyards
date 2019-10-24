@@ -2,10 +2,7 @@
 
 .filter-list {
   margin-bottom: 15px;
-
-  .filter-list-search {
-    margin-bottom: 0;
-  }
+  position: relative;
 
   .filter-list-title,
   .filter-list-item {
@@ -15,6 +12,12 @@
       right: 15px;
       top: 13px;
     }
+  }
+
+  .filter-list-search {
+    border: 1px solid $input-border;
+    border-top: none;
+    border-bottom: none;
   }
 
   .filter-list-title {
@@ -56,9 +59,19 @@
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, .8);
+    background-color: rgba($gray-darker, .95);
     border-bottom-left-radius: $border-radius-base;
     border-bottom-right-radius: $border-radius-base;
+    border: 1px solid $input-border;
+    border-top: none;
+  }
+
+  .filter-list-items-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    right: 0;
+    box-shadow: 0 1px 3px rgba(black, .9);
   }
 
   .filter-list-item {

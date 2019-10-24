@@ -12,7 +12,7 @@ export default {
   app: 'FleetYards.net',
   meta: {
     description: 'FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.',
-    keywords: 'Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation',
+    keywords: 'Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation',
   },
   title: {
     ...title,
@@ -82,6 +82,8 @@ export default {
     ordnance: 'Ordnance',
     modular: 'Modular',
     soldAt: 'Sold at?',
+    rentalAt: 'Rental at?',
+    lastUpdatedAt: 'Last updated at?',
   },
   component: {
     manufacturer: 'Manufacturer',
@@ -130,7 +132,7 @@ export default {
     grade: 'Grade',
     type: 'Type',
     itemType: 'Item Type',
-    class: 'Item Class',
+    itemClass: 'Item Class',
     weaponClass: 'Weapon Class',
     size: 'Size',
     range: 'Range',
@@ -149,14 +151,16 @@ export default {
   },
   datetime: {
     formats: {
-      default: '%e %B %Y at %H:%M',
+      default: "d MMMM y 'at' HH:mm z",
+      iso: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
     },
   },
   number: {
     format: {
       precision: 2,
       strip_insignificant_zeros: true,
-      delimiter: '',
+      delimiter: '.',
+      separator: ',',
     },
     percent: '%{count} %',
     distance: '%{count} m',

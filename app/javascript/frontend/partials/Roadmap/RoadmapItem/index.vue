@@ -31,7 +31,7 @@
             v-tooltip="$t('labels.roadmap.lastUpdate')"
             class="pull-right"
           >
-            {{ $l(item.lastVersionChangedAt) }}
+            {{ item.lastVersionChangedAtDisplay }}
             <i class="far fa-clock" />
           </small>
         </h3>
@@ -46,15 +46,21 @@
                 release: update.new,
               }) }}
             </template>
+            <template v-else-if="update.key === 'released'">
+              {{ $t(`labels.roadmap.lastVersion.released`) }}
+            </template>
             <template v-else-if="update.key === 'tasks'">
               {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
             </template>
-            <template v-else-if="update.key === 'inprogress'">
-              {{ $t(`labels.roadmap.lastVersion.inprogress.${update.change}`, {
+            <template v-else-if="update.key === 'completed'">
+              {{ $t(`labels.roadmap.lastVersion.completed.${update.change}`, {
                 value: removeSign(update.count),
               }) }}
+            </template>
+            <template v-else-if="update.key === 'active'">
+              {{ $t(`labels.roadmap.lastVersion.active.${update.change}`) }}
             </template>
             <template v-else>
               {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
@@ -68,11 +74,6 @@
         <b-progress :max="item.tasks">
           <div class="progress-label">
             {{ progressLabel }} | {{ completedPercent }} %
-            <template v-if="showInprogress">
-              {{ $t('labels.roadmap.inprogress', {
-                count: inprogress,
-              }) }}
-            </template>
           </div>
           <b-progress-bar
             v-if="completed !== 0"
@@ -80,11 +81,6 @@
             :class="{
               completed: completed === item.tasks
             }"
-          />
-          <b-progress-bar
-            v-if="showInprogress"
-            :value="inprogress"
-            class="active"
           />
         </b-progress>
       </div>
@@ -118,6 +114,7 @@ export default {
       if (this.item.tasks) {
         return this.item.tasks
       }
+
       return '?'
     },
 
@@ -125,6 +122,7 @@ export default {
       if (this.item.completed) {
         return this.item.completed
       }
+
       return 0
     },
 
@@ -132,14 +130,8 @@ export default {
       if (!this.item.tasks) {
         return '?'
       }
-      return Math.round(100 * this.completed / this.item.tasks)
-    },
 
-    inprogress() {
-      if (this.item.inprogress) {
-        return Math.min(this.item.inprogress, this.item.tasks)
-      }
-      return 0
+      return Math.round((100 * this.completed) / this.item.tasks)
     },
 
     progressLabel() {
@@ -162,10 +154,6 @@ export default {
       return this.item.description
     },
 
-    showInprogress() {
-      return this.inprogress !== 0 && this.completed !== this.item.tasks
-    },
-
     recentlyUpdated() {
       return isBefore(new Date(), addHours(new Date(this.item.lastVersionChangedAt), 24))
     },
@@ -177,16 +165,21 @@ export default {
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'inprogress', 'released'].filter(key => lastVersion[key]).map((key) => {
-        const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
-        return {
-          key,
-          change: (count < 0) ? 'decreased' : 'increased',
-          old: lastVersion[key][0],
-          new: lastVersion[key][1],
-          count,
-        }
-      })
+      return ['tasks', 'completed', 'release', 'released', 'active'].filter((key) => lastVersion[key])
+        .map((key) => {
+          const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
+
+          return {
+            key,
+            change: (count < 0) ? 'decreased' : 'increased',
+            old: lastVersion[key][0],
+            new: lastVersion[key][1],
+            count,
+          }
+        })
+        .filter((update) => update.key !== 'released' || (update.key === 'released' && update.old))
+        .filter((update) => update.key !== 'tasks' || (update.key === 'tasks' && update.count !== 0))
+        .filter((update) => update.key !== 'completed' || (update.key === 'completed' && update.count !== 0))
     },
   },
 }

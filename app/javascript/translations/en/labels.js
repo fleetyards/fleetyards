@@ -2,6 +2,7 @@ export default {
   true: 'Yes',
   false: 'No',
   selected: 'Selected',
+  or: 'or',
   deselect: 'Click to deselect',
   shop: {
     rentPrice: 'rent / day',
@@ -28,16 +29,16 @@ export default {
     recentlyUpdated: 'Recently Updated',
     lastVersion: {
       completed: {
-        one: 'Completed %{count} Task',
-        other: 'Completed %{count} Tasks',
-      },
-      inprogress: {
-        decreased: 'Decreased Tasks in Progress by %{value}',
-        increased: 'Increased Tasks in Progress by %{value}',
+        decreased: 'Decreased Completed Tasks by %{value}',
+        increased: 'Increased Completed Tasks by %{value}',
       },
       tasks: {
         decreased: 'Decreased Tasks by %{value}',
         increased: 'Increased Tasks by %{value}',
+      },
+      active: {
+        decreased: 'Item was removed from the Roadmap',
+        increased: 'Item was readded to the Roadmap',
       },
       released: 'Item was released to PU',
       release: 'Item moved from release %{old} to %{new}',
@@ -50,10 +51,6 @@ export default {
     tasks: {
       one: 'of %{count} Task',
       other: 'of %{count} Tasks',
-    },
-    inprogress: {
-      one: '( %{count} Task in Progress )',
-      other: '( %{count} Tasks in Progress )',
     },
     ships: {
       one: '%{count} Ship',
@@ -254,6 +251,7 @@ export default {
   rememberMe: 'Remember me',
   emptyList: 'No %{name} present',
   all: 'All',
+  supportUs: 'Support FleetYards.net via',
   account: {
     destroyInfo: "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
   },
@@ -298,16 +296,16 @@ export default {
       purchased: 'Purchased',
       group: 'Group',
     },
-    cargoRoutes: {
+    tradeRoutes: {
       sortBy: 'Sort by',
       sortByValues: {
         percent: 'Max. Percent',
         profit: 'Max. Profit',
       },
-      cargoShip: 'Cargoship',
-      tradeHub: 'Trade Hub',
-      commodity: 'Commodity',
-      planet: 'Planet',
+      cargoShip: 'With Cargoship?',
+      origin: 'From?',
+      destination: 'To?',
+      excludeCommodityType: 'Exclude Commodity Type',
     },
     models: {
       shipRole: 'Ship Role',
@@ -344,6 +342,8 @@ export default {
     buy: 'Buy for: %{uec}',
     sell: 'Sell for: %{uec}',
     cargoShip: 'for %{cargo} SCU',
+    sortByPercent: 'Sort by Profit Percent',
+    sortByProfit: 'Sort by Profit Value',
   },
   erkul: {
     prefix: 'Tryout Loadouts with',

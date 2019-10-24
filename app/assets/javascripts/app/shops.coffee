@@ -6,7 +6,9 @@ window.App.Shops.prefill = ($element) ->
       setTimeout ->
         $('.add_fields').click()
         $row = $('.fields:last')
-        $row.find('select:first').val(item.gid.uri)
+        $select = $row.find('select:first').selectize()
+        selectize = $select[0].selectize
+        selectize.setValue(item.gid.uri)
       , 200
 
 window.App.Shops.loadData = (url, callback) ->

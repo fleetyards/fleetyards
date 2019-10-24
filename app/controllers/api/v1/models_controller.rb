@@ -4,7 +4,7 @@ module Api
   module V1
     class ModelsController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: []
-      after_action -> { pagination_header(:models) }, only: %i[index with_docks]
+      after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -97,11 +97,16 @@ module Api
       def cargo_options
         authorize! :index, :api_models
 
-        @models = Model.visible
-                       .active
-                       .where('cargo > 0')
-                       .order(name: :asc)
-                       .all
+        model_query_params['sorts'] = sort_by_name
+
+        @q = Model.visible
+                  .active
+                  .where('cargo > 0')
+                  .ransack(model_query_params)
+
+        @models = @q.result
+                    .page(params[:page])
+                    .per(per_page(Model))
       end
 
       def latest
@@ -339,7 +344,7 @@ module Api
           :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
           :pledge_price_lteq, :will_it_fit,
-          manufacturer_in: [], classification_in: [], focus_in: [],
+          name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
           id_not_in: []
         )

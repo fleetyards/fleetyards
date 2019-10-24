@@ -9,21 +9,6 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="page-actions">
-          <Btn :to="{ name: 'roadmap', exact: true }">
-            {{ $t('labels.roadmap.shipRoadmap') }}
-          </Btn>
-          <Btn :to="{ name: 'roadmap-releases' }">
-            {{ $t('labels.roadmap.releases') }}
-          </Btn>
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t('labels.rsiRoadmap') }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -31,11 +16,27 @@
           appear
         >
           <div
-            v-for="item in roadmapChanges"
-            :key="item.id"
-            class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+            v-for="(items, release) in groupedByRelease"
+            :key="`releases-${release}`"
+            class="col-xs-12 fade-list-item release"
           >
-            <RoadmapItem :item="item" />
+            <h2>
+              <span class="title">{{ release }}</span>
+              <span class="released-label">
+                ({{ items[0].releaseDescription }})
+              </span>
+              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
+            </h2>
+
+            <div class="flex-row">
+              <div
+                v-for="item in items"
+                :key="item.id"
+                class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+              >
+                <RoadmapItem :item="item" />
+              </div>
+            </div>
           </div>
         </transition-group>
         <EmptyBox v-if="emptyBoxVisible" />
@@ -51,7 +52,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import { subDays, format } from 'date-fns'
@@ -62,7 +62,6 @@ export default {
   components: {
     Loader,
     EmptyBox,
-    Btn,
     RoadmapItem,
   },
 
@@ -81,6 +80,17 @@ export default {
   computed: {
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
+    },
+
+    groupedByRelease() {
+      return this.roadmapChanges.reduce((rv, x) => {
+        const value = JSON.parse(JSON.stringify(rv))
+
+        value[x.release] = rv[x.release] || []
+        value[x.release].push(x)
+
+        return value
+      }, {})
     },
   },
 
@@ -112,14 +122,14 @@ export default {
       this.loading = true
       const response = await this.$api.get('roadmap', {
         q: {
-          lastUpdatedAtGteq: format(subDays(new Date(), 6), 'YYYY-MM-DD'),
+          lastUpdatedAtGteq: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
         },
       })
 
       this.loading = false
 
       if (!response.error) {
-        this.roadmapChanges = response.data.filter(item => item.lastVersion)
+        this.roadmapChanges = response.data.filter((item) => item.lastVersion)
       }
     },
   },

@@ -56,7 +56,7 @@ class RsiOrgsLoader < RsiBaseLoader
     orgs = []
     page.css('.orgs-content .org').each do |org_box|
       org_box.css('.info .entry .value').each_with_index do |value, index|
-        orgs << value.text.strip if index == 1
+        orgs << value.text.strip.upcase if index == 1
       end
     end
     orgs

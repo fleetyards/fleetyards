@@ -142,6 +142,9 @@
                   {{ $t('labels.model.brochure') }}
                   <i class="fal fa-download" />
                 </Btn>
+                <Btn :to="{ name: 'compare-models', query: { models: [model.slug] }}">
+                  {{ $t('actions.compare.models') }}
+                </Btn>
                 <Btn :href="model.storeUrl">
                   {{ $t('actions.model.store') }}
                 </Btn>
@@ -343,7 +346,7 @@ export default {
         return null
       }
 
-      return `https://www.erkul.games/calculator/fleetyardsnet/${this.$route.params.slug}`
+      return `https://www.erkul.games/calculator/fleetyardsnet/${this.model.erkulsSlug}`
     },
 
     metaTitle() {

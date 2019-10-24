@@ -142,6 +142,7 @@ en:
           special_railgun: Special - Railgun
           assault_rifle: Assault Rifle
           weapon_scope: Scope
+          utility: Utility
       shop:
         hidden: hidden?
         rental: Does offer Rentals?
@@ -161,6 +162,7 @@ en:
           salvage: Salvage Yard
           resources: Resources Broker
           rental: Rental
+          computer: Computer Store
       celestial_object:
         hidden: hidden?
       station:

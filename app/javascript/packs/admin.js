@@ -6,8 +6,8 @@ import Subscriptions from 'frontend/lib/Subscriptions'
 import VTooltip from 'v-tooltip'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
+import 'frontend/lib/Bootstrap'
 import router from 'admin/lib/Router'
-import BootstrapVue from 'bootstrap-vue'
 import Comlink from 'frontend/lib/Comlink'
 import I18n from 'frontend/lib/I18n'
 import Noty from 'frontend/lib/Noty'
@@ -31,17 +31,6 @@ Vue.filter('formatSize', (size) => {
   return `${size.toString()} B`
 })
 
-const originalVueComponent = Vue.component
-Vue.component = function bootstrapFix(name, definition) {
-  if (name === 'bFormCheckboxGroup' || name === 'bCheckboxGroup'
-      || name === 'bCheckGroup' || name === 'bFormRadioGroup') {
-    // eslint-disable-next-line no-param-reassign
-    definition.components = { bFormCheckbox: definition.components[0] }
-  }
-  originalVueComponent.apply(this, [name, definition])
-}
-Vue.use(BootstrapVue)
-
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true
 } else {
@@ -57,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach(registration => registration.unregister())
+      registrations.forEach((registration) => registration.unregister())
     })
   }
 
@@ -65,6 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
     router,
-    render: h => h(App),
+    render: (h) => h(App),
   })
 })

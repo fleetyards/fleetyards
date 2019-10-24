@@ -62,9 +62,9 @@ class RsiRoadmapLoader < RsiBaseLoader
       end
     end
 
-    # rubocop:disable Rails/SkipsModelValidations
-    RoadmapItem.where.not(id: roadmap_item_ids).update_all(active: false)
-    # rubocop:enable Rails/SkipsModelValidations
+    RoadmapItem.where.not(id: roadmap_item_ids).find_each do |roadmap_item|
+      roadmap_item.update(active: false)
+    end
   end
 
   private def strip_roadmap_name(name)

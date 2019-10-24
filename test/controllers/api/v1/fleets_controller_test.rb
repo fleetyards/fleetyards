@@ -21,7 +21,7 @@ module Api
 
           expected = [{
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -33,11 +33,11 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.first.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.first.updated_at.to_time.iso8601
+            'createdAt' => Fleet.first.created_at.utc.iso8601,
+            'updatedAt' => Fleet.first.updated_at.utc.iso8601
           }, {
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -49,8 +49,8 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.last.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.last.updated_at.to_time.iso8601
+            'createdAt' => Fleet.last.created_at.utc.iso8601,
+            'updatedAt' => Fleet.last.updated_at.utc.iso8601
           }]
 
           assert_equal expected, json
@@ -64,7 +64,7 @@ module Api
 
           expected = {
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -76,8 +76,8 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.last.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.last.updated_at.to_time.iso8601
+            'createdAt' => Fleet.last.created_at.utc.iso8601,
+            'updatedAt' => Fleet.last.updated_at.utc.iso8601
           }
 
           assert_equal expected, json
@@ -123,7 +123,7 @@ module Api
 
           expected = [{
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -135,8 +135,8 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.first.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.first.updated_at.to_time.iso8601
+            'createdAt' => Fleet.first.created_at.utc.iso8601,
+            'updatedAt' => Fleet.first.updated_at.utc.iso8601
           }]
 
           assert_equal expected, json
@@ -150,7 +150,7 @@ module Api
 
           expected = [{
             'name' => 'TMI',
-            'sid' => 'tmi',
+            'sid' => 'TMI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -162,8 +162,8 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.last.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.last.updated_at.to_time.iso8601
+            'createdAt' => Fleet.last.created_at.utc.iso8601,
+            'updatedAt' => Fleet.last.updated_at.utc.iso8601
           }]
 
           assert_equal expected, json
@@ -177,7 +177,7 @@ module Api
 
           expected = {
             'name' => 'RSI',
-            'sid' => 'rsi',
+            'sid' => 'RSI',
             'logo' => nil,
             'banner' => nil,
             'background' => nil,
@@ -189,8 +189,8 @@ module Api
             'rpg' => nil,
             'exclusive' => nil,
             'memberCount' => nil,
-            'createdAt' => Fleet.first.created_at.to_time.iso8601,
-            'updatedAt' => Fleet.first.updated_at.to_time.iso8601
+            'createdAt' => Fleet.first.created_at.utc.iso8601,
+            'updatedAt' => Fleet.first.updated_at.utc.iso8601
           }
 
           assert_equal expected, json
@@ -292,14 +292,16 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :display) if data.vehicles.first.model.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
               'code' => nil,
               'logo' => nil
             },
-            'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+            'createdAt' => data.vehicles.first.model.created_at.utc.iso8601,
+            'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
           }, {
             'id' => data.vehicles.last.model.id,
             'name' => 'Andromeda',
@@ -348,14 +350,16 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+            'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',
               'code' => nil,
               'logo' => nil
             },
-            'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
+            'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
+            'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
           }]
 
           assert_equal expected, json

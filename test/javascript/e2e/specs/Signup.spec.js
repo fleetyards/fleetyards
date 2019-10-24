@@ -6,6 +6,7 @@ describe('Signup', () => {
 
     cy.url().should('include', '/sign-up')
 
+    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.select('username').type(userData.new.username)
       cy.select('rsi-handle').type(userData.new.handle)
@@ -34,6 +35,11 @@ describe('Signup', () => {
 
       cy.select('username').should('have.value', userData.new.username)
       cy.select('email').should('have.value', userData.new.email)
+
+      cy.get('.tabs a').contains('RSI Account Verification').click()
+
+      cy.url().should('include', '/settings/verify')
+
       cy.select('rsi-handle').should('have.value', userData.new.handle)
 
       cy.get('.tabs a').contains('Account').click()
@@ -56,6 +62,7 @@ describe('Signup', () => {
   it('Validates all fields', () => {
     cy.visit('/sign-up')
 
+    // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.select('username').type(userData.test.username)
       cy.select('username').parent().should('have.class', 'has-error')

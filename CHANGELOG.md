@@ -2,6 +2,411 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.29.0](https://github.com/fleetyards/app/compare/v3.28.0...v3.29.0) (2019-10-24)
+
+
+### Features
+
+* **roadmap:** update navigation ([553672e](https://github.com/fleetyards/app/commit/553672e))
+* **roadmap:** update navigation ([4615b2a](https://github.com/fleetyards/app/commit/4615b2a))
+
+## [3.28.0](https://github.com/fleetyards/app/compare/v3.27.1...v3.28.0) (2019-10-22)
+
+
+### Features
+
+* **compare:** update scrolling ([87ab830](https://github.com/fleetyards/app/commit/87ab830))
+* **compare:** update scrolling ([e232bcb](https://github.com/fleetyards/app/commit/e232bcb))
+
+### [3.27.1](https://github.com/fleetyards/app/compare/v3.27.0...v3.27.1) (2019-10-15)
+
+
+### Bug Fixes
+
+* **fleet:** update specs ([336d8c3](https://github.com/fleetyards/app/commit/336d8c3))
+* **fleets:** save and validate sid for upcase ([1aae94a](https://github.com/fleetyards/app/commit/1aae94a))
+
+## [3.27.0](https://github.com/fleetyards/app/compare/v3.26.0...v3.27.0) (2019-10-06)
+
+
+### Bug Fixes
+
+* **specs:** add new date fields ([4f58b28](https://github.com/fleetyards/app/commit/4f58b28))
+
+
+### Features
+
+* **rentals:** add rental information to ship detail page ([0e32a5b](https://github.com/fleetyards/app/commit/0e32a5b))
+* **shops:** add rental shops ([25cd1ac](https://github.com/fleetyards/app/commit/25cd1ac))
+
+## [3.26.0](https://github.com/fleetyards/app/compare/v3.25.3...v3.26.0) (2019-09-15)
+
+
+### Features
+
+* **shop:** add quick filter for sub categories ([b36e576](https://github.com/fleetyards/app/commit/b36e576))
+
+### [3.25.3](https://github.com/fleetyards/app/compare/v3.25.2...v3.25.3) (2019-09-13)
+
+### [3.25.2](https://github.com/fleetyards/app/compare/v3.25.1...v3.25.2) (2019-09-13)
+
+
+### Bug Fixes
+
+* **roadmap:** update date format ([e308dc7](https://github.com/fleetyards/app/commit/e308dc7))
+
+### [3.25.1](https://github.com/fleetyards/app/compare/v3.25.0...v3.25.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* **roadmap:** use correct format for dates ([57de7c0](https://github.com/fleetyards/app/commit/57de7c0))
+
+## [3.25.0](https://github.com/fleetyards/app/compare/v3.24.1...v3.25.0) (2019-09-13)
+
+
+### Features
+
+* **hangar:** show addons on public hangar ([b92cc6e](https://github.com/fleetyards/app/commit/b92cc6e))
+
+### [3.24.1](https://github.com/fleetyards/app/compare/v3.24.0...v3.24.1) (2019-09-12)
+
+
+### Bug Fixes
+
+* **test:** update times ([c019b27](https://github.com/fleetyards/app/commit/c019b27))
+
+## [3.24.0](https://github.com/fleetyards/app/compare/v3.23.1...v3.24.0) (2019-09-11)
+
+
+### Bug Fixes
+
+* **dateFormat:** update key ([65dff18](https://github.com/fleetyards/app/commit/65dff18))
+
+
+### Features
+
+* **models:** add last updated at date and direct link to compare from detail ([aa20c7b](https://github.com/fleetyards/app/commit/aa20c7b))
+* **models:** add last updated at date and direct link to compare from detail ([1412029](https://github.com/fleetyards/app/commit/1412029))
+
+### [3.23.1](https://github.com/fleetyards/app/compare/v3.23.0...v3.23.1) (2019-09-01)
+
+
+### Bug Fixes
+
+* **roadmap:** use correct label for changes page ([fc2b2aa](https://github.com/fleetyards/app/commit/fc2b2aa))
+
+## [3.23.0](https://github.com/fleetyards/app/compare/v3.22.1...v3.23.0) (2019-08-31)
+
+
+### Features
+
+* **roadmap:** group changes by release ([4dde3d4](https://github.com/fleetyards/app/commit/4dde3d4))
+
+### [3.22.1](https://github.com/fleetyards/app/compare/v3.22.0...v3.22.1) (2019-08-31)
+
+
+### Bug Fixes
+
+* **models:** strip rsi name of whitespace ([b9f39b6](https://github.com/fleetyards/app/commit/b9f39b6))
+
+## [3.22.0](https://github.com/fleetyards/app/compare/v3.21.6...v3.22.0) (2019-08-31)
+
+
+### Features
+
+* **roadmap:** add removals and fix empty labels ([92048f0](https://github.com/fleetyards/app/commit/92048f0))
+
+### [3.21.6](https://github.com/fleetyards/app/compare/v3.21.5...v3.21.6) (2019-08-30)
+
+
+### Bug Fixes
+
+* **support:** update specs ([779e0e1](https://github.com/fleetyards/app/commit/779e0e1))
+
+### [3.21.5](https://github.com/fleetyards/app/compare/v3.21.4...v3.21.5) (2019-08-30)
+
+### [3.21.4](https://github.com/fleetyards/app/compare/v3.21.3...v3.21.4) (2019-08-25)
+
+
+### Bug Fixes
+
+* **store-image:** add background color ([95fede9](https://github.com/fleetyards/app/commit/95fede9))
+
+### [3.21.3](https://github.com/fleetyards/app/compare/v3.21.2...v3.21.3) (2019-08-25)
+
+
+### Bug Fixes
+
+* **admin:** update for latest carrierwave changes ([d858d9d](https://github.com/fleetyards/app/commit/d858d9d))
+
+### [3.21.2](https://github.com/fleetyards/app/compare/v3.21.1...v3.21.2) (2019-08-24)
+
+
+### Bug Fixes
+
+* **stations:** update dock sorting ([84ed699](https://github.com/fleetyards/app/commit/84ed699))
+
+### [3.21.1](https://github.com/fleetyards/app/compare/v3.21.0...v3.21.1) (2019-08-24)
+
+## [3.21.0](https://github.com/fleetyards/app/compare/v3.20.3...v3.21.0) (2019-08-23)
+
+
+### Features
+
+* **roadmap:** remove inprogress for now ([32eebbb](https://github.com/fleetyards/app/commit/32eebbb))
+
+### [3.20.3](https://github.com/fleetyards/app/compare/v3.20.2...v3.20.3) (2019-08-16)
+
+
+### Bug Fixes
+
+* **verification:** update e2e tests ([bb059e4](https://github.com/fleetyards/app/commit/bb059e4))
+
+### [3.20.2](https://github.com/fleetyards/app/compare/v3.20.1...v3.20.2) (2019-08-16)
+
+
+### Bug Fixes
+
+* **verification:** update process for rsi verification ([355bbc6](https://github.com/fleetyards/app/commit/355bbc6))
+* **verification:** update workflow ([fbf3eac](https://github.com/fleetyards/app/commit/fbf3eac))
+
+### [3.20.1](https://github.com/fleetyards/app/compare/v3.20.0...v3.20.1) (2019-08-15)
+
+
+### Bug Fixes
+
+* **modal:** update mobile styles ([ca2c529](https://github.com/fleetyards/app/commit/ca2c529))
+
+## [3.20.0](https://github.com/fleetyards/app/compare/v3.19.0...v3.20.0) (2019-08-15)
+
+
+### Features
+
+* **hangar:** fix stats loading ([2703e11](https://github.com/fleetyards/app/commit/2703e11))
+
+## [3.19.0](https://github.com/fleetyards/app/compare/v3.18.2...v3.19.0) (2019-08-15)
+
+
+### Bug Fixes
+
+* **router:** replace flat() with concat spread ([5218890](https://github.com/fleetyards/app/commit/5218890))
+* **routes:** for child routes ([383aabf](https://github.com/fleetyards/app/commit/383aabf))
+* **routes:** update settings child routes ([4d7c44e](https://github.com/fleetyards/app/commit/4d7c44e))
+
+
+### Features
+
+* **filter:** add searchable to will it fit ([98a3b87](https://github.com/fleetyards/app/commit/98a3b87))
+* **shops:** update labels ([e44a10b](https://github.com/fleetyards/app/commit/e44a10b))
+
+### [3.18.2](https://github.com/fleetyards/app/compare/v3.18.1...v3.18.2) (2019-08-14)
+
+
+### Bug Fixes
+
+* **admin:** prefill selectize inputs ([1fdbacc](https://github.com/fleetyards/app/commit/1fdbacc))
+
+### [3.18.1](https://github.com/fleetyards/app/compare/v3.18.0...v3.18.1) (2019-08-14)
+
+
+### Bug Fixes
+
+* **seeds:** update image paths ([64dbde6](https://github.com/fleetyards/app/commit/64dbde6))
+
+## [3.18.0](https://github.com/fleetyards/app/compare/v3.17.8...v3.18.0) (2019-08-13)
+
+
+### Features
+
+* **public-hangar:** add avatar and link to rsi profile ([#772](https://github.com/fleetyards/app/issues/772)) ([31aec7d](https://github.com/fleetyards/app/commit/31aec7d))
+
+### [3.17.8](https://github.com/fleetyards/app/compare/v3.17.7...v3.17.8) (2019-08-13)
+
+
+### Bug Fixes
+
+* **specs:** update footer specs ([64e1d55](https://github.com/fleetyards/app/commit/64e1d55))
+
+### [3.17.7](https://github.com/fleetyards/app/compare/v3.17.6...v3.17.7) (2019-08-12)
+
+
+### Bug Fixes
+
+* **filter-group:** linting ([80e5422](https://github.com/fleetyards/app/commit/80e5422))
+
+### [3.17.6](https://github.com/fleetyards/app/compare/v3.17.5...v3.17.6) (2019-08-12)
+
+
+### Bug Fixes
+
+* **filter-group:** update find missing ([6c8a288](https://github.com/fleetyards/app/commit/6c8a288))
+
+### [3.17.5](https://github.com/fleetyards/app/compare/v3.17.4...v3.17.5) (2019-08-12)
+
+
+### Bug Fixes
+
+* **modals:** update scrolling ([7e873e6](https://github.com/fleetyards/app/commit/7e873e6))
+
+### [3.17.4](https://github.com/fleetyards/app/compare/v3.17.3...v3.17.4) (2019-08-11)
+
+
+### Bug Fixes
+
+* **addons:** remove unused component ([2c8f5db](https://github.com/fleetyards/app/commit/2c8f5db))
+
+### [3.17.3](https://github.com/fleetyards/app/compare/v3.17.2...v3.17.3) (2019-08-11)
+
+
+### Bug Fixes
+
+* **filter-group:** update selection styles ([e168a6a](https://github.com/fleetyards/app/commit/e168a6a))
+
+### [3.17.2](https://github.com/fleetyards/app/compare/v3.17.1...v3.17.2) (2019-08-11)
+
+
+### Bug Fixes
+
+* **addons:** update modal and use filterGroup ([1729425](https://github.com/fleetyards/app/commit/1729425))
+
+### [3.17.1](https://github.com/fleetyards/app/compare/v3.17.0...v3.17.1) (2019-08-11)
+
+
+### Refactorings
+
+* **click-handler:** update global document click ([308b045](https://github.com/fleetyards/app/commit/308b045))
+
+## [3.17.0](https://github.com/fleetyards/app/compare/v3.16.2...v3.17.0) (2019-08-11)
+
+
+### Features
+
+* **trade-routes:** update filters ([7a2493a](https://github.com/fleetyards/app/commit/7a2493a))
+
+### [3.16.2](https://github.com/fleetyards/app/compare/v3.16.1...v3.16.2) (2019-08-11)
+
+
+### Bug Fixes
+
+* **trade-routes:** allow search of cargo ships ([43d8be9](https://github.com/fleetyards/app/commit/43d8be9))
+
+### [3.16.1](https://github.com/fleetyards/app/compare/v3.16.0...v3.16.1) (2019-08-11)
+
+
+### Bug Fixes
+
+* **trade-routes:** update pagination ([3bc8be2](https://github.com/fleetyards/app/commit/3bc8be2))
+
+## [3.16.0](https://github.com/fleetyards/app/compare/v3.15.6...v3.16.0) (2019-08-10)
+
+
+### Features
+
+* **trade-routes:** add filter for origin and destination ([8f0937b](https://github.com/fleetyards/app/commit/8f0937b))
+
+### [3.15.6](https://github.com/fleetyards/app/compare/v3.15.5...v3.15.6) (2019-08-10)
+
+
+### Bug Fixes
+
+* **toggle:** update mobile styles ([1ac198f](https://github.com/fleetyards/app/commit/1ac198f))
+
+### [3.15.5](https://github.com/fleetyards/app/compare/v3.15.4...v3.15.5) (2019-08-09)
+
+### [3.15.4](https://github.com/fleetyards/app/compare/v3.15.3...v3.15.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **model:** dont lazy load fleetchart images ([917eced](https://github.com/fleetyards/app/commit/917eced))
+
+### [3.15.3](https://github.com/fleetyards/app/compare/v3.15.2...v3.15.3) (2019-08-08)
+
+
+### Bug Fixes
+
+* **models:** update admin form ([87473c2](https://github.com/fleetyards/app/commit/87473c2))
+
+### [3.15.2](https://github.com/fleetyards/app/compare/v3.15.1...v3.15.2) (2019-08-08)
+
+
+### Refactorings
+
+* **toggle:** reuse structure from btn component ([6d4e8fd](https://github.com/fleetyards/app/commit/6d4e8fd))
+
+### [3.15.1](https://github.com/fleetyards/app/compare/v3.15.0...v3.15.1) (2019-08-08)
+
+
+### Bug Fixes
+
+* **fleets:** search for lowercase fleet sids ([e328df9](https://github.com/fleetyards/app/commit/e328df9))
+
+## [3.15.0](https://github.com/fleetyards/app/compare/v3.14.1...v3.15.0) (2019-08-08)
+
+
+### Features
+
+* **trade-routes:** paginate cargo ship filter ([712e9cd](https://github.com/fleetyards/app/commit/712e9cd))
+
+### [3.14.1](https://github.com/fleetyards/app/compare/v3.14.0...v3.14.1) (2019-08-08)
+
+
+### Bug Fixes
+
+* **trade-routes:** add missing labels ([3e52a7e](https://github.com/fleetyards/app/commit/3e52a7e))
+
+## [3.14.0](https://github.com/fleetyards/app/compare/v3.13.2...v3.14.0) (2019-08-07)
+
+
+### Features
+
+* **trade-routes:** add button for sorting ([9bbdb8c](https://github.com/fleetyards/app/commit/9bbdb8c))
+
+### [3.13.2](https://github.com/fleetyards/app/compare/v3.13.1...v3.13.2) (2019-08-07)
+
+
+### Bug Fixes
+
+* **trade-routes:** auto delete when shop commodity is deleted ([5d51a99](https://github.com/fleetyards/app/commit/5d51a99))
+
+### [3.13.1](https://github.com/fleetyards/app/compare/v3.13.0...v3.13.1) (2019-08-07)
+
+## [3.13.0](https://github.com/fleetyards/app/compare/v3.12.2...v3.13.0) (2019-08-07)
+
+
+### Features
+
+* **stations:** update docks ([2cf0525](https://github.com/fleetyards/app/commit/2cf0525))
+
+### [3.12.2](https://github.com/fleetyards/app/compare/v3.12.1...v3.12.2) (2019-08-07)
+
+
+### Bug Fixes
+
+* **trade-routes:** update worker ([fa028d1](https://github.com/fleetyards/app/commit/fa028d1))
+
+### [3.12.1](https://github.com/fleetyards/app/compare/v3.12.0...v3.12.1) (2019-08-07)
+
+## [3.12.0](https://github.com/fleetyards/app/compare/v3.11.0...v3.12.0) (2019-08-07)
+
+
+### Features
+
+* **components:** add item class to shop list ([4efccf3](https://github.com/fleetyards/app/commit/4efccf3))
+
+## [3.11.0](https://github.com/fleetyards/app/compare/v3.10.2...v3.11.0) (2019-08-07)
+
+
+### Bug Fixes
+
+* **pagination:** remove check for page where it didn't belong ([b82efbf](https://github.com/fleetyards/app/commit/b82efbf))
+
+
+### Features
+
+* **erkul:** add links to Erkuls DPS Calculator ([#745](https://github.com/fleetyards/app/issues/745)) ([6df6d09](https://github.com/fleetyards/app/commit/6df6d09))
+
 ### [3.10.2](https://github.com/fleetyards/app/compare/v3.10.1...v3.10.2) (2019-08-07)
 
 

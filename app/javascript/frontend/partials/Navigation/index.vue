@@ -1,5 +1,6 @@
 <template>
   <nav
+    ref="navigation"
     :class="{
       'visible': !navCollapsed,
     }"
@@ -20,10 +21,6 @@
       <span class="icon-bar top-bar" />
       <span class="icon-bar middle-bar" />
       <span class="icon-bar bottom-bar" />
-      <!-- <i
-        v-if="isUpdateAvailable && navCollapsed"
-        class="update-icon"
-      /> -->
     </button>
     <div
       v-if="nodeEnv"
@@ -105,7 +102,7 @@
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
-              :id="`user-sub-menu`"
+              id="user-sub-menu"
               :visible="userMenuOpen"
               tag="ul"
             >
@@ -133,21 +130,6 @@
             </b-collapse>
           </li>
         </ul>
-        <!-- <ul v-if="isUpdateAvailable">
-          <li
-            v-if="isAuthenticated"
-            class="divider"
-          />
-          <li>
-            <a
-              class="reload"
-              @click="reload"
-            >
-              {{ $t('nav.reload') }}
-            </a>
-          </li>
-          <li class="divider" />
-        </ul> -->
         <ul>
           <router-link
             :to="{ name: 'home' }"
@@ -164,7 +146,7 @@
           </router-link>
           <li
             :class="{
-              active: stationRouteActive,
+              active: stationsRouteActive,
               open: stationMenuOpen,
             }"
             class="sub-menu"
@@ -174,7 +156,7 @@
               <i class="fa fa-chevron-right" />
             </a>
             <b-collapse
-              :id="`stations-sub-menu`"
+              id="stations-sub-menu"
               :visible="stationMenuOpen"
               tag="ul"
             >
@@ -246,12 +228,54 @@
           >
             <a>{{ $t('nav.stats') }}</a>
           </router-link>
-          <router-link
-            :to="{ name: 'roadmap' }"
-            tag="li"
+          <li
+            :class="{
+              active: roadmapsRouteActive,
+              open: roadmapMenuOpen,
+            }"
+            class="sub-menu"
           >
-            <a>{{ $t('nav.roadmap') }}</a>
-          </router-link>
+            <a @click="toggleRoadmapMenu">
+              {{ $t('nav.roadmap.index') }}
+              <i class="fa fa-chevron-right" />
+            </a>
+            <b-collapse
+              id="roadmap-sub-menu"
+              :visible="roadmapMenuOpen"
+              tag="ul"
+            >
+              <router-link
+                :to="{ name: 'roadmap' }"
+                :class="{
+                  active: roadmapRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.overview') }}</a>
+              </router-link>
+              <router-link
+                :to="{ name: 'roadmap-changes' }"
+                :class="{
+                  active: roadmapChangesRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.changes') }}</a>
+              </router-link>
+              <router-link
+                :to="{ name: 'roadmap-ships' }"
+                :class="{
+                  active: roadmapShipsRouteActive,
+                }"
+                active-class="router-active"
+                tag="li"
+              >
+                <a>{{ $t('nav.roadmap.ships') }}</a>
+              </router-link>
+            </b-collapse>
+          </li>
         </ul>
       </div>
     </div>
@@ -264,9 +288,11 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Navigation',
+
   components: {
     QuickSearch,
   },
+
   data() {
     return {
       shipsRouteActive: false,
@@ -279,22 +305,31 @@ export default {
       userMenuOpen: false,
       stationMenuOpen: false,
       searchQuery: null,
+      roadmapMenuOpen: false,
+      roadmapsRouteActive: false,
+      roadmapRouteActive: false,
+      roadmapChangesRouteActive: false,
+      roadmapShipsRouteActive: false,
     }
   },
+
   computed: {
     ...mapGetters([
       'mobile',
     ]),
+
     ...mapGetters('app', [
       'navCollapsed',
       'isUpdateAvailable',
       'gitRevision',
     ]),
+
     ...mapGetters('session', [
       'currentUser',
       'citizen',
       'isAuthenticated',
     ]),
+
     environmentLabelClasses() {
       const cssClasses = ['pill']
       if (window.NODE_ENV === 'staging') {
@@ -304,6 +339,7 @@ export default {
       }
       return cssClasses
     },
+
     nodeEnv() {
       if (window.NODE_ENV === 'production') {
         return null
@@ -311,34 +347,64 @@ export default {
       return (window.NODE_ENV || '').toUpperCase()
     },
   },
+
   watch: {
     $route() {
       this.checkRoutes()
       this.close()
     },
   },
+
   mounted() {
     this.checkRoutes()
   },
-  beforeDestroy() {
-    this.$store.commit('app/closeNav')
+
+  created() {
+    document.addEventListener('click', this.documentClick)
   },
+
+  destroyed() {
+    document.removeEventListener('click', this.documentClick)
+  },
+
+  beforeDestroy() {
+    this.close()
+  },
+
   methods: {
+    documentClick(event) {
+      const element = this.$refs.navigation
+      const { target } = event
+
+      if (element !== target && !element.contains(target)) {
+        this.close()
+      }
+    },
+
     toggleUserMenu() {
       this.userMenuOpen = !this.userMenuOpen
     },
+
     toggleStationMenu() {
       this.stationMenuOpen = !this.stationMenuOpen
     },
+
+    toggleRoadmapMenu() {
+      this.roadmapMenuOpen = !this.roadmapMenuOpen
+    },
+
     toggle() {
       this.$store.commit('app/toggleNav')
     },
+
     open() {
       this.$store.commit('app/openNav')
     },
+
     close() {
       this.$store.commit('app/closeNav')
     },
+
     checkRoutes() {
       const { path } = this.$route
       this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components')
@@ -350,14 +416,21 @@ export default {
       this.stationMenuOpen = this.stationsRouteActive
       this.shopRouteActive = path.includes('shops')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
+      this.roadmapsRouteActive = path.includes('roadmap')
+      this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
+      this.roadmapMenuOpen = this.roadmapsRouteActive
     },
+
     async logout() {
       await this.$store.dispatch('session/logout')
     },
+
     reload() {
       this.close()
+
       window.location.reload(true)
     },
+
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
         this.$success({

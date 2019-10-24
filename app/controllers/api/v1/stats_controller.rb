@@ -22,7 +22,7 @@ module Api
         components_by_class = transform_for_pie_chart(
           Component.group(:component_class).count
               .map { |label, count| { (label.present? ? I18n.t("filter.component.class.items.#{label.downcase}") : I18n.t('labels.unknown')) => count } }
-              .reduce(:merge)
+              .reduce(:merge) || []
         )
 
         render json: components_by_class
@@ -35,7 +35,7 @@ module Api
           Model.visible.active
                .group(:size).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_size.to_json
@@ -48,7 +48,7 @@ module Api
           Model.visible.active
                .group(:production_status).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_production_status.to_json
@@ -60,7 +60,7 @@ module Api
         models_by_manufacturer = transform_for_pie_chart(
           Manufacturer.with_model
                       .map { |m| { m.name => m.models.count } }
-                      .reduce(:merge)
+                      .reduce(:merge) || []
         )
 
         render json: models_by_manufacturer.to_json
@@ -73,7 +73,7 @@ module Api
           Model.visible.active
                .group(:classification).count
                .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge)
+               .reduce(:merge) || []
         )
 
         render json: models_by_classification.to_json

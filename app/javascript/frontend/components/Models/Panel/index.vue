@@ -94,15 +94,15 @@
           v-tooltip="$t('labels.model.addons')"
           class="addons"
           :class="{
-            selected: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length)
+            selected: hasAddons,
           }"
           @click="onAddons(vehicle)"
         >
           <i
             class="fa-plus-octagon"
             :class="{
-              far: !(vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length),
-              fa: (vehicle.modelModuleIds.length || vehicle.modelUpgradeIds.length),
+              far: !this.hasAddons,
+              fa: this.hasAddons,
             }"
           />
         </div>
@@ -216,8 +216,13 @@ export default {
       return this.$t('labels.flagship')
     },
 
+    hasAddons() {
+      return this.vehicle
+        && (this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length)
+    },
+
     upgradable() {
-      return this.isMyShip && (this.model.hasModules || this.model.hasUpgrades)
+      return (this.isMyShip || this.hasAddons) && (this.model.hasModules || this.model.hasUpgrades)
     },
   },
 

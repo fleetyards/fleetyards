@@ -2,14 +2,14 @@
 
 production: &production
   models_worker_job:
-    cron: '*/10 * * * *' # Every 10 Minutes
+    cron: '*/15 * * * *' # Every 15 Minutes
     class: 'ModelsWorker'
+  roadmap_worker_job:
+    cron: '*/15 * * * *' # Every 15 Minutes
+    class: 'RoadmapWorker'
   trade_route_calculator_job:
     cron: '*/30 * * * *' # Every 30 Minutes
     class: 'TradeRoutesWorker'
-  roadmap_worker_job:
-    cron: '0 */1 * * *' # Every Hour
-    class: 'RoadmapWorker'
   citizen_worker_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'CitizenWorker'

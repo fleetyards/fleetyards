@@ -71,16 +71,30 @@
           {{ $t('nav.api') }}
         </a>
       </div>
+      <div class="app-footer-support">
+        {{ $t('labels.supportUs') }}
+        <a
+          href="https://paypal.me/pools/c/83jQLadz60"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-paypal" />
+          PayPal
+        </a>
+        {{ $t('labels.or') }}
+        <a
+          href="https://www.patreon.com/fleetyards"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-patreon" />
+          Patreon
+        </a>
+      </div>
       <div class="app-footer-item">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
-          <a
-            href="mailto:info@mortik.de"
-            target="_blank"
-            rel="noopener"
-          >
-            Marten Klitzke - mortik.
-          </a>
+          Torlek Maru
         </p>
         <p class="rsi-disclaimer">
           This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group
@@ -115,12 +129,14 @@ export default {
     ...mapGetters([
       'online',
     ]),
+
     ...mapGetters('app', [
       'version',
       'codename',
       'gitRevision',
     ]),
   },
+
   methods: {
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
@@ -138,5 +154,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

@@ -11,7 +11,12 @@
       }"
       class="panel"
     >
-      <div class="panel-inner">
+      <div
+        :class="{
+          'panel-inner-text': forText,
+        }"
+        class="panel-inner"
+      >
         <slot />
       </div>
     </div>
@@ -25,6 +30,12 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    forText: {
+      type: Boolean,
+      default: false,
+    },
+
     variant: {
       type: String,
       default: 'default',

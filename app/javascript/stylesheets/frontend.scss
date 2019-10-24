@@ -76,11 +76,6 @@ button {
   border: none;
 }
 
-.modal-body {
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     .main-wrapper {

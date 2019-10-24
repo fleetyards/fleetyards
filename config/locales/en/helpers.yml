@@ -7,10 +7,6 @@ en:
     placeholder:
       name: Name
       description: Description
-      trade_hub:
-        system: System
-        station_type: Type
-        planet: Planet
       trade_commodity:
         sell: Sale?
         buy: Buy?
@@ -48,8 +44,6 @@ en:
     prompt:
       video:
         video_type: Please select a Video Type
-      trade_hub:
-        station_type: Please select a Station Type
       trade_commodity:
         commodity: Commodity
       models:

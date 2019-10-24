@@ -30,13 +30,13 @@ module Api
           'storeImageSmall' => second_roadmap_item.store_image.small.url,
           'released' => false,
           'tasks' => 1,
-          'inprogress' => 1,
           'completed' => 1,
           'model' => nil,
-          'lastVersionChangedAt' => second_roadmap_item.last_version_changed_at.to_time.iso8601,
+          'lastVersionChangedAt' => second_roadmap_item.last_version_changed_at.iso8601,
+          'lastVersionChangedAtDisplay' => I18n.l(second_roadmap_item.last_version_changed_at.utc, format: :display),
           'lastVersion' => nil,
-          'createdAt' => second_roadmap_item.created_at.to_time.iso8601,
-          'updatedAt' => second_roadmap_item.updated_at.to_time.iso8601
+          'createdAt' => second_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => second_roadmap_item.updated_at.utc.iso8601
         }, {
           'id' => first_roadmap_item.id,
           'name' => 'MyString',
@@ -52,13 +52,13 @@ module Api
           'storeImageSmall' => first_roadmap_item.store_image.small.url,
           'released' => false,
           'tasks' => 1,
-          'inprogress' => 1,
           'completed' => 1,
           'model' => nil,
-          'lastVersionChangedAt' => first_roadmap_item.last_version_changed_at.to_time.iso8601,
+          'lastVersionChangedAt' => first_roadmap_item.last_version_changed_at.iso8601,
+          'lastVersionChangedAtDisplay' => I18n.l(first_roadmap_item.last_version_changed_at.utc, format: :display),
           'lastVersion' => nil,
-          'createdAt' => first_roadmap_item.created_at.to_time.iso8601,
-          'updatedAt' => first_roadmap_item.updated_at.to_time.iso8601
+          'createdAt' => first_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => first_roadmap_item.updated_at.utc.iso8601
         }]
       end
 

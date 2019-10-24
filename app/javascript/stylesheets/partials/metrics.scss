@@ -14,9 +14,18 @@
   margin-top: -6px;
 }
 
-.metrics-label {
+.metrics-label,
+.metrics-group-label {
   margin-top: 6px;
   color: darken($text-color, 20%);
+}
+
+.metrics-group-label {
+  border-bottom: 2px solid $gray-dark;
+  margin-top: 25px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  font-size: 110%;
 }
 
 .metrics-value {

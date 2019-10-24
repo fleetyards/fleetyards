@@ -179,7 +179,7 @@ export default {
 
   methods: {
     hardpointsForCategory(category) {
-      return this.hardpoints.filter(hardpoint => hardpoint.class === category)
+      return this.hardpoints.filter((hardpoint) => hardpoint.class === category)
     },
   },
 }

@@ -24,7 +24,7 @@ module Api
       end
 
       private def commodity_query_params
-        @commodity_query_params ||= query_params
+        @commodity_query_params ||= query_params(:name_cont, name_in: [])
       end
     end
   end

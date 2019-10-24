@@ -31,26 +31,22 @@ shubin_sal_5.update!(
 )
 
 shubin_sal_5.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     shubin_sal_5.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     shubin_sal_5.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -71,26 +67,22 @@ shubin_sal_2.update!(
 )
 
 shubin_sal_2.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     shubin_sal_2.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ small: 1, medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ small: [1],  medium: [2] }.each do |ship_size, pads|
+  pads.each do |pad|
     shubin_sal_2.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 

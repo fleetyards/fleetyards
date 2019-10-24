@@ -149,6 +149,11 @@ const displayConfirm = function displayConfirm(options) {
     ...options,
   }
 
+  let btnClass = ''
+  if (defaults.confirmBtnLayout !== 'default') {
+    btnClass = ` btn-${defaults.confirmBtnLayout}`
+  }
+
   const n = new Noty({
     text: defaults.text,
     layout: defaults.layout,
@@ -161,7 +166,7 @@ const displayConfirm = function displayConfirm(options) {
       close: 'noty_effects_close',
     },
     buttons: [
-      Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-inline btn-${defaults.confirmBtnLayout}`, () => {
+      Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-inline${btnClass}`, () => {
         n.close()
         defaults.onConfirm()
       }, { 'data-status': 'ok' }),

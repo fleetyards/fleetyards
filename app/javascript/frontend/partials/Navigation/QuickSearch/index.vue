@@ -19,7 +19,11 @@ export default {
   components: {
     FormInput,
   },
-  mixins: [Filters],
+
+  mixins: [
+    Filters,
+  ],
+
   data() {
     const query = this.queryParams()
 

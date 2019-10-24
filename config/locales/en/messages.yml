@@ -28,3 +28,6 @@ en:
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."
+    rsi_verification:
+      success: "Account successfully verified."
+      failure: "Account could not be verified."

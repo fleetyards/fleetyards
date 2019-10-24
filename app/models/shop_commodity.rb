@@ -34,7 +34,17 @@ class ShopCommodity < ApplicationRecord
              inverse_of: :shop_commodities,
              required: false
 
-  has_many :trade_routes, dependent: :destroy
+  has_many :trade_route_origins,
+           class_name: 'TradeRoute',
+           dependent: :destroy,
+           foreign_key: 'origin_id',
+           inverse_of: :origin
+
+  has_many :trade_route_destinations,
+           class_name: 'TradeRoute',
+           dependent: :destroy,
+           foreign_key: 'destination_id',
+           inverse_of: :destination
 
   belongs_to :shop
 
@@ -56,7 +66,7 @@ class ShopCommodity < ApplicationRecord
   end
 
   def self.visible
-    includes(:shop).where(shop: { hidden: false })
+    includes(:shop).where(shops: { hidden: false })
   end
 
   def set_commodity_item

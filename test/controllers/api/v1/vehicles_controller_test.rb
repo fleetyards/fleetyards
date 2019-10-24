@@ -128,20 +128,22 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :display) if data.vehicles.first.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.first.model.created_at.to_time.iso8601,
-              'updatedAt' => data.vehicles.first.model.updated_at.to_time.iso8601
+              'createdAt' => data.vehicles.first.model.created_at.utc.iso8601,
+              'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
             },
             'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
             'modelModuleIds' => data.vehicles.first.model_module_ids,
             'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
-            'createdAt' => data.vehicles.first.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.first.updated_at.to_time.iso8601
+            'createdAt' => data.vehicles.first.created_at.utc.iso8601,
+            'updatedAt' => data.vehicles.first.updated_at.utc.iso8601
           }, {
             'id' => data.vehicles.last.id,
             'name' => 'Enterprise',
@@ -198,20 +200,22 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
-              'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
+              'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
+              'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.first.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
-            'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
+            'modelModuleIds' => data.vehicles.last.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
+            'createdAt' => data.vehicles.last.created_at.utc.iso8601,
+            'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
           }]
           assert_equal expected, json
         end
@@ -281,20 +285,22 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtDisplay' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :display) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.last.model.created_at.to_time.iso8601,
-              'updatedAt' => data.vehicles.last.model.updated_at.to_time.iso8601
+              'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
+              'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.first.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
-            'createdAt' => data.vehicles.last.created_at.to_time.iso8601,
-            'updatedAt' => data.vehicles.last.updated_at.to_time.iso8601
+            'modelModuleIds' => data.vehicles.last.model_module_ids,
+            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
+            'createdAt' => data.vehicles.last.created_at.utc.iso8601,
+            'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
           }]
           assert_equal expected, json
         end

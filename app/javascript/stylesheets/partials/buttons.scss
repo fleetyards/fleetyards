@@ -159,6 +159,51 @@ $panel-content-border-radius: 6px;
   }
 }
 
+.panel-btn-toggle {
+  .panel-btn-inner {
+    display: inline-block;
+    box-sizing: border-box;
+    min-width: 32px;
+    width: 50%;
+
+    &:first-child {
+      margin-right: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child {
+      margin-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &.active-left {
+    .panel-btn-inner:first-child {
+      background-color: $panel-inner-border;
+      color: invert($text-color);
+    }
+
+    .panel-btn-inner:last-child {
+      background-color: transparent;
+      color: $text-color;
+    }
+  }
+
+  &.active-right {
+    .panel-btn-inner:first-child {
+      background-color: transparent;
+      color: $text-color;
+    }
+
+    .panel-btn-inner:last-child {
+      background-color: $panel-inner-border;
+      color: invert($text-color);
+    }
+  }
+}
+
 @keyframes flash {
   from,
   50%,

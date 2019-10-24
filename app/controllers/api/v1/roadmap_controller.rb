@@ -10,14 +10,16 @@ module Api
 
         roadmap_query_params['sorts'] = ['release asc', 'rsi_category_id asc', 'name asc']
 
-        @q = RoadmapItem.active.ransack(roadmap_query_params)
+        @q = RoadmapItem.ransack(roadmap_query_params)
 
         @roadmap_items = @q.result(distinct: true)
       end
 
       private def roadmap_query_params
         @roadmap_query_params ||= query_params(
-          :name_cont, :released_eq, :updated_at_gteq, :updated_at_lteq, :last_updated_at_lteq, :last_updated_at_gteq, rsi_category_id_in: [], sorts: []
+          :name_cont, :released_eq, :updated_at_gteq, :updated_at_lteq, :last_updated_at_lteq,
+          :last_updated_at_gteq, :active_eq,
+          rsi_category_id_in: [], sorts: []
         )
       end
     end

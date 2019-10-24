@@ -60,6 +60,19 @@
               class="far fa-filter"
             />
           </Btn>
+          <template v-if="!mobile">
+            <Btn
+              v-for="item in subCategories"
+              :key="item.value"
+              size="small"
+              :class="{
+                active: (subCategory || []).includes(item.value)
+              }"
+              @click.native="toggleSubcategory(item.value)"
+            >
+              {{ item.name }}
+            </Btn>
+          </template>
         </div>
       </div>
       <div class="col-xs-12 col-md-6">
@@ -194,6 +207,7 @@ export default {
       loading: false,
       shop: null,
       commodities: [],
+      subCategories: [],
       fullscreen: false,
     }
   },
@@ -222,6 +236,14 @@ export default {
       }
       return this.$t('title.shop', { shop: this.shop.name, station: this.shop.station.name })
     },
+
+    subCategory() {
+      if (!this.$route.query || !this.$route.query.q || !this.$route.query.q.subCategoryIn) {
+        return null
+      }
+
+      return this.$route.query.q.subCategoryIn
+    },
   },
 
   watch: {
@@ -234,12 +256,13 @@ export default {
     },
   },
 
-  created() {
-    this.fetch()
+  async mounted() {
     if (this.mobile) {
       this.$store.commit('shop/setFilterVisible', false)
     }
-    this.fetchCommodities()
+
+    await this.fetch()
+
     this.toggleFullscreen()
   },
 
@@ -272,17 +295,64 @@ export default {
       this.$store.dispatch('shop/toggleFilter')
     },
 
+    toggleSubcategory(value) {
+      if ((this.subCategory || []).includes(value)) {
+        const q = {
+          ...JSON.parse(JSON.stringify(this.$route.query.q)),
+        }
+
+        delete q.subCategoryIn
+
+        this.$router.replace({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            q: {
+              ...q,
+            },
+          },
+        }).catch((_err) => {})
+      } else {
+        this.$router.replace({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            q: {
+              ...this.$route.query.q,
+              subCategoryIn: [value],
+            },
+          },
+        }).catch((_err) => {})
+      }
+    },
+
+    async fetchSubCategories() {
+      const response = await this.$api.get('filters/shop-commodities/sub-categories', {
+        stationSlug: this.shop.station.slug,
+        shopSlug: this.shop.slug,
+      })
+
+      if (!response.error) {
+        this.subCategories = response.data
+        await this.fetchCommodities()
+      }
+    },
+
     async fetch() {
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)
       if (!response.error) {
         this.shop = response.data
+        await this.fetchSubCategories()
       }
     },
 
     async fetchCommodities() {
       this.loading = true
       const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`, {
-        q: this.$route.query.q,
+        q: {
+          ...this.$route.query.q,
+          subCategoryIn: this.subCategory,
+        },
         page: this.$route.query.page,
       })
       this.loading = false

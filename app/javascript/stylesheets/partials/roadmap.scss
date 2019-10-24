@@ -7,13 +7,20 @@
     margin-bottom: 30px;
   }
 
+  .release-progress {
+    margin-bottom: 20px !important;
+  }
+
   .release {
     margin-bottom: 30px;
     position: relative;
 
     h2 {
       margin-bottom: 20px;
-      cursor: pointer;
+
+      &.toggleable {
+        cursor: pointer;
+      }
 
       i {
         transition: all .5s ease;

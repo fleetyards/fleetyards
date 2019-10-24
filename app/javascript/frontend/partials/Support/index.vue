@@ -25,12 +25,23 @@
           </div>
         </div>
         <br>
+        <p>
+          {{ $t('labels.supportUs') }}
+        </p>
         <Btn
           href="https://paypal.me/pools/c/83jQLadz60"
           size="large"
         >
           <i class="fab fa-paypal" />
-          {{ $t('actions.supportUsPaypal') }}
+          PayPal
+        </Btn>
+        {{ $t('labels.or') }}&nbsp;&nbsp;
+        <Btn
+          href="https://www.patreon.com/fleetyards"
+          size="large"
+        >
+          <i class="fab fa-patreon" />
+          Patreon
         </Btn>
       </div>
     </modal>

@@ -24,7 +24,6 @@ class Ability
     can %i[index], :api_shop_commodities
     can %i[show index], :api_starsystems
     can %i[index], :api_images
-    can %i[index], :api_trade_hubs
     can %i[index], :api_commodities
     can %i[index], :api_components
     can %i[index], :api_equipment
@@ -35,12 +34,14 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_trade_routes
 
+    can %i[read_public], :user
+
     return if user.id.blank?
 
     can :index, :api_hangar
     can %i[my create], :api_fleets
     can %i[models count], Fleet do |fleet|
-      user.rsi_orgs.map(&:downcase).include?(fleet.sid)
+      user.rsi_orgs.map(&:upcase).include?(fleet.sid.upcase)
     end
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id

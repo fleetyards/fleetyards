@@ -13,26 +13,22 @@ area_061.update!(
 )
 
 area_061.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_061.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ medium: [1] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_061.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -60,26 +56,22 @@ admin_office_area_048.update!(
 )
 
 area_048.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_048.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ medium: [1] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_048.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -100,26 +92,22 @@ admin_office_area_045.update!(
 )
 
 area_045.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_045.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ medium: [1] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_045.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
 
@@ -140,25 +128,21 @@ admin_office_area_056.update!(
 )
 
 area_056.docks.destroy_all
-pad = 1
-{ small: 2 }.each do |ship_size, count|
-  count.times do
+{ small: [1, 2] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_056.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :vehiclepad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end
-pad = 1
-{ medium: 1 }.each do |ship_size, count|
-  count.times do |index|
+{ medium: [1] }.each do |ship_size, pads|
+  pads.each do |pad|
     area_056.docks << Dock.new(
       name: ("%02d" % pad),
       dock_type: :landingpad,
       ship_size: ship_size,
     )
-    pad += 1
   end
 end

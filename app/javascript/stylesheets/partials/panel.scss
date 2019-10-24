@@ -187,6 +187,10 @@ $contentBorderRadius: $panelContentBorderRadius;
 
   .panel-inner {
     border-radius: $contentBorderRadius;
+
+    &.panel-inner-text {
+      padding: 20px;
+    }
   }
 
   .list-group-item {

@@ -1,5 +1,8 @@
 <template>
-  <div class="filter-list">
+  <div
+    ref="filterGroup"
+    class="filter-list"
+  >
     <div
       :class="{
         active: visible,
@@ -39,49 +42,52 @@
         </span>
       </a>
     </b-collapse>
-    <FormInput
-      v-show="searchable && visible"
-      ref="searchInput"
-      v-model="search"
-      :placeholder="searchLabel || $t('actions.find')"
-      class="filter-list-search"
-      variant="clean"
-      @input="onSearch"
-    />
     <b-collapse
       :id="`${groupID}-${id}`"
       :visible="visible"
-      class="filter-list-items"
+      class="filter-list-items-wrapper"
     >
-      <a
-        v-for="(option, index) in filteredOptions"
-        :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
-        :class="{
-          active: selected(option[valueAttr]),
-        }"
-        class="filter-list-item fade-list-item"
-        @click="select(option[valueAttr])"
-      >
-        <span
-          v-if="option[iconAttr]"
-          class="filter-list-item-icon"
+      <FormInput
+        v-if="searchable"
+        ref="searchInput"
+        v-model="search"
+        :placeholder="searchLabel || $t('actions.find')"
+        class="filter-list-search"
+        variant="clean"
+        @input="onSearch"
+      />
+      <div class="filter-list-items">
+        <a
+          v-for="(option, index) in filteredOptions"
+          :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
+          :class="{
+            active: selected(option[valueAttr]),
+          }"
+          class="filter-list-item fade-list-item"
+          @click="select(returnObject ? option : option[valueAttr])"
         >
-          <img :src="option[iconAttr]">
-        </span>
-        <span v-html="option[labelAttr]" />
-        <span v-if="multiple">
-          <i class="fal fa-plus" />
-        </span>
-      </a>
-      <InfiniteLoading
-        v-if="shouldFetch && fetchedOptions.length && !search && paginated"
-        ref="infiniteLoading"
-        :distance="100"
-        @infinite="fetchMore"
-      >
-        <span slot="no-more" />
-        <span slot="spinner" />
-      </InfiniteLoading>
+          <span
+            v-if="option[iconAttr]"
+            class="filter-list-item-icon"
+          >
+            <img :src="option[iconAttr]">
+          </span>
+          <span v-html="option[labelAttr]" />
+          <span v-if="multiple">
+            <i class="fal fa-plus" />
+          </span>
+        </a>
+
+        <InfiniteLoading
+          v-if="shouldFetch && fetchedOptions.length && !search && paginated"
+          ref="infiniteLoading"
+          :distance="100"
+          @infinite="fetchMore"
+        >
+          <span slot="no-more" />
+          <span slot="spinner" />
+        </InfiniteLoading>
+      </div>
     </b-collapse>
   </div>
 </template>
@@ -152,6 +158,11 @@ export default {
       default: false,
     },
 
+    returnObject: {
+      type: Boolean,
+      default: false,
+    },
+
     paginated: {
       type: Boolean,
       default: false,
@@ -214,16 +225,17 @@ export default {
 
     selectedOptions() {
       if (this.multiple) {
-        return this.availableOptions.filter(item => this.value.includes(item[this.valueAttr]))
+        return this.availableOptions.filter((item) => this.value.includes(item[this.valueAttr]))
       }
-      const selectedOption = this.availableOptions.find(item => item[this.valueAttr] === this.value)
+      const selectedOption = this.availableOptions
+        .find((item) => item[this.valueAttr] === this.value)
       return selectedOption ? [selectedOption] : []
     },
 
     filteredOptions() {
       if (this.search) {
         return this.availableOptions.filter(
-          item => item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
+          (item) => item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
         )
       }
       return this.availableOptions
@@ -236,7 +248,24 @@ export default {
     }
   },
 
+  created() {
+    document.addEventListener('click', this.documentClick)
+  },
+
+  destroyed () {
+    document.removeEventListener('click', this.documentClick)
+  },
+
   methods: {
+    documentClick(event) {
+      const element = this.$refs.filterGroup
+      const { target } = event
+
+      if (element !== target && !element.contains(target)) {
+        this.visible = false
+      }
+    },
+
     onSearch: debounce(function debounced() {
       if (this.paginated && this.search) {
         this.page = 1
@@ -284,13 +313,14 @@ export default {
     },
 
     async fetchMissingOption() {
-      if ((this.multiple && this.selectedOptions.length === this.value.length)
+      if (!this.value || (this.multiple && this.selectedOptions.length === this.value.length)
         || (!this.multiple && this.selectedOptions[0] === this.value)) {
         return
       }
 
       this.loading = true
-      const response = await this.internalFetch({ page: this.page, missingValue: this.value })
+
+      const response = await this.internalFetch({ missingValue: this.value })
       this.loading = false
       if (!response.error) {
         this.addOptions(response.data)
@@ -327,7 +357,7 @@ export default {
     addOptions(newOptions) {
       newOptions.forEach((item) => {
         if (!this.availableOptions.find(
-          option => option[this.valueAttr] === item[this.valueAttr],
+          (option) => option[this.valueAttr] === item[this.valueAttr],
         )) {
           this.fetchedOptions.push(item)
         }
@@ -351,7 +381,7 @@ export default {
 
       if (this.selected(option)) {
         if (this.multiple) {
-          this.$emit('input', this.value.filter(item => item !== option))
+          this.$emit('input', this.value.filter((item) => item !== option))
         } else {
           this.$emit('input', null)
         }
@@ -367,7 +397,7 @@ export default {
     },
 
     unselect(option) {
-      this.$emit('input', this.value.filter(item => item !== option))
+      this.$emit('input', this.value.filter((item) => item !== option))
     },
 
     toggle() {

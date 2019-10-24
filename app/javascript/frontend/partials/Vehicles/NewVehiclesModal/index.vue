@@ -15,35 +15,34 @@
         class="row"
       >
         <div class="col-xs-8 col-sm-10">
-          <FilterGroup
-            v-model="item.modelId"
-            :label="$t('labels.selectModel')"
-            :name="`model`"
-            :search-label="$t('actions.findModel')"
-            :fetch="fetchModels"
-            value-attr="id"
-            paginated
-            searchable
+          <TeaserPanel
+            :item="item.model"
+            variant="text"
+            :with-description="false"
           />
         </div>
         <div class="col-xs-4 col-sm-2">
           <Btn
-            v-tooltip="$t('actions.delete')"
-            :aria-label="$t('actions.delete')"
-            :disabled="form.vehicles.length <= 1"
+            v-tooltip="$t('actions.remove')"
+            :aria-label="$t('actions.remove')"
             @click.native="removeItem(index)"
           >
             <i class="fa fa-trash" />
           </Btn>
         </div>
       </div>
-      <Btn
-        v-tooltip="$t('actions.addAnother')"
-        :aria-label="$t('actions.addAnother')"
-        @click.native="addItem"
-      >
-        <i class="fa fa-plus" />
-      </Btn>
+
+      <FilterGroup
+        :label="$t('labels.selectModel')"
+        name="model"
+        :search-label="$t('actions.findModel')"
+        fetch-path="models"
+        value-attr="id"
+        paginated
+        searchable
+        return-object
+        @input="add"
+      />
     </form>
     <template #footer>
       <div class="pull-right">
@@ -63,6 +62,7 @@
 <script>
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Modal from 'frontend/components/Modal'
+import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 
 export default {
@@ -70,46 +70,53 @@ export default {
     Modal,
     FilterGroup,
     Btn,
+    TeaserPanel,
   },
+
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
   },
+
   data() {
     return {
       submitting: false,
       form: {
-        vehicles: [{
-          modelId: null,
-        }],
+        vehicles: [],
       },
     }
   },
+
   methods: {
-    addItem() {
+    add(value) {
       this.form.vehicles.push({
-        modelId: null,
+        model: value,
       })
     },
+
     removeItem(index) {
       this.form.vehicles.splice(index, 1)
     },
+
     open() {
       this.form = {
-        vehicles: [{
-          modelId: null,
-        }],
+        vehicles: [],
       }
+
       this.$nextTick(() => {
         this.$refs.modal.open()
       })
     },
+
     async save() {
       this.submitting = true
       await this.form.vehicles.forEach(async (item) => {
-        const response = await this.$api.post('vehicles', item)
+        const response = await this.$api.post('vehicles', {
+          modelId: item.model.id,
+        })
+
         if (response.error) {
           console.error(response.error)
         }
@@ -117,19 +124,6 @@ export default {
       this.submitting = false
       this.$refs.modal.close()
       this.$comlink.$emit('vehiclesAdded')
-    },
-    fetchModels({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameCont = missingValue
-      } else if (page) {
-        query.page = page
-      }
-      return this.$api.get('models', query)
     },
   },
 }

@@ -23,6 +23,7 @@
                           v-model="searchQuery"
                           :aria-label="$t('labels.searchInput')"
                           data-test="home-search"
+                          :placeholder="$t('placeholders.home.search')"
                           size="large"
                           autofocus
                         />

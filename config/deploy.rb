@@ -12,7 +12,7 @@ set :conditionally_migrate, true
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
-set :bundler_version, '2.0.1'
+set :bundler_version, '2.0.2'
 
 set :initial_deploy, false
 
@@ -57,7 +57,7 @@ namespace :ruby do
       info 'Update Rubygems'
       execute("#{rbenv_path}/shims/gem update --system")
       info 'Update/Install Bundler'
-      execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent")
+      execute("#{rbenv_path}/shims/gem install bundler -v #{fetch(:bundler_version)} --conservative --silent --force")
     end
   end
 end

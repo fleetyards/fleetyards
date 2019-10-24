@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '2.6.3'
+ruby '2.6.5'
 
 gem 'rails', '5.2.3'
 
@@ -81,8 +81,6 @@ gem 'mini_magick'
 
 gem 'nokogiri', '>= 1.7.1'
 gem 'typhoeus'
-
-gem 'web_translate_it'
 
 gem 'rack-cors', require: 'rack/cors'
 

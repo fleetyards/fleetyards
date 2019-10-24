@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
-hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston.png').open, hidden: false)
+hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston-a.jpg').open, hidden: false)
 
 teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
 teasa_spaceport.update!(
@@ -12,7 +12,7 @@ teasa_spaceport.update!(
   hidden: false
 )
 teasa_spaceport.docks.destroy_all
-{ capital: [1], medium: [2, 3, 7], small: [6, 8, 9], large: [4, 5] }.each do |ship_size, hangars|
+{ capital: [1, 10, 11], medium: [2, 3, 7], small: [6, 8, 9], large: [4, 5] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     teasa_spaceport.docks << Dock.new(
       name: ("%02d" % hangar),
@@ -23,21 +23,6 @@ teasa_spaceport.docks.destroy_all
 end
 
 teasa_spaceport.habitations.destroy_all
-%w[1 2 3 4 5 6].each do |level|
-  [['C', 6], ['B', 4]].each do |prefix|
-    pad = 1
-    { small_apartment: prefix[1] }.each do |apartment_size, count|
-      count.times do
-        teasa_spaceport.habitations << Habitation.new(
-          name: "Level #{"%02d" % level} Apartment #{prefix[0]}#{"%02d" % pad}",
-          habitation_name: 'L19 Habitations',
-          habitation_type: apartment_size
-        )
-        pad += 1
-      end
-    end
-  end
-end
 
 new_deal = Shop.find_or_initialize_by(name: 'New Deal', station: teasa_spaceport)
 new_deal.update!(
@@ -47,12 +32,37 @@ new_deal.update!(
   hidden: false
 )
 
+vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: teasa_spaceport)
+vantage_rentals.update!(
+  shop_type: :ships,
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/vantage.png').open,
+  rental: true,
+  hidden: false
+)
+
 l19 = Station.find_or_initialize_by(name: 'L19 District', celestial_object: hurston, location: 'Lorville')
 l19.update!(
   station_type: :district,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/l19.jpg').open,
   hidden: false
 )
+
+l19.habitations.destroy_all
+%w[1 2 3 4 5 6].each do |level|
+  [['C', 6], ['B', 4]].each do |prefix|
+    pad = 1
+    { small_apartment: prefix[1] }.each do |apartment_size, count|
+      count.times do
+        l19.habitations << Habitation.new(
+          name: "Level #{"%02d" % level} Apartment #{prefix[0]}#{"%02d" % pad}",
+          habitation_name: 'L19 Habitations',
+          habitation_type: apartment_size
+        )
+        pad += 1
+      end
+    end
+  end
+end
 
 admin = Shop.find_or_initialize_by(name: 'Admin Office', station: l19)
 admin.update!(

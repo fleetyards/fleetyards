@@ -214,9 +214,7 @@
                   <strong>E-Mail:</strong>
                 </dt>
                 <dd>
-                  <a href="mailto:info@fleetyards.net">
-                    info@fleetyards.net
-                  </a>
+                  info ( at ) fleetyards.net
                 </dd>
               </dl>
             </address>

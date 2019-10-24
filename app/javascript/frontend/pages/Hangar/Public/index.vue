@@ -7,7 +7,35 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <h1>{{ $t('headlines.hangar.public', { user: usernamePlural }) }}</h1>
+            <h1>
+              <div class="avatar">
+                <img
+                  v-if="citizen && citizen.avatar"
+                  :src="citizen.avatar"
+                  alt="avatar"
+                  width="36"
+                  height="36"
+                >
+                <div
+                  v-else
+                  class="no-avatar"
+                >
+                  <i class="fa fa-user" />
+                </div>
+              </div>
+              <template v-if="user && user.rsiHandle">
+                <a
+                  :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
+                </a>
+              </template>
+              <template v-else>
+                {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
+              </template>
+            </h1>
           </div>
         </div>
         <div class="row">
@@ -103,7 +131,7 @@
             <ModelPanel
               :model="vehicle.model"
               :vehicle="vehicle"
-              :is-my-ship="isMyShip"
+              :on-addons="showAddonsModal"
             />
           </div>
         </transition-group>
@@ -122,6 +150,8 @@
         />
       </div>
     </div>
+
+    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -136,12 +166,14 @@ import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
+import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 
 export default {
   name: 'PublicHangar',
 
   components: {
     Btn,
+    AddonsModal,
     Loader,
     DownloadScreenshotBtn,
     ModelPanel,
@@ -159,6 +191,8 @@ export default {
     return {
       loading: false,
       vehicles: [],
+      user: null,
+      citizen: null,
       fleetchartVehicles: [],
       vehiclesCount: null,
     }
@@ -182,23 +216,15 @@ export default {
       return this.$route.params.user
     },
 
-    isMyShip() {
-      if (!this.currentUser) {
-        return false
-      }
-
-      return (this.username || '').toLowerCase() === this.currentUser.username.toLowerCase()
-    },
-
     usernamePlural() {
-      if (this.user.endsWith('s') || this.user.endsWith('x') || this.user.endsWith('z')) {
-        return this.user
+      if (this.userTitle.endsWith('s') || this.userTitle.endsWith('x') || this.userTitle.endsWith('z')) {
+        return this.userTitle
       }
 
-      return `${this.user}'s`
+      return `${this.userTitle}'s`
     },
 
-    user() {
+    userTitle() {
       return this.username[0].toUpperCase() + this.username.slice(1)
     },
   },
@@ -222,6 +248,10 @@ export default {
   },
 
   methods: {
+    showAddonsModal(vehicle) {
+      this.$refs.addonsModal.open(vehicle)
+    },
+
     updateScale(value) {
       this.$store.commit('hangar/setPublicFleetchartScale', value)
     },
@@ -231,31 +261,53 @@ export default {
     },
 
     fetch() {
-      if (this.publicFleetchartVisible) {
-        this.fetchFleetchart()
-      } else {
-        this.fetchVehicles()
+      this.fetchUser()
+      this.fetchFleetchart()
+      this.fetchVehicles()
+      this.fetchCount()
+    },
+
+    async fetchUser() {
+      const response = await this.$api.get(`users/${this.username}`)
+
+      if (!response.error) {
+        this.user = response.data
+
+        this.fetchCitizen()
+      }
+    },
+
+    async fetchCitizen() {
+      if (!this.user.rsiHandle) {
+        return
+      }
+
+      const response = await this.$api.get(`rsi/citizens/${this.user.rsiHandle}`)
+
+      if (!response.error) {
+        this.citizen = response.data
       }
     },
 
     async fetchVehicles() {
       this.loading = true
 
-      this.fetchCount()
-
       const response = await this.$api.get(`vehicles/${this.username}`, {
         page: this.$route.query.page,
       })
+
       this.loading = false
 
       if (!response.error) {
         this.vehicles = response.data
       }
+
       this.setPages(response.meta)
     },
 
     async fetchCount() {
       const response = await this.$api.get(`vehicles/${this.username}/quick-stats`)
+
       if (!response.error) {
         this.vehiclesCount = response.data
       }
@@ -263,8 +315,11 @@ export default {
 
     async fetchFleetchart() {
       this.loading = true
+
       const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
+
       this.loading = false
+
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
