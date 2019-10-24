@@ -29,7 +29,9 @@ module Api
           'pricePerUnit' => false,
           'sellPrice' => nil,
           'buyPrice' => nil,
-          'rentPrice' => nil,
+          'rentPrice1Day' => nil,
+          'rentPrice7Days' => nil,
+          'rentPrice30Days' => nil,
           'item' => {
             'id' => explorer.commodity_item.id,
             'name' => '600i',
@@ -104,7 +106,9 @@ module Api
           'pricePerUnit' => false,
           'sellPrice' => nil,
           'buyPrice' => nil,
-          'rentPrice' => nil,
+          'rentPrice1Day' => nil,
+          'rentPrice7Days' => nil,
+          'rentPrice30Days' => nil,
           'item' => {
             'id' => andromeda.commodity_item.id,
             'name' => 'Andromeda',
