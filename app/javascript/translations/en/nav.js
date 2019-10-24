@@ -16,7 +16,12 @@ export default {
   tradeRoutes: 'Trade Routes',
   api: 'API Docs',
   stats: 'Stats',
-  roadmap: 'Ship-Roadmap',
+  roadmap: {
+    index: 'Roadmap',
+    overview: 'Overview',
+    changes: 'Changes',
+    ships: 'Ship-Roadmap',
+  },
   rsiVerification: 'RSI Verification',
   settings: {
     index: 'Settings',

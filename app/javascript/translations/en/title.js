@@ -27,9 +27,9 @@ export default {
   changePassword: 'Change Password',
   fleets: 'Fleets',
   roadmap: {
-    shipRoadmap: 'Ship-Roadmap',
+    index: 'Roadmap',
+    ships: 'Ship-Roadmap',
     changes: 'Roadmap Changes',
-    releases: 'Roadmap Releases',
   },
   verify: 'Verify your RSI Handle',
   settings: {
