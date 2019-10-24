@@ -418,6 +418,7 @@ export default {
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
       this.roadmapsRouteActive = path.includes('roadmap')
       this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
+      this.roadmapMenuOpen = this.roadmapsRouteActive
     },
 
     async logout() {

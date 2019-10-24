@@ -9,15 +9,6 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <div class="page-actions">
-          <Btn href="https://robertsspaceindustries.com/roadmap">
-            {{ $t('labels.rsiRoadmap') }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="row"
@@ -108,7 +99,6 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
-import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 
 export default {
@@ -118,7 +108,6 @@ export default {
     Loader,
     EmptyBox,
     RoadmapItem,
-    Btn,
   },
 
   mixins: [
