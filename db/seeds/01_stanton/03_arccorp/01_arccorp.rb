@@ -114,8 +114,8 @@ end
 
 vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: rikerMemorial)
 vantage_rentals.update!(
-  shop_type: :ships,
-  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/vantage.png').open,
+  shop_type: :rental,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/vantage.jpg').open,
   rental: true,
   hidden: false
 )

@@ -19,7 +19,11 @@
 
   .col-xs-12.col-md-2
     .form-group
-      = fields.number_field :rent_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price"), class: 'form-control', step: 0.01
+      = fields.number_field :rent_price_1_day, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_1_day"), class: 'form-control', step: 0.01
+    .form-group
+      = fields.number_field :rent_price_7_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_7_days"), class: 'form-control', step: 0.01
+    .form-group
+      = fields.number_field :rent_price_30_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_30_days"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-2
     .checkbox.pull-left

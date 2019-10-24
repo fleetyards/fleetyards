@@ -125,7 +125,9 @@ export default {
     type: 'Type',
     celestialObject: 'Location',
     station: 'Station',
-    rentalPrice: '%{price} / day',
+    rentalPrice1Day: '1 day for %{price}',
+    rentalPrice7Days: '7 days for %{price}',
+    rentalPrice30Days: '30 days for %{price}',
     location: '%{name} at %{location}',
   },
   commodityItem: {

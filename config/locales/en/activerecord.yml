@@ -162,7 +162,7 @@ en:
           salvage: Salvage Yard
           resources: Resources Broker
           rental: Rental
-          computer: Computer Store
+          computers: Computer Store
       celestial_object:
         hidden: hidden?
       station:

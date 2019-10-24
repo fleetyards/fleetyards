@@ -110,7 +110,11 @@
       <span class="price-label">
         {{ $t('labels.shop.rentPrice') }}:&nbsp;
       </span>
-      {{ $t('shop.rentalPrice', { price: $toUEC(commodity.rentPrice) }) }}
+      {{ $t('shop.rentalPrice1Day', { price: $toUEC(commodity.rentPrice1Day) }) }}
+      <br>
+      {{ $t('shop.rentalPrice7Days', { price: $toUEC(commodity.rentPrice7Days) }) }}
+      <br>
+      {{ $t('shop.rentalPrice30Days', { price: $toUEC(commodity.rentPrice30Days) }) }}
     </div>
   </div>
 </template>

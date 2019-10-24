@@ -12,4 +12,6 @@ json.description shop_commodity.commodity_item.description
 json.price_per_unit shop_commodity.price_per_unit
 json.sell_price shop_commodity.sell_price
 json.buy_price shop_commodity.buy_price
-json.rent_price shop_commodity.rent_price
+json.rent_price_1_day shop_commodity.rent_price_1_day
+json.rent_price_7_days shop_commodity.rent_price_7_days
+json.rent_price_30_days shop_commodity.rent_price_30_days

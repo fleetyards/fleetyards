@@ -5,7 +5,7 @@ export default {
   or: 'or',
   deselect: 'Click to deselect',
   shop: {
-    rentPrice: 'rent / day',
+    rentPrice: 'rental',
     sellPrice: 'price',
     buyPrice: 'buying price',
   },

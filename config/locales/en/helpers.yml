@@ -30,7 +30,9 @@ en:
         description: Description
         buy_price: Buy Price
         sell_price: Sell Price
-        rent_price: Rent Price
+        rent_price_1_day: Rent Price 1 Day
+        rent_price_7_days: Rent Price 7 Days
+        rent_price_30_days: Rent Price 30 Days
       component:
         grade: Grade
         size: Size
