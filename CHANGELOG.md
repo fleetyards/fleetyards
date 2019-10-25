@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.31.0](https://github.com/fleetyards/app/compare/v3.30.0...v3.31.0) (2019-10-25)
+
+
+### Bug Fixes
+
+* **shops:** update rental_at check ([48b0a97](https://github.com/fleetyards/app/commit/48b0a97))
+
+
+### Features
+
+* **shops:** add rental prices ([c0a9b43](https://github.com/fleetyards/app/commit/c0a9b43))
+* **shops:** update specs ([f560eb2](https://github.com/fleetyards/app/commit/f560eb2))
+
+
+### Refactorings
+
+* move style files ([0f68650](https://github.com/fleetyards/app/commit/0f68650))
+
 ## [3.30.0](https://github.com/fleetyards/app/compare/v3.29.0...v3.30.0) (2019-10-24)
 
 
