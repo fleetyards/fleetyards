@@ -112,10 +112,10 @@ rikerMemorial.docks.destroy_all
   end
 end
 
-vantage_rentals = Shop.find_or_initialize_by(name: 'Vantage Rentals', station: rikerMemorial)
-vantage_rentals.update!(
+traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: rikerMemorial)
+traveler_rentals.update!(
   shop_type: :rental,
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/vantage.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
   rental: true,
   hidden: false
 )
