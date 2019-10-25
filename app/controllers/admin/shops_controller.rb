@@ -58,7 +58,8 @@ module Admin
         :name, :station_id, :store_image, :shop_type, :store_image_cache, :remove_store_image, :hidden,
         :rental, :buying, :selling,
         shop_commodities_attributes: %i[
-          id commodity_item_selected buy_price sell_price rent_price_1_day rent_price_7_days rent_price_30_days price_per_unit _destroy
+          id commodity_item_selected buy_price sell_price rent_price_1_day rent_price_3_days
+          rent_price_7_days rent_price_30_days price_per_unit _destroy
         ]
       )
     end

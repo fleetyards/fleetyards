@@ -1,5 +1,5 @@
 .row.fields
-  .col-xs-12.col-md-4
+  .col-xs-12.col-md-5
     .form-group{class: form_error?(fields.object, :commodity_item)}
       :ruby
         options = {
@@ -10,20 +10,40 @@
       = form_errors fields.object, :commodity_item
 
   .col-xs-12.col-md-2
-    .form-group
-      = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.sell_price"), class: 'form-control', step: 0.01
+    .row
+      .col-xs-12.col-md-5
+        .form-label.text-right
+          = I18n.t(:"helpers.placeholder.shop_commodity.sell_price")
+      .col-xs-12.col-md-7
+        .form-group
+          = fields.number_field :sell_price, class: 'form-control', step: 0.01
+    .row
+      .col-xs-12.col-md-5
+        .form-label.text-right
+          = I18n.t(:"helpers.placeholder.shop_commodity.buy_price")
+      .col-xs-12.col-md-7
+        .form-group
+          = fields.number_field :buy_price, class: 'form-control', step: 0.01
 
-  .col-xs-12.col-md-2
-    .form-group
-      = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.buy_price"), class: 'form-control', step: 0.01
-
-  .col-xs-12.col-md-2
-    .form-group
-      = fields.number_field :rent_price_1_day, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_1_day"), class: 'form-control', step: 0.01
-    .form-group
-      = fields.number_field :rent_price_7_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_7_days"), class: 'form-control', step: 0.01
-    .form-group
-      = fields.number_field :rent_price_30_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_30_days"), class: 'form-control', step: 0.01
+  .col-xs-12.col-md-3
+    .row
+      .col-xs-12.col-md-3
+        .form-label.text-right
+          = I18n.t(:"helpers.placeholder.shop_commodity.rent_price")
+      .col-xs-12.col-md-9
+        .row
+          .col-xs-12.col-md-6
+            .form-group
+              = fields.number_field :rent_price_1_day, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_1_day"), class: 'form-control', step: 0.01
+          .col-xs-12.col-md-6
+            .form-group
+              = fields.number_field :rent_price_3_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_3_days"), class: 'form-control', step: 0.01
+          .col-xs-12.col-md-6
+            .form-group
+              = fields.number_field :rent_price_7_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_7_days"), class: 'form-control', step: 0.01
+          .col-xs-12.col-md-6
+            .form-group
+              = fields.number_field :rent_price_30_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_30_days"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-2
     .checkbox.pull-left
