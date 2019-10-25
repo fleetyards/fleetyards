@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-8">
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
@@ -75,7 +75,7 @@
           </template>
         </div>
       </div>
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-4">
         <Paginator
           v-if="commodities.length"
           :page="currentPage"
