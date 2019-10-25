@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.32.0](https://github.com/fleetyards/app/compare/v3.31.1...v3.32.0) (2019-10-25)
+
+
+### Features
+
+* **rentals:** add 3 days rental prices ([ea3fa38](https://github.com/fleetyards/app/commit/ea3fa38))
+* **rentals:** update admin tools ([15d27f5](https://github.com/fleetyards/app/commit/15d27f5))
+
 ### [3.31.1](https://github.com/fleetyards/app/compare/v3.31.0...v3.31.1) (2019-10-25)
 
 ## [3.31.0](https://github.com/fleetyards/app/compare/v3.30.0...v3.31.0) (2019-10-25)
