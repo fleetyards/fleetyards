@@ -30,6 +30,7 @@ module Api
           'sellPrice' => nil,
           'buyPrice' => nil,
           'rentPrice1Day' => nil,
+          'rentPrice3Days' => nil,
           'rentPrice7Days' => nil,
           'rentPrice30Days' => nil,
           'item' => {
@@ -107,6 +108,7 @@ module Api
           'sellPrice' => nil,
           'buyPrice' => nil,
           'rentPrice1Day' => nil,
+          'rentPrice3Days' => nil,
           'rentPrice7Days' => nil,
           'rentPrice30Days' => nil,
           'item' => {

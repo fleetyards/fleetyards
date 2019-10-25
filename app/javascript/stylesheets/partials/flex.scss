@@ -139,7 +139,6 @@
     justify-content: center;
     min-width: 150px;
     max-width: 100%;
-    font-weight: bold;
     text-align: right;
     vertical-align: middle;
     padding-right: 20px;
@@ -159,6 +158,14 @@
 
   .rent-price {
     min-width: 250px;
+  }
+}
+
+.flex-list > .flex-list-heading > .flex-list-row {
+  .price,
+  .size,
+  .rent-price {
+    font-weight: bold;
   }
 }
 
