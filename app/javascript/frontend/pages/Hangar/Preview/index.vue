@@ -12,7 +12,7 @@
 
         <div class="row">
           <div class="col-xs-12">
-            <h2 class="text-center">
+            <h2 class="text-center main-headline">
               {{ $t('headlines.hangar.preview.h2') }}
             </h2>
           </div>
@@ -22,7 +22,7 @@
 
         <div class="row">
           <div class="col-xs-12">
-            <h3 class="text-center">
+            <h3 class="text-center main-subheadline">
               {{ $t('headlines.hangar.preview.h3') }}
             </h3>
           </div>

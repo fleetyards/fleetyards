@@ -29,6 +29,12 @@ $panelOuterBorderRadius: 24px;
 $panelInnerBorderRadius: 20px;
 $panelContentBorderRadius: 16px;
 
-$transition-base-speed: .5s;
-
 $font-size-base: 15px;
+$font-size-h1-base: floor(($font-size-base * 2.15));
+$font-size-h2-base: floor(($font-size-base * 1.7));
+$font-size-h3-base: floor(($font-size-base * 1.25));
+$font-size-h4-base: $font-size-base;
+$font-size-h5-base: floor(($font-size-base * .85));
+$font-size-h6-base: floor(($font-size-base * .85));
+
+$transition-base-speed: .5s;
