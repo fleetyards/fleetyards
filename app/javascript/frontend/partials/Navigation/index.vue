@@ -194,7 +194,15 @@
             </b-collapse>
           </li>
           <router-link
+            v-if="isAuthenticated"
             :to="{ name: 'hangar' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.hangar') }}</a>
+          </router-link>
+          <router-link
+            v-else
+            :to="{ name: 'hangar-preview' }"
             tag="li"
           >
             <a>{{ $t('nav.hangar') }}</a>
