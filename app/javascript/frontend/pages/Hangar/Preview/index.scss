@@ -1,0 +1,26 @@
+@import '~stylesheets/variables';
+
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: normal;
+}
+
+.info-box {
+  margin-bottom: 21px;
+
+  .panel-title {
+    margin-top: 20px;
+  }
+
+  .panel-body {
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    min-height: 250px;
+
+    p {
+      font-size: 110%;
+      line-height: 2;
+    }
+  }
+}

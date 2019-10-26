@@ -78,6 +78,14 @@ $contentBorderRadius: $panelContentBorderRadius;
     color: white;
   }
 
+  &.panel-transparency-more {
+    background-color: rgba($panel-bg, .6);
+  }
+
+  &.panel-transparency-complete {
+    background-color: transparent;
+  }
+
   .text-huge {
     font-size: 40px;
   }

@@ -8,6 +8,7 @@
     <div
       :class="{
         [variantClass]: true,
+        [transparencyClass]: true,
       }"
       class="panel"
     >
@@ -31,6 +32,14 @@ export default {
       default: true,
     },
 
+    transparency: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return ['default', 'more', 'complete'].indexOf(value) !== -1
+      },
+    },
+
     forText: {
       type: Boolean,
       default: false,
@@ -48,6 +57,10 @@ export default {
   computed: {
     variantClass() {
       return `panel-${this.variant}`
+    },
+
+    transparencyClass() {
+      return `panel-transparency-${this.transparency}`
     },
   },
 }

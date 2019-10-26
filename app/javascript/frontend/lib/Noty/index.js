@@ -223,6 +223,14 @@ export default {
     }
 
     // eslint-disable-next-line no-param-reassign
+    Vue.prototype.$warning = function info(options) {
+      displayNotification({
+        ...options,
+        type: 'warning',
+      })
+    }
+
+    // eslint-disable-next-line no-param-reassign
     Vue.prototype.$confirm = function confirm(options) {
       displayConfirm({
         ...options,

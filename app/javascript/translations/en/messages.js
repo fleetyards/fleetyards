@@ -42,11 +42,6 @@ export default {
     wrongFileType: 'Only JSON and CSV is supported.',
     wrongStructure: 'The Import needs to contain a list of ships with at least a name or model field/col.',
   },
-  fleet: {
-    create: {
-      failure: 'We could not create your Fleet.',
-    },
-  },
   model: {
     onSale: '%{model} now on Sale!',
   },
@@ -56,7 +51,7 @@ export default {
   error: {
     usernameTaken: 'Username is already taken.',
     emailTaken: 'E-Mail is already taken.',
-    orgNotFound: 'RSI Org could not be found.',
+    accountRequired: 'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
     default: '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
   account: {

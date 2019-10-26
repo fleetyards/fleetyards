@@ -33,6 +33,20 @@ export default {
     public: 'Your hangar has a public visible page where all ships marked as "purchased" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
     icon: 'Lookout for this icon:',
   },
+  hangarPreview: {
+    notified: {
+      headline: 'Get notified about new Ships and Sales',
+      text: 'Get notified once a new Ship is released on <a href="https://robertsspaceindustries.com" target="_blank" rel="noopener">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar.',
+    },
+    manage: {
+      headline: 'Manage your Hangar',
+      text: 'Add Ships to your Hangar, name your Ships, mark them as purchased or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?',
+    },
+    fleetchart: {
+      headline: 'Fleetchart and Public Hangar',
+      text: 'View your Ships as a scaled topview Fleetchart and export it as an image. Export your Ships to <a href="https://starship42.com" target="_blank" rel="noopener">starship42.com</a> to view all your Ships in 3D. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar.',
+    },
+  },
   impressum: {
     ytShipImages: 'The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href="https://twitter.com/WhyTeeZero" target="_blank" rel="noopener">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.',
     copyright: 'The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.',

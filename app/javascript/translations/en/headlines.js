@@ -10,7 +10,11 @@ export default {
   login: 'Login',
   hangar: {
     index: 'My Hangar',
-    preview: 'My Hangar Preview',
+    preview: {
+      h1: 'My Hangar Preview',
+      h2: 'Your personal Hangar requires an FleetYards.net Account',
+      h3: 'What Features does the Hangar include?',
+    },
     stats: 'My Hangar Stats',
     public: '%{user} Hangar',
     import: 'Import',
