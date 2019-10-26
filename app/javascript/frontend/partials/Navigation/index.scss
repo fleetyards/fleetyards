@@ -211,16 +211,6 @@ nav {
         position: absolute;
         top: 10px;
         left: 30px;
-
-        img {
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-        }
-
-        .no-avatar {
-          padding: 6px 9px 5px 8px;
-        }
       }
 
       .username {
@@ -229,25 +219,6 @@ nav {
         padding-left: 50px;
         padding-right: 20px;
         display: block;
-      }
-
-      .verified {
-        width: 12px;
-        height: 12px;
-        position: absolute;
-        display: block;
-        bottom: 0;
-        right: 0;
-        background-color: $success;
-        border-radius: 100%;
-        text-align: center;
-
-        i {
-          display: inline-block;
-          vertical-align: top;
-          margin-top: 15%;
-          font-size: 9px;
-        }
       }
     }
   }

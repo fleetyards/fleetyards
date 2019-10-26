@@ -88,22 +88,6 @@ export default {
     manufacturer: 'Manufacturer',
     size: 'Size',
   },
-  user: {
-    rsi: {
-      username: 'Name',
-      handle: 'Handle name',
-      title: 'Title',
-      location: 'Location',
-      citizenRecord: 'UEE Citizen Record',
-      enlisted: 'Enlisted',
-      languages: 'Fluency',
-      org: {
-        name: 'Name',
-        sid: 'Spectrum Identification (SID)',
-        rank: 'Organization rank',
-      },
-    },
-  },
   celestialObject: {
     type: 'Type',
     subType: 'Sub Type',

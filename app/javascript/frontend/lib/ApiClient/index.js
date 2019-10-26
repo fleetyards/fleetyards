@@ -123,6 +123,22 @@ export async function destroy(path, data = {}, silent = false) {
   }
 }
 
+export async function upload(path, body = {}, silent = false) {
+  if (!silent) {
+    nprogress.start()
+  }
+
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+  }
+
+  try {
+    return handleResponse(await client.put(path, body, { headers }), body, silent)
+  } catch (error) {
+    return handleError(error, silent)
+  }
+}
+
 export async function download(path, silent = false) {
   if (!silent) {
     nprogress.start()
@@ -137,7 +153,7 @@ export async function download(path, silent = false) {
 }
 
 const apiClient = {
-  get, post, put, destroy, download, client,
+  get, post, put, destroy, download, client, upload,
 }
 
 export { apiClient }

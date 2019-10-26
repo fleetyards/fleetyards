@@ -42,7 +42,7 @@ export default {
     },
     liabilityExternal: 'Our site contains links to websites of third parties (“external links”). As the content of these sites is not under our control, We cannot assume any liability for such external content. In all cases, the provider of information of the linked sites is liable for the content and accuracy of the information provided. At the point in time when the links were placed, no infringements of the law were recognisable to us. As soon as an infringement of the law becomes known to us, We will immediately remove the link in question.',
   },
-  privacy: 'The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address or RSI Handle) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.',
+  privacy: 'The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.',
   signup: {
     blacklisted: 'You have been blacklisted from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
   },
