@@ -1,6 +1,9 @@
 <template>
   <section class="container hangar">
-    <div class="row">
+    <div
+      v-if="user"
+      class="row"
+    >
       <div class="col-xs-12 col-md-12">
         <div class="row">
           <div class="col-xs-12" />
@@ -10,8 +13,8 @@
             <h1>
               <div class="avatar">
                 <img
-                  v-if="citizen && citizen.avatar"
-                  :src="citizen.avatar"
+                  v-if="user && user.avatar"
+                  :src="user.avatar"
                   alt="avatar"
                   width="36"
                   height="36"
@@ -23,18 +26,7 @@
                   <i class="fa fa-user" />
                 </div>
               </div>
-              <template v-if="user && user.rsiHandle">
-                <a
-                  :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
-                </a>
-              </template>
-              <template v-else>
-                {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
-              </template>
+              {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
             </h1>
           </div>
         </div>
@@ -192,7 +184,6 @@ export default {
       loading: false,
       vehicles: [],
       user: null,
-      citizen: null,
       fleetchartVehicles: [],
       vehiclesCount: null,
     }
@@ -202,10 +193,6 @@ export default {
     ...mapGetters('hangar', [
       'publicFleetchartVisible',
       'publicFleetchartScale',
-    ]),
-
-    ...mapGetters('session', [
-      'currentUser',
     ]),
 
     metaTitle() {
@@ -272,20 +259,8 @@ export default {
 
       if (!response.error) {
         this.user = response.data
-
-        this.fetchCitizen()
-      }
-    },
-
-    async fetchCitizen() {
-      if (!this.user.rsiHandle) {
-        return
-      }
-
-      const response = await this.$api.get(`rsi/citizens/${this.user.rsiHandle}`)
-
-      if (!response.error) {
-        this.citizen = response.data
+      } else if (response.error.response && response.error.response.status === 404) {
+        this.$router.replace({ name: '404' })
       }
     },
 

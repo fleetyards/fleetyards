@@ -115,23 +115,6 @@ export const routes = [
     name: 'hangar-public',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
-    path: '/fleets/',
-    name: 'fleets',
-    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-2.jpg'),
-      title: 'fleets',
-    },
-  }, {
-    path: '/fleets/:sid/',
-    name: 'fleet',
-    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-2.jpg'),
-    },
-  }, {
     path: '/stations/',
     name: 'stations',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations'),

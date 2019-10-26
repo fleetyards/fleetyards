@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_25_120504) do
+ActiveRecord::Schema.define(version: 2019_10_26_015120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -176,33 +176,6 @@ ActiveRecord::Schema.define(version: 2019_10_25_120504) do
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "fleet_id"
-    t.uuid "user_id"
-    t.integer "role"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "logo"
-    t.string "sid"
-    t.string "archetype"
-    t.string "main_activity"
-    t.string "secondary_activity"
-    t.boolean "recruiting"
-    t.string "commitment"
-    t.boolean "rpg"
-    t.boolean "exclusive"
-    t.integer "member_count"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.hstore "rsi_members", default: [], null: false, array: true
-    t.string "banner"
-    t.string "background"
   end
 
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -556,12 +529,7 @@ ActiveRecord::Schema.define(version: 2019_10_25_120504) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "rsi_handle", limit: 255
     t.boolean "sale_notify", default: false
-    t.string "rsi_org"
-    t.boolean "rsi_verified", default: false
-    t.string "rsi_verification_token"
-    t.string "rsi_orgs"
     t.boolean "tracking", default: true
     t.boolean "public_hangar", default: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

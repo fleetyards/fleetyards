@@ -207,7 +207,6 @@ export default {
     ordnance: 'No Ordnance present',
     modular: 'No Modular present',
     avionics: 'No Avionics present',
-    rsiCitizen: 'No RSI Information present',
     userShips: 'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
   user: {
@@ -243,7 +242,6 @@ export default {
   login: 'Username or E-Mail',
   username: 'Username',
   email: 'E-Mail',
-  rsiHandle: 'RSI Handle',
   alreadyRegistered: 'Already have an Account?',
   currentPassword: 'Current Password',
   password: 'Password',

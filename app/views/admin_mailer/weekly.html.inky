@@ -10,6 +10,3 @@
 <p>
   <%= I18n.t("mailer.admin.weekly.vehicles") %>: <%= @stats[:vehicles] %>
 </p>
-<p>
-  <%= I18n.t("mailer.admin.weekly.fleets") %>: <%= @stats[:fleets] %>
-</p>

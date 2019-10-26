@@ -75,16 +75,9 @@
           >
             <a @click="toggleUserMenu">
               <div class="avatar">
-                <div
-                  v-if="currentUser.rsiVerified"
-                  v-tooltip="$t('labels.rsiVerified')"
-                  class="verified"
-                >
-                  <i class="fa fa-check" />
-                </div>
                 <img
-                  v-if="citizen && citizen.avatar"
-                  :src="citizen.avatar"
+                  v-if="currentUser.avatar"
+                  :src="currentUser.avatar"
                   alt="avatar"
                   width="36"
                   height="36"
@@ -112,15 +105,6 @@
               >
                 <a>{{ $t('nav.settings.index') }}</a>
               </router-link>
-              <li v-if="currentUser.rsiHandle">
-                <a
-                  :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {{ $t('nav.rsiProfile') }}
-                </a>
-              </li>
               <li class="divider" />
               <li>
                 <a @click="logout">
@@ -265,12 +249,6 @@
             </b-collapse>
           </li>
           <router-link
-            :to="{ name: 'fleets' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.fleets') }}</a>
-          </router-link>
-          <router-link
             :to="{ name: 'stats' }"
             tag="li"
           >
@@ -326,7 +304,6 @@ export default {
 
     ...mapGetters('session', [
       'currentUser',
-      'citizen',
       'isAuthenticated',
     ]),
 

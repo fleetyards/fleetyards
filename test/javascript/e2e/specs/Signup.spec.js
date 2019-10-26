@@ -9,7 +9,6 @@ describe('Signup', () => {
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.select('username').type(userData.new.username)
-      cy.select('rsi-handle').type(userData.new.handle)
       cy.select('email').type(userData.new.email)
       cy.select('password').type(userData.new.password)
       cy.select('password-confirmation').type(userData.new.password)
@@ -35,12 +34,6 @@ describe('Signup', () => {
 
       cy.select('username').should('have.value', userData.new.username)
       cy.select('email').should('have.value', userData.new.email)
-
-      cy.get('.tabs a').contains('RSI Account Verification').click()
-
-      cy.url().should('include', '/settings/verify')
-
-      cy.select('rsi-handle').should('have.value', userData.new.handle)
 
       cy.get('.tabs a').contains('Account').click()
 
@@ -74,11 +67,6 @@ describe('Signup', () => {
       cy.select('password').parent().should('have.class', 'has-error')
       cy.select('password').clear().type(userData.test.password)
       cy.select('password').parent().should('not.have.class', 'has-error')
-
-      cy.select('rsi-handle').type('torle')
-      cy.select('rsi-handle').parent().should('have.class', 'has-error')
-      cy.select('rsi-handle').clear().type('torlekmaru')
-      cy.select('rsi-handle').parent().should('not.have.class', 'has-error')
 
       cy.select('password-confirmation').type('bar').clear()
       cy.select('password-confirmation').parent().should('have.class', 'has-error')

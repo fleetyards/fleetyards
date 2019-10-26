@@ -106,7 +106,6 @@ export default {
   computed: {
     ...mapGetters('session', [
       'currentUser',
-      'citizen',
     ]),
   },
 

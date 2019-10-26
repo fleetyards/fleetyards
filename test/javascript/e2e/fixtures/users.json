@@ -7,7 +7,6 @@
   "new": {
     "username": "NewTestUser",
     "email": "new-test@fleetyards.net",
-    "password": "NewTestPassword",
-    "handle": "torlekmaru"
+    "password": "NewTestPassword"
   }
 }

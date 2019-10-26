@@ -31,7 +31,6 @@ export default {
     ships: 'Ship-Roadmap',
     changes: 'Roadmap Changes',
   },
-  verify: 'Verify your RSI Handle',
   settings: {
     index: 'Profile Settings',
     account: 'Account',
