@@ -28,8 +28,9 @@ class User < ApplicationRecord
 
   attr_accessor :login
 
-  before_save :update_gravatar_hash
   before_validation :clean_username
+
+  mount_uploader :avatar, AvatarUploader
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -40,15 +41,6 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
-  end
-
-  def update_gravatar_hash
-    hash = if gravatar.blank?
-             Digest::MD5.hexdigest(id.to_s)
-           else
-             Digest::MD5.hexdigest(gravatar.downcase.strip)
-           end
-    self.gravatar_hash = hash
   end
 
   def clean_username

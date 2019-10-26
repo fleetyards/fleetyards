@@ -30,6 +30,9 @@ export default {
   updateProfile: {
     success: 'Profile updated.',
   },
+  avatarUpload: {
+    success: 'Avatar uploaded',
+  },
   vehicle: {
     add: {
       success: 'Your new <b>%{model}</b> will be delivered to your <a href="/hangar">Hangar</a>',

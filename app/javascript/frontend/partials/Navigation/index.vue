@@ -74,21 +74,10 @@
             class="sub-menu user-menu"
           >
             <a @click="toggleUserMenu">
-              <div class="avatar">
-                <img
-                  v-if="currentUser.avatar"
-                  :src="currentUser.avatar"
-                  alt="avatar"
-                  width="36"
-                  height="36"
-                >
-                <div
-                  v-else
-                  class="no-avatar"
-                >
-                  <i class="fa fa-user" />
-                </div>
-              </div>
+              <Avatar
+                :avatar="currentUser.avatar"
+                size="small"
+              />
               <span class="username">
                 {{ currentUser.username }}
               </span>
@@ -263,12 +252,14 @@
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
+import Avatar from 'frontend/components/Avatar'
 
 export default {
   name: 'Navigation',
 
   components: {
     QuickSearch,
+    Avatar,
   },
 
   data() {

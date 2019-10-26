@@ -48,17 +48,6 @@ v1_api_routes = lambda do
 
   resources :roadmap, only: %i[index]
 
-  resources :fleets, param: :sid, only: %i[index show create destroy] do
-    collection do
-      get :my
-    end
-    member do
-      get :models
-      get :count
-      get :members
-    end
-  end
-
   resources :users, only: [] do
     collection do
       post :signup

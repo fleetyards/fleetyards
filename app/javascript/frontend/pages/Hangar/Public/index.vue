@@ -11,21 +11,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1>
-              <div class="avatar">
-                <img
-                  v-if="user && user.avatar"
-                  :src="user.avatar"
-                  alt="avatar"
-                  width="36"
-                  height="36"
-                >
-                <div
-                  v-else
-                  class="no-avatar"
-                >
-                  <i class="fa fa-user" />
-                </div>
-              </div>
+              <Avatar :avatar="user.avatar" />
               {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
             </h1>
           </div>
@@ -159,6 +145,7 @@ import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
+import Avatar from 'frontend/components/Avatar'
 
 export default {
   name: 'PublicHangar',
@@ -172,6 +159,7 @@ export default {
     FleetchartItem,
     ModelClassLabels,
     FleetchartSlider,
+    Avatar,
   },
 
   mixins: [

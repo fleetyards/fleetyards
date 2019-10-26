@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_015120) do
+ActiveRecord::Schema.define(version: 2019_10_26_094259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -506,8 +506,6 @@ ActiveRecord::Schema.define(version: 2019_10_26_015120) do
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "admin", default: false, null: false
-    t.string "gravatar_hash", limit: 255
-    t.string "gravatar", limit: 255
     t.string "locale", limit: 255
     t.string "username", limit: 255, default: "", null: false
     t.string "email", limit: 255, default: "", null: false
@@ -532,6 +530,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_015120) do
     t.boolean "sale_notify", default: false
     t.boolean "tracking", default: true
     t.boolean "public_hangar", default: true
+    t.string "avatar"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -4,6 +4,7 @@ json.cache! ['v1', user] do
   json.id user.id
   json.email user.email
   json.username user.username
+  json.avatar user.avatar.small.url
   json.is_admin user.admin?
   json.sale_notify user.sale_notify
   json.public_hangar user.public_hangar
