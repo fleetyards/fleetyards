@@ -10,12 +10,6 @@ production: &production
   trade_route_calculator_job:
     cron: '*/30 * * * *' # Every 30 Minutes
     class: 'TradeRoutesWorker'
-  citizen_worker_job:
-    cron: '0 */2 * * *' # Every 2 Hours
-    class: 'CitizenWorker'
-  fleets_worker_job:
-    cron: '0 1 * * *' # Daily at 1:00
-    class: 'FleetsWorker'
   cleanup_auth_tokens_worker:
     cron: '0 2 * * *' # Daily at 2:00
     class: 'CleanupAuthTokensWorker'

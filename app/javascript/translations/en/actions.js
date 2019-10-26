@@ -40,6 +40,7 @@ export default {
   signUp: 'Sign Up',
   'reset-password': 'Forgot password?',
   edit: 'Edit',
+  change: 'Change',
   editCommodities: 'Edit commodities',
   save: 'Save',
   remove: 'Remove',

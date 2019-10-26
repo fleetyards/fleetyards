@@ -8,9 +8,6 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'ships/:slug/images' => 'base#model_images'
   get 'ships/:slug/videos' => 'base#model_videos'
 
-  get 'fleets' => 'base#index'
-  get 'fleets/:sid' => 'base#fleet'
-
   get 'hangar' => 'base#index'
   get 'hangar/import' => 'base#index'
   get 'hangar/stats' => 'base#index'
@@ -51,7 +48,6 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'settings/profile' => 'base#index'
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
-  get 'settings/verify' => 'base#index'
   get 'settings/hangar' => 'base#index'
 
   get 'password/request' => 'base#index'

@@ -22,12 +22,6 @@
             <a>{{ $t('nav.settings.hangar') }}</a>
           </router-link>
           <router-link
-            :to="{ name: 'settings-verify' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.settings.verify') }}</a>
-          </router-link>
-          <router-link
             :to="{ name: 'settings-change-password' }"
             tag="li"
           >

@@ -8,14 +8,6 @@ export const routes = [
       needsAuthentication: true,
     },
   }, {
-    path: 'verify/',
-    name: 'settings-verify',
-    component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Verify'),
-    meta: {
-      title: 'verify',
-      needsAuthentication: true,
-    },
-  }, {
     path: 'account/',
     name: 'settings-account',
     component: () => import(/* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Account'),

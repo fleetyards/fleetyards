@@ -48,17 +48,6 @@ v1_api_routes = lambda do
 
   resources :roadmap, only: %i[index]
 
-  resources :fleets, param: :sid, only: %i[index show create destroy] do
-    collection do
-      get :my
-    end
-    member do
-      get :models
-      get :count
-      get :members
-    end
-  end
-
   resources :users, only: [] do
     collection do
       post :signup
@@ -70,8 +59,6 @@ v1_api_routes = lambda do
       get ':username' => 'users#public'
       post 'check-email'
       post 'check-username'
-      post 'start-rsi-verification'
-      post 'finish-rsi-verification'
     end
   end
 
@@ -138,11 +125,6 @@ v1_api_routes = lambda do
     collection do
       get 'shop-types' => 'shops#shop_types'
     end
-  end
-
-  namespace :rsi do
-    resources :citizens, only: [:show], param: :handle
-    resources :orgs, only: %i[show], param: :sid
   end
 
   resource :stats, only: [] do

@@ -47,40 +47,6 @@
             </span>
           </div>
           <div
-            :class="{'has-error has-feedback': errors.has('rsiHandle')}"
-            class="form-group"
-          >
-            <transition name="fade">
-              <label
-                v-show="form.rsiHandle"
-                for="rsiHandle"
-              >
-                {{ $t('labels.rsiHandle') }}
-              </label>
-            </transition>
-            <input
-              id="rsiHandle"
-              v-model="form.rsiHandle"
-              v-tooltip.right="errors.first('rsiHandle')"
-              v-validate="'alpha_dash|handle'"
-              data-test="rsi-handle"
-              :placeholder="$t('labels.rsiHandle')"
-              :data-vv-as="$t('labels.rsiHandle')"
-              name="rsiHandle"
-              type="text"
-              class="form-control"
-            >
-            <span
-              v-show="errors.has('rsiHandle')"
-              class="form-control-feedback"
-            >
-              <i
-                :title="errors.first('rsiHandle')"
-                class="fal fa-exclamation-triangle"
-              />
-            </span>
-          </div>
-          <div
             :class="{'has-error has-feedback': errors.has('email')}"
             class="form-group"
           >
@@ -240,7 +206,6 @@ export default {
       submitting: false,
       form: {
         username: null,
-        rsiHandle: null,
         email: null,
         saleNotify: false,
         password: null,

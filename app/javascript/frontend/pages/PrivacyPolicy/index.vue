@@ -60,44 +60,6 @@
               <dd>
                 To Display a name on your Hangar page and to address you in Notifications.
               </dd>
-              <dt>
-                <strong>RSI-Handle (optional):</strong>
-              </dt>
-              <dd>
-                <p>
-                  To Verify your Account with <a
-                    href="https://robertsspaceindustries.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    robertsspaceindustries.com
-                  </a> and to gather Additional Information from <a
-                    href="https://robertsspaceindustries.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    robertsspaceindustries.com
-                  </a> like:
-                </p>
-                <ul>
-                  <li>Username</li>
-                  <li>Avatar Image</li>
-                  <li>Title</li>
-                  <li>Enlisted Date</li>
-                  <li>Citizen Record</li>
-                  <li>Location</li>
-                  <li>Languages</li>
-                </ul>
-                <br>
-                These Informations are only gathered from <a
-                  href="https://robertsspaceindustries.com"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  robertsspaceindustries.com
-                </a> when you provide us with your RSI-Handle and are not
-                saved in any form on our Systems and are also not shared with any Third Parties.
-              </dd>
             </dl>
             <br>
 

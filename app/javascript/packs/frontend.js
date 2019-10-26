@@ -18,7 +18,6 @@ import Comlink from 'frontend/lib/Comlink'
 import EmailValidator from 'frontend/lib/validations/EmailValidator'
 import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
 import OrgValidator from 'frontend/lib/validations/OrgValidator'
-import HandleValidator from 'frontend/lib/validations/HandleValidator'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
 import Helpers from 'frontend/lib/Helpers'
@@ -54,7 +53,6 @@ Vue.use(VeeValidate)
 Validator.extend('emailTaken', EmailValidator)
 Validator.extend('usernameTaken', UsernameValidator)
 Validator.extend('org', OrgValidator)
-Validator.extend('handle', HandleValidator)
 
 Vue.use(VueScrollTo, {
   easing: 'ease-in-out',

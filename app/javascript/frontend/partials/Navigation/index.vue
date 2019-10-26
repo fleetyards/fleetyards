@@ -74,28 +74,10 @@
             class="sub-menu user-menu"
           >
             <a @click="toggleUserMenu">
-              <div class="avatar">
-                <div
-                  v-if="currentUser.rsiVerified"
-                  v-tooltip="$t('labels.rsiVerified')"
-                  class="verified"
-                >
-                  <i class="fa fa-check" />
-                </div>
-                <img
-                  v-if="citizen && citizen.avatar"
-                  :src="citizen.avatar"
-                  alt="avatar"
-                  width="36"
-                  height="36"
-                >
-                <div
-                  v-else
-                  class="no-avatar"
-                >
-                  <i class="fa fa-user" />
-                </div>
-              </div>
+              <Avatar
+                :avatar="currentUser.avatar"
+                size="small"
+              />
               <span class="username">
                 {{ currentUser.username }}
               </span>
@@ -112,15 +94,6 @@
               >
                 <a>{{ $t('nav.settings.index') }}</a>
               </router-link>
-              <li v-if="currentUser.rsiHandle">
-                <a
-                  :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {{ $t('nav.rsiProfile') }}
-                </a>
-              </li>
               <li class="divider" />
               <li>
                 <a @click="logout">
@@ -265,12 +238,6 @@
             </b-collapse>
           </li>
           <router-link
-            :to="{ name: 'fleets' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.fleets') }}</a>
-          </router-link>
-          <router-link
             :to="{ name: 'stats' }"
             tag="li"
           >
@@ -285,12 +252,14 @@
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import { mapGetters } from 'vuex'
+import Avatar from 'frontend/components/Avatar'
 
 export default {
   name: 'Navigation',
 
   components: {
     QuickSearch,
+    Avatar,
   },
 
   data() {
@@ -326,7 +295,6 @@ export default {
 
     ...mapGetters('session', [
       'currentUser',
-      'citizen',
       'isAuthenticated',
     ]),
 

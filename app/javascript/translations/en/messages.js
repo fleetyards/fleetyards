@@ -1,12 +1,4 @@
 export default {
-  rsiVerification: {
-    success: 'Yeah! You verified your RSI Account',
-    failure: 'We could not find the Verification Token. Please try again.',
-    handleMissing: 'Please add your RSI Handle to your Account first.',
-    copySuccess: 'Verification Token copied to your Clipboard. Click Confirm to open automatically open a new Tab with the RSI Settings page to paste the Tomen in your Short Bio.',
-    rsiHandleMandatory: 'You need to enter a valid RSI Handle before you can start the verification process.',
-    saveHandleSuccess: 'Your RSI Handle was saved.',
-  },
   copy: {
     success: 'Text Copied!',
     failure: 'Could not copy Text',
@@ -25,7 +17,7 @@ export default {
     failure: 'We could not create your account. Please try again later.',
   },
   accountConfirm: {
-    success: "Your account was successfully confirmed.<br>You can now login. <br>Don't forget to add and verify your RSI handle.",
+    success: 'Your account was successfully confirmed.<br>You can now login.',
     failure: 'Your account could not be confirmed.',
   },
   requestPasswordChange: {
@@ -37,6 +29,9 @@ export default {
   },
   updateProfile: {
     success: 'Profile updated.',
+  },
+  avatarUpload: {
+    success: 'Avatar uploaded',
   },
   vehicle: {
     add: {
@@ -62,7 +57,6 @@ export default {
     usernameTaken: 'Username is already taken.',
     emailTaken: 'E-Mail is already taken.',
     orgNotFound: 'RSI Org could not be found.',
-    handleNotFound: 'RSI Citizen could not be found.',
     default: '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
   account: {

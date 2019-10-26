@@ -75,15 +75,6 @@ export default {
   },
 
   methods: {
-    changeHandle() {
-      if (this.rsiFetchTimeout) {
-        clearTimeout(this.rsiFetchTimeout)
-      }
-      this.rsiFetchTimeout = setTimeout(() => {
-        this.fetchCitizen()
-      }, 300)
-    },
-
     setupForm() {
       this.form.saleNotify = !!this.currentUser.saleNotify
       this.form.publicHangar = !!this.currentUser.publicHangar
