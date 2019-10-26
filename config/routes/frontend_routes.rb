@@ -9,6 +9,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'ships/:slug/videos' => 'base#model_videos'
 
   get 'hangar' => 'base#index'
+  get 'hangar/preview' => 'base#index'
   get 'hangar/import' => 'base#index'
   get 'hangar/stats' => 'base#index'
   get 'hangar/:username' => 'hangar#index'

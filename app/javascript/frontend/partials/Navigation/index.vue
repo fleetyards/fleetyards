@@ -112,6 +112,20 @@
             <a>{{ $t('nav.home') }}</a>
           </router-link>
           <router-link
+            v-if="isAuthenticated"
+            :to="{ name: 'hangar' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.hangar') }}</a>
+          </router-link>
+          <router-link
+            v-else
+            :to="{ name: 'hangar-preview' }"
+            tag="li"
+          >
+            <a>{{ $t('nav.hangar') }}</a>
+          </router-link>
+          <router-link
             :to="{ name: 'models' }"
             tag="li"
           >
@@ -166,12 +180,6 @@
               </router-link>
             </b-collapse>
           </li>
-          <router-link
-            :to="{ name: 'hangar' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.hangar') }}</a>
-          </router-link>
           <router-link
             :to="{ name: 'images' }"
             tag="li"

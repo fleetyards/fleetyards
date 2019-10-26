@@ -1,6 +1,5 @@
 <template>
   <Btn
-    v-if="isAuthenticated"
     v-tooltip.bottom="$t('actions.addToHangar')"
     :variant="variant === 'panel' ? 'link' : 'default'"
     :size="variant === 'panel' ? 'small' : 'default'"
@@ -49,6 +48,13 @@ export default {
   },
   methods: {
     async add() {
+      if (!this.isAuthenticated) {
+        this.$warning({
+          text: this.$t('messages.error.accountRequired'),
+        })
+        return
+      }
+
       const response = await this.$api.post('vehicles', { modelId: this.model.id })
       if (!response.error) {
         this.$store.dispatch('hangar/add', this.model.slug)

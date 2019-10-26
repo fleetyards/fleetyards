@@ -11,11 +11,11 @@ $container-md:           95%;
 $container-xs:           95%;
 $container-sm:           100%;
 
-$font-size-h1: floor(($font-size-base * 2.15));
-$font-size-h2: floor(($font-size-base * 1.7));
-$font-size-h3: floor(($font-size-base * 1.25));
-$font-size-h4: $font-size-base;
-$font-size-h5: floor(($font-size-base * .85));
-$font-size-h6: floor(($font-size-base * .85));
+$font-size-h1: $font-size-h1-base;
+$font-size-h2: $font-size-h2-base;
+$font-size-h3: $font-size-h3-base;
+$font-size-h4: $font-size-h4-base;
+$font-size-h5: $font-size-h5-base;
+$font-size-h6: $font-size-h6-base;
 
 @import 'dark';

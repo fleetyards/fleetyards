@@ -101,6 +101,15 @@ export const routes = [
       title: 'hangar.index',
     },
   }, {
+    path: '/hangar/preview',
+    name: 'hangar-preview',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-5.jpg'),
+      title: 'hangar.preview',
+    },
+  }, {
     path: '/hangar/stats/',
     name: 'hangar-stats',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Stats'),
