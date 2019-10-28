@@ -18,6 +18,7 @@ export default (
     componentUsed = Component
   }
 
+  // eslint-disable-next-line jest/valid-describe
   describe(`Component: ${Component.name}`, () => {
     let wrapper
 
