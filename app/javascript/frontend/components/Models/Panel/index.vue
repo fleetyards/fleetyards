@@ -101,8 +101,8 @@
           <i
             class="fa-plus-octagon"
             :class="{
-              far: !this.hasAddons,
-              fa: this.hasAddons,
+              far: !hasAddons,
+              fa: hasAddons,
             }"
           />
         </div>
