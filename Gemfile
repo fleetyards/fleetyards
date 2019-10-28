@@ -17,6 +17,8 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'searchkick'
+
 gem 'selectize-rails'
 
 gem 'ahoy_matey'
