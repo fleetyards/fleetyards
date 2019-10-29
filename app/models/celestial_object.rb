@@ -3,6 +3,20 @@
 class CelestialObject < ApplicationRecord
   paginates_per 30
 
+  searchkick searchable: %i[name starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      starsystem: starsystem.name
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   belongs_to :starsystem, optional: true
 
   belongs_to :parent,

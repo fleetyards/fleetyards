@@ -6,14 +6,17 @@ class Model < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name manufacturer_name],
-             filterable: [],
-             settings: { blocks: { read_only_allow_delete: false } }
+             filterable: []
 
   def search_data
     {
       name: name,
-      manufacturer_name: manufacturer.name,
+      manufacturer_name: manufacturer.name
     }
+  end
+
+  def should_index?
+    active && !hidden
   end
 
   belongs_to :manufacturer, optional: true

@@ -43,6 +43,9 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# and disable callbacks
+Searchkick.disable_callbacks
+
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers

@@ -3,6 +3,23 @@
 class Shop < ApplicationRecord
   paginates_per 30
 
+  searchkick searchable: %i[name shop_type station celestial_object starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      shop_type: shop_type,
+      station: station.name,
+      celestial_object: station.celestial_object.name,
+      starsystem: station.celestial_object.starsystem.name
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   belongs_to :station
   has_many :shop_commodities, dependent: :destroy
 

@@ -48,6 +48,8 @@ v1_api_routes = lambda do
 
   resources :roadmap, only: %i[index]
 
+  resources :search, only: %i[index]
+
   resources :users, only: [] do
     collection do
       post :signup

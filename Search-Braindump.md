@@ -1,12 +1,8 @@
-Model -> Model Detail
+Model
   name
   description
   manufacturer_name
-Component -> Shop Detail
-  name
-  description
-  manufacturer_name
-Shop -> Shop Detail
+Shop
   name
   description
   station_name
@@ -17,21 +13,33 @@ ShopCommodities -> Shop Detail
   station_name
   planet_name
   starsystem_name
-Station -> Station Detail
+Station
   name
   description
   planet_name
-Planet -> Planet Detail
+Planet
   name
   description
   starsystem_name
-StarSystem -> Starsystem Detail
+StarSystem
   name
   description
-Equipment -> Shop Detail
+
+
+--- 
+
+Needs Views (Index and Detail)
+
+Component
   name
   description
   manufacturer_name
-Manufacturer -> Model Detail or Shop Detail
+
+Manufacturer
   name
   description
+
+Equipment
+  name
+  description
+  manufacturer_name

@@ -4,19 +4,21 @@ class ShopCommodity < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name manufacturer_name shop station celestial_object starsystem],
-             filterable: [],
-             settings: { blocks: { read_only_allow_delete: false } }
+             filterable: []
 
   def search_data
-    manufacturer_name = commodity_item.manufacturer&.name if commodity_item.respond_to?(:manufacturer)
     {
       name: commodity_item.name,
-      manufacturer_name: manufacturer_name,
+      manufacturer_name: commodity_item.manufacturer&.name,
       shop: shop.name,
       station: shop.station.name,
       celestial_object: shop.station.celestial_object.name,
-      starsystem: shop.station.celestial_object.starsystem.name,
+      starsystem: shop.station.celestial_object.starsystem.name
     }
+  end
+
+  def should_index?
+    commodity_item.is_a?(Equipment) || commodity_item.is_a?(Component)
   end
 
   belongs_to :commodity_item, polymorphic: true, optional: true
