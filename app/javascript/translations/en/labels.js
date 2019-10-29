@@ -86,7 +86,6 @@ export default {
   rsiRoadmap: 'RSI Roadmap',
   unknown: 'Unknown',
   none: '-',
-  searchInput: 'Search Input',
   search: 'Search',
   unknownModel: '%{slug} Unknown',
   'not-available': 'N/A',

@@ -71,15 +71,7 @@
             :key="station.slug"
             class="col-xs-12 fade-list-item"
           >
-            <StationList
-              :item="station"
-              :route="{
-                name: 'station',
-                params: {
-                  slug: station.slug
-                }
-              }"
-            />
+            <StationPanel :station="station" />
           </div>
         </transition-group>
         <EmptyBox v-if="emptyBoxVisible" />
@@ -103,7 +95,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import StationList from 'frontend/partials/Stations/List'
+import StationPanel from 'frontend/components/Stations/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
@@ -118,7 +110,7 @@ export default {
   components: {
     Loader,
     EmptyBox,
-    StationList,
+    StationPanel,
     FilterForm,
     Btn,
   },

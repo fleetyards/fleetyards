@@ -1,11 +1,11 @@
 <template>
   <Panel
-    :id="item.slug"
-    class="station-list"
+    :id="station.slug"
+    class="station-panel"
   >
     <div
-      :key="item.storeImage"
-      v-lazy:background-image="item.storeImage"
+      :key="station.storeImage"
+      v-lazy:background-image="station.storeImage"
       class="panel-bg lazy"
     />
     <div class="row">
@@ -13,10 +13,15 @@
         <div class="panel-heading">
           <h2 class="panel-title">
             <router-link
-              :to="route"
-              :aria-label="item.name"
+              :to="{
+                name: 'station',
+                params: {
+                  slug: station.slug
+                }
+              }"
+              :aria-label="station.name"
             >
-              {{ item.name }}
+              {{ station.name }}
             </router-link>
           </h2>
         </div>
@@ -25,7 +30,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-lg-4">
         <div class="panel-stats">
-          <Stats :station="item" />
+          <Stats :station="station" />
         </div>
       </div>
       <div class="col-xs-12 col-sm-6 col-lg-8 items">
@@ -46,12 +51,7 @@ export default {
   },
 
   props: {
-    route: {
-      type: Object,
-      required: true,
-    },
-
-    item: {
+    station: {
       type: Object,
       required: true,
     },

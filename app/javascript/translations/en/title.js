@@ -1,6 +1,7 @@
 export default {
   main: '%{title} | FleetYards.net',
   home: 'Home',
+  search: 'Search Results',
   models: 'Ships',
   model: '%{name} - %{manufacturer}',
   modelImages: '%{name} Images',

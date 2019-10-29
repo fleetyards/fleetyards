@@ -15,3 +15,4 @@ json.size celestial_object.size
 json.danger celestial_object.sensor_danger
 json.economy celestial_object.sensor_economy
 json.population celestial_object.sensor_population
+json.location_label celestial_object.location_label

@@ -1,11 +1,9 @@
 @import '~stylesheets/variables';
 
-$borderRadius: 16px;
-
-.station-list {
+.station-panel {
   > .panel {
-    min-height: 400px;
     background-color: black;
+    min-height: 400px;
 
     .panel-heading .panel-title {
       font-size: 30px;
@@ -20,7 +18,7 @@ $borderRadius: 16px;
   }
 
   .panel-bg {
-    border-radius: $borderRadius;
+    border-radius: $panelContentBorderRadius;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -66,7 +64,7 @@ $borderRadius: 16px;
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .station-list {
+  .station-panel {
     .items {
       position: relative;
     }

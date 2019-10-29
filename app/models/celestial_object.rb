@@ -9,7 +9,7 @@ class CelestialObject < ApplicationRecord
   def search_data
     {
       name: name,
-      starsystem: starsystem.name
+      starsystem: starsystem&.name
     }
   end
 
@@ -55,5 +55,9 @@ class CelestialObject < ApplicationRecord
 
   def self.visible
     where(hidden: false)
+  end
+
+  def location_label
+    I18n.t('activerecord.attributes.celestial_object.location_prefix.default', starsystem: starsystem.name)
   end
 end

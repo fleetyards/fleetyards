@@ -11,7 +11,7 @@ class Station < ApplicationRecord
       name: name,
       station_type: station_type,
       celestial_object: celestial_object.name,
-      starsystem: celestial_object.starsystem.name
+      starsystem: celestial_object.starsystem&.name
     }
   end
 
@@ -106,6 +106,10 @@ class Station < ApplicationRecord
         OpenStruct.new(size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, count: docks_by_type.size)
       end
     end.flatten
+  end
+
+  def shop_list_label
+    shops.map(&:name).join(', ')
   end
 
   def station_type_label

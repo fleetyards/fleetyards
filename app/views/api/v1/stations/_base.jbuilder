@@ -11,25 +11,11 @@ json.store_image_medium station.store_image.medium.url
 json.store_image_small station.store_image.small.url
 json.description station.description
 json.background_image station.random_image&.name&.url
-json.celestial_object do
-  json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
-end
-json.starsystem do
-  json.partial! 'api/v1/starsystems/base', starsystem: station.starsystem
-end
-json.shops do
-  json.array! station.shops.visible.order(:name), partial: 'api/v1/shops/base', as: :shop
+json.has_images station.images.count.positive?
+json.shop_list_label station.shop_list_label
+json.habitation_counts do
+  json.array! station.habitation_counts, partial: 'api/v1/stations/habitation_count', as: :habitation_count
 end
 json.dock_counts do
   json.array! station.dock_counts, partial: 'api/v1/stations/dock_count', as: :dock_count
 end
-json.docks do
-  json.array! station.docks, partial: 'api/v1/stations/dock', as: :dock
-end
-json.habitation_counts do
-  json.array! station.habitation_counts, partial: 'api/v1/stations/habitation_count', as: :habitation_count
-end
-json.habitations do
-  json.array! station.habitations, partial: 'api/v1/stations/habitation', as: :habitation
-end
-json.has_images station.images.count.positive?

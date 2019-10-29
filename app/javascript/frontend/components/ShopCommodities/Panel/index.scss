@@ -5,11 +5,11 @@
 
   .teaser-panel-body {
     padding: 15px;
-    width: 50%;
+    width: 66%;
   }
 
   .teaser-panel-image {
-    width: 50%;
+    width: 33%;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: .8;
@@ -22,24 +22,17 @@
   }
 
   h3 {
-    text-align: right;
     font-size: 20px;
     font-family: 'Orbitron', tahoma, sans-serif;
     font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   p {
     z-index: 20;
     position: relative;
-  }
-
-  &.teaser-panel-text {
-    .teaser-panel-body {
-      width: 66%;
-    }
-
-    .teaser-panel-image {
-      width: 33%;
-    }
   }
 }

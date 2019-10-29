@@ -5,13 +5,14 @@ class Model < ApplicationRecord
 
   paginates_per 30
 
-  searchkick searchable: %i[name manufacturer_name],
+  searchkick searchable: %i[name manufacturer_name manufacturer_code],
              filterable: []
 
   def search_data
     {
       name: name,
-      manufacturer_name: manufacturer.name
+      manufacturer_name: manufacturer.name,
+      manufacturer_code: manufacturer.code
     }
   end
 

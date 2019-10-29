@@ -118,9 +118,6 @@ export default {
     },
   },
   methods: {
-    clearName() {
-      this.form.nameCont = null
-    },
     fetchCelestialObjects({ page, search, missingValue }) {
       const query = {
         q: {},

@@ -12,6 +12,13 @@ export const routes = [
       title: 'home',
     },
   }, {
+    path: '/search/',
+    name: 'search',
+    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Search'),
+    meta: {
+      title: 'search',
+    },
+  }, {
     path: '/impressum/',
     name: 'impressum',
     component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Impressum'),

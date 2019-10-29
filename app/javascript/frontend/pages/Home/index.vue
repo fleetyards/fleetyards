@@ -21,9 +21,9 @@
                       <div class="input-group-flex">
                         <FormInput
                           v-model="searchQuery"
-                          :aria-label="$t('labels.searchInput')"
+                          :aria-label="$t('placeholders.search')"
                           data-test="home-search"
-                          :placeholder="$t('placeholders.home.search')"
+                          :placeholder="$t('placeholders.search')"
                           size="large"
                           autofocus
                         />
@@ -193,10 +193,10 @@ export default {
         return
       }
       this.$router.push({
-        name: 'models',
+        name: 'search',
         query: {
           q: {
-            nameCont: this.searchQuery,
+            search: this.searchQuery,
           },
         },
       })

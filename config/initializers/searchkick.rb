@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Searchkick.index_prefix = 'fleetyards'
+Searchkick.index_prefix = "fleetyards-#{Rails.env}"
 Searchkick.model_options = {
   settings: {
     blocks: {

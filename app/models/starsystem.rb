@@ -41,4 +41,8 @@ class Starsystem < ApplicationRecord
   def self.visible
     where(hidden: false)
   end
+
+  def location_label
+    factions.first&.name
+  end
 end
