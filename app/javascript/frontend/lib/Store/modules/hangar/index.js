@@ -13,6 +13,10 @@ export default () => ({
       return state.ships
     },
 
+    preview(state) {
+      return state.preview
+    },
+
     empty(state) {
       return state.ships.length === 0
     },
@@ -82,6 +86,10 @@ export default () => ({
 
     setShips(state, payload) {
       state.ships = payload
+    },
+
+    setPreview(state, payload) {
+      state.preview = !!payload
     },
   },
   /* eslint-enable no-param-reassign */

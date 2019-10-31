@@ -112,7 +112,7 @@
             <a>{{ $t('nav.home') }}</a>
           </router-link>
           <router-link
-            v-if="isAuthenticated"
+            v-if="isAuthenticated || !hangarPreview"
             :to="{ name: 'hangar' }"
             tag="li"
           >
@@ -305,6 +305,10 @@ export default {
       'currentUser',
       'isAuthenticated',
     ]),
+
+    ...mapGetters('hangar', {
+      hangarPreview: 'preview',
+    }),
 
     environmentLabelClasses() {
       const cssClasses = ['pill']

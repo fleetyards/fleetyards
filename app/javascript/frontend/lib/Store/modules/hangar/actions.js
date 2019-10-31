@@ -19,6 +19,10 @@ export default {
     }
   },
 
+  hidePreview({ commit }) {
+    commit('setPreview', false)
+  },
+
   add({ commit }, payload) {
     commit('add', payload)
   },

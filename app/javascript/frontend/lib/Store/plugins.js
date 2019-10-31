@@ -20,6 +20,7 @@ export default function getStorePlugins() {
       'hangar.fleetchartScale',
       'hangar.publicFleetchartVisible',
       'hangar.publicFleetchartScale',
+      'hangar.preview',
       'models.detailsVisible',
       'models.filterVisible',
       'models.fleetchartVisible',

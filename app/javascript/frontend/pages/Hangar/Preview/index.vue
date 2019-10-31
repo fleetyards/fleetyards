@@ -109,6 +109,7 @@
                 },
               }"
               block
+              @click.native="hidePreview"
             >
               {{ $t('actions.login') }}
             </Btn>
@@ -136,6 +137,13 @@ export default {
   mixins: [
     MetaInfo,
   ],
+
+  methods: {
+    hidePreview() {
+      console.log('foo')
+      this.$store.dispatch('hangar/hidePreview')
+    },
+  },
 }
 </script>
 

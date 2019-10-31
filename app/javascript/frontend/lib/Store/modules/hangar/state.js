@@ -6,4 +6,5 @@ export default () => ({
   fleetchartScale: 100,
   publicFleetchartVisible: false,
   publicFleetchartScale: 100,
+  preview: true,
 })
