@@ -12,7 +12,8 @@ describe('Home', () => {
 
     cy.get('#search-submit').click()
 
-    cy.url().should('include', '/search')
+    cy.url().should('include', '/ships')
+    // cy.url().should('include', '/search')
 
     cy.get('.panel .panel-title').should('contain', '600i Explorer')
   })
@@ -20,7 +21,8 @@ describe('Home', () => {
   it('Shows Search Results via Key', () => {
     cy.selectInput('home-search').type('600i Touring{enter}')
 
-    cy.url().should('include', '/search')
+    cy.url().should('include', '/ships')
+    // cy.url().should('include', '/search')
 
     cy.get('.panel .panel-title').should('contain', '600i Touring')
   })

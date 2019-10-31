@@ -193,10 +193,12 @@ export default {
         return
       }
       this.$router.push({
-        name: 'search',
+        // name: 'search',
+        name: 'ships',
         query: {
           q: {
-            search: this.searchQuery,
+            // search: this.searchQuery,
+            nameCont: this.searchQuery,
           },
         },
       })
