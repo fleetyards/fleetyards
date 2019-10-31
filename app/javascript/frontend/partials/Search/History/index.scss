@@ -1,0 +1,30 @@
+
+@import '~stylesheets/variables';
+
+.search-history {
+  .search-history-item,
+  .search-history-empty {
+    padding: 20px 25px;
+    font-size: 20px;
+    border-top: 1px solid $gray-black;
+  }
+
+  .search-history-item {
+    cursor: pointer;
+    transition: background-color $transition-base-speed ease;
+
+    &:last-child {
+      border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+    }
+
+    &:hover {
+      background-color: $gray-dark;
+    }
+  }
+
+  .search-history-empty {
+    text-align: center;
+    color: darken($text-color, 30%);
+  }
+}

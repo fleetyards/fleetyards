@@ -27,6 +27,16 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <Paginator
+          v-if="results.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -63,9 +73,24 @@
           ignore-filter
         />
 
-        <Loader
-          :loading="loading"
-          fixed
+        <SearchHistory
+          v-if="historyVisible"
+          @restore="restoreSearch"
+        >
+<Loader
+            :loading="loading"
+            fixed
+          />
+        </searchhistory>
+</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <Paginator
+          v-if="results.length"
+          :page="currentPage"
+          :total="totalPages"
+          right
         />
       </div>
     </div>
@@ -82,6 +107,8 @@ import SearchPanel from 'frontend/components/Search/Panel'
 import CelestialObjectsPanel from 'frontend/components/CelestialObjects/Panel'
 import ShopCommodityPanel from 'frontend/components/ShopCommodities/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import SearchHistory from 'frontend/partials/Search/History'
+import Pagination from 'frontend/mixins/Pagination'
 
 export default {
   name: 'Search',
@@ -94,11 +121,13 @@ export default {
     CelestialObjectsPanel,
     ShopCommodityPanel,
     FormInput,
+    SearchHistory,
   },
 
   mixins: [
     MetaInfo,
     Filters,
+    Pagination,
   ],
 
   data() {
@@ -109,12 +138,13 @@ export default {
       },
       results: [],
       loading: false,
+      emptyBoxVisible: false,
     }
   },
 
   computed: {
-    emptyBoxVisible() {
-      return !this.loading && !this.results.length && this.form.search
+    historyVisible() {
+      return !this.loading && !this.results.length && !this.form.search
     },
   },
 
@@ -129,9 +159,17 @@ export default {
 
     form: {
       handler() {
+        if (!this.form.search) {
+          this.emptyBoxVisible = false
+        }
+
         this.filter()
       },
       deep: true,
+    },
+
+    results() {
+      this.emptyBoxVisible = !this.loading && !this.results.length && this.form.search
     },
   },
 
@@ -169,18 +207,29 @@ export default {
       }
     },
 
+    restoreSearch(search) {
+      this.form.search = search
+    },
+
     async fetch() {
       this.loading = true
 
       const response = await this.$api.get('search', {
         q: this.$route.query.q,
+        page: this.$route.query.page,
       })
 
       this.loading = false
 
       if (!response.error) {
         this.results = response.data
+
+        if (this.form.search) {
+          this.$store.dispatch('search/save', { search: this.form.search, createdAt: new Date() })
+        }
       }
+
+      this.setPages(response.meta)
     },
   },
 }

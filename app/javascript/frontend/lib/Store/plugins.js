@@ -29,6 +29,7 @@ export default function getStorePlugins() {
       'stations.filterVisible',
       'compare.modelA',
       'compare.modelB',
+      'search.history',
     ],
   })]
 }

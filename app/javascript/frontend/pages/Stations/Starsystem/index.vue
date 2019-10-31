@@ -27,14 +27,14 @@
       </div>
       <div class="col-xs-12 col-md-4">
         <Panel>
-          <ul class="list-group metrics">
-            <li class="list-group-item">
-              <StarsystemBaseMetrics :starsystem="starsystem" />
-            </li>
-            <li class="list-group-item">
-              <StarsystemLevelsMetrics :starsystem="starsystem" />
-            </li>
-          </ul>
+          <StarsystemBaseMetrics
+            :starsystem="starsystem"
+            padding
+          />
+          <StarsystemLevelsMetrics
+            :starsystem="starsystem"
+            padding
+          />
         </Panel>
       </div>
     </div>

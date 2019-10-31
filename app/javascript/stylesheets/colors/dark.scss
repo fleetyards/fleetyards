@@ -273,21 +273,6 @@ $progress-bar-warning-bg:     $brand-warning;
 $progress-bar-danger-bg:      $brand-danger;
 $progress-bar-info-bg:        $brand-info;
 
-// List group
-// -------------------------
-$list-group-bg:               rgba(lighten($body-bg, 3%), .4);
-$list-group-border:           rgba(0, 0, 0, .6);
-$list-group-border-radius:    $border-radius-base;
-
-$list-group-hover-bg:         rgba(lighten($body-bg, 10%), .8);
-$list-group-active-color:     $component-active-color;
-$list-group-active-bg:        lighten($body-bg, 10%);
-$list-group-active-border:    $list-group-border;
-
-$list-group-link-color:          $text-color;
-$list-group-link-heading-color:  #fff;
-$list-group-link-hover-color:    darken(#fff, 10%);
-
 // Wells
 // -------------------------
 $well-bg:                     rgba(darken($body-bg, 5%), .8);

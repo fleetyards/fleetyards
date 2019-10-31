@@ -35,17 +35,18 @@
         class="col-xs-12 col-md-4"
       >
         <Panel>
-          <ul class="list-group metrics">
-            <li class="list-group-item">
-              <StationBaseMetrics :station="station" />
-            </li>
-            <li class="list-group-item">
-              <StationDocks :station="station" />
-            </li>
-            <li class="list-group-item">
-              <StationHabitations :station="station" />
-            </li>
-          </ul>
+          <StationBaseMetrics
+            :station="station"
+            padding
+          />
+          <StationDocks
+            :station="station"
+            padding
+          />
+          <StationHabitations
+            :station="station"
+            padding
+          />
         </Panel>
         <div class="text-right">
           <div class="page-actions">

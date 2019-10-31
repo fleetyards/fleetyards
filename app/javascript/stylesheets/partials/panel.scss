@@ -139,6 +139,18 @@ $contentBorderRadius: $panelContentBorderRadius;
         }
       }
     }
+
+    &.panel-heading-with-actions {
+      h2 {
+        margin-bottom: 10.5px;
+      }
+
+      .panel-heading-actions {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+      }
+    }
   }
 
   .panel-footer {
@@ -201,27 +213,12 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
   }
 
-  .list-group-item {
-    background: transparent;
-  }
-
-  .list-group,
   table {
     margin-bottom: 0;
   }
 
   table:first-child tbody:first-child tr:first-child td,
-  table:first-child thead tr:first-child th,
-  .list-group:first-child .list-group-item:first-child {
+  table:first-child thead tr:first-child th {
     border-top: none;
-  }
-
-  .list-group:last-child .list-group-item:last-child {
-    border-bottom: none;
-  }
-
-  .list-group .list-group-item {
-    border-width: 0 0 1px;
-    border-radius: 0;
   }
 }

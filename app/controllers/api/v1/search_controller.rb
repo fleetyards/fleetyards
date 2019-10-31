@@ -4,6 +4,7 @@ module Api
   module V1
     class SearchController < ::Api::V1::BaseController
       before_action :authenticate_api_user!, only: %i[]
+      after_action -> { pagination_header(:results) }, only: [:index]
 
       def index
         authorize! :index, :api_search

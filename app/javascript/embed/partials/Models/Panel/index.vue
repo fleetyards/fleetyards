@@ -49,17 +49,9 @@
           </template>
         </strong>
       </div>
-      <ul
-        v-if="details"
-        class="list-group"
-      >
-        <li class="list-group-item">
-          <ModelTopMetrics :model="model" />
-        </li>
-        <li class="list-group-item">
-          <ModelBaseMetrics :model="model" />
-        </li>
-      </ul>
+      <ModelTopMetrics :model="model" />
+      <hr>
+      <ModelBaseMetrics :model="model" />
     </Panel>
   </div>
 </template>

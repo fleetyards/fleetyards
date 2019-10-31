@@ -121,14 +121,15 @@
             </template>
           </strong>
         </div>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <ModelTopMetrics :model="model" />
-          </li>
-          <li class="list-group-item">
-            <ModelBaseMetrics :model="model" />
-          </li>
-        </ul>
+        <ModelTopMetrics
+          :model="model"
+          padding
+        />
+        <hr class="dark">
+        <ModelBaseMetrics
+          :model="model"
+          padding
+        />
       </b-collapse>
     </Panel>
   </div>

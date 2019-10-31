@@ -91,35 +91,26 @@
           </div>
           <div class="col-xs-12 col-md-4">
             <Panel>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <ModelBaseMetrics
-                    :model="model"
-                    title
-                    detailed
-                  />
-                </li>
-              </ul>
+              <ModelBaseMetrics
+                :model="model"
+                title
+                detailed
+                padding
+              />
             </Panel>
             <Panel>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <ModelCrewMetrics
-                    :model="model"
-                    title
-                  />
-                </li>
-              </ul>
+              <ModelCrewMetrics
+                :model="model"
+                title
+                padding
+              />
             </Panel>
             <Panel>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <ModelSpeedMetrics
-                    :model="model"
-                    title
-                  />
-                </li>
-              </ul>
+              <ModelSpeedMetrics
+                :model="model"
+                title
+                padding
+              />
             </Panel>
             <div class="text-right">
               <div class="page-actions">

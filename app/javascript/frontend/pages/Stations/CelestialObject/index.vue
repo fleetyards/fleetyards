@@ -34,11 +34,10 @@
       </div>
       <div class="col-xs-12 col-md-4">
         <Panel>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <CelestialObjectMetrics :celestial-object="celestialObject" />
-            </li>
-          </ul>
+          <CelestialObjectMetrics
+            :celestial-object="celestialObject"
+            padding
+          />
         </Panel>
       </div>
     </div>

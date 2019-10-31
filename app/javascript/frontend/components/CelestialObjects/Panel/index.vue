@@ -26,29 +26,6 @@
         </small>
       </h2>
     </div>
-    <!-- <b-collapse
-        :id="`details-${model.slug}-wrapper`"
-        :visible="details"
-      >
-        <div class="production-status">
-          <strong class="text-uppercase">
-            <template v-if="model.productionStatus">
-              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
-            </template>
-            <template v-else>
-              {{ $t(`labels.not-available`) }}
-            </template>
-          </strong>
-        </div>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <ModelTopMetrics :model="model" />
-          </li>
-          <li class="list-group-item">
-            <ModelBaseMetrics :model="model" />
-          </li>
-        </ul>
-      </b-collapse> -->
   </Panel>
 </template>
 

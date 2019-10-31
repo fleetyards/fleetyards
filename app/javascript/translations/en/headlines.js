@@ -40,6 +40,7 @@ export default {
     create: 'Create Group',
     edit: 'Edit Group',
   },
+  searchHistory: 'Search History',
   compare: {
     models: 'Compare Ships',
   },

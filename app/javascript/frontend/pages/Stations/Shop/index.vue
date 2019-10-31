@@ -33,11 +33,10 @@
         class="col-xs-12 col-md-4"
       >
         <Panel>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <ShopBaseMetrics :shop="shop" />
-            </li>
-          </ul>
+          <ShopBaseMetrics
+            :shop="shop"
+            padding
+          />
         </Panel>
       </div>
     </div>
