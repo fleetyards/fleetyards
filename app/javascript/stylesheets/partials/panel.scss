@@ -141,14 +141,12 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
 
     &.panel-heading-with-actions {
+      display: flex;
+      justify-content: space-between;
+
       h2 {
         margin-bottom: 10.5px;
-      }
-
-      .panel-heading-actions {
-        position: absolute;
-        right: 15px;
-        top: 10px;
+        padding-right: 40px;
       }
     }
   }

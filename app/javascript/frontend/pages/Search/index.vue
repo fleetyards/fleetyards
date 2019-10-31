@@ -11,15 +11,31 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-push-3">
-            <form @submit.prevent="filter">
-              <FormInput
-                v-model="form.search"
-                :placeholder="$t('placeholders.search')"
-                :aria-label="$t('placeholders.search')"
-                size="large"
-                autofocus
-              />
-              <br>
+            <form
+              class="search-form"
+              @submit.prevent="filter"
+            >
+              <div class="form-group">
+                <div class="input-group-flex">
+                  <FormInput
+                    v-model="form.search"
+                    :placeholder="$t('placeholders.search')"
+                    :aria-label="$t('placeholders.search')"
+                    size="large"
+                    autofocus
+                    @clear="filter"
+                  />
+                  <Btn
+                    id="search-submit"
+                    :aria-label="$t('labels.search')"
+                    size="large"
+                    inline
+                    @click.native="search"
+                  >
+                    <i class="fal fa-search" />
+                  </Btn>
+                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -69,20 +85,22 @@
         </transition-group>
 
         <EmptyBox
-          v-if="emptyBoxVisible"
+          :visible="emptyBoxVisible"
           ignore-filter
         />
 
-        <SearchHistory
-          v-if="historyVisible"
-          @restore="restoreSearch"
-        >
-<Loader
-            :loading="loading"
-            fixed
+        <transition name="fade">
+          <SearchHistory
+            v-if="historyVisible"
+            @restore="restoreSearch"
           />
-        </searchhistory>
-</div>
+        </transition>
+
+        <Loader
+          :loading="loading"
+          fixed
+        />
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
@@ -102,6 +120,7 @@ import Filters from 'frontend/mixins/Filters'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/components/Form/FormInput'
 import Loader from 'frontend/components/Loader'
+import Btn from 'frontend/components/Btn'
 import ModelPanel from 'frontend/components/Models/Panel'
 import SearchPanel from 'frontend/components/Search/Panel'
 import CelestialObjectsPanel from 'frontend/components/CelestialObjects/Panel'
@@ -115,6 +134,7 @@ export default {
 
   components: {
     Loader,
+    Btn,
     EmptyBox,
     ModelPanel,
     SearchPanel,
@@ -139,13 +159,8 @@ export default {
       results: [],
       loading: false,
       emptyBoxVisible: false,
+      historyVisible: false,
     }
-  },
-
-  computed: {
-    historyVisible() {
-      return !this.loading && !this.results.length && !this.form.search
-    },
   },
 
   watch: {
@@ -157,19 +172,9 @@ export default {
       this.fetch()
     },
 
-    form: {
-      handler() {
-        if (!this.form.search) {
-          this.emptyBoxVisible = false
-        }
-
-        this.filter()
-      },
-      deep: true,
-    },
-
     results() {
-      this.emptyBoxVisible = !this.loading && !this.results.length && this.form.search
+      this.historyVisible = !this.loading && !this.results.length && !this.form.search
+      this.emptyBoxVisible = !this.loading && !this.results.length && !!this.form.search
     },
   },
 
@@ -207,8 +212,13 @@ export default {
       }
     },
 
+    search() {
+      this.filter()
+    },
+
     restoreSearch(search) {
       this.form.search = search
+      this.filter()
     },
 
     async fetch() {
@@ -234,3 +244,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import 'index';
+</style>

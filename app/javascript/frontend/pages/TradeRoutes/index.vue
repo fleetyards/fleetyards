@@ -117,7 +117,7 @@
           </div>
         </div>
       </transition-group>
-      <EmptyBox v-if="emptyBoxVisible" />
+      <EmptyBox :visible="emptyBoxVisible" />
       <Loader
         :loading="loading"
         fixed

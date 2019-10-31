@@ -117,6 +117,7 @@ export default {
     },
     clear() {
       this.$emit('input', null)
+      this.$emit('clear')
     },
   },
 }

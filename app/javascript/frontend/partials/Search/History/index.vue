@@ -8,11 +8,19 @@
           </h2>
           <div class="panel-heading-actions">
             <Btn
+              v-if="history.length"
               size="small"
               inline
+              :aria-label="$t('actions.clearHistory')"
               @click.native="resetHistory"
             >
-              {{ $t('actions.clearHistory') }}
+              <i
+                v-if="mobile"
+                class="fa fa-times"
+              />
+              <template v-else>
+                {{ $t('actions.clearHistory') }}
+              </template>
             </Btn>
           </div>
         </div>
@@ -66,6 +74,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+
     ...mapGetters('search', [
       'history',
     ]),
