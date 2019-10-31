@@ -194,7 +194,7 @@ export default {
       }
       this.$router.push({
         // name: 'search',
-        name: 'ships',
+        name: 'models',
         query: {
           q: {
             // search: this.searchQuery,
