@@ -144,6 +144,8 @@ en:
           weapon_scope: Scope
           utility: Utility
       shop:
+        location_prefix:
+          default: 'at'
         hidden: hidden?
         rental: Does offer Rentals?
         buying: Does buy Items?
@@ -165,6 +167,8 @@ en:
           computers: Computer Store
       celestial_object:
         hidden: hidden?
+        location_prefix:
+          default: 'in the %{starsystem} System'
       station:
         hidden: hidden?
         location_prefix:
@@ -199,6 +203,8 @@ en:
           scrap: Scrap
           vice: Vice
       shop_commodity:
+        location_prefix:
+          default: 'sold at'
         price_per_unit: Price per Unit?
     errors:
       messages:

@@ -3,6 +3,8 @@
 namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%w[admin api].include?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
 
+  get 'search' => 'base#index'
+
   get 'ships' => 'base#index'
   get 'ships/:slug' => 'base#model'
   get 'ships/:slug/images' => 'base#model_images'

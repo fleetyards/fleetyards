@@ -134,12 +134,12 @@ class RsiLocationLoader < RsiBaseLoader
   private def create_or_update_affiliations(affiliationable, data = [])
     affiliationable.affiliations.destroy_all
 
-    data.map do |faction|
-      faction = Faction.find_or_create_by!(rsi_id: faction['id'])
-      faction.update!(
-        name: faction['name'],
-        code: faction['code'],
-        color: faction['color']
+    data.each do |faction_data|
+      faction = Faction.find_or_create_by!(rsi_id: faction_data['id'])
+      faction.update(
+        name: faction_data['name'],
+        code: faction_data['code'],
+        color: faction_data['color']
       )
       Affiliation.create(affiliationable: affiliationable, faction_id: faction.id)
     end

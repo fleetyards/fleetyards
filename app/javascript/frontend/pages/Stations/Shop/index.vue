@@ -278,7 +278,7 @@ export default {
         hash: `#${this.shop.station.slug}-${this.shop.slug}`,
       }
 
-      if (this.previousRoute && ['shops', 'station', 'celestialObject'].includes(this.previousRoute.name)) {
+      if (this.previousRoute && ['shops', 'station', 'celestialObject', 'search'].includes(this.previousRoute.name)) {
         route.name = this.previousRoute.name
         route.params = this.previousRoute.params
         route.query = this.previousRoute.query

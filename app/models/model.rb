@@ -5,6 +5,21 @@ class Model < ApplicationRecord
 
   paginates_per 30
 
+  searchkick searchable: %i[name manufacturer_name manufacturer_code],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      manufacturer_name: manufacturer.name,
+      manufacturer_code: manufacturer.code
+    }
+  end
+
+  def should_index?
+    active && !hidden
+  end
+
   belongs_to :manufacturer, optional: true
 
   has_one :addition,

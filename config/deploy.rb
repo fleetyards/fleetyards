@@ -151,6 +151,20 @@ namespace :uploads do
   end
 end
 
+namespace :es do
+  task :index do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Reindexing Elasticsearch...'
+          execute(:bundle, :exec, :thor, 'search:index')
+          info 'Reindexing finished'
+        end
+      end
+    end
+  end
+end
+
 namespace :db do
   task :load_schema do
     on roles(:db) do

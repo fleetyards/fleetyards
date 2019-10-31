@@ -5,11 +5,11 @@
 
   .teaser-panel-body {
     padding: 15px;
-    flex: .5;
+    width: 50%;
   }
 
   .teaser-panel-image {
-    flex: .5;
+    width: 50%;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: .8;
@@ -35,11 +35,11 @@
 
   &.teaser-panel-text {
     .teaser-panel-body {
-      flex: .66;
+      width: 66%;
     }
 
     .teaser-panel-image {
-      flex: .33;
+      width: 33%;
     }
   }
 }

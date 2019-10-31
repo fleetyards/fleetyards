@@ -30,6 +30,7 @@ module Api
           'economy' => nil,
           'danger' => nil,
           'status' => nil,
+          'locationLabel' => oberon.location_label,
           'celestialObjects' => [],
           'createdAt' => oberon.created_at.utc.iso8601,
           'updatedAt' => oberon.updated_at.utc.iso8601
@@ -48,6 +49,7 @@ module Api
           'economy' => nil,
           'danger' => nil,
           'status' => nil,
+          'locationLabel' => stanton.location_label,
           'celestialObjects' => [{
             'name' => 'Hurston',
             'slug' => 'hurston',
@@ -63,7 +65,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => stanton.celestial_objects.first.location_label
           }, {
             'name' => 'Crusader',
             'slug' => 'crusader',
@@ -79,7 +82,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => stanton.celestial_objects.last.location_label
           }],
           'createdAt' => stanton.created_at.utc.iso8601,
           'updatedAt' => stanton.updated_at.utc.iso8601
@@ -101,6 +105,7 @@ module Api
           'economy' => nil,
           'danger' => nil,
           'status' => nil,
+          'locationLabel' => stanton.location_label,
           'celestialObjects' => [{
             'name' => 'Hurston',
             'slug' => 'hurston',
@@ -116,7 +121,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => stanton.celestial_objects.first.location_label
           }, {
             'name' => 'Crusader',
             'slug' => 'crusader',
@@ -132,7 +138,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => stanton.celestial_objects.last.location_label
           }],
           'createdAt' => stanton.created_at.utc.iso8601,
           'updatedAt' => stanton.updated_at.utc.iso8601

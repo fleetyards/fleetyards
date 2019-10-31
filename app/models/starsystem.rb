@@ -3,6 +3,19 @@
 class Starsystem < ApplicationRecord
   paginates_per 15
 
+  searchkick searchable: %i[name],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   has_many :celestial_objects,
            dependent: :destroy
   has_many :planets,
@@ -27,5 +40,9 @@ class Starsystem < ApplicationRecord
 
   def self.visible
     where(hidden: false)
+  end
+
+  def location_label
+    factions.first&.name
   end
 end

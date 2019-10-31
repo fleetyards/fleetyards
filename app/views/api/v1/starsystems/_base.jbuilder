@@ -14,3 +14,4 @@ json.population starsystem.aggregated_population
 json.economy starsystem.aggregated_economy
 json.danger starsystem.aggregated_danger
 json.status starsystem.status
+json.location_label starsystem.location_label

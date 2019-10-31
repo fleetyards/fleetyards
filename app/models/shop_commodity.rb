@@ -3,6 +3,25 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
+  searchkick searchable: %i[name manufacturer_name manufacturer_code shop station celestial_object starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: commodity_item.name,
+      manufacturer_name: commodity_item.manufacturer&.name,
+      manufacturer_code: commodity_item.manufacturer&.code,
+      shop: shop.name,
+      station: shop.station.name,
+      celestial_object: shop.station.celestial_object.name,
+      starsystem: shop.station.celestial_object.starsystem&.name
+    }
+  end
+
+  def should_index?
+    commodity_item.is_a?(Equipment) || commodity_item.is_a?(Component)
+  end
+
   belongs_to :commodity_item, polymorphic: true, optional: true
   belongs_to :model,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
@@ -109,5 +128,14 @@ class ShopCommodity < ApplicationRecord
     when 'Commodity'
       commodity_item.commodity_type_label
     end
+  end
+
+  def location_label
+    [
+      I18n.t('activerecord.attributes.shop_commodity.location_prefix.default'),
+      shop.name,
+      I18n.t('activerecord.attributes.station.location_prefix.default'),
+      shop.station.name
+    ].join(' ')
   end
 end

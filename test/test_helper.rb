@@ -43,6 +43,9 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# and disable callbacks
+Searchkick.disable_callbacks
+
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers
@@ -50,6 +53,8 @@ class ActionController::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -58,6 +63,8 @@ class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
   fixtures :all
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -70,5 +77,7 @@ class ActiveSupport::TestCase
   after do
     Sidekiq::Worker.clear_all
   end
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren

@@ -33,6 +33,7 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
+          'locationLabel' => hurston.location_label,
           'moons' => [],
           'starsystem' => {
             'name' => 'Stanton',
@@ -49,6 +50,7 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
+            'locationLabel' => hurston.starsystem.location_label,
           },
           'createdAt' => hurston.created_at.utc.iso8601,
           'updatedAt' => hurston.updated_at.utc.iso8601
@@ -68,6 +70,7 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
+          'locationLabel' => crusader.location_label,
           'moons' => [{
             'name' => 'Yela',
             'slug' => 'yela',
@@ -83,7 +86,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => crusader.moons.first.location_label,
           }, {
             'name' => 'Daymar',
             'slug' => 'daymar',
@@ -99,7 +103,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => crusader.moons.last.location_label,
           }],
           'starsystem' => {
             'name' => 'Stanton',
@@ -116,6 +121,7 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
+            'locationLabel' => crusader.starsystem.location_label,
           },
           'createdAt' => crusader.created_at.utc.iso8601,
           'updatedAt' => crusader.updated_at.utc.iso8601
@@ -135,6 +141,7 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
+          'locationLabel' => yela.location_label,
           'moons' => [],
           'starsystem' => {
             'name' => 'Stanton',
@@ -151,6 +158,7 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
+            'locationLabel' => yela.starsystem.location_label,
           },
           'createdAt' => yela.created_at.utc.iso8601,
           'updatedAt' => yela.updated_at.utc.iso8601
@@ -170,6 +178,7 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
+          'locationLabel' => daymar.location_label,
           'moons' => [],
           'starsystem' => {
             'name' => 'Stanton',
@@ -186,6 +195,7 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
+            'locationLabel' => daymar.starsystem.location_label,
           },
           'createdAt' => daymar.created_at.utc.iso8601,
           'updatedAt' => daymar.updated_at.utc.iso8601
@@ -208,6 +218,7 @@ module Api
           'danger' => nil,
           'economy' => nil,
           'population' => nil,
+          'locationLabel' => crusader.location_label,
           'moons' => [{
             'name' => 'Yela',
             'slug' => 'yela',
@@ -223,7 +234,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => crusader.moons.first.location_label,
           }, {
             'name' => 'Daymar',
             'slug' => 'daymar',
@@ -239,7 +251,8 @@ module Api
             'size' => nil,
             'danger' => nil,
             'economy' => nil,
-            'population' => nil
+            'population' => nil,
+            'locationLabel' => crusader.moons.last.location_label,
           }],
           'starsystem' => {
             'name' => 'Stanton',
@@ -256,6 +269,7 @@ module Api
             'economy' => nil,
             'danger' => nil,
             'status' => nil,
+            'locationLabel' => crusader.starsystem.location_label,
           },
           'createdAt' => crusader.created_at.utc.iso8601,
           'updatedAt' => crusader.updated_at.utc.iso8601

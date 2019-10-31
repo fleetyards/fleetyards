@@ -44,9 +44,16 @@ export default {
 
   mixins: [Filters],
 
+  props: {
+    ignoreFilter: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   computed: {
     isQueryPresent() {
-      return Object.keys(this.$route.query).length > 0
+      return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
     },
   },
 }

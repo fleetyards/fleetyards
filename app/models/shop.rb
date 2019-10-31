@@ -3,6 +3,23 @@
 class Shop < ApplicationRecord
   paginates_per 30
 
+  searchkick searchable: %i[name shop_type station celestial_object starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      shop_type: shop_type,
+      station: station.name,
+      celestial_object: station.celestial_object.name,
+      starsystem: station.celestial_object.starsystem&.name
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   belongs_to :station
   has_many :shop_commodities, dependent: :destroy
 
@@ -46,6 +63,14 @@ class Shop < ApplicationRecord
 
   def shop_type_label
     Shop.human_enum_name(:shop_type, shop_type)
+  end
+
+  def location_label
+    [
+      I18n.t('activerecord.attributes.shop.location_prefix.default'),
+      station.name,
+      station.location_label
+    ].join(' ')
   end
 
   private def update_shop_commodities

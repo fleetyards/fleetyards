@@ -3,6 +3,22 @@
 class Station < ApplicationRecord
   paginates_per 10
 
+  searchkick searchable: %i[name station_type celestial_object starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      station_type: station_type,
+      celestial_object: celestial_object.name,
+      starsystem: celestial_object.starsystem&.name
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   has_many :shops, dependent: :destroy
   has_many :docks,
            -> { order(ship_size: :asc) },
@@ -90,6 +106,10 @@ class Station < ApplicationRecord
         OpenStruct.new(size: size, dock_type: dock_type, dock_type_label: docks_by_type.first.dock_type_label, count: docks_by_type.size)
       end
     end.flatten
+  end
+
+  def shop_list_label
+    shops.map(&:name).join(', ')
   end
 
   def station_type_label

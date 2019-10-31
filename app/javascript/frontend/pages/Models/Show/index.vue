@@ -397,7 +397,7 @@ export default {
         hash: `#${this.model.slug}`,
       }
 
-      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop'].includes(this.previousRoute.name)) {
+      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop', 'search'].includes(this.previousRoute.name)) {
         route.name = this.previousRoute.name
         route.params = this.previousRoute.params
         route.query = this.previousRoute.query

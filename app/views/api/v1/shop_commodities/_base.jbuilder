@@ -16,3 +16,10 @@ json.rent_price_1_day shop_commodity.rent_price_1_day
 json.rent_price_3_days shop_commodity.rent_price_3_days
 json.rent_price_7_days shop_commodity.rent_price_7_days
 json.rent_price_30_days shop_commodity.rent_price_30_days
+json.location_label shop_commodity.location_label
+json.shop do
+  json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
+end
+json.item do
+  json.partial! "api/v1/#{shop_commodity.category.pluralize}/minimal", shop_commodity.category.to_sym => shop_commodity.commodity_item
+end

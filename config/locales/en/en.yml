@@ -61,6 +61,7 @@ en:
   title:
     frontend:
       home: Home
+      search: Search Results
       images: Images
       trade-routes: Trade Routes
       ships: Ships
