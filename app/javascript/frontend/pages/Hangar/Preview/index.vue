@@ -140,7 +140,6 @@ export default {
 
   methods: {
     hidePreview() {
-      console.log('foo')
       this.$store.dispatch('hangar/hidePreview')
     },
   },
