@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.34.0](https://github.com/fleetyards/app/compare/v3.32.0...v3.34.0) (2019-10-31)
+
+
+### Bug Fixes
+
+* **search:** update route ([0ae0acc](https://github.com/fleetyards/app/commit/0ae0acc))
+* **search:** update route ([caeeab5](https://github.com/fleetyards/app/commit/caeeab5))
+
+
+### Features
+
+* **advanced-search:** global single field search for the home page ([#942](https://github.com/fleetyards/app/issues/942)) ([853c2c0](https://github.com/fleetyards/app/commit/853c2c0))
+* **hangar-preview:** add page and basic layout ([#935](https://github.com/fleetyards/app/issues/935)) ([9525a9b](https://github.com/fleetyards/app/commit/9525a9b))
+* **search:** update history list ([d3c5e2f](https://github.com/fleetyards/app/commit/d3c5e2f))
+* **shops:** update page cols ([50eba24](https://github.com/fleetyards/app/commit/50eba24))
+
 ## [3.33.0](https://github.com/fleetyards/app/compare/v3.32.0...v3.33.0) (2019-10-31)
 
 
