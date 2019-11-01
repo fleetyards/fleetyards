@@ -38,7 +38,7 @@ class RsiRoadmapLoader < RsiBaseLoader
         item = RoadmapItem.find_or_create_by(rsi_id: card['id']) do |new_item|
           new_item.release = release_name(new_item, release)
           new_item.release_description = release['description']
-          new_item.rsi_release_id =release['id']
+          new_item.rsi_release_id = release['id']
           new_item.released = release['released'].zero? ? false : true
           new_item.rsi_category_id = card['category_id']
           new_item.name = card['name']
