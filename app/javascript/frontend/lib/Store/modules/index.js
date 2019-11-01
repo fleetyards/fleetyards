@@ -7,6 +7,7 @@ import shops from 'frontend/lib/Store/modules/shops'
 import shop from 'frontend/lib/Store/modules/shop'
 import compare from 'frontend/lib/Store/modules/compare'
 import sentry from 'frontend/lib/Store/modules/sentry'
+import search from 'frontend/lib/Store/modules/search'
 
 export default () => ({
   app: app(),
@@ -18,4 +19,5 @@ export default () => ({
   shop: shop(),
   compare: compare(),
   sentry: sentry(),
+  search: search(),
 })

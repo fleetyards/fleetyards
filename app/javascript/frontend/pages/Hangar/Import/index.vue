@@ -77,7 +77,7 @@
             </div>
           </transition-group>
         </Panel>
-        <EmptyBox v-if="emptyBoxVisible" />
+        <EmptyBox :visible="emptyBoxVisible" />
       </div>
     </div>
   </section>

@@ -5,7 +5,6 @@ export default {
     ...mapGetters('session', [
       'isAuthenticated',
       'currentUser',
-      'citizen',
     ]),
   },
   methods: {
@@ -17,23 +16,6 @@ export default {
       const response = await this.$api.get('users/current')
       if (!response.error) {
         this.$store.commit('session/setCurrentUser', response.data)
-        if (this.currentUser.rsiHandle) {
-          this.fetchCitizen()
-        } else {
-          this.$store.dispatch('session/resetCitizen')
-        }
-      }
-    },
-    async fetchCitizen() {
-      if (!this.currentUser.rsiHandle) {
-        return
-      }
-
-      const response = await this.$api.get(`rsi/citizens/${this.currentUser.rsiHandle}`)
-      if (!response.error) {
-        this.$store.commit('session/setCitizen', response.data)
-      } else {
-        this.$store.dispatch('session/resetCitizen')
       }
     },
   },

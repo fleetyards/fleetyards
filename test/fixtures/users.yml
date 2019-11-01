@@ -5,14 +5,11 @@ DEFAULTS: &DEFAULTS
 data:
   email: "data@star.fleet"
   username: "data"
-  rsi_orgs: ['tmi']
-  rsi_verified: true
   <<: *DEFAULTS
 
 will:
   email: "will@star.fleet"
   username: "willriker"
-  rsi_orgs: ['rsi']
   <<: *DEFAULTS
 
 jeanluc:

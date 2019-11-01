@@ -1,9 +1,3 @@
-.metrics {
-  li.list-group-item {
-    border: none;
-  }
-}
-
 .metrics-title {
   font-size: 18px;
   font-family: 'Orbitron', tahoma, sans-serif;
@@ -28,6 +22,14 @@
   font-size: 110%;
 }
 
+:first-child > .metrics-group-label {
+  margin-top: 0;
+}
+
 .metrics-value {
   font-weight: bold;
+}
+
+.metrics-padding {
+  padding: 10px 15px;
 }

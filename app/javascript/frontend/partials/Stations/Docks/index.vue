@@ -2,6 +2,9 @@
   <div
     v-if="station.docks.length"
     class="row"
+    :class="{
+      'metrics-padding': padding,
+    }"
   >
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
@@ -78,22 +81,32 @@ export default {
   components: {
     DockItem,
   },
+
   props: {
     station: {
       type: Object,
       required: true,
     },
+
+    padding: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
     hasGroup() {
       return this.station.docks.some((dock) => !!dock.group)
     },
+
     docksBySize() {
       return this.groupBy(this.station.docks, 'sizeLabel')
     },
+
     docksByType() {
       return this.groupBy(this.station.docks, 'typeLabel')
     },
+
     docksByGroup() {
       return this.groupBy(this.sortBy(this.station.docks, 'name'), 'group')
     },

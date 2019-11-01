@@ -16,6 +16,7 @@ require File.expand_path('../config/environment', __dir__)
 
 require 'rails/test_help'
 require 'minitest/rails'
+require 'minitest/pride'
 
 # https://github.com/rails/rails/issues/31324
 Minitest::Rails::TestUnit = Rails::TestUnit if ActionPack::VERSION::STRING >= '5.2.0'
@@ -43,6 +44,9 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# and disable callbacks
+Searchkick.disable_callbacks
+
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers
@@ -50,6 +54,8 @@ class ActionController::TestCase
   ActiveRecord::Migration.check_pending!
 
   fixtures :all
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -58,6 +64,8 @@ class ActionView::TestCase
   include Devise::Test::ControllerHelpers
 
   fixtures :all
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren
 
@@ -70,5 +78,7 @@ class ActiveSupport::TestCase
   after do
     Sidekiq::Worker.clear_all
   end
+
+  make_my_diffs_pretty!
 end
 # rubocop:enable Style/ClassAndModuleChildren

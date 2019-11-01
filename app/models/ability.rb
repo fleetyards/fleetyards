@@ -30,8 +30,8 @@ class Ability
     can %i[index sort], :api_hangar_groups
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
-    can %i[index show], :api_fleets
     can %i[index], :api_roadmap
+    can %i[index], :api_search
     can %i[index], :api_trade_routes
 
     can %i[read_public], :user
@@ -39,12 +39,8 @@ class Ability
     return if user.id.blank?
 
     can :index, :api_hangar
-    can %i[my create], :api_fleets
-    can %i[models count], Fleet do |fleet|
-      user.rsi_orgs.map(&:upcase).include?(fleet.sid.upcase)
-    end
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
-    can %i[read update rsi_verify destroy], User, id: user.id
+    can %i[read update destroy], User, id: user.id
   end
 end

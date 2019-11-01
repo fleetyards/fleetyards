@@ -3,15 +3,15 @@
 namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%w[admin api].include?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
 
+  get 'search' => 'base#index'
+
   get 'ships' => 'base#index'
   get 'ships/:slug' => 'base#model'
   get 'ships/:slug/images' => 'base#model_images'
   get 'ships/:slug/videos' => 'base#model_videos'
 
-  get 'fleets' => 'base#index'
-  get 'fleets/:sid' => 'base#fleet'
-
   get 'hangar' => 'base#index'
+  get 'hangar/preview' => 'base#index'
   get 'hangar/import' => 'base#index'
   get 'hangar/stats' => 'base#index'
   get 'hangar/:username' => 'hangar#index'
@@ -51,7 +51,6 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'settings/profile' => 'base#index'
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
-  get 'settings/verify' => 'base#index'
   get 'settings/hangar' => 'base#index'
 
   get 'password/request' => 'base#index'

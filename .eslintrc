@@ -36,7 +36,8 @@
     "space-before-function-paren": 0,
     "vue/no-v-html": "off",
     "vue/component-name-in-template-casing": "error",
-    "spaced-comment": [2, "always", {"exceptions": ["-"], "markers": ["/"]}]
+    "spaced-comment": [2, "always", {"exceptions": ["-"], "markers": ["/"]}],
+    "jest/no-mocks-import": "off"
   },
   "env": {
     "browser": true,
@@ -48,7 +49,9 @@
   "overrides": [{
     "files": ["**/e2e/**/*.js"],
     "rules": {
-      "jest/valid-expect": "off"
+      "jest/valid-expect": "off",
+      "jest/no-standalone-expect": "off",
+      "jest/expect-expect": "off"
     }
   }]
 }

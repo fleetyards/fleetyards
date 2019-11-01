@@ -3,7 +3,6 @@
   - fleetyards_model_loader
   - fleetyards_roadmap_loader
   - fleetyards_vehicles_loader
-  - fleetyards_fleets_loader
   - fleetyards_location_loader
   - fleetyards_mailers
   - fleetyards_model_notification

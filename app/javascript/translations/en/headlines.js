@@ -10,6 +10,11 @@ export default {
   login: 'Login',
   hangar: {
     index: 'My Hangar',
+    preview: {
+      h1: 'My Hangar Preview',
+      h2: 'Your personal Hangar requires an FleetYards.net Account',
+      h3: 'What Features does the Hangar include?',
+    },
     stats: 'My Hangar Stats',
     public: '%{user} Hangar',
     import: 'Import',
@@ -35,6 +40,7 @@ export default {
     create: 'Create Group',
     edit: 'Edit Group',
   },
+  searchHistory: 'Search History',
   compare: {
     models: 'Compare Ships',
   },

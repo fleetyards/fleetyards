@@ -89,22 +89,6 @@ export default {
     manufacturer: 'Manufacturer',
     size: 'Size',
   },
-  user: {
-    rsi: {
-      username: 'Name',
-      handle: 'Handle name',
-      title: 'Title',
-      location: 'Location',
-      citizenRecord: 'UEE Citizen Record',
-      enlisted: 'Enlisted',
-      languages: 'Fluency',
-      org: {
-        name: 'Name',
-        sid: 'Spectrum Identification (SID)',
-        rank: 'Organization rank',
-      },
-    },
-  },
   celestialObject: {
     type: 'Type',
     subType: 'Sub Type',
@@ -125,7 +109,10 @@ export default {
     type: 'Type',
     celestialObject: 'Location',
     station: 'Station',
-    rentalPrice: '%{price} / day',
+    rentalPrice1Day: '1 day for',
+    rentalPrice3Days: '3 days for',
+    rentalPrice7Days: '7 days for',
+    rentalPrice30Days: '30 days for',
     location: '%{name} at %{location}',
   },
   commodityItem: {

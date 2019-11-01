@@ -1,4 +1,5 @@
 export default {
+  search: 'Search the Verse...',
   fleet: {
     sid: 'Your Orgs Spectrum ID (SID) from robertsspaceindustries.com',
   },

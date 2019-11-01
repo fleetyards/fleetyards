@@ -12,7 +12,6 @@ export default function getStorePlugins() {
       'filtersVisible',
       'session.authToken',
       'session.currentUser',
-      'session.citizen',
       'session.cookiesAccepted',
       'hangar.ships',
       'hangar.detailsVisible',
@@ -21,6 +20,7 @@ export default function getStorePlugins() {
       'hangar.fleetchartScale',
       'hangar.publicFleetchartVisible',
       'hangar.publicFleetchartScale',
+      'hangar.preview',
       'models.detailsVisible',
       'models.filterVisible',
       'models.fleetchartVisible',
@@ -30,6 +30,7 @@ export default function getStorePlugins() {
       'stations.filterVisible',
       'compare.modelA',
       'compare.modelB',
+      'search.history',
     ],
   })]
 }

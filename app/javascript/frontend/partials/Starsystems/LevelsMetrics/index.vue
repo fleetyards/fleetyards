@@ -1,5 +1,10 @@
 <template>
-  <div class="row">
+  <div
+    class="row"
+    :class="{
+      'metrics-padding': padding,
+    }"
+  >
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
         {{ $t('labels.metrics.levels') }}
@@ -51,6 +56,11 @@ export default {
     starsystem: {
       type: Object,
       required: true,
+    },
+
+    padding: {
+      type: Boolean,
+      default: false,
     },
   },
 }

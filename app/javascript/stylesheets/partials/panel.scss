@@ -78,6 +78,14 @@ $contentBorderRadius: $panelContentBorderRadius;
     color: white;
   }
 
+  &.panel-transparency-more {
+    background-color: rgba($panel-bg, .6);
+  }
+
+  &.panel-transparency-complete {
+    background-color: transparent;
+  }
+
   .text-huge {
     font-size: 40px;
   }
@@ -129,6 +137,16 @@ $contentBorderRadius: $panelContentBorderRadius;
             color: $text-color;
           }
         }
+      }
+    }
+
+    &.panel-heading-with-actions {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        margin-bottom: 10.5px;
+        padding-right: 40px;
       }
     }
   }
@@ -193,27 +211,12 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
   }
 
-  .list-group-item {
-    background: transparent;
-  }
-
-  .list-group,
   table {
     margin-bottom: 0;
   }
 
   table:first-child tbody:first-child tr:first-child td,
-  table:first-child thead tr:first-child th,
-  .list-group:first-child .list-group-item:first-child {
+  table:first-child thead tr:first-child th {
     border-top: none;
-  }
-
-  .list-group:last-child .list-group-item:last-child {
-    border-bottom: none;
-  }
-
-  .list-group .list-group-item {
-    border-width: 0 0 1px;
-    border-radius: 0;
   }
 }

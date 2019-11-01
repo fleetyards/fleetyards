@@ -126,7 +126,7 @@
       </transition-group>
     </Panel>
 
-    <EmptyBox v-if="emptyBoxVisible" />
+    <EmptyBox :visible="emptyBoxVisible" />
 
     <Loader
       :loading="loading"

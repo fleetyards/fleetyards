@@ -2,6 +2,9 @@
   <div
     v-if="station.habitationCounts.length"
     class="row"
+    :class="{
+      'metrics-padding': padding,
+    }"
   >
     <div class="col-xs-12 col-md-3">
       <div class="metrics-title">
@@ -34,7 +37,13 @@ export default {
       type: Object,
       required: true,
     },
+
+    padding: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
     habitationsByName() {
       return this.groupBy(this.station.habitations, 'habitationName')

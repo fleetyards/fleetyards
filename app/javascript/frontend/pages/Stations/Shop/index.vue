@@ -33,16 +33,15 @@
         class="col-xs-12 col-md-4"
       >
         <Panel>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <ShopBaseMetrics :shop="shop" />
-            </li>
-          </ul>
+          <ShopBaseMetrics
+            :shop="shop"
+            padding
+          />
         </Panel>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-8">
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
@@ -75,7 +74,7 @@
           </template>
         </div>
       </div>
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-4">
         <Paginator
           v-if="commodities.length"
           :page="currentPage"
@@ -278,7 +277,7 @@ export default {
         hash: `#${this.shop.station.slug}-${this.shop.slug}`,
       }
 
-      if (this.previousRoute && ['shops', 'station', 'celestialObject'].includes(this.previousRoute.name)) {
+      if (this.previousRoute && ['shops', 'station', 'celestialObject', 'search'].includes(this.previousRoute.name)) {
         route.name = this.previousRoute.name
         route.params = this.previousRoute.params
         route.query = this.previousRoute.query

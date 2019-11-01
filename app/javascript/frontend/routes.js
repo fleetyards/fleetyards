@@ -12,6 +12,13 @@ export const routes = [
       title: 'home',
     },
   }, {
+    path: '/search/',
+    name: 'search',
+    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Search'),
+    meta: {
+      title: 'search',
+    },
+  }, {
     path: '/impressum/',
     name: 'impressum',
     component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Impressum'),
@@ -109,6 +116,14 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
       title: 'hangar.import',
+  }, {
+    path: '/hangar/preview/',
+    name: 'hangar-preview',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-5.jpg'),
+      title: 'hangar.preview',
     },
   }, {
     path: '/hangar/stats/',
@@ -124,23 +139,6 @@ export const routes = [
     path: '/hangar/:user/',
     name: 'hangar-public',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
-  }, {
-    path: '/fleets/',
-    name: 'fleets',
-    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-2.jpg'),
-      title: 'fleets',
-    },
-  }, {
-    path: '/fleets/:sid/',
-    name: 'fleet',
-    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-2.jpg'),
-    },
   }, {
     path: '/stations/',
     name: 'stations',

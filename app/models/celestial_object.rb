@@ -3,6 +3,20 @@
 class CelestialObject < ApplicationRecord
   paginates_per 30
 
+  searchkick searchable: %i[name starsystem],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      starsystem: starsystem&.name
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   belongs_to :starsystem, optional: true
 
   belongs_to :parent,
@@ -41,5 +55,9 @@ class CelestialObject < ApplicationRecord
 
   def self.visible
     where(hidden: false)
+  end
+
+  def location_label
+    I18n.t('activerecord.attributes.celestial_object.location_prefix.default', starsystem: starsystem.name)
   end
 end

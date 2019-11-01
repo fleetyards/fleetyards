@@ -34,11 +34,10 @@
       </div>
       <div class="col-xs-12 col-md-4">
         <Panel>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <CelestialObjectMetrics :celestial-object="celestialObject" />
-            </li>
-          </ul>
+          <CelestialObjectMetrics
+            :celestial-object="celestialObject"
+            padding
+          />
         </Panel>
       </div>
     </div>
@@ -59,7 +58,7 @@
             :key="moon.slug"
             class="col-xs-12 col-sm-6 col-md-3 fade-list-item"
           >
-            <ShopPanel
+            <ItemPanel
               :item="moon"
               :route="{
                 name: 'celestialObject',
@@ -99,15 +98,7 @@
             :key="station.slug"
             class="col-xs-12 fade-list-item"
           >
-            <StationList
-              :item="station"
-              :route="{
-                name: 'station',
-                params: {
-                  slug: station.slug
-                }
-              }"
-            />
+            <StationPanel :station="station" />
           </div>
         </transition-group>
         <Loader
@@ -131,8 +122,8 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
-import StationList from 'frontend/partials/Stations/List'
-import ShopPanel from 'frontend/partials/Stations/Panel'
+import StationPanel from 'frontend/components/Stations/Panel'
+import ItemPanel from 'frontend/partials/Stations/Panel'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 import CelestialObjectMetrics from 'frontend/partials/CelestialObjects/Metrics'
@@ -141,8 +132,8 @@ export default {
   components: {
     Loader,
     Panel,
-    StationList,
-    ShopPanel,
+    StationPanel,
+    ItemPanel,
     CelestialObjectMetrics,
   },
 

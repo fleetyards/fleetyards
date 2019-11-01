@@ -82,10 +82,12 @@ const validateAndResolveNewRoute = (to) => {
   return null
 }
 
-router.beforeResolve((to, from, next) => {
+router.beforeResolve((to, _from, next) => {
   const newRoute = validateAndResolveNewRoute(to)
   if (newRoute) {
-    router.push({ name: newRoute.routeName, params: newRoute.routeParams })
+    router.push({ name: newRoute.routeName, params: newRoute.routeParams }).catch(() => {
+      window.location.reload()
+    })
   } else {
     next()
   }

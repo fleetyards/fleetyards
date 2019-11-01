@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div
+    :class="{
+      'metrics-padding': padding,
+    }"
+  >
     <div class="row">
       <div class="col-xs-12 col-md-3">
         <div class="metrics-title">
@@ -109,6 +113,11 @@ export default {
     celestialObject: {
       type: Object,
       required: true,
+    },
+
+    padding: {
+      type: Boolean,
+      default: false,
     },
   },
 }

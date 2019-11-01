@@ -1,5 +1,10 @@
 <template>
-  <div class="row">
+  <div
+    class="row"
+    :class="{
+      'metrics-padding': padding,
+    }"
+  >
     <div
       v-if="title"
       :class="{
@@ -150,7 +155,13 @@ export default {
       type: Object,
       required: true,
     },
+
     title: {
+      type: Boolean,
+      default: false,
+    },
+
+    padding: {
       type: Boolean,
       default: false,
     },
@@ -164,5 +175,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index.scss';
+  @import 'index';
 </style>

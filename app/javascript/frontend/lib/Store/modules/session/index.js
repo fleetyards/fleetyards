@@ -18,9 +18,6 @@ export default () => ({
     currentUser(state) {
       return state.currentUser
     },
-    citizen(state) {
-      return state.citizen
-    },
     cookiesAccepted(state) {
       return state.cookiesAccepted
     },
@@ -42,10 +39,6 @@ export default () => ({
 
     setCurrentUser(state, payload) {
       state.currentUser = payload
-    },
-
-    setCitizen(state, payload) {
-      state.citizen = payload
     },
 
     acceptCookies(state) {

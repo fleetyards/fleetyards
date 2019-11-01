@@ -1,0 +1,23 @@
+@import '~stylesheets/variables';
+
+.celestial-object-panel {
+  position: relative;
+
+  .panel-heading {
+    position: relative;
+    z-index: 1;
+  }
+
+  .panel-image {
+    position: inherit;
+
+    a {
+      position: absolute;
+      border-radius: $panelContentBorderRadius;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}

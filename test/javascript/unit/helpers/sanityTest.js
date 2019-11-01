@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import defaultComponent from '../__mocks__/defaultComponent'
 import optionsDefault from './mountDefault'
 
+// eslint-disable-next-line jest/no-export
 export default (
   Component,
   propsData = {},
@@ -18,6 +19,7 @@ export default (
     componentUsed = Component
   }
 
+  // eslint-disable-next-line jest/valid-describe
   describe(`Component: ${Component.name}`, () => {
     let wrapper
 

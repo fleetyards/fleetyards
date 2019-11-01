@@ -33,6 +33,20 @@ export default {
     public: 'Your hangar has a public visible page where all ships marked as "purchased" are listed. You can access your public hangar by clicking on the "Public URL" button in the top right corner.',
     icon: 'Lookout for this icon:',
   },
+  hangarPreview: {
+    notified: {
+      headline: 'Get notified about new Ships and Sales',
+      text: 'Get notified once a new Ship is released on <a href="https://robertsspaceindustries.com" target="_blank" rel="noopener">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar.',
+    },
+    manage: {
+      headline: 'Manage your Hangar',
+      text: 'Add Ships to your Hangar, name your Ships, mark them as purchased or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?',
+    },
+    fleetchart: {
+      headline: 'Fleetchart and Public Hangar',
+      text: 'View your Ships as a scaled topview Fleetchart and export it as an image. Export your Ships to <a href="https://starship42.com" target="_blank" rel="noopener">starship42.com</a> to view all your Ships in 3D. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar.',
+    },
+  },
   impressum: {
     ytShipImages: 'The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href="https://twitter.com/WhyTeeZero" target="_blank" rel="noopener">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.',
     copyright: 'The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.',
@@ -42,7 +56,7 @@ export default {
     },
     liabilityExternal: 'Our site contains links to websites of third parties (“external links”). As the content of these sites is not under our control, We cannot assume any liability for such external content. In all cases, the provider of information of the linked sites is liable for the content and accuracy of the information provided. At the point in time when the links were placed, no infringements of the law were recognisable to us. As soon as an infringement of the law becomes known to us, We will immediately remove the link in question.',
   },
-  privacy: 'The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address or RSI Handle) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.',
+  privacy: 'The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.',
   signup: {
     blacklisted: 'You have been blacklisted from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
   },

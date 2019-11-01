@@ -7,13 +7,13 @@
     <dd>{{ station.typeLabel }}</dd>
 
     <dt>{{ $t('labels.station.location') }}:</dt>
-    <dd>{{ station.location }}</dd>
+    <dd>{{ station.locationLabel }}</dd>
 
-    <dt v-if="station.shops.length">
+    <dt v-if="station.shopsListLabel">
       {{ $t('labels.station.shops') }}:
     </dt>
-    <dd v-if="station.shops.length">
-      {{ station.shops.map(item => item.name).join(', ') }}
+    <dd v-if="station.shopsListLabel">
+      {{ station.shopListLabel }}
     </dd>
 
     <template v-if="station.dockCounts.length">

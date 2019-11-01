@@ -1,6 +1,7 @@
 export default {
   main: '%{title} | FleetYards.net',
   home: 'Home',
+  search: 'Search Results',
   models: 'Ships',
   model: '%{name} - %{manufacturer}',
   modelImages: '%{name} Images',
@@ -11,6 +12,7 @@ export default {
   signUp: 'Sign Up',
   hangar: {
     index: 'My Hangar',
+    preview: 'My Hangar Preview',
     stats: 'My Hangar Stats',
     import: 'Import',
     public: '%{user} Hangar',
@@ -31,7 +33,6 @@ export default {
     ships: 'Ship-Roadmap',
     changes: 'Roadmap Changes',
   },
-  verify: 'Verify your RSI Handle',
   settings: {
     index: 'Profile Settings',
     account: 'Account',

@@ -12,13 +12,22 @@ export default {
             return value
           }, {})
         },
-        sortBy(list, key) {
+        sortBy(list, key, decending = false) {
           return list.sort((a, b) => {
-            if (a[key] < b[key]) {
-              return -1
-            }
-            if (a[key] > b[key]) {
-              return 1
+            if (decending) {
+              if (a[key] < b[key]) {
+                return 1
+              }
+              if (a[key] > b[key]) {
+                return -1
+              }
+            } else {
+              if (a[key] < b[key]) {
+                return -1
+              }
+              if (a[key] > b[key]) {
+                return 1
+              }
             }
             return 0
           })

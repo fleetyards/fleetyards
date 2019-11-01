@@ -1,12 +1,4 @@
 export default {
-  rsiVerification: {
-    success: 'Yeah! You verified your RSI Account',
-    failure: 'We could not find the Verification Token. Please try again.',
-    handleMissing: 'Please add your RSI Handle to your Account first.',
-    copySuccess: 'Verification Token copied to your Clipboard. Click Confirm to open automatically open a new Tab with the RSI Settings page to paste the Tomen in your Short Bio.',
-    rsiHandleMandatory: 'You need to enter a valid RSI Handle before you can start the verification process.',
-    saveHandleSuccess: 'Your RSI Handle was saved.',
-  },
   copy: {
     success: 'Text Copied!',
     failure: 'Could not copy Text',
@@ -25,7 +17,7 @@ export default {
     failure: 'We could not create your account. Please try again later.',
   },
   accountConfirm: {
-    success: "Your account was successfully confirmed.<br>You can now login. <br>Don't forget to add and verify your RSI handle.",
+    success: 'Your account was successfully confirmed.<br>You can now login.',
     failure: 'Your account could not be confirmed.',
   },
   requestPasswordChange: {
@@ -38,6 +30,9 @@ export default {
   updateProfile: {
     success: 'Profile updated.',
   },
+  avatarUpload: {
+    success: 'Avatar uploaded',
+  },
   vehicle: {
     add: {
       success: 'Your new <b>%{model}</b> will be delivered to your <a href="/hangar">Hangar</a>',
@@ -46,11 +41,6 @@ export default {
   hangarImport: {
     wrongFileType: 'Only JSON and CSV is supported.',
     wrongStructure: 'The Import needs to contain a list of ships with at least a name or model field/col.',
-  },
-  fleet: {
-    create: {
-      failure: 'We could not create your Fleet.',
-    },
   },
   model: {
     onSale: '%{model} now on Sale!',
@@ -61,8 +51,7 @@ export default {
   error: {
     usernameTaken: 'Username is already taken.',
     emailTaken: 'E-Mail is already taken.',
-    orgNotFound: 'RSI Org could not be found.',
-    handleNotFound: 'RSI Citizen could not be found.',
+    accountRequired: 'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
     default: '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
   account: {

@@ -38,10 +38,8 @@ describe('Login', () => {
     cy.alert('Invalid email or password')
   })
 
-  it('Redirects to login when navigating to restricted page', () => {
-    cy.visit('/')
-
-    cy.clickNav('Hangar')
+  it('Redirects to login when visiting restricted page', () => {
+    cy.visit('/settings')
 
     cy.url().should('include', '/login')
 
@@ -52,15 +50,7 @@ describe('Login', () => {
 
       cy.get('button[type=submit]').click()
 
-      cy.url().should('include', '/hangar')
-
-      cy.get('.hangar').should('exist')
+      cy.url().should('include', '/settings')
     })
-  })
-
-  it('Redirects to login when visiting restricted page', () => {
-    cy.visit('/settings')
-
-    cy.url().should('include', '/login')
   })
 })

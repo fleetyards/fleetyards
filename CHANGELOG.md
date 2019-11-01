@@ -2,6 +2,92 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.34.2](https://github.com/fleetyards/app/compare/v3.34.1...v3.34.2) (2019-11-01)
+
+
+### Bug Fixes
+
+* group labels alignment ([90719a7](https://github.com/fleetyards/app/commit/90719a7))
+
+### [3.34.1](https://github.com/fleetyards/app/compare/v3.34.0...v3.34.1) (2019-10-31)
+
+
+### Bug Fixes
+
+* specs ([5a5d508](https://github.com/fleetyards/app/commit/5a5d508))
+
+## [3.34.0](https://github.com/fleetyards/app/compare/v3.32.0...v3.34.0) (2019-10-31)
+
+
+### Bug Fixes
+
+* **search:** update route ([0ae0acc](https://github.com/fleetyards/app/commit/0ae0acc))
+* **search:** update route ([caeeab5](https://github.com/fleetyards/app/commit/caeeab5))
+
+
+### Features
+
+* **advanced-search:** global single field search for the home page ([#942](https://github.com/fleetyards/app/issues/942)) ([853c2c0](https://github.com/fleetyards/app/commit/853c2c0))
+* **hangar-preview:** add page and basic layout ([#935](https://github.com/fleetyards/app/issues/935)) ([9525a9b](https://github.com/fleetyards/app/commit/9525a9b))
+* **search:** update history list ([d3c5e2f](https://github.com/fleetyards/app/commit/d3c5e2f))
+* **shops:** update page cols ([50eba24](https://github.com/fleetyards/app/commit/50eba24))
+
+## [3.33.0](https://github.com/fleetyards/app/compare/v3.32.0...v3.33.0) (2019-10-31)
+
+
+### Bug Fixes
+
+* **search:** update route ([0ae0acc](https://github.com/fleetyards/app/commit/0ae0acc))
+* **search:** update route ([caeeab5](https://github.com/fleetyards/app/commit/caeeab5))
+
+
+### Features
+
+* **advanced-search:** global single field search for the home page ([#942](https://github.com/fleetyards/app/issues/942)) ([853c2c0](https://github.com/fleetyards/app/commit/853c2c0))
+* **hangar-preview:** add page and basic layout ([#935](https://github.com/fleetyards/app/issues/935)) ([9525a9b](https://github.com/fleetyards/app/commit/9525a9b))
+* **search:** update history list ([d3c5e2f](https://github.com/fleetyards/app/commit/d3c5e2f))
+* **shops:** update page cols ([50eba24](https://github.com/fleetyards/app/commit/50eba24))
+
+## [3.32.0](https://github.com/fleetyards/app/compare/v3.31.1...v3.32.0) (2019-10-25)
+
+
+### Features
+
+* **rentals:** add 3 days rental prices ([ea3fa38](https://github.com/fleetyards/app/commit/ea3fa38))
+* **rentals:** update admin tools ([15d27f5](https://github.com/fleetyards/app/commit/15d27f5))
+
+### [3.31.1](https://github.com/fleetyards/app/compare/v3.31.0...v3.31.1) (2019-10-25)
+
+## [3.31.0](https://github.com/fleetyards/app/compare/v3.30.0...v3.31.0) (2019-10-25)
+
+
+### Bug Fixes
+
+* **shops:** update rental_at check ([48b0a97](https://github.com/fleetyards/app/commit/48b0a97))
+
+
+### Features
+
+* **shops:** add rental prices ([c0a9b43](https://github.com/fleetyards/app/commit/c0a9b43))
+* **shops:** update specs ([f560eb2](https://github.com/fleetyards/app/commit/f560eb2))
+
+
+### Refactorings
+
+* move style files ([0f68650](https://github.com/fleetyards/app/commit/0f68650))
+
+## [3.30.0](https://github.com/fleetyards/app/compare/v3.29.0...v3.30.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* **search:** update placeholder ([08f0f9e](https://github.com/fleetyards/app/commit/08f0f9e))
+
+
+### Features
+
+* **roadmap:** update e2e tests ([404c020](https://github.com/fleetyards/app/commit/404c020))
+
 ## [3.29.0](https://github.com/fleetyards/app/compare/v3.28.0...v3.29.0) (2019-10-24)
 
 

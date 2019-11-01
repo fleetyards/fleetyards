@@ -1,5 +1,10 @@
 <template>
-  <div class="row metrics-block top-metrics">
+  <div
+    class="row metrics-block top-metrics"
+    :class="{
+      'metrics-padding': padding,
+    }"
+  >
     <div
       v-if="model.focus"
       class="col-xs-6 col-sm-4"
@@ -41,7 +46,13 @@ export default {
       type: Object,
       required: true,
     },
+
+    padding: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
     isGroundVehicle() {
       return this.model.classification === 'ground'
@@ -63,6 +74,7 @@ export default {
 
       return this.$toNumber([minCrew, maxCrew].filter((item) => item).join(' - '), 'people')
     },
+
     speeds() {
       const speeds = []
       if (this.groundSpeeds || this.isGroundVehicle) {
@@ -73,6 +85,7 @@ export default {
       }
       return speeds.join('<br>')
     },
+
     airSpeeds() {
       let { scmSpeed, afterburnerSpeed } = this.model
 
@@ -86,6 +99,7 @@ export default {
 
       return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
     },
+
     groundSpeeds() {
       let { groundSpeed, afterburnerGroundSpeed } = this.model
 
@@ -104,5 +118,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

@@ -32,7 +32,6 @@ export default {
     commit('setAuthToken', null)
     commit('hangar/setShips', [], { root: true })
     commit('setCurrentUser', null)
-    commit('setCitizen', null)
   },
 
   async renew({ dispatch, state }) {
@@ -48,10 +47,6 @@ export default {
     } catch (error) {
       // console.error(error)
     }
-  },
-
-  resetCitizen({ commit }) {
-    commit('setCitizen', null)
   },
 
   acceptCookies({ commit }) {
