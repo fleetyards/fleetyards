@@ -4,6 +4,8 @@ require 'rsi_base_loader'
 
 class RsiRoadmapLoader < RsiBaseLoader
   def fetch
+    return if roadmap_maintenance_on?
+
     response = Typhoeus.get("#{base_url}/api/roadmap/v1/boards/1")
     return false, nil unless response.success?
 
@@ -22,11 +24,31 @@ class RsiRoadmapLoader < RsiBaseLoader
     end
   end
 
+  private def roadmap_maintenance_on?
+    response = Typhoeus.get("#{base_url}/roadmap/board/1-Star-Citizen")
+
+    !response.success?
+  end
+
+  # rubocop:disable Metrics/MethodLength
   private def parse_roadmap(data)
     roadmap_item_ids = []
     data['data']['releases'].each do |release|
       release['cards'].each do |card|
-        item = RoadmapItem.find_or_create_by(rsi_id: card['id'])
+        item = RoadmapItem.find_or_create_by(rsi_id: card['id']) do |new_item|
+          new_item.release = release_name(new_item, release)
+          new_item.release_description = release['description']
+          new_item.rsi_release_id =release['id']
+          new_item.released = release['released'].zero? ? false : true
+          new_item.rsi_category_id = card['category_id']
+          new_item.name = card['name']
+          new_item.description = card['description']
+          new_item.body = card['body']
+          new_item.tasks = card['tasks']
+          new_item.inprogress = card['inprogress']
+          new_item.completed = card['completed']
+          new_item.active = true
+        end
 
         item.update!(
           release: release_name(item, release),
@@ -66,6 +88,7 @@ class RsiRoadmapLoader < RsiBaseLoader
       roadmap_item.update(active: false)
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private def strip_roadmap_name(name)
     strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
