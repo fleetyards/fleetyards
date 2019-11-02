@@ -4,6 +4,7 @@ class CelestialObject < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name starsystem],
+             word_start: %i[name],
              filterable: []
 
   def search_data

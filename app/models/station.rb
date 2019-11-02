@@ -4,6 +4,7 @@ class Station < ApplicationRecord
   paginates_per 10
 
   searchkick searchable: %i[name station_type celestial_object starsystem],
+             word_start: %i[name],
              filterable: []
 
   def search_data
