@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.35.1](https://github.com/fleetyards/app/compare/v3.35.0...v3.35.1) (2019-11-02)
+
+
+### Bug Fixes
+
+* **search:** add missing word_start settings for remaining models ([88926b0](https://github.com/fleetyards/app/commit/88926b0))
+
 ## [3.35.0](https://github.com/fleetyards/app/compare/v3.34.3...v3.35.0) (2019-11-02)
 
 
