@@ -22,6 +22,7 @@ module Api
           rsi_category_id_in: [], sorts: []
         )
       end
+      helper_method :roadmap_query_params
     end
   end
 end

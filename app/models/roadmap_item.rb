@@ -15,7 +15,13 @@ class RoadmapItem < ApplicationRecord
     where(active: true)
   end
 
-  def last_version_changed_at
-    versions.last&.created_at || created_at
+  def last_version(max_created_at)
+    max_created_at = Time.zone.now.to_date if max_created_at.nil?
+    versions.where('created_at < ?', max_created_at).last
+  end
+
+  def last_version_changed_at(max_created_at)
+    max_created_at = Time.zone.now.to_date if max_created_at.nil?
+    last_version(max_created_at)&.created_at || created_at
   end
 end
