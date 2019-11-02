@@ -60,7 +60,8 @@ class Vehicle < ApplicationRecord
       { key: 'saleNotify', value: 'sale_notify' },
       { key: 'flagship', value: 'flagship' },
       { key: 'nameVisible', value: 'name_visible' },
-      { key: 'public', value: 'public' }
+      { key: 'public', value: 'public' },
+      { key: 'groups', value: 'group_names' }
     ]
 
     CSV.generate(headers: true) do |csv|
@@ -70,6 +71,10 @@ class Vehicle < ApplicationRecord
         csv << attributes.map { |attr| vehicle.send(attr[:value]) }
       end
     end
+  end
+
+  def group_names
+    hangar_groups.map(&:name).join(', ')
   end
 
   def model_manufacturer

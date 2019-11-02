@@ -31,12 +31,18 @@
             >
               {{ $t('labels.3dView') }}
             </Btn>
-            <!-- <Btn
+            <Btn
+              v-tooltip="$t('actions.import')"
+              :to="{ name: 'hangar-import' }"
+            >
+              <i class="fal fa-upload" />
+            </Btn>
+            <Btn
               v-tooltip="$t('actions.export')"
               @click.native="exportCsv"
             >
               <i class="fal fa-download" />
-            </Btn> -->
+            </Btn>
             <Btn
               v-tooltip="$t('labels.hangarStats')"
               :to="{ name: 'hangar-stats' }"

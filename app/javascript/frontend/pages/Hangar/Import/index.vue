@@ -57,8 +57,8 @@
               <div class="flex-list-row">
                 <div class="store-image">
                   <LazyImage
-                    v-if="item.found"
-                    :src="item.found.storeImageMedium"
+                    v-if="item.storeImageMedium"
+                    :src="item.storeImageMedium"
                     :alt="item.name"
                     :title="item.name"
                     class="image"
@@ -88,11 +88,13 @@ import Papa from 'papaparse'
 import Panel from 'frontend/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import LazyImage from 'frontend/components/LazyImage'
+import EmptyBox from 'frontend/partials/EmptyBox'
 
 export default {
   components: {
     Panel,
     LazyImage,
+    EmptyBox,
   },
 
   mixins: [
@@ -109,7 +111,7 @@ export default {
 
   computed: {
     emptyBoxVisible() {
-      return this.data && this.data.length === 0
+      return !!this.data && this.data.length === 0
     },
 
     sortedData() {
@@ -196,18 +198,18 @@ export default {
       const matchedItems = await items.map((item) => {
         const found = currentHangar.find((vehicle) => vehicle.modelSlug === item.modelSlug)
 
-        let state = 'new'
+        let state = 'add'
 
         if (found) {
           const index = currentHangar.findIndex((vehicle) => vehicle.modelSlug === found.modelSlug)
           currentHangar.splice(index, 1)
-          state = 'replace'
+          state = 'keep'
         }
 
         return {
           ...item,
+          ...found,
           state,
-          found,
         }
       })
 
