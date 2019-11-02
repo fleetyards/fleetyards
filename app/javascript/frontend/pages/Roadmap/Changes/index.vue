@@ -9,6 +9,18 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <Btn
+          v-for="week in weekOptions"
+          :key="week"
+          :active="changesWeek === week"
+          @click.native="setWeek(week)"
+        >
+          {{ changesQuery[week].label }}
+        </Btn>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
         <transition-group
           name="fade-list"
           class="flex-row"
@@ -52,15 +64,17 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import Btn from 'frontend/components/Btn'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import { subDays, format } from 'date-fns'
+import { subDays, format, endOfWeek } from 'date-fns'
 
 export default {
   name: 'RoadmapChanges',
 
   components: {
     Loader,
+    Btn,
     EmptyBox,
     RoadmapItem,
   },
@@ -74,10 +88,18 @@ export default {
       loading: true,
       roadmapChanges: [],
       roadmapChannel: null,
+      changesWeek: 'current',
+      weekOptions: [
+        'current', 'lastWeek', 'twoWeeksAgo', 'threeWeeksAgo', 'fourWeeksAgo', 'fiveWeeksAgo',
+      ],
     }
   },
 
   computed: {
+    nextRoadmapUpdate() {
+      return endOfWeek(new Date(), { weekStartsOn: 6 })
+    },
+
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
     },
@@ -91,6 +113,40 @@ export default {
 
         return value
       }, {})
+    },
+
+    changesQuery() {
+      return {
+        current: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 7), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 7), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 13), 'yyyy-MM-dd')}`,
+        },
+        lastWeek: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 14), 'yyyy-MM-dd'),
+          lastUpdatedAtLt: format(subDays(this.nextRoadmapUpdate, 7), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 14), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 20), 'yyyy-MM-dd')}`,
+        },
+        twoWeeksAgo: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 21), 'yyyy-MM-dd'),
+          lastUpdatedAtLt: format(subDays(this.nextRoadmapUpdate, 14), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 21), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 27), 'yyyy-MM-dd')}`,
+        },
+        threeWeeksAgo: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 28), 'yyyy-MM-dd'),
+          lastUpdatedAtLt: format(subDays(this.nextRoadmapUpdate, 21), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 28), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 34), 'yyyy-MM-dd')}`,
+        },
+        fourWeeksAgo: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 35), 'yyyy-MM-dd'),
+          lastUpdatedAtLt: format(subDays(this.nextRoadmapUpdate, 28), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 35), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 41), 'yyyy-MM-dd')}`,
+        },
+        fiveWeeksAgo: {
+          lastUpdatedAtGteq: format(subDays(this.nextRoadmapUpdate, 42), 'yyyy-MM-dd'),
+          lastUpdatedAtLt: format(subDays(this.nextRoadmapUpdate, 35), 'yyyy-MM-dd'),
+          label: `${format(subDays(this.nextRoadmapUpdate, 42), 'yyyy-MM-dd')} - ${format(subDays(this.nextRoadmapUpdate, 48), 'yyyy-MM-dd')}`,
+        },
+      }
     },
   },
 
@@ -106,6 +162,11 @@ export default {
   },
 
   methods: {
+    setWeek(week) {
+      this.changesWeek = week
+      this.fetch()
+    },
+
     setupUpdates() {
       if (this.roadmapChannel) {
         this.roadmapChannel.unsubscribe()
@@ -121,9 +182,7 @@ export default {
     async fetch() {
       this.loading = true
       const response = await this.$api.get('roadmap', {
-        q: {
-          lastUpdatedAtGteq: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-        },
+        q: this.changesQuery[this.changesWeek],
       })
 
       this.loading = false

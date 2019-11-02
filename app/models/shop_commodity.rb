@@ -4,6 +4,7 @@ class ShopCommodity < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code shop station celestial_object starsystem],
+             word_start: %i[name manufacturer_name],
              filterable: []
 
   def search_data
