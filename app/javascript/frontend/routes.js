@@ -116,6 +116,7 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-5.jpg'),
       title: 'hangar.import',
+    },
   }, {
     path: '/hangar/preview/',
     name: 'hangar-preview',
