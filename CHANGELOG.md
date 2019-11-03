@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.37.0](https://github.com/fleetyards/app/compare/v3.36.1...v3.37.0) (2019-11-03)
+
+
+### Features
+
+* **roadmap:** add more roadmap updates to select from ([404eaf9](https://github.com/fleetyards/app/commit/404eaf9))
+* **roadmap:** rubocoptering ([224bb73](https://github.com/fleetyards/app/commit/224bb73))
+
 ### [3.36.1](https://github.com/fleetyards/app/compare/v3.36.0...v3.36.1) (2019-11-03)
 
 
