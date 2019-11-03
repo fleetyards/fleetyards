@@ -46,7 +46,9 @@ v1_api_routes = lambda do
     get :random, on: :collection
   end
 
-  resources :roadmap, only: %i[index]
+  resources :roadmap, only: %i[index] do
+    get :weeks, on: :collection
+  end
 
   resources :search, only: %i[index]
 

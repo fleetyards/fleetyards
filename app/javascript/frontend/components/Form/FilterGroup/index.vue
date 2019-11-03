@@ -119,7 +119,7 @@ export default {
     },
 
     value: {
-      type: [Array, String],
+      type: [Array, String, Number, Object],
       default() {
         if (this.multiple) {
           return []
@@ -161,6 +161,11 @@ export default {
     returnObject: {
       type: Boolean,
       default: false,
+    },
+
+    nullable: {
+      type: Boolean,
+      default: true,
     },
 
     paginated: {
@@ -382,7 +387,7 @@ export default {
       if (this.selected(option)) {
         if (this.multiple) {
           this.$emit('input', this.value.filter((item) => item !== option))
-        } else {
+        } else if (this.nullable) {
           this.$emit('input', null)
         }
       } else if (this.multiple) {

@@ -21,15 +21,8 @@ export default {
     modelsByProductionStatus: 'Models by Production Status',
   },
   roadmap: {
+    selectWeek: 'Select Week',
     changes: 'Changes',
-    changesRange: {
-      current: 'Current Week',
-      lastWeek: 'Last Week',
-      twoWeeksAgo: 'Two Weeks ago',
-      threeWeeksAgo: 'Three Weeks ago',
-      fourWeeksAgo: 'Four Weeks ago',
-      fiveWeeksAgo: 'Five Weeks ago',
-    },
     shipRoadmap: 'Ship-Roadmap',
     releases: 'Releases',
     unscheduled: 'Unscheduled',
