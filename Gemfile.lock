@@ -438,7 +438,7 @@ GEM
       docile (~> 1.1)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-console (0.5.0)
+    simplecov-console (0.6.0)
       ansi
       simplecov
       terminal-table
