@@ -195,7 +195,7 @@ GEM
     htmlentities (4.3.4)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
-    i18n-js (3.4.1)
+    i18n-js (3.5.0)
       i18n (>= 0.6.6)
     i18n-tasks (0.9.29)
       activesupport (>= 4.0.2)
@@ -417,7 +417,7 @@ GEM
       elasticsearch (>= 6)
       hashie
     selectize-rails (0.12.6)
-    sentry-raven (2.12.2)
+    sentry-raven (2.12.3)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.12.0)
     shoulda (3.6.0)
