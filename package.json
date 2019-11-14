@@ -48,7 +48,7 @@
     "file-loader": "4.2.0",
     "highcharts": "7.2.1",
     "html2canvas": "1.0.0-alpha.12",
-    "i18n-js": "3.3.0",
+    "i18n-js": "3.5.0",
     "jest-transform-stub": "2.0.0",
     "lodash.debounce": "4.0.8",
     "noty": "3.1.4",
