@@ -5440,7 +5440,7 @@ core-js-pure@3.1.4, core-js-pure@^3.0.1:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.1.4.tgz#5fa17dc77002a169a3566cc48dc774d2e13e3769"
   integrity sha512-uJ4Z7iPNwiu1foygbcZYJsJs1jiXrTTCvxfLDXNhI/I+NHbSIEyr548y4fcsCEyWY0XgfAG/qqaunJ1SThHenA==
 
-core-js@3.4.1:
+core-js@3.4.1, core-js@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.1.tgz#76dd6828412900ab27c8ce0b22e6114d7ce21b18"
   integrity sha512-KX/dnuY/J8FtEwbnrzmAjUYgLqtk+cxM86hfG60LGiW3MmltIc2yAmDgBgEkfm0blZhUrdr1Zd84J2Y14mLxzg==
@@ -5459,11 +5459,6 @@ core-js@^3.0.1, core-js@^3.0.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
   integrity sha512-YNZN8lt82XIMLnLirj9MhKDFZHalwzzrL9YLt6eb0T5D0EDl4IQ90IGkua8mHbnxNrkj1d8hbdizMc0Qmg1WnQ==
-
-core-js@^3.4.0:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.1.tgz#76dd6828412900ab27c8ce0b22e6114d7ce21b18"
-  integrity sha512-KX/dnuY/J8FtEwbnrzmAjUYgLqtk+cxM86hfG60LGiW3MmltIc2yAmDgBgEkfm0blZhUrdr1Zd84J2Y14mLxzg==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -5615,24 +5610,7 @@ css-line-break@1.0.1:
   dependencies:
     base64-arraybuffer "^0.1.5"
 
-css-loader@2.1.1, css-loader@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-2.1.1.tgz#d8254f72e412bb2238bb44dd674ffbef497333ea"
-  integrity sha512-OcKJU/lt232vl1P9EEDamhoO9iKY3tIjY5GU+XDLblAykTdgs6Ux9P1hTHve8nFKy5KPpOXOsVI/hIwi3841+w==
-  dependencies:
-    camelcase "^5.2.0"
-    icss-utils "^4.1.0"
-    loader-utils "^1.2.3"
-    normalize-path "^3.0.0"
-    postcss "^7.0.14"
-    postcss-modules-extract-imports "^2.0.0"
-    postcss-modules-local-by-default "^2.0.6"
-    postcss-modules-scope "^2.1.0"
-    postcss-modules-values "^2.0.0"
-    postcss-value-parser "^3.3.0"
-    schema-utils "^1.0.0"
-
-css-loader@^3.0.0, css-loader@^3.2.0:
+css-loader@3.2.0, css-loader@^3.0.0, css-loader@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.2.0.tgz#bb570d89c194f763627fcf1f80059c6832d009b2"
   integrity sha512-QTF3Ud5H7DaZotgdcJjGMvyDj5F3Pn1j/sC6VBEOVp94cbwqyIBdcs/quzj4MC1BKQSrTpQznegH/5giYbhnCQ==
@@ -5649,6 +5627,23 @@ css-loader@^3.0.0, css-loader@^3.2.0:
     postcss-modules-values "^3.0.0"
     postcss-value-parser "^4.0.0"
     schema-utils "^2.0.0"
+
+css-loader@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-2.1.1.tgz#d8254f72e412bb2238bb44dd674ffbef497333ea"
+  integrity sha512-OcKJU/lt232vl1P9EEDamhoO9iKY3tIjY5GU+XDLblAykTdgs6Ux9P1hTHve8nFKy5KPpOXOsVI/hIwi3841+w==
+  dependencies:
+    camelcase "^5.2.0"
+    icss-utils "^4.1.0"
+    loader-utils "^1.2.3"
+    normalize-path "^3.0.0"
+    postcss "^7.0.14"
+    postcss-modules-extract-imports "^2.0.0"
+    postcss-modules-local-by-default "^2.0.6"
+    postcss-modules-scope "^2.1.0"
+    postcss-modules-values "^2.0.0"
+    postcss-value-parser "^3.3.0"
+    schema-utils "^1.0.0"
 
 css-parse@1.7.x:
   version "1.7.0"
