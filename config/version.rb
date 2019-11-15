@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = 'ArcCorp'
-  VERSION = 'v3.37.1'
+  VERSION = 'v3.37.2'
 end
