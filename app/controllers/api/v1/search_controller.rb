@@ -13,7 +13,7 @@ module Api
           search_query_params[:search],
           models: [Model, ShopCommodity, Shop, Station, CelestialObject, Starsystem],
           fields: [
-            'name^5', 'manufacturer_name', 'manufacturer_code', 'station', 'shop',
+            { 'name^5': :word_start }, { 'manufacturer_name': :word_start }, 'manufacturer_code', 'station', 'shop',
             'celestial_object', 'starsystem', 'shop_type', 'station_type'
           ],
           indices_boost: {

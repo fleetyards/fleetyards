@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.37.1](https://github.com/fleetyards/app/compare/v3.37.0...v3.37.1) (2019-11-08)
+
+
+### Bug Fixes
+
+* **weekly:** remove fleets from mailer ([686824a](https://github.com/fleetyards/app/commit/686824a))
+
+## [3.37.0](https://github.com/fleetyards/app/compare/v3.36.1...v3.37.0) (2019-11-03)
+
+
+### Features
+
+* **roadmap:** add more roadmap updates to select from ([404eaf9](https://github.com/fleetyards/app/commit/404eaf9))
+* **roadmap:** rubocoptering ([224bb73](https://github.com/fleetyards/app/commit/224bb73))
+
+### [3.36.1](https://github.com/fleetyards/app/compare/v3.36.0...v3.36.1) (2019-11-03)
+
+
+### Bug Fixes
+
+* roadmap specs ([4b6918c](https://github.com/fleetyards/app/commit/4b6918c))
+
+## [3.36.0](https://github.com/fleetyards/app/compare/v3.35.1...v3.36.0) (2019-11-02)
+
+
+### Features
+
+* **roadmap:** update last versions for older weeks ([9c173e0](https://github.com/fleetyards/app/commit/9c173e0))
+
+### [3.35.1](https://github.com/fleetyards/app/compare/v3.35.0...v3.35.1) (2019-11-02)
+
+
+### Bug Fixes
+
+* **search:** add missing word_start settings for remaining models ([88926b0](https://github.com/fleetyards/app/commit/88926b0))
+
+## [3.35.0](https://github.com/fleetyards/app/compare/v3.34.3...v3.35.0) (2019-11-02)
+
+
+### Features
+
+* **search:** update name matching ([150c982](https://github.com/fleetyards/app/commit/150c982))
+
 ### [3.34.3](https://github.com/fleetyards/app/compare/v3.34.2...v3.34.3) (2019-11-01)
 
 ### [3.34.2](https://github.com/fleetyards/app/compare/v3.34.1...v3.34.2) (2019-11-01)

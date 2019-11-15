@@ -21,6 +21,7 @@ export default {
     modelsByProductionStatus: 'Models by Production Status',
   },
   roadmap: {
+    selectWeek: 'Select Week',
     changes: 'Changes',
     shipRoadmap: 'Ship-Roadmap',
     releases: 'Releases',

@@ -8,6 +8,20 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xs-12 col-md-3">
+        <FilterGroup
+          v-model="selectedWeek"
+          :label="$t('labels.roadmap.selectWeek')"
+          name="query"
+          :options="options"
+          label-attr="label"
+          :nullable="false"
+          @input="fetch"
+        />
+      </div>
+    </div>
+    <hr class="dark">
+    <div class="row">
       <div class="col-xs-12">
         <transition-group
           name="fade-list"
@@ -52,15 +66,16 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
+import FilterGroup from 'frontend/components/Form/FilterGroup'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
-import { subDays, format } from 'date-fns'
 
 export default {
   name: 'RoadmapChanges',
 
   components: {
     Loader,
+    FilterGroup,
     EmptyBox,
     RoadmapItem,
   },
@@ -73,13 +88,23 @@ export default {
     return {
       loading: true,
       roadmapChanges: [],
+      options: [],
       roadmapChannel: null,
+      selectedWeek: 0,
     }
   },
 
   computed: {
     emptyBoxVisible() {
       return !this.loading && this.roadmapChanges.length === 0
+    },
+
+    query() {
+      if (!this.options.length) {
+        return null
+      }
+
+      return this.options[this.selectedWeek].query
     },
 
     groupedByRelease() {
@@ -94,7 +119,8 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
+    await this.fetchOptions()
     this.fetch()
     this.setupUpdates()
   },
@@ -118,12 +144,22 @@ export default {
       })
     },
 
+    async fetchOptions() {
+      const response = await this.$api.get('roadmap/weeks')
+
+      if (!response.error) {
+        this.options = response.data
+      }
+    },
+
     async fetch() {
+      if (!this.query) {
+        return
+      }
+
       this.loading = true
       const response = await this.$api.get('roadmap', {
-        q: {
-          lastUpdatedAtGteq: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-        },
+        q: this.query,
       })
 
       this.loading = false
