@@ -40,7 +40,7 @@
     "bootstrap-sass": "3.4.1",
     "bootstrap-vue": "2.1.0",
     "core-js": "3.4.1",
-    "css-loader": "2.1.1",
+    "css-loader": "3.2.0",
     "date-fns": "2.7.0",
     "date-fns-tz": "^1.0.8",
     "debounce": "1.2.0",
