@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # [...document.querySelectorAll('picture.c-slide__media img')].map(item => item.getAttribute('src')).forEach((item) => window.open(item, '_blank'))
+# loader = RsiModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]); ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.all
 
 require 'rsi_base_loader'
 
@@ -11,7 +12,6 @@ class RsiModelsLoader < RsiBaseLoader
     super
 
     @json_file_path = 'public/models.json'
-    @test_file_path = 'public/last_models_import.txt'
     @vat_percent = options[:vat_percent] || 19
   end
 

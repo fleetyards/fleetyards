@@ -2,21 +2,36 @@
 
 require 'rsi_base_loader'
 
+# loader = RsiRoadmapLoader.new; ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.fetch
+
 class RsiRoadmapLoader < RsiBaseLoader
+  def initialize(options = {})
+    super
+
+    @json_file_path = 'public/roadmap.json'
+  end
+
   def fetch
     return if roadmap_maintenance_on?
 
+    roadmap_data = load_roadmap_data
+
+    parse_roadmap(roadmap_data)
+  end
+
+  def load_roadmap_data
+    return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
+
     response = Typhoeus.get("#{base_url}/api/roadmap/v1/boards/1")
-    return false, nil unless response.success?
+
+    return [] unless response.success?
 
     begin
       roadmap_data = JSON.parse(response.body)
-
-      items = parse_roadmap(roadmap_data)
-
-      # cleanup_changes
-
-      items
+      File.open(json_file_path, 'w') do |f|
+        f.write(roadmap_data.to_json)
+      end
+      roadmap_data['data']['releases']
     rescue JSON::ParserError => e
       Raven.capture_exception(e)
       Rails.logger.error "Roadmap Data could not be parsed: #{response.body}"
@@ -25,6 +40,8 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   private def roadmap_maintenance_on?
+    return false if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+
     response = Typhoeus.get("#{base_url}/roadmap/board/1-Star-Citizen")
 
     !response.success?
@@ -33,7 +50,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   # rubocop:disable Metrics/MethodLength
   private def parse_roadmap(data)
     roadmap_item_ids = []
-    data['data']['releases'].each do |release|
+    data.each do |release|
       release['cards'].each do |card|
         item = RoadmapItem.find_or_create_by(rsi_id: card['id']) do |new_item|
           new_item.release = release_name(new_item, release)
