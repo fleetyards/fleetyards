@@ -2,20 +2,20 @@
 
 production: &production
   models_worker_job:
-    cron: '*/15 * * * *' # Every 15 Minutes
+    cron: '* */4 * * *' # Every 4 Hours
     class: 'ModelsWorker'
-  roadmap_worker_job:
-    cron: '*/15 * * * *' # Every 15 Minutes
-    class: 'RoadmapWorker'
+  # roadmap_worker_job:
+  #   cron: '* */4 * * *' # Every 4 Hours
+  #   class: 'RoadmapWorker'
   trade_route_calculator_job:
-    cron: '*/30 * * * *' # Every 30 Minutes
+    cron: '* */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'
   cleanup_auth_tokens_worker:
     cron: '0 2 * * *' # Daily at 2:00
     class: 'CleanupAuthTokensWorker'
-  locations_worker_job:
-    cron: '0 3 * * 0' # Weekly on Sunday 3:00
-    class: 'LocationsWorker'
+  # locations_worker_job:
+  #   cron: '0 3 * * 0' # Weekly on Sunday 3:00
+  #   class: 'LocationsWorker'
   admin_notifier_worker_job:
     cron: '0 20 * * 0' # Weekly on Sunday 20:00
     class: 'AdminNotifierWorker'

@@ -5,17 +5,22 @@
 require 'rsi_base_loader'
 
 class RsiModelsLoader < RsiBaseLoader
-  attr_accessor :json_file_path, :vat_percent
+  attr_accessor :json_file_path, :vat_percent, :test_file_path
 
   def initialize(options = {})
     super
 
     @json_file_path = 'public/models.json'
+    @test_file_path = 'public/last_models_import.txt'
     @vat_percent = options[:vat_percent] || 19
   end
 
   def all
-    models = load_models
+    models = if File.exist?(json_file_path) && (!File.exist?(test_file_path) || File.mtime(json_file_path) > File.mtime(test_file_path))
+               load_models_from_file
+             else
+               [] # load_models
+             end
 
     models.each do |data|
       sync_model(data)
@@ -28,6 +33,12 @@ class RsiModelsLoader < RsiBaseLoader
     model_data = models.find { |model| model['id'] == rsi_id.to_s }
 
     sync_model(model_data) if model_data.present?
+  end
+
+  def load_models_from_file
+    File.open(test_file_path, 'w') {}
+
+    JSON.parse(File.read(json_file_path))['data']
   end
 
   def load_models
@@ -79,6 +90,8 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def get_buying_options(store_url)
+    sleep 30
+
     response = Typhoeus.get("#{base_url}#{store_url}")
 
     return unless response.success?
