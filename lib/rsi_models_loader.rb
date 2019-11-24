@@ -16,11 +16,7 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def all
-    models = if File.exist?(json_file_path) && (!File.exist?(test_file_path) || File.mtime(json_file_path) > File.mtime(test_file_path))
-               load_models_from_file
-             else
-               [] # load_models
-             end
+    models = load_models
 
     models.each do |data|
       sync_model(data)
@@ -35,14 +31,8 @@ class RsiModelsLoader < RsiBaseLoader
     sync_model(model_data) if model_data.present?
   end
 
-  def load_models_from_file
-    File.open(test_file_path, 'w') {}
-
-    JSON.parse(File.read(json_file_path))['data']
-  end
-
   def load_models
-    return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI']) && File.exist?(json_file_path)
+    return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
     response = Typhoeus.get("#{base_url}/ship-matrix/index")
 
@@ -90,6 +80,8 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def get_buying_options(store_url)
+    return if Rails.env.test? || ENV['CI']
+
     sleep 30
 
     response = Typhoeus.get("#{base_url}#{store_url}")
