@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.38.2](https://github.com/fleetyards/app/compare/v3.38.1...v3.38.2) (2019-11-24)
+
+
+### Bug Fixes
+
+* **loaders:** update models loader ([c549993](https://github.com/fleetyards/app/commit/c549993))
+
 ### [3.38.1](https://github.com/fleetyards/app/compare/v3.38.0...v3.38.1) (2019-11-17)
 
 ## [3.38.0](https://github.com/fleetyards/app/compare/v3.37.3...v3.38.0) (2019-11-17)
