@@ -48,17 +48,13 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
+
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
   config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets[:mailer_host],
-    port: Rails.application.secrets[:mailer_port],
-    enable_starttls_auto: true,
-    user_name: Rails.application.secrets[:mailer_user],
-    password: Rails.application.secrets[:mailer_password],
-    authentication: :cram_md5,
-    domain: Rails.application.secrets[:domain]
+    address: 'localhost',
+    port: 1025
   }
 
   config.action_cable.url = Rails.application.secrets[:cable_endpoint]
