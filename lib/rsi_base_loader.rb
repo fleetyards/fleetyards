@@ -10,7 +10,7 @@ class RsiBaseLoader
   private def fetch_remote(url)
     response = Typhoeus.get(url)
 
-    AdminMailer.notify_block if response.code == 403
+    AdminMailer.notify_block.deliver_later if response.code == 403
 
     response
   end

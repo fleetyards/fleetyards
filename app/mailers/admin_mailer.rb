@@ -12,6 +12,7 @@ class AdminMailer < ApplicationMailer
   end
 
   def notify_block
+    raise 'foo'
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")

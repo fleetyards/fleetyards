@@ -107,8 +107,6 @@ group :development do
   gem 'spring-watcher-listen'
   gem 'web-console'
 
-  gem 'mailcatcher'
-
   gem 'bcrypt_pbkdf', require: false
   gem 'capistrano', '~> 3.11', require: false
   gem 'capistrano-rails', '~> 1.4', require: false
