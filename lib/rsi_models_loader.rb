@@ -80,9 +80,9 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def get_buying_options(store_url)
-    return if Rails.env.test? || ENV['CI']
+    return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
-    sleep 30
+    sleep 10
 
     response = Typhoeus.get("#{base_url}#{store_url}")
 
@@ -166,7 +166,7 @@ class RsiModelsLoader < RsiBaseLoader
       model.store_images_updated_at = data['media'][0]['time_modified']
       store_image_url = data['media'][0]['images']['store_hub_large']
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
-      if store_image_url.present?
+      if store_image_url.present? && !ENV['RSI_LOAD_FROM_FILE']
         model.remote_store_image_url = store_image_url
         model.save
       end
