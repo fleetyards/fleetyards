@@ -5,6 +5,8 @@ require 'rsi_base_loader'
 # loader = RsiRoadmapLoader.new; ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.fetch
 
 class RsiRoadmapLoader < RsiBaseLoader
+  attr_accessor :json_file_path
+
   def initialize(options = {})
     super
 
@@ -87,7 +89,7 @@ class RsiRoadmapLoader < RsiBaseLoader
         if item.store_image.blank?
           image_url = card['thumbnail']['urls']['source']
           image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
-          if image_url.present?
+          if image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
             item.remote_store_image_url = image_url
             item.save
           end

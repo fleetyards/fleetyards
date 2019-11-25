@@ -6,7 +6,7 @@
 require 'rsi_base_loader'
 
 class RsiModelsLoader < RsiBaseLoader
-  attr_accessor :json_file_path, :vat_percent, :test_file_path
+  attr_accessor :json_file_path, :vat_percent
 
   def initialize(options = {})
     super
