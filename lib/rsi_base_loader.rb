@@ -7,6 +7,14 @@ class RsiBaseLoader
     @base_url = options[:base_url] || Rails.application.secrets[:rsi_endpoint]
   end
 
+  private def fetch_remote(url)
+    response = Typhoeus.get(url)
+
+    AdminMailer.notify_block if response.code == 403
+
+    response
+  end
+
   private def strip_name(name)
     name.gsub(/(?:AEGIS|Aegis|ANVIL|Anvil|BANU|Banu|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|Consolidated Outland)/, '').strip
   end

@@ -1,0 +1,6 @@
+<h4>
+  <%= I18n.t("mailer.admin.notify_block.headline") %>
+</h4>
+<p>
+  <%= I18n.t("mailer.admin.notify_block.text") %>
+</p>

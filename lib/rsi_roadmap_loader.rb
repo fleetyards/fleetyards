@@ -22,7 +22,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   def load_roadmap_data
     return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
-    response = Typhoeus.get("#{base_url}/api/roadmap/v1/boards/1")
+    response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1")
 
     return [] unless response.success?
 
@@ -42,7 +42,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   private def roadmap_maintenance_on?
     return false if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
-    response = Typhoeus.get("#{base_url}/roadmap/board/1-Star-Citizen")
+    response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen")
 
     !response.success?
   end
