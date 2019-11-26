@@ -50,6 +50,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   private def parse_roadmap(data)
     roadmap_item_ids = []
     data.each do |release|
@@ -108,6 +109,7 @@ class RsiRoadmapLoader < RsiBaseLoader
     end
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   private def strip_roadmap_name(name)
     strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
