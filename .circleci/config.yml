@@ -283,9 +283,9 @@ jobs:
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-      # - run:
-      #     name: Deploy
-      #     command: bundle exec cap stage deploy
+      - run:
+          name: Deploy
+          command: bundle exec cap stage deploy
 
   deploy-to-live:
     <<: *defaults

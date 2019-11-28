@@ -2,7 +2,7 @@
 
 set :rails_env, 'production'
 set :deploy_to, '/home/fleetyards'
-set :branch, -> { ENV['CIRCLE_TAG'] }
+set :branch, -> { ENV['CIRCLE_TAG'] || 'master' }
 set :branch_spec, ->(rev) { available_tags.include?(rev) }
 set :branch_spec_type, 'a git tag'
 
