@@ -82,7 +82,7 @@ class RsiModelsLoader < RsiBaseLoader
   def get_buying_options(store_url)
     return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
-    sleep 15
+    sleep 10
 
     response = fetch_remote("#{base_url}#{store_url}")
 
