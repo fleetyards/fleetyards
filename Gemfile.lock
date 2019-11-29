@@ -127,12 +127,12 @@ GEM
     dynamic_fields_for_rails (1.0.0)
       rails (>= 3.0.0, < 6.0.0)
     ed25519 (1.2.4)
-    elasticsearch (7.3.0)
-      elasticsearch-api (= 7.3.0)
-      elasticsearch-transport (= 7.3.0)
-    elasticsearch-api (7.3.0)
+    elasticsearch (7.4.0)
+      elasticsearch-api (= 7.4.0)
+      elasticsearch-transport (= 7.4.0)
+    elasticsearch-api (7.4.0)
       multi_json
-    elasticsearch-transport (7.3.0)
+    elasticsearch-transport (7.4.0)
       faraday
       multi_json
     errbase (0.1.1)
@@ -185,7 +185,7 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 5.1)
     hashdiff (1.0.0)
-    hashie (3.6.0)
+    hashie (4.0.0)
     highline (2.0.3)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
@@ -413,7 +413,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (4.1.0)
+    searchkick (4.1.1)
       activemodel (>= 5)
       elasticsearch (>= 6)
       hashie
