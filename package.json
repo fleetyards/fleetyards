@@ -45,7 +45,7 @@
     "date-fns-tz": "^1.0.8",
     "debounce": "1.2.0",
     "downloadjs": "1.4.7",
-    "file-loader": "4.3.0",
+    "file-loader": "5.0.2",
     "highcharts": "7.2.1",
     "html2canvas": "1.0.0-alpha.12",
     "i18n-js": "3.5.0",
