@@ -84,7 +84,7 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += %w[error.css]
-  config.assets.precompile += Dir[Rails.root.join('vendor', 'assets', 'bower_components', '**', 'img', '*')]
+  config.assets.precompile += Dir[Rails.root.join('vendor/assets/bower_components/**/img/*')]
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Api
+  # rubocop:disable Rails/ApplicationController
   class BaseController < ActionController::Base
     include RansackHelper
     include ActionController::HttpAuthentication::Token
@@ -61,4 +62,5 @@ module Api
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).iso8601
     end
   end
+  # rubocop:enable Rails/ApplicationController
 end

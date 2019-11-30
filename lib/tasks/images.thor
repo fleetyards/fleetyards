@@ -67,7 +67,7 @@ class Images < Thor
       'starsystem/store_image',
       'station/store_image'
     ].each do |model_path|
-      Dir[[Rails.root.join('public', 'uploads'), model_path, '**', '*.*'].join('/')].each do |image|
+      Dir[Rails.root.join("public/uploads/#{model_path}/**/*.*")].each do |image|
         image_dirs = File.dirname(image).split('/')
 
         image_id = image_dirs.pop
@@ -105,7 +105,7 @@ class Images < Thor
       'starsystem/store_image',
       'station/store_image'
     ].each do |model_path|
-      Dir[[Rails.root.join('public', 'uploads'), model_path, '*'].join('/')].each do |dir|
+      Dir[Rails.root.join("public/uploads/#{model_path}/*")].each do |dir|
         name = File.basename(dir)
         next unless name.size == 36
 
