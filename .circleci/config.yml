@@ -278,8 +278,8 @@ jobs:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erelas (HACK)
-          command: ssh-keyscan -H erelas.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Erebor (HACK)
+          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -297,8 +297,8 @@ jobs:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erelas (HACK)
-          command: ssh-keyscan -H erelas.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Erebor (HACK)
+          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts

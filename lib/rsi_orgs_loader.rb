@@ -11,7 +11,7 @@ class RsiOrgsLoader < RsiBaseLoader
   end
 
   def fetch_citizen(handle)
-    response = Typhoeus.get("#{base_url}/citizens/#{handle}")
+    response = fetch_remote("#{base_url}/citizens/#{handle}")
     return false, nil unless response.success?
 
     citizen = parse_citizen(Nokogiri::HTML(response.body))
@@ -23,7 +23,7 @@ class RsiOrgsLoader < RsiBaseLoader
   end
 
   def fetch_orgs_for_citizen(handle)
-    response = Typhoeus.get("#{base_url}/citizens/#{handle}/organizations")
+    response = fetch_remote("#{base_url}/citizens/#{handle}/organizations")
     return false, nil unless response.success?
 
     [true, parse_citizen_orgs(Nokogiri::HTML(response.body))]
@@ -67,7 +67,7 @@ class RsiOrgsLoader < RsiBaseLoader
   end
 
   private def fetch_org_data(sid)
-    response = Typhoeus.get("#{base_url}/orgs/#{sid}")
+    response = fetch_remote("#{base_url}/orgs/#{sid}")
     return if response.code != 200
 
     page = Nokogiri::HTML(response.body)

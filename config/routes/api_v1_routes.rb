@@ -131,10 +131,10 @@ v1_api_routes = lambda do
     end
   end
 
-  namespace :rsi do
-    resources :citizens, only: [:show], param: :handle
-    resources :orgs, only: %i[show], param: :sid
-  end
+  # namespace :rsi do
+  #   resources :citizens, only: [:show], param: :handle
+  #   resources :orgs, only: %i[show], param: :sid
+  # end
 
   resource :stats, only: [] do
     get 'quick-stats' => 'stats#quick_stats'

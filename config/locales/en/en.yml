@@ -21,6 +21,10 @@ en:
         ships: "New Ships"
         vehicles: "New Vehicles"
         fleets: "New Fleets"
+      notify_block:
+        headline: FleetYards.net Blocked by RSI
+        subject: FleetYards.net Blocked by RSI
+        text: RSI has blocked automated updates
     vehicle:
       on_sale:
         headline:
