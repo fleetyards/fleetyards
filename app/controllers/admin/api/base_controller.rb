@@ -2,6 +2,7 @@
 
 module Admin
   module Api
+    # rubocop:disable Rails/ApplicationController
     class BaseController < ActionController::Base
       include RansackHelper
       include Concerns::Pagination
@@ -32,5 +33,6 @@ module Admin
         render json: { code: 'not_found', message: message }, status: :not_found
       end
     end
+    # rubocop:enable Rails/ApplicationController
   end
 end
