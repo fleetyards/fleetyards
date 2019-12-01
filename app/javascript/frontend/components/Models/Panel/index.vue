@@ -194,7 +194,7 @@ export default {
 
   computed: {
     customName() {
-      if (this.vehicle && this.vehicle.name && (this.$route.name !== 'hangar-public' || this.vehicle.nameVisible)) {
+      if (this.vehicle && this.vehicle.name) {
         return this.vehicle.name
       }
       return null

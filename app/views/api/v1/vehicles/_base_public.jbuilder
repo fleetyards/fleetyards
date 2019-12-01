@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.id vehicle.id
-json.name vehicle.name_visible? ? vehicle.name : vehicle.model.name
+json.name vehicle.name_visible? ? vehicle.name : nil
 json.flagship vehicle.flagship
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
