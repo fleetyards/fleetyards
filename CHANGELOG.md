@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.38.10](https://github.com/fleetyards/app/compare/v3.38.9...v3.38.10) (2019-12-01)
+
+
+### Bug Fixes
+
+* **hangar:** show vehicle name when allowed ([692bdfc](https://github.com/fleetyards/app/commit/692bdfc))
+* **workers:** update schedule ([3d6c40e](https://github.com/fleetyards/app/commit/3d6c40e))
+
 ### [3.38.9](https://github.com/fleetyards/app/compare/v3.38.8...v3.38.9) (2019-11-26)
 
 ### [3.38.8](https://github.com/fleetyards/app/compare/v3.38.7...v3.38.8) (2019-11-25)
