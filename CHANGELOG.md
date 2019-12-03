@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.40.0](https://github.com/fleetyards/app/compare/v3.39.0...v3.40.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** update gold for flagship ([85bc3bc](https://github.com/fleetyards/app/commit/85bc3bcfcad33245708aab9e7d6d86fc8e0a182d))
+
 ## [3.39.0](https://github.com/fleetyards/app/compare/v3.38.11...v3.39.0) (2019-12-03)
 
 
