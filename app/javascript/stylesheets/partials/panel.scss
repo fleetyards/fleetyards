@@ -17,7 +17,7 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &.panel-highlight {
-    border: $outerBorderWidth solid goldenrod;
+    border: $outerBorderWidth solid $gold;
   }
 
   &::before {
