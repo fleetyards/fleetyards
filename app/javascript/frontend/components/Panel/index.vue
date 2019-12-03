@@ -2,6 +2,7 @@
   <div
     :class="{
       'panel-outer-spacing': outerSpacing,
+      'panel-highlight': highlight,
     }"
     class="panel-wrapper"
   >
@@ -38,6 +39,11 @@ export default {
       validator(value) {
         return ['default', 'more', 'complete'].indexOf(value) !== -1
       },
+    },
+
+    highlight: {
+      type: Boolean,
+      default: false,
     },
 
     forText: {
