@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.39.0](https://github.com/fleetyards/app/compare/v3.38.11...v3.39.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** add flagship highlight ([54050dd](https://github.com/fleetyards/app/commit/54050dd7031dd2e2b64a01b3b903f765a06aa86b))
+
+
+### Bug Fixes
+
+* **model:** add missing check for vehicle ([0f80c47](https://github.com/fleetyards/app/commit/0f80c47f9b225476545b763869f03319c10d93db))
+
 ### [3.38.11](https://github.com/fleetyards/app/compare/v3.38.10...v3.38.11) (2019-12-01)
 
 
