@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.40.1](https://github.com/fleetyards/app/compare/v3.40.0...v3.40.1) (2019-12-07)
+
+
+### Bug Fixes
+
+* **rsi:** cache bust api requests ([c6176f4](https://github.com/fleetyards/app/commit/c6176f47669d3a5bf903d81f2b325476b6c790ca))
+
 ## [3.40.0](https://github.com/fleetyards/app/compare/v3.39.0...v3.40.0) (2019-12-03)
 
 
