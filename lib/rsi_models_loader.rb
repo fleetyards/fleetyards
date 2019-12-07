@@ -34,7 +34,7 @@ class RsiModelsLoader < RsiBaseLoader
   def load_models
     return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
-    response = fetch_remote("#{base_url}/ship-matrix/index")
+    response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
     return [] unless response.success?
 
@@ -82,9 +82,9 @@ class RsiModelsLoader < RsiBaseLoader
   def get_buying_options(store_url)
     return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
-    sleep 10
+    sleep 5
 
-    response = fetch_remote("#{base_url}#{store_url}")
+    response = fetch_remote("#{base_url}#{store_url}?#{Time.zone.now.to_i}")
 
     return unless response.success?
 

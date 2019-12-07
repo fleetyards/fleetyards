@@ -22,9 +22,9 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   def load_roadmap_data
-    return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
+    return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || !!ENV['CI'] || !!ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
-    response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1")
+    response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1?#{Time.zone.now.to_i}")
 
     return [] unless response.success?
 
@@ -44,7 +44,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   private def roadmap_maintenance_on?
     return false if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
-    response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen")
+    response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen?#{Time.zone.now.to_i}")
 
     !response.success?
   end
@@ -107,6 +107,8 @@ class RsiRoadmapLoader < RsiBaseLoader
     RoadmapItem.where.not(id: roadmap_item_ids).find_each do |roadmap_item|
       roadmap_item.update(active: false)
     end
+
+    roadmap_item_ids
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/CyclomaticComplexity
