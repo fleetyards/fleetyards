@@ -3,7 +3,7 @@
     <Panel
       v-if="model"
       :id="model.slug"
-      :highlight="vehicle.flagship"
+      :highlight="vehicle && vehicle.flagship"
     >
       <div class="panel-heading">
         <h2 class="panel-title">

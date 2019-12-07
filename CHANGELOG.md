@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.40.1](https://github.com/fleetyards/app/compare/v3.40.0...v3.40.1) (2019-12-07)
+
+
+### Bug Fixes
+
+* **rsi:** cache bust api requests ([c6176f4](https://github.com/fleetyards/app/commit/c6176f47669d3a5bf903d81f2b325476b6c790ca))
+
+## [3.40.0](https://github.com/fleetyards/app/compare/v3.39.0...v3.40.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** update gold for flagship ([85bc3bc](https://github.com/fleetyards/app/commit/85bc3bcfcad33245708aab9e7d6d86fc8e0a182d))
+
+## [3.39.0](https://github.com/fleetyards/app/compare/v3.38.11...v3.39.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** add flagship highlight ([54050dd](https://github.com/fleetyards/app/commit/54050dd7031dd2e2b64a01b3b903f765a06aa86b))
+
+
+### Bug Fixes
+
+* **model:** add missing check for vehicle ([0f80c47](https://github.com/fleetyards/app/commit/0f80c47f9b225476545b763869f03319c10d93db))
+
 ### [3.38.11](https://github.com/fleetyards/app/compare/v3.38.10...v3.38.11) (2019-12-01)
 
 
