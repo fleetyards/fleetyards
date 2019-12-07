@@ -22,7 +22,7 @@ class RsiRoadmapLoader < RsiBaseLoader
   end
 
   def load_roadmap_data
-    return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || !!ENV['CI'] || !!ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
+    return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
     response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1?#{Time.zone.now.to_i}")
 
