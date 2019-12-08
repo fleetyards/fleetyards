@@ -55,5 +55,5 @@ Rails.application.config.content_security_policy do |policy|
   policy.frame_src(*frame_src)
   policy.worker_src :self
   policy.object_src :self
-  policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
+  # policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
 end
