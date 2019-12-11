@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.40.5](https://github.com/fleetyards/app/compare/v3.40.4...v3.40.5) (2019-12-11)
+
+
+### Bug Fixes
+
+* **cors:** add production s3 url ([a3b3189](https://github.com/fleetyards/app/commit/a3b31897b8fd80decccb9689d359dcf812f4fdb9))
+
 ### [3.40.4](https://github.com/fleetyards/app/compare/v3.40.3...v3.40.4) (2019-12-11)
 
 ### [3.40.3](https://github.com/fleetyards/app/compare/v3.40.2...v3.40.3) (2019-12-08)
