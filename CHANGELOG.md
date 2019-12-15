@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.41.0](https://github.com/fleetyards/app/compare/v3.40.7...v3.41.0) (2019-12-15)
+
+
+### Features
+
+* **stations:** add shadow for info texts and headlines ([a2db28b](https://github.com/fleetyards/app/commit/a2db28b0d45b6be341ea42256aab504de731b0f4))
+
 ### [3.40.7](https://github.com/fleetyards/app/compare/v3.40.6...v3.40.7) (2019-12-13)
 
 ### [3.40.6](https://github.com/fleetyards/app/compare/v3.40.5...v3.40.6) (2019-12-13)
