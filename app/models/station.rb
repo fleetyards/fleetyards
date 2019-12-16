@@ -45,6 +45,7 @@ class Station < ApplicationRecord
   ransack_alias :starsystem, :celestial_object_starsystem_slug
   ransack_alias :celestial_object, :celestial_object_slug
   ransack_alias :name, :name_or_slug
+  ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
   validates :name, :station_type, :location, :celestial_object, presence: true
   validates :name, uniqueness: true

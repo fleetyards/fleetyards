@@ -343,7 +343,7 @@ module Api
         @model_query_params ||= query_params(
           :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq, :will_it_fit,
+          :pledge_price_lteq, :will_it_fit, :search_cont,
           name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
           id_not_in: []

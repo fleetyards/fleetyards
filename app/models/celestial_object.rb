@@ -41,6 +41,7 @@ class CelestialObject < ApplicationRecord
 
   ransack_alias :starsystem, :starsystem_slug
   ransack_alias :name, :name_or_slug
+  ransack_alias :search, :name_or_slug_or_starsystem_slug
 
   def self.main
     where(parent_id: nil)

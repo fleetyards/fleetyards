@@ -47,7 +47,7 @@ export const routes = [
       title: 'models',
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
-      quickSearch: 'nameCont',
+      quickSearch: 'searchCont',
     },
   }, {
     path: '/compare/ships/',
@@ -137,6 +137,7 @@ export const routes = [
     children: StationsRoutes,
     meta: {
       title: 'stations',
+      quickSearch: 'searchCont',
     },
   }, {
     path: '/trade-routes/',

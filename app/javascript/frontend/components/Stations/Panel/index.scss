@@ -80,5 +80,11 @@
     .items {
       position: relative;
     }
+
+    .panel-bg {
+      &::after {
+        right: 0;
+      }
+    }
   }
 }

@@ -52,7 +52,7 @@ module Api
 
       private def station_query_params
         @station_query_params ||= query_params(
-          :celestial_object_eq, :name_cont, :habs_not_null,
+          :celestial_object_eq, :name_cont, :habs_not_null, :search_cont,
           name_in: [], celestial_object_in: [], starsystem_in: [], station_type_in: [],
           shops_shop_type_in: [], docks_ship_size_in: [], sorts: []
         )
