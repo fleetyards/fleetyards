@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.42.0](https://github.com/fleetyards/app/compare/v3.41.0...v3.42.0) (2019-12-16)
+
+
+### Features
+
+* **stations:** add quick search ([6dc19f2](https://github.com/fleetyards/app/commit/6dc19f2c45d86e5c886ad8f9c08438bd794b5ab9))
+
 ## [3.41.0](https://github.com/fleetyards/app/compare/v3.40.7...v3.41.0) (2019-12-15)
 
 
