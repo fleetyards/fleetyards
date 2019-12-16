@@ -3,6 +3,50 @@
 hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 hurston.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/hurston-a.jpg').open, hidden: false)
 
+everus = Station.find_or_initialize_by(name: 'Everus Harbor')
+everus.update!(
+  celestial_object: hurston,
+  station_type: :hub,
+  location: 'Orbit',
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
+  hidden: false
+)
+
+everus.docks.destroy_all
+{ small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
+  pads.each do |pad|
+    everus.docks << Dock.new(
+      name: ("%02d" % pad),
+      dock_type: :landingpad,
+      ship_size: ship_size,
+    )
+  end
+end
+{ large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+  hangars.each do |hangar|
+    everus.docks << Dock.new(
+      name: ("%02d" % hangar),
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+  end
+end
+
+everus.habitations.destroy_all
+%w[1 2 3 4 5].each do |level|
+  pad = 1
+  { container: 10 }.each do |hab_size, count|
+    count.times do
+      everus.habitations << Habitation.new(
+        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        habitation_name: 'EZ Hab',
+        habitation_type: hab_size
+      )
+      pad += 1
+    end
+  end
+end
+
 teasa_spaceport = Station.find_or_initialize_by(name: 'Teasa Spaceport')
 teasa_spaceport.update!(
   celestial_object: hurston,
