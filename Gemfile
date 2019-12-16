@@ -94,6 +94,9 @@ gem 'pry-rails'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# Audit Issues
+gem "excon", ">= 0.71.0"
+
 group :development do
   gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'

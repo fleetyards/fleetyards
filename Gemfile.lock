@@ -142,7 +142,7 @@ GEM
       tzinfo
     ethon (0.12.0)
       ffi (>= 1.3.0)
-    excon (0.64.0)
+    excon (0.71.0)
     execjs (2.7.0)
     faker (2.8.1)
       i18n (>= 1.6, < 1.8)
@@ -531,6 +531,7 @@ DEPENDENCIES
   devise
   dynamic_fields_for_rails
   ed25519
+  excon (>= 0.71.0)
   faker
   fog-aws
   foundation_emails

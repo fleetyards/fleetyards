@@ -1,6 +1,9 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
+system("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'")
+puts ''
+
 if ENV['TEST_SEEDS'].present?
   require 'rsi_models_loader'
 
@@ -47,5 +50,6 @@ if ENV['TEST_SEEDS'].present?
 end
 
 Dir[File.join(Rails.root, 'db', 'seeds', '**', '*.rb')].sort.each do |seed|
+  puts seed.remove("#{Rails.root}/db/seeds/")
   load seed
 end

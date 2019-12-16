@@ -55,7 +55,7 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: porttre
 platinum_bay.update!(
   shop_type: :components,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/platinum_bay.jpg').open,
-  hidden: hidden
+  hidden: false
 )
 
 casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: porttressler)
