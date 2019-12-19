@@ -146,7 +146,7 @@ GEM
     execjs (2.7.0)
     faker (2.8.1)
       i18n (>= 1.6, < 1.8)
-    faraday (0.17.0)
+    faraday (0.17.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.3)
     fog-aws (3.5.2)
@@ -416,7 +416,7 @@ GEM
       elasticsearch (>= 6)
       hashie
     selectize-rails (0.12.6)
-    sentry-raven (2.12.3)
+    sentry-raven (2.13.0)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.12.0)
     shoulda (3.6.0)
