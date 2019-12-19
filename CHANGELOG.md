@@ -2,6 +2,133 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.42.3](https://github.com/fleetyards/app/compare/v3.42.2...v3.42.3) (2019-12-18)
+
+### [3.42.2](https://github.com/fleetyards/app/compare/v3.42.1...v3.42.2) (2019-12-16)
+
+
+### Bug Fixes
+
+* **seeds:** update index ([50930eb](https://github.com/fleetyards/app/commit/50930eb19380ba536d9cb28a98bb2e5a2fdda6cb))
+
+### [3.42.1](https://github.com/fleetyards/app/compare/v3.42.0...v3.42.1) (2019-12-16)
+
+## [3.42.0](https://github.com/fleetyards/app/compare/v3.41.0...v3.42.0) (2019-12-16)
+
+
+### Features
+
+* **stations:** add quick search ([6dc19f2](https://github.com/fleetyards/app/commit/6dc19f2c45d86e5c886ad8f9c08438bd794b5ab9))
+
+## [3.41.0](https://github.com/fleetyards/app/compare/v3.40.7...v3.41.0) (2019-12-15)
+
+
+### Features
+
+* **stations:** add shadow for info texts and headlines ([a2db28b](https://github.com/fleetyards/app/commit/a2db28b0d45b6be341ea42256aab504de731b0f4))
+
+### [3.40.7](https://github.com/fleetyards/app/compare/v3.40.6...v3.40.7) (2019-12-13)
+
+### [3.40.6](https://github.com/fleetyards/app/compare/v3.40.5...v3.40.6) (2019-12-13)
+
+### [3.40.5](https://github.com/fleetyards/app/compare/v3.40.4...v3.40.5) (2019-12-11)
+
+
+### Bug Fixes
+
+* **cors:** add production s3 url ([a3b3189](https://github.com/fleetyards/app/commit/a3b31897b8fd80decccb9689d359dcf812f4fdb9))
+
+### [3.40.4](https://github.com/fleetyards/app/compare/v3.40.3...v3.40.4) (2019-12-11)
+
+### [3.40.3](https://github.com/fleetyards/app/compare/v3.40.2...v3.40.3) (2019-12-08)
+
+### [3.40.2](https://github.com/fleetyards/app/compare/v3.40.1...v3.40.2) (2019-12-07)
+
+### [3.40.1](https://github.com/fleetyards/app/compare/v3.40.0...v3.40.1) (2019-12-07)
+
+
+### Bug Fixes
+
+* **rsi:** cache bust api requests ([c6176f4](https://github.com/fleetyards/app/commit/c6176f47669d3a5bf903d81f2b325476b6c790ca))
+
+## [3.40.0](https://github.com/fleetyards/app/compare/v3.39.0...v3.40.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** update gold for flagship ([85bc3bc](https://github.com/fleetyards/app/commit/85bc3bcfcad33245708aab9e7d6d86fc8e0a182d))
+
+## [3.39.0](https://github.com/fleetyards/app/compare/v3.38.11...v3.39.0) (2019-12-03)
+
+
+### Features
+
+* **hangar:** add flagship highlight ([54050dd](https://github.com/fleetyards/app/commit/54050dd7031dd2e2b64a01b3b903f765a06aa86b))
+
+
+### Bug Fixes
+
+* **model:** add missing check for vehicle ([0f80c47](https://github.com/fleetyards/app/commit/0f80c47f9b225476545b763869f03319c10d93db))
+
+### [3.38.11](https://github.com/fleetyards/app/compare/v3.38.10...v3.38.11) (2019-12-01)
+
+
+### Bug Fixes
+
+* **file-loader:** downgrade to 4.x ([30997d0](https://github.com/fleetyards/app/commit/30997d04c816a730d967737c93516a91cf74e3db))
+
+### [3.38.10](https://github.com/fleetyards/app/compare/v3.38.9...v3.38.10) (2019-12-01)
+
+
+### Bug Fixes
+
+* **hangar:** show vehicle name when allowed ([692bdfc](https://github.com/fleetyards/app/commit/692bdfc))
+* **workers:** update schedule ([3d6c40e](https://github.com/fleetyards/app/commit/3d6c40e))
+
+### [3.38.9](https://github.com/fleetyards/app/compare/v3.38.8...v3.38.9) (2019-11-26)
+
+### [3.38.8](https://github.com/fleetyards/app/compare/v3.38.7...v3.38.8) (2019-11-25)
+
+### [3.38.7](https://github.com/fleetyards/app/compare/v3.38.6...v3.38.7) (2019-11-25)
+
+
+### Bug Fixes
+
+* **mailer:** remove debugging code ([ae37683](https://github.com/fleetyards/app/commit/ae37683))
+
+### [3.38.6](https://github.com/fleetyards/app/compare/v3.38.5...v3.38.6) (2019-11-25)
+
+### [3.38.5](https://github.com/fleetyards/app/compare/v3.38.4...v3.38.5) (2019-11-25)
+
+### [3.38.4](https://github.com/fleetyards/app/compare/v3.38.3...v3.38.4) (2019-11-25)
+
+### [3.38.3](https://github.com/fleetyards/app/compare/v3.38.2...v3.38.3) (2019-11-25)
+
+### [3.38.2](https://github.com/fleetyards/app/compare/v3.38.1...v3.38.2) (2019-11-24)
+
+
+### Bug Fixes
+
+* **loaders:** update models loader ([c549993](https://github.com/fleetyards/app/commit/c549993))
+
+### [3.38.1](https://github.com/fleetyards/app/compare/v3.38.0...v3.38.1) (2019-11-17)
+
+## [3.38.0](https://github.com/fleetyards/app/compare/v3.37.3...v3.38.0) (2019-11-17)
+
+
+### Features
+
+* **rsi:** readd orgs and citizen endpoints ([49775ea](https://github.com/fleetyards/app/commit/49775ea))
+
+### [3.37.3](https://github.com/fleetyards/app/compare/v3.37.2...v3.37.3) (2019-11-16)
+
+### [3.37.2](https://github.com/fleetyards/app/compare/v3.37.1...v3.37.2) (2019-11-15)
+
+
+### Bug Fixes
+
+* **roadmap:** add roadmap updates for friday ([a8907a7](https://github.com/fleetyards/app/commit/a8907a7))
+
 ### [3.37.1](https://github.com/fleetyards/app/compare/v3.37.0...v3.37.1) (2019-11-08)
 
 

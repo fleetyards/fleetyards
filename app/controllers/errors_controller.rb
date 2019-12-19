@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Rails/ApplicationController
 class ErrorsController < ActionController::Base
   def not_found
     respond_to do |format|
@@ -26,3 +27,4 @@ class ErrorsController < ActionController::Base
     end
   end
 end
+# rubocop:enable Rails/ApplicationController

@@ -50,24 +50,26 @@ CarrierWave.configure do |config|
   if Rails.env.test?
     config.storage = :file
     config.enable_processing = false
-  elsif Rails.env.development? || ENV['CI'].present?
+    # elsif Rails.env.development? || ENV['CI'].present?
+  else
     config.storage :file
     config.asset_host = Rails.application.secrets[:frontend_endpoint]
-  else
-    config.fog_provider = 'fog/aws'
-    config.fog_credentials = {
-      provider: 'AWS',
-      aws_access_key_id: Rails.application.secrets.aws_access_key_id,
-      aws_secret_access_key: Rails.application.secrets.aws_secret_access_key,
-      region: Rails.application.secrets.aws_s3_region
-    }
+    # else
+    #   config.fog_provider = 'fog/aws'
+    #   config.fog_credentials = {
+    #     provider: 'AWS',
+    #     aws_access_key_id: Rails.application.secrets.aws_access_key_id,
+    #     aws_secret_access_key: Rails.application.secrets.aws_secret_access_key,
+    #     region: Rails.application.secrets.aws_s3_region
+    #   }
 
-    config.storage :fog
+    #   config.storage :fog
 
-    config.fog_directory = Rails.application.secrets.aws_s3_bucket
-    config.fog_public = true
+    #   config.fog_directory = Rails.application.secrets.aws_s3_bucket
+    #   config.fog_public = true
 
-    config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
-    config.asset_host = 'https://fleetyards-stage.s3.eu-central-1.amazonaws.com' if Rails.env.staging?
+    #   # config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
+    #   config.asset_host = 'https://fleetyards.s3-eu-west-1.amazonaws.com' if Rails.env.production?
+    #   config.asset_host = 'https://fleetyards-stage.s3.eu-central-1.amazonaws.com' if Rails.env.staging?
   end
 end

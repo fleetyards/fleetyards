@@ -24,7 +24,7 @@ module Fleetyards
 
     # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.default_locale = :en
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}').to_s]
 
     config.i18n.fallbacks = [:en]
 
@@ -37,7 +37,7 @@ module Fleetyards
       html_tag.to_s.html_safe
       # rubocop:enable Rails/OutputSafety
     }
-    config.autoload_paths << Rails.root.join('config', 'routes')
+    config.autoload_paths << Rails.root.join('config/routes')
 
     config.exceptions_app = routes
 

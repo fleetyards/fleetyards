@@ -173,6 +173,7 @@ export default {
     return {
       loading: false,
       form: {
+        searchCont: query.searchCont,
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         priceLteq: query.priceLteq,
@@ -198,6 +199,7 @@ export default {
       const query = this.$route.query.q || {}
 
       this.form = {
+        searchCont: query.searchCont,
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         priceLteq: query.priceLteq,

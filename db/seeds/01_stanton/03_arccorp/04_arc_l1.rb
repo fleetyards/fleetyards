@@ -14,7 +14,7 @@ arc_l1.update!(
 )
 
 arc_l1.docks.destroy_all
-{ small: [1, 3], large: [2, 4]}.each do |ship_size, pads|
+{ small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     arc_l1.docks << Dock.new(
       name: ("%02d" % pad),

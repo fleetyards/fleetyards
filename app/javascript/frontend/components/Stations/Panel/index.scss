@@ -29,6 +29,18 @@
     background-size: cover;
     background-position: center;
     opacity: .7;
+
+    &::after {
+      content: "";
+      border-top-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 60%;
+      background: linear-gradient(to right, rgba(black, 0.5) 50%, transparent)
+    }
   }
 
   .panel-stats {
@@ -67,6 +79,12 @@
   .station-panel {
     .items {
       position: relative;
+    }
+
+    .panel-bg {
+      &::after {
+        right: 0;
+      }
     }
   }
 }

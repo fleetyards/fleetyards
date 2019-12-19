@@ -10,9 +10,14 @@ $contentBorderRadius: $panelContentBorderRadius;
   border-radius: $outerBorderRadius;
   position: relative;
   box-sizing: border-box;
+  transition: border-color $transition-base-speed ease;
 
   &.panel-outer-spacing {
     margin-bottom: 21px;
+  }
+
+  &.panel-highlight {
+    border: $outerBorderWidth solid $gold;
   }
 
   &::before {

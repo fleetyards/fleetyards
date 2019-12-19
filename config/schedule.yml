@@ -2,13 +2,13 @@
 
 production: &production
   models_worker_job:
-    cron: '*/15 * * * *' # Every 15 Minutes
+    cron: '0 */1 * * *' # Every 1 Hour
     class: 'ModelsWorker'
   roadmap_worker_job:
-    cron: '*/15 * * * *' # Every 15 Minutes
+    cron: '0 */1 * * *' # Every 1 Hour
     class: 'RoadmapWorker'
   trade_route_calculator_job:
-    cron: '*/30 * * * *' # Every 30 Minutes
+    cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'
   cleanup_auth_tokens_worker:
     cron: '0 2 * * *' # Daily at 2:00

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # [...document.querySelectorAll('picture.c-slide__media img')].map(item => item.getAttribute('src')).forEach((item) => window.open(item, '_blank'))
+# loader = RsiModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]); ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.all
 
 require 'rsi_base_loader'
 
@@ -31,9 +32,9 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def load_models
-    return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI']) && File.exist?(json_file_path)
+    return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
 
-    response = Typhoeus.get("#{base_url}/ship-matrix/index")
+    response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
     return [] unless response.success?
 
@@ -79,7 +80,11 @@ class RsiModelsLoader < RsiBaseLoader
   end
 
   def get_buying_options(store_url)
-    response = Typhoeus.get("#{base_url}#{store_url}")
+    return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+
+    sleep 5
+
+    response = fetch_remote("#{base_url}#{store_url}?#{Time.zone.now.to_i}")
 
     return unless response.success?
 
@@ -161,7 +166,7 @@ class RsiModelsLoader < RsiBaseLoader
       model.store_images_updated_at = data['media'][0]['time_modified']
       store_image_url = data['media'][0]['images']['store_hub_large']
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
-      if store_image_url.present?
+      if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
         model.remote_store_image_url = store_image_url
         model.save
       end

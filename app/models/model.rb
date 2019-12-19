@@ -90,6 +90,7 @@ class Model < ApplicationRecord
 
   ransack_alias :name, :name_or_slug_or_manufacturer_slug
   ransack_alias :manufacturer, :manufacturer_slug
+  ransack_alias :search, :name_or_slug_or_manufacturer_slug
 
   def self.ordered_by_name
     order(name: :asc)

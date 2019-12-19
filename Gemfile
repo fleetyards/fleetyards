@@ -2,9 +2,9 @@
 
 source 'https://rubygems.org'
 
-ruby '2.6.5'
+ruby '~> 2.6'
 
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.4.1'
 
 gem 'pg', '~> 1.0'
 
@@ -93,6 +93,9 @@ gem 'lograge'
 gem 'pry-rails'
 
 gem 'bootsnap', '>= 1.1.0', require: false
+
+# Audit Issues
+gem 'excon', '>= 0.71.0'
 
 group :development do
   gem 'i18n-tasks', '~> 0.9.18'

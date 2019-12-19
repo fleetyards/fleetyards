@@ -28,7 +28,7 @@ module Api
       private def celestial_object_query_params
         @celestial_object_query_params ||= begin
           permitted_query_params = query_params(
-            :starsystem_eq, :main, :name_cont,
+            :starsystem_eq, :main, :name_cont, :search_cont,
             name_in: []
           )
 

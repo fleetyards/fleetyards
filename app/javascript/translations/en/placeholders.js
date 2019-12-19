@@ -6,6 +6,7 @@ export default {
   quicksearch: {
     models: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',
+    stations: 'Search for Stations...',
   },
   home: {
     search: 'Search for Ships...',

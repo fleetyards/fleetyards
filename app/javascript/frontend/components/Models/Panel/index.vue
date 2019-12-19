@@ -3,6 +3,7 @@
     <Panel
       v-if="model"
       :id="model.slug"
+      :highlight="vehicle && vehicle.flagship"
     >
       <div class="panel-heading">
         <h2 class="panel-title">
@@ -16,12 +17,17 @@
             </span>
           </router-link>
 
-          <small
-            v-if="vehicle && vehicle.flagship"
-            v-tooltip.right="flagshipTooltip"
+          <transition
+            name="fade"
+            appear
           >
-            <i class="fa fa-certificate" />
-          </small>
+            <small
+              v-if="vehicle && vehicle.flagship"
+              v-tooltip.right="flagshipTooltip"
+            >
+              <i class="fa fa-certificate flagship-icon" />
+            </small>
+          </transition>
 
           <br>
 
@@ -194,9 +200,17 @@ export default {
 
   computed: {
     customName() {
-      if (this.vehicle && this.vehicle.name && (this.$route.name !== 'hangar-public' || this.vehicle.nameVisible)) {
+      if (this.vehicle && this.vehicle.name) {
         return this.vehicle.name
       }
+      return null
+    },
+
+    highlightClass() {
+      if (this.vehicle.flagship) {
+        return 'highlight-gold'
+      }
+
       return null
     },
 

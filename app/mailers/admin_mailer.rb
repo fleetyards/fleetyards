@@ -10,4 +10,11 @@ class AdminMailer < ApplicationMailer
       subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
+
+  def notify_block
+    mail(
+      to: Rails.application.secrets[:mailer_admin_mail],
+      subject: I18n.t(:"mailer.admin.notify_block.subject")
+    )
+  end
 end

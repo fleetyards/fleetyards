@@ -37,5 +37,17 @@ $borderRadius: 16px;
     background-size: cover;
     background-position: center;
     opacity: .7;
+
+    &::before {
+      content: "";
+      border-top-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+      position: absolute;
+      top: 0;
+      bottom: 70%;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to bottom, rgba(black, 0.5) 50%, transparent)
+    }
   }
 }

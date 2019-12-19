@@ -25,7 +25,7 @@ module Api
 
       private def starsystem_query_params
         @starsystem_query_params ||= query_params(
-          :name_cont, name_in: []
+          :search_cont, :name_cont, name_in: []
         )
       end
     end

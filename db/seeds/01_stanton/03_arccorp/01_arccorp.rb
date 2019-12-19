@@ -6,6 +6,50 @@ arccorp.update!(
   hidden: false
 )
 
+baijini = Station.find_or_initialize_by(name: 'Baijini Point')
+baijini.update!(
+  celestial_object: arccorp,
+  station_type: :hub,
+  location: 'Orbit',
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
+  hidden: false
+)
+
+baijini.docks.destroy_all
+{ small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
+  pads.each do |pad|
+    baijini.docks << Dock.new(
+      name: ("%02d" % pad),
+      dock_type: :landingpad,
+      ship_size: ship_size,
+    )
+  end
+end
+{ large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+  hangars.each do |hangar|
+    baijini.docks << Dock.new(
+      name: ("%02d" % hangar),
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+  end
+end
+
+baijini.habitations.destroy_all
+%w[1 2 3 4 5].each do |level|
+  pad = 1
+  { container: 10 }.each do |hab_size, count|
+    count.times do
+      baijini.habitations << Habitation.new(
+        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        habitation_name: 'EZ Hab',
+        habitation_type: hab_size
+      )
+      pad += 1
+    end
+  end
+end
+
 area18 = Station.find_or_initialize_by(name: 'Area 18')
 area18.update!(
   celestial_object: arccorp,

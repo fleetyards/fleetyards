@@ -34,6 +34,7 @@ Rails.application.config.content_security_policy do |policy|
   img_src = [
     :self, :data, :blob, Rails.application.secrets[:frontend_endpoint],
     Rails.application.secrets[:rsi_endpoint], 'https://img.youtube.com',
+    'https://fleetyards.s3-eu-west-1.amazonaws.com',
     'https://fleetyards-stage.s3.eu-central-1.amazonaws.com',
     'https://cdn.s3.fleetyards.net'
   ]
@@ -55,5 +56,5 @@ Rails.application.config.content_security_policy do |policy|
   policy.frame_src(*frame_src)
   policy.worker_src :self
   policy.object_src :self
-  policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
+  # policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
 end

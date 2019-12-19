@@ -86,6 +86,7 @@ export default {
     return {
       loading: false,
       form: {
+        searchCont: query.searchCont,
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
         celestialObjectIn: query.celestialObjectIn || [],
@@ -100,6 +101,7 @@ export default {
     $route() {
       const query = this.$route.query.q || {}
       this.form = {
+        searchCont: query.searchCont,
         nameCont: query.nameCont,
         habsNotNull: query.habsNotNull,
         celestialObjectIn: query.celestialObjectIn || [],
