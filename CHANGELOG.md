@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.43.0](https://github.com/fleetyards/app/compare/v3.42.4...v3.43.0) (2019-12-21)
+
+
+### Features
+
+* **hangar:** add filter for public ([3fc4060](https://github.com/fleetyards/app/commit/3fc4060da1a81fa734cf8c6e2cc49cf8d8189bf5))
+
 ### [3.42.4](https://github.com/fleetyards/app/compare/v3.42.3...v3.42.4) (2019-12-21)
 
 ### [3.42.3](https://github.com/fleetyards/app/compare/v3.42.2...v3.42.3) (2019-12-18)
