@@ -152,6 +152,15 @@
       name="sale"
     />
 
+    <RadioList
+      v-if="$route.name === 'hangar'"
+      v-model="form.publicEq"
+      :label="$t('labels.filters.vehicles.public')"
+      :reset-label="$t('labels.all')"
+      :options="booleanOptions"
+      name="public"
+    />
+
     <Btn
       :disabled="!isFilterSelected"
       block
@@ -198,6 +207,7 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        publicEq: query.publicEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,
         pledgePriceLteq: query.pledgePriceLteq,
@@ -224,6 +234,7 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        publicEq: query.publicEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,
         pledgePriceLteq: query.pledgePriceLteq,

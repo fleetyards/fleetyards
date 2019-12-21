@@ -290,6 +290,7 @@ export default {
       priceLt: 'Price <=',
       priceGt: 'Price >=',
       purchased: 'Purchased',
+      public: 'Public',
       group: 'Group',
     },
     tradeRoutes: {
