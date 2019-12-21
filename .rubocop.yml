@@ -47,7 +47,7 @@ Layout/RescueEnsureAlignment:
 Style/AccessModifierDeclarations:
   EnforcedStyle: inline
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/ClassLength:

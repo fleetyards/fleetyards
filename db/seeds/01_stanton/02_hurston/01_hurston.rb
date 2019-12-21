@@ -8,7 +8,7 @@ everus.update!(
   celestial_object: hurston,
   station_type: :hub,
   location: 'Orbit',
-  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
   hidden: false
 )
 

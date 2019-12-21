@@ -27,6 +27,21 @@ end
   end
 end
 
+hur_l5.habitations.destroy_all
+%w[1 2 3 4 5].each do |level|
+  pad = 1
+  { container: 10 }.each do |hab_size, count|
+    count.times do
+      hur_l5.habitations << Habitation.new(
+        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        habitation_name: 'EZ Hab',
+        habitation_type: hab_size
+      )
+      pad += 1
+    end
+  end
+end
+
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l5)
 admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/admin.jpg').open, hidden: false)
 live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station: hur_l5)
