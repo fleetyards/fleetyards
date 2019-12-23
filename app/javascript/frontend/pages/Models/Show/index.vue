@@ -35,29 +35,27 @@
               >
                 {{ $t('labels.3dView') }}
               </Btn>
-              <Btn
-                v-if="show3d"
-                :active="color3d"
-                class="toggle-3d-color"
-                size="small"
-                @click.native="toggle3dColor"
+              <a
+                v-show="show3d"
+                :href="starship42Url"
+                class="starship42-link"
+                target="_blank"
+                rel="noopener"
               >
-                {{ $t('labels.3dColor') }}
-              </Btn>
-              <div
+                {{ $t('labels.poweredByStarship42') }}
+              </a>
+              <iframe
                 v-if="show3d"
-                class="embed-responsive embed-responsive-16by9"
-              >
-                <iframe
-                  :src="starship42Url"
-                  class="embed-responsive-item"
-                  frameborder="0"
-                />
-              </div>
+                :src="starship42IframeUrl"
+                class="holo-viewer"
+                frameborder="0"
+              />
               <img
-                v-else
                 v-lazy="model.storeImage"
                 class="image"
+                :class="{
+                  'image-hidden': show3d,
+                }"
                 alt="model image"
               >
             </div>
@@ -295,7 +293,6 @@ export default {
       loadingModules: false,
       loadingUpgrades: false,
       show3d: false,
-      color3d: false,
       model: null,
       variants: [],
       modules: [],
@@ -312,15 +309,11 @@ export default {
     ]),
 
     starship42Url() {
-      const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
+      return `https://starship42.com/inverse/?ship=${this.model.rsiName}&mode=color`
+    },
 
-      if (this.color3d) {
-        data.style = 'colored'
-      }
-
-      const startship42Params = qs.stringify(data)
-
-      return `https://starship42.com/fleetview/single?${startship42Params}`
+    starship42IframeUrl() {
+      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}`
     },
 
     erkulUrl() {
@@ -385,8 +378,8 @@ export default {
       this.show3d = !this.show3d
     },
 
-    toggle3dColor() {
-      this.color3d = !this.color3d
+    openStarship42() {
+      alert('foo')
     },
 
     async fetch() {

@@ -7,6 +7,20 @@
   border-radius: $border-radius-base;
   box-shadow: 0 0 5px black;
   background-color: black;
+  opacity: 1;
+  transition: opacity ease $transition-base-speed;
+
+  &.image-hidden {
+    opacity: 0;
+  }
+}
+
+.holo-viewer {
+  position: absolute;
+  width: 100%;
+  height: 200%;
+  top: -50%;
+  cursor: pointer;
 }
 
 .image-wrapper {
@@ -73,13 +87,19 @@
   z-index: 1000;
   top: 10px;
   right: 15px;
+  margin-right: 0;
 }
 
-.toggle-3d-color {
+.starship42-link {
   position: absolute;
   z-index: 1000;
-  top: 10px;
-  left: 25px;
+  bottom: 15px;
+  right: 15px;
+  color: $gray-lighter;
+
+  &:hover {
+    color: $text-color;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

@@ -93,7 +93,6 @@ export default {
   receiveSaleNotifications: '',
   publicUrl: 'Public URL',
   '3dView': '3D',
-  '3dColor': 'Color',
   poweredByStarship42: 'Powered by starship42.com',
   filter: 'Filter',
   taxExcluded: 'excl. VAT',
