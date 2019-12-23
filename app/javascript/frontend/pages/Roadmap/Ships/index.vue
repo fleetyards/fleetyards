@@ -109,6 +109,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import Btn from 'frontend/components/Btn'
 
 export default {
   name: 'Roadmap',
@@ -117,6 +118,7 @@ export default {
     Loader,
     EmptyBox,
     RoadmapItem,
+    Btn,
   },
 
   mixins: [

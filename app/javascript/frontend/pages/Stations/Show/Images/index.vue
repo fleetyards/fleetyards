@@ -102,6 +102,12 @@ export default {
 
       const crumbs = [{
         to: {
+          name: 'starsystems',
+          hash: `#${this.station.celestialObject.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }, {
+        to: {
           name: 'starsystem',
           params: {
             slug: this.station.celestialObject.starsystem.slug,
