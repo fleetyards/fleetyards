@@ -37,7 +37,7 @@ class Station < ApplicationRecord
 
   belongs_to :celestial_object
 
-  enum station_type: { spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9, aid_shelter: 10, gate: 11, drug_lab: 12 }
+  enum station_type: { spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5, "mining-hub": 13, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9, aid_shelter: 10, gate: 11, drug_lab: 12 }
   ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
     parent.table[:station_type]
   end
@@ -47,7 +47,7 @@ class Station < ApplicationRecord
   ransack_alias :name, :name_or_slug
   ransack_alias :search, :name_or_slug_or_celestial_object_starsystem_slug_or_celestial_object_slug
 
-  validates :name, :station_type, :location, :celestial_object, presence: true
+  validates :name, :station_type, :celestial_object, presence: true
   validates :name, uniqueness: true
 
   before_save :update_slugs

@@ -18,7 +18,7 @@
             :to="{
               name: 'model',
               params: {
-                slug: item.model.slug
+                slug: item.model.slug,
               }
             }"
           >

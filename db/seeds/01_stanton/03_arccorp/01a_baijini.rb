@@ -8,7 +8,7 @@ baijini = Station.find_or_initialize_by(name: 'Baijini Point')
 baijini.update!(
   celestial_object: arccorp,
   station_type: :hub,
-  location: 'Orbit',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
   hidden: false
 )

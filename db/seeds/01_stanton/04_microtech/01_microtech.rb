@@ -7,7 +7,7 @@ new_babbage_spaceport = Station.find_or_initialize_by(name: 'New Babbage Interst
 new_babbage_spaceport.update!(
   celestial_object: microtech,
   station_type: :spaceport,
-  location: 'New Babbage Interstellar Spaceport',
+  location: 'New Babbage',
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/new-babbage-spaceport.jpg').open,
   hidden: false
 )

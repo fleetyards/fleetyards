@@ -30,6 +30,7 @@ export default {
     hangar: 'Hangar',
     verify: 'RSI Account Verification',
   },
+  starsystems: 'Starsystems',
   stations: {
     index: 'Stations',
     overview: 'Overview',

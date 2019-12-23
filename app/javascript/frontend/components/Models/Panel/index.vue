@@ -7,7 +7,14 @@
     >
       <div class="panel-heading">
         <h2 class="panel-title">
-          <router-link :to="{ name: 'model', params: { slug: model.slug }}">
+          <router-link
+            :to="{
+              name: 'model',
+              params: {
+                slug: model.slug
+              }
+            }"
+          >
             <span v-if="customName">
               {{ customName }}
             </span>

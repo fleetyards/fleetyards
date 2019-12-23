@@ -16,10 +16,7 @@
           <div class="metrics-label">
             {{ $t('station.type') }}:
           </div>
-          <div
-            v-tooltip="station.typeLabel"
-            class="metrics-value"
-          >
+          <div class="metrics-value">
             {{ station.typeLabel }}
           </div>
         </div>
@@ -27,12 +24,10 @@
           <div class="metrics-label">
             {{ $t('station.location') }}:
           </div>
-          <div
-            v-tooltip="station.location"
+          <LocationLabel
             class="metrics-value"
-          >
-            {{ station.location }}
-          </div>
+            :station="station"
+          />
         </div>
       </div>
     </div>
@@ -40,7 +35,13 @@
 </template>
 
 <script>
+import LocationLabel from 'frontend/components/Stations/LocationLabel'
+
 export default {
+  components: {
+    LocationLabel,
+  },
+
   props: {
     station: {
       type: Object,

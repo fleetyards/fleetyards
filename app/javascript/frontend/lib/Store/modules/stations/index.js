@@ -9,10 +9,6 @@ export default () => ({
   actions,
 
   getters: {
-    backRoute(state) {
-      return state.backRoute
-    },
-
     filterVisible(state) {
       return state.filterVisible
     },
@@ -22,10 +18,6 @@ export default () => ({
   mutations: {
     reset(state) {
       Object.assign(state, getDefaultState())
-    },
-
-    setBackRoute(state, payload) {
-      state.backRoute = payload
     },
 
     setFilterVisible(state, payload) {

@@ -19,3 +19,6 @@ end
 json.dock_counts do
   json.array! station.dock_counts, partial: 'api/v1/stations/dock_count', as: :dock_count
 end
+json.celestial_object do
+  json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
+end

@@ -2,19 +2,8 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="celestialObject">
-          <router-link
-            :to="{
-              name: 'starsystem',
-              params: {
-                slug: celestialObject.starsystem.slug,
-              },
-              hash: `#${celestialObject.slug}`,
-            }"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ celestialObject.name }}
           <small>{{ celestialObject.designation }}</small>
         </h1>
@@ -126,6 +115,7 @@ import StationPanel from 'frontend/components/Stations/Panel'
 import ItemPanel from 'frontend/partials/Stations/Panel'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import CelestialObjectMetrics from 'frontend/partials/CelestialObjects/Metrics'
 
 export default {
@@ -135,6 +125,7 @@ export default {
     StationPanel,
     ItemPanel,
     CelestialObjectMetrics,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -156,7 +147,39 @@ export default {
       if (!this.celestialObject) {
         return null
       }
+
       return this.$t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
+    },
+
+    crumbs() {
+      if (!this.celestialObject) {
+        return null
+      }
+
+      const crumbs = [{
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.celestialObject.starsystem.slug,
+          },
+          hash: `#${this.celestialObject.slug}`,
+        },
+        label: this.celestialObject.starsystem.name,
+      }]
+
+      if (this.celestialObject.parent) {
+        crumbs.push({
+          to: {
+            name: 'celestialObject',
+            params: {
+              slug: this.celestialObject.parent.slug,
+            },
+          },
+          label: this.celestialObject.parent.name,
+        })
+      }
+
+      return crumbs
     },
   },
 

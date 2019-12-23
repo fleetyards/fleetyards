@@ -2,17 +2,9 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="shop">
-          <router-link
-            :to="backRoute"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ shop.name }}
-          <small>
-            {{ shop.station.name }}
-          </small>
         </h1>
       </div>
     </div>
@@ -182,6 +174,7 @@ import FilterForm from 'frontend/partials/Shops/ShopItemFilterForm'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/components/Btn'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -192,6 +185,7 @@ export default {
     ShopItemRow,
     FilterForm,
     Btn,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -213,12 +207,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      'previousRoute',
       'mobile',
     ]),
 
     ...mapGetters('shop', [
-      'backRoute',
       'filterVisible',
     ]),
 
@@ -243,15 +235,67 @@ export default {
 
       return this.$route.query.q.subCategoryIn
     },
+
+    station() {
+      return this.shop.station
+    },
+
+    crumbs() {
+      if (!this.shop) {
+        return null
+      }
+
+      const crumbs = [{
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.shop.celestialObject.starsystem.slug,
+          },
+          hash: `#${this.shop.celestialObject.slug}`,
+        },
+        label: this.shop.celestialObject.starsystem.name,
+      }]
+
+      if (this.shop.celestialObject.parent) {
+        crumbs.push({
+          to: {
+            name: 'celestialObject',
+            params: {
+              slug: this.shop.celestialObject.parent.slug,
+            },
+          },
+          label: this.shop.celestialObject.parent.name,
+        })
+      }
+
+      crumbs.push({
+        to: {
+          name: 'celestialObject',
+          params: {
+            slug: this.shop.celestialObject.slug,
+          },
+          hash: `#${this.station.slug}`,
+        },
+        label: this.shop.celestialObject.name,
+      })
+
+      crumbs.push({
+        to: {
+          name: 'station',
+          params: {
+            slug: this.station.slug,
+          },
+        },
+        label: this.station.name,
+      })
+
+      return crumbs
+    },
   },
 
   watch: {
     $route() {
       this.fetchCommodities()
-    },
-
-    shop() {
-      this.setBackRoute()
     },
   },
 
@@ -266,26 +310,6 @@ export default {
   },
 
   methods: {
-    setBackRoute() {
-      if (this.shopBackRoute && this.previousRoute
-        && ['model'].includes(this.previousRoute.name)) {
-        return
-      }
-
-      const route = {
-        name: 'shops',
-        hash: `#${this.shop.station.slug}-${this.shop.slug}`,
-      }
-
-      if (this.previousRoute && ['shops', 'station', 'celestialObject', 'search'].includes(this.previousRoute.name)) {
-        route.name = this.previousRoute.name
-        route.params = this.previousRoute.params
-        route.query = this.previousRoute.query
-      }
-
-      this.$store.commit('shop/setBackRoute', route)
-    },
-
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },

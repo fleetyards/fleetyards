@@ -6,7 +6,7 @@ delamar = CelestialObject.find_or_create_by!(name: 'Delamar')
 delamar.update!(store_image: Rails.root.join('db/seeds/images/nyx/delamar/delamar.jpg').open, hidden: false)
 
 levski = Station.find_or_initialize_by(name: 'Levski')
-levski.update!(celestial_object: delamar, station_type: 'mining-station', location: 'Delamar', store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open, hidden: false)
+levski.update!(celestial_object: delamar, station_type: 'mining-hub', location: nil, store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open, hidden: false)
 
 levski.docks.destroy_all
 pad = 1

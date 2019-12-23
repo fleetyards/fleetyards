@@ -7,14 +7,16 @@
       >
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs
+              :crumbs="[{
+                to: {
+                  name: 'models',
+                  hash: `#${model.slug}`,
+                },
+                label: $t('nav.models'),
+              }]"
+            />
             <h1>
-              <router-link
-                v-if="backRoute"
-                :to="backRoute"
-                class="back-button"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
               {{ model.name }}
               <small class="manufacturer">
                 <span class="manufacturer-prefix">
@@ -272,6 +274,7 @@ import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -286,6 +289,7 @@ export default {
     ModelCrewMetrics,
     ModelSpeedMetrics,
     ModelPanel,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -311,24 +315,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'previousRoute',
-    ]),
-
     ...mapGetters('app', [
       'overlayVisible',
     ]),
 
-    ...mapGetters('models', [
-      'backRoute',
-    ]),
-
     starship42Url() {
       const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
+
       if (this.color3d) {
         data.style = 'colored'
       }
+
       const startship42Params = qs.stringify(data)
+
       return `https://starship42.com/fleetview/single?${startship42Params}`
     },
 
@@ -344,6 +343,7 @@ export default {
       if (!this.model) {
         return null
       }
+
       return this.$t('title.model', {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
@@ -364,8 +364,6 @@ export default {
         return
       }
 
-      this.setBackRoute()
-
       if (this.model.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       }
@@ -377,26 +375,6 @@ export default {
   },
 
   methods: {
-    setBackRoute() {
-      if (this.backRoute && this.previousRoute
-        && ['model-images', 'model-videos'].includes(this.previousRoute.name)) {
-        return
-      }
-
-      const route = {
-        name: 'models',
-        hash: `#${this.model.slug}`,
-      }
-
-      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop', 'search'].includes(this.previousRoute.name)) {
-        route.name = this.previousRoute.name
-        route.params = this.previousRoute.params
-        route.query = this.previousRoute.query
-      }
-
-      this.$store.commit('models/setBackRoute', route)
-    },
-
     toggle3d() {
       this.show3d = !this.show3d
     },

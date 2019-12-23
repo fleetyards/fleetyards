@@ -8,7 +8,7 @@ everus = Station.find_or_initialize_by(name: 'Everus Harbor')
 everus.update!(
   celestial_object: hurston,
   station_type: :hub,
-  location: 'Orbit',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
   hidden: hidden
 )

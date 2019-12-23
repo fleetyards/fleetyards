@@ -16,7 +16,7 @@
               :to="{
                 name: 'station',
                 params: {
-                  slug: station.slug
+                  slug: station.slug,
                 }
               }"
               :aria-label="station.name"

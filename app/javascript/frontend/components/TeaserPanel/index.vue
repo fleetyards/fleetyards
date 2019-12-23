@@ -72,6 +72,7 @@ export default {
     image() {
       return this.item.storeImageMedium
     },
+
     title() {
       if (this.item.title) {
         return this.item.title

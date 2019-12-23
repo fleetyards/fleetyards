@@ -334,6 +334,12 @@ export default {
     habitation: 'Habitation',
     habs: 'Habs',
     shops: 'Shops',
+    locationPrefix: {
+      default: 'on',
+      asteriod: 'on asteroid near',
+      orbit: 'in orbit around',
+    },
+    locationSuffix: 'near %{location}',
   },
   tradeRoutes: {
     buy: 'Buy for: %{uec}',

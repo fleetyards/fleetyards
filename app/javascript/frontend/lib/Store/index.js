@@ -27,6 +27,10 @@ const store = new Vuex.Store({
       return state.previousRoute
     },
 
+    backRoutes(state) {
+      return state.backRoutes
+    },
+
     backgroundImage(state) {
       return state.backgroundImage
     },

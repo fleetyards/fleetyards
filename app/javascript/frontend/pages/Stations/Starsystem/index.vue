@@ -2,13 +2,17 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs
+          v-if="starsystem"
+          :crumbs="[{
+            to: {
+              name: 'starsystems',
+              hash: `#${starsystem.slug}`,
+            },
+            label: $t('nav.starsystems')
+          }]"
+        />
         <h1 v-if="starsystem">
-          <router-link
-            :to="{name: 'starsystems'}"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
         </h1>
       </div>
@@ -129,6 +133,7 @@ import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
 import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   name: 'Starsystem',
@@ -140,6 +145,7 @@ export default {
     StarsystemBaseMetrics,
     StarsystemLevelsMetrics,
     Panel,
+    BreadCrumbs,
   },
 
   mixins: [

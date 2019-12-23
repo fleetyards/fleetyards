@@ -182,6 +182,7 @@ en:
           rest_stop: Rest Stop
           cargo-station: Cargo Station
           mining-station: Mining Station
+          mining-hub: Mining Hub
           asteroid-station: Asteriod Station
           refinery: Refinery
           district: District

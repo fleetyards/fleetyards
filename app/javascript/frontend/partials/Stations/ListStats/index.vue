@@ -7,7 +7,9 @@
     <dd>{{ station.typeLabel }}</dd>
 
     <dt>{{ $t('labels.station.location') }}:</dt>
-    <dd>{{ station.locationLabel }}</dd>
+    <dd>
+      <LocationLabel :station="station" />
+    </dd>
 
     <dt v-if="station.shopsListLabel">
       {{ $t('labels.station.shops') }}:
@@ -47,7 +49,13 @@
 </template>
 
 <script>
+import LocationLabel from 'frontend/components/Stations/LocationLabel'
+
 export default {
+  components: {
+    LocationLabel,
+  },
+
   props: {
     station: {
       type: Object,

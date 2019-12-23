@@ -154,10 +154,12 @@ module Frontend
     end
 
     private def compare_image(models)
+      return if models.size < 2
+
       filename_base = models.map(&:slug).join('-')
       filename = "#{filename_base}.jpg"
       path = Rails.root.join('public', 'compare', filename)
-      return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
+      return "https://fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|
         image = MiniMagick::Image.open(model.store_image.to_s)
@@ -192,7 +194,7 @@ module Frontend
         FileUtils.rm(Rails.root.join('tmp', model.slug))
       end
 
-      "https://api.fleetyards.net/compare/#{filename}"
+      "https://fleetyards.net/compare/#{filename}"
     end
 
     private def compare_params

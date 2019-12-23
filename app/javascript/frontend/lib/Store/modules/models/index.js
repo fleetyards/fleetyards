@@ -20,10 +20,6 @@ export default () => ({
     fleetchartScale(state) {
       return state.fleetchartScale
     },
-
-    backRoute(state) {
-      return state.backRoute
-    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -42,10 +38,6 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
-    },
-
-    setBackRoute(state, payload) {
-      state.backRoute = payload
     },
   },
   /* eslint-enable no-param-reassign */

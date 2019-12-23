@@ -5,8 +5,5 @@ json.cache! ['v1', celestial_object] do
   json.moons do
     json.array! celestial_object.moons.visible.order(designation: :asc).visible.order(:name), partial: 'api/v1/celestial_objects/base', as: :celestial_object
   end
-  json.starsystem do
-    json.partial! 'api/v1/starsystems/base', starsystem: celestial_object.starsystem
-  end
   json.partial! 'api/shared/dates', record: celestial_object
 end

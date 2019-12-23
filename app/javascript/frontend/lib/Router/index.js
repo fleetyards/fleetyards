@@ -111,7 +111,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-  if (from.name && to.name !== from.name) {
+  if (from.name && to.path !== from.path) {
     Store.commit('setPreviousRoute', {
       name: from.name,
       params: from.params,

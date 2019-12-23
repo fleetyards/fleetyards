@@ -79,11 +79,11 @@ export default {
   watch: {
     $route() {
       this.setBackground()
+
       if (this.isAuthenticated) {
         this.fetchHangar()
       }
     },
-
 
     navCollapsed: 'setNoScroll',
 

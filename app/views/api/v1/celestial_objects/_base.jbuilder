@@ -16,3 +16,9 @@ json.danger celestial_object.sensor_danger
 json.economy celestial_object.sensor_economy
 json.population celestial_object.sensor_population
 json.location_label celestial_object.location_label
+json.parent do
+  json.partial! 'api/v1/celestial_objects/base', celestial_object: celestial_object.parent if celestial_object.parent.present?
+end
+json.starsystem do
+  json.partial! 'api/v1/starsystems/base', starsystem: celestial_object.starsystem
+end

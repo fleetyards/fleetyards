@@ -8,7 +8,7 @@ portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
 portolisar.update!(
   celestial_object: crusader,
   station_type: :hub,
-  location: 'Orbit',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/portolisar.jpg').open,
   hidden: false
 )
