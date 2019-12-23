@@ -26,7 +26,12 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-8">
-            <div class="image-wrapper">
+            <div
+              :class="{
+                'image-wrapper-holoviewer': holoviewerVisible,
+              }"
+              class="image-wrapper"
+            >
               <Btn
                 :active="holoviewerVisible"
                 class="toggle-3d"

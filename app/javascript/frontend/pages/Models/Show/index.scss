@@ -26,6 +26,10 @@
   max-width: 1200px;
   position: relative;
   margin: 0 auto;
+
+  &.image-wrapper-holoviewer {
+    min-height: 400px;
+  }
 }
 
 .description {
@@ -92,8 +96,8 @@
 .starship42-link {
   position: absolute;
   z-index: 1000;
-  bottom: 15px;
-  right: 15px;
+  top: 18px;
+  right: 75px;
   color: darken($text-color, 5%);
 
   &:hover {
