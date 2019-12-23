@@ -7,15 +7,7 @@
       >
         <div class="row">
           <div class="col-xs-12">
-            <BreadCrumbs
-              :crumbs="[{
-                to: {
-                  name: 'models',
-                  hash: `#${model.slug}`,
-                },
-                label: $t('nav.models'),
-              }]"
-            />
+            <BreadCrumbs :crumbs="crumbs" />
             <h1>
               {{ model.name }}
               <small class="manufacturer">
@@ -348,6 +340,20 @@ export default {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })
+    },
+
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'models',
+          hash: `#${this.model.slug}`,
+        },
+        label: this.$t('nav.models'),
+      }]
     },
   },
 

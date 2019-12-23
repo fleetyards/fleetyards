@@ -4,12 +4,7 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
-            <BreadCrumbs
-              :crumbs="[{
-                to: { name: 'model', param: { slug: $route.params.slug } },
-                label: model.name
-              }]"
-            />
+            <BreadCrumbs :crumbs="crumbs" />
             <h1>
               {{ metaTitle }}
             </h1>
@@ -100,6 +95,23 @@ export default {
       return this.$t('title.modelImages', {
         name: this.model.name,
       })
+    },
+
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'models',
+          hash: `#${this.model.slug}`,
+        },
+        label: this.$t('nav.models'),
+      }, {
+        to: { name: 'model', param: { slug: this.$route.params.slug } },
+        label: this.model.name,
+      }]
     },
   },
 

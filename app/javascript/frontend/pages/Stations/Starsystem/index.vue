@@ -2,16 +2,7 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <BreadCrumbs
-          v-if="starsystem"
-          :crumbs="[{
-            to: {
-              name: 'starsystems',
-              hash: `#${starsystem.slug}`,
-            },
-            label: $t('nav.starsystems')
-          }]"
-        />
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="starsystem">
           {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
         </h1>
@@ -175,6 +166,20 @@ export default {
         return null
       }
       return this.$t('title.starsystem', { starsystem: this.starsystem.name })
+    },
+
+    crumbs() {
+      if (!this.starsystem) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'starsystems',
+          hash: `#${this.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }]
     },
   },
 
