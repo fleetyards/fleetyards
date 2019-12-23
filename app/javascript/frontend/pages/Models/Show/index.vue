@@ -252,7 +252,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
