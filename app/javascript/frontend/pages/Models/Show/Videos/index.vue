@@ -63,7 +63,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
-import BreadCrumbs from 'frontend/components/BackButton'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {

@@ -93,7 +93,7 @@ export default {
     },
 
     showMore() {
-      this.page = this.page + 1
+      this.page += 1
     },
 
     resetHistory() {

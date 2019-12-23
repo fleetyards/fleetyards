@@ -2,7 +2,9 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
-        <BreadCrumbs />
+        <BreadCrumbs
+          :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
+        />
         <h1>
           {{ $t('headlines.hangar.import') }}
         </h1>
@@ -81,13 +83,13 @@ import Papa from 'papaparse'
 import Panel from 'frontend/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import LazyImage from 'frontend/components/LazyImage'
-import BackButton from 'frontend/components/BackButton'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {
     Panel,
     LazyImage,
-    BackButton,
+    BreadCrumbs,
   },
 
   mixins: [
