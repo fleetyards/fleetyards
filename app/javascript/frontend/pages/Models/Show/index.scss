@@ -95,7 +95,7 @@
   z-index: 1000;
   bottom: 15px;
   right: 15px;
-  color: $gray-lighter;
+  color: darken($text-color, 5%);
 
   &:hover {
     color: $text-color;
