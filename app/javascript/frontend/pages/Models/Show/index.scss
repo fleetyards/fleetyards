@@ -18,8 +18,9 @@
 .holoviewer {
   position: absolute;
   width: 100%;
-  height: 100%;
-  top: 0;
+  height: 200%;
+  top: -50%;
+  z-index: -1;
 }
 
 .image-wrapper {
@@ -99,6 +100,7 @@
   top: 18px;
   right: 75px;
   color: darken($text-color, 5%);
+  text-shadow: 0 0 3px black;
 
   &:hover {
     color: $text-color;
