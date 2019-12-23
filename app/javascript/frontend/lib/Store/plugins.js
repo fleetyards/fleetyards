@@ -5,7 +5,6 @@ export default function getStorePlugins() {
     key: 'FleetYards',
     paths: [
       'route',
-      'lastRoute',
       'backgroundImage',
       'storeVersion',
       'filters',

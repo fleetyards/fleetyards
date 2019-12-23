@@ -23,10 +23,6 @@ const store = new Vuex.Store({
       return state.online
     },
 
-    previousRoute(state) {
-      return state.previousRoute
-    },
-
     backRoutes(state) {
       return state.backRoutes
     },
@@ -70,14 +66,6 @@ const store = new Vuex.Store({
 
     setBackgroundImage(state, payload) {
       state.backgroundImage = payload
-    },
-
-    setLastRoute(state, payload) {
-      state.lastRoute = { ...state.lastRoute, ...payload }
-    },
-
-    setPreviousRoute(state, payload) {
-      state.previousRoute = { ...state.previousRoute, ...payload }
     },
 
     setFilters(state, payload) {

@@ -110,22 +110,4 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from) => {
-  if (from.name && to.path !== from.path) {
-    Store.commit('setPreviousRoute', {
-      name: from.name,
-      params: from.params,
-      query: from.query,
-      hash: from.hash,
-    })
-
-    Store.commit('setLastRoute', {
-      name: to.name,
-      params: to.params,
-      query: to.query,
-      hash: to.hash,
-    })
-  }
-})
-
 export default router
