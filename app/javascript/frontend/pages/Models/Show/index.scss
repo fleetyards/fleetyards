@@ -15,12 +15,12 @@
   }
 }
 
-.holo-viewer {
+.holoviewer {
   position: absolute;
   width: 100%;
   height: 200%;
   top: -50%;
-  cursor: pointer;
+  z-index: -1;
 }
 
 .image-wrapper {

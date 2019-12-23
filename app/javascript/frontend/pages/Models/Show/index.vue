@@ -28,15 +28,15 @@
           <div class="col-xs-12 col-md-8">
             <div class="image-wrapper">
               <Btn
-                :active="show3d"
+                :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
-                @click.native="toggle3d"
+                @click.native="toggleHoloviewer"
               >
                 {{ $t('labels.3dView') }}
               </Btn>
               <a
-                v-show="show3d"
+                v-show="holoviewerVisible"
                 :href="starship42Url"
                 class="starship42-link"
                 target="_blank"
@@ -45,16 +45,16 @@
                 {{ $t('labels.poweredByStarship42') }}
               </a>
               <iframe
-                v-if="show3d"
+                v-if="holoviewerVisible"
+                class="holoviewer"
                 :src="starship42IframeUrl"
-                class="holo-viewer"
                 frameborder="0"
               />
               <img
                 v-lazy="model.storeImage"
                 class="image"
                 :class="{
-                  'image-hidden': show3d,
+                  'image-hidden': holoviewerVisible,
                 }"
                 alt="model image"
               >
@@ -307,6 +307,10 @@ export default {
       'overlayVisible',
     ]),
 
+    ...mapGetters('models', [
+      'holoviewerVisible',
+    ]),
+
     starship42Url() {
       return `https://starship42.com/inverse/?ship=${this.model.rsiName}&mode=color`
     },
@@ -372,13 +376,15 @@ export default {
     this.fetch()
   },
 
-  methods: {
-    toggle3d() {
-      this.show3d = !this.show3d
-    },
+  mounted() {
+    if (this.$route.query.holoviewer) {
+      this.$store.dispatch('models/enableHoloviewer')
+    }
+  },
 
-    openStarship42() {
-      alert('foo')
+  methods: {
+    toggleHoloviewer() {
+      this.$store.dispatch('models/toggleHoloviewer')
     },
 
     async fetch() {

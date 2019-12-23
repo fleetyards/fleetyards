@@ -24,6 +24,7 @@ export default function getStorePlugins() {
       'models.filterVisible',
       'models.fleetchartVisible',
       'models.fleetchartScale',
+      'models.holoviewerVisible',
       'shop.filterVisible',
       'shops.filterVisible',
       'stations.filterVisible',

@@ -20,6 +20,10 @@ export default () => ({
     fleetchartScale(state) {
       return state.fleetchartScale
     },
+
+    holoviewerVisible(state) {
+      return state.holoviewerVisible
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -38,6 +42,10 @@ export default () => ({
 
     setFleetchartScale(state, payload) {
       state.fleetchartScale = payload
+    },
+
+    setHoloviewerVisible(state, payload) {
+      state.holoviewerVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */
