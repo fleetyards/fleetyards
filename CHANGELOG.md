@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.44.0](https://github.com/fleetyards/app/compare/v3.43.1...v3.44.0) (2019-12-23)
+
+
+### Features
+
+* **breadcrumbs:** add breadcrumbs to all required pages ([158abea](https://github.com/fleetyards/app/commit/158abea20c825a0fe0b2ce24d6bef6e8f6d64baf))
+
+
+### Bug Fixes
+
+* specs ([07bbe0d](https://github.com/fleetyards/app/commit/07bbe0d63c5b2c57193fc8bb25edf4b857802790))
+
 ### [3.43.1](https://github.com/fleetyards/app/compare/v3.43.0...v3.43.1) (2019-12-21)
 
 ## [3.43.0](https://github.com/fleetyards/app/compare/v3.42.4...v3.43.0) (2019-12-21)
