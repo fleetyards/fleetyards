@@ -5,9 +5,9 @@ system("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_
 puts ''
 
 if ENV['TEST_SEEDS'].present?
-  require 'rsi_models_loader'
+  require 'rsi/models_loader'
 
-  RsiModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]).all
+  ::RSI::ModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]).all
 
   model = Model.first
   20.times do |index|

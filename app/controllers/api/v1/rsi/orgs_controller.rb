@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi_orgs_loader'
+require 'rsi/orgs_loader'
 
 module Api
   module V1
@@ -10,7 +10,7 @@ module Api
         before_action :authenticate_api_user!, only: %i[]
 
         def show
-          success, @org = RsiOrgsLoader.new.fetch(params[:sid].downcase)
+          success, @org = ::RSI::OrgsLoader.new.fetch(params[:sid].downcase)
 
           return if success
 
