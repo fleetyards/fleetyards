@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.44.1](https://github.com/fleetyards/app/compare/v3.44.0...v3.44.1) (2019-12-23)
+
+
+### Bug Fixes
+
+* missing import ans breadcrumb ([1888813](https://github.com/fleetyards/app/commit/1888813bbed6c654d6757ea4108769e6f10dca7b))
+
 ## [3.44.0](https://github.com/fleetyards/app/compare/v3.43.1...v3.44.0) (2019-12-23)
 
 
