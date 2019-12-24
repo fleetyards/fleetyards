@@ -31,19 +31,24 @@
             = form.check_box :ground, placeholder: I18n.t(:"helpers.placeholder.model.ground")
             = form.label :ground do
               = I18n.t(:"activerecord.attributes.model.ground")
-
-    .col-xs-12.col-sm-6.col-md-4
+  .row
+    .col-xs-12
       .row
-        .col-xs-12.col-sm-6.form-group{class: form_error?(model, :base_model_id)}
+        .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :base_model_id)}
           = form.label :base_model_id
           = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
           %small
             = form_errors model, :base_model_id
-        .col-xs-12.col-md-6.form-group{class: form_error?(model, :erkuls_slug)}
+        .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :erkuls_slug)}
           = form.label :erkuls_slug
           = form.text_field :erkuls_slug, class: 'form-control'
           %small
             = form_errors model, :erkuls_slug
+        .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :starship42_slug)}
+          = form.label :starship42_slug
+          = form.text_field :starship42_slug, class: 'form-control'
+          %small
+            = form_errors model, :starship42_slug
 
   .row
     .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}

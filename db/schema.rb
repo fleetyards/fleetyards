@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_094259) do
+ActiveRecord::Schema.define(version: 2019_12_24_213207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -176,6 +176,25 @@ ActiveRecord::Schema.define(version: 2019_10_26_094259) do
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.string "sid"
+    t.string "archetype"
+    t.string "main_activity"
+    t.string "secondary_activity"
+    t.boolean "recruiting"
+    t.string "commitment"
+    t.boolean "rpg"
+    t.boolean "exclusive"
+    t.integer "member_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.hstore "rsi_members", default: [], null: false, array: true
+    t.string "banner"
+    t.string "background"
   end
 
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -358,6 +377,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_094259) do
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
     t.string "erkuls_slug"
+    t.string "starship42_slug"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
