@@ -20,6 +20,10 @@ class Image < ApplicationRecord
     where(enabled: true)
   end
 
+  def self.global_enabled
+    where(global: true)
+  end
+
   def self.background
     where(background: true)
   end

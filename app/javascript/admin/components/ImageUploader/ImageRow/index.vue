@@ -97,6 +97,19 @@
           />
         </Btn>
         <Btn
+          v-tooltip="$t('labels.image.global')"
+          :disabled="updating"
+          size="small"
+          @click.native="toggleGlobal"
+        >
+          <i
+            :class="{
+              'fas fa-globe': image.global,
+              'fal fa-globe icon-disabled': !image.global,
+            }"
+          />
+        </Btn>
+        <Btn
           :disabled="deleting"
           size="small"
           @click.native="deleteImage"
@@ -166,6 +179,19 @@ export default {
         this.image.enabled = !this.image.enabled
       }
     },
+    async toggleGlobal() {
+      this.updating = true
+      this.image.global = !this.image.global
+      const response = await this.$api.put(`images/${this.image.id}`, {
+        global: this.image.global,
+      })
+
+      this.updating = false
+
+      if (response.error) {
+        this.image.global = !this.image.global
+      }
+    },
     async toggleBackground() {
       this.updating = true
       this.image.background = !this.image.background
@@ -193,5 +219,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'styles/index.scss';
+  @import 'index';
 </style>

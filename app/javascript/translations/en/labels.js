@@ -221,6 +221,7 @@ export default {
   image: {
     background: 'Use as Background?',
     enabled: 'Enabled?',
+    global: 'Global?',
     delete: 'Delete',
     start: 'Start',
     cancel: 'Cancel',

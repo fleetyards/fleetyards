@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_24_213207) do
+ActiveRecord::Schema.define(version: 2019_12_24_220538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -245,6 +245,7 @@ ActiveRecord::Schema.define(version: 2019_12_24_213207) do
     t.boolean "background", default: true
     t.integer "width"
     t.integer "height"
+    t.boolean "global", default: true
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
