@@ -154,7 +154,8 @@ module Frontend
     end
 
     private def compare_image(models)
-      return if models.size < 2
+      return models.first.store_image.url if models.size == 1
+      return if models.blank?
 
       filename_base = models.map(&:slug).join('-')
       filename = "#{filename_base}.jpg"
