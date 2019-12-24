@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.45.0](https://github.com/fleetyards/app/compare/v3.44.2...v3.45.0) (2019-12-24)
+
+
+### Features
+
+* **3dview:** add new holoviewer from starship42 ([b25431f](https://github.com/fleetyards/app/commit/b25431f284632e0429aec6f227f6c8400472b2c2))
+* **3dview:** update starship42 link ([7d4fc6b](https://github.com/fleetyards/app/commit/7d4fc6b54c69d82ea148e7ddc576197225c9096e))
+* **breadcrumbs:** add crumbs to compare page ([1ccba1c](https://github.com/fleetyards/app/commit/1ccba1c30e0bcbb3d1fc7b6ccc89e8f493b3a080))
+* **holoviewer:** update mobile size ([d3f0b3e](https://github.com/fleetyards/app/commit/d3f0b3ea313c6c7ac01ccc553ffcedc1f5d4d174))
+* **holoviewer:** update size ([63de855](https://github.com/fleetyards/app/commit/63de8558bce8b2eafe694446f6ca63e4dc965e9b))
+* **holoviewer:** update size ([d9f2d7e](https://github.com/fleetyards/app/commit/d9f2d7e1a6c7fbb0b757495ea399869389a217d4))
+* **holoviewer:** update z-index ([34da30f](https://github.com/fleetyards/app/commit/34da30fac0e26b1ff3749e219d113e5950e39492))
+
 ### [3.44.2](https://github.com/fleetyards/app/compare/v3.44.1...v3.44.2) (2019-12-23)
 
 
