@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.46.0](https://github.com/fleetyards/app/compare/v3.45.0...v3.46.0) (2019-12-24)
+
+
+### Features
+
+* **holoviewer:** update size on mobile ([2457f03](https://github.com/fleetyards/app/commit/2457f034f7a18c8178bbbcabd4b070b28acf464d))
+
 ## [3.45.0](https://github.com/fleetyards/app/compare/v3.44.2...v3.45.0) (2019-12-24)
 
 
