@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.46.1](https://github.com/fleetyards/app/compare/v3.46.0...v3.46.1) (2019-12-24)
+
+
+### Bug Fixes
+
+* **holoviewer:** update iframe url ([d96eafa](https://github.com/fleetyards/app/commit/d96eafaf1881931f8b56d01103a3d53f6b064ebc))
+
 ## [3.46.0](https://github.com/fleetyards/app/compare/v3.45.0...v3.46.0) (2019-12-24)
 
 
