@@ -317,7 +317,7 @@ export default {
     ]),
 
     starship42Url() {
-      return `https://starship42.com/inverse/?ship=${this.model.rsiName}&mode=color`
+      return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
     },
 
     starship42IframeUrl() {
