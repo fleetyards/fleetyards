@@ -10,6 +10,8 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs :crumbs="crumbs" />
+            <br>
             <h1 class="sr-only">
               {{ $t('headlines.compare.models') }}
             </h1>
@@ -122,6 +124,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Box from 'frontend/components/Box'
 import Btn from 'frontend/components/Btn'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import BaseRows from 'frontend/partials/Compare/Models/Base'
 import CrewRows from 'frontend/partials/Compare/Models/Crew'
 import SpeedRows from 'frontend/partials/Compare/Models/Speed'
@@ -133,6 +136,7 @@ export default {
     FilterGroup,
     Box,
     Btn,
+    BreadCrumbs,
     BaseRows,
     CrewRows,
     SpeedRows,
@@ -191,6 +195,15 @@ export default {
       }
 
       return null
+    },
+
+    crumbs() {
+      return [{
+        to: {
+          name: 'models',
+        },
+        label: this.$t('nav.models'),
+      }]
     },
   },
 

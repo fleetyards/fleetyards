@@ -127,6 +127,9 @@
           </router-link>
           <router-link
             :to="{ name: 'models' }"
+            :class="{
+              active: shipsRouteActive,
+            }"
             tag="li"
           >
             <a>{{ $t('nav.models') }}</a>
@@ -387,7 +390,7 @@ export default {
 
     checkRoutes() {
       const { path } = this.$route
-      this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components')
+      this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components') || path.includes('compare/ships')
       this.userRouteActive = path.includes('settings')
       this.userMenuOpen = this.userRouteActive
       this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
