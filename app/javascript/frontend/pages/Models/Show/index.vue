@@ -321,7 +321,7 @@ export default {
     },
 
     starship42IframeUrl() {
-      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}`
+      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
     },
 
     erkulUrl() {
