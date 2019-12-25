@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.46.4](https://github.com/fleetyards/app/compare/v3.46.3...v3.46.4) (2019-12-25)
+
+
+### Bug Fixes
+
+* **no-scroll:** update css for mobile ([1af3320](https://github.com/fleetyards/app/commit/1af3320b3b326fb246d77d0b4f98eea11ae1863c))
+* **no-scroll:** update mobile ([c3c899c](https://github.com/fleetyards/app/commit/c3c899c8e35c1b1a796f989b0e6fc86e26d94480))
+
 ### [3.46.3](https://github.com/fleetyards/app/compare/v3.46.2...v3.46.3) (2019-12-24)
 
 ### [3.46.2](https://github.com/fleetyards/app/compare/v3.46.1...v3.46.2) (2019-12-24)
