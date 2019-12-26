@@ -12,8 +12,8 @@
   overflow: hidden !important;
   position: relative !important;
   height: 100% !important;
-  margin-bottom: -env(safe-area-inset-top);
   -webkit-overflow-scrolling: auto;
+  padding-bottom: env(safe-area-inset-top);
 }
 
 body {

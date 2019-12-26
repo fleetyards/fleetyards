@@ -15,7 +15,7 @@
   .modal-dialog {
     transition: transform ease $transition-base-speed ease-out;
     width: 600px;
-    margin: 40px auto 30px auto;
+    margin: 30px auto;
   }
 
   .modal-content {
@@ -86,7 +86,7 @@
   .modal {
     .modal-dialog {
       width: 100%;
-      margin: 0;
+      margin: 20px 0;
 
       .modal-content {
         border-width: 1px 0 0;

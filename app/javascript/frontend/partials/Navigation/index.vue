@@ -23,7 +23,7 @@
       <span class="icon-bar bottom-bar" />
     </button>
     <div
-      v-if="nodeEnv"
+      v-if="nodeEnv && !mobile"
       :class="{
         'spacing-right': this.$route.name === 'home',
       }"
