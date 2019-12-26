@@ -11,9 +11,8 @@
 .no-scroll {
   overflow: hidden !important;
   position: relative !important;
-  height: 100% !important;
+  height: 100vh !important;
   -webkit-overflow-scrolling: auto;
-  padding-bottom: env(safe-area-inset-top);
 }
 
 body {
