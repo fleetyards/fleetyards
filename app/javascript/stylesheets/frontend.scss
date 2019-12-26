@@ -11,14 +11,8 @@
 .no-scroll {
   overflow: hidden !important;
   position: fixed !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 100vh !important;
+  height: 100% !important;
   -webkit-overflow-scrolling: auto;
-  margin: 0;
-  padding: 0;
 }
 
 body {
@@ -27,6 +21,15 @@ body {
   min-width: 320px;
   min-height: 100%;
   background-color: $background;
+
+  &::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    content: "";
+    border-top: 1px solid $gray-dark;
+  }
 }
 
 .app-body {
@@ -96,14 +99,6 @@ hr {
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .app-body {
-    .main-wrapper {
-      margin-top: env(safe-area-inset-top);
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-  }
-
   .app-intro {
     .logo {
       width: 200px;
