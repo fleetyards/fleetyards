@@ -25,7 +25,7 @@
                           data-test="home-search"
                           :placeholder="$t('placeholders.search')"
                           size="large"
-                          :autofocus="mobile !== undefined && !mobile"
+                          :autofocus="!mobile"
                         />
                         <Btn
                           id="search-submit"
@@ -179,7 +179,7 @@ export default {
     }
   },
 
-  computet: {
+  computed: {
     ...mapGetters([
       'mobile',
     ]),
