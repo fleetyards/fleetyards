@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.46.5](https://github.com/fleetyards/app/compare/v3.46.4...v3.46.5) (2019-12-27)
+
+
+### Bug Fixes
+
+* **home:** update autofocus on mobile ([a062ddc](https://github.com/fleetyards/app/commit/a062ddcbeba3f1a2ced7f92d4ecb8b864e6f1f9c))
+* **no-scroll:** update height ([49c0b19](https://github.com/fleetyards/app/commit/49c0b195beb692f71044aab93cf252b4ff4c3689))
+* **no-scroll:** update metrics ([5349aad](https://github.com/fleetyards/app/commit/5349aad5aa4a3ac7905f881b35a043ad0b7b4b20))
+
 ### [3.46.4](https://github.com/fleetyards/app/compare/v3.46.3...v3.46.4) (2019-12-25)
 
 
