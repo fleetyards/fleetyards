@@ -1,0 +1,62 @@
+## Hangar [/v1/vehicles]
+
+### GET Vehicles [GET]
+Get your personal Vehicles
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer JWT
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            [
+                {
+                    "id": "7089c581-c212-4f2e-8d47-8dc988963b5a",
+                    "name": "",
+                    "purchased": true,
+                    "flagship": false,
+                    "saleNotify": true,
+                    "public": true,
+                    "model": {
+                        "id": "0f7bb93d-c144-4cec-b4f7-17f520a01203",
+                        "name": "Freelancer MIS",
+                        "slug": "freelancer-mis",
+                        "description": "The Freelancer MIS is a limited edition militarized variant of the classic mercantile ship developed by the UEE. These were produced in very small quantity due to some early payload incidents. This version sacrifices the majority of the cargo capacity to make way for missiles. ",
+                        "length": "34.000",
+                        "beam": "15.000",
+                        "height": "8.000",
+                        "mass": "300",
+                        "cargo": "52",
+                        "netCargo": null,
+                        "crew": "3",
+                        "storeImage": "https://api.fleetyards.test/uploads/ship/store_image/0f7bb93d-c144-4cec-b4f7-17f520a01203/Freelancer_mis_storefront_visual.jpg",
+                        "storeUrl": "https://robertsspaceindustries.com/pledge/ships/misc-freelancer/Freelancer-MIS",
+                        "price": "0.0",
+                        "onSale": false,
+                        "productionStatus": "ready",
+                        "productionNote": "Update pass scheduled",
+                        "powerplantSize": 5,
+                        "shieldSize": 5,
+                        "classification": "fighter",
+                        "focus": "Militia",
+                        "rsiId": 33,
+                        "manufacturer": {
+                            "id": "9c0435a4-43ed-4db0-b023-7b42deeabc54",
+                            "name": "Musashi Industrial \u0026amp; Starflight Concern"
+                        },
+                        "role": {
+                            "id": "3c8fe766-0798-434f-bf9a-7631e2447175",
+                            "name": "Militia"
+                        },
+                        "createdAt": "2014-10-04T23:47:25+02:00",
+                        "updatedAt": "2017-08-30T22:00:37+02:00"
+                    },
+                    "createdAt": "2017-01-03T19:47:37+01:00",
+                    "updatedAt": "2017-01-11T01:16:50+01:00"
+                }
+            ]

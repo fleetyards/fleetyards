@@ -1,0 +1,42 @@
+## Model [/v1/models/{slug}/modules]
+
+### GET Modules [GET]
+Get Modules List of a Model referenced by its Slug
+
++ Parameters
+
+    + slug: `endeavor` (required, string) - The Model Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            [    
+                {
+                    "id": "5e6f0588-f5bf-4ef9-b3b0-6f4a7f89f3c9",
+                    "name": "Bio Dome (2x1)",
+                    "description": "As long as Humanity expands outward into the galaxy, there will always be a need for the most basic elements that sustain it. The Endeavor’s biodome pods were designed to support ongoing agriculture operations, adapting and growing foodstuffs which can then be sold for a profit.",
+                    "pledgePrice": null,
+                    "storeImage": "http://api.fleetyards.test/uploads/model_module/store_image/5e6f0588-f5bf-4ef9-b3b0-6f4a7f89f3c9/Biodome_pod_only_store.jpg",
+                    "storeImageMedium": "http://api.fleetyards.test/uploads/model_module/store_image/5e6f0588-f5bf-4ef9-b3b0-6f4a7f89f3c9/medium_Biodome_pod_only_store.jpg",
+                    "storeImageSmall": "http://api.fleetyards.test/uploads/model_module/store_image/5e6f0588-f5bf-4ef9-b3b0-6f4a7f89f3c9/small_Biodome_pod_only_store.jpg",
+                    "productionStatus": "in-concept",
+                    "manufacturer": {
+                        "name": "Musashi Industrial &amp; Starflight Concern",
+                        "slug": "musashi-industrial-amp-starflight-concern",
+                        "code": "MISC",
+                        "logo": "http://api.fleetyards.test/uploads/manufacturer/logo/9c0435a4-43ed-4db0-b023-7b42deeabc54/small_MISC.png"
+                    },
+                    "createdAt": "2018-11-29T23:53:38+01:00",
+                    "updatedAt": "2018-12-01T10:36:51+01:00"
+                }
+                ...
+            ]

@@ -1,0 +1,19 @@
+### DELETE Destroy [DELETE]
+Destroy your current Session
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer JWT_TOKEN
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "code": "sessions.destroy",
+                "message": "Signed out successfully."
+            }
+
