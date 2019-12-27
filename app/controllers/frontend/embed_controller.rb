@@ -33,5 +33,9 @@ module Frontend
     def test_v2
       render 'frontend/embed_test', layout: 'embed_v2_test'
     end
+
+    def test_v2_username
+      render 'frontend/embed_test', layout: 'embed_v2_username_test'
+    end
   end
 end

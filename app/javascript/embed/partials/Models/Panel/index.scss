@@ -10,6 +10,23 @@
 }
 
 .panel-image {
+  &.no-details {
+    overflow: hidden;
+    border-bottom: none;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+
+    a {
+      overflow: hidden;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+    }
+  }
+
   .on-sale {
     position: absolute;
     top: 0;

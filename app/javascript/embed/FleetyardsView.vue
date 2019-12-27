@@ -126,6 +126,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'FleetyardsView',
+
   components: {
     ModelPanel,
     FleetchartItem,
@@ -133,15 +134,18 @@ export default {
     Btn,
     FleetchartSlider,
   },
+
   data() {
     return {
       ships: [],
+      vehicles: null,
       models: null,
       loading: false,
       slider: false,
       groupedButton: false,
     }
   },
+
   computed: {
     ...mapGetters([
       'fleetchartScale',
@@ -150,6 +154,7 @@ export default {
       'fleetchartGrouping',
       'fleetchart',
     ]),
+
     ungroupedModels() {
       return this.ships.map((slug) => ({
         slug,
@@ -177,6 +182,7 @@ export default {
           return 0
         })
     },
+
     displayModels() {
       if (!this.models) {
         return []
@@ -186,6 +192,7 @@ export default {
       }
       return this.models
     },
+
     fleetchartModels() {
       const fleetchartModels = this.displayModels.concat()
       return fleetchartModels.sort((a, b) => {
@@ -199,43 +206,71 @@ export default {
       })
     },
   },
+
   watch: {
     ships() {
-      this.fetch()
+      this.fetchShips()
+    },
+
+    users() {
+      this.fetchHangars()
+    },
+
+    vehicles() {
+      this.models = this.vehicles.map((vehicle) => vehicle.model)
     },
   },
+
   mounted() {
     this.ships = this.$root.ships
+    this.users = this.$root.users
     this.slider = this.$root.fleetchartSlider
     this.groupedButton = this.$root.groupedButton
-    this.fetch()
+
+    if (this.users) {
+      this.fetchHangars()
+    } else {
+      this.fetchShips()
+    }
   },
+
   methods: {
     updateShips(ships) {
       this.ships = ships
     },
+
+    updateUsers(users) {
+      this.users = users
+    },
+
     updateFleetchartScale(value) {
       this.$store.commit('setFleetchartScale', value)
     },
+
     toggleDetails() {
       this.$store.commit('toggleDetails')
     },
+
     toggleFleetchart() {
       this.$store.commit('toggleFleetchart')
     },
+
     toggleGrouping() {
       this.$store.commit('toggleGrouping')
     },
+
     toggleFleetchartGrouping() {
       this.$store.commit('toggleFleetchartGrouping')
     },
+
     count(slug) {
       if (!this.grouping) {
         return null
       }
       return this.ships.filter((item) => item === slug).length
     },
-    async fetch() {
+
+    async fetchShips() {
       this.loading = true
       const response = await this.$api.post('models/embed', {
         models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
@@ -244,6 +279,20 @@ export default {
 
       if (!response.error) {
         this.models = response.data
+      }
+    },
+
+    async fetchHangars() {
+      this.loading = true
+
+      const response = await this.$api.post('vehicles/embed', {
+        usernames: this.users,
+      })
+
+      this.loading = false
+
+      if (!response.error) {
+        this.vehicles = response.data
       }
     },
   },

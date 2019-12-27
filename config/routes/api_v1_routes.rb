@@ -81,6 +81,7 @@ v1_api_routes = lambda do
       get 'quick-stats' => 'vehicles#quick_stats'
       get :fleetchart
       get :export
+      post :embed
       get 'hangar-items' => 'vehicles#hangar_items'
       get :hangar
       get ':username' => 'vehicles#public', as: :public

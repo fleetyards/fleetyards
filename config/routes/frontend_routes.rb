@@ -61,6 +61,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'embed-v2' => 'embed#index_v2'
   get 'embed-test' => 'embed#test'
   get 'embed-v2-test' => 'embed#test_v2'
+  get 'embed-v2-username-test' => 'embed#test_v2_username'
 
   get 'service-worker' => 'service_worker#index'
   get 'precache-manifest.:id' => 'service_worker#precache_manifest'

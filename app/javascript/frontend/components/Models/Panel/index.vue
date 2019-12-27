@@ -121,7 +121,7 @@
         </div>
       </div>
       <b-collapse
-        :id="`details-${model.slug}-wrapper`"
+        :id="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
@@ -138,7 +138,7 @@
           :model="model"
           padding
         />
-        <hr class="dark">
+        <hr class="dark slim-spacer">
         <ModelBaseMetrics
           :model="model"
           padding
@@ -206,6 +206,10 @@ export default {
   },
 
   computed: {
+    uuid() {
+      return this._uid
+    },
+
     customName() {
       if (this.vehicle && this.vehicle.name) {
         return this.vehicle.name

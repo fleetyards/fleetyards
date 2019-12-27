@@ -94,6 +94,10 @@ hr {
   &.dark {
     background-color: $gray-black;
   }
+
+  &.slim-spacer {
+    margin: 10px 5%;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

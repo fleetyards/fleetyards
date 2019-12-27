@@ -15,6 +15,7 @@ To get a custom Ship List on your Website you can just paste the example code on
             groupedButton: false, // Allow the User to toggle Groupped Views
             fleetchartSlider: false, // Set to true to display a slider which allows users to scale the Fleetchart
             ships: ['100i', '300i', '600i-touring', '890-jump'], // Replace the Array with a List of Shipnames (slugs) you want to display,
+            users: ['torlekmaru', 'johndoe'], // Replace the Array with a list of Fleetyards.net usernames, alternative to the ships option.
         }
     };
     (function() {
@@ -222,5 +223,13 @@ You can use the Following Mapping to find out what the slug looks like for each 
 ```
 
 Please use https://www.fleetyards.net/ships or call the Fleetyards.net API ```/v1/models``` to fetch the latest Shipnames.
+
+<br>
+
+### Users List
+
+```users```: `[]` (Array of Strings) default is `[]`
+
+As an alternative to the Ships List you can also provide a list of Fleetyards usernames. You will than get a list of all Ships those Users have in there public Hangar.
 
 <br>
