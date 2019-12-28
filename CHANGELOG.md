@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.47.0](https://github.com/fleetyards/app/compare/v3.46.5...v3.47.0) (2019-12-28)
+
+
+### Features
+
+* **embed:** add option to use usernames for fleetview ([58618b7](https://github.com/fleetyards/app/commit/58618b7864cc93808822a93913fc6d2953676a7e))
+* **embed:** remove on sale sign ([9ec3c51](https://github.com/fleetyards/app/commit/9ec3c51245c448322e1c930b8c33d14b60e4692f))
+
 ### [3.46.5](https://github.com/fleetyards/app/compare/v3.46.4...v3.46.5) (2019-12-27)
 
 
