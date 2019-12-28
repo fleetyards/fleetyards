@@ -31,15 +31,7 @@
           :src="model.storeImageMedium"
           :alt="model.name"
           class="image"
-        >
-          <div
-            v-show="model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />
-          </div>
-        </LazyImage>
+        />
       </div>
       <b-collapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
