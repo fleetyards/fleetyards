@@ -29,6 +29,10 @@ export default () => ({
       return state.navCollapsed
     },
 
+    navSlim(state) {
+      return state.navSlim
+    },
+
     overlayVisible(state) {
       return state.overlayVisible
     },
@@ -54,6 +58,10 @@ export default () => ({
 
     toggleNav(state) {
       state.navCollapsed = !state.navCollapsed
+    },
+
+    toggleSlimNav(state) {
+      state.navSlim = !state.navSlim
     },
 
     openNav(state) {

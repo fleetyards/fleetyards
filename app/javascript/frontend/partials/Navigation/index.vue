@@ -3,10 +3,12 @@
     ref="navigation"
     :class="{
       'visible': !navCollapsed,
+      'nav-slim': slim,
     }"
     role="navigation"
   >
     <button
+      v-if="mobile"
       :class="{
         collapsed: navCollapsed,
       }"
@@ -43,217 +45,81 @@
       </span>
     </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
-    <div class="nav-container">
-      <img
-        :src="require('images/logo.png')"
-        class="logo"
-        alt="logo"
-      >
+    <div
+      :class="{
+        'nav-container-slim': slim,
+      }"
+      class="nav-container"
+    >
       <div class="nav-container-inner">
         <ul v-if="!isAuthenticated">
-          <router-link
-            :to="{ name: 'signup' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.signUp') }}</a>
-          </router-link>
-          <router-link
-            :to="{ name: 'login' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.login') }}</a>
-          </router-link>
-          <li class="divider" />
+          <NavItem
+            v-for="(navItem, index) in guestNavItems"
+            :key="`guest-${index}`"
+            :item="navItem"
+            :slim="slim"
+          />
         </ul>
         <ul v-if="isAuthenticated && currentUser">
-          <li
-            :class="{
-              active: userRouteActive,
-              open: userMenuOpen,
-            }"
-            class="sub-menu user-menu"
+          <NavItem
+            :item="userNavItem"
+            :slim="slim"
+            class="user-menu"
           >
-            <a @click="toggleUserMenu">
-              <Avatar
-                :avatar="currentUser.avatar"
-                size="small"
-              />
-              <span class="username">
-                {{ currentUser.username }}
-              </span>
-              <i class="fa fa-chevron-right" />
-            </a>
-            <b-collapse
-              id="user-sub-menu"
-              :visible="userMenuOpen"
-              tag="ul"
+            <Avatar
+              :avatar="currentUser.avatar"
+              size="small"
+            />
+            <span
+              v-if="!slim"
+              class="username"
             >
-              <router-link
-                :to="{ name: 'settings' }"
-                tag="li"
-              >
-                <a>{{ $t('nav.settings.index') }}</a>
-              </router-link>
-              <li class="divider" />
-              <li>
-                <a @click="logout">
-                  {{ $t('nav.logout') }}
-                </a>
-              </li>
-            </b-collapse>
-          </li>
+              {{ currentUser.username }}
+            </span>
+          </NavItem>
         </ul>
         <ul>
-          <router-link
-            :to="{ name: 'home' }"
-            tag="li"
-            exact
-          >
-            <a>{{ $t('nav.home') }}</a>
-          </router-link>
-          <router-link
-            v-if="isAuthenticated || !hangarPreview"
-            :to="{ name: 'hangar' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.hangar') }}</a>
-          </router-link>
-          <router-link
-            v-else
-            :to="{ name: 'hangar-preview' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.hangar') }}</a>
-          </router-link>
-          <router-link
-            :to="{ name: 'models' }"
-            :class="{
-              active: shipsRouteActive,
+          <NavItem
+            v-for="(navItem, index) in navItems"
+            :key="`nav-${index}`"
+            :item="navItem"
+            :slim="slim"
+          />
+        </ul>
+        <ul class="nav-bottom">
+          <NavItem
+            v-if="!mobile"
+            :item="{
+              action: toggleSlim,
             }"
-            tag="li"
+            :slim="slim"
           >
-            <a>{{ $t('nav.models') }}</a>
-          </router-link>
-          <li
-            :class="{
-              active: stationsRouteActive,
-              open: stationMenuOpen,
-            }"
-            class="sub-menu"
+            <i
+              v-tooltip="slim && toggleSlimLabel"
+              :class="{
+                'fa-chevron-double-right': slim,
+                'fa-chevron-double-left': !slim,
+              }"
+              class="fal"
+            />
+            <transition name="fade-nav">
+              <span v-if="!slim">{{ toggleSlimLabel }}</span>
+            </transition>
+          </NavItem>
+          <NavItem
+            :item="{}"
+            :slim="slim"
+            class="logo-menu"
           >
-            <a @click="toggleStationMenu">
-              {{ $t('nav.stations.index') }}
-              <i class="fa fa-chevron-right" />
-            </a>
-            <b-collapse
-              id="stations-sub-menu"
-              :visible="stationMenuOpen"
-              tag="ul"
+            <img
+              :src="require('images/favicon.png')"
+              class="logo"
+              alt="logo"
             >
-              <router-link
-                :to="{ name: 'stations' }"
-                :class="{
-                  active: stationRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.stations.overview') }}</a>
-              </router-link>
-              <router-link
-                :to="{ name: 'starsystems' }"
-                :class="{
-                  active: starsystemRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.stations.starsystems') }}</a>
-              </router-link>
-              <li class="divider" />
-              <router-link
-                :to="{ name: 'shops' }"
-                :class="{
-                  active: shopRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.stations.shops') }}</a>
-              </router-link>
-            </b-collapse>
-          </li>
-          <router-link
-            :to="{ name: 'images' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.images') }}</a>
-          </router-link>
-          <router-link
-            :to="{
-              name: 'trade-routes',
-              query: {
-                q: $store.state.filters['trade-routes'],
-              },
-            }"
-            tag="li"
-          >
-            <a>{{ $t('nav.tradeRoutes') }}</a>
-          </router-link>
-          <li
-            :class="{
-              active: roadmapsRouteActive,
-              open: roadmapMenuOpen,
-            }"
-            class="sub-menu"
-          >
-            <a @click="toggleRoadmapMenu">
-              {{ $t('nav.roadmap.index') }}
-              <i class="fa fa-chevron-right" />
-            </a>
-            <b-collapse
-              id="roadmap-sub-menu"
-              :visible="roadmapMenuOpen"
-              tag="ul"
-            >
-              <router-link
-                :to="{ name: 'roadmap' }"
-                :class="{
-                  active: roadmapRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.roadmap.overview') }}</a>
-              </router-link>
-              <router-link
-                :to="{ name: 'roadmap-changes' }"
-                :class="{
-                  active: roadmapChangesRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.roadmap.changes') }}</a>
-              </router-link>
-              <router-link
-                :to="{ name: 'roadmap-ships' }"
-                :class="{
-                  active: roadmapShipsRouteActive,
-                }"
-                active-class="router-active"
-                tag="li"
-              >
-                <a>{{ $t('nav.roadmap.ships') }}</a>
-              </router-link>
-            </b-collapse>
-          </li>
-          <router-link
-            :to="{ name: 'stats' }"
-            tag="li"
-          >
-            <a>{{ $t('nav.stats') }}</a>
-          </router-link>
+            <transition name="fade-nav">
+              <span v-if="!slim">{{ $t('app') }}</span>
+            </transition>
+          </NavItem>
         </ul>
       </div>
     </div>
@@ -262,6 +128,7 @@
 
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
+import NavItem from 'frontend/partials/Navigation/NavItem'
 import { mapGetters } from 'vuex'
 import Avatar from 'frontend/components/Avatar'
 
@@ -270,6 +137,7 @@ export default {
 
   components: {
     QuickSearch,
+    NavItem,
     Avatar,
   },
 
@@ -282,14 +150,18 @@ export default {
       stationRouteActive: false,
       shopRouteActive: false,
       starsystemRouteActive: false,
-      userMenuOpen: false,
-      stationMenuOpen: false,
       searchQuery: null,
-      roadmapMenuOpen: false,
       roadmapsRouteActive: false,
       roadmapRouteActive: false,
       roadmapChangesRouteActive: false,
       roadmapShipsRouteActive: false,
+      guestNavItems: [{
+        to: { name: 'login' },
+        label: this.$t('nav.login'),
+        icon: 'fad fa-sign-in',
+      }, {
+        divider: true,
+      }],
     }
   },
 
@@ -300,6 +172,7 @@ export default {
 
     ...mapGetters('app', [
       'navCollapsed',
+      'navSlim',
       'isUpdateAvailable',
       'gitRevision',
     ]),
@@ -313,13 +186,135 @@ export default {
       hangarPreview: 'preview',
     }),
 
+    userNavItem() {
+      return {
+        active: this.userRouteActive,
+        submenu: [{
+          to: { name: 'settings' },
+          icon: 'fad fa-cog',
+          label: this.$t('nav.settings.index'),
+          active: this.userRouteActive,
+        }, {
+          divider: true,
+        }, {
+          action: this.logout,
+          icon: 'fad fa-sign-out',
+          label: this.$t('nav.logout'),
+        }],
+      }
+    },
+
+    toggleSlimLabel() {
+      if (this.slim) {
+        return this.$t('nav.toggleSlimExpand')
+      }
+
+      return this.$t('nav.toggleSlimCollapse')
+    },
+
+    navItems() {
+      let navItems = [{
+        to: { name: 'home' },
+        exact: true,
+        icon: 'fad fa-home-alt',
+        label: this.$t('nav.home'),
+      }]
+
+      if (this.isAuthenticated || !this.hangarPreview) {
+        navItems.push({
+          to: { name: 'hangar' },
+          icon: 'fas fa-bookmark',
+          label: this.$t('nav.hangar'),
+        })
+      } else {
+        navItems.push({
+          to: { name: 'hangar-preview' },
+          icon: 'fad fa-bookmark',
+          label: this.$t('nav.hangar'),
+        })
+      }
+
+      navItems = navItems.concat([{
+        to: { name: 'models' },
+        icon: 'fad fa-starship',
+        label: this.$t('nav.models'),
+        active: this.shipsRouteActive,
+      }, {
+        icon: 'fad fa-planet-ringed',
+        label: this.$t('nav.stations.index'),
+        active: this.stationsRouteActive,
+        submenu: [{
+          to: { name: 'stations' },
+          icon: 'fad fa-planet-ringed',
+          label: this.$t('nav.stations.overview'),
+        }, {
+          to: { name: 'starsystems' },
+          icon: 'fad fa-solar-system',
+          label: this.$t('nav.stations.starsystems'),
+          active: this.starsystemRouteActive,
+        }, {
+          divider: true,
+        }, {
+          to: { name: 'shops' },
+          icon: 'fad fa-store-alt',
+          label: this.$t('nav.stations.shops'),
+          active: this.shopRouteActive,
+        }],
+      }, {
+        to: { name: 'images' },
+        icon: 'fad fa-images',
+        label: this.$t('nav.images'),
+      }, {
+        to: {
+          name: 'trade-routes',
+          query: {
+            q: this.$store.state.filters['trade-routes'],
+          },
+        },
+        icon: 'fad fa-pallet-alt',
+        label: this.$t('nav.tradeRoutes'),
+      }, {
+        icon: 'fad fa-tasks-alt',
+        label: this.$t('nav.roadmap.index'),
+        active: this.roadmapsRouteActive,
+        submenu: [{
+          to: { name: 'roadmap' },
+          icon: 'fad fa-tasks-alt',
+          label: this.$t('nav.roadmap.overview'),
+          active: this.roadmapRouteActive,
+        }, {
+          to: { name: 'roadmap-changes' },
+          icon: 'fad fa-tasks',
+          label: this.$t('nav.roadmap.changes'),
+          active: this.roadmapChangesRouteActive,
+        }, {
+          to: { name: 'roadmap-ships' },
+          icon: 'fad fa-rocket-launch',
+          label: this.$t('nav.roadmap.ships'),
+          active: this.roadmapShipsRouteActive,
+        }],
+      }, {
+        to: { name: 'stats' },
+        icon: 'fad fa-chart-bar',
+        label: this.$t('nav.stats'),
+      }])
+
+      return navItems
+    },
+
+    slim() {
+      return this.navSlim && !this.mobile
+    },
+
     environmentLabelClasses() {
       const cssClasses = ['pill']
+
       if (window.NODE_ENV === 'staging') {
         cssClasses.push('pill-warning')
       } else if (window.NODE_ENV === 'production') {
         cssClasses.push('pill-danger')
       }
+
       return cssClasses
     },
 
@@ -327,6 +322,7 @@ export default {
       if (window.NODE_ENV === 'production') {
         return null
       }
+
       return (window.NODE_ENV || '').toUpperCase()
     },
   },
@@ -364,20 +360,12 @@ export default {
       }
     },
 
-    toggleUserMenu() {
-      this.userMenuOpen = !this.userMenuOpen
-    },
-
-    toggleStationMenu() {
-      this.stationMenuOpen = !this.stationMenuOpen
-    },
-
-    toggleRoadmapMenu() {
-      this.roadmapMenuOpen = !this.roadmapMenuOpen
-    },
-
     toggle() {
       this.$store.commit('app/toggleNav')
+    },
+
+    toggleSlim() {
+      this.$store.commit('app/toggleSlimNav')
     },
 
     open() {
@@ -390,18 +378,16 @@ export default {
 
     checkRoutes() {
       const { path } = this.$route
-      this.shipsRouteActive = path.includes('ships') || path.includes('manufacturers') || path.includes('components') || path.includes('compare/ships')
+      this.shipsRouteActive = (path.includes('ships') || path.includes('manufacturers')
+        || path.includes('components') || path.includes('compare/ships')) && !path.includes('roadmap/ships')
       this.userRouteActive = path.includes('settings')
-      this.userMenuOpen = this.userRouteActive
       this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
       this.stationsRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
       this.stationRouteActive = path.includes('stations') && !path.includes('shops')
-      this.stationMenuOpen = this.stationsRouteActive
       this.shopRouteActive = path.includes('shops')
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
       this.roadmapsRouteActive = path.includes('roadmap')
       this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
-      this.roadmapMenuOpen = this.roadmapsRouteActive
     },
 
     async logout() {

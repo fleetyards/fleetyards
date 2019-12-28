@@ -35,11 +35,22 @@ body {
   min-height: 100vh;
   flex-direction: column;
 
+  .app-content {
+    display: flex;
+    align-items: stretch;
+  }
+
   .main-wrapper {
-    min-height: 100vh;
+    max-width: 100%;
     flex: 1;
     padding-top: 80px;
-    margin-bottom: 50px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-inner {
+    min-height: 100vh;
   }
 
   .main {
@@ -47,6 +58,7 @@ body {
     position: relative;
     transition: left ease .5s, right ease .5s;
     width: 100%;
+    margin-bottom: 50px;
   }
 
   &.nav-visible {

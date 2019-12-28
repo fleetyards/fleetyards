@@ -9,6 +9,7 @@ export default function getStorePlugins() {
       'storeVersion',
       'filters',
       'filtersVisible',
+      'app.navSlim',
       'session.authToken',
       'session.currentUser',
       'session.cookiesAccepted',

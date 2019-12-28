@@ -16,6 +16,8 @@ export default {
   tradeRoutes: 'Trade Routes',
   api: 'API Docs',
   stats: 'Stats',
+  toggleSlimCollapse: 'Collapse',
+  toggleSlimExpand: 'Expand',
   roadmap: {
     index: 'Roadmap',
     overview: 'Overview',

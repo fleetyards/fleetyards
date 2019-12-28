@@ -12,24 +12,28 @@
       v-lazy:background-image="backgroundImage"
       class="background-image"
     />
-    <transition
-      name="fade"
-      mode="out-in"
-      appear
-    >
-      <Navigation />
-    </transition>
-    <div class="main-wrapper">
+    <div class="app-content">
       <transition
         name="fade"
         mode="out-in"
         appear
       >
-        <router-view class="main" />
+        <Navigation />
       </transition>
+      <div class="main-wrapper">
+        <div class="main-inner">
+          <transition
+            name="fade"
+            mode="out-in"
+            appear
+          >
+            <router-view class="main" />
+          </transition>
+        </div>
+        <AppFooter />
+      </div>
     </div>
     <BackToTop visible-offset="500" />
-    <AppFooter />
     <CookiesBanner />
   </div>
 </template>

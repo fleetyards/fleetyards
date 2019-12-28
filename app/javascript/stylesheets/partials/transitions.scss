@@ -72,3 +72,16 @@
 .fade-list-enter-active {
   transition-delay: .5s;
 }
+
+.fade-nav-enter-active {
+  transition: opacity .3s;
+}
+
+.fade-nav-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-nav-enter,
+.fade-nav-leave-active {
+  opacity: 0;
+}
