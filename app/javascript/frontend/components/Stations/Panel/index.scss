@@ -31,7 +31,7 @@
     opacity: .7;
 
     &::after {
-      content: "";
+      content: '';
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       position: absolute;
@@ -39,7 +39,7 @@
       bottom: 0;
       left: 0;
       right: 60%;
-      background: linear-gradient(to right, rgba(black, 0.5) 50%, transparent)
+      background: linear-gradient(to right, rgba(black, .5) 50%, transparent);
     }
   }
 

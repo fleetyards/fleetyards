@@ -26,13 +26,6 @@ li.nav-item {
     cursor: pointer;
   }
 
-  &.divider {
-    padding: 0;
-    margin: 5px 15px 5px;
-    height: 1px;
-    background-color: $gray-darker;
-  }
-
   &:hover > a {
     color: lighten($text-color, 10%);
   }
