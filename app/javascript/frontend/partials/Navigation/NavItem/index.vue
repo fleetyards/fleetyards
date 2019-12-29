@@ -34,13 +34,13 @@
       </transition>
     </a>
     <b-collapse
-      :id="`${uuid}-sub-menu`"
+      :id="`${item.submenuId}-sub-menu`"
       :visible="open"
       tag="ul"
     >
       <NavItem
         v-for="(submenuItem, index) in item.submenu"
-        :key="`${uuid}-${index}`"
+        :key="`${item.submenuId}-${index}`"
         :item="submenuItem"
         :slim="slim"
       />
@@ -149,10 +149,6 @@ export default {
   computed: {
     hasDefaultSlot() {
       return !!this.$slots.default
-    },
-
-    uuid() {
-      return this._uid
     },
 
     active() {

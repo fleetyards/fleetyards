@@ -189,6 +189,7 @@ export default {
     userNavItem() {
       return {
         active: this.userRouteActive,
+        submenuId: 'user',
         submenu: [{
           to: { name: 'settings' },
           icon: 'fad fa-cog',
@@ -243,6 +244,7 @@ export default {
         icon: 'fad fa-planet-ringed',
         label: this.$t('nav.stations.index'),
         active: this.stationsRouteActive,
+        submenuId: 'stations',
         submenu: [{
           to: { name: 'stations' },
           icon: 'fad fa-planet-ringed',
@@ -277,6 +279,7 @@ export default {
         icon: 'fad fa-tasks-alt',
         label: this.$t('nav.roadmap.index'),
         active: this.roadmapsRouteActive,
+        submenuId: 'roadmap',
         submenu: [{
           to: { name: 'roadmap' },
           icon: 'fad fa-tasks-alt',
