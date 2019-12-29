@@ -1,6 +1,6 @@
 <%
 chunks = Webpacker.manifest.refresh.filter do |item|
-  item.include?('frontend')
+  item.include?('frontend') && (item.ends_with?('.js') || item.ends_with?('.css'))
 end.map do |key, value|
   {
     revision: value.scan(/^.*-(\w*)\..*$/).last.first,
