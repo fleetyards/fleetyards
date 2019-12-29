@@ -92,6 +92,10 @@ nav {
     padding: 0;
 
     .nav-container-inner {
+      padding-bottom: 150px;
+      position: relative;
+      min-height: 100%;
+
       > :first-child {
         padding-top: 20px;
       }
