@@ -82,22 +82,6 @@ workbox.routing.registerRoute(
   }), 'GET',
 )
 
-// /**
-//   Images
-// */
-// workbox.routing.registerRoute(
-//   /\.[a-f0-9]{8}\.(?:png|gif|jpg|jpeg|svg|webp)$/i,
-//   workbox.strategies.cacheFirst({
-//     cacheName: `${prefix}-images`,
-//     plugins: [
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 7 * 24 * 3600, // 1 week
-//         purgeOnQuotaError: false,
-//       }),
-//     ],
-//   }), 'GET',
-// )
-
 /**
   Fonts
 */
