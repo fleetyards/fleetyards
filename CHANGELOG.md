@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.48.0](https://github.com/fleetyards/app/compare/v3.47.0...v3.48.0) (2019-12-29)
+
+
+### Features
+
+* **navigation:** linting ([240fc9a](https://github.com/fleetyards/app/commit/240fc9a4a1e0bc38afd0507023dd2bdaa4e83384))
+* **navigation:** new fixed navbar ([c129099](https://github.com/fleetyards/app/commit/c129099946a3c2b5d24d94cf33487d3a5ccbbee2))
+* **navigation:** update e2e ([00437ef](https://github.com/fleetyards/app/commit/00437ef09032d73e4f5b342272d1d3183a3d5725))
+* **navigation:** update e2e ([852cf42](https://github.com/fleetyards/app/commit/852cf4257167493d70c1272edaa75f777c8b3f32))
+* **navigation:** update e2e ([2007884](https://github.com/fleetyards/app/commit/200788410041326309b4bdd85f8bffa0d7af8f0e))
+* **navigation:** update e2e ([53debbe](https://github.com/fleetyards/app/commit/53debbe20c85220b0cb30f1c359001113daae818))
+* **navigation:** update e2e ([10b9e4a](https://github.com/fleetyards/app/commit/10b9e4a9e68fa04fe5922e4c33554299d9c75f47))
+* **navigation:** update hangar icons ([1651ad3](https://github.com/fleetyards/app/commit/1651ad33936fdc1c64a29233a35133840d5445e5))
+
 ## [3.47.0](https://github.com/fleetyards/app/compare/v3.46.5...v3.47.0) (2019-12-28)
 
 
