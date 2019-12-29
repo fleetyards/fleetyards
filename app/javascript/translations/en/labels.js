@@ -4,6 +4,7 @@ export default {
   selected: 'Selected',
   or: 'or',
   deselect: 'Click to deselect',
+  networkStatusOffline: 'Network Status: Offline - Service Unavailable',
   shop: {
     rentPrice: 'rental',
     sellPrice: 'price',

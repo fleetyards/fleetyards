@@ -12,6 +12,7 @@
       v-lazy:background-image="backgroundImage"
       class="background-image"
     />
+    <NetworkStatus />
     <div class="app-content">
       <transition
         name="fade"
@@ -46,6 +47,7 @@ import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import CookiesBanner from 'frontend/partials/CookiesBanner'
+import NetworkStatus from 'frontend/components/NetworkStatus'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -57,6 +59,7 @@ export default {
     AppFooter,
     BackToTop,
     CookiesBanner,
+    NetworkStatus,
   },
 
   mixins: [
@@ -113,26 +116,14 @@ export default {
       this.fetchHangar()
     }
 
-    window.addEventListener('online', this.online)
-    window.addEventListener('offline', this.offline)
     window.addEventListener('resize', this.checkMobile)
   },
 
   beforeDestroy() {
     window.removeEventListener('resize', this.checkMobile)
-    window.removeEventListener('online', this.online)
-    window.removeEventListener('offline', this.offline)
   },
 
   methods: {
-    offline() {
-      this.$store.commit('setOnlineStatus', false)
-    },
-
-    online() {
-      this.$store.commit('setOnlineStatus', true)
-    },
-
     checkMobile() {
       this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
     },
