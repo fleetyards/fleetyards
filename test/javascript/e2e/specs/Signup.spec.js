@@ -2,7 +2,9 @@ describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
     cy.visit('/')
 
-    cy.clickNav('Sign up')
+    cy.clickNav('Login')
+
+    cy.select('signup-link').click()
 
     cy.url().should('include', '/sign-up')
 

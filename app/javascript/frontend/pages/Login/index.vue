@@ -58,6 +58,7 @@
               {{ $t('labels.signUp') }}
             </p>
             <Btn
+              data-test="signup-link"
               :to="{name: 'signup'}"
               size="small"
               block
