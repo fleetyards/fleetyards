@@ -223,13 +223,13 @@ export default {
       if (this.isAuthenticated || !this.hangarPreview) {
         navItems.push({
           to: { name: 'hangar' },
-          icon: 'fas fa-bookmark',
+          icon: 'fad fa-bookmark',
           label: this.$t('nav.hangar'),
         })
       } else {
         navItems.push({
           to: { name: 'hangar-preview' },
-          icon: 'fad fa-bookmark',
+          icon: 'fal fa-bookmark',
           label: this.$t('nav.hangar'),
         })
       }
