@@ -26,7 +26,6 @@ describe('Signup', () => {
 
       cy.location('pathname').should('eq', '/')
 
-      cy.get('.nav-toggle').click()
       cy.contains('.username', userData.new.username).click()
       cy.clickNav('Settings', false)
 
@@ -47,7 +46,6 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
-      cy.get('.nav-toggle').click()
       cy.get('nav a').contains('nav a', 'Login').should('exist')
     })
   })
