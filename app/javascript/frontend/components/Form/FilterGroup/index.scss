@@ -6,7 +6,8 @@
 
   .filter-list-title,
   .filter-list-item {
-    i {
+    i,
+    svg {
       transition: all .5s ease;
       position: absolute;
       right: 15px;
@@ -39,7 +40,8 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
 
-      i {
+      i,
+      svg {
         transform: rotate(90deg);
       }
     }
@@ -142,7 +144,8 @@
       animation-name: flash;
       animation-duration: .5s;
 
-      i {
+      i,
+      svg {
         transform: rotate(45deg);
       }
     }

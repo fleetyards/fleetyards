@@ -34,6 +34,11 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
 
   get 'images' => 'base#index'
 
+  get 'fleets' => 'base#index'
+  get 'fleets/:slug' => 'base#index'
+  get 'fleets/:slug/members' => 'base#index'
+  get 'fleets/:slug/settings' => 'base#index'
+
   get 'stats' => 'base#index'
 
   get 'roadmap' => 'base#index'

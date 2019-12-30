@@ -42,7 +42,8 @@
     border-left: 20px solid $primary;
     border-bottom: 20px solid transparent;
 
-    i {
+    i,
+    svg {
       color: #fff;
       position: absolute;
       top: -15px;
@@ -61,7 +62,8 @@
     border-right: 20px solid $success;
     border-bottom: 20px solid transparent;
 
-    i {
+    i,
+    svg {
       color: #fff;
       position: absolute;
       top: -15px;
@@ -86,7 +88,8 @@
       border-bottom: 25px solid $success;
     }
 
-    i {
+    i,
+    svg {
       color: #fff;
       position: absolute;
       bottom: -16px;

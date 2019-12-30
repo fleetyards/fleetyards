@@ -14,33 +14,28 @@
   >
     <a @click="toggleMenu">
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
       <transition name="fade-nav">
-        <i
+        <span
           v-if="!slim"
-          class="fa fa-chevron-right"
-        />
+          class="submenu-icon"
+        >
+          <i class="fa fa-chevron-right" />
+        </span>
       </transition>
     </a>
     <b-collapse
-      :id="`${item.submenuId}-sub-menu`"
+      :id="`${item.key}-sub-menu`"
       :visible="open"
       tag="ul"
     >
       <NavItem
         v-for="(submenuItem, index) in item.submenu"
-        :key="`${item.submenuId}-${index}`"
+        :key="`${item.key}-${index}`"
         :item="submenuItem"
         :slim="slim"
       />
@@ -57,18 +52,11 @@
   >
     <a>
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </a>
   </li>
   <router-link
@@ -85,18 +73,11 @@
   >
     <a>
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </a>
   </router-link>
   <li
@@ -108,25 +89,24 @@
   >
     <span>
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </span>
   </li>
 </template>
 
 <script>
+import NavItemInner from 'frontend/partials/Navigation/NavItem/NavItemInner'
+
 export default {
   name: 'NavItem',
+
+  components: {
+    NavItemInner,
+  },
 
   props: {
     item: {
@@ -147,6 +127,14 @@ export default {
   },
 
   computed: {
+    tooltip() {
+      if (!this.slim) {
+        return null
+      }
+
+      return this.item.label
+    },
+
     hasDefaultSlot() {
       return !!this.$slots.default
     },

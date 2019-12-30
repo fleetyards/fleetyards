@@ -32,7 +32,10 @@ export default {
   filterVehicles: 'Filter Hangar',
   filterCargoRoutes: 'Filter Cargo routes',
   filterCommodities: 'Filter Commodities',
-  fleets: 'Fleets',
+  fleets: {
+    index: 'Fleets',
+    add: 'Create new Fleet',
+  },
   fleetMembers: 'Setup Members',
   newFleet: 'Setup Your Fleet',
   empty: "There's nothing to see here...",

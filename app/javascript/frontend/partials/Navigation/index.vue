@@ -79,7 +79,8 @@
           </NavItem>
         </ul>
         <ul>
-          <NavItem
+          <component
+            :is="navItem.component || 'NavItem'"
             v-for="(navItem, index) in navItems"
             :key="`nav-${index}`"
             :item="navItem"
@@ -129,6 +130,7 @@
 <script>
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import NavItem from 'frontend/partials/Navigation/NavItem'
+import FleetsNavItem from 'frontend/partials/Navigation/FleetsNavItem'
 import { mapGetters } from 'vuex'
 import Avatar from 'frontend/components/Avatar'
 
@@ -138,6 +140,7 @@ export default {
   components: {
     QuickSearch,
     NavItem,
+    FleetsNavItem,
     Avatar,
   },
 
@@ -155,12 +158,18 @@ export default {
       roadmapRouteActive: false,
       roadmapChangesRouteActive: false,
       roadmapShipsRouteActive: false,
+      fleetsRouteActive: false,
       guestNavItems: [{
         to: { name: 'login' },
         label: this.$t('nav.login'),
         icon: 'fad fa-sign-in',
       }, {
         divider: true,
+      }],
+      fleets: [{
+        slug: 'merc',
+        name: 'MERC',
+        logo: 'https://robertsspaceindustries.com/media/p7e22y3wa5wv2r/heap_infobox/MERCCORP-Logo.png?v=1449687402',
       }],
     }
   },
@@ -189,7 +198,7 @@ export default {
     userNavItem() {
       return {
         active: this.userRouteActive,
-        submenuId: 'user',
+        key: 'user',
         submenu: [{
           to: { name: 'settings' },
           icon: 'fad fa-cog',
@@ -213,38 +222,76 @@ export default {
       return this.$t('nav.toggleSlimCollapse')
     },
 
-    navItems() {
-      let navItems = [{
-        to: { name: 'home' },
-        exact: true,
-        icon: 'fad fa-home-alt',
-        label: this.$t('nav.home'),
-      }]
+    navRoutes() {
+      return this.filterRoutes(this.$router.options.routes).map(this.mapRoutes)
+    },
 
+    navItems() {
+      console.log(
+        this.navRoutes,
+      )
+      return [
+        {
+          to: { name: 'home' },
+          exact: true,
+          icon: 'fad fa-home-alt',
+          label: this.$t('nav.home'),
+        },
+        ...[this.hangarNavItem],
+        {
+          to: { name: 'models' },
+          icon: 'fad fa-starship',
+          label: this.$t('nav.models'),
+          active: this.shipsRouteActive,
+        },
+        ...[this.stationsNavItem],
+        ...[this.fleetsNavItem],
+        {
+          to: { name: 'images' },
+          icon: 'fad fa-images',
+          label: this.$t('nav.images'),
+        },
+        {
+          to: {
+            name: 'trade-routes',
+            query: {
+              q: this.$store.state.filters['trade-routes'],
+            },
+          },
+          icon: 'fad fa-pallet-alt',
+          label: this.$t('nav.tradeRoutes'),
+        },
+        ...[this.roadmapNavItem],
+        {
+          to: { name: 'stats' },
+          icon: 'fad fa-chart-bar',
+          label: this.$t('nav.stats'),
+        },
+      ]
+    },
+
+    hangarNavItem() {
       if (this.isAuthenticated || !this.hangarPreview) {
-        navItems.push({
+        return {
           to: { name: 'hangar' },
           icon: 'fad fa-bookmark',
           label: this.$t('nav.hangar'),
-        })
-      } else {
-        navItems.push({
-          to: { name: 'hangar-preview' },
-          icon: 'fal fa-bookmark',
-          label: this.$t('nav.hangar'),
-        })
+        }
       }
 
-      navItems = navItems.concat([{
-        to: { name: 'models' },
-        icon: 'fad fa-starship',
-        label: this.$t('nav.models'),
-        active: this.shipsRouteActive,
-      }, {
+      return {
+        to: { name: 'hangar-preview' },
+        icon: 'fal fa-bookmark',
+        label: this.$t('nav.hangar'),
+      }
+    },
+
+    stationsNavItem() {
+      return {
         icon: 'fad fa-planet-ringed',
         label: this.$t('nav.stations.index'),
         active: this.stationsRouteActive,
-        submenuId: 'stations',
+        key: 'stations',
         submenu: [{
           to: { name: 'stations' },
           icon: 'fad fa-planet-ringed',
@@ -262,24 +309,15 @@ export default {
           label: this.$t('nav.stations.shops'),
           active: this.shopRouteActive,
         }],
-      }, {
-        to: { name: 'images' },
-        icon: 'fad fa-images',
-        label: this.$t('nav.images'),
-      }, {
-        to: {
-          name: 'trade-routes',
-          query: {
-            q: this.$store.state.filters['trade-routes'],
-          },
-        },
-        icon: 'fad fa-pallet-alt',
-        label: this.$t('nav.tradeRoutes'),
-      }, {
+      }
+    },
+
+    roadmapNavItem() {
+      return {
         icon: 'fad fa-tasks-alt',
         label: this.$t('nav.roadmap.index'),
         active: this.roadmapsRouteActive,
-        submenuId: 'roadmap',
+        key: 'roadmap',
         submenu: [{
           to: { name: 'roadmap' },
           icon: 'fad fa-tasks-alt',
@@ -296,13 +334,33 @@ export default {
           label: this.$t('nav.roadmap.ships'),
           active: this.roadmapShipsRouteActive,
         }],
-      }, {
-        to: { name: 'stats' },
-        icon: 'fad fa-chart-bar',
-        label: this.$t('nav.stats'),
-      }])
+      }
+    },
 
-      return navItems
+    fleetsNavItem() {
+      return {
+        component: 'FleetsNavItem',
+        label: this.$t('nav.fleets.index'),
+        active: this.fleetsRouteActive,
+        key: 'fleets',
+        submenu: [
+          {
+            to: { name: 'fleets' },
+            icon: 'fal fa-matrix',
+            label: this.$t('nav.fleets.index'),
+          },
+          ...this.fleets.map((item) => ({
+            to: { name: 'fleet', params: { slug: item.slug } },
+            label: item.name,
+            image: item.logo,
+          })),
+          {
+            to: { name: 'fleet-add' },
+            icon: 'fal fa-plus',
+            label: this.$t('nav.fleets.add'),
+          },
+        ],
+      }
     },
 
     slim() {
@@ -354,6 +412,28 @@ export default {
   },
 
   methods: {
+    filterRoutes(routes) {
+      return routes.filter((item) => !!item.meta?.nav)
+        .filter((item) => !item.meta?.needsAuthentication
+          || item.meta?.needsAuthentication === this.isAuthenticated)
+        .filter((item) => !item.meta?.guest || item.meta?.guest !== this.isAuthenticated)
+    },
+
+    mapRoutes(route) {
+      const submenuRoutes = this.filterRoutes(route.children || []).map(this.mapRoutes)
+      const { nav } = route.meta || {}
+
+      return {
+        to: {
+          name: route.name,
+        },
+        component: nav.component || null,
+        icon: nav.icon || null,
+        label: (nav.label ? this.$t(`nav.${nav.label}`) : this.$t(`nav.${route.name}`)),
+        submenu: submenuRoutes.length ? submenuRoutes : null,
+      }
+    },
+
     documentClick(event) {
       const element = this.$refs.navigation
       const { target } = event
@@ -391,6 +471,7 @@ export default {
       this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
       this.roadmapsRouteActive = path.includes('roadmap')
       this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
+      this.fleetsRouteActive = path.includes('fleets')
     },
 
     async logout() {

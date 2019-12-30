@@ -30,7 +30,8 @@
       border-bottom: 25px solid $success;
       border-bottom-left-radius: $panelContentBorderRadius;
 
-      i {
+      i,
+      svg {
         color: #fff;
         position: absolute;
         bottom: -16px;

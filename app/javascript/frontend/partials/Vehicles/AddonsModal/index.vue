@@ -58,6 +58,7 @@
           :loading="submitting"
           type="submit"
           size="large"
+          inline
         >
           {{ $t('actions.save') }}
         </Btn>

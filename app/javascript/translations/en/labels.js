@@ -2,6 +2,8 @@ export default {
   true: 'Yes',
   false: 'No',
   selected: 'Selected',
+  collapse: 'Collapse',
+  expand: 'Expand',
   or: 'or',
   deselect: 'Click to deselect',
   networkStatusOffline: 'Network Status: Offline - Service Unavailable',
