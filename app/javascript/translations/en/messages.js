@@ -51,6 +51,7 @@ export default {
   error: {
     usernameTaken: 'Username is already taken.',
     emailTaken: 'E-Mail is already taken.',
+    fleetTaken: 'Fleet is already taken.',
     accountRequired: 'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
     default: '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
@@ -58,6 +59,20 @@ export default {
     destroy: {
       success: "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
       failure: 'We could not destroy your Account! Please try again later.',
+    },
+  },
+  fleet: {
+    create: {
+      success: 'Fleet created.',
+      failure: 'Fleet could not be saved.',
+    },
+    update: {
+      success: 'Settings saved.',
+      failure: 'Settings could not be saved.',
+    },
+    destroy: {
+      success: 'Fleet deleted.',
+      failure: 'Fleet could not be deleted.',
     },
   },
   confirm: {
@@ -72,6 +87,9 @@ export default {
     },
     account: {
       destroy: "Are you sure you want to destroy your Account? This Action can't be reverted.",
+    },
+    fleet: {
+      destroy: "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
     },
   },
 }

@@ -25,5 +25,7 @@ export default {
   created() {
     this.fetchCurrentUser()
     this.$comlink.$on('userUpdate', this.fetchCurrentUser)
+    this.$comlink.$on('fleetCreate', this.fetchCurrentUser)
+    this.$comlink.$on('fleetUpdate', this.fetchCurrentUser)
   },
 }

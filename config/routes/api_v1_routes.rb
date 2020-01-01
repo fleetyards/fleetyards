@@ -132,10 +132,27 @@ v1_api_routes = lambda do
     end
   end
 
-  # namespace :rsi do
-  #   resources :citizens, only: [:show], param: :handle
-  #   resources :orgs, only: %i[show], param: :sid
-  # end
+  resources :fleets, param: :slug, except: %i[index] do
+    member do
+      get :vehicles
+      get :models
+      get :members
+      get 'quick-stats' => 'fleets#quick_stats'
+      get 'member-quick-stats' => 'fleets#member_quick_stats'
+      get :fleetchart
+      get 'stats/models-by-size' => 'fleets#models_by_size'
+      get 'stats/models-by-production-status' => 'fleets#models_by_production_status'
+      get 'stats/models-by-manufacturer' => 'fleets#models_by_manufacturer'
+      get 'stats/models-by-classification' => 'fleets#models_by_classification'
+    end
+
+    resources :fleet_members, path: 'members', param: :username, only: %i[create destroy] do
+      member do
+        put :demote
+        put :promote
+      end
+    end
+  end
 
   resource :stats, only: [] do
     get 'quick-stats' => 'stats#quick_stats'

@@ -12,7 +12,8 @@
     position: absolute;
     min-width: 0;
     width: 10px;
-    transition: width ease $transition-base-speed, left ease $transition-base-speed, right ease $transition-base-speed;
+    font-size: 12px;
+    transition: width ease $transition-base-speed, left ease $transition-base-speed, right ease $transition-base-speed, font-size ease $transition-base-speed;
   }
 
   :first-child {
@@ -31,6 +32,7 @@
     :first-child,
     :last-child {
       width: 14px;
+      font-size: 16px;
     }
 
     :first-child {

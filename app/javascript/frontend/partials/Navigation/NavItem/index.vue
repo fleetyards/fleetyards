@@ -12,7 +12,10 @@
     }"
     class="nav-item sub-menu"
   >
-    <a @click="toggleMenu">
+    <a
+      v-tooltip="tooltip"
+      @click="toggleMenu"
+    >
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
@@ -50,7 +53,7 @@
     class="nav-item"
     @click="item.action"
   >
-    <a>
+    <a v-tooltip="tooltip">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
@@ -71,7 +74,7 @@
     tag="li"
     :exact="exact"
   >
-    <a>
+    <a v-tooltip="tooltip">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
@@ -132,7 +135,11 @@ export default {
         return null
       }
 
-      return this.item.label
+      return {
+        content: this.item.label,
+        classes: 'nav-item-tooltip',
+        placement: 'right',
+      }
     },
 
     hasDefaultSlot() {

@@ -1,5 +1,11 @@
 <template>
-  <div v-if="item">
+  <div
+    v-if="item"
+    class="nav-item-inner"
+    :class="{
+      'nav-item-inner-slim': slim
+    }"
+  >
     <img
       v-if="item.image"
       :src="item.image"
@@ -12,8 +18,21 @@
         [item.icon]: true,
       }"
     />
+    <span
+      v-else
+      class="nav-item-image-empty"
+    >
+      {{ firstLetter }}
+    </span>
     <transition name="fade-nav">
-      <span v-if="!slim">{{ item.label }}</span>
+      <span
+        v-if="!slim"
+        :class="{
+          'nav-item-text': !item.icon && !item.image,
+        }"
+      >
+        {{ item.label }}
+      </span>
     </transition>
   </div>
 </template>
@@ -29,6 +48,12 @@ export default {
     slim: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  computed: {
+    firstLetter() {
+      return this.item.label.charAt(0)
     },
   },
 }

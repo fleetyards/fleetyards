@@ -33,12 +33,17 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_search
     can %i[index], :api_trade_routes
+    can :read, :api_fleet
 
     can %i[read_public], :user
 
     return if user.id.blank?
 
     can :index, :api_hangar
+    can :accept, FleetMembership, user_id: user.id
+    can :create, Fleet
+    can :show, Fleet, fleet_memberships: { user_id: user.id }
+    can %i[update destroy], Fleet, fleet_memberships: { user_id: user.id, role: :admin }
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update destroy], User, id: user.id

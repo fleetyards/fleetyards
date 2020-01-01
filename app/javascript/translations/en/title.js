@@ -27,7 +27,12 @@ export default {
   shop: '%{shop} - %{station}',
   requestPassword: 'Request Password',
   changePassword: 'Change Password',
-  fleets: 'Fleets',
+  fleets: {
+    add: 'Create new Fleet',
+    invites: 'Fleet Invites',
+    members: '%{fleet} Members',
+    settings: '%{fleet} Settings',
+  },
   roadmap: {
     index: 'Roadmap',
     ships: 'Ship-Roadmap',

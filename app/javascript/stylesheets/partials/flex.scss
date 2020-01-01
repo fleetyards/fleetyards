@@ -72,7 +72,8 @@
     width: 300px;
   }
 
-  .manufacturer {
+  .manufacturer,
+  .username {
     flex-grow: 1;
   }
 
@@ -156,7 +157,9 @@
     padding-left: 20px;
   }
 
-  .rent-price {
+  .rent-price,
+  .role,
+  .joined {
     min-width: 250px;
   }
 }
@@ -244,6 +247,20 @@
 
     .store-image {
       padding-left: 20px;
+    }
+  }
+
+  .flex-list-users > .flex-list-item > .flex-list-row {
+    align-items: center;
+
+    & > div {
+      &:first-child,
+      &:last-child {
+        &::before {
+          height: 30px;
+          margin-top: -15px;
+        }
+      }
     }
   }
 }

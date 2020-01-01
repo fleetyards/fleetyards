@@ -1,0 +1,12 @@
+<h4>
+  <%= I18n.t('mailer.fleet_membership.new_invite.headline', fleet: @fleet.name) %>
+</h4>
+<p>
+  <%= I18n.t('mailer.fleet_membership.new_invite.body') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="<%= frontend_fleets_invites_url %>">
+    <%= I18n.t('mailer.fleet_membership.new_invite.action', fleet: @fleet.name) %>
+  </button>
+</center>

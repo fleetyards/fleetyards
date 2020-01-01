@@ -4,7 +4,6 @@
     :slim="slim"
   >
     <span
-      v-tooltip.bottom-end="item.label"
       :class="{
         'fleets-nav-item-icon-slim': slim
       }"

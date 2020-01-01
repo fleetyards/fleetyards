@@ -1,5 +1,6 @@
 import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import { routes as SettingsRoutes } from 'frontend/pages/Settings/routes'
+import { routes as FleetsRoutes } from 'frontend/pages/Fleets/routes'
 
 export const routes = [
   {
@@ -39,6 +40,40 @@ export const routes = [
     meta: {
       title: 'cookiePolicy',
     },
+  }, {
+    path: '/hangar/',
+    name: 'hangar',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'),
+    meta: {
+      needsAuthentication: true,
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-5.jpg'),
+      quickSearch: 'nameCont',
+      title: 'hangar.index',
+    },
+  }, {
+    path: '/hangar/preview',
+    name: 'hangar-preview',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-5.jpg'),
+      title: 'hangar.preview',
+    },
+  }, {
+    path: '/hangar/stats/',
+    name: 'hangar-stats',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Stats'),
+    meta: {
+      needsAuthentication: true,
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-5.jpg'),
+      title: 'hangar.stats',
+    },
+  }, {
+    path: '/hangar/:user/',
+    name: 'hangar-public',
+    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
     path: '/ships/',
     name: 'models',
@@ -90,46 +125,20 @@ export const routes = [
       title: 'stats',
     },
   }, {
+    path: '/fleets/',
+    name: 'fleets',
+    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'),
+    children: FleetsRoutes,
+    meta: {
+      title: 'fleets',
+    },
+  }, {
     path: '/images/',
     name: 'images',
     component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
     meta: {
       title: 'images',
     },
-  }, {
-    path: '/hangar/',
-    name: 'hangar',
-    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'),
-    meta: {
-      needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
-      quickSearch: 'nameCont',
-      title: 'hangar.index',
-    },
-  }, {
-    path: '/hangar/preview',
-    name: 'hangar-preview',
-    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
-      title: 'hangar.preview',
-    },
-  }, {
-    path: '/hangar/stats/',
-    name: 'hangar-stats',
-    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Stats'),
-    meta: {
-      needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg'),
-      title: 'hangar.stats',
-    },
-  }, {
-    path: '/hangar/:user/',
-    name: 'hangar-public',
-    component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
     path: '/stations/',
     name: 'stations',

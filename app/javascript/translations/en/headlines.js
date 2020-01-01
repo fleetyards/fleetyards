@@ -33,8 +33,10 @@ export default {
   filterCargoRoutes: 'Filter Cargo routes',
   filterCommodities: 'Filter Commodities',
   fleets: {
-    index: 'Fleets',
     add: 'Create new Fleet',
+    invites: 'Fleet Invites',
+    members: 'Members',
+    settings: 'Settings',
   },
   fleetMembers: 'Setup Members',
   newFleet: 'Setup Your Fleet',

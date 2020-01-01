@@ -2,8 +2,10 @@ export default {
   true: 'Yes',
   false: 'No',
   selected: 'Selected',
+  actions: 'Actions',
   collapse: 'Collapse',
   expand: 'Expand',
+  toggleNavigation: 'Toggle Navigation',
   or: 'or',
   deselect: 'Click to deselect',
   networkStatusOffline: 'Network Status: Offline - Service Unavailable',
@@ -102,6 +104,7 @@ export default {
   hangar: 'Hangar',
   hangarStats: 'Stats',
   hangarMetrics: {
+    total: 'Total',
     totalMoney: 'Money Value',
     totalMinCrew: 'Min. Crew',
     totalMaxCrew: 'Max. Crew',
@@ -122,13 +125,18 @@ export default {
   yourFlagship: 'Your Flagship',
   flagship: 'Flagship',
   fleet: {
-    size: 'Fleet size',
-    sid: 'Spectrum ID (SID)',
-    rpg: 'Role Play',
-    memberCount: '%{count} Members',
-    recruiting: 'Recruiting',
-    exclusive: 'Exclusive Membership',
-    members: 'Members',
+    classes: 'Fleet',
+    name: 'Name',
+    members: {
+      total: 'Total: %{count}',
+      joined: 'Joined at?',
+      role: 'Role',
+      roles: {
+        admin: 'Admin',
+        officer: 'Officer',
+        member: 'Member',
+      },
+    },
   },
   hangarGroup: {
     name: 'Name',
@@ -328,6 +336,11 @@ export default {
     images: {
       station: 'Station',
       model: 'Ship',
+    },
+    fleets: {
+      members: {
+        role: 'Role',
+      },
     },
   },
   station: {

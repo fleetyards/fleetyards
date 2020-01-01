@@ -33,6 +33,12 @@ export default function getStorePlugins() {
       'compare.modelA',
       'compare.modelB',
       'search.history',
+      'fleet.detailsVisible',
+      'fleet.filterVisible',
+      'fleet.fleetchartVisible',
+      'fleet.fleetchartScale',
+      'fleet.grouped',
+      'fleet.money',
     ],
   })]
 }

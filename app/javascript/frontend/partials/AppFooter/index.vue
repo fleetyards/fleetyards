@@ -108,14 +108,16 @@
       <div class="app-community-logo" />
       <div class="app-version">
         {{ codename }} ({{ version }})
-        <i
+        <span
           v-tooltip="gitRevision"
           :class="{
             online: online,
           }"
-          class="far fa-fingerprint git-revision"
+          class="git-revision"
           @click="copyGitRevision"
-        />
+        >
+          <i class="far fa-fingerprint" />
+        </span>
       </div>
     </div>
   </footer>

@@ -18,7 +18,7 @@
       @click.stop.prevent="toggle"
     >
       <span class="sr-only">
-        Toggle Navigation
+        {{ $t('labels.toggleNavigation') }}
       </span>
       <span class="icon-bar top-bar" />
       <span class="icon-bar middle-bar" />
@@ -52,33 +52,16 @@
       class="nav-container"
     >
       <div class="nav-container-inner">
-        <ul v-if="!isAuthenticated">
-          <NavItem
-            v-for="(navItem, index) in guestNavItems"
-            :key="`guest-${index}`"
+        <ul v-if="isFleetRoute">
+          <component
+            :is="navItem.component || 'NavItem'"
+            v-for="(navItem, index) in fleetNavItems"
+            :key="`fleet-nav-${index}`"
             :item="navItem"
             :slim="slim"
           />
         </ul>
-        <ul v-if="isAuthenticated && currentUser">
-          <NavItem
-            :item="userNavItem"
-            :slim="slim"
-            class="user-menu"
-          >
-            <Avatar
-              :avatar="currentUser.avatar"
-              size="small"
-            />
-            <span
-              v-if="!slim"
-              class="username"
-            >
-              {{ currentUser.username }}
-            </span>
-          </NavItem>
-        </ul>
-        <ul>
+        <ul v-else>
           <component
             :is="navItem.component || 'NavItem'"
             v-for="(navItem, index) in navItems"
@@ -92,17 +75,16 @@
             v-if="!mobile"
             :item="{
               action: toggleSlim,
+              label: toggleSlimLabel,
             }"
             :slim="slim"
           >
-            <i
-              v-tooltip="slim && toggleSlimLabel"
-              :class="{
-                'fa-chevron-double-right': slim,
-                'fa-chevron-double-left': !slim,
-              }"
-              class="fal"
-            />
+            <span v-show="slim">
+              <i class="fal fa-chevron-double-right" />
+            </span>
+            <span v-show="!slim">
+              <i class="fal fa-chevron-double-left" />
+            </span>
             <transition name="fade-nav">
               <span v-if="!slim">{{ toggleSlimLabel }}</span>
             </transition>
@@ -131,8 +113,8 @@
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import NavItem from 'frontend/partials/Navigation/NavItem'
 import FleetsNavItem from 'frontend/partials/Navigation/FleetsNavItem'
+import UserNavItem from 'frontend/partials/Navigation/UserNavItem'
 import { mapGetters } from 'vuex'
-import Avatar from 'frontend/components/Avatar'
 
 export default {
   name: 'Navigation',
@@ -141,7 +123,7 @@ export default {
     QuickSearch,
     NavItem,
     FleetsNavItem,
-    Avatar,
+    UserNavItem,
   },
 
   data() {
@@ -159,18 +141,6 @@ export default {
       roadmapChangesRouteActive: false,
       roadmapShipsRouteActive: false,
       fleetsRouteActive: false,
-      guestNavItems: [{
-        to: { name: 'login' },
-        label: this.$t('nav.login'),
-        icon: 'fad fa-sign-in',
-      }, {
-        divider: true,
-      }],
-      fleets: [{
-        slug: 'merc',
-        name: 'MERC',
-        logo: 'https://robertsspaceindustries.com/media/p7e22y3wa5wv2r/heap_infobox/MERCCORP-Logo.png?v=1449687402',
-      }],
     }
   },
 
@@ -195,23 +165,12 @@ export default {
       hangarPreview: 'preview',
     }),
 
-    userNavItem() {
-      return {
-        active: this.userRouteActive,
-        key: 'user',
-        submenu: [{
-          to: { name: 'settings' },
-          icon: 'fad fa-cog',
-          label: this.$t('nav.settings.index'),
-          active: this.userRouteActive,
-        }, {
-          divider: true,
-        }, {
-          action: this.logout,
-          icon: 'fad fa-sign-out',
-          label: this.$t('nav.logout'),
-        }],
+    fleets() {
+      if (!this.currentUser) {
+        return []
       }
+
+      return this.currentUser.fleets
     },
 
     toggleSlimLabel() {
@@ -222,30 +181,24 @@ export default {
       return this.$t('nav.toggleSlimCollapse')
     },
 
-    navRoutes() {
-      return this.filterRoutes(this.$router.options.routes).map(this.mapRoutes)
-    },
-
     navItems() {
-      console.log(
-        this.navRoutes,
-      )
       return [
+        ...this.userNavItems,
         {
           to: { name: 'home' },
           exact: true,
           icon: 'fad fa-home-alt',
           label: this.$t('nav.home'),
         },
-        ...[this.hangarNavItem],
+        ...this.hangarNavItems,
         {
           to: { name: 'models' },
           icon: 'fad fa-starship',
           label: this.$t('nav.models'),
           active: this.shipsRouteActive,
         },
-        ...[this.stationsNavItem],
-        ...[this.fleetsNavItem],
+        ...this.stationsNavItems,
+        ...this.fleetsNavItems,
         {
           to: { name: 'images' },
           icon: 'fad fa-images',
@@ -261,7 +214,7 @@ export default {
           icon: 'fad fa-pallet-alt',
           label: this.$t('nav.tradeRoutes'),
         },
-        ...[this.roadmapNavItem],
+        ...this.roadmapNavItems,
         {
           to: { name: 'stats' },
           icon: 'fad fa-chart-bar',
@@ -270,24 +223,55 @@ export default {
       ]
     },
 
-    hangarNavItem() {
+    userNavItems() {
+      if (!this.isAuthenticated) {
+        return [{
+          to: { name: 'login' },
+          label: this.$t('nav.login'),
+          icon: 'fad fa-sign-in',
+        }, {
+          divider: true,
+        }]
+      }
+
+
+      return [{
+        active: this.userRouteActive,
+        component: 'UserNavItem',
+        key: 'user',
+        submenu: [{
+          to: { name: 'settings' },
+          icon: 'fad fa-cog',
+          label: this.$t('nav.settings.index'),
+          active: this.userRouteActive,
+        }, {
+          divider: true,
+        }, {
+          action: this.logout,
+          icon: 'fad fa-sign-out',
+          label: this.$t('nav.logout'),
+        }],
+      }]
+    },
+
+    hangarNavItems() {
       if (this.isAuthenticated || !this.hangarPreview) {
-        return {
+        return [{
           to: { name: 'hangar' },
           icon: 'fad fa-bookmark',
           label: this.$t('nav.hangar'),
-        }
+        }]
       }
 
-      return {
+      return [{
         to: { name: 'hangar-preview' },
         icon: 'fal fa-bookmark',
         label: this.$t('nav.hangar'),
-      }
+      }]
     },
 
-    stationsNavItem() {
-      return {
+    stationsNavItems() {
+      return [{
         icon: 'fad fa-planet-ringed',
         label: this.$t('nav.stations.index'),
         active: this.stationsRouteActive,
@@ -309,11 +293,11 @@ export default {
           label: this.$t('nav.stations.shops'),
           active: this.shopRouteActive,
         }],
-      }
+      }]
     },
 
-    roadmapNavItem() {
-      return {
+    roadmapNavItems() {
+      return [{
         icon: 'fad fa-tasks-alt',
         label: this.$t('nav.roadmap.index'),
         active: this.roadmapsRouteActive,
@@ -334,33 +318,98 @@ export default {
           label: this.$t('nav.roadmap.ships'),
           active: this.roadmapShipsRouteActive,
         }],
-      }
+      }]
     },
 
-    fleetsNavItem() {
-      return {
+    fleetNavItems() {
+      const fleet = this.fleets.find((item) => item.slug === this.$route.params.slug)
+
+      if (!fleet) {
+        return []
+      }
+
+      const officerItems = []
+      if (fleet.role === 'admin' || fleet.role === 'officer') {
+        officerItems.push({
+          to: { name: 'fleet-members', params: { slug: fleet.slug } },
+          label: this.$t('nav.fleets.members'),
+          icon: 'fad fa-users',
+        })
+      }
+
+      const adminItems = []
+      if (fleet.role === 'admin') {
+        adminItems.push({
+          to: { name: 'fleet-settings', params: { slug: fleet.slug } },
+          label: this.$t('nav.fleets.settings'),
+          icon: 'fad fa-cogs',
+        })
+      }
+
+      return [
+        ...this.userNavItems,
+        {
+          to: { name: 'home' },
+          exact: true,
+          icon: 'fal fa-chevron-left',
+          label: this.$t('nav.home'),
+        },
+        {
+          to: { name: 'fleet', params: { slug: fleet.slug } },
+          label: fleet.name,
+          image: fleet.logo,
+          active: this.fleetRouteActive,
+        },
+        ...officerItems,
+        ...adminItems,
+      ]
+    },
+
+    fleetsNavItems() {
+      const submenu = [
+        ...this.fleets.map((item) => ({
+          to: { name: 'fleet', params: { slug: item.slug } },
+          label: item.name,
+          image: item.logo,
+        })),
+      ]
+
+
+      if (this.isAuthenticated) {
+        const invites = this.fleets.filter((item) => !item.accepted)
+        if (invites.length) {
+          submenu.push({
+            to: { name: 'fleet-invites' },
+            icon: 'fad fa-envelope-open-text',
+            label: this.$t('nav.fleets.invites'),
+          })
+        }
+
+        submenu.push({
+          to: { name: 'fleet-add' },
+          icon: 'fal fa-plus',
+          label: this.$t('nav.fleets.add'),
+        })
+      } else {
+        submenu.push({
+          to: { name: 'fleet-preview' },
+          icon: 'fal fa-plus',
+          label: this.$t('nav.fleets.add'),
+        })
+      }
+
+      return [{
         component: 'FleetsNavItem',
         label: this.$t('nav.fleets.index'),
         active: this.fleetsRouteActive,
         key: 'fleets',
-        submenu: [
-          {
-            to: { name: 'fleets' },
-            icon: 'fal fa-matrix',
-            label: this.$t('nav.fleets.index'),
-          },
-          ...this.fleets.map((item) => ({
-            to: { name: 'fleet', params: { slug: item.slug } },
-            label: item.name,
-            image: item.logo,
-          })),
-          {
-            to: { name: 'fleet-add' },
-            icon: 'fal fa-plus',
-            label: this.$t('nav.fleets.add'),
-          },
-        ],
-      }
+        submenu,
+      }]
+    },
+
+    isFleetRoute() {
+      const { path, name } = this.$route
+      return path.includes('fleets') && name !== 'fleets' && name !== 'fleet-add' && name !== 'fleet-invites' && name !== 'fleet-preview'
     },
 
     slim() {
@@ -412,28 +461,6 @@ export default {
   },
 
   methods: {
-    filterRoutes(routes) {
-      return routes.filter((item) => !!item.meta?.nav)
-        .filter((item) => !item.meta?.needsAuthentication
-          || item.meta?.needsAuthentication === this.isAuthenticated)
-        .filter((item) => !item.meta?.guest || item.meta?.guest !== this.isAuthenticated)
-    },
-
-    mapRoutes(route) {
-      const submenuRoutes = this.filterRoutes(route.children || []).map(this.mapRoutes)
-      const { nav } = route.meta || {}
-
-      return {
-        to: {
-          name: route.name,
-        },
-        component: nav.component || null,
-        icon: nav.icon || null,
-        label: (nav.label ? this.$t(`nav.${nav.label}`) : this.$t(`nav.${route.name}`)),
-        submenu: submenuRoutes.length ? submenuRoutes : null,
-      }
-    },
-
     documentClick(event) {
       const element = this.$refs.navigation
       const { target } = event
@@ -463,7 +490,7 @@ export default {
       const { path } = this.$route
       this.shipsRouteActive = (path.includes('ships') || path.includes('manufacturers')
         || path.includes('components') || path.includes('compare/ships')) && !path.includes('roadmap/ships')
-      this.userRouteActive = path.includes('settings')
+      this.userRouteActive = path.includes('settings') && !path.includes('fleets')
       this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
       this.stationsRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
       this.stationRouteActive = path.includes('stations') && !path.includes('shops')
@@ -472,6 +499,7 @@ export default {
       this.roadmapsRouteActive = path.includes('roadmap')
       this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
       this.fleetsRouteActive = path.includes('fleets')
+      this.fleetRouteActive = path.includes('fleets') && !path.includes('settings') && !path.includes('members') && !path.includes('stats')
     },
 
     async logout() {

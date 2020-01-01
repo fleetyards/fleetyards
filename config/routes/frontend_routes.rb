@@ -35,9 +35,11 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'images' => 'base#index'
 
   get 'fleets' => 'base#index'
-  get 'fleets/:slug' => 'base#index'
-  get 'fleets/:slug/members' => 'base#index'
-  get 'fleets/:slug/settings' => 'base#index'
+  get 'fleets/add' => 'base#index'
+  get 'fleets/invites' => 'base#index'
+  get 'fleets/:slug' => 'fleets#show'
+  get 'fleets/:slug/members' => 'fleets#members'
+  get 'fleets/:slug/settings' => 'fleets#settings'
 
   get 'stats' => 'base#index'
 
@@ -59,8 +61,8 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'settings/hangar' => 'base#index'
 
   get 'password/request' => 'base#index'
-  get 'password/update/:token' => 'base#password'
-  get 'confirm/:token' => 'base#confirm'
+  get 'password/update/:token' => 'base#password', as: :password_reset
+  get 'confirm/:token' => 'base#confirm', as: :confirm
 
   get 'embed' => 'embed#index'
   get 'embed-v2' => 'embed#index_v2'
