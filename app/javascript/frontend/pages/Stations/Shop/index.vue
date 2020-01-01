@@ -42,14 +42,12 @@
             size="small"
             @click.native="toggleFilter"
           >
-            <i
-              v-if="isFilterSelected"
-              class="fas fa-filter"
-            />
-            <i
-              v-else
-              class="far fa-filter"
-            />
+            <span v-show="isFilterSelected">
+              <i class="fas fa-filter" />
+            </span>
+            <span v-show="!isFilterSelected">
+              <i class="far fa-filter" />
+            </span>
           </Btn>
           <template v-if="!mobile">
             <Btn

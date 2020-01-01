@@ -3,7 +3,8 @@
     class="avatar"
     :class="{
       [`avatar-${size}`]: true,
-      'avatar-editable': editable,
+      'avatar-editable': editable || creatable,
+      'avatar-transparent': transparent,
     }"
   >
     <img
@@ -15,10 +16,10 @@
       v-else
       class="no-avatar"
     >
-      <i class="fa fa-user" />
+      <i :class="icon" />
     </div>
     <div
-      v-if="editable"
+      v-if="editable || creatable"
       class="edit"
       @click.prevent="emitClick"
     >
@@ -30,7 +31,12 @@
       <template v-else>
         <i class="fa fa-upload" />
 
-        {{ $t('actions.change') }}
+        <template v-if="editable">
+          {{ $t('actions.change') }}
+        </template>
+        <template v-else>
+          {{ $t('actions.upload') }}
+        </template>
       </template>
     </div>
   </div>
@@ -46,11 +52,28 @@ export default {
         return ['default', 'small', 'large'].indexOf(value) !== -1
       },
     },
+
     avatar: {
       type: String,
       default: null,
     },
+
     editable: {
+      type: Boolean,
+      default: false,
+    },
+
+    creatable: {
+      type: Boolean,
+      default: false,
+    },
+
+    icon: {
+      type: String,
+      default: 'fad fa-user',
+    },
+
+    transparent: {
       type: Boolean,
       default: false,
     },

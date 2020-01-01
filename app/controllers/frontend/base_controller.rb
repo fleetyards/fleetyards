@@ -25,16 +25,6 @@ module Frontend
       render 'frontend/index'
     end
 
-    def fleet
-      @fleet = Fleet.find_by(['lower(sid) = :value', { value: params[:sid].downcase }])
-      if @fleet.present?
-        @title = @fleet.name
-        @og_type = 'article'
-        @og_image = @fleet.logo
-      end
-      render 'frontend/index'
-    end
-
     def model
       @model = model_record
       if @model.present?

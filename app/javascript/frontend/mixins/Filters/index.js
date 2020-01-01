@@ -116,7 +116,7 @@ export default {
       return parts.join('-')
     },
 
-    reset() {
+    resetFilter() {
       this.$router.replace({
         name: this.$route.name,
         query: {},

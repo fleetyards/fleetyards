@@ -114,7 +114,7 @@ module RSI
       starsystem = Starsystem.find_or_create_by!(rsi_id: data['id'])
 
       starsystem.update!(
-        name: strip_name(data['name']),
+        name: data['name'],
         code: data['code'],
         position_x: data['position_x'],
         position_y: data['position_y'],
@@ -152,7 +152,7 @@ module RSI
       celestial_object.update!(
         starsystem_id: starsystem_id,
         parent: CelestialObject.find_by(rsi_id: data['parent_id']),
-        name: strip_name(data['name'] || data['designation']),
+        name: data['name'] || data['designation'],
         designation: data['designation'],
         description: data['description'],
         object_type: data['type'],
@@ -173,7 +173,7 @@ module RSI
     end
 
     private def update_stations(data)
-      station = Station.find_by(name: strip_name(data['name'] || data['designation']))
+      station = Station.find_by(name: data['name'] || data['designation'])
 
       return if station.blank?
 
