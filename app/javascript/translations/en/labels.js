@@ -129,8 +129,10 @@ export default {
     name: 'Name',
     members: {
       total: 'Total: %{count}',
-      joined: 'Joined at?',
-      role: 'Role',
+      joined: 'Joined at',
+      invited: 'Invitation sent at',
+      invitation: 'Invitation',
+      declined: 'Invitation declined',
       roles: {
         admin: 'Admin',
         officer: 'Officer',
@@ -214,6 +216,8 @@ export default {
     ordnance: 'No Ordnance present',
     modular: 'No Modular present',
     avionics: 'No Avionics present',
+    fleetInvites: 'No Invites present',
+    shopCommodities: 'No Commodites available',
     userShips: 'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
   user: {

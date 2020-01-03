@@ -32,14 +32,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <div>
-                    <i class="fad fa-rocket fa-2x" />
-                    <i class="fad fa-rocket fa-2x" />
-                  </div>
-                  <div>
-                    <i class="fad fa-rocket fa-2x" />
-                    <i class="fad fa-rocket fa-2x" />
-                  </div>
+                  <i class="fad fa-rocket fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ quickStats.shipsCountTotal }}

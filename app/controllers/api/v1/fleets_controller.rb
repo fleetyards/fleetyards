@@ -69,9 +69,8 @@ module Api
 
         scope = fleet.fleet_memberships
 
-        member_query_params['sorts'] = sort_by_name(['user.username asc'], 'user.username asc')
+        member_query_params['sorts'] = sort_by_name(['created_at desc', 'accepted_at desc'], 'user_username asc')
 
-        Rails.logger.debug member_query_params.to_yaml
         @q = scope.ransack(member_query_params)
 
         @members = @q.result(distinct: true)
@@ -279,7 +278,7 @@ module Api
 
       private def member_query_params
         @member_query_params ||= query_params(
-          :username_cont, role_in: []
+          :username_cont, sorts: [], role_in: []
         )
       end
 
@@ -289,7 +288,7 @@ module Api
           :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
-          production_status_in: []
+          production_status_in: [], sorts: []
         )
       end
 

@@ -91,6 +91,7 @@ en:
       stats: Stats
       fleets: 'Fleets'
       fleets_add: 'Create new Fleet'
+      fleets_preview: 'Fleet Preview'
       fleets_invites: 'Fleet Invites'
       fleet_members: '%{fleet} Members'
       fleet_settings: '%{fleet} Settings'
@@ -111,6 +112,7 @@ en:
       cookie-policy: Cookie Policy
       login: Login
       sign-up: Sign Up
+      confirm: Confirm Account
       password_request: Request Password
       password_change: Change Password
     admin: FleetYards.net Backend

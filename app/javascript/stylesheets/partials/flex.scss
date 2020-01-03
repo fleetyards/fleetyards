@@ -73,7 +73,8 @@
   }
 
   .manufacturer,
-  .username {
+  .username,
+  .fleet-name {
     flex-grow: 1;
   }
 
@@ -132,6 +133,12 @@
     }
   }
 
+  .empty {
+    flex-grow: 1;
+    text-align: center;
+    color: darken($text-color, 20%);
+  }
+
   .price,
   .size,
   .rent-price {
@@ -155,6 +162,15 @@
     text-align: right;
     vertical-align: middle;
     padding-left: 20px;
+  }
+
+  .joined,
+  .role {
+    text-align: right;
+  }
+
+  > .avatar {
+    min-width: 70px;
   }
 
   .rent-price,
@@ -192,6 +208,14 @@
     & > div {
       padding: 10px;
       color: darken($text-color, 20%);
+
+      &:last-child {
+        padding-right: 20px;
+      }
+
+      &:first-child {
+        padding-left: 20px;
+      }
     }
   }
 

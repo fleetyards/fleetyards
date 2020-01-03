@@ -28,7 +28,8 @@ export default {
   requestPassword: 'Request Password',
   changePassword: 'Change Password',
   fleets: {
-    add: 'Create new Fleet',
+    add: 'Create a new Fleet',
+    preview: 'Fleet Preview',
     invites: 'Fleet Invites',
     members: '%{fleet} Members',
     settings: '%{fleet} Settings',

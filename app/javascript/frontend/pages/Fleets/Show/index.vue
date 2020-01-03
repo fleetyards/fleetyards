@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-8">
         <h1 v-if="fleet">
           <Avatar
             v-if="fleet.logo"
@@ -12,6 +12,22 @@
           {{ fleet.name }}
         </h1>
       </div>
+      <div class="col-xs-4">
+        <div class="page-main-actions">
+          <span v-tooltip="leaveTooltip">
+            <Btn
+              v-if="fleet"
+              :disabled="fleet.role === 'admin' || leaving"
+              inline
+              variant="danger"
+              @click.native="leave"
+            >
+              <i class="fal fa-sign-out" />
+              {{ $t('actions.fleet.leave', { fleet: fleet.name }) }}
+            </Btn>
+          </span>
+        </div>
+      </div>
     </div>
     <div
       v-if="fleetCount"
@@ -19,6 +35,7 @@
     >
       <div class="col-xs-12">
         <ModelClassLabels
+          v-if="isMember"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetCount"
           filter-key="classificationIn"
@@ -26,7 +43,7 @@
       </div>
     </div>
     <div
-      v-if="fleetCount && fleetCount.metrics && !mobile"
+      v-if="fleetCount && fleetCount.metrics && !mobile && isMember"
       class="row"
     >
       <div
@@ -78,8 +95,13 @@
         </div>
       </div>
     </div>
-    <FilteredList>
-      <template slot="actions">
+    <FilteredList
+      :hide-filter="!isMember"
+    >
+      <template
+        v-if="isMember"
+        slot="actions"
+      >
         <Btn
           v-show="!fleetchartVisible"
           v-tooltip="toggleDetailsTooltip"
@@ -294,6 +316,7 @@ export default {
   data() {
     return {
       loading: false,
+      leaving: false,
       fleet: null,
       fleetCount: null,
       vehicles: [],
@@ -324,6 +347,14 @@ export default {
       'money',
     ]),
 
+    leaveTooltip() {
+      if (this.fleet && this.fleet.role === 'admin') {
+        return this.$t('texts.fleets.leaveInfo')
+      }
+
+      return null
+    },
+
     emptyBoxVisible() {
       return !this.loading && (this.noVehicles || this.noFleetchartVehicles)
         && this.isFilterSelected
@@ -342,6 +373,10 @@ export default {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
+    },
+
+    isMember() {
+      return this.fleet && this.fleet.acceptedAt
     },
   },
 
@@ -402,7 +437,13 @@ export default {
 
     fetch() {
       this.fetchFleet()
-      this.fetchFleetCount()
+    },
+
+    fetchAdditional() {
+      if (!this.isMember) {
+        return
+      }
+
       if (this.fleetchartVisible) {
         this.fetchFleetchart()
       } else if (this.grouped) {
@@ -410,6 +451,7 @@ export default {
       } else {
         this.fetchVehicles()
       }
+      this.fetchFleetCount()
     },
 
     async fetchFleet() {
@@ -422,6 +464,8 @@ export default {
       } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }
+
+      this.fetchAdditional()
 
       this.resetLoading()
     },
@@ -482,6 +526,34 @@ export default {
       if (!response.error) {
         this.fleetCount = response.data
       }
+    },
+
+    async leave() {
+      this.leaving = true
+      this.$confirm({
+        text: this.$t('messages.confirm.fleet.leave'),
+        onConfirm: async () => {
+          const response = await this.$api.destroy(`fleets/${this.fleet.slug}/members/leave`)
+
+          if (!response.error) {
+            this.$comlink.$emit('fleetUpdate')
+
+            this.$success({
+              text: this.$t('messages.fleet.leave.success'),
+            })
+
+            this.$router.push({ name: 'home' })
+          } else {
+            this.$alert({
+              text: this.$t('messages.fleet.leave.failure'),
+            })
+            this.leaving = false
+          }
+        },
+        onClose: () => {
+          this.leaving = false
+        },
+      })
     },
 
     resetLoading() {

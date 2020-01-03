@@ -18,12 +18,12 @@
 
   :first-child {
     top: 0;
-    left: 6px;
+    left: 3px;
   }
 
   :last-child {
     bottom: -6px;
-    right: 6px;
+    right: 7px;
   }
 
   &.fleets-nav-item-icon-slim {
@@ -36,11 +36,11 @@
     }
 
     :first-child {
-      left: 2px;
+      left: 0px;
     }
 
     :last-child {
-      right: 2px;
+      right: 4px;
     }
   }
 }

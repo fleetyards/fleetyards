@@ -46,6 +46,7 @@
     </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
     <div
+      :key="navKey"
       :class="{
         'nav-container-slim': slim,
       }"
@@ -128,19 +129,8 @@ export default {
 
   data() {
     return {
-      shipsRouteActive: false,
-      userRouteActive: false,
-      cargoRouteActive: false,
-      stationsRouteActive: false,
-      stationRouteActive: false,
-      shopRouteActive: false,
-      starsystemRouteActive: false,
+      currentFleet: null,
       searchQuery: null,
-      roadmapsRouteActive: false,
-      roadmapRouteActive: false,
-      roadmapChangesRouteActive: false,
-      roadmapShipsRouteActive: false,
-      fleetsRouteActive: false,
     }
   },
 
@@ -161,6 +151,10 @@ export default {
       'isAuthenticated',
     ]),
 
+    ...mapGetters('fleet', {
+      fleetPreview: 'preview',
+    }),
+
     ...mapGetters('hangar', {
       hangarPreview: 'preview',
     }),
@@ -171,6 +165,10 @@ export default {
       }
 
       return this.currentUser.fleets
+    },
+
+    myFleets() {
+      return this.fleets.filter((fleet) => !fleet.invitation)
     },
 
     toggleSlimLabel() {
@@ -195,7 +193,6 @@ export default {
           to: { name: 'models' },
           icon: 'fad fa-starship',
           label: this.$t('nav.models'),
-          active: this.shipsRouteActive,
         },
         ...this.stationsNavItems,
         ...this.fleetsNavItems,
@@ -236,14 +233,12 @@ export default {
 
 
       return [{
-        active: this.userRouteActive,
         component: 'UserNavItem',
         key: 'user',
         submenu: [{
           to: { name: 'settings' },
           icon: 'fad fa-cog',
           label: this.$t('nav.settings.index'),
-          active: this.userRouteActive,
         }, {
           divider: true,
         }, {
@@ -274,7 +269,6 @@ export default {
       return [{
         icon: 'fad fa-planet-ringed',
         label: this.$t('nav.stations.index'),
-        active: this.stationsRouteActive,
         key: 'stations',
         submenu: [{
           to: { name: 'stations' },
@@ -284,14 +278,12 @@ export default {
           to: { name: 'starsystems' },
           icon: 'fad fa-solar-system',
           label: this.$t('nav.stations.starsystems'),
-          active: this.starsystemRouteActive,
         }, {
           divider: true,
         }, {
           to: { name: 'shops' },
           icon: 'fad fa-store-alt',
           label: this.$t('nav.stations.shops'),
-          active: this.shopRouteActive,
         }],
       }]
     },
@@ -300,47 +292,42 @@ export default {
       return [{
         icon: 'fad fa-tasks-alt',
         label: this.$t('nav.roadmap.index'),
-        active: this.roadmapsRouteActive,
         key: 'roadmap',
         submenu: [{
           to: { name: 'roadmap' },
           icon: 'fad fa-tasks-alt',
           label: this.$t('nav.roadmap.overview'),
-          active: this.roadmapRouteActive,
+          exact: true,
         }, {
           to: { name: 'roadmap-changes' },
           icon: 'fad fa-tasks',
           label: this.$t('nav.roadmap.changes'),
-          active: this.roadmapChangesRouteActive,
         }, {
           to: { name: 'roadmap-ships' },
           icon: 'fad fa-rocket-launch',
           label: this.$t('nav.roadmap.ships'),
-          active: this.roadmapShipsRouteActive,
         }],
       }]
     },
 
     fleetNavItems() {
-      const fleet = this.fleets.find((item) => item.slug === this.$route.params.slug)
-
-      if (!fleet) {
+      if (!this.currentFleet) {
         return []
       }
 
       const officerItems = []
-      if (fleet.role === 'admin' || fleet.role === 'officer') {
+      if (this.currentFleet.role === 'admin' || this.currentFleet.role === 'officer') {
         officerItems.push({
-          to: { name: 'fleet-members', params: { slug: fleet.slug } },
+          to: { name: 'fleet-members', params: { slug: this.currentFleet.slug } },
           label: this.$t('nav.fleets.members'),
           icon: 'fad fa-users',
         })
       }
 
       const adminItems = []
-      if (fleet.role === 'admin') {
+      if (this.currentFleet.role === 'admin') {
         adminItems.push({
-          to: { name: 'fleet-settings', params: { slug: fleet.slug } },
+          to: { name: 'fleet-settings', params: { slug: this.currentFleet.slug } },
           label: this.$t('nav.fleets.settings'),
           icon: 'fad fa-cogs',
         })
@@ -355,19 +342,19 @@ export default {
           label: this.$t('nav.home'),
         },
         {
-          to: { name: 'fleet', params: { slug: fleet.slug } },
-          label: fleet.name,
-          image: fleet.logo,
-          active: this.fleetRouteActive,
+          to: { name: 'fleet', params: { slug: this.currentFleet.slug } },
+          label: this.currentFleet.name,
+          image: this.currentFleet.logo,
         },
         ...officerItems,
         ...adminItems,
       ]
     },
 
+
     fleetsNavItems() {
       const submenu = [
-        ...this.fleets.map((item) => ({
+        ...this.myFleets.map((item) => ({
           to: { name: 'fleet', params: { slug: item.slug } },
           label: item.name,
           image: item.logo,
@@ -376,7 +363,7 @@ export default {
 
 
       if (this.isAuthenticated) {
-        const invites = this.fleets.filter((item) => !item.accepted)
+        const invites = this.fleets.filter((item) => item.invitation)
         if (invites.length) {
           submenu.push({
             to: { name: 'fleet-invites' },
@@ -384,7 +371,9 @@ export default {
             label: this.$t('nav.fleets.invites'),
           })
         }
+      }
 
+      if (this.isAuthenticated || !this.fleetPreview) {
         submenu.push({
           to: { name: 'fleet-add' },
           icon: 'fal fa-plus',
@@ -401,7 +390,6 @@ export default {
       return [{
         component: 'FleetsNavItem',
         label: this.$t('nav.fleets.index'),
-        active: this.fleetsRouteActive,
         key: 'fleets',
         submenu,
       }]
@@ -414,6 +402,28 @@ export default {
 
     slim() {
       return this.navSlim && !this.mobile
+    },
+
+    navKey() {
+      const key = ['nav']
+
+      if (this.isAuthenticated) {
+        key.push('authenticated')
+      }
+
+      if (this.fleetPreview) {
+        key.push('fleetPreview')
+      }
+
+      if (this.hangarPreview) {
+        key.push('hangarPreview')
+      }
+
+      if (this.fleets.length) {
+        key.push(this.fleets.map((item) => item.slug).join('-'))
+      }
+
+      return key.join('-')
     },
 
     environmentLabelClasses() {
@@ -439,13 +449,18 @@ export default {
 
   watch: {
     $route() {
-      this.checkRoutes()
       this.close()
+    },
+
+    isFleetRoute() {
+      if (this.isFleetRoute) {
+        this.fetchFleet()
+      }
     },
   },
 
   mounted() {
-    this.checkRoutes()
+    this.$comlink.$on('fleetUpdate', this.fetchFleet)
   },
 
   created() {
@@ -486,22 +501,6 @@ export default {
       this.$store.commit('app/closeNav')
     },
 
-    checkRoutes() {
-      const { path } = this.$route
-      this.shipsRouteActive = (path.includes('ships') || path.includes('manufacturers')
-        || path.includes('components') || path.includes('compare/ships')) && !path.includes('roadmap/ships')
-      this.userRouteActive = path.includes('settings') && !path.includes('fleets')
-      this.starsystemRouteActive = path.includes('starsystems') || path.includes('celestial-objects')
-      this.stationsRouteActive = path.includes('stations') || path.includes('shops') || this.starsystemRouteActive
-      this.stationRouteActive = path.includes('stations') && !path.includes('shops')
-      this.shopRouteActive = path.includes('shops')
-      this.cargoRouteActive = path.includes('cargo') || path.includes('commodities')
-      this.roadmapsRouteActive = path.includes('roadmap')
-      this.roadmapRouteActive = path.includes('roadmap') && !path.includes('roadmap/changes') && !path.includes('roadmap/ships')
-      this.fleetsRouteActive = path.includes('fleets')
-      this.fleetRouteActive = path.includes('fleets') && !path.includes('settings') && !path.includes('members') && !path.includes('stats')
-    },
-
     async logout() {
       await this.$store.dispatch('session/logout')
     },
@@ -522,6 +521,14 @@ export default {
           text: this.$t('messages.copyGitRevision.failure'),
         })
       })
+    },
+
+    async fetchFleet() {
+      const response = await this.$api.get(`fleets/${this.$route.params.slug}?nav`)
+
+      if (!response.error) {
+        this.currentFleet = response.data
+      }
     },
   },
 }

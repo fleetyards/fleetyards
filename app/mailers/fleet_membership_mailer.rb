@@ -7,7 +7,7 @@ class FleetMembershipMailer < ApplicationMailer
     @fleet = fleet
     mail(
       to: to,
-      subject: I18n.t(:"mailer.fleet_membership.invite.subject")
+      subject: I18n.t(:"mailer.fleet_membership.new_invite.subject")
     )
   end
 end

@@ -3,8 +3,12 @@
 class Fleet < ApplicationRecord
   has_many :fleet_memberships,
            dependent: :destroy
+  has_many :accepted_memberships,
+           -> { where.not(accepted_at: nil) },
+           class_name: 'FleetMembership',
+           inverse_of: false
   has_many :users,
-           through: :fleet_memberships
+           through: :accepted_memberships
   has_many :public_vehicles,
            through: :users
   has_many :public_models,
@@ -23,16 +27,29 @@ class Fleet < ApplicationRecord
   before_save :update_slugs
   after_create :setup_admin_user
 
+  def self.not_declined
+    includes(:fleet_memberships).joins(:fleet_memberships)
+                                .where(fleet_memberships: { declined_at: nil })
+  end
+
   def setup_admin_user
-    fleet_memberships.create(accepted: true, user_id: created_by, role: :admin)
+    fleet_memberships.create(user_id: created_by, role: :admin, accepted_at: Time.zone.now)
   end
 
-  def role(user)
-    fleet_memberships.find_by(user_id: user.id)&.role
+  def role(user_id)
+    membership = fleet_memberships.find_by(user_id: user_id)
+
+    return if membership.blank? || membership.invitation || membership.declined_at.present?
+
+    membership.role
   end
 
-  def accepted(user)
-    fleet_memberships.find_by(user_id: user.id)&.accepted
+  def invitation(user_id)
+    fleet_memberships.find_by(user_id: user_id)&.invitation
+  end
+
+  def accepted_at(user_id)
+    fleet_memberships.find_by(user_id: user_id)&.accepted_at
   end
 
   def model_count(model_id)

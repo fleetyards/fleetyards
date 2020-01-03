@@ -3,6 +3,10 @@
     <div class="row">
       <div class="col-xs-12">
         <BreadCrumbs :crumbs="crumbs" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-8">
         <h1>
           {{ $t('headlines.fleets.members') }}
           <small v-if="fleetCount">
@@ -10,7 +14,19 @@
           </small>
         </h1>
       </div>
+      <div class="col-xs-4">
+        <div class="page-main-actions">
+          <Btn
+            inline
+            @click.native="openInviteModal"
+          >
+            <i class="fal fa-plus" />
+            {{ $t('actions.add') }}
+          </Btn>
+        </div>
+      </div>
     </div>
+
     <FilteredList>
       <Paginator
         v-if="members.length"
@@ -36,12 +52,14 @@
             >
               <div class="flex-list-row">
                 <div class="avatar" />
-                <div class="username" />
-                <div class="role">
-                  {{ $t('labels.fleet.members.role') }}
+                <div class="username">
+                  <router-link :to="sortByUsername">
+                    {{ $t('labels.username') }}
+                  </router-link>
                 </div>
+                <div class="role" />
                 <div class="joined">
-                  {{ $t('labels.fleet.members.joined') }}
+                  {{ $t('labels.fleet.members.invited') }} / {{ $t('labels.fleet.members.joined') }}
                 </div>
                 <div class="actions">
                   {{ $t('labels.actions') }}
@@ -64,35 +82,51 @@
                   {{ member.username }}
                 </div>
                 <div class="role">
-                  {{ member.roleLabel }}
+                  <template v-if="member.invitation">
+                    {{ $t('labels.fleet.members.invitation') }}
+                  </template>
+                  <span
+                    v-else-if="member.declinedAt"
+                    class="text-danger"
+                  >
+                    {{ $t('labels.fleet.members.declined') }}
+                  </span>
+                  <template v-else>
+                    {{ member.roleLabel }}
+                  </template>
                 </div>
                 <div class="joined">
-                  {{ $l(member.createdAt) }}
+                  <template v-if="member.invitation || member.declinedAt">
+                    {{ member.inviteSentAtLabel }}
+                  </template>
+                  <template v-else>
+                    {{ member.acceptedAtLabel }}
+                  </template>
                 </div>
                 <div class="actions">
                   <Btn
-                    v-if="member.role !== 'admin'"
+                    v-if="member.role !== 'admin' && !member.invitation && !member.declinedAt"
                     size="small"
                     :disabled="!canEdit(member)"
                     inline
-                    @click.native="promote"
+                    @click.native="promoteMember(Member)"
                   >
                     <i class="fal fa-chevron-up" />
                   </Btn>
                   <Btn
-                    v-if="member.role !== 'member'"
+                    v-if="member.role !== 'member' && !member.invitation && !member.declinedAt"
                     size="small"
                     :disabled="!canEdit(member)"
                     inline
-                    @click.native="demote"
+                    @click.native="demoteMember(member)"
                   >
                     <i class="fal fa-chevron-down" />
                   </Btn>
                   <Btn
                     size="small"
-                    :disabled="!canEdit(member)"
+                    :disabled="!canEdit(member) || deleting"
                     inline
-                    @click.native="remove"
+                    @click.native="removeMember(member)"
                   >
                     <i class="fad fa-trash-alt" />
                   </Btn>
@@ -118,6 +152,12 @@
         right
       />
     </FilteredList>
+
+    <MemberModal
+      v-if="fleet"
+      ref="memberModal"
+      :fleet="fleet"
+    />
   </section>
 </template>
 
@@ -130,6 +170,7 @@ import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import Btn from 'frontend/components/Btn'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import FleetMembersFilterForm from 'frontend/partials/Fleets/MembersFilterForm'
+import MemberModal from 'frontend/partials/Fleets/MemberModal'
 import Avatar from 'frontend/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
@@ -147,6 +188,7 @@ export default {
     EmptyBox,
     FleetMembersFilterForm,
     Avatar,
+    MemberModal,
   },
 
   mixins: [
@@ -158,9 +200,12 @@ export default {
   data() {
     return {
       loading: false,
+      deleting: false,
       fleet: null,
       members: [],
+      invitations: [],
       fleetCount: null,
+      sort: null,
     }
   },
 
@@ -168,6 +213,33 @@ export default {
     ...mapGetters('session', [
       'currentUser',
     ]),
+
+    sortByUsername() {
+      const currentSort = (this.$route.query.q || {}).sorts
+
+      const sorts = []
+      if (Array.isArray(currentSort)) {
+        if (currentSort.includes('user_username asc')) {
+          sorts.push('user_username desc')
+        } else if (!currentSort.includes('user_username asc') && !currentSort.includes('user_username desc')) {
+          sorts.push('user_username asc')
+        }
+      } else {
+        sorts.push('user_username asc')
+      }
+
+      return {
+        name: this.$route.name,
+        params: this.$route.params,
+        query: {
+          ...this.$route.query,
+          q: {
+            ...this.$route.query?.q,
+            sorts,
+          },
+        },
+      }
+    },
 
     metaTitle() {
       if (!this.fleet) {
@@ -212,11 +284,24 @@ export default {
 
   mounted() {
     this.fetch()
+    this.$comlink.$on('fleetMemberInvited', this.fetch)
+  },
+
+  beforeDestroy() {
+    this.$comlink.$off('fleetMemberInvited')
   },
 
   methods: {
     canEdit(member) {
-      return this.fleet.role === 'admin' && member.username !== this.currentUser.username
+      if (!this.currentUser) {
+        return false
+      }
+
+      return this.fleet && this.fleet.role === 'admin' && member.username !== this.currentUser.username
+    },
+
+    openInviteModal() {
+      this.$refs.memberModal.open()
     },
 
     fetch() {
@@ -226,22 +311,29 @@ export default {
     },
 
     async removeMember(member) {
-      this.loading = true
+      this.deleting = true
+      this.$confirm({
+        text: this.$t('messages.confirm.fleet.members.destroy'),
+        onConfirm: async () => {
+          const response = await this.$api.destroy(`fleets/${this.$route.params.slug}/members/${member.username}`)
 
-      const response = await this.$api.delete(`fleets/${this.$route.params.slug}/members/${member.username}`)
+          if (!response.error) {
+            this.$success({
+              text: this.$t('messages.fleet.members.destroy.success'),
+            })
 
-      this.loading = false
-
-      if (!response.error) {
-        this.$success({
-          text: this.$t('messages.fleet.members.delete.success'),
-        })
-        this.fetch()
-      } else {
-        this.$alert({
-          text: this.$t('messages.fleet.members.delete.failure'),
-        })
-      }
+            this.fetch()
+          } else {
+            this.$alert({
+              text: this.$t('messages.fleet.members.destroy.failure'),
+            })
+            this.deleting = false
+          }
+        },
+        onClose: () => {
+          this.deleting = false
+        },
+      })
     },
 
     async demoteMember(member) {

@@ -9,8 +9,8 @@
       }"
       class="fleets-nav-item-icon"
     >
-      <i class="fad fa-rocket" />
-      <i class="fad fa-rocket" />
+      <i class="fad fa-rocket-launch" />
+      <i class="fad fa-rocket-launch" />
     </span>
     <transition name="fade-nav">
       <span v-if="!slim">{{ item.label }}</span>

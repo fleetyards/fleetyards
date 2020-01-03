@@ -182,7 +182,8 @@ ActiveRecord::Schema.define(version: 2019_12_30_155723) do
     t.uuid "fleet_id"
     t.uuid "user_id"
     t.integer "role"
-    t.boolean "accepted", default: false
+    t.datetime "accepted_at"
+    t.datetime "declined_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

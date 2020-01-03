@@ -22,4 +22,8 @@ export default {
   toggleMoney({ commit, state }) {
     commit('setMoney', !state.money)
   },
+
+  hidePreview({ commit }) {
+    commit('setPreview', false)
+  },
 }

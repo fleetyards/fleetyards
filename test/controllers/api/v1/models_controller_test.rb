@@ -67,7 +67,7 @@ module Api
           'hasModules' => false,
           'hasUpgrades' => false,
           'lastUpdatedAt' => Model.first.last_updated_at&.utc&.iso8601,
-          'lastUpdatedAtDisplay' => (I18n.l(Model.first.last_updated_at&.utc, format: :display) if Model.first.last_updated_at.present?),
+          'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if Model.first.last_updated_at.present?),
           'manufacturer' => {
             'name' => 'Origin',
             'slug' => 'origin',
@@ -125,7 +125,7 @@ module Api
           'hasModules' => false,
           'hasUpgrades' => false,
           'lastUpdatedAt' => Model.last.last_updated_at&.utc&.iso8601,
-          'lastUpdatedAtDisplay' => (I18n.l(Model.last.last_updated_at&.utc, format: :display) if Model.last.last_updated_at.present?),
+          'lastUpdatedAtLabel' => (I18n.l(Model.last.last_updated_at&.utc, format: :label) if Model.last.last_updated_at.present?),
           'manufacturer' => {
             'name' => 'RSI',
             'slug' => 'rsi',

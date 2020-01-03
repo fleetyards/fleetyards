@@ -13,7 +13,7 @@ export default {
   admin: 'Admin',
   fleets: {
     index: 'Fleets',
-    add: 'Create new Fleet',
+    add: 'Create a new Fleet',
     invites: 'Invites',
     members: 'Members',
     settings: 'Settings',

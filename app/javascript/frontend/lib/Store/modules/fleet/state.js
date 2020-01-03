@@ -5,4 +5,5 @@ export default () => ({
   fleetchartScale: 100,
   grouped: true,
   money: true,
+  preview: true,
 })

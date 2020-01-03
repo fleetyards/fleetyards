@@ -109,7 +109,7 @@
             {{ $t('model.lastUpdatedAt') }}:
           </div>
           <div class="metrics-value">
-            {{ model.lastUpdatedAtDisplay }}
+            {{ model.lastUpdatedAtLabel }}
           </div>
         </div>
         <div class="col-xs-12">

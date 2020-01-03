@@ -71,6 +71,7 @@ export default {
       this.form = {
         usernameCont: query.usernameCont,
         roleIn: query.roleIn || [],
+        sorts: query.sorts,
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },

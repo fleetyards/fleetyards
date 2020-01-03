@@ -15,6 +15,11 @@ module Frontend
       render 'frontend/index'
     end
 
+    def confirm
+      @title = I18n.t('title.frontend.confirm')
+      render 'frontend/index'
+    end
+
     def password
       @title = I18n.t('title.frontend.password_change')
       render 'frontend/index'

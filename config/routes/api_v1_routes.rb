@@ -146,7 +146,12 @@ v1_api_routes = lambda do
       get 'stats/models-by-classification' => 'fleets#models_by_classification'
     end
 
-    resources :fleet_members, path: 'members', param: :username, only: %i[create destroy] do
+    resources :fleet_memberships, path: 'members', param: :username, only: %i[create destroy] do
+      collection do
+        put 'accept-invite' => 'fleet_memberships#accept_invite'
+        put 'decline-invite' => 'fleet_memberships#decline_invite'
+        delete :leave
+      end
       member do
         put :demote
         put :promote

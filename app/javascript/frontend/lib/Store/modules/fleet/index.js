@@ -32,6 +32,10 @@ export default () => ({
     money(state) {
       return state.money
     },
+
+    preview(state) {
+      return state.preview
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -62,6 +66,10 @@ export default () => ({
 
     setMoney(state, payload) {
       state.money = payload
+    },
+
+    setPreview(state, payload) {
+      state.preview = !!payload
     },
   },
   /* eslint-enable no-param-reassign */

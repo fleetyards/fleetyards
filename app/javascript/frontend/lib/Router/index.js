@@ -44,7 +44,7 @@ const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) 
 const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
-  linkExactActiveClass: 'active',
+  linkExactActiveClass: 'active-exact',
 
   scrollBehavior: (to, _from, savedPosition) => new Promise((resolve) => {
     setTimeout(() => {

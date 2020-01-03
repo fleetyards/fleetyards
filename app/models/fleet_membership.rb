@@ -14,7 +14,11 @@ class FleetMembership < ApplicationRecord
   after_create :notify_user
 
   def notify_user
-    FleetMembershipMailer.new_invite(user.email, fleet)
+    FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
+  end
+
+  def invitation
+    accepted_at.blank? && declined_at.blank?
   end
 
   def promote

@@ -6,6 +6,8 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.add',
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
     path: 'preview/',
@@ -13,6 +15,8 @@ export const routes = [
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Preview'),
     meta: {
       title: 'fleets.preview',
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
     path: 'invites/',
@@ -21,6 +25,8 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.invites',
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
     path: ':slug/',
@@ -28,6 +34,8 @@ export const routes = [
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
     meta: {
       needsAuthentication: true,
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
     },
   }, {
     path: ':slug/members/',
@@ -35,6 +43,8 @@ export const routes = [
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Members'),
     meta: {
       needsAuthentication: true,
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-2.jpg'),
     },
   }, {
     path: ':slug/settings/',
@@ -42,6 +52,8 @@ export const routes = [
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Settings'),
     meta: {
       needsAuthentication: true,
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
     },
   },
 ]

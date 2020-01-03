@@ -7,6 +7,7 @@ export default {
       'currentUser',
     ]),
   },
+
   methods: {
     async fetchCurrentUser() {
       if (!this.isAuthenticated) {
@@ -19,9 +20,11 @@ export default {
       }
     },
   },
+
   watch: {
     isAuthenticated: 'fetchCurrentUser',
   },
+
   created() {
     this.fetchCurrentUser()
     this.$comlink.$on('userUpdate', this.fetchCurrentUser)

@@ -33,13 +33,17 @@ export default {
   filterCargoRoutes: 'Filter Cargo routes',
   filterCommodities: 'Filter Commodities',
   fleets: {
-    add: 'Create new Fleet',
+    add: 'Create a new Fleet',
     invites: 'Fleet Invites',
     members: 'Members',
+    preview: {
+      h1: 'Fleet Preview',
+      h2: 'To create a Fleet you need to have a FleetYards.net Account',
+      h3: 'What Features does your Fleet include?',
+    },
     settings: 'Settings',
+    inviteMember: 'Invite new Member',
   },
-  fleetMembers: 'Setup Members',
-  newFleet: 'Setup Your Fleet',
   empty: "There's nothing to see here...",
   hangarGroup: {
     create: 'Create Group',

@@ -39,6 +39,7 @@ export default function getStorePlugins() {
       'fleet.fleetchartScale',
       'fleet.grouped',
       'fleet.money',
+      'fleet.preview',
     ],
   })]
 }

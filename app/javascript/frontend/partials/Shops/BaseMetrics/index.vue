@@ -32,8 +32,9 @@
           <div class="metrics-value">
             <router-link
               :to="{
-                name: 'celestialObject',
+                name: 'celestial-object',
                 params: {
+                  starsystem: shop.celestialObject.starsystem.slug,
                   slug: shop.celestialObject.slug,
                 },
               }"

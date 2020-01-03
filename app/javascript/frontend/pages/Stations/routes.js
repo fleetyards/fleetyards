@@ -11,8 +11,8 @@ export const routes = [
     name: 'starsystem',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Starsystem'),
   }, {
-    path: '/celestial-objects/:slug/',
-    name: 'celestialObject',
+    path: '/starsystems/:starsystem/celestial-objects/:slug/',
+    name: 'celestial-object',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/CelestialObject'),
   }, {
     path: '/shops/',

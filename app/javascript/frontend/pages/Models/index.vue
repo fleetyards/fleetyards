@@ -25,7 +25,7 @@
           </span>
         </Btn>
         <Btn
-          :to="{name: 'compare-models'}"
+          :to="{name: 'models-compare'}"
           size="small"
         >
           {{ $t('actions.compare.models') }}

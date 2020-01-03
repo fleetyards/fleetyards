@@ -6,7 +6,7 @@
   <li
     v-else-if="item.submenu"
     :class="{
-      active,
+      active: submenuActive,
       open: open,
       'nav-item-slim': slim,
     }"
@@ -47,7 +47,6 @@
   <li
     v-else-if="item.action"
     :class="{
-      active,
       'nav-item-slim': slim,
     }"
     class="nav-item"
@@ -66,11 +65,9 @@
     v-else-if="item.to"
     :to="item.to"
     :class="{
-      active,
       'nav-item-slim': slim,
     }"
     class="nav-item"
-    active-class="router-active"
     tag="li"
     :exact="exact"
   >
@@ -146,16 +143,21 @@ export default {
       return !!this.$slots.default
     },
 
-    active() {
-      return this.item.active || false
-    },
-
     exact() {
       return this.item.exact || false
     },
 
+    matchedRoutes() {
+      return this.$route.matched.map((route) => route.name)
+    },
+
+    alternativeRoute() {
+      return this.$route.meta.nav
+    },
+
     submenuActive() {
-      return this.item.submenu && this.item.submenu.some((item) => item.active)
+      return this.item.submenu
+        && this.item.submenu.some((item) => this.matchedRoutes.includes(item.to?.name))
     },
   },
 
@@ -171,7 +173,7 @@ export default {
 
   methods: {
     checkRoutes() {
-      this.open = this.active || this.submenuActive
+      this.open = this.submenuActive
     },
 
     toggleMenu() {
