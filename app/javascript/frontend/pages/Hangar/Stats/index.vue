@@ -17,14 +17,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <div>
-                    <i class="fa fa-rocket fa-2x" />
-                    <i class="fa fa-rocket fa-2x" />
-                  </div>
-                  <div>
-                    <i class="fa fa-rocket fa-2x" />
-                    <i class="fa fa-rocket fa-2x" />
-                  </div>
+                  <i class="fad fa-rocket fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ totalCount }}
@@ -39,7 +32,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-user fa-4x" />
+                  <i class="fad fa-user fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ minCrew }}
@@ -54,14 +47,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <div>
-                    <i class="fa fa-user fa-2x" />
-                    <i class="fa fa-user fa-2x" />
-                  </div>
-                  <div>
-                    <i class="fa fa-user fa-2x" />
-                    <i class="fa fa-user fa-2x" />
-                  </div>
+                  <i class="fad fa-users fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ maxCrew }}
@@ -76,7 +62,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-box-open fa-4x" />
+                  <i class="fad fa-box-open fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ totalCargo }}

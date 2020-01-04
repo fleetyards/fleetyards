@@ -164,8 +164,9 @@ export default {
       if (this.station.celestialObject.parent) {
         crumbs.push({
           to: {
-            name: 'celestialObject',
+            name: 'celestial-object',
             params: {
+              starsystem: this.station.celestialObject.starsystem.slug,
               slug: this.station.celestialObject.parent.slug,
             },
           },
@@ -175,8 +176,9 @@ export default {
 
       crumbs.push({
         to: {
-          name: 'celestialObject',
+          name: 'celestial-object',
           params: {
+            starsystem: this.station.celestialObject.starsystem.slug,
             slug: this.station.celestialObject.slug,
           },
           hash: `#${this.station.slug}`,
@@ -200,7 +202,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.fetch()
   },
 

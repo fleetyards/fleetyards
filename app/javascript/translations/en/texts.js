@@ -17,10 +17,8 @@ export default {
       info: 'To start select at least two and not more than eight Ships you want to compare.',
     },
   },
-  rsiVerification: {
-    instructions: 'To Verify your RSI Account please copy/paste the following text into your RSI Profile Short Bio on <a href="https://robertsspaceindustries.com/account/profile" target="_blank" rel="noopener">https://robertsspaceindustries.com/account/profile</a>:',
-    verificationText: 'https://fleetyards.net/hangar/%{username}#%{token}',
-    subline: "PS: When your Verification is done you can remove the Link from your Profile again if you don't like it.",
+  fleets: {
+    leaveInfo: 'You can not leave a Fleet as an Admin.',
   },
   hangarGuide: {
     add: 'To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.',
@@ -45,6 +43,20 @@ export default {
     fleetchart: {
       headline: 'Fleetchart and Public Hangar',
       text: 'View your Ships as a scaled topview Fleetchart and export it as an image. Export your Ships to <a href="https://starship42.com" target="_blank" rel="noopener">starship42.com</a> to view all your Ships in 3D. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar.',
+    },
+  },
+  fleetPreview: {
+    notified: {
+      headline: 'Analyze',
+      text: 'View stats of your Fleet - analyze and optimize for roles, cargo capacity etc.',
+    },
+    overview: {
+      headline: 'Overview & Manage',
+      text: 'Invite your Org Mates and get a filterable and searchable list of all public and purchased Ships. ',
+    },
+    fleetchart: {
+      headline: 'Fleetchart',
+      text: 'View your Fleet as a scaled topview Fleetchart and export it as an image.',
     },
   },
   impressum: {

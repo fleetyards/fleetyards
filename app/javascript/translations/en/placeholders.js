@@ -1,7 +1,7 @@
 export default {
   search: 'Search the Verse...',
   fleet: {
-    sid: 'Your Orgs Spectrum ID (SID) from robertsspaceindustries.com',
+    name: 'Name',
   },
   quicksearch: {
     models: 'Avenger, Carrack, Cutlass...',
@@ -34,6 +34,11 @@ export default {
       manufacturer: 'Origin, Robert Space Industries, Aegis...',
       onSale: 'Yes or No',
       productionStatus: 'Announced, Flight Ready, In Concept...',
+    },
+    fleets: {
+      members: {
+        username: 'Username',
+      },
     },
   },
 }

@@ -132,6 +132,8 @@ import CategoryRows from 'frontend/partials/Compare/Models/Categories'
 import Legend from 'frontend/partials/Compare/Models/Legend'
 
 export default {
+  name: 'ModelsCompare',
+
   components: {
     FilterGroup,
     Box,

@@ -6,41 +6,39 @@
   <li
     v-else-if="item.submenu"
     :class="{
-      active,
+      active: submenuActive,
       open: open,
       'nav-item-slim': slim,
     }"
     class="nav-item sub-menu"
   >
-    <a @click="toggleMenu">
+    <a
+      v-tooltip="tooltip"
+      @click="toggleMenu"
+    >
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
       <transition name="fade-nav">
-        <i
+        <span
           v-if="!slim"
-          class="fa fa-chevron-right"
-        />
+          class="submenu-icon"
+        >
+          <i class="fa fa-chevron-right" />
+        </span>
       </transition>
     </a>
     <b-collapse
-      :id="`${item.submenuId}-sub-menu`"
+      :id="`${item.key}-sub-menu`"
       :visible="open"
       tag="ul"
     >
       <NavItem
         v-for="(submenuItem, index) in item.submenu"
-        :key="`${item.submenuId}-${index}`"
+        :key="`${item.key}-${index}`"
         :item="submenuItem"
         :slim="slim"
       />
@@ -49,54 +47,37 @@
   <li
     v-else-if="item.action"
     :class="{
-      active,
       'nav-item-slim': slim,
     }"
     class="nav-item"
     @click="item.action"
   >
-    <a>
+    <a v-tooltip="tooltip">
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </a>
   </li>
   <router-link
     v-else-if="item.to"
     :to="item.to"
     :class="{
-      active,
       'nav-item-slim': slim,
     }"
     class="nav-item"
-    active-class="router-active"
     tag="li"
     :exact="exact"
   >
-    <a>
+    <a v-tooltip="tooltip">
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </a>
   </router-link>
   <li
@@ -108,25 +89,24 @@
   >
     <span>
       <slot v-if="hasDefaultSlot" />
-      <template v-else>
-        <i
-          v-if="item.icon"
-          v-tooltip.bottom-end="item.label"
-          :class="{
-            [item.icon]: true,
-          }"
-        />
-        <transition name="fade-nav">
-          <span v-if="!slim">{{ item.label }}</span>
-        </transition>
-      </template>
+      <NavItemInner
+        v-else
+        :item="item"
+        :slim="slim"
+      />
     </span>
   </li>
 </template>
 
 <script>
+import NavItemInner from 'frontend/partials/Navigation/NavItem/NavItemInner'
+
 export default {
   name: 'NavItem',
+
+  components: {
+    NavItemInner,
+  },
 
   props: {
     item: {
@@ -147,20 +127,37 @@ export default {
   },
 
   computed: {
-    hasDefaultSlot() {
-      return !!this.$slots.default
+    tooltip() {
+      if (!this.slim) {
+        return null
+      }
+
+      return {
+        content: this.item.label,
+        classes: 'nav-item-tooltip',
+        placement: 'right',
+      }
     },
 
-    active() {
-      return this.item.active || false
+    hasDefaultSlot() {
+      return !!this.$slots.default
     },
 
     exact() {
       return this.item.exact || false
     },
 
+    matchedRoutes() {
+      return this.$route.matched.map((route) => route.name)
+    },
+
+    alternativeRoute() {
+      return this.$route.meta.nav
+    },
+
     submenuActive() {
-      return this.item.submenu && this.item.submenu.some((item) => item.active)
+      return this.item.submenu
+        && this.item.submenu.some((item) => this.matchedRoutes.includes(item.to?.name))
     },
   },
 
@@ -176,7 +173,7 @@ export default {
 
   methods: {
     checkRoutes() {
-      this.open = this.active || this.submenuActive
+      this.open = this.submenuActive
     },
 
     toggleMenu() {

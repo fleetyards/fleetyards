@@ -21,6 +21,7 @@ export default function getStorePlugins() {
       'hangar.publicFleetchartVisible',
       'hangar.publicFleetchartScale',
       'hangar.preview',
+      'hangar.money',
       'models.detailsVisible',
       'models.filterVisible',
       'models.fleetchartVisible',
@@ -32,6 +33,13 @@ export default function getStorePlugins() {
       'compare.modelA',
       'compare.modelB',
       'search.history',
+      'fleet.detailsVisible',
+      'fleet.filterVisible',
+      'fleet.fleetchartVisible',
+      'fleet.fleetchartScale',
+      'fleet.grouped',
+      'fleet.money',
+      'fleet.preview',
     ],
   })]
 }

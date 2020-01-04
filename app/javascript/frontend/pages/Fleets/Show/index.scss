@@ -1,0 +1,22 @@
+h1 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .avatar {
+    margin-right: 20px;
+  }
+}
+
+.fleet-metrics {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  .metrics-label,
+  .metrics-value {
+    display: inline-block;
+  }
+}

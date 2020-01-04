@@ -13,7 +13,7 @@ module Api
 
       def public
         authorize! :read_public, :user
-        @user = User.find_by!(username: params[:username])
+        @user = User.find_by!(['lower(username) = :value', { value: params[:username].downcase }])
       end
 
       def update

@@ -90,6 +90,7 @@
         <Btn
           v-if="vehicle"
           :disabled="deleting"
+          inline
           @click.native="remove"
         >
           <i class="fal fa-trash" />
@@ -99,6 +100,7 @@
           :loading="submitting"
           type="submit"
           size="large"
+          inline
         >
           {{ $t('actions.save') }}
         </Btn>

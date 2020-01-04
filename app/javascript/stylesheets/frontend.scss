@@ -112,6 +112,12 @@ hr {
   }
 }
 
+.page-main-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     .main-wrapper {

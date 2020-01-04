@@ -22,6 +22,7 @@ en:
     record_not_found:
       base: No Entry found
       model: No Model found
+      fleet: No Fleet found
     reload:
       startet: "%{resource} reload startet."
       success: "%{resource} successfully reloaded."

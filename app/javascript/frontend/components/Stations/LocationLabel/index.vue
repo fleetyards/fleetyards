@@ -9,8 +9,9 @@
     <template v-else-if="suffix">
       {{ prefix }} <router-link
         :to="{
-          name: 'celestialObject',
+          name: 'celestial-object',
           params: {
+            starsystem: location.starsystem.slug,
             slug: location.slug,
           }
         }"
@@ -21,8 +22,9 @@
     <template v-else>
       {{ prefix }} <router-link
         :to="{
-          name: 'celestialObject',
+          name: 'celestial-object',
           params: {
+            starsystem: location.starsystem.slug,
             slug: location.slug,
           }
         }"

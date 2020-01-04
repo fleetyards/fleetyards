@@ -84,8 +84,9 @@
                     <PlanetPanel
                       :item="celestialObject"
                       :route="{
-                        name: 'celestialObject',
+                        name: 'celestial-object',
                         params: {
+                          starsystem: celestialObject.starsystem.slug,
                           slug: celestialObject.slug,
                         },
                       }"

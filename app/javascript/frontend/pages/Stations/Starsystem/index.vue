@@ -59,8 +59,9 @@
             <PlanetList
               :item="celestialObject"
               :route="{
-                name: 'celestialObject',
+                name: 'celestial-object',
                 params: {
+                  starsystem: celestialObject.starsystem.slug,
                   slug: celestialObject.slug,
                 },
               }"
@@ -83,8 +84,9 @@
                     <MoonPanel
                       :item="moon"
                       :route="{
-                        name: 'celestialObject',
+                        name: 'celestial-object',
                         params: {
+                          starsystem: celestialObject.starsystem.slug,
                           slug: moon.slug,
                         },
                       }"

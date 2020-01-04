@@ -89,6 +89,7 @@ nav {
     width: 300px;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0;
 
     .nav-container-inner {
@@ -109,25 +110,6 @@ nav {
       list-style: none;
       padding: 0;
       margin: 0;
-    }
-
-    .user-menu {
-      min-height: 60px;
-
-      .avatar {
-        transition: left ease $transition-base-speed;
-        position: absolute;
-        top: 10px;
-        left: 30px;
-      }
-
-      .username {
-        font-size: 20px;
-        padding-top: 6px;
-        padding-left: 50px;
-        padding-right: 20px;
-        display: block;
-      }
     }
 
     .logo-menu {
@@ -157,17 +139,6 @@ nav {
 
     &.nav-container-slim {
       width: 80px;
-
-      .user-menu {
-        > :first-child {
-          height: 60px;
-        }
-
-        .avatar {
-          left: 20px;
-          top: auto;
-        }
-      }
 
       .logo-menu {
         > :first-child {

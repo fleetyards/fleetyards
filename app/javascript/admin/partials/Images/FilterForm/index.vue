@@ -21,7 +21,7 @@
     <Btn
       :disabled="!isFilterSelected"
       block
-      @click.native="reset"
+      @click.native="resetFilter"
     >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
@@ -39,9 +39,12 @@ export default {
     FilterGroup,
     Btn,
   },
+
   mixins: [Filters],
+
   data() {
     const query = this.$route.query.q || {}
+
     return {
       loading: false,
       modelIdEq: null,
@@ -52,6 +55,7 @@ export default {
       },
     }
   },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -60,6 +64,7 @@ export default {
         galleryTypeEq: query.galleryTypeEq,
       }
     },
+
     modelIdEq(value) {
       if (value) {
         this.stationIdEq = null
@@ -70,6 +75,7 @@ export default {
         this.form.galleryTypeEq = null
       }
     },
+
     stationIdEq(value) {
       if (value) {
         this.modelIdEq = null
@@ -80,6 +86,7 @@ export default {
         this.form.galleryTypeEq = null
       }
     },
+
     form: {
       handler() {
         if (!this.form.galleryIdEq && !this.form.galleryTypeEq) {
@@ -91,6 +98,7 @@ export default {
       deep: true,
     },
   },
+
   methods: {
     fetchModels({ page, search, missingValue }) {
       const query = {
@@ -105,6 +113,7 @@ export default {
       }
       return this.$api.get('models/options', query)
     },
+
     fetchStations({ page, search, missingValue }) {
       const query = {
         q: {},

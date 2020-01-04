@@ -17,7 +17,8 @@ import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
 import EmailValidator from 'frontend/lib/validations/EmailValidator'
 import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
-import OrgValidator from 'frontend/lib/validations/OrgValidator'
+import UserValidator from 'frontend/lib/validations/UserValidator'
+import FleetValidator from 'frontend/lib/validations/FleetValidator'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
 import Helpers from 'frontend/lib/Helpers'
@@ -52,7 +53,8 @@ Vue.use(VueClipboard)
 Vue.use(VeeValidate)
 Validator.extend('emailTaken', EmailValidator)
 Validator.extend('usernameTaken', UsernameValidator)
-Validator.extend('org', OrgValidator)
+Validator.extend('user', UserValidator)
+Validator.extend('fleet', FleetValidator)
 
 Vue.use(VueScrollTo, {
   easing: 'ease-in-out',

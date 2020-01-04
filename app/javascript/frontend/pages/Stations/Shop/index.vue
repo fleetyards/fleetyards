@@ -42,14 +42,12 @@
             size="small"
             @click.native="toggleFilter"
           >
-            <i
-              v-if="isFilterSelected"
-              class="fas fa-filter"
-            />
-            <i
-              v-else
-              class="far fa-filter"
-            />
+            <span v-show="isFilterSelected">
+              <i class="fas fa-filter" />
+            </span>
+            <span v-show="!isFilterSelected">
+              <i class="far fa-filter" />
+            </span>
           </Btn>
           <template v-if="!mobile">
             <Btn
@@ -96,7 +94,7 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <Panel v-if="commodities.length && shop">
+        <Panel v-if="shop">
           <transition-group
             name="fade"
             class="flex-list"
@@ -127,6 +125,17 @@
                   class="rent-price"
                 >
                   {{ $t('labels.shop.rentPrice') }}
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="!loading && !commodities.length"
+              key="empty"
+              class="fade-list-item col-xs-12 flex-list-item"
+            >
+              <div class="flex-list-row">
+                <div class="empty">
+                  {{ $t('labels.blank.shopCommodities') }}
                 </div>
               </div>
             </div>
@@ -265,8 +274,9 @@ export default {
       if (this.shop.celestialObject.parent) {
         crumbs.push({
           to: {
-            name: 'celestialObject',
+            name: 'celestial-object',
             params: {
+              starsystem: this.shop.celestialObject.starsystem.slug,
               slug: this.shop.celestialObject.parent.slug,
             },
           },
@@ -276,8 +286,9 @@ export default {
 
       crumbs.push({
         to: {
-          name: 'celestialObject',
+          name: 'celestial-object',
           params: {
+            starsystem: this.shop.celestialObject.starsystem.slug,
             slug: this.shop.celestialObject.slug,
           },
           hash: `#${this.station.slug}`,

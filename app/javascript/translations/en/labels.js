@@ -2,6 +2,10 @@ export default {
   true: 'Yes',
   false: 'No',
   selected: 'Selected',
+  actions: 'Actions',
+  collapse: 'Collapse',
+  expand: 'Expand',
+  toggleNavigation: 'Toggle Navigation',
   or: 'or',
   deselect: 'Click to deselect',
   networkStatusOffline: 'Network Status: Offline - Service Unavailable',
@@ -100,6 +104,7 @@ export default {
   hangar: 'Hangar',
   hangarStats: 'Stats',
   hangarMetrics: {
+    total: 'Total',
     totalMoney: 'Money Value',
     totalMinCrew: 'Min. Crew',
     totalMaxCrew: 'Max. Crew',
@@ -120,13 +125,20 @@ export default {
   yourFlagship: 'Your Flagship',
   flagship: 'Flagship',
   fleet: {
-    size: 'Fleet size',
-    sid: 'Spectrum ID (SID)',
-    rpg: 'Role Play',
-    memberCount: '%{count} Members',
-    recruiting: 'Recruiting',
-    exclusive: 'Exclusive Membership',
-    members: 'Members',
+    classes: 'Fleet',
+    name: 'Name',
+    members: {
+      total: 'Total: %{count}',
+      joined: 'Joined at',
+      invited: 'Invitation sent at',
+      invitation: 'Invitation',
+      declined: 'Invitation declined',
+      roles: {
+        admin: 'Admin',
+        officer: 'Officer',
+        member: 'Member',
+      },
+    },
   },
   hangarGroup: {
     name: 'Name',
@@ -204,6 +216,8 @@ export default {
     ordnance: 'No Ordnance present',
     modular: 'No Modular present',
     avionics: 'No Avionics present',
+    fleetInvites: 'No Invites present',
+    shopCommodities: 'No Commodites available',
     userShips: 'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
   user: {
@@ -326,6 +340,11 @@ export default {
     images: {
       station: 'Station',
       model: 'Ship',
+    },
+    fleets: {
+      members: {
+        role: 'Role',
+      },
     },
   },
   station: {

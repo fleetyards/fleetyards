@@ -44,6 +44,10 @@ export default () => ({
     publicFleetchartScale(state) {
       return state.publicFleetchartScale
     },
+
+    money(state) {
+      return state.money
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -90,6 +94,10 @@ export default () => ({
 
     setPreview(state, payload) {
       state.preview = !!payload
+    },
+
+    setMoney(state, payload) {
+      state.money = payload
     },
   },
   /* eslint-enable no-param-reassign */

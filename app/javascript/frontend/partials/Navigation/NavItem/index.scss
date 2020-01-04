@@ -11,7 +11,8 @@ li.nav-item {
     font-size: 18px;
     transition: all ease $transition-base-speed;
 
-    i:not(.fa-chevron-right) {
+    i:not(.fa-chevron-right),
+    svg:not(.fa-chevron-right) {
       min-width: 30px;
       text-align: center;
     }
@@ -56,12 +57,16 @@ li.nav-item {
 
   &.sub-menu {
     > a {
-      > i.fa-chevron-right {
-        transition: all $transition-base-speed ease;
+      .submenu-icon {
         position: absolute;
         right: 20px;
         top: 50%;
-        margin-top: -7px;
+        margin-top: -10px;
+
+        i.fa-chevron-right,
+        svg.fa-chevron-right {
+          transition: all $transition-base-speed ease;
+        }
       }
     }
 
@@ -84,8 +89,13 @@ li.nav-item {
         }
       }
 
-      > a > i.fa-chevron-right {
-        transform: rotate(90deg);
+      > a {
+        .submenu-icon {
+          i.fa-chevron-right,
+          svg.fa-chevron-right {
+            transform: rotate(90deg);
+          }
+        }
       }
     }
   }

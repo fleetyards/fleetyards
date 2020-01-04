@@ -93,7 +93,7 @@ module Api
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
-        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
                  .public

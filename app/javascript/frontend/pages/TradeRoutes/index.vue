@@ -14,22 +14,18 @@
           @toggle:left="sortBy('profit')"
           @toggle:right="sortBy('percent')"
         >
-          <i
+          <span
             slot="left"
             v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
-            :class="{
-              'fa fa-dollar-sign': sortByProfit,
-              'far fa-dollar-sign': !sortByProfit,
-            }"
-          />
-          <i
+          >
+            <i class="far fa-dollar-sign" />
+          </span>
+          <span
             slot="right"
             v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
-            :class="{
-              'fa fa-percent': sortByPercent,
-              'far fa-percent': !sortByPercent,
-            }"
-          />
+          >
+            <i class="far fa-percent" />
+          </span>
         </Toggle>
       </template>
       <Paginator
@@ -135,6 +131,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { debounce } from 'debounce'
 
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
@@ -219,11 +216,11 @@ export default {
   },
 
   methods: {
-    sortBy(sort) {
+    sortBy: debounce(function debounced(sort) {
       this.sort = sort
 
       this.fetch()
-    },
+    }, 500),
 
     profit(value) {
       if (this.cargoShip) {

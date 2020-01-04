@@ -15,6 +15,11 @@ module Frontend
       render 'frontend/index'
     end
 
+    def confirm
+      @title = I18n.t('title.frontend.confirm')
+      render 'frontend/index'
+    end
+
     def password
       @title = I18n.t('title.frontend.password_change')
       render 'frontend/index'
@@ -22,16 +27,6 @@ module Frontend
 
     def commodities
       @title = I18n.t('title.frontend.commodities')
-      render 'frontend/index'
-    end
-
-    def fleet
-      @fleet = Fleet.find_by(['lower(sid) = :value', { value: params[:sid].downcase }])
-      if @fleet.present?
-        @title = @fleet.name
-        @og_type = 'article'
-        @og_image = @fleet.logo
-      end
       render 'frontend/index'
     end
 

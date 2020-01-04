@@ -25,4 +25,8 @@
     opacity: 1;
     transition: opacity ease .15s;
   }
+
+  &.nav-item-tooltip {
+    margin-left: 60px;
+  }
 }

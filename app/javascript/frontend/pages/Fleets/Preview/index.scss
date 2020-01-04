@@ -1,0 +1,31 @@
+@import '~stylesheets/variables';
+
+h2.main-headline {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: normal;
+  font-size: $font-size-h1-base;
+}
+
+h3.main-subheadline {
+  font-size: $font-size-h2-base;
+}
+
+.info-box {
+  margin-bottom: 21px;
+
+  .panel-title {
+    margin-top: 20px;
+  }
+
+  .panel-body {
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    min-height: 150px;
+
+    p {
+      font-size: 110%;
+      line-height: 2;
+    }
+  }
+}

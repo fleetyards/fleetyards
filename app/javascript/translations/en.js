@@ -156,6 +156,10 @@ export default {
     rateOfFire: '%{count} shots/min',
     rotation: '%{count} deg/s',
     cargo: '%{count} SCU',
+    ships: {
+      one: '%{count} ship',
+      other: '%{count} ships',
+    },
     people: {
       one: '%{count} person',
       other: '%{count} persons',
