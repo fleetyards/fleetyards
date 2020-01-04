@@ -30,7 +30,7 @@ Cypress.Commands.add('addToHangar', (ship) => {
 })
 
 Cypress.Commands.add('openShipModal', (ship) => {
-  cy.get(`.model-panel#${ship} [data-test="vehicle_edit"]`).click()
+  cy.get(`.model-panel#${ship} [data-test="vehicle-edit"]`).click()
 })
 
 Cypress.Commands.add('deleteShip', () => {
