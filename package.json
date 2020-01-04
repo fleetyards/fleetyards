@@ -42,7 +42,7 @@
     "core-js": "3.6.1",
     "css-loader": "3.4.0",
     "date-fns": "2.8.1",
-    "date-fns-tz": "^1.0.8",
+    "date-fns-tz": "^1.0.9",
     "debounce": "1.2.0",
     "downloadjs": "1.4.7",
     "file-loader": "4.2.0",
