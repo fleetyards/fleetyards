@@ -141,7 +141,7 @@
     <Btn
       :disabled="!isFilterSelected"
       block
-      @click.native="reset"
+      @click.native="resetFilter"
     >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}

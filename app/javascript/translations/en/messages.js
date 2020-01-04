@@ -50,7 +50,9 @@ export default {
   },
   error: {
     usernameTaken: 'Username is already taken.',
+    userNotFound: 'User not found',
     emailTaken: 'E-Mail is already taken.',
+    fleetTaken: 'Fleet is already taken.',
     accountRequired: 'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
     default: '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
@@ -58,6 +60,43 @@ export default {
     destroy: {
       success: "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
       failure: 'We could not destroy your Account! Please try again later.',
+    },
+  },
+  fleet: {
+    create: {
+      success: 'Fleet created.',
+      failure: 'Fleet could not be saved.',
+    },
+    update: {
+      success: 'Settings saved.',
+      failure: 'Settings could not be saved.',
+    },
+    destroy: {
+      success: 'Fleet deleted.',
+      failure: 'Fleet could not be deleted.',
+    },
+    leave: {
+      success: 'You have left the Fleet.',
+      failure: 'Could not leave the Fleet.',
+    },
+    invites: {
+      accept: {
+        success: 'Invite accepted.',
+        failure: 'Could not accept Invite.',
+      },
+      decline: {
+        success: 'Invite declined.',
+        failure: 'Could not decline Invite.',
+      },
+      create: {
+        failure: 'Could not invite User.',
+      },
+    },
+    members: {
+      destroy: {
+        success: 'Member removed.',
+        failure: 'Member could not be removed.',
+      },
     },
   },
   confirm: {
@@ -72,6 +111,16 @@ export default {
     },
     account: {
       destroy: "Are you sure you want to destroy your Account? This Action can't be reverted.",
+    },
+    fleet: {
+      leave: "Are you sure you want to leave the Fleet? This Action can't be reverted.",
+      destroy: "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
+      members: {
+        destroy: 'Are you sure you want to remove this Member?',
+      },
+      invites: {
+        decline: "Are you sure you want to decline this Invite? This Action can't be reverted.",
+      },
     },
   },
 }

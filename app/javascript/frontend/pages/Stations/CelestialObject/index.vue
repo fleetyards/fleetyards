@@ -50,8 +50,9 @@
             <ItemPanel
               :item="moon"
               :route="{
-                name: 'celestialObject',
+                name: 'celestial-object',
                 params: {
+                  starsystem: celestialObject.starsystem.slug,
                   slug: moon.slug,
                 },
               }"
@@ -176,8 +177,9 @@ export default {
       if (this.celestialObject.parent) {
         crumbs.push({
           to: {
-            name: 'celestialObject',
+            name: 'celestial-object',
             params: {
+              starsystem: this.celestialObject.starsystem.slug,
               slug: this.celestialObject.parent.slug,
             },
           },

@@ -143,6 +143,11 @@ en:
           assault_rifle: Assault Rifle
           weapon_scope: Scope
           utility: Utility
+      fleet_membership:
+        roles:
+          admin: Admin
+          officer: Officer
+          member: Member
       shop:
         location_prefix:
           default: 'at'

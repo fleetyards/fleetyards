@@ -76,12 +76,12 @@
           size="small"
           @click.native="toggleBackground"
         >
-          <i
-            :class="{
-              'fa fa-eye': image.background,
-              'far fa-eye-slash': !image.background,
-            }"
-          />
+          <span v-show="image.background">
+            <i class="fa fa-eye" />
+          </span>
+          <span v-show="!image.background">
+            <i class="far fa-eye-slash" />
+          </span>
         </Btn>
         <Btn
           v-tooltip="$t('labels.image.enabled')"
@@ -89,12 +89,12 @@
           size="small"
           @click.native="toggleEnabled"
         >
-          <i
-            :class="{
-              'fa fa-check-square': image.enabled,
-              'far fa-square': !image.enabled,
-            }"
-          />
+          <span v-show="image.enabled">
+            <i class="fa fa-check-square" />
+          </span>
+          <span v-show="!image.enabled">
+            <i class="far fa-square" />
+          </span>
         </Btn>
         <Btn
           v-tooltip="$t('labels.image.global')"
@@ -102,12 +102,12 @@
           size="small"
           @click.native="toggleGlobal"
         >
-          <i
-            :class="{
-              'fas fa-globe': image.global,
-              'fal fa-globe icon-disabled': !image.global,
-            }"
-          />
+          <span v-show="image.global">
+            <i class="fas fa-globe" />
+          </span>
+          <span v-show="!image.global">
+            <i class="fal fa-globe icon-disabled" />
+          </span>
         </Btn>
         <Btn
           :disabled="deleting"

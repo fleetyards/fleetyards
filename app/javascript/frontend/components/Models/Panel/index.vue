@@ -111,13 +111,12 @@
           }"
           @click="onAddons(vehicle)"
         >
-          <i
-            class="fa-plus-octagon"
-            :class="{
-              far: !hasAddons,
-              fa: hasAddons,
-            }"
-          />
+          <span v-show="hasAddons">
+            <i class="fa fa-plus-octagon" />
+          </span>
+          <span v-show="!hasAddons">
+            <i class="far fa-plus-octagon" />
+          </span>
         </div>
       </div>
       <b-collapse

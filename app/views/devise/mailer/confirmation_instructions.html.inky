@@ -7,7 +7,7 @@
 </p>
 <spacer size="16"></spacer>
 <center>
-  <button href="https://fleetyards.net/confirm/<%= @token %>">
+  <button href="<%= frontend_confirm_url(token: @token) %>">
     <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_link") %>
   </button>
 </center>

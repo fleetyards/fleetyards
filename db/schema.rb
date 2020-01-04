@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_24_220538) do
+ActiveRecord::Schema.define(version: 2019_12_30_155723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -178,23 +178,25 @@ ActiveRecord::Schema.define(version: 2019_12_24_220538) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "logo"
-    t.string "sid"
-    t.string "archetype"
-    t.string "main_activity"
-    t.string "secondary_activity"
-    t.boolean "recruiting"
-    t.string "commitment"
-    t.boolean "rpg"
-    t.boolean "exclusive"
-    t.integer "member_count"
+  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "fleet_id"
+    t.uuid "user_id"
+    t.integer "role"
+    t.datetime "accepted_at"
+    t.datetime "declined_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.hstore "rsi_members", default: [], null: false, array: true
-    t.string "banner"
-    t.string "background"
+  end
+
+  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "sid"
+    t.string "logo"
+    t.string "background_image"
+    t.uuid "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

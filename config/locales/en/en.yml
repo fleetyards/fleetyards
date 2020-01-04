@@ -37,6 +37,12 @@ en:
         headline: New changes on the Roadmap
         subject: New changes on the Roadmap
         body: There have been %{changes} changes to the Roadmap
+    fleet_membership:
+      new_invite:
+        subject: New Fleet Invite
+        headline: You have been invited to Join %{fleet}
+        body: 'To accept the invite please click on the following link:'
+        action: Join %{fleet}
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
@@ -83,6 +89,12 @@ en:
       compare_ships: Compare Ships
       settings: Settings
       stats: Stats
+      fleets: 'Fleets'
+      fleets_add: 'Create new Fleet'
+      fleets_preview: 'Fleet Preview'
+      fleets_invites: 'Fleet Invites'
+      fleet_members: '%{fleet} Members'
+      fleet_settings: '%{fleet} Settings'
       settings_account: Account
       settings_profile: Profile Settings
       settings_hangar: Hangar Settings
@@ -100,6 +112,7 @@ en:
       cookie-policy: Cookie Policy
       login: Login
       sign-up: Sign Up
+      confirm: Confirm Account
       password_request: Request Password
       password_change: Change Password
     admin: FleetYards.net Backend

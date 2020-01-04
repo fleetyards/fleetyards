@@ -1,5 +1,9 @@
 <template>
-  <section class="container roadmap">
+  <router-view v-if="isSubRoute" />
+  <section
+    v-else
+    class="container roadmap"
+  >
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
@@ -139,6 +143,10 @@ export default {
       }
 
       return this.$t('actions.hideReleased')
+    },
+
+    isSubRoute() {
+      return this.$route.name !== 'roadmap'
     },
 
     emptyBoxVisible() {

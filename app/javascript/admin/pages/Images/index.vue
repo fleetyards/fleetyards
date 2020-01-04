@@ -11,13 +11,12 @@
               size="small"
               @click.native="toggleFilter"
             >
-              <i
-                :class="{
-                  fas: isFilterSelected,
-                  far: !isFilterSelected,
-                }"
-                class="fa-filter"
-              />
+              <span v-show="isFilterSelected">
+                <i class="fas fa-filter" />
+              </span>
+              <span v-show="!isFilterSelected">
+                <i class="far fa-filter" />
+              </span>
             </Btn>
           </div>
         </div>

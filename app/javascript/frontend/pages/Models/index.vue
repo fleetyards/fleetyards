@@ -17,15 +17,15 @@
           size="small"
           @click.native="toggleDetails"
         >
-          <i
-            :class="{
-              'fa fa-chevron-up': detailsVisible,
-              'far fa-chevron-down': !detailsVisible,
-            }"
-          />
+          <span v-show="detailsVisible">
+            <i class="fa fa-chevron-up" />
+          </span>
+          <span v-show="!detailsVisible">
+            <i class="far fa-chevron-down" />
+          </span>
         </Btn>
         <Btn
-          :to="{name: 'compare-models'}"
+          :to="{name: 'models-compare'}"
           size="small"
         >
           {{ $t('actions.compare.models') }}
@@ -212,7 +212,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.fetch()
 
     if (this.$route.query.fleetchart && !this.fleetchartVisible) {

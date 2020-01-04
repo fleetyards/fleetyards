@@ -1,5 +1,7 @@
 import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import { routes as SettingsRoutes } from 'frontend/pages/Settings/routes'
+import { routes as FleetsRoutes } from 'frontend/pages/Fleets/routes'
+import { routes as RoadmapRoutes } from 'frontend/pages/Roadmap/routes'
 
 export const routes = [
   {
@@ -40,63 +42,6 @@ export const routes = [
       title: 'cookiePolicy',
     },
   }, {
-    path: '/ships/',
-    name: 'models',
-    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),
-    meta: {
-      title: 'models',
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg'),
-      quickSearch: 'searchCont',
-    },
-  }, {
-    path: '/compare/ships/',
-    name: 'compare-models',
-    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Compare/Models'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg'),
-      title: 'compare.models',
-    },
-  }, {
-    path: '/ships/:slug/',
-    name: 'model',
-    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg'),
-    },
-  }, {
-    path: '/ships/:slug/images/',
-    name: 'model-images',
-    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg'),
-    },
-  }, {
-    path: '/ships/:slug/videos/',
-    name: 'model-videos',
-    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg'),
-    },
-  }, {
-    path: '/stats/',
-    name: 'stats',
-    component: () => import(/* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats'),
-    meta: {
-      title: 'stats',
-    },
-  }, {
-    path: '/images/',
-    name: 'images',
-    component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
-    meta: {
-      title: 'images',
-    },
-  }, {
     path: '/hangar/',
     name: 'hangar',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'),
@@ -131,6 +76,73 @@ export const routes = [
     name: 'hangar-public',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'),
   }, {
+    path: '/ships/',
+    name: 'models',
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-6.jpg'),
+      title: 'models',
+      quickSearch: 'searchCont',
+    },
+  }, {
+    path: '/ships/compare/',
+    name: 'models-compare',
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Compare'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-6.jpg'),
+      title: 'compare.models',
+    },
+  }, {
+    path: '/ships/:slug/',
+    name: 'model',
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-6.jpg'),
+    },
+  }, {
+    path: '/ships/:slug/images/',
+    name: 'model-images',
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-6.jpg'),
+    },
+  }, {
+    path: '/ships/:slug/videos/',
+    name: 'model-videos',
+    component: () => import(/* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'),
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-6.jpg'),
+    },
+  }, {
+    path: '/stats/',
+    name: 'stats',
+    component: () => import(/* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats'),
+    meta: {
+      title: 'stats',
+    },
+  }, {
+    path: '/fleets/',
+    name: 'fleets',
+    component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'),
+    children: FleetsRoutes,
+    meta: {
+      // eslint-disable-next-line global-require
+      backgroundImage: require('images/bg-8.jpg'),
+      title: 'fleets',
+    },
+  }, {
+    path: '/images/',
+    name: 'images',
+    component: () => import(/* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'),
+    meta: {
+      title: 'images',
+    },
+  }, {
     path: '/stations/',
     name: 'stations',
     component: () => import(/* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations'),
@@ -151,23 +163,10 @@ export const routes = [
   }, {
     path: '/roadmap/',
     name: 'roadmap',
+    children: RoadmapRoutes,
     component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap'),
     meta: {
       title: 'roadmap.index',
-    },
-  }, {
-    path: '/roadmap/changes/',
-    name: 'roadmap-changes',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Changes'),
-    meta: {
-      title: 'roadmap.changes',
-    },
-  }, {
-    path: '/roadmap/ships/',
-    name: 'roadmap-ships',
-    component: () => import(/* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/Ships'),
-    meta: {
-      title: 'roadmap.ships',
     },
   }, {
     path: '/settings/',

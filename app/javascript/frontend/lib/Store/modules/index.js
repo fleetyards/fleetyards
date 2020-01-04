@@ -1,5 +1,6 @@
 import app from 'frontend/lib/Store/modules/app'
 import session from 'frontend/lib/Store/modules/session'
+import fleet from 'frontend/lib/Store/modules/fleet'
 import hangar from 'frontend/lib/Store/modules/hangar'
 import models from 'frontend/lib/Store/modules/models'
 import stations from 'frontend/lib/Store/modules/stations'
@@ -12,6 +13,7 @@ import search from 'frontend/lib/Store/modules/search'
 export default () => ({
   app: app(),
   session: session(),
+  fleet: fleet(),
   hangar: hangar(),
   models: models(),
   stations: stations(),

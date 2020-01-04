@@ -164,7 +164,7 @@
     <Btn
       :disabled="!isFilterSelected"
       block
-      @click.native="reset"
+      @click.native="resetFilter"
     >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
@@ -180,6 +180,8 @@ import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
+  name: 'VehiclesFilterForm',
+
   components: {
     RadioList,
     FilterGroup,
