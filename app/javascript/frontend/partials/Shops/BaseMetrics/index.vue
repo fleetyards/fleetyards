@@ -29,22 +29,36 @@
           <div class="metrics-label">
             {{ $t('shop.celestialObject') }}:
           </div>
-          <div
-            v-tooltip="shop.celestialObject.name"
-            class="metrics-value"
-          >
-            {{ shop.celestialObject.name }}
+          <div class="metrics-value">
+            <router-link
+              :to="{
+                name: 'celestial-object',
+                params: {
+                  starsystem: shop.celestialObject.starsystem.slug,
+                  slug: shop.celestialObject.slug,
+                },
+              }"
+            >
+              {{ shop.celestialObject.name }}
+            </router-link>
           </div>
         </div>
         <div class="col-xs-6">
           <div class="metrics-label">
             {{ $t('shop.station') }}:
           </div>
-          <div
-            v-tooltip="shop.station.name"
-            class="metrics-value"
-          >
-            {{ shop.station.name }}
+          <div class="metrics-value">
+            <router-link
+              :to="{
+                name: 'station',
+                params: {
+                  slug: shop.station.slug,
+                },
+                hash: `#${shop.slug}`,
+              }"
+            >
+              {{ shop.station.name }}
+            </router-link>
           </div>
         </div>
       </div>

@@ -1,0 +1,51 @@
+@import '~stylesheets/variables';
+
+.nav-item-inner {
+  position: relative;
+  white-space: nowrap;
+  height: 24px;
+  transition: height ease $transition-base-speed;
+
+  .nav-item-image {
+    max-width: 24px;
+    vertical-align: top;
+    margin-left: 3px;
+    margin-right: 3px;
+    transition: max-width ease $transition-base-speed, margin ease $transition-base-speed;
+  }
+
+  .nav-item-image-empty {
+    width: 24px;
+    height: 24px;
+    left: 3px;
+    position: absolute;
+    background-color: $gray-darker;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 70%;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .nav-item-text {
+    margin-left: 34px;
+  }
+
+  &.nav-item-inner-slim {
+    height: 30px;
+
+    .nav-item-image {
+      max-width: 30px;
+      vertical-align: top;
+      margin: 0;
+    }
+
+    .nav-item-image-empty {
+      width: 30px;
+      height: 30px;
+      left: 0;
+    }
+  }
+}

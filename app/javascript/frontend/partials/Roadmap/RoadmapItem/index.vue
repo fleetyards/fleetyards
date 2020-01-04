@@ -18,7 +18,7 @@
             :to="{
               name: 'model',
               params: {
-                slug: item.model.slug
+                slug: item.model.slug,
               }
             }"
           >
@@ -31,7 +31,7 @@
             v-tooltip="$t('labels.roadmap.lastUpdate')"
             class="pull-right"
           >
-            {{ item.lastVersionChangedAtDisplay }}
+            {{ item.lastVersionChangedAtLabel }}
             <i class="far fa-clock" />
           </small>
         </h3>

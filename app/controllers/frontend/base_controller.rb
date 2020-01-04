@@ -15,6 +15,11 @@ module Frontend
       render 'frontend/index'
     end
 
+    def confirm
+      @title = I18n.t('title.frontend.confirm')
+      render 'frontend/index'
+    end
+
     def password
       @title = I18n.t('title.frontend.password_change')
       render 'frontend/index'
@@ -22,16 +27,6 @@ module Frontend
 
     def commodities
       @title = I18n.t('title.frontend.commodities')
-      render 'frontend/index'
-    end
-
-    def fleet
-      @fleet = Fleet.find_by(['lower(sid) = :value', { value: params[:sid].downcase }])
-      if @fleet.present?
-        @title = @fleet.name
-        @og_type = 'article'
-        @og_image = @fleet.logo
-      end
       render 'frontend/index'
     end
 
@@ -154,10 +149,13 @@ module Frontend
     end
 
     private def compare_image(models)
+      return models.first.store_image.url if models.size == 1
+      return if models.blank?
+
       filename_base = models.map(&:slug).join('-')
       filename = "#{filename_base}.jpg"
       path = Rails.root.join('public', 'compare', filename)
-      return "https://api.fleetyards.net/compare/#{filename}" if File.exist?(path)
+      return "https://fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|
         image = MiniMagick::Image.open(model.store_image.to_s)
@@ -192,7 +190,7 @@ module Frontend
         FileUtils.rm(Rails.root.join('tmp', model.slug))
       end
 
-      "https://api.fleetyards.net/compare/#{filename}"
+      "https://fleetyards.net/compare/#{filename}"
     end
 
     private def compare_params

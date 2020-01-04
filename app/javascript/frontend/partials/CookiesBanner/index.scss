@@ -1,0 +1,22 @@
+@import '~stylesheets/variables';
+
+.cookies-banner {
+  background-color: rgba($gray-darker, .95);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  p {
+    padding: 10px;
+    padding-right: 60px;
+    margin: 0;
+  }
+
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

@@ -10,7 +10,7 @@ json.cache! ['v1', item] do
     end
   end
   json.last_version_changed_at item.last_version_changed_at(roadmap_query_params[:last_updated_at_lt]).iso8601
-  json.last_version_changed_at_display I18n.l(item.last_version_changed_at(roadmap_query_params[:last_updated_at_lt]).utc, format: :display)
+  json.last_version_changed_at_label I18n.l(item.last_version_changed_at(roadmap_query_params[:last_updated_at_lt]).utc, format: :label)
   json.last_version do
     if item.last_version(roadmap_query_params[:last_updated_at_lt]).nil?
       json.null!

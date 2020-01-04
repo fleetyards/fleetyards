@@ -4,13 +4,6 @@
       name="fade-list"
       appear
     >
-      <h3
-        v-if="countData.total > 0"
-        key="all"
-        class="label-title fade-list-item"
-      >
-        {{ allLabel }}: {{ countData.total }}
-      </h3>
       <a
         v-for="classification in countData.classifications"
         :key="classification.name"

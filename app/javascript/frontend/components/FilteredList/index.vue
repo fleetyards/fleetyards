@@ -5,19 +5,19 @@
         <div class="col-xs-12 col-md-6">
           <div class="page-actions page-actions-left">
             <Btn
+              v-if="!hideFilter"
               v-tooltip="filterTooltip"
               :active="filterVisible"
               :aria-label="filterTooltip"
               size="small"
               @click.native="toggleFilter"
             >
-              <i
-                :class="{
-                  fas: isFilterSelected,
-                  far: !isFilterSelected,
-                }"
-                class="fa-filter"
-              />
+              <span v-show="isFilterSelected">
+                <i class="fas fa-filter" />
+              </span>
+              <span v-show="!isFilterSelected">
+                <i class="far fa-filter" />
+              </span>
             </Btn>
             <slot name="actions" />
           </div>
@@ -37,7 +37,10 @@
             v-if="filterVisible"
             class="col-xs-12 col-md-3 col-xlg-2"
           >
-            <slot name="filter" />
+            <slot
+              v-if="!hideFilter"
+              name="filter"
+            />
           </div>
         </transition>
         <div
@@ -67,6 +70,13 @@ export default {
     Btn,
   },
 
+  props: {
+    hideFilter: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   data() {
     return {
       fullscreen: false,
@@ -80,7 +90,7 @@ export default {
     ]),
 
     filterVisible() {
-      return !!this.filtersVisible[this.$route.name]
+      return !!this.filtersVisible[this.$route.name] && !this.hideFilter
     },
 
     filterTooltip() {

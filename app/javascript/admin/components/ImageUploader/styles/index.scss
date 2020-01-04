@@ -14,7 +14,8 @@
   justify-content: center;
   cursor: pointer;
 
-  i.fal {
+  i.fal,
+  svg.fal {
     color: darken($text-color, 30%);
     margin: 10px 0;
   }
@@ -30,7 +31,8 @@
 
 .panel-success {
   .dropzone {
-    i.fal {
+    i.fal,
+    svg.fal {
       color: white;
     }
 

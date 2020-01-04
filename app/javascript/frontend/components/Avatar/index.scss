@@ -40,7 +40,8 @@
     justify-content: center;
     transition: color .5s ease;
 
-    i {
+    i,
+    svg {
       margin-right: 10px;
     }
   }
@@ -71,5 +72,10 @@
         color: white;
       }
     }
+  }
+
+  &.avatar-transparent {
+    background-color: transparent;
+    box-shadow: none;
   }
 }

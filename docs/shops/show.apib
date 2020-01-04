@@ -1,0 +1,40 @@
+## Shop [/v1/stations/{station_slug}/shops/{slug}]
+
+### GET Detail [GET]
+Get Detail of a Shop referenced by its Slug and its Station Slug
+
++ Parameters
+
+    + station_slug: `port-olisar` (required, string) - The Station Slug
+    + slug: `dumpers-depot` (required, string) - The Shop Slug
+
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+    
+            {
+                "name": "Casaba Outlet",
+                "slug": "casaba-outlet",
+                "type": "clothing",
+                "typeLabel": "Clothing Store",
+                "rental": false,
+                "buying": false,
+                "selling": true,
+                "storeImage": "http://api.fleetyards.test/uploads/shop/store_image/8e4ea426-f6ac-4f06-b069-6ca6b336ec84/casaba_portolisar.jpg",
+                "station": {
+                    "name": "Port Olisar",
+                    "slug": "port-olisar"
+                },
+                "celestialObject": {
+                    "name": "Crusader",
+                    "slug": "crusader"
+                },
+                "createdAt": "2018-10-26T20:19:21+02:00",
+                "updatedAt": "2018-10-28T14:26:08+01:00"
+            }

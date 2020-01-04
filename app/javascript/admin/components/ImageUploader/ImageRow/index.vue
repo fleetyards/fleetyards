@@ -76,12 +76,12 @@
           size="small"
           @click.native="toggleBackground"
         >
-          <i
-            :class="{
-              'fa fa-eye': image.background,
-              'far fa-eye-slash': !image.background,
-            }"
-          />
+          <span v-show="image.background">
+            <i class="fa fa-eye" />
+          </span>
+          <span v-show="!image.background">
+            <i class="far fa-eye-slash" />
+          </span>
         </Btn>
         <Btn
           v-tooltip="$t('labels.image.enabled')"
@@ -89,12 +89,25 @@
           size="small"
           @click.native="toggleEnabled"
         >
-          <i
-            :class="{
-              'fa fa-check-square': image.enabled,
-              'far fa-square': !image.enabled,
-            }"
-          />
+          <span v-show="image.enabled">
+            <i class="fa fa-check-square" />
+          </span>
+          <span v-show="!image.enabled">
+            <i class="far fa-square" />
+          </span>
+        </Btn>
+        <Btn
+          v-tooltip="$t('labels.image.global')"
+          :disabled="updating"
+          size="small"
+          @click.native="toggleGlobal"
+        >
+          <span v-show="image.global">
+            <i class="fas fa-globe" />
+          </span>
+          <span v-show="!image.global">
+            <i class="fal fa-globe icon-disabled" />
+          </span>
         </Btn>
         <Btn
           :disabled="deleting"
@@ -166,6 +179,19 @@ export default {
         this.image.enabled = !this.image.enabled
       }
     },
+    async toggleGlobal() {
+      this.updating = true
+      this.image.global = !this.image.global
+      const response = await this.$api.put(`images/${this.image.id}`, {
+        global: this.image.global,
+      })
+
+      this.updating = false
+
+      if (response.error) {
+        this.image.global = !this.image.global
+      }
+    },
     async toggleBackground() {
       this.updating = true
       this.image.background = !this.image.background
@@ -193,5 +219,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'styles/index.scss';
+  @import 'index';
 </style>

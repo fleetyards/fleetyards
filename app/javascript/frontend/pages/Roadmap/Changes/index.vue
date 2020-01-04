@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-3">
+      <div class="col-xs-12 col-md-6">
         <FilterGroup
           v-model="selectedWeek"
           :label="$t('labels.roadmap.selectWeek')"
@@ -18,6 +18,13 @@
           :nullable="false"
           @input="fetch"
         />
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="page-actions">
+          <Btn href="https://robertsspaceindustries.com/roadmap">
+            {{ $t('labels.rsiRoadmap') }}
+          </Btn>
+        </div>
       </div>
     </div>
     <hr class="dark">
@@ -65,6 +72,7 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
@@ -74,6 +82,7 @@ export default {
   name: 'RoadmapChanges',
 
   components: {
+    Btn,
     Loader,
     FilterGroup,
     EmptyBox,

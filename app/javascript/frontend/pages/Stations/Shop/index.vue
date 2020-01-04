@@ -2,17 +2,9 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="shop">
-          <router-link
-            :to="backRoute"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ shop.name }}
-          <small>
-            {{ shop.station.name }}
-          </small>
         </h1>
       </div>
     </div>
@@ -50,14 +42,12 @@
             size="small"
             @click.native="toggleFilter"
           >
-            <i
-              v-if="isFilterSelected"
-              class="fas fa-filter"
-            />
-            <i
-              v-else
-              class="far fa-filter"
-            />
+            <span v-show="isFilterSelected">
+              <i class="fas fa-filter" />
+            </span>
+            <span v-show="!isFilterSelected">
+              <i class="far fa-filter" />
+            </span>
           </Btn>
           <template v-if="!mobile">
             <Btn
@@ -104,7 +94,7 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <Panel v-if="commodities.length && shop">
+        <Panel v-if="shop">
           <transition-group
             name="fade"
             class="flex-list"
@@ -135,6 +125,17 @@
                   class="rent-price"
                 >
                   {{ $t('labels.shop.rentPrice') }}
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="!loading && !commodities.length"
+              key="empty"
+              class="fade-list-item col-xs-12 flex-list-item"
+            >
+              <div class="flex-list-row">
+                <div class="empty">
+                  {{ $t('labels.blank.shopCommodities') }}
                 </div>
               </div>
             </div>
@@ -182,6 +183,7 @@ import FilterForm from 'frontend/partials/Shops/ShopItemFilterForm'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/components/Btn'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -192,6 +194,7 @@ export default {
     ShopItemRow,
     FilterForm,
     Btn,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -213,12 +216,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      'previousRoute',
       'mobile',
     ]),
 
     ...mapGetters('shop', [
-      'backRoute',
       'filterVisible',
     ]),
 
@@ -243,15 +244,75 @@ export default {
 
       return this.$route.query.q.subCategoryIn
     },
+
+    station() {
+      return this.shop.station
+    },
+
+    crumbs() {
+      if (!this.shop) {
+        return null
+      }
+
+      const crumbs = [{
+        to: {
+          name: 'starsystems',
+          hash: `#${this.shop.celestialObject.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }, {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.shop.celestialObject.starsystem.slug,
+          },
+          hash: `#${this.shop.celestialObject.slug}`,
+        },
+        label: this.shop.celestialObject.starsystem.name,
+      }]
+
+      if (this.shop.celestialObject.parent) {
+        crumbs.push({
+          to: {
+            name: 'celestial-object',
+            params: {
+              starsystem: this.shop.celestialObject.starsystem.slug,
+              slug: this.shop.celestialObject.parent.slug,
+            },
+          },
+          label: this.shop.celestialObject.parent.name,
+        })
+      }
+
+      crumbs.push({
+        to: {
+          name: 'celestial-object',
+          params: {
+            starsystem: this.shop.celestialObject.starsystem.slug,
+            slug: this.shop.celestialObject.slug,
+          },
+          hash: `#${this.station.slug}`,
+        },
+        label: this.shop.celestialObject.name,
+      })
+
+      crumbs.push({
+        to: {
+          name: 'station',
+          params: {
+            slug: this.station.slug,
+          },
+        },
+        label: this.station.name,
+      })
+
+      return crumbs
+    },
   },
 
   watch: {
     $route() {
       this.fetchCommodities()
-    },
-
-    shop() {
-      this.setBackRoute()
     },
   },
 
@@ -266,26 +327,6 @@ export default {
   },
 
   methods: {
-    setBackRoute() {
-      if (this.shopBackRoute && this.previousRoute
-        && ['model'].includes(this.previousRoute.name)) {
-        return
-      }
-
-      const route = {
-        name: 'shops',
-        hash: `#${this.shop.station.slug}-${this.shop.slug}`,
-      }
-
-      if (this.previousRoute && ['shops', 'station', 'celestialObject', 'search'].includes(this.previousRoute.name)) {
-        route.name = this.previousRoute.name
-        route.params = this.previousRoute.params
-        route.query = this.previousRoute.query
-      }
-
-      this.$store.commit('shop/setBackRoute', route)
-    },
-
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },

@@ -4,13 +4,8 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs :crumbs="crumbs" />
             <h1>
-              <router-link
-                :to="{ name: 'model', param: { slug: $route.params.slug }}"
-                class="back-button"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
               {{ metaTitle }}
             </h1>
           </div>
@@ -63,10 +58,12 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {
     Loader,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -91,6 +88,23 @@ export default {
       return this.$t('title.modelVideos', {
         name: this.model.name,
       })
+    },
+
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'models',
+          hash: `#${this.model.slug}`,
+        },
+        label: this.$t('nav.models'),
+      }, {
+        to: { name: 'model', param: { slug: this.$route.params.slug } },
+        label: this.model.name,
+      }]
     },
   },
 

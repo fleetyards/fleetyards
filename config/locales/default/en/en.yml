@@ -219,7 +219,7 @@ en:
     am: am
     formats:
       default: ! '%a, %d %b %Y %H:%M:%S %z'
-      display: ! '%e. %B %Y at %H:%M %Z'
+      label: ! '%e. %B %Y at %H:%M %Z'
       long: ! '%B %d, %Y %H:%M'
       short: ! '%d %b %H:%M'
     pm: pm

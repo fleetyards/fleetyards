@@ -7,6 +7,7 @@ import ApiClient from 'frontend/lib/ApiClient'
 import I18n from 'frontend/lib/I18n'
 import Noty from 'frontend/lib/Noty'
 import 'frontend/lib/LazyLoad'
+import 'frontend/lib/Bootstrap'
 
 Vue.use(ApiClient)
 Vue.use(I18n)
@@ -38,6 +39,7 @@ setTimeout(() => {
     store,
     data: {
       ships: config.ships || [],
+      users: config.users || [],
       groupedButton: config.groupedButton || false,
       fleetchartSlider: config.fleetchartSlider || false,
       frontendEndpoint: window.FRONTEND_ENDPOINT,
@@ -47,6 +49,13 @@ setTimeout(() => {
         const fleetview = (this.$children || [])[0]
         if (fleetview) {
           fleetview.updateShips(ships)
+        }
+      },
+
+      updateUsers(users) {
+        const fleetview = (this.$children || [])[0]
+        if (fleetview) {
+          fleetview.updateUsers(users)
         }
       },
     },

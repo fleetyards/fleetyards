@@ -2,13 +2,8 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="station">
-          <router-link
-            :to="backRoute"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ station.name }}
         </h1>
       </div>
@@ -107,7 +102,7 @@ import ShopPanel from 'frontend/partials/Stations/Panel'
 import StationBaseMetrics from 'frontend/partials/Stations/BaseMetrics'
 import StationDocks from 'frontend/partials/Stations/Docks'
 import StationHabitations from 'frontend/partials/Stations/Habitations'
-import { mapGetters } from 'vuex'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   name: 'Station',
@@ -120,6 +115,7 @@ export default {
     StationBaseMetrics,
     StationDocks,
     StationHabitations,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -135,20 +131,62 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'previousRoute',
-    ]),
-
-    ...mapGetters('stations', [
-      'backRoute',
-    ]),
-
     metaTitle() {
       if (!this.station) {
         return null
       }
 
       return this.$t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
+    },
+
+    crumbs() {
+      if (!this.station) {
+        return null
+      }
+
+      const crumbs = [{
+        to: {
+          name: 'starsystems',
+          hash: `#${this.station.celestialObject.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }, {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.station.celestialObject.starsystem.slug,
+          },
+          hash: `#${this.station.celestialObject.slug}`,
+        },
+        label: this.station.celestialObject.starsystem.name,
+      }]
+
+      if (this.station.celestialObject.parent) {
+        crumbs.push({
+          to: {
+            name: 'celestial-object',
+            params: {
+              starsystem: this.station.celestialObject.starsystem.slug,
+              slug: this.station.celestialObject.parent.slug,
+            },
+          },
+          label: this.station.celestialObject.parent.name,
+        })
+      }
+
+      crumbs.push({
+        to: {
+          name: 'celestial-object',
+          params: {
+            starsystem: this.station.celestialObject.starsystem.slug,
+            slug: this.station.celestialObject.slug,
+          },
+          hash: `#${this.station.slug}`,
+        },
+        label: this.station.celestialObject.name,
+      })
+
+      return crumbs
     },
   },
 
@@ -158,38 +196,24 @@ export default {
     },
 
     station() {
-      this.setBackRoute()
-
       if (this.station.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.station.backgroundImage)
       }
     },
   },
 
-  created() {
+  mounted() {
     this.fetch()
   },
 
   methods: {
-    setBackRoute() {
-      const route = {
-        name: 'stations',
-        hash: `#${this.station.slug}`,
-      }
-
-      if (this.previousRoute && ['stations', 'celestialObject'].includes(this.previousRoute.name)) {
-        route.name = this.previousRoute.name
-        route.params = this.previousRoute.params
-        route.query = this.previousRoute.query
-      }
-
-      this.$store.commit('stations/setBackRoute', route)
-    },
-
     async fetch() {
       this.loading = true
+
       const response = await this.$api.get(`stations/${this.$route.params.slug}`)
+
       this.loading = false
+
       if (!response.error) {
         this.station = response.data
       }

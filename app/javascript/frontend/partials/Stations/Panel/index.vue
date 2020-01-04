@@ -30,15 +30,18 @@ export default {
   components: {
     Panel,
   },
+
   props: {
     item: {
       type: Object,
       required: true,
     },
+
     route: {
       type: Object,
       required: true,
     },
+
     id: {
       type: String,
       default: null,

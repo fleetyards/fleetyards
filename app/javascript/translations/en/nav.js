@@ -11,11 +11,19 @@ export default {
   cookiePolicy: 'Cookie policy',
   impressum: 'Impressum',
   admin: 'Admin',
-  fleets: 'Fleets',
+  fleets: {
+    index: 'Fleets',
+    add: 'Create a new Fleet',
+    invites: 'Invites',
+    members: 'Members',
+    settings: 'Settings',
+  },
   rsiProfile: 'RSI Profile',
   tradeRoutes: 'Trade Routes',
   api: 'API Docs',
   stats: 'Stats',
+  toggleSlimCollapse: 'Collapse',
+  toggleSlimExpand: 'Expand',
   roadmap: {
     index: 'Roadmap',
     overview: 'Overview',
@@ -30,6 +38,7 @@ export default {
     hangar: 'Hangar',
     verify: 'RSI Account Verification',
   },
+  starsystems: 'Starsystems',
   stations: {
     index: 'Stations',
     overview: 'Overview',

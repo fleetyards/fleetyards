@@ -4,13 +4,8 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs :crumbs="crumbs" />
             <h1>
-              <router-link
-                :to="{ name: 'station', param: { slug: $route.params.slug }}"
-                class="back-button"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
               {{ metaTitle }}
             </h1>
           </div>
@@ -69,10 +64,12 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
 import GalleryHelpers from 'frontend/mixins/GalleryHelpers'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {
     Loader,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -96,6 +93,66 @@ export default {
       }
 
       return this.$t('title.stationImages', { station: this.station.name, celestialObject: this.station.celestialObject.name })
+    },
+
+    crumbs() {
+      if (!this.station) {
+        return null
+      }
+
+      const crumbs = [{
+        to: {
+          name: 'starsystems',
+          hash: `#${this.station.celestialObject.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }, {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.station.celestialObject.starsystem.slug,
+          },
+          hash: `#${this.station.celestialObject.slug}`,
+        },
+        label: this.station.celestialObject.starsystem.name,
+      }]
+
+      if (this.station.celestialObject.parent) {
+        crumbs.push({
+          to: {
+            name: 'celestial-object',
+            params: {
+              starsystem: this.station.celestialObject.starsystem.slug,
+              slug: this.station.celestialObject.parent.slug,
+            },
+          },
+          label: this.station.celestialObject.parent.name,
+        })
+      }
+
+      crumbs.push({
+        to: {
+          name: 'celestial-object',
+          params: {
+            starsystem: this.station.celestialObject.starsystem.slug,
+            slug: this.station.celestialObject.slug,
+          },
+          hash: `#${this.station.slug}`,
+        },
+        label: this.station.celestialObject.name,
+      })
+
+      crumbs.push({
+        to: {
+          name: 'station',
+          params: {
+            slug: this.station.slug,
+          },
+        },
+        label: this.station.name,
+      })
+
+      return crumbs
     },
   },
 

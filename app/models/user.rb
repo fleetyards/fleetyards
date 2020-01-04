@@ -21,6 +21,10 @@ class User < ApplicationRecord
            through: :public_vehicles,
            source: :model,
            inverse_of: false
+  has_many :fleet_memberships,
+           dependent: :destroy
+  has_many :fleets,
+           through: :fleet_memberships
 
   validates :username,
             uniqueness: { case_sensitive: false },

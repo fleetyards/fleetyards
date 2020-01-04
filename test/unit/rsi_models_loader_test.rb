@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'rsi_models_loader'
+require 'rsi/models_loader'
 
 class RsiModelsLoaderTest < ActiveSupport::TestCase
-  let(:loader) { RsiModelsLoader.new }
+  let(:loader) { ::RSI::ModelsLoader.new }
 
   before do
     Timecop.freeze('2017-01-01 14:00:00')

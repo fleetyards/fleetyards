@@ -143,6 +143,11 @@ en:
           assault_rifle: Assault Rifle
           weapon_scope: Scope
           utility: Utility
+      fleet_membership:
+        roles:
+          admin: Admin
+          officer: Officer
+          member: Member
       shop:
         location_prefix:
           default: 'at'
@@ -182,6 +187,7 @@ en:
           rest_stop: Rest Stop
           cargo-station: Cargo Station
           mining-station: Mining Station
+          mining-hub: Mining Hub
           asteroid-station: Asteriod Station
           refinery: Refinery
           district: District

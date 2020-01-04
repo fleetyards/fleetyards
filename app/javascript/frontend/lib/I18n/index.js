@@ -15,9 +15,11 @@ const methods = {
   t(key, options) {
     return I18n.t(key, options)
   },
+
   l(value, dateFormat = 'datetime.formats.default') {
     return format(parseISO(value), I18n.t(dateFormat))
   },
+
   toNumber(value, units) {
     let count = I18n.l('number', value)
     if (units === 'weight') {
@@ -34,12 +36,14 @@ const methods = {
     }
     return I18n.t(`number.${units}`, { count })
   },
+
   toDollar(value) {
     return I18n.toCurrency(value, {
       precision: 2,
       unit: '$',
     })
   },
+
   toAu(value) {
     if (!value) {
       return '-'
@@ -50,6 +54,7 @@ const methods = {
       format: '%n %u',
     })
   },
+
   toUEC(value, unit) {
     if (!unit) {
       // eslint-disable-next-line no-param-reassign

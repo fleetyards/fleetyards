@@ -1,0 +1,16 @@
+@import '~stylesheets/variables';
+
+.network-status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px 6px;
+  color: white;
+  z-index: 2000;
+  text-transform: uppercase;
+  background-color: $danger;
+}

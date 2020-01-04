@@ -17,7 +17,12 @@
           <small v-html="model.manufacturer.name" />
         </h2>
       </div>
-      <div class="panel-image text-center">
+      <div
+        :class="{
+          'no-details': !details,
+        }"
+        class="panel-image text-center"
+      >
         <LazyImage
           :href="url"
           target="_blank"
@@ -26,32 +31,32 @@
           :src="model.storeImageMedium"
           :alt="model.name"
           class="image"
-        >
-          <div
-            v-show="model.onSale"
-            v-tooltip="$t('labels.model.onSale')"
-            class="on-sale"
-          >
-            <i class="fal fa-dollar-sign" />$
-          </div>
-        </LazyImage>
+        />
       </div>
-      <div
-        v-if="details"
-        class="production-status"
+      <b-collapse
+        :id="`details-${model.slug}-${uuid}-wrapper`"
+        :visible="details"
       >
-        <strong class="text-uppercase">
-          <template v-if="model.productionStatus">
-            {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
-          </template>
-          <template v-else>
-            {{ $t(`labels.not-available`) }}
-          </template>
-        </strong>
-      </div>
-      <ModelTopMetrics :model="model" />
-      <hr>
-      <ModelBaseMetrics :model="model" />
+        <div class="production-status">
+          <strong class="text-uppercase">
+            <template v-if="model.productionStatus">
+              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
+            </template>
+            <template v-else>
+              {{ $t(`labels.not-available`) }}
+            </template>
+          </strong>
+        </div>
+        <ModelTopMetrics
+          :model="model"
+          padding
+        />
+        <hr class="dark slim-spacer">
+        <ModelBaseMetrics
+          :model="model"
+          padding
+        />
+      </b-collapse>
     </Panel>
   </div>
 </template>
@@ -88,6 +93,10 @@ export default {
   },
 
   computed: {
+    uuid() {
+      return this._uid
+    },
+
     url() {
       return `${window.FRONTEND_ENDPOINT}/ships/${this.model.slug}`
     },

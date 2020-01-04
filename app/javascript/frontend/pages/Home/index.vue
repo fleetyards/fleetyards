@@ -25,7 +25,7 @@
                           data-test="home-search"
                           :placeholder="$t('placeholders.search')"
                           size="large"
-                          autofocus
+                          :autofocus="!mobile"
                         />
                         <Btn
                           id="search-submit"
@@ -151,6 +151,7 @@ import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Support from 'frontend/partials/Support'
 import LazyImage from 'frontend/components/LazyImage'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -178,7 +179,13 @@ export default {
     }
   },
 
-  created () {
+  computed: {
+    ...mapGetters([
+      'mobile',
+    ]),
+  },
+
+  created() {
     this.fetchImages()
     this.fetchModels()
 

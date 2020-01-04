@@ -72,7 +72,9 @@
     width: 300px;
   }
 
-  .manufacturer {
+  .manufacturer,
+  .username,
+  .fleet-name {
     flex-grow: 1;
   }
 
@@ -131,6 +133,12 @@
     }
   }
 
+  .empty {
+    flex-grow: 1;
+    text-align: center;
+    color: darken($text-color, 20%);
+  }
+
   .price,
   .size,
   .rent-price {
@@ -156,7 +164,18 @@
     padding-left: 20px;
   }
 
-  .rent-price {
+  .joined,
+  .role {
+    text-align: right;
+  }
+
+  > .avatar {
+    min-width: 70px;
+  }
+
+  .rent-price,
+  .role,
+  .joined {
     min-width: 250px;
   }
 }
@@ -189,6 +208,14 @@
     & > div {
       padding: 10px;
       color: darken($text-color, 20%);
+
+      &:last-child {
+        padding-right: 20px;
+      }
+
+      &:first-child {
+        padding-left: 20px;
+      }
     }
   }
 
@@ -244,6 +271,20 @@
 
     .store-image {
       padding-left: 20px;
+    }
+  }
+
+  .flex-list-users > .flex-list-item > .flex-list-row {
+    align-items: center;
+
+    & > div {
+      &:first-child,
+      &:last-child {
+        &::before {
+          height: 30px;
+          margin-top: -15px;
+        }
+      }
     }
   }
 }

@@ -1,0 +1,116 @@
+@import '~stylesheets/variables';
+
+li.nav-item {
+  > a,
+  > span {
+    color: darken($text-color, 10%);
+    position: relative;
+    display: block;
+    padding: 10px 15px 10px 30px;
+    white-space: nowrap;
+    font-size: 18px;
+    transition: all ease $transition-base-speed;
+
+    i:not(.fa-chevron-right),
+    svg:not(.fa-chevron-right) {
+      min-width: 30px;
+      text-align: center;
+    }
+
+    &::after {
+      transition: all ease $transition-base-speed;
+      opacity: 1;
+    }
+  }
+
+  > a {
+    cursor: pointer;
+  }
+
+  &:hover > a {
+    color: lighten($text-color, 10%);
+  }
+
+  &.active > a {
+    color: lighten($text-color, 20%);
+
+    &::after {
+      width: 3px;
+      height: 80%;
+      content: '';
+      position: absolute;
+      top: 10%;
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+      left: 0;
+      background: $primary;
+      box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
+    }
+  }
+
+  &.divider {
+    padding: 0;
+    margin: 5px 15px 5px;
+    height: 1px;
+    background-color: $gray-darker;
+  }
+
+  &.sub-menu {
+    > a {
+      .submenu-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        margin-top: -10px;
+
+        i.fa-chevron-right,
+        svg.fa-chevron-right {
+          transition: all $transition-base-speed ease;
+        }
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      margin-bottom: 10px;
+
+      > li > a {
+        padding-left: 40px;
+        font-size: 16px;
+      }
+    }
+
+    &.open {
+      &.active > a {
+        &::after {
+          opacity: 0;
+        }
+      }
+
+      > a {
+        .submenu-icon {
+          i.fa-chevron-right,
+          svg.fa-chevron-right {
+            transform: rotate(90deg);
+          }
+        }
+      }
+    }
+  }
+
+  &.nav-item-slim {
+    > a {
+      padding: 10px 10px 10px 25px;
+      font-size: 24px;
+    }
+
+    &.sub-menu {
+      ul > li > a {
+        padding-left: 25px;
+        font-size: 20px;
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rsi_roadmap_loader'
+require 'rsi/roadmap_loader'
 
 class RoadmapWorker
   include Sidekiq::Worker
@@ -9,7 +9,7 @@ class RoadmapWorker
   def perform
     count_before = PaperTrail::Version.where(item_type: 'RoadmapItem').count
 
-    RsiRoadmapLoader.new.fetch
+    ::RSI::RoadmapLoader.new.fetch
 
     changes = PaperTrail::Version.where(item_type: 'RoadmapItem').count - count_before
 

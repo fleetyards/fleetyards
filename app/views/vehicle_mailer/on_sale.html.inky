@@ -3,7 +3,7 @@
 </h4>
 <p>
   <%= I18n.t('mailer.vehicle.on_sale.headline.part_one') %>
-  <a href="https://fleetyards.net/ships/#{@vehicle.model.slug}" target="_blank">
+  <a href="<%= frontend_url(slug: @vehicle.model.slug) %>" target="_blank">
     <%= @vehicle.model.name %>
   </a>
   <%= I18n.t('mailer.vehicle.on_sale.headline.part_two') %>

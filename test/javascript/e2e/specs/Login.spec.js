@@ -15,9 +15,8 @@ describe('Login', () => {
 
       cy.location('pathname').should('eq', '/')
 
-      cy.get('.nav-toggle').click()
       cy.contains('.username', userData.test.username).click()
-      cy.clickNav('Logout', false)
+      cy.clickNav('Logout')
 
       cy.contains('nav a', 'Login').should('exist')
 

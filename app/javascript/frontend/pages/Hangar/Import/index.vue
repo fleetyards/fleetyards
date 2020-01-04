@@ -2,15 +2,10 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs
+          :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
+        />
         <h1>
-          <router-link
-            :to="{
-              name: 'hangar'
-            }"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ $t('headlines.hangar.import') }}
         </h1>
       </div>
@@ -89,12 +84,14 @@ import Panel from 'frontend/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import LazyImage from 'frontend/components/LazyImage'
 import EmptyBox from 'frontend/partials/EmptyBox'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {
     Panel,
     LazyImage,
     EmptyBox,
+    BreadCrumbs,
   },
 
   mixins: [

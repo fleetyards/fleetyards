@@ -44,7 +44,7 @@ const addTrailingSlashToAllRoutes = (routes) => [].concat(...routes.map((route) 
 const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
-  linkExactActiveClass: 'active',
+  linkExactActiveClass: 'active-exact',
 
   scrollBehavior: (to, _from, savedPosition) => new Promise((resolve) => {
     setTimeout(() => {
@@ -108,24 +108,6 @@ router.beforeEach((to, from, next) => {
   }
 
   next()
-})
-
-router.afterEach((to, from) => {
-  if (from.name && to.name !== from.name) {
-    Store.commit('setPreviousRoute', {
-      name: from.name,
-      params: from.params,
-      query: from.query,
-      hash: from.hash,
-    })
-
-    Store.commit('setLastRoute', {
-      name: to.name,
-      params: to.params,
-      query: to.query,
-      hash: to.hash,
-    })
-  }
 })
 
 export default router

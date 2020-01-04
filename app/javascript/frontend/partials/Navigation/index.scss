@@ -1,12 +1,11 @@
 @import '~stylesheets/variables';
 
 nav {
-  transition: left ease .5s, right ease .5s;
-  position: absolute;
+  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
+  position: relative;
   z-index: 1000;
-  top: 0;
-  left: 0;
-  right: 0;
+  width: 300px;
+  height: 100%;
 
   .environment-label {
     position: fixed;
@@ -23,7 +22,7 @@ nav {
   }
 
   .nav-toggle {
-    transition: left ease .5s;
+    transition: left ease $transition-base-speed;
     position: absolute;
     left: 0;
     top: 0;
@@ -83,29 +82,21 @@ nav {
   }
 
   .nav-container {
-    transition: left ease .5s;
+    transition: left ease $transition-base-speed, width ease $transition-base-speed;
     position: fixed;
     background-color: rgba($gray-darker, .5);
     border-right: 1px solid rgba(30, 34, 38, .5);
     width: 300px;
-    top: 0;
-    bottom: 0;
-    left: -300px;
-    right: auto;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0;
 
-    .logo {
-      width: 80%;
-      position: absolute;
-      left: 10%;
-      bottom: 20px;
-      opacity: .5;
-    }
-
     .nav-container-inner {
+      padding-bottom: 150px;
+      position: relative;
+      min-height: 100%;
+
       > :first-child {
         padding-top: 20px;
       }
@@ -115,140 +106,68 @@ nav {
       }
     }
 
-    .update {
-      text-align: center;
-      margin: 0 15px 0 30px;
-    }
-
     ul {
       list-style: none;
       padding: 0;
       margin: 0;
-
-      li {
-        > a {
-          cursor: pointer;
-          color: darken($text-color, 10%);
-          position: relative;
-          display: block;
-          padding: 10px 15px 10px 30px;
-          transition: all ease $transition-base-speed;
-
-          &::after {
-            transition: all ease $transition-base-speed;
-            opacity: 1;
-          }
-
-          &.reload {
-            color: $warning;
-            font-weight: bold;
-            text-align: center;
-          }
-        }
-
-        &.divider {
-          padding: 0;
-          margin: 5px 15px 5px;
-          height: 1px;
-          background-color: $gray-darker;
-        }
-
-        &:hover > a {
-          color: lighten($text-color, 10%);
-        }
-
-        &.active > a {
-          color: lighten($text-color, 20%);
-
-          &::after {
-            width: 3px;
-            height: 80%;
-            content: '';
-            position: absolute;
-            top: 10%;
-            border-top-right-radius: 2px;
-            border-bottom-right-radius: 2px;
-            left: 0;
-            background: $primary;
-            box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
-          }
-        }
-      }
     }
 
-    .sub-menu {
-      > a {
-        > i {
-          transition: all .5s ease;
-          position: absolute;
-          right: 20px;
-          top: 50%;
-          margin-top: -7px;
-        }
-      }
-
-      ul > li > a {
-        padding-left: 40px;
-      }
-
-      &.open {
-        &.active > a {
-          &::after {
-            opacity: 0;
-          }
-        }
-
-        > a > i {
-          transform: rotate(90deg);
-        }
-      }
-    }
-
-    .user-menu {
+    .logo-menu {
       min-height: 60px;
 
-      .avatar {
+      .logo {
+        width: 40px;
         position: absolute;
+        transition: left ease $transition-base-speed;
         top: 10px;
         left: 30px;
       }
 
-      .username {
-        font-size: 20px;
+      span {
         padding-top: 6px;
         padding-left: 50px;
         padding-right: 20px;
         display: block;
+        font-family: 'Orbitron', sans-serif;
+      }
+    }
+
+    .nav-bottom {
+      position: absolute;
+      bottom: 0;
+    }
+
+    &.nav-container-slim {
+      width: 80px;
+
+      .logo-menu {
+        > :first-child {
+          min-height: 60px;
+        }
+
+        .logo {
+          left: 20px;
+          top: auto;
+        }
       }
     }
   }
-}
 
-.nav-visible {
-  left: 300px;
-  right: -300px;
+  .quick-search-bar {
+    position: absolute;
+    top: 15px;
+    left: 315px;
+    width: 600px;
+    transition: left ease .5s, right ease .5s;
+  }
 
-  nav {
-    .nav-toggle {
-      left: 300px;
-    }
+  &.nav-slim {
+    width: 80px;
 
-    .nav-container {
-      left: 0;
-    }
-
-    .environment-label {
-      right: -280px;
+    .quick-search-bar {
+      left: 95px;
     }
   }
-}
-
-.quick-search-bar {
-  position: absolute;
-  top: 15px;
-  left: 70px;
-  width: 600px;
-  transition: left ease .5s, right ease .5s;
 }
 
 .nav-visible .quick-search-bar {
@@ -258,12 +177,23 @@ nav {
 @media (max-width: $desktop-breakpoint) {
   nav {
     margin-top: env(safe-area-inset-top);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
 
     .nav-container {
       padding-top: env(safe-area-inset-top);
       padding-left: env(safe-area-inset-left);
+      position: fixed;
       width: 300px;
+      height: 100vh;
+      top: 0;
+      right: auto;
+      bottom: 0;
       left: -300px;
+      max-height: 100vh;
 
       .nav-container-inner {
         > :first-child {
@@ -274,26 +204,41 @@ nav {
           padding-bottom: 10px;
         }
       }
-
-      .logo {
-        bottom: 10px;
-      }
     }
 
     .nav-toggle {
       margin-left: env(safe-area-inset-left);
       padding-left: 24px;
+      position: absolute;
+    }
+
+    .quick-search-bar {
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+      width: auto;
+      right: 15px;
+      left: 70px;
     }
   }
 
-  .quick-search-bar {
-    padding-right: env(safe-area-inset-right);
-    padding-left: env(safe-area-inset-left);
-    width: auto;
-    right: 15px;
-  }
-
   .nav-visible {
+    left: 300px;
+    right: -300px;
+
+    nav {
+      .nav-toggle {
+        left: 300px;
+      }
+
+      .nav-container {
+        left: 0;
+      }
+
+      .environment-label {
+        right: -280px;
+      }
+    }
+
     .quick-search-bar {
       left: 370px;
       right: -285px;
@@ -317,11 +262,11 @@ nav {
       .nav-toggle {
         left: 250px;
       }
-    }
 
-    .quick-search-bar {
-      left: 250px;
-      right: -285px;
+      .quick-search-bar {
+        left: 250px;
+        right: -285px;
+      }
     }
   }
 }

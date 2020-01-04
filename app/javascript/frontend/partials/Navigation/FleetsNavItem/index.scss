@@ -1,0 +1,46 @@
+@import '~stylesheets/variables';
+
+.fleets-nav-item-icon {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  display: inline-block;
+  transition: height ease $transition-base-speed;
+
+  :first-child,
+  :last-child {
+    position: absolute;
+    min-width: 0;
+    width: 10px;
+    font-size: 12px;
+    transition: width ease $transition-base-speed, left ease $transition-base-speed, right ease $transition-base-speed, font-size ease $transition-base-speed;
+  }
+
+  :first-child {
+    top: 0;
+    left: 3px;
+  }
+
+  :last-child {
+    bottom: -6px;
+    right: 7px;
+  }
+
+  &.fleets-nav-item-icon-slim {
+    height: 24px;
+
+    :first-child,
+    :last-child {
+      width: 14px;
+      font-size: 16px;
+    }
+
+    :first-child {
+      left: 0px;
+    }
+
+    :last-child {
+      right: 4px;
+    }
+  }
+}

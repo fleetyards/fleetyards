@@ -1,15 +1,8 @@
 import { apiClient } from 'frontend/lib/ApiClient'
 
-const CHECK_VERSION_INTERVAL = 60 * 1000 // 60s
-
 export default {
   reset({ commit }) {
     commit('reset')
-  },
-
-  async init({ commit, dispatch }) {
-    await dispatch('checkVersion')
-    commit('setCheckVersionIntervalHandle', setInterval(() => { dispatch('checkVersion') }, CHECK_VERSION_INTERVAL))
   },
 
   async fetch({ commit }) {
@@ -45,5 +38,9 @@ export default {
 
   togglePublicFleetchart({ commit, state }) {
     commit('setPublicFleetchartVisible', !state.publicFleetchartVisible)
+  },
+
+  toggleMoney({ commit, state }) {
+    commit('setMoney', !state.money)
   },
 }

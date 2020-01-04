@@ -2,7 +2,9 @@ describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
     cy.visit('/')
 
-    cy.clickNav('Sign up')
+    cy.clickNav('Login')
+
+    cy.select('signup-link').click()
 
     cy.url().should('include', '/sign-up')
 
@@ -26,7 +28,6 @@ describe('Signup', () => {
 
       cy.location('pathname').should('eq', '/')
 
-      cy.get('.nav-toggle').click()
       cy.contains('.username', userData.new.username).click()
       cy.clickNav('Settings', false)
 
@@ -47,7 +48,6 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
-      cy.get('.nav-toggle').click()
       cy.get('nav a').contains('nav a', 'Login').should('exist')
     })
   })

@@ -2,13 +2,8 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="starsystem">
-          <router-link
-            :to="{name: 'starsystems'}"
-            class="back-button"
-          >
-            <i class="fal fa-chevron-left" />
-          </router-link>
           {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
         </h1>
       </div>
@@ -64,8 +59,9 @@
             <PlanetList
               :item="celestialObject"
               :route="{
-                name: 'celestialObject',
+                name: 'celestial-object',
                 params: {
+                  starsystem: celestialObject.starsystem.slug,
                   slug: celestialObject.slug,
                 },
               }"
@@ -88,8 +84,9 @@
                     <MoonPanel
                       :item="moon"
                       :route="{
-                        name: 'celestialObject',
+                        name: 'celestial-object',
                         params: {
+                          starsystem: celestialObject.starsystem.slug,
                           slug: moon.slug,
                         },
                       }"
@@ -129,6 +126,7 @@ import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
 import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
 import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   name: 'Starsystem',
@@ -140,6 +138,7 @@ export default {
     StarsystemBaseMetrics,
     StarsystemLevelsMetrics,
     Panel,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -169,6 +168,20 @@ export default {
         return null
       }
       return this.$t('title.starsystem', { starsystem: this.starsystem.name })
+    },
+
+    crumbs() {
+      if (!this.starsystem) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'starsystems',
+          hash: `#${this.starsystem.slug}`,
+        },
+        label: this.$t('nav.starsystems'),
+      }]
     },
   },
 

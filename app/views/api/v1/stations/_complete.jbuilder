@@ -2,9 +2,6 @@
 
 json.cache! ['v1', station] do
   json.partial! 'api/v1/stations/base', station: station
-  json.celestial_object do
-    json.partial! 'api/v1/celestial_objects/base', celestial_object: station.celestial_object
-  end
   json.starsystem do
     json.partial! 'api/v1/starsystems/base', starsystem: station.starsystem
   end

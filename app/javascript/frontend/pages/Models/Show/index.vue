@@ -7,14 +7,8 @@
       >
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs :crumbs="crumbs" />
             <h1>
-              <router-link
-                v-if="backRoute"
-                :to="backRoute"
-                class="back-button"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
               {{ model.name }}
               <small class="manufacturer">
                 <span class="manufacturer-prefix">
@@ -32,38 +26,41 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-8">
-            <div class="image-wrapper">
+            <div
+              :class="{
+                'image-wrapper-holoviewer': holoviewerVisible,
+              }"
+              class="image-wrapper"
+            >
               <Btn
-                :active="show3d"
+                :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
-                @click.native="toggle3d"
+                @click.native="toggleHoloviewer"
               >
                 {{ $t('labels.3dView') }}
               </Btn>
-              <Btn
-                v-if="show3d"
-                :active="color3d"
-                class="toggle-3d-color"
-                size="small"
-                @click.native="toggle3dColor"
+              <a
+                v-show="holoviewerVisible"
+                :href="starship42Url"
+                class="starship42-link"
+                target="_blank"
+                rel="noopener"
               >
-                {{ $t('labels.3dColor') }}
-              </Btn>
-              <div
-                v-if="show3d"
-                class="embed-responsive embed-responsive-16by9"
-              >
-                <iframe
-                  :src="starship42Url"
-                  class="embed-responsive-item"
-                  frameborder="0"
-                />
-              </div>
+                {{ $t('labels.poweredByStarship42') }}
+              </a>
+              <iframe
+                v-if="holoviewerVisible"
+                class="holoviewer"
+                :src="starship42IframeUrl"
+                frameborder="0"
+              />
               <img
-                v-else
                 v-lazy="model.storeImage"
                 class="image"
+                :class="{
+                  'image-hidden': holoviewerVisible,
+                }"
                 alt="model image"
               >
             </div>
@@ -260,7 +257,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
@@ -272,6 +268,7 @@ import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -286,6 +283,7 @@ export default {
     ModelCrewMetrics,
     ModelSpeedMetrics,
     ModelPanel,
+    BreadCrumbs,
   },
 
   mixins: [
@@ -299,7 +297,6 @@ export default {
       loadingModules: false,
       loadingUpgrades: false,
       show3d: false,
-      color3d: false,
       model: null,
       variants: [],
       modules: [],
@@ -311,25 +308,20 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'previousRoute',
-    ]),
-
     ...mapGetters('app', [
       'overlayVisible',
     ]),
 
     ...mapGetters('models', [
-      'backRoute',
+      'holoviewerVisible',
     ]),
 
     starship42Url() {
-      const data = { source: 'FleetYards', type: 'matrix', s: this.model.rsiName }
-      if (this.color3d) {
-        data.style = 'colored'
-      }
-      const startship42Params = qs.stringify(data)
-      return `https://starship42.com/fleetview/single?${startship42Params}`
+      return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
+    },
+
+    starship42IframeUrl() {
+      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
     },
 
     erkulUrl() {
@@ -344,10 +336,25 @@ export default {
       if (!this.model) {
         return null
       }
+
       return this.$t('title.model', {
         name: this.model.name,
         manufacturer: this.model.manufacturer.name,
       })
+    },
+
+    crumbs() {
+      if (!this.model) {
+        return null
+      }
+
+      return [{
+        to: {
+          name: 'models',
+          hash: `#${this.model.slug}`,
+        },
+        label: this.$t('nav.models'),
+      }]
     },
   },
 
@@ -364,8 +371,6 @@ export default {
         return
       }
 
-      this.setBackRoute()
-
       if (this.model.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       }
@@ -376,33 +381,15 @@ export default {
     this.fetch()
   },
 
+  mounted() {
+    if (this.$route.query.holoviewer) {
+      this.$store.dispatch('models/enableHoloviewer')
+    }
+  },
+
   methods: {
-    setBackRoute() {
-      if (this.backRoute && this.previousRoute
-        && ['model-images', 'model-videos'].includes(this.previousRoute.name)) {
-        return
-      }
-
-      const route = {
-        name: 'models',
-        hash: `#${this.model.slug}`,
-      }
-
-      if (this.previousRoute && ['models', 'fleet', 'hangar', 'shop', 'search'].includes(this.previousRoute.name)) {
-        route.name = this.previousRoute.name
-        route.params = this.previousRoute.params
-        route.query = this.previousRoute.query
-      }
-
-      this.$store.commit('models/setBackRoute', route)
-    },
-
-    toggle3d() {
-      this.show3d = !this.show3d
-    },
-
-    toggle3dColor() {
-      this.color3d = !this.color3d
+    toggleHoloviewer() {
+      this.$store.dispatch('models/toggleHoloviewer')
     },
 
     async fetch() {

@@ -5,8 +5,8 @@ module Api
     class VehiclesController < ::Api::V1::BaseController
       include ChartHelper
 
-      skip_authorization_check only: %i[public public_quick_stats public_fleetchart]
-      before_action :authenticate_api_user!, except: %i[public public_quick_stats public_fleetchart]
+      skip_authorization_check only: %i[public public_quick_stats public_fleetchart embed]
+      before_action :authenticate_api_user!, except: %i[public public_quick_stats public_fleetchart embed]
       after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index
@@ -93,7 +93,7 @@ module Api
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
-        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
+        vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
                  .public
@@ -137,6 +137,25 @@ module Api
             )
           end
         )
+      end
+
+      def embed
+        usernames = params.fetch(:usernames, []).map(&:downcase)
+        user_ids = User.where('lower(username) IN (?)', usernames)
+                       .where(public_hangar: true)
+                       .pluck(:id)
+
+        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
+
+        @q = Vehicle.where(user_id: user_ids)
+                    .public
+                    .ransack(vehicle_query_params)
+
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
+
+        render 'api/v1/vehicles/public'
       end
 
       def hangar_items
@@ -298,7 +317,7 @@ module Api
 
       private def vehicle_query_params
         @vehicle_query_params ||= query_params(
-          :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq,
+          :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq, :public_eq,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
           :pledge_price_lteq,
           manufacturer_in: [], classification_in: [], focus_in: [],

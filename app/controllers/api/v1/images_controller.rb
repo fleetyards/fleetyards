@@ -9,6 +9,7 @@ module Api
       def index
         authorize! :index, :api_images
         @images = Image.enabled
+                       .global_enabled
                        .in_gallery
                        .with_uniq_name
                        .order('images.created_at desc')
@@ -19,6 +20,7 @@ module Api
       def random
         authorize! :index, :api_images
         @images = Image.enabled
+                       .global_enabled
                        .in_gallery
                        .with_uniq_name
                        .order(Arel.sql('RANDOM()'))

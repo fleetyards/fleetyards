@@ -7,7 +7,7 @@ humboldt_mines = Station.find_or_initialize_by(name: 'Humboldt Mines')
 humboldt_mines.update!(
   celestial_object: lyria,
   station_type: :outpost,
-  location: 'Lyria',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/humboldt.jpg').open,
   hidden: false
 )
@@ -25,7 +25,7 @@ shubin_sal_5 = Station.find_or_initialize_by(name: 'Schubin Mining Facility SAL-
 shubin_sal_5.update!(
   celestial_object: lyria,
   station_type: :outpost,
-  location: 'Lyria',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_5.jpg').open,
   hidden: false
 )
@@ -61,7 +61,7 @@ shubin_sal_2 = Station.find_or_initialize_by(name: 'Schubin Mining Facility SAL-
 shubin_sal_2.update!(
   celestial_object: lyria,
   station_type: :outpost,
-  location: 'Lyria',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2.jpg').open,
   hidden: false
 )
@@ -97,7 +97,7 @@ loveridge = Station.find_or_initialize_by(name: 'Loveridge Mineral Reserve')
 loveridge.update!(
   celestial_object: lyria,
   station_type: :outpost,
-  location: 'Lyria',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/loveridge.jpg').open,
   hidden: false
 )
@@ -113,7 +113,7 @@ paradise = Station.find_or_initialize_by(name: 'Paradise Cove')
 paradise.update!(
   celestial_object: lyria,
   station_type: :drug_lab,
-  location: 'Lyria',
+  location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/paradise.jpg').open,
   hidden: true
 )
@@ -128,7 +128,7 @@ orphanage = Station.find_or_initialize_by(name: 'The Orphanage')
 orphanage.update!(
   celestial_object: lyria,
   station_type: :drug_lab,
-  location: 'Lyria',
+  location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/orphanage.jpg').open,
   hidden: true
 )

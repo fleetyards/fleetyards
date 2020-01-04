@@ -11,6 +11,7 @@
   z-index: 1050;
   overflow-y: auto;
   outline: 0;
+  align-items: center;
 
   .modal-dialog {
     transition: transform ease $transition-base-speed ease-out;
@@ -54,7 +55,7 @@
   }
 
   &.show {
-    display: block !important;
+    display: flex !important;
   }
 
   &.fade {
@@ -84,9 +85,12 @@
 
 @media (max-width: $tablet-breakpoint) {
   .modal {
+    align-items: flex-end;
+
     .modal-dialog {
       width: 100%;
       margin: 0;
+      margin-top: env(safe-area-inset-top);
 
       .modal-content {
         border-width: 1px 0 0;
@@ -102,7 +106,7 @@
 
       &.in {
         .modal-dialog {
-          transform: translate(0, 5%);
+          transform: translate(0, -20px);
         }
       }
     }

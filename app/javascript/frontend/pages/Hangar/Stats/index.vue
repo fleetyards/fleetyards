@@ -4,13 +4,10 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
+            <BreadCrumbs
+              :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
+            />
             <h1>
-              <router-link
-                :to="{ name: 'hangar' }"
-                class="back-button"
-              >
-                <i class="fal fa-chevron-left" />
-              </router-link>
               {{ $t('headlines.hangar.stats') }}
             </h1>
           </div>
@@ -20,14 +17,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <div>
-                    <i class="fa fa-rocket fa-2x" />
-                    <i class="fa fa-rocket fa-2x" />
-                  </div>
-                  <div>
-                    <i class="fa fa-rocket fa-2x" />
-                    <i class="fa fa-rocket fa-2x" />
-                  </div>
+                  <i class="fad fa-rocket fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ totalCount }}
@@ -42,7 +32,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-user fa-4x" />
+                  <i class="fad fa-user fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ minCrew }}
@@ -57,14 +47,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <div>
-                    <i class="fa fa-user fa-2x" />
-                    <i class="fa fa-user fa-2x" />
-                  </div>
-                  <div>
-                    <i class="fa fa-user fa-2x" />
-                    <i class="fa fa-user fa-2x" />
-                  </div>
+                  <i class="fad fa-users fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ maxCrew }}
@@ -79,7 +62,7 @@
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
-                  <i class="fa fa-box-open fa-4x" />
+                  <i class="fad fa-box-open fa-4x" />
                 </div>
                 <div class="panel-box-text">
                   {{ totalCargo }}
@@ -164,6 +147,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Chart from 'frontend/components/Chart'
 import Panel from 'frontend/components/Panel'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   name: 'Stats',
@@ -171,6 +155,7 @@ export default {
   components: {
     Chart,
     Panel,
+    BreadCrumbs,
   },
 
   mixins: [

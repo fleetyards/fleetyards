@@ -1,0 +1,17 @@
+## Public Hangar [/v1/vehicles/{username}]
+
++ Parameters
+
+    + username: `torlekmaru` (required, string) - The FleetYards.net Username
+
+### GET Public Vehicles [GET]
+Get all public Vehicles by username
+
+The Response is idenntical to the Private Vehicles Response ```/v1/vehicles``` but only purchased Ships are returned.
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json; charset=utf-8)

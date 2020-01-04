@@ -21,8 +21,8 @@ export default () => ({
       return state.fleetchartScale
     },
 
-    backRoute(state) {
-      return state.backRoute
+    holoviewerVisible(state) {
+      return state.holoviewerVisible
     },
   },
 
@@ -44,8 +44,8 @@ export default () => ({
       state.fleetchartScale = payload
     },
 
-    setBackRoute(state, payload) {
-      state.backRoute = payload
+    setHoloviewerVisible(state, payload) {
+      state.holoviewerVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

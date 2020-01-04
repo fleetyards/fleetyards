@@ -2,6 +2,113 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.48.0](https://github.com/fleetyards/app/compare/v3.47.0...v3.48.0) (2019-12-29)
+
+
+### Features
+
+* **navigation:** linting ([240fc9a](https://github.com/fleetyards/app/commit/240fc9a4a1e0bc38afd0507023dd2bdaa4e83384))
+* **navigation:** new fixed navbar ([c129099](https://github.com/fleetyards/app/commit/c129099946a3c2b5d24d94cf33487d3a5ccbbee2))
+* **navigation:** update e2e ([00437ef](https://github.com/fleetyards/app/commit/00437ef09032d73e4f5b342272d1d3183a3d5725))
+* **navigation:** update e2e ([852cf42](https://github.com/fleetyards/app/commit/852cf4257167493d70c1272edaa75f777c8b3f32))
+* **navigation:** update e2e ([2007884](https://github.com/fleetyards/app/commit/200788410041326309b4bdd85f8bffa0d7af8f0e))
+* **navigation:** update e2e ([53debbe](https://github.com/fleetyards/app/commit/53debbe20c85220b0cb30f1c359001113daae818))
+* **navigation:** update e2e ([10b9e4a](https://github.com/fleetyards/app/commit/10b9e4a9e68fa04fe5922e4c33554299d9c75f47))
+* **navigation:** update hangar icons ([1651ad3](https://github.com/fleetyards/app/commit/1651ad33936fdc1c64a29233a35133840d5445e5))
+
+## [3.47.0](https://github.com/fleetyards/app/compare/v3.46.5...v3.47.0) (2019-12-28)
+
+
+### Features
+
+* **embed:** add option to use usernames for fleetview ([58618b7](https://github.com/fleetyards/app/commit/58618b7864cc93808822a93913fc6d2953676a7e))
+* **embed:** remove on sale sign ([9ec3c51](https://github.com/fleetyards/app/commit/9ec3c51245c448322e1c930b8c33d14b60e4692f))
+
+### [3.46.5](https://github.com/fleetyards/app/compare/v3.46.4...v3.46.5) (2019-12-27)
+
+
+### Bug Fixes
+
+* **home:** update autofocus on mobile ([a062ddc](https://github.com/fleetyards/app/commit/a062ddcbeba3f1a2ced7f92d4ecb8b864e6f1f9c))
+* **no-scroll:** update height ([49c0b19](https://github.com/fleetyards/app/commit/49c0b195beb692f71044aab93cf252b4ff4c3689))
+* **no-scroll:** update metrics ([5349aad](https://github.com/fleetyards/app/commit/5349aad5aa4a3ac7905f881b35a043ad0b7b4b20))
+
+### [3.46.4](https://github.com/fleetyards/app/compare/v3.46.3...v3.46.4) (2019-12-25)
+
+
+### Bug Fixes
+
+* **no-scroll:** update css for mobile ([1af3320](https://github.com/fleetyards/app/commit/1af3320b3b326fb246d77d0b4f98eea11ae1863c))
+* **no-scroll:** update mobile ([c3c899c](https://github.com/fleetyards/app/commit/c3c899c8e35c1b1a796f989b0e6fc86e26d94480))
+
+### [3.46.3](https://github.com/fleetyards/app/compare/v3.46.2...v3.46.3) (2019-12-24)
+
+### [3.46.2](https://github.com/fleetyards/app/compare/v3.46.1...v3.46.2) (2019-12-24)
+
+### [3.46.1](https://github.com/fleetyards/app/compare/v3.46.0...v3.46.1) (2019-12-24)
+
+
+### Bug Fixes
+
+* **holoviewer:** update iframe url ([d96eafa](https://github.com/fleetyards/app/commit/d96eafaf1881931f8b56d01103a3d53f6b064ebc))
+
+## [3.46.0](https://github.com/fleetyards/app/compare/v3.45.0...v3.46.0) (2019-12-24)
+
+
+### Features
+
+* **holoviewer:** update size on mobile ([2457f03](https://github.com/fleetyards/app/commit/2457f034f7a18c8178bbbcabd4b070b28acf464d))
+
+## [3.45.0](https://github.com/fleetyards/app/compare/v3.44.2...v3.45.0) (2019-12-24)
+
+
+### Features
+
+* **3dview:** add new holoviewer from starship42 ([b25431f](https://github.com/fleetyards/app/commit/b25431f284632e0429aec6f227f6c8400472b2c2))
+* **3dview:** update starship42 link ([7d4fc6b](https://github.com/fleetyards/app/commit/7d4fc6b54c69d82ea148e7ddc576197225c9096e))
+* **breadcrumbs:** add crumbs to compare page ([1ccba1c](https://github.com/fleetyards/app/commit/1ccba1c30e0bcbb3d1fc7b6ccc89e8f493b3a080))
+* **holoviewer:** update mobile size ([d3f0b3e](https://github.com/fleetyards/app/commit/d3f0b3ea313c6c7ac01ccc553ffcedc1f5d4d174))
+* **holoviewer:** update size ([63de855](https://github.com/fleetyards/app/commit/63de8558bce8b2eafe694446f6ca63e4dc965e9b))
+* **holoviewer:** update size ([d9f2d7e](https://github.com/fleetyards/app/commit/d9f2d7e1a6c7fbb0b757495ea399869389a217d4))
+* **holoviewer:** update z-index ([34da30f](https://github.com/fleetyards/app/commit/34da30fac0e26b1ff3749e219d113e5950e39492))
+
+### [3.44.2](https://github.com/fleetyards/app/compare/v3.44.1...v3.44.2) (2019-12-23)
+
+
+### Refactorings
+
+* **breadcrumbs:** update crumbs ([4e2b0e7](https://github.com/fleetyards/app/commit/4e2b0e7911ffe435affdc386c8e2568c9b6dca7b))
+
+### [3.44.1](https://github.com/fleetyards/app/compare/v3.44.0...v3.44.1) (2019-12-23)
+
+
+### Bug Fixes
+
+* missing import ans breadcrumb ([1888813](https://github.com/fleetyards/app/commit/1888813bbed6c654d6757ea4108769e6f10dca7b))
+
+## [3.44.0](https://github.com/fleetyards/app/compare/v3.43.1...v3.44.0) (2019-12-23)
+
+
+### Features
+
+* **breadcrumbs:** add breadcrumbs to all required pages ([158abea](https://github.com/fleetyards/app/commit/158abea20c825a0fe0b2ce24d6bef6e8f6d64baf))
+
+
+### Bug Fixes
+
+* specs ([07bbe0d](https://github.com/fleetyards/app/commit/07bbe0d63c5b2c57193fc8bb25edf4b857802790))
+
+### [3.43.1](https://github.com/fleetyards/app/compare/v3.43.0...v3.43.1) (2019-12-21)
+
+## [3.43.0](https://github.com/fleetyards/app/compare/v3.42.4...v3.43.0) (2019-12-21)
+
+
+### Features
+
+* **hangar:** add filter for public ([3fc4060](https://github.com/fleetyards/app/commit/3fc4060da1a81fa734cf8c6e2cc49cf8d8189bf5))
+
+### [3.42.4](https://github.com/fleetyards/app/compare/v3.42.3...v3.42.4) (2019-12-21)
+
 ### [3.42.3](https://github.com/fleetyards/app/compare/v3.42.2...v3.42.3) (2019-12-18)
 
 ### [3.42.2](https://github.com/fleetyards/app/compare/v3.42.1...v3.42.2) (2019-12-16)

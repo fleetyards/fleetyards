@@ -4,7 +4,7 @@ describe('Stations', () => {
 
     cy.clickNav('Stations')
 
-    cy.get('#stations-sub-menu a').contains('Overview').click()
+    cy.get('#stations-sub-menu').contains('Overview').click()
 
     cy.url().should('include', '/stations')
 

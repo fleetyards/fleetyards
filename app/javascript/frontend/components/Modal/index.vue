@@ -75,6 +75,7 @@ export default {
   methods: {
     open() {
       this.isShow = true
+      this.$store.commit('app/showOverlay')
 
       this.$nextTick(function onOpen() {
         this.isOpen = true
@@ -85,6 +86,7 @@ export default {
 
     close() {
       this.isOpen = false
+      this.$store.commit('app/hideOverlay')
 
       this.$nextTick(function onClose() {
         setTimeout(() => {

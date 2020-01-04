@@ -7,7 +7,14 @@
     >
       <div class="panel-heading">
         <h2 class="panel-title">
-          <router-link :to="{ name: 'model', params: { slug: model.slug }}">
+          <router-link
+            :to="{
+              name: 'model',
+              params: {
+                slug: model.slug
+              }
+            }"
+          >
             <span v-if="customName">
               {{ customName }}
             </span>
@@ -25,7 +32,7 @@
               v-if="vehicle && vehicle.flagship"
               v-tooltip.right="flagshipTooltip"
             >
-              <i class="fa fa-certificate flagship-icon" />
+              <i class="fad fa-certificate flagship-icon" />
             </small>
           </transition>
 
@@ -104,17 +111,16 @@
           }"
           @click="onAddons(vehicle)"
         >
-          <i
-            class="fa-plus-octagon"
-            :class="{
-              far: !hasAddons,
-              fa: hasAddons,
-            }"
-          />
+          <span v-show="hasAddons">
+            <i class="fa fa-plus-octagon" />
+          </span>
+          <span v-show="!hasAddons">
+            <i class="far fa-plus-octagon" />
+          </span>
         </div>
       </div>
       <b-collapse
-        :id="`details-${model.slug}-wrapper`"
+        :id="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
         <div class="production-status">
@@ -131,7 +137,7 @@
           :model="model"
           padding
         />
-        <hr class="dark">
+        <hr class="dark slim-spacer">
         <ModelBaseMetrics
           :model="model"
           padding
@@ -199,6 +205,10 @@ export default {
   },
 
   computed: {
+    uuid() {
+      return this._uid
+    },
+
     customName() {
       if (this.vehicle && this.vehicle.name) {
         return this.vehicle.name

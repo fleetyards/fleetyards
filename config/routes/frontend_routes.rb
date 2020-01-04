@@ -2,6 +2,7 @@
 
 namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%w[admin api].include?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
+  get 'compare/ships', to: redirect('/ships/compare')
 
   get 'search' => 'base#index'
 
@@ -34,6 +35,13 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
 
   get 'images' => 'base#index'
 
+  get 'fleets' => 'base#index'
+  get 'fleets/add' => 'base#index'
+  get 'fleets/invites' => 'base#index'
+  get 'fleets/:slug' => 'fleets#show'
+  get 'fleets/:slug/members' => 'fleets#members'
+  get 'fleets/:slug/settings' => 'fleets#settings'
+
   get 'stats' => 'base#index'
 
   get 'roadmap' => 'base#index'
@@ -54,13 +62,14 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'settings/hangar' => 'base#index'
 
   get 'password/request' => 'base#index'
-  get 'password/update/:token' => 'base#password'
-  get 'confirm/:token' => 'base#confirm'
+  get 'password/update/:token' => 'base#password', as: :password_reset
+  get 'confirm/:token' => 'base#confirm', as: :confirm
 
   get 'embed' => 'embed#index'
   get 'embed-v2' => 'embed#index_v2'
   get 'embed-test' => 'embed#test'
   get 'embed-v2-test' => 'embed#test_v2'
+  get 'embed-v2-username-test' => 'embed#test_v2_username'
 
   get 'service-worker' => 'service_worker#index'
   get 'precache-manifest.:id' => 'service_worker#precache_manifest'

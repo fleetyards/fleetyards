@@ -7,12 +7,30 @@
   border-radius: $border-radius-base;
   box-shadow: 0 0 5px black;
   background-color: black;
+  opacity: 1;
+  transition: opacity ease $transition-base-speed;
+
+  &.image-hidden {
+    opacity: 0;
+  }
+}
+
+.holoviewer {
+  position: absolute;
+  width: 100%;
+  height: 200%;
+  top: -50%;
+  z-index: -1;
 }
 
 .image-wrapper {
   max-width: 1200px;
   position: relative;
   margin: 0 auto;
+
+  &.image-wrapper-holoviewer {
+    min-height: 400px;
+  }
 }
 
 .description {
@@ -73,13 +91,20 @@
   z-index: 1000;
   top: 10px;
   right: 15px;
+  margin-right: 0;
 }
 
-.toggle-3d-color {
+.starship42-link {
   position: absolute;
   z-index: 1000;
-  top: 10px;
-  left: 25px;
+  top: 18px;
+  right: 75px;
+  color: darken($text-color, 5%);
+  text-shadow: 0 0 3px black;
+
+  &:hover {
+    color: $text-color;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {
@@ -91,5 +116,11 @@
 
   .sale-button {
     width: 100%;
+  }
+
+  .holoviewer {
+    width: 100%;
+    height: 100%;
+    top: 0;
   }
 }

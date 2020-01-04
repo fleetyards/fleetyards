@@ -1,11 +1,7 @@
 Cypress.Commands.add('select', (id) => cy.get(`[data-test="${id}"]`))
 Cypress.Commands.add('selectInput', (id) => cy.get(`[data-test="${id}"] > input`))
 
-Cypress.Commands.add('clickNav', (name, openNav = true) => {
-  if (openNav) {
-    cy.get('.nav-toggle').click()
-  }
-
+Cypress.Commands.add('clickNav', (name) => {
   cy.contains('nav a', name).click()
 })
 

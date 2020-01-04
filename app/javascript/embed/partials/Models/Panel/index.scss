@@ -10,22 +10,20 @@
 }
 
 .panel-image {
-  .on-sale {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-right: 20px solid transparent;
-    border-top: 20px solid $primary;
-    border-left: 20px solid $primary;
-    border-bottom: 20px solid transparent;
+  &.no-details {
+    overflow: hidden;
+    border-bottom: none;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
 
-    i {
-      color: #fff;
-      position: absolute;
-      top: -15px;
-      left: -10px;
+    a {
+      overflow: hidden;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
     }
   }
 }

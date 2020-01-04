@@ -2,7 +2,7 @@
 
 arccorp = CelestialObject.find_or_create_by!(name: 'ArcCorp')
 
-hidden = true # currently not present 2019-07-28
+hidden = true # currently not present 3.8.0
 
 arc_l4 = Station.find_or_initialize_by(name: 'Rest & Relax (ARC-L4)')
 arc_l4.update!(
@@ -30,5 +30,20 @@ arc_l4.update!(
 #       dock_type: :hangar,
 #       ship_size: ship_size,
 #     )
+#   end
+# end
+
+# arc_l4.habitations.destroy_all
+# %w[1 2 3 4 5].each do |level|
+#   pad = 1
+#   { container: 11 }.each do |hab_size, count|
+#     count.times do
+#       arc_l4.habitations << Habitation.new(
+#         name: "Hab #{level}#{"%02d" % pad}",
+#         habitation_name: 'EZ Hab',
+#         habitation_type: hab_size
+#       )
+#       pad += 1
+#     end
 #   end
 # end

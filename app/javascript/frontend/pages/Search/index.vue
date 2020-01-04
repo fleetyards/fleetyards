@@ -187,8 +187,9 @@ export default {
       switch (result.resultType) {
         case 'celestial_object':
           return {
-            name: 'celestialObject',
+            name: 'celestial-object',
             params: {
+              starsystem: result.starsystem.slug,
               slug: result.slug,
             },
           }

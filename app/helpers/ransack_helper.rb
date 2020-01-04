@@ -16,7 +16,8 @@ module RansackHelper
     if query_params['sorts'].present?
       sorts = query_params['sorts']
       sorts = sorts.split(',') if sorts.is_a? String
-      sorts.push(minimum) unless sorts.include?('name') || sorts.include?('name desc') || sorts.include?('name asc')
+      minimum_parts = minimum.split(' ')
+      sorts.push(minimum) unless sorts.include?(minimum_parts.first) || sorts.include?("#{minimum_parts.first} desc") || sorts.include?("#{minimum_parts.first} asc")
       sorts
     else
       fallback

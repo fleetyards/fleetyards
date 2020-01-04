@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <title>Embed Test</title>
+  </head>
+  <body style="color: white; background-color: #333;">
+    <%= yield %>
+
+    <h1>Test H1</h1>
+    <h2>Test H2</h2>
+    <h3>Test H3</h3>
+    <p>Text</p>
+
+    <div id="fleetyards-view"></div>
+    <script>
+        window.FleetYardsFleetchartConfig = {
+          details: true,
+          grouped: false,
+          groupedButton: true,
+          fleetchart: false,
+          fleetchartGrouped: true,
+          fleetchartSlider: true,
+          users: ['test']  // Replace [] with a javascript array of the usernames you want to display
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = '<%=Rails.application.secrets.frontend_endpoint %>/embed-v2.js#' + new Date().getTime();
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.</a></noscript>
+  </body>
+</html>

@@ -33,6 +33,21 @@ end
   end
 end
 
+cru_l5.habitations.destroy_all
+%w[1 2 3 4 5].each do |level|
+  pad = 1
+  { container: 11 }.each do |hab_size, count|
+    count.times do
+      cru_l5.habitations << Habitation.new(
+        name: "Hab #{level}#{"%02d" % pad}",
+        habitation_name: 'EZ Hab',
+        habitation_type: hab_size
+      )
+      pad += 1
+    end
+  end
+end
+
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l5)
 admin_office.update!(
   shop_type: :admin,

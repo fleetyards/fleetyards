@@ -33,6 +33,21 @@ end
   end
 end
 
+hur_l2.habitations.destroy_all
+%w[1 2 3 4 5].each do |level|
+  pad = 1
+  { container: 10 }.each do |hab_size, count|
+    count.times do
+      hur_l2.habitations << Habitation.new(
+        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        habitation_name: 'EZ Hab',
+        habitation_type: hab_size
+      )
+      pad += 1
+    end
+  end
+end
+
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l2)
 admin_office.update!(
   shop_type: :admin,
@@ -47,12 +62,15 @@ live_fire_weapons.update!(
   hidden: hidden
 )
 
-casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: hur_l2)
-casaba.update!(
-  shop_type: :clothing,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/casaba.jpg').open,
+ship_weapons = Shop.find_or_initialize_by(name: 'Ship Weapons', station: hur_l2)
+ship_weapons.update!(
+  shop_type: :weapons,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/ship_weapons.jpg').open,
   hidden: hidden
 )
+
+casaba = Shop.find_by(name: 'Casaba Outlet', station: hur_l2)
+casaba.destroy if casaba.present?
 
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l2)
 platinum_bay.update!(

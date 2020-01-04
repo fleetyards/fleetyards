@@ -58,13 +58,27 @@
           v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics && !mobile"
           class="row"
         >
-          <div class="col-xs-12 hangar-metrics metrics-block">
-            <div class="metrics-item">
+          <div
+            class="col-xs-12 hangar-metrics metrics-block"
+            @click="toggleMoney"
+          >
+            <div
+              v-if="money"
+              class="metrics-item"
+            >
               <div class="metrics-label">
                 {{ $t('labels.hangarMetrics.totalMoney') }}:
               </div>
               <div class="metrics-value">
                 {{ $toDollar(vehiclesCount.metrics.totalMoney) }}
+              </div>
+            </div>
+            <div class="metrics-item">
+              <div class="metrics-label">
+                {{ $t('labels.hangarMetrics.total') }}:
+              </div>
+              <div class="metrics-value">
+                {{ $toNumber(vehiclesCount.total, 'ships') }}
               </div>
             </div>
             <div class="metrics-item">
@@ -106,12 +120,12 @@
           size="small"
           @click.native="toggleDetails"
         >
-          <i
-            :class="{
-              'fa fa-chevron-up': detailsVisible,
-              'far fa-chevron-down': !detailsVisible,
-            }"
-          />
+          <span v-show="detailsVisible">
+            <i class="fa fa-chevron-up" />
+          </span>
+          <span v-show="!detailsVisible">
+            <i class="far fa-chevron-down" />
+          </span>
         </Btn>
 
         <DownloadScreenshotBtn
@@ -344,6 +358,7 @@ export default {
       'detailsVisible',
       'fleetchartVisible',
       'fleetchartScale',
+      'money',
     ]),
 
     emptyBoxVisible() {
@@ -449,6 +464,10 @@ export default {
 
     toggleFleetchart() {
       this.$store.dispatch('hangar/toggleFleetchart')
+    },
+
+    toggleMoney() {
+      this.$store.dispatch('hangar/toggleMoney')
     },
 
     fetch() {

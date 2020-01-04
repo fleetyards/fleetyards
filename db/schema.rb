@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_094259) do
+ActiveRecord::Schema.define(version: 2019_12_30_155723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -178,6 +178,27 @@ ActiveRecord::Schema.define(version: 2019_10_26_094259) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fleet_memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "fleet_id"
+    t.uuid "user_id"
+    t.integer "role"
+    t.datetime "accepted_at"
+    t.datetime "declined_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "sid"
+    t.string "logo"
+    t.string "background_image"
+    t.uuid "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.integer "habitation_type"
@@ -226,6 +247,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_094259) do
     t.boolean "background", default: true
     t.integer "width"
     t.integer "height"
+    t.boolean "global", default: true
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
@@ -358,6 +380,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_094259) do
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
     t.string "erkuls_slug"
+    t.string "starship42_slug"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

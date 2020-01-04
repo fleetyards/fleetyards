@@ -1,28 +1,11 @@
 <%
 chunks = Webpacker.manifest.refresh.filter do |item|
-  item.include?('frontend') || item.include?('media')
+  item.include?('frontend') && (item.ends_with?('.js') || item.ends_with?('.css'))
 end.map do |key, value|
   {
     revision: value.scan(/^.*-(\w*)\..*$/).last.first,
     url: value
   }
 end
-
-# asset_images = [
-#   'favicon.png',
-#   'icon-48.png',
-#   'icon-96.png',
-#   'icon-128.png',
-#   'icon-192.png',
-#   'icon-196.png',
-#   'icon-256.png',
-#   'icon-384.png',
-#   'icon-512.png',
-#   'logo.png',
-#   'icon-ipad-retina.png',
-#   'icon-ipad.png',
-#   'icon-iphone-retina.png',
-#   'icon-iphone.png'
-# ]
 %>
 self.__precacheManifest = <%= chunks.to_json.html_safe %>;
