@@ -67,6 +67,14 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
   config.log_tags = [:request_id]
 
+  # Use a different cache store in production.
+  if ENV['MEMCACHED_URL']
+    config.cache_store = :dalli_store,
+                         ENV['MEMCACHED_URL'].split(','),
+                         {
+                           namespace: "fleetyards-#{Rails.env}",
+                         }
+  end
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
