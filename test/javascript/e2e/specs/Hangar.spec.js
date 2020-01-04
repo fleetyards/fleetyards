@@ -52,6 +52,8 @@ describe('Hangar', () => {
 
     cy.clickNav('Hangar')
 
+    cy.wait(1000)
+
     cy.get('.model-panel .panel-title a').contains('300i').should('exist')
 
     cy.openShipModal('300i')
