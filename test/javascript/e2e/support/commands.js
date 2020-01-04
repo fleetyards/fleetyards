@@ -24,3 +24,24 @@ Cypress.Commands.add('success', (message) => {
     expect($noty).to.contain(message)
   })
 })
+
+Cypress.Commands.add('addToHangar', (ship) => {
+  cy.get(`.model-panel#${ship} [data-test="add-to-hangar"]`).click()
+})
+
+
+Cypress.Commands.add('login', () => {
+  cy.url().should('include', '/login')
+
+  cy.wait(500)
+
+  // eslint-disable-next-line jest/valid-expect-in-promise
+  cy.fixture('users').then((userData) => {
+    cy.select('login').type(userData.test.username)
+    cy.select('password').type(userData.test.password)
+
+    cy.get('button[type=submit]').click()
+
+    cy.contains('.username', userData.test.username).should('exist')
+  })
+})

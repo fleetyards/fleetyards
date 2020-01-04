@@ -3,6 +3,7 @@
     <Panel
       v-if="model"
       :id="model.slug"
+      class="model-panel"
       :highlight="vehicle && vehicle.flagship"
     >
       <div class="panel-heading">
@@ -60,6 +61,7 @@
             class="panel-edit-button"
             variant="link"
             size="small"
+            data-test="vehicle-edit"
             @click.native="onEdit(vehicle)"
           >
             <i class="fa fa-pencil" />

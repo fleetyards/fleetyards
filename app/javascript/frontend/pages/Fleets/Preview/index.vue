@@ -89,6 +89,7 @@
                   redirectToRoute: 'fleet-add',
                 },
               }"
+              data-test="signup"
               size="large"
               block
             >
@@ -108,6 +109,7 @@
                   redirectToRoute: 'fleet-add',
                 },
               }"
+              data-test="login"
               block
               @click.native="hidePreview"
             >

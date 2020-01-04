@@ -90,6 +90,7 @@
         <Btn
           v-if="vehicle"
           :disabled="deleting"
+          data-test="vehicle-delete"
           inline
           @click.native="remove"
         >
@@ -100,6 +101,7 @@
           :loading="submitting"
           type="submit"
           size="large"
+          data-test="vehicle-save"
           inline
         >
           {{ $t('actions.save') }}
