@@ -29,6 +29,13 @@ Cypress.Commands.add('addToHangar', (ship) => {
   cy.get(`.model-panel#${ship} [data-test="add-to-hangar"]`).click()
 })
 
+Cypress.Commands.add('openShipModal', (ship) => {
+  cy.get(`.model-panel#${ship} [data-test="vehicle_edit"]`).click()
+})
+
+Cypress.Commands.add('deleteShip', () => {
+  cy.select('vehicle-delete').click()
+})
 
 Cypress.Commands.add('login', () => {
   cy.url().should('include', '/login')

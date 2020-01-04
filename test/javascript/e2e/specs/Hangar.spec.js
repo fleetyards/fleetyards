@@ -35,7 +35,7 @@ describe('Hangar', () => {
     cy.get('.hangar-guide-box').should('exist')
   })
 
-  it.only('Shows Added Ships', () => {
+  it('Shows Added Ships', () => {
     cy.visit('/')
 
     cy.clickNav('Login')
@@ -54,9 +54,9 @@ describe('Hangar', () => {
 
     cy.get('.model-panel .panel-title a').contains('300i').should('exist')
 
-    cy.select('vehicle-edit').first().click()
+    cy.openShipModal('300i')
 
-    cy.select('vehicle-delete').first().click()
+    cy.deleteShip()
 
     cy.acceptConfirm()
 
