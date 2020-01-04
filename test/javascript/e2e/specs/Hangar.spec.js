@@ -52,14 +52,14 @@ describe('Hangar', () => {
 
     cy.clickNav('Hangar')
 
-    // cy.get('.model-panel .panel-title a').contains('300i').should('exist')
+    cy.get('.model-panel .panel-title a').contains('300i').should('exist')
 
-    // cy.openShipModal('300i')
+    cy.openShipModal('300i')
 
-    // cy.deleteShip()
+    cy.deleteShip()
 
-    // cy.acceptConfirm()
+    cy.acceptConfirm()
 
-    // cy.get('.model-panel').should('have.length', 0)
+    cy.get('.model-panel').should('have.length', 0)
   })
 })
