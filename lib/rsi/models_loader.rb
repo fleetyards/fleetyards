@@ -70,8 +70,8 @@ module RSI
       components.each_key do |component_class|
         types = components[component_class]
         types.each_key do |type|
-          types[type].each do |hardpoint_data|
-            hardpoint = create_or_update_hardpoint(hardpoint_data, model.id)
+          types[type].each_with_index do |hardpoint_data, index|
+            hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
             hardpoint_ids << hardpoint.id
           end
         end
@@ -197,14 +197,16 @@ module RSI
       manufacturer
     end
 
-    def create_or_update_hardpoint(hardpoint_data, model_id)
+    def create_or_update_hardpoint(hardpoint_data, model_id, index)
       key = [
         model_id,
+        hardpoint_data['component_class'],
         hardpoint_data['type'],
         hardpoint_data['category'],
         hardpoint_data['size'],
         hardpoint_data['quantity'].to_i,
-        hardpoint_data['mounts'].to_i
+        hardpoint_data['mounts'].to_i,
+        index
       ].join('-')
 
       hardpoint = Hardpoint.find_or_create_by(rsi_key: key) do |new_hardpoint|
