@@ -2,7 +2,7 @@ describe('Hangar', () => {
   it('Shows Preview', () => {
     cy.visit('/')
 
-    cy.clickNav('Hangar')
+    cy.clickNav('hangar-preview')
 
     cy.url().should('include', '/hangar/preview/')
 
@@ -10,13 +10,13 @@ describe('Hangar', () => {
 
     cy.url().should('include', '/login')
 
-    cy.clickNav('Hangar')
+    cy.clickNav('hangar')
 
     cy.url().should('include', '/login')
 
     cy.visit('/')
 
-    cy.clickNav('Hangar')
+    cy.clickNav('hangar')
 
     cy.url().should('include', '/login')
   })
@@ -24,7 +24,7 @@ describe('Hangar', () => {
   it('Shows Guide on initial Visit', () => {
     cy.visit('/')
 
-    cy.clickNav('Hangar')
+    cy.clickNav('hangar')
 
     cy.select('login').click()
 
@@ -38,19 +38,19 @@ describe('Hangar', () => {
   it('Default Workflow', () => {
     cy.visit('/')
 
-    cy.clickNav('Login')
+    cy.clickNav('login')
 
     cy.login()
 
     cy.url().should('include', '/')
 
-    cy.clickNav('Ships')
+    cy.clickNav('models')
 
     cy.url().should('include', '/ships/')
 
     cy.addToHangar('300i')
 
-    cy.clickNav('Hangar')
+    cy.clickNav('hangar')
 
     cy.get('.model-panel .panel-title a').contains('300i').should('exist')
 

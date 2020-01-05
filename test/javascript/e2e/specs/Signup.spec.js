@@ -2,7 +2,7 @@ describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
     cy.visit('/')
 
-    cy.clickNav('Login')
+    cy.clickNav('login')
 
     cy.select('signup-link').click()
 
@@ -19,7 +19,7 @@ describe('Signup', () => {
 
       cy.success('Welcome to FleetYards.net')
 
-      cy.clickNav('Login')
+      cy.clickNav('login')
 
       cy.select('login').type(userData.new.username)
       cy.select('password').type(userData.new.password)
@@ -29,7 +29,7 @@ describe('Signup', () => {
       cy.location('pathname').should('eq', '/')
 
       cy.contains('.username', userData.new.username).click()
-      cy.clickNav('Settings', false)
+      cy.clickNav('settings', false)
 
       cy.url().should('include', '/settings')
 
