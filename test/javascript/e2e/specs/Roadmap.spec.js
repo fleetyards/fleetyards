@@ -7,15 +7,15 @@ describe('Roadmap', () => {
 
     cy.url().should('include', '/roadmap')
 
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 62)
+    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 80)
 
-    cy.get('#roadmap-sub-menu').contains('Ship-Roadmap').click()
+    cy.clickNav('roadmap-ships')
 
     cy.url().should('include', '/roadmap/ships')
 
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 62)
+    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 54)
 
-    cy.get('#roadmap-sub-menu').contains('Changes').click()
+    cy.clickNav('roadmap-changes')
 
     cy.url().should('include', '/roadmap/changes')
   })

@@ -29,7 +29,7 @@ describe('Signup', () => {
       cy.location('pathname').should('eq', '/')
 
       cy.contains('.username', userData.new.username).click()
-      cy.clickNav('settings', false)
+      cy.clickNav('settings')
 
       cy.url().should('include', '/settings')
 
