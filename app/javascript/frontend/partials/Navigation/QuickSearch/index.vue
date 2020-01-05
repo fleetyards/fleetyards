@@ -5,7 +5,7 @@
         v-model="form[$route.meta.quickSearch]"
         :placeholder="$t(`placeholders.quicksearch.${$route.name}`)"
         :aria-label="$t(`placeholders.quicksearch.${$route.name}`)"
-        :name="$route.meta.quickSearch"
+        :name="$route.meta.quickSearch || 'quicksearch'"
         autofocus
       />
     </form>
