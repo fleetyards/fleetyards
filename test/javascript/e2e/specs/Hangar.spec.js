@@ -56,7 +56,7 @@ describe('Hangar', () => {
 
     cy.openShipModal('300i')
 
-    cy.select('input-name').type('Enterprise')
+    cy.select('input-vehicle-name').type('Enterprise')
 
     cy.saveShip()
 

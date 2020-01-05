@@ -2,9 +2,8 @@ describe('Roadmap', () => {
   it('Loads', () => {
     cy.visit('/')
 
+    cy.clickNav('roadmap-menu')
     cy.clickNav('roadmap')
-
-    cy.get('#roadmap-sub-menu').contains('Overview').click()
 
     cy.url().should('include', '/roadmap')
 

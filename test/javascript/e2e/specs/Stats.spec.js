@@ -2,7 +2,7 @@ describe('Stats', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.clickNav('Stats')
+    cy.clickNav('stats')
 
     cy.url().should('include', '/stats')
 
