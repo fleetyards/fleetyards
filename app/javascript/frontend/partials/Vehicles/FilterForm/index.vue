@@ -2,6 +2,7 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
+      name="vehicle-name"
       :placeholder="$t('placeholders.filters.vehicles.name')"
       :aria-label="$t('placeholders.filters.vehicles.name')"
     />
@@ -87,6 +88,7 @@
         <FormInput
           v-model="form.lengthGteq"
           type="number"
+          name="vehicle-length-gteq"
           :label="$t('labels.filters.vehicles.lengthGt')"
           :aria-label="$t('labels.filters.vehicles.lengthGt')"
         />
@@ -95,6 +97,7 @@
         <FormInput
           v-model="form.lengthLteq"
           type="number"
+          name="vehicle-length-lteq"
           :label="$t('labels.filters.vehicles.lengthLt')"
           :aria-label="$t('labels.filters.vehicles.lengthLt')"
         />
@@ -106,6 +109,7 @@
         <FormInput
           v-model="form.pledgePriceGteq"
           type="number"
+          name="vehicle-pledge-price-gteq"
           :label="$t('labels.filters.vehicles.pledgePriceGt')"
           :aria-label="$t('labels.filters.vehicles.pledgePriceGt')"
         />
@@ -115,6 +119,7 @@
         <FormInput
           v-model="form.pledgePriceLteq"
           type="number"
+          name="vehicle-pledge-price-lteq"
           :label="$t('labels.filters.vehicles.pledgePriceLt')"
           :aria-label="$t('labels.filters.vehicles.pledgePriceLt')"
         />
@@ -124,6 +129,7 @@
     <FormInput
       v-model="form.priceGteq"
       type="number"
+      name="vehicle-price-gteq"
       :label="$t('labels.filters.vehicles.priceGt')"
       :aria-label="$t('labels.filters.vehicles.priceGt')"
     />
@@ -131,6 +137,7 @@
     <FormInput
       v-model="form.priceLteq"
       type="number"
+      name="vehicle-price-lteq"
       :label="$t('labels.filters.vehicles.priceLt')"
       :aria-label="$t('labels.filters.vehicles.priceLt')"
     />

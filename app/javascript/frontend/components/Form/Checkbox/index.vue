@@ -6,6 +6,7 @@
       :disabled="disabled ? 'disabled' : null"
       class="checkbox"
       type="checkbox"
+      :data-test="`checkbox-${id}`"
       @change="change"
     >
     <label :for="checkboxID">

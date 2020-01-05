@@ -10,6 +10,7 @@
       open: open,
       'nav-item-slim': slim,
     }"
+    :data-test="`nav-${item.key}`"
     class="nav-item sub-menu"
   >
     <a
@@ -49,6 +50,7 @@
     :class="{
       'nav-item-slim': slim,
     }"
+    :data-test="`nav-${item.key}`"
     class="nav-item"
     @click="item.action"
   >
@@ -67,6 +69,7 @@
     :class="{
       'nav-item-slim': slim,
     }"
+    :data-test="`nav-${item.to.name}`"
     class="nav-item"
     tag="li"
     :exact="exact"

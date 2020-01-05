@@ -2,6 +2,7 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
+      name="model-name"
       :placeholder="$t('placeholders.filters.models.name')"
       :aria-label="$t('placeholders.filters.models.name')"
     />
@@ -82,6 +83,7 @@
         <FormInput
           v-model="form.lengthGteq"
           type="number"
+      name="model-length-gteq"
           :label="$t('labels.filters.models.lengthGt')"
           :aria-label="$t('labels.filters.models.lengthGt')"
         />
@@ -91,6 +93,7 @@
         <FormInput
           v-model="form.lengthLteq"
           type="number"
+      name="model-length-lteq"
           :label="$t('labels.filters.models.lengthLt')"
           :aria-label="$t('labels.filters.models.lengthLt')"
         />
@@ -102,6 +105,7 @@
         <FormInput
           v-model="form.pledgePriceGteq"
           type="number"
+      name="model-pledge-price-gteq"
           :label="$t('labels.filters.models.pledgePriceGt')"
           :aria-label="$t('labels.filters.models.pledgePriceGt')"
         />
@@ -110,6 +114,7 @@
         <FormInput
           v-model="form.pledgePriceLteq"
           type="number"
+      name="model-pledge-price-lteq"
           :label="$t('labels.filters.models.pledgePriceLt')"
           :aria-label="$t('labels.filters.models.pledgePriceLt')"
         />
@@ -119,6 +124,7 @@
     <FormInput
       v-model="form.priceGteq"
       type="number"
+      name="model-price-gteq"
       :label="$t('labels.filters.models.priceGt')"
       :aria-label="$t('labels.filters.models.priceGt')"
     />
@@ -126,6 +132,7 @@
     <FormInput
       v-model="form.priceLteq"
       type="number"
+      name="model-price-lteq"
       :label="$t('labels.filters.models.priceLt')"
       :aria-label="$t('labels.filters.models.priceLt')"
     />

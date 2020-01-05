@@ -6,7 +6,7 @@ export default {
     return I18n.t('messages.error.usernameTaken')
   },
   validate(value) {
-    return post('users/check-username', { username: value })
+    return post('users/check-username', { username: value }, true)
       .then(({ data }) => ({
         valid: !data.usernameTaken,
       }))

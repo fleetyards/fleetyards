@@ -22,6 +22,7 @@
                     :placeholder="$t('placeholders.search')"
                     :aria-label="$t('placeholders.search')"
                     size="large"
+                    name="search"
                     autofocus
                     @clear="filter"
                   />

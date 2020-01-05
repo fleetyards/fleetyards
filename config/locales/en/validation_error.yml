@@ -5,6 +5,10 @@ en:
     confirmation: Confirmation failed.
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    fleet:
+      create: Fleet could not be created
+      update: Fleet could not be updated
+      destroy: Fleet could not be destroyed
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed
