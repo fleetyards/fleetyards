@@ -24,7 +24,7 @@ describe('Hangar', () => {
   it('Shows Guide on initial Visit', () => {
     cy.visit('/')
 
-    cy.clickNav('hangar')
+    cy.clickNav('hangar-preview')
 
     cy.select('login').click()
 
