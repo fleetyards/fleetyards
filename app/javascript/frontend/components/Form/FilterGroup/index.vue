@@ -54,6 +54,7 @@
         :placeholder="searchLabel || $t('actions.find')"
         class="filter-list-search"
         variant="clean"
+        name="search"
         @input="onSearch"
       />
       <div class="filter-list-items">

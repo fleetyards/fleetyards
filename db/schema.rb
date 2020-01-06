@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_30_155723) do
+ActiveRecord::Schema.define(version: 2020_01_04_200933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -233,6 +233,8 @@ ActiveRecord::Schema.define(version: 2019_12_30_155723) do
     t.string "details"
     t.string "category"
     t.boolean "default_empty", default: false
+    t.string "rsi_key"
+    t.datetime "deleted_at"
     t.index ["component_id"], name: "index_hardpoints_on_component_id"
     t.index ["model_id"], name: "index_hardpoints_on_model_id"
   end

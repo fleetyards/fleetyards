@@ -16,8 +16,9 @@ class Fleet < ApplicationRecord
   has_many :manufacturers,
            through: :users
 
-  validates :name, presence: true
-  validates :name, uniqueness: true
+  validates :name,
+            uniqueness: { case_sensitive: false },
+            format: { with: /\A[a-zA-Z0-9\-_]+\Z/ }
 
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader

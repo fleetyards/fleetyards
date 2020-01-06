@@ -3,6 +3,7 @@
     v-tooltip.bottom="$t('actions.addToHangar')"
     :variant="variant === 'panel' ? 'link' : 'default'"
     :size="variant === 'panel' ? 'small' : 'default'"
+    data-test="add-to-hangar"
     @click.native="add"
   >
     <span v-show="inHangar">

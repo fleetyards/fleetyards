@@ -14,6 +14,8 @@ class FleetMembership < ApplicationRecord
   after_create :notify_user
 
   def notify_user
+    return unless invitation
+
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 

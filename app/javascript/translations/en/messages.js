@@ -64,7 +64,7 @@ export default {
   },
   fleet: {
     create: {
-      success: 'Fleet created.',
+      success: 'Your Fleet has been created.',
       failure: 'Fleet could not be saved.',
     },
     update: {
@@ -72,8 +72,8 @@ export default {
       failure: 'Settings could not be saved.',
     },
     destroy: {
-      success: 'Fleet deleted.',
-      failure: 'Fleet could not be deleted.',
+      success: 'Your Fleet has been destroyed.',
+      failure: 'We could not destroy your Fleet.',
     },
     leave: {
       success: 'You have left the Fleet.',

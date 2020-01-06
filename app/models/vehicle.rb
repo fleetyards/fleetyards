@@ -36,8 +36,6 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
-  delegate :name, :slug, to: :model, prefix: true
-
   def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_json)
   end

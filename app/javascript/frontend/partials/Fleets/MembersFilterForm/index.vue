@@ -2,6 +2,7 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.usernameCont"
+      name="username"
       :placeholder="$t('placeholders.filters.fleets.members.username')"
       :aria-label="$t('placeholders.filters.fleets.members.username')"
     />

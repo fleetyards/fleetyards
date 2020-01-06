@@ -21,7 +21,7 @@ admin_office_humboldt_mines.update!(
 
 humboldt_mines.docks.destroy_all
 
-shubin_sal_5 = Station.find_or_initialize_by(name: 'Schubin Mining Facility SAL-5')
+shubin_sal_5 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SAL-5')
 shubin_sal_5.update!(
   celestial_object: lyria,
   station_type: :outpost,
@@ -57,7 +57,7 @@ admin_office_shubin_sal_5.update!(
   hidden: false
 )
 
-shubin_sal_2 = Station.find_or_initialize_by(name: 'Schubin Mining Facility SAL-2')
+shubin_sal_2 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SAL-2')
 shubin_sal_2.update!(
   celestial_object: lyria,
   station_type: :outpost,

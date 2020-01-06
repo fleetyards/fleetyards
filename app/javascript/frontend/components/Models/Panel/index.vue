@@ -2,7 +2,11 @@
   <div>
     <Panel
       v-if="model"
-      :id="model.slug"
+      :id="id"
+      class="model-panel"
+      :class="{
+        [`model-panel-${model.slug}`]: true
+      }"
       :highlight="vehicle && vehicle.flagship"
     >
       <div class="panel-heading">
@@ -60,6 +64,7 @@
             class="panel-edit-button"
             variant="link"
             size="small"
+            data-test="vehicle-edit"
             @click.native="onEdit(vehicle)"
           >
             <i class="fa fa-pencil" />
@@ -207,6 +212,14 @@ export default {
   computed: {
     uuid() {
       return this._uid
+    },
+
+    id() {
+      if (this.vehicle) {
+        return this.vehicle.id
+      }
+
+      return this.model.slug
     },
 
     customName() {

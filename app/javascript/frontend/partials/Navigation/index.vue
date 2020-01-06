@@ -243,6 +243,7 @@ export default {
           divider: true,
         }, {
           action: this.logout,
+          key: 'logout',
           icon: 'fad fa-sign-out',
           label: this.$t('nav.logout'),
         }],
@@ -269,7 +270,7 @@ export default {
       return [{
         icon: 'fad fa-planet-ringed',
         label: this.$t('nav.stations.index'),
-        key: 'stations',
+        key: 'stations-menu',
         submenu: [{
           to: { name: 'stations' },
           icon: 'fad fa-planet-ringed',
@@ -292,7 +293,7 @@ export default {
       return [{
         icon: 'fad fa-tasks-alt',
         label: this.$t('nav.roadmap.index'),
-        key: 'roadmap',
+        key: 'roadmap-menu',
         submenu: [{
           to: { name: 'roadmap' },
           icon: 'fad fa-tasks-alt',

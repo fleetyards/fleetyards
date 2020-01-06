@@ -68,12 +68,11 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  if ENV['MEMCACHEDCLOUD_SERVERS']
+  if ENV['MEMCACHED_URL']
     config.cache_store = :dalli_store,
                          ENV['MEMCACHED_URL'].split(','),
                          {
-                           username: ENV['MEMCACHED_USERNAME'],
-                           password: ENV['MEMCACHED_PASSWORD']
+                           namespace: "fleetyards-#{Rails.env}",
                          }
   end
   # config.cache_store = :mem_cache_store

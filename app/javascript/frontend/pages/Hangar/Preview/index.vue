@@ -89,6 +89,7 @@
                   redirectToRoute: 'hangar',
                 },
               }"
+              data-test="signup"
               size="large"
               block
             >
@@ -108,6 +109,7 @@
                   redirectToRoute: 'hangar',
                 },
               }"
+              data-test="login"
               block
               @click.native="hidePreview"
             >

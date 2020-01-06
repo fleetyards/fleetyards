@@ -37,35 +37,15 @@
       </div>
       <div class="row">
         <div class="col-md-12 col-lg-6">
-          <div
-            :class="{'has-error has-feedback': errors.has('name')}"
-            class="form-group"
-          >
-            <label for="name">
-              {{ $t('labels.fleet.name') }}
-            </label>
-            <input
-              id="name"
-              v-model="form.name"
-              v-tooltip.bottom-end="errors.first('name')"
-              v-validate="'required|alpha_dash'"
-              data-test="name"
-              :data-vv-as="$t('labels.fleet.name')"
-              :placeholder="$t('labels.fleet.name')"
-              name="name"
-              type="text"
-              class="form-control"
-            >
-            <span
-              v-show="errors.has('name')"
-              class="form-control-feedback"
-            >
-              <i
-                :title="errors.first('name')"
-                class="fal fa-exclamation-triangle"
-              />
-            </span>
-          </div>
+          <FormInput
+            v-model="form.name"
+            v-validate="'required|alpha_dash'"
+            :data-vv-as="$t('labels.fleet.name')"
+            :placeholder="$t('labels.fleet.name')"
+            :label="$t('labels.fleet.name')"
+            :error="errors.first('name')"
+            name="name"
+          />
         </div>
       </div>
       <br>
@@ -73,6 +53,7 @@
         :loading="submitting"
         type="submit"
         size="large"
+        data-test="fleet-save"
       >
         {{ $t('actions.save') }}
       </Btn>
@@ -80,6 +61,7 @@
         :loading="deleting"
         size="large"
         variant="danger"
+        data-test="fleet-delete"
         @click.native="destroy"
       >
         {{ $t('actions.delete') }}
@@ -93,6 +75,7 @@ import VueUploadComponent from 'vue-upload-component'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 import Avatar from 'frontend/components/Avatar'
 
 export default {
@@ -102,6 +85,7 @@ export default {
     VueUploadComponent,
     BreadCrumbs,
     Btn,
+    FormInput,
     Avatar,
   },
 
@@ -218,17 +202,44 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$comlink.$emit('fleetUpdate')
-
-        setTimeout(() => {
-          this.files = []
-        }, 1000)
-
-        this.fetch()
-
         this.$success({
           text: this.$t('messages.fleet.update.success'),
         })
+
+        this.$comlink.$emit('fleetUpdate')
+
+        if (response.data.slug !== this.$route.params.slug) {
+          this.$router.push({ name: 'fleet-settings', params: { slug: response.data.slug } })
+        } else {
+          setTimeout(() => {
+            this.files = []
+          }, 1000)
+
+          this.fetch()
+        }
+      } else {
+        const { error } = response
+        if (error.response && error.response.data) {
+          const { data: errorData } = error.response
+
+          errorData.errors.map((item) => ({
+            field: item[0],
+            errors: item[1],
+          })).forEach((item) => {
+            item.errors.forEach((errorItem) => this.errors.add({
+              field: item.field,
+              msg: errorItem,
+            }))
+          })
+
+          this.$alert({
+            text: errorData.message,
+          })
+        } else {
+          this.$alert({
+            text: this.$t('messages.fleet.update.failure'),
+          })
+        }
       }
     },
 
