@@ -16,7 +16,7 @@
         <div class="page-main-actions">
           <span v-tooltip="leaveTooltip">
             <Btn
-              v-if="fleet"
+              v-if="fleet && myFleet"
               :disabled="fleet.role === 'admin' || leaving"
               inline
               variant="danger"
