@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.52.0](https://github.com/fleetyards/app/compare/v3.51.0...v3.52.0) (2020-01-06)
+
+
+### Features
+
+* **fleets:** prevent people from viewing internal links ([464c8db](https://github.com/fleetyards/app/commit/464c8db9b556c169ed8438e8f5825ac6588515c7))
+
 ## [3.51.0](https://github.com/fleetyards/app/compare/v3.50.0...v3.51.0) (2020-01-06)
 
 
