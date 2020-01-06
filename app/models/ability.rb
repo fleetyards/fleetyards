@@ -39,7 +39,7 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_search
     can %i[index], :api_trade_routes
-    can %i[read check], :api_fleet
+    can %i[read], :api_fleet
 
     can %i[read_public], :api_user
   end
@@ -54,6 +54,7 @@ class Ability
                     .where.not(fleet_memberships: { accepted_at: nil })
                     .pluck(:id)
 
+    can %i[check invites], :api_fleet
     can :index, :api_hangar
     can %i[accept update destroy], FleetMembership, user_id: user.id
     can %i[create update destroy], FleetMembership, fleet_id: fleet_ids

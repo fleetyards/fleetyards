@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-6 col-md-offset-3">
-        <Panel v-if="currentUser">
+        <Panel>
           <transition-group
             name="fade"
             class="flex-list flex-list-users"
@@ -28,7 +28,39 @@
               </div>
             </div>
             <div
-              v-if="!fleetInvites.length"
+              v-for="(invite, index) in invites"
+              :key="`invites-${index}`"
+              class="fade-list-item col-xs-12 flex-list-item"
+            >
+              <div class="flex-list-row">
+                <div class="fleet-name">
+                  {{ invite.fleet.name }}
+                </div>
+                <div class="actions">
+                  <Btn
+                    size="small"
+                    :disabled="submitting"
+                    inline
+                    @click.native="accept(invite)"
+                  >
+                    <i class="fal fa-check" />
+                    {{ $t('actions.fleet.acceptInvite') }}
+                  </Btn>
+                  <Btn
+                    size="small"
+                    variant="danger"
+                    :disabled="submitting"
+                    inline
+                    @click.native="decline(invite)"
+                  >
+                    <i class="fal fa-times" />
+                    {{ $t('actions.fleet.declineInvite') }}
+                  </Btn>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="!invites.length && !loading"
               key="empty"
               class="fade-list-item col-xs-12 flex-list-item"
             >
@@ -38,49 +70,22 @@
                 </div>
               </div>
             </div>
-            <div
-              v-for="(fleet, index) in fleetInvites"
-              :key="`invites-${index}`"
-              class="fade-list-item col-xs-12 flex-list-item"
-            >
-              <div class="flex-list-row">
-                <div class="fleet-name">
-                  {{ fleet.name }}
-                </div>
-                <div class="actions">
-                  <Btn
-                    size="small"
-                    :disabled="loading"
-                    inline
-                    @click.native="accept(fleet)"
-                  >
-                    <i class="fal fa-check" />
-                    {{ $t('actions.fleet.acceptInvite') }}
-                  </Btn>
-                  <Btn
-                    size="small"
-                    variant="danger"
-                    :disabled="loading"
-                    inline
-                    @click.native="decline(fleet)"
-                  >
-                    <i class="fal fa-times" />
-                    {{ $t('actions.fleet.declineInvite') }}
-                  </Btn>
-                </div>
-              </div>
-            </div>
           </transition-group>
         </Panel>
+
+        <Loader
+          :loading="loading"
+          fixed
+        />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
+import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 
 export default {
@@ -88,6 +93,7 @@ export default {
 
   components: {
     Panel,
+    Loader,
     Btn,
   },
 
@@ -97,31 +103,23 @@ export default {
 
   data() {
     return {
-      loading: false,
+      loading: true,
+      submitting: false,
+      invites: [],
     }
   },
 
-  computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
-
-    fleetInvites() {
-      if (!this.currentUser) {
-        return []
-      }
-
-      return this.currentUser.fleets.filter((item) => item.invitation) || []
-    },
+  mounted() {
+    this.fetch()
   },
 
   methods: {
-    async accept(fleet) {
-      this.loading = true
+    async accept(invite) {
+      this.submitting = true
 
-      const response = await this.$api.put(`fleets/${fleet.slug}/members/accept-invite`)
+      const response = await this.$api.put(`fleets/${invite.fleet.slug}/members/accept-invite`)
 
-      this.loading = false
+      this.submitting = false
 
       if (!response.error) {
         this.$comlink.$emit('fleetUpdate')
@@ -130,19 +128,21 @@ export default {
           text: this.$t('messages.fleet.invites.accept.success'),
         })
 
-        this.$router.push({ name: 'fleet', params: { slug: fleet.slug } })
+        this.$router.push({ name: 'fleet', params: { slug: invite.fleet.slug } })
       } else {
         this.$alert({
           text: this.$t('messages.fleet.invites.accept.failure'),
         })
       }
     },
-    async decline(fleet) {
-      this.loading = true
+
+    async decline(invite) {
+      this.submitting = true
+
       this.$confirm({
         text: this.$t('messages.confirm.fleet.invites.decline'),
         onConfirm: async () => {
-          const response = await this.$api.put(`fleets/${fleet.slug}/members/decline-invite`)
+          const response = await this.$api.put(`fleets/${invite.fleet.slug}/members/decline-invite`)
 
           if (!response.error) {
             this.$comlink.$emit('fleetUpdate')
@@ -154,13 +154,25 @@ export default {
             this.$alert({
               text: this.$t('messages.fleet.invites.decline.failure'),
             })
-            this.loading = false
+            this.submitting = false
           }
         },
         onClose: () => {
-          this.loading = false
+          this.submitting = false
         },
       })
+    },
+
+    async fetch() {
+      this.loading = true
+
+      const response = await this.$api.get('fleets/invites')
+
+      this.loading = false
+
+      if (!response.error) {
+        this.invites = response.data
+      }
     },
   },
 }

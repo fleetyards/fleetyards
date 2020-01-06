@@ -131,6 +131,7 @@ export default {
     return {
       currentFleet: null,
       searchQuery: null,
+      invites: [],
     }
   },
 
@@ -363,15 +364,12 @@ export default {
       ]
 
 
-      if (this.isAuthenticated) {
-        const invites = this.fleets.filter((item) => item.invitation)
-        if (invites.length) {
-          submenu.push({
-            to: { name: 'fleet-invites' },
-            icon: 'fad fa-envelope-open-text',
-            label: this.$t('nav.fleets.invites'),
-          })
-        }
+      if (this.isAuthenticated && this.invites.length) {
+        submenu.push({
+          to: { name: 'fleet-invites' },
+          icon: 'fad fa-envelope-open-text',
+          label: this.$t('nav.fleets.invites'),
+        })
       }
 
       if (this.isAuthenticated || !this.fleetPreview) {
@@ -424,6 +422,10 @@ export default {
         key.push(this.fleets.map((item) => item.slug).join('-'))
       }
 
+      if (this.invites.length) {
+        key.push(this.invites.map((item) => `invite-${item.fleet.slug}`).join('-'))
+      }
+
       return key.join('-')
     },
 
@@ -451,6 +453,7 @@ export default {
   watch: {
     $route() {
       this.close()
+      this.fetchInvites()
     },
 
     isFleetRoute() {
@@ -461,6 +464,7 @@ export default {
   },
 
   mounted() {
+    this.fetchInvites()
     this.$comlink.$on('fleetUpdate', this.fetchFleet)
   },
 
@@ -529,6 +533,18 @@ export default {
 
       if (!response.error) {
         this.currentFleet = response.data
+      }
+    },
+
+    async fetchInvites() {
+      if (!this.isAuthenticated) {
+        return
+      }
+
+      const response = await this.$api.get('fleets/invites')
+
+      if (!response.error) {
+        this.invites = response.data
       }
     },
   },

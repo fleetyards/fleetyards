@@ -11,6 +11,12 @@ module Api
         not_found(I18n.t('messages.record_not_found.fleet', slug: params[:slug]))
       end
 
+      def invites
+        authorize! :invites, :api_fleet
+
+        @invites = current_user.fleet_memberships.where(accepted_at: nil, declined_at: nil).all
+      end
+
       def show
         authorize! :read, :api_fleet
         @fleet = Fleet.where(slug: params[:slug]).first!

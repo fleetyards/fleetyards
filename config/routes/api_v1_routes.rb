@@ -135,6 +135,7 @@ v1_api_routes = lambda do
   resources :fleets, param: :slug, except: %i[index] do
     collection do
       post :check
+      get :invites
     end
 
     member do
