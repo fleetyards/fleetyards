@@ -35,7 +35,7 @@
     >
       <div class="col-xs-12">
         <ModelClassLabels
-          v-if="isMember"
+          v-if="myFleet"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetCount"
           filter-key="classificationIn"
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div
-      v-if="fleetCount && fleetCount.metrics && !mobile && isMember"
+      v-if="fleetCount && fleetCount.metrics && !mobile && myFleet"
       class="row"
     >
       <div
@@ -96,10 +96,10 @@
       </div>
     </div>
     <FilteredList
-      :hide-filter="!isMember"
+      :hide-filter="!myFleet"
     >
       <template
-        v-if="isMember"
+        v-if="myFleet"
         slot="actions"
       >
         <Btn
@@ -339,6 +339,10 @@ export default {
       'mobile',
     ]),
 
+    ...mapGetters('session', [
+      'currentUser',
+    ]),
+
     ...mapGetters('fleet', [
       'detailsVisible',
       'fleetchartVisible',
@@ -346,6 +350,11 @@ export default {
       'grouped',
       'money',
     ]),
+
+    myFleet() {
+      return this.currentUser.fleets.find((fleet) => !fleet.invitation
+        && fleet.slug === this.$route.params.slug)
+    },
 
     leaveTooltip() {
       if (this.fleet && this.fleet.role === 'admin') {
@@ -373,10 +382,6 @@ export default {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
-    },
-
-    isMember() {
-      return this.fleet && this.fleet.acceptedAt
     },
   },
 
@@ -440,7 +445,7 @@ export default {
     },
 
     fetchAdditional() {
-      if (!this.isMember) {
+      if (!this.myFleet) {
         return
       }
 

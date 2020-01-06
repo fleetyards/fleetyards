@@ -1,6 +1,9 @@
 <template>
   <section class="container">
-    <form @submit.prevent="submit">
+    <form
+      v-if="fleet"
+      @submit.prevent="submit"
+    >
       <div class="row">
         <div class="col-md-12">
           <BreadCrumbs :crumbs="crumbs" />
@@ -71,6 +74,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import VueUploadComponent from 'vue-upload-component'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -110,6 +114,14 @@ export default {
   },
 
   computed: {
+    ...mapGetters('session', [
+      'currentUser',
+    ]),
+
+    myFleets() {
+      return this.currentUser.fleets.filter((fleet) => ['admin'].includes(fleet.role) && !fleet.invitation)
+    },
+
     metaTitle() {
       if (!this.fleet) {
         return null
@@ -117,6 +129,7 @@ export default {
 
       return this.$t('title.fleets.settings', { fleet: this.fleet.name })
     },
+
 
     logoUrl() {
       if (this.fleet) {
@@ -156,6 +169,10 @@ export default {
   },
 
   mounted() {
+    if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+      this.$router.replace({ name: '404' })
+    }
+
     this.fetch()
 
     if (this.fleet) {
@@ -296,6 +313,10 @@ export default {
     },
 
     async fetch() {
+      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+        return
+      }
+
       this.loading = true
 
       const response = await this.$api.get(`fleets/${this.$route.params.slug}`)

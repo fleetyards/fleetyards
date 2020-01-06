@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <FilteredList>
+    <FilteredList v-if="fleet">
       <Paginator
         v-if="members.length"
         slot="pagination-top"
@@ -214,6 +214,10 @@ export default {
       'currentUser',
     ]),
 
+    myFleets() {
+      return this.currentUser.fleets.filter((fleet) => ['officer', 'admin'].includes(fleet.role) && !fleet.invitation)
+    },
+
     sortByUsername() {
       const currentSort = (this.$route.query.q || {}).sorts
 
@@ -283,6 +287,10 @@ export default {
   },
 
   mounted() {
+    if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+      this.$router.replace({ name: '404' })
+    }
+
     this.fetch()
     this.$comlink.$on('fleetMemberInvited', this.fetch)
   },
@@ -292,6 +300,12 @@ export default {
   },
 
   methods: {
+    checkAccess() {
+      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+        this.$router.replace({ name: '404' })
+      }
+    },
+
     canEdit(member) {
       if (!this.currentUser) {
         return false
@@ -302,12 +316,6 @@ export default {
 
     openInviteModal() {
       this.$refs.memberModal.open()
-    },
-
-    fetch() {
-      this.fetchFleet()
-      this.fetchMembers()
-      this.fetchFleetCount()
     },
 
     async removeMember(member) {
@@ -374,13 +382,20 @@ export default {
       }
     },
 
-    async fetchFleet() {
+    async fetch() {
+      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+        return
+      }
+
       this.loading = true
 
       const response = await this.$api.get(`fleets/${this.$route.params.slug}`)
 
       if (!response.error) {
         this.fleet = response.data
+
+        this.fetchMembers()
+        this.fetchFleetCount()
       } else if (response.error.response && response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }

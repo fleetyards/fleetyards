@@ -9,7 +9,7 @@ json.cache! ['v1', user] do
   json.sale_notify user.sale_notify
   json.public_hangar user.public_hangar
   json.fleets do
-    json.array! user.fleets.not_declined, partial: 'api/v1/fleets/minimal', as: :fleet
+    json.array! user.fleets.not_declined, partial: 'api/v1/users/fleet', as: :fleet
   end
   json.partial! 'api/shared/dates', record: user
 end

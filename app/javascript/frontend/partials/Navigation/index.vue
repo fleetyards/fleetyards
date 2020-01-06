@@ -172,6 +172,20 @@ export default {
       return this.fleets.filter((fleet) => !fleet.invitation)
     },
 
+    currentFleetRole() {
+      if (!this.currentFleet) {
+        return null
+      }
+
+      const myFleet = this.myFleets.find((fleet) => fleet.slug === this.currentFleet.slug)
+
+      if (!myFleet) {
+        return null
+      }
+
+      return myFleet.role
+    },
+
     toggleSlimLabel() {
       if (this.slim) {
         return this.$t('nav.toggleSlimExpand')
@@ -318,7 +332,7 @@ export default {
       }
 
       const officerItems = []
-      if (this.currentFleet.role === 'admin' || this.currentFleet.role === 'officer') {
+      if (this.currentFleetRole === 'admin' || this.currentFleetRole === 'officer') {
         officerItems.push({
           to: { name: 'fleet-members', params: { slug: this.currentFleet.slug } },
           label: this.$t('nav.fleets.members'),
@@ -327,7 +341,7 @@ export default {
       }
 
       const adminItems = []
-      if (this.currentFleet.role === 'admin') {
+      if (this.currentFleetRole === 'admin') {
         adminItems.push({
           to: { name: 'fleet-settings', params: { slug: this.currentFleet.slug } },
           label: this.$t('nav.fleets.settings'),
