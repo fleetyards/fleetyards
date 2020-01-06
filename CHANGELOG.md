@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.54.0](https://github.com/fleetyards/app/compare/v3.53.0...v3.54.0) (2020-01-06)
+
+
+### Features
+
+* **fleet:** dont allow leaving of guild as admin ([605ff83](https://github.com/fleetyards/app/commit/605ff8352c1229af15dc41d73bf7124a054ed9bb))
+
 ## [3.53.0](https://github.com/fleetyards/app/compare/v3.52.1...v3.53.0) (2020-01-06)
 
 
