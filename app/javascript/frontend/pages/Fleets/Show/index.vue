@@ -17,7 +17,7 @@
           <span v-tooltip="leaveTooltip">
             <Btn
               v-if="fleet && myFleet"
-              :disabled="fleet.role === 'admin' || leaving"
+              :disabled="myFleet.role === 'admin' || leaving"
               inline
               variant="danger"
               @click.native="leave"
@@ -540,6 +540,8 @@ export default {
         onConfirm: async () => {
           const response = await this.$api.destroy(`fleets/${this.fleet.slug}/members/leave`)
 
+          this.leaving = false
+
           if (!response.error) {
             this.$comlink.$emit('fleetUpdate')
 
@@ -549,10 +551,18 @@ export default {
 
             this.$router.push({ name: 'home' })
           } else {
-            this.$alert({
-              text: this.$t('messages.fleet.leave.failure'),
-            })
-            this.leaving = false
+            const { error } = response
+            if (error.response && error.response.data) {
+              const { data: errorData } = error.response
+
+              this.$alert({
+                text: errorData.message,
+              })
+            } else {
+              this.$alert({
+                text: this.$t('messages.fleet.leave.failure'),
+              })
+            }
           }
         },
         onClose: () => {

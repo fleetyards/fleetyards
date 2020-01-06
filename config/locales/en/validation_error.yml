@@ -6,9 +6,12 @@ en:
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
     fleet:
-      create: Fleet could not be created
-      update: Fleet could not be updated
-      destroy: Fleet could not be destroyed
+      create: Fleet could not be created.
+      update: Fleet could not be updated.
+      destroy: Fleet could not be destroyed.
+    fleet_memberships:
+      destroy: Fleet Membership could not be deleted.
+      destroy_as_admin: You can't leave a Fleet as an Admin.
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed
