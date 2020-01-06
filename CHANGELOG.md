@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.53.0](https://github.com/fleetyards/app/compare/v3.52.1...v3.53.0) (2020-01-06)
+
+
+### Features
+
+* **fleets:** add stats to dashboard ([65638ae](https://github.com/fleetyards/app/commit/65638ae6f6648fd384dcde113240ce519704ebda))
+* **fleets:** hide leave button for non members ([6ff5c86](https://github.com/fleetyards/app/commit/6ff5c869f481cf1e790b58fe8ca96f2275e80346))
+
 ### [3.52.1](https://github.com/fleetyards/app/compare/v3.52.0...v3.52.1) (2020-01-06)
 
 ## [3.52.0](https://github.com/fleetyards/app/compare/v3.51.0...v3.52.0) (2020-01-06)
