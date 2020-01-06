@@ -12,12 +12,12 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
-            <input
+            <FormInput
+              id="name"
               v-model="form.name"
+              name="vehicle-name"
               :placeholder="vehicle.model.name"
-              type="text"
-              class="form-control"
-            >
+            />
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -113,6 +113,7 @@
 
 <script>
 import Modal from 'frontend/components/Modal'
+import FormInput from 'frontend/components/Form/FormInput'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
 
@@ -120,6 +121,7 @@ export default {
   components: {
     Modal,
     Checkbox,
+    FormInput,
     Btn,
   },
   props: {

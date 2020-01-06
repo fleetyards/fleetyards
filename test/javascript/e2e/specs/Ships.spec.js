@@ -2,7 +2,7 @@ describe('Ships', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.clickNav('Ships')
+    cy.clickNav('models')
 
     cy.url().should('include', '/ships')
 

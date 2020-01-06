@@ -2,9 +2,8 @@ describe('Stations', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.clickNav('Stations')
-
-    cy.get('#stations-sub-menu').contains('Overview').click()
+    cy.clickNav('stations-menu')
+    cy.clickNav('stations')
 
     cy.url().should('include', '/stations')
 

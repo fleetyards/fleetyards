@@ -18,7 +18,7 @@ class Ability
     can :read, [:models, Model]
     can :read, [:components, Component]
 
-    can :check, :users
+    can :check, :api_users
 
     can :show, :api
     can :read, :api_stats
@@ -39,9 +39,9 @@ class Ability
     can %i[index], :api_roadmap
     can %i[index], :api_search
     can %i[index], :api_trade_routes
-    can :read, :api_fleet
+    can %i[read check], :api_fleet
 
-    can %i[read_public], :user
+    can %i[read_public], :api_user
   end
 
   private def user_rules(user)

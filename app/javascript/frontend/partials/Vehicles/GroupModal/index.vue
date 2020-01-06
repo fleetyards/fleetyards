@@ -10,27 +10,14 @@
     >
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div
-            :class="{'has-error has-feedback': errors.has('name')}"
-            class="form-group"
-          >
-            <input
-              v-model="form.name"
-              v-tooltip.right="errors.first('name')"
-              v-validate="'required'"
-              :data-vv-as="$t('labels.hangarGroup.name')"
-              :placeholder="$t('labels.hangarGroup.name')"
-              name="name"
-              type="text"
-              class="form-control"
-            >
-            <span
-              v-show="errors.has('name')"
-              class="form-control-feedback"
-            >
-              <i class="fal fa-exclamation-triangle" />
-            </span>
-          </div>
+          <FormInput
+            v-model="form.name"
+            v-validate="'required|alpha_dash'"
+            :data-vv-as="$t('labels.hangarGroup.name')"
+            :placeholder="$t('labels.hangarGroup.name')"
+            :error="errors.first('group-name')"
+            name="group-name"
+          />
         </div>
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
           <div
@@ -80,6 +67,7 @@
 <script>
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
 
@@ -87,18 +75,22 @@ export default {
   components: {
     Modal,
     Btn,
+    FormInput,
     Swatches,
   },
+
   props: {
     group: {
       type: Object,
       required: true,
     },
+
     visible: {
       type: Boolean,
       default: false,
     },
   },
+
   data() {
     return {
       submitting: false,
@@ -109,17 +101,21 @@ export default {
       },
     }
   },
+
   computed: {
     title() {
       if (this.group.id) {
         return this.$t('headlines.hangarGroup.edit')
       }
+
       return this.$t('headlines.hangarGroup.create')
     },
+
     id() {
       return (this.group.id || 'new')
     },
   },
+
   watch: {
     group() {
       this.form = {
@@ -128,10 +124,12 @@ export default {
       }
     },
   },
+
   methods: {
     open() {
       this.$refs.modal.open()
     },
+
     remove() {
       this.deleting = true
       this.$confirm({
@@ -144,6 +142,7 @@ export default {
         },
       })
     },
+
     async destroy() {
       const response = await this.$api.destroy(`hangar-groups/${this.group.id}`)
       if (!response.error) {
@@ -153,11 +152,14 @@ export default {
         this.deleting = false
       }
     },
+
     async save() {
       const result = await this.$validator.validateAll()
+
       if (!result) {
         return
       }
+
       this.submitting = true
       if (this.group.id) {
         this.update()
@@ -165,6 +167,7 @@ export default {
         this.create()
       }
     },
+
     async update() {
       const response = await this.$api.put(`hangar-groups/${this.group.id}`, this.form)
       this.submitting = false
@@ -177,6 +180,7 @@ export default {
         })
       }
     },
+
     async create() {
       const response = await this.$api.post('hangar-groups', this.form)
       this.submitting = false

@@ -25,6 +25,7 @@
                           data-test="home-search"
                           :placeholder="$t('placeholders.search')"
                           size="large"
+                          name="search-query"
                           :autofocus="!mobile"
                         />
                         <Btn

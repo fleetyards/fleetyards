@@ -1,5 +1,6 @@
 <template>
   <div
+    :key="name"
     class="form-input"
     :class="cssClasses"
   >
@@ -13,10 +14,13 @@
       :id="id"
       ref="input"
       v-model="inputValue"
+      v-tooltip.right="error"
       :placeholder="placeholder"
       :type="type"
+      :data-test="`input-${name}`"
       :aria-label="ariaLabel"
       :autofocus="autofocus"
+      :name="name"
       @input="update"
     >
     <Btn
@@ -40,11 +44,13 @@ export default {
   components: {
     Btn,
   },
+
   props: {
     value: {
       type: [String, Number],
       default: null,
     },
+
     type: {
       type: String,
       default: 'text',
@@ -52,26 +58,42 @@ export default {
         return ['text', 'number'].indexOf(value) !== -1
       },
     },
+
+    name: {
+      type: String,
+      required: true,
+    },
+
+    error: {
+      type: String,
+      default: null,
+    },
+
     id: {
       type: String,
       default: null,
     },
+
     label: {
       type: String,
       default: null,
     },
+
     placeholder: {
       type: String,
       default: null,
     },
+
     ariaLabel: {
       type: String,
       default: null,
     },
+
     autofocus: {
       type: Boolean,
       default: false,
     },
+
     variant: {
       type: String,
       default: 'default',
@@ -79,6 +101,7 @@ export default {
         return ['default', 'clean'].indexOf(value) !== -1
       },
     },
+
     size: {
       type: String,
       default: 'default',
@@ -87,34 +110,42 @@ export default {
       },
     },
   },
+
   data() {
     return {
       inputValue: null,
     }
   },
+
   computed: {
     cssClasses() {
       return {
+        'has-error has-feedback': this.error,
         'form-input-large': this.size === 'large',
         'form-input-clean': this.variant === 'clean',
       }
     },
   },
+
   watch: {
     value() {
       this.inputValue = this.value
     },
   },
+
   mounted() {
     this.inputValue = this.value
   },
+
   methods: {
     setFocus() {
       this.$refs.input.focus()
     },
+
     update() {
       this.$emit('input', this.inputValue)
     },
+
     clear() {
       this.$emit('input', null)
       this.$emit('clear')

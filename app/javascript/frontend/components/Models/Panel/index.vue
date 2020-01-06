@@ -2,8 +2,11 @@
   <div>
     <Panel
       v-if="model"
-      :id="model.slug"
+      :id="id"
       class="model-panel"
+      :class="{
+        [`model-panel-${model.slug}`]: true
+      }"
       :highlight="vehicle && vehicle.flagship"
     >
       <div class="panel-heading">
@@ -209,6 +212,14 @@ export default {
   computed: {
     uuid() {
       return this._uid
+    },
+
+    id() {
+      if (this.vehicle) {
+        return this.vehicle.id
+      }
+
+      return this.model.slug
     },
 
     customName() {

@@ -2,6 +2,7 @@
   <form @submit.prevent="filter">
     <FormInput
       v-model="form.nameCont"
+      name="shop-name"
       :placeholder="$t('placeholders.filters.shopItems.name')"
     />
 
@@ -36,6 +37,7 @@
     <FormInput
       :id="idFor('shopitems-min-price')"
       v-model="form.priceGteq"
+      name="shop-price-gteq"
       :label="$t('labels.filters.shopItems.minPrice')"
       :placeholder="$t('placeholders.filters.shopItems.minPrice')"
       type="number"
@@ -44,6 +46,7 @@
     <FormInput
       :id="idFor('shopitems-max-price')"
       v-model="form.priceLteq"
+      name="shop-price-lteq"
       :label="$t('labels.filters.shopItems.maxPrice')"
       :placeholder="$t('placeholders.filters.shopItems.maxPrice')"
       type="number"

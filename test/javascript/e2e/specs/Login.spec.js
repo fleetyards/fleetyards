@@ -2,7 +2,7 @@ describe('Login', () => {
   it('Loads and excepts valid credentials', () => {
     cy.visit('/')
 
-    cy.clickNav('Login')
+    cy.clickNav('login')
 
     cy.url().should('include', '/login')
 
@@ -16,7 +16,7 @@ describe('Login', () => {
       cy.location('pathname').should('eq', '/')
 
       cy.contains('.username', userData.test.username).click()
-      cy.clickNav('Logout')
+      cy.clickNav('logout')
 
       cy.contains('nav a', 'Login').should('exist')
 

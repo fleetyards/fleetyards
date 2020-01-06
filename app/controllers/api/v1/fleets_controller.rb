@@ -102,7 +102,7 @@ module Api
 
         return if fleet.save
 
-        render json: ValidationError.new('create', fleet.errors), status: :bad_request
+        render json: ValidationError.new('fleet.create', fleet.errors.messages), status: :bad_request
       end
 
       def update
@@ -110,7 +110,7 @@ module Api
 
         return if fleet.update(fleet_params)
 
-        render json: ValidationError.new('update', fleet.errors), status: :bad_request
+        render json: ValidationError.new('fleet.update', fleet.errors.messages), status: :bad_request
       end
 
       def destroy
@@ -118,7 +118,7 @@ module Api
 
         return if fleet.destroy
 
-        render json: ValidationError.new('destroy', fleet.errors), status: :bad_request
+        render json: ValidationError.new('fleet.destroy', fleet.errors), status: :bad_request
       end
 
       def fleetchart
@@ -212,6 +212,11 @@ module Api
         )
 
         render json: models_by_classification.to_json
+      end
+
+      def check
+        authorize! :check, :api_fleet
+        render json: { taken: Fleet.exists?(['lower(name) = :value', { value: (fleet_params[:name] || '').downcase }]) }
       end
 
       private def fleet

@@ -9,35 +9,16 @@
 
       <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
-          <div
-            :class="{'has-error has-feedback': errors.has('name')}"
-            class="form-group"
-          >
-            <label for="name">
-              {{ $t('labels.fleet.name') }}
-            </label>
-            <input
-              id="name"
-              v-model="form.name"
-              v-tooltip.bottom-end="errors.first('name')"
-              v-validate="'required|alpha_dash|fleet'"
-              data-test="name"
-              :data-vv-as="$t('labels.fleet.name')"
-              :placeholder="$t('labels.fleet.name')"
-              name="name"
-              type="text"
-              class="form-control"
-            >
-            <span
-              v-show="errors.has('name')"
-              class="form-control-feedback"
-            >
-              <i
-                :title="errors.first('name')"
-                class="fal fa-exclamation-triangle"
-              />
-            </span>
-          </div>
+          <FormInput
+            v-model="form.name"
+            v-validate="'required|alpha_dash|fleet'"
+            :data-vv-as="$t('labels.fleet.name')"
+            :placeholder="$t('labels.fleet.name')"
+            :label="$t('labels.fleet.name')"
+            :error="errors.first('name')"
+            name="name"
+            size="large"
+          />
         </div>
       </div>
       <div class="row">
@@ -47,6 +28,7 @@
             :loading="submitting"
             type="submit"
             size="large"
+            data-test="fleet-save"
           >
             {{ $t('actions.save') }}
           </Btn>
@@ -59,12 +41,14 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 
 export default {
   name: 'FleetAdd',
 
   components: {
     Btn,
+    FormInput,
   },
 
   mixins: [

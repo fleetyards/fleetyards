@@ -63,17 +63,21 @@ module RSI
 
       model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
 
-      model.hardpoints.destroy_all
+      model.hardpoints.where(rsi_key: nil).destroy_all
 
+      hardpoint_ids = []
       components = data['compiled']
       components.each_key do |component_class|
         types = components[component_class]
         types.each_key do |type|
-          types[type].each do |hardpoint_data|
-            create_or_update_hardpoint(hardpoint_data, model.id)
+          types[type].each_with_index do |hardpoint_data, index|
+            hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
+            hardpoint_ids << hardpoint.id
           end
         end
       end
+
+      model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
 
       model.hidden = false
 
@@ -193,15 +197,29 @@ module RSI
       manufacturer
     end
 
-    def create_or_update_hardpoint(hardpoint_data, model_id)
-      hardpoint = Hardpoint.create!(
-        model_id: model_id,
-        hardpoint_type: hardpoint_data['type'],
-        size: hardpoint_data['size'],
+    def create_or_update_hardpoint(hardpoint_data, model_id, index)
+      key = [
+        model_id,
+        hardpoint_data['component_class'],
+        hardpoint_data['type'],
+        hardpoint_data['category'],
+        hardpoint_data['size'],
+        hardpoint_data['quantity'].to_i,
+        hardpoint_data['mounts'].to_i,
+        index
+      ].join('-')
+
+      hardpoint = Hardpoint.find_or_create_by(rsi_key: key) do |new_hardpoint|
+        new_hardpoint.model_id = model_id
+        new_hardpoint.hardpoint_type = hardpoint_data['type']
+        new_hardpoint.size = hardpoint_data['size']
+        new_hardpoint.quantity = hardpoint_data['quantity'].to_i
+        new_hardpoint.mounts = hardpoint_data['mounts'].to_i
+        new_hardpoint.category = hardpoint_data['category']
+      end
+
+      hardpoint.update(
         details: hardpoint_data['details'],
-        quantity: hardpoint_data['quantity'].to_i,
-        mounts: hardpoint_data['mounts'].to_i,
-        category: hardpoint_data['category'],
         component_class: hardpoint_data['component_class'],
         default_empty: hardpoint_data['name'].blank?
       )
