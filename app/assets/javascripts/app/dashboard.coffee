@@ -14,6 +14,7 @@ window.App.Dashboard.checkQuickStats = (callback) ->
       $('#ships-count-year').text(data.ships_count_year)
       $('#ships-count-total').text(data.ships_count_total)
       $('#users-count-total').text(data.users_count_total)
+      $('#fleets-count-total').text(data.fleets_count_total)
 
 window.App.Dashboard.charts = []
 

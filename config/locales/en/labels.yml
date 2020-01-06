@@ -34,6 +34,7 @@ en:
       ships_count_year: New Ships in %{year}
       ships_count_total: Total Ships
       users_count_total: Total Users
+      fleets_count_total: Total Fleets
       models_by_classification: Models by Classification
       models_by_manufacturer: Models by Manufacturer
       models_by_production_status: Models by Production Status

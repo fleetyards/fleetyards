@@ -9,6 +9,7 @@ class AdminNotifierWorker
       registrations: User.where(created_at: (Time.zone.now - 1.week)..Time.zone.now).size,
       ships: Model.where(created_at: (Time.zone.now - 1.week)..Time.zone.now).size,
       vehicles: Vehicle.where(created_at: (Time.zone.now - 1.week)..Time.zone.now).size
+      fleets: Fleet.where(created_at: (Time.zone.now - 1.week)..Time.zone.now).size
     }
 
     AdminMailer.weekly(stats).deliver_later
