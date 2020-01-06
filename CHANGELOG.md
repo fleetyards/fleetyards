@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.49.0](https://github.com/fleetyards/app/compare/v3.48.0...v3.49.0) (2020-01-06)
+
+
+### Features
+
+* **fleet:** add e2e tests and rework FormInput ([02a5919](https://github.com/fleetyards/app/commit/02a5919d6590cb98f16b042c116daafa37cf513e))
+
+
+### Bug Fixes
+
+* **add-to-hangar:** update jbuilder views for action cable ([f071052](https://github.com/fleetyards/app/commit/f071052bbe1f44de8ff46209e006482b3ccbdfbf))
+* **e2e:** update hangar nav ([8762da1](https://github.com/fleetyards/app/commit/8762da1237e36eeb00d006b5f35ed072b41b02bd))
+* **e2e:** update helper usage ([023e366](https://github.com/fleetyards/app/commit/023e366a0f59c22992a87e8c7b74e60e00fef710))
+* **e2e:** update keys ([d3251ad](https://github.com/fleetyards/app/commit/d3251ad1007d1d7c4c9d01f431e1ac4570628d73))
+* **e2e:** update test labels ([120f51b](https://github.com/fleetyards/app/commit/120f51be036b513d0f81d580e86456fa598e827d))
+* **e2e-specs:** use correct data-test label ([c2464e1](https://github.com/fleetyards/app/commit/c2464e1097aaa70e99c4063cd7f52d3d0cb6e7fc))
+* **specs:** update default name for quicksearch ([ceb3c9a](https://github.com/fleetyards/app/commit/ceb3c9a1bc8149a18f4694a16c15a044d57f6716))
+
 ## [3.48.0](https://github.com/fleetyards/app/compare/v3.47.0...v3.48.0) (2019-12-29)
 
 
