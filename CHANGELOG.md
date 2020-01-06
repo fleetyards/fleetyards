@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.51.0](https://github.com/fleetyards/app/compare/v3.50.0...v3.51.0) (2020-01-06)
+
+
+### Features
+
+* **fleets:** update invites call ([6288676](https://github.com/fleetyards/app/commit/6288676589d7fb03f6a19662faa71d4bb12e6b2f))
+
 ## [3.50.0](https://github.com/fleetyards/app/compare/v3.48.0...v3.50.0) (2020-01-06)
 
 
