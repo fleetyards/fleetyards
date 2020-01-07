@@ -53,7 +53,14 @@
     >
       <div class="nav-container-inner">
         <ul>
-          <UserNav />
+          <UserNav v-if="isAuthenticated" />
+          <NavItem
+            v-else
+            key="user-menu-guest"
+            :to="{ name: 'login' }"
+            :label="$t('nav.login')"
+            icon="fad fa-sign-in"
+          />
           <NavItem
             :to="{ name: 'home' }"
             :label="$t('nav.home')"

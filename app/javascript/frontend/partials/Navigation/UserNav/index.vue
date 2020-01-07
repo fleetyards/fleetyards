@@ -20,20 +20,12 @@
     </span>
     <template slot="submenu">
       <NavItem
-        v-if="isAuthenticated"
         :to="{ name: 'settings' }"
         :label="$t('nav.settings.index')"
         icon="fad fa-cog"
       />
-      <NavItem
-        v-else
-        :to="{ name: 'login' }"
-        :label="$t('nav.login')"
-        icon="fad fa-sign-in"
-      />
       <NavItem divider />
       <NavItem
-        v-if="isAuthenticated"
         :action="logout"
         menu-key="logout"
         :label="$t('nav.logout')"

@@ -280,11 +280,12 @@ export default {
 
   watch: {
     $route() {
-      this.fetch()
+      if (this.canView) {
+        this.fetch()
+      }
     },
 
     canView() {
-      console.log(this.canView)
       if (this.canView) {
         this.fetch()
       }
