@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.56.0](https://github.com/fleetyards/app/compare/v3.55.1...v3.56.0) (2020-01-07)
+
+
+### Features
+
+* **fleets:** update member list on mobile ([dbdb293](https://github.com/fleetyards/app/commit/dbdb293edc264642136eb69473b6f9d4167f1c2d))
+
+
+### Bug Fixes
+
+* **e2e:** update data test selector ([5baba4b](https://github.com/fleetyards/app/commit/5baba4be63df5a13eaec9b4d574828af7501674a))
+* **e2e:** update data test selector ([075e333](https://github.com/fleetyards/app/commit/075e3332dd1aeb228cfc001d238d0db751714dcb))
+
 ### [3.55.1](https://github.com/fleetyards/app/compare/v3.55.0...v3.55.1) (2020-01-07)
 
 
