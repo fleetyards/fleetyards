@@ -305,7 +305,6 @@ export default {
       vehicles: [],
       models: [],
       fleetchartVehicles: [],
-      fleetchartModels: [],
     }
   },
 
@@ -373,6 +372,10 @@ export default {
       } else {
         this.fetchVehicles()
       }
+    },
+
+    fleetchartVisible() {
+      this.fetchAdditional()
     },
 
     fleet() {
