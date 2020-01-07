@@ -72,8 +72,19 @@
     width: 300px;
   }
 
+
+  .username {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    font-size: 120%;
+
+    .avatar {
+      margin-right: 15px;
+    }
+  }
+
   .manufacturer,
-  .username,
   .fleet-name {
     flex-grow: 1;
   }
@@ -312,16 +323,6 @@
 
       & > div {
         padding: 10px;
-      }
-
-      .username {
-        display: flex;
-        align-items: center;
-        font-size: 120%;
-
-        .avatar {
-          margin-right: 15px;
-        }
       }
 
       .store-image {
