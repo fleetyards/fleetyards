@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.55.0](https://github.com/fleetyards/app/compare/v3.54.1...v3.55.0) (2020-01-07)
+
+
+### Features
+
+* **fleet:** update nav ([47aee64](https://github.com/fleetyards/app/commit/47aee64a61ce33635d00f2ae736273b161803eb7))
+
 ### [3.54.1](https://github.com/fleetyards/app/compare/v3.54.0...v3.54.1) (2020-01-07)
 
 
