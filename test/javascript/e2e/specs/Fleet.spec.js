@@ -18,7 +18,7 @@ describe('Fleet', () => {
 
     cy.visit('/')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')
 
     cy.url().should('include', '/login')
