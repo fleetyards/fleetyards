@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.57.1](https://github.com/fleetyards/app/compare/v3.57.0...v3.57.1) (2020-01-07)
+
+
+### Bug Fixes
+
+* **csp:** update manifest_src ([3fe4d5f](https://github.com/fleetyards/app/commit/3fe4d5f766b76ccb4bbfa7695cf5842b43db095b))
+
 ## [3.57.0](https://github.com/fleetyards/app/compare/v3.56.0...v3.57.0) (2020-01-07)
 
 
