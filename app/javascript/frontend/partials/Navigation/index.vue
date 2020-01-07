@@ -361,6 +361,7 @@ export default {
           to: { name: 'fleet', params: { slug: this.currentFleet.slug } },
           label: this.currentFleet.name,
           image: this.currentFleet.logo,
+          exact: true,
         },
         ...officerItems,
         ...adminItems,

@@ -308,7 +308,8 @@ export default {
 
     canEdit(member) {
       return this.myFleets.filter((fleet) => fleet.role === 'admin')
-        .some((fleet) => fleet.slug === this.$route.params.slug) && member.username !== this.currentUser.username
+        .some((fleet) => fleet.slug === this.$route.params.slug)
+          && member.username !== this.currentUser.username
     },
 
     openInviteModal() {
