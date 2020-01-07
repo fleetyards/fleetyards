@@ -58,6 +58,7 @@ Rails.application.config.content_security_policy do |policy|
 
   policy.default_src :none
   policy.base_uri :self
+  policy.manifest_src :self
   policy.form_action(*form_action)
   policy.connect_src(*connect_src)
   policy.script_src(*script_src)
