@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.57.0](https://github.com/fleetyards/app/compare/v3.56.0...v3.57.0) (2020-01-07)
+
+
+### Features
+
+* **fleets:** update members list ([2f490ce](https://github.com/fleetyards/app/commit/2f490cee9f3f6fbf31cab5fa1d43b0d5f9c89994))
+
 ## [3.56.0](https://github.com/fleetyards/app/compare/v3.55.1...v3.56.0) (2020-01-07)
 
 
