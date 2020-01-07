@@ -298,33 +298,53 @@
     display: none;
   }
 
-  .flex-list > .flex-list-item > .flex-list-row {
-    flex-direction: column;
+  .flex-list > .flex-list-item {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 
-    & > div {
-      padding: 10px;
+    &:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
     }
 
-    .store-image {
-      padding-left: 10px;
-      width: 100%;
+    > .flex-list-row {
+      flex-direction: column;
 
-      .image {
+      & > div {
+        padding: 10px;
+      }
+
+      .username {
+        display: flex;
+        align-items: center;
+        font-size: 120%;
+
+        .avatar {
+          margin-right: 15px;
+        }
+      }
+
+      .store-image {
+        padding-left: 10px;
+        width: 100%;
+
+        .image {
+          width: 100%;
+        }
+      }
+
+      .actions {
+        padding-right: 10px;
         width: 100%;
       }
-    }
 
-    .actions {
-      padding-right: 10px;
-      width: 100%;
-    }
+      .price,
+      .rent-price {
+        flex-direction: row;
 
-    .price,
-    .rent-price {
-      flex-direction: row;
-
-      .price-label {
-        display: inline;
+        .price-label {
+          display: inline;
+        }
       }
     }
   }

@@ -52,7 +52,6 @@
               class="fade-list-item col-xs-12 flex-list-heading"
             >
               <div class="flex-list-row">
-                <div class="avatar" />
                 <div class="username">
                   <router-link :to="sortByUsername">
                     {{ $t('labels.username') }}
@@ -73,13 +72,11 @@
               class="fade-list-item col-xs-12 flex-list-item"
             >
               <div class="flex-list-row">
-                <div class="avatar">
+                <div class="username">
                   <Avatar
                     :avatar="member.avatar"
                     size="small"
                   />
-                </div>
-                <div class="username">
                   {{ member.username }}
                 </div>
                 <div class="role">

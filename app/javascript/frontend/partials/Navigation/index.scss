@@ -1,3 +1,5 @@
+@import '~stylesheets/variables';
+
 nav {
   transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
   position: relative;
