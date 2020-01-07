@@ -307,11 +307,8 @@ export default {
     },
 
     canEdit(member) {
-      if (!this.currentUser) {
-        return false
-      }
-
-      return this.fleet && this.fleet.role === 'admin' && member.username !== this.currentUser.username
+      return this.myFleets.filter((fleet) => fleet.role === 'admin')
+        .some((fleet) => fleet.slug === this.$route.params.slug) && member.username !== this.currentUser.username
     },
 
     openInviteModal() {
