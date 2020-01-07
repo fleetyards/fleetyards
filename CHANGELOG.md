@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.54.1](https://github.com/fleetyards/app/compare/v3.54.0...v3.54.1) (2020-01-07)
+
+
+### Bug Fixes
+
+* **fleets:** update invite template and fix member list abilities ([445cb1e](https://github.com/fleetyards/app/commit/445cb1e47defb255a47e1097ba39800f48029278))
+
 ## [3.54.0](https://github.com/fleetyards/app/compare/v3.53.0...v3.54.0) (2020-01-06)
 
 
