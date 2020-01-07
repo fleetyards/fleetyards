@@ -1,21 +1,20 @@
 <template>
   <div
-    v-if="item"
     class="nav-item-inner"
     :class="{
       'nav-item-inner-slim': slim
     }"
   >
     <img
-      v-if="item.image"
-      :src="item.image"
-      :alt="`${item.label} image`"
+      v-if="image"
+      :src="image"
+      :alt="`${label} image`"
       class="nav-item-image"
     >
     <i
-      v-else-if="item.icon"
+      v-else-if="icon"
       :class="{
-        [item.icon]: true,
+        [icon]: true,
       }"
     />
     <span
@@ -28,10 +27,10 @@
       <span
         v-if="!slim"
         :class="{
-          'nav-item-text': !item.icon && !item.image,
+          'nav-item-text': !icon && !image,
         }"
       >
-        {{ item.label }}
+        {{ label }}
       </span>
     </transition>
   </div>
@@ -40,9 +39,19 @@
 <script>
 export default {
   props: {
-    item: {
-      type: Object,
-      required: true,
+    label: {
+      type: String,
+      default: '',
+    },
+
+    icon: {
+      type: String,
+      default: null,
+    },
+
+    image: {
+      type: String,
+      default: null,
     },
 
     slim: {
@@ -53,7 +62,7 @@ export default {
 
   computed: {
     firstLetter() {
-      return this.item.label.charAt(0)
+      return this.label.charAt(0)
     },
   },
 }

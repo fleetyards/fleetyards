@@ -46,76 +46,81 @@
     </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
     <div
-      :key="navKey"
       :class="{
         'nav-container-slim': slim,
       }"
       class="nav-container"
     >
       <div class="nav-container-inner">
-        <ul v-if="isFleetRoute">
-          <component
-            :is="navItem.component || 'NavItem'"
-            v-for="(navItem, index) in fleetNavItems"
-            :key="`fleet-nav-${index}`"
-            :item="navItem"
-            :slim="slim"
-          />
-        </ul>
-        <ul v-else>
-          <component
-            :is="navItem.component || 'NavItem'"
-            v-for="(navItem, index) in navItems"
-            :key="`nav-${index}`"
-            :item="navItem"
-            :slim="slim"
-          />
-        </ul>
-        <ul class="nav-bottom">
+        <ul>
+          <UserNav />
           <NavItem
-            v-if="!mobile"
-            :item="{
-              action: toggleSlim,
-              label: toggleSlimLabel,
-            }"
-            :slim="slim"
-          >
-            <span v-show="slim">
-              <i class="fal fa-chevron-double-right" />
-            </span>
-            <span v-show="!slim">
-              <i class="fal fa-chevron-double-left" />
-            </span>
-            <transition name="fade-nav">
-              <span v-if="!slim">{{ toggleSlimLabel }}</span>
-            </transition>
-          </NavItem>
-          <NavItem
-            :item="{}"
-            :slim="slim"
-            class="logo-menu"
-          >
-            <img
-              :src="require('images/favicon.png')"
-              class="logo"
-              alt="logo"
-            >
-            <transition name="fade-nav">
-              <span v-if="!slim">{{ $t('app') }}</span>
-            </transition>
-          </NavItem>
+            :to="{ name: 'home' }"
+            :label="$t('nav.home')"
+            :icon="isFleetRoute ? 'fal fa-chevron-left' : 'fad fa-home-alt'"
+            exact
+          />
+          <FleetNav v-if="isFleetRoute" />
+          <template v-else>
+            <NavItem
+              v-if="isAuthenticated || !hangarPreview"
+              :to="{ name: 'hangar' }"
+              :label="$t('nav.hangar')"
+              icon="fad fa-bookmark"
+            />
+            <NavItem
+              v-else
+              :to="{ name: 'hangar-preview' }"
+              :label="$t('nav.hangar')"
+              icon="fal fa-bookmark"
+            />
+            <NavItem
+              :to="{ name: 'models' }"
+              :label="$t('nav.models')"
+              icon="fad fa-starship"
+            />
+            <StationsNav />
+            <FleetsNav />
+            <NavItem
+              :to="{ name: 'images' }"
+              :label="$t('nav.images')"
+              icon="fad fa-images"
+            />
+            <NavItem
+              :to="{
+                name: 'trade-routes',
+                query: {
+                  q: this.$store.state.filters['trade-routes'],
+                },
+              }"
+              :label="$t('nav.tradeRoutes')"
+              icon="fad fa-pallet-alt"
+            />
+            <RoadmapNav />
+            <NavItem
+              :to="{ name: 'stats' }"
+              :label="$t('nav.stats')"
+              icon="fad fa-chart-bar"
+            />
+          </template>
         </ul>
+        <NavFooter />
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import NavItem from 'frontend/partials/Navigation/NavItem'
-import FleetsNavItem from 'frontend/partials/Navigation/FleetsNavItem'
-import UserNavItem from 'frontend/partials/Navigation/UserNavItem'
-import { mapGetters } from 'vuex'
+import UserNav from 'frontend/partials/Navigation/UserNav'
+import FleetNav from 'frontend/partials/Navigation/FleetNav'
+import FleetsNav from 'frontend/partials/Navigation/FleetsNav'
+import StationsNav from 'frontend/partials/Navigation/StationsNav'
+import RoadmapNav from 'frontend/partials/Navigation/RoadmapNav'
+import NavFooter from 'frontend/partials/Navigation/NavFooter'
+import NavigationMixin from 'frontend/mixins/Navigation'
 
 export default {
   name: 'Navigation',
@@ -123,325 +128,37 @@ export default {
   components: {
     QuickSearch,
     NavItem,
-    FleetsNavItem,
-    UserNavItem,
+    UserNav,
+    FleetNav,
+    FleetsNav,
+    StationsNav,
+    RoadmapNav,
+    NavFooter,
   },
+
+  mixins: [
+    NavigationMixin,
+  ],
 
   data() {
     return {
-      currentFleet: null,
       searchQuery: null,
-      invites: [],
     }
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
-
     ...mapGetters('app', [
       'navCollapsed',
-      'navSlim',
       'isUpdateAvailable',
       'gitRevision',
     ]),
-
-    ...mapGetters('session', [
-      'currentUser',
-      'isAuthenticated',
-    ]),
-
-    ...mapGetters('fleet', {
-      fleetPreview: 'preview',
-    }),
 
     ...mapGetters('hangar', {
       hangarPreview: 'preview',
     }),
 
-    fleets() {
-      if (!this.currentUser) {
-        return []
-      }
-
-      return this.currentUser.fleets
-    },
-
-    myFleets() {
-      return this.fleets.filter((fleet) => !fleet.invitation)
-    },
-
-    currentFleetRole() {
-      if (!this.currentFleet) {
-        return null
-      }
-
-      const myFleet = this.myFleets.find((fleet) => fleet.slug === this.currentFleet.slug)
-
-      if (!myFleet) {
-        return null
-      }
-
-      return myFleet.role
-    },
-
-    toggleSlimLabel() {
-      if (this.slim) {
-        return this.$t('nav.toggleSlimExpand')
-      }
-
-      return this.$t('nav.toggleSlimCollapse')
-    },
-
-    navItems() {
-      return [
-        ...this.userNavItems,
-        {
-          to: { name: 'home' },
-          exact: true,
-          icon: 'fad fa-home-alt',
-          label: this.$t('nav.home'),
-        },
-        ...this.hangarNavItems,
-        {
-          to: { name: 'models' },
-          icon: 'fad fa-starship',
-          label: this.$t('nav.models'),
-        },
-        ...this.stationsNavItems,
-        ...this.fleetsNavItems,
-        {
-          to: { name: 'images' },
-          icon: 'fad fa-images',
-          label: this.$t('nav.images'),
-        },
-        {
-          to: {
-            name: 'trade-routes',
-            query: {
-              q: this.$store.state.filters['trade-routes'],
-            },
-          },
-          icon: 'fad fa-pallet-alt',
-          label: this.$t('nav.tradeRoutes'),
-        },
-        ...this.roadmapNavItems,
-        {
-          to: { name: 'stats' },
-          icon: 'fad fa-chart-bar',
-          label: this.$t('nav.stats'),
-        },
-      ]
-    },
-
-    userNavItems() {
-      if (!this.isAuthenticated) {
-        return [{
-          to: { name: 'login' },
-          label: this.$t('nav.login'),
-          icon: 'fad fa-sign-in',
-        }, {
-          divider: true,
-        }]
-      }
-
-
-      return [{
-        component: 'UserNavItem',
-        key: 'user',
-        submenu: [{
-          to: { name: 'settings' },
-          icon: 'fad fa-cog',
-          label: this.$t('nav.settings.index'),
-        }, {
-          divider: true,
-        }, {
-          action: this.logout,
-          key: 'logout',
-          icon: 'fad fa-sign-out',
-          label: this.$t('nav.logout'),
-        }],
-      }]
-    },
-
-    hangarNavItems() {
-      if (this.isAuthenticated || !this.hangarPreview) {
-        return [{
-          to: { name: 'hangar' },
-          icon: 'fad fa-bookmark',
-          label: this.$t('nav.hangar'),
-        }]
-      }
-
-      return [{
-        to: { name: 'hangar-preview' },
-        icon: 'fal fa-bookmark',
-        label: this.$t('nav.hangar'),
-      }]
-    },
-
-    stationsNavItems() {
-      return [{
-        icon: 'fad fa-planet-ringed',
-        label: this.$t('nav.stations.index'),
-        key: 'stations-menu',
-        submenu: [{
-          to: { name: 'stations' },
-          icon: 'fad fa-planet-ringed',
-          label: this.$t('nav.stations.overview'),
-        }, {
-          to: { name: 'starsystems' },
-          icon: 'fad fa-solar-system',
-          label: this.$t('nav.stations.starsystems'),
-        }, {
-          divider: true,
-        }, {
-          to: { name: 'shops' },
-          icon: 'fad fa-store-alt',
-          label: this.$t('nav.stations.shops'),
-        }],
-      }]
-    },
-
-    roadmapNavItems() {
-      return [{
-        icon: 'fad fa-tasks-alt',
-        label: this.$t('nav.roadmap.index'),
-        key: 'roadmap-menu',
-        submenu: [{
-          to: { name: 'roadmap' },
-          icon: 'fad fa-tasks-alt',
-          label: this.$t('nav.roadmap.overview'),
-          exact: true,
-        }, {
-          to: { name: 'roadmap-changes' },
-          icon: 'fad fa-tasks',
-          label: this.$t('nav.roadmap.changes'),
-        }, {
-          to: { name: 'roadmap-ships' },
-          icon: 'fad fa-rocket-launch',
-          label: this.$t('nav.roadmap.ships'),
-        }],
-      }]
-    },
-
-    fleetNavItems() {
-      if (!this.currentFleet) {
-        return []
-      }
-
-      const officerItems = []
-      if (this.currentFleetRole === 'admin' || this.currentFleetRole === 'officer') {
-        officerItems.push({
-          to: { name: 'fleet-members', params: { slug: this.currentFleet.slug } },
-          label: this.$t('nav.fleets.members'),
-          icon: 'fad fa-users',
-        })
-      }
-
-      const adminItems = []
-      if (this.currentFleetRole === 'admin') {
-        adminItems.push({
-          to: { name: 'fleet-settings', params: { slug: this.currentFleet.slug } },
-          label: this.$t('nav.fleets.settings'),
-          icon: 'fad fa-cogs',
-        })
-      }
-
-      return [
-        ...this.userNavItems,
-        {
-          to: { name: 'home' },
-          exact: true,
-          icon: 'fal fa-chevron-left',
-          label: this.$t('nav.home'),
-        },
-        {
-          to: { name: 'fleet', params: { slug: this.currentFleet.slug } },
-          label: this.currentFleet.name,
-          image: this.currentFleet.logo,
-          exact: true,
-        },
-        ...officerItems,
-        ...adminItems,
-      ]
-    },
-
-
-    fleetsNavItems() {
-      const submenu = [
-        ...this.myFleets.map((item) => ({
-          to: { name: 'fleet', params: { slug: item.slug } },
-          label: item.name,
-          image: item.logo,
-        })),
-      ]
-
-
-      if (this.isAuthenticated && this.invites.length) {
-        submenu.push({
-          to: { name: 'fleet-invites' },
-          icon: 'fad fa-envelope-open-text',
-          label: this.$t('nav.fleets.invites'),
-        })
-      }
-
-      if (this.isAuthenticated || !this.fleetPreview) {
-        submenu.push({
-          to: { name: 'fleet-add' },
-          icon: 'fal fa-plus',
-          label: this.$t('nav.fleets.add'),
-        })
-      } else {
-        submenu.push({
-          to: { name: 'fleet-preview' },
-          icon: 'fal fa-plus',
-          label: this.$t('nav.fleets.add'),
-        })
-      }
-
-      return [{
-        component: 'FleetsNavItem',
-        label: this.$t('nav.fleets.index'),
-        key: 'fleets',
-        submenu,
-      }]
-    },
-
     isFleetRoute() {
-      const { path, name } = this.$route
-      return path.includes('fleets') && name !== 'fleets' && name !== 'fleet-add' && name !== 'fleet-invites' && name !== 'fleet-preview'
-    },
-
-    slim() {
-      return this.navSlim && !this.mobile
-    },
-
-    navKey() {
-      const key = ['nav']
-
-      if (this.isAuthenticated) {
-        key.push('authenticated')
-      }
-
-      if (this.fleetPreview) {
-        key.push('fleetPreview')
-      }
-
-      if (this.hangarPreview) {
-        key.push('hangarPreview')
-      }
-
-      if (this.fleets.length) {
-        key.push(this.fleets.map((item) => item.slug).join('-'))
-      }
-
-      if (this.invites.length) {
-        key.push(this.invites.map((item) => `invite-${item.fleet.slug}`).join('-'))
-      }
-
-      return key.join('-')
+      return ['fleet', 'fleet-members', 'fleet-settings'].includes(this.$route.name)
     },
 
     environmentLabelClasses() {
@@ -468,19 +185,7 @@ export default {
   watch: {
     $route() {
       this.close()
-      this.fetchInvites()
     },
-
-    isFleetRoute() {
-      if (this.isFleetRoute) {
-        this.fetchFleet()
-      }
-    },
-  },
-
-  mounted() {
-    this.fetchInvites()
-    this.$comlink.$on('fleetUpdate', this.fetchFleet)
   },
 
   created() {
@@ -509,20 +214,12 @@ export default {
       this.$store.commit('app/toggleNav')
     },
 
-    toggleSlim() {
-      this.$store.commit('app/toggleSlimNav')
-    },
-
     open() {
       this.$store.commit('app/openNav')
     },
 
     close() {
       this.$store.commit('app/closeNav')
-    },
-
-    async logout() {
-      await this.$store.dispatch('session/logout')
     },
 
     reload() {
@@ -542,30 +239,6 @@ export default {
         })
       })
     },
-
-    async fetchFleet() {
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}?nav`)
-
-      if (!response.error) {
-        this.currentFleet = response.data
-      }
-    },
-
-    async fetchInvites() {
-      if (!this.isAuthenticated) {
-        return
-      }
-
-      const response = await this.$api.get('fleets/invites')
-
-      if (!response.error) {
-        this.invites = response.data
-      }
-    },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  @import 'index';
-</style>

@@ -162,6 +162,10 @@
     text-align: right;
     vertical-align: middle;
     padding-left: 20px;
+
+    &.actions-3x {
+      min-width: 192px;
+    }
   }
 
   .joined,

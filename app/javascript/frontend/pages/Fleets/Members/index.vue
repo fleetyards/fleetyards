@@ -1,11 +1,12 @@
 <template>
   <section class="container">
-    <div class="row">
+    <div
+      v-if="canView"
+      class="row"
+    >
       <div class="col-xs-12">
         <BreadCrumbs :crumbs="crumbs" />
       </div>
-    </div>
-    <div class="row">
       <div class="col-xs-8">
         <h1>
           {{ $t('headlines.fleets.members') }}
@@ -27,7 +28,7 @@
       </div>
     </div>
 
-    <FilteredList v-if="fleet">
+    <FilteredList v-if="fleet && canView">
       <Paginator
         v-if="members.length"
         slot="pagination-top"
@@ -61,7 +62,7 @@
                 <div class="joined">
                   {{ $t('labels.fleet.members.invited') }} / {{ $t('labels.fleet.members.joined') }}
                 </div>
-                <div class="actions">
+                <div class="actions actions-3x">
                   {{ $t('labels.actions') }}
                 </div>
               </div>
@@ -103,7 +104,7 @@
                     {{ member.acceptedAtLabel }}
                   </template>
                 </div>
-                <div class="actions">
+                <div class="actions actions-3x">
                   <Btn
                     v-if="member.role !== 'admin' && !member.invitation && !member.declinedAt"
                     size="small"
@@ -172,9 +173,10 @@ import EmptyBox from 'frontend/partials/EmptyBox'
 import FleetMembersFilterForm from 'frontend/partials/Fleets/MembersFilterForm'
 import MemberModal from 'frontend/partials/Fleets/MemberModal'
 import Avatar from 'frontend/components/Avatar'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import Filters from 'frontend/mixins/Filters'
-import Pagination from 'frontend/mixins/Pagination'
+import MetaInfoMixin from 'frontend/mixins/MetaInfo'
+import FiltersMixin from 'frontend/mixins/Filters'
+import PaginationMixin from 'frontend/mixins/Pagination'
+import FleetsMixin from 'frontend/mixins/Fleets'
 
 export default {
   name: 'Fleet',
@@ -192,9 +194,10 @@ export default {
   },
 
   mixins: [
-    MetaInfo,
-    Pagination,
-    Filters,
+    MetaInfoMixin,
+    PaginationMixin,
+    FiltersMixin,
+    FleetsMixin,
   ],
 
   data() {
@@ -215,8 +218,8 @@ export default {
       'currentUser',
     ]),
 
-    myFleets() {
-      return this.currentUser.fleets.filter((fleet) => ['officer', 'admin'].includes(fleet.role) && !fleet.invitation)
+    canView() {
+      return ['officer', 'admin'].includes(this.myFleetRole)
     },
 
     sortByUsername() {
@@ -280,6 +283,13 @@ export default {
       this.fetch()
     },
 
+    canView() {
+      console.log(this.canView)
+      if (this.canView) {
+        this.fetch()
+      }
+    },
+
     fleet() {
       if (this.fleet.backgroundImage) {
         this.$store.commit('setBackgroundImage', this.fleet.backgroundImage)
@@ -288,8 +298,9 @@ export default {
   },
 
   mounted() {
-    if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+    if (!this.canView) {
       this.$router.replace({ name: '404' })
+      return
     }
 
     this.fetch()
@@ -301,16 +312,8 @@ export default {
   },
 
   methods: {
-    checkAccess() {
-      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
-        this.$router.replace({ name: '404' })
-      }
-    },
-
     canEdit(member) {
-      return this.myFleets.filter((fleet) => fleet.role === 'admin')
-        .some((fleet) => fleet.slug === this.$route.params.slug)
-          && member.username !== this.currentUser.username
+      return this.myFleetRole === 'admin' && member.username !== this.currentUser.username
     },
 
     openInviteModal() {
@@ -382,10 +385,6 @@ export default {
     },
 
     async fetch() {
-      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
-        return
-      }
-
       this.loading = true
 
       const response = await this.$api.get(`fleets/${this.$route.params.slug}`)

@@ -1,16 +1,16 @@
 <template>
   <li
-    v-if="item.divider"
+    v-if="divider"
     class="nav-item divider"
   />
   <li
-    v-else-if="item.submenu"
+    v-else-if="hasSubmenuSlot"
     :class="{
-      active: submenuActive,
+      active: active || submenuActive,
       open: open,
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${item.key}`"
+    :data-test="`nav-${menuKey}`"
     class="nav-item sub-menu"
   >
     <a
@@ -20,7 +20,9 @@
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
-        :item="item"
+        :label="label"
+        :icon="icon"
+        :image="image"
         :slim="slim"
       />
       <transition name="fade-nav">
@@ -33,43 +35,41 @@
       </transition>
     </a>
     <b-collapse
-      :id="`${item.key}-sub-menu`"
+      :id="`${menuKey}-sub-menu`"
       :visible="open"
       tag="ul"
     >
-      <NavItem
-        v-for="(submenuItem, index) in item.submenu"
-        :key="`${item.key}-${index}`"
-        :item="submenuItem"
-        :slim="slim"
-      />
+      <slot name="submenu" />
     </b-collapse>
   </li>
   <li
-    v-else-if="item.action"
+    v-else-if="action"
     :class="{
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${item.key}`"
+    :data-test="`nav-${menuKey}`"
     class="nav-item"
-    @click="item.action"
+    @click="action"
   >
     <a v-tooltip="tooltip">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
-        :item="item"
+        :label="label"
+        :icon="icon"
+        :image="image"
         :slim="slim"
       />
     </a>
   </li>
   <router-link
-    v-else-if="item.to"
-    :to="item.to"
+    v-else-if="to"
+    :to="to"
     :class="{
+      'active': active,
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${item.to.name}`"
+    :data-test="`nav-${to.name}`"
     class="nav-item"
     tag="li"
     :exact="exact"
@@ -78,7 +78,9 @@
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
-        :item="item"
+        :label="label"
+        :icon="icon"
+        :image="image"
         :slim="slim"
       />
     </a>
@@ -94,7 +96,9 @@
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
-        :item="item"
+        :label="label"
+        :icon="icon"
+        :image="image"
         :slim="slim"
       />
     </span>
@@ -103,6 +107,7 @@
 
 <script>
 import NavItemInner from 'frontend/partials/Navigation/NavItem/NavItemInner'
+import NavigationMixin from 'frontend/mixins/Navigation'
 
 export default {
   name: 'NavItem',
@@ -111,13 +116,57 @@ export default {
     NavItemInner,
   },
 
+  mixins: [
+    NavigationMixin,
+  ],
+
   props: {
-    item: {
+    to: {
       type: Object,
-      required: true,
+      default: null,
     },
 
-    slim: {
+    action: {
+      type: Function,
+      default: null,
+    },
+
+    label: {
+      type: String,
+      default: '',
+    },
+
+    icon: {
+      type: String,
+      default: null,
+    },
+
+    image: {
+      type: String,
+      default: null,
+    },
+
+    menuKey: {
+      type: String,
+      default: null,
+    },
+
+    exact: {
+      type: Boolean,
+      default: false,
+    },
+
+    divider: {
+      type: Boolean,
+      default: false,
+    },
+
+    active: {
+      type: Boolean,
+      default: false,
+    },
+
+    submenuActive: {
       type: Boolean,
       default: false,
     },
@@ -136,7 +185,7 @@ export default {
       }
 
       return {
-        content: this.item.label,
+        content: this.label,
         classes: 'nav-item-tooltip',
         placement: 'right',
       }
@@ -146,26 +195,21 @@ export default {
       return !!this.$slots.default
     },
 
-    exact() {
-      return this.item.exact || false
+    hasSubmenuSlot() {
+      return !!this.$slots.submenu
     },
 
     matchedRoutes() {
       return this.$route.matched.map((route) => route.name)
     },
-
-    alternativeRoute() {
-      return this.$route.meta.nav
-    },
-
-    submenuActive() {
-      return this.item.submenu
-        && this.item.submenu.some((item) => this.matchedRoutes.includes(item.to?.name))
-    },
   },
 
   watch: {
     $route() {
+      this.checkRoutes()
+    },
+
+    submenuActive() {
       this.checkRoutes()
     },
   },

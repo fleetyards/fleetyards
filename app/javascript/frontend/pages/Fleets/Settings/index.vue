@@ -1,16 +1,16 @@
 <template>
   <section class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <BreadCrumbs :crumbs="crumbs" />
+        <h1>{{ $t('headlines.fleets.settings') }}</h1>
+      </div>
+    </div>
+
     <form
-      v-if="fleet"
+      v-if="canEdit && fleet"
       @submit.prevent="submit"
     >
-      <div class="row">
-        <div class="col-md-12">
-          <BreadCrumbs :crumbs="crumbs" />
-          <h1>{{ $t('headlines.fleets.settings') }}</h1>
-        </div>
-      </div>
-
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <div
@@ -69,18 +69,30 @@
       >
         {{ $t('actions.delete') }}
       </Btn>
+      <hr>
     </form>
+    <span v-tooltip="leaveTooltip">
+      <Btn
+        v-if="fleet && myFleet"
+        :disabled="myFleet.role === 'admin' || leaving"
+        variant="danger"
+        @click.native="leave"
+      >
+        <i class="fal fa-sign-out" />
+        {{ $t('actions.fleet.leave', { fleet: fleet.name }) }}
+      </Btn>
+    </span>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import VueUploadComponent from 'vue-upload-component'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Avatar from 'frontend/components/Avatar'
+import FleetsMixin from 'frontend/mixins/Fleets'
 
 export default {
   name: 'FleetSettings',
@@ -95,6 +107,7 @@ export default {
 
   mixins: [
     MetaInfo,
+    FleetsMixin,
   ],
 
   data() {
@@ -105,6 +118,7 @@ export default {
       },
       fleet: null,
       loading: false,
+      leaving: false,
       submitting: false,
       deleting: false,
       files: [],
@@ -114,14 +128,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
-
-    myFleets() {
-      return this.currentUser.fleets.filter((fleet) => ['admin'].includes(fleet.role) && !fleet.invitation)
-    },
-
     metaTitle() {
       if (!this.fleet) {
         return null
@@ -158,6 +164,18 @@ export default {
         label: this.fleet.name,
       }]
     },
+
+    canEdit() {
+      return this.myFleetRole === 'admin'
+    },
+
+    leaveTooltip() {
+      if (this.myFleet && this.myFleet.role === 'admin') {
+        return this.$t('texts.fleets.leaveInfo')
+      }
+
+      return null
+    },
   },
 
   watch: {
@@ -169,10 +187,6 @@ export default {
   },
 
   mounted() {
-    if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
-      this.$router.replace({ name: '404' })
-    }
-
     this.fetch()
 
     if (this.fleet) {
@@ -312,8 +326,46 @@ export default {
       return null
     },
 
+    async leave() {
+      this.leaving = true
+      this.$confirm({
+        text: this.$t('messages.confirm.fleet.leave'),
+        onConfirm: async () => {
+          const response = await this.$api.destroy(`fleets/${this.fleet.slug}/members/leave`)
+
+          this.leaving = false
+
+          if (!response.error) {
+            this.$comlink.$emit('fleetUpdate')
+
+            this.$success({
+              text: this.$t('messages.fleet.leave.success'),
+            })
+
+            this.$router.push({ name: 'home' })
+          } else {
+            const { error } = response
+            if (error.response && error.response.data) {
+              const { data: errorData } = error.response
+
+              this.$alert({
+                text: errorData.message,
+              })
+            } else {
+              this.$alert({
+                text: this.$t('messages.fleet.leave.failure'),
+              })
+            }
+          }
+        },
+        onClose: () => {
+          this.leaving = false
+        },
+      })
+    },
+
     async fetch() {
-      if (!this.myFleets.some((fleet) => fleet.slug === this.$route.params.slug)) {
+      if (!this.myFleet) {
         return
       }
 
