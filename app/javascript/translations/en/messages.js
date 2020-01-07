@@ -97,6 +97,14 @@ export default {
         success: 'Member removed.',
         failure: 'Member could not be removed.',
       },
+      demote: {
+        success: 'Member demoted.',
+        failure: 'Member could not be demoted.',
+      },
+      promote: {
+        success: 'Member promoted.',
+        failure: 'Member could not be promoted.',
+      },
     },
   },
   confirm: {

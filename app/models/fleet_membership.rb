@@ -24,9 +24,9 @@ class FleetMembership < ApplicationRecord
   end
 
   def promote
-    return if role == :admin
+    return if admin?
 
-    if role == :officer
+    if officer?
       update(role: :admin)
     else
       update(role: :officer)
@@ -34,9 +34,9 @@ class FleetMembership < ApplicationRecord
   end
 
   def demote
-    return if role == :member
+    return if member?
 
-    if role == :admin
+    if admin?
       update(role: :officer)
     else
       update(role: :member)

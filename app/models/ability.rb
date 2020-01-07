@@ -47,17 +47,24 @@ class Ability
   private def user_rules(user)
     return if user.id.blank?
 
-    fleet_ids = user.fleets
-                    .includes(:fleet_memberships)
-                    .joins(:fleet_memberships)
-                    .where(fleet_memberships: { role: %i[officer admin] })
-                    .where.not(fleet_memberships: { accepted_at: nil })
-                    .pluck(:id)
+    officer_fleet_ids = user.fleets
+                            .includes(:fleet_memberships)
+                            .joins(:fleet_memberships)
+                            .where(fleet_memberships: { role: %i[officer admin] })
+                            .where.not(fleet_memberships: { accepted_at: nil })
+                            .pluck(:id)
+    admin_fleet_ids = user.fleets
+                          .includes(:fleet_memberships)
+                          .joins(:fleet_memberships)
+                          .where(fleet_memberships: { role: :admin })
+                          .where.not(fleet_memberships: { accepted_at: nil })
+                          .pluck(:id)
 
     can %i[check invites], :api_fleet
     can :index, :api_hangar
     can %i[accept update destroy], FleetMembership, user_id: user.id
-    can %i[create update destroy], FleetMembership, fleet_id: fleet_ids
+    can %i[create], FleetMembership, fleet_id: officer_fleet_ids
+    can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
     can :create, Fleet
     can :show, Fleet, fleet_memberships: { user_id: user.id }
     cannot :show, Fleet, fleet_memberships: { user_id: user.id, accepted_at: nil }

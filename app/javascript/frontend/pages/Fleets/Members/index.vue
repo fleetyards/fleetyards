@@ -107,16 +107,16 @@
                   <Btn
                     v-if="member.role !== 'admin' && !member.invitation && !member.declinedAt"
                     size="small"
-                    :disabled="!canEdit(member)"
+                    :disabled="!canEdit(member) || updating"
                     inline
-                    @click.native="promoteMember(Member)"
+                    @click.native="promoteMember(member)"
                   >
                     <i class="fal fa-chevron-up" />
                   </Btn>
                   <Btn
                     v-if="member.role !== 'member' && !member.invitation && !member.declinedAt"
                     size="small"
-                    :disabled="!canEdit(member)"
+                    :disabled="!canEdit(member) || updating"
                     inline
                     @click.native="demoteMember(member)"
                   >
@@ -201,6 +201,7 @@ export default {
     return {
       loading: false,
       deleting: false,
+      updating: false,
       fleet: null,
       members: [],
       invitations: [],
@@ -343,11 +344,11 @@ export default {
     },
 
     async demoteMember(member) {
-      this.loading = true
+      this.updating = true
 
       const response = await this.$api.put(`fleets/${this.$route.params.slug}/members/${member.username}/demote`)
 
-      this.loading = false
+      this.updating = false
 
       if (!response.error) {
         this.$success({
@@ -362,11 +363,11 @@ export default {
     },
 
     async promoteMember(member) {
-      this.loading = true
+      this.updating = true
 
       const response = await this.$api.put(`fleets/${this.$route.params.slug}/members/${member.username}/promote`)
 
-      this.loading = false
+      this.updating = false
 
       if (!response.error) {
         this.$success({
