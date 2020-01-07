@@ -2,7 +2,7 @@ describe('Fleet', () => {
   it('Shows Preview', () => {
     cy.visit('/')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-preview')
 
     cy.url().should('include', '/fleets/preview/')
@@ -11,7 +11,7 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/login')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')
 
     cy.url().should('include', '/login')
@@ -28,7 +28,7 @@ describe('Fleet', () => {
   it('default workflow', () => {
     cy.visit('/')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-preview')
 
     cy.url().should('include', '/fleets/preview/')
@@ -37,14 +37,14 @@ describe('Fleet', () => {
 
     cy.url().should('include', '/login')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')
 
     cy.url().should('include', '/login')
 
     cy.visit('/')
 
-    cy.clickNav('fleets')
+    cy.clickNav('fleets-menu')
     cy.clickNav('fleet-add')
 
     cy.url().should('include', '/login')
