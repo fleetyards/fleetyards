@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.58.2](https://github.com/fleetyards/app/compare/v3.58.1...v3.58.2) (2020-01-08)
+
+
+### Bug Fixes
+
+* **hangar:** update addons/modules update ([87c7ab4](https://github.com/fleetyards/app/commit/87c7ab4f91f48d25727fc9ccb60fb0ca912e45d0))
+
 ### [3.58.1](https://github.com/fleetyards/app/compare/v3.58.0...v3.58.1) (2020-01-08)
 
 
