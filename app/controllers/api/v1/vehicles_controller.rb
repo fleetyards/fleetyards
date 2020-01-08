@@ -183,8 +183,8 @@ module Api
       def update
         authorize! :update, vehicle
 
-        vehicle.vehicle_modules.destroy_all if vehicle_params[:model_module_ids].present?
-        vehicle.vehicle_upgrades.destroy_all if vehicle_params[:model_upgrade_ids].present?
+        vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
+        vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
 
         return if vehicle.update(vehicle_params)
 
