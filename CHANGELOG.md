@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.58.1](https://github.com/fleetyards/app/compare/v3.58.0...v3.58.1) (2020-01-08)
+
+
+### Bug Fixes
+
+* **vehicles:** update parent on upgrade/module change ([c592074](https://github.com/fleetyards/app/commit/c59207454df92d28076a10569138bc7886d2fdcd))
+
 ## [3.58.0](https://github.com/fleetyards/app/compare/v3.57.1...v3.58.0) (2020-01-07)
 
 
