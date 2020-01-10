@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.58.4](https://github.com/fleetyards/app/compare/v3.58.3...v3.58.4) (2020-01-10)
+
+
+### Bug Fixes
+
+* **signup:** add uniqness validation for email ([29e467a](https://github.com/fleetyards/app/commit/29e467a68d0b16dfc4e7e0482569b4205733a884))
+
 ### [3.58.3](https://github.com/fleetyards/app/compare/v3.58.2...v3.58.3) (2020-01-08)
 
 
