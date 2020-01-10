@@ -29,6 +29,9 @@ class User < ApplicationRecord
   validates :username,
             uniqueness: { case_sensitive: false },
             format: { with: /\A[a-zA-Z0-9\-_]+\Z/ }
+  validates :email,
+            uniqueness: { case_sensitive: false },
+            presence: true
 
   attr_accessor :login
 
