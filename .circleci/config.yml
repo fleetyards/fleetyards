@@ -103,7 +103,7 @@ jobs:
           keys:
             - v1-yarn-{{ checksum "yarn.lock" }}
             - v1-yarn-
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -131,7 +131,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/app
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run:
           name: Check Audit DB
           command: yarn audit
@@ -199,7 +199,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/app
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run:
           name: Run Javascript Tests
           command: yarn test
@@ -232,7 +232,7 @@ jobs:
       - attach_workspace:
           at: ~/app
       - run: bundle --path vendor/bundle
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
@@ -257,7 +257,7 @@ jobs:
                   printf '.'
                   sleep 5
               done
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
