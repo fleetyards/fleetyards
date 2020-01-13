@@ -39,7 +39,7 @@
     "bootstrap": "4.4.1",
     "bootstrap-sass": "3.4.1",
     "bootstrap-vue": "2.1.0",
-    "core-js": "3.6.1",
+    "core-js": "3.6.3",
     "css-loader": "3.4.1",
     "date-fns": "2.8.1",
     "date-fns-tz": "^1.0.9",
