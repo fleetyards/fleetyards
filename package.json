@@ -30,7 +30,7 @@
     "@babel/plugin-transform-runtime": "7.8.0",
     "@babel/preset-env": "7.8.0",
     "@rails/webpacker": "4.2.2",
-    "@sentry/browser": "5.10.2",
+    "@sentry/browser": "5.11.0",
     "@sentry/integrations": "5.10.2",
     "actioncable": "5.2.4",
     "ahoy.js": "0.3.4",
