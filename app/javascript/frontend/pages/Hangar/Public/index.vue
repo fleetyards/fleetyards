@@ -12,7 +12,9 @@
           <div class="col-xs-12">
             <h1>
               <Avatar :avatar="user.avatar" />
-              {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
+              <span>
+                {{ $t('headlines.hangar.public', { user: usernamePlural }) }}
+              </span>
             </h1>
           </div>
         </div>

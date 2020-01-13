@@ -3,6 +3,7 @@
 .avatar {
   width: 100px;
   height: 100px;
+  min-width: 100px;
   background-color: $gray-darker;
   border-radius: 50%;
   display: flex;
@@ -14,7 +15,6 @@
 
   img {
     border-radius: 50%;
-    max-width: 100%;
     max-height: 100%;
   }
 
@@ -49,6 +49,7 @@
   &.avatar-small {
     width: 40px;
     height: 40px;
+    min-width: 40px;
 
     .no-avatar {
       font-size: 15px;
@@ -58,6 +59,7 @@
   &.avatar-large {
     width: 200px;
     height: 200px;
+    min-width: 200px;
 
     .no-avatar {
       font-size: 60px;
