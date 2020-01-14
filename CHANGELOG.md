@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.58.5](https://github.com/fleetyards/app/compare/v3.58.4...v3.58.5) (2020-01-14)
+
+
+### Bug Fixes
+
+* **avatar:** update width ([dc26b3e](https://github.com/fleetyards/app/commit/dc26b3e75164eabe5f2415879bcd6e4fe1b2174c))
+
 ### [3.58.4](https://github.com/fleetyards/app/compare/v3.58.3...v3.58.4) (2020-01-10)
 
 
