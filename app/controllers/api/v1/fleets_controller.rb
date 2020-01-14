@@ -232,7 +232,7 @@ module Api
       private def fleet_params
         @fleet_params ||= params.transform_keys(&:underscore)
                                 .permit(
-                                  :name, :logo, :background_image, :public, :remove_logo,
+                                  :fid, :name, :logo, :background_image, :public, :remove_logo,
                                   :remove_background
                                 )
       end

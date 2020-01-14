@@ -9,7 +9,7 @@
             :transparent="!!fleet.logo"
             icon="fad fa-image"
           />
-          {{ fleet.name }}
+          {{ fleet.name }} ({{ fleet.fid }})
         </h1>
       </div>
     </div>

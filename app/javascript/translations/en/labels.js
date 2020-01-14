@@ -126,6 +126,7 @@ export default {
   flagship: 'Flagship',
   fleet: {
     classes: 'Fleet',
+    fid: 'Fleet ID',
     name: 'Name',
     members: {
       total: 'Total: %{count}',

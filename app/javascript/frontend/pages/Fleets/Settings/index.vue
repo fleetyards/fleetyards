@@ -41,8 +41,27 @@
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <FormInput
+            v-model="form.fid"
+            v-validate="{
+              required: true,
+              min: 3,
+              regex: /^[a-zA-Z0-9\-_]{3,}$/
+            }"
+            :data-vv-as="$t('labels.fleet.fid')"
+            :placeholder="$t('labels.fleet.fid')"
+            :label="$t('labels.fleet.fid')"
+            :error="errors.first('fid')"
+            name="fid"
+          />
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <FormInput
             v-model="form.name"
-            v-validate="'required|alpha_dash'"
+            v-validate="{
+              required: true,
+              min: 3,
+              regex: /^[a-zA-Z0-9\-_ ]{3,}$/
+            }"
             :data-vv-as="$t('labels.fleet.name')"
             :placeholder="$t('labels.fleet.name')"
             :label="$t('labels.fleet.name')"
@@ -113,6 +132,7 @@ export default {
   data() {
     return {
       form: {
+        fid: null,
         name: null,
         removeLogo: false,
       },
@@ -207,7 +227,12 @@ export default {
     },
 
     setupForm() {
-      this.form.name = this.fleet.name
+      this.form = {
+        fid: this.fleet.fid,
+        sid: this.fleet.sid,
+        public: this.fleet.public,
+        name: this.fleet.name,
+      }
     },
 
     async submit() {
