@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.59.0](https://github.com/fleetyards/app/compare/v3.58.5...v3.59.0) (2020-01-14)
+
+
+### Features
+
+* **fleets:** add fid and update validations ([2044232](https://github.com/fleetyards/app/commit/204423227fc1f90211a934c463cc7f52ca82e3e4))
+
 ### [3.58.5](https://github.com/fleetyards/app/compare/v3.58.4...v3.58.5) (2020-01-14)
 
 
