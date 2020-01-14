@@ -111,7 +111,7 @@
     "standard-version": "7.0.1",
     "storybook-vue-router": "1.0.7",
     "stylelint": "13.0.0",
-    "stylelint-config-prettier": "8.0.0",
+    "stylelint-config-prettier": "8.0.1",
     "stylelint-config-standard": "19.0.0",
     "typescript": "3.7.4",
     "vue-eslint-parser": "7.0.0",
