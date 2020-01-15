@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.60.0](https://github.com/fleetyards/app/compare/v3.59.0...v3.60.0) (2020-01-15)
+
+
+### Features
+
+* **fleets:** generate slugs from fid ([0f2dae7](https://github.com/fleetyards/app/commit/0f2dae7a2156d92648bfc7ea80c9c8041e472f3f))
+
+
+### Bug Fixes
+
+* **fleets:** update regex ([785b573](https://github.com/fleetyards/app/commit/785b5732022a71b7a96dd893986f7ec220b9f07b))
+* **specs:** update e2e test for fleets ([b8ebc35](https://github.com/fleetyards/app/commit/b8ebc35df15a1d32f325db57ea664e911b80b819))
+
 ## [3.59.0](https://github.com/fleetyards/app/compare/v3.58.5...v3.59.0) (2020-01-14)
 
 
