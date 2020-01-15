@@ -62,4 +62,8 @@ class Fleet < ApplicationRecord
   def model_count(model_id)
     public_vehicles.where(model_id: model_id).size
   end
+
+  private def update_slugs
+    self.slug = SlugHelper.generate_slug(fid)
+  end
 end
