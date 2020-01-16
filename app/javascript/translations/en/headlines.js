@@ -41,7 +41,10 @@ export default {
       h2: 'To create a Fleet you need to have a FleetYards.net Account',
       h3: 'What Features does your Fleet include?',
     },
-    settings: 'Settings',
+    settings: {
+      fleet: 'Fleet Settings',
+      membership: 'Membership Settings',
+    },
     inviteMember: 'Invite new Member',
   },
   empty: "There's nothing to see here...",

@@ -165,7 +165,10 @@ export default {
     }),
 
     isFleetRoute() {
-      return ['fleet', 'fleet-members', 'fleet-settings'].includes(this.$route.name)
+      return [
+        'fleet', 'fleet-members', 'fleet-settings', 'fleet-settings-fleet',
+        'fleet-settings-membership',
+      ].includes(this.$route.name)
     },
 
     environmentLabelClasses() {

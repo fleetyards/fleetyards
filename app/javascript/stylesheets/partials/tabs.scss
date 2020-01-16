@@ -48,6 +48,11 @@ $nav-transition-speed: .3s;
         top: 0;
       }
 
+      &.disabled {
+        opacity: .5;
+        cursor: not-allowed;
+      }
+
       &:hover {
         i {
           color: $text-color;
@@ -81,9 +86,15 @@ $nav-transition-speed: .3s;
 
     &.disabled {
       > a {
-        opacity: .8;
+        opacity: .5;
         color: $text-color;
-        cursor: default;
+        cursor: not-allowed;
+
+        > i,
+        > svg {
+          opacity: .5;
+          color: $text-color;
+        }
 
         &::before {
           display: none;

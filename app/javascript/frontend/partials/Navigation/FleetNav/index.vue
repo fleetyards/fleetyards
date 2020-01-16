@@ -16,7 +16,7 @@
       />
       <NavItem
         :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
-        :label="$t('nav.fleets.settings')"
+        :label="$t('nav.fleets.settings.index')"
         icon="fad fa-cogs"
       />
     </template>
