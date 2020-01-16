@@ -60,7 +60,7 @@
             v-validate="{
               required: true,
               min: 3,
-              regex: /^[a-zA-Z0-9\-_ ]{3,}$/
+              regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
             }"
             :data-vv-as="$t('labels.fleet.name')"
             :placeholder="$t('labels.fleet.name')"

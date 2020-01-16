@@ -54,7 +54,7 @@ describe('Fleet', () => {
     cy.url().should('include', '/fleets/add/')
 
     cy.select('input-fid').type('TestFleet1')
-    cy.select('input-name').type('Test Fleet 1')
+    cy.select('input-name').type('Test Fleet 1.')
 
     cy.select('fleet-save').click()
 
