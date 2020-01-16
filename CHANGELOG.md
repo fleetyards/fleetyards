@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.61.0](https://github.com/fleetyards/app/compare/v3.60.0...v3.61.0) (2020-01-16)
+
+
+### Features
+
+* **fleet:** allow dots in fleet name ([24f8b69](https://github.com/fleetyards/app/commit/24f8b697551f2dba877cf98163f934e92e533973))
+* **fleet:** update settings page ([68fc1f5](https://github.com/fleetyards/app/commit/68fc1f54f54a493ae253614d861b4a5c6a79bc49))
+
 ## [3.60.0](https://github.com/fleetyards/app/compare/v3.59.0...v3.60.0) (2020-01-15)
 
 
