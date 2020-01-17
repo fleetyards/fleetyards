@@ -8,7 +8,7 @@ describe('Home', () => {
   })
 
   it('Shows Search Results via Button', () => {
-    cy.selectInput('home-search').type('600i')
+    cy.selectInput('search').type('600i')
 
     cy.get('#search-submit').click()
 
@@ -18,7 +18,7 @@ describe('Home', () => {
   })
 
   it('Shows Search Results via Key', () => {
-    cy.selectInput('home-search').type('600i Touring{enter}')
+    cy.selectInput('search').type('600i Touring{enter}')
 
     cy.url().should('include', '/search')
 

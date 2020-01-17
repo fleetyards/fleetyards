@@ -1,8 +1,12 @@
 export default {
   search: 'Search the Verse...',
-  fleet: {
-    name: 'Name',
-  },
+  name: 'Name',
+  login: 'Username or E-Mail',
+  username: 'Username',
+  email: 'E-Mail',
+  currentPassword: 'Current Password',
+  password: 'Password',
+  passwordConfirmation: 'Password Confirmation',
   quicksearch: {
     models: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',

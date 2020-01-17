@@ -97,6 +97,7 @@ export default {
   'not-available': 'N/A',
   receiveSaleNotifications: '',
   publicUrl: 'Public URL',
+  name: 'Name',
   '3dView': '3D',
   poweredByStarship42: 'Powered by starship42.com',
   filter: 'Filter',
@@ -128,6 +129,7 @@ export default {
     classes: 'Fleet',
     fid: 'Fleet ID',
     name: 'Name',
+    logo: 'Logo',
     members: {
       total: 'Total: %{count}',
       joined: 'Joined at',
@@ -222,6 +224,7 @@ export default {
     userShips: 'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
   user: {
+    avatar: 'Avatar',
     saleNotify: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',
   },
@@ -251,7 +254,11 @@ export default {
     selectImages: 'Add images...',
     selectFolder: 'Add a folder...',
   },
-  signUp: "Don't have an Account?",
+  signup: {
+    link: "Don't have an Account?",
+    privacyPolicy: 'By creating a FleetYards account, you agree to our',
+  },
+  privacyPolicy: 'Privacy Policy',
   login: 'Username or E-Mail',
   username: 'Username',
   email: 'E-Mail',

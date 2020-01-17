@@ -1,72 +1,63 @@
 <template>
-  <Modal
-    v-if="fleet"
-    ref="modal"
-    :title="$t('headlines.fleets.inviteMember')"
-    :visible="visible"
+  <ValidationObserver
+    v-slot="{ handleSubmit }"
+    slim
   >
-    <form
-      :id="`fleet-member-${fleet.id}`"
-      @submit.prevent="save"
+    <Modal
+      v-if="fleet"
+      ref="modal"
+      :title="$t('headlines.fleets.inviteMember')"
+      :visible="visible"
     >
-      <div class="row">
-        <div class="col-xs-12">
-          <div
-            :class="{'has-error has-feedback': errors.has('username')}"
-            class="form-group"
-          >
-            <label for="username">
-              {{ $t('labels.username') }}
-            </label>
-            <input
-              id="username"
-              v-model="form.username"
-              v-tooltip.right="errors.first('username')"
-              v-validate="'required|alpha_dash|user'"
-              data-test="username"
-              :data-vv-as="$t('labels.username')"
-              :placeholder="$t('labels.username')"
-              name="username"
-              type="text"
-              class="form-control"
-              autofocus
+      <form
+        :id="`fleet-member-${fleet.id}`"
+        @submit.prevent="handleSubmit(save)"
+      >
+        <div class="row">
+          <div class="col-xs-12">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="username"
+              rules="required|alpha_dash|user"
+              :name="$t('labels.username')"
+              slim
             >
-            <span
-              v-show="errors.has('username')"
-              class="form-control-feedback"
-            >
-              <i
-                :title="errors.first('username')"
-                class="fal fa-exclamation-triangle"
+              <FormInput
+                id="username"
+                v-model="form.username"
+                :error="errors[0]"
+                autofocus
               />
-            </span>
+            </validationprovider>
           </div>
         </div>
-      </div>
-    </form>
-    <template #footer>
-      <div class="pull-right">
-        <Btn
-          :form="`fleet-member-${fleet.id}`"
-          :loading="submitting"
-          type="submit"
-          size="large"
-          inline
-        >
-          {{ $t('actions.fleet.members.invite') }}
-        </Btn>
-      </div>
-    </template>
-  </Modal>
+      </form>
+      <template #footer>
+        <div class="pull-right">
+          <Btn
+            :form="`fleet-member-${fleet.id}`"
+            :loading="submitting"
+            type="submit"
+            size="large"
+            inline
+          >
+            {{ $t('actions.fleet.members.invite') }}
+          </Btn>
+        </div>
+      </template>
+    </Modal>
+  </ValidationObserver>
 </template>
 
 <script>
 import Modal from 'frontend/components/Modal'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
     Modal,
+    FormInput,
     Btn,
   },
 
@@ -103,14 +94,6 @@ export default {
     },
 
     async save() {
-      const result = await this.$validator.validateAll()
-      if (!result) {
-        this.$alert({
-          text: this.$t('messages.fleet.invites.create.failure'),
-        })
-        return
-      }
-
       this.submitting = true
 
       const response = await this.$api.post(`fleets/${this.fleet.slug}/members`, this.form)

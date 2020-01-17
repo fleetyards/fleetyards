@@ -7,88 +7,111 @@
       </div>
     </div>
 
-    <form
-      v-if="canEdit && fleet"
-      @submit.prevent="submit"
+    <ValidationObserver
+      ref="form"
+      v-slot="{ handleSubmit }"
+      small
     >
-      <div class="row">
-        <div class="col-md-12 col-lg-6">
-          <div
-            :class="{'has-error has-feedback': errors.has('logo')}"
-            class="form-group"
-          >
-            <VueUploadComponent
-              ref="upload"
-              :value="files"
-              name="uploadLogo"
-              :extensions="fileExtensions"
-              :accept="acceptedMimeTypes"
-              class="avatar-uploader"
-              @input="updatedValue"
-              @input-filter="inputFilter"
-            />
-            <Avatar
-              :avatar="logoUrl"
-              size="large"
-              icon="fad fa-image"
-              editable
-              @upload="selectLogo"
-              @destroy="removeLogo"
-            />
+      <form
+        v-if="canEdit && fleet"
+        @submit.prevent="handleSubmit(submit)"
+      >
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="logo"
+              :name="$t('labels.fleet.logo')"
+              slim
+            >
+              <div
+                :class="{'has-error has-feedback': errors[0]}"
+                class="form-group"
+              >
+                <VueUploadComponent
+                  ref="upload"
+                  :value="files"
+                  name="uploadLogo"
+                  :extensions="fileExtensions"
+                  :accept="acceptedMimeTypes"
+                  class="avatar-uploader"
+                  @input="updatedValue"
+                  @input-filter="inputFilter"
+                />
+                <Avatar
+                  :avatar="logoUrl"
+                  size="large"
+                  icon="fad fa-image"
+                  editable
+                  @upload="selectLogo"
+                  @destroy="removeLogo"
+                />
+              </div>
+            </ValidationProvider>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 col-lg-6">
-          <FormInput
-            v-model="form.fid"
-            v-validate="{
-              required: true,
-              min: 3,
-              regex: /^[a-zA-Z0-9\-_]{3,}$/
-            }"
-            :data-vv-as="$t('labels.fleet.fid')"
-            :placeholder="$t('labels.fleet.fid')"
-            :label="$t('labels.fleet.fid')"
-            :error="errors.first('fid')"
-            name="fid"
-          />
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="fid"
+              :rules="{
+                required: true,
+                min: 3,
+                regex: /^[a-zA-Z0-9\-_]{3,}$/
+              }"
+              :name="$t('labels.fleet.fid')"
+              slim
+            >
+              <FormInput
+                id="fid"
+                v-model="form.fid"
+                transition-key="fleet.fid"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="name"
+              :rules="{
+                required: true,
+                min: 3,
+                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
+              }"
+              :name="$t('labels.name')"
+              slim
+            >
+              <FormInput
+                id="name"
+                v-model="form.name"
+                transition-key="name"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
         </div>
-        <div class="col-md-12 col-lg-6">
-          <FormInput
-            v-model="form.name"
-            v-validate="{
-              required: true,
-              min: 3,
-              regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
-            }"
-            :data-vv-as="$t('labels.fleet.name')"
-            :placeholder="$t('labels.fleet.name')"
-            :label="$t('labels.fleet.name')"
-            :error="errors.first('name')"
-            name="name"
-          />
-        </div>
-      </div>
-      <br>
-      <Btn
-        :loading="submitting"
-        type="submit"
-        size="large"
-        data-test="fleet-save"
-      >
-        {{ $t('actions.save') }}
-      </Btn>
-      <Btn
-        :loading="deleting"
-        size="large"
-        variant="danger"
-        data-test="fleet-delete"
-        @click.native="destroy"
-      >
-        {{ $t('actions.delete') }}
-      </Btn>
-    </form>
+        <br>
+        <Btn
+          :loading="submitting"
+          type="submit"
+          size="large"
+          data-test="fleet-save"
+        >
+          {{ $t('actions.save') }}
+        </Btn>
+        <Btn
+          :loading="deleting"
+          size="large"
+          variant="danger"
+          data-test="fleet-delete"
+          @click.native="destroy"
+        >
+          {{ $t('actions.delete') }}
+        </Btn>
+      </form>
+    </ValidationObserver>
   </section>
 </template>
 
@@ -224,12 +247,6 @@ export default {
     },
 
     async submit() {
-      const result = await this.$validator.validateAll()
-
-      if (!result) {
-        return
-      }
-
       this.submitting = true
 
       const data = new FormData()
@@ -240,6 +257,7 @@ export default {
         data.append('removeLogo', true)
       }
       data.append('name', this.form.name)
+      data.append('fid', this.form.fid)
 
       const response = await this.$api.upload(`fleets/${this.$route.params.slug}`, data)
 
@@ -258,23 +276,13 @@ export default {
           setTimeout(() => {
             this.files = []
           }, 1000)
-
-          this.fetch()
         }
       } else {
         const { error } = response
         if (error.response && error.response.data) {
           const { data: errorData } = error.response
 
-          errorData.errors.map((item) => ({
-            field: item[0],
-            errors: item[1],
-          })).forEach((item) => {
-            item.errors.forEach((errorItem) => this.errors.add({
-              field: item.field,
-              msg: errorItem,
-            }))
-          })
+          this.$refs.form.setErrors(errorData.errors)
 
           this.$alert({
             text: errorData.message,

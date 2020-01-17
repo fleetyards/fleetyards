@@ -18,12 +18,11 @@
               <div class="form-group">
                 <div class="input-group-flex">
                   <FormInput
+                    id="search"
                     v-model="form.search"
-                    :placeholder="$t('placeholders.search')"
-                    :aria-label="$t('placeholders.search')"
                     size="large"
-                    name="search"
                     autofocus
+                    clearable
                     @clear="filter"
                   />
                   <Btn

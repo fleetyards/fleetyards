@@ -1,6 +1,5 @@
 import 'stylesheets/frontend'
 import Vue from 'vue'
-import VeeValidate, { Validator } from 'vee-validate'
 import VTooltip from 'v-tooltip'
 import VueClipboard from 'vue-clipboard2'
 import App from 'frontend/App'
@@ -15,14 +14,11 @@ import ApiClient from 'frontend/lib/ApiClient'
 import Subscriptions from 'frontend/lib/Subscriptions'
 import VueScrollTo from 'vue-scrollto'
 import Comlink from 'frontend/lib/Comlink'
-import EmailValidator from 'frontend/lib/validations/EmailValidator'
-import UsernameValidator from 'frontend/lib/validations/UsernameValidator'
-import UserValidator from 'frontend/lib/validations/UserValidator'
-import FleetValidator from 'frontend/lib/validations/FleetValidator'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
 import Helpers from 'frontend/lib/Helpers'
 import Noty from 'frontend/lib/Noty'
+import Validations from 'frontend/lib/Validations'
 
 console.info(`
 
@@ -47,14 +43,9 @@ Vue.use(I18n)
 Vue.use(DataPrefetch)
 Vue.use(Helpers)
 Vue.use(Noty)
+Vue.use(Validations)
 
 Vue.use(VueClipboard)
-
-Vue.use(VeeValidate)
-Validator.extend('emailTaken', EmailValidator)
-Validator.extend('usernameTaken', UsernameValidator)
-Validator.extend('user', UserValidator)
-Validator.extend('fleet', FleetValidator)
 
 Vue.use(VueScrollTo, {
   easing: 'ease-in-out',

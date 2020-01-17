@@ -1,10 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <FormInput
+      id="station-name"
       v-model="form.nameCont"
-      name="station-name"
-      :placeholder="$t('placeholders.filters.stations.name')"
-      :aria-label="$t('placeholders.filters.stations.name')"
+      translation-key="filters.stations.name"
+      clearable
+      no-label
     />
     <FilterGroup
       v-model="form.celestialObjectIn"
@@ -54,8 +55,6 @@
       :options="booleanOptions"
       name="habs"
     />
-    <!-- <br>
-    Filter by Status -->
     <Btn
       :disabled="!isFilterSelected"
       block

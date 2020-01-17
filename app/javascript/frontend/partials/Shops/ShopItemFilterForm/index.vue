@@ -1,9 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <FormInput
+      id="shop-name"
       v-model="form.nameCont"
-      name="shop-name"
-      :placeholder="$t('placeholders.filters.shopItems.name')"
+      translation-key="filters.shopItems.name"
+      no-label
+      clearable
     />
 
     <FilterGroup
@@ -37,18 +39,14 @@
     <FormInput
       :id="idFor('shopitems-min-price')"
       v-model="form.priceGteq"
-      name="shop-price-gteq"
-      :label="$t('labels.filters.shopItems.minPrice')"
-      :placeholder="$t('placeholders.filters.shopItems.minPrice')"
+      translation-key="filters.shopItems.minPrice"
       type="number"
     />
 
     <FormInput
       :id="idFor('shopitems-max-price')"
       v-model="form.priceLteq"
-      name="shop-price-lteq"
-      :label="$t('labels.filters.shopItems.maxPrice')"
-      :placeholder="$t('placeholders.filters.shopItems.maxPrice')"
+      translation-key="filters.shopItems.maxPrice"
       type="number"
     />
 
@@ -75,7 +73,9 @@ export default {
     FormInput,
     Btn,
   },
+
   mixins: [Filters],
+
   data() {
     const query = this.$route.query.q || {}
     return {
@@ -106,6 +106,7 @@ export default {
       }],
     }
   },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -119,17 +120,21 @@ export default {
       }
       this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
+
     form: {
       handler() {
         this.filter()
       },
+
       deep: true,
     },
   },
+
   methods: {
     fetchSubCategories() {
       return this.$api.get('filters/shop-commodities/sub-categories')
     },
+
     fetchCommodityManufacturers({ page, search, missingValue }) {
       const query = {
         q: {},

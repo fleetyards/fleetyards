@@ -1,67 +1,86 @@
 <template>
-  <Modal
-    ref="modal"
-    :title="title"
-    :visible="visible"
+  <ValidationObserver
+    v-slot="{ handleSubmit }"
+    small
   >
-    <form
-      :id="`group-${id}`"
-      @submit.prevent="save"
+    <Modal
+      ref="modal"
+      :title="title"
+      :visible="visible"
     >
-      <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <FormInput
-            v-model="form.name"
-            v-validate="'required|alpha_dash'"
-            :data-vv-as="$t('labels.hangarGroup.name')"
-            :placeholder="$t('labels.hangarGroup.name')"
-            :error="errors.first('group-name')"
-            name="group-name"
-          />
-        </div>
-        <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
-          <div
-            :class="{'has-error has-feedback': errors.has('color')}"
-            class="form-group"
-          >
-            <Swatches
-              v-model="form.color"
-              v-tooltip.right="errors.first('color')"
-              v-validate="'required'"
-              :data-vv-as="$t('labels.hangarGroup.color')"
-              name="color"
-              colors="material-dark"
-              shapes="circles"
-              swatch-size="24"
-              background-color="transparent"
-              inline
-            />
+      <form
+        :id="`group-${id}`"
+        @submit.prevent="handleSubmit(save)"
+      >
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="group-name"
+              rules="required|alpha_dash"
+              :name="$t('labels.hangarGroup.name')"
+              slim
+            >
+              <FormInput
+                id="group-name"
+                v-model="form.name"
+                translation-key="name"
+                :error="errors[0]"
+                no-label
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="color"
+              rules="required"
+              :name="$t('labels.hangarGroup.color')"
+              immediate
+              slim
+            >
+              <div
+                v-tooltip.right="errors[0]"
+                :class="{'has-error has-feedback': errors[0]}"
+                class="form-group"
+              >
+                <Swatches
+                  v-model="form.color"
+                  name="color"
+                  colors="material-dark"
+                  shapes="circles"
+                  swatch-size="24"
+                  background-color="transparent"
+                  inline
+                />
+              </div>
+            </ValidationProvider>
           </div>
         </div>
-      </div>
-    </form>
-    <template #footer>
-      <div class="pull-right">
-        <Btn
-          v-if="group"
-          :disabled="deleting ? 'disabled' : null"
-          inline
-          @click.native="remove"
-        >
-          <i class="fal fa-trash" />
-        </Btn>
-        <Btn
-          :form="`group-${id}`"
-          :loading="submitting"
-          type="submit"
-          size="large"
-          inline
-        >
-          {{ $t('actions.save') }}
-        </Btn>
-      </div>
-    </template>
-  </Modal>
+      </form>
+      <template #footer>
+        <div class="pull-right">
+          <Btn
+            v-if="group"
+            :disabled="deleting ? 'disabled' : null"
+            inline
+            @click.native="remove"
+          >
+            <i class="fal fa-trash" />
+          </Btn>
+          <Btn
+            :form="`group-${id}`"
+            :loading="submitting"
+            type="submit"
+            size="large"
+            inline
+          >
+            {{ $t('actions.save') }}
+          </Btn>
+        </div>
+      </template>
+    </Modal>
+  </ValidationObserver>
 </template>
 
 <script>
@@ -132,6 +151,7 @@ export default {
 
     remove() {
       this.deleting = true
+
       this.$confirm({
         text: this.$t('messages.confirm.hangarGroup.destroy'),
         onConfirm: () => {
@@ -145,6 +165,7 @@ export default {
 
     async destroy() {
       const response = await this.$api.destroy(`hangar-groups/${this.group.id}`)
+
       if (!response.error) {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupDelete', response.data)
@@ -154,13 +175,8 @@ export default {
     },
 
     async save() {
-      const result = await this.$validator.validateAll()
-
-      if (!result) {
-        return
-      }
-
       this.submitting = true
+
       if (this.group.id) {
         this.update()
       } else {
@@ -170,7 +186,9 @@ export default {
 
     async update() {
       const response = await this.$api.put(`hangar-groups/${this.group.id}`, this.form)
+
       this.submitting = false
+
       if (!response.error) {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
@@ -183,7 +201,9 @@ export default {
 
     async create() {
       const response = await this.$api.post('hangar-groups', this.form)
+
       this.submitting = false
+
       if (!response.error) {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)

@@ -1,61 +1,74 @@
 <template>
   <section class="container">
-    <form @submit.prevent="submit">
-      <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
-          <h1>{{ $t('headlines.fleets.add') }}</h1>
+    <ValidationObserver
+      v-slot="{ handleSubmit }"
+      small
+    >
+      <form @submit.prevent="handleSubmit(submit)">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <h1>{{ $t('headlines.fleets.add') }}</h1>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
-          <FormInput
-            v-model="form.fid"
-            v-validate="{
-              required: true,
-              fleet: true,
-              min: 3,
-              regex: /^[a-zA-Z0-9\-_]{3,}$/
-            }"
-            :data-vv-as="$t('labels.fleet.fid')"
-            :placeholder="$t('labels.fleet.fid')"
-            :label="$t('labels.fleet.fid')"
-            :error="errors.first('fid')"
-            name="fid"
-            size="large"
-          />
-
-          <FormInput
-            v-model="form.name"
-            v-validate="{
-              required: true,
-              fleet: true,
-              min: 3,
-              regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
-            }"
-            :data-vv-as="$t('labels.fleet.name')"
-            :placeholder="$t('labels.fleet.name')"
-            :label="$t('labels.fleet.name')"
-            :error="errors.first('name')"
-            name="name"
-            size="large"
-          />
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="fid"
+              :rules="{
+                required: true,
+                fidTaken: true,
+                min: 3,
+                regex: /^[a-zA-Z0-9\-_]{3,}$/
+              }"
+              :name="$t('labels.fleet.fid')"
+              slim
+            >
+              <FormInput
+                id="fid"
+                v-model="form.fid"
+                transition-key="fleet.fid"
+                :error="errors[0]"
+                size="large"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="name"
+              :rules="{
+                required: true,
+                min: 3,
+                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
+              }"
+              :name="$t('labels.name')"
+              slim
+            >
+              <FormInput
+                id="name"
+                v-model="form.name"
+                transition-key="name"
+                :error="errors[0]"
+                size="large"
+              />
+            </ValidationProvider>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
-          <br>
-          <Btn
-            :loading="submitting"
-            type="submit"
-            size="large"
-            data-test="fleet-save"
-          >
-            {{ $t('actions.save') }}
-          </Btn>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <br>
+            <Btn
+              :loading="submitting"
+              type="submit"
+              size="large"
+              data-test="fleet-save"
+            >
+              {{ $t('actions.save') }}
+            </Btn>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </ValidationObserver>
   </section>
 </template>
 
@@ -89,12 +102,6 @@ export default {
 
   methods: {
     async submit() {
-      const result = await this.$validator.validateAll()
-
-      if (!result) {
-        return
-      }
-
       this.submitting = true
 
       const response = await this.$api.post('fleets', this.form)

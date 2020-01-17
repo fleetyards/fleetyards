@@ -1,113 +1,96 @@
 <template>
-  <form @submit.prevent="submit">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>{{ $t('headlines.settings.profile') }}</h1>
+  <ValidationObserver
+    v-slot="{ handleSubmit }"
+    slim
+  >
+    <form @submit.prevent="handleSubmit(submit)">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>{{ $t('headlines.settings.profile') }}</h1>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-12 col-lg-6">
-        <div
-          :class="{'has-error has-feedback': errors.has('avatar')}"
-          class="form-group"
-        >
-          <VueUploadComponent
-            ref="upload"
-            :value="files"
-            name="uploadAvatar"
-            :extensions="fileExtensions"
-            :accept="acceptedMimeTypes"
-            class="avatar-uploader"
-            @input="updatedValue"
-            @input-filter="inputFilter"
-          />
-          <Avatar
-            :avatar="avatarUrl"
-            size="large"
-            editable
-            @upload="selectAvatar"
-            @destroy="removeAvatar"
-          />
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="logo"
+            :name="$t('labels.user.avatar')"
+            slim
+          >
+            <div
+              :class="{'has-error has-feedback': errors[0]}"
+              class="form-group"
+            >
+              <VueUploadComponent
+                ref="upload"
+                :value="files"
+                name="uploadAvatar"
+                :extensions="fileExtensions"
+                :accept="acceptedMimeTypes"
+                class="avatar-uploader"
+                @input="updatedValue"
+                @input-filter="inputFilter"
+              />
+              <Avatar
+                :avatar="avatarUrl"
+                size="large"
+                editable
+                @upload="selectAvatar"
+                @destroy="removeAvatar"
+              />
+            </div>
+          </ValidationProvider>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 col-lg-6">
-        <div
-          :class="{'has-error has-feedback': errors.has('username')}"
-          class="form-group"
-        >
-          <label for="username">
-            {{ $t('labels.username') }}
-          </label>
-          <input
-            id="username"
-            v-model="form.username"
-            v-tooltip.bottom-end="errors.first('username')"
-            v-validate="'required|alpha_dash'"
-            data-test="username"
-            :data-vv-as="$t('labels.username')"
-            :placeholder="$t('labels.username')"
-            name="username"
-            type="text"
-            class="form-control"
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="username"
+            rules="required|alpha_dash"
+            :name="$t('labels.username')"
+            slim
           >
-          <span
-            v-show="errors.has('username')"
-            class="form-control-feedback"
-          >
-            <i
-              :title="errors.first('username')"
-              class="fal fa-exclamation-triangle"
+            <FormInput
+              id="username"
+              v-model="form.username"
+              :error="errors[0]"
             />
-          </span>
-        </div>
-        <div
-          :class="{'has-error has-feedback': errors.has('email')}"
-          class="form-group"
-        >
-          <label for="email">
-            {{ $t('labels.email') }}
-          </label>
-          <input
-            id="email"
-            v-model="form.email"
-            v-tooltip.bottom-end="errors.first('email')"
-            v-validate="'required|email'"
-            data-test="email"
-            :data-vv-as="$t('labels.email')"
-            name="email"
-            type="email"
-            class="form-control"
+          </ValidationProvider>
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="email"
+            rules="required|email"
+            :name="$t('labels.email')"
+            slim
           >
-          <span
-            v-show="errors.has('email')"
-            class="form-control-feedback"
-          >
-            <i
-              :title="errors.first('email')"
-              class="fal fa-exclamation-triangle"
+            <FormInput
+              id="email"
+              v-model="form.email"
+              :error="errors[0]"
+              type="email"
             />
-          </span>
+          </ValidationProvider>
         </div>
       </div>
-    </div>
-    <br>
-    <Btn
-      :loading="submitting"
-      type="submit"
-      size="large"
-    >
-      {{ $t('actions.save') }}
-    </Btn>
-  </form>
+      <br>
+      <Btn
+        :loading="submitting"
+        type="submit"
+        size="large"
+      >
+        {{ $t('actions.save') }}
+      </Btn>
+    </form>
+  </ValidationObserver>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import VueUploadComponent from 'vue-upload-component'
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 import Avatar from 'frontend/components/Avatar'
 
@@ -116,6 +99,7 @@ export default {
 
   components: {
     VueUploadComponent,
+    FormInput,
     Btn,
     Avatar,
   },
@@ -180,12 +164,6 @@ export default {
     },
 
     async submit() {
-      const result = await this.$validator.validateAll()
-
-      if (!result) {
-        return
-      }
-
       this.submitting = true
 
       const data = new FormData()
