@@ -8,8 +8,8 @@ describe('Login', () => {
 
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
-      cy.select('login').type(userData.test.username)
-      cy.select('password').type(userData.test.password)
+      cy.selectInput('login').type(userData.test.username)
+      cy.selectInput('password').type(userData.test.password)
 
       cy.get('button[type=submit]').click()
 
@@ -29,8 +29,8 @@ describe('Login', () => {
 
     cy.url().should('include', '/login')
 
-    cy.select('login').type('invalidUsername')
-    cy.select('password').type('invalidPassword')
+    cy.selectInput('login').type('invalidUsername')
+    cy.selectInput('password').type('invalidPassword')
 
     cy.get('button[type=submit]').click()
 
@@ -44,8 +44,8 @@ describe('Login', () => {
 
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
-      cy.select('login').type(userData.test.username)
-      cy.select('password').type(userData.test.password)
+      cy.selectInput('login').type(userData.test.username)
+      cy.selectInput('password').type(userData.test.password)
 
       cy.get('button[type=submit]').click()
 

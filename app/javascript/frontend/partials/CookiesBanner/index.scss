@@ -7,6 +7,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
+  transition: left ease $transition-base-speed;
 
   p {
     padding: 10px;
@@ -18,5 +19,15 @@
     position: absolute;
     right: 0;
     top: 0;
+  }
+}
+
+@media (min-width: $desktop-breakpoint) {
+  .cookies-banner {
+    left: 300px;
+
+    &.cookies-banner-slim {
+      left: 80px;
+    }
   }
 }

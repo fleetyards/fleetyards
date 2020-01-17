@@ -20,13 +20,12 @@
                     <div class="form-group">
                       <div class="input-group-flex">
                         <FormInput
+                          id="search"
                           v-model="searchQuery"
-                          :aria-label="$t('placeholders.search')"
-                          data-test="home-search"
-                          :placeholder="$t('placeholders.search')"
                           size="large"
-                          name="search-query"
                           :autofocus="!mobile"
+                          no-label
+                          clearable
                         />
                         <Btn
                           id="search-submit"

@@ -2,11 +2,12 @@
   <div class="quick-search-bar">
     <form @submit.prevent="filter">
       <FormInput
+        :id="$route.meta.quickSearch || 'quicksearch'"
         v-model="form[$route.meta.quickSearch]"
-        :placeholder="$t(`placeholders.quicksearch.${$route.name}`)"
-        :aria-label="$t(`placeholders.quicksearch.${$route.name}`)"
-        :name="$route.meta.quickSearch || 'quicksearch'"
+        :translation-key="`quicksearch.${$route.name}`"
+        no-label
         autofocus
+        clearable
       />
     </form>
   </div>

@@ -1,3 +1,4 @@
+// import { messages as validationMessages } from 'vee-validate/dist/locale/de.json'
 // import actions from './en/actions'
 // import headlines from './en/headlines'
 // import labels from './en/labels'
@@ -7,6 +8,11 @@
 // import sublines from './en/sublines'
 // import texts from './en/texts'
 // import title from './en/title'
+
+// const validations = {}
+// Object.keys(validationMessages).forEach((key) => {
+//   validations[key] = validationMessages[key].replace(/\{/g, '%{')
+// })
 
 export default {
   app: 'FleetYards.net',
@@ -40,6 +46,9 @@ export default {
   // },
   // messages: {
   //   ...messages,
+  // },
+  // validations: {
+  //   ...validations,
   // },
   station: {
     type: 'Typ',

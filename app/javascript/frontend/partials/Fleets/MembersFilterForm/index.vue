@@ -1,10 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <FormInput
+      id="username"
       v-model="form.usernameCont"
-      name="username"
-      :placeholder="$t('placeholders.filters.fleets.members.username')"
-      :aria-label="$t('placeholders.filters.fleets.members.username')"
+      translation-key="filters.fleets.members.username"
+      no-label
+      clearable
     />
 
     <FilterGroup

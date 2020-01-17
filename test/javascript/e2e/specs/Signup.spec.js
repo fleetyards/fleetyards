@@ -10,10 +10,10 @@ describe('Signup', () => {
 
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
-      cy.select('username').type(userData.new.username)
-      cy.select('email').type(userData.new.email)
-      cy.select('password').type(userData.new.password)
-      cy.select('password-confirmation').type(userData.new.password)
+      cy.selectInput('username').type(userData.new.username)
+      cy.selectInput('email').type(userData.new.email)
+      cy.selectInput('password').type(userData.new.password)
+      cy.selectInput('passwordConfirmation').type(userData.new.password)
 
       cy.get('button[type=submit]').click()
 
@@ -21,8 +21,8 @@ describe('Signup', () => {
 
       cy.clickNav('login')
 
-      cy.select('login').type(userData.new.username)
-      cy.select('password').type(userData.new.password)
+      cy.selectInput('login').type(userData.new.username)
+      cy.selectInput('password').type(userData.new.password)
 
       cy.get('button[type=submit]').click()
 
@@ -33,8 +33,8 @@ describe('Signup', () => {
 
       cy.url().should('include', '/settings')
 
-      cy.select('username').should('have.value', userData.new.username)
-      cy.select('email').should('have.value', userData.new.email)
+      cy.selectInput('username').should('have.value', userData.new.username)
+      cy.selectInput('email').should('have.value', userData.new.email)
 
       cy.get('.tabs a').contains('Account').click()
 
@@ -57,25 +57,23 @@ describe('Signup', () => {
 
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
-      cy.select('username').type(userData.test.username)
-      cy.select('username').parent().should('have.class', 'has-error')
+      cy.selectInput('username').type(userData.test.username)
+      cy.selectInput('username').parent().should('have.class', 'has-error')
 
-      cy.select('email').type('foo').clear()
-      cy.select('email').parent().should('have.class', 'has-error')
+      cy.selectInput('email').type('foo').clear()
+      cy.selectInput('email').parent().should('have.class', 'has-error')
 
-      cy.select('password').type('bar')
-      cy.select('password').parent().should('have.class', 'has-error')
-      cy.select('password').clear().type(userData.test.password)
-      cy.select('password').parent().should('not.have.class', 'has-error')
+      cy.selectInput('password').type('bar')
+      cy.selectInput('password').parent().should('have.class', 'has-error')
+      cy.selectInput('password').clear().type(userData.test.password)
+      cy.selectInput('password').parent().should('not.have.class', 'has-error')
 
-      cy.select('password-confirmation').type('bar').clear()
-      cy.select('password-confirmation').parent().should('have.class', 'has-error')
-      cy.select('password-confirmation').type(userData.test.password)
-      cy.select('password-confirmation').parent().should('not.have.class', 'has-error')
+      cy.selectInput('passwordConfirmation').type('bar').clear()
+      cy.selectInput('passwordConfirmation').parent().should('have.class', 'has-error')
+      cy.selectInput('passwordConfirmation').type(userData.test.password)
+      cy.selectInput('passwordConfirmation').parent().should('not.have.class', 'has-error')
 
       cy.get('button[type=submit]').click()
-
-      cy.alert('Please resolve the errors')
     })
   })
 
@@ -84,11 +82,9 @@ describe('Signup', () => {
 
     cy.get('button[type=submit]').click()
 
-    cy.select('username').parent().should('have.class', 'has-error')
-    cy.select('email').parent().should('have.class', 'has-error')
-    cy.select('password').parent().should('have.class', 'has-error')
-    cy.select('password-confirmation').parent().should('have.class', 'has-error')
-
-    cy.alert('Please resolve the errors')
+    cy.selectInput('username').parent().should('have.class', 'has-error')
+    cy.selectInput('email').parent().should('have.class', 'has-error')
+    cy.selectInput('password').parent().should('have.class', 'has-error')
+    cy.selectInput('passwordConfirmation').parent().should('have.class', 'has-error')
   })
 })

@@ -1,18 +1,26 @@
 <template>
-  <div
-    v-if="!cookiesAccepted"
-    class="cookies-banner"
+  <transition
+    name="fade"
+    appear
   >
-    <p v-html="$t('texts.cookies')" />
-    <Btn
-      class="close"
-      variant="link"
-      inline
-      @click.native="acceptCookies"
+    <div
+      v-if="!cookiesAccepted"
+      class="cookies-banner"
+      :class="{
+        'cookies-banner-slim': navSlim,
+      }"
     >
-      <i class="fal fa-times" />
-    </Btn>
-  </div>
+      <p v-html="$t('texts.cookies')" />
+      <Btn
+        class="close"
+        variant="link"
+        inline
+        @click.native="acceptCookies"
+      >
+        <i class="fal fa-times" />
+      </Btn>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -23,11 +31,17 @@ export default {
   components: {
     Btn,
   },
+
   computed: {
     ...mapGetters('session', [
       'cookiesAccepted',
     ]),
+
+    ...mapGetters('app', [
+      'navSlim',
+    ]),
   },
+
   methods: {
     acceptCookies() {
       this.$store.dispatch('session/acceptCookies')

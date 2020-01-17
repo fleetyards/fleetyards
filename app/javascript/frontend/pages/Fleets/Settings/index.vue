@@ -75,6 +75,7 @@ export default {
 
   mounted() {
     this.fetch()
+    this.$comlink.$on('fleetUpdate', this.fetch)
   },
 
   methods: {

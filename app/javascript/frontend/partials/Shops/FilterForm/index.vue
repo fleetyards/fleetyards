@@ -1,10 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <FormInput
+      id="shop-name"
       v-model="form.nameCont"
-      name="shop-name"
-      :placeholder="$t('placeholders.filters.shops.name')"
-      :aria-label="$t('placeholders.filters.shops.name')"
+      translation-key="filters.shops.name"
+      no-label
+      clearable
     />
 
     <FilterGroup

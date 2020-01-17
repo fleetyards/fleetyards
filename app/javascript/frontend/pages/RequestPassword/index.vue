@@ -1,71 +1,62 @@
 <template>
-  <section class="container">
+  <section class="container request-password">
     <div class="row">
       <div class="col-xs-12">
-        <form @submit.prevent="requestPassword">
-          <h1>
-            <router-link
-              to="/"
-              exact
-            >
-              {{ $t('app') }}
-            </router-link>
-          </h1>
-          <div
-            :class="{'has-error has-feedback': errors.has('email')}"
-            class="form-group"
-          >
-            <transition name="fade">
-              <label
-                v-show="form.email"
-                for="email"
+        <ValidationObserver
+          v-slot="{ handleSubmit }"
+          slim
+        >
+          <form @submit.prevent="handleSubmit(requestPassword)">
+            <h1>
+              <router-link
+                to="/"
+                exact
               >
-                {{ $t('labels.email') }}
-              </label>
-            </transition>
-            <input
-              id="email"
-              v-model="form.email"
-              v-tooltip.right="errors.first('email')"
-              v-validate="'required|email'"
-              :data-vv-as="$t('labels.email')"
-              :placeholder="$t('labels.email')"
-              name="email"
-              type="email"
-              class="form-control"
-              autofocus
-            >
-            <span
-              v-show="errors.has('email')"
-              class="form-control-feedback"
-            >
-              <i class="fal fa-exclamation-triangle" />
-            </span>
-          </div>
+                {{ $t('app') }}
+              </router-link>
+            </h1>
 
-          <Btn
-            :loading="submitting"
-            type="submit"
-            size="large"
-            block
-          >
-            {{ $t('actions.requestPassword') }}
-          </Btn>
-
-          <footer>
-            <p class="text-center">
-              {{ $t('labels.alreadyRegistered') }}
-            </p>
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="email"
+              rules="required|email"
+              :name="$t('labels.email')"
+              slim
+            >
+              <FormInput
+                id="email"
+                v-model="form.email"
+                :error="errors[0]"
+                type="email"
+                hide-label-on-empty
+                autofocus
+              />
+            </ValidationProvider>
 
             <Btn
-              :to="{name: 'login'}"
-              size="small"
+              :loading="submitting"
+              type="submit"
+              size="large"
               block
             >
-              {{ $t('actions.login') }}
+              {{ $t('actions.requestPassword') }}
             </Btn>
-          </footer>
-        </form>
+
+            <footer>
+              <p class="text-center">
+                {{ $t('labels.alreadyRegistered') }}
+              </p>
+
+              <Btn
+                :to="{name: 'login'}"
+                size="small"
+                block
+              >
+                {{ $t('actions.login') }}
+              </Btn>
+            </footer>
+          </form>
+        </ValidationObserver>
       </div>
     </div>
   </section>
@@ -73,10 +64,12 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
+import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
+    FormInput,
     Btn,
   },
 
@@ -95,22 +88,22 @@ export default {
 
   methods: {
     async requestPassword() {
-      const result = await this.$validator.validateAll()
-      if (!result) {
-        return
-      }
       this.submitting = true
+
       await this.$api.post('password/request', this.form)
+
       this.submitting = false
+
       this.$success({
         text: this.$t('messages.requestPasswordChange.success'),
       })
+
       this.$router.push('/')
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import 'index';
 </style>

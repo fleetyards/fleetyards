@@ -13,10 +13,11 @@
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <FormInput
-              id="name"
+              id="vehicle-name"
               v-model="form.name"
-              name="vehicle-name"
               :placeholder="vehicle.model.name"
+              translation-key="name"
+              no-label
             />
           </div>
         </div>

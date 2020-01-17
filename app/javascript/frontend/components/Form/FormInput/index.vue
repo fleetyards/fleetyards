@@ -1,35 +1,39 @@
 <template>
   <div
-    :key="name"
+    :key="innerId"
     class="form-input"
     :class="cssClasses"
   >
-    <label
-      v-if="label"
-      :for="id"
-    >
-      {{ label }}
-    </label>
+    <transition name="fade">
+      <label
+        v-show="!hideLabelOnEmpty || inputValue"
+        v-if="innerLabel && !noLabel"
+        :for="id"
+      >
+        {{ innerLabel }}
+      </label>
+    </transition>
     <input
-      :id="id"
+      :id="innerId"
       ref="input"
       v-model="inputValue"
       v-tooltip.right="error"
-      :placeholder="placeholder"
+      :placeholder="innerPlaceholder"
       :type="type"
-      :data-test="`input-${name}`"
-      :aria-label="ariaLabel"
+      :data-test="`input-${id}`"
+      :aria-label="innerLabel"
       :autofocus="autofocus"
-      :name="name"
+      :name="id"
       @input="update"
+      @blur="update"
     >
     <Btn
-      v-if="inputValue"
+      v-if="inputValue && clearable"
       variant="link"
       size="small"
       class="clear"
       :class="{
-        'with-label': !!label
+        'with-label': !!innerLabel && !noLabel
       }"
       @click.native="clear"
       v-html="'&times;'"
@@ -46,6 +50,11 @@ export default {
   },
 
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
+
     value: {
       type: [String, Number],
       default: null,
@@ -55,13 +64,8 @@ export default {
       type: String,
       default: 'text',
       validator(value) {
-        return ['text', 'number'].indexOf(value) !== -1
+        return ['text', 'number', 'password', 'email', 'url'].indexOf(value) !== -1
       },
-    },
-
-    name: {
-      type: String,
-      required: true,
     },
 
     error: {
@@ -69,9 +73,19 @@ export default {
       default: null,
     },
 
-    id: {
+    translationKey: {
       type: String,
       default: null,
+    },
+
+    autofocus: {
+      type: Boolean,
+      default: false,
+    },
+
+    hideLabelOnEmpty: {
+      type: Boolean,
+      default: false,
     },
 
     label: {
@@ -79,17 +93,22 @@ export default {
       default: null,
     },
 
+    noLabel: {
+      type: Boolean,
+      default: false,
+    },
+
+    noPlaceholder: {
+      type: Boolean,
+      default: false,
+    },
+
     placeholder: {
       type: String,
       default: null,
     },
 
-    ariaLabel: {
-      type: String,
-      default: null,
-    },
-
-    autofocus: {
+    clearable: {
       type: Boolean,
       default: false,
     },
@@ -118,11 +137,44 @@ export default {
   },
 
   computed: {
+    innerId() {
+      return `${this.id}-${this._uid}`
+    },
+
+    innerLabel() {
+      if (this.label) {
+        return this.label
+      }
+
+      if (this.translationKey) {
+        return this.$t(`labels.${this.translationKey}`)
+      }
+
+      return this.$t(`labels.${this.id}`)
+    },
+
+    innerPlaceholder() {
+      if (this.noPlaceholder) {
+        return null
+      }
+
+      if (this.placeholder) {
+        return this.placeholder
+      }
+
+      if (this.translationKey) {
+        return this.$t(`placeholders.${this.translationKey}`)
+      }
+
+      return this.$t(`placeholders.${this.id}`)
+    },
+
     cssClasses() {
       return {
         'has-error has-feedback': this.error,
         'form-input-large': this.size === 'large',
         'form-input-clean': this.variant === 'clean',
+        'form-input-clearable': this.clearable,
       }
     },
   },

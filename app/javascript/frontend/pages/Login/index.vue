@@ -1,72 +1,92 @@
 <template>
-  <section class="container">
+  <section class="container login">
     <div class="row">
       <div class="col-xs-12">
-        <form @submit.prevent="login">
-          <h1>
-            <router-link
-              to="/"
-              exact
+        <ValidationObserver
+          ref="form"
+          v-slot="{ handleSubmit }"
+          small
+        >
+          <form @submit.prevent="handleSubmit(login)">
+            <h1>
+              <router-link
+                to="/"
+                exact
+              >
+                {{ $t('app') }}
+              </router-link>
+            </h1>
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="login"
+              rules="required"
+              :name="$t('labels.login')"
+              slim
             >
-              {{ $t('app') }}
-            </router-link>
-          </h1>
-          <div class="form-group">
-            <input
-              v-model="form.login"
-              data-test="login"
-              :placeholder="$t('labels.login')"
-              type="text"
-              autofocus
-              class="form-control"
+              <FormInput
+                id="login"
+                v-model="form.login"
+                :error="errors[0]"
+                autofocus
+                hide-label-on-empty
+                clearable
+              />
+            </ValidationProvider>
+
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="password"
+              rules="required"
+              :name="$t('labels.password')"
+              slim
             >
-          </div>
-          <div class="form-group">
-            <input
-              v-model="form.password"
-              data-test="password"
-              :placeholder="$t('labels.password')"
-              type="password"
-              class="form-control"
-            >
-          </div>
-          <Checkbox
-            id="rememberMe"
-            v-model="form.rememberMe"
-            :label="$t('labels.rememberMe')"
-          />
-          <Btn
-            :loading="submitting"
-            type="submit"
-            size="large"
-            block
-          >
-            {{ $t('actions.login') }}
-          </Btn>
-          <Btn
-            :to="{
-              name: 'request-password',
-            }"
-            variant="link"
-            size="small"
-            block
-          >
-            {{ $t('actions.reset-password') }}
-          </Btn>
-          <footer>
-            <p class="text-center">
-              {{ $t('labels.signUp') }}
-            </p>
+              <FormInput
+                id="password"
+                v-model="form.password"
+                :error="errors[0]"
+                type="password"
+                hide-label-on-empty
+                clearable
+              />
+            </ValidationProvider>
+            <Checkbox
+              id="rememberMe"
+              v-model="form.rememberMe"
+              :label="$t('labels.rememberMe')"
+            />
             <Btn
-              data-test="signup-link"
-              :to="{name: 'signup'}"
+              :loading="submitting"
+              type="submit"
+              size="large"
+              block
+            >
+              {{ $t('actions.login') }}
+            </Btn>
+            <Btn
+              :to="{
+                name: 'request-password',
+              }"
+              variant="link"
               size="small"
               block
             >
-              {{ $t('actions.signUp') }}
+              {{ $t('actions.reset-password') }}
             </Btn>
-          </footer>
-        </form>
+            <footer>
+              <p class="text-center">
+                {{ $t('labels.signup.link') }}
+              </p>
+              <Btn
+                data-test="signup-link"
+                :to="{name: 'signup'}"
+                size="small"
+                block
+              >
+                {{ $t('actions.signUp') }}
+              </Btn>
+            </footer>
+          </form>
+        </ValidationObserver>
       </div>
     </div>
   </section>
@@ -75,6 +95,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/components/Form/FormInput'
 import Checkbox from 'frontend/components/Form/Checkbox'
 
 export default {
@@ -82,6 +103,7 @@ export default {
 
   components: {
     Btn,
+    FormInput,
     Checkbox,
   },
 
@@ -123,6 +145,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import 'index';
 </style>

@@ -1,5 +1,5 @@
 Cypress.Commands.add('select', (id) => cy.get(`[data-test="${id}"]`))
-Cypress.Commands.add('selectInput', (id) => cy.get(`[data-test="${id}"] > input`))
+Cypress.Commands.add('selectInput', (id) => cy.get(`[data-test="input-${id}"]`))
 
 Cypress.Commands.add('clickNav', (name) => {
   cy.select(`nav-${name}`).click()
@@ -49,8 +49,8 @@ Cypress.Commands.add('login', () => {
 
   // eslint-disable-next-line jest/valid-expect-in-promise
   cy.fixture('users').then((userData) => {
-    cy.select('login').type(userData.test.username)
-    cy.select('password').type(userData.test.password)
+    cy.selectInput('login').type(userData.test.username)
+    cy.selectInput('password').type(userData.test.password)
 
     cy.get('button[type=submit]').click()
 

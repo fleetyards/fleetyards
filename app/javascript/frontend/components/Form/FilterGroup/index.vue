@@ -49,12 +49,15 @@
     >
       <FormInput
         v-if="searchable"
+        id="search-input"
         ref="searchInput"
         v-model="search"
         :placeholder="searchLabel || $t('actions.find')"
+        :label="$t('actions.find')"
         class="filter-list-search"
         variant="clean"
-        name="search"
+        no-label
+        clearable
         @input="onSearch"
       />
       <div class="filter-list-items">

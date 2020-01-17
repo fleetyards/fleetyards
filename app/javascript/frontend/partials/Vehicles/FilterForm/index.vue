@@ -1,10 +1,11 @@
 <template>
   <form @submit.prevent="filter">
     <FormInput
+      id="vehicle-name"
       v-model="form.nameCont"
-      name="vehicle-name"
-      :placeholder="$t('placeholders.filters.vehicles.name')"
-      :aria-label="$t('placeholders.filters.vehicles.name')"
+      translation-key="filters.vehicles.name"
+      no-label
+      clearable
     />
 
     <FilterGroup
@@ -86,20 +87,20 @@
     <div class="row">
       <div class="col-xs-6">
         <FormInput
+          id="vehicle-length-gteq"
           v-model="form.lengthGteq"
           type="number"
-          name="vehicle-length-gteq"
-          :label="$t('labels.filters.vehicles.lengthGt')"
-          :aria-label="$t('labels.filters.vehicles.lengthGt')"
+          translation-key="filters.vehicles.lengthGt"
+          no-placeholder
         />
       </div>
       <div class="col-xs-6">
         <FormInput
+          id="vehicle-length-lteq"
           v-model="form.lengthLteq"
           type="number"
-          name="vehicle-length-lteq"
-          :label="$t('labels.filters.vehicles.lengthLt')"
-          :aria-label="$t('labels.filters.vehicles.lengthLt')"
+          translation-key="filters.vehicles.lengthLt"
+          no-placeholder
         />
       </div>
     </div>
@@ -107,39 +108,39 @@
     <div class="row">
       <div class="col-xs-6">
         <FormInput
+          id="vehicle-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
           type="number"
-          name="vehicle-pledge-price-gteq"
-          :label="$t('labels.filters.vehicles.pledgePriceGt')"
-          :aria-label="$t('labels.filters.vehicles.pledgePriceGt')"
+          translation-key="filters.vehicles.pledgePriceGt"
+          no-placeholder
         />
       </div>
 
       <div class="col-xs-6">
         <FormInput
+          id="vehicle-pledge-price-lteq"
           v-model="form.pledgePriceLteq"
           type="number"
-          name="vehicle-pledge-price-lteq"
-          :label="$t('labels.filters.vehicles.pledgePriceLt')"
-          :aria-label="$t('labels.filters.vehicles.pledgePriceLt')"
+          translation-key="filters.vehicles.pledgePriceLt"
+          no-placeholder
         />
       </div>
     </div>
 
     <FormInput
+      id="vehicle-price-gteq"
       v-model="form.priceGteq"
       type="number"
-      name="vehicle-price-gteq"
-      :label="$t('labels.filters.vehicles.priceGt')"
-      :aria-label="$t('labels.filters.vehicles.priceGt')"
+      translation-key="filters.vehicles.priceGt"
+      no-placeholder
     />
 
     <FormInput
+      id="vehicle-price-lteq"
       v-model="form.priceLteq"
       type="number"
-      name="vehicle-price-lteq"
-      :label="$t('labels.filters.vehicles.priceLt')"
-      :aria-label="$t('labels.filters.vehicles.priceLt')"
+      translation-key="filters.vehicles.priceLt"
+      no-placeholder
     />
 
     <RadioList
