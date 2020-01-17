@@ -22,7 +22,9 @@ class User < ApplicationRecord
            source: :model,
            inverse_of: false
   has_many :fleet_memberships,
-           dependent: :destroy
+           -> { order(primary: :desc) },
+           dependent: :destroy,
+           inverse_of: false
   has_many :fleets,
            through: :fleet_memberships
 

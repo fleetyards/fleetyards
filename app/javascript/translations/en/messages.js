@@ -51,6 +51,7 @@ export default {
   error: {
     usernameTaken: 'Username is already taken.',
     userNotFound: 'User not found',
+    urlInvalid: 'URL is invalid',
     emailTaken: 'E-Mail is already taken.',
     fleetTaken: 'Fleet is already taken.',
     accountRequired: 'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
@@ -93,6 +94,10 @@ export default {
       },
     },
     members: {
+      update: {
+        success: 'Settings saved.',
+        failure: 'Settings could not be saved.',
+      },
       destroy: {
         success: 'Member removed.',
         failure: 'Member could not be removed.',

@@ -5,6 +5,11 @@ json.cache! ['v1', user] do
   json.email user.email
   json.username user.username
   json.avatar user.avatar.small.url
+  json.rsi_handle user.rsi_handle
+  json.discord user.discord
+  json.youtube user.youtube
+  json.twitch user.twitch
+  json.homepage user.homepage
   json.is_admin user.admin?
   json.sale_notify user.sale_notify
   json.public_hangar user.public_hangar

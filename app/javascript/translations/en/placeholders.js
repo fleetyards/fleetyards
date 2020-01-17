@@ -7,6 +7,10 @@ export default {
   currentPassword: 'Current Password',
   password: 'Password',
   passwordConfirmation: 'Password Confirmation',
+  homepage: 'Homepage',
+  discord: 'Discord Server',
+  youtube: 'Youtube Channel',
+  twitch: 'Twitch Channel',
   quicksearch: {
     models: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',
@@ -14,6 +18,14 @@ export default {
   },
   home: {
     search: 'Search for Ships...',
+  },
+  fleet: {
+    fid: 'Fleet ID',
+    rsiSid: 'RSI SID',
+    ts: 'Teamspeak Server',
+  },
+  user: {
+    rsiHandle: 'RSI Handle',
   },
   filters: {
     shops: {

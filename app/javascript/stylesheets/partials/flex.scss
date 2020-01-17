@@ -83,6 +83,25 @@
     }
   }
 
+  .rsi-handle {
+    width: 300px;
+    font-size: 120%;
+  }
+
+  .links {
+    width: 200px;
+    font-size: 20px;
+    text-align: right;
+
+    > a {
+      margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
   .manufacturer,
   .fleet-name {
     flex-grow: 1;
@@ -330,6 +349,20 @@
 
         .image {
           width: 100%;
+        }
+      }
+
+      .rsi-handle {
+        width: 100%;
+      }
+
+      .links {
+        width: 100%;
+        text-align: center;
+        font-size: 25px;
+
+        > a {
+          margin-right: 10px;
         }
       }
 

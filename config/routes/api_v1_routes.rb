@@ -153,6 +153,8 @@ v1_api_routes = lambda do
 
     resources :fleet_memberships, path: 'members', param: :username, only: %i[create destroy] do
       collection do
+        put :update
+        patch :update
         put 'accept-invite' => 'fleet_memberships#accept_invite'
         put 'decline-invite' => 'fleet_memberships#decline_invite'
         delete :leave

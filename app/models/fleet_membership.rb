@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FleetMembership < ApplicationRecord
-  belongs_to :fleet
+  belongs_to :fleet, touch: true
   belongs_to :user
 
   enum role: { admin: 0, officer: 1, member: 2 }
@@ -12,6 +12,17 @@ class FleetMembership < ApplicationRecord
   ransack_alias :username, :user_username
 
   after_create :notify_user
+  after_save :set_primary
+
+  def set_primary
+    return unless primary?
+
+    # rubocop:disable SkipsModelValidations
+    FleetMembership.where(user_id: user_id, primary: true)
+                   .where.not(id: id)
+                   .update_all(primary: false)
+    # rubocop:enable SkipsModelValidations
+  end
 
   def notify_user
     return unless invitation

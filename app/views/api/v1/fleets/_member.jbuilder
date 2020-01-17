@@ -11,5 +11,10 @@ json.cache! ['v1', member] do
   json.declined_at member.declined_at&.utc&.iso8601
   json.declined_at_label((I18n.l(member.declined_at.utc, format: :label) if member.declined_at.present?))
   json.avatar member.user.avatar.small.url
+  json.rsi_handle member.user.rsi_handle
+  json.homepage member.user.homepage
+  json.discord member.user.discord
+  json.youtube member.user.youtube
+  json.twitch member.user.twitch
   json.partial! 'api/shared/dates', record: member
 end

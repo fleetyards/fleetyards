@@ -19,6 +19,14 @@ module Api
         render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
       end
 
+      def update
+        authorize! :update, my_membership
+
+        return if my_membership.update(membeship_params)
+
+        render json: ValidationError.new('fleet_memberships.update', my_membership.errors), status: :bad_request
+      end
+
       def accept_invite
         authorize! :accept, my_membership
 
@@ -70,6 +78,11 @@ module Api
         return if my_membership.destroy
 
         render json: ValidationError.new('fleet_memberships.destroy', my_membership.errors), status: :bad_request
+      end
+
+      private def membeship_params
+        @membeship_params ||= params.transform_keys(&:underscore)
+                                    .permit(:primary, :hide_ships)
       end
 
       private def fleet

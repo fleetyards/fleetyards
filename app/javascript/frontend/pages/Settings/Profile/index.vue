@@ -58,6 +58,8 @@
               :error="errors[0]"
             />
           </ValidationProvider>
+        </div>
+        <div class="col-md-12 col-lg-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="email"
@@ -70,6 +72,83 @@
               v-model="form.email"
               :error="errors[0]"
               type="email"
+            />
+          </ValidationProvider>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <FormInput
+            id="rsiHandle"
+            v-model="form.rsiHandle"
+            translation-key="user.rsiHandle"
+          />
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="homepage"
+            rules="url"
+            :name="$t('labels.homepage')"
+            slim
+          >
+            <FormInput
+              id="homepage"
+              v-model="form.homepage"
+              translation-key="homepage"
+              :error="errors[0]"
+            />
+          </ValidationProvider>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="discord"
+            rules="url"
+            :name="$t('labels.discord')"
+            slim
+          >
+            <FormInput
+              id="discord"
+              v-model="form.discord"
+              translation-key="discord"
+              :error="errors[0]"
+            />
+          </ValidationProvider>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="youtube"
+            rules="url"
+            :name="$t('labels.youtube')"
+            slim
+          >
+            <FormInput
+              id="youtube"
+              v-model="form.youtube"
+              translation-key="youtube"
+              :error="errors[0]"
+            />
+          </ValidationProvider>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="twitch"
+            rules="url"
+            :name="$t('labels.twitch')"
+            slim
+          >
+            <FormInput
+              id="twitch"
+              v-model="form.twitch"
+              translation-key="twitch"
+              :error="errors[0]"
             />
           </ValidationProvider>
         </div>
@@ -113,6 +192,11 @@ export default {
       form: {
         username: null,
         email: null,
+        rsiHandle: null,
+        homepage: null,
+        discord: null,
+        youtube: null,
+        twitch: null,
         removeAvatar: false,
       },
       files: [],
@@ -159,8 +243,16 @@ export default {
     },
 
     setupForm() {
-      this.form.username = this.currentUser.username
-      this.form.email = this.currentUser.email
+      this.form = {
+        username: this.currentUser.username,
+        email: this.currentUser.email,
+        rsiHandle: this.currentUser.rsiHandle,
+        homepage: this.currentUser.homepage,
+        discord: this.currentUser.discord,
+        youtube: this.currentUser.youtube,
+        twitch: this.currentUser.twitch,
+        removeAvatar: false,
+      }
     },
 
     async submit() {
@@ -170,11 +262,10 @@ export default {
       if (this.newAvatar && this.newAvatar.file) {
         data.append('avatar', this.newAvatar.file)
       }
-      if (this.form.removeAvatar) {
-        data.append('removeAvatar', true)
-      }
-      data.append('username', this.form.username)
-      data.append('email', this.form.email)
+
+      Object.keys(this.form).forEach((key) => {
+        data.append(key, this.form[key])
+      })
 
       const response = await this.$api.upload('users/current', data)
 

@@ -35,7 +35,6 @@ export const routes = [
     name: 'fleet',
     component: () => import(/* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/Show'),
     meta: {
-      needsAuthentication: true,
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
     },

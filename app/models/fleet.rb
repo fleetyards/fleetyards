@@ -3,12 +3,12 @@
 class Fleet < ApplicationRecord
   has_many :fleet_memberships,
            dependent: :destroy
-  has_many :accepted_memberships,
-           -> { where.not(accepted_at: nil) },
+  has_many :visible_memberships,
+           -> { where.not(accepted_at: nil).where(hide_ships: false) },
            class_name: 'FleetMembership',
            inverse_of: false
   has_many :users,
-           through: :accepted_memberships
+           through: :visible_memberships
   has_many :public_vehicles,
            through: :users
   has_many :public_models,
@@ -53,6 +53,14 @@ class Fleet < ApplicationRecord
 
   def invitation(user_id)
     fleet_memberships.find_by(user_id: user_id)&.invitation
+  end
+
+  def primary(user_id)
+    fleet_memberships.find_by(user_id: user_id)&.primary
+  end
+
+  def hide_ships(user_id)
+    fleet_memberships.find_by(user_id: user_id)&.hide_ships
   end
 
   def accepted_at(user_id)
