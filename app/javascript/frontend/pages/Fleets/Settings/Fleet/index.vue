@@ -66,7 +66,7 @@
               <FormInput
                 id="fid"
                 v-model="form.fid"
-                transition-key="fleet.fid"
+                translation-key="fleet.fid"
                 :error="errors[0]"
               />
             </ValidationProvider>
@@ -86,7 +86,7 @@
               <FormInput
                 id="name"
                 v-model="form.name"
-                transition-key="name"
+                translation-key="name"
                 :error="errors[0]"
               />
             </ValidationProvider>
