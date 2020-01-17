@@ -122,7 +122,8 @@
   },
   "resolutions": {
     "handlebars": ">=4.5.3",
-    "serialize-javascript": ">=2.1.1"
+    "serialize-javascript": ">=2.1.1",
+    "node-sass": ">=4.13.1"
   },
   "config": {
     "storybook": {
