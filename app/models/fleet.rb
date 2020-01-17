@@ -24,7 +24,7 @@ class Fleet < ApplicationRecord
   validates :name,
             length: { minimum: 3 },
             presence: true,
-            format: { with: /\A[a-zA-Z0-9\-_ ]{3,}\Z/ }
+            format: { with: /\A[a-zA-Z0-9\-_\. ]{3,}\Z/ }
 
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader
@@ -61,5 +61,9 @@ class Fleet < ApplicationRecord
 
   def model_count(model_id)
     public_vehicles.where(model_id: model_id).size
+  end
+
+  private def update_slugs
+    self.slug = SlugHelper.generate_slug(fid)
   end
 end

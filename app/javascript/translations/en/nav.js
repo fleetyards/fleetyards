@@ -16,7 +16,11 @@ export default {
     add: 'Create a new Fleet',
     invites: 'Invites',
     members: 'Members',
-    settings: 'Settings',
+    settings: {
+      index: 'Settings',
+      fleet: 'Fleet Settings',
+      membership: 'Membership Settings',
+    },
   },
   rsiProfile: 'RSI Profile',
   tradeRoutes: 'Trade Routes',

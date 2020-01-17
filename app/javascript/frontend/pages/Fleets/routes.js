@@ -1,3 +1,5 @@
+import { routes as SettingsRoutes } from 'frontend/pages/Fleets/Settings/routes'
+
 export const routes = [
   {
     path: 'add/',
@@ -55,6 +57,10 @@ export const routes = [
       // eslint-disable-next-line global-require
       backgroundImage: require('images/bg-8.jpg'),
     },
+    redirect: {
+      name: 'fleet-settings-fleet',
+    },
+    children: SettingsRoutes,
   },
 ]
 
