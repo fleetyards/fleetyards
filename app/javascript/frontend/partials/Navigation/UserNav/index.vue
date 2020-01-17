@@ -26,6 +26,13 @@
       />
       <NavItem divider />
       <NavItem
+        v-if="currentUser.rsiHandle"
+        :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
+        :label="$t('nav.rsiProfile')"
+        :image="require('images/rsi_logo.png')"
+      />
+      <NavItem divider />
+      <NavItem
         :action="logout"
         menu-key="logout"
         :label="$t('nav.logout')"

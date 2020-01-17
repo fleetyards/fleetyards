@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_200848) do
+ActiveRecord::Schema.define(version: 2020_01_17_194951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -186,6 +186,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_200848) do
     t.datetime "declined_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "primary", default: false
+    t.boolean "hide_ships", default: false
   end
 
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -198,6 +200,12 @@ ActiveRecord::Schema.define(version: 2020_01_14_200848) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "discord"
+    t.string "rsi_sid"
+    t.string "twitch"
+    t.string "youtube"
+    t.string "ts"
+    t.string "homepage"
   end
 
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -557,6 +565,11 @@ ActiveRecord::Schema.define(version: 2020_01_14_200848) do
     t.boolean "tracking", default: true
     t.boolean "public_hangar", default: true
     t.string "avatar"
+    t.string "twitch"
+    t.string "discord"
+    t.string "rsi_handle"
+    t.string "youtube"
+    t.string "homepage"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

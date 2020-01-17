@@ -8,7 +8,7 @@ import {
 /* eslint-enable camelcase */
 import { I18n } from 'frontend/lib/I18n'
 import {
-  emailTaken, fidTaken, user, usernameTaken,
+  emailTaken, fidTaken, user, usernameTaken, url,
 } from './rules'
 
 configure({
@@ -23,6 +23,7 @@ export default {
     Vue.component('ValidationProvider', ValidationProvider)
 
     extend('required', required)
+    extend('url', url)
     extend('alpha_dash', alpha_dash)
     extend('confirmed', confirmed)
     extend('regex', regex)

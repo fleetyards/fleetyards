@@ -72,7 +72,7 @@ module Api
           params.transform_keys(&:underscore)
                 .permit(
                   :username, :avatar, :remove_avatar, :email, :password, :password_confirmation,
-                  :sale_notify, :public_hangar
+                  :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage, :youtube, :twitch
                 )
         end
       end

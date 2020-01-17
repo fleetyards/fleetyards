@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetsController < ::Api::V1::BaseController
+      before_action :authenticate_api_user!, except: %i[show]
+
       after_action -> { pagination_header(:vehicles) }, only: %i[vehicles]
       after_action -> { pagination_header(:models) }, only: %i[models]
       after_action -> { pagination_header(:members) }, only: %i[members]
@@ -233,7 +235,8 @@ module Api
         @fleet_params ||= params.transform_keys(&:underscore)
                                 .permit(
                                   :fid, :name, :logo, :background_image, :public, :remove_logo,
-                                  :remove_background
+                                  :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
+                                  :twitch
                                 )
       end
 

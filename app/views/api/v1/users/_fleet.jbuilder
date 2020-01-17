@@ -9,3 +9,5 @@ json.background_image((fleet.background_image.url if fleet.background_image.pres
 json.role fleet.role(current_user&.id)
 json.invitation fleet.invitation(current_user&.id)
 json.accepted_at fleet.accepted_at(current_user&.id)&.utc&.iso8601
+json.primary fleet.primary(current_user&.id)
+json.hide_ships fleet.hide_ships(current_user&.id)

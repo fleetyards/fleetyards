@@ -7,6 +7,7 @@
         :title="image.name"
         :download="image.name"
         target="_blank"
+        rel="noopener"
       >
         <div
           :key="image.smallUrl"

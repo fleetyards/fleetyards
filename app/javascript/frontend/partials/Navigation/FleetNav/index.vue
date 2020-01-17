@@ -9,7 +9,6 @@
     />
     <template v-if="myFleet">
       <NavItem
-        v-if="myFleetRole === 'admin' || myFleetRole === 'officer'"
         :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
         :label="$t('nav.fleets.members')"
         icon="fad fa-users"

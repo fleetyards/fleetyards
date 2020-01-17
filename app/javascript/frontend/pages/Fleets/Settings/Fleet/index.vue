@@ -91,6 +91,99 @@
               />
             </ValidationProvider>
           </div>
+          <div class="col-md-12 col-lg-6">
+            <FormInput
+              id="rsiSid"
+              v-model="form.rsiSid"
+              translation-key="fleet.rsiSid"
+            />
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="homepage"
+              rules="url"
+              :name="$t('labels.homepage')"
+              slim
+            >
+              <FormInput
+                id="homepage"
+                v-model="form.homepage"
+                translation-key="homepage"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="discord"
+              rules="url"
+              :name="$t('labels.discord')"
+              slim
+            >
+              <FormInput
+                id="discord"
+                v-model="form.discord"
+                translation-key="discord"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="ts"
+              rules="url"
+              :name="$t('labels.fleet.ts')"
+              slim
+            >
+              <FormInput
+                id="ts"
+                v-model="form.ts"
+                translation-key="fleet.ts"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="youtube"
+              rules="url"
+              :name="$t('labels.youtube')"
+              slim
+            >
+              <FormInput
+                id="youtube"
+                v-model="form.youtube"
+                translation-key="youtube"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="twitch"
+              rules="url"
+              :name="$t('labels.twitch')"
+              slim
+            >
+              <FormInput
+                id="twitch"
+                v-model="form.twitch"
+                translation-key="twitch"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
         </div>
         <br>
         <Btn
@@ -152,6 +245,12 @@ export default {
       form: {
         fid: null,
         name: null,
+        rsiSid: null,
+        discord: null,
+        ts: null,
+        homepage: null,
+        twitch: null,
+        youtube: null,
         removeLogo: false,
       },
       loading: false,
@@ -220,6 +319,11 @@ export default {
   },
 
   mounted() {
+    if (!this.canEdit) {
+      this.$router.replace({ name: 'fleet-settings-membership', params: { slug: this.myFleet.slug } })
+      return
+    }
+
     if (this.fleet) {
       this.setupForm()
     }
@@ -240,9 +344,14 @@ export default {
     setupForm() {
       this.form = {
         fid: this.fleet.fid,
-        sid: this.fleet.sid,
-        public: this.fleet.public,
+        rsiSid: this.fleet.rsiSid,
         name: this.fleet.name,
+        discord: this.fleet.discord,
+        ts: this.fleet.ts,
+        homepage: this.fleet.homepage,
+        twitch: this.fleet.twitch,
+        youtube: this.fleet.youtube,
+        removeLogo: false,
       }
     },
 
@@ -253,11 +362,10 @@ export default {
       if (this.newLogo && this.newLogo.file) {
         data.append('logo', this.newLogo.file)
       }
-      if (this.form.removeLogo) {
-        data.append('removeLogo', true)
-      }
-      data.append('name', this.form.name)
-      data.append('fid', this.form.fid)
+
+      Object.keys(this.form).forEach((key) => {
+        data.append(key, this.form[key])
+      })
 
       const response = await this.$api.upload(`fleets/${this.$route.params.slug}`, data)
 

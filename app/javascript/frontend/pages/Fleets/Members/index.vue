@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div
-      v-if="canView"
+      v-if="myFleet"
       class="row"
     >
       <div class="col-xs-12">
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <FilteredList v-if="fleet && canView">
+    <FilteredList v-if="fleet && myFleet">
       <Paginator
         v-if="members.length"
         slot="pagination-top"
@@ -57,11 +57,20 @@
                     {{ $t('labels.username') }}
                   </router-link>
                 </div>
+                <div class="rsi-handle">
+                  <router-link :to="sortByRsiHandle">
+                    {{ $t('labels.user.rsiHandle') }}
+                  </router-link>
+                </div>
                 <div class="role" />
                 <div class="joined">
                   {{ $t('labels.fleet.members.invited') }} / {{ $t('labels.fleet.members.joined') }}
                 </div>
-                <div class="actions actions-3x">
+                <div class="links" />
+                <div
+                  v-if="canEdit()"
+                  class="actions actions-3x"
+                >
                   {{ $t('labels.actions') }}
                 </div>
               </div>
@@ -78,6 +87,17 @@
                     size="small"
                   />
                   {{ member.username }}
+                </div>
+                <div class="rsi-handle">
+                  <a
+                    v-if="member.rsiHandle"
+                    v-tooltip="$t('nav.rsiProfile')"
+                    :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {{ member.rsiHandle }}
+                  </a>
                 </div>
                 <div class="role">
                   <template v-if="member.invitation">
@@ -101,7 +121,56 @@
                     {{ member.acceptedAtLabel }}
                   </template>
                 </div>
-                <div class="actions actions-3x">
+                <div class="links">
+                  <a
+                    v-tooltip="$t('labels.hangar')"
+                    :href="`/hangar/${member.username}`"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fad fa-bookmark" />
+                  </a>
+                  <a
+                    v-if="member.homepage"
+                    v-tooltip="$t('labels.homepage')"
+                    :href="member.homepage"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fad fa-home" />
+                  </a>
+                  <a
+                    v-if="member.youtube"
+                    v-tooltip="$t('labels.youtube')"
+                    :href="member.youtube"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fab fa-youtube" />
+                  </a>
+                  <a
+                    v-if="member.twitch"
+                    v-tooltip="$t('labels.twitch')"
+                    :href="member.twitch"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fab fa-twitch" />
+                  </a>
+                  <a
+                    v-if="member.discord"
+                    v-tooltip="$t('labels.discord')"
+                    :href="member.discord"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fab fa-discord" />
+                  </a>
+                </div>
+                <div
+                  v-if="canEdit()"
+                  class="actions actions-3x"
+                >
                   <Btn
                     v-if="member.role !== 'admin' && !member.invitation && !member.declinedAt"
                     size="small"
@@ -215,10 +284,6 @@ export default {
       'currentUser',
     ]),
 
-    canView() {
-      return ['officer', 'admin'].includes(this.myFleetRole)
-    },
-
     sortByUsername() {
       const currentSort = (this.$route.query.q || {}).sorts
 
@@ -231,6 +296,33 @@ export default {
         }
       } else {
         sorts.push('user_username asc')
+      }
+
+      return {
+        name: this.$route.name,
+        params: this.$route.params,
+        query: {
+          ...this.$route.query,
+          q: {
+            ...this.$route.query?.q,
+            sorts,
+          },
+        },
+      }
+    },
+
+    sortByRsiHandle() {
+      const currentSort = (this.$route.query.q || {}).sorts
+
+      const sorts = []
+      if (Array.isArray(currentSort)) {
+        if (currentSort.includes('user_rsi_handle asc')) {
+          sorts.push('user_rsi_handle desc')
+        } else if (!currentSort.includes('user_rsi_handle asc') && !currentSort.includes('user_rsi_handle desc')) {
+          sorts.push('user_rsi_handle asc')
+        }
+      } else {
+        sorts.push('user_rsi_handle asc')
       }
 
       return {
@@ -277,15 +369,7 @@ export default {
 
   watch: {
     $route() {
-      if (this.canView) {
-        this.fetch()
-      }
-    },
-
-    canView() {
-      if (this.canView) {
-        this.fetch()
-      }
+      this.fetch()
     },
 
     fleet() {
@@ -296,7 +380,7 @@ export default {
   },
 
   mounted() {
-    if (!this.canView) {
+    if (!this.myFleet) {
       this.$router.replace({ name: '404' })
       return
     }
@@ -311,7 +395,11 @@ export default {
 
   methods: {
     canEdit(member) {
-      return this.myFleetRole === 'admin' && member.username !== this.currentUser.username
+      if (member) {
+        return this.myFleetRole === 'admin' && member.username !== this.currentUser.username
+      }
+
+      return this.myFleetRole === 'admin'
     },
 
     openInviteModal() {

@@ -1,3 +1,5 @@
+@import '~stylesheets/variables';
+
 h1 {
   display: flex;
   justify-content: flex-start;
@@ -18,5 +20,34 @@ h1 {
   .metrics-label,
   .metrics-value {
     display: inline-block;
+  }
+}
+
+.fleet-links {
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100px;
+  margin: 15px 0;
+
+  > a {
+    margin-right: 20px;
+
+    > img {
+      max-width: 34px;
+      max-height: 34px;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleet-links {
+    justify-content: center;
+    height: 80px;
   }
 }

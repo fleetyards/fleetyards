@@ -86,6 +86,29 @@
     </a>
   </router-link>
   <li
+    v-else-if="href"
+    :class="{
+      'nav-item-slim': slim,
+    }"
+    class="nav-item"
+  >
+    <a
+      v-tooltip="tooltip"
+      :href="href"
+      target="_blank"
+      rel="noopener"
+    >
+      <slot v-if="hasDefaultSlot" />
+      <NavItemInner
+        v-else
+        :label="label"
+        :icon="icon"
+        :image="image"
+        :slim="slim"
+      />
+    </a>
+  </li>
+  <li
     v-else
     :class="{
       'nav-item-slim': slim,
@@ -128,6 +151,11 @@ export default {
 
     action: {
       type: Function,
+      default: null,
+    },
+
+    href: {
+      type: String,
       default: null,
     },
 

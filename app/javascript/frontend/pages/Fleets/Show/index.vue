@@ -1,8 +1,11 @@
 <template>
   <section class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <h1 v-if="fleet">
+    <div
+      v-if="fleet"
+      class="row"
+    >
+      <div class="col-xs-12 col-md-8">
+        <h1>
           <Avatar
             v-if="fleet.logo"
             :avatar="fleet.logo"
@@ -11,6 +14,65 @@
           />
           {{ fleet.name }} ({{ fleet.fid }})
         </h1>
+      </div>
+      <div class="col-xs-12 col-md-4 fleet-links">
+        <a
+          v-if="fleet.homepage"
+          v-tooltip="$t('labels.homepage')"
+          :href="fleet.homepage"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fad fa-home" />
+        </a>
+        <a
+          v-if="fleet.rsiSid"
+          v-tooltip="$t('nav.rsiProfile')"
+          :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            :src="require('images/rsi_logo.png')"
+            alt="rsi"
+          >
+        </a>
+        <a
+          v-if="fleet.discord"
+          v-tooltip="$t('labels.discord')"
+          :href="fleet.discord"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-discord" />
+        </a>
+        <a
+          v-if="fleet.ts"
+          v-tooltip="$t('labels.fleet.ts')"
+          :href="fleet.ts"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-teamspeak" />
+        </a>
+        <a
+          v-if="fleet.youtube"
+          v-tooltip="$t('labels.youtube')"
+          :href="fleet.youtube"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-youtube" />
+        </a>
+        <a
+          v-if="fleet.twitch"
+          v-tooltip="$t('labels.twitch')"
+          :href="fleet.twitch"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fab fa-twitch" />
+        </a>
       </div>
     </div>
     <div
@@ -334,6 +396,10 @@ export default {
     ]),
 
     myFleet() {
+      if (!this.currentUser) {
+        return null
+      }
+
       return this.currentUser.fleets.find((fleet) => !fleet.invitation
         && fleet.slug === this.$route.params.slug)
     },

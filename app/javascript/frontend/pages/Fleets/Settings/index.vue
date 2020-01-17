@@ -4,17 +4,18 @@
       <div class="col-xs-12 col-sm-3 col-sm-push-9">
         <ul class="tabs">
           <router-link
+            v-if="myFleetRole === 'admin'"
             :to="{ name: 'fleet-settings-fleet' }"
             tag="li"
           >
             <a>{{ $t('nav.fleets.settings.fleet') }}</a>
           </router-link>
-          <!-- <router-link
+          <router-link
             :to="{ name: 'fleet-settings-membership' }"
             tag="li"
           >
             <a>{{ $t('nav.fleets.settings.membership') }}</a>
-          </router-link> -->
+          </router-link>
           <li
             v-if="fleet && myFleet"
             v-tooltip="leaveTooltip"
@@ -33,7 +34,7 @@
       </div>
       <div class="col-xs-12 col-sm-9 col-sm-pull-3">
         <router-view
-          v-if="fleet"
+          v-if="fleet && myFleet"
           :fleet="fleet"
         />
       </div>
@@ -74,6 +75,11 @@ export default {
   },
 
   mounted() {
+    if (!this.myFleet) {
+      this.$router.replace({ name: '404' })
+      return
+    }
+
     this.fetch()
     this.$comlink.$on('fleetUpdate', this.fetch)
   },
