@@ -411,13 +411,13 @@ export default {
           const response = await this.$api.destroy(`fleets/${this.$route.params.slug}`)
 
           if (!response.error) {
+            this.$router.push({ name: 'home' })
+
             this.$comlink.$emit('fleetUpdate')
 
             this.$success({
               text: this.$t('messages.fleet.destroy.success'),
             })
-
-            this.$router.push({ name: 'home' })
           } else {
             this.$alert({
               text: this.$t('messages.fleet.destroy.failure'),

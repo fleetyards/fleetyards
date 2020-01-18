@@ -2,6 +2,8 @@ describe('Login', () => {
   it('Loads and excepts valid credentials', () => {
     cy.visit('/')
 
+    cy.acceptCookies()
+
     cy.clickNav('login')
 
     cy.url().should('include', '/login')
@@ -27,6 +29,8 @@ describe('Login', () => {
   it('Shows error message with wrong credentails', () => {
     cy.visit('/login')
 
+    cy.acceptCookies()
+
     cy.url().should('include', '/login')
 
     cy.selectInput('login').type('invalidUsername')
@@ -39,6 +43,8 @@ describe('Login', () => {
 
   it('Redirects to login when visiting restricted page', () => {
     cy.visit('/settings')
+
+    cy.acceptCookies()
 
     cy.url().should('include', '/login')
 

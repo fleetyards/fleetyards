@@ -1,7 +1,11 @@
 describe('Hangar', () => {
-  it('Shows Preview', () => {
+  beforeEach(() => {
     cy.visit('/')
 
+    cy.acceptCookies()
+  })
+
+  it('Shows Preview', () => {
     cy.clickNav('hangar-preview')
 
     cy.url().should('include', '/hangar/preview/')
@@ -22,8 +26,6 @@ describe('Hangar', () => {
   })
 
   it('Shows Guide on initial Visit', () => {
-    cy.visit('/')
-
     cy.clickNav('hangar-preview')
 
     cy.select('login').click()
@@ -36,8 +38,6 @@ describe('Hangar', () => {
   })
 
   it('Default Workflow', () => {
-    cy.visit('/')
-
     cy.clickNav('login')
 
     cy.login()
