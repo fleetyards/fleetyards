@@ -42,6 +42,10 @@ Cypress.Commands.add('saveShip', () => {
   cy.select('vehicle-save').click()
 })
 
+Cypress.Commands.add('acceptCookies', () => {
+  cy.select('accept-cookies').click()
+})
+
 Cypress.Commands.add('login', () => {
   cy.url().should('include', '/login')
 

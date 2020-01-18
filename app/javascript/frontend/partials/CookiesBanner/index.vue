@@ -111,6 +111,7 @@
           <div class="cookies-banner-actions">
             <Btn
               type="submit"
+              data-test="accept-cookies"
               block
               inline
             >

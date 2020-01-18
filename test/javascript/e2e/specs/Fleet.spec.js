@@ -1,7 +1,11 @@
 describe('Fleet', () => {
-  it('Shows Preview', () => {
+  beforeEach(() => {
     cy.visit('/')
 
+    cy.acceptCookies()
+  })
+
+  it('Shows Preview', () => {
     cy.clickNav('fleets-menu')
     cy.clickNav('fleet-preview')
 
@@ -26,8 +30,6 @@ describe('Fleet', () => {
 
 
   it('default workflow', () => {
-    cy.visit('/')
-
     cy.clickNav('fleets-menu')
     cy.clickNav('fleet-preview')
 
