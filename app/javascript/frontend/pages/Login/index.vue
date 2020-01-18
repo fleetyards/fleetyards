@@ -57,6 +57,7 @@
             <Btn
               :loading="submitting"
               type="submit"
+              data-test="submit-login"
               size="large"
               block
             >

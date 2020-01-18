@@ -4,6 +4,6 @@ import AppFooter from 'frontend/partials/AppFooter'
 describe('AppFooter', () => {
   it('renders all links', () => {
     const cmp = mountVM(AppFooter)
-    expect(cmp.findAll('a')).toHaveLength(10)
+    expect(cmp.findAll('a')).toHaveLength(9)
   })
 })

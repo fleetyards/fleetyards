@@ -57,7 +57,7 @@ Cypress.Commands.add('login', () => {
     cy.selectInput('login').type(userData.test.username)
     cy.selectInput('password').type(userData.test.password)
 
-    cy.get('button[type=submit]').click()
+    cy.select('submit-login').click()
 
     cy.contains('.username', userData.test.username).should('exist')
   })
