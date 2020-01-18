@@ -12,14 +12,17 @@ export default () => ({
     isAuthenticated(state) {
       return state.authToken !== null
     },
+
     authToken(state) {
       return state.authToken
     },
+
     currentUser(state) {
       return state.currentUser
     },
-    cookiesAccepted(state) {
-      return state.cookiesAccepted
+
+    cookies(state) {
+      return state.cookies
     },
   },
 
@@ -41,8 +44,8 @@ export default () => ({
       state.currentUser = payload
     },
 
-    acceptCookies(state) {
-      state.cookiesAccepted = true
+    setCookies(state, payload) {
+      state.cookies = payload
     },
   },
   /* eslint-enable no-param-reassign */

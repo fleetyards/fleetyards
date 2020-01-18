@@ -22,25 +22,30 @@ export default {
       type: String,
       default: '',
     },
+
     label: {
       type: String,
       required: true,
     },
+
     value: {
       type: Boolean,
       required: true,
     },
+
     disabled: {
       type: Boolean,
       default: false,
     },
   },
+
   computed: {
     checkboxID() {
       // eslint-disable-next-line no-underscore-dangle
       return `${this.id}-${this._uid.toString()}`
     },
   },
+
   methods: {
     change(event) {
       this.$emit('input', event.target.checked)
@@ -50,5 +55,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+  @import 'index';
 </style>

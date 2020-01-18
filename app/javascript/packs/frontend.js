@@ -7,7 +7,7 @@ import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
-import 'frontend/lib/Ahoy'
+import Ahoy from 'frontend/lib/Ahoy'
 import 'frontend/lib/Bootstrap'
 import I18n from 'frontend/lib/I18n'
 import ApiClient from 'frontend/lib/ApiClient'
@@ -43,6 +43,7 @@ Vue.use(I18n)
 Vue.use(DataPrefetch)
 Vue.use(Helpers)
 Vue.use(Noty)
+Vue.use(Ahoy)
 Vue.use(Validations)
 
 Vue.use(VueClipboard)

@@ -79,6 +79,7 @@ $outerBorderWidth: 2px;
 
   a {
     color: $text-color;
+    cursor: pointer;
 
     &:hover {
       color: white;

@@ -4,4 +4,9 @@ ahoy.configure({
   cookies: false,
 })
 
-ahoy.trackAll()
+export default {
+  install(Vue) {
+    // eslint-disable-next-line no-param-reassign
+    Vue.prototype.$ahoy = ahoy
+  },
+}

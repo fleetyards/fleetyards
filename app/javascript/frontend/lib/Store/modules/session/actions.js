@@ -49,7 +49,7 @@ export default {
     }
   },
 
-  acceptCookies({ commit }) {
-    commit('acceptCookies')
+  setCookies({ commit }, payload) {
+    commit('setCookies', payload)
   },
 }

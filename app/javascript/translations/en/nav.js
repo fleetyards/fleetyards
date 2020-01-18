@@ -8,7 +8,7 @@ export default {
   logout: 'Logout',
   signUp: 'Sign up',
   privacyPolicy: 'Privacy policy',
-  cookiePolicy: 'Cookie policy',
+  privacySettings: 'Privacy settings',
   impressum: 'Impressum',
   admin: 'Admin',
   fleets: {

@@ -52,7 +52,6 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
 
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'
-  get 'cookie-policy' => 'base#index'
 
   get 'sign-up' => 'base#index'
   get 'login' => 'base#index'

@@ -35,13 +35,6 @@ export const routes = [
       title: 'privacyPolicy',
     },
   }, {
-    path: '/cookie-policy/',
-    name: 'cookie-policy',
-    component: () => import(/* webpackChunkName: "frontend.page.home" */ 'frontend/pages/CookiePolicy'),
-    meta: {
-      title: 'cookiePolicy',
-    },
-  }, {
     path: '/hangar/',
     name: 'hangar',
     component: () => import(/* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'),

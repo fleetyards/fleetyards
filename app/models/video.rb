@@ -12,7 +12,7 @@ class Video < ApplicationRecord
   def video_url
     return url unless youtube?
 
-    "https://www.youtube.com/embed/#{url}"
+    "https://www.youtube-nocookie.com/embed/#{url}"
   end
 
   def video_id
