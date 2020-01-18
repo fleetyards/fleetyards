@@ -21,6 +21,10 @@ export default () => ({
       return state.currentUser
     },
 
+    cookiesInfoVisible(state) {
+      return state.cookiesInfoVisible
+    },
+
     cookies(state) {
       return state.cookies
     },
@@ -42,6 +46,10 @@ export default () => ({
 
     setCurrentUser(state, payload) {
       state.currentUser = payload
+    },
+
+    setCookiesInfoVisible(state, payload) {
+      state.cookiesInfoVisible = payload
     },
 
     setCookies(state, payload) {

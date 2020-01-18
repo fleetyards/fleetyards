@@ -2,8 +2,6 @@ describe('Roadmap', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.acceptCookies()
-
     cy.clickNav('roadmap-menu')
     cy.clickNav('roadmap')
 

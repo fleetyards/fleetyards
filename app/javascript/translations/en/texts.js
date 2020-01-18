@@ -1,5 +1,4 @@
 export default {
-  cookies: '<b>This website uses cookies.</b> Cookies improve the user experience and help make this website better. By continuing to use the site, you agree to our cookie policy: <a href="/cookie-policy" target="_blank" rel="noopener"><b>Cookie policy</b></a>',
   index: 'Your database for all information around Ships and Stations in Star Citizen.',
   indexQuote: '“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”',
   indexQuoteSource: 'Author Unknown, Source:',

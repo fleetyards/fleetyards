@@ -32,10 +32,23 @@
             class="col-xs-12 col-md-6 col-lgx-3 fade-list-item"
           >
             <div class="video embed-responsive embed-responsive-16by9">
-              <iframe
-                :src="video.url"
-                class="embed-responsive-item"
-              />
+              <template v-if="video.type === 'youtube' && youtubeEnabled">
+                <iframe
+                  :src="video.url"
+                  class="embed-responsive-item"
+                />
+              </template>
+              <div
+                v-else-if="video.type === 'youtube'"
+                class="youtube-placeholder"
+              >
+                <i
+                  v-tooltip="$t('labels.enableYoutube')"
+                  class="fab fa-youtube"
+                  @click="enableYoutube"
+                  @click.right.stop.prevent="copyVideoUrl(video)"
+                />
+              </div>
             </div>
           </div>
         </transition-group>
@@ -55,6 +68,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
@@ -80,6 +94,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters('session', [
+      'cookies',
+    ]),
+
     metaTitle() {
       if (!this.model) {
         return null
@@ -106,6 +124,10 @@ export default {
         label: this.model.name,
       }]
     },
+
+    youtubeEnabled() {
+      return this.cookies.youtube
+    },
   },
 
   watch: {
@@ -120,15 +142,38 @@ export default {
   },
 
   methods: {
+    copyVideoUrl(video) {
+      this.$copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(() => {
+        this.$success({
+          text: this.$t('messages.copyVideoUrl.success'),
+        })
+      }, () => {
+        this.$alert({
+          text: this.$t('messages.copyVideoUrl.failure'),
+        })
+      })
+    },
+
+    enableYoutube() {
+      this.$store.dispatch('session/updateCookies', {
+        ...this.cookies,
+        youtube: true,
+      })
+    },
+
     async fetch() {
       this.loading = true
+
       const response = await this.$api.get(`models/${this.$route.params.slug}/videos`, {
         page: this.$route.query.page,
       })
+
       this.loading = false
+
       if (!response.error) {
         this.videos = response.data
       }
+
       this.setPages(response.meta)
     },
 

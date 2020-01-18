@@ -2,8 +2,6 @@ describe('Stations', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.acceptCookies()
-
     cy.clickNav('stations-menu')
     cy.clickNav('stations')
 

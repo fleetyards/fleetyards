@@ -49,7 +49,11 @@ export default {
     }
   },
 
-  setCookies({ commit }, payload) {
+  hideCookiesInfo({ commit }) {
+    commit('setCookiesInfoVisible', false)
+  },
+
+  updateCookies({ commit }, payload) {
     commit('setCookies', payload)
   },
 }

@@ -2,8 +2,6 @@ describe('Ships', () => {
   it('Loads', () => {
     cy.visit('/')
 
-    cy.acceptCookies()
-
     cy.clickNav('models')
 
     cy.url().should('include', '/ships')

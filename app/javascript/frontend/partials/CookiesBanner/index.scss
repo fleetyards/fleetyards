@@ -1,57 +1,33 @@
 @import '~stylesheets/variables';
 
 .cookies-banner {
+  background-color: rgba($gray-darker, .95);
   position: fixed;
-  top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
-  background-color: rgba(black, .5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transition: left ease $transition-base-speed;
 
-  .cookies-banner-inner {
-    position: relative;
-    width: 500px;
-    background-color: rgba($gray-darker, .95);
-    padding: 20px;
-    border-radius: $border-radius-base;
+  p {
+    padding: 10px;
+    padding-right: 60px;
+    margin: 0;
+  }
 
-    form {
-      margin-top: 20px;
-    }
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
 
-    .close {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
+@media (min-width: $desktop-breakpoint) {
+  .cookies-banner {
+    left: 300px;
 
-    dl {
-      margin: 20px 0;
-
-      dt {
-        margin-bottom: 5px;
-        margin-top: 10px;
-      }
-    }
-
-    .info-link {
-      font-size: 120%;
-      cursor: pointer;
-    }
-
-    .form-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-
-      > .form-group {
-        margin: 0;
-      }
+    &.cookies-banner-slim {
+      left: 80px;
     }
   }
 }

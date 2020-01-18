@@ -11,6 +11,10 @@ export default {
     success: 'Image URL Copied!',
     failure: 'Could not copy Image URL',
   },
+  copyVideoUrl: {
+    success: 'Video URL Copied!',
+    failure: 'Could not copy Video URL',
+  },
   signup: {
     success: '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.',
     invalid: 'Please resolve the errors before your account can be created.',

@@ -1,0 +1,38 @@
+@import '~stylesheets/variables';
+
+.cookies-banner {
+  form {
+    margin-top: 20px;
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  dl {
+    margin: 20px 0;
+
+    dt {
+      margin-bottom: 5px;
+      margin-top: 10px;
+    }
+  }
+
+  .info-link {
+    font-size: 120%;
+    cursor: pointer;
+  }
+
+  .form-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    > .form-group {
+      margin: 0;
+    }
+  }
+}

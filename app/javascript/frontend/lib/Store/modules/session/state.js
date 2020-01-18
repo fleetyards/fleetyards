@@ -2,8 +2,8 @@ export default () => ({
   authToken: null,
   authTokenRenewAt: null,
   currentUser: null,
+  cookiesInfoVisible: true,
   cookies: {
-    visible: true,
-    ahoy: false,
+    youtube: false,
   },
 })

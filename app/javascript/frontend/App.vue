@@ -35,7 +35,7 @@
       </div>
     </div>
     <BackToTop visible-offset="500" />
-    <CookiesBanner />
+    <CookiesBanner v-if="cookiesInfoVisible" />
   </div>
 </template>
 
@@ -80,12 +80,8 @@ export default {
 
     ...mapGetters('session', [
       'isAuthenticated',
-      'cookies',
+      'cookiesInfoVisible',
     ]),
-
-    ahoyEnabled() {
-      return this.cookies.ahoy
-    },
   },
 
   watch: {
@@ -109,14 +105,6 @@ export default {
         this.$router.push({ name: 'login' })
       }
     },
-
-    ahoyEnabled() {
-      if (this.ahoyEnabled) {
-        this.$ahoy.trackAll()
-      } else {
-        window.location.reload(true)
-      }
-    },
   },
 
   created() {
@@ -127,10 +115,6 @@ export default {
     if (this.isAuthenticated) {
       requestPermission()
       this.fetchHangar()
-    }
-
-    if (this.ahoyEnabled) {
-      this.$ahoy.trackAll()
     }
 
     window.addEventListener('resize', this.checkMobile)

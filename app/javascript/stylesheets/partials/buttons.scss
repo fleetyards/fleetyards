@@ -127,6 +127,19 @@ $panel-content-border-radius: 6px;
     margin-bottom: 0;
   }
 
+  &.panel-btn-text-inline {
+    margin: 0;
+    padding: 0;
+    min-height: auto;
+
+    .panel-btn-inner {
+      padding: 0;
+      margin: 0;
+      color: $text-color !important;
+      background-color: transparent !important;
+    }
+  }
+
   &.panel-btn-block {
     width: 100%;
   }

@@ -5,6 +5,13 @@
         <Panel>
           <div class="panel-body">
             <h1>{{ $t('headlines.privacy') }}</h1>
+            <Btn
+              class="privacy-settings-link"
+              mobile-block
+              @click.native="openPrivacySettings"
+            >
+              {{ $t('nav.privacySettings') }}
+            </Btn>
             <p>
               Below you can read about what Information we are using to provide you the services on
               Fleetyards.net. For most parts this only concerns registered Users but please read
@@ -21,10 +28,20 @@
 
             <h3>As a Guest</h3>
             <p>
-              As a Guest on Fleetyards.net we use your Broswer Type and Version as well as
-              your Operating System and Version. This Information is only collected when an Error
-              occurs on Fleetyards.net to give us an overview about what went wrong and to improve
-              the experience on Fleetyards.net. We use the Third Party Service <a
+              As a Guest on Fleetyards.net we collect the following data:
+            </p>
+            <ul>
+              <li>Anonymised IP address</li>
+              <li>Referrer URL</li>
+              <li>Date and time of visit</li>
+              <li>Pages visited</li>
+              <li>Browser information</li>
+              <li>Device information</li>
+            </ul>
+            <p>
+              This Information helps us to optimise the user experience on Fleetyards.net.
+              Additionally, but only when an error occurs, the Browser and Device information is
+              shared with the following third party service <a
                 href="https://sentry.io/"
                 target="_blank"
                 rel="noopener"
@@ -134,6 +151,40 @@
             </p>
             <br>
 
+            <h3>
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener"
+              >
+                Youtube
+              </a>
+            </h3>
+            <p>
+              This website, uses YouTube to embed Videos. YouTube is an
+              Internet video portal that enables video publishers to set video clips and other
+              users free of charge, which also provides free viewing, review and commenting on
+              them. YouTube allows you to publish all kinds of videos, so you can access both full
+              movies and TV broadcasts, as well as music videos, trailers, and videos made by users
+              via the Internet portal.
+            </p>
+            <p>
+              The operating company of YouTube is YouTube, LLC, 901 Cherry Ave., San Bruno, CA
+              94066, United States of America. The YouTube, LLC is a subsidiary of Alphabet Inc.
+              1600 Amphitheatre Parkway, Mountain View, CA 94043-1351, United States of America.
+            </p>
+            <p>
+              On pages with an embeded Video, Youtube will gather information like your IP address
+              and Refarral URL. Additionally, if you are logged in on the Youtube homepage, Youtube
+              will attach the gathered data to the logged in account.
+            </p>
+            <p>
+              YouTube's data protection provisions, available at
+              https://www.google.com/intl/en/policies/privacy/, provide information about the
+              collection, processing and use of personal data by YouTube and Alphabet.
+            </p>
+            <br>
+
             <h2>Your choices</h2>
             <p>
               You can opt out on Notifications on the
@@ -185,20 +236,36 @@
         </Panel>
       </div>
     </div>
+
+    <PrivacySettings ref="privacySettings" />
   </section>
 </template>
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
+import Btn from 'frontend/components/Btn'
+import PrivacySettings from 'frontend/partials/PrivacySettings'
 
 export default {
   components: {
     Panel,
+    Btn,
+    PrivacySettings,
   },
 
   mixins: [
     MetaInfo,
   ],
+
+  methods: {
+    openPrivacySettings() {
+      this.$refs.privacySettings.open()
+    },
+  },
 }
 </script>
+
+<style lang="scss" scoped>
+  @import 'index';
+</style>

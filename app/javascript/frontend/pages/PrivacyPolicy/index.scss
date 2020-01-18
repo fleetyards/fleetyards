@@ -1,0 +1,15 @@
+@import '~stylesheets/variables';
+
+.privacy-settings-link {
+  position: absolute;
+  top: 25px;
+  right: 10px;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .privacy-settings-link {
+    top: auto;
+    position: relative;
+    right: auto;
+  }
+}

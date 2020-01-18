@@ -22,10 +22,6 @@
           {{ $t('nav.privacyPolicy') }}
         </router-link>
         |
-        <a @click.stop.prevent="showCookieBanner">
-          {{ $t('nav.privacySettings') }}
-        </a>
-        |
         <router-link :to="{ name: 'impressum' }">
           {{ $t('nav.impressum') }}
         </router-link>
@@ -137,20 +133,9 @@ export default {
       'codename',
       'gitRevision',
     ]),
-
-    ...mapGetters('session', [
-      'cookies',
-    ]),
   },
 
   methods: {
-    showCookieBanner() {
-      this.$store.dispatch('session/setCookies', {
-        ...this.cookies,
-        visible: true,
-      })
-    },
-
     copyGitRevision() {
       this.$copyText(this.gitRevision).then(() => {
         this.$success({

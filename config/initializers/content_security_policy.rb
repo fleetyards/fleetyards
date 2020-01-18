@@ -49,7 +49,7 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   frame_src = [
-    :self, 'https://www.youtube.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
+    :self, 'https://www.youtube.com', 'https://www.youtube-nocookie.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
   ]
 
   form_action = [

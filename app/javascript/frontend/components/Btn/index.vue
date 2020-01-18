@@ -87,6 +87,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    textInline: {
+      type: Boolean,
+      default: false,
+    },
     active: {
       type: Boolean,
       default: false,
@@ -108,6 +112,7 @@ export default {
         'panel-btn-large': this.size === 'large',
         'panel-btn-block': this.block,
         'panel-btn-inline': this.inline,
+        'panel-btn-text-inline': this.textInline,
         'panel-btn-mobile-block': this.mobileBlock,
         active: this.active,
       }

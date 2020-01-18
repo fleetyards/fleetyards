@@ -130,7 +130,10 @@
                   {{ $t('labels.model.brochure') }}
                   <i class="fal fa-download" />
                 </Btn>
-                <Btn :to="{ name: 'compare-models', query: { models: [model.slug] }}">
+                <Btn
+                  :to="{ name: 'models-compare', query: { models: [model.slug] }}"
+                  data-test="compare"
+                >
                   {{ $t('actions.compare.models') }}
                 </Btn>
                 <Btn :href="model.storeUrl">

@@ -8,6 +8,8 @@ import placeholders from './en/placeholders'
 import sublines from './en/sublines'
 import texts from './en/texts'
 import title from './en/title'
+import cookies from './en/cookies'
+import privacySettings from './en/privacySettings'
 
 const validations = {}
 Object.keys(validationMessages).forEach((key) => {
@@ -22,6 +24,12 @@ export default {
   },
   title: {
     ...title,
+  },
+  cookies: {
+    ...cookies,
+  },
+  privacySettings: {
+    ...privacySettings,
   },
   headlines: {
     ...headlines,

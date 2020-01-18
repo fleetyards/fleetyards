@@ -12,7 +12,7 @@ export default function getStorePlugins() {
       'app.navSlim',
       'session.authToken',
       'session.currentUser',
-      'session.cookies',
+      'session.cookiesInfoVisible',
       'session.cookies',
       'hangar.ships',
       'hangar.detailsVisible',

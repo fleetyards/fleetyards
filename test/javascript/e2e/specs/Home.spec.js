@@ -1,8 +1,6 @@
 describe('Home', () => {
   beforeEach(() => {
     cy.visit('/')
-
-    cy.acceptCookies()
   })
 
   it('Loads', () => {
