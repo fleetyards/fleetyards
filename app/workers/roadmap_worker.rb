@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rsi/roadmap_loader'
+require 'discord/roadmap_update'
 
 class RoadmapWorker
   include Sidekiq::Worker
@@ -16,6 +17,8 @@ class RoadmapWorker
     return if changes.zero?
 
     RoadmapMailer.notify_admin(changes).deliver_later
+
+    Discord::RoadmapUpdate.new(changes: changes).run
 
     ActionCable.server.broadcast('roadmap', {
       changes: changes

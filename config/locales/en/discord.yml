@@ -1,0 +1,11 @@
+en:
+  discord:
+    new_ship:
+      title: New Ship/Vehicle added
+      message: "Allow me to introduce: The %{manufacturer} %{model}"
+    roadmap_update:
+      title: New changes on the Roadmap
+      message: There have been %{changes} changes to the Roadmap
+    ship_on_sale:
+      title: The %{model} is now on Sale!
+      message: Starting at %{price} excl. VAT

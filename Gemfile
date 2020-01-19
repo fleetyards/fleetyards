@@ -19,6 +19,8 @@ gem 'slim-rails'
 
 gem 'searchkick'
 
+gem 'discordrb-webhooks'
+
 gem 'selectize-rails'
 
 gem 'ahoy_matey'

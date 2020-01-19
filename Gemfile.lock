@@ -123,7 +123,11 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    discordrb-webhooks (3.3.0)
+      rest-client (>= 2.1.0.rc1)
     docile (1.3.2)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     dynamic_fields_for_rails (1.0.0)
       rails (>= 3.0.0, < 6.0.0)
     ed25519 (1.2.4)
@@ -193,6 +197,9 @@ GEM
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
     htmlentities (4.3.4)
+    http-accept (1.7.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     i18n-js (3.5.1)
@@ -283,6 +290,7 @@ GEM
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
+    netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -378,6 +386,11 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rubocop (0.79.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -482,6 +495,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     uniform_notifier (1.13.0)
     url_plumber (0.1.2)
@@ -529,6 +545,7 @@ DEPENDENCIES
   coffee-rails
   dalli
   devise
+  discordrb-webhooks
   dynamic_fields_for_rails
   ed25519
   excon (>= 0.71.0)
@@ -608,4 +625,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.0.2
+   2.1.4

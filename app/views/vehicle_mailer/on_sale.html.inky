@@ -9,6 +9,6 @@
   <%= I18n.t('mailer.vehicle.on_sale.headline.part_two') %>
 </p>
 <p>
-  <%= I18n.t('mailer.vehicle.on_sale.price', price: number_to_currency(@vehicle.model.price)) %>
+  <%= I18n.t('mailer.vehicle.on_sale.price', price: number_to_currency(@vehicle.model.pledge_price)) %>
   <%= I18n.t('labels.tax_excluded') %>
 </p>

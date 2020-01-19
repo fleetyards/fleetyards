@@ -10,7 +10,7 @@ en:
       new:
         subject: New Ship/Vehicle added
         headline: New Ship/Vehicle added
-        body: "Allow me to introduce: The"
+        body: "Allow me to introduce: The %{manufacturer}"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
     admin:
