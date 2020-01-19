@@ -317,9 +317,9 @@ jobs:
           }'
 
   notify-discord-stage:
-    <<: *defaults
     steps:
-      - run: "curl -X POST '$DISCORD_WEBHOOK' -H 'Content-Type: application/json' -d '{ \"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }'"
+      - run: echo $DISCORD_WEBHOOK
+      - run: "curl -X POST $DISCORD_WEBHOOK -H 'Content-Type: application/json' -d '{ \"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }'"
 
 workflows:
   version: 2
