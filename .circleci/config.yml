@@ -309,24 +309,17 @@ jobs:
   notify-discord:
     <<: *defaults
     steps:
-      - run:
-          command: |
-            curl --location --request POST '$DISCORD_WEBHOOK' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-              "content": "**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG"
-            }'
+      - run: |
+          curl --location --request POST '$DISCORD_WEBHOOK' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+            "content": "**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG"
+          }'
 
   notify-discord-stage:
     <<: *defaults
     steps:
-      - run:
-          command: |
-            curl --location --request POST '$DISCORD_WEBHOOK' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-              "content": "**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG"
-            }'
+      - run: "curl -X POST '$DISCORD_WEBHOOK' -H 'Content-Type: application/json' -d '{ \"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }'"
 
 workflows:
   version: 2
