@@ -317,6 +317,8 @@ jobs:
           }'
 
   notify-discord-stage:
+    docker:
+      - image: fleetyards/base:2.6.5
     steps:
       - run: echo $DISCORD_WEBHOOK
       - run: "curl -X POST $DISCORD_WEBHOOK -H 'Content-Type: application/json' -d '{ \"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }'"
