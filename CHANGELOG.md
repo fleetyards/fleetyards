@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.63.0](https://github.com/fleetyards/app/compare/v3.62.0...v3.63.0) (2020-01-19)
+
+
+### Features
+
+* **cookies:** update e2e specs ([0bc32c4](https://github.com/fleetyards/app/commit/0bc32c4f7ddf31ec19a857cda3f977be8f43277b))
+
+
+### Bug Fixes
+
+* **specs:** update ships spec ([9a244f3](https://github.com/fleetyards/app/commit/9a244f342de890efda5aa4fc1ffa0eb261f8d644))
+* **specs:** update test labels ([20140e0](https://github.com/fleetyards/app/commit/20140e0a1c9922fd4d52448251c133a52e5d2312))
+* **specs:** update test labels ([0f85538](https://github.com/fleetyards/app/commit/0f85538a8b952faaf813ff727bd5cb193024c07d))
+
 ## [3.62.0](https://github.com/fleetyards/app/compare/v3.61.0...v3.62.0) (2020-01-18)
 
 
