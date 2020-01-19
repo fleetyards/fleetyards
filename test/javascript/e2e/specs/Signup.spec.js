@@ -15,7 +15,7 @@ describe('Signup', () => {
       cy.selectInput('password').type(userData.new.password)
       cy.selectInput('passwordConfirmation').type(userData.new.password)
 
-      cy.get('button[type=submit]').click()
+      cy.select('submit-signup').click()
 
       cy.success('Welcome to FleetYards.net')
 
@@ -24,7 +24,7 @@ describe('Signup', () => {
       cy.selectInput('login').type(userData.new.username)
       cy.selectInput('password').type(userData.new.password)
 
-      cy.get('button[type=submit]').click()
+      cy.select('submit-login').click()
 
       cy.location('pathname').should('eq', '/')
 
@@ -73,14 +73,14 @@ describe('Signup', () => {
       cy.selectInput('passwordConfirmation').type(userData.test.password)
       cy.selectInput('passwordConfirmation').parent().should('not.have.class', 'has-error')
 
-      cy.get('button[type=submit]').click()
+      cy.select('submit-signup').click()
     })
   })
 
   it('Validates all fields on submit', () => {
     cy.visit('/sign-up')
 
-    cy.get('button[type=submit]').click()
+    cy.select('submit-signup').click()
 
     cy.selectInput('username').parent().should('have.class', 'has-error')
     cy.selectInput('email').parent().should('have.class', 'has-error')

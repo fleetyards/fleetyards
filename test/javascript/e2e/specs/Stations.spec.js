@@ -9,6 +9,6 @@ describe('Stations', () => {
 
     cy.get('.panel-title a').contains('Port Olisar').should('exist')
 
-    cy.get('.panel').should('have.length', Cypress.env('CI') ? 1 : 10)
+    cy.get('.station-panel').should('have.length', Cypress.env('CI') ? 1 : 10)
   })
 })

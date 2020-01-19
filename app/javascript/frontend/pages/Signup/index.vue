@@ -88,6 +88,7 @@
             <Btn
               :loading="submitting"
               type="submit"
+              data-test="submit-signup"
               size="large"
               block
             >
