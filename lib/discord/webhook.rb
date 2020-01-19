@@ -16,6 +16,7 @@ module Discord
 
     def run
       return if Rails.application.secrets[:discord_updates_endpoint].blank?
+
       client.execute do |builder|
         builder.content = content
       end

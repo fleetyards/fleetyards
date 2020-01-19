@@ -306,6 +306,16 @@ jobs:
           name: Deploy
           command: bundle exec cap live deploy
 
+  notify-discord:
+    <<: *defaults
+    steps:
+      - run: |
+          curl --location --request POST '$DISCORD_WEBHOOK' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+            "content": "**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG"
+          }'
+
 workflows:
   version: 2
   check:
@@ -418,6 +428,12 @@ workflows:
           filters:
             branches:
               only: master
+      - notify-discord:
+        requires:
+          - deploy-to-stage
+        filters:
+          tags:
+            only: /^v.*/
       - deploy-to-live:
           requires:
             - e2e-tests
@@ -434,3 +450,9 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - notify-discord:
+          requires:
+            - deploy-to-live
+          filters:
+            tags:
+              only: /^v.*/
