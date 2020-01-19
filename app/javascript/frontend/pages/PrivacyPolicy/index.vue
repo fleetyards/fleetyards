@@ -236,8 +236,6 @@
         </Panel>
       </div>
     </div>
-
-    <PrivacySettings ref="privacySettings" />
   </section>
 </template>
 
@@ -245,13 +243,11 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
-import PrivacySettings from 'frontend/partials/PrivacySettings'
 
 export default {
   components: {
     Panel,
     Btn,
-    PrivacySettings,
   },
 
   mixins: [
@@ -260,7 +256,7 @@ export default {
 
   methods: {
     openPrivacySettings() {
-      this.$refs.privacySettings.open()
+      this.$comlink.$emit('openPrivacySettings')
     },
   },
 }

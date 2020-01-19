@@ -42,12 +42,21 @@
                 v-else-if="video.type === 'youtube'"
                 class="youtube-placeholder"
               >
-                <i
-                  v-tooltip="$t('labels.enableYoutube')"
-                  class="fab fa-youtube"
-                  @click="enableYoutube"
-                  @click.right.stop.prevent="copyVideoUrl(video)"
-                />
+                <i class="fab fa-youtube" />
+                <div class="youtube-placeholder-buttons">
+                  <Btn
+                    inline
+                    @click.native="enableYoutube"
+                  >
+                    Allow video embeds
+                  </Btn>
+                  <Btn
+                    inline
+                    @click.native="copyVideoUrl(video)"
+                  >
+                    Copy Youtube URL
+                  </Btn>
+                </div>
               </div>
             </div>
           </div>
@@ -72,11 +81,13 @@ import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
+import Btn from 'frontend/components/Btn'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   components: {
     Loader,
+    Btn,
     BreadCrumbs,
   },
 
@@ -155,10 +166,7 @@ export default {
     },
 
     enableYoutube() {
-      this.$store.dispatch('session/updateCookies', {
-        ...this.cookies,
-        youtube: true,
-      })
+      this.$comlink.$emit('openPrivacySettings')
     },
 
     async fetch() {

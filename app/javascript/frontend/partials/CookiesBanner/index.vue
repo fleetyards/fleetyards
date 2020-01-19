@@ -38,19 +38,15 @@
         </Btn>
       </div>
     </transition>
-
-    <PrivacySettings ref="privacySettings" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import PrivacySettings from 'frontend/partials/PrivacySettings'
 import Btn from 'frontend/components/Btn'
 
 export default {
   components: {
-    PrivacySettings,
     Btn,
   },
 
@@ -70,7 +66,7 @@ export default {
     },
 
     openPrivacySettings() {
-      this.$refs.privacySettings.open()
+      this.$comlink.$emit('openPrivacySettings')
     },
   },
 }

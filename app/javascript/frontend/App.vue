@@ -36,6 +36,7 @@
     </div>
     <BackToTop visible-offset="500" />
     <CookiesBanner v-if="cookiesInfoVisible" />
+    <PrivacySettings ref="privacySettings" />
   </div>
 </template>
 
@@ -47,6 +48,7 @@ import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import CookiesBanner from 'frontend/partials/CookiesBanner'
+import PrivacySettings from 'frontend/partials/PrivacySettings'
 import NetworkStatus from 'frontend/components/NetworkStatus'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
@@ -59,6 +61,7 @@ export default {
     AppFooter,
     BackToTop,
     CookiesBanner,
+    PrivacySettings,
     NetworkStatus,
   },
 
@@ -117,6 +120,8 @@ export default {
       this.fetchHangar()
     }
 
+    this.$comlink.$on('openPrivacySettings', this.openPrivacySettings)
+
     window.addEventListener('resize', this.checkMobile)
   },
 
@@ -125,6 +130,10 @@ export default {
   },
 
   methods: {
+    openPrivacySettings() {
+      this.$refs.privacySettings.open()
+    },
+
     checkMobile() {
       this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
     },
