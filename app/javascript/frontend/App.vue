@@ -49,7 +49,6 @@ import CurrentUser from 'frontend/mixins/CurrentUser'
 import RenewSession from 'frontend/mixins/RenewSession'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
-import CookiesBanner from 'frontend/partials/CookiesBanner'
 import PrivacySettings from 'frontend/partials/PrivacySettings'
 import NetworkStatus from 'frontend/components/NetworkStatus'
 import { mapGetters } from 'vuex'
@@ -62,7 +61,6 @@ export default {
     Navigation,
     AppFooter,
     BackToTop,
-    CookiesBanner,
     PrivacySettings,
     NetworkStatus,
   },
