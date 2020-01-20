@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.63.2](https://github.com/fleetyards/app/compare/v3.63.1...v3.63.2) (2020-01-20)
+
+
+### Bug Fixes
+
+* **fleets:** update rsi icon ([7963b1f](https://github.com/fleetyards/app/commit/7963b1f10fb2801f637d57099d41162dae68bf4c))
+
 ### [3.63.1](https://github.com/fleetyards/app/compare/v3.63.0...v3.63.1) (2020-01-20)
 
 
