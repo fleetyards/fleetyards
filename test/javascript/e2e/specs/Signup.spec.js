@@ -2,6 +2,8 @@ describe('Signup', () => {
   it('Allows Signup/Login/Account deletion', () => {
     cy.visit('/')
 
+    cy.acceptCookies()
+
     cy.clickNav('login')
 
     cy.select('signup-link').click()
@@ -55,6 +57,8 @@ describe('Signup', () => {
   it('Validates all fields', () => {
     cy.visit('/sign-up')
 
+    cy.acceptCookies()
+
     // eslint-disable-next-line jest/valid-expect-in-promise
     cy.fixture('users').then((userData) => {
       cy.selectInput('username').type(userData.test.username)
@@ -79,6 +83,8 @@ describe('Signup', () => {
 
   it('Validates all fields on submit', () => {
     cy.visit('/sign-up')
+
+    cy.acceptCookies()
 
     cy.select('submit-signup').click()
 

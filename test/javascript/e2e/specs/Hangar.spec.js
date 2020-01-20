@@ -1,6 +1,8 @@
 describe('Hangar', () => {
   beforeEach(() => {
     cy.visit('/')
+
+    cy.acceptCookies()
   })
 
   it('Shows Preview', () => {

@@ -2,6 +2,8 @@ describe('Ship', () => {
   it('Loads', () => {
     cy.visit('/ships')
 
+    cy.acceptCookies()
+
     cy.get('.panel-title a span').contains('100i').click()
 
     cy.url().should('include', '/ships/100i')
