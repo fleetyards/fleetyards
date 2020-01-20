@@ -39,6 +39,8 @@ class User < ApplicationRecord
 
   before_validation :clean_username
 
+  after_save :touch_fleet_memberships
+
   mount_uploader :avatar, AvatarUploader
 
   def self.find_for_database_authentication(warden_conditions)
@@ -56,5 +58,11 @@ class User < ApplicationRecord
     return if username.blank?
 
     self.username = username.strip
+  end
+
+  private def touch_fleet_memberships
+    # rubocop:disable Rails/SkipsModelValidations
+    fleet_memberships.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 end
