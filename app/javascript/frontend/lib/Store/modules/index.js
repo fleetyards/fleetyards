@@ -1,5 +1,6 @@
 import app from 'frontend/lib/Store/modules/app'
 import session from 'frontend/lib/Store/modules/session'
+import cookies from 'frontend/lib/Store/modules/cookies'
 import fleet from 'frontend/lib/Store/modules/fleet'
 import hangar from 'frontend/lib/Store/modules/hangar'
 import models from 'frontend/lib/Store/modules/models'
@@ -13,6 +14,7 @@ import search from 'frontend/lib/Store/modules/search'
 export default () => ({
   app: app(),
   session: session(),
+  cookies: cookies(),
   fleet: fleet(),
   hangar: hangar(),
   models: models(),

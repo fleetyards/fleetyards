@@ -191,9 +191,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
+    ...mapGetters('cookies', [
       'cookies',
-      'cookiesInfoVisible',
+      'infoVisible',
     ]),
 
     title() {
@@ -209,7 +209,7 @@ export default {
 
   watch: {
     $route() {
-      if (this.cookiesInfoVisible && this.$route.name !== 'privacy-policy') {
+      if (this.infoVisible && this.$route.name !== 'privacy-policy') {
         this.open()
       } else {
         this.close()
@@ -226,10 +226,6 @@ export default {
 
   mounted() {
     this.setupForm()
-
-    // if (this.cookiesInfoVisible && this.$route.name !== 'privacyPolicy') {
-    //   this.open()
-    // }
   },
 
   methods: {
@@ -254,22 +250,22 @@ export default {
     },
 
     submit() {
-      this.$store.dispatch('session/updateCookies', {
+      this.$store.dispatch('cookies/updateAcceptedCookies', {
         ...this.form,
       })
 
-      this.$store.dispatch('session/hideCookiesInfo')
+      this.$store.dispatch('cookies/hideInfo')
 
       this.close()
     },
 
     accept() {
-      this.$store.dispatch('session/updateCookies', {
+      this.$store.dispatch('cookies/updateAcceptedCookies', {
         ahoy: true,
         youtube: true,
       })
 
-      this.$store.dispatch('session/hideCookiesInfo')
+      this.$store.dispatch('cookies/hideInfo')
 
       this.close()
     },

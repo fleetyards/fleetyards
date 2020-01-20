@@ -83,9 +83,12 @@ export default {
 
     ...mapGetters('session', [
       'isAuthenticated',
-      'cookies',
-      'cookiesInfoVisible',
     ]),
+
+    ...mapGetters('cookies', {
+      cookies: 'cookies',
+      cookiesInfoVisible: 'infoVisible',
+    }),
 
     ahoyAccepted() {
       return this.cookies.ahoy

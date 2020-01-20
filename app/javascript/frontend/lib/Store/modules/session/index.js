@@ -20,14 +20,6 @@ export default () => ({
     currentUser(state) {
       return state.currentUser
     },
-
-    cookiesInfoVisible(state) {
-      return state.cookiesInfoVisible
-    },
-
-    cookies(state) {
-      return state.cookies
-    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -46,14 +38,6 @@ export default () => ({
 
     setCurrentUser(state, payload) {
       state.currentUser = payload
-    },
-
-    setCookiesInfoVisible(state, payload) {
-      state.cookiesInfoVisible = payload
-    },
-
-    setCookies(state, payload) {
-      state.cookies = payload
     },
   },
   /* eslint-enable no-param-reassign */
