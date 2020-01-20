@@ -17,6 +17,7 @@ import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
 import Helpers from 'frontend/lib/Helpers'
 import Noty from 'frontend/lib/Noty'
+import Ahoy from 'frontend/lib/Ahoy'
 import Validations from 'frontend/lib/Validations'
 
 console.info(`
@@ -42,6 +43,7 @@ Vue.use(I18n)
 Vue.use(DataPrefetch)
 Vue.use(Helpers)
 Vue.use(Noty)
+Vue.use(Ahoy)
 Vue.use(Validations)
 
 Vue.use(VueClipboard)

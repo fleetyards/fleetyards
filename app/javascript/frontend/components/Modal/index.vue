@@ -7,13 +7,14 @@
       wide: wide,
     }"
     class="modal fade"
-    @click.self="close"
+    @click.self="closable && close"
   >
     <div class="modal-dialog">
       <Panel :outer-spacing="false">
         <div class="modal-content">
           <div class="modal-header">
             <a
+              v-if="closable"
               class="close"
               aria-label="Close"
               @click="close"
@@ -62,6 +63,11 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+
+    closable: {
+      type: Boolean,
+      default: true,
     },
   },
 

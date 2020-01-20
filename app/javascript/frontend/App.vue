@@ -35,8 +35,10 @@
       </div>
     </div>
     <BackToTop visible-offset="500" />
-    <CookiesBanner v-if="cookiesInfoVisible" />
-    <PrivacySettings ref="privacySettings" />
+    <PrivacySettings
+      ref="privacySettings"
+      :open="cookiesInfoVisible"
+    />
   </div>
 </template>
 
@@ -83,8 +85,13 @@ export default {
 
     ...mapGetters('session', [
       'isAuthenticated',
+      'cookies',
       'cookiesInfoVisible',
     ]),
+
+    ahoyAccepted() {
+      return this.cookies.ahoy
+    },
   },
 
   watch: {
@@ -108,6 +115,14 @@ export default {
         this.$router.push({ name: 'login' })
       }
     },
+
+    ahoyAccepted() {
+      if (this.ahoyAccepted) {
+        this.$ahoy.trackAll()
+      } else {
+        window.location.reload(true)
+      }
+    },
   },
 
   created() {
@@ -120,6 +135,10 @@ export default {
       this.fetchHangar()
     }
 
+    if (this.ahoyAccepted) {
+      this.$ahoy.trackAll()
+    }
+
     this.$comlink.$on('openPrivacySettings', this.openPrivacySettings)
 
     window.addEventListener('resize', this.checkMobile)
@@ -130,8 +149,8 @@ export default {
   },
 
   methods: {
-    openPrivacySettings() {
-      this.$refs.privacySettings.open()
+    openPrivacySettings(settings = false) {
+      this.$refs.privacySettings.open(settings)
     },
 
     checkMobile() {

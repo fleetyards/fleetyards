@@ -1,7 +1,8 @@
 <template>
   <Modal
     ref="modal"
-    :title="info ? $t(`privacySettings.info.${info}.title`) : $t('privacySettings.title')"
+    :title="title"
+    :closable="false"
   >
     <div
       v-if="info"
@@ -43,17 +44,9 @@
           {{ $t(`privacySettings.info.${info}.location`) }}
         </dd>
       </dl>
-      <Btn
-        inline
-        block
-        @click.native="hideInfo"
-      >
-        <i class="fal fa-chevron-left" />
-        {{ $t('actions.back') }}
-      </Btn>
     </div>
     <div
-      v-else
+      v-else-if="settings"
       class="cookies-banner"
     >
       <p>{{ $t(`privacySettings.text`) }}</p>
@@ -89,6 +82,16 @@
               <legend>{{ $t('privacySettings.functional') }}</legend>
               <div class="form-item">
                 <Checkbox
+                  v-model="form.ahoy"
+                  :label="$t('privacySettings.ahoy')"
+                />
+                <i
+                  class="info-link fal fa-info-circle"
+                  @click="openInfo('ahoy')"
+                />
+              </div>
+              <div class="form-item">
+                <Checkbox
                   v-model="form.youtube"
                   :label="$t('privacySettings.youtube')"
                 />
@@ -100,18 +103,66 @@
             </fieldset>
           </div>
         </div>
-        <div class="cookies-banner-actions">
-          <Btn
-            type="submit"
-            data-test="accept-cookies"
-            block
-            inline
-          >
-            {{ $t('privacySettings.save') }}
-          </Btn>
-        </div>
+        <div class="cookies-banner-actions" />
       </form>
     </div>
+    <div
+      v-else
+      class="cookies-banner"
+    >
+      <p>{{ $t('privacySettings.introduction.paragraph1') }}</p>
+      <p>{{ $t('privacySettings.introduction.paragraph2') }}</p>
+      <p>
+        {{ $t('privacySettings.introduction.paragraph3') }} <Btn
+          variant="link"
+          text-inline
+          :to="{name: 'privacy-policy'}"
+        >
+          {{ $t('nav.privacyPolicy') }}
+        </Btn>.
+      </p>
+    </div>
+    <template #footer>
+      <div class="cookies-banner-actions">
+        <Btn
+          v-if="info"
+          inline
+          block
+          @click.native="hideInfo"
+        >
+          <i class="fal fa-chevron-left" />
+          {{ $t('actions.back') }}
+        </Btn>
+        <Btn
+          v-else-if="settings"
+          data-test="save-privacy-settings"
+          block
+          inline
+          @click.native="submit"
+        >
+          {{ $t('privacySettings.save') }}
+        </Btn>
+        <template v-else>
+          <Btn
+            data-test="show-settings"
+            inline
+            block
+            variant="link"
+            @click.native="showSettings"
+          >
+            {{ $t('privacySettings.editSettings') }}
+          </Btn>
+          <Btn
+            data-test="accept-cookies"
+            inline
+            block
+            @click.native="accept"
+          >
+            {{ $t('privacySettings.accept') }}
+          </Btn>
+        </template>
+      </div>
+    </template>
   </Modal>
 </template>
 
@@ -131,7 +182,9 @@ export default {
   data() {
     return {
       info: null,
+      settings: false,
       form: {
+        ahoy: false,
         youtube: false,
       },
     }
@@ -140,10 +193,29 @@ export default {
   computed: {
     ...mapGetters('session', [
       'cookies',
+      'cookiesInfoVisible',
     ]),
+
+    title() {
+      if (this.info) {
+        return this.$t(`privacySettings.info.${this.info}.title`)
+      } if (this.settings) {
+        return this.$t('privacySettings.title')
+      }
+
+      return this.$t('privacySettings.introduction.title')
+    },
   },
 
   watch: {
+    $route() {
+      if (this.cookiesInfoVisible && this.$route.name !== 'privacy-policy') {
+        this.open()
+      } else {
+        this.close()
+      }
+    },
+
     cookies: {
       handler() {
         this.setupForm()
@@ -154,10 +226,19 @@ export default {
 
   mounted() {
     this.setupForm()
+
+    // if (this.cookiesInfoVisible && this.$route.name !== 'privacyPolicy') {
+    //   this.open()
+    // }
   },
 
   methods: {
-    open() {
+    showSettings() {
+      this.settings = true
+    },
+
+    open(settings = false) {
+      this.settings = settings
       this.$refs.modal.open()
     },
 
@@ -167,6 +248,7 @@ export default {
 
     setupForm() {
       this.form = {
+        ahoy: this.cookies.ahoy,
         youtube: this.cookies.youtube,
       }
     },
@@ -175,6 +257,19 @@ export default {
       this.$store.dispatch('session/updateCookies', {
         ...this.form,
       })
+
+      this.$store.dispatch('session/hideCookiesInfo')
+
+      this.close()
+    },
+
+    accept() {
+      this.$store.dispatch('session/updateCookies', {
+        ahoy: true,
+        youtube: true,
+      })
+
+      this.$store.dispatch('session/hideCookiesInfo')
 
       this.close()
     },

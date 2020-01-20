@@ -256,7 +256,7 @@ export default {
 
   methods: {
     openPrivacySettings() {
-      this.$comlink.$emit('openPrivacySettings')
+      this.$comlink.$emit('openPrivacySettings', true)
     },
   },
 }

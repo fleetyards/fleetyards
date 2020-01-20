@@ -4,6 +4,7 @@ export default () => ({
   currentUser: null,
   cookiesInfoVisible: true,
   cookies: {
+    ahoy: false,
     youtube: false,
   },
 })
