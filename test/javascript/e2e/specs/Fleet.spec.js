@@ -1,6 +1,8 @@
 describe('Fleet', () => {
   beforeEach(() => {
     cy.visit('/')
+
+    cy.acceptCookies()
   })
 
   it('Shows Preview', () => {
