@@ -80,17 +80,21 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Component from 'vue-class-component'
+import Vue from 'vue'
+
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
 
-export default {
+@Component({
   components: {
     Panel,
   },
-
   mixins: [
     MetaInfo,
   ],
+})
+export default class Impressum extends Vue {
 }
 </script>

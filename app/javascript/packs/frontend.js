@@ -70,6 +70,15 @@ if (process.env.NODE_ENV !== 'production') {
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
+// declare global {
+//   interface Window {
+//     APP_VERSION: string;
+//     STORE_VERSION: string;
+//     APP_CODENAME: string;
+//     API_ENDPOINT: string;
+//   }
+// }
+
 console.info(`APP Version: ${window.APP_VERSION} (${window.APP_CODENAME})`)
 console.info(`Store Version: ${window.STORE_VERSION}`)
 console.info(`API Endpoint: ${window.API_ENDPOINT}`)

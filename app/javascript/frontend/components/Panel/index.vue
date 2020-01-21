@@ -25,49 +25,43 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    outerSpacing: {
-      type: Boolean,
-      default: true,
-    },
+<script lang="ts">
+import { Component, Prop } from 'vue-property-decorator'
+import Vue from 'vue'
 
-    transparency: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'more', 'complete'].indexOf(value) !== -1
-      },
-    },
+@Component
+export default class Panel extends Vue {
+  @Prop({ default: true })
+  public outerSpacing!: boolean
 
-    highlight: {
-      type: Boolean,
-      default: false,
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'more', 'complete'].indexOf(value) !== -1
     },
+  })
+  public transparency!: string
 
-    forText: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false })
+  public highlight!: boolean
 
-    variant: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'primary', 'success'].indexOf(value) !== -1
-      },
-    },
-  },
+  @Prop({ default: false })
+  public forText!: boolean
 
-  computed: {
-    variantClass() {
-      return `panel-${this.variant}`
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'primary', 'success'].indexOf(value) !== -1
     },
+  })
+  public variant!: string
 
-    transparencyClass() {
-      return `panel-transparency-${this.transparency}`
-    },
-  },
+  public get variantClass() {
+    return `panel-${this.variant}`
+  }
+
+  public get transparencyClass() {
+    return `panel-transparency-${this.transparency}`
+  }
 }
 </script>
