@@ -1,3 +1,5 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 import 'stylesheets/embed'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'

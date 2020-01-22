@@ -1,3 +1,5 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 import 'stylesheets/admin'
 import Vue from 'vue'
 import App from 'admin/App'
