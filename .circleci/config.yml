@@ -16,7 +16,7 @@ defaults: &defaults
       environment:
         POSTGRES_USER: root
         POSTGRES_DB: fleetyards_test
-    - image: docker.elastic.co/elasticsearch/elasticsearch:7.4.1
+    - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
       environment:
         cluster.name: fleetyards-test-cluster
         xpack.security.enabled: false
@@ -24,7 +24,7 @@ defaults: &defaults
         network.host: 127.0.0.1
         http.port: 9200
         discovery.type: single-node
-        ES_JAVA_OPTS: -Xms500m -Xmx500m
+        ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 e2e: &e2e
   working_directory: ~/app
@@ -50,7 +50,7 @@ e2e: &e2e
         POSTGRES_PASSWORD: root
         POSTGRES_DB: fleetyards
     - image: circleci/redis:5.0.3-alpine
-    - image: docker.elastic.co/elasticsearch/elasticsearch:7.4.1
+    - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
       environment:
         cluster.name: fleetyards-test-cluster
         xpack.security.enabled: false
@@ -58,7 +58,7 @@ e2e: &e2e
         network.host: 127.0.0.1
         http.port: 9200
         discovery.type: single-node
-        ES_JAVA_OPTS: -Xms500m -Xmx500m
+        ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 jobs:
   checkout-code:
