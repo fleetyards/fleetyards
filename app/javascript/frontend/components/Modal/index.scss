@@ -14,9 +14,10 @@
   align-items: center;
 
   .modal-dialog {
+    box-sizing: border-box;
     transition: transform ease $transition-base-speed ease-out;
     width: 600px;
-    margin: 30px auto;
+    padding: 30px auto;
   }
 
   .modal-content {
@@ -54,10 +55,6 @@
     }
   }
 
-  &.show {
-    display: flex !important;
-  }
-
   &.fade {
     transition: opacity ease $transition-base-speed / 2 linear;
     opacity: 0;
@@ -85,12 +82,18 @@
 
 @media (max-width: $tablet-breakpoint) {
   .modal {
-    align-items: flex-end;
+    &.show {
+      display: flex !important;
+    }
 
     .modal-dialog {
       width: 100%;
-      margin: 0;
-      margin-top: env(safe-area-inset-top);
+      padding: 20px 0;
+      margin-top: auto !important;
+
+      > :first-child {
+        margin-top: env(safe-area-inset-top);
+      }
 
       .modal-content {
         border-width: 1px 0 0;
@@ -106,7 +109,7 @@
 
       &.in {
         .modal-dialog {
-          transform: translate(0, -20px);
+          transform: translate(0, 0);
         }
       }
     }
