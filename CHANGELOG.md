@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.63.6](https://github.com/fleetyards/app/compare/v3.63.5...v3.63.6) (2020-01-23)
+
+
+### Bug Fixes
+
+* **modal:** update item align ([d867a39](https://github.com/fleetyards/app/commit/d867a39ec7448494340745e0d44fea1d19226bc6))
+* **modal:** update position on desktop ([37d4f71](https://github.com/fleetyards/app/commit/37d4f71056977fa386ba0e655f70074759512993))
+
 ### [3.63.5](https://github.com/fleetyards/app/compare/v3.63.4...v3.63.5) (2020-01-20)
 
 ### [3.63.4](https://github.com/fleetyards/app/compare/v3.63.3...v3.63.4) (2020-01-20)
