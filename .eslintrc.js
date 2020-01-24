@@ -61,7 +61,7 @@ module.exports = {
       'jest/expect-expect': 'off',
     }
   }, {
-    files: ['**/Impressum/index.vue', '**/Panel/index.vue', '**/*.ts'],
+    files: ['**/Impressum/index.vue', '**/Modal/index.vue', '**/Panel/index.vue', '**/*.ts'],
     parserOptions: {
       parser: '@typescript-eslint/parser',
     },

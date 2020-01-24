@@ -136,7 +136,7 @@ export default {
     },
 
     onClose() {
-      this.$store.commit('app/hideOverlay')
+      this.$store.dispatch('app/hideOverlay')
     },
 
     setup() {

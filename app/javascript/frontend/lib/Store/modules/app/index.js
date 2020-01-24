@@ -72,12 +72,8 @@ export default () => ({
       state.navCollapsed = true
     },
 
-    showOverlay(state) {
-      state.overlayVisible = true
-    },
-
-    hideOverlay(state) {
-      state.overlayVisible = false
+    setOverlayVisible(state, payload) {
+      state.overlayVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

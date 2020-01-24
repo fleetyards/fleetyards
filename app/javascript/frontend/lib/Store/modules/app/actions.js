@@ -25,4 +25,12 @@ export default {
       commit('setCodename', payload.codename)
     }
   },
+
+  showOverlay({ commit }) {
+    commit('setOverlayVisible', true)
+  },
+
+  hideOverlay({ commit }) {
+    commit('setOverlayVisible', false)
+  },
 }
