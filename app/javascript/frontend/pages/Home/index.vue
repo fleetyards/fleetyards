@@ -9,7 +9,7 @@
               <h1 id="home-welcome">
                 <small>{{ $t('headlines.welcome') }}</small>
                 <img
-                  :src="require(`images/logo.png`)"
+                  :src="require(`images/logo.png`).default"
                   class="logo"
                 >
                 {{ $t('app') }}

@@ -12,7 +12,7 @@
     <h2>{{ $t('sublines.hangarGuide.add') }}</h2>
     <div class="hangar-guide-topic">
       <img
-        :src="require(`images/hangar-guide/add.gif`)"
+        :src="require(`images/hangar-guide/add.gif`).default"
         class="hangar-guide-gif"
         alt="add-guide"
       >
@@ -27,7 +27,7 @@
     <h2>{{ $t('sublines.hangarGuide.edit') }}</h2>
     <div class="hangar-guide-topic">
       <img
-        :src="require(`images/hangar-guide/edit.gif`)"
+        :src="require(`images/hangar-guide/edit.gif`).default"
         class="hangar-guide-gif"
         alt="edit-guide"
       >
@@ -42,7 +42,7 @@
     <h2>{{ $t('sublines.hangarGuide.public') }}</h2>
     <div class="hangar-guide-topic">
       <img
-        :src="require(`images/hangar-guide/public.gif`)"
+        :src="require(`images/hangar-guide/public.gif`).default"
         class="hangar-guide-gif"
         alt="public-guide"
       >
@@ -53,7 +53,7 @@
     <h2>{{ $t('sublines.hangarGuide.fleetchart') }}</h2>
     <div class="hangar-guide-topic">
       <img
-        :src="require(`images/hangar-guide/fleetchart.gif`)"
+        :src="require(`images/hangar-guide/fleetchart.gif`).default"
         class="hangar-guide-gif"
         alt="fleetchart-guide"
       >
@@ -64,7 +64,7 @@
     <h2>{{ $t('sublines.hangarGuide.groups') }}</h2>
     <div class="hangar-guide-topic">
       <img
-        :src="require(`images/hangar-guide/groups.gif`)"
+        :src="require(`images/hangar-guide/groups.gif`).default"
         class="hangar-guide-gif"
         alt="groups-guide"
       >

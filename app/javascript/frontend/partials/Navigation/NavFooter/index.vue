@@ -8,7 +8,7 @@
     />
     <NavItem class="logo-menu">
       <img
-        :src="require('images/favicon.png')"
+        :src="require('images/favicon.png').default"
         class="logo-menu-image"
         alt="logo"
       >

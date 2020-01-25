@@ -33,7 +33,7 @@
           rel="noopener"
         >
           <img
-            :src="require('images/rsi_logo.png')"
+            :src="require('images/rsi_logo.png').default"
             alt="rsi"
           >
         </a>

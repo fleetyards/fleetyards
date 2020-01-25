@@ -172,7 +172,7 @@ export default {
       let { backgroundImage } = this.$route.meta
       if (!backgroundImage) {
         // eslint-disable-next-line global-require
-        backgroundImage = require('images/bg-0.jpg')
+        backgroundImage = require('images/bg-0.jpg').default
       }
       this.$store.commit('setBackgroundImage', backgroundImage)
     },

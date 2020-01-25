@@ -12,7 +12,7 @@
         <Panel>
           <div class="starmap">
             <img
-              :src="require('images/map.png')"
+              :src="require('images/map.png').default"
               alt="map"
             >
             <router-link

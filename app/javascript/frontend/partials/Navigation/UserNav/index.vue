@@ -29,7 +29,7 @@
         v-if="currentUser.rsiHandle"
         :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
         :label="$t('nav.rsiProfile')"
-        :image="require('images/rsi_logo.png')"
+        :image="require('images/rsi_logo.png').default"
       />
       <NavItem divider />
       <NavItem
