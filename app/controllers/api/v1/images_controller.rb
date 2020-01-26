@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ImagesController < ::Api::V1::BaseController
+    class ImagesController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:images) }, only: [:index]
 

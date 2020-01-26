@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ShopCommoditiesController < ::Api::V1::BaseController
+    class ShopCommoditiesController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:shop_commodities) }, only: [:index]
 

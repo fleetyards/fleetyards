@@ -4,7 +4,7 @@ require 'json_web_token'
 
 module Api
   module V1
-    class SessionsController < ::Api::V1::BaseController
+    class SessionsController < ::Api::BaseController
       skip_authorization_check
       before_action :authenticate_api_user!, except: [:create]
 

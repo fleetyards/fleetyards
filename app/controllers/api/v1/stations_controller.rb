@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class StationsController < ::Api::V1::BaseController
+    class StationsController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:stations) }, only: [:index]
       after_action -> { pagination_header(:images) }, only: [:images]

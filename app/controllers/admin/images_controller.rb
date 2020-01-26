@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class ImagesController < BaseController
+  class ImagesController < ::Admin::ApplicationController
     before_action :set_active_nav
 
     def index

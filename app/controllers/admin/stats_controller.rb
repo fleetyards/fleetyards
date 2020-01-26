@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class StatsController < ::Api::V1::BaseController
+  class StatsController < ::Api::BaseController
     def quick_stats
       authorize! :stats, :admin
 

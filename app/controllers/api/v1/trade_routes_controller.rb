@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TradeRoutesController < ::Api::V1::BaseController
+    class TradeRoutesController < ::Api::BaseController
       before_action :authenticate_api_user!, only: %i[]
       after_action -> { pagination_header(:trade_routes) }, only: [:index]
 
