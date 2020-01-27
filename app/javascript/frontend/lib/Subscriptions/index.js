@@ -1,4 +1,4 @@
-import ActionCable from 'actioncable'
+import ActionCable from '@rails/actioncable'
 
 export default {
   install(Vue) {
