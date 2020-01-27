@@ -5,8 +5,8 @@ module Api
   class BaseController < ActionController::Base
     include RansackHelper
     include ActionController::HttpAuthentication::Token
-    include ::Concerns::Pagination
-    include ::Concerns::ApiAuthorization
+    include Pagination
+    include ApiAuthorization
 
     protect_from_forgery with: :null_session
     respond_to :json
