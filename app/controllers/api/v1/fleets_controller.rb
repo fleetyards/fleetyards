@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class FleetsController < ::Api::V1::BaseController
+    class FleetsController < ::Api::BaseController
       before_action :authenticate_api_user!, except: %i[show]
 
       after_action -> { pagination_header(:vehicles) }, only: %i[vehicles]

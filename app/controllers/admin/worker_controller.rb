@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class WorkerController < BaseController
+  class WorkerController < ::Admin::ApplicationController
     def check_state
       authorize! :check, :worker
       respond_to do |format|

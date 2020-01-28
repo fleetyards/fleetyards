@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 2.6'
 
-gem 'rails', '5.2.4.1'
+gem 'rails', '6.0.2.1'
 
 gem 'pg', '~> 1.0'
 
@@ -43,7 +43,7 @@ gem 'ransack'
 
 gem 'jbuilder'
 
-gem 'rails-i18n', '~> 5.0' # For 5.0.x and 5.1.x
+gem 'rails-i18n'
 
 gem 'dalli'
 gem 'turbolinks'

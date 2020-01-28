@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class StarsystemsController < ::Api::V1::BaseController
+    class StarsystemsController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:starsystems) }, only: [:index]
 

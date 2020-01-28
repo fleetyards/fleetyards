@@ -5,7 +5,8 @@ module Api
   class BaseController < ActionController::Base
     include RansackHelper
     include ActionController::HttpAuthentication::Token
-    include Concerns::Pagination
+    include Pagination
+    include ApiAuthorization
 
     protect_from_forgery with: :null_session
     respond_to :json
@@ -13,6 +14,7 @@ module Api
     skip_before_action :track_ahoy_visit
 
     before_action :authenticate_api_user!, except: %i[root version]
+    before_action :current_ability
 
     check_authorization except: %i[root version]
 
@@ -36,11 +38,6 @@ module Api
     def version
       render json: { version: Fleetyards::VERSION, codename: Fleetyards::CODENAME }
     end
-
-    def current_user
-      current_api_user
-    end
-    helper_method :current_user
 
     def resource_message(resource, action, state)
       I18n.t(state, scope: "resources.messages.#{action}", resource: I18n.t(:"resources.#{resource}"))

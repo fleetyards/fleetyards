@@ -5,7 +5,7 @@ module Admin
     # rubocop:disable Rails/ApplicationController
     class BaseController < ActionController::Base
       include RansackHelper
-      include Concerns::Pagination
+      include Pagination
 
       protect_from_forgery with: :null_session
       respond_to :json
@@ -21,7 +21,7 @@ module Admin
       end
 
       private def current_user
-        current_api_user
+        @current_user ||= current_api_user
       end
       helper_method :current_user
 

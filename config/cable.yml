@@ -1,6 +1,7 @@
 production:
   adapter: redis
   url: <%=ENV['REDIS_URL']%>
+  channel_prefix: fleetyards_production
 
 docker:
   adapter: redis
@@ -11,4 +12,4 @@ development:
   url: <%=ENV['REDIS_URL']%>
 
 test:
-  adapter: async
+  adapter: test

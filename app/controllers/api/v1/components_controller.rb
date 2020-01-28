@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ComponentsController < ::Api::V1::BaseController
+    class ComponentsController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:components) }, only: [:index]
 

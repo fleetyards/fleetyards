@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class VehiclesController < ::Api::V1::BaseController
+    class VehiclesController < ::Api::BaseController
       include ChartHelper
 
       skip_authorization_check only: %i[public public_quick_stats public_fleetchart embed]

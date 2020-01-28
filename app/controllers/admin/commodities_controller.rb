@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class CommoditiesController < BaseController
+  class CommoditiesController < ::Admin::ApplicationController
     before_action :set_active_nav
     after_action :save_filters, only: [:index]
 

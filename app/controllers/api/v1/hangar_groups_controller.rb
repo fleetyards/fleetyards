@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class HangarGroupsController < ::Api::V1::BaseController
+    class HangarGroupsController < ::Api::BaseController
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)
