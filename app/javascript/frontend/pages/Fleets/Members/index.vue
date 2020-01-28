@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div
-      v-if="myFleet"
+      v-if="fleet && myFleet"
       class="row"
     >
       <div class="col-xs-12">
@@ -18,6 +18,7 @@
       <div class="col-xs-4">
         <div class="page-main-actions">
           <Btn
+            v-if="canInvite"
             inline
             @click.native="openInviteModal"
           >
@@ -28,7 +29,7 @@
       </div>
     </div>
 
-    <FilteredList v-if="fleet && myFleet">
+    <FilteredList>
       <Paginator
         v-if="members.length"
         slot="pagination-top"
@@ -364,6 +365,10 @@ export default {
         },
         label: this.fleet.name,
       }]
+    },
+
+    canInvite() {
+      return ['admin', 'officer'].includes(this.myFleetRole)
     },
   },
 
