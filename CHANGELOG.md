@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.63.7](https://github.com/fleetyards/app/compare/v3.63.6...v3.63.7) (2020-01-29)
+
+
+### Bug Fixes
+
+* **fleets:** hide invite button on members list for normal members ([f9cbf52](https://github.com/fleetyards/app/commit/f9cbf52e13cfe148167d7c04f13fc2d87a1e9d58))
+* **images:** update require import ([ec9a925](https://github.com/fleetyards/app/commit/ec9a92517d6dec05e92cfe848fd683c6a6e78a2d))
+
+
+### Refactorings
+
+* **ts:** rewrite prop validation of panel component ([f5c1f0f](https://github.com/fleetyards/app/commit/f5c1f0f643c05faf18f2918e251a628ac53d9694))
+* **ts:** update Modal component ([5f852ff](https://github.com/fleetyards/app/commit/5f852ff1223f51d4b3c404e839072820aaed508c))
+
 ### [3.63.6](https://github.com/fleetyards/app/compare/v3.63.5...v3.63.6) (2020-01-23)
 
 
