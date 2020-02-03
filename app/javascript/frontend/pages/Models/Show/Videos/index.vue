@@ -105,7 +105,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
+    ...mapGetters('cookies', [
       'cookies',
     ]),
 
