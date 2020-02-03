@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.63.8](https://github.com/fleetyards/app/compare/v3.63.7...v3.63.8) (2020-02-03)
+
+
+### Bug Fixes
+
+* **youtube:** update store reference ([6db6260](https://github.com/fleetyards/app/commit/6db62602b3cb45f17fcc3c878181e9f8905299ce))
+
 ### [3.63.7](https://github.com/fleetyards/app/compare/v3.63.6...v3.63.7) (2020-01-29)
 
 
