@@ -21,6 +21,9 @@ en:
         ships: "New Ships"
         vehicles: "New Vehicles"
         fleets: "New Fleets"
+      missing_loaners:
+        headline: FleetYards.net Missing Loaners
+        subject: FleetYards.net Missing Loaners
       notify_block:
         headline: FleetYards.net Blocked by RSI
         subject: FleetYards.net Blocked by RSI

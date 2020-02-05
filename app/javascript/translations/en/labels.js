@@ -160,6 +160,7 @@ export default {
   source: 'Source',
   model: {
     variants: 'Variants',
+    loaners: 'Loaners',
     modules: 'Modules',
     upgrades: 'Upgrade-Kits',
     brochure: 'Brochure',

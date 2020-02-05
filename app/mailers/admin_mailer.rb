@@ -5,9 +5,19 @@ class AdminMailer < ApplicationMailer
 
   def weekly(stats)
     @stats = stats
+
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
       subject: I18n.t(:"mailer.admin.weekly.subject")
+    )
+  end
+
+  def missing_loaners(loaners)
+    @loaners = loaners
+
+    mail(
+      to: Rails.application.secrets[:mailer_admin_mail],
+      subject: I18n.t(:"mailer.admin.missing_loaners.subject")
     )
   end
 

@@ -5,6 +5,8 @@ module Api
     class ModelsController < ::Api::BaseController
       before_action :authenticate_api_user!, only: []
       after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
+      after_action -> { pagination_header(:variants) }, only: [:variants]
+      after_action -> { pagination_header(:loaners) }, only: [:loaners]
       after_action -> { pagination_header(:images) }, only: [:images]
       after_action -> { pagination_header(:videos) }, only: [:videos]
 
@@ -180,6 +182,29 @@ module Api
         @variants = @q.result
                       .page(params[:page])
                       .per(per_page(Model))
+      end
+
+      def loaners
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        scope = model.loaners.visible.active
+        if pledge_price_range.present?
+          model_query_params['sorts'] = 'last_pledge_price asc'
+          scope = scope.where(last_pledge_price: pledge_price_range)
+        end
+        if price_range.present?
+          model_query_params['sorts'] = 'price asc'
+          scope = scope.where(price: price_range)
+        end
+
+        model_query_params['sorts'] = sort_by_name
+
+        @q = scope.ransack(model_query_params)
+
+        @loaners = @q.result
+                     .page(params[:page])
+                     .per(per_page(Model))
       end
 
       def modules
