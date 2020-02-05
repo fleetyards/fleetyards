@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.64.1](https://github.com/fleetyards/app/compare/v3.64.0...v3.64.1) (2020-02-05)
+
+
+### Bug Fixes
+
+* **loaner-loader:** add queue to sidekiq config ([e9a2b2a](https://github.com/fleetyards/app/commit/e9a2b2a46334528e44c8ce0fd6a1c6c9073c231e))
+
 ## [3.64.0](https://github.com/fleetyards/app/compare/v3.63.8...v3.64.0) (2020-02-05)
 
 
