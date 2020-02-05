@@ -241,7 +241,7 @@
         >
           <div
             v-for="variant in variants"
-            :key="variant.slug"
+            :key="`variant-${variant.slug}`"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
@@ -252,6 +252,35 @@
         </transition-group>
         <Loader
           :loading="loadingVariants"
+          fixed
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 loaners">
+        <h2
+          v-if="loaners.length"
+          class="text-uppercase"
+        >
+          {{ $t('labels.model.loaners') }}
+        </h2>
+        <transition-group
+          v-if="loaners.length"
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="loaner in loaners"
+            :key="`loaner-${loaner.slug}`"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel :model="loaner" />
+          </div>
+        </transition-group>
+        <Loader
+          :loading="loadingLoaners"
           fixed
         />
       </div>
@@ -297,11 +326,13 @@ export default {
     return {
       loading: false,
       loadingVariants: false,
+      loadingLoaners: false,
       loadingModules: false,
       loadingUpgrades: false,
       show3d: false,
       model: null,
       variants: [],
+      loaners: [],
       modules: [],
       upgrades: [],
       attributes: [
@@ -367,6 +398,7 @@ export default {
       this.fetchModules()
       this.fetchUpgrades()
       this.fetchVariants()
+      this.fetchLoaners()
     },
 
     model() {
@@ -422,6 +454,7 @@ export default {
       this.fetchModules()
       this.fetchUpgrades()
       this.fetchVariants()
+      this.fetchLoaners()
     },
 
     async fetchModules() {
@@ -448,6 +481,15 @@ export default {
       this.loadingVariants = false
       if (!response.error) {
         this.variants = response.data
+      }
+    },
+
+    async fetchLoaners() {
+      this.loadingLoaners = true
+      const response = await this.$api.get(`models/${this.$route.params.slug}/loaners`)
+      this.loadingLoaners = false
+      if (!response.error) {
+        this.loaners = response.data
       }
     },
   },

@@ -19,3 +19,7 @@ production: &production
   admin_notifier_worker_job:
     cron: '0 20 * * 0' # Weekly on Sunday 20:00
     class: 'AdminNotifierWorker'
+  loaner_worker_job:
+    cron: '0 21 * * 0' # Weekly on Sunday 21:00
+    class: 'LoanerWorker'
+

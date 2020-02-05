@@ -28,6 +28,7 @@ v1_api_routes = lambda do
       get :images
       get :videos
       get :variants
+      get :loaners
       get 'snub-crafts' => 'models#snub_crafts'
       get :modules
       get :upgrades

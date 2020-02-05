@@ -48,6 +48,13 @@ class Model < ApplicationRecord
            through: :module_hardpoints,
            source: :model_module
 
+  has_many :model_loaners,
+           dependent: :destroy,
+           inverse_of: :model
+  has_many :loaners,
+           through: :model_loaners,
+           source: :loaner_model
+
   has_many :upgrades,
            class_name: 'ModelUpgrade',
            dependent: :destroy,

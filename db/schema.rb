@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_26_230404) do
+ActiveRecord::Schema.define(version: 2020_02_04_230545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -291,6 +291,13 @@ ActiveRecord::Schema.define(version: 2020_01_26_230404) do
     t.integer "max_crew"
     t.decimal "price", precision: 15, scale: 2
     t.index ["model_id"], name: "index_model_additions_on_model_id"
+  end
+
+  create_table "model_loaners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "model_id"
+    t.uuid "loaner_model_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "model_modules", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
