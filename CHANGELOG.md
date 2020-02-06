@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.65.0](https://github.com/fleetyards/app/compare/v3.64.1...v3.65.0) (2020-02-06)
+
+
+### Features
+
+* **loaner:** add loaner to hangar ([8a08f68](https://github.com/fleetyards/app/commit/8a08f6818d4f85359c325b1e621342313e2eae95))
+
 ### [3.64.1](https://github.com/fleetyards/app/compare/v3.64.0...v3.64.1) (2020-02-05)
 
 
