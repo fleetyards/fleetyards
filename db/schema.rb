@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_05_215937) do
+ActiveRecord::Schema.define(version: 2020_02_06_224105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -611,6 +611,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_215937) do
     t.boolean "public", default: true
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
+    t.boolean "hidden", default: false
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end

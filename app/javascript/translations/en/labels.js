@@ -169,7 +169,6 @@ export default {
     brochure: 'Brochure',
     onSale: 'On Sale',
     addons: 'Modules & Upgrade-Kits',
-    purchased: 'Purchased',
     productionStatus: {
       'in-production': 'In Production',
       'in-concept': 'In Concept',
@@ -247,6 +246,7 @@ export default {
     name: 'Name',
     flagship: 'Flagship',
     purchased: 'Purchased',
+    loaner: 'Loaner',
     public: 'Visible on Public Hangar',
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',

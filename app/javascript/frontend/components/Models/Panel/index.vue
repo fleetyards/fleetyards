@@ -57,7 +57,7 @@
           </small>
 
           <Btn
-            v-if="vehicle && onEdit"
+            v-if="vehicle && onEdit && !vehicle.loaner"
             :title="$t('actions.edit')"
             :aria-label="$t('actions.edit')"
             class="panel-edit-button"
@@ -92,11 +92,16 @@
         >
           <div
             v-if="isMyShip"
-            v-show="vehicle.purchased"
-            v-tooltip="$t('labels.model.purchased')"
+            v-show="vehicle.purchased || vehicle.loaner"
+            v-tooltip="
+              vehicle.loaner
+                ? $t('labels.vehicle.loaner')
+                : $t('labels.vehicle.purchased')
+            "
             class="purchased"
           >
-            <i class="fal fa-check" />
+            <i v-if="vehicle.loaner" class="fal fa-exchange" />
+            <i v-else class="fal fa-check" />
           </div>
           <div
             v-show="model.onSale"

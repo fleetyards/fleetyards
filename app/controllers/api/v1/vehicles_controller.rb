@@ -11,7 +11,7 @@ module Api
 
       def index
         authorize! :index, :api_hangar
-        scope = current_user.vehicles
+        scope = current_user.vehicles.visible
 
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
@@ -51,7 +51,7 @@ module Api
 
       def fleetchart
         authorize! :index, :api_hangar
-        scope = current_user.vehicles
+        scope = current_user.vehicles.visible
 
         scope = loaner_included?(scope)
 
@@ -65,7 +65,7 @@ module Api
 
       def quick_stats
         authorize! :index, :api_hangar
-        scope = current_user.vehicles
+        scope = current_user.vehicles.visible
 
         scope = loaner_included?(scope)
 
@@ -118,6 +118,7 @@ module Api
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         @q = user.vehicles
+                 .visible
                  .public
                  .ransack(vehicle_query_params)
 
@@ -168,7 +169,9 @@ module Api
 
       def hangar_items
         authorize! :index, :api_hangar
-        model_ids = current_user.vehicles.pluck(:model_id)
+        model_ids = current_user.vehicles
+                                .visible
+                                .pluck(:model_id)
         @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
       end
 

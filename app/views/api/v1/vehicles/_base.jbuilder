@@ -3,6 +3,7 @@
 json.id vehicle.id
 json.name vehicle.name
 json.purchased vehicle.purchased
+json.loaner vehicle.loaner
 json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible
