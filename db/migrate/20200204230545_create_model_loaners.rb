@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateModelLoaners < ActiveRecord::Migration[6.0]
   def change
     create_table :model_loaners, id: :uuid, default: -> { 'uuid_generate_v4()' }, force: :cascade do |t|

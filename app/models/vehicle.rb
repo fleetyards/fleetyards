@@ -23,6 +23,8 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   after_save :set_flagship
   after_commit :broadcast_update
+  after_destroy :remove_loaners
+  after_create :add_loaners
 
   ransack_alias :name, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
@@ -35,6 +37,31 @@ class Vehicle < ApplicationRecord
   ransack_alias :size, :model_size
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
+
+  def add_loaners
+    return if loaner
+
+    model.loaners.each do |loaner|
+      create_loaner(loaner)
+    end
+  end
+
+  def remove_loaners
+    return if loaner
+
+    Vehicle.where(loaner: true, vehicle_id: id).destroy_all
+  end
+
+  def create_loaner(loaner)
+    Vehicle.create(
+      loaner: true,
+      model_id: loaner.id,
+      vehicle_id: id,
+      user_id: user_id,
+      public: false,
+      purchased: true
+    )
+  end
 
   def broadcast_update
     ActionCable.server.broadcast("hangar_#{user.username}", to_json)

@@ -49,7 +49,7 @@ module RSI
 
       ModelLoaner.where.not(id: model_loaners).destroy_all
 
-      missing_models
+      [missing_models, model_loaners]
     end
 
     private def models_map(name)

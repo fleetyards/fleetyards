@@ -1,30 +1,57 @@
 module.exports = {
   root: true,
 
-  parserOptions: {
-    parser: 'babel-eslint'
+  env: {
+    node: true,
+    jest: true,
+    'cypress/globals': true,
   },
 
   extends: [
-    'airbnb-base',
     'plugin:vue/recommended',
+    'plugin:vue-types/strongly-recommended',
     'plugin:jest/recommended',
+    'airbnb-base',
     "plugin:compat/recommended",
+    'prettier',
+    'prettier/@typescript-eslint',
+    'prettier/babel',
+    'prettier/vue',
     '@vue/typescript',
   ],
 
+  parserOptions: {
+    parser: 'babel-eslint',
+  },
+
   plugins: [
-    'cypress',
-    'jest',
     'import',
+    'prettier',
+    'cypress',
   ],
 
   settings: {
     'html/indent': 'tab',
-    polyfills: ['Promise', 'Object.assign'],
+    polyfills: [
+      'Promise',
+      'Object.assign',
+      'Object.entries',
+      'Object.values',
+      'Array.iterator',
+    ],
+    'import/resolver': {
+      typescript: {},
+    },
   },
 
   rules: {
+    'prettier/prettier': ['warn', {
+      semi: false,
+      quoteProps: 'consistent',
+      trailingComma: 'all',
+      singleQuote: true,
+      htmlWhitespaceSensitivity: 'ignore',
+    }],
     'no-bitwise': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
@@ -32,7 +59,9 @@ module.exports = {
     'no-underscore-dangle': 'off',
     semi: ['error', 'never'],
     'no-console': [
-      'error', { allow: ['info', 'warn', 'error'] }
+      'error', {
+        allow: ['info', 'warn', 'error']
+      }
     ],
     'no-unused-vars': ['error', {
       'argsIgnorePattern': '^_'
@@ -41,16 +70,11 @@ module.exports = {
     'space-before-function-paren': 0,
     'vue/no-v-html': 'off',
     'vue/component-name-in-template-casing': 'error',
-    'spaced-comment': [2, 'always', {exceptions: ['-'], markers: ['/']}],
+    'spaced-comment': [2, 'always', {
+      exceptions: ['-'],
+      markers: ['/']
+    }],
     'jest/no-mocks-import': 'off',
-  },
-
-  env: {
-    browser: true,
-    node: true,
-    jest: true,
-    mocha: true,
-    'cypress/globals': true,
   },
 
   overrides: [{

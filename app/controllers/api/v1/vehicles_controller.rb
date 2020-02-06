@@ -23,6 +23,8 @@ module Api
           scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 
+        scope = scope.where(loaner: false) if vehicle_query_params['loaner_eq'].blank?
+
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = scope.ransack(vehicle_query_params)
