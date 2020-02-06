@@ -155,6 +155,20 @@
     />
 
     <RadioList
+      v-if="$route.name === 'hangar'"
+      v-model="form.loanerEq"
+      :label="$t('labels.filters.vehicles.loaner')"
+      :reset-label="$t('labels.hide')"
+      :options="[
+        {
+          name: 'Show',
+          value: 'true',
+        },
+      ]"
+      name="loaner"
+    />
+
+    <RadioList
       v-model="form.onSaleEq"
       :label="$t('labels.filters.models.onSale')"
       :reset-label="$t('labels.all')"
@@ -213,6 +227,7 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        loanerEq: query.loanerEq,
         publicEq: query.publicEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,
@@ -240,6 +255,7 @@ export default {
         nameCont: query.nameCont,
         onSaleEq: query.onSaleEq,
         purchasedEq: query.purchasedEq,
+        loanerEq: query.loanerEq,
         publicEq: query.publicEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,

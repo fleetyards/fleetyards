@@ -1,6 +1,8 @@
 export default {
   'true': 'Yes',
   'false': 'No',
+  'hide': 'Hide',
+  'show': 'Show',
   'selected': 'Selected',
   'actions': 'Actions',
   'collapse': 'Collapse',
@@ -329,6 +331,7 @@ export default {
       purchased: 'Purchased',
       public: 'Public',
       group: 'Group',
+      loaner: 'Loaners',
     },
     tradeRoutes: {
       sortBy: 'Sort by',

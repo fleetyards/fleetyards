@@ -23,7 +23,7 @@ module Api
           scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
         end
 
-        scope = scope.where(loaner: false) if vehicle_query_params['loaner_eq'].blank?
+        scope = loaner_included?(scope)
 
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'purchased desc', 'name asc', 'model_name asc'], 'model_name asc')
 
@@ -51,8 +51,11 @@ module Api
 
       def fleetchart
         authorize! :index, :api_hangar
-        @q = current_user.vehicles
-                         .ransack(vehicle_query_params)
+        scope = current_user.vehicles
+
+        scope = loaner_included?(scope)
+
+        @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -62,8 +65,11 @@ module Api
 
       def quick_stats
         authorize! :index, :api_hangar
-        @q = current_user.vehicles
-                         .ransack(vehicle_query_params)
+        scope = current_user.vehicles
+
+        scope = loaner_included?(scope)
+
+        @q = scope.ransack(vehicle_query_params)
 
         @q.sorts = ['model_classification asc']
 
@@ -317,11 +323,21 @@ module Api
         price_in
       end
 
+      private def loaner_included?(scope)
+        if vehicle_query_params['loaner_eq'].blank?
+          scope = scope.where(loaner: false)
+        else
+          vehicle_query_params.delete('loaner_eq')
+        end
+
+        scope
+      end
+
       private def vehicle_query_params
         @vehicle_query_params ||= query_params(
           :name_cont, :model_name_or_model_description_cont, :on_sale_eq, :purchased_eq, :public_eq,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq,
+          :pledge_price_lteq, :loaner_eq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
           production_status_in: [], hangar_groups_in: [], hangar_groups_not_in: []

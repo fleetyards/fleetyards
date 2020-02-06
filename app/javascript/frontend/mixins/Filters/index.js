@@ -5,11 +5,11 @@ export default {
     return {
       booleanOptions: [
         {
-          name: 'No',
+          name: this.$t('labels.false'),
           value: 'false',
         },
         {
-          name: 'Yes',
+          name: this.$t('labels.true'),
           value: 'true',
         },
       ],

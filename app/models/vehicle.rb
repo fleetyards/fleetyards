@@ -53,14 +53,21 @@ class Vehicle < ApplicationRecord
   end
 
   def create_loaner(loaner)
-    Vehicle.create(
-      loaner: true,
-      model_id: loaner.id,
-      vehicle_id: id,
-      user_id: user_id,
-      public: false,
-      purchased: true
-    )
+    # CIG only gives you one loaner of each kind
+    Vehicle.find_or_create_by(loaner: true, model_id: loaner.id, user_id: user_id) do |new_loaner|
+      new_loaner.vehicle_id = id
+      new_loaner.public = false
+      new_loaner.purchased = true
+    end
+    # once CIG fixes this replace by:
+    # Vehicle.create(
+    #   loaner: true,
+    #   model_id: loaner.id,
+    #   user_id: user_id,
+    #   vehicle_id: id,
+    #   public: false,
+    #   purchased: true,
+    # )
   end
 
   def broadcast_update
