@@ -48,18 +48,15 @@
           {{ $t('labels.image.processing') }}
           {{ image.speed | formatSize }}
         </p>
-        <div
-          v-if="image.active || image.progress !== '0.00'"
-          class="progress"
-        >
+        <div v-if="image.active || image.progress !== '0.00'" class="progress">
           <div
             class="progress-bar progress-bar-info progress-bar-striped"
             :class="{
               'progress-bar-danger': image.error,
-              'progress-bar-animated': image.active
+              'progress-bar-animated': image.active,
             }"
             role="progressbar"
-            :style="{width: image.progress + '%'}"
+            :style="{ width: image.progress + '%' }"
           >
             {{ image.progress }} %
           </div>
@@ -110,20 +107,13 @@
             <i class="fal fa-globe icon-disabled" />
           </span>
         </Btn>
-        <Btn
-          :disabled="deleting"
-          size="small"
-          @click.native="deleteImage"
-        >
+        <Btn :disabled="deleting" size="small" @click.native="deleteImage">
           <i class="fa fa-trash" />
           <span>{{ $t('labels.image.delete') }}</span>
         </Btn>
       </template>
       <template v-else>
-        <Btn
-          v-if="!image.success"
-          @click.native="start(image)"
-        >
+        <Btn v-if="!image.success" @click.native="start(image)">
           <i class="fa fa-upload" />
           <span>{{ $t('labels.image.start') }}</span>
         </Btn>
@@ -220,5 +210,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

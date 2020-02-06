@@ -1,13 +1,10 @@
 <template>
   <div class="container">
-    <Box
-      class="error"
-      large
-    >
+    <Box class="error" large>
       <h1>{{ $t('headlines.error') }}</h1>
       <p>{{ $t('texts.error') }}</p>
       <template #footer>
-        <Btn :to="{name: 'home', exact: true}">
+        <Btn :to="{ name: 'home', exact: true }">
           <i class="fa fa-chevron-left" />
           {{ $t('actions.backToHome').toUpperCase() }}
         </Btn>
@@ -27,12 +24,10 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 }
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

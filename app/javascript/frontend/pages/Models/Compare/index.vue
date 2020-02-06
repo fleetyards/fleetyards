@@ -11,7 +11,7 @@
         <div class="row">
           <div class="col-xs-12">
             <BreadCrumbs :crumbs="crumbs" />
-            <br>
+            <br />
             <h1 class="sr-only">
               {{ $t('headlines.compare.models') }}
             </h1>
@@ -34,13 +34,9 @@
                   searchable
                   @input="add"
                 />
-                <Btn
-                  :href="erkulUrl"
-                  block
-                  class="erkul-link"
-                >
+                <Btn :href="erkulUrl" block class="erkul-link">
                   <i />
-                  {{ $t('labels.erkul.link' ) }}
+                  {{ $t('labels.erkul.link') }}
                 </Btn>
               </div>
               <div
@@ -52,7 +48,7 @@
                   <router-link
                     :key="model.storeImage"
                     v-lazy:background-image="model.storeImage"
-                    :to="{ name: 'model', params: { slug: model.slug }}"
+                    :to="{ name: 'model', params: { slug: model.slug } }"
                     :aria-label="model.name"
                     class="lazy"
                   />
@@ -75,15 +71,9 @@
               </div>
             </div>
 
-            <div
-              v-if="!sortedModels.length"
-              class="row compare-row"
-            >
+            <div v-if="!sortedModels.length" class="row compare-row">
               <div class="col-xs-12">
-                <Box
-                  class="info"
-                  large
-                >
+                <Box class="info" large>
                   <h1>{{ $t('headlines.compare.models') }}</h1>
                   <p>{{ $t('texts.compare.models.info') }}</p>
                 </Box>
@@ -146,9 +136,7 @@ export default {
     Legend,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     const query = JSON.parse(JSON.stringify(this.$route.query || {}))
@@ -200,12 +188,14 @@ export default {
     },
 
     crumbs() {
-      return [{
-        to: {
-          name: 'models',
+      return [
+        {
+          to: {
+            name: 'models',
+          },
+          label: this.$t('nav.models'),
         },
-        label: this.$t('nav.models'),
-      }]
+      ]
     },
   },
 
@@ -218,16 +208,16 @@ export default {
     },
   },
 
-  created () {
+  created() {
     window.addEventListener('scroll', this.handleScroll)
   },
 
-  destroyed () {
+  destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
 
   mounted() {
-    this.form.models.forEach(async (slug) => {
+    this.form.models.forEach(async slug => {
       const model = await this.fetchModel(slug)
       this.models.push(model)
     })
@@ -238,7 +228,9 @@ export default {
       this.scrolledTop = document.documentElement.scrollTop > 261
       this.scrolledLeft = document.documentElement.scrollLeft > 200
       this.scrolledTopOffset = document.documentElement.scrollTop
-      this.scrolledLeftOffset = this.scrolledLeft ? document.documentElement.scrollLeft : 0
+      this.scrolledLeftOffset = this.scrolledLeft
+        ? document.documentElement.scrollLeft
+        : 0
     },
 
     update() {
@@ -265,8 +257,8 @@ export default {
         this.form.models.splice(index, 1)
       }
 
-      if (this.models.findIndex((item) => item.slug === model.slug) >= 0) {
-        const index = this.models.findIndex((item) => item.slug === model.slug)
+      if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
+        const index = this.models.findIndex(item => item.slug === model.slug)
         this.models.splice(index, 1)
       }
     },

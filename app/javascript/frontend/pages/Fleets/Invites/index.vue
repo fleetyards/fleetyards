@@ -73,10 +73,7 @@
           </transition-group>
         </Panel>
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
   </section>
@@ -97,9 +94,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -117,7 +112,9 @@ export default {
     async accept(invite) {
       this.submitting = true
 
-      const response = await this.$api.put(`fleets/${invite.fleet.slug}/members/accept-invite`)
+      const response = await this.$api.put(
+        `fleets/${invite.fleet.slug}/members/accept-invite`,
+      )
 
       this.submitting = false
 
@@ -128,7 +125,10 @@ export default {
           text: this.$t('messages.fleet.invites.accept.success'),
         })
 
-        this.$router.push({ name: 'fleet', params: { slug: invite.fleet.slug } })
+        this.$router.push({
+          name: 'fleet',
+          params: { slug: invite.fleet.slug },
+        })
       } else {
         this.$alert({
           text: this.$t('messages.fleet.invites.accept.failure'),
@@ -142,7 +142,9 @@ export default {
       this.$confirm({
         text: this.$t('messages.confirm.fleet.invites.decline'),
         onConfirm: async () => {
-          const response = await this.$api.put(`fleets/${invite.fleet.slug}/members/decline-invite`)
+          const response = await this.$api.put(
+            `fleets/${invite.fleet.slug}/members/decline-invite`,
+          )
 
           if (!response.error) {
             this.$comlink.$emit('fleetUpdate')

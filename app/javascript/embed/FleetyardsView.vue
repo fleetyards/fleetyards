@@ -42,10 +42,7 @@
                   {{ $t('actions.showDetails') }}
                 </template>
               </Btn>
-              <Btn
-                size="small"
-                @click.native="toggleFleetchart"
-              >
+              <Btn size="small" @click.native="toggleFleetchart">
                 <template v-if="fleetchart">
                   {{ $t('actions.hideFleetchart') }}
                 </template>
@@ -56,10 +53,7 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="fleetchart && slider"
-          class="row"
-        >
+        <div v-if="fleetchart && slider" class="row">
           <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
             <FleetchartSlider
               :initial-scale="fleetchartScale"
@@ -67,10 +61,7 @@
             />
           </div>
         </div>
-        <div
-          v-if="fleetchart"
-          class="row"
-        >
+        <div v-if="fleetchart" class="row">
           <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
@@ -107,10 +98,7 @@
             />
           </div>
         </transition-group>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
   </div>
@@ -156,11 +144,12 @@ export default {
     ]),
 
     ungroupedModels() {
-      return this.ships.map((slug) => ({
-        slug,
-        model: this.models.find((model) => model.slug === slug),
-      }))
-        .map((item) => {
+      return this.ships
+        .map(slug => ({
+          slug,
+          model: this.models.find(model => model.slug === slug),
+        }))
+        .map(item => {
           if (!item.model) {
             return {
               name: this.$t('labels.unknownModel', { slug: item.slug }),
@@ -217,7 +206,7 @@ export default {
     },
 
     vehicles() {
-      this.models = this.vehicles.map((vehicle) => vehicle.model)
+      this.models = this.vehicles.map(vehicle => vehicle.model)
     },
   },
 
@@ -267,7 +256,7 @@ export default {
       if (!this.grouping) {
         return null
       }
-      return this.ships.filter((item) => item === slug).length
+      return this.ships.filter(item => item === slug).length
     },
 
     async fetchShips() {

@@ -8,20 +8,18 @@ const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {
     common: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
   },
-  transformRequest: axiosDefaults.transformRequest.concat(
-    (data, headers) => {
-      if (Store.getters['session/isAuthenticated']) {
-        // eslint-disable-next-line no-param-reassign
-        headers.Authorization = `Bearer ${Store.getters['session/authToken']}`
-      }
+  transformRequest: axiosDefaults.transformRequest.concat((data, headers) => {
+    if (Store.getters['session/isAuthenticated']) {
+      // eslint-disable-next-line no-param-reassign
+      headers.Authorization = `Bearer ${Store.getters['session/authToken']}`
+    }
 
-      return data
-    },
-  ),
+    return data
+  }),
 })
 
 const { CancelToken } = axios
@@ -34,7 +32,10 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   if (links) {
     meta = {
       currentPage: parseInt(params.page || 1, 10),
-      totalPages: parseInt((links.last && links.last.page) || params.page || 1, 10),
+      totalPages: parseInt(
+        (links.last && links.last.page) || params.page || 1,
+        10,
+      ),
     }
   }
   return meta
@@ -45,8 +46,12 @@ const handleError = async function handleError(error, silent) {
     nprogress.done()
   }
 
-  if (error.response && error.response.status === 401 && Store.getters['session/isAuthenticated']) {
-    Store.dispatch('session/logout', true)
+  if (
+    error.response &&
+    error.response.status === 401 &&
+    Store.getters['session/isAuthenticated']
+  ) {
+    Store.dispatch('session/logout')
   }
 
   return {
@@ -76,15 +81,19 @@ export async function get(path, params = {}, silent = false) {
     nprogress.start()
   }
   try {
-    return handleResponse(await client.get(path, {
-      params,
-      cancelToken: new CancelToken((c) => {
-        if (cancelations[path]) {
-          cancelations[path]('cancel')
-        }
-        cancelations[path] = c
+    return handleResponse(
+      await client.get(path, {
+        params,
+        cancelToken: new CancelToken(c => {
+          if (cancelations[path]) {
+            cancelations[path]('cancel')
+          }
+          cancelations[path] = c
+        }),
       }),
-    }), params, silent)
+      params,
+      silent,
+    )
   } catch (error) {
     return handleError(error, silent)
   }
@@ -133,7 +142,11 @@ export async function upload(path, body = {}, silent = false) {
   }
 
   try {
-    return handleResponse(await client.put(path, body, { headers }), body, silent)
+    return handleResponse(
+      await client.put(path, body, { headers }),
+      body,
+      silent,
+    )
   } catch (error) {
     return handleError(error, silent)
   }
@@ -144,16 +157,26 @@ export async function download(path, silent = false) {
     nprogress.start()
   }
   try {
-    return handleResponse(await client.get(path, {
-      responseType: 'blob',
-    }), {}, silent)
+    return handleResponse(
+      await client.get(path, {
+        responseType: 'blob',
+      }),
+      {},
+      silent,
+    )
   } catch (error) {
     return handleError(error, silent)
   }
 }
 
 const apiClient = {
-  get, post, put, destroy, download, client, upload,
+  get,
+  post,
+  put,
+  destroy,
+  download,
+  client,
+  upload,
 }
 
 export { apiClient }

@@ -1,18 +1,11 @@
 <template>
-  <ol
-    aria-label="breadcrumb"
-    class="breadcrumb"
-  >
+  <ol aria-label="breadcrumb" class="breadcrumb">
     <li class="breadcrumb-item">
       <router-link :to="{ name: 'home' }">
         {{ $t('nav.home') }}
       </router-link>
     </li>
-    <li
-      v-for="(crumb, index) in crumbs"
-      :key="index"
-      class="breadcrumb-item"
-    >
+    <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
       /
       <router-link :to="crumb.to">
         {{ crumb.label }}

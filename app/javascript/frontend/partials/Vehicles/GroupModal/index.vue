@@ -1,17 +1,7 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    small
-  >
-    <Modal
-      ref="modal"
-      :title="title"
-      :visible="visible"
-    >
-      <form
-        :id="`group-${id}`"
-        @submit.prevent="handleSubmit(save)"
-      >
+  <ValidationObserver v-slot="{ handleSubmit }" small>
+    <Modal ref="modal" :title="title" :visible="visible">
+      <form :id="`group-${id}`" @submit.prevent="handleSubmit(save)">
         <div class="row">
           <div class="col-xs-12 col-sm-6">
             <ValidationProvider
@@ -41,7 +31,7 @@
             >
               <div
                 v-tooltip.right="errors[0]"
-                :class="{'has-error has-feedback': errors[0]}"
+                :class="{ 'has-error has-feedback': errors[0] }"
                 class="form-group"
               >
                 <Swatches
@@ -131,7 +121,7 @@ export default {
     },
 
     id() {
-      return (this.group.id || 'new')
+      return this.group.id || 'new'
     },
   },
 
@@ -185,7 +175,10 @@ export default {
     },
 
     async update() {
-      const response = await this.$api.put(`hangar-groups/${this.group.id}`, this.form)
+      const response = await this.$api.put(
+        `hangar-groups/${this.group.id}`,
+        this.form,
+      )
 
       this.submitting = false
 
@@ -218,5 +211,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './styles/index';
+@import './styles/index';
 </style>

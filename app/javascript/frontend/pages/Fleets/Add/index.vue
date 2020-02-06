@@ -1,9 +1,6 @@
 <template>
   <section class="container">
-    <ValidationObserver
-      v-slot="{ handleSubmit }"
-      small
-    >
+    <ValidationObserver v-slot="{ handleSubmit }" small>
       <form @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-offset-3">
@@ -20,7 +17,7 @@
                 required: true,
                 fidTaken: true,
                 min: 3,
-                regex: /^[a-zA-Z0-9\-_]{3,}$/
+                regex: /^[a-zA-Z0-9\-_]{3,}$/,
               }"
               :name="$t('labels.fleet.fid')"
               slim
@@ -39,7 +36,7 @@
               :rules="{
                 required: true,
                 min: 3,
-                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
+                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
               }"
               :name="$t('labels.name')"
               slim
@@ -56,7 +53,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <br>
+            <br />
             <Btn
               :loading="submitting"
               type="submit"
@@ -85,9 +82,7 @@ export default {
     FormInput,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -114,7 +109,10 @@ export default {
         this.$success({
           text: this.$t('messages.fleet.create.success'),
         })
-        this.$router.push({ name: 'fleet', params: { slug: response.data.slug } })
+        this.$router.push({
+          name: 'fleet',
+          params: { slug: response.data.slug },
+        })
       } else {
         this.$alert({
           text: this.$t('messages.fleet.create.failure'),

@@ -2,16 +2,10 @@
   <section class="container request-password">
     <div class="row">
       <div class="col-xs-12">
-        <ValidationObserver
-          v-slot="{ handleSubmit }"
-          slim
-        >
+        <ValidationObserver v-slot="{ handleSubmit }" slim>
           <form @submit.prevent="handleSubmit(requestPassword)">
             <h1>
-              <router-link
-                to="/"
-                exact
-              >
+              <router-link to="/" exact>
                 {{ $t('app') }}
               </router-link>
             </h1>
@@ -33,12 +27,7 @@
               />
             </ValidationProvider>
 
-            <Btn
-              :loading="submitting"
-              type="submit"
-              size="large"
-              block
-            >
+            <Btn :loading="submitting" type="submit" size="large" block>
               {{ $t('actions.requestPassword') }}
             </Btn>
 
@@ -47,11 +36,7 @@
                 {{ $t('labels.alreadyRegistered') }}
               </p>
 
-              <Btn
-                :to="{name: 'login'}"
-                size="small"
-                block
-              >
+              <Btn :to="{ name: 'login' }" size="small" block>
                 {{ $t('actions.login') }}
               </Btn>
             </footer>
@@ -73,9 +58,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -105,5 +88,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

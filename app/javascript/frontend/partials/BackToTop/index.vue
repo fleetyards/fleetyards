@@ -30,7 +30,7 @@ export default {
 
   created() {
     const catchScroll = () => {
-      this.visible = (window.pageYOffset > parseInt(this.visibleOffset, 10))
+      this.visible = window.pageYOffset > parseInt(this.visibleOffset, 10)
     }
 
     window.onscroll = catchScroll
@@ -45,5 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -51,10 +51,7 @@
       </div>
     </div>
 
-    <Gallery
-      ref="gallery"
-      :items="images"
-    />
+    <Gallery ref="gallery" :items="images" />
   </section>
 </template>
 
@@ -69,11 +66,7 @@ export default {
     Loader,
   },
 
-  mixins: [
-    MetaInfo,
-    Pagination,
-    GalleryHelpers,
-  ],
+  mixins: [MetaInfo, Pagination, GalleryHelpers],
 
   data() {
     return {

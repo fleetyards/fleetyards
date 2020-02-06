@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { parseISO, isBefore } from 'date-fns'
 
 export default {
   data() {
@@ -6,11 +7,11 @@ export default {
       sessionRenewInterval: null,
     }
   },
+
   computed: {
-    ...mapGetters('session', [
-      'isAuthenticated',
-    ]),
+    ...mapGetters('session', ['isAuthenticated', 'authTokenRenewAt']),
   },
+
   watch: {
     isAuthenticated() {
       if (this.isAuthenticated) {
@@ -20,18 +21,21 @@ export default {
       }
     },
   },
+
   created() {
     if (this.isAuthenticated) {
-      this.$store.dispatch('session/renew')
+      this.renew()
 
       this.setupSessionRenewInterval()
     }
   },
+
   beforeDestroy() {
     if (this.sessionRenewInterval) {
       clearInterval(this.sessionRenewInterval)
     }
   },
+
   methods: {
     setupSessionRenewInterval() {
       if (this.sessionRenewInterval) {
@@ -39,8 +43,22 @@ export default {
       }
 
       this.sessionRenewInterval = setInterval(() => {
-        this.$store.dispatch('session/renew')
+        this.renew()
       }, 60 * 1000)
+    },
+
+    async renew() {
+      if (
+        this.authTokenRenewAt &&
+        isBefore(new Date(), parseISO(this.authTokenRenewAt))
+      ) {
+        return
+      }
+
+      const response = await this.$api.put('sessions/renew')
+      if (!response.error) {
+        this.$store.dispatch('session/login', response.data)
+      }
     },
   },
 }

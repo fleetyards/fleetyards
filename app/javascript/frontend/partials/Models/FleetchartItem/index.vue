@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-tooltip.bottom="label"
-    class="fleetchart-item fade-list-item"
-  >
+  <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
     <router-link
       :to="{
         name: 'model',
@@ -11,10 +8,7 @@
         },
       }"
     >
-      <FleetchartItemImage
-        :model="model"
-        :scale="scale"
-      />
+      <FleetchartItemImage :model="model" :scale="scale" />
       <FleetchartItemLabel :label="label" />
     </router-link>
   </div>

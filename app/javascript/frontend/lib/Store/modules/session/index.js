@@ -13,6 +13,10 @@ export default () => ({
       return state.authToken !== null
     },
 
+    authTokenRenewAt(state) {
+      return state.authTokenRenewAt
+    },
+
     authToken(state) {
       return state.authToken
     },

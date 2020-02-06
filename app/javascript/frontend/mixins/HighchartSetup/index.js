@@ -4,8 +4,19 @@ export default {
   data() {
     return {
       theme: {
-        colors: ['#428bca', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
-          '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+        colors: [
+          '#428bca',
+          '#90ee7e',
+          '#f45b5b',
+          '#7798BF',
+          '#aaeeee',
+          '#ff0066',
+          '#eeaaee',
+          '#55BF3B',
+          '#DF5353',
+          '#7798BF',
+          '#aaeeee',
+        ],
         chart: {
           backgroundColor: 'transparent',
           style: {

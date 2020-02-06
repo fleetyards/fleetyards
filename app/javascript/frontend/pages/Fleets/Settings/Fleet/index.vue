@@ -7,15 +7,8 @@
       </div>
     </div>
 
-    <ValidationObserver
-      ref="form"
-      v-slot="{ handleSubmit }"
-      small
-    >
-      <form
-        v-if="canEdit && fleet"
-        @submit.prevent="handleSubmit(submit)"
-      >
+    <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
+      <form v-if="canEdit && fleet" @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <ValidationProvider
@@ -25,7 +18,7 @@
               slim
             >
               <div
-                :class="{'has-error has-feedback': errors[0]}"
+                :class="{ 'has-error has-feedback': errors[0] }"
                 class="form-group"
               >
                 <VueUploadComponent
@@ -58,7 +51,7 @@
               :rules="{
                 required: true,
                 min: 3,
-                regex: /^[a-zA-Z0-9\-_]{3,}$/
+                regex: /^[a-zA-Z0-9\-_]{3,}$/,
               }"
               :name="$t('labels.fleet.fid')"
               slim
@@ -78,7 +71,7 @@
               :rules="{
                 required: true,
                 min: 3,
-                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/
+                regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
               }"
               :name="$t('labels.name')"
               slim
@@ -99,7 +92,7 @@
             />
           </div>
         </div>
-        <hr>
+        <hr />
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <ValidationProvider
@@ -150,7 +143,7 @@
             </ValidationProvider>
           </div>
         </div>
-        <hr>
+        <hr />
         <div class="row">
           <div class="col-md-12 col-lg-6">
             <ValidationProvider
@@ -185,7 +178,7 @@
             </ValidationProvider>
           </div>
         </div>
-        <br>
+        <br />
         <Btn
           :loading="submitting"
           type="submit"
@@ -228,10 +221,7 @@ export default {
     Avatar,
   },
 
-  mixins: [
-    MetaInfo,
-    FleetsMixin,
-  ],
+  mixins: [MetaInfo, FleetsMixin],
 
   props: {
     fleet: {
@@ -272,7 +262,6 @@ export default {
       return this.$t('title.fleets.settings', { fleet: this.fleet.name })
     },
 
-
     logoUrl() {
       if (this.fleet) {
         return this.newLogo.url || this.fleet.logo
@@ -282,7 +271,7 @@ export default {
     },
 
     newLogo() {
-      return ((this.files && this.files[0]) || {})
+      return (this.files && this.files[0]) || {}
     },
 
     crumbs() {
@@ -290,15 +279,17 @@ export default {
         return []
       }
 
-      return [{
-        to: {
-          name: 'fleet',
-          params: {
-            slug: this.fleet.slug,
+      return [
+        {
+          to: {
+            name: 'fleet',
+            params: {
+              slug: this.fleet.slug,
+            },
           },
+          label: this.fleet.name,
         },
-        label: this.fleet.name,
-      }]
+      ]
     },
 
     canEdit() {
@@ -320,7 +311,10 @@ export default {
 
   mounted() {
     if (!this.canEdit) {
-      this.$router.replace({ name: 'fleet-settings-membership', params: { slug: this.myFleet.slug } })
+      this.$router.replace({
+        name: 'fleet-settings-membership',
+        params: { slug: this.myFleet.slug },
+      })
       return
     }
 
@@ -363,11 +357,14 @@ export default {
         data.append('logo', this.newLogo.file)
       }
 
-      Object.keys(this.form).forEach((key) => {
+      Object.keys(this.form).forEach(key => {
         data.append(key, this.form[key])
       })
 
-      const response = await this.$api.upload(`fleets/${this.$route.params.slug}`, data)
+      const response = await this.$api.upload(
+        `fleets/${this.$route.params.slug}`,
+        data,
+      )
 
       this.submitting = false
 
@@ -379,7 +376,10 @@ export default {
         this.$comlink.$emit('fleetUpdate')
 
         if (response.data.slug !== this.$route.params.slug) {
-          this.$router.push({ name: 'fleet-settings', params: { slug: response.data.slug } })
+          this.$router.push({
+            name: 'fleet-settings',
+            params: { slug: response.data.slug },
+          })
         } else {
           setTimeout(() => {
             this.files = []
@@ -408,7 +408,9 @@ export default {
       this.$confirm({
         text: this.$t('messages.confirm.fleet.destroy'),
         onConfirm: async () => {
-          const response = await this.$api.destroy(`fleets/${this.$route.params.slug}`)
+          const response = await this.$api.destroy(
+            `fleets/${this.$route.params.slug}`,
+          )
 
           if (!response.error) {
             this.$router.push({ name: 'home' })

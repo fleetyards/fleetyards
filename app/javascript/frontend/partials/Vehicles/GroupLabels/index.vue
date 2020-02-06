@@ -3,21 +3,14 @@
     <h3 class="label-title">
       Groups:
     </h3>
-    <draggable
-      v-model="groups"
-      @start="drag=true"
-      @end="drag=false"
-    >
-      <transition-group
-        name="fade-list"
-        appear
-      >
+    <draggable v-model="groups" @start="drag = true" @end="drag = false">
+      <transition-group name="fade-list" appear>
         <a
           v-for="group in groups"
           :key="group.id"
           :class="{
-            'active': isActive(group.slug),
-            'inverted': isInverted(group.slug),
+            active: isActive(group.slug),
+            inverted: isInverted(group.slug),
           }"
           class="label label-link fade-list-item"
           @click.exact="filter(group.slug)"
@@ -26,7 +19,7 @@
           <span class="label-inner">
             <span
               :style="{
-                'background-color': group.color
+                'background-color': group.color,
               }"
               class="label-color"
             />
@@ -35,19 +28,12 @@
         </a>
       </transition-group>
     </draggable>
-    <a
-      v-tooltip="$t('actions.addGroup')"
-      class="label label-link"
-      @click="add"
-    >
+    <a v-tooltip="$t('actions.addGroup')" class="label label-link" @click="add">
       <span class="label-inner">
         <i class="far fa-plus" />
       </span>
     </a>
-    <GroupModal
-      ref="groupModal"
-      :group="selectedGroup"
-    />
+    <GroupModal ref="groupModal" :group="selectedGroup" />
   </div>
 </template>
 
@@ -79,7 +65,7 @@ export default {
   },
   computed: {
     sortIndex() {
-      return this.groups.map((item) => item.id)
+      return this.groups.map(item => item.id)
     },
   },
   watch: {
@@ -102,12 +88,12 @@ export default {
         }
         query.hangarGroupsNotIn.push(filter)
 
-        const index = query.hangarGroupsIn.findIndex((item) => item === filter)
+        const index = query.hangarGroupsIn.findIndex(item => item === filter)
         if (index > -1) {
           query.hangarGroupsIn.splice(index, 1)
         }
       } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-        const index = query.hangarGroupsNotIn.findIndex((item) => item === filter)
+        const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
         if (index > -1) {
           query.hangarGroupsNotIn.splice(index, 1)
         }
@@ -181,5 +167,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

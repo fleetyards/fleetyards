@@ -19,12 +19,8 @@
         />
       </div>
     </div>
-    <br>
-    <Btn
-      :loading="submitting"
-      type="submit"
-      size="large"
-    >
+    <br />
+    <Btn :loading="submitting" type="submit" size="large">
       {{ $t('actions.save') }}
     </Btn>
   </form>
@@ -44,9 +40,7 @@ export default {
     Checkbox,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -59,9 +53,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
   },
 
   watch: {

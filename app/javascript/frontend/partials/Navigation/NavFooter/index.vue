@@ -4,19 +4,18 @@
       v-if="!mobile"
       :action="toggleSlim"
       :label="toggleSlimLabel"
-      :icon="slim ? 'fal fa-chevron-double-right' : 'fal fa-chevron-double-left'"
+      :icon="
+        slim ? 'fal fa-chevron-double-right' : 'fal fa-chevron-double-left'
+      "
     />
     <NavItem class="logo-menu">
       <img
         :src="require('images/favicon.png').default"
         class="logo-menu-image"
         alt="logo"
-      >
+      />
       <transition name="fade-nav">
-        <span
-          v-if="!slim"
-          class="logo-menu-label"
-        >
+        <span v-if="!slim" class="logo-menu-label">
           {{ $t('app') }}
         </span>
       </transition>
@@ -34,13 +33,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('app', [
-      'navSlim',
-    ]),
+    ...mapGetters('app', ['navSlim']),
 
     slim() {
       return this.navSlim && !this.mobile

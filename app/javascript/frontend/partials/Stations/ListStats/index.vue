@@ -1,8 +1,5 @@
 <template>
-  <dl
-    v-if="station"
-    class="dl-horizontal"
-  >
+  <dl v-if="station" class="dl-horizontal">
     <dt>{{ $t('labels.station.type') }}:</dt>
     <dd>{{ station.typeLabel }}</dd>
 
@@ -11,9 +8,7 @@
       <LocationLabel :station="station" />
     </dd>
 
-    <dt v-if="station.shopsListLabel">
-      {{ $t('labels.station.shops') }}:
-    </dt>
+    <dt v-if="station.shopsListLabel">{{ $t('labels.station.shops') }}:</dt>
     <dd v-if="station.shopsListLabel">
       {{ station.shopListLabel }}
     </dd>
@@ -22,10 +17,7 @@
       <dt>{{ $t('labels.station.docks') }}:</dt>
       <dd>
         <ul class="list-unstyled">
-          <li
-            v-for="(dock, index) in station.dockCounts"
-            :key="index"
-          >
+          <li v-for="(dock, index) in station.dockCounts" :key="index">
             {{ dock.size }} {{ dock.typeLabel }}: {{ dock.count }}
           </li>
         </ul>

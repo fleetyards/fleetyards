@@ -4,13 +4,13 @@ import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
 import store from 'embed/lib/Store'
 import ApiClient from 'frontend/lib/ApiClient'
-import I18n from 'frontend/lib/I18n'
+import I18nPlugin from 'frontend/lib/I18n'
 import Noty from 'frontend/lib/Noty'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Bootstrap'
 
 Vue.use(ApiClient)
-Vue.use(I18n)
+Vue.use(I18nPlugin)
 Vue.use(Noty)
 
 Vue.config.productionTip = false
@@ -59,6 +59,6 @@ setTimeout(() => {
         }
       },
     },
-    render: (h) => h(FleetyardsView),
+    render: h => h(FleetyardsView),
   })
 }, 2000)

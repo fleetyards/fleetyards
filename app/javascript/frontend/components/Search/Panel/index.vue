@@ -1,15 +1,12 @@
 <template>
-  <Panel
-    v-if="item"
-    :id="`${item.resultType}-${item.id}`"
-  >
+  <Panel v-if="item" :id="`${item.resultType}-${item.id}`">
     <div class="panel-heading">
       <h2 class="panel-title">
         <router-link :to="route">
           {{ item.name }}
         </router-link>
 
-        <br>
+        <br />
 
         <small>
           {{ item.locationLabel }}
@@ -49,7 +46,10 @@ export default {
     route() {
       switch (this.item.resultType) {
         case 'shop':
-          return { name: 'shop', params: { station: this.item.station.slug, slug: this.item.slug } }
+          return {
+            name: 'shop',
+            params: { station: this.item.station.slug, slug: this.item.slug },
+          }
         case 'station':
           return { name: 'station', params: { slug: this.item.slug } }
         default:

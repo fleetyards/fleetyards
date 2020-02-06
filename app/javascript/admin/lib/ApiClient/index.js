@@ -7,18 +7,16 @@ const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {
     common: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${window.AUTH_TOKEN}`,
+      'Authorization': `Bearer ${window.AUTH_TOKEN}`,
     },
   },
-  transformRequest: axiosDefaults.transformRequest.concat(
-    (data) => {
-      nprogress.start()
+  transformRequest: axiosDefaults.transformRequest.concat(data => {
+    nprogress.start()
 
-      return data
-    },
-  ),
+    return data
+  }),
 })
 
 const { CancelToken } = axios
@@ -31,7 +29,10 @@ const extractMetaInfo = function extractMetaInfo(headers, params) {
   if (links) {
     meta = {
       currentPage: parseInt(params.page || 1, 10),
-      totalPages: parseInt((links.last && links.last.page) || params.page || 1, 10),
+      totalPages: parseInt(
+        (links.last && links.last.page) || params.page || 1,
+        10,
+      ),
     }
   }
   return meta
@@ -62,15 +63,18 @@ const handleResponse = function handleResponse(response, params) {
 
 export async function get(path, params = {}) {
   try {
-    return handleResponse(await client.get(path, {
-      params,
-      cancelToken: new CancelToken((c) => {
-        if (cancelations[path]) {
-          cancelations[path]('cancel')
-        }
-        cancelations[path] = c
+    return handleResponse(
+      await client.get(path, {
+        params,
+        cancelToken: new CancelToken(c => {
+          if (cancelations[path]) {
+            cancelations[path]('cancel')
+          }
+          cancelations[path] = c
+        }),
       }),
-    }), params)
+      params,
+    )
   } catch (error) {
     return handleError(error)
   }
@@ -101,7 +105,11 @@ export async function destroy(path, data = {}) {
 }
 
 const apiClient = {
-  get, post, put, destroy, client,
+  get,
+  post,
+  put,
+  destroy,
+  client,
 }
 
 export { apiClient }

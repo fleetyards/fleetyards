@@ -6,10 +6,7 @@
     }"
     class="hardpoint-icon"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 47.98 55.4"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.98 55.4">
       <rect
         v-if="hardpoint.quantity && hardpoint.quantity > 1"
         class="c-specbox__background-dot hardpoint-icon-part"
@@ -67,12 +64,7 @@
         points="14,0 7,0 3.5,6.1 7,12.1 14,12.1 17.5,6.1"
       />
       <g>
-        <rect
-          class="hardpoint-icon-part"
-          x="23.48"
-          width="1"
-          height="1"
-        />
+        <rect class="hardpoint-icon-part" x="23.48" width="1" height="1" />
         <rect
           class="hardpoint-icon-part"
           x="23.49"
@@ -80,18 +72,8 @@
           width="1"
           height="1"
         />
-        <rect
-          class="hardpoint-icon-part"
-          y="40.55"
-          width="1"
-          height="1"
-        />
-        <rect
-          class="hardpoint-icon-part"
-          y="13.84"
-          width="1"
-          height="1"
-        />
+        <rect class="hardpoint-icon-part" y="40.55" width="1" height="1" />
+        <rect class="hardpoint-icon-part" y="13.84" width="1" height="1" />
         <rect
           class="hardpoint-icon-part"
           x="46.98"
@@ -111,7 +93,8 @@
     <div
       v-if="size"
       :class="{
-        'hardpoint-size-label-small': (hardpoint.quantity && hardpoint.quantity > 1)
+        'hardpoint-size-label-small':
+          hardpoint.quantity && hardpoint.quantity > 1,
       }"
       class="hardpoint-label hardpoint-size-label"
     >
@@ -135,10 +118,7 @@
     >
       {{ hardpoint.mounts }}
     </div>
-    <div
-      v-if="rackSize"
-      class="hardpoint-label hardpoint-rack-size-label"
-    >
+    <div v-if="rackSize" class="hardpoint-label hardpoint-rack-size-label">
       {{ rackSize }}
     </div>
   </div>
@@ -157,7 +137,11 @@ export default {
       return 'M24,0,22.26,1l.5.87L24,1.15,25.4,2l.5-.87L24.17.1l-.06.1L24,0ZM20.53,2,18.79,3l.5.87,1.73-1L20.53,2ZM17.06,4,15.33,5l.5.87,1.73-1L17.06,4ZM13.6,6,11.87,7l.5.87,1.73-1L13.6,6ZM10.13,8h-.06L8.4,9l.5.87,1.73-1L10.13,8ZM6.67,10,4.94,11l.5.87,1.73-1L6.67,10ZM3.21,12,1.47,13l.5.87,1.73-1L3.21,12ZM1,14.15H0v2H1v-2Zm0,4H0v2H1v-2Zm0,4H0v2H1v-2Zm0,4H0v2H1v-2Zm0,4H0v2H1v-2Zm0,4H0v2H1v-2Zm0,4H0v2H1v-2ZM1,41l-.5.87,1.29.75h0l.43.25.5-.87L1,41Zm3.46,2-.5.87,1.73,1,.5-.87L4.48,43Zm3.46,2-.5.87,1.73,1,.5-.87L7.95,45Zm3.46,2-.5.87,1.73,1,.5-.87-1.73-1Zm3.46,2-.5.87,1.73,1,.5-.87-1.73-1Zm3.46,2-.5.87,1.73,1,.5-.87-1.73-1Zm3.46,2-.5.87,1.73,1,.5-.87L21.8,53Zm4.2.1-1.73,1,.5.87.84-.49h0L26.5,54l-.5-.87Zm3.46-2-1.73,1,.5.87L30,52l-.5-.87Zm3.46-2-1.73,1,.5.87,1.73-1-.5-.87Zm3.46-2-1.73,1,.5.87,1.73-1-.5-.87Zm3.46-2-1.73,1,.5.87,1.73-1-.5-.87Zm3.46-2-1.73,1,.5.87,1.73-1-.5-.87Zm3.46-2-1.73,1,.5.87,1.73-1-.5-.87ZM48,38.35H47v2h1v-2Zm0-4H47v2h1v-2Zm0-4H47v2h1v-2Zm0-4H47v2h1v-2Zm0-4H47v2h1v-2Zm0-4H47v2h1v-2Zm0-4H47v2h1v-2ZM45,12.1l-.5.87,1.73,1,.5-.87-.8-.46L45,12.1Zm-3.46-2L41,11l1.73,1,.5-.87-1.73-1ZM38,8.1l-.5.87,1.73,1,.5-.87L38,8.1Zm-3.46-2-.5.87,1.73,1,.5-.87-1.73-1Zm-3.46-2L30.6,5l1.73,1,.5-.87-1.73-1Zm-3.46-2-.5.87,1.73,1,.5-.87-1.73-1Z'
     },
     rackSize() {
-      if (this.hardpoint.type === 'missiles' && this.hardpoint.size !== '' && this.hardpoint.size !== '-') {
+      if (
+        this.hardpoint.type === 'missiles' &&
+        this.hardpoint.size !== '' &&
+        this.hardpoint.size !== '-'
+      ) {
         return this.hardpoint.size
       }
       return null

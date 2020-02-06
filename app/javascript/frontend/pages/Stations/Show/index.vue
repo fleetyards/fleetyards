@@ -9,45 +9,23 @@
       </div>
     </div>
     <div class="row">
-      <div
-        v-if="station"
-        class="col-xs-12 col-md-8"
-      >
-        <img
-          :src="station.storeImage"
-          class="image"
-          alt="model image"
-        >
-        <blockquote
-          v-if="station.description"
-          class="description"
-        >
+      <div v-if="station" class="col-xs-12 col-md-8">
+        <img :src="station.storeImage" class="image" alt="model image" />
+        <blockquote v-if="station.description" class="description">
           <p v-html="station.description" />
         </blockquote>
       </div>
-      <div
-        v-if="station"
-        class="col-xs-12 col-md-4"
-      >
+      <div v-if="station" class="col-xs-12 col-md-4">
         <Panel>
-          <StationBaseMetrics
-            :station="station"
-            padding
-          />
-          <StationDocks
-            :station="station"
-            padding
-          />
-          <StationHabitations
-            :station="station"
-            padding
-          />
+          <StationBaseMetrics :station="station" padding />
+          <StationDocks :station="station" padding />
+          <StationHabitations :station="station" padding />
         </Panel>
         <div class="text-right">
           <div class="page-actions">
             <Btn
               v-if="station.hasImages"
-              :to="{ name: 'station-images', params: { slug: station.slug }}"
+              :to="{ name: 'station-images', params: { slug: station.slug } }"
             >
               <i class="fa fa-images" />
             </Btn>
@@ -59,12 +37,7 @@
       <div class="col-xs-12">
         <template v-if="station && station.shops.length">
           <h2>{{ $t('headlines.shops') }}</h2>
-          <transition-group
-            name="fade-list"
-            class="flex-row"
-            tag="div"
-            appear
-          >
+          <transition-group name="fade-list" class="flex-row" tag="div" appear>
             <div
               v-for="shop in station.shops"
               :key="shop.slug"
@@ -82,10 +55,7 @@
               />
             </div>
           </transition-group>
-          <Loader
-            :loading="loading"
-            fixed
-          />
+          <Loader :loading="loading" fixed />
         </template>
       </div>
     </div>
@@ -118,10 +88,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-  ],
+  mixins: [MetaInfo, Hash],
 
   data() {
     return {
@@ -136,7 +103,10 @@ export default {
         return null
       }
 
-      return this.$t('title.station', { station: this.station.name, celestialObject: this.station.celestialObject.name })
+      return this.$t('title.station', {
+        station: this.station.name,
+        celestialObject: this.station.celestialObject.name,
+      })
     },
 
     crumbs() {
@@ -144,22 +114,25 @@ export default {
         return null
       }
 
-      const crumbs = [{
-        to: {
-          name: 'starsystems',
-          hash: `#${this.station.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t('nav.starsystems'),
-      }, {
-        to: {
-          name: 'starsystem',
-          params: {
-            slug: this.station.celestialObject.starsystem.slug,
+      const crumbs = [
+        {
+          to: {
+            name: 'starsystems',
+            hash: `#${this.station.celestialObject.starsystem.slug}`,
           },
-          hash: `#${this.station.celestialObject.slug}`,
+          label: this.$t('nav.starsystems'),
         },
-        label: this.station.celestialObject.starsystem.name,
-      }]
+        {
+          to: {
+            name: 'starsystem',
+            params: {
+              slug: this.station.celestialObject.starsystem.slug,
+            },
+            hash: `#${this.station.celestialObject.slug}`,
+          },
+          label: this.station.celestialObject.starsystem.name,
+        },
+      ]
 
       if (this.station.celestialObject.parent) {
         crumbs.push({
@@ -210,7 +183,9 @@ export default {
     async fetch() {
       this.loading = true
 
-      const response = await this.$api.get(`stations/${this.$route.params.slug}`)
+      const response = await this.$api.get(
+        `stations/${this.$route.params.slug}`,
+      )
 
       this.loading = false
 
@@ -223,5 +198,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

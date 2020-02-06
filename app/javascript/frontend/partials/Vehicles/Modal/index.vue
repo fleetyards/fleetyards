@@ -5,10 +5,7 @@
     :title="$t('headlines.myVehicle', { vehicle: vehicle.model.name })"
     :visible="visible"
   >
-    <form
-      :id="`vehicle-${vehicle.id}`"
-      @submit.prevent="save"
-    >
+    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="save">
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
@@ -35,40 +32,28 @@
             :label="$t('labels.vehicle.purchased')"
           />
         </div>
-        <div
-          v-if="!form.purchased"
-          class="col-xs-12 col-sm-6"
-        >
+        <div v-if="!form.purchased" class="col-xs-12 col-sm-6">
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
             :label="$t('labels.vehicle.saleNotify')"
           />
         </div>
-        <div
-          v-else
-          class="col-xs-12 col-sm-6"
-        >
+        <div v-else class="col-xs-12 col-sm-6">
           <Checkbox
             id="public"
             v-model="form.public"
             :label="$t('labels.vehicle.public')"
           />
         </div>
-        <div
-          v-if="form.public && form.purchased"
-          class="col-xs-12 col-sm-6"
-        >
+        <div v-if="form.public && form.purchased" class="col-xs-12 col-sm-6">
           <Checkbox
             id="nameVisible"
             v-model="form.nameVisible"
             :label="$t('labels.vehicle.nameVisible')"
           />
         </div>
-        <div
-          v-if="hangarGroups.length > 0"
-          class="col-xs-12"
-        >
+        <div v-if="hangarGroups.length > 0" class="col-xs-12">
           <h3>Groups:</h3>
           <div class="row">
             <div
@@ -191,7 +176,9 @@ export default {
     },
     changeGroup(group) {
       if (this.form.hangarGroupIds.includes(group.id)) {
-        const index = this.form.hangarGroupIds.findIndex((groupId) => groupId === group.id)
+        const index = this.form.hangarGroupIds.findIndex(
+          groupId => groupId === group.id,
+        )
         if (index > -1) {
           this.form.hangarGroupIds.splice(index, 1)
         }
@@ -201,7 +188,10 @@ export default {
     },
     async save() {
       this.submitting = true
-      const response = await this.$api.put(`vehicles/${this.vehicle.id}`, this.form)
+      const response = await this.$api.put(
+        `vehicles/${this.vehicle.id}`,
+        this.form,
+      )
       this.submitting = false
       if (!response.error) {
         this.$refs.modal.close()
@@ -213,5 +203,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

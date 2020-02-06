@@ -1,29 +1,15 @@
 <template>
   <transition name="fade">
-    <div
-      v-if="visible"
-      class="empty-box"
-    >
-      <Box
-        class="info"
-        large
-      >
+    <div v-if="visible" class="empty-box">
+      <Box class="info" large>
         <h1>{{ $t('headlines.empty') }}</h1>
         <template v-if="isQueryPresent">
           <p>{{ $t('texts.empty.query') }}</p>
-          <div
-            slot="footer"
-            class="pull-right"
-          >
-            <Btn
-              v-if="isPagePresent"
-              @click.native="resetPage"
-            >
+          <div slot="footer" class="pull-right">
+            <Btn v-if="isPagePresent" @click.native="resetPage">
               {{ $t('actions.empty.resetPage') }}
             </Btn>
-            <Btn
-              :to="{ name: this.$route.name, exact: true }"
-            >
+            <Btn :to="{ name: this.$route.name, exact: true }">
               {{ $t('actions.empty.reset') }}
             </Btn>
           </div>

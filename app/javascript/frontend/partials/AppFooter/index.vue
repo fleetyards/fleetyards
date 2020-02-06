@@ -28,7 +28,7 @@
         <span class="hidden-xs">
           |
         </span>
-        <br class="visible-xs">
+        <br class="visible-xs" />
         <a
           v-tooltip="'Twitter'"
           href="https://twitter.com/FleetYardsNet"
@@ -59,11 +59,7 @@
           <i class="fab fa-discord" />
         </a>
         |
-        <a
-          href="https://api.fleetyards.net"
-          target="_blank"
-          rel="noopener"
-        >
+        <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
           {{ $t('nav.api') }}
         </a>
       </div>
@@ -93,12 +89,17 @@
           Torlek Maru
         </p>
         <p class="rsi-disclaimer">
-          This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group
-          of companies.<br>
-          All content on this site not authored by its host or users are property of their
-          respective owners.<br>
-          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are<br>
-          registered trademarks of Cloud Imperium Rights LLC. All rights reserved.
+          This is an unofficial Star Citizen fansite, not affiliated with the
+          Cloud Imperium group of companies.
+          <br />
+          All content on this site not authored by its host or users are
+          property of their respective owners.
+          <br />
+          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
+          Imperium® are
+          <br />
+          registered trademarks of Cloud Imperium Rights LLC. All rights
+          reserved.
         </p>
       </div>
       <div class="app-community-logo" />
@@ -124,33 +125,30 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters([
-      'online',
-    ]),
+    ...mapGetters(['online']),
 
-    ...mapGetters('app', [
-      'version',
-      'codename',
-      'gitRevision',
-    ]),
+    ...mapGetters('app', ['version', 'codename', 'gitRevision']),
   },
 
   methods: {
     copyGitRevision() {
-      this.$copyText(this.gitRevision).then(() => {
-        this.$success({
-          text: this.$t('messages.copyGitRevision.success'),
-        })
-      }, () => {
-        this.$alert({
-          text: this.$t('messages.copyGitRevision.failure'),
-        })
-      })
+      this.$copyText(this.gitRevision).then(
+        () => {
+          this.$success({
+            text: this.$t('messages.copyGitRevision.success'),
+          })
+        },
+        () => {
+          this.$alert({
+            text: this.$t('messages.copyGitRevision.failure'),
+          })
+        },
+      )
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

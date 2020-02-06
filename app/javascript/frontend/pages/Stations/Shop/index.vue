@@ -9,26 +9,14 @@
       </div>
     </div>
     <div class="row">
-      <div
-        v-if="shop"
-        class="col-xs-12 col-md-8"
-      >
-        <blockquote
-          v-if="shop.description"
-          class="description"
-        >
+      <div v-if="shop" class="col-xs-12 col-md-8">
+        <blockquote v-if="shop.description" class="description">
           <p v-html="shop.description" />
         </blockquote>
       </div>
-      <div
-        v-if="shop"
-        class="col-xs-12 col-md-4"
-      >
+      <div v-if="shop" class="col-xs-12 col-md-4">
         <Panel>
-          <ShopBaseMetrics
-            :shop="shop"
-            padding
-          />
+          <ShopBaseMetrics :shop="shop" padding />
         </Panel>
       </div>
     </div>
@@ -55,7 +43,7 @@
               :key="item.value"
               size="small"
               :class="{
-                active: (subCategory || []).includes(item.value)
+                active: (subCategory || []).includes(item.value),
               }"
               @click.native="toggleSubcategory(item.value)"
             >
@@ -81,10 +69,7 @@
         @before-enter="toggleFullscreen"
         @after-leave="toggleFullscreen"
       >
-        <div
-          v-show="filterVisible"
-          class="col-xs-12 col-md-3 col-xlg-2"
-        >
+        <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
           <FilterForm />
         </div>
       </transition>
@@ -95,12 +80,7 @@
         class="col-xs-12 col-animated"
       >
         <Panel v-if="shop">
-          <transition-group
-            name="fade"
-            class="flex-list"
-            tag="div"
-            appear
-          >
+          <transition-group name="fade" class="flex-list" tag="div" appear>
             <div
               key="heading"
               class="fade-list-item col-xs-12 flex-list-heading"
@@ -108,22 +88,13 @@
               <div class="flex-list-row">
                 <div class="store-image" />
                 <div class="description" />
-                <div
-                  v-if="shop.selling"
-                  class="price"
-                >
+                <div v-if="shop.selling" class="price">
                   {{ $t('labels.shop.sellPrice') }}
                 </div>
-                <div
-                  v-if="shop.buying"
-                  class="price"
-                >
+                <div v-if="shop.buying" class="price">
                   {{ $t('labels.shop.buyPrice') }}
                 </div>
-                <div
-                  v-if="shop.rental"
-                  class="rent-price"
-                >
+                <div v-if="shop.rental" class="rent-price">
                   {{ $t('labels.shop.rentPrice') }}
                 </div>
               </div>
@@ -153,10 +124,7 @@
             </div>
           </transition-group>
         </Panel>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
     <div class="row">
@@ -197,12 +165,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-    Filters,
-    Hash,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Filters, Hash, Pagination],
 
   data() {
     return {
@@ -215,13 +178,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('shop', [
-      'filterVisible',
-    ]),
+    ...mapGetters('shop', ['filterVisible']),
 
     toggleFiltersTooltip() {
       if (this.filterVisible) {
@@ -234,11 +193,18 @@ export default {
       if (!this.shop) {
         return ''
       }
-      return this.$t('title.shop', { shop: this.shop.name, station: this.shop.station.name })
+      return this.$t('title.shop', {
+        shop: this.shop.name,
+        station: this.shop.station.name,
+      })
     },
 
     subCategory() {
-      if (!this.$route.query || !this.$route.query.q || !this.$route.query.q.subCategoryIn) {
+      if (
+        !this.$route.query ||
+        !this.$route.query.q ||
+        !this.$route.query.q.subCategoryIn
+      ) {
         return null
       }
 
@@ -254,22 +220,25 @@ export default {
         return null
       }
 
-      const crumbs = [{
-        to: {
-          name: 'starsystems',
-          hash: `#${this.shop.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t('nav.starsystems'),
-      }, {
-        to: {
-          name: 'starsystem',
-          params: {
-            slug: this.shop.celestialObject.starsystem.slug,
+      const crumbs = [
+        {
+          to: {
+            name: 'starsystems',
+            hash: `#${this.shop.celestialObject.starsystem.slug}`,
           },
-          hash: `#${this.shop.celestialObject.slug}`,
+          label: this.$t('nav.starsystems'),
         },
-        label: this.shop.celestialObject.starsystem.name,
-      }]
+        {
+          to: {
+            name: 'starsystem',
+            params: {
+              slug: this.shop.celestialObject.starsystem.slug,
+            },
+            hash: `#${this.shop.celestialObject.slug}`,
+          },
+          label: this.shop.celestialObject.starsystem.name,
+        },
+      ]
 
       if (this.shop.celestialObject.parent) {
         crumbs.push({
@@ -343,34 +312,41 @@ export default {
 
         delete q.subCategoryIn
 
-        this.$router.replace({
-          name: this.$route.name,
-          query: {
-            ...this.$route.query,
-            q: {
-              ...q,
+        this.$router
+          .replace({
+            name: this.$route.name,
+            query: {
+              ...this.$route.query,
+              q: {
+                ...q,
+              },
             },
-          },
-        }).catch((_err) => {})
+          })
+          .catch(_err => {})
       } else {
-        this.$router.replace({
-          name: this.$route.name,
-          query: {
-            ...this.$route.query,
-            q: {
-              ...this.$route.query.q,
-              subCategoryIn: [value],
+        this.$router
+          .replace({
+            name: this.$route.name,
+            query: {
+              ...this.$route.query,
+              q: {
+                ...this.$route.query.q,
+                subCategoryIn: [value],
+              },
             },
-          },
-        }).catch((_err) => {})
+          })
+          .catch(_err => {})
       }
     },
 
     async fetchSubCategories() {
-      const response = await this.$api.get('filters/shop-commodities/sub-categories', {
-        stationSlug: this.shop.station.slug,
-        shopSlug: this.shop.slug,
-      })
+      const response = await this.$api.get(
+        'filters/shop-commodities/sub-categories',
+        {
+          stationSlug: this.shop.station.slug,
+          shopSlug: this.shop.slug,
+        },
+      )
 
       if (!response.error) {
         this.subCategories = response.data
@@ -379,7 +355,9 @@ export default {
     },
 
     async fetch() {
-      const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}`)
+      const response = await this.$api.get(
+        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}`,
+      )
       if (!response.error) {
         this.shop = response.data
         await this.fetchSubCategories()
@@ -388,13 +366,16 @@ export default {
 
     async fetchCommodities() {
       this.loading = true
-      const response = await this.$api.get(`stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`, {
-        q: {
-          ...this.$route.query.q,
-          subCategoryIn: this.subCategory,
+      const response = await this.$api.get(
+        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`,
+        {
+          q: {
+            ...this.$route.query.q,
+            subCategoryIn: this.subCategory,
+          },
+          page: this.$route.query.page,
         },
-        page: this.$route.query.page,
-      })
+      )
       this.loading = false
       if (!response.error) {
         this.commodities = response.data

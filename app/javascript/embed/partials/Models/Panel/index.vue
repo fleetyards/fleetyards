@@ -1,19 +1,12 @@
 <template>
   <div>
-    <Panel
-      v-if="model"
-      :id="model.slug"
-    >
+    <Panel v-if="model" :id="model.slug">
       <div class="panel-heading">
         <h2 class="panel-title">
-          <a
-            :href="url"
-            target="_blank"
-            rel="noopener"
-          >
+          <a :href="url" target="_blank" rel="noopener">
             {{ countLabel }}{{ model.name }}
           </a>
-          <br>
+          <br />
           <small v-html="model.manufacturer.name" />
         </h2>
       </div>
@@ -40,22 +33,18 @@
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
+              {{
+                $t(`labels.model.productionStatus.${model.productionStatus}`)
+              }}
             </template>
             <template v-else>
               {{ $t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
-        <ModelTopMetrics
-          :model="model"
-          padding
-        />
-        <hr class="dark slim-spacer">
-        <ModelBaseMetrics
-          :model="model"
-          padding
-        />
+        <ModelTopMetrics :model="model" padding />
+        <hr class="dark slim-spacer" />
+        <ModelBaseMetrics :model="model" padding />
       </b-collapse>
     </Panel>
   </div>
@@ -112,5 +101,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

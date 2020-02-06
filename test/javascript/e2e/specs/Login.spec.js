@@ -9,7 +9,7 @@ describe('Login', () => {
     cy.url().should('include', '/login')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then((userData) => {
+    cy.fixture('users').then(userData => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 
@@ -49,7 +49,7 @@ describe('Login', () => {
     cy.url().should('include', '/login')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then((userData) => {
+    cy.fixture('users').then(userData => {
       cy.selectInput('login').type(userData.test.username)
       cy.selectInput('password').type(userData.test.password)
 

@@ -18,12 +18,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
             :key="`releases-${release}`"
@@ -40,7 +35,9 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.ships', { count: items.length }) }}</small>
+              <small>
+                {{ $t('labels.roadmap.ships', { count: items.length }) }}
+              </small>
               <i class="fa fa-chevron-right" />
             </h2>
 
@@ -54,20 +51,14 @@
                   :key="item.id"
                   class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
                 >
-                  <RoadmapItem
-                    :item="item"
-                    slim
-                  />
+                  <RoadmapItem :item="item" slim />
                 </div>
               </div>
             </b-collapse>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
         <div class="row">
           <div class="col-xs-12 fade-list-item release">
             <h2
@@ -80,7 +71,13 @@
               <span class="title">
                 {{ $t('labels.roadmap.unscheduled') }}
               </span>
-              <small>{{ $t('labels.roadmap.ships', { count: unscheduledModels.length }) }}</small>
+              <small>
+                {{
+                  $t('labels.roadmap.ships', {
+                    count: unscheduledModels.length,
+                  })
+                }}
+              </small>
               <i class="fa fa-chevron-right" />
             </h2>
             <b-collapse
@@ -121,9 +118,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -150,7 +145,7 @@ export default {
 
     filteredItems() {
       if (this.onlyReleased) {
-        return this.roadmapItems.filter((item) => !item.released)
+        return this.roadmapItems.filter(item => !item.released)
       }
       return this.roadmapItems
     },
@@ -171,9 +166,10 @@ export default {
     },
 
     modelsOnRoadmap() {
-      return this.roadmapItems.filter((item) => item.model)
-        .map((item) => item.model.id)
-        .filter((item) => item)
+      return this.roadmapItems
+        .filter(item => item.model)
+        .map(item => item.model.id)
+        .filter(item => item)
     },
   },
 
@@ -194,11 +190,14 @@ export default {
         this.roadmapChannel.unsubscribe()
       }
 
-      this.roadmapChannel = this.$cable.subscriptions.create({
-        channel: 'RoadmapChannel',
-      }, {
-        received: this.fetch,
-      })
+      this.roadmapChannel = this.$cable.subscriptions.create(
+        {
+          channel: 'RoadmapChannel',
+        },
+        {
+          received: this.fetch,
+        },
+      )
     },
 
     toggleReleased() {
@@ -215,7 +214,7 @@ export default {
     },
 
     openReleased() {
-      Object.keys(this.groupedByRelease).forEach((release) => {
+      Object.keys(this.groupedByRelease).forEach(release => {
         const items = this.groupedByRelease[release]
         if (items.length && !items[0].released) {
           this.visible.push(release)

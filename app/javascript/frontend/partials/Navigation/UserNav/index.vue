@@ -8,14 +8,8 @@
     menu-key="user-menu"
     class="user-menu"
   >
-    <Avatar
-      :avatar="currentUser.avatar"
-      size="small"
-    />
-    <span
-      v-if="!slim"
-      class="username"
-    >
+    <Avatar :avatar="currentUser.avatar" size="small" />
+    <span v-if="!slim" class="username">
       {{ currentUser.username }}
     </span>
     <template slot="submenu">
@@ -27,7 +21,9 @@
       <NavItem divider />
       <NavItem
         v-if="currentUser.rsiHandle"
-        :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
+        :href="
+          `https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`
+        "
         :label="$t('nav.rsiProfile')"
         :image="require('images/rsi_logo.png').default"
       />
@@ -53,14 +49,15 @@ export default {
     Avatar,
   },
 
-  mixins: [
-    NavigationMixin,
-  ],
+  mixins: [NavigationMixin],
 
   computed: {
     active() {
       return [
-        'settings-profile', 'settings-account', 'settings-hangar', 'settings-change-password',
+        'settings-profile',
+        'settings-account',
+        'settings-hangar',
+        'settings-change-password',
       ].includes(this.$route.name)
     },
   },
@@ -74,5 +71,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

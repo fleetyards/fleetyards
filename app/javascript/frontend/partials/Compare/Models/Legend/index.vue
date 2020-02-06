@@ -4,7 +4,7 @@
       <div class="col-xs-12 compare-row-label">
         <div
           :class="{
-            active: visible
+            active: visible,
           }"
           class="text-right metrics-title"
           @click="toggle"
@@ -19,10 +19,7 @@
         class="col-xs-12 compare-row-item"
       />
     </div>
-    <b-collapse
-      id="legend"
-      :visible="visible"
-    >
+    <b-collapse id="legend" :visible="visible">
       <div class="row compare-row">
         <div class="col-xs-12 compare-row-label text-right metrics-label" />
         <div
@@ -40,10 +37,7 @@
                     :hardpoint="testHardpoint"
                     style="float: left;"
                   />
-                  <div
-                    style="float: left;"
-                    class="hardpoint-labels"
-                  >
+                  <div style="float: left;" class="hardpoint-labels">
                     <div class="hardpoint-quantity">
                       - {{ $t('labels.hardpoint.quantity') }}
                     </div>
@@ -59,10 +53,7 @@
                     :hardpoint="testHardpointEmpty"
                     style="float: left;"
                   />
-                  <div
-                    style="float: left;"
-                    class="hardpoint-labels"
-                  >
+                  <div style="float: left;" class="hardpoint-labels">
                     <div class="hardpoint-quantity">
                       - {{ $t('labels.hardpoint.quantity') }}
                     </div>

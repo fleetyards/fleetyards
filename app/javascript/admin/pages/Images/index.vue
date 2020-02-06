@@ -36,10 +36,7 @@
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div
-            v-show="filterVisible"
-            class="col-xs-12 col-md-3 col-xlg-2"
-          >
+          <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
             <FilterForm />
           </div>
         </transition>

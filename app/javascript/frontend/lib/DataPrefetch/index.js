@@ -1,4 +1,3 @@
-
 const getByKey = function getByKey(key) {
   return (window.DATA_PREFILL || {})[key]
 }
@@ -20,7 +19,7 @@ const prefetch = function prefetch(key) {
 
   const element = JSON.parse(json)
   if (Array.isArray(element)) {
-    return element.map((item) => JSON.parse(item))
+    return element.map(item => JSON.parse(item))
   }
   return element
 }

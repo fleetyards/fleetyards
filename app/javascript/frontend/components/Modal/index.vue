@@ -13,12 +13,7 @@
       <Panel :outer-spacing="false">
         <div class="modal-content">
           <div class="modal-header">
-            <a
-              v-if="closable"
-              class="close"
-              aria-label="Close"
-              @click="close"
-            >
+            <a v-if="closable" class="close" aria-label="Close" @click="close">
               <i class="fal fa-times" />
             </a>
             <h2 class="modal-title">
@@ -30,10 +25,7 @@
           </div>
         </div>
       </Panel>
-      <div
-        v-if="$slots['footer']"
-        class="modal-footer"
-      >
+      <div v-if="$slots['footer']" class="modal-footer">
         <slot name="footer" />
         <div class="clearfix" />
       </div>
@@ -112,5 +104,5 @@ export default class Modal extends Vue {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

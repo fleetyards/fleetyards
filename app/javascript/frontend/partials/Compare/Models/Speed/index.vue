@@ -9,7 +9,7 @@
       >
         <div
           :class="{
-            active: visible
+            active: visible,
           }"
           class="text-right metrics-title"
           @click="toggle('speed')"
@@ -24,10 +24,7 @@
         class="col-xs-12 compare-row-item"
       />
     </div>
-    <b-collapse
-      id="speed"
-      :visible="visible"
-    >
+    <b-collapse id="speed" :visible="visible">
       <div class="row compare-row">
         <div
           :style="{

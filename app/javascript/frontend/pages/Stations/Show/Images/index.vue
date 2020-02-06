@@ -52,10 +52,7 @@
       </div>
     </div>
 
-    <Gallery
-      ref="gallery"
-      :items="images"
-    />
+    <Gallery ref="gallery" :items="images" />
   </section>
 </template>
 
@@ -72,11 +69,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    GalleryHelpers,
-    MetaInfo,
-    Pagination,
-  ],
+  mixins: [GalleryHelpers, MetaInfo, Pagination],
 
   data() {
     return {
@@ -92,7 +85,10 @@ export default {
         return null
       }
 
-      return this.$t('title.stationImages', { station: this.station.name, celestialObject: this.station.celestialObject.name })
+      return this.$t('title.stationImages', {
+        station: this.station.name,
+        celestialObject: this.station.celestialObject.name,
+      })
     },
 
     crumbs() {
@@ -100,22 +96,25 @@ export default {
         return null
       }
 
-      const crumbs = [{
-        to: {
-          name: 'starsystems',
-          hash: `#${this.station.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t('nav.starsystems'),
-      }, {
-        to: {
-          name: 'starsystem',
-          params: {
-            slug: this.station.celestialObject.starsystem.slug,
+      const crumbs = [
+        {
+          to: {
+            name: 'starsystems',
+            hash: `#${this.station.celestialObject.starsystem.slug}`,
           },
-          hash: `#${this.station.celestialObject.slug}`,
+          label: this.$t('nav.starsystems'),
         },
-        label: this.station.celestialObject.starsystem.name,
-      }]
+        {
+          to: {
+            name: 'starsystem',
+            params: {
+              slug: this.station.celestialObject.starsystem.slug,
+            },
+            hash: `#${this.station.celestialObject.slug}`,
+          },
+          label: this.station.celestialObject.starsystem.name,
+        },
+      ]
 
       if (this.station.celestialObject.parent) {
         crumbs.push({
@@ -170,9 +169,12 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      const response = await this.$api.get(`stations/${this.$route.params.slug}/images`, {
-        page: this.$route.query.page,
-      })
+      const response = await this.$api.get(
+        `stations/${this.$route.params.slug}/images`,
+        {
+          page: this.$route.query.page,
+        },
+      )
       this.loading = false
       if (!response.error) {
         this.images = response.data
@@ -181,7 +183,9 @@ export default {
     },
 
     async fetchStation() {
-      const response = await this.$api.get(`stations/${this.$route.params.slug}`)
+      const response = await this.$api.get(
+        `stations/${this.$route.params.slug}`,
+      )
 
       if (!response.error) {
         this.station = response.data

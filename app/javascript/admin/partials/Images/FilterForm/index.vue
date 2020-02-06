@@ -18,11 +18,7 @@
       paginated
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      block
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>

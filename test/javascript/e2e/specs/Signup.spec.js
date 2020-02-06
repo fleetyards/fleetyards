@@ -11,7 +11,7 @@ describe('Signup', () => {
     cy.url().should('include', '/sign-up')
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then((userData) => {
+    cy.fixture('users').then(userData => {
       cy.selectInput('username').type(userData.new.username)
       cy.selectInput('email').type(userData.new.email)
       cy.selectInput('password').type(userData.new.password)
@@ -38,11 +38,15 @@ describe('Signup', () => {
       cy.selectInput('username').should('have.value', userData.new.username)
       cy.selectInput('email').should('have.value', userData.new.email)
 
-      cy.get('.tabs a').contains('Account').click()
+      cy.get('.tabs a')
+        .contains('Account')
+        .click()
 
       cy.url().should('include', '/settings/account')
 
-      cy.get('button').contains('Destroy').click()
+      cy.get('button')
+        .contains('Destroy')
+        .click()
 
       cy.acceptConfirm()
 
@@ -50,7 +54,9 @@ describe('Signup', () => {
 
       cy.success('Your Account has been destroyed')
 
-      cy.get('nav a').contains('nav a', 'Login').should('exist')
+      cy.get('nav a')
+        .contains('nav a', 'Login')
+        .should('exist')
     })
   })
 
@@ -60,22 +66,40 @@ describe('Signup', () => {
     cy.acceptCookies()
 
     // eslint-disable-next-line jest/valid-expect-in-promise
-    cy.fixture('users').then((userData) => {
+    cy.fixture('users').then(userData => {
       cy.selectInput('username').type(userData.test.username)
-      cy.selectInput('username').parent().should('have.class', 'has-error')
+      cy.selectInput('username')
+        .parent()
+        .should('have.class', 'has-error')
 
-      cy.selectInput('email').type('foo').clear()
-      cy.selectInput('email').parent().should('have.class', 'has-error')
+      cy.selectInput('email')
+        .type('foo')
+        .clear()
+      cy.selectInput('email')
+        .parent()
+        .should('have.class', 'has-error')
 
       cy.selectInput('password').type('bar')
-      cy.selectInput('password').parent().should('have.class', 'has-error')
-      cy.selectInput('password').clear().type(userData.test.password)
-      cy.selectInput('password').parent().should('not.have.class', 'has-error')
+      cy.selectInput('password')
+        .parent()
+        .should('have.class', 'has-error')
+      cy.selectInput('password')
+        .clear()
+        .type(userData.test.password)
+      cy.selectInput('password')
+        .parent()
+        .should('not.have.class', 'has-error')
 
-      cy.selectInput('passwordConfirmation').type('bar').clear()
-      cy.selectInput('passwordConfirmation').parent().should('have.class', 'has-error')
+      cy.selectInput('passwordConfirmation')
+        .type('bar')
+        .clear()
+      cy.selectInput('passwordConfirmation')
+        .parent()
+        .should('have.class', 'has-error')
       cy.selectInput('passwordConfirmation').type(userData.test.password)
-      cy.selectInput('passwordConfirmation').parent().should('not.have.class', 'has-error')
+      cy.selectInput('passwordConfirmation')
+        .parent()
+        .should('not.have.class', 'has-error')
 
       cy.select('submit-signup').click()
     })
@@ -88,9 +112,17 @@ describe('Signup', () => {
 
     cy.select('submit-signup').click()
 
-    cy.selectInput('username').parent().should('have.class', 'has-error')
-    cy.selectInput('email').parent().should('have.class', 'has-error')
-    cy.selectInput('password').parent().should('have.class', 'has-error')
-    cy.selectInput('passwordConfirmation').parent().should('have.class', 'has-error')
+    cy.selectInput('username')
+      .parent()
+      .should('have.class', 'has-error')
+    cy.selectInput('email')
+      .parent()
+      .should('have.class', 'has-error')
+    cy.selectInput('password')
+      .parent()
+      .should('have.class', 'has-error')
+    cy.selectInput('passwordConfirmation')
+      .parent()
+      .should('have.class', 'has-error')
   })
 })

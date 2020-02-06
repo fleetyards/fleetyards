@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      v-for="category in categories"
-      :key="category"
-    >
+    <div v-for="category in categories" :key="category">
       <div class="row compare-row compare-section">
         <div
           :style="{
@@ -13,7 +10,7 @@
         >
           <div
             :class="{
-              active: isVisible(category.toLowerCase())
+              active: isVisible(category.toLowerCase()),
             }"
             class="text-right metrics-title"
             @click="toggle(category.toLowerCase())"
@@ -28,10 +25,7 @@
           class="col-xs-12 compare-row-item"
         />
       </div>
-      <b-collapse
-        :id="category"
-        :visible="isVisible(category.toLowerCase())"
-      >
+      <b-collapse :id="category" :visible="isVisible(category.toLowerCase())">
         <div class="row compare-row">
           <div
             :style="{
@@ -46,7 +40,9 @@
           >
             <div class="well">
               <HardpointCategory
-                v-if="hardpointsForCategory(category, model.hardpoints).length > 0"
+                v-if="
+                  hardpointsForCategory(category, model.hardpoints).length > 0
+                "
                 :category="category"
                 :hardpoints="hardpointsForCategory(category, model.hardpoints)"
                 without-title
@@ -86,7 +82,13 @@ export default {
       rsipropulsionVisible: this.models.length > 0,
       rsithrusterVisible: this.models.length > 0,
       rsiweaponVisible: this.models.length > 0,
-      categories: ['RSIAvionic', 'RSIModular', 'RSIPropulsion', 'RSIThruster', 'RSIWeapon'],
+      categories: [
+        'RSIAvionic',
+        'RSIModular',
+        'RSIPropulsion',
+        'RSIThruster',
+        'RSIWeapon',
+      ],
     }
   },
 
@@ -110,19 +112,19 @@ export default {
     },
 
     modularHardpoints(model) {
-      return model.hardpoints.filter((item) => item.categorySlug === 'modular')
+      return model.hardpoints.filter(item => item.categorySlug === 'modular')
     },
 
     ordnanceHardpoints(model) {
-      return model.hardpoints.filter((item) => item.categorySlug === 'ordnance')
+      return model.hardpoints.filter(item => item.categorySlug === 'ordnance')
     },
 
     propulsionHardpoints(model) {
-      return model.hardpoints.filter((item) => item.categorySlug === 'propulsion')
+      return model.hardpoints.filter(item => item.categorySlug === 'propulsion')
     },
 
     hardpointsForCategory(category, hardpoints) {
-      return hardpoints.filter((hardpoint) => hardpoint.class === category)
+      return hardpoints.filter(hardpoint => hardpoint.class === category)
     },
   },
 }

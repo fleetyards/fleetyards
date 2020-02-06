@@ -18,9 +18,7 @@
           :key="name"
           class="col-xs-6"
         >
-          <div class="metrics-label">
-            {{ name }}:
-          </div>
+          <div class="metrics-label">{{ name }}:</div>
           <div class="metrics-value">
             {{ habs.length }}x {{ habs[0].typeLabel }}
           </div>

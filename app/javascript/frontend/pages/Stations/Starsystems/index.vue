@@ -11,10 +11,7 @@
       <div class="col-xs-12">
         <Panel>
           <div class="starmap">
-            <img
-              :src="require('images/map.png').default"
-              alt="map"
-            >
+            <img :src="require('images/map.png').default" alt="map" />
             <router-link
               v-for="starsystem in starsystems"
               :key="starsystem.slug"
@@ -26,7 +23,7 @@
               }"
               :style="{
                 left: `${starsystem.mapX}%`,
-                top: `${starsystem.mapY}%`
+                top: `${starsystem.mapY}%`,
               }"
               class="starsystem"
             />
@@ -46,12 +43,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="starsystem in starsystems"
             :key="starsystem.slug"
@@ -97,10 +89,7 @@
             </StarsystemList>
           </div>
         </transition-group>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
     <div class="row">
@@ -135,11 +124,7 @@ export default {
     PlanetPanel,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Hash, Pagination],
 
   data() {
     return {
@@ -177,5 +162,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

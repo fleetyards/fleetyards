@@ -24,11 +24,15 @@ export default (
     let wrapper
 
     beforeEach(() => {
-      wrapper = mount(componentUsed, {
-        ...optionsDefault(),
-        propsData,
-        mocks,
-      }, additionalPlugins)
+      wrapper = mount(
+        componentUsed,
+        {
+          ...optionsDefault(),
+          propsData,
+          mocks,
+        },
+        additionalPlugins,
+      )
     })
 
     afterEach(() => {

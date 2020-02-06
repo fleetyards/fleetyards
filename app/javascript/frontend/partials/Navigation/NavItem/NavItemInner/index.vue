@@ -2,7 +2,7 @@
   <div
     class="nav-item-inner"
     :class="{
-      'nav-item-inner-slim': slim
+      'nav-item-inner-slim': slim,
     }"
   >
     <img
@@ -10,17 +10,14 @@
       :src="image"
       :alt="`${label} image`"
       class="nav-item-image"
-    >
+    />
     <i
       v-else-if="icon"
       :class="{
         [icon]: true,
       }"
     />
-    <span
-      v-else
-      class="nav-item-image-empty"
-    >
+    <span v-else class="nav-item-image-empty">
       {{ firstLetter }}
     </span>
     <transition name="fade-nav">
@@ -69,5 +66,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

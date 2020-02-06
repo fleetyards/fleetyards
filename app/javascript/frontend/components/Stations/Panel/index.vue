@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    :id="station.slug"
-    class="station-panel"
-  >
+  <Panel :id="station.slug" class="station-panel">
     <div
       :key="station.storeImage"
       v-lazy:background-image="station.storeImage"
@@ -17,7 +14,7 @@
                 name: 'station',
                 params: {
                   slug: station.slug,
-                }
+                },
               }"
               :aria-label="station.name"
             >
@@ -60,5 +57,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

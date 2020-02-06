@@ -1,9 +1,6 @@
 <template>
   <router-view v-if="isSubRoute" />
-  <section
-    v-else
-    class="container roadmap"
-  >
+  <section v-else class="container roadmap">
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
@@ -23,10 +20,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="text-center">
-          <a
-            class="show-released"
-            @click="toggleReleased"
-          >
+          <a class="show-released" @click="toggleReleased">
             - {{ releasedToggleLabel }} -
           </a>
         </div>
@@ -34,12 +28,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
             :key="`releases-${release}`"
@@ -56,14 +45,13 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
+              <small>
+                {{ $t('labels.roadmap.stories', { count: items.length }) }}
+              </small>
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <b-progress
-              :max="tasks(items)"
-              class="release-progress"
-            >
+            <b-progress :max="tasks(items)" class="release-progress">
               <div class="progress-label">
                 {{ progressLabel(items) }} | {{ completedPercent(items) }} %
               </div>
@@ -71,7 +59,7 @@
                 v-if="completed(items) !== 0"
                 :value="completed(items)"
                 :class="{
-                  completed: completed(items) === tasks(items)
+                  completed: completed(items) === tasks(items),
                 }"
               />
             </b-progress>
@@ -86,20 +74,14 @@
                   :key="item.id"
                   class="col-xs-12 col-xxlg-4 fade-list-item"
                 >
-                  <RoadmapItem
-                    :item="item"
-                    slim
-                  />
+                  <RoadmapItem :item="item" slim />
                 </div>
               </div>
             </b-collapse>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
   </section>
@@ -122,9 +104,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -155,7 +135,7 @@ export default {
 
     filteredItems() {
       if (this.onlyReleased) {
-        return this.roadmapItems.filter((item) => !item.released)
+        return this.roadmapItems.filter(item => !item.released)
       }
 
       return this.roadmapItems
@@ -177,9 +157,10 @@ export default {
     },
 
     modelsOnRoadmap() {
-      return this.roadmapItems.filter((item) => item.model)
-        .map((item) => item.model.id)
-        .filter((item) => item)
+      return this.roadmapItems
+        .filter(item => item.model)
+        .map(item => item.model.id)
+        .filter(item => item)
     },
   },
 
@@ -196,17 +177,21 @@ export default {
 
   methods: {
     tasks(items) {
-      return items.map((item) => Math.max(0, item.tasks))
+      return items
+        .map(item => Math.max(0, item.tasks))
         .reduce((ac, count) => ac + count, 0)
     },
 
     completed(items) {
-      return items.map((item) => Math.max(0, item.completed))
+      return items
+        .map(item => Math.max(0, item.completed))
         .reduce((ac, count) => ac + count, 0)
     },
 
     progressLabel(items) {
-      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', { count: this.tasks(items) })}`
+      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', {
+        count: this.tasks(items),
+      })}`
     },
 
     completedPercent(items) {
@@ -222,11 +207,14 @@ export default {
         this.roadmapChannel.unsubscribe()
       }
 
-      this.roadmapChannel = this.$cable.subscriptions.create({
-        channel: 'RoadmapChannel',
-      }, {
-        received: this.fetch,
-      })
+      this.roadmapChannel = this.$cable.subscriptions.create(
+        {
+          channel: 'RoadmapChannel',
+        },
+        {
+          received: this.fetch,
+        },
+      )
     },
 
     toggleReleased() {
@@ -245,7 +233,7 @@ export default {
     },
 
     openReleased() {
-      Object.keys(this.groupedByRelease).forEach((release) => {
+      Object.keys(this.groupedByRelease).forEach(release => {
         const items = this.groupedByRelease[release]
 
         if (items.length && !items[0].released) {

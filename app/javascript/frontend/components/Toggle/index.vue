@@ -7,7 +7,8 @@
   >
     <BtnInner :loading="loading">
       <slot name="left" />
-    </BtnInner><BtnInner :loading="loading">
+    </BtnInner>
+    <BtnInner :loading="loading">
       <slot name="right" />
     </BtnInner>
   </button>

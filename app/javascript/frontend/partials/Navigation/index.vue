@@ -143,9 +143,7 @@ export default {
     NavFooter,
   },
 
-  mixins: [
-    NavigationMixin,
-  ],
+  mixins: [NavigationMixin],
 
   data() {
     return {
@@ -154,11 +152,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('app', [
-      'navCollapsed',
-      'isUpdateAvailable',
-      'gitRevision',
-    ]),
+    ...mapGetters('app', ['navCollapsed', 'isUpdateAvailable', 'gitRevision']),
 
     ...mapGetters('hangar', {
       hangarPreview: 'preview',
@@ -166,7 +160,10 @@ export default {
 
     isFleetRoute() {
       return [
-        'fleet', 'fleet-members', 'fleet-settings', 'fleet-settings-fleet',
+        'fleet',
+        'fleet-members',
+        'fleet-settings',
+        'fleet-settings-fleet',
         'fleet-settings-membership',
       ].includes(this.$route.name)
     },
@@ -239,20 +236,23 @@ export default {
     },
 
     copyGitRevision() {
-      this.$copyText(this.gitRevision).then(() => {
-        this.$success({
-          text: this.$t('messages.copyGitRevision.success'),
-        })
-      }, () => {
-        this.$alert({
-          text: this.$t('messages.copyGitRevision.failure'),
-        })
-      })
+      this.$copyText(this.gitRevision).then(
+        () => {
+          this.$success({
+            text: this.$t('messages.copyGitRevision.success'),
+          })
+        },
+        () => {
+          this.$alert({
+            text: this.$t('messages.copyGitRevision.failure'),
+          })
+        },
+      )
     },
   },
 }
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

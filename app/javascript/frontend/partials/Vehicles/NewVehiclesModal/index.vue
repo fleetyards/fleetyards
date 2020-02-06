@@ -1,19 +1,7 @@
 <template>
-  <Modal
-    ref="modal"
-    :title="$t('headlines.newVehicles')"
-    :visible="visible"
-  >
-    <form
-      id="new-vehicles"
-      class="new-vehicles"
-      @submit.prevent="save"
-    >
-      <div
-        v-for="(item, index) in form.vehicles"
-        :key="index"
-        class="row"
-      >
+  <Modal ref="modal" :title="$t('headlines.newVehicles')" :visible="visible">
+    <form id="new-vehicles" class="new-vehicles" @submit.prevent="save">
+      <div v-for="(item, index) in form.vehicles" :key="index" class="row">
         <div class="col-xs-8 col-sm-10">
           <TeaserPanel
             :item="item.model"
@@ -113,7 +101,7 @@ export default {
 
     async save() {
       this.submitting = true
-      await this.form.vehicles.forEach(async (item) => {
+      await this.form.vehicles.forEach(async item => {
         const response = await this.$api.post('vehicles', {
           modelId: item.model.id,
         })

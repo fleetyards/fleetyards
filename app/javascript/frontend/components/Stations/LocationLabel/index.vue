@@ -1,32 +1,32 @@
 <template>
-  <div
-    v-if="station"
-    v-tooltip="tooltip"
-  >
+  <div v-if="station" v-tooltip="tooltip">
     <template v-if="station.type === 'rest_stop'">
       {{ suffix }}
     </template>
     <template v-else-if="suffix">
-      {{ prefix }} <router-link
+      {{ prefix }}
+      <router-link
         :to="{
           name: 'celestial-object',
           params: {
             starsystem: location.starsystem.slug,
             slug: location.slug,
-          }
+          },
         }"
       >
         {{ location.name }}
-      </router-link>, {{ suffix }}
+      </router-link>
+      , {{ suffix }}
     </template>
     <template v-else>
-      {{ prefix }} <router-link
+      {{ prefix }}
+      <router-link
         :to="{
           name: 'celestial-object',
           params: {
             starsystem: location.starsystem.slug,
             slug: location.slug,
-          }
+          },
         }"
       >
         {{ location.name }}
@@ -85,7 +85,9 @@ export default {
 
     suffix() {
       if (this.station.location) {
-        return this.$t('labels.station.locationSuffix', { location: this.station.location })
+        return this.$t('labels.station.locationSuffix', {
+          location: this.station.location,
+        })
       }
 
       return null

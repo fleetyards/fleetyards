@@ -7,22 +7,11 @@
       'avatar-transparent': transparent,
     }"
   >
-    <img
-      v-if="avatar"
-      :src="avatar"
-      alt="avatar"
-    >
-    <div
-      v-else
-      class="no-avatar"
-    >
+    <img v-if="avatar" :src="avatar" alt="avatar" />
+    <div v-else class="no-avatar">
       <i :class="icon" />
     </div>
-    <div
-      v-if="editable || creatable"
-      class="edit"
-      @click.prevent="emitClick"
-    >
+    <div v-if="editable || creatable" class="edit" @click.prevent="emitClick">
       <template v-if="avatar">
         <i class="fa fa-times" />
 
@@ -92,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

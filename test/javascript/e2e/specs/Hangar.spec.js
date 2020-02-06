@@ -52,7 +52,9 @@ describe('Hangar', () => {
 
     cy.clickNav('hangar')
 
-    cy.get('.model-panel .panel-title a').contains('300i').should('exist')
+    cy.get('.model-panel .panel-title a')
+      .contains('300i')
+      .should('exist')
 
     cy.openShipModal('300i')
 
@@ -60,7 +62,9 @@ describe('Hangar', () => {
 
     cy.saveShip()
 
-    cy.get('.model-panel .panel-title a').contains('Enterprise').should('exist')
+    cy.get('.model-panel .panel-title a')
+      .contains('Enterprise')
+      .should('exist')
 
     cy.openShipModal('300i')
 

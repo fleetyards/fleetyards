@@ -26,8 +26,10 @@ storiesOf('ModelPanel', module)
         default: {
           slug: 'galaxy-class',
           name: 'Galaxy Class',
-          description: 'The Galaxy class is the result of an ambitious development program at Utopia Planitia Fleet Yards. It is the largest and most complex Starfleet starship built to date. The Galaxy class is primarily designed to replace the aged Ambassador and Oberth classes in research missions. Galaxy-class starships feature a detachable and independently operational saucer section, three shuttlebays and a captains yacht at the bottom of the saucer.',
-          storeImageMedium: 'https://vignette.wikia.nocookie.net/memoryalpha/images/9/9d/USS_Enterprise-D.jpeg/revision/latest?cb=20131125162836&path-prefix=de',
+          description:
+            'The Galaxy class is the result of an ambitious development program at Utopia Planitia Fleet Yards. It is the largest and most complex Starfleet starship built to date. The Galaxy class is primarily designed to replace the aged Ambassador and Oberth classes in research missions. Galaxy-class starships feature a detachable and independently operational saucer section, three shuttlebays and a captains yacht at the bottom of the saucer.',
+          storeImageMedium:
+            'https://vignette.wikia.nocookie.net/memoryalpha/images/9/9d/USS_Enterprise-D.jpeg/revision/latest?cb=20131125162836&path-prefix=de',
           manufacturer: {
             slug: 'utopia-planitia',
             name: 'Utopia Planitia',

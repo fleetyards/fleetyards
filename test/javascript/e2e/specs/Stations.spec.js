@@ -9,7 +9,9 @@ describe('Stations', () => {
 
     cy.url().should('include', '/stations')
 
-    cy.get('.panel-title a').contains('Port Olisar').should('exist')
+    cy.get('.panel-title a')
+      .contains('Port Olisar')
+      .should('exist')
 
     cy.get('.station-panel').should('have.length', Cypress.env('CI') ? 1 : 10)
   })

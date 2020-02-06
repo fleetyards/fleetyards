@@ -8,8 +8,7 @@ export default () => ({
 
   actions,
 
-  getters: {
-  },
+  getters: {},
 
   /* eslint-disable no-param-reassign */
   mutations: {

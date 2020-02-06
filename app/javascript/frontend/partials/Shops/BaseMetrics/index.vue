@@ -13,22 +13,15 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">
-            {{ $t('shop.type') }}:
-          </div>
-          <div
-            v-tooltip="shop.typeLabel"
-            class="metrics-value"
-          >
+          <div class="metrics-label">{{ $t('shop.type') }}:</div>
+          <div v-tooltip="shop.typeLabel" class="metrics-value">
             {{ shop.typeLabel }}
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">
-            {{ $t('shop.celestialObject') }}:
-          </div>
+          <div class="metrics-label">{{ $t('shop.celestialObject') }}:</div>
           <div class="metrics-value">
             <router-link
               :to="{
@@ -44,9 +37,7 @@
           </div>
         </div>
         <div class="col-xs-6">
-          <div class="metrics-label">
-            {{ $t('shop.station') }}:
-          </div>
+          <div class="metrics-label">{{ $t('shop.station') }}:</div>
           <div class="metrics-value">
             <router-link
               :to="{

@@ -1,2 +1,1 @@
-module.exports = (_on, _config) => {
-}
+module.exports = (_on, _config) => {}

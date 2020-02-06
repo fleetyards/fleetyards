@@ -1,10 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div
-        v-if="model"
-        class="col-xs-12"
-      >
+      <div v-if="model" class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
             <BreadCrumbs :crumbs="crumbs" />
@@ -19,7 +16,7 @@
                   v-if="model.manufacturer && model.manufacturer.logo"
                   v-lazy="model.manufacturer.logo"
                   class="manufacturer-logo"
-                >
+                />
               </small>
             </h1>
           </div>
@@ -62,13 +59,17 @@
                   'image-hidden': holoviewerVisible,
                 }"
                 alt="model image"
-              >
+              />
             </div>
             <div class="row production-status">
               <div class="col-xs-6">
                 <template v-if="model.productionStatus">
                   <h3 class="text-uppercase">
-                    {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
+                    {{
+                      $t(
+                        `labels.model.productionStatus.${model.productionStatus}`,
+                      )
+                    }}
                   </h3>
                   <p>{{ model.productionNote }}</p>
                 </template>
@@ -88,50 +89,37 @@
           </div>
           <div class="col-xs-12 col-md-4">
             <Panel>
-              <ModelBaseMetrics
-                :model="model"
-                title
-                detailed
-                padding
-              />
+              <ModelBaseMetrics :model="model" title detailed padding />
             </Panel>
             <Panel>
-              <ModelCrewMetrics
-                :model="model"
-                title
-                padding
-              />
+              <ModelCrewMetrics :model="model" title padding />
             </Panel>
             <Panel>
-              <ModelSpeedMetrics
-                :model="model"
-                title
-                padding
-              />
+              <ModelSpeedMetrics :model="model" title padding />
             </Panel>
             <div class="text-right">
               <div class="page-actions">
                 <Btn
                   v-if="model.hasImages"
-                  :to="{ name: 'model-images', params: { slug: model.slug }}"
+                  :to="{ name: 'model-images', params: { slug: model.slug } }"
                 >
                   <i class="fa fa-images" />
                 </Btn>
                 <Btn
                   v-if="model.hasVideos"
-                  :to="{ name: 'model-videos', params: { slug: model.slug }}"
+                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
                 >
                   <i class="fal fa-video" />
                 </Btn>
-                <Btn
-                  v-if="model.brochure"
-                  :href="model.brochure"
-                >
+                <Btn v-if="model.brochure" :href="model.brochure">
                   {{ $t('labels.model.brochure') }}
                   <i class="fal fa-download" />
                 </Btn>
                 <Btn
-                  :to="{ name: 'models-compare', query: { models: [model.slug] }}"
+                  :to="{
+                    name: 'models-compare',
+                    query: { models: [model.slug] },
+                  }"
                   data-test="compare"
                 >
                   {{ $t('actions.compare.models') }}
@@ -142,23 +130,24 @@
                 <AddToHangar :model="model" />
               </div>
             </div>
-            <br>
-            <div
-              v-if="model.onSale"
-              class="text-center"
-            >
+            <br />
+            <div v-if="model.onSale" class="text-center">
               <Btn
                 :href="`${model.storeUrl}#buying-options`"
                 class="sale-button"
                 size="large"
               >
-                {{ $t('actions.model.onSale', { price: $toDollar(model.pledgePrice) }) }}
+                {{
+                  $t('actions.model.onSale', {
+                    price: $toDollar(model.pledgePrice),
+                  })
+                }}
                 <small class="price-info">
                   {{ $t('labels.taxExcluded') }}
                 </small>
               </Btn>
             </div>
-            <br>
+            <br />
           </div>
         </div>
         <div class="row components">
@@ -174,16 +163,10 @@
     </div>
     <div class="row">
       <div class="col-xs-12 modules">
-        <h2
-          v-if="modules.length"
-          class="text-uppercase"
-        >
+        <h2 v-if="modules.length" class="text-uppercase">
           {{ $t('labels.model.modules') }}
         </h2>
-        <div
-          v-if="modules.length"
-          class="flex-row"
-        >
+        <div v-if="modules.length" class="flex-row">
           <div
             v-for="module in modules"
             :key="module.id"
@@ -192,24 +175,15 @@
             <TeaserPanel :item="module" />
           </div>
         </div>
-        <Loader
-          :loading="loadingModules"
-          fixed
-        />
+        <Loader :loading="loadingModules" fixed />
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 upgrades">
-        <h2
-          v-if="upgrades.length"
-          class="text-uppercase"
-        >
+        <h2 v-if="upgrades.length" class="text-uppercase">
           {{ $t('labels.model.upgrades') }}
         </h2>
-        <div
-          v-if="upgrades.length"
-          class="flex-row"
-        >
+        <div v-if="upgrades.length" class="flex-row">
           <div
             v-for="upgrade in upgrades"
             :key="upgrade.id"
@@ -218,18 +192,12 @@
             <TeaserPanel :item="upgrade" />
           </div>
         </div>
-        <Loader
-          :loading="loadingUpgrades"
-          fixed
-        />
+        <Loader :loading="loadingUpgrades" fixed />
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 variants">
-        <h2
-          v-if="variants.length"
-          class="text-uppercase"
-        >
+        <h2 v-if="variants.length" class="text-uppercase">
           {{ $t('labels.model.variants') }}
         </h2>
         <transition-group
@@ -244,24 +212,15 @@
             :key="`variant-${variant.slug}`"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
           >
-            <ModelPanel
-              :model="variant"
-              details
-            />
+            <ModelPanel :model="variant" details />
           </div>
         </transition-group>
-        <Loader
-          :loading="loadingVariants"
-          fixed
-        />
+        <Loader :loading="loadingVariants" fixed />
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 loaners">
-        <h2
-          v-if="loaners.length"
-          class="text-uppercase"
-        >
+        <h2 v-if="loaners.length" class="text-uppercase">
           {{ $t('labels.model.loaners') }}
         </h2>
         <transition-group
@@ -279,10 +238,7 @@
             <ModelPanel :model="loaner" />
           </div>
         </transition-group>
-        <Loader
-          :loading="loadingLoaners"
-          fixed
-        />
+        <Loader :loading="loadingLoaners" fixed />
       </div>
     </div>
   </section>
@@ -318,9 +274,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -336,19 +290,23 @@ export default {
       modules: [],
       upgrades: [],
       attributes: [
-        'length', 'beam', 'height', 'mass', 'cargo', 'minCrew', 'maxCrew', 'scmSpeed', 'afterburnerSpeed',
+        'length',
+        'beam',
+        'height',
+        'mass',
+        'cargo',
+        'minCrew',
+        'maxCrew',
+        'scmSpeed',
+        'afterburnerSpeed',
       ],
     }
   },
 
   computed: {
-    ...mapGetters('app', [
-      'overlayVisible',
-    ]),
+    ...mapGetters('app', ['overlayVisible']),
 
-    ...mapGetters('models', [
-      'holoviewerVisible',
-    ]),
+    ...mapGetters('models', ['holoviewerVisible']),
 
     starship42Url() {
       return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
@@ -382,13 +340,15 @@ export default {
         return null
       }
 
-      return [{
-        to: {
-          name: 'models',
-          hash: `#${this.model.slug}`,
+      return [
+        {
+          to: {
+            name: 'models',
+            hash: `#${this.model.slug}`,
+          },
+          label: this.$t('nav.models'),
         },
-        label: this.$t('nav.models'),
-      }]
+      ]
     },
   },
 
@@ -435,17 +395,23 @@ export default {
 
       this.loading = true
 
-      const response = await this.$api.get(`models/${this.$route.params.slug}`, {
-        withoutImages: true,
-        withoutVideos: true,
-      })
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}`,
+        {
+          withoutImages: true,
+          withoutVideos: true,
+        },
+      )
 
       this.loading = false
 
       if (!response.error) {
         this.model = response.data
         this.fetchExtras()
-      } else if (response.error.response && response.error.response.status === 404) {
+      } else if (
+        response.error.response &&
+        response.error.response.status === 404
+      ) {
         this.$router.replace({ name: '404' })
       }
     },
@@ -459,7 +425,9 @@ export default {
 
     async fetchModules() {
       this.loadingModules = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}/modules`)
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/modules`,
+      )
       this.loadingModules = false
       if (!response.error) {
         this.modules = response.data
@@ -468,7 +436,9 @@ export default {
 
     async fetchUpgrades() {
       this.loadingUpgrades = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}/upgrades`)
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/upgrades`,
+      )
       this.loadingUpgrades = false
       if (!response.error) {
         this.upgrades = response.data
@@ -477,7 +447,9 @@ export default {
 
     async fetchVariants() {
       this.loadingVariants = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}/variants`)
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/variants`,
+      )
       this.loadingVariants = false
       if (!response.error) {
         this.variants = response.data
@@ -486,7 +458,9 @@ export default {
 
     async fetchLoaners() {
       this.loadingLoaners = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}/loaners`)
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/loaners`,
+      )
       this.loadingLoaners = false
       if (!response.error) {
         this.loaners = response.data
@@ -497,5 +471,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

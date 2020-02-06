@@ -9,10 +9,7 @@
             </h1>
           </div>
         </div>
-        <div
-          v-if="quickStats"
-          class="row"
-        >
+        <div v-if="quickStats" class="row">
           <div class="col-xs-12 col-sm-3">
             <Panel variant="primary">
               <div class="panel-box">
@@ -22,7 +19,11 @@
                 <div class="panel-box-text">
                   {{ quickStats.shipsCountYear }}
                   <div class="panel-box-text-info">
-                    {{ $t('labels.stats.quickStats.newShips', { year: new Date().getFullYear() }) }}
+                    {{
+                      $t('labels.stats.quickStats.newShips', {
+                        year: new Date().getFullYear(),
+                      })
+                    }}
                   </div>
                 </div>
               </div>
@@ -143,9 +144,7 @@ export default {
     Panel,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {

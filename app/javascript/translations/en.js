@@ -11,15 +11,17 @@ import title from './en/title'
 import privacySettings from './en/privacySettings'
 
 const validations = {}
-Object.keys(validationMessages).forEach((key) => {
+Object.keys(validationMessages).forEach(key => {
   validations[key] = validationMessages[key].replace(/\{/g, '%{')
 })
 
 export default {
   app: 'FleetYards.net',
   meta: {
-    description: 'FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.',
-    keywords: 'Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation',
+    description:
+      'FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.',
+    keywords:
+      'Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation',
   },
   title: {
     ...title,

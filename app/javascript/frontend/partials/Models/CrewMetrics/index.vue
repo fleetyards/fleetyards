@@ -24,19 +24,13 @@
     >
       <div class="row">
         <div class="col-xs-6 col-sm-6">
-          <div class="metrics-label">
-            {{ $t('model.minCrew') }}:
-          </div>
+          <div class="metrics-label">{{ $t('model.minCrew') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.minCrew, 'people') }}
           </div>
         </div>
-        <div
-          class="col-xs-6 col-sm-6"
-        >
-          <div class="metrics-label">
-            {{ $t('model.maxCrew') }}:
-          </div>
+        <div class="col-xs-6 col-sm-6">
+          <div class="metrics-label">{{ $t('model.maxCrew') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.maxCrew, 'people') }}
           </div>

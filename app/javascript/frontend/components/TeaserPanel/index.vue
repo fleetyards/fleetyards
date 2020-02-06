@@ -6,15 +6,9 @@
         'teaser-panel-text': variant === 'text',
       }"
     >
-      <LazyImage
-        :src="image"
-        class="teaser-panel-image"
-      />
+      <LazyImage :src="image" class="teaser-panel-image" />
       <div class="teaser-panel-body">
-        <router-link
-          v-if="to"
-          :to="to"
-        >
+        <router-link v-if="to" :to="to">
           <h3>{{ title }}</h3>
           <p v-if="withDescription">
             {{ item.description }}
@@ -76,7 +70,8 @@ export default {
     title() {
       if (this.item.title) {
         return this.item.title
-      } if (this.item.label) {
+      }
+      if (this.item.label) {
         return this.item.label
       }
       return this.item.name
@@ -86,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -29,9 +29,7 @@
         </div>
       </div>
       <div class="flex-row">
-        <div
-          class="col-xs-12"
-        >
+        <div class="col-xs-12">
           <fieldset v-if="upgrades.length">
             <legend>
               <h3>{{ $t('labels.model.upgrades') }}:</h3>
@@ -48,10 +46,7 @@
         <Loader :loading="loadingUpgrades" />
       </div>
     </form>
-    <template
-      v-if="modifiable"
-      #footer
-    >
+    <template v-if="modifiable" #footer>
       <div class="pull-right">
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
@@ -136,7 +131,9 @@ export default {
       }
 
       if (this.form.modelUpgradeIds.includes(upgrade.id)) {
-        const index = this.form.modelUpgradeIds.findIndex((upgradeId) => upgradeId === upgrade.id)
+        const index = this.form.modelUpgradeIds.findIndex(
+          upgradeId => upgradeId === upgrade.id,
+        )
         if (index > -1) {
           this.form.modelUpgradeIds.splice(index, 1)
         }
@@ -151,7 +148,10 @@ export default {
       }
 
       this.submitting = true
-      const response = await this.$api.put(`vehicles/${this.vehicle.id}`, this.form)
+      const response = await this.$api.put(
+        `vehicles/${this.vehicle.id}`,
+        this.form,
+      )
       this.submitting = false
       if (!response.error) {
         this.$refs.modal.close()
@@ -166,7 +166,9 @@ export default {
 
     async fetchModules() {
       this.loadingModules = true
-      const response = await this.$api.get(`models/${this.vehicle.model.slug}/modules`)
+      const response = await this.$api.get(
+        `models/${this.vehicle.model.slug}/modules`,
+      )
       this.loadingModules = false
       if (!response.error) {
         this.modules = response.data
@@ -175,7 +177,9 @@ export default {
 
     async fetchUpgrades() {
       this.loadingUpgrades = true
-      const response = await this.$api.get(`models/${this.vehicle.model.slug}/upgrades`)
+      const response = await this.$api.get(
+        `models/${this.vehicle.model.slug}/upgrades`,
+      )
       this.loadingUpgrades = false
       if (!response.error) {
         this.upgrades = response.data
@@ -186,5 +190,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -14,10 +14,7 @@
               :aria-label="$t('actions.clearHistory')"
               @click.native="resetHistory"
             >
-              <i
-                v-if="mobile"
-                class="fa fa-times"
-              />
+              <i v-if="mobile" class="fa fa-times" />
               <template v-else>
                 {{ $t('actions.clearHistory') }}
               </template>
@@ -35,19 +32,13 @@
               {{ entry.search }}
             </div>
           </template>
-          <div
-            v-else
-            class="search-history-empty"
-          >
+          <div v-else class="search-history-empty">
             ...
           </div>
         </div>
       </Panel>
       <div class="text-center">
-        <Btn
-          v-if="history.length > (page * perPage)"
-          @click.native="showMore"
-        >
+        <Btn v-if="history.length > page * perPage" @click.native="showMore">
           {{ $t('actions.showMore') }}
         </Btn>
       </div>
@@ -74,13 +65,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('search', [
-      'history',
-    ]),
+    ...mapGetters('search', ['history']),
 
     filteredHistory() {
       return this.history.slice(0, this.page * this.perPage)
@@ -104,5 +91,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

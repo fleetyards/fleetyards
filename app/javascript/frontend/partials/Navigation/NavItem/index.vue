@@ -1,22 +1,16 @@
 <template>
-  <li
-    v-if="divider"
-    class="nav-item divider"
-  />
+  <li v-if="divider" class="nav-item divider" />
   <li
     v-else-if="hasSubmenuSlot"
     :class="{
-      active: active || submenuActive,
-      open: open,
+      'active': active || submenuActive,
+      'open': open,
       'nav-item-slim': slim,
     }"
     :data-test="`nav-${menuKey}`"
     class="nav-item sub-menu"
   >
-    <a
-      v-tooltip="tooltip"
-      @click="toggleMenu"
-    >
+    <a v-tooltip="tooltip" @click="toggleMenu">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
@@ -26,19 +20,12 @@
         :slim="slim"
       />
       <transition name="fade-nav">
-        <span
-          v-if="!slim"
-          class="submenu-icon"
-        >
+        <span v-if="!slim" class="submenu-icon">
           <i class="fa fa-chevron-right" />
         </span>
       </transition>
     </a>
-    <b-collapse
-      :id="`${menuKey}-sub-menu`"
-      :visible="open"
-      tag="ul"
-    >
+    <b-collapse :id="`${menuKey}-sub-menu`" :visible="open" tag="ul">
       <slot name="submenu" />
     </b-collapse>
   </li>
@@ -92,12 +79,7 @@
     }"
     class="nav-item"
   >
-    <a
-      v-tooltip="tooltip"
-      :href="href"
-      target="_blank"
-      rel="noopener"
-    >
+    <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
       <slot v-if="hasDefaultSlot" />
       <NavItemInner
         v-else
@@ -139,9 +121,7 @@ export default {
     NavItemInner,
   },
 
-  mixins: [
-    NavigationMixin,
-  ],
+  mixins: [NavigationMixin],
 
   props: {
     to: {
@@ -228,7 +208,7 @@ export default {
     },
 
     matchedRoutes() {
-      return this.$route.matched.map((route) => route.name)
+      return this.$route.matched.map(route => route.name)
     },
   },
 
@@ -259,5 +239,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

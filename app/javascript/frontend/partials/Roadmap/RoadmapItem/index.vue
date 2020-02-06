@@ -1,10 +1,7 @@
 <template>
   <Panel>
     <div class="roadmap-item">
-      <div
-        v-lazy:background-image="storeImage"
-        class="item-image lazy"
-      >
+      <div v-lazy:background-image="storeImage" class="item-image lazy">
         <div
           v-if="recentlyUpdated"
           v-tooltip="$t('labels.roadmap.recentlyUpdated')"
@@ -19,7 +16,7 @@
               name: 'model',
               params: {
                 slug: item.model.slug,
-              }
+              },
             }"
           >
             {{ item.name }}
@@ -27,47 +24,49 @@
           <template v-else>
             {{ item.name }}
           </template>
-          <small
-            v-tooltip="$t('labels.roadmap.lastUpdate')"
-            class="pull-right"
-          >
+          <small v-tooltip="$t('labels.roadmap.lastUpdate')" class="pull-right">
             {{ item.lastVersionChangedAtLabel }}
             <i class="far fa-clock" />
           </small>
         </h3>
         <p>{{ description }}</p>
         <ul v-if="item.lastVersion && !slim">
-          <li
-            v-for="(update, index) in updates(item.lastVersion)"
-            :key="index"
-          >
+          <li v-for="(update, index) in updates(item.lastVersion)" :key="index">
             <template v-if="update.key === 'release' && !update.old">
-              {{ $t('labels.roadmap.lastVersion.addedToRelease', {
-                release: update.new,
-              }) }}
+              {{
+                $t('labels.roadmap.lastVersion.addedToRelease', {
+                  release: update.new,
+                })
+              }}
             </template>
             <template v-else-if="update.key === 'released'">
               {{ $t(`labels.roadmap.lastVersion.released`) }}
             </template>
             <template v-else-if="update.key === 'tasks'">
-              {{ $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
-                value: removeSign(update.count),
-              }) }}
+              {{
+                $t(`labels.roadmap.lastVersion.tasks.${update.change}`, {
+                  value: removeSign(update.count),
+                })
+              }}
             </template>
             <template v-else-if="update.key === 'completed'">
-              {{ $t(`labels.roadmap.lastVersion.completed.${update.change}`, {
-                value: removeSign(update.count),
-              }) }}
+              {{
+                $t(`labels.roadmap.lastVersion.completed.${update.change}`, {
+                  value: removeSign(update.count),
+                })
+              }}
             </template>
             <template v-else-if="update.key === 'active'">
               {{ $t(`labels.roadmap.lastVersion.active.${update.change}`) }}
             </template>
             <template v-else>
-              {{ $t(`labels.roadmap.lastVersion.${update.key}`, {
-                old: update.old,
-                new: update.new,
-                count: update.count,
-              }) }}
+              {{
+                $t(`labels.roadmap.lastVersion.${update.key}`, {
+                  old: update.old,
+                  new: update.new,
+                  count: update.count,
+                })
+              }}
             </template>
           </li>
         </ul>
@@ -79,7 +78,7 @@
             v-if="completed !== 0"
             :value="completed"
             :class="{
-              completed: completed === item.tasks
+              completed: completed === item.tasks,
             }"
           />
         </b-progress>
@@ -135,7 +134,9 @@ export default {
     },
 
     progressLabel() {
-      return `${this.completed} ${this.$t('labels.roadmap.tasks', { count: this.tasks })}`
+      return `${this.completed} ${this.$t('labels.roadmap.tasks', {
+        count: this.tasks,
+      })}`
     },
 
     storeImage() {
@@ -155,31 +156,47 @@ export default {
     },
 
     recentlyUpdated() {
-      return isBefore(new Date(), addHours(new Date(this.item.lastVersionChangedAt), 24))
+      return isBefore(
+        new Date(),
+        addHours(new Date(this.item.lastVersionChangedAt), 24),
+      )
     },
   },
 
   methods: {
     removeSign(number) {
-      return (number < 0) ? number * -1 : number
+      return number < 0 ? number * -1 : number
     },
 
     updates(lastVersion) {
-      return ['tasks', 'completed', 'release', 'released', 'active'].filter((key) => lastVersion[key])
-        .map((key) => {
+      return ['tasks', 'completed', 'release', 'released', 'active']
+        .filter(key => lastVersion[key])
+        .map(key => {
           const count = parseInt(lastVersion[key][1] - lastVersion[key][0], 10)
 
           return {
             key,
-            change: (count < 0) ? 'decreased' : 'increased',
+            change: count < 0 ? 'decreased' : 'increased',
             old: lastVersion[key][0],
             new: lastVersion[key][1],
             count,
           }
         })
-        .filter((update) => update.key !== 'released' || (update.key === 'released' && update.old))
-        .filter((update) => update.key !== 'tasks' || (update.key === 'tasks' && update.count !== 0))
-        .filter((update) => update.key !== 'completed' || (update.key === 'completed' && update.count !== 0))
+        .filter(
+          update =>
+            update.key !== 'released' ||
+            (update.key === 'released' && update.old),
+        )
+        .filter(
+          update =>
+            update.key !== 'tasks' ||
+            (update.key === 'tasks' && update.count !== 0),
+        )
+        .filter(
+          update =>
+            update.key !== 'completed' ||
+            (update.key === 'completed' && update.count !== 0),
+        )
     },
   },
 }

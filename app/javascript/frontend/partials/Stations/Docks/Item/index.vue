@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="metrics-label">
-      {{ docks.length }}x {{ size }}:
-    </div>
+    <div class="metrics-label">{{ docks.length }}x {{ size }}:</div>
     <div class="metrics-value">
       {{ sortedDocks.map(dock => dock.name).join(', ') }}
     </div>
@@ -32,9 +30,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .dock-item {
-    white-space: nowrap;
-    display: inline-block;
-    padding-right: 5px;
-  }
+.dock-item {
+  white-space: nowrap;
+  display: inline-block;
+  padding-right: 5px;
+}
 </style>

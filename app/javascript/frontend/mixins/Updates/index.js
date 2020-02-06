@@ -1,4 +1,3 @@
-
 import { mapGetters } from 'vuex'
 import { I18n } from 'frontend/lib/I18n'
 
@@ -10,16 +9,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
   },
   mounted() {
     this.setupAppVersionUpdates()
     this.setupUpdates()
   },
   beforeDestroy() {
-    Object.keys(this.channels).forEach((channel) => {
+    Object.keys(this.channels).forEach(channel => {
       this.channels[channel].unsubscribe()
     })
   },
@@ -55,13 +52,20 @@ export default {
       }
     },
     setupAppVersionUpdates() {
-      this.channels.appVersion = this.$cable.subscriptions.create({
-        channel: 'AppVersionChannel',
-      }, {
-        received: this.updateAppVersion,
-        connected: () => { this.connected('AppVersionChannel') },
-        disconnected: () => { this.disconnected('AppVersionChannel') },
-      })
+      this.channels.appVersion = this.$cable.subscriptions.create(
+        {
+          channel: 'AppVersionChannel',
+        },
+        {
+          received: this.updateAppVersion,
+          connected: () => {
+            this.connected('AppVersionChannel')
+          },
+          disconnected: () => {
+            this.disconnected('AppVersionChannel')
+          },
+        },
+      )
     },
     updateAppVersion(data) {
       this.$store.dispatch('app/updateVersion', JSON.parse(data))
@@ -70,14 +74,21 @@ export default {
       if (this.channels.hangar) {
         return
       }
-      this.channels.hangar = this.$cable.subscriptions.create({
-        channel: 'HangarChannel',
-        username: this.currentUser.username,
-      }, {
-        received: this.updateHangar,
-        connected: () => { this.connected('HangarChannel') },
-        disconnected: () => { this.disconnected('HangarChannel') },
-      })
+      this.channels.hangar = this.$cable.subscriptions.create(
+        {
+          channel: 'HangarChannel',
+          username: this.currentUser.username,
+        },
+        {
+          received: this.updateHangar,
+          connected: () => {
+            this.connected('HangarChannel')
+          },
+          disconnected: () => {
+            this.disconnected('HangarChannel')
+          },
+        },
+      )
     },
     updateHangar(data) {
       const vehicle = JSON.parse(data)
@@ -96,38 +107,54 @@ export default {
       if (this.channels.onSaleHangar) {
         return
       }
-      this.channels.onSaleHangar = this.$cable.subscriptions.create({
-        channel: 'OnSaleHangarChannel',
-        username: this.currentUser.username,
-      }, {
-        received(data) {
-          const vehicle = JSON.parse(data)
-          this.$info({
-            text: I18n.t('messages.model.onSale', { model: vehicle.model.name }),
-            icon: vehicle.model.storeImageSmall,
-          })
+      this.channels.onSaleHangar = this.$cable.subscriptions.create(
+        {
+          channel: 'OnSaleHangarChannel',
+          username: this.currentUser.username,
         },
-        connected: () => { this.connected('OnSaleHangarChannel') },
-        disconnected: () => { this.disconnected('OnSaleHangarChannel') },
-      })
+        {
+          received(data) {
+            const vehicle = JSON.parse(data)
+            this.$info({
+              text: I18n.t('messages.model.onSale', {
+                model: vehicle.model.name,
+              }),
+              icon: vehicle.model.storeImageSmall,
+            })
+          },
+          connected: () => {
+            this.connected('OnSaleHangarChannel')
+          },
+          disconnected: () => {
+            this.disconnected('OnSaleHangarChannel')
+          },
+        },
+      )
     },
     setupOnSaleUpdates() {
       if (this.channels.onSale) {
         return
       }
-      this.channels.onSale = this.$cable.subscriptions.create({
-        channel: 'OnSaleChannel',
-      }, {
-        received(data) {
-          const model = JSON.parse(data)
-          this.$info({
-            text: I18n.t('messages.model.onSale', { model: model.name }),
-            icon: model.storeImageSmall,
-          })
+      this.channels.onSale = this.$cable.subscriptions.create(
+        {
+          channel: 'OnSaleChannel',
         },
-        connected: () => { this.connected('OnSaleChannel') },
-        disconnected: () => { this.disconnected('OnSaleChannel') },
-      })
+        {
+          received(data) {
+            const model = JSON.parse(data)
+            this.$info({
+              text: I18n.t('messages.model.onSale', { model: model.name }),
+              icon: model.storeImageSmall,
+            })
+          },
+          connected: () => {
+            this.connected('OnSaleChannel')
+          },
+          disconnected: () => {
+            this.disconnected('OnSaleChannel')
+          },
+        },
+      )
     },
     connected(_channel) {
       // console.info('Connected to', channel)

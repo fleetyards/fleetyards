@@ -16,11 +16,7 @@
       multiple
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      block
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>
@@ -42,9 +38,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    Filters,
-  ],
+  mixins: [Filters],
 
   data() {
     const query = this.$route.query.q || {}
@@ -54,16 +48,20 @@ export default {
         roleIn: query.roleIn || [],
       },
 
-      roleOptions: [{
-        name: this.$t('labels.fleet.members.roles.admin'),
-        value: 'admin',
-      }, {
-        name: this.$t('labels.fleet.members.roles.officer'),
-        value: 'officer',
-      }, {
-        name: this.$t('labels.fleet.members.roles.member'),
-        value: 'member',
-      }],
+      roleOptions: [
+        {
+          name: this.$t('labels.fleet.members.roles.admin'),
+          value: 'admin',
+        },
+        {
+          name: this.$t('labels.fleet.members.roles.officer'),
+          value: 'officer',
+        },
+        {
+          name: this.$t('labels.fleet.members.roles.member'),
+          value: 'member',
+        },
+      ],
     }
   },
 

@@ -5,36 +5,21 @@
       'metrics-padding': padding,
     }"
   >
-    <div
-      v-if="model.focus"
-      class="col-xs-6 col-sm-4"
-    >
-      <div class="metrics-label">
-        {{ $t('model.focus') }}:
-      </div>
+    <div v-if="model.focus" class="col-xs-6 col-sm-4">
+      <div class="metrics-label">{{ $t('model.focus') }}:</div>
       <div class="metrics-value">
         {{ model.focus }}
       </div>
     </div>
-    <div
-      v-if="model.minCrew || model.maxCrew"
-      class="col-xs-6 col-sm-4"
-    >
-      <div class="metrics-label">
-        {{ $t('model.crew') }}:
-      </div>
+    <div v-if="model.minCrew || model.maxCrew" class="col-xs-6 col-sm-4">
+      <div class="metrics-label">{{ $t('model.crew') }}:</div>
       <div class="metrics-value">
         {{ crew }}
       </div>
     </div>
     <div class="col-xs-12 col-sm-4">
-      <div class="metrics-label">
-        {{ $t('model.speed') }}:
-      </div>
-      <div
-        class="metrics-value"
-        v-html="speeds"
-      />
+      <div class="metrics-label">{{ $t('model.speed') }}:</div>
+      <div class="metrics-value" v-html="speeds" />
     </div>
   </div>
 </template>
@@ -72,7 +57,10 @@ export default {
         return this.$toNumber(this.model.minCrew, 'people')
       }
 
-      return this.$toNumber([minCrew, maxCrew].filter((item) => item).join(' - '), 'people')
+      return this.$toNumber(
+        [minCrew, maxCrew].filter(item => item).join(' - '),
+        'people',
+      )
     },
 
     speeds() {
@@ -97,7 +85,7 @@ export default {
         afterburnerSpeed = null
       }
 
-      return [scmSpeed, afterburnerSpeed].filter((item) => item).join(' - ')
+      return [scmSpeed, afterburnerSpeed].filter(item => item).join(' - ')
     },
 
     groundSpeeds() {
@@ -111,12 +99,14 @@ export default {
         afterburnerGroundSpeed = null
       }
 
-      return [groundSpeed, afterburnerGroundSpeed].filter((item) => item).join(' - ')
+      return [groundSpeed, afterburnerGroundSpeed]
+        .filter(item => item)
+        .join(' - ')
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

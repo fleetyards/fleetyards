@@ -5,7 +5,7 @@
         <Panel>
           <div class="panel-body">
             <h1>{{ $t('headlines.impressum') }}</h1>
-            <br>
+            <br />
 
             <h2>{{ $t('sublines.impressum.general') }}</h2>
 
@@ -19,9 +19,9 @@
                 </dt>
                 <dd>
                   Marten Klitzke
-                  <br>
+                  <br />
                   Lindenstraße 8b
-                  <br>
+                  <br />
                   22880 Wedel
                 </dd>
                 <dt>
@@ -32,47 +32,46 @@
                 </dd>
               </dl>
             </address>
-            <br>
+            <br />
 
             <h2>{{ $t('sublines.impressum.thirdpartycontent') }}</h2>
-            <br>
+            <br />
             <h3>YT Ship Images</h3>
             <p v-html="$t('texts.impressum.ytShipImages')" />
             <p>
-              <a
-                href="https://redd.it/8k18sm"
-                target="_blank"
-                rel="noopener"
-              >
+              <a href="https://redd.it/8k18sm" target="_blank" rel="noopener">
                 https://redd.it/8k18sm
               </a>
             </p>
-            <br>
+            <br />
 
             <h2>{{ $t('sublines.impressum.disclaimer') }}</h2>
-            <br>
+            <br />
             <p>
-              This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium
-              group of companies.<br>
-              All content on this site not authored by its host or users are property of their
-              respective owners.<br>
-              Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium®
-              are registered trademarks of Cloud Imperium Rights LLC. All rights reserved.
+              This is an unofficial Star Citizen fansite, not affiliated with
+              the Cloud Imperium group of companies.
+              <br />
+              All content on this site not authored by its host or users are
+              property of their respective owners.
+              <br />
+              Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
+              Imperium® are registered trademarks of Cloud Imperium Rights LLC.
+              All rights reserved.
             </p>
-            <br>
+            <br />
 
             <h3>{{ $t('sublines.impressum.copyright') }}:</h3>
             <p v-html="$t('texts.impressum.copyright')" />
-            <br>
+            <br />
 
             <h3>{{ $t('sublines.impressum.liabilityInternal') }}:</h3>
             <p v-html="$t('texts.impressum.liabilityInternal.paragraphOne')" />
             <p v-html="$t('texts.impressum.liabilityInternal.paragraphTwo')" />
-            <br>
+            <br />
 
             <h3>{{ $t('sublines.impressum.liabilityExternal') }}:</h3>
             <p v-html="$t('texts.impressum.liabilityExternal')" />
-            <br>
+            <br />
           </div>
         </Panel>
       </div>
@@ -91,10 +90,7 @@ import Panel from 'frontend/components/Panel'
   components: {
     Panel,
   },
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 })
-export default class Impressum extends Vue {
-}
+export default class Impressum extends Vue {}
 </script>

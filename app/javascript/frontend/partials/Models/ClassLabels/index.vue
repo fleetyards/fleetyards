@@ -1,9 +1,6 @@
 <template>
   <div class="labels">
-    <transition-group
-      name="fade-list"
-      appear
-    >
+    <transition-group name="fade-list" appear>
       <a
         v-for="classification in countData.classifications"
         :key="classification.name"
@@ -51,7 +48,7 @@ export default {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
       if ((query[this.filterKey] || []).includes(filter)) {
-        const index = query[this.filterKey].findIndex((item) => item === filter)
+        const index = query[this.filterKey].findIndex(item => item === filter)
         if (index > -1) {
           query[this.filterKey].splice(index, 1)
         }

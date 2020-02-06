@@ -1,8 +1,5 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    slim
-  >
+  <ValidationObserver v-slot="{ handleSubmit }" slim>
     <form @submit.prevent="handleSubmit(changePassword)">
       <div class="row">
         <div class="col-md-12">
@@ -56,12 +53,8 @@
               clearable
             />
           </ValidationProvider>
-          <br>
-          <Btn
-            :loading="submitting"
-            type="submit"
-            size="large"
-          >
+          <br />
+          <Btn :loading="submitting" type="submit" size="large">
             {{ $t('actions.save') }}
           </Btn>
         </div>
@@ -84,9 +77,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -100,9 +91,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'isAuthenticated',
-    ]),
+    ...mapGetters('session', ['isAuthenticated']),
   },
 
   methods: {
@@ -130,5 +119,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

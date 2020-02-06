@@ -2,17 +2,10 @@
   <section class="container login">
     <div class="row">
       <div class="col-xs-12">
-        <ValidationObserver
-          ref="form"
-          v-slot="{ handleSubmit }"
-          small
-        >
+        <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
           <form @submit.prevent="handleSubmit(login)">
             <h1>
-              <router-link
-                to="/"
-                exact
-              >
+              <router-link to="/" exact>
                 {{ $t('app') }}
               </router-link>
             </h1>
@@ -79,7 +72,7 @@
               </p>
               <Btn
                 data-test="signup-link"
-                :to="{name: 'signup'}"
+                :to="{ name: 'signup' }"
                 size="small"
                 block
               >
@@ -108,9 +101,7 @@ export default {
     Checkbox,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -147,5 +138,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

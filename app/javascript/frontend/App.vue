@@ -14,20 +14,12 @@
     />
     <NetworkStatus />
     <div class="app-content">
-      <transition
-        name="fade"
-        mode="out-in"
-        appear
-      >
+      <transition name="fade" mode="out-in" appear>
         <Navigation />
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
-          <transition
-            name="fade"
-            mode="out-in"
-            appear
-          >
+          <transition name="fade" mode="out-in" appear>
             <router-view class="main" />
           </transition>
         </div>
@@ -35,10 +27,7 @@
       </div>
     </div>
     <BackToTop visible-offset="500" />
-    <PrivacySettings
-      ref="privacySettings"
-      :open="cookiesInfoVisible"
-    />
+    <PrivacySettings ref="privacySettings" :open="cookiesInfoVisible" />
   </div>
 </template>
 
@@ -47,6 +36,7 @@ import BackToTop from 'frontend/partials/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
 import RenewSession from 'frontend/mixins/RenewSession'
+import CheckVersion from 'frontend/mixins/CheckVersion'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import PrivacySettings from 'frontend/partials/PrivacySettings'
@@ -65,25 +55,14 @@ export default {
     NetworkStatus,
   },
 
-  mixins: [
-    Updates,
-    CurrentUser,
-    RenewSession,
-  ],
+  mixins: [Updates, CurrentUser, RenewSession, CheckVersion],
 
   computed: {
-    ...mapGetters([
-      'backgroundImage',
-    ]),
+    ...mapGetters(['backgroundImage']),
 
-    ...mapGetters('app', [
-      'navCollapsed',
-      'overlayVisible',
-    ]),
+    ...mapGetters('app', ['navCollapsed', 'overlayVisible']),
 
-    ...mapGetters('session', [
-      'isAuthenticated',
-    ]),
+    ...mapGetters('session', ['isAuthenticated']),
 
     ...mapGetters('cookies', {
       cookies: 'cookies',
@@ -155,7 +134,10 @@ export default {
     },
 
     checkMobile() {
-      this.$store.commit('setMobile', document.documentElement.clientWidth < 992)
+      this.$store.commit(
+        'setMobile',
+        document.documentElement.clientWidth < 992,
+      )
     },
 
     setNoScroll() {
@@ -181,7 +163,11 @@ export default {
       if (!['models', 'model', 'fleet', 'hangar'].includes(this.$route.name)) {
         return
       }
-      this.$store.dispatch('hangar/fetch')
+
+      const response = await this.$api.get('vehicles/hangar-items', null, true)
+      if (!response.error) {
+        this.$store.dispatch('hangar/saveHangar', response.data)
+      }
     },
   },
 }

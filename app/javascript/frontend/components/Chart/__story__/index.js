@@ -16,7 +16,11 @@ storiesOf('Chart', module)
     components: { Chart },
     props: {
       type: {
-        default: select(chartTypes.label, chartTypes.options, chartTypes.default),
+        default: select(
+          chartTypes.label,
+          chartTypes.options,
+          chartTypes.default,
+        ),
       },
       height: {
         default: number('Height', 400),

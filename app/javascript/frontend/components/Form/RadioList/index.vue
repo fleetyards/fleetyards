@@ -4,11 +4,7 @@
       {{ label }}
     </label>
     <div class="radio-list">
-      <div
-        v-if="resetLabel"
-        :class="{ 'radio-inline': inline }"
-        class="radio"
-      >
+      <div v-if="resetLabel" :class="{ 'radio-inline': inline }" class="radio">
         <input
           :id="`${radioID}-reset`"
           :checked="!value"
@@ -16,11 +12,8 @@
           :name="name"
           type="radio"
           @change="clear"
-        >
-        <label
-          :for="`${radioID}-reset`"
-          class="radio-label"
-        >
+        />
+        <label :for="`${radioID}-reset`" class="radio-label">
           {{ resetLabel }}
         </label>
       </div>
@@ -38,11 +31,8 @@
           :value="option.value"
           type="radio"
           @change="change"
-        >
-        <label
-          :for="`${radioID}-${option.value}`"
-          class="radio-label"
-        >
+        />
+        <label :for="`${radioID}-${option.value}`" class="radio-label">
           {{ option.name }}
         </label>
       </div>

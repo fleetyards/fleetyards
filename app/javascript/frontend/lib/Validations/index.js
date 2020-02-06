@@ -1,15 +1,21 @@
 import {
-  ValidationProvider, ValidationObserver, extend, configure,
+  ValidationProvider,
+  ValidationObserver,
+  extend,
+  configure,
 } from 'vee-validate'
 /* eslint-disable camelcase */
 import {
-  required, email, alpha_dash, min, confirmed, regex,
+  required,
+  email,
+  alpha_dash,
+  min,
+  confirmed,
+  regex,
 } from 'vee-validate/dist/rules'
 /* eslint-enable camelcase */
 import { I18n } from 'frontend/lib/I18n'
-import {
-  emailTaken, fidTaken, user, usernameTaken, url,
-} from './rules'
+import { emailTaken, fidTaken, user, usernameTaken, url } from './rules'
 
 configure({
   defaultMessage(_, values) {

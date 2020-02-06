@@ -8,7 +8,7 @@
       type="checkbox"
       :data-test="`checkbox-${id}`"
       @change="change"
-    >
+    />
     <label :for="checkboxID">
       {{ label }}
     </label>

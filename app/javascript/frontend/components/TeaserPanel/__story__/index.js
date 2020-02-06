@@ -16,7 +16,11 @@ storiesOf('TeaserPanel', module)
     components: { TeaserPanel },
     props: {
       variant: {
-        default: select(teaserVariants.label, teaserVariants.options, teaserVariants.default),
+        default: select(
+          teaserVariants.label,
+          teaserVariants.options,
+          teaserVariants.default,
+        ),
       },
     },
     template: `

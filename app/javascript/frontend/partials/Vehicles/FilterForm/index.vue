@@ -73,12 +73,14 @@
     <FilterGroup
       v-if="hangarGroupsOptions.length > 0"
       v-model="form.hangarGroupsIn"
-      :options="hangarGroupsOptions.map(item => {
-        return {
-          value: item.slug,
-          name: item.name,
-        }
-      })"
+      :options="
+        hangarGroupsOptions.map(item => {
+          return {
+            value: item.slug,
+            name: item.name,
+          }
+        })
+      "
       :label="$t('labels.filters.vehicles.group')"
       name="hangar-group"
       multiple
@@ -169,11 +171,7 @@
       name="public"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      block
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>
@@ -197,9 +195,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    Filters,
-  ],
+  mixins: [Filters],
 
   props: {
     hangarGroupsOptions: {

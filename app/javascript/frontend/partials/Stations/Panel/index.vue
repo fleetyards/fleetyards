@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    :id="id || item.slug"
-    class="station-item"
-  >
+  <Panel :id="id || item.slug" class="station-item">
     <div class="panel-image text-center">
       <router-link
         :key="item.storeImageMedium"
@@ -13,10 +10,7 @@
       />
     </div>
     <h2 class="panel-title">
-      <router-link
-        :to="route"
-        :aria-label="item.name"
-      >
+      <router-link :to="route" :aria-label="item.name">
         {{ item.name }}
       </router-link>
     </h2>
@@ -51,5 +45,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

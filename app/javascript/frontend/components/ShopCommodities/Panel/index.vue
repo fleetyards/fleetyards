@@ -12,27 +12,30 @@
             {{ item.name }}
           </router-link>
         </h3>
-        <ul
-          v-if="showStats"
-          class="list-unstyled"
-        >
+        <ul v-if="showStats" class="list-unstyled">
           <li>
-            <b>{{ $t('commodityItem.grade') }}:</b> {{ item.item.grade || '-' }}
+            <b>{{ $t('commodityItem.grade') }}:</b>
+            {{ item.item.grade || '-' }}
           </li>
           <li>
-            <b>{{ $t('commodityItem.size') }}:</b> {{ item.item.size || '-' }}
+            <b>{{ $t('commodityItem.size') }}:</b>
+            {{ item.item.size || '-' }}
           </li>
           <li>
-            <b>{{ $t('commodityItem.type') }}:</b> {{ item.item.typeLabel || '-' }}
+            <b>{{ $t('commodityItem.type') }}:</b>
+            {{ item.item.typeLabel || '-' }}
           </li>
           <li>
-            <b>{{ $t('commodityItem.itemType') }}:</b> {{ item.item.itemTypeLabel || '-' }}
+            <b>{{ $t('commodityItem.itemType') }}:</b>
+            {{ item.item.itemTypeLabel || '-' }}
           </li>
           <li v-if="item.category === 'equipment'">
-            <b>{{ $t('commodityItem.weaponClass') }}:</b> {{ item.item.weaponClassLabel || '-' }}
+            <b>{{ $t('commodityItem.weaponClass') }}:</b>
+            {{ item.item.weaponClassLabel || '-' }}
           </li>
           <li v-else>
-            <b>{{ $t('commodityItem.itemClass') }}:</b> {{ item.item.itemClassLabel || '-' }}
+            <b>{{ $t('commodityItem.itemClass') }}:</b>
+            {{ item.item.itemClassLabel || '-' }}
           </li>
           <li v-if="item.category === 'equipment'">
             <b>{{ $t('commodityItem.range') }}:</b>
@@ -76,12 +79,18 @@ export default {
     },
 
     route() {
-      return { name: 'shop', params: { station: this.item.shop.station.slug, slug: this.item.shop.slug } }
+      return {
+        name: 'shop',
+        params: {
+          station: this.item.shop.station.slug,
+          slug: this.item.shop.slug,
+        },
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

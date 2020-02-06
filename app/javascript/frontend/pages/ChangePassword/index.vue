@@ -2,16 +2,10 @@
   <section class="container change-password">
     <div class="row">
       <div class="col-xs-12">
-        <ValidationObserver
-          v-slot="{ handleSubmit }"
-          slim
-        >
+        <ValidationObserver v-slot="{ handleSubmit }" slim>
           <form @submit.prevent="handleSubmit(changePassword)">
             <h1>
-              <router-link
-                :to="{ name: 'home'}"
-                exact
-              >
+              <router-link :to="{ name: 'home' }" exact>
                 {{ $t('app') }}
               </router-link>
             </h1>
@@ -48,12 +42,7 @@
               />
             </ValidationProvider>
 
-            <Btn
-              :loading="submitting"
-              type="submit"
-              size="large"
-              block
-            >
+            <Btn :loading="submitting" type="submit" size="large" block>
               {{ $t('actions.save') }}
             </Btn>
 
@@ -62,11 +51,7 @@
                 {{ $t('labels.alreadyRegistered') }}
               </p>
 
-              <Btn
-                :to="{name: 'login'}"
-                size="small"
-                block
-              >
+              <Btn :to="{ name: 'login' }" size="small" block>
                 {{ $t('actions.login') }}
               </Btn>
             </footer>
@@ -103,9 +88,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'isAuthenticated',
-    ]),
+    ...mapGetters('session', ['isAuthenticated']),
   },
 
   mounted() {
@@ -118,7 +101,10 @@ export default {
     async changePassword() {
       this.submitting = true
 
-      const response = await this.$api.put(`password/update/${this.$route.params.token}`, this.form)
+      const response = await this.$api.put(
+        `password/update/${this.$route.params.token}`,
+        this.form,
+      )
 
       this.submitting = false
 
@@ -139,5 +125,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

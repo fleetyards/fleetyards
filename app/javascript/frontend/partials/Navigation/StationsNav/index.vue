@@ -40,7 +40,13 @@ export default {
   computed: {
     active() {
       return [
-        'stations', 'station', 'shops', 'shop', 'starsystems', 'starsystem', 'celestial-object',
+        'stations',
+        'station',
+        'shops',
+        'shop',
+        'starsystems',
+        'starsystem',
+        'celestial-object',
         'station-images',
       ].includes(this.$route.name)
     },

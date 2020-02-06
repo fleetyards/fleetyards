@@ -21,7 +21,9 @@ export default () => ({
 
     addToHistory(state, payload) {
       // eslint-disable-next-line no-param-reassign
-      state.history = state.history.filter((item) => item.search !== payload.search)
+      state.history = state.history.filter(
+        item => item.search !== payload.search,
+      )
       state.history.unshift(payload)
     },
   },

@@ -31,9 +31,7 @@ export default {
     NavItem,
   },
 
-  mixins: [
-    FleetsMixin,
-  ],
+  mixins: [FleetsMixin],
 
   data() {
     return {
@@ -48,7 +46,9 @@ export default {
 
   methods: {
     async fetch() {
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}?nav`)
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}?nav`,
+      )
 
       if (!response.error) {
         this.currentFleet = response.data

@@ -1,9 +1,6 @@
 <template>
   <transition name="fade">
-    <span
-      v-if="loading"
-      class="small-loader"
-    >
+    <span v-if="loading" class="small-loader">
       <div class="rhombus" />
       <div class="rhombus" />
       <div class="rhombus" />

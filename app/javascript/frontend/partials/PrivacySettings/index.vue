@@ -1,13 +1,6 @@
 <template>
-  <Modal
-    ref="modal"
-    :title="title"
-    :closable="false"
-  >
-    <div
-      v-if="info"
-      class="cookies-banner"
-    >
+  <Modal ref="modal" :title="title" :closable="false">
+    <div v-if="info" class="cookies-banner">
       <p>
         {{ $t(`privacySettings.info.${info}.text`) }}
       </p>
@@ -45,10 +38,7 @@
         </dd>
       </dl>
     </div>
-    <div
-      v-else-if="settings"
-      class="cookies-banner"
-    >
+    <div v-else-if="settings" class="cookies-banner">
       <p>{{ $t(`privacySettings.text`) }}</p>
       <form @submit.prevent="submit">
         <div class="row">
@@ -106,30 +96,20 @@
         <div class="cookies-banner-actions" />
       </form>
     </div>
-    <div
-      v-else
-      class="cookies-banner"
-    >
+    <div v-else class="cookies-banner">
       <p>{{ $t('privacySettings.introduction.paragraph1') }}</p>
       <p>{{ $t('privacySettings.introduction.paragraph2') }}</p>
       <p>
-        {{ $t('privacySettings.introduction.paragraph3') }} <Btn
-          variant="link"
-          text-inline
-          :to="{name: 'privacy-policy'}"
-        >
+        {{ $t('privacySettings.introduction.paragraph3') }}
+        <Btn variant="link" text-inline :to="{ name: 'privacy-policy' }">
           {{ $t('nav.privacyPolicy') }}
-        </Btn>.
+        </Btn>
+        .
       </p>
     </div>
     <template #footer>
       <div class="cookies-banner-actions">
-        <Btn
-          v-if="info"
-          inline
-          block
-          @click.native="hideInfo"
-        >
+        <Btn v-if="info" inline block @click.native="hideInfo">
           <i class="fal fa-chevron-left" />
           {{ $t('actions.back') }}
         </Btn>
@@ -152,12 +132,7 @@
           >
             {{ $t('privacySettings.editSettings') }}
           </Btn>
-          <Btn
-            data-test="accept-cookies"
-            inline
-            block
-            @click.native="accept"
-          >
+          <Btn data-test="accept-cookies" inline block @click.native="accept">
             {{ $t('privacySettings.accept') }}
           </Btn>
         </template>
@@ -191,15 +166,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters('cookies', [
-      'cookies',
-      'infoVisible',
-    ]),
+    ...mapGetters('cookies', ['cookies', 'infoVisible']),
 
     title() {
       if (this.info) {
         return this.$t(`privacySettings.info.${this.info}.title`)
-      } if (this.settings) {
+      }
+      if (this.settings) {
         return this.$t('privacySettings.title')
       }
 
@@ -282,5 +255,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

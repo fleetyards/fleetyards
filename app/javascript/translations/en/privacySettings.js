@@ -8,21 +8,22 @@ export default {
   title: 'Privacy Settings',
   introduction: {
     title: 'This website uses cookies.',
-    paragraph1: 'To improve the user experience, to help make this website better and to know on which aspects we should concentrate the further development of this project we use cookies.',
-    paragraph2: 'By clicking the "Accept" button you agree to the usage of cookies on this website. Alternative you can update your settings by clicking on "Configure settings"',
+    paragraph1:
+      'To improve the user experience, to help make this website better and to know on which aspects we should concentrate the further development of this project we use cookies.',
+    paragraph2:
+      'By clicking the "Accept" button you agree to the usage of cookies on this website. Alternative you can update your settings by clicking on "Configure settings"',
     paragraph3: 'Find more information in our',
   },
-  text: 'This site uses services and tools to improve the overall user experience. You can update your preferences below to enable or disable those services and tools.',
+  text:
+    'This site uses services and tools to improve the overall user experience. You can update your preferences below to enable or disable those services and tools.',
   info: {
     fontawesome: {
       title: 'Fontawesome',
       text: 'This is a font and icon toolkit service.',
       why: 'Providing fonts',
-      data: [
-        'IP address',
-        'Referrer URL',
-      ],
-      company: 'Fonticons. Inc. 6 Porter Road, Apartment 3R, Cambridge, MA 02140, United States of America',
+      data: ['IP address', 'Referrer URL'],
+      company:
+        'Fonticons. Inc. 6 Porter Road, Apartment 3R, Cambridge, MA 02140, United States of America',
       location: 'United States of America',
     },
     googleFonts: {
@@ -36,18 +37,17 @@ export default {
         'Aggregated usage numbers',
         'Font file requests',
       ],
-      company: 'Alphabet Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043-1351, United States of America',
+      company:
+        'Alphabet Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043-1351, United States of America',
       location: 'United States of America',
     },
     youtube: {
       title: 'Youtube Videos',
       text: 'This is a video streaming plattform.',
       why: 'Embed Videos',
-      data: [
-        'IP address',
-        'Referrer URL',
-      ],
-      company: 'Alphabet Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043-1351, United States of America',
+      data: ['IP address', 'Referrer URL'],
+      company:
+        'Alphabet Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043-1351, United States of America',
       location: 'United States of America',
     },
     ahoy: {

@@ -12,22 +12,13 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <input
-          type="file"
-          :disabled="loading"
-          @input="importData"
-        >
+        <input type="file" :disabled="loading" @input="importData" />
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-animated">
         <Panel>
-          <transition-group
-            name="fade"
-            class="flex-list"
-            tag="div"
-            appear
-          >
+          <transition-group name="fade" class="flex-list" tag="div" appear>
             <div
               key="heading"
               class="fade-list-item col-xs-12 flex-list-heading"
@@ -92,9 +83,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -154,14 +143,20 @@ export default {
     },
 
     async parseCSV(event) {
-      this.data = await this.matchWithHangar(this.transformData(Papa.parse(event.target.result, {
-        header: true,
-        skipEmptyLines: true,
-      }).data))
+      this.data = await this.matchWithHangar(
+        this.transformData(
+          Papa.parse(event.target.result, {
+            header: true,
+            skipEmptyLines: true,
+          }).data,
+        ),
+      )
     },
 
     async parseJSON(event) {
-      this.data = await this.matchWithHangar(this.transformData(JSON.parse(event.target.result)))
+      this.data = await this.matchWithHangar(
+        this.transformData(JSON.parse(event.target.result)),
+      )
     },
 
     transformData(result) {
@@ -180,7 +175,7 @@ export default {
         return result
       }
 
-      return result.map((item) => ({
+      return result.map(item => ({
         ...item,
         model: item.name,
         modelSlug: this.transformSlug(item.name),
@@ -190,13 +185,17 @@ export default {
     async matchWithHangar(items) {
       const currentHangar = JSON.parse(JSON.stringify(this.ships))
 
-      const matchedItems = await items.map((item) => {
-        const found = currentHangar.find((vehicle) => vehicle.modelSlug === item.modelSlug)
+      const matchedItems = await items.map(item => {
+        const found = currentHangar.find(
+          vehicle => vehicle.modelSlug === item.modelSlug,
+        )
 
         let state = 'new'
 
         if (found) {
-          const index = currentHangar.findIndex((vehicle) => vehicle.modelSlug === found.modelSlug)
+          const index = currentHangar.findIndex(
+            vehicle => vehicle.modelSlug === found.modelSlug,
+          )
           currentHangar.splice(index, 1)
           state = 'replace'
         }
@@ -208,7 +207,7 @@ export default {
         }
       })
 
-      matchedItems.forEach(async (item) => {
+      matchedItems.forEach(async item => {
         if (item.found) {
           return
         }
@@ -221,7 +220,7 @@ export default {
 
       return [
         ...matchedItems,
-        ...currentHangar.map((vehicle) => ({
+        ...currentHangar.map(vehicle => ({
           ...vehicle,
           state: 'destroy',
         })),

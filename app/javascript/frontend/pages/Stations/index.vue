@@ -1,9 +1,6 @@
 <template>
   <router-view v-if="isSubRoute" />
-  <section
-    v-else
-    class="container"
-  >
+  <section v-else class="container">
     <div class="row">
       <div class="col-xs-12">
         <h1 class="sr-only">
@@ -46,10 +43,7 @@
         @before-enter="toggleFullscreen"
         @after-leave="toggleFullscreen"
       >
-        <div
-          v-show="filterVisible"
-          class="col-xs-12 col-md-3 col-xlg-2"
-        >
+        <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
           <FilterForm />
         </div>
       </transition>
@@ -59,12 +53,7 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"
@@ -74,10 +63,7 @@
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
       <div class="col-xs-12">
         <Paginator
@@ -114,12 +100,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-    Filters,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Hash, Filters, Pagination],
 
   data() {
     return {
@@ -130,13 +111,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('stations', [
-      'filterVisible',
-    ]),
+    ...mapGetters('stations', ['filterVisible']),
 
     isSubRoute() {
       return this.$route.name !== 'stations'

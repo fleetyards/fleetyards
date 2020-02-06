@@ -16,5 +16,7 @@ console.error = (e, ...args) => {
 }
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.warn(`Unhandled Rejection at: ${promise}, reason: ${reason.message}, stack: ${reason.stack}`)
+  console.warn(
+    `Unhandled Rejection at: ${promise}, reason: ${reason.message}, stack: ${reason.stack}`,
+  )
 })

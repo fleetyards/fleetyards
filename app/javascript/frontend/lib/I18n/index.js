@@ -23,18 +23,23 @@ const methods = {
   toNumber(value, units) {
     let count = I18n.l('number', value)
     if (units === 'weight') {
-      count = I18n.l('number', (value / 1000))
+      count = I18n.l('number', value / 1000)
     }
     if (units === 'people') {
       count = value
     }
     if (units === 'speed' && value) {
-      count = value.split(' - ').map((item) => I18n.l('number', item)).join(' - ')
+      count = value
+        .split(' - ')
+        .map(item => I18n.l('number', item))
+        .join(' - ')
     }
     if (!value || (['speed', 'rotation'].includes(units) && value <= 0)) {
       return I18n.t('labels.not-available')
     }
-    return I18n.t(`number.${units}`, { count })
+    return I18n.t(`number.${units}`, {
+      count,
+    })
   },
 
   toDollar(value) {
@@ -77,13 +82,13 @@ export { I18n }
 
 export default {
   install(Vue) {
-    Object.keys(methods).forEach((methodName) => {
+    Object.keys(methods).forEach(methodName => {
       // eslint-disable-next-line no-param-reassign
       Vue.prototype[`$${methodName}`] = methods[methodName]
     })
 
     Vue.mixin({
-      created () {
+      created() {
         if (this.$store && I18n.locale !== this.$store.state.locale) {
           I18n.locale = this.$store.state.locale
         }

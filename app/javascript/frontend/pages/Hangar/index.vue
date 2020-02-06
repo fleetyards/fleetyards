@@ -18,8 +18,14 @@
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="!mobile && (vehicles.length || fleetchartVehicles.length
-                || (!vehicles.length && !fleetchartVehicles.length && isFilterSelected))"
+              v-if="
+                !mobile &&
+                  (vehicles.length ||
+                    fleetchartVehicles.length ||
+                    (!vehicles.length &&
+                      !fleetchartVehicles.length &&
+                      isFilterSelected))
+              "
               :hangar-groups="hangarGroups"
               :label="$t('labels.groups')"
             />
@@ -49,17 +55,19 @@
           </div>
         </div>
         <div
-          v-if="vehicles.length > 0 && vehiclesCount && vehiclesCount.metrics && !mobile"
+          v-if="
+            vehicles.length > 0 &&
+              vehiclesCount &&
+              vehiclesCount.metrics &&
+              !mobile
+          "
           class="row"
         >
           <div
             class="col-xs-12 hangar-metrics metrics-block"
             @click="toggleMoney"
           >
-            <div
-              v-if="money"
-              class="metrics-item"
-            >
+            <div v-if="money" class="metrics-item">
               <div class="metrics-label">
                 {{ $t('labels.hangarMetrics.totalMoney') }}:
               </div>
@@ -128,10 +136,7 @@
           filename="my-hangar-fleetchart"
         />
 
-        <Btn
-          size="small"
-          @click.native="toggleFleetchart"
-        >
+        <Btn size="small" @click.native="toggleFleetchart">
           <template v-if="fleetchartVisible">
             {{ $t('actions.hideFleetchart') }}
           </template>
@@ -168,16 +173,10 @@
         right
       />
 
-      <VehiclesFilterForm
-        slot="filter"
-        :hangar-groups-options="hangarGroups"
-      />
+      <VehiclesFilterForm slot="filter" :hangar-groups-options="hangarGroups" />
 
       <template v-slot:default="{ filterVisible }">
-        <transition
-          name="fade"
-          appear
-        >
+        <transition name="fade" appear>
           <div
             v-if="fleetchartVisible && fleetchartVehicles.length"
             class="row"
@@ -193,10 +192,7 @@
 
         <HangarGuideBox v-if="guideVisible" />
 
-        <div
-          v-else-if="fleetchartVisible"
-          class="row"
-        >
+        <div v-else-if="fleetchartVisible" class="row">
           <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
@@ -244,10 +240,7 @@
 
         <EmptyBox :visible="emptyBoxVisible" />
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </template>
 
       <Paginator
@@ -259,15 +252,9 @@
       />
     </FilteredList>
 
-    <VehicleModal
-      ref="vehicleModal"
-      :hangar-groups="hangarGroups"
-    />
+    <VehicleModal ref="vehicleModal" :hangar-groups="hangarGroups" />
 
-    <AddonsModal
-      ref="addonsModal"
-      modifiable
-    />
+    <AddonsModal ref="addonsModal" modifiable />
 
     <NewVehiclesModal ref="newVehiclesModal" />
   </section>
@@ -318,12 +305,7 @@ export default {
     FleetchartSlider,
   },
 
-  mixins: [
-    MetaInfo,
-    Filters,
-    Pagination,
-    Hash,
-  ],
+  mixins: [MetaInfo, Filters, Pagination, Hash],
 
   data() {
     return {
@@ -339,13 +321,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
 
     ...mapGetters('hangar', [
       'ships',
@@ -356,8 +334,11 @@ export default {
     ]),
 
     emptyBoxVisible() {
-      return !this.loading && (this.noVehicles || this.noFleetchartVehicles)
-        && this.isFilterSelected
+      return (
+        !this.loading &&
+        (this.noVehicles || this.noFleetchartVehicles) &&
+        this.isFilterSelected
+      )
     },
 
     guideVisible() {
@@ -394,7 +375,9 @@ export default {
     },
 
     starship42Url() {
-      const shipList = this.fleetchartVehicles.map((vehicle) => vehicle.model.rsiName)
+      const shipList = this.fleetchartVehicles.map(
+        vehicle => vehicle.model.rsiName,
+      )
       const data = { source: 'FleetYards', type: 'matrix', s: shipList }
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
@@ -486,7 +469,7 @@ export default {
     },
 
     removeVehicle(vehicle) {
-      const index = this.vehicles.findIndex((item) => item.id === vehicle.id)
+      const index = this.vehicles.findIndex(item => item.id === vehicle.id)
       if (index >= 0) {
         this.vehicles.splice(index, 1)
       }
@@ -517,12 +500,15 @@ export default {
         this.vehiclesChannel.unsubscribe()
       }
 
-      this.vehiclesChannel = this.$cable.subscriptions.create({
-        channel: 'HangarChannel',
-        username: this.currentUser.username,
-      }, {
-        received: this.fetch,
-      })
+      this.vehiclesChannel = this.$cable.subscriptions.create(
+        {
+          channel: 'HangarChannel',
+          username: this.currentUser.username,
+        },
+        {
+          received: this.fetch,
+        },
+      )
     },
 
     async fetchGroups() {
@@ -542,7 +528,13 @@ export default {
       const response = await this.$api.download('vehicles/export.csv')
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(new Blob([response.data]))
-      link.setAttribute('download', `fleetyards-${this.currentUser.username}-hangar-${format(new Date(), 'yyyy-MM-dd-HH-mm')}.csv`)
+      link.setAttribute(
+        'download',
+        `fleetyards-${this.currentUser.username}-hangar-${format(
+          new Date(),
+          'yyyy-MM-dd-HH-mm',
+        )}.csv`,
+      )
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -552,5 +544,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

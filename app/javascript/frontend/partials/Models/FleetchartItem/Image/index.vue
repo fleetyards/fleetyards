@@ -7,7 +7,7 @@
     }"
     :alt="model.name"
     class="fleetchart-item-image"
-  >
+  />
   <span v-else>
     <i class="fal fa-question-circle" />
     <p>{{ model.name }}</p>

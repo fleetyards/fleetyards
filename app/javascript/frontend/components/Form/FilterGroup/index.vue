@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="filterGroup"
-    class="filter-list"
-  >
+  <div ref="filterGroup" class="filter-list">
     <div
       :class="{
         active: visible,
@@ -30,11 +27,8 @@
         class="filter-list-item fade-list-item"
         @click="select(option[valueAttr])"
       >
-        <span
-          v-if="option[iconAttr]"
-          class="filter-list-item-icon"
-        >
-          <img :src="option[iconAttr]">
+        <span v-if="option[iconAttr]" class="filter-list-item-icon">
+          <img :src="option[iconAttr]" />
         </span>
         <span v-html="option[labelAttr]" />
         <span v-if="multiple">
@@ -70,11 +64,8 @@
           class="filter-list-item fade-list-item"
           @click="select(returnObject ? option : option[valueAttr])"
         >
-          <span
-            v-if="option[iconAttr]"
-            class="filter-list-item-icon"
-          >
-            <img :src="option[iconAttr]">
+          <span v-if="option[iconAttr]" class="filter-list-item-icon">
+            <img :src="option[iconAttr]" />
           </span>
           <span v-html="option[labelAttr]" />
           <span v-if="multiple">
@@ -234,17 +225,22 @@ export default {
 
     selectedOptions() {
       if (this.multiple) {
-        return this.availableOptions.filter((item) => this.value.includes(item[this.valueAttr]))
+        return this.availableOptions.filter(item =>
+          this.value.includes(item[this.valueAttr]),
+        )
       }
-      const selectedOption = this.availableOptions
-        .find((item) => item[this.valueAttr] === this.value)
+      const selectedOption = this.availableOptions.find(
+        item => item[this.valueAttr] === this.value,
+      )
       return selectedOption ? [selectedOption] : []
     },
 
     filteredOptions() {
       if (this.search) {
-        return this.availableOptions.filter(
-          (item) => item[this.labelAttr].toLowerCase().includes(this.search.toLowerCase()),
+        return this.availableOptions.filter(item =>
+          item[this.labelAttr]
+            .toLowerCase()
+            .includes(this.search.toLowerCase()),
         )
       }
       return this.availableOptions
@@ -261,7 +257,7 @@ export default {
     document.addEventListener('click', this.documentClick)
   },
 
-  destroyed () {
+  destroyed() {
     document.removeEventListener('click', this.documentClick)
   },
 
@@ -307,7 +303,10 @@ export default {
 
       this.loading = true
 
-      const response = await this.internalFetch({ page: this.page, search: this.search })
+      const response = await this.internalFetch({
+        page: this.page,
+        search: this.search,
+      })
 
       this.loading = false
 
@@ -322,8 +321,11 @@ export default {
     },
 
     async fetchMissingOption() {
-      if (!this.value || (this.multiple && this.selectedOptions.length === this.value.length)
-        || (!this.multiple && this.selectedOptions[0] === this.value)) {
+      if (
+        !this.value ||
+        (this.multiple && this.selectedOptions.length === this.value.length) ||
+        (!this.multiple && this.selectedOptions[0] === this.value)
+      ) {
         return
       }
 
@@ -364,10 +366,12 @@ export default {
     },
 
     addOptions(newOptions) {
-      newOptions.forEach((item) => {
-        if (!this.availableOptions.find(
-          (option) => option[this.valueAttr] === item[this.valueAttr],
-        )) {
+      newOptions.forEach(item => {
+        if (
+          !this.availableOptions.find(
+            option => option[this.valueAttr] === item[this.valueAttr],
+          )
+        ) {
           this.fetchedOptions.push(item)
         }
       })
@@ -390,7 +394,10 @@ export default {
 
       if (this.selected(option)) {
         if (this.multiple) {
-          this.$emit('input', this.value.filter((item) => item !== option))
+          this.$emit(
+            'input',
+            this.value.filter(item => item !== option),
+          )
         } else if (this.nullable) {
           this.$emit('input', null)
         }
@@ -406,7 +413,10 @@ export default {
     },
 
     unselect(option) {
-      this.$emit('input', this.value.filter((item) => item !== option))
+      this.$emit(
+        'input',
+        this.value.filter(item => item !== option),
+      )
     },
 
     toggle() {

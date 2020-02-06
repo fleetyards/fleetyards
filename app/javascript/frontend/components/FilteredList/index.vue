@@ -33,14 +33,8 @@
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div
-            v-if="filterVisible"
-            class="col-xs-12 col-md-3 col-xlg-2"
-          >
-            <slot
-              v-if="!hideFilter"
-              name="filter"
-            />
+          <div v-if="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
+            <slot v-if="!hideFilter" name="filter" />
           </div>
         </transition>
         <div
@@ -84,10 +78,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'filtersVisible',
-      'mobile',
-    ]),
+    ...mapGetters(['filtersVisible', 'mobile']),
 
     filterVisible() {
       return !!this.filtersVisible[this.$route.name] && !this.hideFilter
@@ -103,8 +94,8 @@ export default {
     isFilterSelected() {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
       Object.keys(query)
-        .filter((key) => !query[key] || query[key].length === 0)
-        .forEach((key) => delete query[key])
+        .filter(key => !query[key] || query[key].length === 0)
+        .forEach(key => delete query[key])
       return Object.keys(query).length > 0
     },
   },

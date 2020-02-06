@@ -8,28 +8,16 @@
         </h1>
       </div>
     </div>
-    <div
-      v-if="starsystem"
-      class="row"
-    >
+    <div v-if="starsystem" class="row">
       <div class="col-xs-12 col-md-8">
-        <blockquote
-          v-if="starsystem.description"
-          class="description"
-        >
+        <blockquote v-if="starsystem.description" class="description">
           <p v-html="starsystem.description" />
         </blockquote>
       </div>
       <div class="col-xs-12 col-md-4">
         <Panel>
-          <StarsystemBaseMetrics
-            :starsystem="starsystem"
-            padding
-          />
-          <StarsystemLevelsMetrics
-            :starsystem="starsystem"
-            padding
-          />
+          <StarsystemBaseMetrics :starsystem="starsystem" padding />
+          <StarsystemLevelsMetrics :starsystem="starsystem" padding />
         </Panel>
       </div>
     </div>
@@ -45,12 +33,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="celestialObject in celestialObjects"
             :key="celestialObject.slug"
@@ -97,10 +80,7 @@
             </PlanetList>
           </div>
         </transition-group>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
     <div class="row">
@@ -141,11 +121,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Hash, Pagination],
 
   data() {
     return {
@@ -175,13 +151,15 @@ export default {
         return null
       }
 
-      return [{
-        to: {
-          name: 'starsystems',
-          hash: `#${this.starsystem.slug}`,
+      return [
+        {
+          to: {
+            name: 'starsystems',
+            hash: `#${this.starsystem.slug}`,
+          },
+          label: this.$t('nav.starsystems'),
         },
-        label: this.$t('nav.starsystems'),
-      }]
+      ]
     },
   },
 
@@ -204,7 +182,9 @@ export default {
 
   methods: {
     async fetch() {
-      const response = await this.$api.get(`starsystems/${this.$route.params.slug}`)
+      const response = await this.$api.get(
+        `starsystems/${this.$route.params.slug}`,
+      )
       if (!response.error) {
         this.starsystem = response.data
       }

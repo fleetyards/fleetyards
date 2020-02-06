@@ -1,15 +1,10 @@
-import { apiClient } from 'frontend/lib/ApiClient'
-
 export default {
   reset({ commit }) {
     commit('reset')
   },
 
-  async fetch({ commit }) {
-    const response = await apiClient.get('vehicles/hangar-items', null, true)
-    if (!response.error) {
-      commit('setShips', response.data)
-    }
+  saveHangar({ commit }, payload) {
+    commit('setShips', payload)
   },
 
   hidePreview({ commit }) {

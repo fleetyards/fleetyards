@@ -1,50 +1,37 @@
 <template>
   <div>
-    <Btn
-      size="small"
-      class="support-button"
-      @click.native="open"
-    >
+    <Btn size="small" class="support-button" @click.native="open">
       {{ $t('actions.supportUs') }}
     </Btn>
-    <Modal
-      ref="modal"
-      :title="$t('headlines.support')"
-    >
+    <Modal ref="modal" :title="$t('headlines.support')">
       <div class="support-body">
-        <br>
+        <br />
         <div class="row">
           <div class="col-xs-12">
             <p v-html="$t('texts.support.info')" />
           </div>
         </div>
-        <br>
+        <br />
         <div class="row">
           <div class="col-xs-12">
-            <p v-html="$t('texts.support.code', { code: 'STAR-5F32-SJZ4'})" />
+            <p v-html="$t('texts.support.code', { code: 'STAR-5F32-SJZ4' })" />
           </div>
         </div>
-        <br>
+        <br />
         <p>
           {{ $t('labels.supportUs') }}
         </p>
-        <Btn
-          href="https://paypal.me/pools/c/83jQLadz60"
-          size="large"
-        >
+        <Btn href="https://paypal.me/pools/c/83jQLadz60" size="large">
           <i class="fab fa-paypal" />
           PayPal
         </Btn>
         {{ $t('labels.or') }}&nbsp;&nbsp;
-        <Btn
-          href="https://www.patreon.com/fleetyards"
-          size="large"
-        >
+        <Btn href="https://www.patreon.com/fleetyards" size="large">
           <i class="fab fa-patreon" />
           Patreon
         </Btn>
       </div>
-    </modal>
+    </Modal>
   </div>
 </template>
 
@@ -71,5 +58,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'styles/index.scss';
+@import 'styles/index.scss';
 </style>

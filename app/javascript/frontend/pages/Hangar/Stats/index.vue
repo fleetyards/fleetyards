@@ -158,9 +158,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -214,7 +212,9 @@ export default {
       }
     },
     async loadModelsByClassification() {
-      const response = await this.$api.get('vehicles/stats/models-by-classification')
+      const response = await this.$api.get(
+        'vehicles/stats/models-by-classification',
+      )
       if (!response.error) {
         return response.data
       }
@@ -230,7 +230,9 @@ export default {
     },
 
     async loadModelsByManufacturer() {
-      const response = await this.$api.get('vehicles/stats/models-by-manufacturer')
+      const response = await this.$api.get(
+        'vehicles/stats/models-by-manufacturer',
+      )
       if (!response.error) {
         return response.data
       }
@@ -238,7 +240,9 @@ export default {
     },
 
     async loadModelsByProductionStatus() {
-      const response = await this.$api.get('vehicles/stats/models-by-production-status')
+      const response = await this.$api.get(
+        'vehicles/stats/models-by-production-status',
+      )
       if (!response.error) {
         return response.data
       }

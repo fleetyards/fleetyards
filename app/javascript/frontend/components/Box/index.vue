@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{
-      'box-large': large
+      'box-large': large,
     }"
     class="box"
   >

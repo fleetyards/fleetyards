@@ -24,10 +24,7 @@
             <i class="far fa-chevron-down" />
           </span>
         </Btn>
-        <Btn
-          :to="{name: 'models-compare'}"
-          size="small"
-        >
+        <Btn :to="{ name: 'models-compare' }" size="small">
           {{ $t('actions.compare.models') }}
         </Btn>
         <DownloadScreenshotBtn
@@ -35,10 +32,7 @@
           element="#fleetchart"
           filename="ships-fleetchart"
         />
-        <Btn
-          size="small"
-          @click.native="toggleFleetchart"
-        >
+        <Btn size="small" @click.native="toggleFleetchart">
           <template v-if="fleetchartVisible">
             {{ $t('actions.hideFleetchart') }}
           </template>
@@ -59,14 +53,8 @@
       <ModelsFilterForm slot="filter" />
 
       <template v-slot:default="{ filterVisible }">
-        <transition
-          name="fade"
-          appear
-        >
-          <div
-            v-if="fleetchartVisible && fleetchartModels.length"
-            class="row"
-          >
+        <transition name="fade" appear>
+          <div v-if="fleetchartVisible && fleetchartModels.length" class="row">
             <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
               <FleetchartSlider
                 :initial-scale="fleetchartScale"
@@ -76,10 +64,7 @@
           </div>
         </transition>
 
-        <div
-          v-if="fleetchartVisible"
-          class="row"
-        >
+        <div v-if="fleetchartVisible" class="row">
           <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
@@ -114,19 +99,13 @@
             }"
             class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
           >
-            <ModelPanel
-              :model="model"
-              :details="detailsVisible"
-            />
+            <ModelPanel :model="model" :details="detailsVisible" />
           </div>
         </transition-group>
 
         <EmptyBox :visible="emptyBoxVisible" />
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </template>
 
       <Paginator
@@ -171,12 +150,7 @@ export default {
     FleetchartSlider,
   },
 
-  mixins: [
-    MetaInfo,
-    Filters,
-    Pagination,
-    Hash,
-  ],
+  mixins: [MetaInfo, Filters, Pagination, Hash],
 
   data() {
     return {
@@ -194,8 +168,11 @@ export default {
     ]),
 
     emptyBoxVisible() {
-      return !this.loading && !this.models.length && (this.isFilterSelected
-        || this.$route.query.page)
+      return (
+        !this.loading &&
+        !this.models.length &&
+        (this.isFilterSelected || this.$route.query.page)
+      )
     },
 
     toggleDetailsTooltip() {

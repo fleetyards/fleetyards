@@ -1,9 +1,6 @@
 <template>
   <section class="container">
-    <div
-      v-if="fleet"
-      class="row"
-    >
+    <div v-if="fleet" class="row">
       <div class="col-xs-12 col-md-8">
         <h1>
           <Avatar
@@ -32,10 +29,7 @@
           target="_blank"
           rel="noopener"
         >
-          <img
-            :src="require('images/rsi_logo.png').default"
-            alt="rsi"
-          >
+          <img :src="require('images/rsi_logo.png').default" alt="rsi" />
         </a>
         <a
           v-if="fleet.discord"
@@ -75,10 +69,7 @@
         </a>
       </div>
     </div>
-    <div
-      v-if="fleetCount"
-      class="row"
-    >
+    <div v-if="fleetCount" class="row">
       <div class="col-xs-12">
         <ModelClassLabels
           v-if="myFleet"
@@ -92,14 +83,8 @@
       v-if="fleetCount && fleetCount.metrics && !mobile && myFleet"
       class="row"
     >
-      <div
-        class="col-xs-12 fleet-metrics metrics-block"
-        @click="toggleMoney"
-      >
-        <div
-          v-if="money"
-          class="metrics-item"
-        >
+      <div class="col-xs-12 fleet-metrics metrics-block" @click="toggleMoney">
+        <div v-if="money" class="metrics-item">
           <div class="metrics-label">
             {{ $t('labels.hangarMetrics.totalMoney') }}:
           </div>
@@ -141,13 +126,8 @@
         </div>
       </div>
     </div>
-    <FilteredList
-      :hide-filter="!myFleet"
-    >
-      <template
-        v-if="myFleet"
-        slot="actions"
-      >
+    <FilteredList :hide-filter="!myFleet">
+      <template v-if="myFleet" slot="actions">
         <Btn
           v-show="!fleetchartVisible"
           v-tooltip="toggleDetailsTooltip"
@@ -170,10 +150,7 @@
           :filename="`${fleet.slug}-fleetchart`"
         />
 
-        <Btn
-          size="small"
-          @click.native="toggleFleetchart"
-        >
+        <Btn size="small" @click.native="toggleFleetchart">
           <template v-if="fleetchartVisible">
             {{ $t('actions.hideFleetchart') }}
           </template>
@@ -210,10 +187,7 @@
       </template>
 
       <template v-slot:default="{ filterVisible }">
-        <transition
-          name="fade"
-          appear
-        >
+        <transition name="fade" appear>
           <div
             v-if="fleetchartVisible && fleetchartVehicles.length"
             class="row"
@@ -227,10 +201,7 @@
           </div>
         </transition>
 
-        <div
-          v-if="fleetchartVisible"
-          class="row"
-        >
+        <div v-if="fleetchartVisible" class="row">
           <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
@@ -295,10 +266,7 @@
 
         <EmptyBox :visible="emptyBoxVisible" />
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </template>
 
       <Paginator
@@ -353,11 +321,7 @@ export default {
     Avatar,
   },
 
-  mixins: [
-    MetaInfo,
-    Pagination,
-    Filters,
-  ],
+  mixins: [MetaInfo, Pagination, Filters],
 
   data() {
     return {
@@ -379,13 +343,9 @@ export default {
       return this.fleet.name
     },
 
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
 
     ...mapGetters('fleet', [
       'detailsVisible',
@@ -400,13 +360,17 @@ export default {
         return null
       }
 
-      return this.currentUser.fleets.find((fleet) => !fleet.invitation
-        && fleet.slug === this.$route.params.slug)
+      return this.currentUser.fleets.find(
+        fleet => !fleet.invitation && fleet.slug === this.$route.params.slug,
+      )
     },
 
     emptyBoxVisible() {
-      return !this.loading && (this.noVehicles || this.noFleetchartVehicles)
-        && this.isFilterSelected
+      return (
+        !this.loading &&
+        (this.noVehicles || this.noFleetchartVehicles) &&
+        this.isFilterSelected
+      )
     },
 
     noVehicles() {
@@ -510,7 +474,10 @@ export default {
 
       if (!response.error) {
         this.fleet = response.data
-      } else if (response.error.response && response.error.response.status === 404) {
+      } else if (
+        response.error.response &&
+        response.error.response.status === 404
+      ) {
         this.$router.replace({ name: '404' })
       }
 
@@ -522,10 +489,13 @@ export default {
     async fetchVehicles() {
       this.loading = true
 
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/vehicles`, {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/vehicles`,
+        {
+          q: this.$route.query.q,
+          page: this.$route.query.page,
+        },
+      )
 
       if (!response.error) {
         this.vehicles = response.data
@@ -539,10 +509,13 @@ export default {
     async fetchModels() {
       this.loading = true
 
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/models`, {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/models`,
+        {
+          q: this.$route.query.q,
+          page: this.$route.query.page,
+        },
+      )
 
       if (!response.error) {
         this.models = response.data
@@ -556,9 +529,12 @@ export default {
     async fetchFleetchart() {
       this.loading = true
 
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/fleetchart`, {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/fleetchart`,
+        {
+          q: this.$route.query.q,
+        },
+      )
 
       if (!response.error) {
         this.fleetchartVehicles = response.data
@@ -568,9 +544,12 @@ export default {
     },
 
     async fetchFleetCount() {
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/quick-stats`, {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/quick-stats`,
+        {
+          q: this.$route.query.q,
+        },
+      )
 
       if (!response.error) {
         this.fleetCount = response.data
@@ -587,5 +566,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

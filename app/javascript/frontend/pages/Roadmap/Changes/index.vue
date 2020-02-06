@@ -27,15 +27,10 @@
         </div>
       </div>
     </div>
-    <hr class="dark">
+    <hr class="dark" />
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
             :key="`releases-${release}`"
@@ -46,7 +41,9 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>{{ $t('labels.roadmap.stories', { count: items.length }) }}</small>
+              <small>
+                {{ $t('labels.roadmap.stories', { count: items.length }) }}
+              </small>
             </h2>
 
             <div class="flex-row">
@@ -61,10 +58,7 @@
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
   </section>
@@ -89,9 +83,7 @@ export default {
     RoadmapItem,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -146,11 +138,14 @@ export default {
         this.roadmapChannel.unsubscribe()
       }
 
-      this.roadmapChannel = this.$cable.subscriptions.create({
-        channel: 'RoadmapChannel',
-      }, {
-        received: this.fetch,
-      })
+      this.roadmapChannel = this.$cable.subscriptions.create(
+        {
+          channel: 'RoadmapChannel',
+        },
+        {
+          received: this.fetch,
+        },
+      )
     },
 
     async fetchOptions() {
@@ -174,7 +169,7 @@ export default {
       this.loading = false
 
       if (!response.error) {
-        this.roadmapChanges = response.data.filter((item) => item.lastVersion)
+        this.roadmapChanges = response.data.filter(item => item.lastVersion)
       }
     },
   },

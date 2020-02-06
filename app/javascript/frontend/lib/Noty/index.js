@@ -10,7 +10,7 @@ Noty.overrideDefaults({
           <div class="noty_body">${this.options.text}</div>
         `
         const buttons = []
-        this.options.buttons.forEach((button) => {
+        this.options.buttons.forEach(button => {
           const inner = document.createElement('div')
           inner.setAttribute('class', 'panel-btn-inner')
           inner.textContent = button.dom.textContent
@@ -53,10 +53,14 @@ Noty.overrideDefaults({
 })
 
 const notifyPermissionGranted = function notifyPermissionGranted() {
-  return ('Notification' in window) && window.Notification.permission === 'granted'
+  return (
+    'Notification' in window && window.Notification.permission === 'granted'
+  )
 }
 
-const displayDesktopNotification = function displayDesktopNotification(message) {
+const displayDesktopNotification = function displayDesktopNotification(
+  message,
+) {
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
     icon: `${window.FRONTEND_ENDPOINT}${require('images/favicon.png')}`,
@@ -68,14 +72,17 @@ const displayDesktopNotification = function displayDesktopNotification(message) 
 const displayNativeNotification = function displayNativeNotification(message) {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.ready.then((registration) => {
-      registration.showNotification(message, {
-        icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
-        vibrate: [200, 100, 200, 100, 200, 100, 200],
-      })
-    }, () => {
-      displayDesktopNotification(message)
-    })
+    navigator.serviceWorker.ready.then(
+      registration => {
+        registration.showNotification(message, {
+          icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
+          vibrate: [200, 100, 200, 100, 200, 100, 200],
+        })
+      },
+      () => {
+        displayDesktopNotification(message)
+      },
+    )
   } else {
     displayDesktopNotification(message)
   }
@@ -114,8 +121,12 @@ const displayNotification = function displayNotification(options) {
     lastNotyText = defaults.text
 
     let displayText = defaults.text
-    if (document.visibilityState !== 'visible' && notifyPermissionGranted() && defaults.notifyInBackground) {
-      notifyInBackground(displayText.replace(/(<([^>]+)>)/ig, ''))
+    if (
+      document.visibilityState !== 'visible' &&
+      notifyPermissionGranted() &&
+      defaults.notifyInBackground
+    ) {
+      notifyInBackground(displayText.replace(/(<([^>]+)>)/gi, ''))
     } else {
       if (Array.isArray(displayText)) {
         displayText = displayText.join('<br>')
@@ -166,13 +177,22 @@ const displayConfirm = function displayConfirm(options) {
       close: 'noty_effects_close',
     },
     buttons: [
-      Noty.button(I18n.t('actions.confirm'), `panel-btn panel-btn-inline${btnClass}`, () => {
-        n.close()
-        defaults.onConfirm()
-      }, { 'data-status': 'ok' }),
-      Noty.button(I18n.t('actions.cancel'), 'panel-btn panel-btn-inline', () => {
-        n.close()
-      }),
+      Noty.button(
+        I18n.t('actions.confirm'),
+        `panel-btn panel-btn-inline${btnClass}`,
+        () => {
+          n.close()
+          defaults.onConfirm()
+        },
+        { 'data-status': 'ok' },
+      ),
+      Noty.button(
+        I18n.t('actions.cancel'),
+        'panel-btn panel-btn-inline',
+        () => {
+          n.close()
+        },
+      ),
     ],
     callbacks: {
       onClose() {
@@ -187,7 +207,7 @@ export function requestPermission() {
     return
   }
 
-  window.Notification.requestPermission((permission) => {
+  window.Notification.requestPermission(permission => {
     if (permission === 'granted') {
       displayNativeNotification(I18n.t('messages.notification.granted'))
     }

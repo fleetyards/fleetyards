@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    :id="item.slug"
-    class="station-list"
-  >
+  <Panel :id="item.slug" class="station-list">
     <div
       :key="item.storeImage"
       v-lazy:background-image="item.storeImage"
@@ -12,10 +9,7 @@
       <div class="col-xs-12">
         <div class="panel-heading">
           <h2 class="panel-title">
-            <router-link
-              :to="route"
-              :aria-label="item.name"
-            >
+            <router-link :to="route" :aria-label="item.name">
               {{ item.name }}
             </router-link>
           </h2>
@@ -54,5 +48,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

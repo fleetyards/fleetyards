@@ -1,9 +1,6 @@
 <template>
   <transition name="fade">
-    <div
-      v-if="!online"
-      class="network-status"
-    >
+    <div v-if="!online" class="network-status">
       {{ $t('labels.networkStatusOffline') }}
     </div>
   </transition>
@@ -14,9 +11,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters([
-      'online',
-    ]),
+    ...mapGetters(['online']),
   },
 
   created() {
@@ -40,5 +35,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

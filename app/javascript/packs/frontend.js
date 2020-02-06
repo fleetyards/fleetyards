@@ -8,7 +8,7 @@ import store from 'frontend/lib/Store'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Bootstrap'
-import I18n from 'frontend/lib/I18n'
+import I18nPlugin from 'frontend/lib/I18n'
 import ApiClient from 'frontend/lib/ApiClient'
 import Subscriptions from 'frontend/lib/Subscriptions'
 import VueScrollTo from 'vue-scrollto'
@@ -39,7 +39,7 @@ TWITTER: https://twitter.com/FleetYardsNet
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
-Vue.use(I18n)
+Vue.use(I18nPlugin)
 Vue.use(DataPrefetch)
 Vue.use(Helpers)
 Vue.use(Noty)
@@ -86,13 +86,19 @@ console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
-      // Registration was successful
-      console.info('ServiceWorker registration successful with scope: ', registration.scope)
-    }, (err) => {
-      // registration failed :(
-      console.error('ServiceWorker registration failed: ', err)
-    })
+    navigator.serviceWorker.register('/service-worker.js').then(
+      registration => {
+        // Registration was successful
+        console.info(
+          'ServiceWorker registration successful with scope: ',
+          registration.scope,
+        )
+      },
+      err => {
+        // registration failed :(
+        console.error('ServiceWorker registration failed: ', err)
+      },
+    )
   }
 
   if (store.state.storeVersion !== window.STORE_VERSION) {
@@ -104,13 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   store.dispatch('sentry/reset')
 
-  store.dispatch('app/init')
-
   // eslint-disable-next-line no-new
   new Vue({
     el: '#app',
     router,
     store,
-    render: (h) => h(App),
+    render: h => h(App),
   })
 })

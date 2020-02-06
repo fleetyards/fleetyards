@@ -2,17 +2,10 @@
   <section class="container signup">
     <div class="row">
       <div class="col-xs-12">
-        <ValidationObserver
-          ref="form"
-          v-slot="{ handleSubmit }"
-          small
-        >
+        <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
           <form @submit.prevent="handleSubmit(signup)">
             <h1>
-              <router-link
-                to="/"
-                exact
-              >
+              <router-link to="/" exact>
                 {{ $t('app') }}
               </router-link>
             </h1>
@@ -97,9 +90,7 @@
 
             <p class="privacy-info">
               {{ $t('labels.signup.privacyPolicy') }}
-              <router-link
-                :to="{name: 'privacy-policy'}"
-              >
+              <router-link :to="{ name: 'privacy-policy' }">
                 {{ $t('labels.privacyPolicy') }}
               </router-link>
             </p>
@@ -109,11 +100,7 @@
                 {{ $t('labels.alreadyRegistered') }}
               </p>
 
-              <Btn
-                :to="{name: 'login'}"
-                size="small"
-                block
-              >
+              <Btn :to="{ name: 'login' }" size="small" block>
                 {{ $t('actions.login') }}
               </Btn>
             </footer>
@@ -139,9 +126,7 @@ export default {
     Checkbox,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -169,7 +154,11 @@ export default {
           text: this.$t('messages.signup.success'),
         })
         this.$router.push('/')
-      } else if (response.error.response && response.error.response.data && response.error.response.data.code === 'blacklisted') {
+      } else if (
+        response.error.response &&
+        response.error.response.data &&
+        response.error.response.data.code === 'blacklisted'
+      ) {
         this.$alert({
           text: this.$t('texts.signup.blacklisted'),
         })
@@ -195,5 +184,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

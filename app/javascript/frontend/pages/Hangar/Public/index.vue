@@ -1,9 +1,6 @@
 <template>
   <section class="container hangar">
-    <div
-      v-if="user"
-      class="row"
-    >
+    <div v-if="user" class="row">
       <div class="col-xs-12 col-md-12">
         <div class="row">
           <div class="col-xs-12" />
@@ -45,10 +42,7 @@
                 element="#fleetchart"
                 :filename="`${username}-hangar-fleetchart`"
               />
-              <Btn
-                size="small"
-                @click.native="toggleFleetchart"
-              >
+              <Btn size="small" @click.native="toggleFleetchart">
                 <template v-if="publicFleetchartVisible">
                   {{ $t('actions.hideFleetchart') }}
                 </template>
@@ -59,10 +53,7 @@
             </div>
           </div>
         </div>
-        <transition
-          name="fade"
-          appear
-        >
+        <transition name="fade" appear>
           <div
             v-if="publicFleetchartVisible && fleetchartVehicles.length > 0"
             class="row"
@@ -75,10 +66,7 @@
             </div>
           </div>
         </transition>
-        <div
-          v-if="publicFleetchartVisible"
-          class="row"
-        >
+        <div v-if="publicFleetchartVisible" class="row">
           <div class="col-xs-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
@@ -115,10 +103,7 @@
             />
           </div>
         </transition-group>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
     <div class="row">
@@ -164,10 +149,7 @@ export default {
     Avatar,
   },
 
-  mixins: [
-    MetaInfo,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Pagination],
 
   data() {
     return {
@@ -194,7 +176,11 @@ export default {
     },
 
     usernamePlural() {
-      if (this.userTitle.endsWith('s') || this.userTitle.endsWith('x') || this.userTitle.endsWith('z')) {
+      if (
+        this.userTitle.endsWith('s') ||
+        this.userTitle.endsWith('x') ||
+        this.userTitle.endsWith('z')
+      ) {
         return this.userTitle
       }
 
@@ -249,7 +235,10 @@ export default {
 
       if (!response.error) {
         this.user = response.data
-      } else if (response.error.response && response.error.response.status === 404) {
+      } else if (
+        response.error.response &&
+        response.error.response.status === 404
+      ) {
         this.$router.replace({ name: '404' })
       }
     },
@@ -271,7 +260,9 @@ export default {
     },
 
     async fetchCount() {
-      const response = await this.$api.get(`vehicles/${this.username}/quick-stats`)
+      const response = await this.$api.get(
+        `vehicles/${this.username}/quick-stats`,
+      )
 
       if (!response.error) {
         this.vehiclesCount = response.data
@@ -281,7 +272,9 @@ export default {
     async fetchFleetchart() {
       this.loading = true
 
-      const response = await this.$api.get(`vehicles/${this.username}/fleetchart`)
+      const response = await this.$api.get(
+        `vehicles/${this.username}/fleetchart`,
+      )
 
       this.loading = false
 
@@ -294,5 +287,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

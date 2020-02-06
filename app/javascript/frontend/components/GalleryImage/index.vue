@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import LazyImage from 'frontend/components/LazyImage'
 
 export default {
@@ -46,5 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

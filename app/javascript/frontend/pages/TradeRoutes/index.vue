@@ -14,16 +14,10 @@
           @toggle:left="sortBy('profit')"
           @toggle:right="sortBy('percent')"
         >
-          <span
-            slot="left"
-            v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
-          >
+          <span slot="left" v-tooltip="$t('labels.tradeRoutes.sortByProfit')">
             <i class="far fa-dollar-sign" />
           </span>
-          <span
-            slot="right"
-            v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
-          >
+          <span slot="right" v-tooltip="$t('labels.tradeRoutes.sortByPercent')">
             <i class="far fa-percent" />
           </span>
         </Toggle>
@@ -36,19 +30,13 @@
         right
       />
       <FilterForm slot="filter" />
-      <transition-group
-        name="fade-list"
-        class="row"
-        tag="div"
-        appear
-      >
-        <QuickFilter
-          v-if="!mobile"
-          key="quickfilter"
-        />
+      <transition-group name="fade-list" class="row" tag="div" appear>
+        <QuickFilter v-if="!mobile" key="quickfilter" />
         <div
           v-for="route in tradeRoutes"
-          :key="`${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`"
+          :key="
+            `${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`
+          "
           class="col-xs-12 fade-list-item cargo-route"
         >
           <div class="flex-row">
@@ -61,17 +49,21 @@
                         name: 'station',
                         params: {
                           slug: route.origin.slug,
-                        }
+                        },
                       }"
                     >
                       {{ route.origin.name }}
                     </router-link>
-                    <br>
+                    <br />
                     <small>
                       {{ route.origin.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.buy', { uec: profit(route.buyPrice) }) }}
+                  {{
+                    $t('labels.tradeRoutes.buy', {
+                      uec: profit(route.buyPrice),
+                    })
+                  }}
                 </div>
               </Panel>
             </div>
@@ -96,17 +88,21 @@
                         name: 'station',
                         params: {
                           slug: route.destination.slug,
-                        }
+                        },
                       }"
                     >
                       {{ route.destination.name }}
                     </router-link>
-                    <br>
+                    <br />
                     <small>
                       {{ route.destination.locationLabel }}
                     </small>
                   </h3>
-                  {{ $t('labels.tradeRoutes.sell', { uec: profit(route.sellPrice) }) }}
+                  {{
+                    $t('labels.tradeRoutes.sell', {
+                      uec: profit(route.sellPrice),
+                    })
+                  }}
                 </div>
               </Panel>
             </div>
@@ -114,10 +110,7 @@
         </div>
       </transition-group>
       <EmptyBox :visible="emptyBoxVisible" />
-      <Loader
-        :loading="loading"
-        fixed
-      />
+      <Loader :loading="loading" fixed />
       <Paginator
         v-if="tradeRoutes.length"
         slot="pagination-bottom"
@@ -155,11 +148,7 @@ export default {
     QuickFilter,
   },
 
-  mixins: [
-    MetaInfo,
-    Filters,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Filters, Pagination],
 
   data() {
     return {
@@ -171,9 +160,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
     title() {
       if (this.cargoShip) {
@@ -190,8 +177,11 @@ export default {
     },
 
     emptyBoxVisible() {
-      return !this.loading && !this.tradeRoutes.length && (this.isFilterSelected
-        || this.$route.query.page)
+      return (
+        !this.loading &&
+        !this.tradeRoutes.length &&
+        (this.isFilterSelected || this.$route.query.page)
+      )
     },
 
     sortByPercent() {
@@ -270,5 +260,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -65,7 +65,9 @@ export default {
       type: String,
       default: 'default',
       validator(value) {
-        return ['default', 'transparent', 'link', 'danger'].indexOf(value) !== -1
+        return (
+          ['default', 'transparent', 'link', 'danger'].indexOf(value) !== -1
+        )
       },
     },
     size: {
@@ -114,7 +116,7 @@ export default {
         'panel-btn-inline': this.inline,
         'panel-btn-text-inline': this.textInline,
         'panel-btn-mobile-block': this.mobileBlock,
-        active: this.active,
+        'active': this.active,
       }
     },
   },

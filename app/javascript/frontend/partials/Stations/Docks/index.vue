@@ -37,10 +37,7 @@
                     :key="`dock-${size}`"
                     class="col-xs-6"
                   >
-                    <DockItem
-                      :docks="docks"
-                      :size="size"
-                    />
+                    <DockItem :docks="docks" :size="size" />
                   </div>
                 </div>
               </div>
@@ -62,10 +59,7 @@
               :key="`dock-${size}`"
               class="col-xs-6"
             >
-              <DockItem
-                :docks="docks"
-                :size="size"
-              />
+              <DockItem :docks="docks" :size="size" />
             </div>
           </div>
         </div>
@@ -96,7 +90,7 @@ export default {
 
   computed: {
     hasGroup() {
-      return this.station.docks.some((dock) => !!dock.group)
+      return this.station.docks.some(dock => !!dock.group)
     },
 
     docksBySize() {

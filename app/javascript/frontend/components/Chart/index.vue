@@ -52,7 +52,7 @@ export default {
     xAxis() {
       if (this.chartWithCategory) {
         return {
-          categories: this.data.map((item) => item.label),
+          categories: this.data.map(item => item.label),
         }
       }
       return {}
@@ -73,7 +73,7 @@ export default {
     },
     chartData() {
       if (this.chartWithCategory) {
-        return this.data.map((item) => [item.tooltip, item.count])
+        return this.data.map(item => [item.tooltip, item.count])
       }
       return this.data
     },
@@ -115,8 +115,8 @@ export default {
       this.data = await this.loadData()
       const series = this.instance.series[0]
       if (this.chartWithCategory) {
-        series.setData(this.data.map((item) => [item.tooltip, item.count]))
-        this.instance.xAxis[0].setCategories(this.data.map((item) => item.label))
+        series.setData(this.data.map(item => [item.tooltip, item.count]))
+        this.instance.xAxis[0].setCategories(this.data.map(item => item.label))
       } else {
         series.setData(this.data)
       }
@@ -137,9 +137,11 @@ export default {
             return self.tooltipFormat(this)
           },
         },
-        series: [{
-          data: this.chartData,
-        }],
+        series: [
+          {
+            data: this.chartData,
+          },
+        ],
       })
     },
   },

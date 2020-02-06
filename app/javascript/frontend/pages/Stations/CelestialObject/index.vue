@@ -9,24 +9,15 @@
         </h1>
       </div>
     </div>
-    <div
-      v-if="celestialObject"
-      class="row"
-    >
+    <div v-if="celestialObject" class="row">
       <div class="col-xs-12 col-md-8">
-        <blockquote
-          v-if="celestialObject.description"
-          class="description"
-        >
+        <blockquote v-if="celestialObject.description" class="description">
           <p v-html="celestialObject.description" />
         </blockquote>
       </div>
       <div class="col-xs-12 col-md-4">
         <Panel>
-          <CelestialObjectMetrics
-            :celestial-object="celestialObject"
-            padding
-          />
+          <CelestialObjectMetrics :celestial-object="celestialObject" padding />
         </Panel>
       </div>
     </div>
@@ -36,12 +27,7 @@
         class="col-xs-12"
       >
         <h2>{{ $t('headlines.moons') }}</h2>
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="moon in celestialObject.moons"
             :key="moon.slug"
@@ -61,10 +47,7 @@
         </transition-group>
       </div>
     </div>
-    <div
-      v-if="celestialObject && stations.length"
-      class="row"
-    >
+    <div v-if="celestialObject && stations.length" class="row">
       <div class="col-xs-12 col-md-6">
         <h2>{{ $t('headlines.stations') }}</h2>
       </div>
@@ -77,12 +60,7 @@
         />
       </div>
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"
@@ -91,10 +69,7 @@
             <StationPanel :station="station" />
           </div>
         </transition-group>
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
       <div class="col-xs-12">
         <Paginator
@@ -129,11 +104,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Hash, Pagination],
 
   data() {
     return {
@@ -149,7 +120,10 @@ export default {
         return null
       }
 
-      return this.$t('title.celestialObject', { celestialObject: this.celestialObject.name, starsystem: this.celestialObject.starsystem.name })
+      return this.$t('title.celestialObject', {
+        celestialObject: this.celestialObject.name,
+        starsystem: this.celestialObject.starsystem.name,
+      })
     },
 
     crumbs() {
@@ -157,22 +131,25 @@ export default {
         return null
       }
 
-      const crumbs = [{
-        to: {
-          name: 'starsystems',
-          hash: `#${this.celestialObject.starsystem.slug}`,
-        },
-        label: this.$t('nav.starsystems'),
-      }, {
-        to: {
-          name: 'starsystem',
-          params: {
-            slug: this.celestialObject.starsystem.slug,
+      const crumbs = [
+        {
+          to: {
+            name: 'starsystems',
+            hash: `#${this.celestialObject.starsystem.slug}`,
           },
-          hash: `#${this.celestialObject.slug}`,
+          label: this.$t('nav.starsystems'),
         },
-        label: this.celestialObject.starsystem.name,
-      }]
+        {
+          to: {
+            name: 'starsystem',
+            params: {
+              slug: this.celestialObject.starsystem.slug,
+            },
+            hash: `#${this.celestialObject.slug}`,
+          },
+          label: this.celestialObject.starsystem.name,
+        },
+      ]
 
       if (this.celestialObject.parent) {
         crumbs.push({
@@ -198,7 +175,10 @@ export default {
 
     celestialObject() {
       if (this.celestialObject.storeImage) {
-        this.$store.commit('setBackgroundImage', this.celestialObject.storeImage)
+        this.$store.commit(
+          'setBackgroundImage',
+          this.celestialObject.storeImage,
+        )
       }
     },
   },
@@ -210,7 +190,9 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      const response = await this.$api.get(`celestial-objects/${this.$route.params.slug}`)
+      const response = await this.$api.get(
+        `celestial-objects/${this.$route.params.slug}`,
+      )
       this.loading = false
       if (!response.error) {
         this.celestialObject = response.data
@@ -242,5 +224,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

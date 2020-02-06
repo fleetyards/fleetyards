@@ -1,9 +1,6 @@
 <template>
   <section class="container">
-    <div
-      v-if="fleet && myFleet"
-      class="row"
-    >
+    <div v-if="fleet && myFleet" class="row">
       <div class="col-xs-12">
         <BreadCrumbs :crumbs="crumbs" />
       </div>
@@ -17,11 +14,7 @@
       </div>
       <div class="col-xs-4">
         <div class="page-main-actions">
-          <Btn
-            v-if="canInvite"
-            inline
-            @click.native="openInviteModal"
-          >
+          <Btn v-if="canInvite" inline @click.native="openInviteModal">
             <i class="fal fa-plus" />
             {{ $t('actions.add') }}
           </Btn>
@@ -65,13 +58,11 @@
                 </div>
                 <div class="role" />
                 <div class="joined">
-                  {{ $t('labels.fleet.members.invited') }} / {{ $t('labels.fleet.members.joined') }}
+                  {{ $t('labels.fleet.members.invited') }} /
+                  {{ $t('labels.fleet.members.joined') }}
                 </div>
                 <div class="links" />
-                <div
-                  v-if="canEdit()"
-                  class="actions actions-3x"
-                >
+                <div v-if="canEdit()" class="actions actions-3x">
                   {{ $t('labels.actions') }}
                 </div>
               </div>
@@ -83,17 +74,16 @@
             >
               <div class="flex-list-row">
                 <div class="username">
-                  <Avatar
-                    :avatar="member.avatar"
-                    size="small"
-                  />
+                  <Avatar :avatar="member.avatar" size="small" />
                   {{ member.username }}
                 </div>
                 <div class="rsi-handle">
                   <a
                     v-if="member.rsiHandle"
                     v-tooltip="$t('nav.rsiProfile')"
-                    :href="`https://robertsspaceindustries.com/citizens/${member.rsiHandle}`"
+                    :href="
+                      `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
+                    "
                     target="_blank"
                     rel="noopener"
                   >
@@ -104,10 +94,7 @@
                   <template v-if="member.invitation">
                     {{ $t('labels.fleet.members.invitation') }}
                   </template>
-                  <span
-                    v-else-if="member.declinedAt"
-                    class="text-danger"
-                  >
+                  <span v-else-if="member.declinedAt" class="text-danger">
                     {{ $t('labels.fleet.members.declined') }}
                   </span>
                   <template v-else>
@@ -168,12 +155,13 @@
                     <i class="fab fa-discord" />
                   </a>
                 </div>
-                <div
-                  v-if="canEdit()"
-                  class="actions actions-3x"
-                >
+                <div v-if="canEdit()" class="actions actions-3x">
                   <Btn
-                    v-if="member.role !== 'admin' && !member.invitation && !member.declinedAt"
+                    v-if="
+                      member.role !== 'admin' &&
+                        !member.invitation &&
+                        !member.declinedAt
+                    "
                     size="small"
                     :disabled="!canEdit(member) || updating"
                     inline
@@ -182,7 +170,11 @@
                     <i class="fal fa-chevron-up" />
                   </Btn>
                   <Btn
-                    v-if="member.role !== 'member' && !member.invitation && !member.declinedAt"
+                    v-if="
+                      member.role !== 'member' &&
+                        !member.invitation &&
+                        !member.declinedAt
+                    "
                     size="small"
                     :disabled="!canEdit(member) || updating"
                     inline
@@ -206,10 +198,7 @@
 
         <EmptyBox :visible="emptyBoxVisible" />
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </template>
 
       <Paginator
@@ -221,11 +210,7 @@
       />
     </FilteredList>
 
-    <MemberModal
-      v-if="fleet"
-      ref="memberModal"
-      :fleet="fleet"
-    />
+    <MemberModal v-if="fleet" ref="memberModal" :fleet="fleet" />
   </section>
 </template>
 
@@ -260,12 +245,7 @@ export default {
     MemberModal,
   },
 
-  mixins: [
-    MetaInfoMixin,
-    PaginationMixin,
-    FiltersMixin,
-    FleetsMixin,
-  ],
+  mixins: [MetaInfoMixin, PaginationMixin, FiltersMixin, FleetsMixin],
 
   data() {
     return {
@@ -281,9 +261,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
 
     sortByUsername() {
       const currentSort = (this.$route.query.q || {}).sorts
@@ -292,7 +270,10 @@ export default {
       if (Array.isArray(currentSort)) {
         if (currentSort.includes('user_username asc')) {
           sorts.push('user_username desc')
-        } else if (!currentSort.includes('user_username asc') && !currentSort.includes('user_username desc')) {
+        } else if (
+          !currentSort.includes('user_username asc') &&
+          !currentSort.includes('user_username desc')
+        ) {
           sorts.push('user_username asc')
         }
       } else {
@@ -319,7 +300,10 @@ export default {
       if (Array.isArray(currentSort)) {
         if (currentSort.includes('user_rsi_handle asc')) {
           sorts.push('user_rsi_handle desc')
-        } else if (!currentSort.includes('user_rsi_handle asc') && !currentSort.includes('user_rsi_handle desc')) {
+        } else if (
+          !currentSort.includes('user_rsi_handle asc') &&
+          !currentSort.includes('user_rsi_handle desc')
+        ) {
           sorts.push('user_rsi_handle asc')
         }
       } else {
@@ -356,15 +340,17 @@ export default {
         return []
       }
 
-      return [{
-        to: {
-          name: 'fleet',
-          params: {
-            slug: this.fleet.slug,
+      return [
+        {
+          to: {
+            name: 'fleet',
+            params: {
+              slug: this.fleet.slug,
+            },
           },
+          label: this.fleet.name,
         },
-        label: this.fleet.name,
-      }]
+      ]
     },
 
     canInvite() {
@@ -401,7 +387,10 @@ export default {
   methods: {
     canEdit(member) {
       if (member) {
-        return this.myFleetRole === 'admin' && member.username !== this.currentUser.username
+        return (
+          this.myFleetRole === 'admin' &&
+          member.username !== this.currentUser.username
+        )
       }
 
       return this.myFleetRole === 'admin'
@@ -416,7 +405,9 @@ export default {
       this.$confirm({
         text: this.$t('messages.confirm.fleet.members.destroy'),
         onConfirm: async () => {
-          const response = await this.$api.destroy(`fleets/${this.$route.params.slug}/members/${member.username}`)
+          const response = await this.$api.destroy(
+            `fleets/${this.$route.params.slug}/members/${member.username}`,
+          )
 
           if (!response.error) {
             this.$success({
@@ -440,7 +431,9 @@ export default {
     async demoteMember(member) {
       this.updating = true
 
-      const response = await this.$api.put(`fleets/${this.$route.params.slug}/members/${member.username}/demote`)
+      const response = await this.$api.put(
+        `fleets/${this.$route.params.slug}/members/${member.username}/demote`,
+      )
 
       this.updating = false
 
@@ -459,7 +452,9 @@ export default {
     async promoteMember(member) {
       this.updating = true
 
-      const response = await this.$api.put(`fleets/${this.$route.params.slug}/members/${member.username}/promote`)
+      const response = await this.$api.put(
+        `fleets/${this.$route.params.slug}/members/${member.username}/promote`,
+      )
 
       this.updating = false
 
@@ -485,7 +480,10 @@ export default {
 
         this.fetchMembers()
         this.fetchFleetCount()
-      } else if (response.error.response && response.error.response.status === 404) {
+      } else if (
+        response.error.response &&
+        response.error.response.status === 404
+      ) {
         this.$router.replace({ name: '404' })
       }
 
@@ -495,10 +493,13 @@ export default {
     async fetchMembers() {
       this.loading = true
 
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/members`, {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/members`,
+        {
+          q: this.$route.query.q,
+          page: this.$route.query.page,
+        },
+      )
 
       if (!response.error) {
         this.members = response.data
@@ -510,9 +511,12 @@ export default {
     },
 
     async fetchFleetCount() {
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}/member-quick-stats`, {
-        q: this.$route.query.q,
-      })
+      const response = await this.$api.get(
+        `fleets/${this.$route.params.slug}/member-quick-stats`,
+        {
+          q: this.$route.query.q,
+        },
+      )
 
       if (!response.error) {
         this.fleetCount = response.data

@@ -1,13 +1,7 @@
 <template>
-  <div
-    :id="commodity.slug"
-    class="flex-list-row"
-  >
+  <div :id="commodity.slug" class="flex-list-row">
     <div class="store-image">
-      <router-link
-        v-if="link"
-        :to="link"
-      >
+      <router-link v-if="link" :to="link">
         <div
           :key="commodity.storeImageSmall"
           v-lazy:background-image="commodity.storeImageSmall"
@@ -25,41 +19,38 @@
     </div>
     <div class="description">
       <h2>
-        <router-link
-          v-if="link"
-          :to="link"
-        >
+        <router-link v-if="link" :to="link">
           <span v-html="name" />
         </router-link>
-        <span
-          v-else
-          v-html="name"
-        />
+        <span v-else v-html="name" />
         <small>{{ commodity.subCategoryLabel }}</small>
       </h2>
-      <div
-        v-if="showStats"
-        class="row"
-      >
+      <div v-if="showStats" class="row">
         <div class="col-xs-12 col-md-6">
           <ul class="list-unstyled">
             <li v-if="commodity.item.grade">
-              <b>{{ $t('commodityItem.grade') }}:</b> {{ commodity.item.grade }}
+              <b>{{ $t('commodityItem.grade') }}:</b>
+              {{ commodity.item.grade }}
             </li>
             <li v-if="commodity.item.size">
-              <b>{{ $t('commodityItem.size') }}:</b> {{ commodity.item.size }}
+              <b>{{ $t('commodityItem.size') }}:</b>
+              {{ commodity.item.size }}
             </li>
             <li v-if="commodity.item.typeLabel">
-              <b>{{ $t('commodityItem.type') }}:</b> {{ commodity.item.typeLabel }}
+              <b>{{ $t('commodityItem.type') }}:</b>
+              {{ commodity.item.typeLabel }}
             </li>
             <li v-if="commodity.item.itemTypeLabel">
-              <b>{{ $t('commodityItem.itemType') }}:</b> {{ commodity.item.itemTypeLabel }}
+              <b>{{ $t('commodityItem.itemType') }}:</b>
+              {{ commodity.item.itemTypeLabel }}
             </li>
             <li v-if="commodity.item.weaponClassLabel">
-              <b>{{ $t('commodityItem.weaponClass') }}:</b> {{ commodity.item.weaponClassLabel }}
+              <b>{{ $t('commodityItem.weaponClass') }}:</b>
+              {{ commodity.item.weaponClassLabel }}
             </li>
             <li v-if="commodity.item.itemClassLabel">
-              <b>{{ $t('commodityItem.itemClass') }}:</b> {{ commodity.item.itemClassLabel }}
+              <b>{{ $t('commodityItem.itemClass') }}:</b>
+              {{ commodity.item.itemClassLabel }}
             </li>
           </ul>
         </div>
@@ -85,43 +76,32 @@
       </div>
       {{ commodity.description }}
     </div>
-    <div
-      v-if="selling"
-      class="price"
-    >
-      <span class="price-label">
-        {{ $t('labels.shop.sellPrice') }}:&nbsp;
-      </span>
+    <div v-if="selling" class="price">
+      <span class="price-label">{{ $t('labels.shop.sellPrice') }}:&nbsp;</span>
       <b>{{ $toUEC(commodity.sellPrice) }}</b>
     </div>
-    <div
-      v-if="buying"
-      class="price"
-    >
-      <span class="price-label">
-        {{ $t('labels.shop.buyPrice') }}:&nbsp;
-      </span>
+    <div v-if="buying" class="price">
+      <span class="price-label">{{ $t('labels.shop.buyPrice') }}:&nbsp;</span>
       <b>{{ $toUEC(commodity.buyPrice) }}</b>
     </div>
-    <div
-      v-if="rental"
-      class="rent-price"
-    >
-      <span class="price-label">
-        {{ $t('labels.shop.rentPrice') }}:&nbsp;
-      </span>
+    <div v-if="rental" class="rent-price">
+      <span class="price-label">{{ $t('labels.shop.rentPrice') }}:&nbsp;</span>
       <ul class="list-unstyled">
         <li v-if="commodity.rentPrice1Day">
-          {{ $t('shop.rentalPrice1Day') }} <b>{{ $toUEC(commodity.rentPrice1Day) }}</b>
+          {{ $t('shop.rentalPrice1Day') }}
+          <b>{{ $toUEC(commodity.rentPrice1Day) }}</b>
         </li>
         <li v-if="commodity.rentPrice3Days">
-          {{ $t('shop.rentalPrice3Days') }} <b>{{ $toUEC(commodity.rentPrice3Days) }}</b>
+          {{ $t('shop.rentalPrice3Days') }}
+          <b>{{ $toUEC(commodity.rentPrice3Days) }}</b>
         </li>
         <li v-if="commodity.rentPrice7Days">
-          {{ $t('shop.rentalPrice7Days') }} <b>{{ $toUEC(commodity.rentPrice7Days) }}</b>
+          {{ $t('shop.rentalPrice7Days') }}
+          <b>{{ $toUEC(commodity.rentPrice7Days) }}</b>
         </li>
         <li v-if="commodity.rentPrice30Days">
-          {{ $t('shop.rentalPrice30Days') }} <b>{{ $toUEC(commodity.rentPrice30Days) }}</b>
+          {{ $t('shop.rentalPrice30Days') }}
+          <b>{{ $toUEC(commodity.rentPrice30Days) }}</b>
         </li>
       </ul>
     </div>

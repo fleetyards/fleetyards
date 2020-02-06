@@ -38,10 +38,7 @@
                     :hardpoint="testHardpoint"
                     style="float: left;"
                   />
-                  <div
-                    style="float: left;"
-                    class="hardpoint-labels"
-                  >
+                  <div style="float: left;" class="hardpoint-labels">
                     <div class="hardpoint-quantity">
                       - {{ $t('labels.hardpoint.quantity') }}
                     </div>
@@ -57,10 +54,7 @@
                     :hardpoint="testHardpointEmpty"
                     style="float: left;"
                   />
-                  <div
-                    style="float: left;"
-                    class="hardpoint-labels"
-                  >
+                  <div style="float: left;" class="hardpoint-labels">
                     <div class="hardpoint-quantity">
                       - {{ $t('labels.hardpoint.quantity') }}
                     </div>
@@ -116,19 +110,12 @@
           </Panel>
         </div>
       </div>
-      <div
-        v-if="erkulUrl"
-        class="row"
-      >
+      <div v-if="erkulUrl" class="row">
         <div class="col-xs-12">
-          <Btn
-            :href="erkulUrl"
-            block
-            class="erkul-link"
-          >
+          <Btn :href="erkulUrl" block class="erkul-link">
             <small>{{ $t('labels.erkul.prefix') }}</small>
             <i />
-            {{ $t('labels.erkul.link' ) }}
+            {{ $t('labels.erkul.link') }}
           </Btn>
         </div>
       </div>
@@ -179,7 +166,7 @@ export default {
 
   methods: {
     hardpointsForCategory(category) {
-      return this.hardpoints.filter((hardpoint) => hardpoint.class === category)
+      return this.hardpoints.filter(hardpoint => hardpoint.class === category)
     },
   },
 }

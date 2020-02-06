@@ -2,10 +2,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('session', [
-      'isAuthenticated',
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['isAuthenticated', 'currentUser']),
   },
 
   methods: {

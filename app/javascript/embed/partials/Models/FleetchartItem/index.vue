@@ -1,13 +1,6 @@
 <template>
-  <div
-    v-tooltip.bottom="label"
-    class="fleetchart-item fade-list-item"
-  >
-    <a
-      :href="url"
-      target="_blank"
-      rel="noopener"
-    >
+  <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
+    <a :href="url" target="_blank" rel="noopener">
       <FleetchartItemImage
         v-if="model.fleetchartImage"
         :model="model"

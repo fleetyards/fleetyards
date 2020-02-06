@@ -1,8 +1,5 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    slim
-  >
+  <ValidationObserver v-slot="{ handleSubmit }" slim>
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-md-12">
@@ -19,7 +16,7 @@
             slim
           >
             <div
-              :class="{'has-error has-feedback': errors[0]}"
+              :class="{ 'has-error has-feedback': errors[0] }"
               class="form-group"
             >
               <VueUploadComponent
@@ -83,7 +80,7 @@
           />
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <ValidationProvider
@@ -118,7 +115,7 @@
           </ValidationProvider>
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <ValidationProvider
@@ -153,12 +150,8 @@
           </ValidationProvider>
         </div>
       </div>
-      <br>
-      <Btn
-        :loading="submitting"
-        type="submit"
-        size="large"
-      >
+      <br />
+      <Btn :loading="submitting" type="submit" size="large">
         {{ $t('actions.save') }}
       </Btn>
     </form>
@@ -183,9 +176,7 @@ export default {
     Avatar,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -207,16 +198,14 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', [
-      'currentUser',
-    ]),
+    ...mapGetters('session', ['currentUser']),
 
     avatarUrl() {
       return this.newAvatar.url || this.currentUser.avatar
     },
 
     newAvatar() {
-      return ((this.files && this.files[0]) || {})
+      return (this.files && this.files[0]) || {}
     },
   },
 
@@ -263,7 +252,7 @@ export default {
         data.append('avatar', this.newAvatar.file)
       }
 
-      Object.keys(this.form).forEach((key) => {
+      Object.keys(this.form).forEach(key => {
         data.append(key, this.form[key])
       })
 

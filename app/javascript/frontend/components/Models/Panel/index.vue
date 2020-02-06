@@ -5,7 +5,7 @@
       :id="id"
       class="model-panel"
       :class="{
-        [`model-panel-${model.slug}`]: true
+        [`model-panel-${model.slug}`]: true,
       }"
       :highlight="vehicle && vehicle.flagship"
     >
@@ -15,23 +15,18 @@
             :to="{
               name: 'model',
               params: {
-                slug: model.slug
-              }
+                slug: model.slug,
+              },
             }"
           >
             <span v-if="customName">
               {{ customName }}
             </span>
 
-            <span v-else>
-              {{ countLabel }}{{ model.name }}
-            </span>
+            <span v-else>{{ countLabel }}{{ model.name }}</span>
           </router-link>
 
-          <transition
-            name="fade"
-            appear
-          >
+          <transition name="fade" appear>
             <small
               v-if="vehicle && vehicle.flagship"
               v-tooltip.right="flagshipTooltip"
@@ -40,11 +35,13 @@
             </small>
           </transition>
 
-          <br>
+          <br />
 
           <small v-if="customName">
             <router-link
-              :to="{ query: { q: filterManufacturerQuery(model.manufacturer.slug) }}"
+              :to="{
+                query: { q: filterManufacturerQuery(model.manufacturer.slug) },
+              }"
               v-html="model.manufacturer.name"
             />
             {{ model.name }}
@@ -52,7 +49,9 @@
 
           <small v-else>
             <router-link
-              :to="{ query: { q: filterManufacturerQuery(model.manufacturer.slug) }}"
+              :to="{
+                query: { q: filterManufacturerQuery(model.manufacturer.slug) },
+              }"
               v-html="model.manufacturer.name"
             />
           </small>
@@ -85,7 +84,7 @@
         class="panel-image text-center"
       >
         <LazyImage
-          :to="{ name: 'model', params: { slug: model.slug }}"
+          :to="{ name: 'model', params: { slug: model.slug } }"
           :aria-label="model.name"
           :src="model.storeImageMedium"
           :alt="model.name"
@@ -131,22 +130,18 @@
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
-              {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
+              {{
+                $t(`labels.model.productionStatus.${model.productionStatus}`)
+              }}
             </template>
             <template v-else>
               {{ $t(`labels.not-available`) }}
             </template>
           </strong>
         </div>
-        <ModelTopMetrics
-          :model="model"
-          padding
-        />
-        <hr class="dark slim-spacer">
-        <ModelBaseMetrics
-          :model="model"
-          padding
-        />
+        <ModelTopMetrics :model="model" padding />
+        <hr class="dark slim-spacer" />
+        <ModelBaseMetrics :model="model" padding />
       </b-collapse>
     </Panel>
   </div>
@@ -255,12 +250,18 @@ export default {
     },
 
     hasAddons() {
-      return this.vehicle
-        && (this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length)
+      return (
+        this.vehicle &&
+        (this.vehicle.modelModuleIds.length ||
+          this.vehicle.modelUpgradeIds.length)
+      )
     },
 
     upgradable() {
-      return (this.isMyShip || this.hasAddons) && (this.model.hasModules || this.model.hasUpgrades)
+      return (
+        (this.isMyShip || this.hasAddons) &&
+        (this.model.hasModules || this.model.hasUpgrades)
+      )
     },
   },
 
@@ -273,5 +274,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

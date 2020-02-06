@@ -22,14 +22,13 @@ export default {
     FormInput,
   },
 
-  mixins: [
-    Filters,
-  ],
+  mixins: [Filters],
 
   data() {
     const query = this.queryParams()
 
-    query[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch] || null
+    query[this.$route.meta.quickSearch] =
+      query[this.$route.meta.quickSearch] || null
 
     return {
       form: query,
@@ -40,7 +39,8 @@ export default {
     $route() {
       const query = this.queryParams()
 
-      query[this.$route.meta.quickSearch] = query[this.$route.meta.quickSearch] || null
+      query[this.$route.meta.quickSearch] =
+        query[this.$route.meta.quickSearch] || null
 
       this.form = query
     },

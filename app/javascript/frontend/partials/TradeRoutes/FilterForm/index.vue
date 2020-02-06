@@ -34,7 +34,7 @@
         multiple
       />
 
-      <hr>
+      <hr />
     </template>
 
     <FilterGroup
@@ -77,11 +77,7 @@
       multiple
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      block
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>
@@ -101,9 +97,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    Filters,
-  ],
+  mixins: [Filters],
 
   data() {
     const query = this.$route.query.q || {}
@@ -121,9 +115,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
   },
 
   watch: {

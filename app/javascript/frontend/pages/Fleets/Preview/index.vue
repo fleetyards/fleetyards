@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <hr class="large-spacer">
+        <hr class="large-spacer" />
 
         <div class="row">
           <div class="col-xs-12">
@@ -28,14 +28,11 @@
           </div>
         </div>
 
-        <br>
+        <br />
 
         <div class="flex-row">
           <div class="col-xs-12 col-md-4">
-            <Panel
-              class="info-box"
-              transparency="more"
-            >
+            <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ $t('texts.fleetPreview.notified.headline') }}
@@ -47,10 +44,7 @@
             </Panel>
           </div>
           <div class="col-xs-12 col-md-4">
-            <Panel
-              class="info-box"
-              transparency="more"
-            >
+            <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ $t('texts.fleetPreview.overview.headline') }}
@@ -62,10 +56,7 @@
             </Panel>
           </div>
           <div class="col-xs-12 col-md-4">
-            <Panel
-              class="info-box"
-              transparency="more"
-            >
+            <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ $t('texts.fleetPreview.fleetchart.headline') }}
@@ -78,7 +69,7 @@
           </div>
         </div>
 
-        <hr class="large-spacer">
+        <hr class="large-spacer" />
 
         <div class="row">
           <div class="col-xs-12 col-md-4 col-md-push-4">
@@ -96,7 +87,7 @@
               {{ $t('actions.signUp') }}
             </Btn>
 
-            <hr>
+            <hr />
 
             <p class="text-center">
               {{ $t('labels.alreadyRegistered') }}
@@ -136,9 +127,7 @@ export default {
     Panel,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   methods: {
     hidePreview() {
@@ -149,5 +138,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

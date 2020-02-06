@@ -1,9 +1,5 @@
 <template>
-  <div
-    :key="innerId"
-    class="form-input"
-    :class="cssClasses"
-  >
+  <div :key="innerId" class="form-input" :class="cssClasses">
     <transition name="fade">
       <label
         v-show="!hideLabelOnEmpty || inputValue"
@@ -26,14 +22,14 @@
       :name="id"
       @input="update"
       @blur="update"
-    >
+    />
     <Btn
       v-if="inputValue && clearable"
       variant="link"
       size="small"
       class="clear"
       :class="{
-        'with-label': !!innerLabel && !noLabel
+        'with-label': !!innerLabel && !noLabel,
       }"
       @click.native="clear"
       v-html="'&times;'"
@@ -64,7 +60,9 @@ export default {
       type: String,
       default: 'text',
       validator(value) {
-        return ['text', 'number', 'password', 'email', 'url'].indexOf(value) !== -1
+        return (
+          ['text', 'number', 'password', 'email', 'url'].indexOf(value) !== -1
+        )
       },
     },
 

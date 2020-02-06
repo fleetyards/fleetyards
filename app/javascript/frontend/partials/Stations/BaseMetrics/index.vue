@@ -13,21 +13,14 @@
     <div class="col-xs-12 col-md-9 metrics-block">
       <div class="row">
         <div class="col-xs-6">
-          <div class="metrics-label">
-            {{ $t('station.type') }}:
-          </div>
+          <div class="metrics-label">{{ $t('station.type') }}:</div>
           <div class="metrics-value">
             {{ station.typeLabel }}
           </div>
         </div>
         <div class="col-xs-6">
-          <div class="metrics-label">
-            {{ $t('station.location') }}:
-          </div>
-          <LocationLabel
-            class="metrics-value"
-            :station="station"
-          />
+          <div class="metrics-label">{{ $t('station.location') }}:</div>
+          <LocationLabel class="metrics-value" :station="station" />
         </div>
       </div>
     </div>

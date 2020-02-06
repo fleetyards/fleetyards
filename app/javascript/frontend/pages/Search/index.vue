@@ -11,10 +11,7 @@
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-push-3">
-            <form
-              class="search-form"
-              @submit.prevent="filter"
-            >
+            <form class="search-form" @submit.prevent="filter">
               <div class="form-group">
                 <div class="input-group-flex">
                   <FormInput
@@ -53,12 +50,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="result in results"
             :key="`${result.resultType}-${result.id}`"
@@ -70,36 +62,26 @@
               details
             />
             <CelestialObjectsPanel
-              v-else-if="['celestial_object', 'starsystem'].includes(result.resultType)"
+              v-else-if="
+                ['celestial_object', 'starsystem'].includes(result.resultType)
+              "
               :item="result"
             />
             <ShopCommodityPanel
               v-else-if="result.resultType === 'shop_commodity'"
               :item="result"
             />
-            <SearchPanel
-              v-else
-              :item="result"
-            />
+            <SearchPanel v-else :item="result" />
           </div>
         </transition-group>
 
-        <EmptyBox
-          :visible="emptyBoxVisible"
-          ignore-filter
-        />
+        <EmptyBox :visible="emptyBoxVisible" ignore-filter />
 
         <transition name="fade">
-          <SearchHistory
-            v-if="historyVisible"
-            @restore="restoreSearch"
-          />
+          <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
         </transition>
 
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
     </div>
     <div class="row">
@@ -144,11 +126,7 @@ export default {
     SearchHistory,
   },
 
-  mixins: [
-    MetaInfo,
-    Filters,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Filters, Pagination],
 
   data() {
     const query = this.$route.query.q || {}
@@ -173,8 +151,10 @@ export default {
     },
 
     results() {
-      this.historyVisible = !this.loading && !this.results.length && !this.form.search
-      this.emptyBoxVisible = !this.loading && !this.results.length && !!this.form.search
+      this.historyVisible =
+        !this.loading && !this.results.length && !this.form.search
+      this.emptyBoxVisible =
+        !this.loading && !this.results.length && !!this.form.search
     },
   },
 
@@ -236,7 +216,10 @@ export default {
         this.results = response.data
 
         if (this.form.search) {
-          this.$store.dispatch('search/save', { search: this.form.search, createdAt: new Date() })
+          this.$store.dispatch('search/save', {
+            search: this.form.search,
+            createdAt: new Date(),
+          })
         }
       }
 
@@ -247,5 +230,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

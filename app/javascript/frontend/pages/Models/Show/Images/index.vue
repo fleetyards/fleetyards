@@ -52,10 +52,7 @@
       </div>
     </div>
 
-    <Gallery
-      ref="gallery"
-      :items="images"
-    />
+    <Gallery ref="gallery" :items="images" />
   </section>
 </template>
 
@@ -72,11 +69,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [
-    GalleryHelpers,
-    MetaInfo,
-    Pagination,
-  ],
+  mixins: [GalleryHelpers, MetaInfo, Pagination],
 
   data() {
     return {
@@ -102,16 +95,19 @@ export default {
         return null
       }
 
-      return [{
-        to: {
-          name: 'models',
-          hash: `#${this.model.slug}`,
+      return [
+        {
+          to: {
+            name: 'models',
+            hash: `#${this.model.slug}`,
+          },
+          label: this.$t('nav.models'),
         },
-        label: this.$t('nav.models'),
-      }, {
-        to: { name: 'model', param: { slug: this.$route.params.slug } },
-        label: this.model.name,
-      }]
+        {
+          to: { name: 'model', param: { slug: this.$route.params.slug } },
+          label: this.model.name,
+        },
+      ]
     },
   },
 
@@ -129,9 +125,12 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      const response = await this.$api.get(`models/${this.$route.params.slug}/images`, {
-        page: this.$route.query.page,
-      })
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/images`,
+        {
+          page: this.$route.query.page,
+        },
+      )
       this.loading = false
       if (!response.error) {
         this.images = response.data
@@ -140,10 +139,13 @@ export default {
     },
 
     async fetchModel() {
-      const response = await this.$api.get(`models/${this.$route.params.slug}`, {
-        withoutImages: true,
-        withoutVideos: true,
-      })
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}`,
+        {
+          withoutImages: true,
+          withoutVideos: true,
+        },
+      )
 
       if (!response.error) {
         this.model = response.data

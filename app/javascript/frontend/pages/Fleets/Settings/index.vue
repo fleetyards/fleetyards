@@ -10,22 +10,17 @@
           >
             <a>{{ $t('nav.fleets.settings.fleet') }}</a>
           </router-link>
-          <router-link
-            :to="{ name: 'fleet-settings-membership' }"
-            tag="li"
-          >
+          <router-link :to="{ name: 'fleet-settings-membership' }" tag="li">
             <a>{{ $t('nav.fleets.settings.membership') }}</a>
           </router-link>
           <li
             v-if="fleet && myFleet"
             v-tooltip="leaveTooltip"
             :class="{
-              disabled: myFleet.role === 'admin' || leaving
+              disabled: myFleet.role === 'admin' || leaving,
             }"
           >
-            <a
-              @click="leave"
-            >
+            <a @click="leave">
               <i class="fal fa-sign-out" />
               {{ $t('actions.fleet.leave', { fleet: fleet.name }) }}
             </a>
@@ -33,10 +28,7 @@
         </ul>
       </div>
       <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-        <router-view
-          v-if="fleet && myFleet"
-          :fleet="fleet"
-        />
+        <router-view v-if="fleet && myFleet" :fleet="fleet" />
       </div>
     </div>
   </section>
@@ -98,7 +90,10 @@ export default {
 
       if (!response.error) {
         this.fleet = response.data
-      } else if (response.error.response && response.error.response.status === 404) {
+      } else if (
+        response.error.response &&
+        response.error.response.status === 404
+      ) {
         this.$router.replace({ name: '404' })
       }
     },
@@ -110,7 +105,9 @@ export default {
       this.$confirm({
         text: this.$t('messages.confirm.fleet.leave'),
         onConfirm: async () => {
-          const response = await this.$api.destroy(`fleets/${this.fleet.slug}/members/leave`)
+          const response = await this.$api.destroy(
+            `fleets/${this.fleet.slug}/members/leave`,
+          )
 
           this.leaving = false
 

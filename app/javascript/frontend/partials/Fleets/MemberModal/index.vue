@@ -1,8 +1,5 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    slim
-  >
+  <ValidationObserver v-slot="{ handleSubmit }" slim>
     <Modal
       v-if="fleet"
       ref="modal"
@@ -28,7 +25,7 @@
                 :error="errors[0]"
                 autofocus
               />
-            </validationprovider>
+            </ValidationProvider>
           </div>
         </div>
       </form>
@@ -96,7 +93,10 @@ export default {
     async save() {
       this.submitting = true
 
-      const response = await this.$api.post(`fleets/${this.fleet.slug}/members`, this.form)
+      const response = await this.$api.post(
+        `fleets/${this.fleet.slug}/members`,
+        this.form,
+      )
 
       this.submitting = false
 

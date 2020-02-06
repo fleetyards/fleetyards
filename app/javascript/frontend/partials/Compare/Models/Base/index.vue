@@ -9,7 +9,7 @@
       >
         <div
           :class="{
-            active: visible
+            active: visible,
           }"
           class="text-right metrics-title"
           @click="toggle"
@@ -24,10 +24,7 @@
         class="col-xs-12 compare-row-item"
       />
     </div>
-    <b-collapse
-      id="base"
-      :visible="visible"
-    >
+    <b-collapse id="base" :visible="visible">
       <div class="row compare-row">
         <div
           :style="{
@@ -42,10 +39,7 @@
           :key="`${model.slug}-manufacturer`"
           class="col-xs-6 text-center compare-row-item"
         >
-          <span
-            class="metrics-value"
-            v-html="model.manufacturer.name"
-          />
+          <span class="metrics-value" v-html="model.manufacturer.name" />
         </div>
       </div>
       <div class="row compare-row">

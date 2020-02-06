@@ -37,15 +37,13 @@ export default {
     NavItem,
   },
 
-  mixins: [
-    NavigationMixin,
-  ],
+  mixins: [NavigationMixin],
 
   computed: {
     active() {
-      return [
-        'roadmap', 'roadmap-changes', 'roadmap-ships',
-      ].includes(this.$route.name)
+      return ['roadmap', 'roadmap-changes', 'roadmap-ships'].includes(
+        this.$route.name,
+      )
     },
   },
 }

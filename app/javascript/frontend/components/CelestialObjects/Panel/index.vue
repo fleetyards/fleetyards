@@ -19,7 +19,7 @@
           {{ item.name }}
         </router-link>
 
-        <br>
+        <br />
 
         <small>
           {{ item.locationLabel }}
@@ -50,7 +50,13 @@ export default {
     route() {
       switch (this.item.resultType) {
         case 'celestial_object':
-          return { name: 'celestial-object', params: { starsystem: this.item.starsystem.slug, slug: this.item.slug } }
+          return {
+            name: 'celestial-object',
+            params: {
+              starsystem: this.item.starsystem.slug,
+              slug: this.item.slug,
+            },
+          }
         case 'starsystem':
           return { name: 'starsystem', params: { slug: this.item.slug } }
         default:
@@ -62,5 +68,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

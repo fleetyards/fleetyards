@@ -8,10 +8,7 @@
             <div class="search-form text-center">
               <h1 id="home-welcome">
                 <small>{{ $t('headlines.welcome') }}</small>
-                <img
-                  :src="require(`images/logo.png`).default"
-                  class="logo"
-                >
+                <img :src="require(`images/logo.png`).default" class="logo" />
                 {{ $t('app') }}
               </h1>
               <div class="row">
@@ -80,12 +77,7 @@
           <h2 class="sr-only">
             {{ $t('headlines.welcomeShips') }}
           </h2>
-          <transition-group
-            name="fade-list"
-            class="flex-row"
-            tag="div"
-            appear
-          >
+          <transition-group name="fade-list" class="flex-row" tag="div" appear>
             <div
               v-for="model in models"
               :key="model.id"
@@ -101,10 +93,7 @@
               />
             </div>
           </transition-group>
-          <Loader
-            :loading="modelsLoading"
-            fixed
-          />
+          <Loader :loading="modelsLoading" fixed />
         </div>
         <div class="col-xs-12 col-md-6 relative home-images">
           <Panel>
@@ -128,7 +117,10 @@
                     :src="image.smallUrl"
                     :alt="image.name"
                     :title="image.name"
-                    :to="{name: 'model-images', params: { slug: image.model.slug }}"
+                    :to="{
+                      name: 'model-images',
+                      params: { slug: image.model.slug },
+                    }"
                     class="home-image image"
                   />
                 </div>
@@ -164,9 +156,7 @@ export default {
     LazyImage,
   },
 
-  mixins: [
-    MetaInfo,
-  ],
+  mixins: [MetaInfo],
 
   data() {
     return {
@@ -180,9 +170,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
   },
 
   created() {
@@ -235,5 +223,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -7,7 +7,7 @@
   >
     <span
       :class="{
-        'fleets-nav-item-icon-slim': slim
+        'fleets-nav-item-icon-slim': slim,
       }"
       class="fleets-nav-item-icon"
     >
@@ -58,10 +58,7 @@ export default {
     NavItem,
   },
 
-  mixins: [
-    NavigationMixin,
-    FleetsMixin,
-  ],
+  mixins: [NavigationMixin, FleetsMixin],
 
   data() {
     return {
@@ -75,9 +72,9 @@ export default {
     }),
 
     active() {
-      return [
-        'fleets', 'fleet-add', 'fleet-preview', 'fleet-invites',
-      ].includes(this.$route.name)
+      return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
+        this.$route.name,
+      )
     },
   },
 
@@ -108,5 +105,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

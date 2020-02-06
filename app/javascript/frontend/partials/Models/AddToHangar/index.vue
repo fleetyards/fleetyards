@@ -37,14 +37,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('session', [
-      'isAuthenticated',
-    ]),
-    ...mapGetters('hangar', [
-      'ships',
-    ]),
+    ...mapGetters('session', ['isAuthenticated']),
+    ...mapGetters('hangar', ['ships']),
     inHangar() {
-      return !!(this.ships || []).find((item) => item === this.model.slug)
+      return !!(this.ships || []).find(item => item === this.model.slug)
     },
   },
   methods: {
@@ -56,11 +52,15 @@ export default {
         return
       }
 
-      const response = await this.$api.post('vehicles', { modelId: this.model.id })
+      const response = await this.$api.post('vehicles', {
+        modelId: this.model.id,
+      })
       if (!response.error) {
         this.$store.dispatch('hangar/add', this.model.slug)
         this.$success({
-          text: this.$t('messages.vehicle.add.success', { model: this.model.name }),
+          text: this.$t('messages.vehicle.add.success', {
+            model: this.model.name,
+          }),
           icon: this.model.storeImageSmall,
         })
       }

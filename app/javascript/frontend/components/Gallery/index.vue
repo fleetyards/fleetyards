@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="pswp"
-    tabindex="-1"
-    role="dialog"
-    aria-hidden="true"
-  >
+  <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="pswp__bg" />
     <div class="pswp__scroll-wrap">
       <div class="pswp__container">
@@ -19,20 +14,14 @@
             class="pswp__button pswp__button--close"
             title="Close (Esc)"
           />
-          <button
-            class="pswp__button pswp__button--copy"
-            @click="copyUrl"
-          >
+          <button class="pswp__button pswp__button--copy" @click="copyUrl">
             <i class="fa fa-copy" />
           </button>
           <button
             class="pswp__button pswp__button--fs"
             title="Toggle fullscreen"
           />
-          <button
-            class="pswp__button pswp__button--zoom"
-            title="Zoom in/out"
-          />
+          <button class="pswp__button pswp__button--zoom" title="Zoom in/out" />
           <div class="pswp__preloader">
             <div class="pswp__preloader__icn">
               <div class="pswp__preloader__cut">
@@ -41,7 +30,9 @@
             </div>
           </div>
         </div>
-        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div
+          class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"
+        >
           <div class="pswp__share-tooltip" />
         </div>
         <button
@@ -69,7 +60,9 @@ export default {
   props: {
     items: {
       type: Array,
-      default() { return [] },
+      default() {
+        return []
+      },
     },
   },
 
@@ -82,7 +75,7 @@ export default {
 
   computed: {
     galleryItems() {
-      return this.items.map((item) => ({
+      return this.items.map(item => ({
         src: item.url,
         w: item.width,
         h: item.height,
@@ -106,15 +99,18 @@ export default {
 
   methods: {
     copyUrl(_event) {
-      this.$copyText(this.gallery.currItem.src).then(() => {
-        this.$success({
-          text: this.$t('messages.copyImageUrl.success'),
-        })
-      }, () => {
-        this.$alert({
-          text: this.$t('messages.copyImageUrl.failure'),
-        })
-      })
+      this.$copyText(this.gallery.currItem.src).then(
+        () => {
+          this.$success({
+            text: this.$t('messages.copyImageUrl.success'),
+          })
+        },
+        () => {
+          this.$alert({
+            text: this.$t('messages.copyImageUrl.failure'),
+          })
+        },
+      )
     },
 
     getThumbBounds(index) {
@@ -122,7 +118,8 @@ export default {
         return { x: 0, y: 0, w: 0 }
       }
 
-      const pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+      const pageYScroll =
+        window.pageYOffset || document.documentElement.scrollTop
       const rect = this.galleryItems[index].el.getBoundingClientRect()
 
       return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }

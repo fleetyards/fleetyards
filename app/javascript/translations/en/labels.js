@@ -1,21 +1,22 @@
 export default {
-  true: 'Yes',
-  false: 'No',
-  selected: 'Selected',
-  actions: 'Actions',
-  collapse: 'Collapse',
-  expand: 'Expand',
-  toggleNavigation: 'Toggle Navigation',
-  enableYoutube: 'Click to enable Youtube embeds or right click to copy Video URL',
-  or: 'or',
-  deselect: 'Click to deselect',
-  networkStatusOffline: 'Network Status: Offline - Service Unavailable',
-  shop: {
+  'true': 'Yes',
+  'false': 'No',
+  'selected': 'Selected',
+  'actions': 'Actions',
+  'collapse': 'Collapse',
+  'expand': 'Expand',
+  'toggleNavigation': 'Toggle Navigation',
+  'enableYoutube':
+    'Click to enable Youtube embeds or right click to copy Video URL',
+  'or': 'or',
+  'deselect': 'Click to deselect',
+  'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
+  'shop': {
     rentPrice: 'rental',
     sellPrice: 'price',
     buyPrice: 'buying price',
   },
-  stats: {
+  'stats': {
     quickStats: {
       newShips: 'New Ships in %{year}',
       totalShips: 'Total Ships',
@@ -26,7 +27,7 @@ export default {
     modelsByManufacturer: 'Models by Manufacturer',
     modelsByProductionStatus: 'Models by Production Status',
   },
-  roadmap: {
+  'roadmap': {
     selectWeek: 'Select Week',
     changes: 'Changes',
     shipRoadmap: 'Ship-Roadmap',
@@ -64,12 +65,12 @@ export default {
       other: '%{count} Ships',
     },
   },
-  charts: {
-    view: {
+  'charts': {
+    'view': {
       one: '%{label}:<br><b>%{count}</b> View',
       other: '%{label}:<br><b>%{count}</b> Views',
     },
-    ship: {
+    'ship': {
       one: '%{label}:<br><b>%{count}</b> Ship',
       other: '%{label}:<br><b>%{count}</b> Ships',
     },
@@ -81,56 +82,56 @@ export default {
       one: '%{label}:<br><b>%{count}</b> Component (%{percentage} %)',
       other: '%{label}:<br><b>%{count}</b> Components (%{percentage} %)',
     },
-    user: {
+    'user': {
       one: '%{label}:<br><b>%{count}</b> User',
       other: '%{label}:<br><b>%{count}</b> Users',
     },
-    visit: {
+    'visit': {
       one: '%{label}:<br><b>%{count}</b> Visit',
       other: '%{label}:<br><b>%{count}</b> Visits',
     },
   },
-  rsiRoadmap: 'RSI Roadmap',
-  unknown: 'Unknown',
-  none: '-',
-  search: 'Search',
-  unknownModel: '%{slug} Unknown',
+  'rsiRoadmap': 'RSI Roadmap',
+  'unknown': 'Unknown',
+  'none': '-',
+  'search': 'Search',
+  'unknownModel': '%{slug} Unknown',
   'not-available': 'N/A',
-  receiveSaleNotifications: '',
-  publicUrl: 'Public URL',
-  name: 'Name',
-  homepage: 'Homepage',
-  discord: 'Discord Server',
-  youtube: 'Youtube Channel',
-  twitch: 'Twitch Channel',
+  'receiveSaleNotifications': '',
+  'publicUrl': 'Public URL',
+  'name': 'Name',
+  'homepage': 'Homepage',
+  'discord': 'Discord Server',
+  'youtube': 'Youtube Channel',
+  'twitch': 'Twitch Channel',
   '3dView': '3D',
-  poweredByStarship42: 'Powered by starship42.com',
-  filter: 'Filter',
-  taxExcluded: 'excl. VAT',
-  hangar: 'Hangar',
-  hangarStats: 'Stats',
-  hangarMetrics: {
+  'poweredByStarship42': 'Powered by starship42.com',
+  'filter': 'Filter',
+  'taxExcluded': 'excl. VAT',
+  'hangar': 'Hangar',
+  'hangarStats': 'Stats',
+  'hangarMetrics': {
     total: 'Total',
     totalMoney: 'Money Value',
     totalMinCrew: 'Min. Crew',
     totalMaxCrew: 'Max. Crew',
     totalCargo: 'Total Cargo',
   },
-  selectModel: 'Select a Ship',
-  compare: {
+  'selectModel': 'Select a Ship',
+  'compare': {
     removeModel: 'Remove Ship',
     addModel: 'Add a Ship',
     enough: "Don't you think 8 Ships are enough? ;)",
   },
-  cargoRoutes: 'Cargo routes',
-  uecPerUnit: 'aUEC / Unit',
-  au: 'AU',
-  uec: 'aUEC',
-  sell: 'Sell',
-  buy: 'Buy',
-  yourFlagship: 'Your Flagship',
-  flagship: 'Flagship',
-  fleet: {
+  'cargoRoutes': 'Cargo routes',
+  'uecPerUnit': 'aUEC / Unit',
+  'au': 'AU',
+  'uec': 'aUEC',
+  'sell': 'Sell',
+  'buy': 'Buy',
+  'yourFlagship': 'Your Flagship',
+  'flagship': 'Flagship',
+  'fleet': {
     classes: 'Fleet',
     fid: 'Fleet ID',
     name: 'Name',
@@ -152,13 +153,13 @@ export default {
       },
     },
   },
-  hangarGroup: {
+  'hangarGroup': {
     name: 'Name',
     color: 'Color',
     sort: 'Sort Order',
   },
-  source: 'Source',
-  model: {
+  'source': 'Source',
+  'model': {
     variants: 'Variants',
     loaners: 'Loaners',
     modules: 'Modules',
@@ -170,12 +171,12 @@ export default {
     productionStatus: {
       'in-production': 'In Production',
       'in-concept': 'In Concept',
-      ready: 'Hangar Ready',
+      'ready': 'Hangar Ready',
       'flight-ready': 'Flight Ready',
-      announced: 'Announced',
+      'announced': 'Announced',
     },
   },
-  metrics: {
+  'metrics': {
     info: 'Info',
     levels: 'Levels',
     base: 'Base',
@@ -183,10 +184,10 @@ export default {
     speed: 'Speed',
     missileOptions: 'Missle Options (if available)',
   },
-  component: {
+  'component': {
     size: 'Size: %{size}',
   },
-  hardpoint: {
+  'hardpoint': {
     legend: {
       headline: 'Legend',
       slotTaken: 'Slot taken',
@@ -224,22 +225,23 @@ export default {
       utility_items: 'Utility Items',
     },
   },
-  blank: {
+  'blank': {
     propulsion: 'No Propulsion present',
     ordnance: 'No Ordnance present',
     modular: 'No Modular present',
     avionics: 'No Avionics present',
     fleetInvites: 'No Invites present',
     shopCommodities: 'No Commodites available',
-    userShips: 'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
+    userShips:
+      'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
-  user: {
+  'user': {
     rsiHandle: 'RSI Handle',
     avatar: 'Avatar',
     saleNotify: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',
   },
-  vehicle: {
+  'vehicle': {
     name: 'Name',
     flagship: 'Flagship',
     purchased: 'Purchased',
@@ -248,7 +250,7 @@ export default {
     saleNotify: 'I want to receive Sale Notifications',
     selectGroup: 'Select a Group',
   },
-  image: {
+  'image': {
     background: 'Use as Background?',
     enabled: 'Enabled?',
     global: 'Global?',
@@ -265,27 +267,28 @@ export default {
     selectImages: 'Add images...',
     selectFolder: 'Add a folder...',
   },
-  signup: {
+  'signup': {
     link: "Don't have an Account?",
     privacyPolicy: 'By creating a FleetYards account, you agree to our',
   },
-  privacyPolicy: 'Privacy Policy',
-  login: 'Username or E-Mail',
-  username: 'Username',
-  email: 'E-Mail',
-  avatar: 'Avatar',
-  alreadyRegistered: 'Already have an Account?',
-  currentPassword: 'Current Password',
-  password: 'Password',
-  passwordConfirmation: 'Password Confirmation',
-  rememberMe: 'Remember me',
-  emptyList: 'No %{name} present',
-  all: 'All',
-  supportUs: 'Support FleetYards.net via',
-  account: {
-    destroyInfo: "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+  'privacyPolicy': 'Privacy Policy',
+  'login': 'Username or E-Mail',
+  'username': 'Username',
+  'email': 'E-Mail',
+  'avatar': 'Avatar',
+  'alreadyRegistered': 'Already have an Account?',
+  'currentPassword': 'Current Password',
+  'password': 'Password',
+  'passwordConfirmation': 'Password Confirmation',
+  'rememberMe': 'Remember me',
+  'emptyList': 'No %{name} present',
+  'all': 'All',
+  'supportUs': 'Support FleetYards.net via',
+  'account': {
+    destroyInfo:
+      "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
   },
-  filters: {
+  'filters': {
     shops: {
       name: 'Name',
       type: 'Type',
@@ -366,7 +369,7 @@ export default {
       },
     },
   },
-  station: {
+  'station': {
     docks: 'Docks',
     location: 'Location',
     type: 'Type',
@@ -380,15 +383,15 @@ export default {
     },
     locationSuffix: 'near %{location}',
   },
-  tradeRoutes: {
+  'tradeRoutes': {
     buy: 'Buy for: %{uec}',
     sell: 'Sell for: %{uec}',
     cargoShip: 'for %{cargo} SCU',
     sortByPercent: 'Sort by Profit Percent',
     sortByProfit: 'Sort by Profit Value',
   },
-  erkul: {
+  'erkul': {
     prefix: 'Tryout Loadouts with',
-    link: 'Erkul\'s DPS Calculator',
+    link: "Erkul's DPS Calculator",
   },
 }

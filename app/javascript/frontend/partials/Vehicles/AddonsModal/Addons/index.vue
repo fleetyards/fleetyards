@@ -19,7 +19,7 @@
               >
                 <div
                   :style="{
-                    'background-image': `url(${addon.storeImage})`
+                    'background-image': `url(${addon.storeImage})`,
                   }"
                   class="model-panel-image"
                 />
@@ -39,10 +39,7 @@
         </template>
       </div>
     </div>
-    <div
-      v-if="modifiable"
-      class="col-xs-12 col-sm-6 add-addons"
-    >
+    <div v-if="modifiable" class="col-xs-12 col-sm-6 add-addons">
       <FilterGroup
         v-model="addonToAdd"
         :label="label"
@@ -127,7 +124,7 @@ export default {
     },
 
     idsForAddon(addonId) {
-      const ids = this.availableAddons.filter((item) => item === addonId)
+      const ids = this.availableAddons.filter(item => item === addonId)
       if (ids.length) {
         return ids
       }
@@ -140,7 +137,9 @@ export default {
       }
 
       if (this.availableAddons.includes(addonId)) {
-        const index = this.availableAddons.findIndex((itemId) => itemId === addonId)
+        const index = this.availableAddons.findIndex(
+          itemId => itemId === addonId,
+        )
         if (index > -1) {
           this.availableAddons.splice(index, 1)
         }
@@ -157,5 +156,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

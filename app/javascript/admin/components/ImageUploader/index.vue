@@ -1,9 +1,6 @@
 <template>
   <div id="fileupload">
-    <div
-      v-if="isUploadActive"
-      class="row fileupload-buttonbar"
-    >
+    <div v-if="isUploadActive" class="row fileupload-buttonbar">
       <div class="col-lg-7">
         <VueUploadComponent
           ref="upload"
@@ -19,32 +16,22 @@
           @input-filter="inputFilter"
         />
 
-        <Btn
-          @click.native="selectImages"
-        >
+        <Btn @click.native="selectImages">
           <i class="fa fa-plus" />
           <span>{{ $t('labels.image.selectImages') }}</span>
         </Btn>
 
-        <Btn
-          @click.native="selectFolder"
-        >
+        <Btn @click.native="selectFolder">
           <i class="fa fa-plus" />
           <span>{{ $t('labels.image.selectFolder') }}</span>
         </Btn>
 
-        <Btn
-          v-if="newImages.length"
-          @click.native="startUpload"
-        >
+        <Btn v-if="newImages.length" @click.native="startUpload">
           <i class="fa fa-upload" />
           <span>{{ $t('labels.image.startUpload') }}</span>
         </Btn>
 
-        <Btn
-          v-if="newImages.length"
-          @click.native="cancelUpload"
-        >
+        <Btn v-if="newImages.length" @click.native="cancelUpload">
           <i class="fa fa-ban-circle" />
           <span>{{ $t('labels.image.cancelUpload') }}</span>
         </Btn>
@@ -62,7 +49,7 @@
           <div
             class="progress-bar progress-bar-animated progress-bar-info progress-bar-striped"
             role="progressbar"
-            :style="{width: progress + '%'}"
+            :style="{ width: progress + '%' }"
           >
             {{ progress }} %
           </div>
@@ -86,16 +73,8 @@
     </Panel>
 
     <Panel v-if="allImages.length">
-      <transition-group
-        name="fade"
-        class="flex-list"
-        tag="div"
-        appear
-      >
-        <div
-          key="heading"
-          class="fade-list-item col-xs-12 flex-list-heading"
-        >
+      <transition-group name="fade" class="flex-list" tag="div" appear>
+        <div key="heading" class="fade-list-item col-xs-12 flex-list-heading">
           <div class="flex-list-row">
             <div class="store-image wide" />
 
@@ -128,10 +107,7 @@
 
     <EmptyBox :visible="emptyBoxVisible" />
 
-    <Loader
-      :loading="loading"
-      fixed
-    />
+    <Loader :loading="loading" fixed />
   </div>
 </template>
 
@@ -195,10 +171,7 @@ export default {
     },
 
     allImages() {
-      return [
-        ...this.newImages,
-        ...this.images,
-      ]
+      return [...this.newImages, ...this.images]
     },
 
     metaData() {
@@ -211,26 +184,32 @@ export default {
       return !this.loading && !this.allImages.length
     },
     activeImages() {
-      return this.newImages.filter((item) => item.active)
+      return this.newImages.filter(item => item.active)
     },
     progress() {
       if (!this.newImages.length) {
         return 0
       }
 
-      const pendingProgress = this.newImages.map((item) => parseFloat(item.progress))
+      const pendingProgress = this.newImages
+        .map(item => parseFloat(item.progress))
         .reduce((pv, cv) => pv + cv, 0)
       const completedUploads = this.uploadCount - this.newImages.length
 
-      return Math.ceil((pendingProgress + (completedUploads * 100)) / this.uploadCount)
+      return Math.ceil(
+        (pendingProgress + completedUploads * 100) / this.uploadCount,
+      )
     },
     speed() {
       if (!this.activeImages.length) {
         return 0
       }
 
-      return this.activeImages.map((item) => parseFloat(item.speed))
-        .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
+      return (
+        this.activeImages
+          .map(item => parseFloat(item.speed))
+          .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
+      )
     },
   },
 
@@ -267,7 +246,7 @@ export default {
       this.directory = true
       input.onclick = null
       input.click()
-      input.onclick = (_e) => {
+      input.onclick = _e => {
         this.directory = false
         input.directory = false
         input.webkitdirectory = false
@@ -333,5 +312,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'styles/index.scss';
+@import 'styles/index.scss';
 </style>

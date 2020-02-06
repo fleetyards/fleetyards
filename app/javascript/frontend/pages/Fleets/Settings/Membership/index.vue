@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <br>
+      <br />
       <Btn
         :loading="submitting"
         type="submit"
@@ -52,10 +52,7 @@ export default {
     Checkbox,
   },
 
-  mixins: [
-    MetaInfo,
-    FleetsMixin,
-  ],
+  mixins: [MetaInfo, FleetsMixin],
 
   props: {
     fleet: {
@@ -88,16 +85,18 @@ export default {
         return []
       }
 
-      return [{
-        to: {
-          name: 'fleet',
-          params: {
-            slug: this.fleet.slug,
+      return [
+        {
+          to: {
+            name: 'fleet',
+            params: {
+              slug: this.fleet.slug,
+            },
           },
-        },
 
-        label: this.fleet.name,
-      }]
+          label: this.fleet.name,
+        },
+      ]
     },
   },
   watch: {
@@ -121,7 +120,10 @@ export default {
     async submit() {
       this.submitting = true
 
-      const response = await this.$api.put(`fleets/${this.$route.params.slug}/members`, this.form)
+      const response = await this.$api.put(
+        `fleets/${this.$route.params.slug}/members`,
+        this.form,
+      )
 
       this.submitting = false
 

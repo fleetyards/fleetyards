@@ -52,9 +52,7 @@ export default {
     FilterGroup,
   },
 
-  mixins: [
-    Filters,
-  ],
+  mixins: [Filters],
 
   data() {
     const query = this.queryParams()
@@ -96,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .quick-filter {
-    margin-bottom: 20px;
-  }
+.quick-filter {
+  margin-bottom: 20px;
+}
 </style>

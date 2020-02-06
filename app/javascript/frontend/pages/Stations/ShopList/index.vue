@@ -42,10 +42,7 @@
         @before-enter="toggleFullscreen"
         @after-leave="toggleFullscreen"
       >
-        <div
-          v-show="filterVisible"
-          class="col-xs-12 col-md-3 col-xlg-2"
-        >
+        <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
           <FilterForm />
         </div>
       </transition>
@@ -55,21 +52,13 @@
         }"
         class="col-xs-12 col-animated"
       >
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="(shop, index) in shops"
             :key="`shops-${index}`"
             class="col-xs-12 col-md-6 fade-list-item"
           >
-            <Panel
-              :id="`${shop.station.slug}-${shop.slug}`"
-              class="shop-list"
-            >
+            <Panel :id="`${shop.station.slug}-${shop.slug}`" class="shop-list">
               <div
                 :key="shop.storeImageMedium"
                 v-lazy:background-image="shop.storeImageMedium"
@@ -102,10 +91,7 @@
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
-        <Loader
-          :loading="loading"
-          fixed
-        />
+        <Loader :loading="loading" fixed />
       </div>
       <div class="col-xs-12">
         <Paginator
@@ -140,12 +126,7 @@ export default {
     Btn,
   },
 
-  mixins: [
-    MetaInfo,
-    Hash,
-    Filters,
-    Pagination,
-  ],
+  mixins: [MetaInfo, Hash, Filters, Pagination],
 
   data() {
     return {
@@ -156,13 +137,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'mobile',
-    ]),
+    ...mapGetters(['mobile']),
 
-    ...mapGetters('shops', [
-      'filterVisible',
-    ]),
+    ...mapGetters('shops', ['filterVisible']),
 
     toggleFiltersTooltip() {
       if (this.filterVisible) {
@@ -217,5 +194,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'index';
+@import 'index';
 </style>

@@ -9,7 +9,7 @@
     <SmallLoader :loading="downloading" />
     <span
       :class="{
-        active: downloading
+        active: downloading,
       }"
       class="text"
     >
@@ -54,19 +54,21 @@ export default {
       html2canvas(element, {
         backgroundColor: null,
         useCORS: true,
-      }).then((canvas) => {
-        element.classList.remove('fleetchart-download')
-        this.downloading = false
-        download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
-      }).catch(() => {
-        element.classList.remove('fleetchart-download')
-        this.downloading = false
       })
+        .then(canvas => {
+          element.classList.remove('fleetchart-download')
+          this.downloading = false
+          download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
+        })
+        .catch(() => {
+          element.classList.remove('fleetchart-download')
+          this.downloading = false
+        })
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import 'index';
+@import 'index';
 </style>

@@ -9,23 +9,26 @@ import 'frontend/lib/Sentry'
 import 'frontend/lib/Bootstrap'
 import router from 'admin/lib/Router'
 import Comlink from 'frontend/lib/Comlink'
-import I18n from 'frontend/lib/I18n'
+import I18nPlugin from 'frontend/lib/I18n'
 import Noty from 'frontend/lib/Noty'
 
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
-Vue.use(I18n)
+Vue.use(I18nPlugin)
 Vue.use(Noty)
 
-Vue.filter('formatSize', (size) => {
+Vue.filter('formatSize', size => {
   if (size > 1024 * 1024 * 1024 * 1024) {
     return `${(size / 1024 / 1024 / 1024 / 1024).toFixed(2)} TB`
-  } if (size > 1024 * 1024 * 1024) {
+  }
+  if (size > 1024 * 1024 * 1024) {
     return `${(size / 1024 / 1024 / 1024).toFixed(2)} GB`
-  } if (size > 1024 * 1024) {
+  }
+  if (size > 1024 * 1024) {
     return `${(size / 1024 / 1024).toFixed(2)} MB`
-  } if (size > 1024) {
+  }
+  if (size > 1024) {
     return `${(size / 1024).toFixed(2)} KB`
   }
   return `${size.toString()} B`
@@ -45,8 +48,8 @@ console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => registration.unregister())
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      registrations.forEach(registration => registration.unregister())
     })
   }
 
@@ -54,6 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
     router,
-    render: (h) => h(App),
+    render: h => h(App),
   })
 })

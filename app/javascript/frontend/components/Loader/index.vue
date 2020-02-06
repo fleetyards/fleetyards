@@ -1,12 +1,9 @@
 <template>
   <transition name="fade">
-    <div
-      v-if="loading"
-      class="text-center"
-    >
+    <div v-if="loading" class="text-center">
       <div
         :class="{
-          'fixed': fixed,
+          fixed: fixed,
         }"
         class="loader"
       >

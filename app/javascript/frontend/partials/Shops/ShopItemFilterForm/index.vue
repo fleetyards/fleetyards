@@ -50,11 +50,7 @@
       type="number"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      block
-      @click.native="resetFilter"
-    >
+    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>
@@ -88,22 +84,28 @@ export default {
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
       },
-      categoryOptions: [{
-        name: 'Ship',
-        value: 'Model',
-      }, {
-        name: 'Component',
-        value: 'Component',
-      }, {
-        name: 'Equipment',
-        value: 'Equipment',
-      }, {
-        name: 'Commodity',
-        value: 'Commodity',
-      }, {
-        name: 'Module',
-        value: 'ModelModule',
-      }],
+      categoryOptions: [
+        {
+          name: 'Ship',
+          value: 'Model',
+        },
+        {
+          name: 'Component',
+          value: 'Component',
+        },
+        {
+          name: 'Equipment',
+          value: 'Equipment',
+        },
+        {
+          name: 'Commodity',
+          value: 'Commodity',
+        },
+        {
+          name: 'Module',
+          value: 'ModelModule',
+        },
+      ],
     }
   },
 

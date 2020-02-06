@@ -28,7 +28,6 @@ describe('Fleet', () => {
     cy.url().should('include', '/login')
   })
 
-
   it('default workflow', () => {
     cy.clickNav('fleets-menu')
     cy.clickNav('fleet-preview')
