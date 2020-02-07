@@ -12,7 +12,6 @@
       v-lazy:background-image="backgroundImage"
       class="background-image"
     />
-    <NetworkStatus />
     <div class="app-content">
       <transition name="fade" mode="out-in" appear>
         <Navigation />
@@ -40,7 +39,6 @@ import CheckVersion from 'frontend/mixins/CheckVersion'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import PrivacySettings from 'frontend/partials/PrivacySettings'
-import NetworkStatus from 'frontend/components/NetworkStatus'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -52,7 +50,6 @@ export default {
     AppFooter,
     BackToTop,
     PrivacySettings,
-    NetworkStatus,
   },
 
   mixins: [Updates, CurrentUser, RenewSession, CheckVersion],
