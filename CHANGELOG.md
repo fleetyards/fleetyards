@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.67.0](https://github.com/fleetyards/app/compare/v3.66.2...v3.67.0) (2020-02-07)
+
+
+### Features
+
+* **loaner:** allow to show only loaners ([a5b11e7](https://github.com/fleetyards/app/commit/a5b11e723e0ab21f36eae59005d99c014883e561))
+
+
+### Bug Fixes
+
+* **loaner:** update worker ([6d3e800](https://github.com/fleetyards/app/commit/6d3e8005cd8b2fe7157e25679ab48fda74ae4e35))
+
 ### [3.66.2](https://github.com/fleetyards/app/compare/v3.66.1...v3.66.2) (2020-02-07)
 
 
