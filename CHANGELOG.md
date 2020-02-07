@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.67.1](https://github.com/fleetyards/app/compare/v3.67.0...v3.67.1) (2020-02-07)
+
+
+### Bug Fixes
+
+* **network-status:** disable component for now ([50fd8db](https://github.com/fleetyards/app/commit/50fd8dbcdaeba97da1a5d0f039e1b8241efeb2a0))
+
 ## [3.67.0](https://github.com/fleetyards/app/compare/v3.66.2...v3.67.0) (2020-02-07)
 
 
