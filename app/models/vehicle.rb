@@ -43,7 +43,7 @@ class Vehicle < ApplicationRecord
   def add_loaners
     return if loaner
 
-    model.loaners.each do |loaner|
+    model.loaners.reload.each do |loaner|
       create_loaner(loaner)
     end
   end
