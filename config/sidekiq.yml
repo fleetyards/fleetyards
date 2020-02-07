@@ -5,7 +5,6 @@
   - fleetyards_vehicles_loader
   - fleetyards_location_loader
   - fleetyards_loaner_loader
-  - fleetyards_vehicle_loaner_loader
   - fleetyards_mailers
   - fleetyards_model_notification
   - fleetyards_cleanup_auth_tokens

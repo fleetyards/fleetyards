@@ -41,15 +41,15 @@ class Vehicle < ApplicationRecord
   ransack_alias :hangar_groups, :hangar_groups_slug
 
   def add_loaners
-    return if loaner
+    return if loaner?
 
-    model.loaners.reload.each do |loaner|
-      create_loaner(loaner)
+    model.loaners.each do |model_loaner|
+      create_loaner(model_loaner)
     end
   end
 
   def remove_loaners
-    return if loaner
+    return if loaner?
 
     Vehicle.where(loaner: true, vehicle_id: id, user_id: user_id).destroy_all
 
@@ -60,15 +60,15 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  def create_loaner(loaner)
+  def create_loaner(model_loaner)
     Vehicle.create(
       loaner: true,
-      model_id: loaner.id,
+      model_id: model_loaner.id,
       user_id: user_id,
       vehicle_id: id,
       public: false,
       purchased: true,
-      hidden: Vehicle.exists?(loaner: true, model_id: loaner.id, user_id: user_id)
+      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, user_id: user_id)
     )
   end
 
