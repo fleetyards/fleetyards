@@ -164,6 +164,10 @@
           name: 'Show',
           value: 'true',
         },
+        {
+          name: 'Only',
+          value: 'only',
+        },
       ]"
       name="loaner"
     />

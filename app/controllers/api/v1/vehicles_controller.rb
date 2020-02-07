@@ -329,8 +329,10 @@ module Api
       private def loaner_included?(scope)
         if vehicle_query_params['loaner_eq'].blank?
           scope = scope.where(loaner: false)
-        else
+        elsif vehicle_query_params['loaner_eq'] == 'true'
           vehicle_query_params.delete('loaner_eq')
+        else
+          scope = scope.where(loaner: true)
         end
 
         scope
