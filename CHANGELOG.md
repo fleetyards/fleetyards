@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.67.2](https://github.com/fleetyards/app/compare/v3.67.1...v3.67.2) (2020-02-08)
+
+
+### Bug Fixes
+
+* **loaner:** hide loaners from hangar-items ([6eb26dd](https://github.com/fleetyards/app/commit/6eb26dd13dbed9437e7b0182935993629acf4136))
+
 ### [3.67.1](https://github.com/fleetyards/app/compare/v3.67.0...v3.67.1) (2020-02-07)
 
 
