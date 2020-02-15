@@ -23,16 +23,13 @@
       @input="update"
       @blur="update"
     />
-    <Btn
+    <i
       v-if="inputValue && clearable"
-      variant="link"
-      size="small"
-      class="clear"
+      class="fal fa-times clear"
       :class="{
         'with-label': !!innerLabel && !noLabel,
       }"
-      @click.native="clear"
-      v-html="'&times;'"
+      @click="clear"
     />
   </div>
 </template>

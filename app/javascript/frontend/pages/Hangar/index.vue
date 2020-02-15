@@ -500,10 +500,9 @@ export default {
         this.vehiclesChannel.unsubscribe()
       }
 
-      this.vehiclesChannel = this.$cable.subscriptions.create(
+      this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
         {
           channel: 'HangarChannel',
-          username: this.currentUser.username,
         },
         {
           received: this.fetch,

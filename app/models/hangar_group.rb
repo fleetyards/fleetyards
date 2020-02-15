@@ -12,6 +12,6 @@ class HangarGroup < ApplicationRecord
   after_commit :broadcast_update
 
   def broadcast_update
-    ActionCable.server.broadcast("hangar_#{user.username}", {}.to_json)
+    HangarChannel.broadcast_to(user, {}.to_json)
   end
 end

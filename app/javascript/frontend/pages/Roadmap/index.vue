@@ -207,7 +207,7 @@ export default {
         this.roadmapChannel.unsubscribe()
       }
 
-      this.roadmapChannel = this.$cable.subscriptions.create(
+      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
         {
           channel: 'RoadmapChannel',
         },

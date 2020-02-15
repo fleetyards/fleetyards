@@ -73,7 +73,7 @@ class Vehicle < ApplicationRecord
   end
 
   def broadcast_update
-    ActionCable.server.broadcast("hangar_#{user.username}", to_json)
+    HangarChannel.broadcast_to(user, to_json)
   end
 
   def self.purchased
