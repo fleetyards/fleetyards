@@ -35,13 +35,7 @@
 </template>
 
 <script>
-import Btn from 'frontend/components/Btn'
-
 export default {
-  components: {
-    Btn,
-  },
-
   props: {
     id: {
       type: String,
