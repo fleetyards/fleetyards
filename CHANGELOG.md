@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.67.3](https://github.com/fleetyards/app/compare/v3.67.2...v3.67.3) (2020-02-15)
+
+
+### Bug Fixes
+
+* specs ([db851dc](https://github.com/fleetyards/app/commit/db851dce05e1ce59767cc2340ec38ef2090acc67))
+
 ### [3.67.2](https://github.com/fleetyards/app/compare/v3.67.1...v3.67.2) (2020-02-08)
 
 
