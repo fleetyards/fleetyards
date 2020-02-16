@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.67.4](https://github.com/fleetyards/app/compare/v3.67.3...v3.67.4) (2020-02-16)
+
+
+### Bug Fixes
+
+* refresh subscriptions only on authentication change ([8924c6e](https://github.com/fleetyards/app/commit/8924c6e161b42dac719ea7d113e328b612682c12))
+
 ### [3.67.3](https://github.com/fleetyards/app/compare/v3.67.2...v3.67.3) (2020-02-15)
 
 
