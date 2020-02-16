@@ -11,7 +11,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('session', ['currentUser']),
+    ...mapGetters('session', ['isAuthenticated']),
   },
 
   mounted() {
@@ -26,7 +26,7 @@ export default {
   },
 
   watch: {
-    currentUser(value) {
+    isAuthenticated(value) {
       if (value) {
         this.disconnectUpdates()
         this.$cable.refresh()
@@ -40,7 +40,7 @@ export default {
 
   methods: {
     setupUpdates() {
-      if (this.currentUser) {
+      if (this.isAuthenticated) {
         this.setupOnSaleVehiclesUpdates()
         this.setupOnSaleUpdates()
         this.setupHangarUpdates()
