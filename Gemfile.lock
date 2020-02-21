@@ -190,7 +190,7 @@ GEM
     geocoder (1.6.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    groupdate (4.3.0)
+    groupdate (5.0.0)
       activesupport (>= 5)
     haml (5.1.2)
       temple (>= 0.8.0)
@@ -404,11 +404,13 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rubocop (0.79.0)
+    rexml (3.2.4)
+    rubocop (0.80.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.7.0.1)
       rainbow (>= 2.2.2, < 4.0)
+      rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     rubocop-performance (1.5.2)
@@ -436,7 +438,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (4.2.1)
+    searchkick (4.3.0)
       activemodel (>= 5)
       elasticsearch (>= 6)
       hashie
@@ -448,7 +450,7 @@ GEM
       shoulda-context (= 2.0.0.rc2)
       shoulda-matchers (~> 4.0)
     shoulda-context (2.0.0.rc2)
-    shoulda-matchers (4.2.0)
+    shoulda-matchers (4.3.0)
       activesupport (>= 4.2.0)
     sidekiq (6.0.5)
       connection_pool (>= 2.2.2)
