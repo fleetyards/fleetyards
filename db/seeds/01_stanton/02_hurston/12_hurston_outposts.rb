@@ -23,20 +23,20 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     stanhope.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     stanhope.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
@@ -63,20 +63,20 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     edmond.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     edmond.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
@@ -92,20 +92,20 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     hadley.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     hadley.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
@@ -121,20 +121,20 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     oparei.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     oparei.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
@@ -150,20 +150,20 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     pinewood.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     pinewood.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
@@ -179,21 +179,36 @@ pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
     thedus.docks << Dock.new(
-      name: "Vehiclepad #{"%02d" % pad}",
+      name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
-  count.times do |index|
+  count.times do |_index|
     thedus.docks << Dock.new(
-      name: "Ladingpad #{"%02d" % pad}",
+      name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
     pad += 1
   end
 end
+
+reclamation = Station.find_or_initialize_by(name: 'Reclamation and Disposal Orinth')
+reclamation.update!(
+  celestial_object: hurston,
+  station_type: 'salvage-outpost',
+  location: 'Hurston',
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation.jpg').open,
+  hidden: false
+)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: reclamation)
+admin_office.update!(
+  shop_type: :admin,
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation_admin.jpg').open,
+  hidden: false
+)

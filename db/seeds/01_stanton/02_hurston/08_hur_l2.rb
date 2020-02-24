@@ -17,18 +17,18 @@ hur_l2.docks.destroy_all
 { small: [1, 3, 4, 5], large: [2, 6] }.each do |ship_size, pads|
   pads.each do |pad|
     hur_l2.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { large: [1, 2, 3, 4] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     hur_l2.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -39,7 +39,7 @@ hur_l2.habitations.destroy_all
   { container: 10 }.each do |hab_size, count|
     count.times do
       hur_l2.habitations << Habitation.new(
-        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        name: "Level #{'%02d' % level} Hab #{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )
@@ -62,8 +62,8 @@ live_fire_weapons.update!(
   hidden: hidden
 )
 
-ship_weapons = Shop.find_or_initialize_by(name: 'Ship Weapons', station: hur_l2)
-ship_weapons.update!(
+congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station: hur_l2)
+congreve_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/ship_weapons.jpg').open,
   hidden: hidden

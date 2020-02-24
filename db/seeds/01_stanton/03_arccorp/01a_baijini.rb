@@ -17,18 +17,18 @@ baijini.docks.destroy_all
 { small: [1, 4], large: [2, 3] }.each do |ship_size, pads|
   pads.each do |pad|
     baijini.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
-{ large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+{ large: [1, 2, 3, 4] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     baijini.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -39,7 +39,7 @@ baijini.habitations.destroy_all
   { container: 10 }.each do |hab_size, count|
     count.times do
       baijini.habitations << Habitation.new(
-        name: "Level #{"%02d" % level} Hab #{"%02d" % pad}",
+        name: "Level #{'%02d' % level} Hab #{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )
@@ -55,8 +55,8 @@ admin.update!(
   hidden: hidden
 )
 
-armor = Shop.find_or_initialize_by(name: 'Armor Store', station: baijini)
-armor.update!(
+bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: baijini)
+bulwark_armor.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/armor.jpg').open,
   hidden: hidden

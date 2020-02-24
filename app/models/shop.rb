@@ -30,7 +30,7 @@ class Shop < ApplicationRecord
 
   accepts_nested_attributes_for :shop_commodities, allow_destroy: true
 
-  enum shop_type: { clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5, ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12, computers: 13 }
+  enum shop_type: { clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5, ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12, computers: 13, blackmarket: 14 }
   ransacker :shop_type, formatter: proc { |v| Shop.shop_types[v] } do |parent|
     parent.table[:shop_type]
   end

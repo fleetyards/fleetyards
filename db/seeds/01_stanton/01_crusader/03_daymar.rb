@@ -17,18 +17,18 @@ shubin.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     shubin.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
-{ small: [1],  medium: [2] }.each do |ship_size, pads|
+{ medium: [1], large: [2] }.each do |ship_size, pads|
   pads.each do |pad|
     shubin.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -42,18 +42,18 @@ arccorp.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     arccorp.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
-{ small: [1],  medium: [2] }.each do |ship_size, pads|
+{ medium: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     arccorp.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -93,4 +93,19 @@ admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/nuen_admin.jpg').open,
   hidden: true
+)
+
+brios = Station.find_or_initialize_by(name: "Brio's Breaker Yard")
+brios.update!(
+  celestial_object: daymar,
+  station_type: 'salvage-outpost',
+  location: nil,
+  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/brios.jpg').open,
+  hidden: false
+)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: brios)
+admin_office.update!(
+  shop_type: :admin,
+  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/daymar/brios_admin.jpg').open,
+  hidden: false
 )

@@ -82,12 +82,18 @@ en:
           coolers: Coolers
           power_plants: Power Plants
           quantum_drives: Quantum Drives
+          mining_lasers: Mining Lasers
+          missile_racks: Missle Racks
         item_classes:
           stealth: Stealth
           civilian: Civilian
           industrial: Industrial
           military: Military
           competition: Competition
+        tracking_signals:
+          infrared: infrared
+          cross_section: Cross Section
+          electromagnetic: Electromagnetic
         component_classes:
           RSIModular: Modular
           RSIWeapon: Weapon
@@ -122,6 +128,7 @@ en:
           clothing: Clothing
           tool: Tool
           medical: Medical
+          hacking_tool: Hacking Tool
         weapon_classes:
           energy: Energy
           ballistic: Ballistic
@@ -143,6 +150,9 @@ en:
           assault_rifle: Assault Rifle
           weapon_scope: Scope
           utility: Utility
+          rocket_launcher: Rocket Launcher
+          grenade_launcher: Grenade Launcher
+          knife: Knife
       fleet_membership:
         roles:
           admin: Admin
@@ -170,6 +180,7 @@ en:
           resources: Resources Broker
           rental: Rental
           computers: Computer Store
+          blackmarket: Blackmarket
       celestial_object:
         hidden: hidden?
         location_prefix:

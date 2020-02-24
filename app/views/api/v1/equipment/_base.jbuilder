@@ -18,6 +18,7 @@ json.damage_reduction equipment.damage_reduction
 json.rate_of_fire equipment.rate_of_fire
 json.range equipment.range
 json.extras equipment.extras
+json.storage equipment.storage
 json.store_image equipment.store_image.url
 json.store_image_medium equipment.store_image.medium.url
 json.store_image_small equipment.store_image.small.url
