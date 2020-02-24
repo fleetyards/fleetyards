@@ -75,6 +75,10 @@ class Component < ApplicationRecord
     I18n.t("filter.component.class.items.#{component_class.downcase}")
   end
 
+  def tracking_signal_label
+    Component.human_enum_name(:tracking_signal, tracking_signal)
+  end
+
   private def touch_shop_commodities
     # rubocop:disable Rails/SkipsModelValidations
     shop_commodities.update_all(updated_at: Time.zone.now)
