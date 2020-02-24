@@ -20,6 +20,15 @@ Rails:
 Style/Documentation:
   Enabled: false # for now
 
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
 # Style/Lambda:
 #   Enabled: false
 

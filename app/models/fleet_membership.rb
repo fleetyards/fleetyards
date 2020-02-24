@@ -17,11 +17,11 @@ class FleetMembership < ApplicationRecord
   def set_primary
     return unless primary?
 
-    # rubocop:disable SkipsModelValidations
+    # rubocop:disable Rails/SkipsModelValidations
     FleetMembership.where(user_id: user_id, primary: true)
                    .where.not(id: id)
                    .update_all(primary: false)
-    # rubocop:enable SkipsModelValidations
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def notify_user
