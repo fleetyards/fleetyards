@@ -17,18 +17,18 @@ cru_l5.docks.destroy_all
 { small: [1, 3], medium: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     cru_l5.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { large: [1, 2] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     cru_l5.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -39,7 +39,7 @@ cru_l5.habitations.destroy_all
   { container: 11 }.each do |hab_size, count|
     count.times do
       cru_l5.habitations << Habitation.new(
-        name: "Hab #{level}#{"%02d" % pad}",
+        name: "Hab #{level}#{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )
@@ -52,6 +52,13 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l5)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/admin.jpg').open,
+  hidden: hidden
+)
+
+blackmarket = Shop.find_or_initialize_by(name: 'Blackmarket Terminal', station: cru_l5)
+blackmarket.update!(
+  shop_type: :blackmarket,
+  # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/blackmarket.jpg').open,
   hidden: hidden
 )
 
@@ -73,5 +80,12 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l5)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/platinum.jpg').open,
+  hidden: hidden
+)
+
+congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station: cru_l5)
+congreve_weapons.update!(
+  shop_type: :weapons,
+  # store_image: Rails.root.join('db/seeds/images/stanton/hurston/cur-l5/ship_weapons.jpg').open,
   hidden: hidden
 )

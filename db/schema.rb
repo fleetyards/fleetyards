@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_224105) do
+ActiveRecord::Schema.define(version: 2020_02_24_233313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_224105) do
     t.string "store_image"
     t.string "grade"
     t.integer "item_class"
+    t.integer "tracking_signal"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -165,6 +166,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_224105) do
     t.string "extras"
     t.integer "weapon_class"
     t.integer "slot"
+    t.decimal "storage", precision: 15, scale: 2
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 

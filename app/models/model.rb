@@ -134,7 +134,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    %w[vehicle snub small medium large capital].map do |item|
+    %w[vehicle snub small medium large extra_large capital].map do |item|
       Filter.new(
         category: 'size',
         name: item.humanize,

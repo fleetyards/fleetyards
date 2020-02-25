@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 microtech = CelestialObject.find_or_create_by!(name: 'microTech')
 
 hidden = false
@@ -15,18 +17,18 @@ porttressler.docks.destroy_all
 { small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     porttressler.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
-{ large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+{ large: [1, 2, 3, 4] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     porttressler.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -37,7 +39,7 @@ porttressler.habitations.destroy_all
   { container: 11 }.each do |hab_size, count|
     count.times do
       porttressler.habitations << Habitation.new(
-        name: "Hab #{level}#{"%02d" % pad}",
+        name: "Hab #{level}#{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )
@@ -53,8 +55,8 @@ admin_office.update!(
   hidden: hidden
 )
 
-armor = Shop.find_or_initialize_by(name: 'Armor Store', station: porttressler)
-armor.update!(
+bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: porttressler)
+bulwark_armor.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/armor.jpg').open,
   hidden: hidden

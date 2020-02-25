@@ -71,15 +71,15 @@ gloc.update!(
   hidden: false
 )
 
-tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division - Jobwell', station: area18)
+tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division', station: area18)
 tdd.update!(
   shop_type: :resources,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/jobwell.jpg').open,
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: area18)
-admin_office.update!(
+arccorp_tower = Shop.find_or_initialize_by(name: 'ArcCorp Tower', station: area18)
+arccorp_tower.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,
   hidden: false

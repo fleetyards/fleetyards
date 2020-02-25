@@ -141,6 +141,10 @@ export default {
     damageReduction: 'Damage Reduction',
     rateOfFire: 'Rate of Fire',
     extras: '',
+    location: 'Location',
+    slot: 'Slot',
+    storage: 'Storage',
+    shop: 'Shop',
   },
   resources: {
     models: 'Ships',

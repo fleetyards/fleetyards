@@ -55,8 +55,8 @@ admin_office.update!(
   hidden: hidden
 )
 
-armor = Shop.find_or_initialize_by(name: 'Armor Store', station: mic_l1)
-armor.update!(
+bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: mic_l1)
+bulwark_armor.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/armor.jpg').open,
   hidden: hidden

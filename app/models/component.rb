@@ -22,6 +22,11 @@ class Component < ApplicationRecord
     parent.table[:item_class]
   end
 
+  enum tracking_signal: { infrared: 0, cross_section: 1, electromagnetic: 2 }
+  ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do |parent|
+    parent.table[:tracking_signal]
+  end
+
   ransack_alias :name, :name_or_slug
 
   def self.item_types
@@ -33,6 +38,8 @@ class Component < ApplicationRecord
       coolers
       power_plants
       quantum_drives
+      mining_lasers
+      missile_racks
     ]
   end
 
@@ -66,6 +73,10 @@ class Component < ApplicationRecord
 
   def component_class_label
     I18n.t("filter.component.class.items.#{component_class.downcase}")
+  end
+
+  def tracking_signal_label
+    Component.human_enum_name(:tracking_signal, tracking_signal)
   end
 
   private def touch_shop_commodities

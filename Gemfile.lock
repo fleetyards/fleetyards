@@ -141,6 +141,7 @@ GEM
     docile (1.3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.7.5)
     dynamic_fields_for_rails (1.0.1)
       rails (>= 3.0.0, < 7.0.0)
     ed25519 (1.2.4)
@@ -560,6 +561,7 @@ DEPENDENCIES
   dalli
   devise
   discordrb-webhooks
+  dotenv
   dynamic_fields_for_rails
   ed25519
   excon (>= 0.71.0)

@@ -16,18 +16,18 @@ area_061.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     area_061.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { medium: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     area_061.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -59,18 +59,18 @@ area_048.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     area_048.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { medium: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     area_048.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -95,18 +95,18 @@ area_045.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     area_045.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { medium: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     area_045.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -131,18 +131,33 @@ area_056.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
   pads.each do |pad|
     area_056.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :vehiclepad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { medium: [1] }.each do |ship_size, pads|
   pads.each do |pad|
     area_056.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
+
+samson = Station.find_or_initialize_by(name: "Samson & Son's Salvage Center")
+samson.update!(
+  celestial_object: wala,
+  station_type: 'salvage-outpost',
+  location: nil,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson.jpg').open,
+  hidden: false
+)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: samson)
+admin_office.update!(
+  shop_type: :admin,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson_admin.jpg').open,
+  hidden: false
+)

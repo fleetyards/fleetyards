@@ -104,6 +104,8 @@ group :development do
   gem 'listen'
   gem 'rails-erd'
 
+  gem 'dotenv'
+
   gem 'rubocop', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'

@@ -68,6 +68,7 @@ casaba.update!(
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/casaba.jpg').open,
   hidden: hidden
 )
+
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: arc_l1)
 platinum_bay.update!(
   shop_type: :components,
