@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.68.0](https://github.com/fleetyards/app/compare/v3.67.4...v3.68.0) (2020-02-25)
+
+
+### Features
+
+* load equipment and components from spreadsheet ([#1166](https://github.com/fleetyards/app/issues/1166)) ([05e992e](https://github.com/fleetyards/app/commit/05e992e07a220899df090690e32b2c65b2e1a417))
+
+
+### Bug Fixes
+
+* flex-list col sizes should fix [#1161](https://github.com/fleetyards/app/issues/1161) ([2f733f3](https://github.com/fleetyards/app/commit/2f733f3a9170a37364ba3075e515b8154fe1bb31))
+* remove label from search page form ([c047445](https://github.com/fleetyards/app/commit/c047445ec6e12c1c1836c924da5db11444453a07))
+
 ### [3.67.4](https://github.com/fleetyards/app/compare/v3.67.3...v3.67.4) (2020-02-16)
 
 
