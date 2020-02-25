@@ -65,11 +65,11 @@
   }
 
   .id {
-    width: 350px;
+    width: 30%;
   }
 
   .name {
-    width: 300px;
+    width: 25%;
   }
 
   .username {
@@ -83,13 +83,8 @@
     }
   }
 
-  .rsi-handle {
-    width: 300px;
-    font-size: 120%;
-  }
-
   .links {
-    width: 200px;
+    width: 20%;
     font-size: 20px;
     text-align: right;
 
@@ -174,7 +169,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 150px;
+    min-width: 20%;
     max-width: 100%;
     text-align: right;
     vertical-align: middle;
@@ -186,7 +181,7 @@
   }
 
   .actions {
-    min-width: 150px;
+    min-width: 20%;
     max-width: 100%;
     text-align: right;
     vertical-align: middle;
@@ -197,18 +192,29 @@
     }
   }
 
-  .joined,
-  .role {
-    text-align: right;
-  }
-
   > .avatar {
     min-width: 70px;
   }
 
-  .rent-price,
+  .rsi-handle {
+    min-width: 15%;
+    font-size: 120%;
+  }
+
+  .joined {
+    min-width: 20%;
+  }
+
+  .role {
+    min-width: 10%;
+  }
+
   .role,
   .joined {
+    text-align: right;
+  }
+
+  .rent-price {
     min-width: 250px;
   }
 }

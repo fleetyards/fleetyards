@@ -185,11 +185,12 @@ module Spreadsheet
           {
             name: name,
             component_class: component_class_mapping[row[1]],
-            size: row[2],
-            grade: row[3],
+            manufacturer: row[2],
+            size: row[3],
+            grade: row[4],
             item_type: row[1],
-            item_class: component_item_class_mapping[row[4]],
-            prices: extract_prices(row, locations_data, 1),
+            item_class: component_item_class_mapping[row[5]],
+            prices: extract_prices(row, locations_data, 6),
           }
         end.compact
       )

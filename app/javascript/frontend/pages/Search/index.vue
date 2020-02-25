@@ -20,6 +20,7 @@
                     size="large"
                     autofocus
                     clearable
+                    no-label
                     @clear="filter"
                   />
                   <Btn

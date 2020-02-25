@@ -67,7 +67,7 @@ class Items < Thor
 
         manufacturer_name = item_data.delete('manufacturer')
         if manufacturer_name.present?
-          manufacturer = Manufacturer.find_by(name: manufacturer_name)
+          manufacturer = Manufacturer.find_or_create_by(name: manufacturer_name)
           item_data['manufacturer_id'] = manufacturer&.id
         end
 
