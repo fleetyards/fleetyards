@@ -120,9 +120,10 @@ module Spreadsheet
 
           {
             name: name,
+            manufacturer: row[2],
             equipment_type: :clothing,
             slot: row[1].downcase.to_sym,
-            prices: extract_prices(row, locations_data, 3),
+            prices: extract_prices(row, locations_data, 4),
           }
         end.compact
       )
