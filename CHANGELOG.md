@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.68.2](https://github.com/fleetyards/app/compare/v3.68.1...v3.68.2) (2020-02-26)
+
+
+### Bug Fixes
+
+* hangar groups cache invalidation ([bf8db23](https://github.com/fleetyards/app/commit/bf8db23535adca4ff84665efbee1e396632dd69e))
+* toggle button width ([e8c2ac0](https://github.com/fleetyards/app/commit/e8c2ac0b2aa3a4c85d6e615de70c622992b500f8))
+
 ### [3.68.1](https://github.com/fleetyards/app/compare/v3.68.0...v3.68.1) (2020-02-26)
 
 
