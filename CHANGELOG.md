@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.68.1](https://github.com/fleetyards/app/compare/v3.68.0...v3.68.1) (2020-02-26)
+
+
+### Bug Fixes
+
+* toggle button ([addf605](https://github.com/fleetyards/app/commit/addf60589d932756d6b0dfafc59920380d2f8bfc))
+
 ## [3.68.0](https://github.com/fleetyards/app/compare/v3.67.4...v3.68.0) (2020-02-25)
 
 
