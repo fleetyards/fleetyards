@@ -321,7 +321,7 @@ export default {
         return null
       }
 
-      return `https://www.erkul.games/calculator/fleetyardsnet/${this.model.erkulsSlug}`
+      return `https://www.erkul.games/calculator;ship=${this.model.erkulsSlug}`
     },
 
     metaTitle() {
