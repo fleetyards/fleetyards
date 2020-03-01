@@ -3,7 +3,7 @@
 </h4>
 <% @loaners.each do |loaner| %>
 <p>
-  <b><%= loaner[:model] %></b><br>
+  <b><%= loaner[:name] %></b><br>
   <%= [loaner[:model_id], loaner[:loaner], loaner[:loaners]].join('<br>').html_safe %>
 </p>
 <% end %>
