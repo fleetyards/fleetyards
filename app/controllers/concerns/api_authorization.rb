@@ -5,7 +5,7 @@ module ApiAuthorization
 
   included do
     def current_user
-      @current_user ||= current_api_user
+      current_api_user
     end
     helper_method :current_user
 

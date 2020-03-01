@@ -47,7 +47,7 @@ module Admin
     end
 
     private def current_user
-      @current_user ||= current_admin_user
+      current_admin_user
     end
     helper_method :current_user
 
