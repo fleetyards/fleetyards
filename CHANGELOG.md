@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.68.7](https://github.com/fleetyards/app/compare/v3.68.6...v3.68.7) (2020-03-01)
+
+
+### Bug Fixes
+
+* try to resolve forbidden error on sidekiq cron tab ([6a04057](https://github.com/fleetyards/app/commit/6a04057071bda0813b4049798835cb1d72955197))
+
 ### [3.68.6](https://github.com/fleetyards/app/compare/v3.68.5...v3.68.6) (2020-03-01)
 
 
