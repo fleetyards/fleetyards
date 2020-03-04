@@ -29,7 +29,7 @@ window.App.Models.reload = ($element) ->
       , 3000
 
 
-document.addEventListener 'turbolinks:load', ->
+window.addEventListener 'load', ->
   if $('#admin, #models').length
     if $('.reload-models.loading').length
       $('.reload-models.loading').each (_index, element) ->

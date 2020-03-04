@@ -37,7 +37,7 @@ $(document).on('focus', '.modal input, .modal textarea, .modal select', function
   $(this)[0].scrollIntoView(true);
 });
 
-$(document).on('turbolinks:load', function() {
+window.addEventListener('load', function() {
   $('.btn.btn-primary[data-loading-text]').click(function() {
     $(this).button('loading');
   });

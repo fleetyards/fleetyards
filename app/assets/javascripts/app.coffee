@@ -16,7 +16,7 @@ $(document).on 'click', 'a.disabled', (evt) ->
 $(document).on 'dynamicFieldsFor.add', () ->
   App.initSelect()
 
-document.addEventListener 'turbolinks:load', ->
+window.addEventListener 'load', ->
   $('[data-toggle=tooltip]').tooltip()
 
   if success = $('body').attr('data-success')
@@ -32,6 +32,3 @@ document.addEventListener 'turbolinks:load', ->
     displayWarning warning
 
   App.initSelect()
-
-document.addEventListener 'turbolinks:before-cache', ->
-  App.unloadSelect()
