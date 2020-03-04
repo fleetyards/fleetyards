@@ -42,6 +42,8 @@ module Fleetyards
     config.exceptions_app = routes
 
     config.middleware.use Rack::Attack
+
+    config.session_store :cookie_store, key: 'fleetyards_session', secure: Rails.env.production?
   end
 end
 

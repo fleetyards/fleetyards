@@ -46,7 +46,6 @@ gem 'jbuilder'
 gem 'rails-i18n'
 
 gem 'dalli'
-gem 'turbolinks'
 
 gem 'kaminari'
 gem 'url_plumber'
