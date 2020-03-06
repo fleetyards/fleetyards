@@ -119,11 +119,12 @@ module RSI
     end
 
     private def release_name(item, release)
-      new_release_name = release['name'].strip
+      new_release_name = release['name'].strip.chomp('.0')
       old_release_name = (item.release || '').strip
-      return item.release if new_release_name == "#{old_release_name}.0" || old_release_name == "#{new_release_name}.0"
 
-      release['name']
+      return old_release_name if new_release_name == old_release_name
+
+      new_release_name
     end
 
     private def cleanup_changes
