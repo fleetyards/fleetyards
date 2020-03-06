@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.68.14](https://github.com/fleetyards/app/compare/v3.68.13...v3.68.14) (2020-03-06)
+
+
+### Bug Fixes
+
+* roadmap item caching ([f7da100](https://github.com/fleetyards/app/commit/f7da1007d0ca4701b1721dc98b709bcff49668e6))
+
 ### [3.68.13](https://github.com/fleetyards/app/compare/v3.68.12...v3.68.13) (2020-03-06)
 
 
