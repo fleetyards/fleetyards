@@ -197,6 +197,7 @@ module Api
 
         vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
         vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
+        vehicle.task_forces.destroy_all if vehicle_params[:hangar_group_ids].blank?
 
         return if vehicle.update(vehicle_params)
 
