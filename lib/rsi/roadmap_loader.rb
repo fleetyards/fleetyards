@@ -119,7 +119,11 @@ module RSI
     end
 
     private def release_name(item, release)
-      new_release_name = release['name'].strip.chomp('.0')
+      new_release_name = if release['name'].count('.') > 1
+                           release['name'].strip.chomp('.0')
+                         else
+                           release['name'].strip
+                         end
       old_release_name = (item.release || '').strip
 
       return old_release_name if new_release_name == old_release_name
