@@ -194,6 +194,10 @@ export default {
         )
         .filter(
           update =>
+            update.key !== 'active' || (update.key === 'active' && update.old),
+        )
+        .filter(
+          update =>
             update.key !== 'completed' ||
             (update.key === 'completed' && update.count !== 0),
         )
