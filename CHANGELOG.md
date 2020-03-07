@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.68.17](https://github.com/fleetyards/app/compare/v3.68.16...v3.68.17) (2020-03-07)
+
+
+### Bug Fixes
+
+* **roadmap:** filter readds on new item ([91ae95a](https://github.com/fleetyards/app/commit/91ae95a19f734718dd6f2a705a23c600b3ac412a))
+
 ### [3.68.16](https://github.com/fleetyards/app/compare/v3.68.15...v3.68.16) (2020-03-06)
 
 
