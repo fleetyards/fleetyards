@@ -136,8 +136,7 @@
   "resolutions": {
     "handlebars": ">=4.7.3",
     "serialize-javascript": ">=2.1.1",
-    "node-sass": ">=4.13.1",
-    "acorn": ">=7.1.1"
+    "node-sass": ">=4.13.1"
   },
   "config": {
     "storybook": {
