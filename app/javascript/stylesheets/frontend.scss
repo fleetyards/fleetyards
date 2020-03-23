@@ -10,10 +10,8 @@
 
 .no-scroll {
   overflow: hidden !important;
-  height: 100vh !important;
-  -webkit-overflow-scrolling: auto;
 
-  > body {
+  &.nav-visible {
     position: fixed !important;
     top: 0 !important;
     bottom: 0 !important;
