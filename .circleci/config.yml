@@ -64,9 +64,10 @@ e2e: &e2e
 
 jobs:
   health-check:
-    <<: *defaults
+    docker:
+      - image: fleetyards/health:latest
     steps:
-      - run: curl --silent --show-error --fail https://fleetyards.net
+      - run: curl --write-out '%{http_code}' --silent --fail --output /dev/null https://fleetyards.net
 
   checkout-code:
     <<: *defaults
@@ -349,7 +350,7 @@ workflows:
   health:
     triggers:
       - schedule:
-          cron: "0 * * * *"
+          cron: "0 18 * * *"
           filters:
             branches:
               only: master

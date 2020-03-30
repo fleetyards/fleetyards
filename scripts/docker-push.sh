@@ -27,6 +27,17 @@ docker push fleetyards/ci:2.6.5
 popd
 
 echo
+echo "Health Container..."
+echo
+
+pushd health
+
+docker build -t fleetyards/health:latest .
+docker push fleetyards/health:latest
+
+popd
+
+echo
 echo "...Done"
 echo
 
