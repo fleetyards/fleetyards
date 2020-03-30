@@ -63,6 +63,11 @@ e2e: &e2e
         ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 jobs:
+  health-check:
+    <<: *defaults
+    steps:
+      - curl --silent --show-error --fail https://fleetyards.net
+
   checkout-code:
     <<: *defaults
     steps:
@@ -340,6 +345,17 @@ workflows:
       - yarn-audit:
           requires:
             - yarn
+
+  health:
+    triggers:
+      - schedule:
+          cron: "0 */1 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - health-check
+
   main:
     jobs:
       - checkout-code:
