@@ -1,5 +1,3 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import VueClipboard from 'vue-clipboard2'
