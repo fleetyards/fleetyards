@@ -1,12 +1,12 @@
 @import '~noty/lib/noty';
 @import '~photoswipe/dist/photoswipe';
-@import 'vendor/photoswipe/default-skin';
-@import 'variables';
-@import 'colors/default';
-@import 'bootstrap-custom';
-@import 'colors/dark_overrides';
-@import 'nprogress-custom';
-@import 'partials';
+@import '~stylesheets/vendor/photoswipe/default-skin';
+@import '~stylesheets/variables';
+@import '~stylesheets/colors/default';
+@import '~stylesheets/bootstrap-custom';
+@import '~stylesheets/colors/dark_overrides';
+@import '~stylesheets/nprogress-custom';
+@import '~stylesheets/partials';
 
 .no-scroll {
   overflow: hidden !important;
