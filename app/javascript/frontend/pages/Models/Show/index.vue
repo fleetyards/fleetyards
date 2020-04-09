@@ -361,11 +361,6 @@ export default {
       this.fetchVariants()
       this.fetchLoaners()
     },
-
-    model() {
-      if (!this.model) {
-      }
-    },
   },
 
   created() {
