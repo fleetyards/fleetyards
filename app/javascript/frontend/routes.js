@@ -20,7 +20,7 @@ export const routes = [
     name: 'search',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Search'
+        /* webpackChunkName: "frontend.page.search" */ 'frontend/pages/Search'
       ),
     meta: {
       title: 'search',
@@ -31,7 +31,7 @@ export const routes = [
     name: 'impressum',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Impressum'
+        /* webpackChunkName: "frontend.page.impressum" */ 'frontend/pages/Impressum'
       ),
     meta: {
       title: 'impressum',
@@ -42,7 +42,7 @@ export const routes = [
     name: 'privacy-policy',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/PrivacyPolicy'
+        /* webpackChunkName: "frontend.page.privacy" */ 'frontend/pages/PrivacyPolicy'
       ),
     meta: {
       title: 'privacyPolicy',
