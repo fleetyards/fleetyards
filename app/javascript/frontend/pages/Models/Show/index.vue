@@ -16,6 +16,7 @@
                   v-if="model.manufacturer && model.manufacturer.logo"
                   v-lazy="model.manufacturer.logo"
                   class="manufacturer-logo"
+                  alt="manufacturer-logo"
                 />
               </small>
             </h1>

@@ -8,7 +8,11 @@
             <div class="search-form text-center">
               <h1 id="home-welcome">
                 <small>{{ $t('headlines.welcome') }}</small>
-                <img :src="require(`images/logo.png`).default" class="logo" />
+                <img
+                  :src="require(`images/logo.png`).default"
+                  class="logo"
+                  alt="logo"
+                />
                 {{ $t('app') }}
               </h1>
               <div class="row">

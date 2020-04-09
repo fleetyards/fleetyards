@@ -22,6 +22,7 @@
             <router-view class="main" />
           </transition>
         </div>
+        ̦
         <AppFooter />
       </div>
     </div>

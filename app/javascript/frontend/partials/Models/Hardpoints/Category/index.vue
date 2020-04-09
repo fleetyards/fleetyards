@@ -12,7 +12,11 @@
             class="hardpoint-type"
           >
             <div class="hardpoint-type-label">
-              <img :src="icons[type]" class="hardpoint-type-icon" />
+              <img
+                :src="icons[type]"
+                class="hardpoint-type-icon"
+                :alt="`icon-${type}`"
+              />
               {{ $t(`labels.hardpoint.types.${type}`) }}
             </div>
             <HardpointIcon

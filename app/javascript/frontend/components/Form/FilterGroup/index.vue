@@ -28,7 +28,7 @@
         @click="select(option[valueAttr])"
       >
         <span v-if="option[iconAttr]" class="filter-list-item-icon">
-          <img :src="option[iconAttr]" />
+          <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
         </span>
         <span v-html="option[labelAttr]" />
         <span v-if="multiple">
@@ -65,7 +65,7 @@
           @click="select(returnObject ? option : option[valueAttr])"
         >
           <span v-if="option[iconAttr]" class="filter-list-item-icon">
-            <img :src="option[iconAttr]" />
+            <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
           </span>
           <span v-html="option[labelAttr]" />
           <span v-if="multiple">
