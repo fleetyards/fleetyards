@@ -6,7 +6,7 @@
     }"
     class="app-body"
   >
-    <div class="background-image" />
+    <div :class="{ webp: webpSupported }" class="background-image" />
     <div class="app-content">
       <transition name="fade" mode="out-in" appear>
         <Navigation />
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import BackToTop from 'frontend/partials/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
@@ -49,6 +50,12 @@ export default {
   },
 
   mixins: [Updates, CurrentUser, RenewSession, CheckVersion],
+
+  data() {
+    return {
+      webpSupported: true,
+    }
+  },
 
   computed: {
     ...mapGetters('app', ['navCollapsed', 'overlayVisible']),
@@ -97,6 +104,7 @@ export default {
   created() {
     this.setNoScroll()
     this.checkMobile()
+    this.checkWebpSupport()
 
     if (this.isAuthenticated) {
       requestPermission()
@@ -117,6 +125,21 @@ export default {
   },
 
   methods: {
+    async checkWebpSupport() {
+      if (!createImageBitmap) return false
+
+      const webpData =
+        'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='
+      const response = await axios.get(webpData, { responseType: 'blob' })
+
+      this.webpSupported = await createImageBitmap(response.data).then(
+        () => true,
+        () => false,
+      )
+
+      return this.webpSupported
+    },
+
     openPrivacySettings(settings = false) {
       this.$refs.privacySettings.open(settings)
     },

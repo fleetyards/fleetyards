@@ -15,4 +15,8 @@
   transition: background-image ease .5s;
   background-color: black;
   background-image: url('~images/bg-6.jpg');
+
+  &.webp {
+    background-image: url('~images/bg-6.webp');
+  }
 }

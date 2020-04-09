@@ -18,7 +18,7 @@ Rails.application.config.content_security_policy do |policy|
   end
 
   connect_src = [
-    :self, cable_endpoint, api_endpoint, 'https://img.youtube.com',
+    :self, :data, cable_endpoint, api_endpoint, 'https://img.youtube.com',
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
     'https://pro.fontawesome.com', Rails.application.secrets[:rsi_endpoint],
     'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com'
