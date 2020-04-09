@@ -189,7 +189,6 @@ export default {
 
       if (!response.error) {
         this.station = response.data
-        this.$store.commit('setBackgroundImage', this.station.backgroundImage)
       } else if (response.error.response.status === 404) {
         this.$router.replace({ name: '404' })
       }

@@ -172,15 +172,6 @@ export default {
     $route() {
       this.fetch()
     },
-
-    celestialObject() {
-      if (this.celestialObject.storeImage) {
-        this.$store.commit(
-          'setBackgroundImage',
-          this.celestialObject.storeImage,
-        )
-      }
-    },
   },
 
   created() {

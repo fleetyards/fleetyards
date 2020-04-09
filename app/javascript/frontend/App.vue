@@ -6,12 +6,7 @@
     }"
     class="app-body"
   >
-    <div
-      v-if="backgroundImage"
-      :key="backgroundImage"
-      v-lazy:background-image="backgroundImage"
-      class="background-image"
-    />
+    <div class="background-image" />
     <div class="app-content">
       <transition name="fade" mode="out-in" appear>
         <Navigation />
@@ -56,8 +51,6 @@ export default {
   mixins: [Updates, CurrentUser, RenewSession, CheckVersion],
 
   computed: {
-    ...mapGetters(['backgroundImage']),
-
     ...mapGetters('app', ['navCollapsed', 'overlayVisible']),
 
     ...mapGetters('session', ['isAuthenticated']),
@@ -74,8 +67,6 @@ export default {
 
   watch: {
     $route() {
-      this.setBackground()
-
       if (this.isAuthenticated) {
         this.fetchHangar()
       }
@@ -105,7 +96,6 @@ export default {
 
   created() {
     this.setNoScroll()
-    this.setBackground()
     this.checkMobile()
 
     if (this.isAuthenticated) {
@@ -150,15 +140,6 @@ export default {
       } else {
         document.body.classList.remove('no-scroll')
       }
-    },
-
-    setBackground() {
-      let { backgroundImage } = this.$route.meta
-      if (!backgroundImage) {
-        // eslint-disable-next-line global-require
-        backgroundImage = require('images/bg-0.jpg').default
-      }
-      this.$store.commit('setBackgroundImage', backgroundImage)
     },
 
     async fetchHangar() {

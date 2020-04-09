@@ -407,12 +407,6 @@ export default {
     fleetchartVisible() {
       this.fetchAdditional()
     },
-
-    fleet() {
-      if (this.fleet.backgroundImage) {
-        this.$store.commit('setBackgroundImage', this.fleet.backgroundImage)
-      }
-    },
   },
 
   mounted() {

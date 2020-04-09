@@ -167,12 +167,6 @@ export default {
     $route() {
       this.fetch()
     },
-
-    station() {
-      if (this.station.backgroundImage) {
-        this.$store.commit('setBackgroundImage', this.station.backgroundImage)
-      }
-    },
   },
 
   mounted() {

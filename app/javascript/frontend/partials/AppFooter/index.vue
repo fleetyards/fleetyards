@@ -102,7 +102,12 @@
           reserved.
         </p>
       </div>
-      <div class="app-community-logo" />
+      <div class="app-community-logo">
+        <img
+          v-lazy="require('images/community-logo.png').default"
+          alt="community-logo"
+        />
+      </div>
       <div class="app-version">
         {{ codename }} ({{ version }})
         <span

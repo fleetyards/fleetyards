@@ -27,10 +27,6 @@ const store = new Vuex.Store({
       return state.backRoutes
     },
 
-    backgroundImage(state) {
-      return state.backgroundImage
-    },
-
     filters(state) {
       return state.filters
     },
@@ -62,10 +58,6 @@ const store = new Vuex.Store({
 
     setOnlineStatus(state, payload) {
       state.online = payload
-    },
-
-    setBackgroundImage(state, payload) {
-      state.backgroundImage = payload
     },
 
     setFilters(state, payload) {

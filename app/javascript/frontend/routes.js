@@ -12,8 +12,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Home'
       ),
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
       title: 'home',
     },
   },
@@ -59,8 +57,6 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg').default,
       quickSearch: 'nameCont',
       title: 'hangar.index',
     },
@@ -73,8 +69,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'
       ),
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg').default,
       title: 'hangar.preview',
     },
   },
@@ -87,8 +81,6 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-5.jpg').default,
       title: 'hangar.stats',
     },
   },
@@ -108,8 +100,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'
       ),
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
       title: 'models',
       quickSearch: 'searchCont',
     },
@@ -122,8 +112,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Compare'
       ),
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
       title: 'compare.models',
     },
   },
@@ -134,10 +122,6 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'
       ),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
-    },
   },
   {
     path: '/ships/:slug/images/',
@@ -146,10 +130,6 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'
       ),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
-    },
   },
   {
     path: '/ships/:slug/videos/',
@@ -158,10 +138,6 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'
       ),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-6.jpg').default,
-    },
   },
   {
     path: '/stats/',
@@ -183,8 +159,6 @@ export const routes = [
       ),
     children: FleetsRoutes,
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
       title: 'fleets',
     },
   },
@@ -220,8 +194,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/TradeRoutes'
       ),
     meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-7.jpg').default,
       title: 'tradeRoutes',
     },
   },
@@ -313,8 +285,6 @@ export const routes = [
       ),
     meta: {
       title: 'notFound',
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-404.jpg').default,
     },
   },
   {
@@ -323,10 +293,6 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'
       ),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-404.jpg').default,
-    },
   },
 ]
 

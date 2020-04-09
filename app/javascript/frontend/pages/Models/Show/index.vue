@@ -364,11 +364,6 @@ export default {
 
     model() {
       if (!this.model) {
-        return
-      }
-
-      if (this.model.backgroundImage) {
-        this.$store.commit('setBackgroundImage', this.model.backgroundImage)
       }
     },
   },

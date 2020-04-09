@@ -167,12 +167,6 @@ export default {
     $route() {
       this.fetchCelestialObjects()
     },
-
-    starsystem() {
-      if (this.starsystem.storeImage) {
-        this.$store.commit('setBackgroundImage', this.starsystem.storeImage)
-      }
-    },
   },
 
   created() {

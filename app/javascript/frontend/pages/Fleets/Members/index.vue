@@ -362,12 +362,6 @@ export default {
     $route() {
       this.fetch()
     },
-
-    fleet() {
-      if (this.fleet.backgroundImage) {
-        this.$store.commit('setBackgroundImage', this.fleet.backgroundImage)
-      }
-    },
   },
 
   mounted() {

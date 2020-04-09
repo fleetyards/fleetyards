@@ -12,8 +12,6 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.add',
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
     },
   },
   {
@@ -26,8 +24,6 @@ export const routes = [
       ),
     meta: {
       title: 'fleets.preview',
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
     },
   },
   {
@@ -41,8 +37,6 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.invites',
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
     },
   },
   {
@@ -53,10 +47,6 @@ export const routes = [
         /* webpackChunkName: "frontend.page.fleets" */
         'frontend/pages/Fleets/Show'
       ),
-    meta: {
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
-    },
   },
   {
     path: ':slug/members/',
@@ -68,8 +58,6 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-2.jpg').default,
     },
   },
   {
@@ -82,8 +70,6 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
-      // eslint-disable-next-line global-require
-      backgroundImage: require('images/bg-8.jpg').default,
     },
     redirect: {
       name: 'fleet-settings-fleet',
