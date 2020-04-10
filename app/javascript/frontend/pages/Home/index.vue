@@ -77,7 +77,7 @@
     </div>
     <section class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 relative home-ships">
+        <!-- <div class="col-xs-12 col-md-6 relative home-ships">
           <h2 class="sr-only">
             {{ $t('headlines.welcomeShips') }}
           </h2>
@@ -132,7 +132,7 @@
               <Loader :loading="imagesLoading" />
             </div>
           </Panel>
-        </div>
+        </div> -->
       </div>
     </section>
   </div>
