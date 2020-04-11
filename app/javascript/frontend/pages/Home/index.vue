@@ -65,15 +65,6 @@
           </div>
         </div>
       </section>
-      <transition name="fade-slow">
-        <div
-          v-if="showScrollDown"
-          class="home-scroll-to-more"
-          @click="scrollDown"
-        >
-          <i class="fal fa-chevron-down" />
-        </div>
-      </transition>
     </div>
     <section class="container">
       <div class="row">
@@ -178,12 +169,8 @@ export default {
   },
 
   created() {
-    this.fetchImages()
-    this.fetchModels()
-
-    setTimeout(() => {
-      this.showScrollDown = true
-    }, 2000)
+    // this.fetchImages()
+    // this.fetchModels()
   },
 
   methods: {
@@ -217,10 +204,6 @@ export default {
       if (!response.error) {
         this.images = response.data
       }
-    },
-
-    scrollDown() {
-      this.$scrollTo('.home-ships')
     },
   },
 }
