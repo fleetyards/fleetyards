@@ -140,24 +140,24 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
-import TeaserPanel from 'frontend/components/TeaserPanel'
+// import Loader from 'frontend/components/Loader'
+// import Panel from 'frontend/components/Panel'
+// import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Support from 'frontend/partials/Support'
-import LazyImage from 'frontend/components/LazyImage'
+// import LazyImage from 'frontend/components/LazyImage'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    Loader,
-    Panel,
-    TeaserPanel,
+    // Loader,
+    // Panel,
+    // TeaserPanel,
     Btn,
     FormInput,
     Support,
-    LazyImage,
+    // LazyImage,
   },
 
   mixins: [MetaInfo],
