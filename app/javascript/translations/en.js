@@ -23,39 +23,17 @@ export default {
     keywords:
       'Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation',
   },
-  title: {
-    ...title,
-  },
-  privacySettings: {
-    ...privacySettings,
-  },
-  headlines: {
-    ...headlines,
-  },
-  sublines: {
-    ...sublines,
-  },
-  nav: {
-    ...nav,
-  },
-  labels: {
-    ...labels,
-  },
-  placeholders: {
-    ...placeholders,
-  },
-  actions: {
-    ...actions,
-  },
-  texts: {
-    ...texts,
-  },
-  messages: {
-    ...messages,
-  },
-  validations: {
-    ...validations,
-  },
+  title,
+  privacySettings,
+  headlines,
+  sublines,
+  nav,
+  labels,
+  placeholders,
+  actions,
+  texts,
+  messages,
+  validations,
   station: {
     type: 'Type',
     location: 'Location',
