@@ -37,6 +37,7 @@ en:
     back: Back
     cancel: Cancel
     confirm: Confirm Account
+    resend_confirmation: Resend Confirmation
     delete: Delete
     edit: Edit
     copy: Copy
