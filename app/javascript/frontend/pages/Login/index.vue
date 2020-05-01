@@ -121,11 +121,13 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$store.dispatch('session/login', response.data)
+        await this.$store.dispatch('session/login', response.data)
         if (this.$route.params.redirectToRoute) {
-          this.$router.replace({ name: this.$route.params.redirectToRoute })
+          await this.$router.replace({
+            name: this.$route.params.redirectToRoute,
+          })
         } else {
-          this.$router.push('/')
+          await this.$router.push('/')
         }
       } else {
         this.$alert({

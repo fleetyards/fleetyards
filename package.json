@@ -138,7 +138,8 @@
     "serialize-javascript": ">=2.1.1",
     "node-sass": ">=4.13.1",
     "minimist": ">=1.2.3",
-    "kind-of": ">=6.0.3"
+    "kind-of": ">=6.0.3",
+    "yargs-parser": ">=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2"
   },
   "config": {
     "storybook": {
