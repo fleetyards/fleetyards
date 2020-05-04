@@ -111,13 +111,12 @@
       <div class="app-version">
         {{ codename }} ({{ version }})
         <span
-          v-tooltip="gitRevision"
           :class="{
             online: online,
           }"
           class="git-revision"
-          @click="copyGitRevision"
         >
+          <span class="hidden">{{ gitRevision }}</span>
           <i class="far fa-fingerprint" />
         </span>
       </div>
@@ -134,26 +133,5 @@ export default {
 
     ...mapGetters('app', ['version', 'codename', 'gitRevision']),
   },
-
-  methods: {
-    copyGitRevision() {
-      this.$copyText(this.gitRevision).then(
-        () => {
-          this.$success({
-            text: this.$t('messages.copyGitRevision.success'),
-          })
-        },
-        () => {
-          this.$alert({
-            text: this.$t('messages.copyGitRevision.failure'),
-          })
-        },
-      )
-    },
-  },
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

@@ -55,6 +55,7 @@
 import PhotoSwipe from 'photoswipe'
 // eslint-disable-next-line camelcase
 import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default'
+import copyText from 'frontend/lib/CopyText'
 
 export default {
   props: {
@@ -99,7 +100,7 @@ export default {
 
   methods: {
     copyUrl(_event) {
-      this.$copyText(this.gallery.currItem.src).then(
+      copyText(this.gallery.currItem.src).then(
         () => {
           this.$success({
             text: this.$t('messages.copyImageUrl.success'),

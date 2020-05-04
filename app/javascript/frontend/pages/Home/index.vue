@@ -139,6 +139,7 @@
 </template>
 
 <script>
+import VueScrollTo from 'vue-scrollto'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
@@ -220,12 +221,8 @@ export default {
     },
 
     scrollDown() {
-      this.$scrollTo('.home-ships')
+      VueScrollTo.scrollTo('.home-ships')
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

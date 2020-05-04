@@ -27,11 +27,11 @@ describe('Home', () => {
     cy.get('.panel .panel-title').should('contain', '600i Touring')
   })
 
-  it('Shows Latest Ships', () => {
-    cy.get('.home-ships .teaser-panel').should('have.length', 9)
-  })
+  // it('Shows Latest Ships', () => {
+  //   cy.get('.home-ships .teaser-panel').should('have.length', 9)
+  // })
 
-  it('Shows Random Images', () => {
-    cy.get('.home-images .home-image').should('have.length', 14)
-  })
+  // it('Shows Random Images', () => {
+  //   cy.get('.home-images .home-image').should('have.length', 14)
+  // })
 })

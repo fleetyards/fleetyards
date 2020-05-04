@@ -38,12 +38,8 @@ export default {
 
   methods: {
     backToTop() {
-      this.$scrollTo('#app')
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>
