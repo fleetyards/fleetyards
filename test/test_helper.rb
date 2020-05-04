@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
-require 'simplecov'
-require 'simplecov-console'
-require 'simplecov-html'
+if ENV['RAILS_TEST_COVERAGE']
+  require 'simplecov'
+  require 'simplecov-console'
+  require 'simplecov-html'
 
-formatters = [
-  SimpleCov::Formatter::Console,
-  SimpleCov::Formatter::HTMLFormatter
-]
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
-SimpleCov.start('rails')
+  formatters = [
+    SimpleCov::Formatter::Console,
+    SimpleCov::Formatter::HTMLFormatter
+  ]
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
+  SimpleCov.start('rails')
+end
 
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../config/environment', __dir__)

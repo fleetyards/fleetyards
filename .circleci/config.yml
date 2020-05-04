@@ -198,7 +198,7 @@ jobs:
       - run: bundle exec rails db:create db:schema:load
       - run:
           name: Run Unit Tests
-          command: bundle exec rails test
+          command: bundle exec rails test:coverage
       - store_test_results:
           path: ~/app/test/reports
 
@@ -210,7 +210,7 @@ jobs:
       - run: yarn --frozen-lockfile
       - run:
           name: Run Javascript Tests
-          command: yarn test
+          command: yarn test:coverage
 
   assets:
     <<: *defaults
