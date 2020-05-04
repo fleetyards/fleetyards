@@ -1,12 +1,10 @@
-@import '~stylesheets/variables';
-
-$innerBorderWidth: 3px;
-$outerBorderWidth: 2px;
+$footerInnerBorderWidth: 3px;
+$footerOuterBorderWidth: 2px;
 
 .app-footer {
   text-align: center;
   position: relative;
-  padding-top: ($outerBorderWidth * 2);
+  padding-top: ($footerOuterBorderWidth * 2);
   left: 0;
   transition: left ease .5s, right ease .5s;
 
@@ -23,6 +21,10 @@ $outerBorderWidth: 2px;
     &.online {
       opacity: 1;
     }
+
+    .hidden {
+      display: none;
+    }
   }
 
   .app-footer-border-left,
@@ -30,7 +32,7 @@ $outerBorderWidth: 2px;
     position: absolute;
     display: block;
     width: 80px;
-    height: $outerBorderWidth;
+    height: $footerOuterBorderWidth;
   }
 
   .app-footer-border-left {
@@ -47,7 +49,7 @@ $outerBorderWidth: 2px;
     .app-footer-border-left,
     .app-footer-border-right {
       top: 0;
-      border-top: $outerBorderWidth solid $panel-outer-border;
+      border-top: $footerOuterBorderWidth solid $panel-outer-border;
     }
   }
 
@@ -55,12 +57,12 @@ $outerBorderWidth: 2px;
     position: relative;
     padding-bottom: 30px;
     padding-top: 30px;
-    border-top: $innerBorderWidth solid $panel-inner-border;
+    border-top: $footerInnerBorderWidth solid $panel-inner-border;
     background-color: rgba($gray-darker, .7);
 
     .app-footer-inner-border {
       width: 100%;
-      height: $innerBorderWidth;
+      height: $footerInnerBorderWidth;
       position: absolute;
       padding-left: 40px;
       padding-right: 40px;
@@ -68,12 +70,12 @@ $outerBorderWidth: 2px;
       .app-footer-inner-border-bg {
         background: #444;
         width: 100%;
-        height: $innerBorderWidth;
+        height: $footerInnerBorderWidth;
       }
     }
 
     .app-footer-inner-border-top {
-      top: -$innerBorderWidth;
+      top: -$footerInnerBorderWidth;
     }
   }
 

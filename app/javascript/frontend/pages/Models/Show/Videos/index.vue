@@ -74,6 +74,7 @@ import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import copyText from 'frontend/lib/CopyText'
 
 export default {
   components: {
@@ -143,7 +144,7 @@ export default {
 
   methods: {
     copyVideoUrl(video) {
-      this.$copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
+      copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
         () => {
           this.$success({
             text: this.$t('messages.copyVideoUrl.success'),

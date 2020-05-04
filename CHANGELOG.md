@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.69.0](https://github.com/fleetyards/app/compare/v3.68.19...v3.69.0) (2020-05-01)
+
+
+### Features
+
+* add resend confirmation button to admin ([5d20600](https://github.com/fleetyards/app/commit/5d206005aa9b2a7d38a1787bf427069c991339bf))
+
+
+### Bug Fixes
+
+* audit issue ([1445e97](https://github.com/fleetyards/app/commit/1445e97597e7122a8c7e098efcbb3aabffee1964))
+* specs ([83dd6e1](https://github.com/fleetyards/app/commit/83dd6e1de46d10c7d3ab6358907dec4d3450ccda))
+
+
+### Refactorings
+
+* move support styles to global styles ([c77aeff](https://github.com/fleetyards/app/commit/c77aeff0f65003434e6561a21e6a74d26515fa54))
+* styles for pages ([a5d4033](https://github.com/fleetyards/app/commit/a5d4033a7582e66e8d85ea08d25ca7ad2ca0b43b))
+
 ### [3.68.19](https://github.com/fleetyards/app/compare/v3.68.18...v3.68.19) (2020-03-23)
 
 ### [3.68.18](https://github.com/fleetyards/app/compare/v3.68.17...v3.68.18) (2020-03-20)

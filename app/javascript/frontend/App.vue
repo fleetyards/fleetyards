@@ -172,7 +172,7 @@ export default {
 
       const response = await this.$api.get('vehicles/hangar-items', null, true)
       if (!response.error) {
-        this.$store.dispatch('hangar/saveHangar', response.data)
+        await this.$store.dispatch('hangar/saveHangar', response.data)
       }
     },
   },

@@ -7,7 +7,12 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resource :password, only: %i[edit update]
 
-  resources :users, except: [:show]
+  resources :users, except: [:show] do
+    member do
+      put 'resend-confirmation' => 'users#resend_confirmation', as: :resend_confirmation
+    end
+  end
+
   resources :vehicles, only: [:index]
 
   resources :settings, except: %i[index show]

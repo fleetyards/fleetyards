@@ -35,11 +35,7 @@
         <i class="far fa-info-circle" />
         {{ nodeEnv }}
       </span>
-      <span
-        class="git-revision"
-        :class="environmentLabelClasses"
-        @click="copyGitRevision"
-      >
+      <span class="git-revision" :class="environmentLabelClasses">
         <i class="far fa-fingerprint" />
         {{ gitRevision }}
       </span>
@@ -233,21 +229,6 @@ export default {
       this.close()
 
       window.location.reload(true)
-    },
-
-    copyGitRevision() {
-      this.$copyText(this.gitRevision).then(
-        () => {
-          this.$success({
-            text: this.$t('messages.copyGitRevision.success'),
-          })
-        },
-        () => {
-          this.$alert({
-            text: this.$t('messages.copyGitRevision.failure'),
-          })
-        },
-      )
     },
   },
 }
