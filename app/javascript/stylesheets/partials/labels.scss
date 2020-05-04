@@ -43,13 +43,13 @@ $innerBorderWidth: 2px;
     }
 
     .label-inner {
-      border-radius: 3px;
+      border-radius: $border-radius-base;
       padding: 3px 6px;
       display: block;
     }
 
     .label-color {
-      border-radius: 100%;
+      border-radius: 50%;
       width: 15px;
       height: 15px;
       display: inline-block;
