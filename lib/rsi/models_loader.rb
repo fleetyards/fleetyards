@@ -53,7 +53,12 @@ module RSI
     end
 
     def sync_model(data)
-      model = create_or_update_model(data)
+      model = if skin?(data)
+                model = find_model_for_skin(data)
+                create_or_update_skin(data, model.id)
+              else
+                create_or_update_model(data)
+              end
 
       buying_options = get_buying_options(model.store_url)
       if buying_options.present?
@@ -61,23 +66,25 @@ module RSI
         model.on_sale = buying_options.on_sale
       end
 
-      model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
+      unless skin?(data)
+        model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
 
-      model.hardpoints.where(rsi_key: nil).destroy_all
+        model.hardpoints.where(rsi_key: nil).destroy_all
 
-      hardpoint_ids = []
-      components = data['compiled']
-      components.each_key do |component_class|
-        types = components[component_class]
-        types.each_key do |type|
-          types[type].each_with_index do |hardpoint_data, index|
-            hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
-            hardpoint_ids << hardpoint.id
+        hardpoint_ids = []
+        components = data['compiled']
+        components.each_key do |component_class|
+          types = components[component_class]
+          types.each_key do |type|
+            types[type].each_with_index do |hardpoint_data, index|
+              hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
+              hardpoint_ids << hardpoint.id
+            end
           end
         end
-      end
 
-      model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
+        model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
+      end
 
       model.hidden = false
 
@@ -100,8 +107,10 @@ module RSI
         prices << begin
           raw_price = price_element.text
           price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-          price_with_local_vat = price_match[1].to_f if price_match.present?
-          price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+          if price_match.present?
+            price_with_local_vat = price_match[1].to_f
+            price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+          end
         end
       end
 
@@ -163,10 +172,11 @@ module RSI
       updates[:name] = strip_name(data['name']) if (model_updated(model, data) && data['name'] != model.rsi_name) || model.name.blank?
 
       model.update(updates)
-
-      # rubocop:disable Style/RescueModifier
-      store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
-      # rubocop:enable Style/RescueModifier
+      store_images_updated_at = begin
+                                  Time.zone.parse(data['media'][0]['time_modified'])
+                                rescue StandardError
+                                  nil
+                                end
 
       if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
         model.store_images_updated_at = data['media'][0]['time_modified']
@@ -182,6 +192,44 @@ module RSI
     end
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
+
+    private def create_or_update_skin(data, model_id)
+      skin = ModelSkin.find_or_create_by!(rsi_id: data['id'])
+
+      updates = {
+        last_updated_at: new_time_modified(data),
+        model_id: model_id,
+      }
+
+      updates[:rsi_description] = data['description']
+      updates[:description] = data['description'] if (model_updated(skin, data) && data['description'] != skin.rsi_description) || skin.description.blank?
+
+      updates[:rsi_store_url] = data['url']
+      updates[:store_url] = data['url'] if (model_updated(skin, data) && data['url'] != skin.rsi_store_url) || skin.store_url.blank?
+
+      updates[:rsi_name] = data['name'].strip
+      updates[:starship42_slug] = data['name'].strip if skin.starship42_slug.blank?
+      updates[:name] = strip_name(data['name']) if (model_updated(skin, data) && data['name'] != skin.rsi_name) || skin.name.blank?
+
+      skin.update(updates)
+      store_images_updated_at = begin
+                                  Time.zone.parse(data['media'][0]['time_modified'])
+                                rescue StandardError
+                                  nil
+                                end
+
+      if skin.store_image.blank? || skin.store_images_updated_at != store_images_updated_at
+        skin.store_images_updated_at = data['media'][0]['time_modified']
+        store_image_url = data['media'][0]['images']['store_hub_large']
+        store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
+        if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
+          skin.remote_store_image_url = store_image_url
+          skin.save
+        end
+      end
+
+      skin
+    end
 
     def create_or_update_manufacturer(manufacturer_data)
       manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
@@ -258,6 +306,32 @@ module RSI
       Time.zone.parse(data['time_modified.unfiltered'])
     rescue ArgumentError
       nil
+    end
+
+    private def skin?(data)
+      skin_mapping.any? { |item| item[:rsi_id] == data['id'].to_i }
+    end
+
+    private def skin_mapping
+      [
+        {
+          rsi_id: 206,
+          model_rsi_id: 62,
+        }, {
+          rsi_id: 205,
+          model_rsi_id: 62,
+        }, {
+          rsi_id: 204,
+          model_rsi_id: 62,
+        },
+      ]
+    end
+
+    private def find_model_for_skin(data)
+      model_rsi_id = skin_mapping.find { |item| item[:rsi_id] == data['id'].to_i }[:model_rsi_id]
+      raise 'No Model RSI Id Found' if model_rsi_id.blank?
+
+      Model.find_by(rsi_id: model_rsi_id)
     end
 
     private def model_updated(model, data)
