@@ -103,3 +103,9 @@ Rails/UnknownEnv:
     - test
     - development
     - ci
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true

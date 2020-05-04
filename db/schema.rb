@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_24_233313) do
+ActiveRecord::Schema.define(version: 2020_05_04_133432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2020_02_24_233313) do
     t.text "description"
     t.string "store_image"
     t.integer "commodity_type"
+    t.index ["name"], name: "index_commodities_on_name", unique: true
   end
 
   create_table "components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -208,6 +209,7 @@ ActiveRecord::Schema.define(version: 2020_02_24_233313) do
     t.string "youtube"
     t.string "ts"
     t.string "homepage"
+    t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
   create_table "habitations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -315,6 +317,29 @@ ActiveRecord::Schema.define(version: 2020_02_24_233313) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "pledge_price", precision: 15, scale: 2
+  end
+
+  create_table "model_skins", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "model_id"
+    t.string "slugexi"
+    t.string "description"
+    t.decimal "pledge_price", precision: 15, scale: 2
+    t.string "store_image"
+    t.boolean "active", default: true
+    t.boolean "hidden", default: true
+    t.datetime "store_images_updated_at"
+    t.string "store_url"
+    t.string "starship42_slug"
+    t.integer "rsi_id"
+    t.string "rsi_name"
+    t.string "rsi_slug"
+    t.string "rsi_description"
+    t.string "rsi_store_url"
+    t.datetime "last_updated_at"
+    t.boolean "on_sale", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "model_upgrades", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -505,6 +530,7 @@ ActiveRecord::Schema.define(version: 2020_02_24_233313) do
     t.uuid "celestial_object_id"
     t.integer "status"
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
+    t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"
   end
 
@@ -535,6 +561,7 @@ ActiveRecord::Schema.define(version: 2020_02_24_233313) do
     t.index ["destination_starsystem_id"], name: "index_trade_routes_on_destination_starsystem_id"
     t.index ["destination_station_id"], name: "index_trade_routes_on_destination_station_id"
     t.index ["origin_celestial_object_id"], name: "index_trade_routes_on_origin_celestial_object_id"
+    t.index ["origin_id", "destination_id"], name: "index_trade_routes_on_origin_id_and_destination_id", unique: true
     t.index ["origin_id"], name: "index_trade_routes_on_origin_id"
     t.index ["origin_starsystem_id"], name: "index_trade_routes_on_origin_starsystem_id"
     t.index ["origin_station_id"], name: "index_trade_routes_on_origin_station_id"
