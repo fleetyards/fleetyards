@@ -34,12 +34,10 @@
                 :class="{ 'has-error has-feedback': errors[0] }"
                 class="form-group"
               >
-                <Swatches
+                <VSwatches
                   v-model="form.color"
                   name="color"
                   colors="material-dark"
-                  shapes="circles"
-                  swatch-size="24"
                   background-color="transparent"
                   inline
                 />
@@ -77,15 +75,15 @@
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
-import Swatches from 'vue-swatches'
-import 'vue-swatches/dist/vue-swatches.min.css'
+import VSwatches from 'vue-swatches'
+import 'vue-swatches/dist/vue-swatches.css'
 
 export default {
   components: {
     Modal,
     Btn,
     FormInput,
-    Swatches,
+    VSwatches,
   },
 
   props: {
@@ -211,5 +209,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './styles/index';
+@import 'index';
 </style>
