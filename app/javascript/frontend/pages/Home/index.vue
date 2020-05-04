@@ -65,10 +65,19 @@
           </div>
         </div>
       </section>
+      <transition name="fade-slow">
+        <div
+          v-if="showScrollDown"
+          class="home-scroll-to-more"
+          @click="scrollDown"
+        >
+          <i class="fal fa-chevron-down" />
+        </div>
+      </transition>
     </div>
     <section class="container">
       <div class="row">
-        <!-- <div class="col-xs-12 col-md-6 relative home-ships">
+        <div class="col-xs-12 col-md-6 relative home-ships">
           <h2 class="sr-only">
             {{ $t('headlines.welcomeShips') }}
           </h2>
@@ -123,32 +132,33 @@
               <Loader :loading="imagesLoading" />
             </div>
           </Panel>
-        </div> -->
+        </div>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import VueScrollTo from 'vue-scrollto'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-// import Loader from 'frontend/components/Loader'
-// import Panel from 'frontend/components/Panel'
-// import TeaserPanel from 'frontend/components/TeaserPanel'
+import Loader from 'frontend/components/Loader'
+import Panel from 'frontend/components/Panel'
+import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Support from 'frontend/partials/Support'
-// import LazyImage from 'frontend/components/LazyImage'
+import LazyImage from 'frontend/components/LazyImage'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    // Loader,
-    // Panel,
-    // TeaserPanel,
+    Loader,
+    Panel,
+    TeaserPanel,
     Btn,
     FormInput,
     Support,
-    // LazyImage,
+    LazyImage,
   },
 
   mixins: [MetaInfo],
@@ -169,8 +179,12 @@ export default {
   },
 
   created() {
-    // this.fetchImages()
-    // this.fetchModels()
+    this.fetchImages()
+    this.fetchModels()
+
+    setTimeout(() => {
+      this.showScrollDown = true
+    }, 2000)
   },
 
   methods: {
@@ -204,6 +218,10 @@ export default {
       if (!response.error) {
         this.images = response.data
       }
+    },
+
+    scrollDown() {
+      VueScrollTo.scrollTo('.home-ships')
     },
   },
 }

@@ -73,6 +73,7 @@
     "vue-loader": "15.9.1",
     "vue-meta": "2.3.3",
     "vue-router": "3.1.6",
+    "vue-scrollto": "^2.18.1",
     "vue-server-renderer": "2.6.11",
     "vue-slider-component": "3.1.1",
     "vue-swatches": "1.0.4",
