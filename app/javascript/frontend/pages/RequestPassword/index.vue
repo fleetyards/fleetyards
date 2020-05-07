@@ -27,7 +27,7 @@
               />
             </ValidationProvider>
 
-            <Btn :loading="submitting" type="submit" size="large" block>
+            <Btn :loading="submitting" type="submit" size="large" :block="true">
               {{ $t('actions.requestPassword') }}
             </Btn>
 
@@ -36,7 +36,7 @@
                 {{ $t('labels.alreadyRegistered') }}
               </p>
 
-              <Btn :to="{ name: 'login' }" size="small" block>
+              <Btn :to="{ name: 'login' }" size="small" :block="true">
                 {{ $t('actions.login') }}
               </Btn>
             </footer>

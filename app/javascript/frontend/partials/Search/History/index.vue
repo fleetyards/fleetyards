@@ -10,7 +10,7 @@
             <Btn
               v-if="history.length"
               size="small"
-              inline
+              :inline="true"
               :aria-label="$t('actions.clearHistory')"
               @click.native="resetHistory"
             >

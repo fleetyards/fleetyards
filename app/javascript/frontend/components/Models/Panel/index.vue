@@ -229,14 +229,6 @@ export default {
       return null
     },
 
-    highlightClass() {
-      if (this.vehicle.flagship) {
-        return 'highlight-gold'
-      }
-
-      return null
-    },
-
     countLabel() {
       if (!this.count) {
         return ''

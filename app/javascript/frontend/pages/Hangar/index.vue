@@ -192,24 +192,13 @@
 
         <HangarGuideBox v-if="guideVisible" />
 
-        <div v-else-if="fleetchartVisible" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="flex-row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="vehicle in fleetchartVehicles"
-                :key="vehicle.id"
-                :model="vehicle.model"
-                :scale="fleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
+        <FleetchartList
+          v-else-if="fleetchartVisible"
+          :items="fleetchartVehicles"
+          :on-edit="showEditModal"
+          :on-addons="showAddonsModal"
+          :scale="fleetchartScale"
+        />
 
         <transition-group
           v-else
@@ -268,7 +257,7 @@ import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
-import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
@@ -277,7 +266,7 @@ import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -293,7 +282,7 @@ export default {
     Btn,
     DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartItem,
+    FleetchartList,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,

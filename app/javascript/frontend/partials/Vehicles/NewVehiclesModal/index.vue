@@ -39,7 +39,7 @@
           form="new-vehicles"
           :loading="submitting"
           size="large"
-          inline
+          :inline="true"
         >
           {{ $t('actions.add') }}
         </Btn>

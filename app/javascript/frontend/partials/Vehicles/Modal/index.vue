@@ -77,7 +77,7 @@
           v-if="vehicle"
           :disabled="deleting"
           data-test="vehicle-delete"
-          inline
+          :inline="true"
           @click.native="remove"
         >
           <i class="fal fa-trash" />
@@ -88,7 +88,7 @@
           type="submit"
           size="large"
           data-test="vehicle-save"
-          inline
+          :inline="true"
         >
           {{ $t('actions.save') }}
         </Btn>

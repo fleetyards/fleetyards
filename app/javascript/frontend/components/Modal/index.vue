@@ -35,11 +35,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-
-import Panel from 'frontend/components/Panel'
+import Panel from 'frontend/components/Panel/index.vue'
 
 @Component({
   components: {

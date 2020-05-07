@@ -34,7 +34,7 @@
                   searchable
                   @input="add"
                 />
-                <Btn :href="erkulUrl" block class="erkul-link">
+                <Btn :href="erkulUrl" :block="true" class="erkul-link">
                   <i />
                   {{ $t('labels.erkul.link') }}
                 </Btn>

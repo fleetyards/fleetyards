@@ -82,7 +82,7 @@
               }"
               data-test="signup"
               size="large"
-              block
+              :block="true"
             >
               {{ $t('actions.signUp') }}
             </Btn>
@@ -101,7 +101,7 @@
                 },
               }"
               data-test="login"
-              block
+              :block="true"
               @click.native="hidePreview"
             >
               {{ $t('actions.login') }}

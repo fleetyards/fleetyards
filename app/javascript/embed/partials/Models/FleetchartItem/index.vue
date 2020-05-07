@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import FleetchartItemImage from 'frontend/partials/Models/FleetchartItem/Image'
-import FleetchartItemLabel from 'frontend/partials/Models/FleetchartItem/Label'
+import FleetchartItemImage from 'frontend/partials/Fleetchart/List/Item/Image'
+import FleetchartItemLabel from 'frontend/partials/Fleetchart/List/Item/Label'
 
 export default {
   components: {

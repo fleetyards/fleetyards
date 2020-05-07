@@ -40,7 +40,7 @@
                   <Btn
                     size="small"
                     :disabled="submitting"
-                    inline
+                    :inline="true"
                     @click.native="accept(invite)"
                   >
                     <i class="fal fa-check" />
@@ -50,7 +50,7 @@
                     size="small"
                     variant="danger"
                     :disabled="submitting"
-                    inline
+                    :inline="true"
                     @click.native="decline(invite)"
                   >
                     <i class="fal fa-times" />

@@ -7,7 +7,7 @@
             <h1>{{ $t('headlines.privacy') }}</h1>
             <Btn
               class="privacy-settings-link"
-              mobile-block
+              :mobile-block="true"
               @click.native="openPrivacySettings"
             >
               {{ $t('nav.privacySettings') }}

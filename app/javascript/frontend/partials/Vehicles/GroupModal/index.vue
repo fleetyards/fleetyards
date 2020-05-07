@@ -51,7 +51,7 @@
           <Btn
             v-if="group"
             :disabled="deleting ? 'disabled' : null"
-            inline
+            :inline="true"
             @click.native="remove"
           >
             <i class="fal fa-trash" />
@@ -61,7 +61,7 @@
             :loading="submitting"
             type="submit"
             size="large"
-            inline
+            :inline="true"
           >
             {{ $t('actions.save') }}
           </Btn>

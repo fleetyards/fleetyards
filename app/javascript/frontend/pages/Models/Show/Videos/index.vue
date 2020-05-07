@@ -41,10 +41,10 @@
               >
                 <i class="fab fa-youtube" />
                 <div class="youtube-placeholder-buttons">
-                  <Btn inline @click.native="enableYoutube">
+                  <Btn :inline="true" @click.native="enableYoutube">
                     Allow video embeds
                   </Btn>
-                  <Btn inline @click.native="copyVideoUrl(video)">
+                  <Btn :inline="true" @click.native="copyVideoUrl(video)">
                     Copy Youtube URL
                   </Btn>
                 </div>

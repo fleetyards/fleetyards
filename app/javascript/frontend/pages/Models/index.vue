@@ -64,24 +64,11 @@
           </div>
         </transition>
 
-        <div v-if="fleetchartVisible" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="flex-row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="model in fleetchartModels"
-                :key="`fleetchart-${model.slug}`"
-                :model="model"
-                :scale="fleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
+        <FleetchartList
+          v-if="fleetchartVisible"
+          :items="fleetchartModels"
+          :scale="fleetchartScale"
+        />
 
         <transition-group
           v-else
@@ -128,8 +115,8 @@ import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/components/Models/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
-import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -146,7 +133,7 @@ export default {
     ModelPanel,
     EmptyBox,
     ModelsFilterForm,
-    FleetchartItem,
+    FleetchartList,
     FleetchartSlider,
   },
 
