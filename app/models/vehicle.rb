@@ -8,6 +8,7 @@ class Vehicle < ApplicationRecord
   scope :visible, -> { where(hidden: false) }
 
   belongs_to :model
+  belongs_to :model_skin, optional: true
   belongs_to :user
 
   has_many :task_forces, dependent: :destroy

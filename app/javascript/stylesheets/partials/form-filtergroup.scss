@@ -27,7 +27,6 @@
     padding: 10px 40px 10px 10px;
     border-radius: $border-radius-base;
     border: 1px solid $input-border;
-    transition: all .5s ease;
 
     &:hover {
       background: $input-bg;
@@ -49,9 +48,16 @@
       cursor: not-allowed;
     }
 
+    &.hasLabel {
+      color: $input-placerholder;
+      font-weight: normal;
+    }
+
     &.selected {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      color: white;
+      font-weight: bold;
     }
   }
 

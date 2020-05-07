@@ -30,7 +30,6 @@ json.store_image model.store_image.url
 json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
-json.background_image model.random_image&.name&.url
 json.brochure model.brochure.url
 json.store_url rsi_store_url(model.store_url)
 json.price((model.price.to_f if model.price.present?))
@@ -47,6 +46,7 @@ json.has_images model.images.count.positive?
 json.has_videos model.videos.count.positive?
 json.has_modules model.modules.count.positive?
 json.has_upgrades model.upgrades.count.positive?
+json.has_skins model.skins.count.positive?
 json.last_updated_at model.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if model.last_updated_at.present?))
 json.manufacturer do

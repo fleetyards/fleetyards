@@ -247,20 +247,13 @@ export default {
     async submit() {
       this.submitting = true
 
-      const data = new FormData()
-      if (this.newAvatar && this.newAvatar.file) {
-        data.append('avatar', this.newAvatar.file)
-      }
+      const uploadResponse = await this.uploadAvatar()
 
-      Object.keys(this.form).forEach(key => {
-        data.append(key, this.form[key])
-      })
-
-      const response = await this.$api.upload('users/current', data)
+      const response = await this.$api.put('users/current', this.form)
 
       this.submitting = false
 
-      if (!response.error) {
+      if (!uploadResponse.error && !response.error) {
         this.$comlink.$emit('userUpdate')
 
         setTimeout(() => {
@@ -271,6 +264,19 @@ export default {
           text: this.$t('messages.updateProfile.success'),
         })
       }
+    },
+
+    async uploadAvatar() {
+      let uploadResponse = { error: null }
+
+      if (this.newAvatar && this.newAvatar.file) {
+        const uploadData = new FormData()
+        uploadData.append('avatar', this.newAvatar.file)
+
+        uploadResponse = await this.$api.upload('users/current', uploadData)
+      }
+
+      return uploadResponse
     },
 
     updatedValue(value) {

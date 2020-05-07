@@ -49,7 +49,6 @@ module Api
           'storeImageMedium' => Model.first.store_image.medium.url,
           'storeImageSmall' => Model.first.store_image.small.url,
           'fleetchartImage' => nil,
-          'backgroundImage' => nil,
           'brochure' => nil,
           'storeUrl' => 'https://robertsspaceindustries.com',
           'price' => nil,
@@ -66,6 +65,7 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
+          'hasSkins' => false,
           'lastUpdatedAt' => Model.first.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if Model.first.last_updated_at.present?),
           'manufacturer' => {
@@ -107,7 +107,6 @@ module Api
           'storeImageMedium' => Model.last.store_image.medium.url,
           'storeImageSmall' => Model.last.store_image.small.url,
           'fleetchartImage' => nil,
-          'backgroundImage' => nil,
           'brochure' => nil,
           'storeUrl' => 'https://robertsspaceindustries.com',
           'price' => nil,
@@ -124,6 +123,7 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
+          'hasSkins' => false,
           'lastUpdatedAt' => Model.last.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.last.last_updated_at&.utc, format: :label) if Model.last.last_updated_at.present?),
           'manufacturer' => {

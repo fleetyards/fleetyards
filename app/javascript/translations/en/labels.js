@@ -122,7 +122,9 @@ export default {
   'selectModel': 'Select a Ship',
   'compare': {
     removeModel: 'Remove Ship',
-    addModel: 'Add a Ship',
+    addModel: {
+      nullablePrompt: 'Add a Ship',
+    },
     enough: "Don't you think 8 Ships are enough? ;)",
   },
   'cargoRoutes': 'Cargo routes',
@@ -251,6 +253,9 @@ export default {
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',
     selectGroup: 'Select a Group',
+    modelSkinSelect: {
+      nullablePrompt: 'Select a Skin',
+    },
   },
   'image': {
     background: 'Use as Background?',
@@ -396,5 +401,15 @@ export default {
   'erkul': {
     prefix: 'Tryout Loadouts with',
     link: "Erkul's DPS Calculator",
+  },
+  'filterGroup': {
+    nullablePrompt: 'No Option selected',
+    prompt: 'Please select an Option',
+  },
+  'newVehicle': {
+    nullablePrompt: 'Select a Ship',
+  },
+  'addAddon': {
+    nullablePrompt: '',
   },
 }

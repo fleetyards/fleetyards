@@ -7,9 +7,10 @@
         fetch-path="stations?origin"
         name="origin"
         value-attr="slug"
-        paginated
-        searchable
-        multiple
+        :paginated="true"
+        :searchable="true"
+        :multiple="true"
+        :no-label="true"
       />
 
       <FilterGroup
@@ -18,9 +19,10 @@
         fetch-path="stations?destination"
         name="destination"
         value-attr="slug"
-        paginated
-        searchable
-        multiple
+        :paginated="true"
+        :searchable="true"
+        :multiple="true"
+        :no-label="true"
       />
 
       <FilterGroup
@@ -29,9 +31,10 @@
         fetch-path="commodities"
         name="commodity"
         value-attr="slug"
-        paginated
-        searchable
-        multiple
+        :paginated="true"
+        :searchable="true"
+        :multiple="true"
+        :no-label="true"
       />
 
       <hr />
@@ -42,8 +45,8 @@
       fetch-path="models/cargo-options"
       :label="$t('labels.filters.tradeRoutes.cargoShip')"
       name="models"
-      paginated
-      searchable
+      :paginated="true"
+      :searchable="true"
     />
 
     <FilterGroup
@@ -51,8 +54,9 @@
       :label="$t('labels.filters.tradeRoutes.excludeCommodityType')"
       fetch-path="commodities/types"
       name="exclude-commodity-types"
-      searchable
-      multiple
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -61,9 +65,10 @@
       fetch-path="celestial-objects"
       name="celestial-objects"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -72,9 +77,10 @@
       fetch-path="starsystems"
       name="starsystems"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <Btn

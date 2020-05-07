@@ -5,8 +5,9 @@
       :label="$t('labels.filters.images.model')"
       :fetch="fetchModels"
       name="model"
-      searchable
-      paginated
+      :searchable="true"
+      :paginated="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -14,8 +15,9 @@
       :label="$t('labels.filters.images.station')"
       :fetch="fetchStations"
       name="station"
-      searchable
-      paginated
+      :searchable="true"
+      :paginated="true"
+      :no-label="true"
     />
 
     <Btn

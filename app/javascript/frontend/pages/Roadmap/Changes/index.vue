@@ -16,6 +16,7 @@
           :options="options"
           label-attr="label"
           :nullable="false"
+          :no-label="true"
           @input="fetch"
         />
       </div>

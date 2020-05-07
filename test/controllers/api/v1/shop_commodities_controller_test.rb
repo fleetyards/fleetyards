@@ -82,7 +82,6 @@ module Api
             'storeImageMedium' => explorer.commodity_item.store_image.medium.url,
             'storeImageSmall' => explorer.commodity_item.store_image.small.url,
             'fleetchartImage' => nil,
-            'backgroundImage' => nil,
             'brochure' => nil,
             'storeUrl' => 'https://robertsspaceindustries.com',
             'price' => nil,
@@ -99,6 +98,7 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'hasSkins' => false,
             'lastUpdatedAt' => explorer.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(explorer.commodity_item.last_updated_at&.utc, format: :label) if explorer.commodity_item.last_updated_at.present?),
             'manufacturer' => {
@@ -178,7 +178,6 @@ module Api
             'storeImageMedium' => andromeda.commodity_item.store_image.medium.url,
             'storeImageSmall' => andromeda.commodity_item.store_image.small.url,
             'fleetchartImage' => nil,
-            'backgroundImage' => nil,
             'brochure' => nil,
             'storeUrl' => 'https://robertsspaceindustries.com',
             'price' => nil,
@@ -195,6 +194,7 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
+            'hasSkins' => false,
             'lastUpdatedAt' => andromeda.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(andromeda.commodity_item.last_updated_at&.utc, format: :label) if andromeda.commodity_item.last_updated_at.present?),
             'manufacturer' => {

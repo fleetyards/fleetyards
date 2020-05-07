@@ -20,8 +20,12 @@ module RSI
       models = load_models
 
       models.each do |data|
+        next if blacklist.find { |item| item[:rsi_id] == data['id'] }
+
         sync_model(data)
       end
+
+      cleanup_variants
     end
 
     def one(rsi_id)
@@ -29,7 +33,11 @@ module RSI
 
       model_data = models.find { |model| model['id'] == rsi_id.to_s }
 
-      sync_model(model_data) if model_data.present?
+      return if model_data.blank?
+
+      sync_model(model_data) unless blacklist.find { |item| item[:rsi_id] == rsi_id }
+
+      cleanup_variants
     end
 
     def load_models
@@ -53,9 +61,9 @@ module RSI
     end
 
     def sync_model(data)
-      model = if skin?(data)
-                model = find_model_for_skin(data)
-                create_or_update_skin(data, model.id)
+      model_for_skin = find_model_for_skin(data)
+      model = if model_for_skin.present?
+                create_or_update_skin(data, model_for_skin.id)
               else
                 create_or_update_model(data)
               end
@@ -190,9 +198,10 @@ module RSI
 
       model
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/CyclomaticComplexity
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_skin(data, model_id)
       skin = ModelSkin.find_or_create_by!(rsi_id: data['id'])
 
@@ -206,6 +215,11 @@ module RSI
 
       updates[:rsi_store_url] = data['url']
       updates[:store_url] = data['url'] if (model_updated(skin, data) && data['url'] != skin.rsi_store_url) || skin.store_url.blank?
+
+      if model_updated(skin, data) || skin.production_status.blank?
+        updates[:production_status] = data['production_status']
+        updates[:production_note] = data['production_note']
+      end
 
       updates[:rsi_name] = data['name'].strip
       updates[:starship42_slug] = data['name'].strip if skin.starship42_slug.blank?
@@ -230,6 +244,7 @@ module RSI
 
       skin
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def create_or_update_manufacturer(manufacturer_data)
       manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
@@ -312,30 +327,142 @@ module RSI
       skin_mapping.any? { |item| item[:rsi_id] == data['id'].to_i }
     end
 
+    # rubocop:disable Metrics/MethodLength
     private def skin_mapping
       [
         {
+          # Carrack
           rsi_id: 206,
           model_rsi_id: 62,
         }, {
-          rsi_id: 205,
-          model_rsi_id: 62,
+          # Ballista
+          rsi_id: 185,
+          model_rsi_id: 183,
         }, {
-          rsi_id: 204,
-          model_rsi_id: 62,
+          rsi_id: 184,
+          model_rsi_id: 183,
+        }, {
+          # Caterpillar
+          rsi_id: 194,
+          model_rsi_id: 24,
+        }, {
+          rsi_id: 125,
+          model_rsi_id: 24,
+        }, {
+          # Phoenix
+          rsi_id: 156,
+          model_rsi_id: 49,
+        }, {
+          # Cutlass
+          rsi_id: 193,
+          model_rsi_id: 56,
+        }, {
+          # Hammerhead
+          rsi_id: 195,
+          model_rsi_id: 151,
+        }, {
+          # Reclaimer
+          rsi_id: 196,
+          model_rsi_id: 51,
+        }, {
+          # Mole
+          rsi_id: 202,
+          model_rsi_id: 201,
+        }, {
+          rsi_id: 203,
+          model_rsi_id: 201,
+        }, {
+          # Mustang
+          rsi_id: 172,
+          model_rsi_id: 65,
+        }, {
+          # Nautilus
+          rsi_id: 187,
+          model_rsi_id: 186,
+        }, {
+          # Archimedes
+          rsi_id: 207,
+          model_rsi_id: 104,
+        }, {
+          # Valkyrie
+          rsi_id: 171,
+          model_rsi_id: 169,
         },
       ]
     end
+    # rubocop:enable Metrics/MethodLength
+
+    private def blacklist
+      [{
+        rsi_id: 205,
+        replacements: [{
+          rsi_id: 62,
+          skin_rsi_id: 205,
+        }, {
+          rsi_id: 192,
+        }],
+      }, {
+        rsi_id: 204,
+        replacements: [{
+          rsi_id: 62,
+        }, {
+          rsi_id: 192,
+        }],
+      }]
+    end
 
     private def find_model_for_skin(data)
-      model_rsi_id = skin_mapping.find { |item| item[:rsi_id] == data['id'].to_i }[:model_rsi_id]
-      raise 'No Model RSI Id Found' if model_rsi_id.blank?
+      mapping = skin_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
+
+      return if mapping.blank?
+
+      model_rsi_id = mapping[:model_rsi_id]
+
+      return if model_rsi_id.blank?
 
       Model.find_by(rsi_id: model_rsi_id)
     end
 
     private def model_updated(model, data)
       model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
+    end
+
+    def cleanup_variants
+      ModelSkin.find_each do |skin|
+        model = Model.find_by(rsi_id: skin.rsi_id)
+        next if model.blank?
+
+        Vehicle.where(model_id: model.id).find_each do |vehicle|
+          vehicle.update(model_id: skin.model_id, model_skin_id: skin.id)
+        end
+
+        model.destroy
+      end
+
+      blacklist.each do |item|
+        model = Model.find_by(rsi_id: item[:rsi_id])
+        next if model.blank?
+
+        replacements = item[:replacements].map { |replacement| replacement.merge(model: Model.find_by!(rsi_id: replacement[:rsi_id])) }
+
+        Vehicle.where(model_id: model.id).find_each do |vehicle|
+          next if replacements.first[:model].blank?
+
+          vehicle.update(model_id: replacements.first[:model].id)
+          replacements.each_with_index do |replacement, index|
+            next if index.zero?
+
+            replacement_model = replacement[:model]
+            next if replacement_model.blank?
+
+            skin = ModelSkin.find_by!(rsi_id: replacement[:skin_rsi_id]) if replacement[:skin_rsi_id].present?
+
+            Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_skin_id: skin&.id)
+          end
+        end
+
+        model.destroy
+      end
     end
   end
 end

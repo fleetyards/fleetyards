@@ -13,7 +13,8 @@
       :options="categoryOptions"
       :label="$t('labels.filters.shopItems.category')"
       name="category"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -21,7 +22,8 @@
       :label="$t('labels.filters.shopItems.subCategory')"
       :fetch="fetchSubCategories"
       name="sub-category"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -31,9 +33,10 @@
       name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FormInput

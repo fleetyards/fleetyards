@@ -86,7 +86,7 @@
         <LazyImage
           :to="{ name: 'model', params: { slug: model.slug } }"
           :aria-label="model.name"
-          :src="model.storeImageMedium"
+          :src="storeImage"
           :alt="model.name"
           class="image"
         >
@@ -212,6 +212,14 @@ export default {
   computed: {
     uuid() {
       return this._uid
+    },
+
+    storeImage() {
+      if (this.vehicle && this.vehicle.skin) {
+        return this.vehicle.skin.storeImageMedium
+      }
+
+      return this.model.storeImageMedium
     },
 
     id() {

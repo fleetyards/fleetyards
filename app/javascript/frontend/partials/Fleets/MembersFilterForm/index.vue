@@ -13,7 +13,8 @@
       :options="roleOptions"
       :label="$t('labels.filters.fleets.members.role')"
       name="role"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <Btn

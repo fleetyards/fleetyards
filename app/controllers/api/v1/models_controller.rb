@@ -227,6 +227,15 @@ module Api
                                .active
       end
 
+      def skins
+        authorize! :show, :api_models
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+
+        @skins = model.skins
+                      .visible
+                      .active
+      end
+
       def store_image
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first

@@ -5,9 +5,10 @@ class CreateModelSkins < ActiveRecord::Migration[6.0]
     create_table :model_skins, id: :uuid, default: -> { 'uuid_generate_v4()' }, force: :cascade do |t|
       t.string :name
       t.uuid :model_id
-      t.string :slugexi
+      t.string :slug
       t.string :description
       t.decimal :pledge_price, precision: 15, scale: 2
+      t.decimal :last_pledge_price, precision: 15, scale: 2
       t.string :store_image
       t.boolean :active, default: true
       t.boolean :hidden, default: true
@@ -21,6 +22,8 @@ class CreateModelSkins < ActiveRecord::Migration[6.0]
       t.string :rsi_store_url
       t.datetime :last_updated_at
       t.boolean :on_sale, default: false
+      t.string :production_status
+      t.string :production_note
 
       t.timestamps
     end

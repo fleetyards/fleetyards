@@ -15,14 +15,14 @@ corvolex:
   hidden: false
 
 arccorp_daymar:
-  name: ArcCorp
+  name: ArcCorp 001
   slug: arccorp
   celestial_object: daymar
   station_type: outpost
   hidden: false
 
 arccorp_yela:
-  name: ArcCorp
+  name: ArcCorp 002
   slug: arccorp
   celestial_object: yela
   station_type: outpost

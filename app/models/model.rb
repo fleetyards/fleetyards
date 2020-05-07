@@ -55,16 +55,16 @@ class Model < ApplicationRecord
            through: :model_loaners,
            source: :loaner_model
 
-  has_many :upgrades,
-           class_name: 'ModelUpgrade',
-           dependent: :destroy,
-           inverse_of: :model
-
   has_many :upgrade_kits,
            dependent: :destroy
   has_many :upgrades,
            through: :upgrade_kits,
            source: :model_upgrade
+
+  has_many :skins,
+           class_name: 'ModelSkin',
+           dependent: :destroy,
+           inverse_of: :model
 
   has_many :images,
            as: :gallery,

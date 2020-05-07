@@ -46,7 +46,7 @@
         :options="addons"
         name="addons"
         value-attr="id"
-        searchable
+        :searchable="true"
         @input="addAddon"
       />
     </div>

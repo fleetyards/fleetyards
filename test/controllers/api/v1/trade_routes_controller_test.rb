@@ -18,7 +18,7 @@ module Api
       let(:index_result) do
         [{
           'origin' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
@@ -30,7 +30,7 @@ module Api
             'starsystemSlug' => 'stanton'
           },
           'destination' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 002',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
@@ -54,7 +54,7 @@ module Api
           'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
         }, {
           'origin' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
@@ -90,7 +90,7 @@ module Api
           'updatedAt' => titan_daymar_olisar.updated_at.utc.iso8601
         }, {
           'origin' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 002',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
@@ -102,7 +102,7 @@ module Api
             'starsystemSlug' => 'stanton'
           },
           'destination' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',
@@ -129,7 +129,7 @@ module Api
       let(:filtered_index_result) do
         [{
           'origin' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 002',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Yela',
@@ -141,7 +141,7 @@ module Api
             'starsystemSlug' => 'stanton'
           },
           'destination' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
             'type' => 'outpost',
             'locationLabel' => 'on Daymar',

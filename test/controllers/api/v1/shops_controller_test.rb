@@ -90,7 +90,7 @@ module Api
           'storeImageMedium' => admin_daymar.store_image.medium.url,
           'storeImageSmall' => admin_daymar.store_image.small.url,
           'station' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 001',
             'slug' => 'arccorp'
           },
           'celestialObject' => {
@@ -178,7 +178,7 @@ module Api
           'storeImageMedium' => admin_yela.store_image.medium.url,
           'storeImageSmall' => admin_yela.store_image.small.url,
           'station' => {
-            'name' => 'ArcCorp',
+            'name' => 'ArcCorp 002',
             'slug' => 'arccorp'
           },
           'celestialObject' => {
