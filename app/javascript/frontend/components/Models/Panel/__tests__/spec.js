@@ -22,8 +22,8 @@ describe('ShipPanel', () => {
   })
 
   it('renders ship panel', () => {
-    const panel = cmp.find(Panel)
-    expect(panel.is(Panel)).toBe(true)
+    const panel = cmp.findComponent(Panel)
+    expect(panel.exists()).toBe(true)
   })
 
   it('renders heading with ship name and manufacturer', () => {
