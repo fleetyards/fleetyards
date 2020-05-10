@@ -75,6 +75,8 @@ class Vehicle < ApplicationRecord
   end
 
   def broadcast_update
+    return if loaner?
+
     HangarChannel.broadcast_to(user, to_json)
   end
 

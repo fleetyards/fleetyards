@@ -166,6 +166,7 @@ export default {
   'model': {
     variants: 'Variants',
     loaners: 'Loaners',
+    skins: 'Skins',
     modules: 'Modules',
     upgrades: 'Upgrade-Kits',
     brochure: 'Brochure',

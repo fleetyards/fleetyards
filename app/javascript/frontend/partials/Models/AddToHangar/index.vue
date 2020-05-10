@@ -1,5 +1,6 @@
 <template>
   <Btn
+    :key="`add-to-hangar-${model.slug}`"
     v-tooltip.bottom="$t('actions.addToHangar')"
     :variant="btnVariant"
     :size="btnSize"
@@ -39,7 +40,9 @@ export default {
   },
   computed: {
     ...mapGetters('session', ['isAuthenticated']),
+
     ...mapGetters('hangar', ['ships']),
+
     inHangar() {
       return !!(this.ships || []).find(item => item === this.model.slug)
     },
@@ -60,6 +63,7 @@ export default {
       return 'default'
     },
   },
+
   methods: {
     async add() {
       if (!this.isAuthenticated) {
@@ -72,6 +76,7 @@ export default {
       const response = await this.$api.post('vehicles', {
         modelId: this.model.id,
       })
+
       if (!response.error) {
         await this.$store.dispatch('hangar/add', this.model.slug)
         this.$success({

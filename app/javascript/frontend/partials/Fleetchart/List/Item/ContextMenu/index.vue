@@ -53,7 +53,11 @@
       </Btn>
     </template>
 
-    <AddToHangar v-else-if="model" :model="model" variant="menu" />
+    <AddToHangar
+      v-else-if="model && !vehicle && !vehicle.loaner"
+      :model="model"
+      variant="menu"
+    />
   </BtnGroup>
 </template>
 

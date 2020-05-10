@@ -1,13 +1,21 @@
 <template>
   <Panel>
+    <div v-if="fullscreen" class="panel-heading">
+      <h2 class="panel-title">
+        {{ title }}
+      </h2>
+    </div>
     <div
       class="teaser-panel"
       :class="{
         'teaser-panel-text': variant === 'text',
+        'teaser-panel-fullscreen': fullscreen,
       }"
     >
-      <LazyImage :src="image" class="teaser-panel-image" />
-      <div class="teaser-panel-body">
+      <div class="teaser-panel-image teaser-panel-item">
+        <LazyImage :src="image" />
+      </div>
+      <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
         <router-link v-if="to" :to="to">
           <h3>{{ title }}</h3>
           <p v-if="withDescription">
@@ -51,6 +59,11 @@ export default {
     withDescription: {
       type: Boolean,
       default: true,
+    },
+
+    fullscreen: {
+      type: Boolean,
+      default: false,
     },
 
     variant: {

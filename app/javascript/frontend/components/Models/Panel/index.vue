@@ -23,7 +23,7 @@
               {{ customName }}
             </span>
 
-            <span v-else>{{ countLabel }}{{ model.name }}</span>
+            <span v-else>{{ countLabel }}{{ modelName }}</span>
           </router-link>
 
           <transition name="fade" appear>
@@ -37,23 +37,16 @@
 
           <br />
 
-          <small v-if="customName">
+          <small>
             <router-link
               :to="{
                 query: { q: filterManufacturerQuery(model.manufacturer.slug) },
               }"
               v-html="model.manufacturer.name"
             />
-            {{ model.name }}
-          </small>
-
-          <small v-else>
-            <router-link
-              :to="{
-                query: { q: filterManufacturerQuery(model.manufacturer.slug) },
-              }"
-              v-html="model.manufacturer.name"
-            />
+            <template v-if="customName">
+              {{ modelName }}
+            </template>
           </small>
 
           <Btn
@@ -220,6 +213,14 @@ export default {
       }
 
       return this.model.storeImageMedium
+    },
+
+    modelName() {
+      if (this.vehicle && this.vehicle.skin) {
+        return this.vehicle.skin.name
+      }
+
+      return this.model.name
     },
 
     id() {

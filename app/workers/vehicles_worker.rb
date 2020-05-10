@@ -11,7 +11,7 @@ class VehiclesWorker
 
     Discord::ShipOnSale.new(model: model).run
 
-    Vehicle.where(model_id: model_id, sale_notify: true, purchased: false).find_each do |vehicle|
+    Vehicle.where(model_id: model_id, sale_notify: true, purchased: false, loaner: false).find_each do |vehicle|
       next unless vehicle.user.sale_notify?
 
       OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_json)
