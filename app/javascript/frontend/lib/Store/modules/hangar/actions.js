@@ -12,7 +12,6 @@ export default {
   },
 
   add({ commit }, payload) {
-    console.log('bar')
     commit('add', payload)
   },
 
