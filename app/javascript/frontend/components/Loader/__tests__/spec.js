@@ -4,12 +4,15 @@ import { mount } from '@vue/test-utils'
 describe('Loader', () => {
   it('does not render loader on default', () => {
     const cmp = mount(Loader)
-    expect(cmp.vm.$el.innerHTML).toBeUndefined()
+    expect(cmp.find('div').exists()).toBe(false)
   })
 
   it('renders centered loader', () => {
     const cmp = mount(Loader, { propsData: { loading: true } })
-    expect(cmp.vm.$el.className).toBe('text-center')
-    expect(cmp.vm.$el.querySelector('.loader')).not.toBeNull()
+    const mainElement = cmp.find('div')
+
+    expect(mainElement.exists()).toBe(true)
+    expect(mainElement.classes('text-center')).toBe(true)
+    expect(cmp.find('.loader').exists()).toBe(true)
   })
 })

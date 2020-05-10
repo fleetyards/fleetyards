@@ -23,6 +23,7 @@ export default {
       type: Boolean,
       default: false,
     },
+
     fixed: {
       type: Boolean,
       default: false,

@@ -40,7 +40,7 @@ export default (
     })
 
     it('should mount', () => {
-      expect(wrapper.isVueInstance()).toBe(true)
+      expect(wrapper.exists()).toBe(true)
     })
   })
 }
