@@ -12,7 +12,7 @@ defaults: &defaults
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
-        NODE_OPTIONS: --max-old-space-size=1024
+        NODE_OPTIONS: --max-old-space-size=512
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -45,7 +45,7 @@ e2e: &e2e
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
-        NODE_OPTIONS: --max-old-space-size=1024
+        NODE_OPTIONS: --max-old-space-size=512
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -69,34 +69,15 @@ jobs:
     steps:
       - run: curl --write-out '%{http_code}' --silent --fail --output /dev/null https://fleetyards.net
 
-  checkout-code:
-    <<: *defaults
-    steps:
-      - checkout
-      - run: mkdir -p ~/app/log
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - ./
-      - save_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/app
-
   bundle:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - restore_cache:
           keys:
             - v1-bundle-{{ checksum "Gemfile.lock" }}
             - v1-bundle-
       - run: bundle install --path vendor/bundle
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - vendor/bundle
       - save_cache:
           key: v1-bundle-{{ checksum "Gemfile.lock" }}
           paths:
@@ -105,17 +86,12 @@ jobs:
   yarn:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - restore_cache:
           keys:
             - v1-yarn-{{ checksum "yarn.lock" }}
             - v1-yarn-
       - run: yarn --frozen-lockfile
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - node_modules
       - save_cache:
           key: v1-yarn-{{ checksum "yarn.lock" }}
           paths:
@@ -124,8 +100,7 @@ jobs:
   bundle-audit:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - run:
           name: Update Audit DB
@@ -137,8 +112,7 @@ jobs:
   yarn-audit:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: yarn --frozen-lockfile
       - run:
           name: Check Audit DB
@@ -147,8 +121,7 @@ jobs:
   rubocop:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - run:
           name: rubocoptering
@@ -157,29 +130,25 @@ jobs:
   js-lint:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: yarn run lint:js
 
   vue-lint:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: yarn run lint:vue
 
   style-lint:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: yarn run lint:style
 
   seeds:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - run: bundle exec rails db:create db:schema:load
       - run:
@@ -192,8 +161,7 @@ jobs:
   ruby-tests:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - run: bundle exec rails db:create db:schema:load
       - run:
@@ -205,8 +173,7 @@ jobs:
   js-tests:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: yarn --frozen-lockfile
       - run:
           name: Run Javascript Tests
@@ -215,30 +182,17 @@ jobs:
   assets:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-assets-
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
+      - run: yarn --frozen-lockfile
       - run:
           name: Webpacker & Assets Compile
           command: RAILS_ENV=production bundle exec rails assets:precompile
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - public/assets
-      - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/app/public/assets
 
   e2e-tests:
     <<: *e2e
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - run: yarn --frozen-lockfile
       - run:
@@ -279,8 +233,7 @@ jobs:
   deploy-to-stage:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - add_ssh_keys:
           fingerprints:
@@ -298,8 +251,7 @@ jobs:
   deploy-to-live:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/app
+      - checkout
       - run: bundle --path vendor/bundle
       - add_ssh_keys:
           fingerprints:
@@ -333,13 +285,8 @@ workflows:
             branches:
               only: master
     jobs:
-      - checkout-code
       - bundle:
-          requires:
-            - checkout-code
       - yarn:
-          requires:
-            - checkout-code
       - bundle-audit:
           requires:
             - bundle
@@ -359,19 +306,11 @@ workflows:
 
   main:
     jobs:
-      - checkout-code:
-          filters:
-            tags:
-              only: /^v.*/
       - bundle:
-          requires:
-            - checkout-code
           filters:
             tags:
               only: /^v.*/
       - yarn:
-          requires:
-            - checkout-code
           filters:
             tags:
               only: /^v.*/
