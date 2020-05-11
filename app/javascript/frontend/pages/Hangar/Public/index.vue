@@ -20,7 +20,7 @@
             <ModelClassLabels
               v-if="vehiclesCount"
               :label="$t('labels.hangar')"
-              :count-data="vehiclesCount"
+              :count-data="vehiclesCount.classifications"
             />
           </div>
         </div>

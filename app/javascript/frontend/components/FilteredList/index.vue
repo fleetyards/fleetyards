@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 filtered-list-header">
           <div class="page-actions page-actions-left">
             <Btn
               v-if="!hideFilter"
@@ -21,9 +21,12 @@
             </Btn>
             <slot name="actions" />
           </div>
-        </div>
-        <div class="col-xs-12 col-md-6">
-          <slot name="pagination-top" />
+          <div class="pagination-wrapper">
+            <slot name="pagination-top" />
+          </div>
+          <div v-if="hasRightActions" class="page-actions page-actions-right">
+            <slot name="actions-right" />
+          </div>
         </div>
       </div>
       <div class="row">
@@ -82,6 +85,10 @@ export default {
 
     filterVisible() {
       return !!this.filtersVisible[this.$route.name] && !this.hideFilter
+    },
+
+    hasRightActions() {
+      return !!this.$slots['actions-right']
     },
 
     filterTooltip() {

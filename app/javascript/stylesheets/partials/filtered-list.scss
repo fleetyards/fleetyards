@@ -1,0 +1,27 @@
+.filtered-list-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .filtered-list-header {
+    flex-wrap: wrap;
+
+    > * {
+      width: auto;
+    }
+
+    > :first-child {
+      flex-grow: 1;
+    }
+
+    > :last-child {
+      margin-left: 10px;
+    }
+
+    > .pagination-wrapper {
+      flex-basis: 100%;
+      order: 3;
+    }
+  }
+}

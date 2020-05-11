@@ -1,8 +1,33 @@
 <template>
-  <div class="labels">
+  <BtnDropdown
+    v-if="mobile"
+    :mobile-block="true"
+    size="small"
+    class="labels-dropdown"
+  >
+    <template slot="label">
+      Classifications
+    </template>
+    <template slot="default">
+      <Btn
+        v-for="classification in countData"
+        :key="`dropdown-${classification.name}`"
+        variant="link"
+        class="labels-dropdown-item"
+        :class="{
+          active: isActive(classification.name),
+        }"
+        @click.native="filter(classification.name)"
+      >
+        {{ classification.label }}
+        <span class="label-count">{{ classification.count }}</span>
+      </Btn>
+    </template>
+  </BtnDropdown>
+  <div v-else class="labels">
     <transition-group name="fade-list" appear>
       <a
-        v-for="classification in countData.classifications"
+        v-for="classification in countData"
         :key="classification.name"
         :class="{
           'label-link': filterKey,
@@ -20,10 +45,19 @@
 </template>
 
 <script>
+import BtnDropdown from 'frontend/components/BtnDropdown'
+import Btn from 'frontend/components/Btn'
+import { mapGetters } from 'vuex'
+
 export default {
+  components: {
+    BtnDropdown,
+    Btn,
+  },
+
   props: {
     countData: {
-      type: Object,
+      type: Array,
       required: true,
     },
     filterKey: {
@@ -35,7 +69,10 @@ export default {
       default: '',
     },
   },
+
   computed: {
+    ...mapGetters(['mobile']),
+
     allLabel() {
       return this.label || this.$t('labels.fleet.size')
     },

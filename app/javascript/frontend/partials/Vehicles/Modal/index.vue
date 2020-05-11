@@ -19,7 +19,7 @@
           </div>
         </div>
         <div
-          v-if="this.vehicle && this.vehicle.model.hasSkins"
+          v-if="vehicle && vehicle.model.hasSkins"
           class="col-xs-12 col-sm-6"
         >
           <div class="form-group">
@@ -27,7 +27,7 @@
               :key="`skins-${vehicle.model.id}`"
               v-model="form.modelSkinId"
               translation-key="vehicle.modelSkinSelect"
-              :fetch-path="`models/${this.vehicle.model.slug}/skins`"
+              :fetch-path="`models/${vehicle.model.slug}/skins`"
               name="modelSkinId"
               label-attr="name"
               value-attr="id"

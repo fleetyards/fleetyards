@@ -1,8 +1,38 @@
 <template>
-  <div class="labels">
-    <h3 class="label-title">
-      Groups:
-    </h3>
+  <BtnDropdown
+    v-if="mobile"
+    :mobile-block="true"
+    size="small"
+    class="labels-dropdown"
+  >
+    <template slot="label">
+      {{ $t('labels.groups') }}
+    </template>
+    <Btn
+      v-for="group in groups"
+      :key="group.id"
+      variant="link"
+      class="labels-dropdown-item"
+      :class="{
+        active: isActive(group.slug),
+        inverted: isInverted(group.slug),
+      }"
+      @click.exact.native="filter(group.slug)"
+    >
+      <span
+        :style="{
+          'background-color': group.color,
+        }"
+        class="label-color"
+      />
+      <span class="label-text">
+        {{ group.name }}
+      </span>
+      <span class="label-count">{{ groupCount(group).count }}</span>
+    </Btn>
+  </BtnDropdown>
+  <div v-else class="labels">
+    <h3 class="label-title">{{ $t('labels.groups') }}:</h3>
     <draggable v-model="groups" @start="drag = true" @end="drag = false">
       <transition-group name="fade-list" appear>
         <a
@@ -23,7 +53,7 @@
               }"
               class="label-color"
             />
-            {{ group.name }}: {{ group.vehiclesCount }}
+            {{ group.name }}: {{ groupCount(group).count }}
           </span>
         </a>
       </transition-group>
@@ -39,15 +69,26 @@
 
 <script>
 import draggable from 'vuedraggable'
+import BtnDropdown from 'frontend/components/BtnDropdown'
+import Btn from 'frontend/components/Btn'
 import GroupModal from 'frontend/partials/Vehicles/GroupModal'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
+    BtnDropdown,
+    Btn,
     GroupModal,
     draggable,
   },
   props: {
     hangarGroups: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    hangarGroupCounts: {
       type: Array,
       default() {
         return []
@@ -64,6 +105,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['mobile']),
     sortIndex() {
       return this.groups.map(item => item.id)
     },
@@ -79,6 +121,14 @@ export default {
     },
   },
   methods: {
+    groupCount(group) {
+      return (
+        this.hangarGroupCounts.find(count => count.id === group.id) || {
+          count: 0,
+        }
+      )
+    },
+
     filter(filter) {
       const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 

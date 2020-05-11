@@ -235,6 +235,10 @@ $panel-content-border-radius: 6px;
     justify-content: center;
     flex-wrap: wrap;
 
+    > :last-child {
+      margin-right: 0;
+    }
+
     .panel-btn {
       flex-grow: 1;
     }

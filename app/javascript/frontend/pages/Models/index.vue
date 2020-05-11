@@ -8,38 +8,45 @@
       </div>
     </div>
     <FilteredList>
-      <template slot="actions">
-        <Btn
-          v-if="!fleetchartVisible"
-          v-tooltip="toggleDetailsTooltip"
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          size="small"
-          @click.native="toggleDetails"
-        >
-          <span v-show="detailsVisible">
-            <i class="fa fa-chevron-up" />
-          </span>
-          <span v-show="!detailsVisible">
-            <i class="far fa-chevron-down" />
-          </span>
-        </Btn>
-        <Btn :to="{ name: 'models-compare' }" size="small">
-          {{ $t('actions.compare.models') }}
-        </Btn>
-        <DownloadScreenshotBtn
-          v-if="fleetchartVisible"
-          element="#fleetchart"
-          filename="ships-fleetchart"
-        />
-        <Btn size="small" @click.native="toggleFleetchart">
-          <template v-if="fleetchartVisible">
-            {{ $t('actions.hideFleetchart') }}
-          </template>
-          <template v-else>
-            {{ $t('actions.showFleetchart') }}
-          </template>
-        </Btn>
+      <template slot="actions-right">
+        <BtnDropdown size="small">
+          <Btn :to="{ name: 'models-compare' }" size="small" variant="link">
+            <i class="fad fa-exchange" />
+            {{ $t('actions.compare.models') }}
+          </Btn>
+
+          <Btn size="small" variant="link" @click.native="toggleFleetchart">
+            <template v-if="fleetchartVisible">
+              <i class="fas fa-th" />
+              {{ $t('actions.hideFleetchart') }}
+            </template>
+            <template v-else>
+              <i class="fad fa-starship" />
+              {{ $t('actions.showFleetchart') }}
+            </template>
+          </Btn>
+
+          <DownloadScreenshotBtn
+            v-if="fleetchartVisible"
+            element="#fleetchart"
+            filename="ships-fleetchart"
+            size="small"
+            variant="link"
+            :show-tooltip="false"
+          />
+
+          <Btn
+            v-else
+            :active="detailsVisible"
+            :aria-label="toggleDetailsTooltip"
+            size="small"
+            variant="link"
+            @click.native="toggleDetails"
+          >
+            <i class="fad fa-info-square" />
+            {{ toggleDetailsTooltip }}
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <Paginator
@@ -47,7 +54,7 @@
         slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
 
       <ModelsFilterForm slot="filter" />
@@ -100,7 +107,7 @@
         slot="pagination-bottom"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
     </FilteredList>
   </section>
@@ -109,6 +116,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
+import BtnDropdown from 'frontend/components/BtnDropdown'
 import FilteredList from 'frontend/components/FilteredList'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
@@ -127,6 +135,7 @@ export default {
 
   components: {
     Btn,
+    BtnDropdown,
     FilteredList,
     DownloadScreenshotBtn,
     Loader,

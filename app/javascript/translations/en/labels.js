@@ -13,6 +13,7 @@ export default {
   'or': 'or',
   'deselect': 'Click to deselect',
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
+  'groups': 'Groups',
   'shop': {
     rentPrice: 'rental',
     sellPrice: 'price',
@@ -108,6 +109,7 @@ export default {
   'twitch': 'Twitch Channel',
   '3dView': '3D',
   'poweredByStarship42': 'Powered by starship42.com',
+  'exportStarship42': 'View on Starship42',
   'filter': 'Filter',
   'taxExcluded': 'excl. VAT',
   'hangar': 'Hangar',

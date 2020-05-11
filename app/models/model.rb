@@ -114,13 +114,17 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
+    Model.classifications.map do |item|
       Filter.new(
         category: 'classification',
         name: item.humanize,
         value: item
       )
     end
+  end
+
+  def self.classifications
+    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq
   end
 
   def self.focus_filters

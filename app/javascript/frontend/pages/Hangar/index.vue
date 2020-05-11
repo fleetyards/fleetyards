@@ -10,27 +10,27 @@
           </div>
         </div>
         <div class="hangar-header">
-          <div>
+          <div class="hangar-labels">
             <ModelClassLabels
               v-if="vehiclesCount"
               :label="$t('labels.hangar')"
-              :count-data="vehiclesCount"
+              :count-data="vehiclesCount.classifications"
               filter-key="classificationIn"
             />
             <GroupLabels
               v-if="
-                !mobile &&
-                  (vehicles.length ||
-                    fleetchartVehicles.length ||
-                    (!vehicles.length &&
-                      !fleetchartVehicles.length &&
-                      isFilterSelected))
+                vehicles.length ||
+                  fleetchartVehicles.length ||
+                  (!vehicles.length &&
+                    !fleetchartVehicles.length &&
+                    isFilterSelected)
               "
               :hangar-groups="hangarGroups"
+              :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
             />
           </div>
-          <div class="page-actions">
+          <div v-if="!mobile" class="page-actions">
             <Btn
               v-tooltip="$t('labels.poweredByStarship42')"
               :href="starship42Url"
@@ -113,56 +113,77 @@
     </div>
 
     <FilteredList>
-      <template slot="actions">
-        <Btn
-          v-show="!fleetchartVisible"
-          v-tooltip="toggleDetailsTooltip"
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          size="small"
-          @click.native="toggleDetails"
-        >
-          <span v-show="detailsVisible">
-            <i class="fa fa-chevron-up" />
-          </span>
-          <span v-show="!detailsVisible">
-            <i class="far fa-chevron-down" />
-          </span>
-        </Btn>
-
-        <DownloadScreenshotBtn
-          v-if="fleetchartVisible"
-          element="#fleetchart"
-          filename="my-hangar-fleetchart"
-        />
-
-        <Btn size="small" @click.native="toggleFleetchart">
-          <template v-if="fleetchartVisible">
-            {{ $t('actions.hideFleetchart') }}
+      <template slot="actions-right">
+        <BtnDropdown size="small">
+          <template v-if="mobile">
+            <Btn :href="starship42Url" size="small" variant="link">
+              <i class="fad fa-cube" />
+              {{ $t('labels.exportStarship42') }}
+            </Btn>
+            <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
+              <i class="fad fa-chart-bar" />
+              {{ $t('labels.hangarStats') }}
+            </Btn>
+            <Btn :href="publicUrl" size="small" variant="link">
+              <i class="fad fa-share-square" />
+              {{ $t('labels.publicUrl') }}
+            </Btn>
+            <hr />
           </template>
-          <template v-else>
-            {{ $t('actions.showFleetchart') }}
-          </template>
-        </Btn>
+          <Btn size="small" variant="link" @click.native="toggleFleetchart">
+            <template v-if="fleetchartVisible">
+              <i class="fas fa-th" />
+              {{ $t('actions.hideFleetchart') }}
+            </template>
+            <template v-else>
+              <i class="fad fa-starship" />
+              {{ $t('actions.showFleetchart') }}
+            </template>
+          </Btn>
 
-        <Btn
-          v-tooltip="$t('actions.addVehicle')"
-          :aria-label="$t('actions.addVehicle')"
-          size="small"
-          @click.native="showNewModal"
-        >
-          <i class="fa fa-plus" />
-        </Btn>
+          <Btn
+            v-show="!fleetchartVisible"
+            :active="detailsVisible"
+            :aria-label="toggleDetailsTooltip"
+            size="small"
+            variant="link"
+            @click.native="toggleDetails"
+          >
+            <i class="fad fa-info-square" />
+            {{ toggleDetailsTooltip }}
+          </Btn>
 
-        <Btn
-          v-tooltip="toggleGuideTooltip"
-          :active="guideVisible"
-          :aria-label="toggleGuideTooltip"
-          size="small"
-          @click.native="toggleGuide"
-        >
-          <i class="fa fa-question" />
-        </Btn>
+          <DownloadScreenshotBtn
+            v-if="fleetchartVisible"
+            element="#fleetchart"
+            filename="my-hangar-fleetchart"
+            size="small"
+            variant="link"
+            :show-tooltip="false"
+          />
+
+          <Btn
+            :aria-label="$t('actions.addVehicle')"
+            size="small"
+            variant="link"
+            :inline="true"
+            @click.native="showNewModal"
+          >
+            <i class="fas fa-plus" />
+            {{ $t('actions.addVehicle') }}
+          </Btn>
+
+          <Btn
+            :active="guideVisible"
+            :aria-label="toggleGuideTooltip"
+            size="small"
+            variant="link"
+            @click.native="toggleGuide"
+          >
+            <i class="fad fa-question" />
+            {{ toggleGuideTooltip }}
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <Paginator
@@ -170,7 +191,7 @@
         slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
 
       <VehiclesFilterForm slot="filter" :hangar-groups-options="hangarGroups" />
@@ -237,7 +258,7 @@
         slot="pagination-bottom"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
     </FilteredList>
 
@@ -256,6 +277,7 @@ import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
 import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
@@ -280,6 +302,7 @@ export default {
     Loader,
     FilteredList,
     Btn,
+    BtnDropdown,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartList,
@@ -328,6 +351,14 @@ export default {
         (this.noVehicles || this.noFleetchartVehicles) &&
         this.isFilterSelected
       )
+    },
+
+    hangarGroupCounts() {
+      if (!this.vehiclesCount) {
+        return []
+      }
+
+      return this.vehiclesCount.groups
     },
 
     guideVisible() {

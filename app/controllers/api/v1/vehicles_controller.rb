@@ -80,13 +80,19 @@ module Api
 
         @quick_stats = OpenStruct.new(
           total: vehicles.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
+          classifications: Model.classifications.map do |classification|
             OpenStruct.new(
-              # rubocop:disable Performance/Count
-              count: models.select { |model| model.classification == classification }.size,
-              # rubocop:enable Performance/Count
+              count: models.count { |model| model.classification == classification },
+
               name: classification,
               label: classification.humanize
+            )
+          end,
+          groups: HangarGroup.where(user: current_user).map do |group|
+            OpenStruct.new(
+              count: group.vehicles.where(id: vehicles.map(&:id)).size,
+              id: group.id,
+              slug: group.slug
             )
           end,
           metrics: {
