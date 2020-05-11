@@ -2,7 +2,7 @@ name: CI
 
 on: [push]
 
-defaults: &defaults
+defaults:
   runs-on: ubuntu-latest
   container: fleetyards/base:2.6.6
   env:
@@ -34,7 +34,6 @@ defaults: &defaults
 
 jobs:
   checkout:
-    <<: *defaults
     steps:
     - uses: actions/checkout@v2
     - name: persist workspace
@@ -44,7 +43,6 @@ jobs:
         path: ./
 
   bundle:
-    <<: *defaults
     needs: checkout
     steps:
     - name: load workspace
@@ -63,7 +61,6 @@ jobs:
         bundle install --jobs 4 --retry 3
 
   yarn:
-    <<: *defaults
     needs: checkout
     steps:
     - name: load workspace
@@ -84,7 +81,6 @@ jobs:
       run: yarn --frozen-lockfile
 
   bundle-audit:
-    <<: *defaults
     needs: bundle
     steps:
     - name: load workspace
@@ -97,7 +93,6 @@ jobs:
       run: bundle exec bundle-audit check
 
   yarn-audit:
-    <<: *defaults
     needs: yarn
     steps:
     - name: load workspace
@@ -108,7 +103,6 @@ jobs:
       run: yarn audit
 
   rubocop:
-    <<: *defaults
     needs: bundle
     steps:
     - name: load workspace
@@ -119,7 +113,6 @@ jobs:
       run: bundle exec rubocop --format progress
 
   js-lint:
-    <<: *defaults
     needs: yarn
     steps:
     - name: load workspace
