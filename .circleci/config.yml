@@ -72,7 +72,6 @@ e2e: &e2e
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
-        NODE_OPTIONS: --max-old-space-size=1024
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -256,9 +255,11 @@ jobs:
           keys:
             - v3-bundle-{{ checksum "Gemfile.lock" }}
             - v3-bundle-
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
       - run: bundle install
+      - restore_cache:
+         keys:
+           - v3-yarn-{{ checksum "yarn.lock" }}
+           - v3-yarn-
       - run: yarn --frozen-lockfile
       - run:
           name: Webpacker & Assets Compile
@@ -272,9 +273,11 @@ jobs:
           keys:
             - v3-bundle-{{ checksum "Gemfile.lock" }}
             - v3-bundle-
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
       - run: bundle install
+      - restore_cache:
+           keys:
+             - v3-yarn-{{ checksum "yarn.lock" }}
+             - v3-yarn-
       - run: yarn --frozen-lockfile
       - run: mkdir -p ~/app/log
       - run:
