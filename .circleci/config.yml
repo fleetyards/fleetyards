@@ -285,8 +285,8 @@ workflows:
             branches:
               only: master
     jobs:
-      - bundle:
-      - yarn:
+      - bundle
+      - yarn
       - bundle-audit:
           requires:
             - bundle
