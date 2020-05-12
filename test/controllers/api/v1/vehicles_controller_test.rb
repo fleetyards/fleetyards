@@ -320,14 +320,15 @@ module Api
           expected = {
             'total' => 2,
             'classifications' => [{
-              'name' => 'explorer',
-              'label' => 'Explorer',
-              'count' => 1
-            }, {
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
+            }, {
+              'name' => 'explorer',
+              'label' => 'Explorer',
+              'count' => 1
             }],
+            'groups' => [],
             'metrics' => {
               'totalMoney' => 625,
               'totalMinCrew' => 5,
@@ -347,6 +348,7 @@ module Api
           expected = {
             'total' => 0,
             'classifications' => [],
+            'groups' => [],
             'metrics' => {
               'totalMoney' => 0,
               'totalMinCrew' => 0,
