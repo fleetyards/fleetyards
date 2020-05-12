@@ -461,16 +461,16 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - e2e-tests:
-          requires:
-            - bundle
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
+      # - e2e-tests:
+      #     requires:
+      #       - bundle
+      #       - yarn
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
       - deploy-to-stage:
           requires:
-            - e2e-tests
+            # - e2e-tests
             - rubocop
             - js-lint
             - vue-lint
@@ -484,7 +484,7 @@ workflows:
               only: master
       - deploy-to-live:
           requires:
-            - e2e-tests
+            # - e2e-tests
             - rubocop
             - js-lint
             - vue-lint
