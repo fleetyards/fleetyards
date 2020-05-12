@@ -347,7 +347,15 @@ module Api
 
           expected = {
             'total' => 0,
-            'classifications' => [],
+            'classifications' => [{
+              'name' => 'explorer',
+              'label' => 'Explorer',
+              'count' => 0
+            }, {
+              'name' => 'multi_role',
+              'label' => 'Multi role',
+              'count' => 0
+            }],
             'groups' => [],
             'metrics' => {
               'totalMoney' => 0,
