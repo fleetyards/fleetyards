@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.70.0](https://github.com/fleetyards/fleetyards/compare/v3.69.0...v3.70.0) (2020-05-12)
+
+
+### Features
+
+* model skins vs variants ([#1187](https://github.com/fleetyards/fleetyards/issues/1187)) ([a8cdd89](https://github.com/fleetyards/fleetyards/commit/a8cdd89e4996c087f2e41b9801bcc92bd8d61390))
+
+
+### Bug Fixes
+
+* context menu for model list ([10721b8](https://github.com/fleetyards/fleetyards/commit/10721b83befe31683217bad29d664c21d0443298))
+* update github actions for ruby ([fb892be](https://github.com/fleetyards/fleetyards/commit/fb892be82054ba91fa2bfa6358de93fea48ab6da))
+
 ### [3.69.1](https://github.com/fleetyards/fleetyards/compare/v3.69.0...v3.69.1) (2020-05-04)
 
 ## [3.69.0](https://github.com/fleetyards/app/compare/v3.68.19...v3.69.0) (2020-05-01)
