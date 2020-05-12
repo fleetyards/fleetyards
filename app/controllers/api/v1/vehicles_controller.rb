@@ -88,7 +88,7 @@ module Api
               label: classification.humanize
             )
           end,
-          groups: HangarGroup.where(user: current_user).order([sort: :asc, name: :desc]).map do |group|
+          groups: HangarGroup.where(user: current_user).order([sort: :asc, name: :asc]).map do |group|
             OpenStruct.new(
               count: group.vehicles.where(id: vehicles.map(&:id)).size,
               id: group.id,

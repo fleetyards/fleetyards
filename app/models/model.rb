@@ -124,7 +124,7 @@ class Model < ApplicationRecord
   end
 
   def self.classifications
-    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq
+    Model.visible.active.order(classification: :asc).all.map(&:classification).reject(&:blank?).compact.uniq
   end
 
   def self.focus_filters
