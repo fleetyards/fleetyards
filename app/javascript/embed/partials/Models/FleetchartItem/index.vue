@@ -6,19 +6,16 @@
         :model="model"
         :scale="scale"
       />
-      <FleetchartItemLabel :label="label" />
     </a>
   </div>
 </template>
 
 <script>
 import FleetchartItemImage from 'frontend/partials/Fleetchart/List/Item/Image'
-import FleetchartItemLabel from 'frontend/partials/Fleetchart/List/Item/Label'
 
 export default {
   components: {
     FleetchartItemImage,
-    FleetchartItemLabel,
   },
   props: {
     model: {

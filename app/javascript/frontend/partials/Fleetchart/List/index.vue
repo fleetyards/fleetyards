@@ -31,7 +31,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import FleetchartItem from 'frontend/partials/Fleetchart/List/Item/index.vue'
-import FleetchartItemContextMenu from 'frontend/partials/Fleetchart/List/Item/ContextMenu/index.vue'
+import FleetchartItemContextMenu from 'frontend/partials/Fleetchart/List/ContextMenu/index.vue'
 
 @Component({
   components: {

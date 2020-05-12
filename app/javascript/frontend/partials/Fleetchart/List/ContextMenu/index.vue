@@ -54,7 +54,7 @@
     </template>
 
     <AddToHangar
-      v-else-if="model && !vehicle && !vehicle.loaner"
+      v-else-if="model || (vehicle && !vehicle.loaner)"
       :model="model"
       variant="menu"
     />
