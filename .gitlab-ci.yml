@@ -1,16 +1,9 @@
 image: fleetyards/base:2.6.6
 
-stages:
-  - prep
-  - test
-  - post-test
-  - deploy
-
 cache: &global_cache
   key: fleetyards-cache
   paths:
     - node_modules/
-    - public/
     - vendor/bundle/
   policy: pull
 
@@ -18,7 +11,6 @@ cache: &global_cache
   variables:
     BUNDLE_PATH: vendor/bundle
   before_script:
-    - bundle config path vendor/bundle
     - bundle install
     - mkdir -p log
 
@@ -32,13 +24,14 @@ cache: &global_cache
     - postgres:12.2-alpine
   variables:
     RAILS_ENV: test
-    DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-    DATABASE_HOST: 127.0.0.1
-    DATABASE_USER: root
     POSTGRES_DB: fleetyards_test
     POSTGRES_USER: root
-    POSTGRES_PASSWORD: ""
+    POSTGRES_PASSWORD: root
     POSTGRES_HOST_AUTH_METHOD: trust
+    DATABASE_HOST: postgres
+    DATABASE_PORT: 5432
+    DATABASE_USER: $POSTGRES_USER
+    DATABASE_URL: postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$DATABASE_HOST:$DATABASE_PORT/$POSTGRES_DB
 
 .e2e_template:
   extends: .ruby_test_template
@@ -66,7 +59,7 @@ cache: &global_cache
     ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 yarn:
-  stage: prep
+  stage: build
   cache:
     <<: *global_cache
     paths:
@@ -82,14 +75,13 @@ yarn:
       - .npmrc
 
 bundle:
-  stage: prep
+  stage: build
   cache:
     <<: *global_cache
     paths:
       - vendor/bundle/
     policy: pull-push
   script:
-    - bundle config path vendor/bundle
     - bundle install
   only:
     changes:
@@ -100,50 +92,42 @@ bundle:
 
 ruby audit:
   extends: .ruby_template
-  stage: test
   script:
     - bundle exec bundle-audit update
     - bundle exec bundle-audit check
 
 yarn audit:
   extends: .js_test_template
-  stage: test
   script:
     - yarn audit
 
 rubocop:
   extends: .ruby_template
-  stage: test
   script:
     - bundle exec rubocop --format progress
 
 js-lint:
   extends: .js_test_template
-  stage: test
   script:
     - yarn run lint:js
 
 vue-lint:
   extends: .js_test_template
-  stage: test
   script:
     - yarn run lint:vue
 
 style-lint:
   extends: .js_test_template
-  stage: test
   script:
     - yarn run lint:style
 
 js tests:
   extends: .js_test_template
-  stage: test
   script:
     - yarn run test
 
 ruby tests:
   extends: .ruby_test_template
-  stage: test
   script:
     - ./scripts/wait-for-db.sh
     - bundle exec rails db:create db:schema:load

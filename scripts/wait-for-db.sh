@@ -17,5 +17,5 @@ do
 done
 
 echo
-echo "WARNING: DB not ready after after ${MAXTRIES * 2} seconds! Aborting."
+echo "WARNING: DB not ready after $((MAXTRIES * 2)) seconds! Aborting."
 exit 1
