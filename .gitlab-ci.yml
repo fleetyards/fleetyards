@@ -145,4 +145,6 @@ ruby tests:
   extends: .ruby_test_template
   stage: test
   script:
+    - ./scripts/wait-for-db.sh
+    - bundle exec rails db:create db:schema:load
     - bundle exec rails test
