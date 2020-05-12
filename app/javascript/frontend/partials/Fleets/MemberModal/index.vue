@@ -36,7 +36,7 @@
             :loading="submitting"
             type="submit"
             size="large"
-            inline
+            :inline="true"
           >
             {{ $t('actions.fleet.members.invite') }}
           </Btn>

@@ -19,9 +19,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.all
 
       expectations = {
-        hardpoints: 2170,
-        components: 122,
-        models: 144,
+        hardpoints: 2199,
+        components: 125,
+        models: 145,
+        skins: 16,
         manufacturers: 45
       }
 
@@ -29,6 +30,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
                    hardpoints: Hardpoint.count,
                    components: Component.count,
                    models: Model.count,
+                   skins: ModelSkin.count,
                    manufacturers: Manufacturer.count)
 
       assert_equal(Model.find_by(slug: '300i').rsi_chassis_id, Model.find_by(slug: '315p').rsi_chassis_id)
@@ -88,7 +90,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       model_polaris.reload
 
       assert_equal(155.0, model_polaris.length.to_f)
-      assert_equal('2017-10-24T12:38:57Z', model_polaris.last_updated_at.utc.iso8601)
+      assert_equal('2020-02-26T22:17:02Z', model_polaris.last_updated_at.utc.iso8601)
     end
   end
 end

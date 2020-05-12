@@ -101,7 +101,11 @@
       <p>{{ $t('privacySettings.introduction.paragraph2') }}</p>
       <p>
         {{ $t('privacySettings.introduction.paragraph3') }}
-        <Btn variant="link" text-inline :to="{ name: 'privacy-policy' }">
+        <Btn
+          variant="link"
+          :text-inline="true"
+          :to="{ name: 'privacy-policy' }"
+        >
           {{ $t('nav.privacyPolicy') }}
         </Btn>
         .
@@ -109,15 +113,15 @@
     </div>
     <template #footer>
       <div class="cookies-banner-actions">
-        <Btn v-if="info" inline block @click.native="hideInfo">
+        <Btn v-if="info" :inline="true" :block="true" @click.native="hideInfo">
           <i class="fal fa-chevron-left" />
           {{ $t('actions.back') }}
         </Btn>
         <Btn
           v-else-if="settings"
           data-test="save-privacy-settings"
-          block
-          inline
+          :block="true"
+          :inline="true"
           @click.native="submit"
         >
           {{ $t('privacySettings.save') }}
@@ -125,14 +129,19 @@
         <template v-else>
           <Btn
             data-test="show-settings"
-            inline
-            block
+            :inline="true"
+            :block="true"
             variant="link"
             @click.native="showSettings"
           >
             {{ $t('privacySettings.editSettings') }}
           </Btn>
-          <Btn data-test="accept-cookies" inline block @click.native="accept">
+          <Btn
+            data-test="accept-cookies"
+            :inline="true"
+            :block="true"
+            @click.native="accept"
+          >
             {{ $t('privacySettings.accept') }}
           </Btn>
         </template>

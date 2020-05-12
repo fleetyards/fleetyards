@@ -109,3 +109,9 @@ Lint/StructNewOverride:
 
 Lint/RaiseException:
   Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true

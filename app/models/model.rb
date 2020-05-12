@@ -55,16 +55,16 @@ class Model < ApplicationRecord
            through: :model_loaners,
            source: :loaner_model
 
-  has_many :upgrades,
-           class_name: 'ModelUpgrade',
-           dependent: :destroy,
-           inverse_of: :model
-
   has_many :upgrade_kits,
            dependent: :destroy
   has_many :upgrades,
            through: :upgrade_kits,
            source: :model_upgrade
+
+  has_many :skins,
+           class_name: 'ModelSkin',
+           dependent: :destroy,
+           inverse_of: :model
 
   has_many :images,
            as: :gallery,
@@ -114,13 +114,17 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq.map do |item|
+    Model.classifications.map do |item|
       Filter.new(
         category: 'classification',
         name: item.humanize,
         value: item
       )
     end
+  end
+
+  def self.classifications
+    Model.visible.active.all.map(&:classification).reject(&:blank?).compact.uniq
   end
 
   def self.focus_filters

@@ -21,14 +21,16 @@
       </div>
 
       <FilterGroup
-        :label="$t('labels.selectModel')"
         name="model"
         :search-label="$t('actions.findModel')"
         fetch-path="models"
         value-attr="id"
-        paginated
-        searchable
-        return-object
+        translation-key="newVehicle"
+        :paginated="true"
+        :searchable="true"
+        s
+        :return-object="true"
+        :no-label="true"
         @input="add"
       />
     </form>
@@ -39,7 +41,7 @@
           form="new-vehicles"
           :loading="submitting"
           size="large"
-          inline
+          :inline="true"
         >
           {{ $t('actions.add') }}
         </Btn>

@@ -25,11 +25,23 @@
 
 @media (max-width: $desktop-breakpoint) {
   .hangar-header {
-    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap;
+
+    .hangar-labels {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+
+      > * {
+        flex-grow: 1;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   .hangar-metrics {

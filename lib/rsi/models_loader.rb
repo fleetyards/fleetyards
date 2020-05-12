@@ -20,8 +20,12 @@ module RSI
       models = load_models
 
       models.each do |data|
+        next if blacklist.find { |item| item[:rsi_id] == data['id'] }
+
         sync_model(data)
       end
+
+      cleanup_variants
     end
 
     def one(rsi_id)
@@ -29,7 +33,11 @@ module RSI
 
       model_data = models.find { |model| model['id'] == rsi_id.to_s }
 
-      sync_model(model_data) if model_data.present?
+      return if model_data.blank?
+
+      sync_model(model_data) unless blacklist.find { |item| item[:rsi_id] == rsi_id }
+
+      cleanup_variants
     end
 
     def load_models
@@ -53,7 +61,12 @@ module RSI
     end
 
     def sync_model(data)
-      model = create_or_update_model(data)
+      model_for_skin = find_model_for_skin(data)
+      model = if model_for_skin.present?
+                create_or_update_skin(data, model_for_skin.id)
+              else
+                create_or_update_model(data)
+              end
 
       buying_options = get_buying_options(model.store_url)
       if buying_options.present?
@@ -61,23 +74,25 @@ module RSI
         model.on_sale = buying_options.on_sale
       end
 
-      model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
+      unless skin?(data)
+        model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
 
-      model.hardpoints.where(rsi_key: nil).destroy_all
+        model.hardpoints.where(rsi_key: nil).destroy_all
 
-      hardpoint_ids = []
-      components = data['compiled']
-      components.each_key do |component_class|
-        types = components[component_class]
-        types.each_key do |type|
-          types[type].each_with_index do |hardpoint_data, index|
-            hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
-            hardpoint_ids << hardpoint.id
+        hardpoint_ids = []
+        components = data['compiled']
+        components.each_key do |component_class|
+          types = components[component_class]
+          types.each_key do |type|
+            types[type].each_with_index do |hardpoint_data, index|
+              hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
+              hardpoint_ids << hardpoint.id
+            end
           end
         end
-      end
 
-      model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
+        model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
+      end
 
       model.hidden = false
 
@@ -100,8 +115,10 @@ module RSI
         prices << begin
           raw_price = price_element.text
           price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-          price_with_local_vat = price_match[1].to_f if price_match.present?
-          price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+          if price_match.present?
+            price_with_local_vat = price_match[1].to_f
+            price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
+          end
         end
       end
 
@@ -163,10 +180,11 @@ module RSI
       updates[:name] = strip_name(data['name']) if (model_updated(model, data) && data['name'] != model.rsi_name) || model.name.blank?
 
       model.update(updates)
-
-      # rubocop:disable Style/RescueModifier
-      store_images_updated_at = Time.zone.parse(data['media'][0]['time_modified']) rescue nil
-      # rubocop:enable Style/RescueModifier
+      store_images_updated_at = begin
+                                  Time.zone.parse(data['media'][0]['time_modified'])
+                                rescue StandardError
+                                  nil
+                                end
 
       if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
         model.store_images_updated_at = data['media'][0]['time_modified']
@@ -180,8 +198,53 @@ module RSI
 
       model
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/CyclomaticComplexity
+
+    # rubocop:disable Metrics/CyclomaticComplexity
+    private def create_or_update_skin(data, model_id)
+      skin = ModelSkin.find_or_create_by!(rsi_id: data['id'])
+
+      updates = {
+        last_updated_at: new_time_modified(data),
+        model_id: model_id,
+      }
+
+      updates[:rsi_description] = data['description']
+      updates[:description] = data['description'] if (model_updated(skin, data) && data['description'] != skin.rsi_description) || skin.description.blank?
+
+      updates[:rsi_store_url] = data['url']
+      updates[:store_url] = data['url'] if (model_updated(skin, data) && data['url'] != skin.rsi_store_url) || skin.store_url.blank?
+
+      if model_updated(skin, data) || skin.production_status.blank?
+        updates[:production_status] = data['production_status']
+        updates[:production_note] = data['production_note']
+      end
+
+      updates[:rsi_name] = data['name'].strip
+      updates[:starship42_slug] = data['name'].strip if skin.starship42_slug.blank?
+      updates[:name] = strip_name(data['name']) if (model_updated(skin, data) && data['name'] != skin.rsi_name) || skin.name.blank?
+
+      skin.update(updates)
+      store_images_updated_at = begin
+                                  Time.zone.parse(data['media'][0]['time_modified'])
+                                rescue StandardError
+                                  nil
+                                end
+
+      if skin.store_image.blank? || skin.store_images_updated_at != store_images_updated_at
+        skin.store_images_updated_at = data['media'][0]['time_modified']
+        store_image_url = data['media'][0]['images']['store_hub_large']
+        store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
+        if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
+          skin.remote_store_image_url = store_image_url
+          skin.save
+        end
+      end
+
+      skin
+    end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def create_or_update_manufacturer(manufacturer_data)
       manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
@@ -260,8 +323,146 @@ module RSI
       nil
     end
 
+    private def skin?(data)
+      skin_mapping.any? { |item| item[:rsi_id] == data['id'].to_i }
+    end
+
+    # rubocop:disable Metrics/MethodLength
+    private def skin_mapping
+      [
+        {
+          # Carrack
+          rsi_id: 206,
+          model_rsi_id: 62,
+        }, {
+          # Ballista
+          rsi_id: 185,
+          model_rsi_id: 183,
+        }, {
+          rsi_id: 184,
+          model_rsi_id: 183,
+        }, {
+          # Caterpillar
+          rsi_id: 194,
+          model_rsi_id: 24,
+        }, {
+          rsi_id: 125,
+          model_rsi_id: 24,
+        }, {
+          # Phoenix
+          rsi_id: 156,
+          model_rsi_id: 49,
+        }, {
+          # Cutlass
+          rsi_id: 193,
+          model_rsi_id: 56,
+        }, {
+          # Hammerhead
+          rsi_id: 195,
+          model_rsi_id: 151,
+        }, {
+          # Reclaimer
+          rsi_id: 196,
+          model_rsi_id: 51,
+        }, {
+          # Mole
+          rsi_id: 202,
+          model_rsi_id: 201,
+        }, {
+          rsi_id: 203,
+          model_rsi_id: 201,
+        }, {
+          # Mustang
+          rsi_id: 172,
+          model_rsi_id: 65,
+        }, {
+          # Nautilus
+          rsi_id: 187,
+          model_rsi_id: 186,
+        }, {
+          # Archimedes
+          rsi_id: 207,
+          model_rsi_id: 104,
+        }, {
+          # Valkyrie
+          rsi_id: 171,
+          model_rsi_id: 169,
+        },
+      ]
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    private def blacklist
+      [{
+        rsi_id: 205,
+        replacements: [{
+          rsi_id: 62,
+          skin_rsi_id: 205,
+        }, {
+          rsi_id: 192,
+        }],
+      }, {
+        rsi_id: 204,
+        replacements: [{
+          rsi_id: 62,
+        }, {
+          rsi_id: 192,
+        }],
+      }]
+    end
+
+    private def find_model_for_skin(data)
+      mapping = skin_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
+
+      return if mapping.blank?
+
+      model_rsi_id = mapping[:model_rsi_id]
+
+      return if model_rsi_id.blank?
+
+      Model.find_by(rsi_id: model_rsi_id)
+    end
+
     private def model_updated(model, data)
       model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
+    end
+
+    def cleanup_variants
+      ModelSkin.find_each do |skin|
+        model = Model.find_by(rsi_id: skin.rsi_id)
+        next if model.blank?
+
+        Vehicle.where(model_id: model.id).find_each do |vehicle|
+          vehicle.update(model_id: skin.model_id, model_skin_id: skin.id)
+        end
+
+        model.destroy
+      end
+
+      blacklist.each do |item|
+        model = Model.find_by(rsi_id: item[:rsi_id])
+        next if model.blank?
+
+        replacements = item[:replacements].map { |replacement| replacement.merge(model: Model.find_by!(rsi_id: replacement[:rsi_id])) }
+
+        Vehicle.where(model_id: model.id).find_each do |vehicle|
+          next if replacements.first[:model].blank?
+
+          vehicle.update(model_id: replacements.first[:model].id)
+          replacements.each_with_index do |replacement, index|
+            next if index.zero?
+
+            replacement_model = replacement[:model]
+            next if replacement_model.blank?
+
+            skin = ModelSkin.find_by!(rsi_id: replacement[:skin_rsi_id]) if replacement[:skin_rsi_id].present?
+
+            Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_skin_id: skin&.id)
+          end
+        end
+
+        model.destroy
+      end
     end
   end
 end

@@ -32,7 +32,7 @@
                           id="search-submit"
                           :aria-label="$t('labels.search')"
                           size="large"
-                          inline
+                          :inline="true"
                           @click.native="search"
                         >
                           <i class="fal fa-search" />

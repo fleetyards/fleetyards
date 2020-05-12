@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateFleets < ActiveRecord::Migration[5.2]
   def change
-    create_table :fleets, id: :uuid, default: -> { 'uuid_generate_v4()' }, force: :cascade  do |t|
+    create_table :fleets, id: :uuid, default: -> { 'uuid_generate_v4()' }, force: :cascade do |t|
       t.string :name
       t.string :slug
       t.string :sid

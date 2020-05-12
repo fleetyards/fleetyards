@@ -31,52 +31,37 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    size: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'small', 'large'].indexOf(value) !== -1
-      },
-    },
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
-    avatar: {
-      type: String,
-      default: null,
+@Component({})
+export default class Avatar extends Vue {
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'small', 'large'].indexOf(value) !== -1
     },
+  })
+  size!: string
 
-    editable: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: null }) avatar!: string
 
-    creatable: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) editable!: boolean
 
-    icon: {
-      type: String,
-      default: 'fad fa-user',
-    },
+  @Prop({ default: false }) creatable!: boolean
 
-    transparent: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  @Prop({ default: 'fad fa-user' }) icon!: string
 
-  methods: {
-    emitClick() {
-      if (this.avatar) {
-        this.$emit('destroy')
-      } else {
-        this.$emit('upload')
-      }
-    },
-  },
+  @Prop({ default: false }) transparent!: boolean
+
+  emitClick() {
+    if (this.avatar) {
+      this.$emit('destroy')
+    } else {
+      this.$emit('upload')
+    }
+  }
 }
 </script>
 

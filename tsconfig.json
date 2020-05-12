@@ -5,6 +5,7 @@
     "module": "esnext",
     "jsx": "preserve",
     "importHelpers": true,
+    "allowJs": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -15,6 +16,7 @@
     "baseUrl": "app/javascript"
   },
   "include": [
+    "@types/*",
     "app/javascript/**/*.ts",
     "app/javascript/**/*.tsx",
     "app/javascript/**/*.vue"

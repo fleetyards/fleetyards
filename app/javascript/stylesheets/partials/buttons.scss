@@ -36,7 +36,6 @@ $panel-content-border-radius: 6px;
   display: inline-block;
   margin-bottom: 20px;
   min-width: 50px;
-  min-height: 43px;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
   cursor: pointer;
@@ -101,7 +100,6 @@ $panel-content-border-radius: 6px;
 
   &.panel-btn-small {
     min-width: 40px;
-    min-height: 39px;
 
     .panel-btn-inner {
       padding: 5px 10px;
@@ -111,7 +109,6 @@ $panel-content-border-radius: 6px;
 
   &.panel-btn-large {
     min-width: 62px;
-    min-height: 51px;
 
     .panel-btn-inner {
       padding: 8px 16px;
@@ -237,6 +234,10 @@ $panel-content-border-radius: 6px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+
+    > :last-child {
+      margin-right: 0;
+    }
 
     .panel-btn {
       flex-grow: 1;

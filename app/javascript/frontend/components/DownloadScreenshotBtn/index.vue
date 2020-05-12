@@ -1,9 +1,11 @@
 <template>
   <Btn
-    v-tooltip="$t('actions.saveScreenshot')"
+    v-tooltip="showTooltip && $t('actions.saveScreenshot')"
     :loading="downloading"
     :aria-label="$t('actions.saveScreenshot')"
-    size="small"
+    :variant="variant"
+    :size="size"
+    :inline="inline"
     @click.native="download"
   >
     <SmallLoader :loading="downloading" />
@@ -13,59 +15,59 @@
       }"
       class="text"
     >
+      <i class="fad fa-image" />
       {{ $t('actions.saveScreenshot') }}
     </span>
   </Btn>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
-import Btn from 'frontend/components/Btn'
-import SmallLoader from 'frontend/components/SmallLoader'
+import Btn from 'frontend/components/Btn/index.vue'
+import SmallLoader from 'frontend/components/SmallLoader/index.vue'
 
-export default {
+@Component({
   components: {
     SmallLoader,
     Btn,
   },
-  props: {
-    element: {
-      type: String,
-      required: true,
-    },
-    filename: {
-      type: String,
-      default: 'fleetyards-screenshot',
-    },
-  },
-  data() {
-    return {
-      downloading: false,
+})
+export default class DownloadScreenshotBtn extends Btn {
+  @Prop({ required: true }) element!: string
+
+  @Prop({ default: true }) showTooltip!: boolean
+
+  @Prop({ default: 'fleetyards-screenshot' }) filename!: string
+
+  downloading: boolean = false
+
+  download() {
+    this.downloading = true
+
+    const element = document.querySelector(this.element)
+
+    if (!element) {
+      return
     }
-  },
-  methods: {
-    download() {
-      this.downloading = true
 
-      const element = document.querySelector(this.element)
-      element.classList.add('fleetchart-download')
+    element.classList.add('fleetchart-download')
 
-      html2canvas(element, {
-        backgroundColor: null,
-        useCORS: true,
+    html2canvas(element, {
+      backgroundColor: null,
+      useCORS: true,
+    })
+      .then(canvas => {
+        element.classList.remove('fleetchart-download')
+        this.downloading = false
+        download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
       })
-        .then(canvas => {
-          element.classList.remove('fleetchart-download')
-          this.downloading = false
-          download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
-        })
-        .catch(() => {
-          element.classList.remove('fleetchart-download')
-          this.downloading = false
-        })
-    },
-  },
+      .catch(() => {
+        element.classList.remove('fleetchart-download')
+        this.downloading = false
+      })
+  }
 }
 </script>
 

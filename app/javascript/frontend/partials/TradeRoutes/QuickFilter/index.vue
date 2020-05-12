@@ -9,9 +9,10 @@
             fetch-path="stations?quickfilter-origin"
             name="origin"
             value-attr="slug"
-            paginated
-            searchable
-            multiple
+            :paginated="true"
+            :searchable="true"
+            :multiple="true"
+            :no-label="true"
           />
         </div>
         <div class="col-xs-12 col-sm-4">
@@ -21,9 +22,10 @@
             fetch-path="commodities?quickfilter"
             name="commodity"
             value-attr="slug"
-            paginated
-            searchable
-            multiple
+            :paginated="true"
+            :searchable="true"
+            :multiple="true"
+            :no-label="true"
           />
         </div>
         <div class="col-xs-12 col-sm-4">
@@ -33,9 +35,10 @@
             fetch-path="stations?quickfilter-destination"
             name="destination"
             value-attr="slug"
-            paginated
-            searchable
-            multiple
+            :paginated="true"
+            :searchable="true"
+            :multiple="true"
+            :no-label="true"
           />
         </div>
       </div>

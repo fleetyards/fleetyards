@@ -352,23 +352,16 @@ export default {
     async submit() {
       this.submitting = true
 
-      const data = new FormData()
-      if (this.newLogo && this.newLogo.file) {
-        data.append('logo', this.newLogo.file)
-      }
+      const uploadResponse = await this.uploadLogo()
 
-      Object.keys(this.form).forEach(key => {
-        data.append(key, this.form[key])
-      })
-
-      const response = await this.$api.upload(
+      const response = await this.$api.put(
         `fleets/${this.$route.params.slug}`,
-        data,
+        this.form,
       )
 
       this.submitting = false
 
-      if (!response.error) {
+      if (!uploadResponse.error && !response.error) {
         this.$success({
           text: this.$t('messages.fleet.update.success'),
         })
@@ -376,7 +369,7 @@ export default {
         this.$comlink.$emit('fleetUpdate')
 
         if (response.data.slug !== this.$route.params.slug) {
-          this.$router.push({
+          await this.$router.push({
             name: 'fleet-settings',
             params: { slug: response.data.slug },
           })
@@ -401,6 +394,22 @@ export default {
           })
         }
       }
+    },
+
+    async uploadLogo() {
+      let uploadResponse = { error: null }
+
+      if (this.newLogo && this.newLogo.file) {
+        const uploadData = new FormData()
+        uploadData.append('logo', this.newLogo.file)
+
+        uploadResponse = await this.$api.upload(
+          `fleets/${this.$route.params.slug}`,
+          uploadData,
+        )
+      }
+
+      return uploadResponse
     },
 
     async destroy() {

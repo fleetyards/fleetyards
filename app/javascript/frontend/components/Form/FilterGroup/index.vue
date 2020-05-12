@@ -1,19 +1,26 @@
 <template>
   <div ref="filterGroup" class="filter-list">
+    <transition name="fade">
+      <label v-show="labelVisible" v-if="innerLabel && !noLabel" :for="id">
+        {{ innerLabel }}
+      </label>
+    </transition>
     <div
       :class="{
         active: visible,
         disabled: disabled,
         selected: selectedOptions.length > 0,
+        hasLabel: labelVisible,
       }"
       class="filter-list-title"
       @click="toggle"
     >
-      {{ label }}
+      {{ prompt }}
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
     <b-collapse
+      v-if="multiple"
       :id="`${groupID}-${selectedId}`"
       :visible="selectedOptions.length > 0 && !visible"
       class="filter-list-items"
@@ -168,9 +175,24 @@ export default {
       default: false,
     },
 
+    hideLabelOnEmpty: {
+      type: Boolean,
+      default: false,
+    },
+
     label: {
       type: String,
-      default: '',
+      default: null,
+    },
+
+    translationKey: {
+      type: String,
+      default: 'filterGroup',
+    },
+
+    noLabel: {
+      type: Boolean,
+      default: false,
     },
 
     fetch: {
@@ -202,6 +224,38 @@ export default {
   },
 
   computed: {
+    prompt() {
+      if (this.multiple) {
+        return this.label
+      }
+
+      if (this.selectedOptions.length > 0) {
+        return this.selectedOptions[0][this.labelAttr]
+      }
+
+      if (this.nullable) {
+        return this.$t(`labels.${this.translationKey}.nullablePrompt`)
+      }
+
+      return this.$t(`labels.${this.translationKey}.prompt`)
+    },
+
+    labelVisible() {
+      return !this.hideLabelOnEmpty || this.selectedOptions.length > 0
+    },
+
+    innerLabel() {
+      if (this.label) {
+        return this.label
+      }
+
+      if (this.translationKey && this.translationKey !== 'filterGroup') {
+        return this.$t(`labels.${this.translationKey}.label`)
+      }
+
+      return this.$t(`labels.${this.id}`)
+    },
+
     shouldFetch() {
       return this.fetch || this.fetchPath
     },

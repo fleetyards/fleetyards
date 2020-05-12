@@ -112,7 +112,7 @@
       </div>
       <div v-if="erkulUrl" class="row">
         <div class="col-xs-12">
-          <Btn :href="erkulUrl" block class="erkul-link">
+          <Btn :href="erkulUrl" :block="true" class="erkul-link">
             <small>{{ $t('labels.erkul.prefix') }}</small>
             <i />
             {{ $t('labels.erkul.link') }}

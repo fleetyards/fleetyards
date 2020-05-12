@@ -8,38 +8,45 @@
       </div>
     </div>
     <FilteredList>
-      <template slot="actions">
-        <Btn
-          v-if="!fleetchartVisible"
-          v-tooltip="toggleDetailsTooltip"
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          size="small"
-          @click.native="toggleDetails"
-        >
-          <span v-show="detailsVisible">
-            <i class="fa fa-chevron-up" />
-          </span>
-          <span v-show="!detailsVisible">
-            <i class="far fa-chevron-down" />
-          </span>
-        </Btn>
-        <Btn :to="{ name: 'models-compare' }" size="small">
-          {{ $t('actions.compare.models') }}
-        </Btn>
-        <DownloadScreenshotBtn
-          v-if="fleetchartVisible"
-          element="#fleetchart"
-          filename="ships-fleetchart"
-        />
-        <Btn size="small" @click.native="toggleFleetchart">
-          <template v-if="fleetchartVisible">
-            {{ $t('actions.hideFleetchart') }}
-          </template>
-          <template v-else>
-            {{ $t('actions.showFleetchart') }}
-          </template>
-        </Btn>
+      <template slot="actions-right">
+        <BtnDropdown size="small">
+          <Btn :to="{ name: 'models-compare' }" size="small" variant="link">
+            <i class="fad fa-exchange" />
+            {{ $t('actions.compare.models') }}
+          </Btn>
+
+          <Btn size="small" variant="link" @click.native="toggleFleetchart">
+            <template v-if="fleetchartVisible">
+              <i class="fas fa-th" />
+              {{ $t('actions.hideFleetchart') }}
+            </template>
+            <template v-else>
+              <i class="fad fa-starship" />
+              {{ $t('actions.showFleetchart') }}
+            </template>
+          </Btn>
+
+          <DownloadScreenshotBtn
+            v-if="fleetchartVisible"
+            element="#fleetchart"
+            filename="ships-fleetchart"
+            size="small"
+            variant="link"
+            :show-tooltip="false"
+          />
+
+          <Btn
+            v-else
+            :active="detailsVisible"
+            :aria-label="toggleDetailsTooltip"
+            size="small"
+            variant="link"
+            @click.native="toggleDetails"
+          >
+            <i class="fad fa-info-square" />
+            {{ toggleDetailsTooltip }}
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <Paginator
@@ -47,7 +54,7 @@
         slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
 
       <ModelsFilterForm slot="filter" />
@@ -64,24 +71,11 @@
           </div>
         </transition>
 
-        <div v-if="fleetchartVisible" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="flex-row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="model in fleetchartModels"
-                :key="`fleetchart-${model.slug}`"
-                :model="model"
-                :scale="fleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
+        <FleetchartList
+          v-if="fleetchartVisible"
+          :items="fleetchartModels"
+          :scale="fleetchartScale"
+        />
 
         <transition-group
           v-else
@@ -113,7 +107,7 @@
         slot="pagination-bottom"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
     </FilteredList>
   </section>
@@ -122,14 +116,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
+import BtnDropdown from 'frontend/components/BtnDropdown'
 import FilteredList from 'frontend/components/FilteredList'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Loader from 'frontend/components/Loader'
 import ModelPanel from 'frontend/components/Models/Panel'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
-import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -140,13 +135,14 @@ export default {
 
   components: {
     Btn,
+    BtnDropdown,
     FilteredList,
     DownloadScreenshotBtn,
     Loader,
     ModelPanel,
     EmptyBox,
     ModelsFilterForm,
-    FleetchartItem,
+    FleetchartList,
     FleetchartSlider,
   },
 

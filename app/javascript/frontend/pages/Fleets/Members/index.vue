@@ -14,7 +14,7 @@
       </div>
       <div class="col-xs-4">
         <div class="page-main-actions">
-          <Btn v-if="canInvite" inline @click.native="openInviteModal">
+          <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
             <i class="fal fa-plus" />
             {{ $t('actions.add') }}
           </Btn>
@@ -164,7 +164,7 @@
                     "
                     size="small"
                     :disabled="!canEdit(member) || updating"
-                    inline
+                    :inline="true"
                     @click.native="promoteMember(member)"
                   >
                     <i class="fal fa-chevron-up" />
@@ -177,7 +177,7 @@
                     "
                     size="small"
                     :disabled="!canEdit(member) || updating"
-                    inline
+                    :inline="true"
                     @click.native="demoteMember(member)"
                   >
                     <i class="fal fa-chevron-down" />
@@ -185,7 +185,7 @@
                   <Btn
                     size="small"
                     :disabled="!canEdit(member) || deleting"
-                    inline
+                    :inline="true"
                     @click.native="removeMember(member)"
                   >
                     <i class="fad fa-trash-alt" />

@@ -14,7 +14,25 @@
               v-model="form.name"
               :placeholder="vehicle.model.name"
               translation-key="name"
-              no-label
+              :no-label="true"
+            />
+          </div>
+        </div>
+        <div
+          v-if="vehicle && vehicle.model.hasSkins"
+          class="col-xs-12 col-sm-6"
+        >
+          <div class="form-group">
+            <FilterGroup
+              :key="`skins-${vehicle.model.id}`"
+              v-model="form.modelSkinId"
+              translation-key="vehicle.modelSkinSelect"
+              :fetch-path="`models/${vehicle.model.slug}/skins`"
+              name="modelSkinId"
+              label-attr="name"
+              value-attr="id"
+              :nullable="true"
+              :no-label="true"
             />
           </div>
         </div>
@@ -77,7 +95,7 @@
           v-if="vehicle"
           :disabled="deleting"
           data-test="vehicle-delete"
-          inline
+          :inline="true"
           @click.native="remove"
         >
           <i class="fal fa-trash" />
@@ -88,7 +106,7 @@
           type="submit"
           size="large"
           data-test="vehicle-save"
-          inline
+          :inline="true"
         >
           {{ $t('actions.save') }}
         </Btn>
@@ -100,6 +118,7 @@
 <script>
 import Modal from 'frontend/components/Modal'
 import FormInput from 'frontend/components/Form/FormInput'
+import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
 
@@ -108,6 +127,7 @@ export default {
     Modal,
     Checkbox,
     FormInput,
+    FilterGroup,
     Btn,
   },
   props: {
@@ -140,6 +160,7 @@ export default {
         saleNotify: this.vehicle.saleNotify,
         nameVisible: this.vehicle.nameVisible,
         hangarGroupIds: this.vehicle.hangarGroupIds,
+        modelSkinId: this.vehicle.skin?.id || null,
       }
     },
   },

@@ -107,7 +107,7 @@
 <script>
 import ModelPanel from 'embed/partials/Models/Panel'
 import FleetchartItem from 'embed/partials/Models/FleetchartItem'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'

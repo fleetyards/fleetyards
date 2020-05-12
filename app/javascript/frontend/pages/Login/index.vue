@@ -52,7 +52,7 @@
               type="submit"
               data-test="submit-login"
               size="large"
-              block
+              :block="true"
             >
               {{ $t('actions.login') }}
             </Btn>
@@ -62,7 +62,7 @@
               }"
               variant="link"
               size="small"
-              block
+              :block="true"
             >
               {{ $t('actions.reset-password') }}
             </Btn>
@@ -74,7 +74,7 @@
                 data-test="signup-link"
                 :to="{ name: 'signup' }"
                 size="small"
-                block
+                :block="true"
               >
                 {{ $t('actions.signUp') }}
               </Btn>

@@ -14,15 +14,22 @@
   </ol>
 </template>
 
-<script>
-export default {
-  props: {
-    crumbs: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import Panel from 'frontend/components/Panel/index.vue'
+
+@Component({
+  components: {
+    Panel,
   },
+})
+export default class BreadCrumbs extends Vue {
+  @Prop({
+    default() {
+      return []
+    },
+  })
+  crumbs!: Object[]
 }
 </script>

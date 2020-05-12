@@ -1,0 +1,51 @@
+.panel-btn-group {
+  background: $panel-bg;
+  position: relative;
+  opacity: 1;
+  padding: 2px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  min-width: 50px;
+  border: $panel-border-width solid $panel-inner-border;
+  border-radius: $panel-border-radius;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  vertical-align: middle;
+
+  &::before {
+    content: '';
+    height: $panel-border-width;
+    background-color: #444;
+    position: absolute;
+    top: -$panel-border-width;
+    left: 14px;
+    right: 14px;
+  }
+
+  &::after {
+    content: '';
+    height: $panel-border-width;
+    background-color: #444;
+    position: absolute;
+    bottom: -$panel-border-width;
+    left: 14px;
+    right: 14px;
+  }
+
+  > :first-child {
+    flex-grow: 1;
+    min-width: 120px;
+  }
+
+  > * {
+    border-right: 1px solid #444 !important;
+    border-radius: 0;
+    margin-right: 0;
+  }
+
+  > :last-child {
+    border-right: none !important;
+  }
+}

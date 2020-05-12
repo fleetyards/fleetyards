@@ -20,7 +20,7 @@
             <ModelClassLabels
               v-if="vehiclesCount"
               :label="$t('labels.hangar')"
-              :count-data="vehiclesCount"
+              :count-data="vehiclesCount.classifications"
             />
           </div>
         </div>
@@ -66,24 +66,14 @@
             </div>
           </div>
         </transition>
-        <div v-if="publicFleetchartVisible" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="flex-row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="vehicle in fleetchartVehicles"
-                :key="vehicle.id"
-                :model="vehicle.model"
-                :scale="publicFleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
+
+        <FleetchartList
+          v-if="publicFleetchartVisible"
+          :items="fleetchartVehicles"
+          :on-addons="showAddonsModal"
+          :scale="publicFleetchartScale"
+        />
+
         <transition-group
           v-else
           name="fade-list"
@@ -126,9 +116,9 @@ import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
-import FleetchartItem from 'frontend/partials/Models/FleetchartItem'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import FleetchartSlider from 'frontend/partials/FleetchartSlider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
@@ -143,7 +133,7 @@ export default {
     Loader,
     DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartItem,
+    FleetchartList,
     ModelClassLabels,
     FleetchartSlider,
     Avatar,

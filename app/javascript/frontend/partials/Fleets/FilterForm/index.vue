@@ -15,9 +15,10 @@
       name="manufacturer"
       value-attr="slug"
       icon-attr="logo"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -25,7 +26,8 @@
       :label="$t('labels.filters.models.productionStatus')"
       fetch-path="models/production-states"
       name="production-status"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -33,8 +35,9 @@
       :label="$t('labels.filters.models.classification')"
       fetch-path="models/classifications"
       name="classification"
-      searchable
-      multiple
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -42,8 +45,9 @@
       :label="$t('labels.filters.models.focus')"
       fetch-path="models/focus"
       name="focus"
-      searchable
-      multiple
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -51,7 +55,8 @@
       :label="$t('labels.filters.models.size')"
       fetch-path="models/sizes"
       name="size"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -59,7 +64,8 @@
       :options="pledgePriceOptions"
       :label="$t('labels.filters.models.pledgePrice')"
       name="pledge-price"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -67,7 +73,8 @@
       :options="priceOptions"
       :label="$t('labels.filters.models.price')"
       name="price"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <div class="row">
@@ -135,7 +142,11 @@
       name="sale"
     />
 
-    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
+    <Btn
+      :disabled="!isFilterSelected"
+      :block="true"
+      @click.native="resetFilter"
+    >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>

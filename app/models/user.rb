@@ -65,4 +65,14 @@ class User < ApplicationRecord
     fleet_memberships.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations
   end
+
+  # TODO: Remove once run on production
+  def cleanup_profile_fields
+    %i[twitch discord rsi_handle youtube homepage].each do |field|
+      value = send(field)
+      next if value != '' && value != 'null'
+
+      update(field => nil)
+    end
+  end
 end

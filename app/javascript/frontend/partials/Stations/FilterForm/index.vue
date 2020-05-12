@@ -13,41 +13,51 @@
       :fetch="fetchCelestialObjects"
       name="celestial-object"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
+
     <FilterGroup
       v-model="form.starsystemIn"
       :label="$t('labels.filters.stations.starsystem')"
       :fetch="fetchStarsystems"
       name="starsystem"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
+
     <FilterGroup
       v-model="form.stationTypeIn"
       :label="$t('labels.filters.stations.type')"
       :fetch="fetchStationTypes"
       name="station-types"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
+
     <FilterGroup
       v-model="form.shopsShopTypeIn"
       :label="$t('labels.filters.stations.shops')"
       :fetch="fetchShopTypes"
       name="shops"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
+
     <FilterGroup
       v-model="form.docksShipSizeIn"
       :label="$t('labels.filters.stations.docks')"
       :fetch="fetchShipSizes"
       name="docks"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
+
     <RadioList
       v-model="form.habsNotNull"
       :label="$t('labels.filters.stations.habs')"
@@ -55,7 +65,11 @@
       :options="booleanOptions"
       name="habs"
     />
-    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
+    <Btn
+      :disabled="!isFilterSelected"
+      :block="true"
+      @click.native="resetFilter"
+    >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>

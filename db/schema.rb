@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_04_133432) do
+ActiveRecord::Schema.define(version: 2020_05_08_080120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -322,9 +322,10 @@ ActiveRecord::Schema.define(version: 2020_05_04_133432) do
   create_table "model_skins", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "model_id"
-    t.string "slugexi"
+    t.string "slug"
     t.string "description"
     t.decimal "pledge_price", precision: 15, scale: 2
+    t.decimal "last_pledge_price", precision: 15, scale: 2
     t.string "store_image"
     t.boolean "active", default: true
     t.boolean "hidden", default: true
@@ -338,6 +339,8 @@ ActiveRecord::Schema.define(version: 2020_05_04_133432) do
     t.string "rsi_store_url"
     t.datetime "last_updated_at"
     t.boolean "on_sale", default: false
+    t.string "production_status"
+    t.string "production_note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -641,6 +644,7 @@ ActiveRecord::Schema.define(version: 2020_05_04_133432) do
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
     t.boolean "hidden", default: false
+    t.uuid "model_skin_id"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end

@@ -39,9 +39,9 @@ module.exports = {
       'Object.values',
       'Array.iterator',
     ],
-    'import/resolver': {
-      typescript: {},
-    },
+    // 'import/resolver': {
+    //   typescript: {},
+    // },
   },
 
   rules: {
@@ -85,9 +85,24 @@ module.exports = {
       'jest/expect-expect': 'off',
     }
   }, {
-    files: ['**/Impressum/index.vue', '**/Modal/index.vue', '**/Panel/index.vue', '**/*.ts'],
+    files: [
+      '**/*.ts',
+      '**/components/**/*.vue',
+      '**/Impressum/index.vue',
+      '**/partials/Fleetchart/**',
+    ],
     parserOptions: {
       parser: '@typescript-eslint/parser',
     },
+    rules: {
+      'class-methods-use-this': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
+    }
   }],
 }

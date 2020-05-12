@@ -24,17 +24,18 @@
                 <FilterGroup
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
-                  :label="$t('labels.compare.addModel')"
+                  translation-key="compare.addModel"
                   name="new-model"
                   :search-label="$t('actions.findModel')"
                   :fetch="fetchModels"
                   value-attr="slug"
                   :disabled="selectDisabled"
-                  paginated
-                  searchable
+                  :searchable="true"
+                  :paginated="true"
+                  :no-label="true"
                   @input="add"
                 />
-                <Btn :href="erkulUrl" block class="erkul-link">
+                <Btn :href="erkulUrl" :block="true" class="erkul-link">
                   <i />
                   {{ $t('labels.erkul.link') }}
                 </Btn>

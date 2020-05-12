@@ -14,9 +14,10 @@
       fetch-path="models"
       name="model"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -25,9 +26,10 @@
       fetch-path="commodities"
       name="commodity"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -36,9 +38,10 @@
       fetch-path="equipment"
       name="equipment"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -47,9 +50,10 @@
       fetch-path="components"
       name="component"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -57,7 +61,8 @@
       :label="$t('labels.filters.shops.type')"
       :fetch="fetchShopTypes"
       name="type"
-      multiple
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -66,9 +71,10 @@
       fetch-path="stations"
       name="station"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -77,9 +83,10 @@
       fetch-path="celestial-objects"
       name="celestial-object"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
     <FilterGroup
@@ -88,12 +95,17 @@
       fetch-path="starsystems"
       name="starsystem"
       value-attr="slug"
-      paginated
-      searchable
-      multiple
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
     />
 
-    <Btn :disabled="!isFilterSelected" block @click.native="resetFilter">
+    <Btn
+      :disabled="!isFilterSelected"
+      :block="true"
+      @click.native="resetFilter"
+    >
       <i class="fal fa-times" />
       {{ $t('actions.resetFilter') }}
     </Btn>

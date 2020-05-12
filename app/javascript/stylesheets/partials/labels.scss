@@ -81,3 +81,50 @@ $innerBorderWidth: 2px;
     }
   }
 }
+
+.labels-dropdown {
+  .label-color {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  .label-count {
+    width: 20px;
+    margin-left: 10px;
+    text-align: right;
+  }
+
+  .label-text {
+    flex: 1;
+  }
+
+  .labels-dropdown-item {
+    > :first-child {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &.active {
+      > :first-child {
+        color: invert($text-color) !important;
+        background-color: $panel-inner-border !important;
+      }
+    }
+
+    &.inverted {
+      > :first-child {
+        background-color: darkred !important;
+      }
+
+      &:hover {
+        > :first-child {
+          color: $text-color !important;
+        }
+      }
+    }
+  }
+}

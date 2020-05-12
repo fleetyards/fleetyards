@@ -1,8 +1,10 @@
 <template>
   <Btn
+    :key="`add-to-hangar-${model.slug}`"
     v-tooltip.bottom="$t('actions.addToHangar')"
-    :variant="variant === 'panel' ? 'link' : 'default'"
-    :size="variant === 'panel' ? 'small' : 'default'"
+    :variant="btnVariant"
+    :size="btnSize"
+    :inline="variant === 'menu'"
     data-test="add-to-hangar"
     @click.native="add"
   >
@@ -32,17 +34,36 @@ export default {
       type: String,
       default: 'default',
       validator(value) {
-        return ['default', 'panel'].indexOf(value) !== -1
+        return ['default', 'panel', 'menu'].indexOf(value) !== -1
       },
     },
   },
   computed: {
     ...mapGetters('session', ['isAuthenticated']),
+
     ...mapGetters('hangar', ['ships']),
+
     inHangar() {
       return !!(this.ships || []).find(item => item === this.model.slug)
     },
+
+    btnVariant() {
+      if (['panel', 'menu'].includes(this.variant)) {
+        return 'link'
+      }
+
+      return 'default'
+    },
+
+    btnSize() {
+      if (['panel', 'menu'].includes(this.variant)) {
+        return 'small'
+      }
+
+      return 'default'
+    },
   },
+
   methods: {
     async add() {
       if (!this.isAuthenticated) {
@@ -55,8 +76,9 @@ export default {
       const response = await this.$api.post('vehicles', {
         modelId: this.model.id,
       })
+
       if (!response.error) {
-        this.$store.dispatch('hangar/add', this.model.slug)
+        await this.$store.dispatch('hangar/add', this.model.slug)
         this.$success({
           text: this.$t('messages.vehicle.add.success', {
             model: this.model.name,

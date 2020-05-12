@@ -14,17 +14,18 @@
     display: inline-block;
     text-align: center;
     position: relative;
+    cursor: pointer;
 
     a {
       display: block;
+    }
 
-      .fleetchart-item-label {
-        display: none;
-      }
+    .fleetchart-item-label {
+      display: none;
+    }
 
-      .fleetchart-item-image {
-        transform: rotate(180deg);
-      }
+    .fleetchart-item-image {
+      transform: rotate(180deg);
     }
   }
 }
@@ -39,6 +40,10 @@
   background-size: 100px;
   padding-bottom: 110px;
   background-repeat: no-repeat;
+}
+
+.fleetchart-item-context-menu {
+  position: fixed;
 }
 
 @media (max-width: $desktop-breakpoint) {

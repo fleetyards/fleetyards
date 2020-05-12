@@ -83,7 +83,7 @@
               type="submit"
               data-test="submit-signup"
               size="large"
-              block
+              :block="true"
             >
               {{ $t('actions.signUp') }}
             </Btn>
@@ -100,7 +100,7 @@
                 {{ $t('labels.alreadyRegistered') }}
               </p>
 
-              <Btn :to="{ name: 'login' }" size="small" block>
+              <Btn :to="{ name: 'login' }" size="small" :block="true">
                 {{ $t('actions.login') }}
               </Btn>
             </footer>

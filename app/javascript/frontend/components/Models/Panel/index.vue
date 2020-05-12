@@ -23,7 +23,7 @@
               {{ customName }}
             </span>
 
-            <span v-else>{{ countLabel }}{{ model.name }}</span>
+            <span v-else>{{ countLabel }}{{ modelName }}</span>
           </router-link>
 
           <transition name="fade" appear>
@@ -37,23 +37,16 @@
 
           <br />
 
-          <small v-if="customName">
+          <small>
             <router-link
               :to="{
                 query: { q: filterManufacturerQuery(model.manufacturer.slug) },
               }"
               v-html="model.manufacturer.name"
             />
-            {{ model.name }}
-          </small>
-
-          <small v-else>
-            <router-link
-              :to="{
-                query: { q: filterManufacturerQuery(model.manufacturer.slug) },
-              }"
-              v-html="model.manufacturer.name"
-            />
+            <template v-if="customName">
+              {{ modelName }}
+            </template>
           </small>
 
           <Btn
@@ -86,7 +79,7 @@
         <LazyImage
           :to="{ name: 'model', params: { slug: model.slug } }"
           :aria-label="model.name"
-          :src="model.storeImageMedium"
+          :src="storeImage"
           :alt="model.name"
           class="image"
         >
@@ -214,6 +207,22 @@ export default {
       return this._uid
     },
 
+    storeImage() {
+      if (this.vehicle && this.vehicle.skin) {
+        return this.vehicle.skin.storeImageMedium
+      }
+
+      return this.model.storeImageMedium
+    },
+
+    modelName() {
+      if (this.vehicle && this.vehicle.skin) {
+        return this.vehicle.skin.name
+      }
+
+      return this.model.name
+    },
+
     id() {
       if (this.vehicle) {
         return this.vehicle.id
@@ -226,14 +235,6 @@ export default {
       if (this.vehicle && this.vehicle.name) {
         return this.vehicle.name
       }
-      return null
-    },
-
-    highlightClass() {
-      if (this.vehicle.flagship) {
-        return 'highlight-gold'
-      }
-
       return null
     },
 

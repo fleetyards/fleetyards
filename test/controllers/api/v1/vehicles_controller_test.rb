@@ -112,7 +112,6 @@ module Api
               'storeImageMedium' => data.vehicles.first.model.store_image.medium.url,
               'storeImageSmall' => data.vehicles.first.model.store_image.small.url,
               'fleetchartImage' => nil,
-              'backgroundImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
@@ -129,6 +128,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'hasSkins' => false,
               'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :label) if data.vehicles.first.model.last_updated_at.present?),
               'manufacturer' => {
@@ -140,6 +140,7 @@ module Api
               'createdAt' => data.vehicles.first.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
             },
+            'skin' => nil,
             'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
             'modelModuleIds' => data.vehicles.first.model_module_ids,
             'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
@@ -185,7 +186,6 @@ module Api
               'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
               'storeImageSmall' => data.vehicles.last.model.store_image.small.url,
               'fleetchartImage' => nil,
-              'backgroundImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
@@ -202,6 +202,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'hasSkins' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
@@ -213,6 +214,7 @@ module Api
               'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
+            'skin' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,
             'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
@@ -235,9 +237,9 @@ module Api
             'id' => data.vehicles.last.id,
             'name' => 'Enterprise',
             'purchased' => true,
-            'public' => true,
             'loaner' => false,
             'flagship' => false,
+            'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
@@ -251,7 +253,7 @@ module Api
               'beam' => 10.2,
               'height' => 10.2,
               'mass' => 1000.02,
-              'cargo' => 90,
+              'cargo' => 90.0,
               'cargoLabel' => 'Andromeda (90 SCU)',
               'minCrew' => 3,
               'maxCrew' => 5,
@@ -271,7 +273,6 @@ module Api
               'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
               'storeImageSmall' => data.vehicles.last.model.store_image.small.url,
               'fleetchartImage' => nil,
-              'backgroundImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
@@ -288,6 +289,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
+              'hasSkins' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
@@ -299,6 +301,7 @@ module Api
               'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
+            'skin' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,
             'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,

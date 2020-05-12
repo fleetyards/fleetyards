@@ -32,6 +32,7 @@ v1_api_routes = lambda do
       get 'snub-crafts' => 'models#snub_crafts'
       get :modules
       get :upgrades
+      get :skins
       get :store_image, path: 'store-image'
       get :fleetchart_image, path: 'fleetchart-image'
     end

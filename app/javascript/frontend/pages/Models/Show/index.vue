@@ -163,6 +163,29 @@
       <Loader :loading="loading" />
     </div>
     <div class="row">
+      <div class="col-xs-12 skins">
+        <h2 v-if="skins.length" class="text-uppercase">
+          {{ $t('labels.model.skins') }}
+        </h2>
+        <transition-group
+          v-if="skins.length"
+          name="fade-list"
+          class="flex-row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="skin in skins"
+            :key="`skin-${skin.slug}`"
+            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+          >
+            <TeaserPanel :item="skin" :fullscreen="true" />
+          </div>
+        </transition-group>
+        <Loader :loading="loadingSkins" :fixed="true" />
+      </div>
+    </div>
+    <div class="row">
       <div class="col-xs-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
           {{ $t('labels.model.modules') }}
@@ -176,7 +199,7 @@
             <TeaserPanel :item="module" />
           </div>
         </div>
-        <Loader :loading="loadingModules" fixed />
+        <Loader :loading="loadingModules" :fixed="true" />
       </div>
     </div>
     <div class="row">
@@ -193,7 +216,7 @@
             <TeaserPanel :item="upgrade" />
           </div>
         </div>
-        <Loader :loading="loadingUpgrades" fixed />
+        <Loader :loading="loadingUpgrades" :fixed="true" />
       </div>
     </div>
     <div class="row">
@@ -213,10 +236,10 @@
             :key="`variant-${variant.slug}`"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
           >
-            <ModelPanel :model="variant" details />
+            <ModelPanel :model="variant" :details="true" />
           </div>
         </transition-group>
-        <Loader :loading="loadingVariants" fixed />
+        <Loader :loading="loadingVariants" :fixed="true" />
       </div>
     </div>
     <div class="row">
@@ -239,7 +262,7 @@
             <ModelPanel :model="loaner" />
           </div>
         </transition-group>
-        <Loader :loading="loadingLoaners" fixed />
+        <Loader :loading="loadingLoaners" :fixed="true" />
       </div>
     </div>
   </section>
@@ -282,11 +305,13 @@ export default {
       loading: false,
       loadingVariants: false,
       loadingLoaners: false,
+      loadingSkins: false,
       loadingModules: false,
       loadingUpgrades: false,
       show3d: false,
       model: null,
       variants: [],
+      skins: [],
       loaners: [],
       modules: [],
       upgrades: [],
@@ -358,6 +383,7 @@ export default {
       this.fetch()
       this.fetchModules()
       this.fetchUpgrades()
+      this.fetchSkins()
       this.fetchVariants()
       this.fetchLoaners()
     },
@@ -410,6 +436,7 @@ export default {
     fetchExtras() {
       this.fetchModules()
       this.fetchUpgrades()
+      this.fetchSkins()
       this.fetchVariants()
       this.fetchLoaners()
     },
@@ -433,6 +460,17 @@ export default {
       this.loadingUpgrades = false
       if (!response.error) {
         this.upgrades = response.data
+      }
+    },
+
+    async fetchSkins() {
+      this.loadingSkins = true
+      const response = await this.$api.get(
+        `models/${this.$route.params.slug}/skins`,
+      )
+      this.loadingSkins = false
+      if (!response.error) {
+        this.skins = response.data
       }
     },
 
