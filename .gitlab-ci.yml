@@ -131,4 +131,4 @@ ruby tests:
   script:
     - ./scripts/wait-for-db.sh
     - bundle exec rails db:create db:schema:load
-    - bundle exec rails test
+    - bundle exec rails test:coverage
