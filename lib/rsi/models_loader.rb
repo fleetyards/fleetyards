@@ -35,7 +35,7 @@ module RSI
 
       return if model_data.blank?
 
-      sync_model(model_data) unless blacklist.find { |item| item[:rsi_id] == rsi_id }
+      sync_model(model_data) unless blacklist.find { |item| item[:rsi_id] == rsi_id.to_i }
 
       cleanup_variants
     end
