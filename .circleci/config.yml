@@ -60,37 +60,7 @@ e2e: &e2e
   docker:
     - image: fleetyards/ci:2.6.6
       environment:
-        BUNDLE_PATH: ~/app/vendor/bundle
-        DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
-        TEST_SEEDS: 1
-        RAILS_ENV: ci
-        ON_SUBDOMAIN: 1
-        RAILS_SERVE_STATIC_FILES: 1
-        DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
-        CYPRESS_BASE_URL: http://localhost:8270
-        CYPRESS_CI: 1
-        JOBS: 1
-        APP_DIR: .
-        PORT: 8270
-        LC_ALL: C.UTF-8
-        LANG: en_US.UTF-8
-        LANGUAGE: en_US.UTF-8
-        NODE_OPTIONS: --max-old-space-size=1024
-    - image: circleci/postgres:9.5.16-alpine
-      environment:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: root
-        POSTGRES_DB: fleetyards
-    - image: circleci/redis:5.0.3-alpine
-    - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-      environment:
-        cluster.name: fleetyards-test-cluster
-        xpack.security.enabled: false
-        transport.host: localhost
-        network.host: 127.0.0.1
-        http.port: 9200
-        discovery.type: single-node
-        ES_JAVA_OPTS: -Xms512m -Xmx512m
+        CYPRESS_BASE_URL: https://stage.fleetyards.net
 
 jobs:
   health-check:
@@ -231,56 +201,15 @@ jobs:
           name: Run Javascript Tests
           command: yarn test:coverage
 
-  assets:
-    <<: *ruby-defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
-      - run: bundle install
-      - restore_cache:
-         keys:
-           - v3-yarn-{{ checksum "yarn.lock" }}
-           - v3-yarn-
-      - run: yarn --frozen-lockfile
-      - run:
-          name: Webpacker & Assets Compile
-          command: RAILS_ENV=production bundle exec rails assets:precompile
-
   e2e-tests:
     <<: *e2e
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
-      - run: bundle install
-      - restore_cache:
            keys:
              - v3-yarn-{{ checksum "yarn.lock" }}
              - v3-yarn-
       - run: yarn --frozen-lockfile
-      - run: mkdir -p ~/app/log
-      - run:
-          name: Setup DB
-          command: bundle exec rails db:create db:schema:load
-      - run:
-          name: Webpacker & Assets Compile
-          command: bundle exec rails assets:precompile
-      - run:
-          name: Create ES Index
-          command: bundle exec thor search:index
-      - run:
-          name: Prefill DB
-          command: bundle exec rails db:seed
-      - run: mkdir -p tmp/pids && rm -f tmp/pids/*
-      - run:
-          name: Run Server
-          command: bundle exec puma -C config/puma.rb
-          background: true
       - run:
           name: Wait for Server
           command: |
@@ -387,67 +316,40 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - yarn:
-          filters:
-            tags:
-              only: /^v.*/
+      - yarn
       - rubocop:
           requires:
             - bundle
-          filters:
-            tags:
-              only: /^v.*/
       - js-lint:
           requires:
             - yarn
-          filters:
-            tags:
-              only: /^v.*/
       - ruby-tests:
           requires:
             - bundle
             - yarn
-          filters:
-            tags:
-              only: /^v.*/
       - js-tests:
           requires:
             - yarn
-          filters:
-            tags:
-              only: /^v.*/
       - seeds:
           requires:
             - rubocop
             - ruby-tests
-          filters:
-            tags:
-              only: /^v.*/
-      - assets:
+      - e2e-tests:
           requires:
+            - deploy-to-stage
+      - deploy-to-stage:
+          requires:
+            - seeds
             - rubocop
             - ruby-tests
             - js-tests
             - js-lint
           filters:
-            tags:
-              only: /^v.*/
-      - e2e-tests:
-          requires:
-            - seeds
-            - assets
-          filters:
-            tags:
-              only: /^v.*/
-      - deploy-to-stage:
-          requires:
-            - e2e-tests
-          filters:
             branches:
               only: master
       - deploy-to-live:
           requires:
-            - e2e-tests
+            - bundle
           filters:
             tags:
               only: /^v.*/
