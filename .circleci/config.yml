@@ -403,12 +403,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - seeds:
-          requires:
-            - bundle
-          filters:
-            tags:
-              only: /^v.*/
       - ruby-tests:
           requires:
             - bundle
@@ -422,20 +416,25 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+      - seeds:
+          requires:
+            - rubocop
+            - ruby-tests
+          filters:
+            tags:
+              only: /^v.*/
       - assets:
           requires:
-            - bundle
-            - yarn
+            - rubocop
+            - ruby-tests
+            - js-tests
+            - js-lint
           filters:
             tags:
               only: /^v.*/
       - e2e-tests:
           requires:
-            - rubocop
-            - js-lint
             - seeds
-            - ruby-tests
-            - js-tests
             - assets
           filters:
             tags:
