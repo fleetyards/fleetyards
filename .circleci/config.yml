@@ -307,10 +307,7 @@ workflows:
 
   main:
     jobs:
-      - bundle:
-          filters:
-            tags:
-              only: /^v.*/
+      - bundle
       - yarn
       - rubocop:
           requires:
@@ -343,8 +340,6 @@ workflows:
             branches:
               only: master
       - deploy-to-live:
-          requires:
-            - bundle
           filters:
             tags:
               only: /^v.*/
