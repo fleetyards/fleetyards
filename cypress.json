@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://fleetyards.test",
+  "baseUrl": "https://stage.fleetyards.net",
   "projectId": "vngu15",
   "fixturesFolder": "test/javascript/e2e/fixtures",
   "integrationFolder": "test/javascript/e2e/specs",
