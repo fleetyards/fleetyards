@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.70.1](https://github.com/fleetyards/fleetyards/compare/v3.70.0...v3.70.1) (2020-05-13)
+
+
+### Bug Fixes
+
+* ci config ([5c7b5ca](https://github.com/fleetyards/fleetyards/commit/5c7b5ca6380d96df58323ffc2fb5197b61be00da))
+* pry ([b980fdc](https://github.com/fleetyards/fleetyards/commit/b980fdc0fa16f1a12e3859ec2ac3aa139e430c39))
+* rake test task ([8cfe2d2](https://github.com/fleetyards/fleetyards/commit/8cfe2d2de098fedb2965e7739a6b3debf776f23c))
+* ruby specs ([71c7302](https://github.com/fleetyards/fleetyards/commit/71c73024166275e25f17aa5cafb28bf8d04af91b))
+* specs ([0d6a3c0](https://github.com/fleetyards/fleetyards/commit/0d6a3c07a26a54c023c5fdfcf42985770b403481))
+* specs ([c8ced56](https://github.com/fleetyards/fleetyards/commit/c8ced56be2edb740f4853b9dffc88d1fa48f4907))
+* specs ([4fec686](https://github.com/fleetyards/fleetyards/commit/4fec68669483e77987f48bc80db00b4004d194a0))
+
 ## [3.70.0](https://github.com/fleetyards/fleetyards/compare/v3.69.0...v3.70.0) (2020-05-12)
 
 
