@@ -140,7 +140,7 @@ ruby tests:
 
 seeds:
   stage: build
-  extends: .ruby_test_template
+  extends: .e2e_template
   script:
     - ./scripts/wait-for-db.sh
     - bundle exec rails db:create db:schema:load
