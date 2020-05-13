@@ -3,7 +3,7 @@
 class ModelSkin < ApplicationRecord
   paginates_per 30
 
-  belongs_to :model, optional: true
+  belongs_to :model, optional: true, touch: true
 
   mount_uploader :store_image, StoreImageUploader
 
