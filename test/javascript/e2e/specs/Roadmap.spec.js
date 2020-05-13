@@ -9,13 +9,13 @@ describe('Roadmap', () => {
 
     cy.url().should('include', '/roadmap')
 
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 80)
+    cy.get('.roadmap-item').should('have.length', 50)
 
     cy.clickNav('roadmap-ships')
 
     cy.url().should('include', '/roadmap/ships')
 
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 54)
+    cy.get('.roadmap-item').should('have.length', 50)
 
     cy.clickNav('roadmap-changes')
 

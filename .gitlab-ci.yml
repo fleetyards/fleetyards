@@ -57,7 +57,6 @@ cache: &global_cache
     RAILS_SERVE_STATIC_FILES: 1
     DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
     CYPRESS_BASE_URL: http://localhost:8270
-    CYPRESS_CI: 1
     APP_DIR: .
     PORT: 8270
     # transport.host: localhost

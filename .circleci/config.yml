@@ -61,7 +61,6 @@ e2e: &e2e
     - image: fleetyards/ci:2.6.6
       environment:
         CYPRESS_BASE_URL: https://stage.fleetyards.net
-        CYPRESS_CI: 1
 
 jobs:
   health-check:
