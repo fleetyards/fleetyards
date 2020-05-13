@@ -7,7 +7,10 @@ export const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('frontend/pages/Home'),
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Home'
+      ),
     meta: {
       title: 'home',
     },
