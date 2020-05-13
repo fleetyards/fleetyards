@@ -211,6 +211,7 @@ jobs:
              - v3-yarn-{{ checksum "yarn.lock" }}
              - v3-yarn-
       - run: yarn --frozen-lockfile
+      - run: cypress install
       - run:
           name: Wait for Server
           command: |
