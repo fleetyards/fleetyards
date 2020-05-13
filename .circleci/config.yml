@@ -21,6 +21,7 @@ ruby-defaults: &ruby-defaults
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
+        NODE_OPTIONS: --max-old-space-size=2048
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -40,7 +41,6 @@ seeds: &seeds
         LC_ALL: C.UTF-8
         LANG: en_US.UTF-8
         LANGUAGE: en_US.UTF-8
-        NODE_OPTIONS: --max-old-space-size=2048
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -232,7 +232,7 @@ jobs:
           command: yarn test:coverage
 
   assets:
-    <<: *seeds
+    <<: *ruby-defaults
     steps:
       - checkout
       - restore_cache:
