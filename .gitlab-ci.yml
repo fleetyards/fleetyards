@@ -1,5 +1,12 @@
 image: fleetyards/base:2.6.6
 
+stages:
+  - prep
+  - test
+  - build
+  - e2e
+  - deploy
+
 cache: &global_cache
   key: fleetyards-cache
   paths:
@@ -59,7 +66,7 @@ cache: &global_cache
     ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 yarn:
-  stage: build
+  stage: prep
   cache:
     <<: *global_cache
     paths:
@@ -75,7 +82,7 @@ yarn:
       - .npmrc
 
 bundle:
-  stage: build
+  stage: prep
   cache:
     <<: *global_cache
     paths:
@@ -91,44 +98,56 @@ bundle:
       - .ruby-version
 
 ruby audit:
+  stage: test
   extends: .ruby_template
   script:
     - bundle exec bundle-audit update
     - bundle exec bundle-audit check
 
 yarn audit:
+  stage: test
   extends: .js_test_template
   script:
     - yarn audit
 
 rubocop:
+  stage: test
   extends: .ruby_template
   script:
     - bundle exec rubocop --format progress
 
 js-lint:
+  stage: test
   extends: .js_test_template
   script:
     - yarn run lint:js
-
-vue-lint:
-  extends: .js_test_template
-  script:
     - yarn run lint:vue
-
-style-lint:
-  extends: .js_test_template
-  script:
     - yarn run lint:style
 
 js tests:
+  stage: test
   extends: .js_test_template
   script:
     - yarn run test
 
 ruby tests:
+  stage: test
   extends: .ruby_test_template
   script:
     - ./scripts/wait-for-db.sh
     - bundle exec rails db:create db:schema:load
     - bundle exec rails test:coverage
+
+seeds:
+  stage: build
+  extends: .ruby_test_template
+  script:
+    - ./scripts/wait-for-db.sh
+    - bundle exec rails db:create db:schema:load
+    - bundle exec rails db:seed
+
+assets:
+  stage: build
+  extends: .ruby_test_template
+  script:
+    - RAILS_ENV=production bundle exec rails assets:precompile
