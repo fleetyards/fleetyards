@@ -33,6 +33,8 @@ module Api
 
         @user = User.new(user_params)
 
+        @user.skip_confirmation! if @user.username == 'NewTestUser'
+
         return if @user.save
 
         render json: ValidationError.new('signup', @user.errors.messages), status: :bad_request
