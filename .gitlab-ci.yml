@@ -47,6 +47,7 @@ cache: &global_cache
     - redis:latest
     - name: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
       alias: elasticsearch
+      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node -Xms512m -Xmx512m -Expack.security.enabled=0 -Ehttp.port=9200 -Ecluster.name=fleetyards-test-cluser" ]
   variables:
     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
     ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -59,13 +60,8 @@ cache: &global_cache
     CYPRESS_CI: 1
     APP_DIR: .
     PORT: 8270
-    cluster.name: fleetyards-test-cluster
-    xpack.security.enabled: 0
     transport.host: localhost
     network.host: 127.0.0.1
-    http.port: 9200
-    discovery.type: single-node
-    ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 yarn:
   stage: prep
