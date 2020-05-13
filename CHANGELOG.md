@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.70.2](https://github.com/fleetyards/fleetyards/compare/v3.70.1...v3.70.2) (2020-05-13)
+
+
+### Bug Fixes
+
+* chunk name for home page ([dc3dcfc](https://github.com/fleetyards/fleetyards/commit/dc3dcfc09f331cd725b9a0ddac8ccae6b37e598c))
+* model worker for blacklisted ships ([310502a](https://github.com/fleetyards/fleetyards/commit/310502a12bfaab4154b17adfcc379705385aca24))
+* touch model on model skin update ([0f328a0](https://github.com/fleetyards/fleetyards/commit/0f328a0a8c70a30cae74e82d39f2fe5d1383602a))
+
 ### [3.70.1](https://github.com/fleetyards/fleetyards/compare/v3.70.0...v3.70.1) (2020-05-13)
 
 
