@@ -180,27 +180,7 @@ jobs:
             - v3-yarn-
       - run: yarn --frozen-lockfile
       - run: yarn run lint:js
-
-  vue-lint:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
-      - run: yarn --frozen-lockfile
       - run: yarn run lint:vue
-
-  style-lint:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
-      - run: yarn --frozen-lockfile
       - run: yarn run lint:style
 
   seeds:
@@ -423,18 +403,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - vue-lint:
-          requires:
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
-      - style-lint:
-          requires:
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
       - seeds:
           requires:
             - bundle
@@ -465,8 +433,6 @@ workflows:
           requires:
             - rubocop
             - js-lint
-            - vue-lint
-            - style-lint
             - seeds
             - ruby-tests
             - js-tests
