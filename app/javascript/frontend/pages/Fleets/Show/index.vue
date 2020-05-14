@@ -29,7 +29,16 @@
           target="_blank"
           rel="noopener"
         >
-          <img :src="require('images/rsi_logo.png').default" alt="rsi" />
+          <i class="icon icon-rsi" />
+        </a>
+        <a
+          v-if="fleet.guilded"
+          v-tooltip="$t('labels.guilded')"
+          :href="fleet.guilded"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="icon icon-guilded" />
         </a>
         <a
           v-if="fleet.discord"
@@ -74,7 +83,7 @@
         <ModelClassLabels
           v-if="myFleet"
           :label="$t('labels.fleet.classes')"
-          :count-data="fleetCount"
+          :count-data="fleetCount.classifications"
           filter-key="classificationIn"
         />
       </div>
@@ -128,49 +137,55 @@
     </div>
     <FilteredList :hide-filter="!myFleet">
       <template v-if="myFleet" slot="actions">
-        <Btn
-          v-show="!fleetchartVisible"
-          v-tooltip="toggleDetailsTooltip"
-          :active="detailsVisible"
-          :aria-label="toggleDetailsTooltip"
-          size="small"
-          @click.native="toggleDetails"
-        >
-          <span v-show="detailsVisible">
-            <i class="fa fa-chevron-up" />
-          </span>
-          <span v-show="!detailsVisible">
-            <i class="far fa-chevron-down" />
-          </span>
-        </Btn>
+        <BtnDropdown size="small">
+          <Btn
+            v-show="!fleetchartVisible"
+            :active="detailsVisible"
+            :aria-label="toggleDetailsTooltip"
+            size="small"
+            variant="link"
+            @click.native="toggleDetails"
+          >
+            <i class="fad fa-info-square" />
+            {{ toggleDetailsTooltip }}
+          </Btn>
 
-        <DownloadScreenshotBtn
-          v-if="fleet && fleetchartVisible"
-          element="#fleetchart"
-          :filename="`${fleet.slug}-fleetchart`"
-        />
+          <DownloadScreenshotBtn
+            v-if="fleet && fleetchartVisible"
+            element="#fleetchart"
+            :filename="`${fleet.slug}-fleetchart`"
+            size="small"
+            variant="link"
+            :show-tooltip="false"
+          />
 
-        <Btn size="small" @click.native="toggleFleetchart">
-          <template v-if="fleetchartVisible">
-            {{ $t('actions.hideFleetchart') }}
-          </template>
-          <template v-else>
-            {{ $t('actions.showFleetchart') }}
-          </template>
-        </Btn>
+          <Btn size="small" variant="link" @click.native="toggleFleetchart">
+            <template v-if="fleetchartVisible">
+              <i class="fas fa-th" />
+              {{ $t('actions.hideFleetchart') }}
+            </template>
+            <template v-else>
+              <i class="fad fa-starship" />
+              {{ $t('actions.showFleetchart') }}
+            </template>
+          </Btn>
 
-        <Btn
-          v-if="!fleetchartVisible"
-          size="small"
-          @click.native="toggleGrouped"
-        >
-          <template v-if="grouped">
-            {{ $t('actions.ungrouped') }}
-          </template>
-          <template v-else>
-            {{ $t('actions.groupedByModel') }}
-          </template>
-        </Btn>
+          <Btn
+            v-if="!fleetchartVisible"
+            size="small"
+            variant="link"
+            @click.native="toggleGrouped"
+          >
+            <template v-if="grouped">
+              <i class="fas fa-square" />
+              {{ $t('actions.ungrouped') }}
+            </template>
+            <template v-else>
+              <i class="fas fa-th-large" />
+              {{ $t('actions.groupedByModel') }}
+            </template>
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <Paginator
@@ -178,7 +193,7 @@
         slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
 
       <template slot="filter">
@@ -201,24 +216,11 @@
           </div>
         </transition>
 
-        <div v-if="fleetchartVisible" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
-            <transition-group
-              id="fleetchart"
-              name="fade-list"
-              class="flex-row fleetchart"
-              tag="div"
-              appear
-            >
-              <FleetchartItem
-                v-for="vehicle in fleetchartVehicles"
-                :key="vehicle.id"
-                :model="vehicle.model"
-                :scale="fleetchartScale"
-              />
-            </transition-group>
-          </div>
-        </div>
+        <FleetchartList
+          v-if="fleetchartVisible"
+          :items="fleetchartVehicles"
+          :scale="fleetchartScale"
+        />
 
         <transition-group
           v-else
@@ -274,7 +276,7 @@
         slot="pagination-bottom"
         :page="currentPage"
         :total="totalPages"
-        right
+        :center="true"
       />
     </FilteredList>
 
@@ -288,9 +290,10 @@ import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
+import BtnDropdown from 'frontend/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
-import FleetchartItem from 'frontend/partials/Fleetchart/List/Item'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
 import FleetVehiclesFilterForm from 'frontend/partials/Fleets/FilterForm'
 import FleetModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
@@ -307,11 +310,12 @@ export default {
 
   components: {
     Btn,
+    BtnDropdown,
     FilteredList,
     Loader,
     DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartItem,
+    FleetchartList,
     ModelClassLabels,
     EmptyBox,
     AddonsModal,

@@ -1,0 +1,56 @@
+.icon {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+
+  &.icon-guilded {
+    width: 30px;
+    height: 30px;
+    background-image: url(~images/guilded_logo.png);
+  }
+
+  &.icon-rsi {
+    width: 36px;
+    height: 20px;
+    background-image: url(~images/rsi_logo.png);
+  }
+
+  &.icon-label {
+    &.icon-guilded {
+      width: 15px;
+      height: 15px;
+    }
+
+    &.icon-rsi {
+      width: 30px;
+      height: 18px;
+    }
+  }
+
+  &.icon-small {
+    &.icon-guilded {
+      width: 20px;
+      height: 20px;
+    }
+
+    &.icon-rsi {
+      width: 22px;
+      height: 16px;
+    }
+  }
+
+  &.icon-large {
+    &.icon-guilded {
+      width: 60px;
+      height: 60px;
+    }
+
+    &.icon-rsi {
+      width: 76px;
+      height: 40px;
+    }
+  }
+}

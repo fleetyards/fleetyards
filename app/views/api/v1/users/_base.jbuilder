@@ -9,6 +9,7 @@ json.cache! ['v1', user] do
   json.discord user.discord
   json.youtube user.youtube
   json.twitch user.twitch
+  json.guilded user.guilded
   json.homepage user.homepage
   json.is_admin user.admin?
   json.sale_notify user.sale_notify

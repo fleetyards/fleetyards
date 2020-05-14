@@ -146,6 +146,15 @@
                     <i class="fab fa-twitch" />
                   </a>
                   <a
+                    v-if="member.guilded"
+                    v-tooltip="$t('labels.guilded')"
+                    :href="member.guilded"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="icon icon-rsi icon-small" />
+                  </a>
+                  <a
                     v-if="member.discord"
                     v-tooltip="$t('labels.discord')"
                     :href="member.discord"

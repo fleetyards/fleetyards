@@ -76,6 +76,7 @@
           <FormInput
             id="rsiHandle"
             v-model="form.rsiHandle"
+            icon="icon icon-rsi icon-label"
             translation-key="user.rsiHandle"
           />
         </div>
@@ -110,6 +111,7 @@
               id="discord"
               v-model="form.discord"
               translation-key="discord"
+              icon="fab fa-discord"
               :error="errors[0]"
             />
           </ValidationProvider>
@@ -129,6 +131,7 @@
               id="youtube"
               v-model="form.youtube"
               translation-key="youtube"
+              icon="fab fa-youtube"
               :error="errors[0]"
             />
           </ValidationProvider>
@@ -145,6 +148,24 @@
               id="twitch"
               v-model="form.twitch"
               translation-key="twitch"
+              icon="fab fa-twitch"
+              :error="errors[0]"
+            />
+          </ValidationProvider>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="guilded"
+            rules="url"
+            :name="$t('labels.guilded')"
+            slim
+          >
+            <FormInput
+              id="guilded"
+              v-model="form.guilded"
+              icon="icon icon-guilded icon-label"
+              translation-key="guilded"
               :error="errors[0]"
             />
           </ValidationProvider>
@@ -188,6 +209,7 @@ export default {
         discord: null,
         youtube: null,
         twitch: null,
+        guilded: null,
         removeAvatar: false,
       },
       files: [],
@@ -240,6 +262,7 @@ export default {
         discord: this.currentUser.discord,
         youtube: this.currentUser.youtube,
         twitch: this.currentUser.twitch,
+        guilded: this.currentUser.guilded,
         removeAvatar: false,
       }
     },

@@ -8,7 +8,7 @@
       </div>
     </div>
     <FilteredList>
-      <template slot="actions-right">
+      <template slot="actions">
         <BtnDropdown size="small">
           <Btn :to="{ name: 'models-compare' }" size="small" variant="link">
             <i class="fad fa-exchange" />

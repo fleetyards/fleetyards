@@ -6,6 +6,7 @@
         v-if="innerLabel && !noLabel"
         :for="id"
       >
+        <i v-if="icon" :class="icon" />
         {{ innerLabel }}
       </label>
     </transition>
@@ -40,6 +41,11 @@ export default {
     id: {
       type: String,
       required: true,
+    },
+
+    icon: {
+      type: String,
+      default: null,
     },
 
     value: {

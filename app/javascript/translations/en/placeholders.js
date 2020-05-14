@@ -11,6 +11,7 @@ export default {
   discord: 'Discord Server',
   youtube: 'Youtube Channel',
   twitch: 'Twitch Channel',
+  guilded: 'Guilded Server',
   quicksearch: {
     models: 'Avenger, Carrack, Cutlass...',
     hangar: 'Enterprise, Andromeda...',
