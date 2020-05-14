@@ -15,6 +15,7 @@
               v-if="images.length"
               :page="currentPage"
               :total="totalPages"
+              :center="true"
             />
           </div>
         </div>
@@ -44,6 +45,7 @@
               v-if="images.length"
               :page="currentPage"
               :total="totalPages"
+              :center="true"
             />
           </div>
         </div>
