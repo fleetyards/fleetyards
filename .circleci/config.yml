@@ -56,6 +56,7 @@ e2e: &e2e
       environment:
         DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
         TEST_SEEDS: 1
+        BUNDLE_PATH: ~/app/vendor/bundle
         RAILS_ENV: ci
         ON_SUBDOMAIN: 1
         RAILS_SERVE_STATIC_FILES: 1
@@ -284,7 +285,8 @@ jobs:
                   printf '.'
                   sleep 5
               done
-      - run: yarn --frozen-lockfile
+      # force install of cypress because it will not be installed with yarn --frozen-lockfile
+      - run: yarn add cypress
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
