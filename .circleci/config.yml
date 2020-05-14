@@ -260,7 +260,7 @@ jobs:
               - v3-yarn-{{ checksum "yarn.lock" }}
               - v3-yarn-
       - run: yarn --frozen-lockfile
-      - run: mkdir -p ~/app/log
+      - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
           command: bundle exec rails db:create db:schema:load
@@ -273,7 +273,6 @@ jobs:
       - run:
           name: Prefill DB
           command: bundle exec rails db:seed
-      - run: mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Run Server
           command: bundle exec puma -C config/puma.rb
@@ -285,8 +284,6 @@ jobs:
                   printf '.'
                   sleep 5
               done
-      # force install of cypress because it will not be installed with yarn --frozen-lockfile
-      - run: yarn add cypress
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
