@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.71.0](https://github.com/fleetyards/fleetyards/compare/v3.70.3...v3.71.0) (2020-05-14)
+
+
+### Features
+
+* add guilded to profile and fleets ([#1194](https://github.com/fleetyards/fleetyards/issues/1194)) ([fe459c2](https://github.com/fleetyards/fleetyards/commit/fe459c24370e03b303e74d26facdb1f182ce7658))
+
 ### [3.70.3](https://github.com/fleetyards/fleetyards/compare/v3.70.2...v3.70.3) (2020-05-14)
 
 
