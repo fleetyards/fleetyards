@@ -207,7 +207,7 @@ jobs:
           command: yarn test:coverage
 
   seeds:
-    <<: *ruby-defaults
+    <<: *seeds
     steps:
       - checkout
       - attach_workspace:
