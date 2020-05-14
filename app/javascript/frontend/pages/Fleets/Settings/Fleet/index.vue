@@ -88,6 +88,7 @@
             <FormInput
               id="rsiSid"
               v-model="form.rsiSid"
+              icon="icon icon-rsi icon-label"
               translation-key="fleet.rsiSid"
             />
           </div>
@@ -121,6 +122,7 @@
               <FormInput
                 id="discord"
                 v-model="form.discord"
+                icon="fab fa-discord"
                 translation-key="discord"
                 :error="errors[0]"
               />
@@ -137,6 +139,7 @@
               <FormInput
                 id="ts"
                 v-model="form.ts"
+                icon="fab fa-teamspeak"
                 translation-key="fleet.ts"
                 :error="errors[0]"
               />
@@ -156,6 +159,7 @@
               <FormInput
                 id="youtube"
                 v-model="form.youtube"
+                icon="fab fa-youtube"
                 translation-key="youtube"
                 :error="errors[0]"
               />
@@ -172,7 +176,25 @@
               <FormInput
                 id="twitch"
                 v-model="form.twitch"
+                icon="fab fa-twitch"
                 translation-key="twitch"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="guilded"
+              rules="url"
+              :name="$t('labels.guilded')"
+              slim
+            >
+              <FormInput
+                id="guilded"
+                v-model="form.guilded"
+                icon="icon icon-guilded icon-label"
+                translation-key="guilded"
                 :error="errors[0]"
               />
             </ValidationProvider>
@@ -241,6 +263,7 @@ export default {
         homepage: null,
         twitch: null,
         youtube: null,
+        guilded: null,
         removeLogo: false,
       },
       loading: false,
@@ -345,6 +368,7 @@ export default {
         homepage: this.fleet.homepage,
         twitch: this.fleet.twitch,
         youtube: this.fleet.youtube,
+        guilded: this.fleet.guilded,
         removeLogo: false,
       }
     },

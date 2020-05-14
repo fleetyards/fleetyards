@@ -107,6 +107,7 @@ export default {
   'discord': 'Discord Server',
   'youtube': 'Youtube Channel',
   'twitch': 'Twitch Channel',
+  'guilded': 'Guilded Server',
   '3dView': '3D',
   'poweredByStarship42': 'Powered by starship42.com',
   'exportStarship42': 'View on Starship42',
@@ -142,7 +143,7 @@ export default {
     fid: 'Fleet ID',
     name: 'Name',
     logo: 'Logo',
-    rsiSid: 'RSI SID',
+    rsiSid: 'SID',
     ts: 'Teamspeak Server',
     members: {
       primary: 'Primary Fleet?',
@@ -242,7 +243,7 @@ export default {
       'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
   'user': {
-    rsiHandle: 'RSI Handle',
+    rsiHandle: 'Handle',
     avatar: 'Avatar',
     saleNotify: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',

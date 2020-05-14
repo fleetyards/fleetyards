@@ -10,6 +10,23 @@ h1 {
   }
 }
 
+.hangar-profile-links {
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100px;
+  margin: 15px 0;
+
+  > a {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 .fleetchart-slider {
   margin-bottom: 20px;
 }

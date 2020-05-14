@@ -7,6 +7,7 @@ json.ts fleet.ts
 json.discord fleet.discord
 json.youtube fleet.youtube
 json.twitch fleet.twitch
+json.guilded fleet.guilded
 json.homepage fleet.homepage
 json.name fleet.name
 json.slug fleet.slug

@@ -113,7 +113,7 @@
     </div>
 
     <FilteredList>
-      <template slot="actions-right">
+      <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn :href="starship42Url" size="small" variant="link">

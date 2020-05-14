@@ -18,9 +18,6 @@ ruby-defaults: &ruby-defaults
         DATABASE_HOST: 127.0.0.1
         DATABASE_USER: root
         JOBS: 1
-        LC_ALL: C.UTF-8
-        LANG: en_US.UTF-8
-        LANGUAGE: en_US.UTF-8
         NODE_OPTIONS: --max-old-space-size=2048
     - image: circleci/postgres:9.5.16-alpine
       environment:
@@ -38,9 +35,6 @@ seeds: &seeds
         DATABASE_HOST: 127.0.0.1
         DATABASE_USER: root
         JOBS: 1
-        LC_ALL: C.UTF-8
-        LANG: en_US.UTF-8
-        LANGUAGE: en_US.UTF-8
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
@@ -56,6 +50,39 @@ seeds: &seeds
         ES_JAVA_OPTS: -Xms512m -Xmx512m
 
 e2e: &e2e
+  working_directory: ~/app
+  docker:
+    - image: fleetyards/ci:2.6.6
+      environment:
+        DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
+        TEST_SEEDS: 1
+        BUNDLE_PATH: ~/app/vendor/bundle
+        RAILS_ENV: ci
+        ON_SUBDOMAIN: 1
+        RAILS_SERVE_STATIC_FILES: 1
+        DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+        CYPRESS_CI: 1
+        JOBS: 1
+        APP_DIR: .
+        PORT: 8270
+        CYPRESS_BASE_URL: http://localhost:8270
+    - image: circleci/postgres:9.5.16-alpine
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: fleetyards
+    - image: circleci/redis:5.0.3-alpine
+    - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+      environment:
+        cluster.name: fleetyards-test-cluster
+        xpack.security.enabled: false
+        transport.host: localhost
+        network.host: 127.0.0.1
+        http.port: 9200
+        discovery.type: single-node
+        ES_JAVA_OPTS: -Xms512m -Xmx512m
+
+smokeTest: &smokeTest
   working_directory: ~/app
   docker:
     - image: fleetyards/ci:2.6.6
@@ -82,6 +109,10 @@ jobs:
           key: v3-bundle-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - vendor/bundle
 
   yarn:
     <<: *defaults
@@ -91,21 +122,23 @@ jobs:
           keys:
             - v3-yarn-{{ checksum "yarn.lock" }}
             - v3-yarn-
-      - run: yarn --frozen-lockfile
+      - run: yarn install
       - save_cache:
           key: v3-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
             - ~/app/node_modules
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - node_modules
 
   bundle-audit:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: ~/app
       - run: bundle install
       - run:
           name: Update Audit DB
@@ -118,11 +151,9 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
-      - run: yarn --frozen-lockfile
+      - attach_workspace:
+          at: ~/app
+      - run: yarn install
       - run:
           name: Check Audit DB
           command: yarn audit
@@ -131,10 +162,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: ~/app
       - run: bundle install
       - run:
           name: rubocoptering
@@ -144,41 +173,19 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
-      - run: yarn --frozen-lockfile
+      - attach_workspace:
+          at: ~/app
+      - run: yarn install
       - run: yarn run lint:js
       - run: yarn run lint:vue
       - run: yarn run lint:style
-
-  seeds:
-    <<: *seeds
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
-      - run: bundle install
-      - run: mkdir -p ~/app/log
-      - run: bundle exec rails db:create db:schema:load
-      - run:
-          name: Create ES Index
-          command: bundle exec thor search:index
-      - run:
-          name: Run Seeds
-          command: bundle exec rails db:seed
 
   ruby-tests:
     <<: *ruby-defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: ~/app
       - run: bundle install
       - run: mkdir -p ~/app/log
       - run: bundle exec rails db:create db:schema:load
@@ -192,19 +199,79 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
-      - run: yarn --frozen-lockfile
+      - attach_workspace:
+          at: ~/app
+      - run: yarn install
       - run:
           name: Run Javascript Tests
           command: yarn test:coverage
 
-  e2e-tests:
+  seeds:
+    <<: *seeds
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run: bundle install
+      - run: mkdir -p ~/app/log
+      - run: bundle exec rails db:create db:schema:load
+      - run:
+          name: Create ES Index
+          command: bundle exec thor search:index
+      - run:
+          name: Run Seeds
+          command: bundle exec rails db:seed
+
+  assets:
+    <<: *ruby-defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run: bundle install
+      - run: yarn install
+      - restore_cache:
+          keys:
+            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-assets-
+      - run:
+          name: Webpacker & Assets Compile
+          command: RAILS_ENV=production bundle exec rails assets:precompile
+      - save_cache:
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app/public/assets
+            - ~/app/public/packs
+            - ~/app/tmp/cache/webpacker
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - public/assets
+            - public/packs
+            - tmp/cache/webpacker
+
+  e2e-test:
     <<: *e2e
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/app
+      - run: bundle install
+      - run: yarn install
+      - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
+      - run:
+          name: Setup DB
+          command: bundle exec rails db:create db:schema:load
+      - run:
+          name: Create ES Index
+          command: bundle exec thor search:index
+      - run:
+          name: Prefill DB
+          command: bundle exec rails db:seed
+      - run:
+          name: Run Server
+          command: bundle exec puma -C config/puma.rb
+          background: true
       - run:
           name: Wait for Server
           command: |
@@ -212,6 +279,25 @@ jobs:
                   printf '.'
                   sleep 5
               done
+      - run: yarn add cypress
+      - run:
+          name: Run E2E Tests
+          command: yarn run test:e2e --record
+      - store_artifacts:
+          path: ~/app/cypress/snapshots
+          destination: e2e-snapshots
+      - store_artifacts:
+          path: ~/app/cypress/screenshots
+          destination: e2e-screenshots
+
+  smoke-test:
+    <<: *smokeTest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v3-yarn-{{ checksum "yarn.lock" }}
+            - v3-yarn-
       - run: yarn install
       - run:
           name: Run E2E Tests
@@ -267,7 +353,16 @@ jobs:
           name: Deploy
           command: bundle exec cap live deploy
 
-  notify-discord:
+  notify-discord-stage:
+    docker:
+      - image: fleetyards/base:2.6.6
+    steps:
+      - run: |
+          curl -X POST $DISCORD_WEBHOOK_STAGE \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Stage Release:**\" }"
+
+  notify-discord-live:
     docker:
       - image: fleetyards/base:2.6.6
     steps:
@@ -318,7 +413,6 @@ workflows:
       - ruby-tests:
           requires:
             - bundle
-            - yarn
       - js-tests:
           requires:
             - yarn
@@ -326,26 +420,43 @@ workflows:
           requires:
             - rubocop
             - ruby-tests
-      - e2e-tests:
+      - assets:
           requires:
-            - deploy-to-stage
-      - deploy-to-stage:
+            - bundle
+            - js-tests
+            - js-lint
+      - e2e-test:
           requires:
-            - seeds
+            - assets
             - rubocop
             - ruby-tests
             - js-tests
             - js-lint
-          filters:
-            branches:
-              only: master
-      - deploy-to-live:
+      - smoke-test:
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - notify-discord:
+      - deploy-to-stage:
+          requires:
+            - seeds
+            - e2e-test
+          filters:
+            branches:
+              only: master
+      - notify-discord-stage:
+          requires:
+            - deploy-to-stage
+      - deploy-to-live:
+          requires:
+            - smoke-test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - notify-discord-live:
           requires:
             - deploy-to-live
           filters:

@@ -236,7 +236,7 @@ module Api
                                 .permit(
                                   :fid, :name, :logo, :background_image, :public, :remove_logo,
                                   :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-                                  :twitch
+                                  :twitch, :guilded
                                 )
       end
 
