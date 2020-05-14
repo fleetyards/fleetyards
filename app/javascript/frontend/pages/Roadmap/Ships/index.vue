@@ -224,7 +224,7 @@ export default {
 
     async fetch() {
       this.loading = true
-      const response = await this.$api.get('roadmap', {
+      const response = await this.$api.get('roadmap?ships=1', {
         q: {
           rsiCategoryIdIn: [6],
           activeEq: true,

@@ -20,7 +20,7 @@ module RSI
       models = load_models
 
       models.each do |data|
-        next if blacklist.find { |item| item[:rsi_id] == data['id'] }
+        next if blacklisted(data['id'])
 
         sync_model(data)
       end
@@ -35,7 +35,7 @@ module RSI
 
       return if model_data.blank?
 
-      sync_model(model_data) unless blacklist.find { |item| item[:rsi_id] == rsi_id.to_i }
+      sync_model(model_data) unless blacklisted(rsi_id)
 
       cleanup_variants
     end
@@ -409,6 +409,10 @@ module RSI
           rsi_id: 192,
         }],
       }]
+    end
+
+    private def blacklisted(rsi_id)
+      blacklist.find { |item| item[:rsi_id] == rsi_id.to_i }
     end
 
     private def find_model_for_skin(data)

@@ -163,7 +163,7 @@ export default {
       }
 
       this.loading = true
-      const response = await this.$api.get('roadmap', {
+      const response = await this.$api.get('roadmap?changes=1', {
         q: this.query,
       })
 
