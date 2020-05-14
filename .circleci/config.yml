@@ -231,9 +231,9 @@ jobs:
       - run: bundle install
       - run: yarn install
       - restore_cache:
-        keys:
-          - v1-assets-{{ .Environment.CIRCLE_SHA1 }
-          - v1-assets-
+          keys:
+            - v1-assets-{{ .Environment.CIRCLE_SHA1 }
+            - v1-assets-
       - run:
           name: Webpacker & Assets Compile
           command: RAILS_ENV=production bundle exec rails assets:precompile
@@ -294,9 +294,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - v3-yarn-{{ checksum "yarn.lock" }}
-          - v3-yarn-
+          keys:
+            - v3-yarn-{{ checksum "yarn.lock" }}
+            - v3-yarn-
       - run: yarn install
       - run:
           name: Run E2E Tests
