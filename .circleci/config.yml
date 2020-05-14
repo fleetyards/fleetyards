@@ -223,7 +223,7 @@ jobs:
           command: bundle exec rails db:seed
 
   assets:
-    <<: *ruby-defaults
+    <<: *defaults
     steps:
       - checkout
       - attach_workspace:
@@ -232,13 +232,13 @@ jobs:
       - run: yarn install
       - restore_cache:
           keys:
-            - v1-assets-{{ .Environment.CIRCLE_SHA1 }
+            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
             - v1-assets-
       - run:
           name: Webpacker & Assets Compile
           command: RAILS_ENV=production bundle exec rails assets:precompile
       - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/app/public/assets
             - ~/app/public/packs
@@ -422,6 +422,7 @@ workflows:
             - ruby-tests
       - assets:
           requires:
+            - bundle
             - js-tests
             - js-lint
       - e2e-test:
