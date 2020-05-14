@@ -70,6 +70,7 @@ e2e: &e2e
         POSTGRES_USER: root
         POSTGRES_PASSWORD: root
         POSTGRES_DB: fleetyards
+    - image: circleci/redis:5.0.3-alpine
     - image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
       environment:
         cluster.name: fleetyards-test-cluster
