@@ -19,13 +19,12 @@
                 <i class="far fa-filter" />
               </span>
             </Btn>
-            <slot name="actions" />
           </div>
           <div class="pagination-wrapper">
             <slot name="pagination-top" />
           </div>
-          <div v-if="hasRightActions" class="page-actions page-actions-right">
-            <slot name="actions-right" />
+          <div class="page-actions page-actions-right">
+            <slot name="actions" />
           </div>
         </div>
       </div>
@@ -85,10 +84,6 @@ export default {
 
     filterVisible() {
       return !!this.filtersVisible[this.$route.name] && !this.hideFilter
-    },
-
-    hasRightActions() {
-      return !!this.$slots['actions-right']
     },
 
     filterTooltip() {
