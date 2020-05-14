@@ -167,13 +167,25 @@ namespace :es do
   end
 end
 
+namespace :sidekiq do
+  task :clear do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        info 'Clearing Sidekiq Queues...'
+        execute(:bundle, :exec, :thor, 'sidekiq:clear')
+        info 'Sidekiq cleared'
+      end
+    end
+  end
+end
+
 namespace :db do
   task :load_schema do
     on roles(:db) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           if fetch(:initial_deploy)
-            execute :rake, 'db:schema:load'
+            execute :rails, 'db:schema:load'
           else
             info 'Skipping Load Schema'
           end
@@ -193,7 +205,7 @@ namespace :db do
       within release_path do
         with rails_env: fetch(:rails_env) do
           info 'Migration Status'
-          execute(:rake, 'db:migrate:status')
+          execute(:rails, 'db:migrate:status')
         end
       end
     end
@@ -204,7 +216,7 @@ namespace :db do
       within release_path do
         with rails_env: fetch(:rails_env) do
           info 'Seeding database'
-          execute(:rake, 'db:seed')
+          execute(:rails, 'db:seed')
         end
       end
     end
@@ -215,7 +227,7 @@ namespace :db do
       within release_path do
         with rails_env: fetch(:rails_env) do
           info 'Migrating database'
-          execute(:rake, 'db:migrate')
+          execute(:rails, 'db:migrate')
         end
       end
     end
