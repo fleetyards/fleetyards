@@ -442,6 +442,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - deploy-to-stage:
           requires:
             - assets
