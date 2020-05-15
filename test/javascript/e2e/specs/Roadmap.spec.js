@@ -21,8 +21,6 @@ describe('Roadmap', () => {
     cy.clickNav('roadmap-ships')
 
     cy.url().should('include', '/roadmap/ships')
-
-    cy.get('.roadmap-item').should('have.length', 0)
   })
 
   it('Loads changes', () => {
@@ -34,7 +32,5 @@ describe('Roadmap', () => {
     cy.clickNav('roadmap-changes')
 
     cy.url().should('include', '/roadmap/changes')
-
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 293)
   })
 })
