@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.71.3](https://github.com/fleetyards/fleetyards/compare/v3.71.2...v3.71.3) (2020-05-15)
+
+
+### Bug Fixes
+
+* images pagination ([42be854](https://github.com/fleetyards/fleetyards/commit/42be854006616fee48ffdd064b86c101e3557d5d))
+* shop_commodities search ([6a67d37](https://github.com/fleetyards/fleetyards/commit/6a67d37458154446bace4a6db3e2c3b94ffa42ab))
+
 ### [3.71.2](https://github.com/fleetyards/fleetyards/compare/v3.71.1...v3.71.2) (2020-05-14)
 
 
