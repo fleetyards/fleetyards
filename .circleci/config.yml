@@ -297,8 +297,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            - v3-yarn-
+            - v4-yarn-{{ checksum "yarn.lock" }}
+            - v4-yarn-
       - run: yarn install
       - run:
           name: Run E2E Tests
