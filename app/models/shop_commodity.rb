@@ -75,7 +75,7 @@ class ShopCommodity < ApplicationRecord
 
   attr_accessor :commodity_item_selected
 
-  ransack_alias :name, :model_name_or_component_name_or_commodity_item_of_Commodity_type_name_or_equipment_name_or_model_module_name
+  ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
   ransack_alias :category, :commodity_item_type
   ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
   ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
