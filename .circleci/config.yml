@@ -122,23 +122,25 @@ jobs:
           keys:
             - v3-yarn-{{ checksum "yarn.lock" }}
             - v3-yarn-
-      - run: yarn --frozen-lockfile
+      - run: yarn install
       - save_cache:
           key: v3-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
             - ~/app/node_modules
+            - /root/.cache/Cypress
       - persist_to_workspace:
-          root: ~/app
+          root: /root
           paths:
-            - node_modules
+            - app/node_modules
+            - .cache/Cypress
 
   bundle-audit:
     <<: *defaults
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
       - run:
           name: Update Audit DB
@@ -152,8 +154,8 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
-      - run: yarn --frozen-lockfile
+          at: /root
+      - run: yarn install
       - run:
           name: Check Audit DB
           command: yarn audit
@@ -163,7 +165,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
       - run:
           name: rubocoptering
@@ -174,8 +176,8 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
-      - run: yarn --frozen-lockfile
+          at: /root
+      - run: yarn install
       - run: yarn run lint:js
       - run: yarn run lint:vue
       - run: yarn run lint:style
@@ -185,7 +187,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
       - run: mkdir -p ~/app/log
       - run: bundle exec rails db:create db:schema:load
@@ -200,8 +202,8 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
-      - run: yarn --frozen-lockfile
+          at: /root
+      - run: yarn install
       - run:
           name: Run Javascript Tests
           command: yarn test:coverage
@@ -211,7 +213,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
       - run: mkdir -p ~/app/log
       - run: bundle exec rails db:create db:schema:load
@@ -227,9 +229,9 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
-      - run: yarn --frozen-lockfile
+      - run: yarn install
       - restore_cache:
           keys:
             - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
@@ -255,9 +257,9 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: /root
       - run: bundle install
-      - run: yarn --frozen-lockfile
+      - run: yarn install
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
@@ -279,7 +281,6 @@ jobs:
                   printf '.'
                   sleep 5
               done
-      - run: yarn add cypress
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
@@ -298,8 +299,7 @@ jobs:
           keys:
             - v3-yarn-{{ checksum "yarn.lock" }}
             - v3-yarn-
-      - run: yarn --frozen-lockfile
-      - run: yarn add cypress
+      - run: yarn install
       - run:
           name: Run E2E Tests
           command: yarn run test:e2e --record
@@ -419,13 +419,10 @@ workflows:
             - yarn
       - seeds:
           requires:
-            - rubocop
-            - ruby-tests
+            - bundle
       - assets:
           requires:
             - bundle
-            - js-tests
-            - js-lint
       - e2e-test:
           requires:
             - assets
