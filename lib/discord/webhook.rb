@@ -42,7 +42,7 @@ module Discord
         "**#{title}**",
         message,
         url,
-      ].join('\n')
+      ].compact.join('\n')
     end
 
     private def frontend_url(path)
