@@ -22,4 +22,7 @@ production: &production
   loaner_worker_job:
     cron: '0 21 * * 0' # Weekly on Sunday 21:00
     class: 'LoanerWorker'
+  youtube_worker_job:
+    cron: '*/10 * * * *' # Every 10 Minutes
+    class: 'YoutubeWorker'
 

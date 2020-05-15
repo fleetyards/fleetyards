@@ -5,9 +5,10 @@ require 'discordrb/webhooks'
 # rubocop:disable Naming/AccessorMethodName
 module Discord
   class Webhook
-    attr_accessor :options, :title, :message, :url
+    attr_accessor :webhook_endpoint, :options, :title, :message, :url
 
     def initialize(options = {})
+      @webhook_endpoint = get_webhook_endpoint
       @options = options
       @title = get_title
       @message = get_message
@@ -15,16 +16,18 @@ module Discord
     end
 
     def run
-      return if Rails.application.secrets[:discord_updates_endpoint].blank?
+      return if @webhook_endpoint.blank?
 
       client.execute do |builder|
         builder.content = content
       end
     end
 
-    private def get_message
-      raise NotImplementedError
+    private def get_webhook_endpoint
+      Rails.application.secrets[:discord_updates_endpoint]
     end
+
+    private def get_message; end
 
     private def get_title
       raise NotImplementedError
@@ -35,7 +38,11 @@ module Discord
     end
 
     private def content
-      "**#{title}**\n#{message}\n#{url}"
+      [
+        "**#{title}**",
+        message,
+        url,
+      ].join('\n')
     end
 
     private def frontend_url(path)
@@ -43,7 +50,7 @@ module Discord
     end
 
     private def client
-      @client ||= Discordrb::Webhooks::Client.new(url: Rails.application.secrets[:discord_updates_endpoint])
+      @client ||= Discordrb::Webhooks::Client.new(url: @webhook_endpoint)
     end
   end
 end
