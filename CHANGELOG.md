@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.73.0](https://github.com/fleetyards/fleetyards/compare/v3.72.2...v3.73.0) (2020-05-15)
+
+
+### Features
+
+* fetch news from rsi and post to discord ([#1197](https://github.com/fleetyards/fleetyards/issues/1197)) ([e59e118](https://github.com/fleetyards/fleetyards/commit/e59e118bb7b533a9762303ad5c873a54ca170168))
+
 ### [3.72.2](https://github.com/fleetyards/fleetyards/compare/v3.72.1...v3.72.2) (2020-05-15)
 
 
