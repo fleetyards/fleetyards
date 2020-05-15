@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_094937) do
+ActiveRecord::Schema.define(version: 2020_05_15_205819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -669,6 +669,12 @@ ActiveRecord::Schema.define(version: 2020_05_14_094937) do
     t.datetime "updated_at", null: false
     t.uuid "model_id"
     t.index ["model_id"], name: "index_videos_on_model_id"
+  end
+
+  create_table "youtube_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "video_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

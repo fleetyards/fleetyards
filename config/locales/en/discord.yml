@@ -9,3 +9,5 @@ en:
     ship_on_sale:
       title: The %{model} is now on Sale!
       message: Starting at %{price} excl. VAT
+    youtube_video:
+      title: New Video on Youtube!
