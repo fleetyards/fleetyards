@@ -1,6 +1,12 @@
 # see https://crontab.guru for help/explanation of cron lines
 
 production: &production
+  youtube_worker_job:
+    cron: '*/10 * * * *' # Every 10 Minutes
+    class: 'YoutubeWorker'
+  rsi_news_worker_job:
+    cron: '*/15 * * * *' # Every 15 Minutes
+    class: 'RsiNewsWorker'
   models_worker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'ModelsWorker'
@@ -22,7 +28,3 @@ production: &production
   loaner_worker_job:
     cron: '0 21 * * 0' # Weekly on Sunday 21:00
     class: 'LoanerWorker'
-  youtube_worker_job:
-    cron: '*/10 * * * *' # Every 10 Minutes
-    class: 'YoutubeWorker'
-

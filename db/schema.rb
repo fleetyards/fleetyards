@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_205819) do
+ActiveRecord::Schema.define(version: 2020_05_15_230450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -492,6 +492,16 @@ ActiveRecord::Schema.define(version: 2020_05_15_205819) do
     t.boolean "buying", default: false
     t.boolean "selling", default: false
     t.index ["station_id"], name: "index_shops_on_station_id"
+  end
+
+  create_table "star_citizen_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "url"
+    t.string "title"
+    t.string "news_type"
+    t.string "news_sub_type"
+    t.string "slug"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "starsystems", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
