@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.72.0](https://github.com/fleetyards/fleetyards/compare/v3.71.6...v3.72.0) (2020-05-15)
+
+
+### Features
+
+* add youtube notifier for discord ([0a003cb](https://github.com/fleetyards/fleetyards/commit/0a003cbe6b3c97057fafeaed6463b15cef9ed2f5))
+
+
+### Bug Fixes
+
+* discord message ([b4a5961](https://github.com/fleetyards/fleetyards/commit/b4a596121d5209048bc1ef2385a7db1aea2ff8c3))
+
 ### [3.71.6](https://github.com/fleetyards/fleetyards/compare/v3.71.5...v3.71.6) (2020-05-15)
 
 ### [3.71.5](https://github.com/fleetyards/fleetyards/compare/v3.71.4...v3.71.5) (2020-05-15)
