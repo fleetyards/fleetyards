@@ -110,9 +110,9 @@ jobs:
           paths:
             - vendor/bundle
       - persist_to_workspace:
-          root: ~/app
+          root: /root
           paths:
-            - vendor/bundle
+            - app/vendor/bundle
 
   yarn:
     <<: *defaults
@@ -246,11 +246,11 @@ jobs:
             - ~/app/public/packs
             - ~/app/tmp/cache/webpacker
       - persist_to_workspace:
-          root: ~/app
+          root: /root
           paths:
-            - public/assets
-            - public/packs
-            - tmp/cache/webpacker
+            - app/public/assets
+            - app/public/packs
+            - app/tmp/cache/webpacker
 
   e2e-test:
     <<: *e2e
