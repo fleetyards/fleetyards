@@ -398,7 +398,7 @@ export default {
       const shipList = this.fleetchartVehicles.map(
         vehicle => vehicle.model.rsiName,
       )
-      const data = { source: 'FleetYards', type: 'matrix', s: shipList }
+      const data = { type: 'matrix', s: shipList }
       const startship42Params = qs.stringify(data)
       return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
