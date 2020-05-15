@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: MyString
+  title: MyString
+  news_type:
+  news_sub_type: MyString
+  slug: MyString
+
+two:
+  url: MyString
+  title: MyString
+  news_type:
+  news_sub_type: MyString
+  slug: MyString
