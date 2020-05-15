@@ -19,7 +19,7 @@ module Youtube
 
       activities['items'].map do |item|
         item['contentDetails']['upload']
-      end.compact.each do |item|
+      end.compact.reverse_each do |item|
         YoutubeUpdate.find_or_create_by(video_id: item['videoId'])
       end
     end
