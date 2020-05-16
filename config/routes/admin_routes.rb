@@ -31,6 +31,7 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resources :model_modules, path: 'model-modules', except: [:show]
   resources :model_upgrades, path: 'model-upgrades', except: [:show]
+  resources :model_skins, path: 'model-skins', except: [:show]
 
   resources :manufacturers, except: [:show]
 

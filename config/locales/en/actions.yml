@@ -34,6 +34,8 @@ en:
         new: Create new Module
       model_upgrade:
         new: Create new Upgrade
+      model_skin:
+        new: Create new Skin
     back: Back
     cancel: Cancel
     confirm: Confirm Account

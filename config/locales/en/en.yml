@@ -161,6 +161,10 @@ en:
       edit: Edit Starsystem
       index: Starsystems
       new: New Starsystem
+    model_skin:
+      edit: Edit Skin
+      index: Skins
+      new: New Skin
     model_module:
       edit: Edit Module
       index: Modules

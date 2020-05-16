@@ -48,6 +48,10 @@ en:
         edit: Starsystem %{starsystem}
         index: Starsystems
         new: New Starsystem
+      model_skin:
+        edit: Skin %{model_skin}
+        index: Skins
+        new: New Skin
       model_module:
         edit: Module %{model_module}
         index: Modules

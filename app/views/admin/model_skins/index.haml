@@ -1,0 +1,49 @@
+- content_for :title do
+  = I18n.t(:"title.model_skin.index")
+.row#model_skins
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.model_skin.index")
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.admin.model_skin.new"), new_admin_model_skin_path, 'data-turbolinks': "false", class: "btn btn-default"
+
+    .row
+      .col-xs-12.col-md-6
+        %p
+          = @model_skins.count
+          of
+          = @model_skins.total_count
+      .col-xs-12.col-md-6
+        = paginate @model_skins
+
+    .row
+      .col-xs-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/model_skins/table", :@model_skins => @model_skins
+
+      .col-xs-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :name_cont
+            = f.search_field :name_cont, class: 'form-control'
+
+          .form-group
+            = f.label :model_id_eq
+            = f.select :model_id_eq, Model.order(name: :asc).all.map { |w| [w.name, w.id] }, { include_blank: true }, { class: 'form-control' }
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+
+    .row
+      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6
+        = paginate @model_skins
