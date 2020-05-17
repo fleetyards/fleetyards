@@ -432,7 +432,7 @@ module RSI
     end
 
     def cleanup_variants
-      ModelSkin.find_each do |skin|
+      ModelSkin.where.not(rsi_id: nil).find_each do |skin|
         model = Model.find_by(rsi_id: skin.rsi_id)
         next if model.blank?
 
@@ -449,7 +449,7 @@ module RSI
 
         replacements = item[:replacements].map { |replacement| replacement.merge(model: Model.find_by!(rsi_id: replacement[:rsi_id])) }
 
-        Vehicle.where(model_id: model.id).find_each do |vehicle|
+        Vehicle.where(model_id: model.id, loaner: false).find_each do |vehicle|
           next if replacements.first[:model].blank?
 
           vehicle.update(model_id: replacements.first[:model].id)
