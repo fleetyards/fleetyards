@@ -9,7 +9,7 @@ module Admin
       authorize! :index, :admin_model_skins
       @q = ModelSkin.ransack(params[:q])
 
-      @q.sorts = 'name asc' if @q.sorts.empty?
+      @q.sorts = ['model_name asc', 'name asc'] if @q.sorts.empty?
 
       @model_skins = @q.result
                        .page(params.fetch(:page) { nil })

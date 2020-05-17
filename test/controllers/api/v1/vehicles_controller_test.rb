@@ -141,6 +141,7 @@ module Api
               'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
             },
             'skin' => nil,
+            'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
             'modelModuleIds' => data.vehicles.first.model_module_ids,
             'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
@@ -215,6 +216,7 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'skin' => nil,
+            'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,
             'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
@@ -302,6 +304,7 @@ module Api
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
             'skin' => nil,
+            'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,
             'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
