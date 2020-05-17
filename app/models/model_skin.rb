@@ -6,6 +6,7 @@ class ModelSkin < ApplicationRecord
   belongs_to :model, optional: true, touch: true
 
   mount_uploader :store_image, StoreImageUploader
+  mount_uploader :rsi_store_image, StoreImageUploader
 
   before_save :update_slugs
 

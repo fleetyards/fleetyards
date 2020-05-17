@@ -173,7 +173,7 @@
       %small
         = form_errors model, :dock_size
   .row
-    .col-xs-12.col-md-4.form-group{class: form_error?(model, :store_image)}
+    .col-xs-12.col-md-3.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       - if model.store_image_cache
@@ -185,7 +185,21 @@
         Remove Image
       %small
         = form_errors model, :store_image
-    .col-xs-12.col-md-4.form-group{class: form_error?(model, :brochure)}
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(model, :rsi_store_image)}
+      = form.label :rsi_store_image
+      = form.file_field :rsi_store_image, class: 'form-control'
+      - if model.rsi_store_image_cache
+        = form.hidden_field :rsi_store_image_cache
+      %br
+      - if model.rsi_store_image?
+        = image_tag(model.rsi_store_image.url)
+        = form.check_box :remove_rsi_store_image
+        Remove RSI Image
+      %small
+        = form_errors model, :rsi_store_image
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(model, :brochure)}
       = form.label :brochure
       = form.file_field :brochure, class: 'form-control'
       - if model.brochure_cache
@@ -198,7 +212,8 @@
         Remove Brochure
       %small
         = form_errors model, :brochure
-    .col-xs-12.col-md-4.form-group{class: form_error?(model, :fleetchart_image)}
+
+    .col-xs-12.col-md-3.form-group{class: form_error?(model, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
       - if model.fleetchart_image_cache

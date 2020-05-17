@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_230450) do
+ActiveRecord::Schema.define(version: 2020_05_17_210839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -344,6 +344,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_230450) do
     t.string "production_note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "rsi_store_image"
   end
 
   create_table "model_upgrades", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -430,6 +431,7 @@ ActiveRecord::Schema.define(version: 2020_05_15_230450) do
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
     t.string "erkuls_slug"
     t.string "starship42_slug"
+    t.string "rsi_store_image"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

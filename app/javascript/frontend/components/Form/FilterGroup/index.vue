@@ -8,7 +8,7 @@
     <div
       :class="{
         active: visible,
-        disabled: disabled,
+        disabled,
         selected: selectedOptions.length > 0,
         hasLabel: labelVisible,
       }"
@@ -30,6 +30,7 @@
         :key="`${groupID}-${selectedId}-${option[valueAttr]}-${index}`"
         :class="{
           active: selected(option[valueAttr]),
+          bigIcon,
         }"
         class="filter-list-item fade-list-item"
         @click="select(option[valueAttr])"
@@ -67,6 +68,7 @@
           :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
           :class="{
             active: selected(option[valueAttr]),
+            bigIcon,
           }"
           class="filter-list-item fade-list-item"
           @click="select(returnObject ? option : option[valueAttr])"
@@ -191,6 +193,11 @@ export default {
     },
 
     noLabel: {
+      type: Boolean,
+      default: false,
+    },
+
+    bigIcon: {
       type: Boolean,
       default: false,
     },

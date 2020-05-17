@@ -84,6 +84,7 @@ class Model < ApplicationRecord
   accepts_nested_attributes_for :docks, allow_destroy: true
 
   mount_uploader :store_image, StoreImageUploader
+  mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
 

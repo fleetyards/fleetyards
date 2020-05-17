@@ -31,6 +31,8 @@
               name="modelSkinId"
               label-attr="name"
               value-attr="id"
+              icon-attr="storeImageSmall"
+              :big-icon="true"
               :nullable="true"
               :no-label="true"
             />

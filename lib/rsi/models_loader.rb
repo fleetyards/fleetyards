@@ -186,12 +186,13 @@ module RSI
                                   nil
                                 end
 
-      if model.store_image.blank? || model.store_images_updated_at != store_images_updated_at
+      if model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at
         model.store_images_updated_at = data['media'][0]['time_modified']
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          model.remote_store_image_url = store_image_url
+          model.remote_rsi_store_image_url = store_image_url
+          model.remote_store_image_url = store_image_url if model.store_image.blank?
           model.save
         end
       end
@@ -232,12 +233,13 @@ module RSI
                                   nil
                                 end
 
-      if skin.store_image.blank? || skin.store_images_updated_at != store_images_updated_at
+      if skin.rsi_store_image.blank? || skin.store_images_updated_at != store_images_updated_at
         skin.store_images_updated_at = data['media'][0]['time_modified']
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          skin.remote_store_image_url = store_image_url
+          skin.remote_rsi_store_image_url = store_image_url
+          skin.remote_store_image_url = store_image_url if skin.store_image.blank?
           skin.save
         end
       end

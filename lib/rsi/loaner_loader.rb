@@ -54,8 +54,7 @@ module RSI
 
     private def models_map(name)
       models_map = {
-        'Carrack / Carrack Expedition' => ['Carrack', 'Carrack Expedition'],
-        'Carrack w/ C8X / Carrack Expedition w/C8X' => ['Carrack w/C8X', 'Carrack Expedition w/C8X'],
+        'Carrack / Carrack Expedition' => ['Carrack'],
         '100 Series' => %w[100i 125a 135c],
         '600i Series' => ['600i Touring', '600i Explorer', '600i Executive-Edition'],
         'Apollo' => ['Apollo Medivac', 'Apollo Triage'],
@@ -67,7 +66,7 @@ module RSI
         'Idris-M & P' => %w[Idris-P Idris-M],
         'Kraken (+ Privateer)' => ['Kraken', 'Kraken Privateer'],
         'Mercury' => ['Mercury Star Runner'],
-        'Mole' => ['Mole', 'Mole Carbon Edition', 'Mole Talus Edition'],
+        'Mole' => ['Mole'],
         'Retaliator' => ['Retaliator Bomber', 'Retaliator Base'],
         "San'Tok.yai" => ["San'tok.yāi"],
         'Nox' => ['Nox', 'Nox Kue'],

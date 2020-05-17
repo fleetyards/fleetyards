@@ -157,6 +157,12 @@
     &:last-child {
       border-bottom: none;
     }
+
+    &.bigIcon {
+      .filter-list-item-icon {
+        width: 60px;
+      }
+    }
   }
 }
 
