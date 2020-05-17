@@ -212,14 +212,14 @@ export default {
         return this.vehicle.skin.storeImageMedium
       }
 
+      if (this.vehicle && this.vehicle.upgrade) {
+        return this.vehicle.upgrade.storeImageMedium
+      }
+
       return this.model.storeImageMedium
     },
 
     modelName() {
-      if (this.vehicle && this.vehicle.skin) {
-        return this.vehicle.skin.name
-      }
-
       return this.model.name
     },
 
