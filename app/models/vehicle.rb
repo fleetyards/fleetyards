@@ -117,11 +117,11 @@ class Vehicle < ApplicationRecord
   def set_flagship
     return unless flagship?
 
-    # rubocop:disable Rails/SkipsModelValidations
     Vehicle.where(user_id: user_id, flagship: true)
            .where.not(id: id)
-           .update_all(flagship: false)
-    # rubocop:enable Rails/SkipsModelValidations
+           .find_each do |vehicle|
+      vehicle.update(flagship: false)
+    end
   end
 
   def to_json(*_args)
