@@ -56,7 +56,7 @@ module Admin
     private def model_skin_params
       @model_skin_params ||= params.require(:model_skin).permit(
         :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
-        :pledge_price, :description
+        :pledge_price, :description, :model_id
       )
     end
 

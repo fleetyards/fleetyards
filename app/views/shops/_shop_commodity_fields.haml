@@ -46,8 +46,8 @@
               = fields.number_field :rent_price_30_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_30_days"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-2
-    .checkbox.pull-left
-      = fields.check_box :price_per_unit, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.price_per_unit")
+    .pull-left
+      = fields.check_box :price_per_unit, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.price_per_unit"), class: 'checkbox'
       = fields.label :price_per_unit do
         = I18n.t(:"activerecord.attributes.shop_commodity.price_per_unit")
 

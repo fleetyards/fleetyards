@@ -6,8 +6,8 @@
       = form_errors fields.object, :commodity_id
 
   .col-xs-12.col-md-1
-    .checkbox
-      = fields.check_box :buy, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy")
+    .form-group
+      = fields.check_box :buy, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy"), class: 'checkbox'
       = fields.label :buy do
         = I18n.t(:"activerecord.attributes.trade_commodity.buy")
 
@@ -16,8 +16,8 @@
       = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control', step: 0.01
 
   .col-xs-12.col-md-1
-    .checkbox
-      = fields.check_box :sell, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell")
+    .form-group
+      = fields.check_box :sell, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell"), class: 'checkbox'
       = fields.label :sell do
         = I18n.t(:"activerecord.attributes.trade_commodity.sell")
 

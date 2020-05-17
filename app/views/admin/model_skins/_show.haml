@@ -4,7 +4,8 @@
   %td
     = model_skin.name
   %td
-    = model_skin.model.name
+    - if model_skin.model.present?
+      = model_skin.model.name
   %td
     - if model_skin.hidden?
       %i.fa.fa-check

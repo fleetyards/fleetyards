@@ -50,9 +50,9 @@
       %small
         = form_errors station, :map
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.station.hidden")
+    .col-xs-12.col-sm-6.col-md-4
+      .form-group
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.station.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.station.hidden")
 

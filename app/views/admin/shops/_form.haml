@@ -12,27 +12,27 @@
       %small
         = form_errors shop, :station_id
 
-    .col-xs-12.col-sm-3.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.shop.hidden")
+    .col-xs-12.col-sm-3
+      .form-group
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.shop.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.shop.hidden")
 
-    .col-xs-12.col-sm-3.form-group
-      .checkbox
-        = form.check_box :selling, placeholder: I18n.t(:"helpers.placeholder.shop.selling")
+    .col-xs-12.col-sm-3
+      .form-group
+        = form.check_box :selling, placeholder: I18n.t(:"helpers.placeholder.shop.selling"), class: 'checkbox'
         = form.label :selling do
           = I18n.t(:"activerecord.attributes.shop.selling")
 
-    .col-xs-12.col-sm-3.form-group
-      .checkbox
-        = form.check_box :buying, placeholder: I18n.t(:"helpers.placeholder.shop.buying")
+    .col-xs-12.col-sm-3
+      .form-group
+        = form.check_box :buying, placeholder: I18n.t(:"helpers.placeholder.shop.buying"), class: 'checkbox'
         = form.label :buying do
           = I18n.t(:"activerecord.attributes.shop.buying")
 
-    .col-xs-12.col-sm-3.form-group
-      .checkbox
-        = form.check_box :rental, placeholder: I18n.t(:"helpers.placeholder.shop.rental")
+    .col-xs-12.col-sm-3
+      .form-group
+        = form.check_box :rental, placeholder: I18n.t(:"helpers.placeholder.shop.rental"), class: 'checkbox'
         = form.label :rental do
           = I18n.t(:"activerecord.attributes.shop.rental")
 

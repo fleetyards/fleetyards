@@ -69,19 +69,6 @@
     <div class="actions">
       <template v-if="uploaded">
         <Btn
-          v-tooltip="$t('labels.image.background')"
-          :disabled="updating"
-          size="small"
-          @click.native="toggleBackground"
-        >
-          <span v-show="image.background">
-            <i class="fa fa-eye" />
-          </span>
-          <span v-show="!image.background">
-            <i class="far fa-eye-slash" />
-          </span>
-        </Btn>
-        <Btn
           v-tooltip="$t('labels.image.enabled')"
           :disabled="updating"
           size="small"
@@ -181,19 +168,6 @@ export default {
 
       if (response.error) {
         this.image.global = !this.image.global
-      }
-    },
-    async toggleBackground() {
-      this.updating = true
-      this.image.background = !this.image.background
-      const response = await this.$api.put(`images/${this.image.id}`, {
-        background: this.image.background,
-      })
-
-      this.updating = false
-
-      if (response.error) {
-        this.image.background = !this.image.background
       }
     },
     async deleteImage() {

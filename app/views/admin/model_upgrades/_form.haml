@@ -12,15 +12,15 @@
         = form_errors model_upgrade, :description
 
   .row
-    .col-xs-12.col-sm-6.col-md-3.form-group
-      .checkbox
-        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden")
+    .col-xs-12.col-sm-6.col-md-3
+      .form-group
+        = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-3.form-group
-      .checkbox
-        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active")
+    .col-xs-12.col-sm-6.col-md-3
+      .form-group
+        = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active"), class: 'checkbox'
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
