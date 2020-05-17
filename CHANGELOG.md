@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.74.0](https://github.com/fleetyards/fleetyards/compare/v3.73.2...v3.74.0) (2020-05-17)
+
+
+### Features
+
+* update skin display and also switch image for upgrades ([e5ac092](https://github.com/fleetyards/fleetyards/commit/e5ac0925a809cba54667496e5cd644c7da62cf9d))
+* update skin display and also switch image for upgrades ([30f1f62](https://github.com/fleetyards/fleetyards/commit/30f1f622083727e591427102281467c764be6cc4))
+
 ### [3.73.2](https://github.com/fleetyards/fleetyards/compare/v3.73.1...v3.73.2) (2020-05-17)
 
 ### [3.73.1](https://github.com/fleetyards/fleetyards/compare/v3.73.0...v3.73.1) (2020-05-16)
