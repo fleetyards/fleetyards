@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.74.1](https://github.com/fleetyards/fleetyards/compare/v3.74.0...v3.74.1) (2020-05-17)
+
+
+### Bug Fixes
+
+* skin cleanup ([a77b114](https://github.com/fleetyards/fleetyards/commit/a77b1147467472fb71b3f824347239f75d305a14))
+
 ## [3.74.0](https://github.com/fleetyards/fleetyards/compare/v3.73.2...v3.74.0) (2020-05-17)
 
 
