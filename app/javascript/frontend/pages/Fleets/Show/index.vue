@@ -79,7 +79,7 @@
       </div>
     </div>
     <div v-if="fleetCount" class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 col-md-8">
         <ModelClassLabels
           v-if="myFleet"
           :label="$t('labels.fleet.classes')"
@@ -87,7 +87,18 @@
           filter-key="classificationIn"
         />
       </div>
+      <div class="col-xs-12 col-md-4">
+        <div class="page-actions">
+          <Btn
+            v-tooltip="$t('labels.poweredByStarship42')"
+            :href="starship42Url"
+          >
+            {{ $t('labels.3dView') }}
+          </Btn>
+        </div>
+      </div>
     </div>
+
     <div
       v-if="fleetCount && fleetCount.metrics && !mobile && myFleet"
       class="row"
@@ -138,6 +149,13 @@
     <FilteredList :hide-filter="!myFleet">
       <template v-if="myFleet" slot="actions">
         <BtnDropdown size="small">
+          <template v-if="mobile">
+            <Btn :href="starship42Url" size="small" variant="link">
+              <i class="fad fa-cube" />
+              {{ $t('labels.exportStarship42') }}
+            </Btn>
+            <hr />
+          </template>
           <Btn
             v-show="!fleetchartVisible"
             :active="detailsVisible"
@@ -287,6 +305,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import qs from 'qs'
 import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
@@ -390,6 +409,15 @@ export default {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
+    },
+
+    starship42Url() {
+      const shipList = this.fleetchartVehicles.map(
+        vehicle => vehicle.model.rsiName,
+      )
+      const data = { type: 'matrix', s: shipList }
+      const startship42Params = qs.stringify(data)
+      return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
 
