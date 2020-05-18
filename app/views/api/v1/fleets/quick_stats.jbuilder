@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-json.total @quick_stats.total
+json.total_ships @quick_stats.total_ships
+json.total_members @quick_stats.total_members
 json.classifications do
   json.array! @quick_stats.classifications, partial: 'api/v1/vehicles/classification_quick_stats', as: :classification_quick_stats
 end

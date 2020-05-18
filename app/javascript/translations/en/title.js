@@ -32,6 +32,7 @@ export default {
     preview: 'Fleet Preview',
     invites: 'Fleet Invites',
     members: '%{fleet} Members',
+    stats: '%{fleet} Stats',
     settings: '%{fleet} Settings',
   },
   roadmap: {
