@@ -90,6 +90,12 @@
       <div class="col-xs-12 col-md-4">
         <div class="page-actions">
           <Btn
+            v-tooltip="$t('labels.poweredByStarship42')"
+            :href="starship42Url"
+          >
+            {{ $t('labels.3dView') }}
+          </Btn>
+          <Btn
             v-tooltip="$t('labels.hangarStats')"
             :to="{ name: 'fleet-stats' }"
           >
@@ -98,6 +104,7 @@
         </div>
       </div>
     </div>
+
     <div
       v-if="fleetCount && fleetCount.metrics && !mobile && myFleet"
       class="row"
@@ -149,6 +156,10 @@
       <template v-if="myFleet" slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
+            <Btn :href="starship42Url" size="small" variant="link">
+              <i class="fad fa-cube" />
+              {{ $t('labels.exportStarship42') }}
+            </Btn>
             <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
               {{ $t('labels.fleetStats') }}
@@ -304,6 +315,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import qs from 'qs'
 import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
@@ -407,6 +419,15 @@ export default {
         return this.$t('actions.hideDetails')
       }
       return this.$t('actions.showDetails')
+    },
+
+    starship42Url() {
+      const shipList = this.fleetchartVehicles.map(
+        vehicle => vehicle.model.rsiName,
+      )
+      const data = { type: 'matrix', s: shipList }
+      const startship42Params = qs.stringify(data)
+      return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
 
