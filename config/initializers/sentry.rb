@@ -2,7 +2,7 @@
 
 Raven.configure do |config|
   config.dsn = Rails.application.secrets[:sentry_dsn]
-  confif.release = Git.revision_short
+  config.release = Git.revision_short
   config.tags = {
     version: Fleetyards::VERSION,
     codename: Fleetyards::CODENAME
