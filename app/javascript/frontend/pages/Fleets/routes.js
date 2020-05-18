@@ -76,6 +76,18 @@ export const routes = [
     },
     children: SettingsRoutes,
   },
+  {
+    path: ':slug/stats/',
+    name: 'fleet-stats',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.fleets" */
+        'frontend/pages/Fleets/Stats'
+      ),
+    meta: {
+      needsAuthentication: true,
+    },
+  },
 ]
 
 export default routes

@@ -12,6 +12,16 @@ module Frontend
       render 'frontend/index'
     end
 
+    def stats
+      if fleet.present?
+        @title = I18n.t('title.frontend.fleet_stats', fleet: fleet.name)
+        @og_type = 'article'
+        @og_image = fleet.logo.url if fleet.logo.present?
+      end
+
+      render 'frontend/index'
+    end
+
     def members
       if fleet.present?
         @title = I18n.t('title.frontend.fleet_members', fleet: fleet.name)

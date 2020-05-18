@@ -79,13 +79,23 @@
       </div>
     </div>
     <div v-if="fleetCount" class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 col-md-8">
         <ModelClassLabels
           v-if="myFleet"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetCount.classifications"
           filter-key="classificationIn"
         />
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <div class="page-actions">
+          <Btn
+            v-tooltip="$t('labels.hangarStats')"
+            :to="{ name: 'fleet-stats' }"
+          >
+            <i class="fal fa-chart-bar" />
+          </Btn>
+        </div>
       </div>
     </div>
     <div
@@ -106,7 +116,7 @@
             {{ $t('labels.hangarMetrics.total') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.total, 'ships') }}
+            {{ $toNumber(fleetCount.totalShips, 'ships') }}
           </div>
         </div>
         <div class="metrics-item">
@@ -138,6 +148,13 @@
     <FilteredList :hide-filter="!myFleet">
       <template v-if="myFleet" slot="actions">
         <BtnDropdown size="small">
+          <template v-if="mobile">
+            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
+              <i class="fad fa-chart-bar" />
+              {{ $t('labels.fleetStats') }}
+            </Btn>
+            <hr />
+          </template>
           <Btn
             v-show="!fleetchartVisible"
             :active="detailsVisible"
