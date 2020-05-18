@@ -95,6 +95,12 @@
           >
             {{ $t('labels.3dView') }}
           </Btn>
+          <Btn
+            v-tooltip="$t('labels.hangarStats')"
+            :to="{ name: 'fleet-stats' }"
+          >
+            <i class="fal fa-chart-bar" />
+          </Btn>
         </div>
       </div>
     </div>
@@ -117,7 +123,7 @@
             {{ $t('labels.hangarMetrics.total') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.total, 'ships') }}
+            {{ $toNumber(fleetCount.totalShips, 'ships') }}
           </div>
         </div>
         <div class="metrics-item">
@@ -153,6 +159,10 @@
             <Btn :href="starship42Url" size="small" variant="link">
               <i class="fad fa-cube" />
               {{ $t('labels.exportStarship42') }}
+            </Btn>
+            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
+              <i class="fad fa-chart-bar" />
+              {{ $t('labels.fleetStats') }}
             </Btn>
             <hr />
           </template>

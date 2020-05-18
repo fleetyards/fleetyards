@@ -23,6 +23,7 @@ export default {
     quickStats: {
       newShips: 'New Ships in %{year}',
       totalShips: 'Total Ships',
+      totalMembers: 'Total Members',
     },
     modelsByClassification: 'Models by Classification',
     modelsBySize: 'Models by Size',
@@ -115,6 +116,7 @@ export default {
   'taxExcluded': 'excl. VAT',
   'hangar': 'Hangar',
   'hangarStats': 'Stats',
+  'fleetStats': 'Stats',
   'hangarMetrics': {
     total: 'Total',
     totalMoney: 'Money Value',

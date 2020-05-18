@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetsController < ::Api::BaseController
+      include ChartHelper
+
       before_action :authenticate_api_user!, except: %i[show]
 
       after_action -> { pagination_header(:vehicles) }, only: %i[vehicles]
@@ -151,7 +153,8 @@ module Api
         modules = vehicles.map(&:model_modules).flatten
 
         @quick_stats = OpenStruct.new(
-          total: vehicles.count,
+          total_ships: vehicles.count,
+          total_members: fleet.fleet_memberships.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
               # rubocop:disable Performance/Count

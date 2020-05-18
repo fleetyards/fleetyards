@@ -36,6 +36,7 @@ export default {
     add: 'Create a new Fleet',
     invites: 'Fleet Invites',
     members: 'Members',
+    stats: 'Stats',
     preview: {
       h1: 'Fleet Preview',
       h2: 'To create a Fleet you need to have a FleetYards.net Account',

@@ -158,6 +158,7 @@ export default {
       return [
         'fleet',
         'fleet-members',
+        'fleet-stats',
         'fleet-settings',
         'fleet-settings-fleet',
         'fleet-settings-membership',
