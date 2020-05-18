@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.75.0](https://github.com/fleetyards/fleetyards/compare/v3.74.3...v3.75.0) (2020-05-18)
+
+
+### Features
+
+* add stats page for fleets ([#1201](https://github.com/fleetyards/fleetyards/issues/1201)) ([fc061b3](https://github.com/fleetyards/fleetyards/commit/fc061b3c69713d138429316e732950cbaaee2420))
+* starship42 export link for fleets ([#1202](https://github.com/fleetyards/fleetyards/issues/1202)) ([7187814](https://github.com/fleetyards/fleetyards/commit/718781421563168c85b6c83e81dc75abf6c9463c))
+
+
+### Bug Fixes
+
+* sentry config ([ab901fc](https://github.com/fleetyards/fleetyards/commit/ab901fc7bbe0c254b31871fa492a8ca2700ba8ce))
+
 ### [3.74.3](https://github.com/fleetyards/fleetyards/compare/v3.74.2...v3.74.3) (2020-05-17)
 
 ### [3.74.2](https://github.com/fleetyards/fleetyards/compare/v3.74.1...v3.74.2) (2020-05-17)
