@@ -21,6 +21,7 @@ export default {
   'more': 'More...',
   'showMore': 'Show more',
   'export': 'Export',
+  'import': 'Import',
   'here': 'here',
   'backToTop': 'Back to Top',
   'cancel': 'Cancel',

@@ -1,6 +1,7 @@
 andromeda:
   name: "Andromeda"
   slug: "andromeda"
+  rsi_id: 14100
   classification: multi_role
   manufacturer: rsi
   length: 61.2
@@ -16,7 +17,7 @@ andromeda:
 explorer:
   name: "600i"
   slug: "600i"
-  rsi_id: 141
+  rsi_id: 14101
   manufacturer: origin
   classification: explorer
   length: 20
@@ -25,3 +26,33 @@ explorer:
   max_crew: 5
   last_pledge_price: 400
   hidden: false
+
+ptv:
+  name: PTV
+  slug: ptv
+  rsi_name: PTV
+  rsi_id: null
+
+600i-executive:
+  name: '600i Executive Edition'
+  slug: '600i-executive-edition'
+  rsi_name: '600i Executive Edition'
+  rsi_id: null
+
+f8c:
+  name: 'F8C'
+  slug: 'f8c-lightning'
+  rsi_name: 'F8C'
+  rsi_id: null
+
+f8c-executive:
+  name: 'F8C Lightning Executive-Edition'
+  slug: 'f8c-lightning-executive-edition'
+  rsi_name: 'F8C Executive'
+  rsi_id: null
+
+starkitten:
+  name: 'Dragonfly Star Kitten Edition'
+  slug: 'dragonfly-starkitten-edition'
+  rsi_name: 'Dragonfly Star Kitten Edition'
+  rsi_id: null

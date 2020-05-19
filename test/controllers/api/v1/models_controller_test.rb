@@ -10,6 +10,8 @@ module Api
         @request.headers['Content-Type'] = Mime[:json].to_s
       end
 
+      let(:origin) { Model.find_by(slug: '600i') }
+
       tests Api::V1::ModelsController
 
       it 'should return list for index' do
@@ -19,7 +21,7 @@ module Api
         json = JSON.parse response.body
 
         expected = [{
-          'id' => Model.first.id,
+          'id' => origin.id,
           'name' => '600i',
           'rsiName' => nil,
           'slug' => '600i',
@@ -45,9 +47,9 @@ module Api
           'zaxisAcceleration' => nil,
           'size' => nil,
           'sizeLabel' => nil,
-          'storeImage' => Model.first.store_image.url,
-          'storeImageMedium' => Model.first.store_image.medium.url,
-          'storeImageSmall' => Model.first.store_image.small.url,
+          'storeImage' => origin.store_image.url,
+          'storeImageMedium' => origin.store_image.medium.url,
+          'storeImageSmall' => origin.store_image.small.url,
           'fleetchartImage' => nil,
           'brochure' => nil,
           'storeUrl' => 'https://robertsspaceindustries.com',
@@ -60,22 +62,22 @@ module Api
           'classification' => 'explorer',
           'classificationLabel' => 'Explorer',
           'focus' => nil,
-          'rsiId' => 141,
+          'rsiId' => 14_101,
           'hasImages' => false,
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
           'hasSkins' => false,
-          'lastUpdatedAt' => Model.first.last_updated_at&.utc&.iso8601,
-          'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if Model.first.last_updated_at.present?),
+          'lastUpdatedAt' => origin.last_updated_at&.utc&.iso8601,
+          'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if origin.last_updated_at.present?),
           'manufacturer' => {
             'name' => 'Origin',
             'slug' => 'origin',
             'code' => nil,
             'logo' => nil
           },
-          'createdAt' => Model.first.created_at.utc.iso8601,
-          'updatedAt' => Model.first.updated_at.utc.iso8601
+          'createdAt' => origin.created_at.utc.iso8601,
+          'updatedAt' => origin.updated_at.utc.iso8601
         }, {
           'id' => Model.last.id,
           'name' => 'Andromeda',
@@ -87,7 +89,7 @@ module Api
           'beam' => 10.2,
           'height' => 10.2,
           'mass' => 1000.02,
-          'cargo' => 90,
+          'cargo' => 90.0,
           'cargoLabel' => 'Andromeda (90 SCU)',
           'minCrew' => 3,
           'maxCrew' => 5,
@@ -118,7 +120,7 @@ module Api
           'classification' => 'multi_role',
           'classificationLabel' => 'Multi role',
           'focus' => nil,
-          'rsiId' => nil,
+          'rsiId' => 14_100,
           'hasImages' => false,
           'hasVideos' => false,
           'hasModules' => false,

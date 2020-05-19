@@ -1,0 +1,1662 @@
+[
+  {
+    "manufacturer": "Aegis",
+    "name": "Avenger Stalker",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Avenger Titan",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Avenger Titan Renegade",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Avenger Warlock",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Eclipse",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Gladius",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Gladius Valiant",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Hammerhead",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Hammerhead 2949 Best in Show",
+    "lti": true,
+    "warbond": false,
+    "package_id": "19627703",
+    "pledge": "Add-Ons - Best In Show Perfect Collection",
+    "pledge_date": "December 04, 2019",
+    "cost": "$1,350.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Idris-M Frigate",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Idris-P Frigate",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Idris-K Frigate",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Greycat",
+    "name": "PTV",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Javelin",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Nautilus ",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Nautilus Solstice Edition",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Pirate Gladius",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Reclaimer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Reclaimer 2949 Best in Show",
+    "lti": true,
+    "warbond": false,
+    "package_id": "19627703",
+    "pledge": "Add-Ons - Best In Show Perfect Collection",
+    "pledge_date": "December 04, 2019",
+    "cost": "$1,350.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Redeemer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Retaliator Bomber",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Retaliator Base",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Sabre",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Sabre Comet",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Sabre Raven",
+    "lti": false,
+    "warbond": false,
+    "package_id": "12978527",
+    "pledge": "Package - AEGIS Sabre Raven ",
+    "pledge_date": "November 21, 2017",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Vanguard Harbinger",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Vanguard Hoplite",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Vanguard Sentinel",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Vanguard Warden",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aegis",
+    "name": "Vulcan",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Arrow",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Ballista Snowblind",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Ballista Dunestalker",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Ballista",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F7A Hornet",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Crucible",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F7C Hornet Wildfire",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F7C-M Super Hornet",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F7C-R Hornet Tracker",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F7C-S Hornet Ghost",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F8C Lightning Civilian ",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15434846",
+    "pledge": "VIP Wing Commander",
+    "pledge_date": "July 25, 2018",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "F8C Lightning Executive Edition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15434847",
+    "pledge": "VIP Legatus Navium",
+    "pledge_date": "July 25, 2018",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Gladiator",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Hawk",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Hornet F7C",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Hornet F7C-M Heartseeker",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Hurricane",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Pisces",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Pisces - Expedition",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Terrapin",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Valkyrie ",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Valkyrie Liberator Edition ",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Aopoa",
+    "name": "Aopoa San'tok.yāi",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Aopoa",
+    "name": "Nox",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Aopoa",
+    "name": "Nox Kue",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "Argo Mole - Carbon Edition",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "Argo Mole",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "Argo Mole - Talus Edition",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "Argo SRV",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "MPUV Cargo",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Argo",
+    "name": "MPUV Personnel",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Banu",
+    "name": "Defender",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Banu",
+    "name": "Merchantman",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Consolidated Outland Pioneer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Alpha",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Alpha Vindicator",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Beta",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Delta",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Gamma",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Consolidated",
+    "name": "Mustang Omega : AMD Edition",
+    "lti": false,
+    "warbond": false,
+    "package_id": "3539890",
+    "pledge": "Package - AMD Never Settle Space Edition",
+    "pledge_date": "January 09, 2015",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Crusader Ares Inferno",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Crusader Ares Ion",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Crusader Mercury Star Runner",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Genesis Starliner",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Hercules Starlifter A2",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Hercules Starlifter C2",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Crusader",
+    "name": "Hercules Starlifter M2",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Buccaneer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Caterpillar",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Caterpillar 2949 Best in Show",
+    "lti": true,
+    "warbond": false,
+    "package_id": "19627703",
+    "pledge": "Add-Ons - Best In Show Perfect Collection",
+    "pledge_date": "December 04, 2019",
+    "cost": "$1,350.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Caterpillar Pirate Edition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Corsair",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Cutlass 2949 Best In Show",
+    "lti": true,
+    "warbond": false,
+    "package_id": "19627703",
+    "pledge": "Add-Ons - Best In Show Perfect Collection",
+    "pledge_date": "December 04, 2019",
+    "cost": "$1,350.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Cutlass Black",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Cutlass Blue",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Cutlass Red",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Dragonfly Black",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Dragonfly Star Kitten Edition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "12605077",
+    "pledge": "Dragonfly StarKitten",
+    "pledge_date": "August 15, 2017",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Dragonfly Yellowjacket",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Herald",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Kraken",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Kraken Privateer",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Vulture",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "Esperia",
+    "name": "Blade",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Esperia",
+    "name": "Prowler",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "KRIG",
+    "name": "P-52 Merlin",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "KRIG",
+    "name": "P-72 Archimedes",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "KRIG",
+    "name": "P-72 Archimedes Emerald",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Endeavor",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Freelancer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Freelancer DUR",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Freelancer MAX",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Freelancer MIS",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Hull A",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Hull B",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Hull C",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Hull D",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Hull E",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Prospector",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Razor",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Razor EX",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Razor LX",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Reliant Kore - Mini Hauler",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Reliant Mako - News Van",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Reliant Sen - Researcher",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Reliant Tana - Skirmisher",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Starfarer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "MISC",
+    "name": "Starfarer Gemini",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "100i",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "125a",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "135c",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "300i",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "315p Explorer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "325a Fighter",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "350r Racer",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "600i Executive Edition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "21683277",
+    "pledge": "VIP Legatus2",
+    "pledge_date": "April 26, 2020",
+    "cost": "$0.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "600i Exploration Module",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "600i Touring Module",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "85X",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "890 JUMP",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "M50",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "Rover",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "X1",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "X1 - FORCE",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "X1 - VELOCITY",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Apollo Medivac",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Apollo Triage",
+    "lti": true,
+    "warbond": true,
+    "package_id": "16537272",
+    "pledge": "Add-Ons - Legatus 2948 Add-On - Warbond",
+    "pledge_date": "December 25, 2018",
+    "cost": "$3,250.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Aurora CL",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Carrack with Pisces Expedition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "19581592",
+    "pledge": "Package - Exploration Megapack 2948",
+    "pledge_date": "December 03, 2019",
+    "cost": "$1,508.00 USD"
+  },
+  {
+    "manufacturer": "Anvil",
+    "name": "Carrack Expedition with Pisces Expedition",
+    "lti": true,
+    "warbond": false,
+    "package_id": "20850318",
+    "pledge": "Standalone Ship - Anvil Carrack - LTI",
+    "pledge_date": "December 25, 2019",
+    "cost": "$395.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Aurora ES",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Aurora LN",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Aurora LX",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Aurora MR",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Constellation Andromeda",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Constellation Aquila",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Constellation Phoenix",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Constellation Phoenix Emerald",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Constellation Taurus",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Mantis",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Orion",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Polaris",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Ursa Rover",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "RSI",
+    "name": "Ursa Rover Fortuna",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Cyclone",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Cyclone AA",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Cyclone RC",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Cyclone RN",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Cyclone-TR",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Nova Tank",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Ranger CV",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Ranger RC",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Tumbril",
+    "name": "Ranger TR",
+    "lti": true,
+    "warbond": true,
+    "package_id": "20900590",
+    "pledge": "Add-Ons - Legatus 2949 Add-on - Warbond",
+    "pledge_date": "December 31, 2019",
+    "cost": "$3,700.00 USD"
+  },
+  {
+    "manufacturer": "Vanduul",
+    "name": "Captured Vanduul Scythe",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Vanduul",
+    "name": "Glaive",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  },
+  {
+    "manufacturer": "Xi'an",
+    "name": "Khartu-al",
+    "lti": true,
+    "warbond": false,
+    "package_id": "15246090",
+    "pledge": "Package - The Legatus Pack",
+    "pledge_date": "June 10, 2018",
+    "cost": "$27,096.00 USD"
+  }
+]

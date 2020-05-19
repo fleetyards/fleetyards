@@ -37,12 +37,6 @@
             >
               {{ $t('labels.3dView') }}
             </Btn>
-            <!-- <Btn
-              v-tooltip="$t('actions.export')"
-              @click.native="exportCsv"
-            >
-              <i class="fal fa-download" />
-            </Btn> -->
             <Btn
               v-tooltip="$t('labels.hangarStats')"
               :to="{ name: 'hangar-stats' }"
@@ -114,22 +108,34 @@
 
     <FilteredList>
       <template slot="actions">
+        <Btn
+          v-tooltip="$t('actions.addVehicle')"
+          :aria-label="$t('actions.addVehicle')"
+          size="small"
+          @click.native="showNewModal"
+        >
+          <i class="fas fa-plus" />
+        </Btn>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn :href="starship42Url" size="small" variant="link">
               <i class="fad fa-cube" />
               {{ $t('labels.exportStarship42') }}
             </Btn>
+
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
               {{ $t('labels.hangarStats') }}
             </Btn>
+
             <Btn :href="publicUrl" size="small" variant="link">
               <i class="fad fa-share-square" />
               {{ $t('labels.publicUrl') }}
             </Btn>
+
             <hr />
           </template>
+
           <Btn size="small" variant="link" @click.native="toggleFleetchart">
             <template v-if="fleetchartVisible">
               <i class="fas fa-th" />
@@ -143,7 +149,6 @@
 
           <Btn
             v-show="!fleetchartVisible"
-            :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
@@ -163,17 +168,6 @@
           />
 
           <Btn
-            :aria-label="$t('actions.addVehicle')"
-            size="small"
-            variant="link"
-            :inline="true"
-            @click.native="showNewModal"
-          >
-            <i class="fas fa-plus" />
-            {{ $t('actions.addVehicle') }}
-          </Btn>
-
-          <Btn
             :active="guideVisible"
             :aria-label="toggleGuideTooltip"
             size="small"
@@ -183,6 +177,20 @@
             <i class="fad fa-question" />
             {{ toggleGuideTooltip }}
           </Btn>
+
+          <hr />
+
+          <Btn
+            size="small"
+            variant="link"
+            :aria-label="$t('actions.export')"
+            @click.native="exportJson"
+          >
+            <i class="fal fa-download" />
+            {{ $t('actions.export') }}
+          </Btn>
+
+          <HangarImportBtn size="small" variant="link" />
         </BtnDropdown>
       </template>
 
@@ -279,6 +287,7 @@ import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
+import HangarImportBtn from 'frontend/components/HangarImportBtn'
 import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
@@ -303,6 +312,7 @@ export default {
     FilteredList,
     Btn,
     BtnDropdown,
+    HangarImportBtn,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartList,
@@ -543,16 +553,16 @@ export default {
       }, 300)
     },
 
-    async exportCsv() {
-      const response = await this.$api.download('vehicles/export.csv')
+    async exportJson() {
+      const response = await this.$api.download('vehicles/export')
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(new Blob([response.data]))
       link.setAttribute(
         'download',
         `fleetyards-${this.currentUser.username}-hangar-${format(
           new Date(),
-          'yyyy-MM-dd-HH-mm',
-        )}.csv`,
+          'yyyy-MM-dd',
+        )}.json`,
       )
       document.body.appendChild(link)
       link.click()
