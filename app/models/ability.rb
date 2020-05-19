@@ -61,7 +61,7 @@ class Ability
                           .pluck(:id)
 
     can %i[check invites], :api_fleet
-    can :index, :api_hangar
+    can %i[index destroy_all], :api_hangar
     can %i[accept update destroy], FleetMembership, user_id: user.id
     can %i[create], FleetMembership, fleet_id: officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids

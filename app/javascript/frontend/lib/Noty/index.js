@@ -156,6 +156,7 @@ const displayConfirm = function displayConfirm(options) {
     layout: 'center',
     confirmBtnLayout: 'danger',
     onConfirm: () => {},
+    onCancel: () => {},
     onClose: () => {},
     ...options,
   }
@@ -191,6 +192,7 @@ const displayConfirm = function displayConfirm(options) {
         'panel-btn panel-btn-inline',
         () => {
           n.close()
+          defaults.onCancel()
         },
       ),
     ],

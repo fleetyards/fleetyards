@@ -67,6 +67,9 @@ export default {
   'compare': {
     models: 'Compare',
   },
+  'hangar': {
+    destroyAll: 'Remove all Ships',
+  },
   'empty': {
     reset: 'Reset Filters/Pages',
     resetPage: 'Go to First Page',

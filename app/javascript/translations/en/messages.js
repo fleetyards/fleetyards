@@ -42,9 +42,10 @@ export default {
       'The Picture you provided has an invalid Format. Supported Formats are: %{extensions}.',
   },
   hangarImport: {
-    success: '',
-    partialSuccess: '',
-    failure: '',
+    success: 'Import completed',
+    partialSuccess:
+      'Import partially completed.<br><br>Not found Ships: <br>%{missing}',
+    failure: 'Import failed',
     invalidExtension:
       'The Import you provided has an invalid Format. Supported Formats are: %{extensions}.',
   },
@@ -137,6 +138,8 @@ export default {
     hangar: {
       import:
         'Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export, Starship42 or HangarXplor.<br><br>Do you want to continue?',
+      destroyAll:
+        "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted.",
     },
     tradeRoutes: {
       reset: 'Are you sure you want to reset all commodity prices?',

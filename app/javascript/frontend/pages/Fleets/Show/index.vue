@@ -493,13 +493,14 @@ export default {
         return
       }
 
-      if (this.fleetchartVisible) {
-        this.fetchFleetchart()
-      } else if (this.grouped) {
+      this.fetchFleetchart()
+
+      if (this.grouped) {
         this.fetchModels()
       } else {
         this.fetchVehicles()
       }
+
       this.fetchFleetCount()
     },
 

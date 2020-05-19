@@ -70,7 +70,7 @@ export default class HangarImportBtn extends Vue {
         // @ts-ignore
         this.$refs.upload.$el.querySelector('input').click()
       },
-      onClose: () => {
+      onCancel: () => {
         this.disabled = false
       },
     })
@@ -109,17 +109,47 @@ export default class HangarImportBtn extends Vue {
   async importJson(value) {
     const importFile = (value && value[0]) || {}
 
-    let uploadResponse = { error: null }
-
-    if (importFile && importFile.file) {
-      const uploadData = new FormData()
-      uploadData.append('import', importFile.file)
-
-      // @ts-ignore
-      uploadResponse = await this.$api.upload('vehicles/import', uploadData)
+    if (!importFile || !importFile.file) {
+      return
     }
 
-    return uploadResponse
+    const uploadData = new FormData()
+    uploadData.append('import', importFile.file)
+
+    // @ts-ignore
+    const response = await this.$api.upload('vehicles/import', uploadData)
+
+    this.disabled = false
+
+    if (response.error || !response.data.success) {
+      // @ts-ignore
+      this.$alert({
+        // @ts-ignore
+        text: this.$t('messages.hangarImport.failure'),
+      })
+      return
+    }
+
+    const { data } = response
+
+    if (data.missing.length) {
+      // @ts-ignore
+      this.$warning({
+        // @ts-ignore
+        text: this.$t('messages.hangarImport.partialSuccess', {
+          missing: `- ${data.missing.join('<br>- ')}`,
+        }),
+        timeout: null,
+      })
+    } else {
+      // @ts-ignore
+      this.$success({
+        // @ts-ignore
+        text: this.$t('messages.hangarImport.success'),
+      })
+    }
+
+    this.$emit('uploaded')
   }
 }
 </script>

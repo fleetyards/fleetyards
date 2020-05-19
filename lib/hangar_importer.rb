@@ -13,6 +13,7 @@ class HangarImporter
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   def run(user_id)
     missing_models = []
     imported_models = []
@@ -43,16 +44,30 @@ class HangarImporter
         }
       ]
 
+      params = {
+        notify: false,
+        user_id: user_id,
+        name: item[:custom_name],
+        flagship: item[:flagship] || false,
+        purchased: item[:purchased] || false,
+        public: item[:public] || false,
+        name_visible: item[:name_visible] || false,
+        sale_notify: item[:sale_notify] || false,
+        hangar_group_ids: HangarGroup.where(user_id: user_id, name: item[:groups]).pluck(:id),
+        model_module_ids: ModelModule.where(name: item[:modules]).pluck(:id),
+        model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
+      }
+
       model = Model.where(query).first
       if model.present?
-        Vehicle.create(model_id: model.id, user_id: user_id)
+        Vehicle.create(params.merge(model_id: model.id))
         imported_models << model.name
         next
       end
 
       model_skin = ModelSkin.where(query).first
       if model_skin.present?
-        Vehicle.create(model_id: model_skin.model_id, user_id: user_id, model_skin_id: model_skin.id)
+        Vehicle.create(params.merge(model_id: model_skin.model_id, model_skin_id: model_skin.id))
         imported_models << model_skin.name
         next
       end
@@ -60,12 +75,17 @@ class HangarImporter
       missing_models << item[:name]
     end
 
+    # rubocop:disable Rails/SkipsModelValidations
+    Vehicle.where(user_id: user_id).update_all(notify: true)
+    # rubocop:enable Rails/SkipsModelValidations
+
     {
       missing: missing_models.sort,
       imported: imported_models.sort,
       success: missing_models.size < @data.size,
     }
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
 
   private def starship_42_mapping

@@ -168,7 +168,7 @@
           />
 
           <Btn
-            :active="guideVisible"
+            :active="showGuide"
             :aria-label="toggleGuideTooltip"
             size="small"
             variant="link"
@@ -190,7 +190,20 @@
             {{ $t('actions.export') }}
           </Btn>
 
-          <HangarImportBtn size="small" variant="link" />
+          <HangarImportBtn size="small" variant="link" @uploaded="fetch" />
+
+          <hr />
+
+          <Btn
+            size="small"
+            variant="link"
+            :disabled="deleting"
+            :aria-label="$t('actions.hangar.destroyAll')"
+            @click.native="destroyAll"
+          >
+            <i class="fal fa-trash" />
+            {{ $t('actions.hangar.destroyAll') }}
+          </Btn>
         </BtnDropdown>
       </template>
 
@@ -219,7 +232,7 @@
           </div>
         </transition>
 
-        <HangarGuideBox v-if="guideVisible" />
+        <HangarGuideBox v-if="!loading && showGuide" />
 
         <FleetchartList
           v-else-if="fleetchartVisible"
@@ -332,12 +345,13 @@ export default {
   data() {
     return {
       loading: true,
+      deleting: false,
       vehicles: [],
       fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
       tooltipTrigger: 'click',
-      showGuide: false,
+      showGuide: true,
       vehiclesChannel: null,
     }
   },
@@ -371,10 +385,6 @@ export default {
       return this.vehiclesCount.groups
     },
 
-    guideVisible() {
-      return !this.ships.length || this.showGuide
-    },
-
     noVehicles() {
       return !this.vehicles.length && !this.fleetchartVisible
     },
@@ -391,7 +401,7 @@ export default {
     },
 
     toggleGuideTooltip() {
-      if (this.guideVisible) {
+      if (this.showGuide) {
         return this.$t('actions.hideGuide')
       }
       return this.$t('actions.showGuide')
@@ -486,16 +496,24 @@ export default {
 
     async fetchVehicles() {
       this.loading = true
+
       const response = await this.$api.get('vehicles', {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
+
       if (!response.error) {
         this.vehicles = response.data
+
         this.scrollToAnchor()
       }
+
       this.setPages(response.meta)
       this.resetLoading()
+
+      if (this.vehicles.length) {
+        this.showGuide = false
+      }
     },
 
     removeVehicle(vehicle) {
@@ -567,6 +585,27 @@ export default {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+    },
+
+    async destroyAll() {
+      this.deleting = true
+      this.$confirm({
+        text: this.$t('messages.confirm.hangar.destroyAll'),
+        onConfirm: async () => {
+          this.loading = true
+          const response = await this.$api.destroy('vehicles/destroy-all')
+
+          if (!response.error) {
+            this.fetch()
+          }
+
+          this.deleting = false
+          this.loading = false
+        },
+        onCancel: () => {
+          this.deleting = false
+        },
+      })
     },
   },
 }

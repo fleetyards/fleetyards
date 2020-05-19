@@ -56,14 +56,21 @@ module Api
       def import
         authorize! :index, :api_hangar
 
-        import_data = JSON.parse(params[:import].read).map do |item|
-          item.transform_keys(&:underscore)
-              .transform_keys(&:to_sym)
-        end
-
-        @response = ::HangarImporter.new(import_data, current_user.id).run
+        @response = ::HangarImporter.new(JSON.parse(params[:import].read)).run(current_user.id)
       rescue JSON::ParserError => e
         render json: ValidationError.new('vehicle.import', e), status: :bad_request
+      end
+
+      def destroy_all
+        authorize! :destroy_all, :api_hangar
+
+        # rubocop:disable Rails/SkipsModelValidations
+        current_user.vehicles.update_all(notify: false)
+        # rubocop:enable Rails/SkipsModelValidations
+
+        return if current_user.vehicles.destroy_all
+
+        render json: ValidationError.new('vehicle.destroy', nil, 'Could not destroy all Vehicles'), status: :bad_request
       end
 
       def fleetchart
