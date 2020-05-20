@@ -31,8 +31,6 @@ export default function getStorePlugins() {
         'shop.filterVisible',
         'shops.filterVisible',
         'stations.filterVisible',
-        'compare.modelA',
-        'compare.modelB',
         'search.history',
         'fleet.detailsVisible',
         'fleet.filterVisible',

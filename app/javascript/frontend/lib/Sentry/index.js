@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import * as Sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
-import Store from 'frontend/lib/Store'
 
 if (window.SENTRY_DSN) {
   Sentry.init({
@@ -14,9 +13,6 @@ if (window.SENTRY_DSN) {
         attachProps: true,
       }),
     ],
-    beforeSend(event) {
-      Store.dispatch('sentry/add', event)
-    },
   })
 
   Sentry.configureScope(scope => {
