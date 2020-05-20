@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'hangar_importer'
+
 module Api
   module V1
     class VehiclesController < ::Api::BaseController
@@ -39,14 +41,36 @@ module Api
       def export
         authorize! :index, :api_hangar
 
-        respond_to do |format|
-          format.csv do
-            send_data current_user.vehicles.to_csv, filename: "fleetyards-#{current_user.username}-hangar-#{Time.zone.now.iso8601}.csv"
-          end
-          format.all do
-            render status: :not_found
-          end
-        end
+        scope = current_user.vehicles.visible
+
+        scope = loaner_included?(scope)
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @vehicles = @q.result(distinct: true)
+                      .includes(:model)
+                      .joins(:model)
+                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+      end
+
+      def import
+        authorize! :index, :api_hangar
+
+        @response = ::HangarImporter.new(JSON.parse(params[:import].read)).run(current_user.id)
+      rescue JSON::ParserError => e
+        render json: ValidationError.new('vehicle.import', e), status: :bad_request
+      end
+
+      def destroy_all
+        authorize! :destroy_all, :api_hangar
+
+        # rubocop:disable Rails/SkipsModelValidations
+        current_user.vehicles.update_all(notify: false)
+        # rubocop:enable Rails/SkipsModelValidations
+
+        return if current_user.vehicles.destroy_all
+
+        render json: ValidationError.new('vehicle.destroy', nil, 'Could not destroy all Vehicles'), status: :bad_request
       end
 
       def fleetchart

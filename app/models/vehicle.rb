@@ -75,7 +75,7 @@ class Vehicle < ApplicationRecord
   end
 
   def broadcast_update
-    return if loaner?
+    return if loaner? || !notify?
 
     HangarChannel.broadcast_to(user, to_json)
   end
@@ -88,26 +88,10 @@ class Vehicle < ApplicationRecord
     purchased.where(purchased: true, public: true)
   end
 
-  def self.to_csv
-    attributes = [
-      { key: 'name', value: 'name' },
-      { key: 'model', value: 'model_name' },
-      { key: 'modelSlug', value: 'model_slug' },
-      { key: 'manufacturer', value: 'model_manufacturer' },
-      { key: 'purchased', value: 'purchased' },
-      { key: 'saleNotify', value: 'sale_notify' },
-      { key: 'flagship', value: 'flagship' },
-      { key: 'nameVisible', value: 'name_visible' },
-      { key: 'public', value: 'public' }
-    ]
+  def export_name
+    return model_skin.rsi_name if model_skin.present? && model_skin.rsi_id.present?
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes.map { |item| item[:key] }
-
-      all.find_each do |vehicle|
-        csv << attributes.map { |attr| vehicle.send(attr[:value]) }
-      end
-    end
+    model.rsi_name || model.name
   end
 
   def model_manufacturer

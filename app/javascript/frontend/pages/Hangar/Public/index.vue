@@ -81,6 +81,16 @@
               :count-data="vehiclesCount.classifications"
             />
           </div>
+          <div class="col-xs-12 col-md-3">
+            <div v-if="!mobile" class="page-actions">
+              <Btn
+                v-tooltip="$t('labels.poweredByStarship42')"
+                :href="starship42Url"
+              >
+                {{ $t('labels.3dView') }}
+              </Btn>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-6">
@@ -98,6 +108,7 @@
               <DownloadScreenshotBtn
                 v-if="publicFleetchartVisible"
                 element="#fleetchart"
+                size="small"
                 :filename="`${username}-hangar-fleetchart`"
               />
               <Btn size="small" @click.native="toggleFleetchart">
@@ -169,6 +180,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
 import Loader from 'frontend/components/Loader'
@@ -237,6 +249,15 @@ export default {
 
     userTitle() {
       return this.username[0].toUpperCase() + this.username.slice(1)
+    },
+
+    starship42Url() {
+      const shipList = this.fleetchartVehicles.map(
+        vehicle => vehicle.model.rsiName,
+      )
+      const data = { type: 'matrix', s: shipList }
+      const startship42Params = qs.stringify(data)
+      return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
 

@@ -68,7 +68,7 @@ module RSI
                 create_or_update_model(data)
               end
 
-      buying_options = get_buying_options(model.store_url)
+      buying_options = get_buying_options(model.store_url) unless Rails.env.test?
       if buying_options.present?
         model.pledge_price = buying_options.price if buying_options.price.present?
         model.on_sale = buying_options.on_sale
@@ -186,7 +186,7 @@ module RSI
                                   nil
                                 end
 
-      if model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at
+      if !Rails.env.test? && (model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at)
         model.store_images_updated_at = data['media'][0]['time_modified']
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
@@ -233,7 +233,7 @@ module RSI
                                   nil
                                 end
 
-      if skin.rsi_store_image.blank? || skin.store_images_updated_at != store_images_updated_at
+      if !Rails.env.test? && (skin.rsi_store_image.blank? || skin.store_images_updated_at != store_images_updated_at)
         skin.store_images_updated_at = data['media'][0]['time_modified']
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
@@ -256,7 +256,7 @@ module RSI
         code: manufacturer_data['code'].presence,
         known_for: manufacturer_data['known_for'].presence,
         description: manufacturer_data['description'].presence,
-        remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if manufacturer.logo.blank? && manufacturer_data['media'].present?)
+        remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data['media'].present?)
       )
 
       manufacturer

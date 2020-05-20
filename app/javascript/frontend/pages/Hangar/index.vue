@@ -37,12 +37,6 @@
             >
               {{ $t('labels.3dView') }}
             </Btn>
-            <!-- <Btn
-              v-tooltip="$t('actions.export')"
-              @click.native="exportCsv"
-            >
-              <i class="fal fa-download" />
-            </Btn> -->
             <Btn
               v-tooltip="$t('labels.hangarStats')"
               :to="{ name: 'hangar-stats' }"
@@ -114,22 +108,34 @@
 
     <FilteredList>
       <template slot="actions">
+        <Btn
+          v-tooltip="$t('actions.addVehicle')"
+          :aria-label="$t('actions.addVehicle')"
+          size="small"
+          @click.native="showNewModal"
+        >
+          <i class="fas fa-plus" />
+        </Btn>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn :href="starship42Url" size="small" variant="link">
               <i class="fad fa-cube" />
               {{ $t('labels.exportStarship42') }}
             </Btn>
+
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
               {{ $t('labels.hangarStats') }}
             </Btn>
+
             <Btn :href="publicUrl" size="small" variant="link">
               <i class="fad fa-share-square" />
               {{ $t('labels.publicUrl') }}
             </Btn>
+
             <hr />
           </template>
+
           <Btn size="small" variant="link" @click.native="toggleFleetchart">
             <template v-if="fleetchartVisible">
               <i class="fas fa-th" />
@@ -143,7 +149,6 @@
 
           <Btn
             v-show="!fleetchartVisible"
-            :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
@@ -163,18 +168,7 @@
           />
 
           <Btn
-            :aria-label="$t('actions.addVehicle')"
-            size="small"
-            variant="link"
-            :inline="true"
-            @click.native="showNewModal"
-          >
-            <i class="fas fa-plus" />
-            {{ $t('actions.addVehicle') }}
-          </Btn>
-
-          <Btn
-            :active="guideVisible"
+            :active="showGuide"
             :aria-label="toggleGuideTooltip"
             size="small"
             variant="link"
@@ -182,6 +176,33 @@
           >
             <i class="fad fa-question" />
             {{ toggleGuideTooltip }}
+          </Btn>
+
+          <hr />
+
+          <Btn
+            size="small"
+            variant="link"
+            :aria-label="$t('actions.export')"
+            @click.native="exportJson"
+          >
+            <i class="fal fa-download" />
+            {{ $t('actions.export') }}
+          </Btn>
+
+          <HangarImportBtn size="small" variant="link" @uploaded="fetch" />
+
+          <hr />
+
+          <Btn
+            size="small"
+            variant="link"
+            :disabled="deleting"
+            :aria-label="$t('actions.hangar.destroyAll')"
+            @click.native="destroyAll"
+          >
+            <i class="fal fa-trash" />
+            {{ $t('actions.hangar.destroyAll') }}
           </Btn>
         </BtnDropdown>
       </template>
@@ -211,7 +232,7 @@
           </div>
         </transition>
 
-        <HangarGuideBox v-if="guideVisible" />
+        <HangarGuideBox v-if="!loading && showGuide" />
 
         <FleetchartList
           v-else-if="fleetchartVisible"
@@ -279,6 +300,7 @@ import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
+import HangarImportBtn from 'frontend/components/HangarImportBtn'
 import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
@@ -303,6 +325,7 @@ export default {
     FilteredList,
     Btn,
     BtnDropdown,
+    HangarImportBtn,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartList,
@@ -322,12 +345,13 @@ export default {
   data() {
     return {
       loading: true,
+      deleting: false,
       vehicles: [],
       fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
       tooltipTrigger: 'click',
-      showGuide: false,
+      showGuide: true,
       vehiclesChannel: null,
     }
   },
@@ -361,10 +385,6 @@ export default {
       return this.vehiclesCount.groups
     },
 
-    guideVisible() {
-      return !this.ships.length || this.showGuide
-    },
-
     noVehicles() {
       return !this.vehicles.length && !this.fleetchartVisible
     },
@@ -381,7 +401,7 @@ export default {
     },
 
     toggleGuideTooltip() {
-      if (this.guideVisible) {
+      if (this.showGuide) {
         return this.$t('actions.hideGuide')
       }
       return this.$t('actions.showGuide')
@@ -476,16 +496,24 @@ export default {
 
     async fetchVehicles() {
       this.loading = true
+
       const response = await this.$api.get('vehicles', {
         q: this.$route.query.q,
         page: this.$route.query.page,
       })
+
       if (!response.error) {
         this.vehicles = response.data
+
         this.scrollToAnchor()
       }
+
       this.setPages(response.meta)
       this.resetLoading()
+
+      if (this.vehicles.length) {
+        this.showGuide = false
+      }
     },
 
     removeVehicle(vehicle) {
@@ -543,20 +571,41 @@ export default {
       }, 300)
     },
 
-    async exportCsv() {
-      const response = await this.$api.download('vehicles/export.csv')
+    async exportJson() {
+      const response = await this.$api.download('vehicles/export')
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(new Blob([response.data]))
       link.setAttribute(
         'download',
         `fleetyards-${this.currentUser.username}-hangar-${format(
           new Date(),
-          'yyyy-MM-dd-HH-mm',
-        )}.csv`,
+          'yyyy-MM-dd',
+        )}.json`,
       )
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+    },
+
+    async destroyAll() {
+      this.deleting = true
+      this.$confirm({
+        text: this.$t('messages.confirm.hangar.destroyAll'),
+        onConfirm: async () => {
+          this.loading = true
+          const response = await this.$api.destroy('vehicles/destroy-all')
+
+          if (!response.error) {
+            this.fetch()
+          }
+
+          this.deleting = false
+          this.loading = false
+        },
+        onCancel: () => {
+          this.deleting = false
+        },
+      })
     },
   },
 }

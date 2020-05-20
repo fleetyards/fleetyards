@@ -2,6 +2,8 @@
   %td.preview.text-center
     = image_tag model.store_image.url
   %td.preview.text-center
+    = image_tag model.rsi_store_image.url
+  %td.preview.text-center
     - if model.fleetchart_image.present?
       = image_tag model.fleetchart_image.url
   %td

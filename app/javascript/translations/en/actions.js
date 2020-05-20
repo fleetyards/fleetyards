@@ -21,6 +21,7 @@ export default {
   'more': 'More...',
   'showMore': 'Show more',
   'export': 'Export',
+  'import': 'Import',
   'here': 'here',
   'backToTop': 'Back to Top',
   'cancel': 'Cancel',
@@ -65,6 +66,9 @@ export default {
   'addUpgrade': 'Add another Upgrade',
   'compare': {
     models: 'Compare',
+  },
+  'hangar': {
+    destroyAll: 'Remove all Ships',
   },
   'empty': {
     reset: 'Reset Filters/Pages',

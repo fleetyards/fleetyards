@@ -4,7 +4,7 @@ one:
   name: MyString
   slug: MyString
   description: MyString
-  rsi_id: 1
+  rsi_id: 15000
   pledge_price: 9.99
   store_image: MyString
   active: false
@@ -16,7 +16,7 @@ two:
   name: MyString
   slug: MyString
   description: MyString
-  rsi_id: 1
+  rsi_id: 15000
   pledge_price: 9.99
   store_image: MyString
   active: false

@@ -229,6 +229,10 @@ export default {
     newAvatar() {
       return (this.files && this.files[0]) || {}
     },
+
+    fileExtensionsList() {
+      return this.fileExtensions.split(',')
+    },
   },
 
   watch: {
@@ -308,8 +312,16 @@ export default {
 
     inputFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
-        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-          this.alert('Your choice is not a picture')
+        if (
+          !this.fileExtensionsList.some(extension =>
+            newFile.name.endsWith(extension),
+          )
+        ) {
+          this.$alert({
+            text: this.$t('messages.avatarUpload.invalidExtension', {
+              extensions: this.fileExtensions,
+            }),
+          })
           return prevent()
         }
       }
