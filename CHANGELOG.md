@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.76.0](https://github.com/fleetyards/fleetyards/compare/v3.75.0...v3.76.0) (2020-05-20)
+
+
+### Features
+
+* add export and import to hangar ([#1207](https://github.com/fleetyards/fleetyards/issues/1207)) ([e1f4c18](https://github.com/fleetyards/fleetyards/commit/e1f4c185b4e1d9ba5b916fde7e0019857e29a505))
+
 ## [3.75.0](https://github.com/fleetyards/fleetyards/compare/v3.74.3...v3.75.0) (2020-05-18)
 
 
