@@ -19,16 +19,16 @@
           </div>
         </div>
         <div
-          v-if="vehicle && vehicle.model.hasSkins"
+          v-if="vehicle && vehicle.model.hasPaints"
           class="col-xs-12 col-sm-6"
         >
           <div class="form-group">
             <FilterGroup
-              :key="`skins-${vehicle.model.id}`"
-              v-model="form.modelSkinId"
-              translation-key="vehicle.modelSkinSelect"
-              :fetch-path="`models/${vehicle.model.slug}/skins`"
-              name="modelSkinId"
+              :key="`paints-${vehicle.model.id}`"
+              v-model="form.modelPaintId"
+              translation-key="vehicle.modelPaintSelect"
+              :fetch-path="`models/${vehicle.model.slug}/paints`"
+              name="modelPaintId"
               label-attr="name"
               value-attr="id"
               icon-attr="storeImageSmall"
@@ -162,7 +162,7 @@ export default {
         saleNotify: this.vehicle.saleNotify,
         nameVisible: this.vehicle.nameVisible,
         hangarGroupIds: this.vehicle.hangarGroupIds,
-        modelSkinId: this.vehicle.skin?.id || null,
+        modelPaintId: this.vehicle.paint?.id || null,
       }
     },
   },

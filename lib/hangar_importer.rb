@@ -65,10 +65,10 @@ class HangarImporter
         next
       end
 
-      model_skin = ModelSkin.where(query).first
-      if model_skin.present?
-        Vehicle.create(params.merge(model_id: model_skin.model_id, model_skin_id: model_skin.id))
-        imported_models << model_skin.name
+      model_paint = ModelPaint.where(query).first
+      if model_paint.present?
+        Vehicle.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+        imported_models << model_paint.name
         next
       end
 

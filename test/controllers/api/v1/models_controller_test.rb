@@ -67,7 +67,7 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
-          'hasSkins' => false,
+          'hasPaints' => false,
           'lastUpdatedAt' => origin.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if origin.last_updated_at.present?),
           'manufacturer' => {
@@ -125,7 +125,7 @@ module Api
           'hasVideos' => false,
           'hasModules' => false,
           'hasUpgrades' => false,
-          'hasSkins' => false,
+          'hasPaints' => false,
           'lastUpdatedAt' => Model.last.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.last.last_updated_at&.utc, format: :label) if Model.last.last_updated_at.present?),
           'manufacturer' => {

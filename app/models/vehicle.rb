@@ -8,7 +8,7 @@ class Vehicle < ApplicationRecord
   scope :visible, -> { where(hidden: false) }
 
   belongs_to :model
-  belongs_to :model_skin, optional: true
+  belongs_to :model_paint, optional: true
   belongs_to :user
 
   has_many :task_forces, dependent: :destroy
@@ -89,7 +89,7 @@ class Vehicle < ApplicationRecord
   end
 
   def export_name
-    return model_skin.rsi_name if model_skin.present? && model_skin.rsi_id.present?
+    return model_paint.rsi_name if model_paint.present? && model_paint.rsi_id.present?
 
     model.rsi_name || model.name
   end

@@ -61,8 +61,8 @@ class Model < ApplicationRecord
            through: :upgrade_kits,
            source: :model_upgrade
 
-  has_many :skins,
-           class_name: 'ModelSkin',
+  has_many :paints,
+           class_name: 'ModelPaint',
            dependent: :destroy,
            inverse_of: :model
 

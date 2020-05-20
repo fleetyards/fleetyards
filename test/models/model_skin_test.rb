@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class ModelSkinTest < ActiveSupport::TestCase
+class ModelPaintTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

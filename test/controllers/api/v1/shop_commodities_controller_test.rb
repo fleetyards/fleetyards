@@ -98,7 +98,7 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
-            'hasSkins' => false,
+            'hasPaints' => false,
             'lastUpdatedAt' => explorer.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(explorer.commodity_item.last_updated_at&.utc, format: :label) if explorer.commodity_item.last_updated_at.present?),
             'manufacturer' => {
@@ -194,7 +194,7 @@ module Api
             'hasVideos' => false,
             'hasModules' => false,
             'hasUpgrades' => false,
-            'hasSkins' => false,
+            'hasPaints' => false,
             'lastUpdatedAt' => andromeda.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(andromeda.commodity_item.last_updated_at&.utc, format: :label) if andromeda.commodity_item.last_updated_at.present?),
             'manufacturer' => {

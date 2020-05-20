@@ -227,13 +227,13 @@ module Api
                                .active
       end
 
-      def skins
+      def paints
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        @skins = model.skins
-                      .visible
-                      .active
+        @paints = model.paints
+                       .visible
+                       .active
       end
 
       def store_image

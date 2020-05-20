@@ -128,7 +128,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
-              'hasSkins' => false,
+              'hasPaints' => false,
               'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :label) if data.vehicles.first.model.last_updated_at.present?),
               'manufacturer' => {
@@ -140,7 +140,7 @@ module Api
               'createdAt' => data.vehicles.first.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
             },
-            'skin' => nil,
+            'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
             'modelModuleIds' => data.vehicles.first.model_module_ids,
@@ -203,7 +203,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
-              'hasSkins' => false,
+              'hasPaints' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
@@ -215,7 +215,7 @@ module Api
               'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
-            'skin' => nil,
+            'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,
@@ -291,7 +291,7 @@ module Api
               'hasVideos' => false,
               'hasModules' => false,
               'hasUpgrades' => false,
-              'hasSkins' => false,
+              'hasPaints' => false,
               'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
               'manufacturer' => {
@@ -303,7 +303,7 @@ module Api
               'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
               'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
             },
-            'skin' => nil,
+            'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
             'modelModuleIds' => data.vehicles.last.model_module_ids,

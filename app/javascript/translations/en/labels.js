@@ -171,7 +171,7 @@ export default {
   'model': {
     variants: 'Variants',
     loaners: 'Loaners',
-    skins: 'Skins',
+    paints: 'Paints',
     modules: 'Modules',
     upgrades: 'Upgrade-Kits',
     brochure: 'Brochure',
@@ -259,8 +259,8 @@ export default {
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',
     selectGroup: 'Select a Group',
-    modelSkinSelect: {
-      nullablePrompt: 'Select a Skin',
+    modelPaintSelect: {
+      nullablePrompt: 'Select a Paint',
     },
   },
   'image': {

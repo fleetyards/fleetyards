@@ -1,30 +1,30 @@
 - content_for :title do
-  = I18n.t(:"title.model_skin.index")
-.row#model_skins
+  = I18n.t(:"title.model_paint.index")
+.row#model_paints
   .col-xs-12.col-md-12
 
     .row
       .col-xs-12.col-md-8
         %h1
-          = I18n.t(:"headlines.admin.model_skin.index")
+          = I18n.t(:"headlines.admin.model_paint.index")
 
       .col-xs-12.col-md-4
         .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.model_skin.new"), new_admin_model_skin_path, 'data-turbolinks': "false", class: "btn btn-default"
+          = link_to I18n.t(:"actions.admin.model_paint.new"), new_admin_model_paint_path, 'data-turbolinks': "false", class: "btn btn-default"
 
     .row
       .col-xs-12.col-md-6
         %p
-          = @model_skins.count
+          = @model_paints.count
           of
-          = @model_skins.total_count
+          = @model_paints.total_count
       .col-xs-12.col-md-6
-        = paginate @model_skins
+        = paginate @model_paints
 
     .row
       .col-xs-12.col-md-9
         .panel.panel-default
-          = render partial: "admin/model_skins/table", :@model_skins => @model_skins
+          = render partial: "admin/model_paints/table", :@model_paints => @model_paints
 
       .col-xs-12.col-md-3
         = search_form_for [:admin, @q] do |f|
@@ -46,4 +46,4 @@
     .row
       .col-xs-12.col-md-6
       .col-xs-12.col-md-6
-        = paginate @model_skins
+        = paginate @model_paints
