@@ -9,14 +9,14 @@
               vid="group-name"
               rules="required|alpha_dash"
               :name="$t('labels.hangarGroup.name')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="group-name"
                 v-model="form.name"
                 translation-key="name"
                 :error="errors[0]"
-                no-label
+                :no-label="true"
               />
             </ValidationProvider>
           </div>
@@ -26,8 +26,8 @@
               vid="color"
               rules="required"
               :name="$t('labels.hangarGroup.color')"
-              immediate
-              slim
+              :immediate="true"
+              :slim="true"
             >
               <div
                 v-tooltip.right="errors[0]"
@@ -37,9 +37,8 @@
                 <VSwatches
                   v-model="form.color"
                   name="color"
-                  colors="material-dark"
                   background-color="transparent"
-                  inline
+                  :inline="true"
                 />
               </div>
             </ValidationProvider>

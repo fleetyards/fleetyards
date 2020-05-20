@@ -45,12 +45,13 @@ module Api
 
         scope = loaner_included?(scope)
 
+        vehicle_query_params['sorts'] = 'model_name asc'
+
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
                       .joins(:model)
-                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       def import
