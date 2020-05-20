@@ -5,5 +5,5 @@ type Vehicle = {
   loaner: boolean
   modelModuleIds: string[]
   modelUpgradeIds: string[]
-  skin: ModelSkin
+  paint: ModelPaint
 }

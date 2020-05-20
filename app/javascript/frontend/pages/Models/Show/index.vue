@@ -163,26 +163,26 @@
       <Loader :loading="loading" />
     </div>
     <div class="row">
-      <div class="col-xs-12 skins">
-        <h2 v-if="skins.length" class="text-uppercase">
-          {{ $t('labels.model.skins') }}
+      <div class="col-xs-12 paints">
+        <h2 v-if="paints.length" class="text-uppercase">
+          {{ $t('labels.model.paints') }}
         </h2>
         <transition-group
-          v-if="skins.length"
+          v-if="paints.length"
           name="fade-list"
           class="flex-row"
           tag="div"
           appear
         >
           <div
-            v-for="skin in skins"
-            :key="`skin-${skin.slug}`"
+            v-for="paint in paints"
+            :key="`paint-${paint.slug}`"
             class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
           >
-            <TeaserPanel :item="skin" :fullscreen="true" />
+            <TeaserPanel :item="paint" :fullscreen="true" />
           </div>
         </transition-group>
-        <Loader :loading="loadingSkins" :fixed="true" />
+        <Loader :loading="loadingPaints" :fixed="true" />
       </div>
     </div>
     <div class="row">
@@ -305,13 +305,13 @@ export default {
       loading: false,
       loadingVariants: false,
       loadingLoaners: false,
-      loadingSkins: false,
+      loadingPaints: false,
       loadingModules: false,
       loadingUpgrades: false,
       show3d: false,
       model: null,
       variants: [],
-      skins: [],
+      paints: [],
       loaners: [],
       modules: [],
       upgrades: [],
@@ -383,7 +383,7 @@ export default {
       this.fetch()
       this.fetchModules()
       this.fetchUpgrades()
-      this.fetchSkins()
+      this.fetchPaints()
       this.fetchVariants()
       this.fetchLoaners()
     },
@@ -436,7 +436,7 @@ export default {
     fetchExtras() {
       this.fetchModules()
       this.fetchUpgrades()
-      this.fetchSkins()
+      this.fetchPaints()
       this.fetchVariants()
       this.fetchLoaners()
     },
@@ -463,14 +463,14 @@ export default {
       }
     },
 
-    async fetchSkins() {
-      this.loadingSkins = true
+    async fetchPaints() {
+      this.loadingPaints = true
       const response = await this.$api.get(
-        `models/${this.$route.params.slug}/skins`,
+        `models/${this.$route.params.slug}/paints`,
       )
-      this.loadingSkins = false
+      this.loadingPaints = false
       if (!response.error) {
-        this.skins = response.data
+        this.paints = response.data
       }
     },
 

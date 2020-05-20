@@ -10,7 +10,7 @@
         %th=sort_link(@q, :active)
         %th.actions.actions-two=I18n.t(:"labels.table.actions")
     %tbody
-      = render partial: "admin/model_skins/show", collection: @model_skins, as: :model_skin
+      = render partial: "admin/model_paints/show", collection: @model_paints, as: :model_paint
 
-      - if @model_skins.blank?
-        = render "shared/tables/blank", count: 6, resource: "model_skins"
+      - if @model_paints.blank?
+        = render "shared/tables/blank", count: 6, resource: "model_paints"

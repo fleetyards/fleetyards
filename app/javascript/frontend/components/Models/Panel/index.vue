@@ -208,8 +208,8 @@ export default {
     },
 
     storeImage() {
-      if (this.vehicle && this.vehicle.skin) {
-        return this.vehicle.skin.storeImageMedium
+      if (this.vehicle && this.vehicle.paint) {
+        return this.vehicle.paint.storeImageMedium
       }
 
       if (this.vehicle && this.vehicle.upgrade) {

@@ -1,3 +1,3 @@
-type ModelSkin = {
+type ModelPaint = {
   id: string
 }

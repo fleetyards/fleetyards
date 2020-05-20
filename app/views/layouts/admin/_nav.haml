@@ -8,8 +8,8 @@
     %ul.dropdown-menu
       %li{class: active_nav?('admin-models')}
         = link_to Model.name.humanize.pluralize, admin_models_path
-      %li{class: active_nav?('admin-model_skins')}
-        = link_to ModelSkin.name.humanize.pluralize, admin_model_skins_path
+      %li{class: active_nav?('admin-model_paints')}
+        = link_to ModelPaint.name.humanize.pluralize, admin_model_paints_path
       %li{class: active_nav?('admin-model_modules')}
         = link_to ModelModule.name.humanize.pluralize, admin_model_modules_path
       %li{class: active_nav?('admin-model_upgrades')}

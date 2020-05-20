@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_215248) do
+ActiveRecord::Schema.define(version: 2020_05_20_073117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -320,7 +320,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_215248) do
     t.decimal "pledge_price", precision: 15, scale: 2
   end
 
-  create_table "model_skins", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "model_paints", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "model_id"
     t.string "slug"
@@ -658,7 +658,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_215248) do
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
     t.boolean "hidden", default: false
-    t.uuid "model_skin_id"
+    t.uuid "model_paint_id"
     t.boolean "notify", default: true
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id"

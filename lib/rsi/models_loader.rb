@@ -61,9 +61,9 @@ module RSI
     end
 
     def sync_model(data)
-      model_for_skin = find_model_for_skin(data)
-      model = if model_for_skin.present?
-                create_or_update_skin(data, model_for_skin.id)
+      model_for_paint = find_model_for_paint(data)
+      model = if model_for_paint.present?
+                create_or_update_paint(data, model_for_paint.id)
               else
                 create_or_update_model(data)
               end
@@ -74,7 +74,7 @@ module RSI
         model.on_sale = buying_options.on_sale
       end
 
-      unless skin?(data)
+      unless paint?(data)
         model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
 
         model.hardpoints.where(rsi_key: nil).destroy_all
@@ -203,8 +203,8 @@ module RSI
     # rubocop:enable Metrics/CyclomaticComplexity
 
     # rubocop:disable Metrics/CyclomaticComplexity
-    private def create_or_update_skin(data, model_id)
-      skin = ModelSkin.find_or_create_by!(rsi_id: data['id'])
+    private def create_or_update_paint(data, model_id)
+      paint = ModelPaint.find_or_create_by!(rsi_id: data['id'])
 
       updates = {
         last_updated_at: new_time_modified(data),
@@ -212,39 +212,39 @@ module RSI
       }
 
       updates[:rsi_description] = data['description']
-      updates[:description] = data['description'] if (model_updated(skin, data) && data['description'] != skin.rsi_description) || skin.description.blank?
+      updates[:description] = data['description'] if (model_updated(paint, data) && data['description'] != paint.rsi_description) || paint.description.blank?
 
       updates[:rsi_store_url] = data['url']
-      updates[:store_url] = data['url'] if (model_updated(skin, data) && data['url'] != skin.rsi_store_url) || skin.store_url.blank?
+      updates[:store_url] = data['url'] if (model_updated(paint, data) && data['url'] != paint.rsi_store_url) || paint.store_url.blank?
 
-      if model_updated(skin, data) || skin.production_status.blank?
+      if model_updated(paint, data) || paint.production_status.blank?
         updates[:production_status] = data['production_status']
         updates[:production_note] = data['production_note']
       end
 
       updates[:rsi_name] = data['name'].strip
-      updates[:starship42_slug] = data['name'].strip if skin.starship42_slug.blank?
-      updates[:name] = strip_name(data['name']) if (model_updated(skin, data) && data['name'] != skin.rsi_name) || skin.name.blank?
+      updates[:starship42_slug] = data['name'].strip if paint.starship42_slug.blank?
+      updates[:name] = strip_name(data['name']) if (model_updated(paint, data) && data['name'] != paint.rsi_name) || paint.name.blank?
 
-      skin.update(updates)
+      paint.update(updates)
       store_images_updated_at = begin
                                   Time.zone.parse(data['media'][0]['time_modified'])
                                 rescue StandardError
                                   nil
                                 end
 
-      if !Rails.env.test? && (skin.rsi_store_image.blank? || skin.store_images_updated_at != store_images_updated_at)
-        skin.store_images_updated_at = data['media'][0]['time_modified']
+      if !Rails.env.test? && (paint.rsi_store_image.blank? || paint.store_images_updated_at != store_images_updated_at)
+        paint.store_images_updated_at = data['media'][0]['time_modified']
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          skin.remote_rsi_store_image_url = store_image_url
-          skin.remote_store_image_url = store_image_url if skin.store_image.blank?
-          skin.save
+          paint.remote_rsi_store_image_url = store_image_url
+          paint.remote_store_image_url = store_image_url if paint.store_image.blank?
+          paint.save
         end
       end
 
-      skin
+      paint
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 
@@ -325,12 +325,12 @@ module RSI
       nil
     end
 
-    private def skin?(data)
-      skin_mapping.any? { |item| item[:rsi_id] == data['id'].to_i }
+    private def paint?(data)
+      paint_mapping.any? { |item| item[:rsi_id] == data['id'].to_i }
     end
 
     # rubocop:disable Metrics/MethodLength
-    private def skin_mapping
+    private def paint_mapping
       [
         {
           # Carrack
@@ -399,7 +399,7 @@ module RSI
         rsi_id: 205,
         replacements: [{
           rsi_id: 62,
-          skin_rsi_id: 205,
+          paint_rsi_id: 205,
         }, {
           rsi_id: 192,
         }],
@@ -417,8 +417,8 @@ module RSI
       blacklist.find { |item| item[:rsi_id] == rsi_id.to_i }
     end
 
-    private def find_model_for_skin(data)
-      mapping = skin_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
+    private def find_model_for_paint(data)
+      mapping = paint_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
 
       return if mapping.blank?
 
@@ -434,12 +434,12 @@ module RSI
     end
 
     def cleanup_variants
-      ModelSkin.where.not(rsi_id: nil).find_each do |skin|
-        model = Model.find_by(rsi_id: skin.rsi_id)
+      ModelPaint.where.not(rsi_id: nil).find_each do |paint|
+        model = Model.find_by(rsi_id: paint.rsi_id)
         next if model.blank?
 
         Vehicle.where(model_id: model.id).find_each do |vehicle|
-          vehicle.update(model_id: skin.model_id, model_skin_id: skin.id)
+          vehicle.update(model_id: paint.model_id, model_paint_id: paint.id)
         end
 
         model.destroy
@@ -461,9 +461,9 @@ module RSI
             replacement_model = replacement[:model]
             next if replacement_model.blank?
 
-            skin = ModelSkin.find_by!(rsi_id: replacement[:skin_rsi_id]) if replacement[:skin_rsi_id].present?
+            paint = ModelPaint.find_by!(rsi_id: replacement[:paint_rsi_id]) if replacement[:paint_rsi_id].present?
 
-            Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_skin_id: skin&.id)
+            Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_paint_id: paint&.id)
           end
         end
 

@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.model_paint.edit")
+.row
+  .col-xs-12.col-md-12
+
+    .row
+      .col-xs-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.model_paint.edit", model_paint: model_paint.name)
+
+      .col-xs-12.col-md-4
+        .btn-group.pull-right.resource-nav
+          = link_to I18n.t(:"actions.back"), admin_model_paints_path(params: index_back_params, anchor: model_paint.id), class: "btn btn-default"
+
+    .well
+      = render "form"

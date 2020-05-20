@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ModelSkin < ApplicationRecord
+class ModelPaint < ApplicationRecord
   paginates_per 30
 
   belongs_to :model, optional: true, touch: true

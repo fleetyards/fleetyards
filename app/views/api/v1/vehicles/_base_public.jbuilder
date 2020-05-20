@@ -6,10 +6,10 @@ json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end
 json.model nil if vehicle.model.blank?
-json.skin do
-  json.partial! 'api/v1/model_skins/minimal', model_skin: vehicle.model_skin if vehicle.model_skin.present?
+json.paint do
+  json.partial! 'api/v1/model_paints/minimal', model_paint: vehicle.model_paint if vehicle.model_paint.present?
 end
-json.skin nil if vehicle.model_skin.blank?
+json.paint nil if vehicle.model_paint.blank?
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.partial! 'api/shared/dates', record: vehicle
