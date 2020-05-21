@@ -9,7 +9,7 @@ export default {
         return []
       }
 
-      return this.currentUser.fleets
+      return this.currentUser.fleets || []
     },
 
     myFleets() {

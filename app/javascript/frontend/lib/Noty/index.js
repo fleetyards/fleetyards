@@ -74,6 +74,10 @@ const displayNativeNotification = function displayNativeNotification(message) {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker.ready.then(
       registration => {
+        if (!registration.showNotification) {
+          return
+        }
+
         registration.showNotification(message, {
           icon: `${window.FRONTEND_ENDPOINT}/images/favicon.png`,
           vibrate: [200, 100, 200, 100, 200, 100, 200],

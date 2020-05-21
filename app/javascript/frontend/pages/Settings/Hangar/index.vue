@@ -1,29 +1,56 @@
 <template>
-  <form @submit.prevent="submit">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>{{ $t('headlines.settings.hangar') }}</h1>
+  <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+    <form @submit.prevent="handleSubmit(submit)">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>{{ $t('headlines.settings.hangar') }}</h1>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 col-lg-6">
-        <Checkbox
-          id="saleNotify"
-          v-model="form.saleNotify"
-          :label="$t('labels.user.saleNotify')"
-        />
-        <Checkbox
-          id="publicHangar"
-          v-model="form.publicHangar"
-          :label="$t('labels.user.publicHangar')"
-        />
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="saleNotify"
+            :name="$t('labels.user.saleNotify')"
+            :slim="true"
+          >
+            <div
+              :class="{ 'has-error has-feedback': errors[0] }"
+              class="form-group"
+            >
+              <Checkbox
+                id="saleNotify"
+                v-model="form.saleNotify"
+                :label="$t('labels.user.saleNotify')"
+              />
+            </div>
+          </ValidationProvider>
+
+          <ValidationProvider
+            v-slot="{ errors }"
+            vid="publicHangar"
+            :name="$t('labels.user.publicHangar')"
+            :slim="true"
+          >
+            <div
+              :class="{ 'has-error has-feedback': errors[0] }"
+              class="form-group"
+            >
+              <Checkbox
+                id="publicHangar"
+                v-model="form.publicHangar"
+                :label="$t('labels.user.publicHangar')"
+              />
+            </div>
+          </ValidationProvider>
+        </div>
       </div>
-    </div>
-    <br />
-    <Btn :loading="submitting" type="submit" size="large">
-      {{ $t('actions.save') }}
-    </Btn>
-  </form>
+      <br />
+      <Btn :loading="submitting" type="submit" size="large">
+        {{ $t('actions.save') }}
+      </Btn>
+    </form>
+  </ValidationObserver>
 </template>
 
 <script>
@@ -73,15 +100,15 @@ export default {
     },
 
     async submit() {
-      const result = await this.$validator.validateAll()
-      if (!result) {
-        return
-      }
       this.submitting = true
+
       const response = await this.$api.put('users/current', this.form)
+
       this.submitting = false
+
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
+
         this.$success({
           text: this.$t('messages.updateProfile.success'),
         })

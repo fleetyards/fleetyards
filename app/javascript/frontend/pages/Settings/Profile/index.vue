@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" slim>
+  <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-md-12">
@@ -13,7 +13,7 @@
             v-slot="{ errors }"
             vid="logo"
             :name="$t('labels.user.avatar')"
-            slim
+            :slim="true"
           >
             <div
               :class="{ 'has-error has-feedback': errors[0] }"
@@ -47,7 +47,7 @@
             vid="username"
             rules="required|alpha_dash"
             :name="$t('labels.username')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="username"
@@ -62,7 +62,7 @@
             vid="email"
             rules="required|email"
             :name="$t('labels.email')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="email"
@@ -89,7 +89,7 @@
             vid="homepage"
             rules="url"
             :name="$t('labels.homepage')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="homepage"
@@ -105,7 +105,7 @@
             vid="discord"
             rules="url"
             :name="$t('labels.discord')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="discord"
@@ -125,7 +125,7 @@
             vid="youtube"
             rules="url"
             :name="$t('labels.youtube')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="youtube"
@@ -142,7 +142,7 @@
             vid="twitch"
             rules="url"
             :name="$t('labels.twitch')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="twitch"
@@ -159,7 +159,7 @@
             vid="guilded"
             rules="url"
             :name="$t('labels.guilded')"
-            slim
+            :slim="true"
           >
             <FormInput
               id="guilded"
