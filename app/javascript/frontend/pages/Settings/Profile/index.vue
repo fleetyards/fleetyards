@@ -32,7 +32,7 @@
               <Avatar
                 :avatar="avatarUrl"
                 size="large"
-                editable
+                :editable="true"
                 @upload="selectAvatar"
                 @destroy="removeAvatar"
               />
