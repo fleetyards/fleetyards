@@ -94,11 +94,17 @@ export default {
     },
 
     isFilterSelected() {
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+      const query = { ...this.$route.query.q }
       Object.keys(query)
         .filter(key => !query[key] || query[key].length === 0)
         .forEach(key => delete query[key])
       return Object.keys(query).length > 0
+    },
+  },
+
+  watch: {
+    $route() {
+      this.saveFilters()
     },
   },
 
@@ -110,9 +116,24 @@ export default {
     }
 
     this.toggleFullscreen()
+    this.saveFilters()
   },
 
   methods: {
+    saveFilters() {
+      if (this.isFilterSelected) {
+        this.$store.commit('setFilters', {
+          [this.$route.name]: { ...this.$route.query.q },
+        })
+
+        return
+      }
+
+      this.$store.commit('setFilters', {
+        [this.$route.name]: null,
+      })
+    },
+
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },

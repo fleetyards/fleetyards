@@ -67,7 +67,10 @@
           <template v-else>
             <NavItem
               v-if="isAuthenticated || !hangarPreview"
-              :to="{ name: 'hangar' }"
+              :to="{
+                name: 'hangar',
+                query: filterFor('hangar'),
+              }"
               :label="$t('nav.hangar')"
               icon="fad fa-bookmark"
             />
@@ -78,7 +81,10 @@
               icon="fal fa-bookmark"
             />
             <NavItem
-              :to="{ name: 'models' }"
+              :to="{
+                name: 'models',
+                query: filterFor('models'),
+              }"
               :label="$t('nav.models')"
               icon="fad fa-starship"
             />
@@ -92,9 +98,7 @@
             <NavItem
               :to="{
                 name: 'trade-routes',
-                query: {
-                  q: this.$store.state.filters['trade-routes'],
-                },
+                query: filterFor('trade-routes'),
               }"
               :label="$t('nav.tradeRoutes')"
               icon="fad fa-pallet-alt"
@@ -148,6 +152,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['filters']),
+
     ...mapGetters('app', ['navCollapsed', 'isUpdateAvailable', 'gitRevision']),
 
     ...mapGetters('hangar', {
@@ -205,6 +211,16 @@ export default {
   },
 
   methods: {
+    filterFor(route) {
+      if (!this.filters[route]) {
+        return null
+      }
+
+      return {
+        q: this.filters[route],
+      }
+    },
+
     documentClick(event) {
       const element = this.$refs.navigation
       const { target } = event

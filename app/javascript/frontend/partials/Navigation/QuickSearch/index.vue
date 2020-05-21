@@ -54,7 +54,7 @@ export default {
 
   methods: {
     queryParams() {
-      return JSON.parse(JSON.stringify(this.$route.query.q || {}))
+      return { ...this.$route.query.q }
     },
   },
 }

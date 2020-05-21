@@ -140,7 +140,7 @@ export default {
   mixins: [MetaInfo],
 
   data() {
-    const query = JSON.parse(JSON.stringify(this.$route.query || {}))
+    const query = { ...this.$route.query }
 
     return {
       scrolledTop: false,
@@ -161,7 +161,7 @@ export default {
     },
 
     sortedModels() {
-      const models = JSON.parse(JSON.stringify(this.models))
+      const models = [...this.models]
 
       return models.sort((a, b) => {
         if (a.name < b.name) {

@@ -120,7 +120,6 @@ export default {
         shopsShopTypeIn: query.shopsShopTypeIn || [],
         docksShipSizeIn: query.docksShipSizeIn || [],
       }
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
     form: {
       handler() {

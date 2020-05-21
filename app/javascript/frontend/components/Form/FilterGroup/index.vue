@@ -414,7 +414,7 @@ export default {
     },
 
     sort(options) {
-      const sortedOptions = JSON.parse(JSON.stringify(options))
+      const sortedOptions = [...options]
       return sortedOptions.sort((a, b) => {
         if (a[this.labelAttr] < b[this.labelAttr]) {
           return -1
@@ -463,7 +463,7 @@ export default {
           this.$emit('input', null)
         }
       } else if (this.multiple) {
-        const selected = JSON.parse(JSON.stringify(this.value))
+        const selected = [...this.value]
         selected.push(option)
         this.$emit('input', selected)
         this.focusSearch()

@@ -156,7 +156,6 @@ export default {
         starsystemIn: query.starsystemIn || [],
         shopTypeIn: query.shopTypeIn || [],
       }
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
     form: {
       handler() {

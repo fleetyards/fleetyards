@@ -1,6 +1,14 @@
 .filtered-list-header {
   display: flex;
   justify-content: space-between;
+
+  > * {
+    flex: 1 1 0;
+
+    // &:nth-child(2) {
+    //   flex-grow: 2;
+    // }
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

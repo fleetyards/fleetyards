@@ -152,7 +152,7 @@ export default {
 
     groupedByRelease() {
       return this.filteredItems.reduce((rv, x) => {
-        const value = JSON.parse(JSON.stringify(rv))
+        const value = { ...rv }
 
         value[x.release] = rv[x.release] || []
         value[x.release].push(x)

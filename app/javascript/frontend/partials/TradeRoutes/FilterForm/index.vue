@@ -142,13 +142,11 @@ export default {
         starsystemIn: query.starsystemIn || [],
       }
 
-      const storedFilters = JSON.parse(JSON.stringify(this.form))
+      const storedFilters = { ...this.form }
 
       if (!storedFilters.cargoShip) {
         delete storedFilters.cargoShip
       }
-
-      this.$store.commit('setFilters', { [this.$route.name]: storedFilters })
     },
 
     form: {

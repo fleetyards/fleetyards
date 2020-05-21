@@ -230,8 +230,6 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       }
-
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
 
     form: {

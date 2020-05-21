@@ -127,7 +127,6 @@ export default {
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
       }
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
 
     form: {

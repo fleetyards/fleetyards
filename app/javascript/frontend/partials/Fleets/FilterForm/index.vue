@@ -215,7 +215,6 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         productionStatusIn: query.productionStatusIn || [],
       }
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
 
     form: {

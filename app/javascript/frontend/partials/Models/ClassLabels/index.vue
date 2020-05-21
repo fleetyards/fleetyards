@@ -82,7 +82,7 @@ export default {
       if (!this.filterKey) {
         return
       }
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+      const query = { ...this.$route.query.q }
 
       if ((query[this.filterKey] || []).includes(filter)) {
         const index = query[this.filterKey].findIndex(item => item === filter)

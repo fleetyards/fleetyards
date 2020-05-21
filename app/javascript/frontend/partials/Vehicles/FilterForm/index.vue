@@ -289,7 +289,6 @@ export default {
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
       }
-      this.$store.commit('setFilters', { [this.$route.name]: this.form })
     },
 
     form: {

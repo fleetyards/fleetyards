@@ -108,7 +108,7 @@ export default {
     },
 
     isFilterSelected() {
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+      const query = { ...this.$route.query.q }
 
       Object.keys(query)
         .filter(key => !query[key] || query[key].length === 0)
@@ -118,7 +118,7 @@ export default {
     },
 
     q() {
-      const q = JSON.parse(JSON.stringify(this.form))
+      const q = { ...this.form }
 
       Object.keys(q)
         .filter(key => !q[key] || q[key].length === 0)
@@ -147,9 +147,7 @@ export default {
     },
 
     resetPage() {
-      const query = {
-        ...JSON.parse(JSON.stringify(this.$route.query)),
-      }
+      const query = { ...this.$route.query }
 
       if (query.page) {
         delete query.page
@@ -172,7 +170,7 @@ export default {
           name: this.$route.name,
           query: {
             ...this.$route.query,
-            q: JSON.parse(JSON.stringify(this.q)),
+            q: { ...this.q },
           },
         })
         .catch(_err => {})
