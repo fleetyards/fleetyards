@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.76.3](https://github.com/fleetyards/fleetyards/compare/v3.76.2...v3.76.3) (2020-05-21)
+
+
+### Bug Fixes
+
+* trade routes filter reset ([21968d5](https://github.com/fleetyards/fleetyards/commit/21968d5880d9b0b14ec2ba7e098d307d196da812))
+
 ### [3.76.2](https://github.com/fleetyards/fleetyards/compare/v3.76.1...v3.76.2) (2020-05-20)
 
 ### [3.76.1](https://github.com/fleetyards/fleetyards/compare/v3.76.0...v3.76.1) (2020-05-20)
