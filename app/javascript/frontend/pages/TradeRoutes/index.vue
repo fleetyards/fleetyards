@@ -177,7 +177,7 @@ export default {
     },
 
     emptyBoxVisible() {
-      return (
+      return !!(
         !this.loading &&
         !this.tradeRoutes.length &&
         (this.isFilterSelected || this.$route.query.page)
@@ -249,7 +249,7 @@ export default {
 
       this.loading = false
 
-      if (!response.errors) {
+      if (!response.errors && response.data) {
         this.tradeRoutes = response.data
       }
 
