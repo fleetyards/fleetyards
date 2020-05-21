@@ -36,6 +36,7 @@ gem 'premailer-rails'
 
 gem 'cancancan'
 gem 'devise'
+gem 'devise-async'
 gem 'jwt'
 gem 'useragent'
 

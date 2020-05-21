@@ -74,7 +74,7 @@ Rails.application.configure do
   config.assets.precompile += Dir[Rails.root.join('vendor/assets/bower_components/**/img/*')]
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :resque
+  config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "fleetyards_production"
 
   config.action_mailer.perform_caching = false
@@ -94,6 +94,7 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.deliver_later_queue_name = 'fleetyards_mailers'
   config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
   config.action_mailer.smtp_settings = {
     address: Rails.application.secrets[:mailer_host],
