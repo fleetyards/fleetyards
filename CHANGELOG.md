@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.76.7](https://github.com/fleetyards/fleetyards/compare/v3.76.6...v3.76.7) (2020-05-21)
+
+
+### Bug Fixes
+
+* public hangar ([9c07d53](https://github.com/fleetyards/fleetyards/commit/9c07d536e87d822e20b46b6b5c8d95badd82ce24))
+* starship42 links for paints ([e249043](https://github.com/fleetyards/fleetyards/commit/e249043aedbb1001eb478b02c10fe2133335683c))
+
 ### [3.76.6](https://github.com/fleetyards/fleetyards/compare/v3.76.5...v3.76.6) (2020-05-21)
 
 
