@@ -8,4 +8,6 @@ type Model = {
   length: number
   hasModules: boolean
   hasUpgrades: boolean
+  rsiId: string
+  rsiName: string
 }

@@ -5,6 +5,7 @@ json.name model_paint.name
 json.slug model_paint.slug
 json.rsi_name model_paint.rsi_name
 json.rsi_slug model_paint.rsi_slug
+json.rsi_id model_paint.rsi_id
 json.description model_paint.description
 json.store_image model_paint.store_image.url
 json.store_image_medium model_paint.store_image.medium.url

@@ -31,18 +31,15 @@
             />
           </div>
           <div v-if="!mobile" class="page-actions">
-            <Btn
-              v-tooltip="$t('labels.poweredByStarship42')"
-              :href="starship42Url"
-            >
-              {{ $t('labels.3dView') }}
-            </Btn>
+            <Starship42Btn :vehicles="fleetchartVehicles" />
+
             <Btn
               v-tooltip="$t('labels.hangarStats')"
               :to="{ name: 'hangar-stats' }"
             >
               <i class="fal fa-chart-bar" />
             </Btn>
+
             <Btn :href="publicUrl">
               {{ $t('labels.publicUrl') }}
             </Btn>
@@ -118,10 +115,12 @@
         </Btn>
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <Btn :href="starship42Url" size="small" variant="link">
-              <i class="fad fa-cube" />
-              {{ $t('labels.exportStarship42') }}
-            </Btn>
+            <Starship42Btn
+              :vehicles="fleetchartVehicles"
+              size="small"
+              variant="link"
+              :with-icon="true"
+            />
 
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
@@ -292,12 +291,12 @@
 </template>
 
 <script>
-import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import Starship42Btn from 'frontend/components/Starship42Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
 import HangarImportBtn from 'frontend/components/HangarImportBtn'
@@ -325,6 +324,7 @@ export default {
     FilteredList,
     Btn,
     BtnDropdown,
+    Starship42Btn,
     HangarImportBtn,
     DownloadScreenshotBtn,
     ModelPanel,
@@ -412,15 +412,6 @@ export default {
         return ''
       }
       return `/hangar/${this.currentUser.username}`
-    },
-
-    starship42Url() {
-      const shipList = this.fleetchartVehicles.map(
-        vehicle => vehicle.model.rsiName,
-      )
-      const data = { type: 'matrix', s: shipList }
-      const startship42Params = qs.stringify(data)
-      return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
 

@@ -83,12 +83,7 @@
           </div>
           <div class="col-xs-12 col-md-3">
             <div v-if="!mobile" class="page-actions">
-              <Btn
-                v-tooltip="$t('labels.poweredByStarship42')"
-                :href="starship42Url"
-              >
-                {{ $t('labels.3dView') }}
-              </Btn>
+              <Starship42Btn :vehicles="fleetchartVehicles" />
             </div>
           </div>
         </div>
@@ -180,9 +175,9 @@
 </template>
 
 <script>
-import qs from 'qs'
 import { mapGetters } from 'vuex'
 import Btn from 'frontend/components/Btn'
+import Starship42Btn from 'frontend/components/Starship42Btn'
 import Loader from 'frontend/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
@@ -199,6 +194,7 @@ export default {
 
   components: {
     Btn,
+    Starship42Btn,
     AddonsModal,
     Loader,
     DownloadScreenshotBtn,
@@ -249,15 +245,6 @@ export default {
 
     userTitle() {
       return this.username[0].toUpperCase() + this.username.slice(1)
-    },
-
-    starship42Url() {
-      const shipList = this.fleetchartVehicles.map(
-        vehicle => vehicle.model.rsiName,
-      )
-      const data = { type: 'matrix', s: shipList }
-      const startship42Params = qs.stringify(data)
-      return `http://www.starship42.com/fleetview/?${startship42Params}`
     },
   },
 
