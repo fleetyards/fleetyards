@@ -33,6 +33,9 @@ module RSI
       news = []
       (page.css('.hub-blocks .hub-block') || []).each do |news_element|
         url = news_element['href']
+
+        next if url.blank?
+
         url_parts = url.split('/')
         type = news_element.css('.type span').text
         sub_type = url_parts[2]
