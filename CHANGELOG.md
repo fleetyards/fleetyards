@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.76.5](https://github.com/fleetyards/fleetyards/compare/v3.76.4...v3.76.5) (2020-05-21)
+
+
+### Bug Fixes
+
+* filters ([e01f00c](https://github.com/fleetyards/fleetyards/commit/e01f00c7214ee9da131b0fd60906ddc3b6810d74))
+* hangar settings validation and add more guards ([32f6276](https://github.com/fleetyards/fleetyards/commit/32f6276028a634fd236e9c18826e817525e2e0d5))
+* mailer queue ([b8573fe](https://github.com/fleetyards/fleetyards/commit/b8573fe56cd928aec476486b32805ea2197fddd9))
+* rubocoptering ([f1b0d07](https://github.com/fleetyards/fleetyards/commit/f1b0d07524262ae9d00ddf4612b74c869bb1e48a))
+* send devise mails async ([9b2c534](https://github.com/fleetyards/fleetyards/commit/9b2c53405da062e3983d8cee099ca03b4e8f5787))
+
 ### [3.76.4](https://github.com/fleetyards/fleetyards/compare/v3.76.3...v3.76.4) (2020-05-21)
 
 
