@@ -2,7 +2,7 @@
 
 production: &production
   youtube_worker_job:
-    cron: '*/10 * * * *' # Every 10 Minutes
+    cron: '*/10 * * * *' # Every 5 Minutes
     class: 'YoutubeWorker'
   rsi_news_worker_job:
     cron: '*/15 * * * *' # Every 15 Minutes
