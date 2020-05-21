@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.76.4](https://github.com/fleetyards/fleetyards/compare/v3.76.3...v3.76.4) (2020-05-21)
+
+
+### Bug Fixes
+
+* disable saved filter navigation and harden webp check ([db72540](https://github.com/fleetyards/fleetyards/commit/db7254053b132ee9f09a4b1db7e51d823692ad26))
+* news worker ([91e369b](https://github.com/fleetyards/fleetyards/commit/91e369b43a6cf9011467c448e75ca6db995f87b1))
+
 ### [3.76.3](https://github.com/fleetyards/fleetyards/compare/v3.76.2...v3.76.3) (2020-05-21)
 
 
