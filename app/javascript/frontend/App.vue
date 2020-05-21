@@ -126,7 +126,9 @@ export default {
 
   methods: {
     async checkWebpSupport() {
-      if (!createImageBitmap) return false
+      if (typeof createImageBitmap === 'undefined') {
+        return false
+      }
 
       const webpData =
         'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='

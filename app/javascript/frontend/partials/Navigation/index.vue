@@ -211,14 +211,16 @@ export default {
   },
 
   methods: {
-    filterFor(route) {
-      if (!this.filters[route]) {
-        return null
-      }
+    filterFor(_route) {
+      // TODO: disabled until vue-router supports navigation to same route
+      return null
+      // if (!this.filters[route]) {
+      //   return null
+      // }
 
-      return {
-        q: this.filters[route],
-      }
+      // return {
+      //   q: this.filters[route],
+      // }
     },
 
     documentClick(event) {

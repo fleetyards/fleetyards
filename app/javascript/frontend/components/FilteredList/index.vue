@@ -100,11 +100,18 @@ export default {
         .forEach(key => delete query[key])
       return Object.keys(query).length > 0
     },
+
+    routeQuery() {
+      return this.$route.query.q
+    },
   },
 
   watch: {
-    $route() {
-      this.saveFilters()
+    routeQuery: {
+      handler() {
+        this.saveFilters()
+      },
+      deep: true,
     },
   },
 

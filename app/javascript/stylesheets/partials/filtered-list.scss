@@ -4,10 +4,6 @@
 
   > * {
     flex: 1 1 0;
-
-    // &:nth-child(2) {
-    //   flex-grow: 2;
-    // }
   }
 }
 
@@ -17,10 +13,11 @@
 
     > * {
       width: auto;
+      flex: none;
     }
 
     > :first-child {
-      flex-grow: 1;
+      flex: 1 0 0;
     }
 
     > :last-child {
@@ -28,7 +25,7 @@
     }
 
     > .pagination-wrapper {
-      flex-basis: 100%;
+      flex: 0 0 100%;
       order: 3;
     }
   }
