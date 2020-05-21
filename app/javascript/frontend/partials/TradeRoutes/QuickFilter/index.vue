@@ -90,7 +90,7 @@ export default {
 
   methods: {
     queryParams() {
-      return { ...this.$route.query.q }
+      return JSON.parse(JSON.stringify(this.$route.query.q || {}))
     },
   },
 }

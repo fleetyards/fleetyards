@@ -35,7 +35,7 @@
                   :avatar="logoUrl"
                   size="large"
                   icon="fad fa-image"
-                  editable
+                  :editable="true"
                   @upload="selectLogo"
                   @destroy="removeLogo"
                 />

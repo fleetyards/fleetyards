@@ -306,7 +306,9 @@ export default {
 
     toggleSubcategory(value) {
       if ((this.subCategory || []).includes(value)) {
-        const q = { ...this.$route.query.q }
+        const q = {
+          ...JSON.parse(JSON.stringify(this.$route.query.q)),
+        }
 
         delete q.subCategoryIn
 

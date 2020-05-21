@@ -183,7 +183,7 @@ export default {
     },
 
     async matchWithHangar(items) {
-      const currentHangar = [...this.ships]
+      const currentHangar = JSON.parse(JSON.stringify(this.ships))
 
       const matchedItems = await items.map(item => {
         const found = currentHangar.find(

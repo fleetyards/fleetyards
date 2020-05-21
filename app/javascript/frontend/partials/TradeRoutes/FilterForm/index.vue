@@ -142,7 +142,7 @@ export default {
         starsystemIn: query.starsystemIn || [],
       }
 
-      const storedFilters = { ...this.form }
+      const storedFilters = JSON.parse(JSON.stringify(this.form))
 
       if (!storedFilters.cargoShip) {
         delete storedFilters.cargoShip

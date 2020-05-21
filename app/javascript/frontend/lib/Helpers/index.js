@@ -4,7 +4,7 @@ export default {
       methods: {
         groupBy(list, key) {
           return list.reduce((rv, x) => {
-            const value = { ...rv }
+            const value = JSON.parse(JSON.stringify(rv))
 
             value[x[key]] = rv[x[key]] || []
             value[x[key]].push(x)

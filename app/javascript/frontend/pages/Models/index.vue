@@ -207,7 +207,7 @@ export default {
       this.$store.dispatch('models/toggleFleetchart')
 
       if (this.$route.query.fleetchart && !this.fleetchartVisible) {
-        const query = { ...this.$route.query }
+        const query = JSON.parse(JSON.stringify(this.$route.query))
 
         delete query.fleetchart
 

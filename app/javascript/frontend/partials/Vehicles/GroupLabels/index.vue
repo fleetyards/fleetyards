@@ -130,7 +130,7 @@ export default {
     },
 
     filter(filter) {
-      const query = { ...this.$route.query.q }
+      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
       if ((query.hangarGroupsIn || []).includes(filter)) {
         if (!query.hangarGroupsNotIn) {
