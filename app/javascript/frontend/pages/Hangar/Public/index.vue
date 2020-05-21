@@ -218,6 +218,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['mobile']),
+
     ...mapGetters('hangar', [
       'publicFleetchartVisible',
       'publicFleetchartScale',
