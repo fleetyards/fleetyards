@@ -21,14 +21,12 @@
         <AppFooter />
       </div>
     </div>
-    <BackToTop />
     <PrivacySettings ref="privacySettings" :open="cookiesInfoVisible" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import BackToTop from 'frontend/partials/BackToTop'
 import Updates from 'frontend/mixins/Updates'
 import CurrentUser from 'frontend/mixins/CurrentUser'
 import RenewSession from 'frontend/mixins/RenewSession'
@@ -45,7 +43,6 @@ export default {
   components: {
     Navigation,
     AppFooter,
-    BackToTop,
     PrivacySettings,
   },
 
