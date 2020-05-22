@@ -152,13 +152,14 @@ export async function upload(path, body = {}, silent = false) {
   }
 }
 
-export async function download(path, silent = false) {
+export async function download(path, params = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
   try {
     return handleResponse(
       await client.get(path, {
+        params,
         responseType: 'blob',
       }),
       {},

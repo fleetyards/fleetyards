@@ -563,7 +563,9 @@ export default {
     },
 
     async exportJson() {
-      const response = await this.$api.download('vehicles/export')
+      const response = await this.$api.download('vehicles/export', {
+        q: this.$route.query.q,
+      })
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(new Blob([response.data]))
       link.setAttribute(
