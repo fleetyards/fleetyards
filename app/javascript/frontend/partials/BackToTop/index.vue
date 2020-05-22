@@ -4,42 +4,42 @@
       v-show="visible"
       :title="$t('actions.backToTop')"
       class="back-to-top"
+      :class="cssClasses"
       @click="backToTop"
     >
-      <i class="fal fa-chevron-up" />
+      <div class="primary-action-inner">
+        <i class="fal fa-chevron-up" />
+      </div>
     </div>
   </transition>
 </template>
 
-<script>
-export default {
-  name: 'BackToTop',
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
-  props: {
-    visibleOffset: {
-      type: [String, Number],
-      default: 600,
-    },
-  },
+@Component
+export default class BackToTop extends Vue {
+  visible: boolean = false
 
-  data() {
+  @Prop({ default: 500 }) visibleOffset!: number
+
+  get cssClasses() {
     return {
-      visible: false,
+      'back-to-top-offset': this.$route.meta.primaryAction,
     }
-  },
+  }
 
   created() {
     const catchScroll = () => {
-      this.visible = window.pageYOffset > parseInt(this.visibleOffset, 10)
+      this.visible = window.pageYOffset > this.visibleOffset
     }
 
     window.onscroll = catchScroll
-  },
+  }
 
-  methods: {
-    backToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    },
-  },
+  backToTop() {
+    window.scrollTo(0, 0)
+  }
 }
 </script>

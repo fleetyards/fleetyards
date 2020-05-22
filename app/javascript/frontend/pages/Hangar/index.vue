@@ -105,14 +105,6 @@
 
     <FilteredList>
       <template slot="actions">
-        <Btn
-          v-tooltip="$t('actions.addVehicle')"
-          :aria-label="$t('actions.addVehicle')"
-          size="small"
-          @click.native="showNewModal"
-        >
-          <i class="fas fa-plus" />
-        </Btn>
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Starship42Btn
@@ -287,6 +279,8 @@
     <AddonsModal ref="addonsModal" modifiable />
 
     <NewVehiclesModal ref="newVehiclesModal" />
+
+    <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
 </template>
 
@@ -295,6 +289,7 @@ import { mapGetters } from 'vuex'
 import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
+import PrimaryAction from 'frontend/components/PrimaryAction'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
@@ -323,6 +318,7 @@ export default {
     Loader,
     FilteredList,
     Btn,
+    PrimaryAction,
     BtnDropdown,
     Starship42Btn,
     HangarImportBtn,

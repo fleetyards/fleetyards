@@ -21,7 +21,7 @@
         <AppFooter />
       </div>
     </div>
-    <BackToTop visible-offset="500" />
+    <BackToTop />
     <PrivacySettings ref="privacySettings" :open="cookiesInfoVisible" />
   </div>
 </template>

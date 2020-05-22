@@ -89,6 +89,7 @@ module.exports = {
       '**/*.ts',
       '**/components/**/*.vue',
       '**/Impressum/index.vue',
+      '**/partials/BackToTop/*.vue',
       '**/partials/Fleetchart/**',
     ],
     parserOptions: {

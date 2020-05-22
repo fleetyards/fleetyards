@@ -1,4 +1,4 @@
-.back-to-top {
+.primary-action {
   position: fixed;
   bottom: 6px;
   right: 6px;
@@ -46,9 +46,5 @@
   &:active:not([disabled]) {
     animation-name: flash;
     animation-duration: .5s;
-  }
-
-  &.back-to-top-offset {
-    right: 80px;
   }
 }

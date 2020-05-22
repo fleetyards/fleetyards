@@ -59,6 +59,7 @@ export const routes = [
       needsAuthentication: true,
       quickSearch: 'nameCont',
       title: 'hangar.index',
+      primaryAction: true,
     },
   },
   {

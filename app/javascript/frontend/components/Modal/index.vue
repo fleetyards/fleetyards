@@ -7,7 +7,7 @@
       wide: wide,
     }"
     class="modal fade"
-    @click.self="closable && close"
+    @click.self="close"
   >
     <div class="modal-dialog">
       <Panel :outer-spacing="false">
@@ -53,16 +53,9 @@ export default class Modal extends Vue {
     modal: HTMLElement
   }
 
-  isShow: boolean
+  isShow: boolean = false
 
-  isOpen: boolean
-
-  constructor() {
-    super()
-
-    this.isShow = this.visible
-    this.isOpen = this.visible
-  }
+  isOpen: boolean = false
 
   @Prop({ required: true })
   private title!: string
@@ -76,6 +69,11 @@ export default class Modal extends Vue {
   @Prop({ default: true })
   private closable!: boolean
 
+  created() {
+    this.isShow = this.visible
+    this.isOpen = this.visible
+  }
+
   public open() {
     this.isShow = true
     this.showOverlay()
@@ -88,6 +86,10 @@ export default class Modal extends Vue {
   }
 
   public close() {
+    if (!this.closable) {
+      return
+    }
+
     this.isOpen = false
     this.hideOverlay()
 
