@@ -110,6 +110,9 @@ Lint/StructNewOverride:
 Lint/RaiseException:
   Enabled: true
 
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
