@@ -221,7 +221,7 @@ export default {
     },
 
     close() {
-      this.$refs.modal.close()
+      this.$refs.modal.close(true)
     },
 
     setupForm() {

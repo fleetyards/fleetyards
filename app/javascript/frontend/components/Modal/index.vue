@@ -85,8 +85,8 @@ export default class Modal extends Vue {
     })
   }
 
-  public close() {
-    if (!this.closable) {
+  public close(force = false) {
+    if (!this.closable && !force) {
       return
     }
 
