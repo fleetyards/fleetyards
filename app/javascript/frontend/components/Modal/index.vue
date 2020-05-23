@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Ref } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 import Panel from 'frontend/components/Panel/index.vue'
 
@@ -49,9 +49,7 @@ export default class Modal extends Vue {
 
   @Action('hideOverlay', { namespace: 'app' }) hideOverlay: any
 
-  $refs!: {
-    modal: HTMLElement
-  }
+  @Ref('modal') readonly modal!: HTMLElement
 
   isShow: boolean = false
 
