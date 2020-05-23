@@ -6,14 +6,21 @@
     "jsx": "preserve",
     "importHelpers": true,
     "allowJs": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "app/javascript/*"]
+    },
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
-    "baseUrl": "app/javascript"
+    "noEmit": true
   },
   "include": [
     "@types/*",
@@ -22,6 +29,10 @@
     "app/javascript/**/*.vue"
   ],
   "exclude": [
-    "node_modules"
-  ]
+    "node_modules",
+    "**/*.spec.ts",
+    "vendor",
+    "public"
+  ],
+  "compileOnSave": false
 }
