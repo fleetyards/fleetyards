@@ -4,7 +4,7 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :user
 
-  enum ships_filter: { purchased: 0, hangar_group: 1, hide: 2 }, default: 0, _prefix: true
+  enum ships_filter: { purchased: 0, hangar_group: 1, hide: 2 }, _prefix: true
 
   enum role: { admin: 0, officer: 1, member: 2 }
   ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
