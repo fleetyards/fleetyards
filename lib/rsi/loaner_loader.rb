@@ -67,6 +67,8 @@ module RSI
         'Kraken (+ Privateer)' => ['Kraken', 'Kraken Privateer'],
         'Mercury' => ['Mercury Star Runner'],
         'Mole' => ['Mole'],
+        'G12A' => ['G12a'],
+        'G12R' => ['G12r'],
         'Retaliator' => ['Retaliator Bomber', 'Retaliator Base'],
         "San'Tok.yai" => ["San'tok.yāi"],
         'Nox' => ['Nox', 'Nox Kue'],
@@ -88,6 +90,7 @@ module RSI
         'Cyclone (Explorer only)' => 'Cyclone',
         'Cyclone TR' => 'Cyclone-TR',
         'Cyclone RC' => 'Cyclone-RC',
+        'Cyclone AA' => 'Cyclone-AA',
         "Khartu-al (Xi'an Scout)" => 'Khartu-Al',
       }
 

@@ -7,7 +7,7 @@
       :class="{
         [`model-panel-${model.slug}`]: true,
       }"
-      :highlight="vehicle && vehicle.flagship"
+      :highlight="(vehicle && vehicle.flagship) || highlight"
     >
       <div class="panel-heading">
         <h2 class="panel-title">
@@ -197,6 +197,11 @@ export default {
     },
 
     isMyShip: {
+      type: Boolean,
+      default: false,
+    },
+
+    highlight: {
       type: Boolean,
       default: false,
     },

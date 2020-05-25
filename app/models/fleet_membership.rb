@@ -4,6 +4,8 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :user
 
+  enum ships_filter: { purchased: 0, hangar_group: 1, hide: 2 }, default: 0, _prefix: true
+
   enum role: { admin: 0, officer: 1, member: 2 }
   ransacker :role, formatter: proc { |v| FleetMembership.roles[v] } do |parent|
     parent.table[:role]
@@ -28,6 +30,22 @@ class FleetMembership < ApplicationRecord
     return unless invitation
 
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
+  end
+
+  def visible_vehicle_ids
+    visibile_vehicles.pluck(:id)
+  end
+
+  def visible_model_ids
+    visibile_vehicles.pluck(:model_id)
+  end
+
+  def visibile_vehicles
+    return unless ships_filter_purchased? || ships_filter_hangar_group?
+
+    return user.vehicles.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
+
+    user.vehicles.purchased if ships_filter_purchased?
   end
 
   def invitation

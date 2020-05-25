@@ -45,6 +45,8 @@
           class="label label-link fade-list-item"
           @click.exact="filter(group.slug)"
           @click.right.prevent="edit(group)"
+          @mouseenter="highlight(group)"
+          @mouseleave="highlight(null)"
         >
           <span class="label-inner">
             <span
@@ -81,6 +83,7 @@ export default {
     GroupModal,
     draggable,
   },
+
   props: {
     hangarGroups: {
       type: Array,
@@ -88,6 +91,7 @@ export default {
         return []
       },
     },
+
     hangarGroupCounts: {
       type: Array,
       default() {
@@ -95,6 +99,7 @@ export default {
       },
     },
   },
+
   data() {
     return {
       selectedGroup: {},
@@ -104,22 +109,27 @@ export default {
       timer: null,
     }
   },
+
   computed: {
     ...mapGetters(['mobile']),
+
     sortIndex() {
       return this.groups.map(item => item.id)
     },
   },
+
   watch: {
     hangarGroups() {
       this.groups = this.hangarGroups
     },
+
     groups() {
       if (this.groups !== this.hangarGroups) {
         this.updateSort()
       }
     },
   },
+
   methods: {
     groupCount(group) {
       return (
@@ -161,6 +171,7 @@ export default {
         },
       })
     },
+
     isActive(group) {
       if (!this.$route.query.q) {
         return false
@@ -177,6 +188,7 @@ export default {
 
       return false
     },
+
     isInverted(group) {
       if (!this.$route.query.q) {
         return false
@@ -193,6 +205,7 @@ export default {
 
       return false
     },
+
     async updateSort() {
       const response = await this.$api.put('hangar-groups/sort', {
         sorting: this.sortIndex,
@@ -204,13 +217,19 @@ export default {
         })
       }
     },
+
     add() {
       this.selectedGroup = {}
       this.$refs.groupModal.open()
     },
+
     edit(group) {
       this.selectedGroup = group
       this.$refs.groupModal.open()
+    },
+
+    highlight(group) {
+      this.$emit('highlight', group)
     },
   },
 }

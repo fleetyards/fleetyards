@@ -28,6 +28,7 @@
               :hangar-groups="hangarGroups"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
+              @highlight="highlightGroup"
             />
           </div>
           <div v-if="!mobile" class="page-actions">
@@ -188,7 +189,7 @@
           <Btn
             size="small"
             variant="link"
-            :disabled="deleting"
+            :disabled="deleting || loading"
             :aria-label="$t('actions.hangar.destroyAll')"
             @click.native="destroyAll"
           >
@@ -255,7 +256,8 @@
               :details="detailsVisible"
               :on-edit="showEditModal"
               :on-addons="showAddonsModal"
-              is-my-ship
+              :is-my-ship="true"
+              :highlight="vehicle.hangarGroupIds.includes(highlightedGroup)"
             />
           </div>
         </transition-group>
@@ -349,6 +351,7 @@ export default {
       tooltipTrigger: 'click',
       showGuide: true,
       vehiclesChannel: null,
+      highlightedGroup: null,
     }
   },
 
@@ -474,6 +477,15 @@ export default {
       this.$store.dispatch('hangar/toggleMoney')
     },
 
+    highlightGroup(group) {
+      if (!group) {
+        this.highlightedGroup = null
+        return
+      }
+
+      this.highlightedGroup = group.id
+    },
+
     fetch() {
       this.fetchFleetchart()
       this.fetchVehicles()
@@ -591,7 +603,7 @@ export default {
           this.deleting = false
           this.loading = false
         },
-        onCancel: () => {
+        onClose: () => {
           this.deleting = false
         },
       })

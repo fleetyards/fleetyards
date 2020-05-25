@@ -29,7 +29,6 @@
               translation-key="vehicle.modelPaintSelect"
               :fetch-path="`models/${vehicle.model.slug}/paints`"
               name="modelPaintId"
-              label-attr="name"
               value-attr="id"
               icon-attr="storeImageSmall"
               :big-icon="true"

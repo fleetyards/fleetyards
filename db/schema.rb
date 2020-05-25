@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_20_073117) do
+ActiveRecord::Schema.define(version: 2020_05_25_193653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -191,6 +191,8 @@ ActiveRecord::Schema.define(version: 2020_05_20_073117) do
     t.datetime "updated_at", null: false
     t.boolean "primary", default: false
     t.boolean "hide_ships", default: false
+    t.integer "ships_filter"
+    t.uuid "hangar_group_id"
   end
 
   create_table "fleets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

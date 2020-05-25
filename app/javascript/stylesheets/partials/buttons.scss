@@ -4,6 +4,12 @@
   &.page-actions-left {
     text-align: left;
   }
+
+  &.page-actions-right {
+    > :last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 a {

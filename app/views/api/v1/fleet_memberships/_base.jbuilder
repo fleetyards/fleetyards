@@ -10,8 +10,6 @@ json.accepted_at_label((I18n.l(member.accepted_at.utc, format: :label) if member
 json.declined_at member.declined_at&.utc&.iso8601
 json.declined_at_label((I18n.l(member.declined_at.utc, format: :label) if member.declined_at.present?))
 json.avatar member.user.avatar.small.url
-json.primary member.primary
-json.hide_ships member.hide_ships
 json.rsi_handle member.user.rsi_handle
 json.homepage member.user.homepage
 json.discord member.user.discord

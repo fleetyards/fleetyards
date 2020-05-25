@@ -82,7 +82,7 @@ module Api
 
       private def membeship_params
         @membeship_params ||= params.transform_keys(&:underscore)
-                                    .permit(:primary, :hide_ships)
+                                    .permit(:primary, :ships_filter, :hangar_group_id)
       end
 
       private def fleet

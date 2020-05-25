@@ -6,33 +6,75 @@
         <h1>{{ $t('headlines.fleets.settings.membership') }}</h1>
       </div>
     </div>
-    <form @submit.prevent="submit">
-      <div class="row">
-        <div class="col-md-12 col-lg-6">
-          <Checkbox
-            id="primary"
-            v-model="form.primary"
-            :label="$t('labels.fleet.members.primary')"
-          />
+    <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+      <form @submit.prevent="handleSubmit(submit)">
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <Checkbox
+              id="primary"
+              v-model="form.primary"
+              :label="$t('labels.fleet.members.primary')"
+            />
+          </div>
         </div>
-        <div class="col-md-12 col-lg-6">
-          <Checkbox
-            id="hideShips"
-            v-model="form.hideShips"
-            :label="$t('labels.fleet.members.hideShips')"
-          />
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="shipsFilter"
+              rules="required"
+              :name="$t('labels.fleet.members.shipsFilter.field')"
+              :slim="true"
+            >
+              <div
+                :class="{ 'has-error has-feedback': errors[0] }"
+                class="form-group"
+              >
+                <FilterGroup
+                  :key="'ships-filter'"
+                  v-model="form.shipsFilter"
+                  translation-key="fleet.members.shipsFilter"
+                  :options="shipsFilterOptions"
+                  name="shipsFilter"
+                />
+              </div>
+            </ValidationProvider>
+          </div>
+          <div v-if="shipsFilterIsHangarGroup" class="col-md-12 col-lg-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="hangarGroupId"
+              rules="required"
+              :name="$t('labels.fleet.members.hangarGroupId.field')"
+              :slim="true"
+            >
+              <div
+                :class="{ 'has-error has-feedback': errors[0] }"
+                class="form-group"
+              >
+                <FilterGroup
+                  :key="'hangar-group-id'"
+                  v-model="form.hangarGroupId"
+                  translation-key="fleet.members.hangarGroupId"
+                  fetch-path="hangar-groups"
+                  value-attr="id"
+                  name="hangarGroupId"
+                />
+              </div>
+            </ValidationProvider>
+          </div>
         </div>
-      </div>
-      <br />
-      <Btn
-        :loading="submitting"
-        type="submit"
-        size="large"
-        data-test="fleet-save"
-      >
-        {{ $t('actions.save') }}
-      </Btn>
-    </form>
+        <br />
+        <Btn
+          :loading="submitting"
+          type="submit"
+          size="large"
+          data-test="fleet-save"
+        >
+          {{ $t('actions.save') }}
+        </Btn>
+      </form>
+    </ValidationObserver>
   </section>
 </template>
 
@@ -40,6 +82,7 @@
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
+import FilterGroup from 'frontend/components/Form/FilterGroup'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FleetsMixin from 'frontend/mixins/Fleets'
 
@@ -50,6 +93,7 @@ export default {
     BreadCrumbs,
     Btn,
     Checkbox,
+    FilterGroup,
   },
 
   mixins: [MetaInfo, FleetsMixin],
@@ -66,7 +110,8 @@ export default {
       submitting: false,
       form: {
         primary: false,
-        hideShips: false,
+        shipsFilter: null,
+        hangarGroupId: null,
       },
     }
   },
@@ -98,10 +143,38 @@ export default {
         },
       ]
     },
+
+    shipsFilterIsHangarGroup() {
+      return this.form.shipsFilter === 'hangar_group'
+    },
+
+    shipsFilterOptions() {
+      return [
+        {
+          name: this.$t('labels.fleet.members.shipsFilter.values.purchased'),
+          value: 'purchased',
+        },
+        {
+          name: this.$t('labels.fleet.members.shipsFilter.values.hangar_group'),
+          value: 'hangar_group',
+        },
+        {
+          name: this.$t('labels.fleet.members.shipsFilter.values.hide'),
+          value: 'hide',
+        },
+      ]
+    },
   },
+
   watch: {
     $route() {
       this.setupForm()
+    },
+
+    shipsFilterIsHangarGroup() {
+      if (!this.shipsFilterIsHangarGroup) {
+        this.form.hangarGroupId = null
+      }
     },
   },
 
@@ -113,7 +186,8 @@ export default {
     setupForm() {
       this.form = {
         primary: this.myFleet.primary,
-        hideShips: this.myFleet.hideShips,
+        shipsFilter: this.myFleet.shipsFilter,
+        hangarGroupId: this.myFleet.hangarGroupId,
       }
     },
 

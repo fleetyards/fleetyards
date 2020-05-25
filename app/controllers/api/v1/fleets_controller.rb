@@ -28,7 +28,10 @@ module Api
 
       def vehicles
         authorize! :show, fleet
-        scope = fleet.public_vehicles
+
+        vehicle_ids = fleet.visible_memberships.map(&:visible_vehicle_ids).flatten
+
+        scope = Vehicle.where(id: vehicle_ids)
 
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
@@ -53,7 +56,10 @@ module Api
 
       def models
         authorize! :show, fleet
-        scope = fleet.public_models
+
+        model_ids = fleet.visible_memberships.map(&:visible_model_ids).flatten
+
+        scope = Model.where(id: model_ids)
 
         if price_range.present?
           model_query_params['sorts'] = 'price asc'

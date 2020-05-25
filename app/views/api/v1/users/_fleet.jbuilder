@@ -10,4 +10,5 @@ json.role fleet.role(current_user&.id)
 json.invitation fleet.invitation(current_user&.id)
 json.accepted_at fleet.accepted_at(current_user&.id)&.utc&.iso8601
 json.primary fleet.primary(current_user&.id)
-json.hide_ships fleet.hide_ships(current_user&.id)
+json.ships_filter fleet.ships_filter(current_user&.id)
+json.hangar_group_id fleet.hangar_group_id(current_user&.id)

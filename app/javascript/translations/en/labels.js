@@ -150,6 +150,21 @@ export default {
     members: {
       primary: 'Primary Fleet?',
       hideShips: 'Hide your Ships for this Fleet?',
+      shipsFilter: {
+        label: 'Which Ships should be added to the Fleet?',
+        nullablePrompt: 'No Option selected',
+        field: 'Ships Select',
+        values: {
+          purchased: 'All Purchased Ships',
+          hangar_group: 'All Ships in a given Hangar Group',
+          hide: 'No Ships',
+        },
+      },
+      hangarGroupId: {
+        field: 'Hangar Group',
+        label: 'Specify a Hangar Group',
+        nullablePrompt: 'No Group selected',
+      },
       total: 'Total: %{count}',
       joined: 'Joined at',
       invited: 'Invitation sent at',
