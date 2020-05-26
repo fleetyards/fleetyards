@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.77.0](https://github.com/fleetyards/fleetyards/compare/v3.76.10...v3.77.0) (2020-05-26)
+
+
+### Features
+
+* **fleets:** give members more control over what ships to add to a fleet ([d055007](https://github.com/fleetyards/fleetyards/commit/d0550071cadc1def5a6dc76f9fa76c55cef66c51))
+
+
+### Bug Fixes
+
+* fleet membership enum ([c1ce9b2](https://github.com/fleetyards/fleetyards/commit/c1ce9b21ed6c296ddd30b6c20a5b06a784e4686b))
+* puma upgrade ([b64ec24](https://github.com/fleetyards/fleetyards/commit/b64ec240f4c8eaeec501f9d95ce814e15d359a8c))
+
 ### [3.76.10](https://github.com/fleetyards/fleetyards/compare/v3.76.9...v3.76.10) (2020-05-22)
 
 
