@@ -126,6 +126,7 @@ export default {
   data() {
     return {
       ships: [],
+      users: [],
       vehicles: null,
       models: null,
       loading: false,
