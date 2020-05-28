@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.77.1](https://github.com/fleetyards/fleetyards/compare/v3.77.0...v3.77.1) (2020-05-28)
+
+
+### Bug Fixes
+
+* initialize users array for embed ([39b3560](https://github.com/fleetyards/fleetyards/commit/39b3560a51fae3df1da635c1e95e7426be2ea32a))
+
 ## [3.77.0](https://github.com/fleetyards/fleetyards/compare/v3.76.10...v3.77.0) (2020-05-26)
 
 
