@@ -78,9 +78,7 @@ import AddToHangar from 'frontend/partials/Models/AddToHangar/index.vue'
 export default class FleetchartItemContextMenu extends Vue {
   visible: boolean = false
 
-  @Prop() model!: Model
-
-  @Prop() vehicle!: Vehicle
+  @Prop() item!: Model | Vehicle
 
   @Prop() onEdit!: Function
 
@@ -91,6 +89,22 @@ export default class FleetchartItemContextMenu extends Vue {
   topPosition: number = 0
 
   leftPosition: number = 0
+
+  get model() {
+    if (this.item && this.item.model) {
+      return this.item.model
+    }
+
+    return this.item
+  }
+
+  get vehicle() {
+    if (this.item && this.item.model) {
+      return this.item
+    }
+
+    return null
+  }
 
   get hasAddons() {
     return (

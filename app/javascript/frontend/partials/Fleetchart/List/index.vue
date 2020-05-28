@@ -11,8 +11,7 @@
         <FleetchartItem
           v-for="item in items"
           :key="item.id"
-          :model="modelFrom(item)"
-          :fleetchart-image="imageFrom(item)"
+          :item="item"
           :scale="scale"
           @click.native="openContextMenu($event, item)"
         />
@@ -22,8 +21,7 @@
       ref="contextMenu"
       :on-edit="onEdit"
       :on-addons="onAddons"
-      :vehicle="selectedVehicle"
-      :model="selectedModel"
+      :item="selectedItem"
     />
   </div>
 </template>
@@ -49,36 +47,10 @@ export default class FleetchartList extends Vue {
 
   @Prop() scale!: number
 
-  selectedModel: Model | null = null
-
-  selectedVehicle: Vehicle | null = null
-
-  modelFrom(item: Vehicle | Model): Model {
-    if ((item as Vehicle).model) {
-      return (item as Vehicle).model
-    }
-
-    return item as Model
-  }
-
-  imageFrom(item: Vehicle | Model): Model {
-    const vehicle = item as Vehicle
-    if (vehicle.paint && vehicle.paint.fleetchartImage) {
-      return vehicle.paint.fleetchartImage
-    }
-
-    if (vehicle.model) {
-      return vehicle.model.fleetchartImage
-    }
-
-    return (item as Model).fleetchartImage
-  }
+  selectedItem: Vehicle | Model | null = null
 
   openContextMenu(event, item) {
-    this.selectedModel = this.modelFrom(item)
-    if (this.selectedModel !== item) {
-      this.selectedVehicle = item
-    }
+    this.selectedItem = item
 
     // @ts-ignore
     this.$refs.contextMenu.open(event)
