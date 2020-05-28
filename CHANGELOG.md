@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.78.1](https://github.com/fleetyards/fleetyards/compare/v3.78.0...v3.78.1) (2020-05-28)
+
+
+### Bug Fixes
+
+* embed fleetview ([1f398a4](https://github.com/fleetyards/fleetyards/commit/1f398a49223766c9ca448e3ff08b2c6c5d36b2d8))
+
 ## [3.78.0](https://github.com/fleetyards/fleetyards/compare/v3.77.2...v3.78.0) (2020-05-28)
 
 
