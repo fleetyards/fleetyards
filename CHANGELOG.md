@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.78.0](https://github.com/fleetyards/fleetyards/compare/v3.77.2...v3.78.0) (2020-05-28)
+
+
+### Features
+
+* allow fleetchart image override by paint ([f93650e](https://github.com/fleetyards/fleetyards/commit/f93650e892c672c29af82d13e4fb58f3b56161ba))
+
 ### [3.77.2](https://github.com/fleetyards/fleetyards/compare/v3.77.1...v3.77.2) (2020-05-28)
 
 ### [3.77.1](https://github.com/fleetyards/fleetyards/compare/v3.77.0...v3.77.1) (2020-05-28)
