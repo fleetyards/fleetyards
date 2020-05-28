@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.78.2](https://github.com/fleetyards/fleetyards/compare/v3.78.1...v3.78.2) (2020-05-28)
+
+
+### Bug Fixes
+
+* dependabot bundle install ([a20f37f](https://github.com/fleetyards/fleetyards/commit/a20f37fb21e1ca0cce220ac8d42e11e5877c78db))
+* **embed:** update grouping for fleetview by usernames ([e75e066](https://github.com/fleetyards/fleetyards/commit/e75e06691aa1caf68253bf1ea2d8c1f47679c1dc))
+
 ### [3.78.1](https://github.com/fleetyards/fleetyards/compare/v3.78.0...v3.78.1) (2020-05-28)
 
 
