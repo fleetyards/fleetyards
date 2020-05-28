@@ -145,41 +145,41 @@ export default {
     ]),
 
     ungroupedModels() {
-      return this.ships
-        .map(slug => ({
-          slug,
-          model: this.models.find(model => model.slug === slug),
-        }))
-        .map(item => {
-          if (!item.model) {
-            return {
-              name: this.$t('labels.unknownModel', { slug: item.slug }),
-              slug: item.slug,
-              manufacturer: {
-                name: this.$t('labels.unknown'),
-              },
-            }
-          }
-          return item.model
-        })
-        .sort((a, b) => {
-          if (a.name < b.name) {
-            return -1
-          }
-          if (a.name > b.name) {
-            return 1
-          }
-          return 0
-        })
+      if (this.ships.length) {
+        return this.ships
+          .map(slug => ({
+            slug,
+            model: this.models.find(model => model.slug === slug),
+          }))
+          .map(this.mapModel)
+          .sort(this.sortByName)
+      }
+
+      if (this.users) {
+        return [...this.models].sort(this.sortByName)
+      }
+
+      return []
     },
 
     displayModels() {
       if (!this.models) {
         return []
       }
+
       if (!this.grouping || (!this.fleetchartGrouping && this.fleetchart)) {
         return this.ungroupedModels
       }
+
+      if (this.users) {
+        return [...this.models].filter((item, pos) => {
+          const model = this.models.find(
+            modelItem => modelItem.slug === item.slug,
+          )
+          return this.models.indexOf(model) === pos
+        })
+      }
+
       return this.models
     },
 
@@ -225,6 +225,29 @@ export default {
   },
 
   methods: {
+    sortByName(a, b) {
+      if (a.name < b.name) {
+        return -1
+      }
+      if (a.name > b.name) {
+        return 1
+      }
+      return 0
+    },
+
+    mapModel(item) {
+      if (!item.model) {
+        return {
+          name: this.$t('labels.unknownModel', { slug: item.slug }),
+          slug: item.slug,
+          manufacturer: {
+            name: this.$t('labels.unknown'),
+          },
+        }
+      }
+      return item.model
+    },
+
     updateShips(ships) {
       this.ships = ships
     },
@@ -257,6 +280,11 @@ export default {
       if (!this.grouping) {
         return null
       }
+
+      if (this.users) {
+        return this.models.filter(model => model.slug === slug).length
+      }
+
       return this.ships.filter(item => item === slug).length
     },
 
