@@ -22,7 +22,7 @@ v1_api_routes = lambda do
       get :focus
       get :sizes
       get 'cargo-options' => 'models#cargo_options'
-      post :embed
+      get :embed
     end
     member do
       get :images
@@ -85,7 +85,7 @@ v1_api_routes = lambda do
       get :export
       put :import
       delete 'destroy-all' => 'vehicles#destroy_all'
-      post :embed
+      get :embed
       get 'hangar-items' => 'vehicles#hangar_items'
       get :hangar
       get ':username' => 'vehicles#public', as: :public

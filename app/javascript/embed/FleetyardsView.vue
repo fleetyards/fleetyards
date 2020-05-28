@@ -262,7 +262,7 @@ export default {
 
     async fetchShips() {
       this.loading = true
-      const response = await this.$api.post('models/embed', {
+      const response = await this.$api.get('models/embed', {
         models: this.ships.filter((v, i, a) => a.indexOf(v) === i),
       })
       this.loading = false
@@ -275,7 +275,7 @@ export default {
     async fetchHangars() {
       this.loading = true
 
-      const response = await this.$api.post('vehicles/embed', {
+      const response = await this.$api.get('vehicles/embed', {
         usernames: this.users,
       })
 
