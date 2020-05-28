@@ -3,6 +3,9 @@
     = image_tag model_paint.store_image.url
   %td.preview.text-center
     = image_tag model_paint.rsi_store_image.url
+  %td.preview.text-center
+    - if model_paint.fleetchart_image.present?
+      = image_tag model_paint.fleetchart_image.url
   %td
     = model_paint.name
   %td

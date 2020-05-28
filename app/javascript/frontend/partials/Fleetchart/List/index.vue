@@ -12,6 +12,7 @@
           v-for="item in items"
           :key="item.id"
           :model="modelFrom(item)"
+          :fleetchart-image="imageFrom(item)"
           :scale="scale"
           @click.native="openContextMenu($event, item)"
         />
@@ -58,6 +59,19 @@ export default class FleetchartList extends Vue {
     }
 
     return item as Model
+  }
+
+  imageFrom(item: Vehicle | Model): Model {
+    const vehicle = item as Vehicle
+    if (vehicle.paint && vehicle.paint.fleetchartImage) {
+      return vehicle.paint.fleetchartImage
+    }
+
+    if (vehicle.model) {
+      return vehicle.model.fleetchartImage
+    }
+
+    return (item as Model).fleetchartImage
   }
 
   openContextMenu(event, item) {

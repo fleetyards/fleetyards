@@ -1,16 +1,16 @@
 <template>
   <img
-    v-if="model.fleetchartImage"
-    :src="model.fleetchartImage"
+    v-if="fleetchartImage"
+    :src="fleetchartImage"
     :style="{
-      height: `${model.length * lengthMultiplicator}px`,
+      height: `${length * lengthMultiplicator}px`,
     }"
-    :alt="model.name"
+    :alt="label"
     class="fleetchart-item-image"
   />
   <span v-else>
     <i class="fal fa-question-circle" />
-    <p>{{ model.name }}</p>
+    <p>{{ label }}</p>
   </span>
 </template>
 
@@ -20,7 +20,11 @@ import Vue from 'vue'
 
 @Component({})
 export default class FleetchartListItemImage extends Vue {
-  @Prop() model!: Model
+  @Prop() fleetchartImage!: string
+
+  @Prop() label!: string
+
+  @Prop() length!: number
 
   @Prop() scale!: number
 

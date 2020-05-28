@@ -61,4 +61,16 @@
       %small
         = form_errors model_paint, :rsi_store_image
 
+    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :fleetchart_image)}
+      = form.label :fleetchart_image
+      = form.file_field :fleetchart_image, class: 'form-control'
+      = form.hidden_field :fleetchart_image_cache
+      %br
+      - if model_paint.fleetchart_image?
+        = image_tag(model_paint.fleetchart_image.url)
+        = form.check_box :remove_fleetchart_image
+        Remove Image
+      %small
+        = form_errors model_paint, :fleetchart_image
+
   = render "shared/submit", path: admin_model_paints_path

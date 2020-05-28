@@ -7,6 +7,7 @@ class ModelPaint < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
+  mount_uploader :fleetchart_image, FleetchartImageUploader
 
   before_save :update_slugs
 

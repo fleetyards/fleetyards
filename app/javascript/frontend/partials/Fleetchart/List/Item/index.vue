@@ -1,6 +1,11 @@
 <template>
   <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
-    <FleetchartItemImage :model="model" :scale="scale" />
+    <FleetchartItemImage
+      :label="model.name"
+      :fleetchart-image="fleetchartImage"
+      :length="model.length"
+      :scale="scale"
+    />
   </div>
 </template>
 
@@ -18,6 +23,8 @@ import FleetchartItemImage from './Image/index.vue'
 })
 export default class FleetchartListItem extends Vue {
   @Prop() model!: Model
+
+  @Prop() fleetchartImage!: string
 
   @Prop() scale!: number
 
