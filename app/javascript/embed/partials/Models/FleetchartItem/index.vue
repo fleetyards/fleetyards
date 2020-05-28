@@ -3,7 +3,9 @@
     <a :href="url" target="_blank" rel="noopener">
       <FleetchartItemImage
         v-if="model.fleetchartImage"
-        :model="model"
+        :src="model.fleetchartImage"
+        :length="model.length"
+        :label="model.name"
         :scale="scale"
       />
     </a>

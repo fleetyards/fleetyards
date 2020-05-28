@@ -2,7 +2,7 @@
   <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
     <FleetchartItemImage
       :label="model.name"
-      :fleetchart-image="fleetchartImage"
+      :src="fleetchartImage"
       :length="model.length"
       :scale="scale"
     />

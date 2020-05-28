@@ -1,7 +1,7 @@
 <template>
   <img
-    v-if="fleetchartImage"
-    :src="fleetchartImage"
+    v-if="src"
+    :src="src"
     :style="{
       height: `${length * lengthMultiplicator}px`,
     }"
@@ -20,7 +20,7 @@ import Vue from 'vue'
 
 @Component({})
 export default class FleetchartListItemImage extends Vue {
-  @Prop() fleetchartImage!: string
+  @Prop() src!: string
 
   @Prop() label!: string
 
