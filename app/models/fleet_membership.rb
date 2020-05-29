@@ -45,7 +45,7 @@ class FleetMembership < ApplicationRecord
 
     return user.vehicles.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
 
-    user.vehicles.purchased if ships_filter_purchased?
+    user.vehicles.where(loaner: false).purchased if ships_filter_purchased?
   end
 
   def invitation
