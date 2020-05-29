@@ -35,7 +35,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 
-@Component({})
+@Component<Avatar>()
 export default class Avatar extends Vue {
   @Prop({
     default: 'default',
