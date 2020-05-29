@@ -24,7 +24,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
 
-  plugins: ['import', 'prettier', 'cypress'],
+  plugins: ['sort-class-members', 'import', 'prettier', 'cypress'],
 
   settings: {
     'html/indent': 'tab',

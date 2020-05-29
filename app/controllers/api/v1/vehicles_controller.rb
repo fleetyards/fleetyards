@@ -65,13 +65,17 @@ module Api
       def destroy_all
         authorize! :destroy_all, :api_hangar
 
-        # rubocop:disable Rails/SkipsModelValidations
-        current_user.vehicles.update_all(notify: false)
-        # rubocop:enable Rails/SkipsModelValidations
+        Vehicle.transaction do
+          # rubocop:disable Rails/SkipsModelValidations
+          current_user.vehicles.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
 
-        return if current_user.vehicles.destroy_all
+          vehicle_ids = current_user.vehicle_ids
 
-        render json: ValidationError.new('vehicle.destroy', nil, 'Could not destroy all Vehicles'), status: :bad_request
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
       end
 
       def fleetchart

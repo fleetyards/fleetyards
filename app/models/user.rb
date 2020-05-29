@@ -6,8 +6,7 @@ class User < ApplicationRecord
          :confirmable, :timeoutable,
          authentication_keys: [:login]
 
-  has_many :vehicles,
-           dependent: :destroy
+  has_many :vehicles, dependent: :destroy
   has_many :models,
            through: :vehicles
   has_many :manufacturers,

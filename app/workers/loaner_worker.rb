@@ -9,10 +9,10 @@ class LoanerWorker
   def perform
     missing_loaners = ::RSI::LoanerLoader.new.run
 
-    Vehicle.where(loaner: true).destroy_all
+    Vehicle.where(loaner: true, notify: true).destroy_all
 
     ModelLoaner.pluck(:model_id).each do |model_id|
-      Vehicle.where(model_id: model_id, loaner: false).find_each(&:add_loaners)
+      Vehicle.where(model_id: model_id, loaner: false, notify: true).find_each(&:add_loaners)
     end
 
     AdminMailer.missing_loaners(missing_loaners).deliver_later if missing_loaners.present?
