@@ -5,6 +5,8 @@ class ModelPaint < ApplicationRecord
 
   belongs_to :model, optional: true, touch: true
 
+  has_many :vehicles, dependent: :nullify
+
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
