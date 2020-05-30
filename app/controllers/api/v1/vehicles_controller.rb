@@ -168,14 +168,21 @@ module Api
 
       def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
-        models = []
-        models = user.public_models.order(classification: :asc) if user.public_hangar?
+
+        vehicles = user.vehicles
+                       .public
+                       .where(loaner: false)
+                       .includes(:model)
+                       .order('models.classification asc')
+
+        models = vehicles.map(&:model)
 
         @quick_stats = OpenStruct.new(
-          total: models.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
+          total: vehicles.count,
+          classifications: Model.classifications.map do |classification|
             OpenStruct.new(
-              count: models.where(classification: classification).count,
+              count: models.count { |model| model.classification == classification },
+
               name: classification,
               label: classification.humanize
             )

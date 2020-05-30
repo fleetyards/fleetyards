@@ -97,7 +97,7 @@ class Vehicle < ApplicationRecord
   end
 
   def self.public
-    purchased.where(purchased: true, public: true)
+    where(purchased: true, public: true)
   end
 
   def export_name
