@@ -2,7 +2,7 @@
 
 class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
-  belongs_to :user
+  belongs_to :user, touch: true
 
   enum ships_filter: { purchased: 0, hangar_group: 1, hide: 2 }, _prefix: true
 
