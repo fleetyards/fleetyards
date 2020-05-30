@@ -63,6 +63,13 @@ describe('Fleet', () => {
 
     cy.success('Your Fleet has been created.')
 
+    cy.visit('/')
+
+    cy.clickNav('fleets-menu')
+    cy.clickNav('testfleet1')
+
+    cy.url().should('include', '/fleets/testfleet1/')
+
     cy.clickNav('fleet-settings')
 
     cy.select('fleet-delete').click()
