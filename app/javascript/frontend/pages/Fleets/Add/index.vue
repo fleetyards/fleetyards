@@ -109,6 +109,7 @@ export default {
         this.$success({
           text: this.$t('messages.fleet.create.success'),
         })
+
         this.$router.push({
           name: 'fleet',
           params: { slug: response.data.slug },
