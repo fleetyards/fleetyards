@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_28_003133) do
+ActiveRecord::Schema.define(version: 2020_05_30_115200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -435,6 +435,11 @@ ActiveRecord::Schema.define(version: 2020_05_28_003133) do
     t.string "erkuls_slug"
     t.string "starship42_slug"
     t.string "rsi_store_image"
+    t.integer "model_paints_count", default: 0
+    t.integer "images_count", default: 0
+    t.integer "videos_count", default: 0
+    t.integer "upgrade_kits_count", default: 0
+    t.integer "module_hardpoints_count", default: 0
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -548,6 +553,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_003133) do
     t.text "description"
     t.uuid "celestial_object_id"
     t.integer "status"
+    t.integer "images_count", default: 0
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"

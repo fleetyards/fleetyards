@@ -32,20 +32,29 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 
-  def visible_vehicle_ids
-    visibile_vehicles.pluck(:id)
+  def visible_vehicle_ids(filters)
+    return [] if visibile_vehicles.blank?
+
+    scope = visibile_vehicles
+    scope = scope.where(filters) if filters.present?
+    scope.pluck(:id)
   end
 
-  def visible_model_ids
-    visibile_vehicles.pluck(:model_id)
+  def visible_model_ids(filters)
+    return [] if visibile_vehicles.blank?
+
+    scope = visibile_vehicles
+    scope = scope.where(filters) if filters.present?
+    scope.pluck(:model_id)
   end
 
   def visibile_vehicles
-    return unless ships_filter_purchased? || ships_filter_hangar_group?
+    return if ships_filter_hide?
 
-    return user.vehicles.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
-
-    user.vehicles.where(loaner: false).purchased if ships_filter_purchased?
+    scope = user.vehicles
+    scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
+    scope = scope.purchased if ships_filter_purchased?
+    scope
   end
 
   def invitation

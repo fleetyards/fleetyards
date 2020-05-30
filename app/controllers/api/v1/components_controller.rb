@@ -11,7 +11,7 @@ module Api
 
         components_query_params['sorts'] = sort_by_name
 
-        @q = Component.ransack(components_query_params)
+        @q = Component.includes(:manufacturer).ransack(components_query_params)
 
         @components = @q.result
                         .page(params[:page])

@@ -342,7 +342,7 @@ export default {
 
   data() {
     return {
-      loading: true,
+      loading: false,
       deleting: false,
       vehicles: [],
       fleetchartVehicles: [],
@@ -487,6 +487,10 @@ export default {
     },
 
     fetch() {
+      if (this.loading) {
+        return
+      }
+
       this.fetchFleetchart()
       this.fetchVehicles()
       this.fetchGroups()

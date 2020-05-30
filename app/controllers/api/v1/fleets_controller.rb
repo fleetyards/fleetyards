@@ -29,9 +29,7 @@ module Api
       def vehicles
         authorize! :show, fleet
 
-        vehicle_ids = fleet.visible_memberships.map(&:visible_vehicle_ids).flatten
-
-        scope = Vehicle.where(id: vehicle_ids)
+        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
@@ -57,9 +55,7 @@ module Api
       def models
         authorize! :show, fleet
 
-        model_ids = fleet.visible_memberships.map(&:visible_model_ids).flatten
-
-        scope = Model.where(id: model_ids)
+        scope = fleet.models(loaner: loaner_included?)
 
         if price_range.present?
           model_query_params['sorts'] = 'price asc'
@@ -139,7 +135,10 @@ module Api
 
       def fleetchart
         authorize! :show, fleet
-        @q = fleet.public_vehicles.ransack(vehicle_query_params)
+
+        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+
+        @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
                       .includes(:model)
@@ -149,7 +148,10 @@ module Api
 
       def quick_stats
         authorize! :show, fleet
-        @q = fleet.public_vehicles.ransack(vehicle_query_params)
+
+        scope = fleet.vehicles(loaner: loaner_included?).includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+
+        @q = scope.ransack(vehicle_query_params)
 
         @q.sorts = ['model_classification asc']
 
@@ -163,9 +165,8 @@ module Api
           total_members: fleet.fleet_memberships.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
-              # rubocop:disable Performance/Count
-              count: models.select { |model| model.classification == classification }.size,
-              # rubocop:enable Performance/Count
+              count: models.count { |model| model.classification == classification },
+
               name: classification,
               label: classification.humanize
             )
@@ -184,10 +185,10 @@ module Api
         authorize! :show, fleet
 
         models_by_size = transform_for_pie_chart(
-          fleet.public_models.visible.active
-              .group(:size).count
-              .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-              .reduce(:merge) || []
+          fleet.models
+               .group(:size).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
         )
 
         render json: models_by_size.to_json
@@ -197,10 +198,10 @@ module Api
         authorize! :show, fleet
 
         models_by_production_status = transform_for_pie_chart(
-          fleet.public_models.visible.active
-              .group(:production_status).count
-              .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-              .reduce(:merge) || []
+          fleet.models
+               .group(:production_status).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
         )
 
         render json: models_by_production_status.to_json
@@ -222,10 +223,10 @@ module Api
         authorize! :show, fleet
 
         models_by_classification = transform_for_pie_chart(
-          fleet.public_models.visible.active
-              .group(:classification).count
-              .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-              .reduce(:merge) || []
+          fleet.models
+               .group(:classification).count
+               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
+               .reduce(:merge) || []
         )
 
         render json: models_by_classification.to_json
@@ -308,7 +309,7 @@ module Api
       private def vehicle_query_params
         @vehicle_query_params ||= query_params(
           :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq, :length_gteq, :length_lteq,
-          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq,
+          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
           manufacturer_in: [], classification_in: [], focus_in: [],
           size_in: [], price_in: [], pledge_price_in: [],
           production_status_in: [], sorts: []
@@ -319,11 +320,23 @@ module Api
         @model_query_params ||= query_params(
           :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
           :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq, :will_it_fit, :search_cont,
+          :pledge_price_lteq, :will_it_fit, :search_cont, :loaner_eq,
           name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
           id_not_in: []
         )
+      end
+
+      private def loaner_param
+        @loaner_param ||= vehicle_query_params.delete('loaner_eq') || model_query_params.delete('loaner_eq')
+      end
+
+      private def loaner_included?
+        return false if loaner_param.blank?
+
+        return true if loaner_param == 'only'
+
+        [false, true]
       end
     end
   end

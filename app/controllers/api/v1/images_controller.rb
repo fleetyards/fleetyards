@@ -23,6 +23,7 @@ module Api
                        .global_enabled
                        .in_gallery
                        .with_uniq_name
+                       .includes(:gallery)
                        .order(Arel.sql('RANDOM()'))
                        .first(14)
       end

@@ -4,17 +4,11 @@ class Fleet < ApplicationRecord
   has_many :fleet_memberships,
            dependent: :destroy
   has_many :visible_memberships,
-           -> { where.not(accepted_at: nil, ships_filter: :hide) },
+           -> { where.not(accepted_at: nil).where.not(ships_filter: :hide) },
            class_name: 'FleetMembership',
            inverse_of: false
   has_many :users,
            through: :visible_memberships
-  has_many :public_vehicles,
-           through: :users
-  has_many :public_models,
-           through: :users
-  has_many :manufacturers,
-           through: :users
 
   validates :fid,
             uniqueness: { case_sensitive: false },
@@ -37,6 +31,24 @@ class Fleet < ApplicationRecord
   def self.not_declined
     includes(:fleet_memberships).joins(:fleet_memberships)
                                 .where(fleet_memberships: { declined_at: nil })
+  end
+
+  def vehicles(filters = nil)
+    vehicle_ids = visible_memberships.map { |member| member.visible_vehicle_ids(filters) }.flatten
+
+    Vehicle.where(id: vehicle_ids)
+  end
+
+  def models(filters = nil)
+    model_ids = visible_memberships.map { |member| member.visible_model_ids(filters) }.flatten
+
+    Model.where(id: model_ids)
+  end
+
+  def manufacturers
+    manufacturer_ids = models.pluck(:manufacturers_id)
+
+    Manufacturer.where(id: manufacturer_ids)
   end
 
   def setup_admin_user
@@ -72,7 +84,7 @@ class Fleet < ApplicationRecord
   end
 
   def model_count(model_id)
-    public_vehicles.where(model_id: model_id).size
+    vehicles.where(model_id: model_id).size
   end
 
   private def update_slugs

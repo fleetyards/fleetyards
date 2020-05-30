@@ -3,7 +3,7 @@
 class ModelPaint < ApplicationRecord
   paginates_per 30
 
-  belongs_to :model, optional: true, touch: true
+  belongs_to :model, optional: true, touch: true, counter_cache: true
 
   has_many :vehicles, dependent: :nullify
 

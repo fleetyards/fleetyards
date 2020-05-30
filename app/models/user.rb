@@ -74,4 +74,17 @@ class User < ApplicationRecord
       update(field => nil)
     end
   end
+
+  # override devise trackable to not save on every single request
+  def update_tracked_fields!(request)
+    # We have to check if the user is already persisted before running
+    # `save` here because invalid users can be saved if we don't.
+    # See https://github.com/heartcombo/devise/issues/4673 for more details.
+    return if new_record?
+
+    return if updated_at < Time.zone.now + 1.minute
+
+    update_tracked_fields(request)
+    save(validate: false)
+  end
 end

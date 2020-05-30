@@ -12,7 +12,8 @@ module Api
         sorts = ['parent_id desc', 'designation asc']
         celestial_object_query_params['sorts'] = sort_by_name(sorts, sorts)
 
-        @q = CelestialObject.visible
+        @q = CelestialObject.includes(:starsystem, :parent)
+                            .visible
                             .ransack(celestial_object_query_params)
 
         @celestial_objects = @q.result(distinct: true)

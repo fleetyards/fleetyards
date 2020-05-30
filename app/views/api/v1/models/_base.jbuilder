@@ -42,11 +42,11 @@ json.classification model.classification
 json.classification_label model.classification&.humanize
 json.focus model.focus
 json.rsi_id model.rsi_id
-json.has_images model.images.count.positive?
-json.has_videos model.videos.count.positive?
-json.has_modules model.modules.count.positive?
-json.has_upgrades model.upgrades.count.positive?
-json.has_paints model.paints.count.positive?
+json.has_images model.images_count.positive?
+json.has_videos model.videos_count.positive?
+json.has_modules model.module_hardpoints_count.positive?
+json.has_upgrades model.upgrade_kits_count.positive?
+json.has_paints model.model_paints_count.positive?
 json.last_updated_at model.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if model.last_updated_at.present?))
 json.manufacturer do

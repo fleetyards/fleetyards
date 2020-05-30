@@ -3,7 +3,7 @@
 class Video < ApplicationRecord
   paginates_per 8
 
-  belongs_to :model, optional: false
+  belongs_to :model, optional: false, counter_cache: true
 
   enum video_type: { youtube: 0 }
 

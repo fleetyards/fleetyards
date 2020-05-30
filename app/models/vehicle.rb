@@ -26,8 +26,8 @@ class Vehicle < ApplicationRecord
   before_save :nil_if_blank
   after_save :set_flagship
   after_commit :broadcast_update
-  after_destroy :remove_loaners
-  after_create :add_loaners
+  after_destroy :remove_loaners, :broadcast_destroy
+  after_create :add_loaners, :broadcast_create
   after_touch :clear_association_cache
 
   ransack_alias :name, :name_or_model_name_or_model_slug
@@ -78,6 +78,18 @@ class Vehicle < ApplicationRecord
     return if loaner? || !notify?
 
     HangarChannel.broadcast_to(user, to_json)
+  end
+
+  def broadcast_create
+    return if loaner? || !notify?
+
+    HangarCreateChannel.broadcast_to(user, to_json)
+  end
+
+  def broadcast_destroy
+    return if loaner? || !notify?
+
+    HangarDestroyChannel.broadcast_to(user, to_json)
   end
 
   def self.purchased

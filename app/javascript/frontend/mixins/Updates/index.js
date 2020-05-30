@@ -43,15 +43,22 @@ export default {
       if (this.isAuthenticated) {
         this.setupOnSaleVehiclesUpdates()
         this.setupOnSaleUpdates()
-        this.setupHangarUpdates()
+        this.setupHangarCreateUpdates()
+        this.setupHangarDestroyUpdates()
       }
     },
 
     disconnectUpdates() {
-      if (this.channels.hangar) {
-        this.$cable.consumer.subscriptions.remove(this.channels.hangar)
-        this.channels.hangar.unsubscribe()
-        delete this.channels.hangar
+      if (this.channels.hangarCreate) {
+        this.$cable.consumer.subscriptions.remove(this.channels.hangarCreate)
+        this.channels.hangarCreate.unsubscribe()
+        delete this.channels.hangarCreate
+      }
+
+      if (this.channels.hangarDestroy) {
+        this.$cable.consumer.subscriptions.remove(this.channels.hangarDestroy)
+        this.channels.hangarDestroy.unsubscribe()
+        delete this.channels.hangarDestroy
       }
 
       if (this.channels.onSaleHangar) {
@@ -88,38 +95,64 @@ export default {
       this.$store.dispatch('app/updateVersion', JSON.parse(data))
     },
 
-    setupHangarUpdates() {
-      if (this.channels.hangar) {
+    setupHangarCreateUpdates() {
+      if (this.channels.hangarCreate) {
         return
       }
-      this.channels.hangar = this.$cable.consumer.subscriptions.create(
+      this.channels.hangarCreate = this.$cable.consumer.subscriptions.create(
         {
-          channel: 'HangarChannel',
+          channel: 'HangarCreateChannel',
         },
         {
-          received: this.updateHangar,
+          received: this.addShipToHangar,
           connected: () => {
-            this.connected('HangarChannel')
+            this.connected('HangarCreateChannel')
           },
           disconnected: () => {
-            this.disconnected('HangarChannel')
+            this.disconnected('HangarCreateChannel')
           },
         },
       )
     },
 
-    updateHangar(data) {
+    setupHangarDestroyUpdates() {
+      if (this.channels.hangarDestroy) {
+        return
+      }
+      this.channels.hangarDestroy = this.$cable.consumer.subscriptions.create(
+        {
+          channel: 'HangarDestroyChannel',
+        },
+        {
+          received: this.removeShipFromHangar,
+          connected: () => {
+            this.connected('HangarDestroyChannel')
+          },
+          disconnected: () => {
+            this.disconnected('HangarDestroyChannel')
+          },
+        },
+      )
+    },
+
+    addShipToHangar(data) {
       const vehicle = JSON.parse(data)
 
       if (!vehicle.model) {
         return
       }
 
-      if (vehicle.deleted) {
-        this.$store.dispatch('hangar/remove', vehicle.model.slug)
-      } else {
-        this.$store.dispatch('hangar/add', vehicle.model.slug)
+      this.$store.dispatch('hangar/add', vehicle.model.slug)
+    },
+
+    removeShipFromHangar(data) {
+      const vehicle = JSON.parse(data)
+
+      if (!vehicle.model) {
+        return
       }
+
+      this.$store.dispatch('hangar/remove', vehicle.model.slug)
     },
 
     notifyVehicleOnSale(data) {
