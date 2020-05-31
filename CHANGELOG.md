@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.79.0](https://github.com/fleetyards/fleetyards/compare/v3.78.2...v3.79.0) (2020-05-31)
+
+
+### Features
+
+* loaners display for fix ([479b62f](https://github.com/fleetyards/fleetyards/commit/479b62f5e6ab5f405667b4d0eca7a9d5ce768d0e))
+* loaners display for fix ([55ab119](https://github.com/fleetyards/fleetyards/commit/55ab1192d0e6abcf98d82b8d3bcf2503d50f56b6))
+
+
+### Bug Fixes
+
+* default for ships filter on fleet membership ([03247c5](https://github.com/fleetyards/fleetyards/commit/03247c505fc1328229d891b8e66e5b9af8984715))
+* **fleets:** hide loaners in ship list ([686f904](https://github.com/fleetyards/fleetyards/commit/686f90412102e7b6f146b53475044469afadadf1))
+* has_many for model_paints to nullify vehicles model_paint_id ([5bc0fd1](https://github.com/fleetyards/fleetyards/commit/5bc0fd1852184548c5451f0e41cf3e1b8fa12cc4))
+
 ### [3.78.2](https://github.com/fleetyards/fleetyards/compare/v3.78.1...v3.78.2) (2020-05-28)
 
 
