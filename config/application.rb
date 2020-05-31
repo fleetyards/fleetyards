@@ -11,6 +11,7 @@ Bundler.require(*Rails.groups)
 module Fleetyards
   class Application < Rails::Application
     config.lograge.enabled = true
+    config.lograge.ignore_actions = ['Api::BaseController#version']
 
     config.load_defaults 6.0
 
