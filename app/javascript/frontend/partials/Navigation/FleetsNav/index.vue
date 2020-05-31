@@ -21,6 +21,7 @@
       <NavItem
         v-for="fleet in myFleets"
         :key="fleet.slug"
+        :menu-key="fleet.slug"
         :to="{ name: 'fleet', params: { slug: fleet.slug } }"
         :label="fleet.name"
         :image="fleet.logo"

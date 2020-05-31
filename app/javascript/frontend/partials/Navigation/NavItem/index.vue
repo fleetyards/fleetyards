@@ -7,7 +7,7 @@
       'open': open,
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${menuKey}`"
+    :data-test="`nav-${navKey}`"
     class="nav-item sub-menu"
   >
     <a v-tooltip="tooltip" @click="toggleMenu">
@@ -34,7 +34,7 @@
     :class="{
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${menuKey}`"
+    :data-test="`nav-${navKey}`"
     class="nav-item"
     @click="action"
   >
@@ -56,7 +56,7 @@
       'active': active,
       'nav-item-slim': slim,
     }"
-    :data-test="`nav-${to.name}`"
+    :data-test="`nav-${navKey}`"
     class="nav-item"
     tag="li"
     :exact="exact"
@@ -78,6 +78,7 @@
       'nav-item-slim': slim,
     }"
     class="nav-item"
+    :data-test="`nav-${navKey}`"
   >
     <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
       <slot v-if="hasDefaultSlot" />
@@ -209,6 +210,18 @@ export default {
 
     matchedRoutes() {
       return this.$route.matched.map(route => route.name)
+    },
+
+    navKey() {
+      if (this.menuKey) {
+        return this.menuKey
+      }
+
+      if (this.to) {
+        return this.to.name
+      }
+
+      return 'nav-item'
     },
   },
 
