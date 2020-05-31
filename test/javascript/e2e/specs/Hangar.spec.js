@@ -25,18 +25,6 @@ describe('Hangar', () => {
     cy.url().should('include', '/login')
   })
 
-  it('Shows Guide on initial Visit', () => {
-    cy.clickNav('hangar-preview')
-
-    cy.select('login').click()
-
-    cy.login()
-
-    cy.url().should('include', '/hangar/')
-
-    cy.get('.hangar-guide-box').should('exist')
-  })
-
   it('Default Workflow', () => {
     cy.clickNav('login')
 
