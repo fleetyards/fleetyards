@@ -63,7 +63,10 @@ describe('Fleet', () => {
 
     cy.success('Your Fleet has been created.')
 
-    cy.visit('/')
+    cy.clickNav('logout')
+    cy.clickNav('login')
+
+    cy.login()
 
     cy.clickNav('fleets-menu')
     cy.clickNav('testfleet1')
