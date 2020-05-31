@@ -48,6 +48,10 @@ export default () => ({
     money(state) {
       return state.money
     },
+
+    starterGuideVisible(state) {
+      return state.starterGuideVisible
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -98,6 +102,10 @@ export default () => ({
 
     setMoney(state, payload) {
       state.money = payload
+    },
+
+    setStarterGuideVisible(state, payload) {
+      state.starterGuideVisible = payload
     },
   },
   /* eslint-enable no-param-reassign */

@@ -160,7 +160,8 @@
           />
 
           <Btn
-            :active="showGuide"
+            v-if="!starterGuideVisible"
+            :active="guideVisible"
             :aria-label="toggleGuideTooltip"
             size="small"
             variant="link"
@@ -224,7 +225,7 @@
           </div>
         </transition>
 
-        <HangarGuideBox v-if="!loading && showGuide" />
+        <HangarGuideBox v-if="isGuideVisible" />
 
         <FleetchartList
           v-else-if="fleetchartVisible"
@@ -349,7 +350,7 @@ export default {
       hangarGroups: [],
       vehiclesCount: null,
       tooltipTrigger: 'click',
-      showGuide: true,
+      guideVisible: false,
       vehiclesChannel: null,
       highlightedGroup: null,
     }
@@ -366,6 +367,7 @@ export default {
       'fleetchartVisible',
       'fleetchartScale',
       'money',
+      'starterGuideVisible',
     ]),
 
     emptyBoxVisible() {
@@ -400,7 +402,7 @@ export default {
     },
 
     toggleGuideTooltip() {
-      if (this.showGuide) {
+      if (this.guideVisible) {
         return this.$t('actions.hideGuide')
       }
       return this.$t('actions.showGuide')
@@ -411,6 +413,10 @@ export default {
         return ''
       }
       return `/hangar/${this.currentUser.username}`
+    },
+
+    isGuideVisible() {
+      return this.starterGuideVisible || this.guideVisible
     },
   },
 
@@ -446,7 +452,7 @@ export default {
 
   methods: {
     toggleGuide() {
-      this.showGuide = !this.showGuide
+      this.guideVisible = !this.guideVisible
     },
 
     showEditModal(vehicle) {
@@ -490,6 +496,7 @@ export default {
       if (this.loading) {
         return
       }
+      this.loading = true
 
       this.fetchFleetchart()
       this.fetchVehicles()
@@ -498,8 +505,6 @@ export default {
     },
 
     async fetchVehicles() {
-      this.loading = true
-
       const response = await this.$api.get('vehicles', {
         q: this.$route.query.q,
         page: this.$route.query.page,
@@ -513,10 +518,6 @@ export default {
 
       this.setPages(response.meta)
       this.resetLoading()
-
-      if (this.vehicles.length) {
-        this.showGuide = false
-      }
     },
 
     removeVehicle(vehicle) {
@@ -530,20 +531,29 @@ export default {
       const response = await this.$api.get('vehicles/quick-stats', {
         q: this.$route.query.q,
       })
+
       if (!response.error) {
         this.vehiclesCount = response.data
       }
     },
 
     async fetchFleetchart() {
-      this.loading = true
       const response = await this.$api.get('vehicles/fleetchart', {
         q: this.$route.query.q,
       })
+
       if (!response.error) {
         this.fleetchartVehicles = response.data
       }
+
       this.resetLoading()
+    },
+
+    async fetchGroups() {
+      const response = await this.$api.get('hangar-groups')
+      if (!response.error) {
+        this.hangarGroups = response.data
+      }
     },
 
     setupUpdates() {
@@ -561,13 +571,6 @@ export default {
       )
     },
 
-    async fetchGroups() {
-      const response = await this.$api.get('hangar-groups')
-      if (!response.error) {
-        this.hangarGroups = response.data
-      }
-    },
-
     resetLoading() {
       setTimeout(() => {
         this.loading = false
@@ -578,8 +581,11 @@ export default {
       const response = await this.$api.download('vehicles/export', {
         q: this.$route.query.q,
       })
+
       const link = document.createElement('a')
+
       link.href = window.URL.createObjectURL(new Blob([response.data]))
+
       link.setAttribute(
         'download',
         `fleetyards-${this.currentUser.username}-hangar-${format(
@@ -587,17 +593,22 @@ export default {
           'yyyy-MM-dd',
         )}.json`,
       )
+
       document.body.appendChild(link)
+
       link.click()
+
       document.body.removeChild(link)
     },
 
     async destroyAll() {
       this.deleting = true
+
       this.$confirm({
         text: this.$t('messages.confirm.hangar.destroyAll'),
         onConfirm: async () => {
           this.loading = true
+
           const response = await this.$api.destroy('vehicles/destroy-all')
 
           if (!response.error) {
@@ -605,7 +616,7 @@ export default {
           }
 
           this.deleting = false
-          this.loading = false
+          this.resetLoading()
         },
         onClose: () => {
           this.deleting = false
