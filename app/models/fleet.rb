@@ -46,7 +46,7 @@ class Fleet < ApplicationRecord
   end
 
   def manufacturers
-    manufacturer_ids = models.pluck(:manufacturers_id)
+    manufacturer_ids = models.pluck(:manufacturer_id)
 
     Manufacturer.where(id: manufacturer_ids)
   end
