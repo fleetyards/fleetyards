@@ -84,7 +84,7 @@ class Fleet < ApplicationRecord
   end
 
   def model_count(model_id)
-    vehicles.where(model_id: model_id).size
+    vehicles.where(model_id: model_id, loaner: false).size
   end
 
   private def update_slugs
