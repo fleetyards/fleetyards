@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.79.4](https://github.com/fleetyards/fleetyards/compare/v3.79.3...v3.79.4) (2020-06-02)
+
+
+### Bug Fixes
+
+* **fleet:** model count ([4d4e5c1](https://github.com/fleetyards/fleetyards/commit/4d4e5c13f26794ca4b1e5d06f0b5faa642343377))
+
 ### [3.79.3](https://github.com/fleetyards/fleetyards/compare/v3.79.2...v3.79.3) (2020-06-01)
 
 
