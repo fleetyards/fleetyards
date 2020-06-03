@@ -113,7 +113,7 @@ module Api
 
       def latest
         authorize! :index, :api_models
-        @models = Model.visible
+        @models = Model.visible.includes(:manufacturer)
                        .active
                        .order(last_updated_at: :desc, name: :asc)
                        .limit(9)
@@ -165,7 +165,7 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.variants.visible.active
+        scope = model.variants.includes(:manufacturer).visible.active
         if pledge_price_range.present?
           model_query_params['sorts'] = 'last_pledge_price asc'
           scope = scope.where(last_pledge_price: pledge_price_range)
@@ -188,7 +188,7 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.loaners.visible.active
+        scope = model.loaners.includes(:manufacturer).visible.active
         if pledge_price_range.present?
           model_query_params['sorts'] = 'last_pledge_price asc'
           scope = scope.where(last_pledge_price: pledge_price_range)
@@ -289,7 +289,7 @@ module Api
       end
 
       private def index_scope
-        scope = Model.visible.active
+        scope = Model.includes([:manufacturer]).visible.active
 
         if pledge_price_range.present?
           model_query_params['sorts'] = 'last_pledge_price asc'

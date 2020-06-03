@@ -43,6 +43,8 @@ export default {
     },
     vehicles: {
       name: 'Enterprise, Andromeda...',
+      priceLt: 'Price <=',
+      priceGt: 'Price >=',
     },
     models: {
       name: 'Gladius, Andromeda...',

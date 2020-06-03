@@ -3,7 +3,9 @@
 class ModelPaint < ApplicationRecord
   paginates_per 30
 
-  belongs_to :model, optional: true, touch: true
+  belongs_to :model, optional: true, touch: true, counter_cache: true
+
+  has_many :vehicles, dependent: :nullify
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader

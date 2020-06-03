@@ -8,4 +8,5 @@ export default () => ({
   publicFleetchartScale: 100,
   preview: true,
   money: true,
+  starterGuideVisible: false,
 })

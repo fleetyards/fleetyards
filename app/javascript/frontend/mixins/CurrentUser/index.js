@@ -28,4 +28,10 @@ export default {
     this.$comlink.$on('fleetCreate', this.fetchCurrentUser)
     this.$comlink.$on('fleetUpdate', this.fetchCurrentUser)
   },
+
+  beforeDestroy() {
+    this.$comlink.$off('userUpdate')
+    this.$comlink.$off('fleetCreate')
+    this.$comlink.$off('fleetUpdate')
+  },
 }

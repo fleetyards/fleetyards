@@ -1,9 +1,24 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  fleet_id: 
-  user_id: 
+starfleet_picard:
+  fleet: starfleet
+  user: jeanluc
+  role: :admin
+  accepted_at: <%= Time.now %>
 
-two:
-  fleet_id: 
-  user_id: 
+starfleet_data:
+  fleet: starfleet
+  user: data
+  role: :member
+  ships_filter: :purchased
+  accepted_at: <%= Time.now %>
+
+starfleet_riker:
+  fleet: starfleet
+  user: will
+  role: :member
+  accepted_at: nil
+
+klingon_empire_worf:
+  fleet: klingon_empire
+  user: worf

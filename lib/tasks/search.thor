@@ -9,6 +9,30 @@ class Search < Thor
     true
   end
 
+  desc 'cleanup', 'Cleanup index for all Relevant Models'
+  def cleanup
+    require './config/environment'
+
+    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+
+    puts
+    puts 'Starting Clenaup...'
+    puts
+
+    puts Model.search_index.clean_indices && '--> Models Reindexed'
+    puts ShopCommodity.search_index.clean_indices && '--> ShopCommodities Reindexed'
+    puts Shop.search_index.clean_indices && '--> Shops Reindexed'
+    puts Station.search_index.clean_indices && '--> Stations Reindexed'
+    puts CelestialObject.search_index.clean_indices && '--> CelestialObjects Reindexed'
+    puts Starsystem.search_index.clean_indices && '--> Starsystems Reindexed'
+
+    puts
+    puts 'Finished'
+    puts
+
+    run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
+  end
+
   desc 'index', 'Create index/reindex for all Relevant Models'
   def index
     require './config/environment'

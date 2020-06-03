@@ -1,4 +1,4 @@
-const CHECK_VERSION_INTERVAL = 60 * 1000 // 60s
+const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
 
 export default {
   created() {

@@ -65,13 +65,17 @@ module Api
       def destroy_all
         authorize! :destroy_all, :api_hangar
 
-        # rubocop:disable Rails/SkipsModelValidations
-        current_user.vehicles.update_all(notify: false)
-        # rubocop:enable Rails/SkipsModelValidations
+        Vehicle.transaction do
+          # rubocop:disable Rails/SkipsModelValidations
+          current_user.vehicles.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
 
-        return if current_user.vehicles.destroy_all
+          vehicle_ids = current_user.vehicle_ids
 
-        render json: ValidationError.new('vehicle.destroy', nil, 'Could not destroy all Vehicles'), status: :bad_request
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
       end
 
       def fleetchart
@@ -164,14 +168,21 @@ module Api
 
       def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
-        models = []
-        models = user.public_models.order(classification: :asc) if user.public_hangar?
+
+        vehicles = user.vehicles
+                       .public
+                       .where(loaner: false)
+                       .includes(:model)
+                       .order('models.classification asc')
+
+        models = vehicles.map(&:model)
 
         @quick_stats = OpenStruct.new(
-          total: models.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
+          total: vehicles.count,
+          classifications: Model.classifications.map do |classification|
             OpenStruct.new(
-              count: models.where(classification: classification).count,
+              count: models.count { |model| model.classification == classification },
+
               name: classification,
               label: classification.humanize
             )

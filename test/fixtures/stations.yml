@@ -6,6 +6,7 @@ portolisar:
   celestial_object: crusader
   station_type: hub
   hidden: false
+  images_count: 0
 
 corvolex:
   name: Corvolex Shipping Hub
@@ -13,6 +14,7 @@ corvolex:
   celestial_object: daymar
   station_type: cargo-station
   hidden: false
+  images_count: 0
 
 arccorp_daymar:
   name: ArcCorp 001
@@ -20,6 +22,7 @@ arccorp_daymar:
   celestial_object: daymar
   station_type: outpost
   hidden: false
+  images_count: 0
 
 arccorp_yela:
   name: ArcCorp 002
@@ -27,4 +30,5 @@ arccorp_yela:
   celestial_object: yela
   station_type: outpost
   hidden: false
+  images_count: 0
 

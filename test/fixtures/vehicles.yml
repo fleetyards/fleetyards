@@ -9,3 +9,9 @@ raven:
   model: explorer
   user: data
   purchased: true
+
+ptv_loaner:
+  model: ptv
+  loaner: true
+  user: data
+  purchased: true

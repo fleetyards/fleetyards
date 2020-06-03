@@ -63,6 +63,8 @@ describe('Fleet', () => {
 
     cy.success('Your Fleet has been created.')
 
+    cy.wait(500)
+
     cy.clickNav('fleet-settings')
 
     cy.select('fleet-delete').click()

@@ -11,7 +11,9 @@ module Api
 
         starsystem_query_params['sorts'] = sort_by_name
 
-        @q = Starsystem.visible.ransack(starsystem_query_params)
+        @q = Starsystem.includes(celestial_objects: [:parent])
+                       .visible
+                       .ransack(starsystem_query_params)
 
         @starsystems = @q.result(distinct: true)
                          .page(params[:page])

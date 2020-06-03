@@ -11,7 +11,7 @@ module Api
 
         equipment_query_params['sorts'] = sort_by_name
 
-        @q = Equipment.ransack(equipment_query_params)
+        @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
 
         @equipment = @q.result
                        .page(params[:page])

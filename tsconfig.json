@@ -6,11 +6,15 @@
     "jsx": "preserve",
     "importHelpers": true,
     "allowJs": true,
-    "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {

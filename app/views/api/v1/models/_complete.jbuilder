@@ -7,7 +7,7 @@ json.cache! ['v1', model] do
     json.array! model.dock_counts, partial: 'api/v1/models/dock', as: :dock_count
   end
   json.hardpoints do
-    json.array! model.hardpoints.undeleted, partial: 'api/v1/models/hardpoint', as: :hardpoint
+    json.array! model.hardpoints.includes(:component).undeleted, partial: 'api/v1/models/hardpoint', as: :hardpoint
   end
   json.sold_at do
     json.array! model.sold_at, partial: 'api/v1/models/shop', as: :shop_commodity

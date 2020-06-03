@@ -22,6 +22,7 @@ export default function getStorePlugins() {
         'hangar.publicFleetchartScale',
         'hangar.preview',
         'hangar.money',
+        'hangar.starterGuideVisible',
         'models.detailsVisible',
         'models.fleetchartVisible',
         'models.fleetchartScale',

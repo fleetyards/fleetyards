@@ -17,7 +17,7 @@ module Api
         ]
         shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 
-        @q = shop.shop_commodities
+        @q = shop.shop_commodities.includes(:shop, :commodity_item)
                  .ransack(shop_commodities_query_params)
 
         @shop_commodities = @q.result
@@ -32,7 +32,7 @@ module Api
         if params[:shopSlug].present? && params[:stationSlug].present?
           station = Station.find_by(slug: params[:stationSlug])
           shop = Shop.find_by(slug: params[:shopSlug], station_id: station.id)
-          allowed_categories = shop.shop_commodities.map(&:sub_category)
+          allowed_categories = shop.shop_commodities.includes(:commodity_item).map(&:sub_category)
         end
 
         @filters = [

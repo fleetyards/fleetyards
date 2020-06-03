@@ -37,13 +37,10 @@ class Model < ApplicationRecord
   has_many :hardpoints,
            dependent: :destroy,
            autosave: true
-  has_many :vehicles,
-           dependent: :destroy
-  has_many :components,
-           through: :hardpoints
+  has_many :vehicles, dependent: :destroy
+  has_many :components, through: :hardpoints
 
-  has_many :module_hardpoints,
-           dependent: :destroy
+  has_many :module_hardpoints, dependent: :destroy
   has_many :modules,
            through: :module_hardpoints,
            source: :model_module
@@ -55,8 +52,7 @@ class Model < ApplicationRecord
            through: :model_loaners,
            source: :loaner_model
 
-  has_many :upgrade_kits,
-           dependent: :destroy
+  has_many :upgrade_kits, dependent: :destroy
   has_many :upgrades,
            through: :upgrade_kits,
            source: :model_upgrade

@@ -3,16 +3,24 @@ export default {
     commit('reset')
   },
 
-  saveHangar({ commit }, payload) {
+  saveHangar({ commit, state }, payload) {
     commit('setShips', payload)
+
+    if (payload.length > 0 && state.starterGuideVisible) {
+      commit('setStarterGuideVisible', false)
+    }
   },
 
   hidePreview({ commit }) {
     commit('setPreview', false)
   },
 
-  add({ commit }, payload) {
+  add({ commit, state }, payload) {
     commit('add', payload)
+
+    if (state.starterGuideVisible) {
+      commit('setStarterGuideVisible', false)
+    }
   },
 
   remove({ commit }, payload) {
@@ -37,5 +45,9 @@ export default {
 
   toggleMoney({ commit, state }) {
     commit('setMoney', !state.money)
+  },
+
+  enableStarterGuide({ commit }) {
+    commit('setStarterGuideVisible', true)
   },
 }

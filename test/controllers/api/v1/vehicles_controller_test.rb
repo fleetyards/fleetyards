@@ -61,6 +61,8 @@ module Api
 
       describe 'with session' do
         let(:data) { users :data }
+        let(:explorer) { data.vehicles.includes(:model).find_by(models: { name: '600i' }) }
+        let(:enterprise) { data.vehicles.includes(:model).find_by(models: { name: 'Andromeda' }) }
 
         before do
           sign_in data
@@ -73,7 +75,7 @@ module Api
           json = JSON.parse response.body
 
           expected = [{
-            'id' => data.vehicles.first.id,
+            'id' => explorer.id,
             'name' => '',
             'purchased' => true,
             'public' => true,
@@ -82,7 +84,7 @@ module Api
             'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
-              'id' => data.vehicles.first.model_id,
+              'id' => explorer.model_id,
               'name' => '600i',
               'rsiName' => nil,
               'slug' => '600i',
@@ -108,9 +110,9 @@ module Api
               'zaxisAcceleration' => nil,
               'size' => nil,
               'sizeLabel' => nil,
-              'storeImage' => data.vehicles.first.model.store_image.url,
-              'storeImageMedium' => data.vehicles.first.model.store_image.medium.url,
-              'storeImageSmall' => data.vehicles.first.model.store_image.small.url,
+              'storeImage' => explorer.model.store_image.url,
+              'storeImageMedium' => explorer.model.store_image.medium.url,
+              'storeImageSmall' => explorer.model.store_image.small.url,
               'fleetchartImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
@@ -129,26 +131,26 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'hasPaints' => false,
-              'lastUpdatedAt' => data.vehicles.first.model.last_updated_at&.utc&.iso8601,
-              'lastUpdatedAtLabel' => (I18n.l(data.vehicles.first.model.last_updated_at&.utc, format: :label) if data.vehicles.first.model.last_updated_at.present?),
+              'lastUpdatedAt' => explorer.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtLabel' => (I18n.l(explorer.model.last_updated_at&.utc, format: :label) if explorer.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.first.model.created_at.utc.iso8601,
-              'updatedAt' => data.vehicles.first.model.updated_at.utc.iso8601
+              'createdAt' => explorer.model.created_at.utc.iso8601,
+              'updatedAt' => explorer.model.updated_at.utc.iso8601
             },
             'paint' => nil,
             'upgrade' => nil,
-            'hangarGroupIds' => data.vehicles.first.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.first.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.first.model_upgrade_ids,
-            'createdAt' => data.vehicles.first.created_at.utc.iso8601,
-            'updatedAt' => data.vehicles.first.updated_at.utc.iso8601
+            'hangarGroupIds' => explorer.hangar_group_ids,
+            'modelModuleIds' => explorer.model_module_ids,
+            'modelUpgradeIds' => explorer.model_upgrade_ids,
+            'createdAt' => explorer.created_at.utc.iso8601,
+            'updatedAt' => explorer.updated_at.utc.iso8601
           }, {
-            'id' => data.vehicles.last.id,
+            'id' => enterprise.id,
             'name' => 'Enterprise',
             'purchased' => true,
             'public' => true,
@@ -157,7 +159,7 @@ module Api
             'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
-              'id' => data.vehicles.last.model.id,
+              'id' => enterprise.model.id,
               'name' => 'Andromeda',
               'rsiName' => nil,
               'slug' => 'andromeda',
@@ -183,9 +185,9 @@ module Api
               'zaxisAcceleration' => nil,
               'size' => nil,
               'sizeLabel' => nil,
-              'storeImage' => data.vehicles.last.model.store_image.url,
-              'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
-              'storeImageSmall' => data.vehicles.last.model.store_image.small.url,
+              'storeImage' => enterprise.model.store_image.url,
+              'storeImageMedium' => enterprise.model.store_image.medium.url,
+              'storeImageSmall' => enterprise.model.store_image.small.url,
               'fleetchartImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
@@ -204,31 +206,31 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'hasPaints' => false,
-              'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
-              'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
+              'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
-              'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
+              'createdAt' => enterprise.model.created_at.utc.iso8601,
+              'updatedAt' => enterprise.model.updated_at.utc.iso8601
             },
             'paint' => nil,
             'upgrade' => nil,
-            'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.last.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
-            'createdAt' => data.vehicles.last.created_at.utc.iso8601,
-            'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
+            'hangarGroupIds' => enterprise.hangar_group_ids,
+            'modelModuleIds' => enterprise.model_module_ids,
+            'modelUpgradeIds' => enterprise.model_upgrade_ids,
+            'createdAt' => enterprise.created_at.utc.iso8601,
+            'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
           assert_equal expected, json
         end
 
         it 'should return list for index when filtered' do
           query_params = {
-            hangarGroupsIn: data.vehicles.last.hangar_groups.map(&:slug)
+            hangarGroupsIn: enterprise.hangar_groups.map(&:slug)
           }
           get :index, params: { q: query_params.to_json }
 
@@ -236,7 +238,7 @@ module Api
           json = JSON.parse response.body
 
           expected = [{
-            'id' => data.vehicles.last.id,
+            'id' => enterprise.id,
             'name' => 'Enterprise',
             'purchased' => true,
             'loaner' => false,
@@ -245,7 +247,7 @@ module Api
             'nameVisible' => false,
             'saleNotify' => false,
             'model' => {
-              'id' => data.vehicles.last.model.id,
+              'id' => enterprise.model.id,
               'name' => 'Andromeda',
               'rsiName' => nil,
               'slug' => 'andromeda',
@@ -271,9 +273,9 @@ module Api
               'zaxisAcceleration' => nil,
               'size' => nil,
               'sizeLabel' => nil,
-              'storeImage' => data.vehicles.last.model.store_image.url,
-              'storeImageMedium' => data.vehicles.last.model.store_image.medium.url,
-              'storeImageSmall' => data.vehicles.last.model.store_image.small.url,
+              'storeImage' => enterprise.model.store_image.url,
+              'storeImageMedium' => enterprise.model.store_image.medium.url,
+              'storeImageSmall' => enterprise.model.store_image.small.url,
               'fleetchartImage' => nil,
               'brochure' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
@@ -292,24 +294,24 @@ module Api
               'hasModules' => false,
               'hasUpgrades' => false,
               'hasPaints' => false,
-              'lastUpdatedAt' => data.vehicles.last.model.last_updated_at&.utc&.iso8601,
-              'lastUpdatedAtLabel' => (I18n.l(data.vehicles.last.model.last_updated_at&.utc, format: :label) if data.vehicles.last.model.last_updated_at.present?),
+              'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
+              'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
                 'code' => nil,
                 'logo' => nil
               },
-              'createdAt' => data.vehicles.last.model.created_at.utc.iso8601,
-              'updatedAt' => data.vehicles.last.model.updated_at.utc.iso8601
+              'createdAt' => enterprise.model.created_at.utc.iso8601,
+              'updatedAt' => enterprise.model.updated_at.utc.iso8601
             },
             'paint' => nil,
             'upgrade' => nil,
-            'hangarGroupIds' => data.vehicles.last.hangar_group_ids,
-            'modelModuleIds' => data.vehicles.last.model_module_ids,
-            'modelUpgradeIds' => data.vehicles.last.model_upgrade_ids,
-            'createdAt' => data.vehicles.last.created_at.utc.iso8601,
-            'updatedAt' => data.vehicles.last.updated_at.utc.iso8601
+            'hangarGroupIds' => enterprise.hangar_group_ids,
+            'modelModuleIds' => enterprise.model_module_ids,
+            'modelUpgradeIds' => enterprise.model_upgrade_ids,
+            'createdAt' => enterprise.created_at.utc.iso8601,
+            'updatedAt' => enterprise.updated_at.utc.iso8601
           }]
           assert_equal expected, json
         end

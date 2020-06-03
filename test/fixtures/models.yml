@@ -13,6 +13,11 @@ andromeda:
   max_crew: 5
   last_pledge_price: 225
   hidden: false
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 explorer:
   name: "600i"
@@ -26,33 +31,63 @@ explorer:
   max_crew: 5
   last_pledge_price: 400
   hidden: false
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 ptv:
   name: PTV
   slug: ptv
   rsi_name: PTV
   rsi_id: null
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 600i-executive:
   name: '600i Executive Edition'
   slug: '600i-executive-edition'
   rsi_name: '600i Executive Edition'
   rsi_id: null
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 f8c:
   name: 'F8C'
   slug: 'f8c-lightning'
   rsi_name: 'F8C'
   rsi_id: null
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 f8c-executive:
   name: 'F8C Lightning Executive-Edition'
   slug: 'f8c-lightning-executive-edition'
   rsi_name: 'F8C Executive'
   rsi_id: null
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0
 
 starkitten:
   name: 'Dragonfly Star Kitten Edition'
   slug: 'dragonfly-starkitten-edition'
   rsi_name: 'Dragonfly Star Kitten Edition'
   rsi_id: null
+  images_count: 0
+  videos_count: 0
+  model_paints_count: 0
+  module_hardpoints_count: 0
+  upgrade_kits_count: 0

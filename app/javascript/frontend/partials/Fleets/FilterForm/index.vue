@@ -142,6 +142,23 @@
       name="sale"
     />
 
+    <RadioList
+      v-model="form.loanerEq"
+      :label="$t('labels.filters.vehicles.loaner')"
+      :reset-label="$t('labels.hide')"
+      :options="[
+        {
+          name: 'Show',
+          value: 'true',
+        },
+        {
+          name: 'Only',
+          value: 'only',
+        },
+      ]"
+      name="loaner"
+    />
+
     <Btn
       :disabled="!isFilterSelected"
       :block="true"
@@ -178,6 +195,7 @@ export default {
       form: {
         modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
+        loanerEq: query.loanerEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,
         pledgePriceLteq: query.pledgePriceLteq,
@@ -201,6 +219,7 @@ export default {
       this.form = {
         modelNameCont: query.modelNameCont,
         onSaleEq: query.onSaleEq,
+        loanerEq: query.loanerEq,
         priceLteq: query.priceLteq,
         priceGteq: query.priceGteq,
         pledgePriceLteq: query.pledgePriceLteq,

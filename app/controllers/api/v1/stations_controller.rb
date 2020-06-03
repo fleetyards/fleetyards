@@ -11,7 +11,8 @@ module Api
         authorize! :index, :api_stations
         station_query_params['sorts'] = sort_by_name if station_query_params['sorts'].blank?
 
-        @q = Station.visible
+        @q = Station.includes(:docks, :habitations, :shops, celestial_object: %i[starsystem parent])
+                    .visible
                     .ransack(station_query_params)
 
         @stations = @q.result(distinct: true)
