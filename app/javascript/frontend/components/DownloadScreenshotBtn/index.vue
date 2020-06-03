@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import html2canvas from 'html2canvas'
+import domToImage from 'dom-to-image'
 import download from 'downloadjs'
 import Btn from 'frontend/components/Btn/index.vue'
 import SmallLoader from 'frontend/components/SmallLoader/index.vue'
@@ -43,7 +43,7 @@ export default class DownloadScreenshotBtn extends Btn {
 
   downloading: boolean = false
 
-  download() {
+  async download() {
     this.downloading = true
 
     const element = document.querySelector(this.element)
@@ -52,19 +52,13 @@ export default class DownloadScreenshotBtn extends Btn {
       return
     }
 
-    element.classList.add('fleetchart-download')
-
-    html2canvas(element, {
-      backgroundColor: null,
-      useCORS: true,
-    })
-      .then(canvas => {
-        element.classList.remove('fleetchart-download')
+    domToImage
+      .toPng(element)
+      .then(dataUrl => {
         this.downloading = false
-        download(canvas.toDataURL(), `fleetyards-${this.filename}.png`)
+        download(dataUrl, `fleetyards-${this.filename}.png`)
       })
       .catch(() => {
-        element.classList.remove('fleetchart-download')
         this.downloading = false
       })
   }
