@@ -240,6 +240,7 @@ export default {
 
         return
       }
+
       const input = this.$refs.upload.$el.querySelector('input')
       input.directory = true
       input.webkitdirectory = true

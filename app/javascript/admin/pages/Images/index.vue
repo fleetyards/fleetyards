@@ -5,7 +5,6 @@
         <div class="col-xs-12 col-md-6">
           <div class="page-actions page-actions-left">
             <Btn
-              v-tooltip="toggleFiltersTooltip"
               :active="filterVisible"
               :aria-label="toggleFiltersTooltip"
               size="small"
@@ -83,7 +82,9 @@ export default {
     FilterForm,
     Btn,
   },
+
   mixins: [Filters, Pagination],
+
   data() {
     return {
       loading: true,
@@ -92,6 +93,7 @@ export default {
       fullscreen: false,
     }
   },
+
   computed: {
     toggleFiltersTooltip() {
       if (this.filterVisible) {
@@ -99,31 +101,39 @@ export default {
       }
       return this.$t('actions.showFilter')
     },
+
     query() {
       return this.$route.query.q || {}
     },
+
     galleryId() {
       return this.query.galleryIdEq
     },
+
     galleryType() {
       return this.query.galleryTypeEq
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   mounted() {
     this.fetch()
   },
+
   methods: {
     toggleFullscreen() {
       this.fullscreen = !this.filterVisible
     },
+
     toggleFilter() {
       this.filterVisible = !this.filterVisible
     },
+
     async fetch() {
       this.loading = true
 

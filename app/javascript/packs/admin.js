@@ -2,8 +2,6 @@ import 'stylesheets/admin'
 import Vue from 'vue'
 import App from 'admin/App'
 import ApiClient from 'admin/lib/ApiClient'
-import Subscriptions from 'frontend/lib/Subscriptions'
-import VTooltip from 'v-tooltip'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
 import 'frontend/lib/Bootstrap'
@@ -12,7 +10,6 @@ import Comlink from 'frontend/lib/Comlink'
 import I18nPlugin from 'frontend/lib/I18n'
 import Noty from 'frontend/lib/Noty'
 
-Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
@@ -40,19 +37,9 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.config.productionTip = false
 }
 
-VTooltip.enabled = window.innerWidth > 768
-Vue.use(VTooltip)
-
 console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 
 document.addEventListener('DOMContentLoaded', () => {
-  if ('serviceWorker' in navigator) {
-    // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-      registrations.forEach(registration => registration.unregister())
-    })
-  }
-
   // eslint-disable-next-line no-new
   new Vue({
     el: '#app',

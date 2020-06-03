@@ -68,12 +68,7 @@
     </div>
     <div class="actions">
       <template v-if="uploaded">
-        <Btn
-          v-tooltip="$t('labels.image.enabled')"
-          :disabled="updating"
-          size="small"
-          @click.native="toggleEnabled"
-        >
+        <Btn :disabled="updating" size="small" @click.native="toggleEnabled">
           <span v-show="image.enabled">
             <i class="fa fa-check-square" />
           </span>
@@ -81,12 +76,7 @@
             <i class="far fa-square" />
           </span>
         </Btn>
-        <Btn
-          v-tooltip="$t('labels.image.global')"
-          :disabled="updating"
-          size="small"
-          @click.native="toggleGlobal"
-        >
+        <Btn :disabled="updating" size="small" @click.native="toggleGlobal">
           <span v-show="image.global">
             <i class="fas fa-globe" />
           </span>
@@ -120,30 +110,36 @@ export default {
   components: {
     Btn,
   },
+
   props: {
     image: {
       type: Object,
       required: true,
     },
   },
+
   data() {
     return {
       deleting: false,
       updating: false,
     }
   },
+
   computed: {
     uploaded() {
       return !!this.image.url
     },
   },
+
   methods: {
     start() {
       this.$emit('start', this.image)
     },
+
     cancel() {
       this.$emit('cancel', this.image)
     },
+
     async toggleEnabled() {
       this.updating = true
       this.image.enabled = !this.image.enabled
@@ -157,6 +153,7 @@ export default {
         this.image.enabled = !this.image.enabled
       }
     },
+
     async toggleGlobal() {
       this.updating = true
       this.image.global = !this.image.global
@@ -170,6 +167,7 @@ export default {
         this.image.global = !this.image.global
       }
     },
+
     async deleteImage() {
       this.deleting = true
       const response = await this.$api.destroy(`images/${this.image.id}`)

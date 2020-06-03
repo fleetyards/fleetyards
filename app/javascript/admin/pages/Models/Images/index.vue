@@ -46,26 +46,32 @@ export default {
   components: {
     ImageUploader,
   },
+
   mixins: [Pagination],
+
   data() {
     return {
       loading: true,
       images: [],
     }
   },
+
   computed: {
     uuid() {
       return this.$route.params.uuid
     },
   },
+
   watch: {
     $route() {
       this.fetch()
     },
   },
+
   mounted() {
     this.fetch()
   },
+
   methods: {
     async fetch() {
       this.loading = true
