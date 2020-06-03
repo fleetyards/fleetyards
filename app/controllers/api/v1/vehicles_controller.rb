@@ -32,8 +32,8 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
+                      .includes(model: [:manufacturer])
+                      .joins(model: [:manufacturer])
                       .page(params[:page])
                       .per(per_page(Vehicle))
       end
@@ -50,8 +50,8 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
+                      .includes(model: [:manufacturer])
+                      .joins(model: [:manufacturer])
       end
 
       def import
@@ -87,14 +87,14 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
+                      .includes(model: [:manufacturer])
+                      .joins(model: [:manufacturer])
                       .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       def quick_stats
         authorize! :index, :api_hangar
-        scope = current_user.vehicles.visible
+        scope = current_user.vehicles.visible.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
 
         scope = loaner_included?(scope)
 
