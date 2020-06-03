@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts'
+import { chart } from 'highcharts'
 import HighchartSetup from 'frontend/mixins/HighchartSetup'
 
 export default {
@@ -124,7 +124,7 @@ export default {
     setupChart() {
       const self = this
 
-      this.instance = Highcharts.chart(this.id, {
+      this.instance = chart(this.id, {
         chart: {
           type: this.type,
           height: this.height,
