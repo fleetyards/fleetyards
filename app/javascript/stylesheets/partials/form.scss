@@ -2,15 +2,8 @@
   height: 43px;
 }
 
-.input-group-addon {
-  color: $gray-lighter;
-  max-width: 60vw;
-  font-size: 16px;
-}
-
 .input-lg,
-.input-group-lg > .form-control,
-.input-group-lg > .input-group-addon {
+.input-group-lg > .form-control {
   height: 51px;
 }
 
