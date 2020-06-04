@@ -16861,11 +16861,6 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-swatches@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-2.0.3.tgz#6534b799e718c857bae9b78c8a3bb22805f89735"
-  integrity sha512-x973af/nU/21RgN1xdYE8N1/38C37/ga7bCOO2UNhG554n60Qy/ITjNP7CyCLzzO6frbAsXukqlq34KsSRTScA==
-
 vue-template-compiler@2.6.11, vue-template-compiler@^2.6.10, vue-template-compiler@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.11.tgz#c04704ef8f498b153130018993e56309d4698080"

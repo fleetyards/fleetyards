@@ -20,7 +20,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+          <div class="col-xs-12 col-sm-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="color"
@@ -29,18 +29,14 @@
               :immediate="true"
               :slim="true"
             >
-              <div
-                v-tooltip.right="errors[0]"
-                :class="{ 'has-error has-feedback': errors[0] }"
-                class="form-group"
-              >
-                <VSwatches
-                  v-model="form.color"
-                  name="color"
-                  background-color="transparent"
-                  :inline="true"
-                />
-              </div>
+              <FormInput
+                id="vehicle-color"
+                v-model="form.color"
+                translation-key="color"
+                :no-label="true"
+                :error="errors[0]"
+                type="color"
+              />
             </ValidationProvider>
           </div>
         </div>
@@ -74,15 +70,12 @@
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
-import VSwatches from 'vue-swatches'
-import 'vue-swatches/dist/vue-swatches.css'
 
 export default {
   components: {
     Modal,
     Btn,
     FormInput,
-    VSwatches,
   },
 
   props: {
