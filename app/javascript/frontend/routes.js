@@ -67,7 +67,7 @@ export const routes = [
     name: 'hangar-preview',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Preview'
+        /* webpackChunkName: "frontend.page.hangar-preview" */ 'frontend/pages/Hangar/Preview'
       ),
     meta: {
       title: 'hangar.preview',
@@ -78,7 +78,7 @@ export const routes = [
     name: 'hangar-stats',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Stats'
+        /* webpackChunkName: "frontend.page.hangar-stats" */ 'frontend/pages/Hangar/Stats'
       ),
     meta: {
       needsAuthentication: true,
@@ -90,7 +90,7 @@ export const routes = [
     name: 'hangar-public',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/Public'
+        /* webpackChunkName: "frontend.page.hangar-public" */ 'frontend/pages/Hangar/Public'
       ),
   },
   {
@@ -110,7 +110,7 @@ export const routes = [
     name: 'models-compare',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Compare'
+        /* webpackChunkName: "frontend.page.ships-compare" */ 'frontend/pages/Models/Compare'
       ),
     meta: {
       title: 'compare.models',
@@ -121,7 +121,7 @@ export const routes = [
     name: 'model',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show'
+        /* webpackChunkName: "frontend.page.ships-detail" */ 'frontend/pages/Models/Show'
       ),
   },
   {
@@ -129,7 +129,7 @@ export const routes = [
     name: 'model-images',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Images'
+        /* webpackChunkName: "frontend.page.ships-images" */ 'frontend/pages/Models/Show/Images'
       ),
   },
   {
@@ -137,7 +137,7 @@ export const routes = [
     name: 'model-videos',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/Show/Videos'
+        /* webpackChunkName: "frontend.page.ships-videos" */ 'frontend/pages/Models/Show/Videos'
       ),
   },
   {
