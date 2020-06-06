@@ -24,14 +24,6 @@ module ApplicationHelper
     end
   end
 
-  def current_background_image
-    if content_for?(:background_image)
-      content_for(:background_image)
-    else
-      asset_path("bg-#{rand(5)}.jpg")
-    end
-  end
-
   def title
     # rubocop:disable Rails/HelperInstanceVariable
     @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
