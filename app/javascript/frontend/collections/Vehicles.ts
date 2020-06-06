@@ -1,4 +1,4 @@
-import { get, put, destroy } from 'frontend/lib/ApiClient'
+import { get, post, put, destroy } from 'frontend/lib/ApiClient'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
@@ -23,7 +23,28 @@ export class VehiclesCollection extends BaseCollection {
     return this.records
   }
 
-  async save(vehicleId: string, form: Vehicle): Promise<boolean> {
+  async refresh(): Promise<void> {
+    await this.findAll(this.params)
+  }
+
+  async create(
+    vehicle: Vehicle,
+    refetch: boolean = false,
+  ): Promise<Vehicle | null> {
+    const response = await post('vehicles', vehicle)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async update(vehicleId: string, form: Vehicle): Promise<boolean> {
     const response = await put(`vehicles/${vehicleId}`, form)
     if (!response.error) {
       this.findAll(this.params)

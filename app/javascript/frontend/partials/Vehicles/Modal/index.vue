@@ -218,7 +218,7 @@ export default class VehicleModal extends Vue {
   async save() {
     this.submitting = true
 
-    if (await this.collection.save(this.vehicle.id, this.form)) {
+    if (await this.collection.update(this.vehicle.id, this.form)) {
       this.$refs.modal.close()
     }
 
