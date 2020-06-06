@@ -25,7 +25,7 @@
           class="col-xs-12 compare-row-item"
         />
       </div>
-      <b-collapse :id="category" :visible="isVisible(category.toLowerCase())">
+      <BCollapse :id="category" :visible="isVisible(category.toLowerCase())">
         <div class="row compare-row">
           <div
             :style="{
@@ -50,16 +50,18 @@
             </div>
           </div>
         </div>
-      </b-collapse>
+      </BCollapse>
     </div>
   </div>
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import HardpointCategory from 'frontend/partials/Models/Hardpoints/Category'
 
 export default {
   components: {
+    BCollapse,
     HardpointCategory,
   },
 

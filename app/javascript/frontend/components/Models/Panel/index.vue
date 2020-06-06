@@ -121,7 +121,7 @@
           </span>
         </div>
       </div>
-      <b-collapse
+      <BCollapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
         :visible="details"
       >
@@ -140,12 +140,13 @@
         <ModelTopMetrics :model="model" padding />
         <hr class="dark slim-spacer" />
         <ModelBaseMetrics :model="model" padding />
-      </b-collapse>
+      </BCollapse>
     </Panel>
   </div>
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/components/Panel'
 import Btn from 'frontend/components/Btn'
 import LazyImage from 'frontend/components/LazyImage'
@@ -157,6 +158,7 @@ export default {
   name: 'ModelPanel',
 
   components: {
+    BCollapse,
     Panel,
     Btn,
     LazyImage,

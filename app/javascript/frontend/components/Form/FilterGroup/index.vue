@@ -19,7 +19,7 @@
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
-    <b-collapse
+    <BCollapse
       v-if="multiple"
       :id="`${groupID}-${selectedId}`"
       :visible="selectedOptions.length > 0 && !visible"
@@ -43,8 +43,8 @@
           <i class="fal fa-plus" />
         </span>
       </a>
-    </b-collapse>
-    <b-collapse
+    </BCollapse>
+    <BCollapse
       :id="`${groupID}-${id}`"
       :visible="visible"
       class="filter-list-items-wrapper"
@@ -92,11 +92,12 @@
           <span slot="spinner" />
         </InfiniteLoading>
       </div>
-    </b-collapse>
+    </BCollapse>
   </div>
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import SmallLoader from 'frontend/components/SmallLoader'
 import FormInput from 'frontend/components/Form/FormInput'
 import debounce from 'lodash.debounce'
@@ -104,6 +105,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   components: {
+    BCollapse,
     SmallLoader,
     InfiniteLoading,
     FormInput,

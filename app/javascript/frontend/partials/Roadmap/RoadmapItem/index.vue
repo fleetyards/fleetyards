@@ -70,29 +70,32 @@
             </template>
           </li>
         </ul>
-        <b-progress :max="item.tasks">
+        <BProgress :max="item.tasks">
           <div class="progress-label">
             {{ progressLabel }} | {{ completedPercent }} %
           </div>
-          <b-progress-bar
+          <BProgressBar
             v-if="completed !== 0"
             :value="completed"
             :class="{
               completed: completed === item.tasks,
             }"
           />
-        </b-progress>
+        </BProgress>
       </div>
     </div>
   </Panel>
 </template>
 
 <script>
+import { BProgress, BProgressBar } from 'bootstrap-vue'
 import Panel from 'frontend/components/Panel'
 import { isBefore, addHours } from 'date-fns'
 
 export default {
   components: {
+    BProgress,
+    BProgressBar,
     Panel,
   },
 

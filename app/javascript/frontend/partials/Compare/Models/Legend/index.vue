@@ -19,7 +19,7 @@
         class="col-xs-12 compare-row-item"
       />
     </div>
-    <b-collapse id="legend" :visible="visible">
+    <BCollapse id="legend" :visible="visible">
       <div class="row compare-row">
         <div class="col-xs-12 compare-row-label text-right metrics-label" />
         <div
@@ -109,16 +109,18 @@
           </Panel>
         </div>
       </div>
-    </b-collapse>
+    </BCollapse>
   </div>
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/components/Panel'
 import HardpointIcon from 'frontend/partials/Models/Hardpoints/Icon'
 
 export default {
   components: {
+    BCollapse,
     HardpointIcon,
     Panel,
   },

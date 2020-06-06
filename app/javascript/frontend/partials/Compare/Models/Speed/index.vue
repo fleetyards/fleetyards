@@ -24,7 +24,7 @@
         class="col-xs-12 compare-row-item"
       />
     </div>
-    <b-collapse id="speed" :visible="visible">
+    <BCollapse id="speed" :visible="visible">
       <div class="row compare-row">
         <div
           :style="{
@@ -215,12 +215,18 @@
           </span>
         </div>
       </div>
-    </b-collapse>
+    </BCollapse>
   </div>
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
+
 export default {
+  components: {
+    BCollapse,
+  },
+
   props: {
     models: {
       type: Array,
