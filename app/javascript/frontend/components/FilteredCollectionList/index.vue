@@ -151,7 +151,7 @@ export default class FilteredList extends Vue {
   }
 
   get emptyBoxVisible() {
-    return (
+    return !!(
       !this.loading &&
       !this.collection.records.length &&
       (this.isFilterSelected || (this.paginated && this.page))

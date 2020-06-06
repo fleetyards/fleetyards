@@ -16,8 +16,8 @@
           <div class="hangar-labels">
             <ModelClassLabels
               v-if="statsCollection.record"
-              :label="$t('labels.hangar')"
               :count-data="statsCollection.record.classifications"
+              :label="$t('labels.hangar')"
               filter-key="classificationIn"
             />
             <GroupLabels
@@ -110,9 +110,15 @@ import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import vehiclesFleetchartCollection from 'frontend/collections/VehiclesFleetchart'
-import hangarGroupsCollection from 'frontend/collections/HangarGroups'
-import hangarStatsCollection from 'frontend/collections/HangarStats'
+import vehiclesFleetchartCollection, {
+  VehiclesFleetchartCollection,
+} from 'frontend/collections/VehiclesFleetchart'
+import hangarGroupsCollection, {
+  HangarGroupsCollection,
+} from 'frontend/collections/HangarGroups'
+import hangarStatsCollection, {
+  HangarStatsCollection,
+} from 'frontend/collections/HangarStats'
 
 @Component<HangarFleetchart>({
   components: {
@@ -134,19 +140,17 @@ import hangarStatsCollection from 'frontend/collections/HangarStats'
   mixins: [MetaInfo, Filters],
 })
 export default class HangarFleetchart extends Vue {
-  loading: boolean = false
-
   deleting: boolean = false
 
   guideVisible: boolean = false
 
   vehiclesChannel = null
 
-  collection = vehiclesFleetchartCollection
+  collection: VehiclesFleetchartCollection = vehiclesFleetchartCollection
 
-  groupsCollection = hangarGroupsCollection
+  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
 
-  statsCollection = hangarStatsCollection
+  statsCollection: HangarStatsCollection = hangarStatsCollection
 
   @Getter('mobile') mobile
 
