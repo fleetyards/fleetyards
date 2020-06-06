@@ -8,11 +8,11 @@ module Api
       def index
         authorize! :index, :api_roadmap
 
-        roadmap_query_params['sorts'] = ['release asc', 'rsi_category_id asc', 'name asc']
+        roadmap_query_params['sorts'] = ['rsi_category_id asc', 'name asc']
 
         @q = RoadmapItem.ransack(roadmap_query_params)
 
-        @roadmap_items = @q.result(distinct: true)
+        @roadmap_items = @q.result(distinct: true).sort_by { |item| Gem::Version.new(item.release) }
       end
 
       def weeks

@@ -30,8 +30,25 @@
   margin-bottom: 20px;
 }
 
+.fleetchart-download-image {
+  width: 100%;
+  text-align: center;
+  display: none;
+}
+
+.fleetchart-download {
+  .fleetchart-download-image {
+    display: block;
+
+    img {
+      height: 120px;
+      width: 120px;
+    }
+  }
+}
+
 .fleetchart-item-context-menu {
-  position: fixed;
+  position: fixed !important;
 }
 
 @media (max-width: $desktop-breakpoint) {
