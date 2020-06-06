@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { sortBy } from 'frontend/lib/Helpers'
 import Papa from 'papaparse'
 import Panel from 'frontend/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -99,7 +100,7 @@ export default {
     },
 
     sortedData() {
-      return this.sortBy(this.data || [], 'state')
+      return sortBy(this.data || [], 'state')
     },
   },
 

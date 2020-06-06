@@ -24,7 +24,7 @@
             </div>
             <div class="row">
               <div
-                v-for="(typedDocks, type) in groupBy(groupDocks, 'typeLabel')"
+                v-for="(typedDocks, type) in docksByType(typedDocks)"
                 :key="`docks-${group}-${type}`"
                 class="col-xs-12"
               >
@@ -33,7 +33,7 @@
                 </div>
                 <div class="row">
                   <div
-                    v-for="(docks, size) in groupBy(typedDocks, 'sizeLabel')"
+                    v-for="(docks, size) in docksBySize(typedDocks)"
                     :key="`dock-${size}`"
                     class="col-xs-6"
                   >
@@ -45,7 +45,7 @@
           </div>
         </template>
         <div
-          v-for="(groupDocks, group) in docksByType"
+          v-for="(groupDocks, group) in docksByType(station.docks)"
           v-else
           :key="`docks-${group}`"
           class="col-xs-12"
@@ -55,7 +55,7 @@
           </div>
           <div class="row">
             <div
-              v-for="(docks, size) in groupBy(groupDocks, 'sizeLabel')"
+              v-for="(docks, size) in docksBySize(groupDocks)"
               :key="`dock-${size}`"
               class="col-xs-6"
             >
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { groupBy, sortBy } from 'frontend/lib/Helpers'
 import DockItem from './Item'
 
 export default {
@@ -93,16 +94,18 @@ export default {
       return this.station.docks.some(dock => !!dock.group)
     },
 
-    docksBySize() {
-      return this.groupBy(this.station.docks, 'sizeLabel')
-    },
-
-    docksByType() {
-      return this.groupBy(this.station.docks, 'typeLabel')
-    },
-
     docksByGroup() {
-      return this.groupBy(this.sortBy(this.station.docks, 'name'), 'group')
+      return groupBy(sortBy(this.station.docks, 'name'), 'group')
+    },
+  },
+
+  method: {
+    docksBySize(docks) {
+      return groupBy(docks, 'sizeLabel')
+    },
+
+    docksByType(docks) {
+      return groupBy(docks, 'typeLabel')
     },
   },
 }

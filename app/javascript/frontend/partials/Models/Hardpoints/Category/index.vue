@@ -58,6 +58,7 @@
 <script>
 import Panel from 'frontend/components/Panel'
 import Modal from 'frontend/components/Modal'
+import { groupBy } from 'frontend/lib/Helpers'
 import HardpointIcon from '../Icon'
 
 export default {
@@ -115,7 +116,7 @@ export default {
   },
   methods: {
     groupByType(hardpoints) {
-      return this.groupBy(hardpoints, 'type')
+      return groupBy(hardpoints, 'type')
     },
     openComponentModal(hardpoint) {
       if (!hardpoint.component) {

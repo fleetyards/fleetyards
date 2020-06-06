@@ -180,8 +180,6 @@ const apiClient = {
   upload,
 }
 
-export { apiClient }
-
 export default {
   install(Vue) {
     // eslint-disable-next-line no-param-reassign

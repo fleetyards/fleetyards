@@ -312,6 +312,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
 import Hash from 'frontend/mixins/Hash'
+import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
 
 export default {
@@ -339,7 +340,7 @@ export default {
     FleetchartSlider,
   },
 
-  mixins: [MetaInfo, Filters, Pagination, Hash],
+  mixins: [MetaInfo, Filters, Pagination, Hash, HangarItemsMixin],
 
   data() {
     return {
