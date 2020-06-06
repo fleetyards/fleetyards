@@ -80,14 +80,7 @@
               :label="$t('nav.hangar')"
               icon="fal fa-bookmark"
             />
-            <NavItem
-              :to="{
-                name: 'models',
-                query: filterFor('models'),
-              }"
-              :label="$t('nav.models')"
-              icon="fad fa-starship"
-            />
+            <ShipsNav />
             <StationsNav />
             <FleetsNav />
             <NavItem
@@ -117,13 +110,14 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 import QuickSearch from 'frontend/partials/Navigation/QuickSearch'
 import NavItem from 'frontend/partials/Navigation/NavItem'
 import UserNav from 'frontend/partials/Navigation/UserNav'
 import FleetNav from 'frontend/partials/Navigation/FleetNav'
 import FleetsNav from 'frontend/partials/Navigation/FleetsNav'
+import ShipsNav from 'frontend/partials/Navigation/ShipsNav'
 import StationsNav from 'frontend/partials/Navigation/StationsNav'
 import RoadmapNav from 'frontend/partials/Navigation/RoadmapNav'
 import NavFooter from 'frontend/partials/Navigation/NavFooter'
@@ -138,6 +132,7 @@ export default {
     UserNav,
     FleetNav,
     FleetsNav,
+    ShipsNav,
     StationsNav,
     RoadmapNav,
     NavFooter,

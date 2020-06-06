@@ -116,6 +116,7 @@ export default {
   'taxExcluded': 'excl. VAT',
   'hangar': 'Hangar',
   'hangarStats': 'Stats',
+  'fleetchart': 'Fleetchart',
   'fleetStats': 'Stats',
   'hangarMetrics': {
     total: 'Total',

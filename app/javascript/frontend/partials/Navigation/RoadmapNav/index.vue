@@ -11,7 +11,7 @@
         :label="$t('nav.stations.overview')"
         icon="fad fa-tasks-alt"
         :active="$route.name === 'roadmap'"
-        exact
+        :exact="true"
       />
       <NavItem
         :to="{ name: 'roadmap-changes' }"
@@ -28,23 +28,23 @@
   </NavItem>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import NavItem from 'frontend/partials/Navigation/NavItem'
 import NavigationMixin from 'frontend/mixins/Navigation'
 
-export default {
+@Component<ShipsNav>({
   components: {
     NavItem,
   },
-
   mixins: [NavigationMixin],
-
-  computed: {
-    active() {
-      return ['roadmap', 'roadmap-changes', 'roadmap-ships'].includes(
-        this.$route.name,
-      )
-    },
-  },
+})
+export default class RoadmapNav extends Vue {
+  get active() {
+    return ['roadmap', 'roadmap-changes', 'roadmap-ships'].includes(
+      this.$route.name,
+    )
+  }
 }
 </script>

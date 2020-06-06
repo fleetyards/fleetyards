@@ -18,13 +18,7 @@
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="
-                vehicles.length ||
-                  fleetchartVehicles.length ||
-                  (!vehicles.length &&
-                    !fleetchartVehicles.length &&
-                    isFilterSelected)
-              "
+              v-if="vehicles.length || (!vehicles.length && isFilterSelected)"
               :hangar-groups="hangarGroups"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
@@ -34,11 +28,14 @@
           <div v-if="!mobile" class="page-actions">
             <Starship42Btn :vehicles="fleetchartVehicles" />
 
-            <Btn
-              v-tooltip="$t('labels.hangarStats')"
-              :to="{ name: 'hangar-stats' }"
-            >
+            <Btn :to="{ name: 'hangar-fleetchart' }">
+              <i class="fad fa-starship" />
+              {{ $t('labels.fleetchart') }}
+            </Btn>
+
+            <Btn :to="{ name: 'hangar-stats' }">
               <i class="fal fa-chart-bar" />
+              {{ $t('labels.hangarStats') }}
             </Btn>
 
             <Btn :href="publicUrl">
@@ -115,6 +112,15 @@
               :with-icon="true"
             />
 
+            <Btn
+              :to="{ name: 'hangar-fleetchart' }"
+              size="small"
+              variant="link"
+            >
+              <i class="fad fa-starship" />
+              {{ $t('labels.fleetchart') }}
+            </Btn>
+
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
               {{ $t('labels.hangarStats') }}
@@ -128,19 +134,7 @@
             <hr />
           </template>
 
-          <Btn size="small" variant="link" @click.native="toggleFleetchart">
-            <template v-if="fleetchartVisible">
-              <i class="fas fa-th" />
-              {{ $t('actions.hideFleetchart') }}
-            </template>
-            <template v-else>
-              <i class="fad fa-starship" />
-              {{ $t('actions.showFleetchart') }}
-            </template>
-          </Btn>
-
           <Btn
-            v-show="!fleetchartVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
@@ -149,15 +143,6 @@
             <i class="fad fa-info-square" />
             {{ toggleDetailsTooltip }}
           </Btn>
-
-          <DownloadScreenshotBtn
-            v-if="fleetchartVisible"
-            element="#fleetchart"
-            filename="my-hangar-fleetchart"
-            size="small"
-            variant="link"
-            :show-tooltip="false"
-          />
 
           <Btn
             v-if="!starterGuideVisible"
@@ -201,7 +186,7 @@
       </template>
 
       <Paginator
-        v-if="!fleetchartVisible && vehicles.length"
+        v-if="vehicles.length"
         slot="pagination-top"
         :page="currentPage"
         :total="totalPages"
@@ -211,29 +196,7 @@
       <VehiclesFilterForm slot="filter" :hangar-groups-options="hangarGroups" />
 
       <template v-slot:default="{ filterVisible }">
-        <transition name="fade" appear>
-          <div
-            v-if="fleetchartVisible && fleetchartVehicles.length"
-            class="row"
-          >
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-              <FleetchartSlider
-                :initial-scale="fleetchartScale"
-                @change="updateScale"
-              />
-            </div>
-          </div>
-        </transition>
-
         <HangarGuideBox v-if="isGuideVisible" />
-
-        <FleetchartList
-          v-else-if="fleetchartVisible"
-          :items="fleetchartVehicles"
-          :on-edit="showEditModal"
-          :on-addons="showAddonsModal"
-          :scale="fleetchartScale"
-        />
 
         <transition-group
           v-else
@@ -269,7 +232,7 @@
       </template>
 
       <Paginator
-        v-if="!fleetchartVisible && vehicles.length"
+        v-if="vehicles.length"
         slot="pagination-bottom"
         :page="currentPage"
         :total="totalPages"
@@ -293,12 +256,10 @@ import Loader from 'frontend/components/Loader'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import PrimaryAction from 'frontend/components/PrimaryAction'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
 import HangarImportBtn from 'frontend/components/HangarImportBtn'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
@@ -307,7 +268,6 @@ import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
@@ -322,13 +282,11 @@ export default {
     Loader,
     FilteredList,
     Btn,
+    Starship42Btn,
     PrimaryAction,
     BtnDropdown,
-    Starship42Btn,
     HangarImportBtn,
-    DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartList,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
@@ -337,7 +295,6 @@ export default {
     VehicleModal,
     AddonsModal,
     NewVehiclesModal,
-    FleetchartSlider,
   },
 
   mixins: [MetaInfo, Filters, Pagination, Hash, HangarItemsMixin],
@@ -350,7 +307,6 @@ export default {
       fleetchartVehicles: [],
       hangarGroups: [],
       vehiclesCount: null,
-      tooltipTrigger: 'click',
       guideVisible: false,
       vehiclesChannel: null,
       highlightedGroup: null,
@@ -362,21 +318,10 @@ export default {
 
     ...mapGetters('session', ['currentUser']),
 
-    ...mapGetters('hangar', [
-      'ships',
-      'detailsVisible',
-      'fleetchartVisible',
-      'fleetchartScale',
-      'money',
-      'starterGuideVisible',
-    ]),
+    ...mapGetters('hangar', ['detailsVisible', 'money', 'starterGuideVisible']),
 
     emptyBoxVisible() {
-      return (
-        !this.loading &&
-        (this.noVehicles || this.noFleetchartVehicles) &&
-        this.isFilterSelected
-      )
+      return !this.loading && !this.vehicles.length && this.isFilterSelected
     },
 
     hangarGroupCounts() {
@@ -385,14 +330,6 @@ export default {
       }
 
       return this.vehiclesCount.groups
-    },
-
-    noVehicles() {
-      return !this.vehicles.length && !this.fleetchartVisible
-    },
-
-    noFleetchartVehicles() {
-      return !this.fleetchartVehicles.length && this.fleetchartVisible
     },
 
     toggleDetailsTooltip() {
@@ -434,10 +371,6 @@ export default {
     this.$comlink.$on('vehicleDelete', this.removeVehicle)
     this.$comlink.$on('hangarGroupDelete', this.fetch)
     this.$comlink.$on('hangarGroupSave', this.fetchGroups)
-
-    if (this.$route.query.fleetchart && !this.fleetchartVisible) {
-      this.$store.dispatch('hangar/toggleFleetchart')
-    }
   },
 
   beforeDestroy() {
@@ -460,10 +393,6 @@ export default {
       this.$refs.vehicleModal.open(vehicle)
     },
 
-    updateScale(value) {
-      this.$store.commit('hangar/setFleetchartScale', value)
-    },
-
     showNewModal() {
       this.$refs.newVehiclesModal.open()
     },
@@ -474,10 +403,6 @@ export default {
 
     toggleDetails() {
       this.$store.dispatch('hangar/toggleDetails')
-    },
-
-    toggleFleetchart() {
-      this.$store.dispatch('hangar/toggleFleetchart')
     },
 
     toggleMoney() {
@@ -499,8 +424,8 @@ export default {
       }
       this.loading = true
 
-      this.fetchFleetchart()
       this.fetchVehicles()
+      this.fetchFleetchart()
       this.fetchGroups()
       this.fetchCount()
     },
@@ -627,7 +552,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

@@ -1,6 +1,12 @@
 export default {
   home: 'Home',
-  models: 'Ships',
+  models: {
+    index: 'Ships',
+    fleetchart: 'Fleetchart',
+  },
+  compare: {
+    models: 'Compare',
+  },
   manufacturers: 'Manufacturers',
   images: 'Images',
   hangar: 'My Hangar',
