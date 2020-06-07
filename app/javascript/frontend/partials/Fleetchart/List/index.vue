@@ -27,6 +27,7 @@
 
     <FleetchartItemContextMenu
       ref="contextMenu"
+      data-test="context-menu"
       :on-edit="onEdit"
       :on-addons="onAddons"
     />

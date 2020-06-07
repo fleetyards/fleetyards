@@ -4,9 +4,7 @@
       v-if="model"
       :id="id"
       class="model-panel"
-      :class="{
-        [`model-panel-${model.slug}`]: true,
-      }"
+      :class="`model-panel-${model.slug}`"
       :highlight="(vehicle && vehicle.flagship) || highlight"
     >
       <div class="panel-heading">

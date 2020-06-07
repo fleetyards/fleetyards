@@ -55,12 +55,18 @@ describe('Hangar', () => {
       .contains('Enterprise')
       .should('exist')
 
-    cy.openShipModal('300i')
+    cy.select('fleetchart-link').click()
+
+    cy.url().should('include', '/fleetchart/')
+
+    cy.openContextMenu('300i')
+
+    cy.openShipModalFromContext()
 
     cy.deleteShip()
 
     cy.acceptConfirm()
 
-    cy.get('.model-panel').should('have.length', 0)
+    cy.get('.fleetchart-item').should('have.length', 0)
   })
 })

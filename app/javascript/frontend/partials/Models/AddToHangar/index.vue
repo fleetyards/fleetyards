@@ -23,6 +23,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
 import { displayWarning, displaySuccess } from 'frontend/lib/Noty'
+import vehiclesCollection from 'frontend/collections/Vehicles'
 
 @Component<AddToHangar>({
   components: {
@@ -74,7 +75,7 @@ export default class AddToHangar extends Vue {
       return
     }
 
-    const success = await this.collection.create({
+    const success = await vehiclesCollection.create({
       modelId: this.model.id,
     })
 

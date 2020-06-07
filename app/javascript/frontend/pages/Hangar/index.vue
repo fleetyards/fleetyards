@@ -26,7 +26,10 @@
             />
           </div>
           <div v-if="!mobile" class="page-actions">
-            <Btn :to="{ name: 'hangar-fleetchart' }">
+            <Btn
+              :to="{ name: 'hangar-fleetchart' }"
+              data-test="fleetchart-link"
+            >
               <i class="fad fa-starship" />
               {{ $t('labels.fleetchart') }}
             </Btn>
