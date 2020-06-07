@@ -106,6 +106,14 @@ export const routes = [
       ),
   },
   {
+    path: '/hangar/:user/fleetchart',
+    name: 'hangar-public-fleetchart',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart'
+      ),
+  },
+  {
     path: '/ships/',
     name: 'models',
     component: () =>

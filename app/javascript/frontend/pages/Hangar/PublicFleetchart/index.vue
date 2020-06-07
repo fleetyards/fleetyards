@@ -7,6 +7,19 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-md-8">
+            <BreadCrumbs
+              :crumbs="[
+                {
+                  to: {
+                    name: 'hangar-public',
+                    params: { slug: username },
+                  },
+                  label: $t('headlines.hangar.public', {
+                    user: usernamePlural,
+                  }),
+                },
+              ]"
+            />
             <h1>
               <Avatar :avatar="user.avatar" />
               <span>
@@ -83,51 +96,39 @@
           </div>
           <div class="col-xs-12 col-md-3">
             <div v-if="!mobile" class="page-actions">
-              <Btn
-                :to="{
-                  name: 'hangar-public-fleetchart',
-                  params: { slug: username },
-                }"
-              >
-                <i class="fad fa-starship" />
-                {{ $t('labels.fleetchart') }}
-              </Btn>
+              <Starship42Btn :vehicles="collection.records" />
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <Paginator
-              v-if="collection.records.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
+            <div class="page-actions">
+              <DownloadScreenshotBtn
+                element="#fleetchart"
+                size="small"
+                :filename="`${username}-hangar-fleetchart`"
+              />
+            </div>
           </div>
         </div>
-
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
-          <div
-            v-for="vehicle in collection.records"
-            :key="vehicle.id"
-            class="col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel
-              :model="vehicle.model"
-              :vehicle="vehicle"
-              :on-addons="showAddonsModal"
-            />
+        <transition name="fade" appear>
+          <div v-if="collection.records.length" class="row">
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+              <FleetchartSlider
+                :initial-scale="publicFleetchartScale"
+                @change="updateScale"
+              />
+            </div>
           </div>
-        </transition-group>
-        <Loader :loading="loading" fixed />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <Paginator
-          v-if="collection.records.length"
-          :page="currentPage"
-          :total="totalPages"
+        </transition>
+
+        <FleetchartList
+          :items="collection.records"
+          :on-addons="showAddonsModal"
+          :scale="publicFleetchartScale"
         />
+
+        <Loader :loading="loading" fixed />
       </div>
     </div>
 
@@ -140,34 +141,39 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import Starship42Btn from 'frontend/components/Starship42Btn'
 import Loader from 'frontend/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import ModelPanel from 'frontend/components/Models/Panel'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import Avatar from 'frontend/components/Avatar'
-import publicVehiclesCollection from 'frontend/collections/PublicVehicles'
+import publicVehiclesFleetchartCollection from 'frontend/collections/PublicVehiclesFleetchart'
 import publicUserCollection from 'frontend/collections/PublicUser'
 import publicHangarStatsCollection from 'frontend/collections/PublicHangarStats'
 
 @Component<PublicHangar>({
   components: {
     Btn,
+    Starship42Btn,
+    BreadCrumbs,
     AddonsModal,
     Loader,
     DownloadScreenshotBtn,
-    ModelPanel,
+    FleetchartList,
     ModelClassLabels,
+    FleetchartSlider,
     Avatar,
   },
-  mixins: [MetaInfo, Pagination],
+  mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
   loading: boolean = false
 
-  collection: PublicVehiclesCollection = publicVehiclesCollection
+  collection: PublicVehiclesFleetchartCollection = publicVehiclesFleetchartCollection
 
   userCollection: PublicUserCollection = publicUserCollection
 
@@ -175,16 +181,19 @@ export default class PublicHangar extends Vue {
 
   @Getter('mobile') mobile
 
+  @Getter('publicFleetchartScale', { namespace: 'hangar' })
+  publicFleetchartScale
+
   get metaTitle() {
     return this.$t('title.hangar.public', { user: this.usernamePlural })
   }
 
-  get user() {
-    return this.userCollection.record
-  }
-
   get username() {
     return this.$route.params.user
+  }
+
+  get user() {
+    return this.userCollection.record
   }
 
   get usernamePlural() {
@@ -203,12 +212,6 @@ export default class PublicHangar extends Vue {
     return this.username[0].toUpperCase() + this.username.slice(1)
   }
 
-  get filters() {
-    return {
-      page: this.$route.query.page,
-    }
-  }
-
   @Watch('$route')
   onRouteChange() {
     this.fetch()
@@ -220,6 +223,14 @@ export default class PublicHangar extends Vue {
 
   showAddonsModal(vehicle) {
     this.$refs.addonsModal.open(vehicle)
+  }
+
+  updateScale(value) {
+    this.$store.commit('hangar/setPublicFleetchartScale', value)
+  }
+
+  toggleFleetchart() {
+    this.$store.dispatch('hangar/togglePublicFleetchart')
   }
 
   async fetch() {

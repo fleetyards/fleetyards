@@ -19,7 +19,7 @@ type HangarGroupMetrics = {
 
 type HangarStats = {
   total: number
-  classifications: []
-  groups: []
+  classifications: ClassificationMetrics
+  groups: HangarGroupMetrics
   metrics: HangarMetrics
 }
