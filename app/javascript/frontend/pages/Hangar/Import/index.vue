@@ -70,11 +70,13 @@
 </template>
 
 <script>
+import { sortBy } from 'frontend/lib/Helpers'
 import Papa from 'papaparse'
 import Panel from 'frontend/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import LazyImage from 'frontend/components/LazyImage'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import { displayAlert } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -99,7 +101,7 @@ export default {
     },
 
     sortedData() {
-      return this.sortBy(this.data || [], 'state')
+      return sortBy(this.data || [], 'state')
     },
   },
 
@@ -123,7 +125,7 @@ export default {
       const file = event.target.files[0]
 
       if (!['text/csv', 'application/json'].includes(file.type)) {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.hangarImport.wrongFileType'),
         })
         // eslint-disable-next-line no-param-reassign
@@ -165,7 +167,7 @@ export default {
       }
 
       if (!result[0].model && !result[0].name) {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.hangarImport.wrongStructure'),
         })
         return null

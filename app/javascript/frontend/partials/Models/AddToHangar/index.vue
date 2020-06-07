@@ -17,76 +17,78 @@
   </Btn>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
-import { mapGetters } from 'vuex'
+import { displayWarning, displaySuccess } from 'frontend/lib/Noty'
+import vehiclesCollection from 'frontend/collections/Vehicles'
 
-export default {
+@Component<AddToHangar>({
   components: {
     Btn,
   },
-  props: {
-    model: {
-      type: Object,
-      required: true,
+})
+export default class AddToHangar extends Vue {
+  @Prop({ required: true }) model: Model
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'panel', 'menu'].includes(value)
     },
-    variant: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'panel', 'menu'].indexOf(value) !== -1
-      },
-    },
-  },
-  computed: {
-    ...mapGetters('session', ['isAuthenticated']),
+  })
+  variant: string
 
-    ...mapGetters('hangar', ['ships']),
+  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
 
-    inHangar() {
-      return !!(this.ships || []).find(item => item === this.model.slug)
-    },
+  @Getter('ships', { namespace: 'hangar' }) ships
 
-    btnVariant() {
-      if (['panel', 'menu'].includes(this.variant)) {
-        return 'link'
-      }
+  @Action('add', { namespace: 'hangar' }) addToHangar
 
-      return 'default'
-    },
+  get inHangar() {
+    return !!(this.ships || []).find(item => item === this.model.slug)
+  }
 
-    btnSize() {
-      if (['panel', 'menu'].includes(this.variant)) {
-        return 'small'
-      }
+  get btnVariant() {
+    if (['panel', 'menu'].includes(this.variant)) {
+      return 'link'
+    }
 
-      return 'default'
-    },
-  },
+    return 'default'
+  }
 
-  methods: {
-    async add() {
-      if (!this.isAuthenticated) {
-        this.$warning({
-          text: this.$t('messages.error.accountRequired'),
-        })
-        return
-      }
+  get btnSize() {
+    if (['panel', 'menu'].includes(this.variant)) {
+      return 'small'
+    }
 
-      const response = await this.$api.post('vehicles', {
-        modelId: this.model.id,
+    return 'default'
+  }
+
+  async add() {
+    if (!this.isAuthenticated) {
+      displayWarning({
+        text: this.$t('messages.error.accountRequired'),
       })
+      return
+    }
 
-      if (!response.error) {
-        await this.$store.dispatch('hangar/add', this.model.slug)
-        this.$success({
-          text: this.$t('messages.vehicle.add.success', {
-            model: this.model.name,
-          }),
-          icon: this.model.storeImageSmall,
-        })
-      }
-    },
-  },
+    const success = await vehiclesCollection.create({
+      modelId: this.model.id,
+    })
+
+    if (success) {
+      await this.addToHangar(this.model.slug)
+
+      displaySuccess({
+        text: this.$t('messages.vehicle.add.success', {
+          model: this.model.name,
+        }),
+        icon: this.model.storeImageSmall,
+      })
+    }
+  }
 }
 </script>

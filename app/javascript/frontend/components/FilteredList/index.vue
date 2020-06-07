@@ -31,7 +31,7 @@
       <div class="row">
         <transition
           name="slide"
-          appear
+          :appear="true"
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
@@ -57,97 +57,94 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch, Prop } from 'vue-property-decorator'
+import { Action, Mutation, Getter } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
 
-export default {
+@Component({
   components: {
     Btn,
   },
+})
+export default class FilteredList extends Vue {
+  loading: boolean = true
 
-  props: {
-    hideFilter: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  fullscreen: boolean = false
 
-  data() {
-    return {
-      fullscreen: false,
+  @Prop({ default: false }) hideFilter!: boolean
+
+  @Getter('filtersVisible') filtersVisible
+
+  @Getter('mobile') mobile
+
+  @Action('toggleFilterVisible') toggleFilterVisible
+
+  @Mutation('setFiltersVisible') setFiltersVisible
+
+  @Mutation('setFilters') setFilters
+
+  get filterVisible() {
+    return !!this.filtersVisible[this.$route.name] && !this.hideFilter
+  }
+
+  get filterTooltip() {
+    if (this.filterVisible) {
+      return this.$t('actions.hideFilter')
     }
-  },
 
-  computed: {
-    ...mapGetters(['filtersVisible', 'mobile']),
+    return this.$t('actions.showFilter')
+  }
 
-    filterVisible() {
-      return !!this.filtersVisible[this.$route.name] && !this.hideFilter
-    },
+  get isFilterSelected() {
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    Object.keys(query)
+      .filter(key => !query[key] || query[key].length === 0)
+      .forEach(key => delete query[key])
+    return Object.keys(query).length > 0
+  }
 
-    filterTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
+  get routeQuery() {
+    return this.$route.query.q
+  }
 
-    isFilterSelected() {
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
-      Object.keys(query)
-        .filter(key => !query[key] || query[key].length === 0)
-        .forEach(key => delete query[key])
-      return Object.keys(query).length > 0
-    },
-
-    routeQuery() {
-      return this.$route.query.q
-    },
-  },
-
-  watch: {
-    routeQuery: {
-      handler() {
-        this.saveFilters()
-      },
-      deep: true,
-    },
-  },
+  @Watch('routeQuery', { deep: true })
+  onRouteQueryChange() {
+    this.saveFilters()
+  }
 
   created() {
     if (this.mobile) {
-      this.$store.commit('setFiltersVisible', {
+      this.setFiltersVisible({
         [this.$route.name]: false,
       })
     }
 
     this.toggleFullscreen()
     this.saveFilters()
-  },
+  }
 
-  methods: {
-    saveFilters() {
-      if (this.isFilterSelected) {
-        this.$store.commit('setFilters', {
-          [this.$route.name]: { ...this.$route.query.q },
-        })
-
-        return
-      }
-
-      this.$store.commit('setFilters', {
-        [this.$route.name]: null,
+  saveFilters() {
+    if (this.isFilterSelected) {
+      this.setFilters({
+        [this.$route.name]: { ...this.$route.query.q },
       })
-    },
 
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
-    },
+      return
+    }
 
-    toggleFilter() {
-      this.$store.dispatch('toggleFilterVisible', this.$route.name)
-    },
-  },
+    this.setFilters({
+      [this.$route.name]: null,
+    })
+  }
+
+  toggleFullscreen() {
+    this.fullscreen = !this.filterVisible
+  }
+
+  toggleFilter() {
+    this.toggleFilterVisible(this.$route.name)
+  }
 }
 </script>

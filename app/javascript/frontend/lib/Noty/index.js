@@ -154,7 +154,7 @@ const displayNotification = function displayNotification(options) {
   }
 }
 
-const displayConfirm = function displayConfirm(options) {
+export const displayConfirm = function displayConfirm(options) {
   const defaults = {
     text: null,
     layout: 'center',
@@ -220,47 +220,32 @@ export function requestPermission() {
   })
 }
 
-export default {
-  install(Vue) {
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$alert = function alert(options) {
-      displayNotification({
-        ...options,
-        type: 'error',
-        timeout: 10000,
-        notifyInBackground: false,
-      })
-    }
+export const displayAlert = function alert(options) {
+  displayNotification({
+    ...options,
+    type: 'error',
+    timeout: 10000,
+    notifyInBackground: false,
+  })
+}
 
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$success = function success(options) {
-      displayNotification({
-        ...options,
-        type: 'success',
-      })
-    }
+export const displaySuccess = function success(options) {
+  displayNotification({
+    ...options,
+    type: 'success',
+  })
+}
 
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$info = function info(options) {
-      displayNotification({
-        ...options,
-        type: 'info',
-      })
-    }
+export const displayInfo = function info(options) {
+  displayNotification({
+    ...options,
+    type: 'info',
+  })
+}
 
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$warning = function info(options) {
-      displayNotification({
-        ...options,
-        type: 'warning',
-      })
-    }
-
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$confirm = function confirm(options) {
-      displayConfirm({
-        ...options,
-      })
-    }
-  },
+export const displayWarning = function warning(options) {
+  displayNotification({
+    ...options,
+    type: 'warning',
+  })
 }

@@ -7,3 +7,7 @@ type Vehicle = {
   modelUpgradeIds: string[]
   paint: ModelPaint
 }
+
+type VehiclesFilter = {
+  modelNameCont: string
+}

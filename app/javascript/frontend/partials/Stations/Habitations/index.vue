@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { groupBy } from 'frontend/lib/Helpers'
+
 export default {
   props: {
     station: {
@@ -44,7 +46,7 @@ export default {
 
   computed: {
     habitationsByName() {
-      return this.groupBy(this.station.habitations, 'habitationName')
+      return groupBy(this.station.habitations, 'habitationName')
     },
   },
 }

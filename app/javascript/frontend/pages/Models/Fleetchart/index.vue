@@ -1,0 +1,89 @@
+<template>
+  <section class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <BreadCrumbs :crumbs="crumbs" />
+        <h1 class="sr-only">
+          {{ $t('headlines.models.fleetchart') }}
+        </h1>
+      </div>
+    </div>
+    <FilteredCollectionList
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :hash="$route.hash"
+    >
+      <template slot="actions">
+        <DownloadScreenshotBtn
+          element="#fleetchart"
+          filename="ships-fleetchart"
+          size="small"
+          :with-label="false"
+        />
+      </template>
+
+      <ModelsFilterForm slot="filter" />
+
+      <template v-slot:default="{ records }">
+        <transition name="fade" appear>
+          <div v-if="records.length" class="row">
+            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+              <FleetchartSlider
+                :initial-scale="fleetchartScale"
+                @change="updateScale"
+              />
+            </div>
+          </div>
+        </transition>
+
+        <FleetchartList :items="records" :scale="fleetchartScale" />
+      </template>
+    </FilteredCollectionList>
+  </section>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Mutation, Getter } from 'vuex-class'
+import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
+import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
+import FleetchartList from 'frontend/partials/Fleetchart/List'
+import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import Filters from 'frontend/mixins/Filters'
+import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import ModelsFleetchartCollection from 'frontend/collections/ModelsFleetchart'
+
+@Component<ModelsFleetchart>({
+  components: {
+    FilteredCollectionList,
+    DownloadScreenshotBtn,
+    ModelsFilterForm,
+    FleetchartList,
+    FleetchartSlider,
+    BreadCrumbs,
+  },
+  mixins: [MetaInfo, Filters],
+})
+export default class ModelsFleetchart extends Vue {
+  collection = ModelsFleetchartCollection
+
+  @Mutation('setFleetchartScale', { namespace: 'models' }) updateScale: any
+
+  @Getter('fleetchartScale', { namespace: 'models' }) fleetchartScale
+
+  get crumbs() {
+    return [
+      {
+        to: {
+          name: 'models',
+        },
+        label: this.$t('nav.models.index'),
+      },
+    ]
+  }
+}
+</script>

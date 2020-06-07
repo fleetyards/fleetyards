@@ -238,6 +238,7 @@ import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import FiltersMixin from 'frontend/mixins/Filters'
 import PaginationMixin from 'frontend/mixins/Pagination'
 import FleetsMixin from 'frontend/mixins/Fleets'
+import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   name: 'Fleet',
@@ -405,7 +406,7 @@ export default {
 
     async removeMember(member) {
       this.deleting = true
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.fleet.members.destroy'),
         onConfirm: async () => {
           const response = await this.$api.destroy(
@@ -413,13 +414,13 @@ export default {
           )
 
           if (!response.error) {
-            this.$success({
+            displaySuccess({
               text: this.$t('messages.fleet.members.destroy.success'),
             })
 
             this.fetch()
           } else {
-            this.$alert({
+            displayAlert({
               text: this.$t('messages.fleet.members.destroy.failure'),
             })
             this.deleting = false
@@ -441,12 +442,12 @@ export default {
       this.updating = false
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.members.demote.success'),
         })
         this.fetch()
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.fleet.members.demote.failure'),
         })
       }
@@ -462,12 +463,12 @@ export default {
       this.updating = false
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.members.promote.success'),
         })
         this.fetch()
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.fleet.members.promote.failure'),
         })
       }

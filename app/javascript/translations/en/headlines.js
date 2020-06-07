@@ -2,7 +2,10 @@ export default {
   welcome: 'Welcome to',
   welcomeShips: 'Latest Ships',
   welcomeImages: 'Random Images',
-  models: 'Ships Index',
+  models: {
+    index: 'Ships Index',
+    fleetchart: 'Ships Fleetchart',
+  },
   images: 'Images Index',
   stats: 'Stats',
   error: 'Navigation Error',

@@ -11,3 +11,7 @@ type Model = {
   rsiId: string
   rsiName: string
 }
+
+type ModelsFilter = {
+  nameCont: string
+}

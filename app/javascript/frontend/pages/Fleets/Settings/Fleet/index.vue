@@ -231,6 +231,7 @@ import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Avatar from 'frontend/components/Avatar'
 import FleetsMixin from 'frontend/mixins/Fleets'
+import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   name: 'FleetSettings',
@@ -386,7 +387,7 @@ export default {
       this.submitting = false
 
       if (!uploadResponse.error && !response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.update.success'),
         })
 
@@ -409,11 +410,11 @@ export default {
 
           this.$refs.form.setErrors(errorData.errors)
 
-          this.$alert({
+          displayAlert({
             text: errorData.message,
           })
         } else {
-          this.$alert({
+          displayAlert({
             text: this.$t('messages.fleet.update.failure'),
           })
         }
@@ -438,7 +439,7 @@ export default {
 
     async destroy() {
       this.deleting = true
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.fleet.destroy'),
         onConfirm: async () => {
           const response = await this.$api.destroy(
@@ -450,11 +451,11 @@ export default {
 
             this.$comlink.$emit('fleetUpdate')
 
-            this.$success({
+            displaySuccess({
               text: this.$t('messages.fleet.destroy.success'),
             })
           } else {
-            this.$alert({
+            displayAlert({
               text: this.$t('messages.fleet.destroy.failure'),
             })
             this.deleting = false

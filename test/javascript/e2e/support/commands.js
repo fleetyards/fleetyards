@@ -30,6 +30,14 @@ Cypress.Commands.add('addToHangar', ship => {
   cy.get(`.model-panel#${ship} [data-test="add-to-hangar"]`).click()
 })
 
+Cypress.Commands.add('openContextMenu', ship => {
+  cy.get(`.fleetchart-item.fleetchart-item-${ship}`).click()
+})
+
+Cypress.Commands.add('openShipModalFromContext', () => {
+  cy.get('[data-test="context-menu"] [data-test="vehicle-edit"]').click()
+})
+
 Cypress.Commands.add('openShipModal', ship => {
   cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-edit"]`).click()
 })

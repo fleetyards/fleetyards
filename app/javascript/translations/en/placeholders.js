@@ -13,9 +13,10 @@ export default {
   twitch: 'Twitch Channel',
   guilded: 'Guilded Server',
   quicksearch: {
-    models: 'Avenger, Carrack, Cutlass...',
-    hangar: 'Enterprise, Andromeda...',
-    stations: 'Search for Stations...',
+    'models': 'Avenger, Carrack, Cutlass...',
+    'models-fleetchart': 'Avenger, Carrack, Cutlass...',
+    'hangar': 'Enterprise, Andromeda...',
+    'stations': 'Search for Stations...',
   },
   home: {
     search: 'Search for Ships...',

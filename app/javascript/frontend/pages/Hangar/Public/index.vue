@@ -1,5 +1,5 @@
 <template>
-  <section class="container hangar">
+  <section class="container hangar hangar-public">
     <div v-if="user" class="row">
       <div class="col-xs-12 col-md-12">
         <div class="row">
@@ -76,77 +76,38 @@
         <div class="row">
           <div class="col-xs-12 col-md-9">
             <ModelClassLabels
-              v-if="vehiclesCount"
+              v-if="statsCollection.record"
               :label="$t('labels.hangar')"
-              :count-data="vehiclesCount.classifications"
+              :count-data="statsCollection.record.classifications"
             />
           </div>
           <div class="col-xs-12 col-md-3">
             <div v-if="!mobile" class="page-actions">
-              <Starship42Btn :vehicles="fleetchartVehicles" />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-6">
-            <Paginator
-              v-if="!publicFleetchartVisible && vehicles.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-          <div
-            v-if="vehicles.length > 0 || fleetchartVehicles.length > 0"
-            class="col-xs-12 col-md-6"
-          >
-            <div class="page-actions">
-              <DownloadScreenshotBtn
-                v-if="publicFleetchartVisible"
-                element="#fleetchart"
-                size="small"
-                :filename="`${username}-hangar-fleetchart`"
-              />
-              <Btn size="small" @click.native="toggleFleetchart">
-                <template v-if="publicFleetchartVisible">
-                  {{ $t('actions.hideFleetchart') }}
-                </template>
-                <template v-else>
-                  {{ $t('actions.showFleetchart') }}
-                </template>
+              <Btn
+                :to="{
+                  name: 'hangar-public-fleetchart',
+                  params: { slug: username },
+                }"
+              >
+                <i class="fad fa-starship" />
+                {{ $t('labels.fleetchart') }}
               </Btn>
             </div>
           </div>
         </div>
-        <transition name="fade" appear>
-          <div
-            v-if="publicFleetchartVisible && fleetchartVehicles.length > 0"
-            class="row"
-          >
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-              <FleetchartSlider
-                :initial-scale="publicFleetchartScale"
-                @change="updateScale"
-              />
-            </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <Paginator
+              v-if="collection.records.length"
+              :page="currentPage"
+              :total="totalPages"
+            />
           </div>
-        </transition>
+        </div>
 
-        <FleetchartList
-          v-if="publicFleetchartVisible"
-          :items="fleetchartVehicles"
-          :on-addons="showAddonsModal"
-          :scale="publicFleetchartScale"
-        />
-
-        <transition-group
-          v-else
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
-            v-for="vehicle in vehicles"
+            v-for="vehicle in collection.records"
             :key="vehicle.id"
             class="col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4 fade-list-item"
           >
@@ -163,7 +124,7 @@
     <div class="row">
       <div class="col-xs-12">
         <Paginator
-          v-if="!publicFleetchartVisible && vehicles.length"
+          v-if="collection.records.length"
           :page="currentPage"
           :total="totalPages"
         />
@@ -174,176 +135,97 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
-import Starship42Btn from 'frontend/components/Starship42Btn'
 import Loader from 'frontend/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import Avatar from 'frontend/components/Avatar'
+import publicVehiclesCollection from 'frontend/collections/PublicVehicles'
+import publicUserCollection from 'frontend/collections/PublicUser'
+import publicHangarStatsCollection from 'frontend/collections/PublicHangarStats'
 
-export default {
-  name: 'PublicHangar',
-
+@Component<PublicHangar>({
   components: {
     Btn,
-    Starship42Btn,
     AddonsModal,
     Loader,
     DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartList,
     ModelClassLabels,
-    FleetchartSlider,
     Avatar,
   },
-
   mixins: [MetaInfo, Pagination],
+})
+export default class PublicHangar extends Vue {
+  loading: boolean = false
 
-  data() {
-    return {
-      loading: false,
-      vehicles: [],
-      user: null,
-      fleetchartVehicles: [],
-      vehiclesCount: null,
+  collection: PublicVehiclesCollection = publicVehiclesCollection
+
+  userCollection: PublicUserCollection = publicUserCollection
+
+  statsCollection: PublicHangarStatsCollection = publicHangarStatsCollection
+
+  @Getter('mobile') mobile
+
+  get metaTitle() {
+    return this.$t('title.hangar.public', { user: this.usernamePlural })
+  }
+
+  get user() {
+    return this.userCollection.record
+  }
+
+  get username() {
+    return this.$route.params.user
+  }
+
+  get usernamePlural() {
+    if (
+      this.userTitle.endsWith('s') ||
+      this.userTitle.endsWith('x') ||
+      this.userTitle.endsWith('z')
+    ) {
+      return this.userTitle
     }
-  },
 
-  computed: {
-    ...mapGetters(['mobile']),
+    return `${this.userTitle}'s`
+  }
 
-    ...mapGetters('hangar', [
-      'publicFleetchartVisible',
-      'publicFleetchartScale',
-    ]),
+  get userTitle() {
+    return this.username[0].toUpperCase() + this.username.slice(1)
+  }
 
-    metaTitle() {
-      return this.$t('title.hangar.public', { user: this.usernamePlural })
-    },
+  get filters() {
+    return {
+      page: this.$route.query.page,
+    }
+  }
 
-    username() {
-      return this.$route.params.user
-    },
-
-    usernamePlural() {
-      if (
-        this.userTitle.endsWith('s') ||
-        this.userTitle.endsWith('x') ||
-        this.userTitle.endsWith('z')
-      ) {
-        return this.userTitle
-      }
-
-      return `${this.userTitle}'s`
-    },
-
-    userTitle() {
-      return this.username[0].toUpperCase() + this.username.slice(1)
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-
-    publicFleetchartVisible() {
-      this.fetch()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
 
   created() {
-    if (this.$route.query.fleetchart && !this.publicFleetchartVisible) {
-      this.$store.dispatch('hangar/togglePublicFleetchart')
-    }
-
     this.fetch()
-  },
+  }
 
-  methods: {
-    showAddonsModal(vehicle) {
-      this.$refs.addonsModal.open(vehicle)
-    },
+  showAddonsModal(vehicle) {
+    this.$refs.addonsModal.open(vehicle)
+  }
 
-    updateScale(value) {
-      this.$store.commit('hangar/setPublicFleetchartScale', value)
-    },
-
-    toggleFleetchart() {
-      this.$store.dispatch('hangar/togglePublicFleetchart')
-    },
-
-    fetch() {
-      this.fetchUser()
-      this.fetchFleetchart()
-      this.fetchVehicles()
-      this.fetchCount()
-    },
-
-    async fetchUser() {
-      const response = await this.$api.get(`users/${this.username}`)
-
-      if (!response.error) {
-        this.user = response.data
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-    },
-
-    async fetchVehicles() {
-      this.loading = true
-
-      const response = await this.$api.get(`vehicles/${this.username}`, {
-        page: this.$route.query.page,
-      })
-
-      this.loading = false
-
-      if (!response.error) {
-        this.vehicles = response.data
-      }
-
-      this.setPages(response.meta)
-    },
-
-    async fetchCount() {
-      const response = await this.$api.get(
-        `vehicles/${this.username}/quick-stats`,
-      )
-
-      if (!response.error) {
-        this.vehiclesCount = response.data
-      }
-    },
-
-    async fetchFleetchart() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `vehicles/${this.username}/fleetchart`,
-      )
-
-      this.loading = false
-
-      if (!response.error) {
-        this.fleetchartVehicles = response.data
-      }
-    },
-  },
+  async fetch() {
+    await this.userCollection.findByUsername(this.username)
+    await this.collection.findAllByUsername(this.username, this.filters)
+    await this.statsCollection.findByUsername(this.username)
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

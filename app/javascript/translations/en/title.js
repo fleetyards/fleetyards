@@ -2,7 +2,10 @@ export default {
   main: '%{title} | FleetYards.net',
   home: 'Home',
   search: 'Search Results',
-  models: 'Ships',
+  models: {
+    index: 'Ships',
+    fleetchart: 'Ships Fleetchart',
+  },
   model: '%{name} - %{manufacturer}',
   modelImages: '%{name} Images',
   modelVideos: '%{name} Videos',
@@ -12,6 +15,7 @@ export default {
   signUp: 'Sign Up',
   hangar: {
     index: 'My Hangar',
+    fleetchart: 'My Hangar Fleetchart',
     preview: 'My Hangar Preview',
     stats: 'My Hangar Stats',
     import: 'Import',

@@ -16,6 +16,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'hangar/import' => 'base#index'
   get 'hangar/stats' => 'base#index'
   get 'hangar/:username' => 'hangar#index'
+  get 'hangar/:username/fleetchart' => 'hangar#index'
 
   get 'compare/ships' => 'base#compare_models'
 

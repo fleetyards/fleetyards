@@ -24,6 +24,11 @@ export default () => ({
       state.history = state.history.filter(
         item => item.search !== payload.search,
       )
+
+      if (state.history.length >= 20) {
+        state.history.pop()
+      }
+
       state.history.unshift(payload)
     },
   },

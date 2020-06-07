@@ -186,6 +186,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 import Avatar from 'frontend/components/Avatar'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'Profile',
@@ -287,7 +288,7 @@ export default {
           this.files = []
         }, 1000)
 
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.updateProfile.success'),
         })
       }
@@ -317,7 +318,7 @@ export default {
             newFile.name.endsWith(extension),
           )
         ) {
-          this.$alert({
+          displayAlert({
             text: this.$t('messages.avatarUpload.invalidExtension', {
               extensions: this.fileExtensions,
             }),

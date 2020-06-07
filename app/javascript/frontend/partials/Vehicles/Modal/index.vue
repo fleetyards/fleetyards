@@ -90,6 +90,7 @@
         </div>
       </div>
     </form>
+
     <template #footer>
       <div class="pull-right">
         <Btn
@@ -116,14 +117,17 @@
   </Modal>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import Modal from 'frontend/components/Modal'
 import FormInput from 'frontend/components/Form/FormInput'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
+import { displayConfirm } from 'frontend/lib/Noty'
 
-export default {
+@Component<VehicleModal>({
   components: {
     Modal,
     Checkbox,
@@ -131,96 +135,96 @@ export default {
     FilterGroup,
     Btn,
   },
-  props: {
-    hangarGroups: {
-      type: Array,
-      default() {
-        return []
-      },
+})
+export default class VehicleModal extends Vue {
+  @Prop({ default: null }) collection: VehiclesCollection
+
+  @Prop({
+    default() {
+      return []
     },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      submitting: false,
-      deleting: false,
-      vehicle: null,
-      form: {},
+  })
+  hangarGroups: HangarGroup[]
+
+  @Prop({ default: false }) visible: boolean
+
+  submitting: boolean = false
+
+  deleting: boolean = false
+
+  vehicle: Vehicle | null = null
+
+  form: Object = {}
+
+  @Watch('vehicle')
+  onVehicleChange() {
+    this.form = {
+      name: this.vehicle.name,
+      purchased: this.vehicle.purchased,
+      flagship: this.vehicle.flagship,
+      public: this.vehicle.public,
+      saleNotify: this.vehicle.saleNotify,
+      nameVisible: this.vehicle.nameVisible,
+      hangarGroupIds: this.vehicle.hangarGroupIds,
+      modelPaintId: this.vehicle.paint?.id || null,
     }
-  },
-  watch: {
-    vehicle() {
-      this.form = {
-        name: this.vehicle.name,
-        purchased: this.vehicle.purchased,
-        flagship: this.vehicle.flagship,
-        public: this.vehicle.public,
-        saleNotify: this.vehicle.saleNotify,
-        nameVisible: this.vehicle.nameVisible,
-        hangarGroupIds: this.vehicle.hangarGroupIds,
-        modelPaintId: this.vehicle.paint?.id || null,
-      }
-    },
-  },
-  methods: {
-    selected(groupId) {
-      return this.form.hangarGroupIds.includes(groupId)
-    },
-    open(vehicle) {
-      this.vehicle = vehicle
-      this.$nextTick(() => {
-        this.$refs.modal.open()
-      })
-    },
-    remove() {
-      this.deleting = true
-      this.$confirm({
-        text: this.$t('messages.confirm.vehicle.destroy'),
-        onConfirm: () => {
-          this.destroy()
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-    async destroy() {
-      const response = await this.$api.destroy(`vehicles/${this.vehicle.id}`)
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('vehicleDelete', response.data)
-      } else {
+  }
+
+  selected(groupId) {
+    return this.form.hangarGroupIds.includes(groupId)
+  }
+
+  open(vehicle) {
+    this.vehicle = vehicle
+
+    this.$nextTick(() => {
+      this.$refs.modal.open()
+    })
+  }
+
+  remove() {
+    this.deleting = true
+    displayConfirm({
+      text: this.$t('messages.confirm.vehicle.destroy'),
+      onConfirm: () => {
+        this.destroy()
+      },
+      onClose: () => {
         this.deleting = false
-      }
-    },
-    changeGroup(group) {
-      if (this.form.hangarGroupIds.includes(group.id)) {
-        const index = this.form.hangarGroupIds.findIndex(
-          groupId => groupId === group.id,
-        )
-        if (index > -1) {
-          this.form.hangarGroupIds.splice(index, 1)
-        }
-      } else {
-        this.form.hangarGroupIds.push(group.id)
-      }
-    },
-    async save() {
-      this.submitting = true
-      const response = await this.$api.put(
-        `vehicles/${this.vehicle.id}`,
-        this.form,
+      },
+    })
+  }
+
+  async destroy() {
+    if (await this.collection.destroy(this.vehicle.id)) {
+      this.$refs.modal.close()
+    }
+
+    this.deleting = false
+  }
+
+  changeGroup(group) {
+    if (this.form.hangarGroupIds.includes(group.id)) {
+      const index = this.form.hangarGroupIds.findIndex(
+        groupId => groupId === group.id,
       )
-      this.submitting = false
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('vehicleSave', response.data)
+      if (index > -1) {
+        this.form.hangarGroupIds.splice(index, 1)
       }
-    },
-  },
+    } else {
+      this.form.hangarGroupIds.push(group.id)
+    }
+  }
+
+  async save() {
+    this.submitting = true
+
+    if (await this.collection.update(this.vehicle.id, this.form)) {
+      this.$refs.modal.close()
+    }
+
+    this.submitting = false
+  }
 }
 </script>
 

@@ -25,9 +25,9 @@
         </span>
       </transition>
     </a>
-    <b-collapse :id="`${menuKey}-sub-menu`" :visible="open" tag="ul">
+    <BCollapse :id="`${menuKey}-sub-menu`" :visible="open" tag="ul">
       <slot name="submenu" />
-    </b-collapse>
+    </BCollapse>
   </li>
   <li
     v-else-if="action"
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import NavItemInner from 'frontend/partials/Navigation/NavItem/NavItemInner'
 import NavigationMixin from 'frontend/mixins/Navigation'
 
@@ -119,6 +120,7 @@ export default {
   name: 'NavItem',
 
   components: {
+    BCollapse,
     NavItemInner,
   },
 

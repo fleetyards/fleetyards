@@ -33,7 +33,7 @@
       </router-link>
     </li>
     <li class="active">
-      <router-link :to="{ query: { page, q } }">
+      <router-link :to="{ query: { page: page, q } }">
         {{ page }}
       </router-link>
     </li>
@@ -64,104 +64,102 @@
   <div v-else />
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import Gap from 'frontend/components/Paginator/Gap'
 
-export default {
+@Component<Paginator>({
   components: {
     Gap,
   },
-  props: {
-    page: {
-      type: Number,
-      default: 1,
-    },
-    total: {
-      type: Number,
-      default: null,
-    },
-    visible: {
-      type: Number,
-      default: 7,
-    },
-    center: {
-      type: Boolean,
-      default: false,
-    },
-    right: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    mobile() {
-      return document.documentElement.clientWidth < 992
-    },
-    q() {
-      return this.$route.query.q
-    },
-    totalVisible() {
-      if (this.mobile) {
-        return Math.min(5, this.total)
-      }
-      return Math.min(Math.max(5, this.visible), this.total)
-    },
-    leftPagesCount() {
-      let leftPagesCount = this.totalVisible - 2
-      if (this.page < this.total - 2) {
-        leftPagesCount = Math.floor(leftPagesCount / 2)
-      }
-      if (this.showLeftGap) {
-        leftPagesCount -= 1
-      }
-      if (this.page < 4) {
-        leftPagesCount = 1
-      }
-      if (this.page < 3) {
-        leftPagesCount = 0
-      }
-      if (this.page === this.total - 1 && this.total !== 4) {
-        leftPagesCount -= 1
-      }
-      if (this.page === this.total - 2 && this.total !== 5) {
-        leftPagesCount -= 2
-      }
-      return Math.max(leftPagesCount, 0)
-    },
-    rightPagesCount() {
-      let rightPagesCount = this.totalVisible - 2
-      if (this.page > 3) {
-        rightPagesCount = Math.floor(rightPagesCount / 2)
-      }
-      if (this.showRightGap) {
-        rightPagesCount -= 1
-      }
-      if (this.page > this.total - 3) {
-        rightPagesCount = 1
-      }
-      if (this.page > this.total - 2) {
-        rightPagesCount = 0
-      }
-      if (this.page === 2 && this.total !== 4) {
-        rightPagesCount -= 1
-      }
-      if (this.page === 3 && this.total !== 5) {
-        rightPagesCount -= 2
-      }
-      return Math.max(rightPagesCount, 0)
-    },
-    showGap() {
-      return this.total > this.totalVisible
-    },
-    showLeftGap() {
-      return this.showGap && this.page > Math.round(this.totalVisible / 2)
-    },
-    showRightGap() {
-      return (
-        this.showGap &&
-        this.page < this.total - (Math.round(this.totalVisible / 2) - 1)
-      )
-    },
-  },
+})
+export default class Paginator extends Vue {
+  @Prop({ default: 1 }) page: number
+
+  @Prop({ default: null }) total: number
+
+  @Prop({ default: 7 }) visible: number
+
+  @Prop({ default: false }) center: boolean
+
+  @Prop({ default: false }) right: boolean
+
+  get mobile() {
+    return document.documentElement.clientWidth < 992
+  }
+
+  get q() {
+    return this.$route.query.q
+  }
+
+  get totalVisible() {
+    if (this.mobile) {
+      return Math.min(5, this.total)
+    }
+
+    return Math.min(Math.max(5, this.visible), this.total)
+  }
+
+  get leftPagesCount() {
+    let leftPagesCount = this.totalVisible - 2
+    if (this.page < this.total - 2) {
+      leftPagesCount = Math.floor(leftPagesCount / 2)
+    }
+    if (this.showLeftGap) {
+      leftPagesCount -= 1
+    }
+    if (this.page < 4) {
+      leftPagesCount = 1
+    }
+    if (this.page < 3) {
+      leftPagesCount = 0
+    }
+    if (this.page === this.total - 1 && this.total !== 4) {
+      leftPagesCount -= 1
+    }
+    if (this.page === this.total - 2 && this.total !== 5) {
+      leftPagesCount -= 2
+    }
+    return Math.max(leftPagesCount, 0)
+  }
+
+  get rightPagesCount() {
+    let rightPagesCount = this.totalVisible - 2
+    if (this.page > 3) {
+      rightPagesCount = Math.floor(rightPagesCount / 2)
+    }
+    if (this.showRightGap) {
+      rightPagesCount -= 1
+    }
+    if (this.page > this.total - 3) {
+      rightPagesCount = 1
+    }
+    if (this.page > this.total - 2) {
+      rightPagesCount = 0
+    }
+    if (this.page === 2 && this.total !== 4) {
+      rightPagesCount -= 1
+    }
+    if (this.page === 3 && this.total !== 5) {
+      rightPagesCount -= 2
+    }
+    return Math.max(rightPagesCount, 0)
+  }
+
+  get showGap() {
+    return this.total > this.totalVisible
+  }
+
+  get showLeftGap() {
+    return this.showGap && this.page > Math.round(this.totalVisible / 2)
+  }
+
+  get showRightGap() {
+    return (
+      this.showGap &&
+      this.page < this.total - (Math.round(this.totalVisible / 2) - 1)
+    )
+  }
 }
 </script>

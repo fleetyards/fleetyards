@@ -49,6 +49,9 @@ export default {
     invalidExtension:
       'The Import you provided has an invalid Format. Supported Formats are: %{extensions}.',
   },
+  hangarExport: {
+    failure: 'Export failed, Please try again later.',
+  },
   vehicle: {
     add: {
       success:

@@ -41,7 +41,7 @@
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <b-collapse
+            <BCollapse
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
             >
@@ -54,7 +54,7 @@
                   <RoadmapItem :item="item" slim />
                 </div>
               </div>
-            </b-collapse>
+            </BCollapse>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
@@ -80,7 +80,7 @@
               </small>
               <i class="fa fa-chevron-right" />
             </h2>
-            <b-collapse
+            <BCollapse
               id="unscheduled-cards"
               :visible="visible.includes('unscheduled')"
             >
@@ -93,7 +93,7 @@
                   <RoadmapItem :item="model" />
                 </div>
               </div>
-            </b-collapse>
+            </BCollapse>
           </div>
         </div>
       </div>
@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import { BCollapse } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
@@ -112,6 +113,7 @@ export default {
   name: 'Roadmap',
 
   components: {
+    BCollapse,
     Loader,
     EmptyBox,
     RoadmapItem,

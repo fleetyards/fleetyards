@@ -1,30 +1,25 @@
 import 'stylesheets/frontend'
 import Vue from 'vue'
-import VTooltip from 'v-tooltip'
 import App from 'frontend/App'
 import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
-import 'frontend/lib/Bootstrap'
 import I18nPlugin from 'frontend/lib/I18n'
 import ApiClient from 'frontend/lib/ApiClient'
 import Subscriptions from 'frontend/lib/Subscriptions'
 import Comlink from 'frontend/lib/Comlink'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
-import Helpers from 'frontend/lib/Helpers'
-import Noty from 'frontend/lib/Noty'
 import Ahoy from 'frontend/lib/Ahoy'
 import Validations from 'frontend/lib/Validations'
+import VTooltip from 'v-tooltip'
 
 Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
 Vue.use(DataPrefetch)
-Vue.use(Helpers)
-Vue.use(Noty)
 Vue.use(Ahoy)
 Vue.use(Validations)
 

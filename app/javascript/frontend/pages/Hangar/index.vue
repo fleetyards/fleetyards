@@ -12,33 +12,31 @@
         <div class="hangar-header">
           <div class="hangar-labels">
             <ModelClassLabels
-              v-if="vehiclesCount"
+              v-if="statsCollection.record"
+              :count-data="statsCollection.record.classifications"
               :label="$t('labels.hangar')"
-              :count-data="vehiclesCount.classifications"
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="
-                vehicles.length ||
-                  fleetchartVehicles.length ||
-                  (!vehicles.length &&
-                    !fleetchartVehicles.length &&
-                    isFilterSelected)
-              "
-              :hangar-groups="hangarGroups"
+              v-if="groupsCollection.records.length"
+              :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
               @highlight="highlightGroup"
             />
           </div>
           <div v-if="!mobile" class="page-actions">
-            <Starship42Btn :vehicles="fleetchartVehicles" />
-
             <Btn
-              v-tooltip="$t('labels.hangarStats')"
-              :to="{ name: 'hangar-stats' }"
+              :to="{ name: 'hangar-fleetchart' }"
+              data-test="fleetchart-link"
             >
+              <i class="fad fa-starship" />
+              {{ $t('labels.fleetchart') }}
+            </Btn>
+
+            <Btn :to="{ name: 'hangar-stats' }">
               <i class="fal fa-chart-bar" />
+              {{ $t('labels.hangarStats') }}
             </Btn>
 
             <Btn :href="publicUrl">
@@ -48,9 +46,9 @@
         </div>
         <div
           v-if="
-            vehicles.length > 0 &&
-              vehiclesCount &&
-              vehiclesCount.metrics &&
+            collection.records.length &&
+              statsCollection.record &&
+              statsCollection.record.metrics &&
               !mobile
           "
           class="row"
@@ -64,7 +62,7 @@
                 {{ $t('labels.hangarMetrics.totalMoney') }}:
               </div>
               <div class="metrics-value">
-                {{ $toDollar(vehiclesCount.metrics.totalMoney) }}
+                {{ $toDollar(statsCollection.record.metrics.totalMoney) }}
               </div>
             </div>
             <div class="metrics-item">
@@ -72,7 +70,7 @@
                 {{ $t('labels.hangarMetrics.total') }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(vehiclesCount.total, 'ships') }}
+                {{ $toNumber(statsCollection.record.total, 'ships') }}
               </div>
             </div>
             <div class="metrics-item">
@@ -80,7 +78,12 @@
                 {{ $t('labels.hangarMetrics.totalMinCrew') }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(vehiclesCount.metrics.totalMinCrew, 'people') }}
+                {{
+                  $toNumber(
+                    statsCollection.record.metrics.totalMinCrew,
+                    'people',
+                  )
+                }}
               </div>
             </div>
             <div class="metrics-item">
@@ -88,7 +91,12 @@
                 {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(vehiclesCount.metrics.totalMaxCrew, 'people') }}
+                {{
+                  $toNumber(
+                    statsCollection.record.metrics.totalMaxCrew,
+                    'people',
+                  )
+                }}
               </div>
             </div>
             <div class="metrics-item">
@@ -96,7 +104,9 @@
                 {{ $t('labels.hangarMetrics.totalCargo') }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(vehiclesCount.metrics.totalCargo, 'cargo') }}
+                {{
+                  $toNumber(statsCollection.record.metrics.totalCargo, 'cargo')
+                }}
               </div>
             </div>
           </div>
@@ -104,16 +114,24 @@
       </div>
     </div>
 
-    <FilteredList>
+    <FilteredCollectionList
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :hash="$route.hash"
+      :paginated="true"
+    >
       <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <Starship42Btn
-              :vehicles="fleetchartVehicles"
+            <Btn
+              :to="{ name: 'hangar-fleetchart' }"
               size="small"
               variant="link"
-              :with-icon="true"
-            />
+            >
+              <i class="fad fa-starship" />
+              {{ $t('labels.fleetchart') }}
+            </Btn>
 
             <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
@@ -128,19 +146,7 @@
             <hr />
           </template>
 
-          <Btn size="small" variant="link" @click.native="toggleFleetchart">
-            <template v-if="fleetchartVisible">
-              <i class="fas fa-th" />
-              {{ $t('actions.hideFleetchart') }}
-            </template>
-            <template v-else>
-              <i class="fad fa-starship" />
-              {{ $t('actions.showFleetchart') }}
-            </template>
-          </Btn>
-
           <Btn
-            v-show="!fleetchartVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
@@ -149,15 +155,6 @@
             <i class="fad fa-info-square" />
             {{ toggleDetailsTooltip }}
           </Btn>
-
-          <DownloadScreenshotBtn
-            v-if="fleetchartVisible"
-            element="#fleetchart"
-            filename="my-hangar-fleetchart"
-            size="small"
-            variant="link"
-            :show-tooltip="false"
-          />
 
           <Btn
             v-if="!starterGuideVisible"
@@ -190,7 +187,7 @@
           <Btn
             size="small"
             variant="link"
-            :disabled="deleting || loading"
+            :disabled="deleting"
             :aria-label="$t('actions.hangar.destroyAll')"
             @click.native="destroyAll"
           >
@@ -200,40 +197,13 @@
         </BtnDropdown>
       </template>
 
-      <Paginator
-        v-if="!fleetchartVisible && vehicles.length"
-        slot="pagination-top"
-        :page="currentPage"
-        :total="totalPages"
-        :center="true"
+      <VehiclesFilterForm
+        slot="filter"
+        :hangar-groups-options="groupsCollection.records"
       />
 
-      <VehiclesFilterForm slot="filter" :hangar-groups-options="hangarGroups" />
-
-      <template v-slot:default="{ filterVisible }">
-        <transition name="fade" appear>
-          <div
-            v-if="fleetchartVisible && fleetchartVehicles.length"
-            class="row"
-          >
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-              <FleetchartSlider
-                :initial-scale="fleetchartScale"
-                @change="updateScale"
-              />
-            </div>
-          </div>
-        </transition>
-
+      <template v-slot:default="{ records, filterVisible }">
         <HangarGuideBox v-if="isGuideVisible" />
-
-        <FleetchartList
-          v-else-if="fleetchartVisible"
-          :items="fleetchartVehicles"
-          :on-edit="showEditModal"
-          :on-addons="showAddonsModal"
-          :scale="fleetchartScale"
-        />
 
         <transition-group
           v-else
@@ -243,7 +213,7 @@
           appear
         >
           <div
-            v-for="vehicle in vehicles"
+            v-for="vehicle in records"
             :key="vehicle.id"
             :class="{
               'col-lg-4': filterVisible,
@@ -262,22 +232,14 @@
             />
           </div>
         </transition-group>
-
-        <EmptyBox :visible="emptyBoxVisible" />
-
-        <Loader :loading="loading" fixed />
       </template>
+    </FilteredCollectionList>
 
-      <Paginator
-        v-if="!fleetchartVisible && vehicles.length"
-        slot="pagination-bottom"
-        :page="currentPage"
-        :total="totalPages"
-        :center="true"
-      />
-    </FilteredList>
-
-    <VehicleModal ref="vehicleModal" :hangar-groups="hangarGroups" />
+    <VehicleModal
+      ref="vehicleModal"
+      :collection="collection"
+      :hangar-groups="groupsCollection.records"
+    />
 
     <AddonsModal ref="addonsModal" modifiable />
 
@@ -287,346 +249,232 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import Loader from 'frontend/components/Loader'
-import FilteredList from 'frontend/components/FilteredList'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
 import Btn from 'frontend/components/Btn'
 import PrimaryAction from 'frontend/components/PrimaryAction'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import Starship42Btn from 'frontend/components/Starship42Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
 import HangarImportBtn from 'frontend/components/HangarImportBtn'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import HangarGuideBox from 'frontend/partials/HangarGuideBox'
 import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import Pagination from 'frontend/mixins/Pagination'
-import Hash from 'frontend/mixins/Hash'
+import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
+import vehiclesCollection from 'frontend/collections/Vehicles'
+import hangarGroupsCollection from 'frontend/collections/HangarGroups'
+import hangarStatsCollection from 'frontend/collections/HangarStats'
+import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
-export default {
-  name: 'Hangar',
-
+@Component<Hangar>({
   components: {
-    Loader,
-    FilteredList,
+    FilteredCollectionList,
     Btn,
     PrimaryAction,
     BtnDropdown,
-    Starship42Btn,
     HangarImportBtn,
-    DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartList,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,
-    EmptyBox,
     HangarGuideBox,
     VehicleModal,
     AddonsModal,
     NewVehiclesModal,
-    FleetchartSlider,
   },
+  mixins: [MetaInfo, Filters, HangarItemsMixin],
+})
+export default class Hangar extends Vue {
+  deleting: boolean = false
 
-  mixins: [MetaInfo, Filters, Pagination, Hash],
+  guideVisible: boolean = false
 
-  data() {
-    return {
-      loading: false,
-      deleting: false,
-      vehicles: [],
-      fleetchartVehicles: [],
-      hangarGroups: [],
-      vehiclesCount: null,
-      tooltipTrigger: 'click',
-      guideVisible: false,
-      vehiclesChannel: null,
-      highlightedGroup: null,
+  vehiclesChannel = null
+
+  highlightedGroup: string = null
+
+  collection: VehiclesCollection = vehiclesCollection
+
+  groupsCollection: HangarGroupsCollection = hangarGroupsCollection
+
+  statsCollection: HangarStatsCollection = hangarStatsCollection
+
+  @Getter('mobile') mobile
+
+  @Getter('currentUser', { namespace: 'session' }) currentUser
+
+  @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
+
+  @Getter('money', { namespace: 'hangar' }) money
+
+  @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
+
+  get hangarGroupCounts() {
+    if (!this.statsCollection.record) {
+      return []
     }
-  },
 
-  computed: {
-    ...mapGetters(['mobile']),
+    return this.statsCollection.record.groups
+  }
 
-    ...mapGetters('session', ['currentUser']),
+  get toggleDetailsTooltip() {
+    if (this.detailsVisible) {
+      return this.$t('actions.hideDetails')
+    }
+    return this.$t('actions.showDetails')
+  }
 
-    ...mapGetters('hangar', [
-      'ships',
-      'detailsVisible',
-      'fleetchartVisible',
-      'fleetchartScale',
-      'money',
-      'starterGuideVisible',
-    ]),
+  get toggleGuideTooltip() {
+    if (this.guideVisible) {
+      return this.$t('actions.hideGuide')
+    }
+    return this.$t('actions.showGuide')
+  }
 
-    emptyBoxVisible() {
-      return (
-        !this.loading &&
-        (this.noVehicles || this.noFleetchartVehicles) &&
-        this.isFilterSelected
-      )
-    },
+  get publicUrl() {
+    if (!this.currentUser) {
+      return ''
+    }
+    return `/hangar/${this.currentUser.username}`
+  }
 
-    hangarGroupCounts() {
-      if (!this.vehiclesCount) {
-        return []
-      }
+  get isGuideVisible() {
+    return this.starterGuideVisible || this.guideVisible
+  }
 
-      return this.vehiclesCount.groups
-    },
+  get filters() {
+    return {
+      filters: this.$route.query.q,
+      page: this.$route.query.page,
+    }
+  }
 
-    noVehicles() {
-      return !this.vehicles.length && !this.fleetchartVisible
-    },
-
-    noFleetchartVehicles() {
-      return !this.fleetchartVehicles.length && this.fleetchartVisible
-    },
-
-    toggleDetailsTooltip() {
-      if (this.detailsVisible) {
-        return this.$t('actions.hideDetails')
-      }
-      return this.$t('actions.showDetails')
-    },
-
-    toggleGuideTooltip() {
-      if (this.guideVisible) {
-        return this.$t('actions.hideGuide')
-      }
-      return this.$t('actions.showGuide')
-    },
-
-    publicUrl() {
-      if (!this.currentUser) {
-        return ''
-      }
-      return `/hangar/${this.currentUser.username}`
-    },
-
-    isGuideVisible() {
-      return this.starterGuideVisible || this.guideVisible
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
 
   mounted() {
     this.fetch()
     this.setupUpdates()
-    this.$comlink.$on('vehicleSave', this.fetch)
-    this.$comlink.$on('vehicleDelete', this.removeVehicle)
+
     this.$comlink.$on('hangarGroupDelete', this.fetch)
     this.$comlink.$on('hangarGroupSave', this.fetchGroups)
-
-    if (this.$route.query.fleetchart && !this.fleetchartVisible) {
-      this.$store.dispatch('hangar/toggleFleetchart')
-    }
-  },
+  }
 
   beforeDestroy() {
     if (this.vehiclesChannel) {
       this.vehiclesChannel.unsubscribe()
     }
 
-    this.$comlink.$off('vehicleSave')
-    this.$comlink.$off('vehicleDelete')
     this.$comlink.$off('hangarGroupDelete')
     this.$comlink.$off('hangarGroupSave')
-  },
+  }
 
-  methods: {
-    toggleGuide() {
-      this.guideVisible = !this.guideVisible
-    },
+  toggleGuide() {
+    this.guideVisible = !this.guideVisible
+  }
 
-    showEditModal(vehicle) {
-      this.$refs.vehicleModal.open(vehicle)
-    },
+  showEditModal(vehicle) {
+    this.$refs.vehicleModal.open(vehicle)
+  }
 
-    updateScale(value) {
-      this.$store.commit('hangar/setFleetchartScale', value)
-    },
+  showNewModal() {
+    this.$refs.newVehiclesModal.open()
+  }
 
-    showNewModal() {
-      this.$refs.newVehiclesModal.open()
-    },
+  showAddonsModal(vehicle) {
+    this.$refs.addonsModal.open(vehicle)
+  }
 
-    showAddonsModal(vehicle) {
-      this.$refs.addonsModal.open(vehicle)
-    },
+  toggleDetails() {
+    this.$store.dispatch('hangar/toggleDetails')
+  }
 
-    toggleDetails() {
-      this.$store.dispatch('hangar/toggleDetails')
-    },
+  toggleMoney() {
+    this.$store.dispatch('hangar/toggleMoney')
+  }
 
-    toggleFleetchart() {
-      this.$store.dispatch('hangar/toggleFleetchart')
-    },
+  highlightGroup(group) {
+    if (!group) {
+      this.highlightedGroup = null
+      return
+    }
 
-    toggleMoney() {
-      this.$store.dispatch('hangar/toggleMoney')
-    },
+    this.highlightedGroup = group.id
+  }
 
-    highlightGroup(group) {
-      if (!group) {
-        this.highlightedGroup = null
-        return
-      }
+  async fetch() {
+    await this.collection.findAll(this.filters)
+    await this.groupsCollection.findAll()
+    await this.statsCollection.current(this.filters)
+  }
 
-      this.highlightedGroup = group.id
-    },
+  setupUpdates() {
+    if (this.vehiclesChannel) {
+      this.vehiclesChannel.unsubscribe()
+    }
 
-    fetch() {
-      if (this.loading) {
-        return
-      }
-      this.loading = true
+    this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'HangarChannel',
+      },
+      {
+        received: this.fetch,
+      },
+    )
+  }
 
-      this.fetchFleetchart()
-      this.fetchVehicles()
-      this.fetchGroups()
-      this.fetchCount()
-    },
+  async exportJson() {
+    const exportedData = await this.collection.export(this.filters)
 
-    async fetchVehicles() {
-      const response = await this.$api.get('vehicles', {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      })
+    if (!exportedData) {
+      displayAlert({ text: this.$t('messages.hangarExport.failure') })
+      return
+    }
 
-      if (!response.error) {
-        this.vehicles = response.data
+    const link = document.createElement('a')
 
-        this.scrollToAnchor()
-      }
+    link.href = window.URL.createObjectURL(new Blob([exportedData]))
 
-      this.setPages(response.meta)
-      this.resetLoading()
-    },
+    link.setAttribute(
+      'download',
+      `fleetyards-${this.currentUser.username}-hangar-${format(
+        new Date(),
+        'yyyy-MM-dd',
+      )}.json`,
+    )
 
-    removeVehicle(vehicle) {
-      const index = this.vehicles.findIndex(item => item.id === vehicle.id)
-      if (index >= 0) {
-        this.vehicles.splice(index, 1)
-      }
-    },
+    document.body.appendChild(link)
 
-    async fetchCount() {
-      const response = await this.$api.get('vehicles/quick-stats', {
-        q: this.$route.query.q,
-      })
+    link.click()
 
-      if (!response.error) {
-        this.vehiclesCount = response.data
-      }
-    },
+    document.body.removeChild(link)
+  }
 
-    async fetchFleetchart() {
-      const response = await this.$api.get('vehicles/fleetchart', {
-        q: this.$route.query.q,
-      })
+  async destroyAll() {
+    this.deleting = true
 
-      if (!response.error) {
-        this.fleetchartVehicles = response.data
-      }
+    displayConfirm({
+      text: this.$t('messages.confirm.hangar.destroyAll'),
+      onConfirm: async () => {
+        await this.collection.destroyAll()
 
-      this.resetLoading()
-    },
-
-    async fetchGroups() {
-      const response = await this.$api.get('hangar-groups')
-      if (!response.error) {
-        this.hangarGroups = response.data
-      }
-    },
-
-    setupUpdates() {
-      if (this.vehiclesChannel) {
-        this.vehiclesChannel.unsubscribe()
-      }
-
-      this.vehiclesChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'HangarChannel',
-        },
-        {
-          received: this.fetch,
-        },
-      )
-    },
-
-    resetLoading() {
-      setTimeout(() => {
-        this.loading = false
-      }, 300)
-    },
-
-    async exportJson() {
-      const response = await this.$api.download('vehicles/export', {
-        q: this.$route.query.q,
-      })
-
-      const link = document.createElement('a')
-
-      link.href = window.URL.createObjectURL(new Blob([response.data]))
-
-      link.setAttribute(
-        'download',
-        `fleetyards-${this.currentUser.username}-hangar-${format(
-          new Date(),
-          'yyyy-MM-dd',
-        )}.json`,
-      )
-
-      document.body.appendChild(link)
-
-      link.click()
-
-      document.body.removeChild(link)
-    },
-
-    async destroyAll() {
-      this.deleting = true
-
-      this.$confirm({
-        text: this.$t('messages.confirm.hangar.destroyAll'),
-        onConfirm: async () => {
-          this.loading = true
-
-          const response = await this.$api.destroy('vehicles/destroy-all')
-
-          if (!response.error) {
-            this.fetch()
-          }
-
-          this.deleting = false
-          this.resetLoading()
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-  },
+        this.deleting = false
+      },
+      onClose: () => {
+        this.deleting = false
+      },
+    })
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

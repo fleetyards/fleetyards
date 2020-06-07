@@ -74,6 +74,18 @@ export const routes = [
     },
   },
   {
+    path: '/hangar/fleetchart/',
+    name: 'hangar-fleetchart',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.hangar-fleetchart" */ 'frontend/pages/Hangar/Fleetchart'
+      ),
+    meta: {
+      needsAuthentication: true,
+      title: 'hangar.fleetchart',
+    },
+  },
+  {
     path: '/hangar/stats/',
     name: 'hangar-stats',
     component: () =>
@@ -94,6 +106,14 @@ export const routes = [
       ),
   },
   {
+    path: '/hangar/:user/fleetchart',
+    name: 'hangar-public-fleetchart',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart'
+      ),
+  },
+  {
     path: '/ships/',
     name: 'models',
     component: () =>
@@ -101,7 +121,19 @@ export const routes = [
         /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'
       ),
     meta: {
-      title: 'models',
+      title: 'models.index',
+      quickSearch: 'searchCont',
+    },
+  },
+  {
+    path: '/ships/fleetchart',
+    name: 'models-fleetchart',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.ships-fleetchart" */ 'frontend/pages/Models/Fleetchart'
+      ),
+    meta: {
+      title: 'models.fleetchart',
       quickSearch: 'searchCont',
     },
   },

@@ -50,72 +50,63 @@
   </Modal>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Modal from 'frontend/components/Modal'
 import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
 
-export default {
+@Component<NewVehiclesModal>({
   components: {
     Modal,
     FilterGroup,
     Btn,
     TeaserPanel,
   },
+})
+export default class NewVehiclesModal extends Vue {
+  submitting: boolean = false
 
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  form: Object = {
+    vehicles: [],
+  }
 
-  data() {
-    return {
-      submitting: false,
-      form: {
-        vehicles: [],
-      },
+  @Prop({ default: false }) visible: boolean
+
+  add(value) {
+    this.form.vehicles.push({
+      model: value,
+    })
+  }
+
+  removeItem(index) {
+    this.form.vehicles.splice(index, 1)
+  }
+
+  open() {
+    this.form = {
+      vehicles: [],
     }
-  },
 
-  methods: {
-    add(value) {
-      this.form.vehicles.push({
-        model: value,
-      })
-    },
+    this.$nextTick(() => {
+      this.$refs.modal.open()
+    })
+  }
 
-    removeItem(index) {
-      this.form.vehicles.splice(index, 1)
-    },
+  async save() {
+    this.submitting = true
 
-    open() {
-      this.form = {
-        vehicles: [],
-      }
+    await this.form.vehicles.forEach(async item => {
+      await this.collection.create({ modelId: item.model.id })
+    })
 
-      this.$nextTick(() => {
-        this.$refs.modal.open()
-      })
-    },
+    this.collection.refresh()
 
-    async save() {
-      this.submitting = true
-      await this.form.vehicles.forEach(async item => {
-        const response = await this.$api.post('vehicles', {
-          modelId: item.model.id,
-        })
+    this.submitting = false
 
-        if (response.error) {
-          console.error(response.error)
-        }
-      })
-      this.submitting = false
-      this.$refs.modal.close()
-      this.$comlink.$emit('vehiclesAdded')
-    },
-  },
+    this.$refs.modal.close()
+  }
 }
 </script>

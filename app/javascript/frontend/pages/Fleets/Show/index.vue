@@ -334,6 +334,7 @@ import Avatar from 'frontend/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import Pagination from 'frontend/mixins/Pagination'
+import HangarItemsMixin from 'frontend/mixins/HangarItems'
 
 export default {
   name: 'Fleet',
@@ -356,7 +357,7 @@ export default {
     Avatar,
   },
 
-  mixins: [MetaInfo, Pagination, Filters],
+  mixins: [MetaInfo, Pagination, Filters, HangarItemsMixin],
 
   data() {
     return {

@@ -26,6 +26,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
+import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   name: 'SettingsAccount',
@@ -45,18 +46,18 @@ export default {
   methods: {
     async destroy() {
       this.deleting = true
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.account.destroy'),
         onConfirm: async () => {
           const response = await this.$api.destroy('users/current')
           if (!response.error) {
-            this.$success({
+            displaySuccess({
               text: this.$t('messages.account.destroy.success'),
             })
             await this.$store.dispatch('session/logout')
             this.$router.push({ name: 'home' })
           } else {
-            this.$alert({
+            displayAlert({
               text: this.$t('messages.account.destroy.error'),
             })
             this.deleting = false

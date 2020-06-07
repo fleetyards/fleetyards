@@ -36,6 +36,7 @@
 
 <script>
 import FleetsMixin from 'frontend/mixins/Fleets'
+import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   name: 'FleetSettings',
@@ -102,7 +103,7 @@ export default {
       if (this.myFleet.role === 'admin' || this.leaving) return
 
       this.leaving = true
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.fleet.leave'),
         onConfirm: async () => {
           const response = await this.$api.destroy(
@@ -114,7 +115,7 @@ export default {
           if (!response.error) {
             this.$comlink.$emit('fleetUpdate')
 
-            this.$success({
+            displaySuccess({
               text: this.$t('messages.fleet.leave.success'),
             })
 
@@ -124,11 +125,11 @@ export default {
             if (error.response && error.response.data) {
               const { data: errorData } = error.response
 
-              this.$alert({
+              displayAlert({
                 text: errorData.message,
               })
             } else {
-              this.$alert({
+              displayAlert({
                 text: this.$t('messages.fleet.leave.failure'),
               })
             }

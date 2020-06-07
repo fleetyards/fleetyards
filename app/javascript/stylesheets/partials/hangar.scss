@@ -1,5 +1,3 @@
-@import '~stylesheets/variables';
-
 .hangar-header {
   display: flex;
   justify-content: space-between;
@@ -49,6 +47,50 @@
 
     .metrics-item {
       padding-right: 8px;
+    }
+  }
+}
+
+.hangar-public {
+  h1 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .avatar {
+      margin-right: 20px;
+    }
+  }
+
+  .hangar-profile-links {
+    font-size: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100px;
+    margin: 15px 0;
+
+    > a {
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .fleetchart-slider {
+    margin-bottom: 20px;
+  }
+
+  .fleetchart {
+    justify-content: space-around;
+    align-items: center;
+
+    .fleetchart-item {
+      margin: 10px;
+      display: inline-block;
+      text-align: center;
     }
   }
 }

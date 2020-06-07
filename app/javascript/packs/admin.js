@@ -4,16 +4,13 @@ import App from 'admin/App'
 import ApiClient from 'admin/lib/ApiClient'
 import 'frontend/lib/LazyLoad'
 import 'frontend/lib/Sentry'
-import 'frontend/lib/Bootstrap'
 import router from 'admin/lib/Router'
 import Comlink from 'frontend/lib/Comlink'
 import I18nPlugin from 'frontend/lib/I18n'
-import Noty from 'frontend/lib/Noty'
 
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
-Vue.use(Noty)
 
 Vue.filter('formatSize', size => {
   if (size > 1024 * 1024 * 1024 * 1024) {

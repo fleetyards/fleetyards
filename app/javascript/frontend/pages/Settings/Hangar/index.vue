@@ -58,6 +58,7 @@ import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
+import { displaySuccess } from 'frontend/lib/Noty'
 
 export default {
   name: 'Profile',
@@ -109,7 +110,7 @@ export default {
       if (!response.error) {
         this.$comlink.$emit('userUpdate')
 
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.updateProfile.success'),
         })
       }

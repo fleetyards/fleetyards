@@ -84,6 +84,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/components/Panel'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
+import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   name: 'FleetInvites',
@@ -121,7 +122,7 @@ export default {
       if (!response.error) {
         this.$comlink.$emit('fleetUpdate')
 
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.invites.accept.success'),
         })
 
@@ -130,7 +131,7 @@ export default {
           params: { slug: invite.fleet.slug },
         })
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.fleet.invites.accept.failure'),
         })
       }
@@ -139,7 +140,7 @@ export default {
     async decline(invite) {
       this.submitting = true
 
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.fleet.invites.decline'),
         onConfirm: async () => {
           const response = await this.$api.put(
@@ -149,11 +150,11 @@ export default {
           if (!response.error) {
             this.$comlink.$emit('fleetUpdate')
 
-            this.$success({
+            displaySuccess({
               text: this.$t('messages.fleet.invites.decline.success'),
             })
           } else {
-            this.$alert({
+            displayAlert({
               text: this.$t('messages.fleet.invites.decline.failure'),
             })
             this.submitting = false

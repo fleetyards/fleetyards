@@ -15,13 +15,21 @@
           :scale="scale"
           @click.native="openContextMenu($event, item)"
         />
+
+        <div key="made-by-the-community" class="fleetchart-download-image">
+          <img
+            :src="require('images/community-logo.png').default"
+            alt="made-by-the-community"
+          />
+        </div>
       </transition-group>
     </div>
+
     <FleetchartItemContextMenu
       ref="contextMenu"
+      data-test="context-menu"
       :on-edit="onEdit"
       :on-addons="onAddons"
-      :item="selectedItem"
     />
   </div>
 </template>
@@ -39,7 +47,7 @@ import FleetchartItemContextMenu from 'frontend/partials/Fleetchart/List/Context
   },
 })
 export default class FleetchartList extends Vue {
-  @Prop() items!: Vehicle | Model
+  @Prop() items!: Vehicle[] | Model[]
 
   @Prop() onEdit!: Function
 
@@ -47,13 +55,13 @@ export default class FleetchartList extends Vue {
 
   @Prop() scale!: number
 
-  selectedItem: Vehicle | Model | null = null
+  selectedModel: Model | null = null
+
+  selectedVehicle: Vehicle | null = null
 
   openContextMenu(event, item) {
-    this.selectedItem = item
-
     // @ts-ignore
-    this.$refs.contextMenu.open(event)
+    this.$refs.contextMenu.open(item, event)
   }
 }
 </script>

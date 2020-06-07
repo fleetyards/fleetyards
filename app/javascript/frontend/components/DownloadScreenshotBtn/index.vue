@@ -1,6 +1,6 @@
 <template>
   <Btn
-    v-tooltip="showTooltip && $t('actions.saveScreenshot')"
+    v-tooltip="!withLabel && $t('actions.saveScreenshot')"
     :loading="downloading"
     :aria-label="$t('actions.saveScreenshot')"
     :variant="variant"
@@ -16,7 +16,9 @@
       class="text"
     >
       <i class="fad fa-image" />
-      {{ $t('actions.saveScreenshot') }}
+      <template v-if="withLabel">
+        {{ $t('actions.saveScreenshot') }}
+      </template>
     </span>
   </Btn>
 </template>
@@ -37,7 +39,7 @@ import SmallLoader from 'frontend/components/SmallLoader/index.vue'
 export default class DownloadScreenshotBtn extends Btn {
   @Prop({ required: true }) element!: string
 
-  @Prop({ default: true }) showTooltip!: boolean
+  @Prop({ default: true }) withLabel!: boolean
 
   @Prop({ default: 'fleetyards-screenshot' }) filename!: string
 

@@ -94,13 +94,7 @@ module.exports = {
       },
     },
     {
-      files: [
-        '**/*.ts',
-        '**/components/**/*.vue',
-        '**/Impressum/index.vue',
-        '**/partials/BackToTop/*.vue',
-        '**/partials/Fleetchart/**',
-      ],
+      files: ['**/*.ts', '**/*.vue'],
       parserOptions: {
         parser: '@typescript-eslint/parser',
       },

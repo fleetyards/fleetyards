@@ -51,20 +51,20 @@
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <b-progress :max="tasks(items)" class="release-progress">
+            <BProgress :max="tasks(items)" class="release-progress">
               <div class="progress-label">
                 {{ progressLabel(items) }} | {{ completedPercent(items) }} %
               </div>
-              <b-progress-bar
+              <BProgressBar
                 v-if="completed(items) !== 0"
                 :value="completed(items)"
                 :class="{
                   completed: completed(items) === tasks(items),
                 }"
               />
-            </b-progress>
+            </BProgress>
 
-            <b-collapse
+            <BCollapse
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
             >
@@ -77,7 +77,7 @@
                   <RoadmapItem :item="item" slim />
                 </div>
               </div>
-            </b-collapse>
+            </BCollapse>
           </div>
         </transition-group>
         <EmptyBox :visible="emptyBoxVisible" />
@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import { BCollapse, BProgress, BProgressBar } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
@@ -98,6 +99,9 @@ export default {
   name: 'RoadmapReleases',
 
   components: {
+    BProgress,
+    BProgressBar,
+    BCollapse,
     Loader,
     EmptyBox,
     RoadmapItem,

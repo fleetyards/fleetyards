@@ -51,6 +51,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
+import { displaySuccess } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -77,7 +78,7 @@ export default {
 
       this.submitting = false
 
-      this.$success({
+      displaySuccess({
         text: this.$t('messages.requestPasswordChange.success'),
       })
 

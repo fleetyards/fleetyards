@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { sortBy } from 'frontend/lib/Helpers'
+
 export default {
   props: {
     docks: {
@@ -23,7 +25,7 @@ export default {
 
   computed: {
     sortedDocks() {
-      return this.sortBy(this.docks, 'name')
+      return sortBy(this.docks, 'name')
     },
   },
 }

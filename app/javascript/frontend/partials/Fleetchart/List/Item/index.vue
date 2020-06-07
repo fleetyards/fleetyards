@@ -1,5 +1,9 @@
 <template>
-  <div v-tooltip.bottom="label" class="fleetchart-item fade-list-item">
+  <div
+    v-tooltip.bottom="label"
+    class="fleetchart-item fade-list-item"
+    :class="`fleetchart-item-${model.slug}`"
+  >
     <FleetchartItemImage
       :label="label"
       :src="image"

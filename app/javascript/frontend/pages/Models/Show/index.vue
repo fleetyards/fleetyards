@@ -281,6 +281,7 @@ import ModelCrewMetrics from 'frontend/partials/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -298,7 +299,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo],
+  mixins: [MetaInfo, HangarItemsMixin],
 
   data() {
     return {
@@ -372,7 +373,7 @@ export default {
             name: 'models',
             hash: `#${this.model.slug}`,
           },
-          label: this.$t('nav.models'),
+          label: this.$t('nav.models.index'),
         },
       ]
     },
