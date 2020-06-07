@@ -32,6 +32,7 @@ describe('Hangar', () => {
 
     cy.url().should('include', '/')
 
+    cy.clickNav('models-menu')
     cy.clickNav('models')
 
     cy.url().should('include', '/ships/')

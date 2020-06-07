@@ -4,6 +4,7 @@ describe('Ships', () => {
 
     cy.acceptCookies()
 
+    cy.clickNav('models-menu')
     cy.clickNav('models')
 
     cy.url().should('include', '/ships')

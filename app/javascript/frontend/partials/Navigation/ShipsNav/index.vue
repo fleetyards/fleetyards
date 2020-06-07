@@ -2,7 +2,7 @@
   <NavItem
     :label="$t('nav.models.index')"
     :submenu-active="active"
-    menu-key="ships-menu"
+    menu-key="models-menu"
     icon="fad fa-starship"
   >
     <template slot="submenu">
