@@ -194,7 +194,7 @@ export default {
           to: {
             name: 'models',
           },
-          label: this.$t('nav.models'),
+          label: this.$t('nav.models.index'),
         },
       ]
     },
