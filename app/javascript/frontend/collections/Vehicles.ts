@@ -78,6 +78,18 @@ export class VehiclesCollection extends BaseCollection {
 
     return false
   }
+
+  async destroyAll(): Promise<boolean> {
+    const response = await destroy('vehicles/destroy-all')
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
 }
 
 export default new VehiclesCollection()

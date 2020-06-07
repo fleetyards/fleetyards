@@ -464,16 +464,9 @@ export default class Hangar extends Vue {
     displayConfirm({
       text: this.$t('messages.confirm.hangar.destroyAll'),
       onConfirm: async () => {
-        this.loading = true
-
-        const response = await this.$api.destroy('vehicles/destroy-all')
-
-        if (!response.error) {
-          this.fetch()
-        }
+        await this.collection.destroyAll()
 
         this.deleting = false
-        this.resetLoading()
       },
       onClose: () => {
         this.deleting = false
