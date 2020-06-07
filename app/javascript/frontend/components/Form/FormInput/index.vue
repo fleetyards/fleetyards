@@ -57,8 +57,8 @@ export default {
       type: String,
       default: 'text',
       validator(value) {
-        return (
-          ['text', 'number', 'password', 'email', 'url'].indexOf(value) !== -1
+        return ['text', 'number', 'password', 'email', 'url', 'color'].includes(
+          value,
         )
       },
     },
