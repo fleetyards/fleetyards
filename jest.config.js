@@ -6,12 +6,16 @@ module.exports = {
     'app/javascript/**/*.{js,vue,ts}',
     'app/javascript/translations/**',
   ],
+  preset: 'ts-jest',
+  globals: {
+    'ts-jest': {
+      babelConfig: true,
+    },
+  },
   coverageDirectory: '<rootDir>/test/javascript/unit/coverage',
   coverageReporters: ['json', 'lcov', 'text'],
   moduleFileExtensions: ['js', 'vue', 'ts'],
-  setupFiles: [
-    '<rootDir>/test/javascript/unit/setup',
-  ],
+  setupFiles: ['<rootDir>/test/javascript/unit/setup'],
   snapshotSerializers: ['jest-serializer-vue'],
   testPathIgnorePatterns: ['config'],
   moduleNameMapper: {
@@ -21,7 +25,8 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
     '^.+\\.tsx?$': 'ts-jest',
-    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': 'jest-transform-stub',
+    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      'jest-transform-stub',
   },
   moduleDirectories: [
     '<rootDir>/node_modules',
