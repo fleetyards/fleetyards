@@ -322,7 +322,9 @@ export default {
               },
             },
           })
-          .catch(_err => {})
+          .catch(err => {
+            console.info(err)
+          })
       } else {
         this.$router
           .replace({
@@ -335,7 +337,9 @@ export default {
               },
             },
           })
-          .catch(_err => {})
+          .catch(err => {
+            console.info(err)
+          })
       }
     },
 
