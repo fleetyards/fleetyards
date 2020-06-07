@@ -270,6 +270,7 @@ import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/collections/Vehicles'
 import hangarGroupsCollection from 'frontend/collections/HangarGroups'
 import hangarStatsCollection from 'frontend/collections/HangarStats'
+import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 @Component<Hangar>({
   components: {
@@ -431,13 +432,16 @@ export default class Hangar extends Vue {
   }
 
   async exportJson() {
-    const response = await this.$api.download('vehicles/export', {
-      q: this.$route.query.q,
-    })
+    const exportedData = await this.collection.export(this.filters)
+
+    if (!exportedData) {
+      displayAlert({ text: this.$t('messages.hangarExport.failure') })
+      return
+    }
 
     const link = document.createElement('a')
 
-    link.href = window.URL.createObjectURL(new Blob([response.data]))
+    link.href = window.URL.createObjectURL(new Blob([exportedData]))
 
     link.setAttribute(
       'download',
@@ -457,7 +461,7 @@ export default class Hangar extends Vue {
   async destroyAll() {
     this.deleting = true
 
-    this.$confirm({
+    displayConfirm({
       text: this.$t('messages.confirm.hangar.destroyAll'),
       onConfirm: async () => {
         this.loading = true

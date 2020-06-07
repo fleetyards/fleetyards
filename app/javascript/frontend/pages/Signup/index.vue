@@ -116,6 +116,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'Signup',
@@ -150,7 +151,7 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.signup.success'),
         })
         this.$router.push('/')
@@ -159,7 +160,7 @@ export default {
         response.error.response.data &&
         response.error.response.data.code === 'blacklisted'
       ) {
-        this.$alert({
+        displayAlert({
           text: this.$t('texts.signup.blacklisted'),
         })
       } else {
@@ -169,11 +170,11 @@ export default {
 
           this.$refs.form.setErrors(errorData.errors)
 
-          this.$alert({
+          displayAlert({
             text: errorData.message,
           })
         } else {
-          this.$alert({
+          displayAlert({
             text: this.$t('messages.signup.failure'),
           })
         }

@@ -75,6 +75,7 @@ import BtnDropdown from 'frontend/components/BtnDropdown'
 import Btn from 'frontend/components/Btn'
 import GroupModal from 'frontend/partials/Vehicles/GroupModal'
 import { mapGetters } from 'vuex'
+import { displayAlert } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -212,7 +213,7 @@ export default {
       })
 
       if (response.error) {
-        this.$alert({
+        displayAlert({
           text: response.error.response.data.message,
         })
       }

@@ -1,4 +1,4 @@
-import { get, post, put, destroy } from 'frontend/lib/ApiClient'
+import { get, post, put, destroy, download } from 'frontend/lib/ApiClient'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
@@ -25,6 +25,18 @@ export class VehiclesCollection extends BaseCollection {
 
   async refresh(): Promise<void> {
     await this.findAll(this.params)
+  }
+
+  async export(params: VehicleParams): Promise<Vehicle[] | null> {
+    const response = await download('vehicles/export', {
+      q: params.filters,
+    })
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return null
   }
 
   async create(

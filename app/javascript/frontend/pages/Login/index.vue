@@ -91,6 +91,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Checkbox from 'frontend/components/Form/Checkbox'
+import { displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'Login',
@@ -130,7 +131,7 @@ export default {
           await this.$router.push('/')
         }
       } else {
-        this.$alert({
+        displayAlert({
           text: response.error.response.data.message,
         })
       }

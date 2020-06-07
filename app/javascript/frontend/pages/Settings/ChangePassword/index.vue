@@ -68,6 +68,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
 import { mapGetters } from 'vuex'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'ChangePassword',
@@ -103,13 +104,13 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.changePassword.success'),
         })
 
         this.$router.push('/')
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.changePassword.failure'),
         })
       }

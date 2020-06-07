@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+
 export default {
   created() {
     this.fetch()
@@ -15,13 +17,13 @@ export default {
       })
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.accountConfirm.success'),
         })
 
         await this.$store.dispatch('hangar/enableStarterGuide')
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.accountConfirm.failure'),
         })
       }

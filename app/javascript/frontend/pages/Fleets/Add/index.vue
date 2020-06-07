@@ -73,6 +73,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'FleetAdd',
@@ -106,7 +107,7 @@ export default {
       if (!response.error) {
         this.$comlink.$emit('fleetCreate')
 
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.create.success'),
         })
 
@@ -115,7 +116,7 @@ export default {
           params: { slug: response.data.slug },
         })
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.fleet.create.failure'),
         })
       }

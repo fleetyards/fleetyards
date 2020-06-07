@@ -25,6 +25,12 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
 import Btn from 'frontend/components/Btn'
+import {
+  displayWarning,
+  displayAlert,
+  displaySuccess,
+  displayConfirm,
+} from 'frontend/lib/Noty'
 
 @Component({
   components: {
@@ -62,8 +68,7 @@ export default class HangarImportBtn extends Vue {
   selectFile() {
     this.disabled = true
 
-    // @ts-ignore
-    this.$confirm({
+    displayConfirm({
       // @ts-ignore
       text: this.$t('messages.confirm.hangar.import'),
       onConfirm: async () => {
@@ -83,8 +88,7 @@ export default class HangarImportBtn extends Vue {
           newFile.name.endsWith(extension),
         )
       ) {
-        // @ts-ignore
-        this.$alert({
+        displayAlert({
           // @ts-ignore
           text: this.$t('messages.hangarImport.invalidExtension', {
             extensions: this.fileExtensions,
@@ -122,8 +126,7 @@ export default class HangarImportBtn extends Vue {
     this.disabled = false
 
     if (response.error || !response.data.success) {
-      // @ts-ignore
-      this.$alert({
+      displayAlert({
         // @ts-ignore
         text: this.$t('messages.hangarImport.failure'),
       })
@@ -133,8 +136,7 @@ export default class HangarImportBtn extends Vue {
     const { data } = response
 
     if (data.missing.length) {
-      // @ts-ignore
-      this.$warning({
+      displayWarning({
         // @ts-ignore
         text: this.$t('messages.hangarImport.partialSuccess', {
           missing: `- ${data.missing.join('<br>- ')}`,
@@ -142,8 +144,7 @@ export default class HangarImportBtn extends Vue {
         timeout: null,
       })
     } else {
-      // @ts-ignore
-      this.$success({
+      displaySuccess({
         // @ts-ignore
         text: this.$t('messages.hangarImport.success'),
       })

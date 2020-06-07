@@ -118,6 +118,7 @@ import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
 import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
+import { displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'ImageUploader',
@@ -234,7 +235,7 @@ export default {
 
     selectFolder() {
       if (!this.$refs.upload.features.directory) {
-        this.$alert({
+        displayAlert({
           text: 'Your browser does not support',
         })
 

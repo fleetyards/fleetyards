@@ -125,6 +125,7 @@ import FormInput from 'frontend/components/Form/FormInput'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import Btn from 'frontend/components/Btn'
+import { displayConfirm } from 'frontend/lib/Noty'
 
 @Component<VehicleModal>({
   components: {
@@ -183,7 +184,7 @@ export default class VehicleModal extends Vue {
 
   remove() {
     this.deleting = true
-    this.$confirm({
+    displayConfirm({
       text: this.$t('messages.confirm.vehicle.destroy'),
       onConfirm: () => {
         this.destroy()

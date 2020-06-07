@@ -85,6 +85,7 @@ import Checkbox from 'frontend/components/Form/Checkbox'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FleetsMixin from 'frontend/mixins/Fleets'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   name: 'FleetSettings',
@@ -202,13 +203,13 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$success({
+        displaySuccess({
           text: this.$t('messages.fleet.members.update.success'),
         })
 
         this.$comlink.$emit('fleetUpdate')
       } else {
-        this.$alert({
+        displayAlert({
           text: this.$t('messages.fleet.members.update.failure'),
         })
       }

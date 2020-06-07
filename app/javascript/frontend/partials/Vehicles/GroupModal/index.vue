@@ -70,6 +70,7 @@
 import Modal from 'frontend/components/Modal'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
+import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -132,7 +133,7 @@ export default {
     remove() {
       this.deleting = true
 
-      this.$confirm({
+      displayConfirm({
         text: this.$t('messages.confirm.hangarGroup.destroy'),
         onConfirm: () => {
           this.destroy()
@@ -176,7 +177,7 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        this.$alert({
+        displayAlert({
           text: response.error.response.data.message,
         })
       }
@@ -191,7 +192,7 @@ export default {
         this.$refs.modal.close()
         this.$comlink.$emit('hangarGroupSave', response.data)
       } else {
-        this.$alert({
+        displayAlert({
           text: response.error.response.data.message,
         })
       }

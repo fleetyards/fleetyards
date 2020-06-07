@@ -11,7 +11,6 @@ import Subscriptions from 'frontend/lib/Subscriptions'
 import Comlink from 'frontend/lib/Comlink'
 import Meta from 'vue-meta'
 import DataPrefetch from 'frontend/lib/DataPrefetch'
-import Noty from 'frontend/lib/Noty'
 import Ahoy from 'frontend/lib/Ahoy'
 import Validations from 'frontend/lib/Validations'
 import VTooltip from 'v-tooltip'
@@ -21,7 +20,6 @@ Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
 Vue.use(DataPrefetch)
-Vue.use(Noty)
 Vue.use(Ahoy)
 Vue.use(Validations)
 

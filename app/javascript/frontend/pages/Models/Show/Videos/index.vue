@@ -75,6 +75,7 @@ import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import copyText from 'frontend/lib/CopyText'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {
   components: {
@@ -146,12 +147,12 @@ export default {
     copyVideoUrl(video) {
       copyText(`https://www.youtube.com/watch?v=${video.videoId}`).then(
         () => {
-          this.$success({
+          displaySuccess({
             text: this.$t('messages.copyVideoUrl.success'),
           })
         },
         () => {
-          this.$alert({
+          displayAlert({
             text: this.$t('messages.copyVideoUrl.failure'),
           })
         },
