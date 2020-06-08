@@ -7,10 +7,22 @@ environment.splitChunks(config => ({
   optimization: {
     ...config.optimization,
     splitChunks: {
-      ...config.optimization.splitChunks,
-      minSize: 10000,
-      maxAsyncRequests: 6,
-      maxInitialRequests: 4,
+      // ...config.optimization.splitChunks,
+      cacheGroups: {
+        vendors: {
+          name: 'chunk-vendors',
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          chunks: 'initial',
+        },
+        common: {
+          name: 'chunk-common',
+          minChunks: 2,
+          priority: -20,
+          chunks: 'initial',
+          reuseExistingChunk: true,
+        },
+      },
     },
   },
 }))
