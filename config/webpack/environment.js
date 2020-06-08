@@ -8,6 +8,7 @@ environment.splitChunks(config => ({
     ...config.optimization,
     splitChunks: {
       ...config.optimization.splitChunks,
+      minSize: 10000,
       maxAsyncRequests: 6,
       maxInitialRequests: 4,
     },
