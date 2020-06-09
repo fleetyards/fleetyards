@@ -15,3 +15,7 @@ type Model = {
 type ModelsFilter = {
   nameCont: string
 }
+
+interface ModelParams extends CollectionParams {
+  filters: ModelsFilter
+}

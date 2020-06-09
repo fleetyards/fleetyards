@@ -4,7 +4,7 @@ hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 
 hidden = false
 
-hur_l3 = Station.find_or_initialize_by(name: 'Rest & Relax (HUR-L3)')
+hur_l3 = Station.find_or_initialize_by(name: 'HUR-L3 Thundering Express Station')
 hur_l3.update!(celestial_object: hurston, station_type: :rest_stop, location: 'HUR-L3', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l3/hur-l3-a.jpg').open, hidden: hidden)
 
 hur_l3.docks.destroy_all

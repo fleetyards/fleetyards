@@ -11,3 +11,7 @@ type Vehicle = {
 type VehiclesFilter = {
   modelNameCont: string
 }
+
+interface VehicleParams extends CollectionParams {
+  filters: VehiclesFilter
+}

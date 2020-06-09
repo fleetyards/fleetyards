@@ -12,22 +12,22 @@
         <div class="row">
           <div class="col-xs-12">
             <Paginator
-              v-if="images.length"
-              :page="currentPage"
-              :total="totalPages"
+              v-if="collection.records.length"
+              :page="collection.currentPage"
+              :total="collection.totalPages"
               :center="true"
             />
           </div>
         </div>
         <transition-group
-          v-if="images"
+          v-if="collection.records.length"
           name="fade-list"
           class="flex-row flex-center images"
           tag="div"
           appear
         >
           <div
-            v-for="(image, index) in images"
+            v-for="(image, index) in collection.records"
             :key="image.id"
             class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
           >
@@ -42,9 +42,9 @@
         <div class="row">
           <div class="col-xs-12">
             <Paginator
-              v-if="images.length"
-              :page="currentPage"
-              :total="totalPages"
+              v-if="collection.records.length"
+              :page="collection.currentPage"
+              :total="collection.totalPages"
               :center="true"
             />
           </div>
@@ -53,52 +53,43 @@
       </div>
     </div>
 
-    <Gallery ref="gallery" :items="images" />
+    <Gallery ref="gallery" :items="collection.records" />
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
 import Loader from 'frontend/components/Loader'
 import GalleryHelpers from 'frontend/mixins/GalleryHelpers'
+import imagesCollection from 'frontend/collections/Images'
 
-export default {
+@Component<Images>({
   components: {
     Loader,
   },
-
   mixins: [MetaInfo, Pagination, GalleryHelpers],
+})
+export default class Images extends Vue {
+  collection: ImagesCollection = imagesCollection
 
-  data() {
-    return {
-      images: [],
-      loading: false,
-    }
-  },
+  loading: boolean = false
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
 
   created() {
     this.fetch()
-  },
+  }
 
-  methods: {
-    async fetch() {
-      this.loading = true
-      const response = await this.$api.get('images', {
-        page: this.$route.query.page,
-      })
-      this.loading = false
-      if (!response.error) {
-        this.images = response.data
-      }
-      this.setPages(response.meta)
-    },
-  },
+  async fetch() {
+    this.loading = true
+    this.collection.findAll({ page: this.$route.params.page })
+    this.loading = false
+  }
 }
 </script>

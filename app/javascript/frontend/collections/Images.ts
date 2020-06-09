@@ -1,12 +1,11 @@
 import { get } from 'frontend/lib/ApiClient'
 import BaseCollection from './Base'
 
-export class ModelsCollection extends BaseCollection {
-  records: Model[] = []
+export class ImagesCollection extends BaseCollection {
+  records: Image[] = []
 
-  async findAll(params: ModelParams): Promise<Model[]> {
-    const response = await get('models', {
-      q: params.filters,
+  async findAll(params: CollectionParams): Promise<Image[]> {
+    const response = await get('images', {
       page: params.page,
     })
 
@@ -19,8 +18,8 @@ export class ModelsCollection extends BaseCollection {
     return this.records
   }
 
-  async latest(): Promise<Model[]> {
-    const response = await get('models/latest')
+  async random(): Promise<Image[]> {
+    const response = await get('images/random')
 
     if (!response.error) {
       this.records = response.data
@@ -30,4 +29,4 @@ export class ModelsCollection extends BaseCollection {
   }
 }
 
-export default new ModelsCollection()
+export default new ImagesCollection()

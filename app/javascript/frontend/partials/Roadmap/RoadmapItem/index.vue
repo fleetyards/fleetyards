@@ -72,13 +72,21 @@
         </ul>
         <BProgress :max="item.tasks">
           <div class="progress-label">
-            {{ progressLabel }} | {{ completedPercent }} %
+            <template v-if="inProgress">
+              {{ progressLabel }} | {{ completedPercent }} %
+            </template>
+            <template v-else-if="inPolish">
+              {{ $t('labels.roadmap.inPolish') }}
+            </template>
+            <template v-else-if="item.released">
+              {{ $t('labels.roadmap.released') }}
+            </template>
           </div>
           <BProgressBar
             v-if="completed !== 0"
             :value="completed"
             :class="{
-              completed: completed === item.tasks,
+              completed: completed >= item.tasks,
             }"
           />
         </BProgress>
@@ -126,6 +134,22 @@ export default {
       }
 
       return 0
+    },
+
+    inProgress() {
+      if (this.tasks === '?') {
+        return false
+      }
+
+      return this.completed < this.tasks && !this.item.released
+    },
+
+    inPolish() {
+      if (this.tasks === '?') {
+        return false
+      }
+
+      return this.completed >= this.tasks && !this.item.released
     },
 
     completedPercent() {

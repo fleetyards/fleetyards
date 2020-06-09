@@ -4,7 +4,7 @@ microtech = CelestialObject.find_or_create_by!(name: 'microTech')
 
 hidden = false
 
-mic_l1 = Station.find_or_initialize_by(name: 'Rest & Relax (MIC-L1)')
+mic_l1 = Station.find_or_initialize_by(name: 'MIC-L1 Shallow Frontier Station')
 mic_l1.update!(
   celestial_object: microtech,
   station_type: :rest_stop,
@@ -17,18 +17,18 @@ mic_l1.docks.destroy_all
 { small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     mic_l1.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
 { large: [1, 2] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     mic_l1.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -39,7 +39,7 @@ mic_l1.habitations.destroy_all
   { container: 11 }.each do |hab_size, count|
     count.times do
       mic_l1.habitations << Habitation.new(
-        name: "Hab #{level}#{"%02d" % pad}",
+        name: "Hab #{level}#{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )

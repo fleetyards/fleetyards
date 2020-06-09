@@ -25,8 +25,8 @@
                           v-model="searchQuery"
                           size="large"
                           :autofocus="!mobile"
-                          no-label
-                          clearable
+                          :no-label="true"
+                          :clearable="true"
                         />
                         <Btn
                           id="search-submit"
@@ -81,9 +81,14 @@
           <h2 class="sr-only">
             {{ $t('headlines.welcomeShips') }}
           </h2>
-          <transition-group name="fade-list" class="flex-row" tag="div" appear>
+          <transition-group
+            name="fade-list"
+            class="flex-row"
+            tag="div"
+            :appear="true"
+          >
             <div
-              v-for="model in models"
+              v-for="model in modelsCollection.records"
               :key="model.id"
               class="col-xs-12 fade-list-item"
             >
@@ -106,14 +111,13 @@
             </h2>
             <div class="panel-body images">
               <transition-group
-                v-if="images"
                 name="fade"
                 class="flex-row flex-center"
                 tag="div"
-                appear
+                :appear="true"
               >
                 <div
-                  v-for="image in images"
+                  v-for="image in imagesCollection.records"
                   :key="image.id"
                   class="col-xs-12 col-sm-6 col-md-6"
                 >
@@ -138,7 +142,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import VueScrollTo from 'vue-scrollto'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
@@ -148,9 +155,10 @@ import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Support from 'frontend/partials/Support'
 import LazyImage from 'frontend/components/LazyImage'
-import { mapGetters } from 'vuex'
+import models from 'frontend/collections/Models'
+import images from 'frontend/collections/Images'
 
-export default {
+@Component<Home>({
   components: {
     Loader,
     Panel,
@@ -160,23 +168,22 @@ export default {
     Support,
     LazyImage,
   },
-
   mixins: [MetaInfo],
+})
+export default class Home extends Vue {
+  modelsCollection: ModelsCollection = models
 
-  data() {
-    return {
-      models: [],
-      modelsLoading: false,
-      images: [],
-      imagesLoading: false,
-      searchQuery: null,
-      showScrollDown: false,
-    }
-  },
+  imagesCollection: ImagesCollection = images
 
-  computed: {
-    ...mapGetters(['mobile']),
-  },
+  modelsLoading: boolean = false
+
+  imagesLoading: boolean = false
+
+  searchQuery: string = null
+
+  showScrollDown: boolean = false
+
+  @Getter('mobile') mobile
 
   created() {
     this.fetchImages()
@@ -185,44 +192,37 @@ export default {
     setTimeout(() => {
       this.showScrollDown = true
     }, 2000)
-  },
+  }
 
-  methods: {
-    search() {
-      if (!this.searchQuery) {
-        return
-      }
-      this.$router.push({
-        name: 'search',
-        query: {
-          q: {
-            search: this.searchQuery,
-          },
+  search() {
+    if (!this.searchQuery) {
+      return
+    }
+
+    this.$router.push({
+      name: 'search',
+      query: {
+        q: {
+          search: this.searchQuery,
         },
-      })
-    },
+      },
+    })
+  }
 
-    async fetchModels() {
-      this.modelsLoading = true
-      const response = await this.$api.get('models/latest')
-      this.modelsLoading = false
-      if (!response.error) {
-        this.models = response.data
-      }
-    },
+  async fetchModels() {
+    this.modelsLoading = true
+    await this.modelsCollection.latest()
+    this.modelsLoading = false
+  }
 
-    async fetchImages() {
-      this.imagesLoading = true
-      const response = await this.$api.get('images/random')
-      this.imagesLoading = false
-      if (!response.error) {
-        this.images = response.data
-      }
-    },
+  async fetchImages() {
+    this.imagesLoading = true
+    await this.imagesCollection.random()
+    this.imagesLoading = false
+  }
 
-    scrollDown() {
-      VueScrollTo.scrollTo('.home-ships')
-    },
-  },
+  scrollDown() {
+    VueScrollTo.scrollTo('.home-ships')
+  }
 }
 </script>

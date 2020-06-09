@@ -4,7 +4,7 @@ crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
 
 hidden = false
 
-cru_l4 = Station.find_or_initialize_by(name: 'Rest & Relax (CRU-L4)')
+cru_l4 = Station.find_or_initialize_by(name: 'CRU-L4 Shallow Fields Stations')
 cru_l4.update!(
   celestial_object: crusader,
   station_type: :rest_stop,

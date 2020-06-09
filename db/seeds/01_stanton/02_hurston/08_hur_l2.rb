@@ -4,7 +4,7 @@ hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 
 hidden = false
 
-hur_l2 = Station.find_or_initialize_by(name: 'Rest & Relax (HUR-L2)')
+hur_l2 = Station.find_or_initialize_by(name: 'HUR-L2 Faithful Dream Station')
 hur_l2.update!(
   celestial_object: hurston,
   station_type: :rest_stop,

@@ -38,6 +38,8 @@ export default {
     releases: 'Releases',
     unscheduled: 'Unscheduled',
     lastUpdate: 'Last Update',
+    inPolish: 'Polishing',
+    released: 'Released',
     recentlyUpdated: 'Recently Updated',
     lastVersion: {
       completed: {

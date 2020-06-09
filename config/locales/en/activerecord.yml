@@ -206,6 +206,7 @@ en:
           aid_shelter: Aid Shelter
           gate: Gate
           drug_lab: Drug lab
+          salvage-outpost: Salvage Outpost
       commodity:
         commodity_types:
           gas: Gas

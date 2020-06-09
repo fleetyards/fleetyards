@@ -4,7 +4,7 @@ arccorp = CelestialObject.find_or_create_by!(name: 'ArcCorp')
 
 hidden = false
 
-arc_l1 = Station.find_or_initialize_by(name: 'Rest & Relax (ARC-L1)')
+arc_l1 = Station.find_or_initialize_by(name: 'ARC-L1 Wide Forest Station')
 arc_l1.update!(
   celestial_object: arccorp,
   station_type: :rest_stop,
@@ -17,18 +17,18 @@ arc_l1.docks.destroy_all
 { small: [1, 3], large: [2, 4] }.each do |ship_size, pads|
   pads.each do |pad|
     arc_l1.docks << Dock.new(
-      name: ("%02d" % pad),
+      name: ('%02d' % pad),
       dock_type: :landingpad,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
-{ large: [1, 2, 3, 4]}.each do |ship_size, hangars|
+{ large: [1, 2, 3, 4] }.each do |ship_size, hangars|
   hangars.each do |hangar|
     arc_l1.docks << Dock.new(
-      name: ("%02d" % hangar),
+      name: ('%02d' % hangar),
       dock_type: :hangar,
-      ship_size: ship_size,
+      ship_size: ship_size
     )
   end
 end
@@ -39,7 +39,7 @@ arc_l1.habitations.destroy_all
   { container: 11 }.each do |hab_size, count|
     count.times do
       arc_l1.habitations << Habitation.new(
-        name: "Hab #{level}#{"%02d" % pad}",
+        name: "Hab #{level}#{'%02d' % pad}",
         habitation_name: 'EZ Hab',
         habitation_type: hab_size
       )
