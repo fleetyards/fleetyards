@@ -206,7 +206,7 @@ jobs:
       - run: yarn install
       - run:
           name: Run Javascript Tests
-          command: yarn test:coverage
+          command: yarn test:ci
 
   seeds:
     <<: *seeds
