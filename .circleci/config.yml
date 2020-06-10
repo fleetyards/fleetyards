@@ -18,7 +18,7 @@ ruby-defaults: &ruby-defaults
         DATABASE_HOST: 127.0.0.1
         DATABASE_USER: root
         JOBS: 1
-        NODE_OPTIONS: --max-old-space-size=2048
+        NODE_OPTIONS: --max-old-space-size=1024
     - image: circleci/postgres:9.5.16-alpine
       environment:
         POSTGRES_USER: root
