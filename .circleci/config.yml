@@ -238,7 +238,7 @@ jobs:
             - v1-assets-
       - run:
           name: Webpacker & Assets Compile
-          command: RAILS_ENV=production bundle exec rails assets:precompile
+          command: NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
       - save_cache:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:
