@@ -11,7 +11,7 @@
     "storybook": "start-storybook",
     "storybook:build": "build-storybook -c .storybook -o .out",
     "test": "jest",
-    "test:ci": "jest -w 1"
+    "test:ci": "jest -w 1",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch --notify",
     "lint": "yarn run lint:js && yarn run lint:ts && yarn run lint:vue && yarn run lint:style",
