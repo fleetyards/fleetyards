@@ -465,6 +465,9 @@ workflows:
             - ruby-tests
             - js-tests
             - js-lint
+            - vue-lint
+            - ts-lint
+            - style-lint
       - smoke-test:
           filters:
             tags:
