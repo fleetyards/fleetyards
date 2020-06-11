@@ -14,24 +14,24 @@
   &.nav-visible {
     position: fixed !important;
     top: 0 !important;
+    right: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
-    right: 0 !important;
   }
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
   position: relative;
   min-width: 320px;
   min-height: 100%;
+  font-family: 'Open Sans', sans-serif;
   background-color: $background;
 }
 
 .app-body {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+  min-height: 100vh;
 
   .app-content {
     display: flex;
@@ -39,12 +39,12 @@ body {
   }
 
   .main-wrapper {
-    max-width: 100%;
-    flex: 1;
-    padding-top: 80px;
-    justify-content: space-between;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    justify-content: space-between;
+    max-width: 100%;
+    padding-top: 80px;
   }
 
   .main-inner {
@@ -52,35 +52,35 @@ body {
   }
 
   .main {
-    left: 0;
     position: relative;
-    transition: left ease .5s, right ease .5s;
+    left: 0;
     width: 100%;
     margin-bottom: 50px;
+    transition: left ease .5s, right ease .5s;
   }
 
   &.nav-visible {
     .main {
-      left: 300px;
       right: -300px;
+      left: 300px;
     }
   }
 }
 
 .app-intro {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
   flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
   margin-top: -80px;
   margin-bottom: -50px;
-  height: 100vh;
   text-align: center;
 
   .logo {
     width: 200px;
-    margin-bottom: 28px;
     margin-right: -30px;
+    margin-bottom: 28px;
   }
 }
 
@@ -91,11 +91,11 @@ button {
 }
 
 hr {
-  border: none;
-  background-color: $gray;
   height: 3px;
-  border-radius: 50%;
   margin: 20px 5%;
+  background-color: $gray;
+  border: none;
+  border-radius: 50%;
 
   &.large-spacer {
     margin: 60px 5%;
@@ -112,24 +112,24 @@ hr {
 
 .page-main-actions {
   display: flex;
-  justify-content: flex-end;
   align-items: flex-end;
+  justify-content: flex-end;
 }
 
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     .main-wrapper {
       margin-top: env(safe-area-inset-top);
-      padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
     }
   }
 
   .app-intro {
     .logo {
       width: 200px;
-      margin-bottom: 20px;
       margin-right: 0;
+      margin-bottom: 20px;
     }
   }
 }
@@ -144,8 +144,8 @@ hr {
 
     &.nav-visible {
       .main {
-        left: 250px;
         right: -250px;
+        left: 250px;
       }
     }
   }

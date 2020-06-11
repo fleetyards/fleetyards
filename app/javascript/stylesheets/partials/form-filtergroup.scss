@@ -1,15 +1,15 @@
 .filter-list {
-  margin-bottom: 15px;
   position: relative;
+  margin-bottom: 15px;
 
   .filter-list-title,
   .filter-list-item {
     i,
     svg {
-      transition: all .5s ease;
       position: absolute;
-      right: 15px;
       top: 13px;
+      right: 15px;
+      transition: all .5s ease;
     }
   }
 
@@ -20,22 +20,22 @@
   }
 
   .filter-list-title {
-    font-weight: bold;
     position: relative;
-    cursor: pointer;
-    background: rgba($input-bg, .9);
     padding: 10px 40px 10px 10px;
-    border-radius: $border-radius-base;
+    font-weight: bold;
+    background: rgba($input-bg, .9);
     border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    cursor: pointer;
 
     &:hover {
-      background: $input-bg;
       color: white;
+      background: $input-bg;
     }
 
     &.active {
-      border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
 
       i,
       svg {
@@ -44,8 +44,8 @@
     }
 
     &.disabled {
-      opacity: .5;
       cursor: not-allowed;
+      opacity: .5;
     }
 
     &.hasLabel {
@@ -54,10 +54,10 @@
     }
 
     &.selected {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
       color: white;
       font-weight: bold;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 
@@ -66,35 +66,35 @@
     overflow-x: hidden;
     overflow-y: auto;
     background-color: rgba($gray-darker, .95);
-    border-bottom-left-radius: $border-radius-base;
-    border-bottom-right-radius: $border-radius-base;
     border: 1px solid $input-border;
     border-top: none;
+    border-bottom-right-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
   }
 
   .filter-list-items-wrapper {
-    z-index: 1000;
     position: absolute;
-    left: 0;
     right: 0;
+    left: 0;
+    z-index: 1000;
     box-shadow: 0 1px 3px rgba(black, .9);
   }
 
   .filter-list-item {
     position: relative;
-    padding: 10px 36px 10px 6px;
-    border-bottom: 1px solid $input-border;
-    cursor: pointer;
-    color: $input-color;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
     display: flex;
     align-items: center;
+    padding: 10px 36px 10px 6px;
+    color: $input-color;
+    border-right: 4px solid transparent;
+    border-bottom: 1px solid $input-border;
+    border-left: 4px solid transparent;
+    cursor: pointer;
 
     .filter-list-item-icon {
-      margin-right: 10px;
       width: 30px;
       height: 21px;
+      margin-right: 10px;
       text-align: center;
 
       img {
@@ -105,14 +105,14 @@
 
     &::before,
     &::after {
-      width: 3px;
-      height: 26px;
-      content: '';
       position: absolute;
       top: 50%;
+      width: 3px;
+      height: 26px;
       margin-top: -13px;
-      transition: all ease .3s;
       opacity: 0;
+      transition: all ease .3s;
+      content: '';
     }
 
     &::before {

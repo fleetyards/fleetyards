@@ -32,8 +32,8 @@
 }
 
 .noty_close_button {
-  color: $text-color;
   display: none;
+  color: $text-color;
   background-color: transparent;
 
   &.override {
@@ -41,8 +41,8 @@
   }
 
   &:hover {
-    background-color: transparent;
     color: white;
+    background-color: transparent;
   }
 }
 

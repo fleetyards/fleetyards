@@ -33,8 +33,8 @@ export default {
 
 <style lang="scss" scoped>
 .dock-item {
-  white-space: nowrap;
   display: inline-block;
   padding-right: 5px;
+  white-space: nowrap;
 }
 </style>

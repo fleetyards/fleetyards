@@ -1,15 +1,15 @@
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  list-style: none;
   margin: 0;
-  padding: 0;
   margin-bottom: 15px;
+  padding: 0;
+  list-style: none;
 
   .breadcrumb-item {
     padding: 4px 8px;
-    font-size: 110%;
     color: $gray-light;
+    font-size: 110%;
 
     > a {
       color: $gray-lighter;
@@ -20,8 +20,8 @@
     }
 
     &:first-child {
-      padding-left: 0;
       padding-right: 4px;
+      padding-left: 0;
     }
 
     &:not(:first-child) > a {

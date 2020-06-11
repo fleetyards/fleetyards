@@ -10,8 +10,8 @@
 
 .addon {
   .model-panel {
-    display: flex;
     position: relative;
+    display: flex;
     overflow: hidden;
 
     &.modifiable {
@@ -24,46 +24,46 @@
       left: 0;
       width: 0;
       height: 0;
-      border-left: 25px solid $success;
       border-top: 25px solid transparent;
       border-right: 25px solid transparent;
       border-bottom: 25px solid $success;
+      border-left: 25px solid $success;
       border-bottom-left-radius: $panelContentBorderRadius;
 
       i,
       svg {
-        color: #fff;
         position: absolute;
         bottom: -16px;
         left: -16px;
+        color: #fff;
       }
     }
 
     .model-panel-body {
-      padding: 15px;
-      flex: .5;
-      min-height: 80px;
-      justify-content: flex-end;
       display: flex;
+      flex: .5;
       align-items: center;
+      justify-content: flex-end;
+      min-height: 80px;
+      padding: 15px;
     }
 
     .model-panel-image {
       flex: .5;
-      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      background-size: cover;
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       opacity: .8;
     }
 
     h3 {
-      text-align: right;
-      font-size: 20px;
       margin-bottom: 0;
-      font-family: 'Orbitron', tahoma, sans-serif;
       font-weight: 400;
+      font-size: 20px;
+      font-family: 'Orbitron', tahoma, sans-serif;
+      text-align: right;
     }
   }
 }

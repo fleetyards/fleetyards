@@ -5,11 +5,11 @@
     .compare-row-headline {
       .compare-row-item .compare-title {
         position: absolute;
-        left: 0;
-        right: 0;
         top: 0;
-        margin: 0 15px;
+        right: 0;
+        left: 0;
         z-index: 1000;
+        margin: 0 15px;
         transition: top .1s linear;
       }
     }
@@ -22,9 +22,9 @@
   &.scrolled-left {
     .compare-wrapper {
       .compare-row-label {
-        transition: left .1s linear;
-        background: linear-gradient(to right, transparent, $gray-darker, $gray-darker);
         z-index: 999;
+        background: linear-gradient(to right, transparent, $gray-darker, $gray-darker);
+        transition: left .1s linear;
       }
 
       .compare-row:last-child {
@@ -42,26 +42,26 @@
   }
 
   .compare-image {
-    height: 180px;
     position: relative;
+    height: 180px;
     overflow: hidden;
 
     & > a {
       position: relative;
-      border-radius: $border-radius-base;
       display: block;
-      height: 100%;
       width: 100%;
+      height: 100%;
       background-color: rgba(0, 0, 0, .6);
       background-repeat: no-repeat;
-      background-size: cover;
       background-position: center;
+      background-size: cover;
+      border-radius: $border-radius-base;
+      -webkit-animation-name: fadein;
+      animation-name: fadeIn;
       -webkit-animation-duration: 1s;
       animation-duration: 1s;
       -webkit-animation-fill-mode: both;
       animation-fill-mode: both;
-      -webkit-animation-name: fadein;
-      animation-name: fadeIn;
     }
 
     .remove-model {
@@ -70,39 +70,39 @@
       right: 0;
       width: 0;
       height: 0;
-      border-left: 20px solid transparent;
       border-top: 20px solid $gray-darker;
       border-right: 20px solid $gray-darker;
       border-bottom: 20px solid transparent;
+      border-left: 20px solid transparent;
       border-top-right-radius: $border-radius-base;
       cursor: pointer;
 
       i {
-        color: #fff;
         position: absolute;
         top: -15px;
         right: -15px;
+        color: #fff;
       }
     }
   }
 
   .compare-title {
-    font-size: 120%;
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 120%;
     background-color: $gray-darker;
-    border-bottom-left-radius: $border-radius-base;
     border-bottom-right-radius: $border-radius-base;
+    border-bottom-left-radius: $border-radius-base;
   }
 
   .compare-row {
     display: flex;
 
     .compare-row-item {
-      padding-bottom: 10px;
       flex: 1;
-      max-width: 33%;
       min-width: 400px;
+      max-width: 33%;
+      padding-bottom: 10px;
     }
 
     .compare-row-label {
@@ -123,10 +123,10 @@
       cursor: pointer;
 
       i {
-        transition: all .5s ease;
         position: absolute;
-        right: 0;
         top: 2px;
+        right: 0;
+        transition: all .5s ease;
       }
 
       &.active {

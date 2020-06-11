@@ -1,12 +1,12 @@
 .teaser-panel {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
   align-content: stretch;
+  align-items: stretch;
+  justify-content: space-between;
 
   .teaser-panel-item {
-    flex-grow: 1;
     flex-basis: 33%;
+    flex-grow: 1;
   }
 
   .teaser-panel-body {
@@ -14,9 +14,9 @@
   }
 
   .teaser-panel-image {
-    opacity: .8;
     position: relative;
     overflow: hidden;
+    opacity: .8;
   }
 
   a {
@@ -24,15 +24,15 @@
   }
 
   h3 {
-    text-align: right;
+    font-weight: 400;
     font-size: 20px;
     font-family: 'Orbitron', tahoma, sans-serif;
-    font-weight: 400;
+    text-align: right;
   }
 
   p {
-    z-index: 20;
     position: relative;
+    z-index: 20;
   }
 
   > :first-child {

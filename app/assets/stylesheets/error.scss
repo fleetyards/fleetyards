@@ -14,15 +14,15 @@ html {
 }
 
 body {
-  font-family: 'Droid Sans', verdana, sans-serif;
-  min-height: 100%;
-  height: auto;
   position: relative;
+  height: auto;
+  min-height: 100%;
+  padding-bottom: 220px;
+  font-family: 'Droid Sans', verdana, sans-serif;
   background-image: image-url('bg.jpg');
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-size: cover;
-  padding-bottom: 220px;
+  background-attachment: fixed;
 
   > .container {
     padding-bottom: 20px;

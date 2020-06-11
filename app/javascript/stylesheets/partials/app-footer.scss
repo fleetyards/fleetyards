@@ -2,16 +2,16 @@ $footerInnerBorderWidth: 3px;
 $footerOuterBorderWidth: 2px;
 
 .app-footer {
-  text-align: center;
   position: relative;
-  padding-top: ($footerOuterBorderWidth * 2);
   left: 0;
+  padding-top: ($footerOuterBorderWidth * 2);
+  text-align: center;
   transition: left ease .5s, right ease .5s;
 
   .app-footer-border {
     position: absolute;
-    left: 0;
     right: 0;
+    left: 0;
   }
 
   .git-revision {
@@ -55,22 +55,22 @@ $footerOuterBorderWidth: 2px;
 
   .app-footer-inner {
     position: relative;
-    padding-bottom: 30px;
     padding-top: 30px;
-    border-top: $footerInnerBorderWidth solid $panel-inner-border;
+    padding-bottom: 30px;
     background-color: rgba($gray-darker, .7);
+    border-top: $footerInnerBorderWidth solid $panel-inner-border;
 
     .app-footer-inner-border {
+      position: absolute;
       width: 100%;
       height: $footerInnerBorderWidth;
-      position: absolute;
-      padding-left: 40px;
       padding-right: 40px;
+      padding-left: 40px;
 
       .app-footer-inner-border-bg {
-        background: #444;
         width: 100%;
         height: $footerInnerBorderWidth;
+        background: #444;
       }
     }
 
@@ -97,12 +97,12 @@ $footerOuterBorderWidth: 2px;
   }
 
   .app-community-logo {
-    opacity: .7;
+    position: absolute;
+    top: 10px;
+    left: 25px;
     width: 100px;
     height: 100px;
-    position: absolute;
-    left: 25px;
-    top: 10px;
+    opacity: .7;
 
     img {
       max-width: 100%;
@@ -123,8 +123,8 @@ $footerOuterBorderWidth: 2px;
 
 .nav-visible {
   .app-footer {
-    left: 300px;
     right: -300px;
+    left: 300px;
   }
 }
 
@@ -132,11 +132,11 @@ $footerOuterBorderWidth: 2px;
   .app-footer {
     .app-community-logo {
       position: relative;
-      margin-bottom: 10px;
-      width: 100%;
-      background-size: 100px;
-      left: auto;
       top: auto;
+      left: auto;
+      width: 100%;
+      margin-bottom: 10px;
+      background-size: 100px;
     }
 
     .app-footer-inner {
@@ -149,8 +149,8 @@ $footerOuterBorderWidth: 2px;
 @media (max-width: 370px) {
   .nav-visible {
     .app-footer-inner {
-      left: 250px;
       right: -250px;
+      left: 250px;
     }
   }
 }

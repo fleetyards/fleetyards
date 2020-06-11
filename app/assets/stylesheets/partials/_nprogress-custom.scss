@@ -3,14 +3,14 @@
 }
 
 #nprogress .bar {
-  background: $navbar-active !important;
   height: 3px !important;
+  background: $navbar-active !important;
 }
 
 #nprogress {
   .spinner {
-    display: none !important;
     top: 18px !important;
+    display: none !important;
   }
 
   .spinner-icon {

@@ -4,40 +4,40 @@
 
   & + label {
     position: relative;
-    cursor: pointer;
+    margin-bottom: 9px;
     padding: 10px 0 4px;
     padding-left: 30px;
-    margin-bottom: 9px;
+    cursor: pointer;
   }
 
   & + label::before {
-    content: '';
+    position: absolute;
     top: 8px;
     left: 0;
     display: inline-block;
-    position: absolute;
-    vertical-align: text-top;
     width: 24px;
     height: 24px;
+    vertical-align: text-top;
     background: $input-bg;
     border: 1px solid $input-border;
     border-radius: 2px;
     transition: all 250ms ease;
+    content: '';
   }
 
   & + label::after {
-    content: '';
+    position: absolute;
+    top: 10px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
     background: transparent;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border-radius: 2px;
-    position: absolute;
-    left: 3px;
-    top: 10px;
-    width: 18px;
-    height: 18px;
     transition: all 250ms ease;
+    content: '';
   }
 
   &:hover + label::before {
@@ -49,8 +49,8 @@
   }
 
   &:disabled + label {
-    opacity: .5;
     cursor: not-allowed;
+    opacity: .5;
 
     &::before {
       box-shadow: 0 0 0 1px $gray inset;

@@ -1,9 +1,9 @@
 .v-select {
-  background-color: $input-bg;
+  margin-bottom: 10px;
   color: $input-color;
+  background-color: $input-bg;
   border: 1px solid $input-border;
   border-radius: $border-radius-base;
-  margin-bottom: 10px;
 
   .selected-tag {
     color: $input-color !important;

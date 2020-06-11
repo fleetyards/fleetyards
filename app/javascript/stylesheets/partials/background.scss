@@ -1,20 +1,20 @@
 .background-image {
-  display: block;
   position: fixed;
-  opacity: .4;
-  z-index: -1;
-  left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  height: 100%;
+  left: 0;
+  z-index: -1;
+  display: block;
   width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  transition: background-image ease .5s;
+  height: 100%;
   background-color: black;
   background-image: url('~images/bg-6.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: .4;
+  transition: background-image ease .5s;
 
   &.webp {
     background-image: url('~images/bg-6.webp');

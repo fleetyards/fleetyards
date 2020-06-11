@@ -4,8 +4,8 @@
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: width .5s ease, padding .5s ease;
   overflow: hidden;
+  transition: width .5s ease, padding .5s ease;
 
   label,
   .filter-list-title {
@@ -57,15 +57,15 @@
 
 .fade-list-enter,
 .fade-list-leave-to {
-  opacity: 0;
   transform: translateY(30px);
+  opacity: 0;
 }
 
 .fade-list-leave-active {
+  position: absolute;
+  top: 70vh;
   left: 50%;
   transform: translate(-50%, 0);
-  top: 70vh;
-  position: absolute;
   opacity: 0;
 }
 

@@ -1,7 +1,7 @@
 @import '~stylesheets/variables';
 
 .seperator {
-  border-bottom: 1px solid rgba($gray-dark, .7);
-  padding-bottom: 8px;
   margin-bottom: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba($gray-dark, .7);
 }

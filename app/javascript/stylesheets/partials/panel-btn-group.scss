@@ -1,37 +1,37 @@
 .panel-btn-group {
-  background: $panel-bg;
   position: relative;
-  opacity: 1;
-  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 50px;
   margin-right: 10px;
   margin-bottom: 20px;
-  min-width: 50px;
+  padding: 2px;
+  vertical-align: middle;
+  background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  vertical-align: middle;
+  opacity: 1;
 
   &::before {
-    content: '';
-    height: $panel-border-width;
-    background-color: #444;
     position: absolute;
     top: -$panel-border-width;
-    left: 14px;
     right: 14px;
+    left: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: '';
   }
 
   &::after {
-    content: '';
-    height: $panel-border-width;
-    background-color: #444;
     position: absolute;
+    right: 14px;
     bottom: -$panel-border-width;
     left: 14px;
-    right: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: '';
   }
 
   > :first-child {
@@ -40,9 +40,9 @@
   }
 
   > * {
+    margin-right: 0;
     border-right: 1px solid #444 !important;
     border-radius: 0;
-    margin-right: 0;
   }
 
   > :last-child {

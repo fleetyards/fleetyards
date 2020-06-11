@@ -26,12 +26,12 @@
   @import 'partials/fleetchart';
   @import 'partials/slider';
 
-  font-family: 'Open Sans', sans-serif;
-  color: $text-color;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
   padding-right: 15px;
+  padding-left: 15px;
+  color: $text-color;
+  font-family: 'Open Sans', sans-serif;
 
   .row > [class*='col-'] {
     transition: width ease $transition-base-speed;
@@ -44,11 +44,11 @@
   }
 
   hr {
-    border: none;
-    background-color: $gray;
     height: 3px;
-    border-radius: 50%;
     margin: 20px 5%;
+    background-color: $gray;
+    border: none;
+    border-radius: 50%;
 
     &.large-spacer {
       margin: 60px 5%;

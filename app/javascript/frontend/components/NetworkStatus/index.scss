@@ -3,14 +3,14 @@
 .network-status {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
+  left: 0;
+  z-index: 2000;
   width: 100%;
-  text-align: center;
-  font-size: 12px;
   padding: 3px 6px;
   color: white;
-  z-index: 2000;
+  font-size: 12px;
+  text-align: center;
   text-transform: uppercase;
   background-color: $danger;
 }

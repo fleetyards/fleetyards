@@ -1,16 +1,16 @@
 .lazy {
   &[lazy='loading']::before {
-    content: '';
-    background-image: url('~images/loading.svg');
-    background-size: 100%;
-    background-position: center;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: -25px;
-    margin-top: -25px;
     width: 50px;
     height: 50px;
+    margin-top: -25px;
+    margin-left: -25px;
+    background-image: url('~images/loading.svg');
+    background-position: center;
+    background-size: 100%;
+    content: '';
   }
 
   &[lazy='error'] {
@@ -22,11 +22,11 @@
   margin-bottom: 20px;
 
   .image {
-    background-size: cover;
-    background-color: black;
-    background-position: center;
     position: relative;
     margin-bottom: 20px;
+    background-color: black;
+    background-position: center;
+    background-size: cover;
     border-radius: $border-radius-base;
     box-shadow: 0 0 5px black;
   }
@@ -42,29 +42,29 @@
 
 .embed-responsive {
   overflow: hidden;
-  border: none;
   background-color: #272b30;
+  border: none;
   border-radius: 6px;
   box-shadow: 0 0 5px black;
 }
 
 .embed-copy {
   position: absolute;
-  bottom: 25px;
   right: 5px;
+  bottom: 25px;
   z-index: 1000;
 }
 
 .youtube-placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   position: absolute;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   i {
     font-size: 100px;
@@ -72,25 +72,25 @@
 }
 
 .lazy-image {
-  overflow: hidden;
-  height: 100%;
   width: 100%;
-  background-size: cover;
+  height: 100%;
+  overflow: hidden;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: cover;
 
   &[lazy='loading']::before {
-    content: '';
-    background-image: url('~images/loading.svg');
-    background-size: 100%;
-    background-position: center;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: -25px;
-    margin-top: -25px;
     width: 50px;
     height: 50px;
+    margin-top: -25px;
+    margin-left: -25px;
+    background-image: url('~images/loading.svg');
+    background-position: center;
+    background-size: 100%;
+    content: '';
   }
 
   &[lazy='error'] {

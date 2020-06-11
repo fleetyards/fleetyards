@@ -3,12 +3,12 @@
 li.nav-item {
   > a,
   > span {
-    color: darken($text-color, 10%);
     position: relative;
     display: block;
     padding: 10px 15px 10px 30px;
-    white-space: nowrap;
+    color: darken($text-color, 10%);
     font-size: 18px;
+    white-space: nowrap;
     transition: all ease $transition-base-speed;
 
     i:not(.fa-chevron-right),
@@ -18,8 +18,8 @@ li.nav-item {
     }
 
     &::after {
-      transition: all ease $transition-base-speed;
       opacity: 1;
+      transition: all ease $transition-base-speed;
     }
   }
 
@@ -35,23 +35,23 @@ li.nav-item {
     color: lighten($text-color, 20%);
 
     &::after {
-      width: 3px;
-      height: 80%;
-      content: '';
       position: absolute;
       top: 10%;
+      left: 0;
+      width: 3px;
+      height: 80%;
+      background: $primary;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
-      left: 0;
-      background: $primary;
       box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
+      content: '';
     }
   }
 
   &.divider {
-    padding: 0;
-    margin: 5px 15px 5px;
     height: 1px;
+    margin: 5px 15px 5px;
+    padding: 0;
     background-color: $gray-darker;
   }
 
@@ -59,8 +59,8 @@ li.nav-item {
     > a {
       .submenu-icon {
         position: absolute;
-        right: 20px;
         top: 50%;
+        right: 20px;
         margin-top: -10px;
 
         i.fa-chevron-right,
@@ -71,10 +71,10 @@ li.nav-item {
     }
 
     ul {
-      list-style: none;
-      padding: 0;
       margin: 0;
       margin-bottom: 10px;
+      padding: 0;
+      list-style: none;
 
       > li > a {
         padding-left: 40px;

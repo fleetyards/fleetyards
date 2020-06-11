@@ -64,6 +64,9 @@ export default {
   'addGroup': 'Add Group',
   'addModule': 'Add another Module',
   'addUpgrade': 'Add another Upgrade',
+  'compare': {
+    models: 'Compare',
+  },
   'hangar': {
     destroyAll: 'Remove all Ships',
   },

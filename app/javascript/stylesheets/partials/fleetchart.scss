@@ -5,15 +5,15 @@
 }
 
 .fleetchart {
-  justify-content: space-around;
-  align-items: center;
   align-content: center;
+  align-items: center;
+  justify-content: space-around;
 
   .fleetchart-item {
-    margin: 30px 20px;
-    display: inline-block;
-    text-align: center;
     position: relative;
+    display: inline-block;
+    margin: 30px 20px;
+    text-align: center;
     cursor: pointer;
 
     a {
@@ -31,9 +31,9 @@
 }
 
 .fleetchart-download-image {
+  display: none;
   width: 100%;
   text-align: center;
-  display: none;
 }
 
 .fleetchart-download {
@@ -41,8 +41,8 @@
     display: block;
 
     img {
-      height: 120px;
       width: 120px;
+      height: 120px;
     }
   }
 }

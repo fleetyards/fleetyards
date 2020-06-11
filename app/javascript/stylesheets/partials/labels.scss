@@ -9,52 +9,52 @@ $innerBorderWidth: 2px;
   }
 
   .label {
-    font-weight: normal;
-    margin-bottom: 5px;
-    margin-right: 10px;
-    border-radius: 6px;
-    user-select: none;
-    display: inline-block;
-    padding: 2px;
-    cursor: default;
-    font-size: 100%;
     position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 2px;
     color: $text-color;
-    border: $innerBorderWidth solid $panel-inner-border;
+    font-weight: normal;
+    font-size: 100%;
     background-color: $panel-bg;
+    border: $innerBorderWidth solid $panel-inner-border;
+    border-radius: 6px;
+    cursor: default;
+    user-select: none;
 
     &::before {
-      content: '';
-      height: $innerBorderWidth;
-      background-color: #444;
       position: absolute;
       top: -$innerBorderWidth;
-      left: 10px;
       right: 10px;
+      left: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
     }
 
     &::after {
-      content: '';
-      height: $innerBorderWidth;
-      background-color: #444;
       position: absolute;
+      right: 10px;
       bottom: -$innerBorderWidth;
       left: 10px;
-      right: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
     }
 
     .label-inner {
-      border-radius: $border-radius-base;
-      padding: 3px 6px;
       display: block;
+      padding: 3px 6px;
+      border-radius: $border-radius-base;
     }
 
     .label-color {
-      border-radius: 50%;
+      display: inline-block;
       width: 15px;
       height: 15px;
-      display: inline-block;
       vertical-align: top;
+      border-radius: 50%;
     }
 
     &.label-link {
@@ -85,11 +85,11 @@ $innerBorderWidth: 2px;
 
 .labels-dropdown {
   .label-color {
-    border-radius: 50%;
+    display: inline-block;
     width: 15px;
     height: 15px;
     margin-right: 10px;
-    display: inline-block;
+    border-radius: 50%;
   }
 
   .label-count {
@@ -105,8 +105,8 @@ $innerBorderWidth: 2px;
   .labels-dropdown-item {
     > :first-child {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
 
     &.active {

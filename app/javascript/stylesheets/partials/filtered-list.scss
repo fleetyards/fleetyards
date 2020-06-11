@@ -12,8 +12,8 @@
     flex-wrap: wrap;
 
     > * {
-      width: auto;
       flex: none;
+      width: auto;
     }
 
     > :first-child {

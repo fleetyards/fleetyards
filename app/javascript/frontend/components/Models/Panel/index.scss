@@ -1,11 +1,11 @@
 @import '~stylesheets/variables';
 
 .production-status {
-  font-size: 75%;
-  text-align: center;
-  line-height: 1;
-  color: $gray-light;
   padding: 4px 6px;
+  color: $gray-light;
+  font-size: 75%;
+  line-height: 1;
+  text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, .6);
 }
 
@@ -17,16 +17,16 @@
   &.no-details {
     overflow: hidden;
     border-bottom: none;
-    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
     -webkit-border-bottom-right-radius: $panelContentBorderRadius;
     border-bottom-right-radius: $panelContentBorderRadius;
+    -webkit-border-bottom-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
 
     a {
       overflow: hidden;
-      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
       -webkit-border-bottom-right-radius: $panelContentBorderRadius;
       border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
     }
   }
@@ -37,17 +37,17 @@
     left: 0;
     width: 0;
     height: 0;
-    border-right: 20px solid transparent;
     border-top: 20px solid $primary;
-    border-left: 20px solid $primary;
+    border-right: 20px solid transparent;
     border-bottom: 20px solid transparent;
+    border-left: 20px solid $primary;
 
     i,
     svg {
-      color: #fff;
       position: absolute;
       top: -15px;
       left: -10px;
+      color: #fff;
     }
   }
 
@@ -57,43 +57,43 @@
     right: 0;
     width: 0;
     height: 0;
-    border-left: 20px solid transparent;
     border-top: 20px solid $success;
     border-right: 20px solid $success;
     border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
 
     i,
     svg {
-      color: #fff;
       position: absolute;
       top: -15px;
       right: -15px;
+      color: #fff;
     }
   }
 
   .addons {
     position: absolute;
-    cursor: pointer;
     bottom: 0;
     left: 0;
     width: 0;
     height: 0;
-    border-left: 25px solid $gray;
     border-top: 25px solid transparent;
     border-right: 25px solid transparent;
     border-bottom: 25px solid $gray;
+    border-left: 25px solid $gray;
+    cursor: pointer;
 
     &.selected {
-      border-left: 25px solid $success;
       border-bottom: 25px solid $success;
+      border-left: 25px solid $success;
     }
 
     i,
     svg {
-      color: #fff;
       position: absolute;
       bottom: -16px;
       left: -16px;
+      color: #fff;
     }
   }
 }
@@ -110,7 +110,7 @@
 }
 
 .roles {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }

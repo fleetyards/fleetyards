@@ -11,8 +11,8 @@ $body-font-family: 'Open Sans', sans-serif;
 body,
 html,
 .body {
-  background: $body-background !important;
   font-size: 1em;
+  background: $body-background !important;
 }
 
 .container.content {
@@ -26,9 +26,9 @@ h4 {
 }
 
 h1 {
+  color: $global-font-color;
   font-size: 1.7em;
   font-family: 'Orbitron', sans-serif;
-  color: $global-font-color;
 
   small {
     font-family: 'Open Sans', sans-serif;
@@ -40,7 +40,7 @@ p {
 }
 
 .transmission {
+  color: darken($global-font-color, 20%);
   font-size: .9em;
   font-family: 'Orbitron', sans-serif;
-  color: darken($global-font-color, 20%);
 }

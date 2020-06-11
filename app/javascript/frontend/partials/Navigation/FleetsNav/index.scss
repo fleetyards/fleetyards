@@ -2,16 +2,16 @@
 
 .fleets-nav-item-icon {
   position: relative;
+  display: inline-block;
   width: 30px;
   height: 18px;
-  display: inline-block;
   transition: height ease $transition-base-speed;
 
   :first-child,
   :last-child {
     position: absolute;
-    min-width: 0;
     width: 10px;
+    min-width: 0;
     font-size: 12px;
     transition: width ease $transition-base-speed, left ease $transition-base-speed, right ease $transition-base-speed, font-size ease $transition-base-speed;
   }
@@ -22,8 +22,8 @@
   }
 
   :last-child {
-    bottom: -6px;
     right: 7px;
+    bottom: -6px;
   }
 
   &.fleets-nav-item-icon-slim {

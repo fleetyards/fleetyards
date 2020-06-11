@@ -13,9 +13,9 @@
   position: relative;
   // Prevent columns from collapsing when empty
   min-height: 1px;
+  padding-right: ($grid-gutter-width / 2);
   // Inner gutter via padding
   padding-left: ($grid-gutter-width / 2);
-  padding-right: ($grid-gutter-width / 2);
 }
 
 // ----- col-ms breakpoints and related classes -----
@@ -238,9 +238,9 @@
   position: relative;
   // Prevent columns from collapsing when empty
   min-height: 1px;
+  padding-right: ($grid-gutter-width / 2);
   // Inner gutter via padding
   padding-left: ($grid-gutter-width / 2);
-  padding-right: ($grid-gutter-width / 2);
 }
 
 // ----- col-xlg breakpoints and related classes -----
@@ -480,9 +480,9 @@
   position: relative;
   // Prevent columns from collapsing when empty
   min-height: 1px;
+  padding-right: ($grid-gutter-width / 2);
   // Inner gutter via padding
   padding-left: ($grid-gutter-width / 2);
-  padding-right: ($grid-gutter-width / 2);
 }
 
 // ----- col-xxlg breakpoints and related classes -----

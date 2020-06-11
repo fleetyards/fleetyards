@@ -1,14 +1,14 @@
 @import 'vendor/nprogress';
 
 #nprogress .bar {
-  background: $primary !important;
   height: 3px !important;
+  background: $primary !important;
 }
 
 #nprogress {
   .spinner {
-    display: none !important;
     top: 18px !important;
+    display: none !important;
   }
 
   .spinner-icon {

@@ -8,28 +8,28 @@ $borderRadius: 16px;
     background-color: black;
 
     .panel-heading .panel-title {
-      font-size: 30px;
       margin-top: 10px;
+      font-size: 30px;
       text-shadow: 0 0 2px black;
     }
 
     > .panel-inner {
-      padding-left: 15px;
       padding-right: 15px;
+      padding-left: 15px;
     }
   }
 
   .panel-bg {
-    border-radius: $borderRadius;
     position: absolute;
     top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
-    right: 0;
     background-color: rgba(0, 0, 0, .6);
     background-repeat: no-repeat;
-    background-size: cover;
     background-position: center;
+    background-size: cover;
+    border-radius: $borderRadius;
     opacity: .7;
   }
 
@@ -45,14 +45,14 @@ $borderRadius: 16px;
 
     h3 {
       margin: 10px;
-      text-align: right;
       font-family: 'Orbitron', sans-serif;
+      text-align: right;
       text-shadow: 0 0 2px black;
     }
 
     .flex-row {
-      justify-content: flex-end;
       flex-wrap: wrap-reverse;
+      justify-content: flex-end;
     }
 
     .station-item {

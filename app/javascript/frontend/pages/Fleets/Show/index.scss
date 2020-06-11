@@ -2,8 +2,8 @@
 
 h1 {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
 
   .avatar {
     margin-right: 20px;
@@ -11,10 +11,10 @@ h1 {
 }
 
 .fleet-metrics {
-  margin-bottom: 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
   cursor: pointer;
 
   .metrics-label,
@@ -24,12 +24,12 @@ h1 {
 }
 
 .fleet-links {
-  font-size: 30px;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
   height: 80px;
   margin: 15px 0;
+  font-size: 30px;
 
   > a {
     margin-right: 20px;

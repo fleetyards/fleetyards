@@ -9,9 +9,9 @@
 
   .vue-slider-mark-label,
   .vue-slider-dot-tooltip {
-    transition: opacity $transition-base-speed ease;
-    opacity: 0;
     visibility: visible;
+    opacity: 0;
+    transition: opacity $transition-base-speed ease;
   }
 
   .vue-slider-rail {

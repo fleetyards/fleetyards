@@ -1,9 +1,9 @@
 @import '~stylesheets/variables';
 
 h2.hardpoint-category-label {
-  text-transform: uppercase;
   font-size: 20px;
   font-family: 'Orbitron', tahoma, sans-serif;
+  text-transform: uppercase;
 }
 
 .hardpoint-category {
@@ -11,23 +11,23 @@ h2.hardpoint-category-label {
 }
 
 .hardpoint-type {
-  padding-left: 200px;
   position: relative;
-  border-bottom: 1px solid rgba($gray-darker, .7);
   margin-bottom: 5px;
+  padding-left: 200px;
+  border-bottom: 1px solid rgba($gray-darker, .7);
 
   &:last-child {
     border-bottom: none;
   }
 
   .hardpoint-type-label {
-    display: flex;
-    align-items: center;
     position: absolute;
-    width: 200px;
-    left: 0;
     top: 0;
     bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 200px;
     padding-right: 20px;
     color: darken($text-color, 20%);
 

@@ -5,11 +5,11 @@ $innerBorderRadius: $panelInnerBorderRadius;
 $contentBorderRadius: $panelContentBorderRadius;
 
 .panel-wrapper {
-  border: $outerBorderWidth solid $panel-outer-border;
-  padding: $outerBorderWidth;
-  border-radius: $outerBorderRadius;
   position: relative;
   box-sizing: border-box;
+  padding: $outerBorderWidth;
+  border: $outerBorderWidth solid $panel-outer-border;
+  border-radius: $outerBorderRadius;
   transition: border-color $transition-base-speed ease;
 
   &.panel-outer-spacing {
@@ -21,66 +21,66 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   &::before {
-    content: '';
-    height: $outerBorderWidth;
-    background-color: #444;
     position: absolute;
     top: -$outerBorderWidth;
-    left: 80px;
     right: 80px;
+    left: 80px;
+    height: $outerBorderWidth;
+    background-color: #444;
+    content: '';
   }
 
   &::after {
-    content: '';
-    height: $outerBorderWidth;
-    background-color: #444;
     position: absolute;
+    right: 80px;
     bottom: -$outerBorderWidth;
     left: 80px;
-    right: 80px;
+    height: $outerBorderWidth;
+    background-color: #444;
+    content: '';
   }
 }
 
 .panel {
-  border: $innerBorderWidth solid $panel-inner-border;
-  background-color: $panel-bg;
-  box-shadow: 0 1px 1px rgba(#000, .05);
-  border-radius: $innerBorderRadius;
-  min-height: $innerBorderRadius * 2;
   position: relative;
+  min-height: $innerBorderRadius * 2;
+  background-color: $panel-bg;
+  border: $innerBorderWidth solid $panel-inner-border;
+  border-radius: $innerBorderRadius;
+  box-shadow: 0 1px 1px rgba(#000, .05);
 
   &::before {
-    content: '';
-    border-bottom-right-radius: 1px;
-    border-bottom-left-radius: 1px;
-    height: ($innerBorderWidth + 1);
-    background-color: #444;
     position: absolute;
     top: -$innerBorderWidth;
-    left: 40px;
     right: 40px;
+    left: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    content: '';
   }
 
   &::after {
-    content: '';
-    border-top-right-radius: 1px;
-    border-top-left-radius: 1px;
-    height: ($innerBorderWidth + 1);
-    background-color: #444;
     position: absolute;
+    right: 40px;
     bottom: -$innerBorderWidth;
     left: 40px;
-    right: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    content: '';
   }
 
   &.panel-primary {
-    background-color: $primary;
     color: white;
+    background-color: $primary;
   }
 
   &.panel-success {
-    background-color: $success;
     color: white;
+    background-color: $success;
   }
 
   &.panel-transparency-more {
@@ -96,15 +96,15 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   .panel-box {
-    padding: 10px 15px;
     display: flex;
-    justify-content: space-between;
     align-content: center;
+    justify-content: space-between;
+    padding: 10px 15px;
 
     .panel-box-icon {
       display: flex;
-      justify-content: center;
       flex-flow: column;
+      justify-content: center;
 
       div {
         margin-bottom: 2px;
@@ -112,8 +112,8 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
 
     .panel-box-text {
-      text-align: right;
       font-size: 40px;
+      text-align: right;
 
       .panel-box-text-info {
         font-size: 15px;
@@ -126,11 +126,11 @@ $contentBorderRadius: $panelContentBorderRadius;
 
     .panel-title {
       margin-bottom: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-right: 30px;
       padding-top: 5px;
+      padding-right: 30px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       small {
         color: darken($text-color, 20%);
@@ -157,9 +157,9 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   .panel-footer {
-    -webkit-border-bottom-left-radius: $contentBorderRadius;
     -webkit-border-bottom-right-radius: $contentBorderRadius;
     border-bottom-right-radius: $contentBorderRadius;
+    -webkit-border-bottom-left-radius: $contentBorderRadius;
     border-bottom-left-radius: $contentBorderRadius;
   }
 
@@ -169,40 +169,40 @@ $contentBorderRadius: $panelContentBorderRadius;
   }
 
   .panel-image {
-    height: 200px;
-    border-bottom: 1px solid rgba(0, 0, 0, .6);
     position: relative;
+    height: 200px;
     overflow: hidden;
+    border-bottom: 1px solid rgba(0, 0, 0, .6);
     transition: border-radius $transition-base-speed ease;
 
     & > a {
       position: relative;
       display: block;
-      height: 100%;
       width: 100%;
+      height: 100%;
       background-color: rgba(0, 0, 0, .6);
       background-repeat: no-repeat;
-      background-size: cover;
       background-position: center;
+      background-size: cover;
+      -webkit-animation-name: fadein;
+      animation-name: fadeIn;
       -webkit-animation-duration: 1s;
       animation-duration: 1s;
       -webkit-animation-fill-mode: both;
       animation-fill-mode: both;
-      -webkit-animation-name: fadein;
-      animation-name: fadeIn;
     }
 
     &:last-child {
       border-bottom: none;
-      -webkit-border-bottom-left-radius: $contentBorderRadius;
       -webkit-border-bottom-right-radius: $contentBorderRadius;
       border-bottom-right-radius: $contentBorderRadius;
+      -webkit-border-bottom-left-radius: $contentBorderRadius;
       border-bottom-left-radius: $contentBorderRadius;
 
       img {
-        -webkit-border-bottom-left-radius: $contentBorderRadius;
         -webkit-border-bottom-right-radius: $contentBorderRadius;
         border-bottom-right-radius: $contentBorderRadius;
+        -webkit-border-bottom-left-radius: $contentBorderRadius;
         border-bottom-left-radius: $contentBorderRadius;
       }
     }

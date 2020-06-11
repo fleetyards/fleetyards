@@ -1,16 +1,16 @@
 @import '~stylesheets/variables';
 
 nav {
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
   position: relative;
   z-index: 1000;
   width: 300px;
   height: 100%;
+  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .environment-label {
     position: fixed;
-    right: 20px;
     top: 20px;
+    right: 20px;
 
     &.spacing-right {
       right: 220px;
@@ -22,23 +22,23 @@ nav {
   }
 
   .nav-toggle {
-    transition: left ease $transition-base-speed;
     position: absolute;
-    left: 0;
     top: 0;
-    border-color: transparent;
-    background-color: transparent;
+    left: 0;
     margin: 10px 10px;
     padding: 18px 14px;
+    background-color: transparent;
     border: 1px solid transparent;
+    border-color: transparent;
     border-radius: 3px;
+    transition: left ease $transition-base-speed;
 
     .icon-bar {
       display: block;
-      height: 2px;
-      border-radius: 1px;
-      background-color: #c8c8c8;
       width: 22px;
+      height: 2px;
+      background-color: #c8c8c8;
+      border-radius: 1px;
       transition: all ease .2s;
     }
 
@@ -48,8 +48,8 @@ nav {
     }
 
     .middle-bar {
-      opacity: 0;
       margin-top: 4px;
+      opacity: 0;
     }
 
     .bottom-bar {
@@ -62,10 +62,10 @@ nav {
       position: absolute;
       top: 12px;
       right: 8px;
-      border-radius: 50%;
       width: 10px;
       height: 10px;
       background-color: $warning;
+      border-radius: 50%;
       transition: all ease .5s;
     }
 
@@ -82,20 +82,20 @@ nav {
   }
 
   .nav-container {
-    transition: left ease $transition-base-speed, width ease $transition-base-speed;
     position: fixed;
-    background-color: rgba($gray-darker, .5);
-    border-right: 1px solid rgba(30, 34, 38, .5);
     width: 300px;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgba($gray-darker, .5);
+    border-right: 1px solid rgba(30, 34, 38, .5);
+    transition: left ease $transition-base-speed, width ease $transition-base-speed;
 
     .nav-container-inner {
-      padding-bottom: 150px;
       position: relative;
       min-height: 100%;
+      padding-bottom: 150px;
 
       > :first-child {
         padding-top: 20px;
@@ -107,27 +107,27 @@ nav {
     }
 
     ul {
-      list-style: none;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
     .logo-menu {
       min-height: 60px;
 
       .logo-menu-image {
-        width: 40px;
         position: absolute;
-        transition: left ease $transition-base-speed;
         top: 10px;
         left: 30px;
+        width: 40px;
+        transition: left ease $transition-base-speed;
       }
 
       .logo-menu-label {
-        padding-top: 6px;
-        padding-left: 50px;
-        padding-right: 20px;
         display: block;
+        padding-top: 6px;
+        padding-right: 20px;
+        padding-left: 50px;
         font-family: 'Orbitron', sans-serif;
       }
     }
@@ -146,8 +146,8 @@ nav {
         }
 
         .logo-menu-image {
-          left: 20px;
           top: auto;
+          left: 20px;
         }
       }
     }
@@ -176,24 +176,24 @@ nav {
 
 @media (max-width: $desktop-breakpoint) {
   nav {
-    margin-top: env(safe-area-inset-top);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: auto;
+    margin-top: env(safe-area-inset-top);
 
     .nav-container {
-      padding-top: env(safe-area-inset-top);
-      padding-left: env(safe-area-inset-left);
       position: fixed;
-      width: 300px;
-      height: 100vh;
       top: 0;
       right: auto;
       bottom: 0;
       left: -300px;
+      width: 300px;
+      height: 100vh;
       max-height: 100vh;
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
 
       .nav-container-inner {
         > :first-child {
@@ -207,23 +207,23 @@ nav {
     }
 
     .nav-toggle {
+      position: absolute;
       margin-left: env(safe-area-inset-left);
       padding-left: 24px;
-      position: absolute;
     }
 
     .quick-search-bar {
-      padding-right: env(safe-area-inset-right);
-      padding-left: env(safe-area-inset-left);
-      width: auto;
       right: 15px;
       left: 70px;
+      width: auto;
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
     }
   }
 
   .nav-visible {
-    left: 300px;
     right: -300px;
+    left: 300px;
 
     nav {
       .nav-toggle {
@@ -240,8 +240,8 @@ nav {
     }
 
     .quick-search-bar {
-      left: 370px;
       right: -285px;
+      left: 370px;
     }
   }
 }
@@ -249,14 +249,14 @@ nav {
 @media (max-width: 370px) {
   nav {
     .nav-container {
-      width: 250px;
       left: -250px;
+      width: 250px;
     }
   }
 
   .nav-visible {
-    left: 250px;
     right: -250px;
+    left: 250px;
 
     nav {
       .nav-toggle {
@@ -264,8 +264,8 @@ nav {
       }
 
       .quick-search-bar {
-        left: 322px;
         right: -285px;
+        left: 322px;
       }
     }
   }

@@ -4,21 +4,21 @@
 }
 
 .small-loader {
+  position: absolute;
+  left: 50%;
+  z-index: 100;
   width: calc(15px * 4);
   height: 15px;
-  position: absolute;
-  z-index: 100;
-  left: 50%;
   margin-left: calc(((15px * 4) / 2) * -1);
 }
 
 .small-loader .rhombus {
-  height: 15px;
-  width: 15px;
-  background-color: $primary;
-  left: calc(15px * 4);
   position: absolute;
+  left: calc(15px * 4);
+  width: 15px;
+  height: 15px;
   margin: 0 auto;
+  background-color: $primary;
   border-radius: 2px;
   transform: translateY(0) rotate(45deg) scale(0);
   animation: looping-rhombuses-spinner-animation 2500ms linear infinite;

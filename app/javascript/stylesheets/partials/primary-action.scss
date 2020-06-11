@@ -1,34 +1,34 @@
 .primary-action {
   position: fixed;
-  bottom: 6px;
   right: 6px;
-  font-size: 160%;
+  bottom: 6px;
   z-index: 1000;
-  cursor: pointer;
-  transition: all ease .5s;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
   width: 59px;
   height: 59px;
   margin: 10px;
+  padding: 2px;
+  font-size: 160%;
   background-color: rgba($gray-darker, .9);
+  border: $panel-border-width solid $panel-inner-border;
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(black, .5);
-  border: $panel-border-width solid $panel-inner-border;
-  padding: 2px;
-  display: flex;
-  justify-content: stretch;
-  align-items: stretch;
+  cursor: pointer;
+  transition: all ease .5s;
 
   .primary-action-inner {
-    transition: all $transition-base-speed ease;
-    color: $text-color;
-    padding: 6px 14px;
-    font-size: 110%;
-    border-radius: 50%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center;
     width: 100%;
     height: 100%;
+    padding: 6px 14px;
+    color: $text-color;
+    font-size: 110%;
+    white-space: nowrap;
+    text-align: center;
+    text-overflow: ellipsis;
+    border-radius: 50%;
+    transition: all $transition-base-speed ease;
   }
 
   &[disabled] {
@@ -38,8 +38,8 @@
   &:hover:not([disabled]),
   &.active {
     .primary-action-inner {
-      background-color: $panel-inner-border;
       color: invert($text-color);
+      background-color: $panel-inner-border;
     }
   }
 

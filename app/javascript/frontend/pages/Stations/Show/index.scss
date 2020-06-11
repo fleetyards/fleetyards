@@ -1,9 +1,9 @@
 @import '~stylesheets/variables';
 
 .image {
-  margin-bottom: 10px;
   width: 100%;
   max-height: 100%;
+  margin-bottom: 10px;
   border-radius: $border-radius-base;
   box-shadow: 0 0 5px black;
 }
@@ -13,8 +13,8 @@
 }
 
 h2 {
-  text-transform: uppercase;
-  font-size: 20px;
   margin-top: 20px;
+  font-size: 20px;
   font-family: 'Orbitron', tahoma, sans-serif;
+  text-transform: uppercase;
 }

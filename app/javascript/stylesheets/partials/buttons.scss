@@ -33,48 +33,48 @@ $panel-border-radius: 10px;
 $panel-content-border-radius: 6px;
 
 .panel-btn {
-  background: $panel-bg;
-  transition: all $transition-base-speed ease;
   position: relative;
-  opacity: 1;
-  padding: 2px;
-  margin-right: 10px;
   display: inline-block;
-  margin-bottom: 20px;
   min-width: 50px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  padding: 2px;
+  background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
   cursor: pointer;
+  opacity: 1;
+  transition: all $transition-base-speed ease;
 
   &::before {
-    content: '';
-    height: $panel-border-width;
-    background-color: #444;
     position: absolute;
     top: -$panel-border-width;
-    left: 14px;
     right: 14px;
+    left: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: '';
   }
 
   &::after {
-    content: '';
-    height: $panel-border-width;
-    background-color: #444;
     position: absolute;
+    right: 14px;
     bottom: -$panel-border-width;
     left: 14px;
-    right: 14px;
+    height: $panel-border-width;
+    background-color: #444;
+    content: '';
   }
 
   .panel-btn-inner {
-    transition: all $transition-base-speed ease;
-    border-radius: $panel-content-border-radius;
-    color: $text-color;
     padding: 6px 14px;
+    color: $text-color;
     font-size: 110%;
-    text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
+    text-overflow: ellipsis;
+    border-radius: $panel-content-border-radius;
+    transition: all $transition-base-speed ease;
   }
 
   &.panel-btn-transparent {
@@ -98,8 +98,8 @@ $panel-content-border-radius: 6px;
       border: none;
 
       .panel-btn-inner {
-        background: transparent !important;
         color: white !important;
+        background: transparent !important;
       }
     }
   }
@@ -131,13 +131,13 @@ $panel-content-border-radius: 6px;
   }
 
   &.panel-btn-text-inline {
+    min-height: auto;
     margin: 0;
     padding: 0;
-    min-height: auto;
 
     .panel-btn-inner {
-      padding: 0;
       margin: 0;
+      padding: 0;
       color: $text-color !important;
       background-color: transparent !important;
     }
@@ -158,8 +158,8 @@ $panel-content-border-radius: 6px;
   &:hover:not([disabled]),
   &.active {
     .panel-btn-inner {
-      background-color: $panel-inner-border;
       color: invert($text-color);
+      background-color: $panel-inner-border;
     }
   }
 
@@ -197,25 +197,25 @@ $panel-content-border-radius: 6px;
 
   &.active-left {
     .panel-btn-inner:first-child {
-      background-color: $panel-inner-border;
       color: invert($text-color);
+      background-color: $panel-inner-border;
     }
 
     .panel-btn-inner:last-child {
-      background-color: transparent;
       color: $text-color;
+      background-color: transparent;
     }
   }
 
   &.active-right {
     .panel-btn-inner:first-child {
-      background-color: transparent;
       color: $text-color;
+      background-color: transparent;
     }
 
     .panel-btn-inner:last-child {
-      background-color: $panel-inner-border;
       color: invert($text-color);
+      background-color: $panel-inner-border;
     }
   }
 }
@@ -235,11 +235,11 @@ $panel-content-border-radius: 6px;
 
 @media (max-width: $desktop-breakpoint) {
   .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
 
     > :last-child {
       margin-right: 0;
@@ -258,8 +258,8 @@ $panel-content-border-radius: 6px;
     }
 
     &.panel-btn-mobile-block {
-      margin-right: 0;
       clear: both;
+      margin-right: 0;
     }
 
     .panel-btn-inner {

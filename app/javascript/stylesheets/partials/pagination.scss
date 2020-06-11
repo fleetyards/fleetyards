@@ -2,12 +2,12 @@ $innerBorderWidth: 2px;
 
 .pagination {
   display: inline-flex;
-  list-style-type: none;
   align-items: center;
-  margin: 0;
-  padding: 0;
   width: 100%;
+  margin: 0;
   margin-bottom: 20px;
+  padding: 0;
+  list-style-type: none;
 
   &.pagination-right {
     justify-content: flex-end;
@@ -18,49 +18,49 @@ $innerBorderWidth: 2px;
   }
 
   li {
+    position: relative;
     min-width: 40px;
     margin-right: 6px;
-    position: relative;
-    border-radius: 6px;
-    user-select: none;
     padding: 2px;
     color: $text-color;
-    border: $innerBorderWidth solid $panel-inner-border;
     background-color: $panel-bg;
+    border: $innerBorderWidth solid $panel-inner-border;
+    border-radius: 6px;
+    user-select: none;
 
     &:last-child {
       margin-right: 0;
     }
 
     &::before {
-      content: '';
-      height: $innerBorderWidth;
-      background-color: #444;
       position: absolute;
       top: -$innerBorderWidth;
-      left: 10px;
       right: 10px;
+      left: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
     }
 
     &::after {
-      content: '';
-      height: $innerBorderWidth;
-      background-color: #444;
       position: absolute;
+      right: 10px;
       bottom: -$innerBorderWidth;
       left: 10px;
-      right: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
     }
 
     a {
-      cursor: pointer;
-      text-align: center;
-      border-radius: 3px;
-      padding: 3px 6px;
       display: block;
-      margin: 0;
       float: none;
+      margin: 0;
+      padding: 3px 6px;
+      text-align: center;
       border: none;
+      border-radius: 3px;
+      cursor: pointer;
     }
 
     &.active a,
@@ -71,11 +71,11 @@ $innerBorderWidth: 2px;
 
     &.gap,
     &.arrow {
-      margin-right: 11px;
-      margin-left: 5px;
       width: 30px;
       min-width: auto;
       height: 30px;
+      margin-right: 11px;
+      margin-left: 5px;
       font-size: 85%;
 
       a {
@@ -87,9 +87,9 @@ $innerBorderWidth: 2px;
       opacity: .5;
 
       a {
-        cursor: default;
         color: $text-color;
         background-color: transparent;
+        cursor: default;
       }
     }
   }

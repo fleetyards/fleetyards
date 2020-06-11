@@ -14,8 +14,8 @@
     transition: background-color $transition-base-speed ease;
 
     &:last-child {
-      border-bottom-left-radius: $panelContentBorderRadius;
       border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
     }
 
     &:hover {
@@ -24,7 +24,7 @@
   }
 
   .search-history-empty {
-    text-align: center;
     color: darken($text-color, 30%);
+    text-align: center;
   }
 }

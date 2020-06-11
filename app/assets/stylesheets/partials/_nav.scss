@@ -21,8 +21,8 @@ $nav-transition-speed: .3s;
         &.active > a,
         > a:hover,
         &.open > a {
-          border-bottom: 4px solid $navbar-active;
           padding-bottom: 11px;
+          border-bottom: 4px solid $navbar-active;
         }
 
         .dropdown-menu {
@@ -50,9 +50,9 @@ $nav-transition-speed: .3s;
           > a:hover,
           &.open > a,
           &.active > a {
+            padding-bottom: 10px;
             border: none;
             border-right: 4px solid $navbar-active;
-            padding-bottom: 10px;
           }
 
           .dropdown-menu {
@@ -71,12 +71,12 @@ $nav-transition-speed: .3s;
 
 .gravatar {
   float: left;
-  box-shadow: $gravatar-shadow;
-  border-radius: 3px;
-  margin: 0 5px 0 0;
+  width: 20px;
   max-width: 20px !important;
   max-height: 20px;
-  width: 20px;
+  margin: 0 5px 0 0;
+  border-radius: 3px;
+  box-shadow: $gravatar-shadow;
 
   &.gravatar-lg {
     width: 100px;
@@ -105,8 +105,8 @@ $nav-transition-speed: .3s;
 
   &:hover,
   &:focus {
-    border-color: transparent;
     background-color: transparent;
+    border-color: transparent;
   }
 
   .icon-bar {
@@ -146,11 +146,11 @@ $nav-transition-speed: .3s;
   }
 
   .navbar-brand {
-    text-overflow: ellipsis;
+    display: block;
+    float: none;
     overflow: hidden;
     white-space: nowrap;
     text-align: center;
-    display: block;
-    float: none;
+    text-overflow: ellipsis;
   }
 }

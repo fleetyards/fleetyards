@@ -6,13 +6,13 @@ $nav-transition-speed: .3s;
   padding: 25px 0 20px;
 
   &::before {
-    content: '';
-    background: linear-gradient(transparent 0%, $gray-darker 10%, $gray-darker 90%, transparent 100%);
-    height: 100%;
-    width: 1px;
+    position: absolute;
     top: 0;
     bottom: 0;
-    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(transparent 0%, $gray-darker 10%, $gray-darker 90%, transparent 100%);
+    content: '';
   }
 
   li {
@@ -21,36 +21,36 @@ $nav-transition-speed: .3s;
     list-style: none;
 
     > a {
-      cursor: pointer;
-      padding: 8px $padding-horizontal;
-      margin: 5px 0;
-      border: 1px solid transparent;
-      transition: box-shadow $nav-transition-speed, color $nav-transition-speed;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
       position: relative;
       display: block;
+      margin: 5px 0;
+      padding: 8px $padding-horizontal;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: box-shadow $nav-transition-speed, color $nav-transition-speed;
 
       i {
-        transition: color $nav-transition-speed;
         color: lighten($text-color, 30%);
+        transition: color $nav-transition-speed;
       }
 
       &::before {
-        transition: all ease $transition-base-speed;
-        opacity: 0;
-        background: $primary;
-        width: 3px;
-        content: '';
         position: absolute;
-        height: 100%;
         top: 0;
+        width: 3px;
+        height: 100%;
+        background: $primary;
+        opacity: 0;
+        transition: all ease $transition-base-speed;
+        content: '';
       }
 
       &.disabled {
-        opacity: .5;
         cursor: not-allowed;
+        opacity: .5;
       }
 
       &:hover {
@@ -77,23 +77,23 @@ $nav-transition-speed: .3s;
         }
 
         &::before {
-          opacity: 1;
-          height: 80%;
           top: 10%;
+          height: 80%;
+          opacity: 1;
         }
       }
     }
 
     &.disabled {
       > a {
-        opacity: .5;
         color: $text-color;
         cursor: not-allowed;
+        opacity: .5;
 
         > i,
         > svg {
-          opacity: .5;
           color: $text-color;
+          opacity: .5;
         }
 
         &::before {
@@ -131,9 +131,9 @@ $nav-transition-speed: .3s;
         border-bottom-left-radius: 4px;
 
         > a {
+          border-right: none;
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
-          border-right: none;
 
           &::before {
             box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);
@@ -171,9 +171,9 @@ $nav-transition-speed: .3s;
         border-bottom-right-radius: 4px;
 
         > a {
+          border-left: none;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
-          border-left: none;
 
           &::before {
             box-shadow: -3px 0 10px rgba(darken($primary, 20%), .9), 0 3px 10px rgba(darken($primary, 20%), .9), 0 -3px 10px rgba(darken($primary, 20%), .9);

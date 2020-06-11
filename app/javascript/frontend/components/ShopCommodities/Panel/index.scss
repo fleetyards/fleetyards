@@ -4,17 +4,17 @@
   display: flex;
 
   .teaser-panel-body {
-    padding: 15px;
     width: 66%;
+    padding: 15px;
   }
 
   .teaser-panel-image {
+    position: relative;
     width: 33%;
+    height: auto;
     border-top-left-radius: $panelContentBorderRadius;
     border-bottom-left-radius: $panelContentBorderRadius;
     opacity: .8;
-    position: relative;
-    height: auto;
   }
 
   a {
@@ -22,17 +22,17 @@
   }
 
   h3 {
+    max-width: 100%;
+    overflow: hidden;
+    font-weight: 400;
     font-size: 20px;
     font-family: 'Orbitron', tahoma, sans-serif;
-    font-weight: 400;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
   }
 
   p {
-    z-index: 20;
     position: relative;
+    z-index: 20;
   }
 }

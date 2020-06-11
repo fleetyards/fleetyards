@@ -1,9 +1,9 @@
 @import '~stylesheets/variables';
 
 h2.main-headline {
-  font-family: 'Orbitron', sans-serif;
   font-weight: normal;
   font-size: $font-size-h1-base;
+  font-family: 'Orbitron', sans-serif;
 }
 
 h3.main-subheadline {
@@ -18,10 +18,10 @@ h3.main-subheadline {
   }
 
   .panel-body {
-    padding-top: 0;
     display: flex;
     align-items: center;
     min-height: 150px;
+    padding-top: 0;
 
     p {
       font-size: 110%;

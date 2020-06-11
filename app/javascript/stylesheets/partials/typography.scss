@@ -11,10 +11,10 @@ h1 {
 
 address {
   .name {
-    font-size: 1.2em;
     color: #999;
-    font-family: 'Orbitron', sans-serif;
     font-weight: normal;
+    font-size: 1.2em;
+    font-family: 'Orbitron', sans-serif;
   }
 }
 
@@ -57,9 +57,9 @@ a.back-button {
 }
 
 .panel-title {
+  font-weight: normal;
   font-size: 22px;
   font-family: 'Orbitron', sans-serif;
-  font-weight: normal;
 
   small {
     font-size: 15px;

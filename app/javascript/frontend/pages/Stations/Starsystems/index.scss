@@ -12,8 +12,8 @@
     display: block;
     width: 1.530406766%;
     height: 2.166476625%;
-    box-shadow: 0 0 20px $primary;
     border-radius: 50%;
+    box-shadow: 0 0 20px $primary;
     transition: box-shadow ease .5s, border ease 1s;
 
     &:hover {

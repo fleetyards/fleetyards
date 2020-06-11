@@ -1,13 +1,13 @@
 .tooltip {
+  z-index: 10000;
   display: block !important;
   padding: 4px;
-  z-index: 10000;
 
   .tooltip-inner {
-    background: $gray-darker;
-    color: $text-color;
-    border-radius: $border-radius-base;
     padding: 5px 10px 4px;
+    color: $text-color;
+    background: $gray-darker;
+    border-radius: $border-radius-base;
   }
 
   .tooltip-arrow {

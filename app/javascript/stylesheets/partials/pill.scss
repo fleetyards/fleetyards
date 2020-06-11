@@ -1,14 +1,14 @@
 .pill {
-  font-size: 15px;
-  padding: 6px 10px;
   display: inline-block;
-  line-height: 1;
+  padding: 6px 10px;
   color: #fff;
-  text-align: center;
+  font-size: 15px;
+  line-height: 1;
   white-space: nowrap;
+  text-align: center;
   vertical-align: baseline;
-  border-radius: $border-radius-base;
   background-color: $primary;
+  border-radius: $border-radius-base;
 
   &.pill-success {
     background-color: $success;

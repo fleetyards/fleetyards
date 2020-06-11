@@ -1,10 +1,10 @@
 .loader {
-  margin: 20px auto;
+  position: absolute;
+  left: 50%;
+  z-index: 100;
   width: 40px;
   height: 40px;
-  position: absolute;
-  z-index: 100;
-  left: 50%;
+  margin: 20px auto;
   margin-left: -20px;
   -webkit-transform: rotateZ(45deg);
   transform: rotateZ(45deg);
@@ -15,28 +15,28 @@
 }
 
 .loader .cube {
+  position: relative;
   float: left;
   width: 50%;
   height: 50%;
-  position: relative;
   -webkit-transform: scale(1.1);
   -ms-transform: scale(1.1);
   transform: scale(1.1);
 }
 
 .loader .cube::before {
-  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: $primary;
-  -webkit-animation: loader-foldcubeangle 2.4s infinite linear both;
-  animation: loader-foldCubeAngle 2.4s infinite linear both;
   -webkit-transform-origin: 100% 100%;
   -ms-transform-origin: 100% 100%;
   transform-origin: 100% 100%;
+  -webkit-animation: loader-foldcubeangle 2.4s infinite linear both;
+  animation: loader-foldCubeAngle 2.4s infinite linear both;
+  content: '';
 }
 
 .loader .cube2 {

@@ -1,10 +1,10 @@
 .roadmap {
   .show-released {
-    cursor: pointer;
-    font-weight: bold;
     display: inline-block;
-    color: darken($text-color, 10%);
     margin-bottom: 30px;
+    color: darken($text-color, 10%);
+    font-weight: bold;
+    cursor: pointer;
   }
 
   .release-progress {
@@ -12,8 +12,8 @@
   }
 
   .release {
-    margin-bottom: 30px;
     position: relative;
+    margin-bottom: 30px;
 
     h2 {
       margin-bottom: 20px;
@@ -23,15 +23,15 @@
       }
 
       i {
-        transition: all .5s ease;
         position: absolute;
-        right: 20px;
         top: 0;
+        right: 20px;
+        transition: all .5s ease;
       }
 
       .released-label {
-        text-transform: uppercase;
         color: darken($text-color, 20%);
+        text-transform: uppercase;
       }
 
       &.open {
@@ -47,11 +47,11 @@
     margin: 0;
 
     .progress-label {
-      color: #fff;
       position: absolute;
       top: 0;
       right: 0;
       left: 0;
+      color: #fff;
       text-align: center;
     }
 
@@ -77,19 +77,19 @@
 
     .item-body {
       position: relative;
-      padding: 15px;
       flex: .8;
+      padding: 15px;
     }
 
     .item-image {
+      position: relative;
       flex: .2;
-      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      background-size: cover;
       border-top-left-radius: $panelContentBorderRadius;
       border-bottom-left-radius: $panelContentBorderRadius;
       opacity: .8;
-      position: relative;
 
       .roadmap-item-updated {
         position: absolute;
@@ -97,8 +97,8 @@
         left: 10px;
         width: 15px;
         height: 15px;
-        border-radius: 50%;
         background-color: $success;
+        border-radius: 50%;
         box-shadow: 0 0 3px $gray-darker;
       }
     }
@@ -108,10 +108,10 @@
     }
 
     h3 {
+      position: relative;
+      font-weight: 400;
       font-size: 20px;
       font-family: 'Orbitron', tahoma, sans-serif;
-      font-weight: 400;
-      position: relative;
 
       i {
         margin-left: 5px;
@@ -119,8 +119,8 @@
     }
 
     p {
-      z-index: 20;
       position: relative;
+      z-index: 20;
       margin-bottom: 10px;
     }
   }

@@ -15,11 +15,11 @@
 }
 
 .metrics-group-label {
-  border-bottom: 2px solid $gray-dark;
   margin-top: 25px;
-  padding-bottom: 5px;
   margin-bottom: 5px;
+  padding-bottom: 5px;
   font-size: 110%;
+  border-bottom: 2px solid $gray-dark;
 }
 
 :first-child > .metrics-group-label {

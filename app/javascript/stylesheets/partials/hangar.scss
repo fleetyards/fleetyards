@@ -1,7 +1,7 @@
 .hangar-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
 
   .page-actions {
     white-space: nowrap;
@@ -9,10 +9,10 @@
 }
 
 .hangar-metrics {
-  margin-bottom: 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
   cursor: pointer;
 
   .metrics-label,
@@ -24,13 +24,13 @@
 @media (max-width: $desktop-breakpoint) {
   .hangar-header {
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
 
     .hangar-labels {
       display: flex;
-      width: 100%;
       justify-content: space-between;
+      width: 100%;
 
       > * {
         flex-grow: 1;
@@ -54,8 +54,8 @@
 .hangar-public {
   h1 {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
 
     .avatar {
       margin-right: 20px;
@@ -63,12 +63,12 @@
   }
 
   .hangar-profile-links {
-    font-size: 30px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
     height: 100px;
     margin: 15px 0;
+    font-size: 30px;
 
     > a {
       margin-right: 20px;
@@ -84,12 +84,12 @@
   }
 
   .fleetchart {
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-around;
 
     .fleetchart-item {
-      margin: 10px;
       display: inline-block;
+      margin: 10px;
       text-align: center;
     }
   }

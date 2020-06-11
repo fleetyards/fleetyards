@@ -6,18 +6,18 @@
 
 .hangar-guide-topic {
   .hangar-guide-gif {
-    max-width: 50%;
-    border-radius: 3px;
-    margin-left: 20px;
     float: right;
+    max-width: 50%;
+    margin-left: 20px;
+    border-radius: 3px;
   }
 
   .hangar-guide-highlight {
     display: inline-block;
     padding: 8px 16px;
-    border-radius: 3px;
-    background-color: $gray-dark;
     text-align: center;
+    background-color: $gray-dark;
+    border-radius: 3px;
 
     i,
     svg {
@@ -29,9 +29,9 @@
 @media (max-width: $desktop-breakpoint) {
   .hangar-guide-topic {
     .hangar-guide-gif {
+      display: block;
       float: none;
       max-width: 100%;
-      display: block;
       margin: 0;
       margin-bottom: 10px;
     }

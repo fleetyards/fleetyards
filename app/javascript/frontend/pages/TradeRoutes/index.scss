@@ -8,8 +8,8 @@
   }
 
   .cargo-route-point {
-    text-align: center;
     padding: 10px;
+    text-align: center;
 
     h3 {
       font-size: 140%;
@@ -18,16 +18,16 @@
   }
 
   .cargo-route-center {
-    text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    text-align: center;
 
     .profit {
       margin-top: 10px;
-      font-size: 120%;
       color: $primary;
+      font-size: 120%;
     }
 
     i,
@@ -38,10 +38,10 @@
 }
 
 .cargo-routes-blank {
-  text-align: center;
+  padding: 20px;
   font-size: 120%;
   line-height: 2;
-  padding: 20px;
+  text-align: center;
 }
 
 @media (max-width: $desktop-breakpoint) {

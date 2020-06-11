@@ -4,10 +4,10 @@
   > .panel {
     .panel-image {
       height: 350px;
-      opacity: .8;
       border-bottom: none;
       -webkit-border-radius: $panelContentBorderRadius;
       border-radius: $panelContentBorderRadius;
+      opacity: .8;
 
       img {
         -webkit-border-radius: $panelContentBorderRadius;
