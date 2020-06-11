@@ -265,11 +265,11 @@ jobs:
           name: Webpacker & Assets Compile
           command: NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
       - save_cache:
-        key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-        paths:
-          - ~/app/public/assets
-          - ~/app/public/packs
-          - ~/app/tmp/cache/webpacker
+          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/app/public/assets
+            - ~/app/public/packs
+            - ~/app/tmp/cache/webpacker
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
