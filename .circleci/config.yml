@@ -460,14 +460,8 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - assets
-            - rubocop
-            - ruby-tests
-            - js-tests
-            - js-lint
-            - vue-lint
-            - ts-lint
-            - style-lint
+            - bundle
+            - yarn
       - smoke-test:
           filters:
             tags:
@@ -477,7 +471,15 @@ workflows:
       - deploy-to-stage:
           requires:
             - seeds
+            - assets
             - e2e-test
+            - rubocop
+            - ruby-tests
+            - js-tests
+            - js-lint
+            - vue-lint
+            - ts-lint
+            - style-lint
           filters:
             branches:
               only: master
