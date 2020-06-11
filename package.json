@@ -54,7 +54,7 @@
     "downloadjs": "1.4.7",
     "file-loader": "6.0.0",
     "handlebars": ">=4.7.3",
-    "highcharts": "8.1.0",
+    "highcharts": "^8.1.1",
     "html2canvas": "1.0.0-rc.5",
     "i18n-js": "3.7.0",
     "jest-transform-stub": "2.0.0",
@@ -145,6 +145,8 @@
     "yorkie": "2.0.0"
   },
   "resolutions": {
+    "http-proxy": ">=1.18.1",
+    "markdown-to-jsx": ">=6.11.4",
     "handlebars": ">=4.7.3",
     "serialize-javascript": ">=3.1.0",
     "node-sass": ">=4.14.1",
