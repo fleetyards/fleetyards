@@ -87,7 +87,7 @@ import Paginator from 'frontend/components/Paginator'
 import Loader from 'frontend/components/Loader'
 import EmptyBox from 'frontend/partials/EmptyBox'
 
-@Component({
+@Component<FilteredCollectionList>({
   components: {
     Btn,
     Paginator,
@@ -95,7 +95,7 @@ import EmptyBox from 'frontend/partials/EmptyBox'
     EmptyBox,
   },
 })
-export default class FilteredList extends Vue {
+export default class FilteredCollectionList extends Vue {
   loading: boolean = true
 
   fullscreen: boolean = false

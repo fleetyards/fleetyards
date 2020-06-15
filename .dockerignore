@@ -33,4 +33,4 @@ build
 
 .eslintcache
 
-blacklist.json
+blocklist.json

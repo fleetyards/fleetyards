@@ -31,7 +31,7 @@ set :linked_dirs, [
 set :linked_files, [
   'config/database.yml',
   '.rbenv-vars',
-  'blacklist.json'
+  'blocklist.json'
 ]
 
 before :'rbenv:validate', :'ruby:prepare'

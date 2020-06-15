@@ -42,6 +42,6 @@ build
 
 .eslintcache
 
-blacklist.json
+blocklist.json
 
 REVISION

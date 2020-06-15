@@ -158,10 +158,10 @@ export default {
       } else if (
         response.error.response &&
         response.error.response.data &&
-        response.error.response.data.code === 'blacklisted'
+        response.error.response.data.code === 'blocked'
       ) {
         displayAlert({
-          text: this.$t('texts.signup.blacklisted'),
+          text: this.$t('texts.signup.blocked'),
         })
       } else {
         const { error } = response

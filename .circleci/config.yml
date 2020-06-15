@@ -391,7 +391,7 @@ workflows:
           cron: "0 20 * * *"
           filters:
             branches:
-              only: master
+              only: releases
     jobs:
       - bundle
       - yarn
@@ -408,7 +408,7 @@ workflows:
           cron: "0 18 * * *"
           filters:
             branches:
-              only: master
+              only: releases
     jobs:
       - health-check
 
@@ -463,7 +463,7 @@ workflows:
             - style-lint
           filters:
             branches:
-              only: master
+              only: releases
       - notify-discord-stage:
           requires:
             - deploy-to-stage

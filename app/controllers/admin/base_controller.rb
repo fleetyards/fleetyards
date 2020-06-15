@@ -15,16 +15,16 @@ module Admin
     end
 
     private def online_count
-      Ahoy::Event.without_users(tracking_blacklist)
+      Ahoy::Event.without_users(tracking_blocklist)
                  .select(:visit_id).distinct
                  .where('time > ?', 15.minutes.ago).count
     end
     helper_method :online_count
 
-    private def tracking_blacklist
-      @tracking_blacklist ||= User.where(tracking: false).pluck(:id)
+    private def tracking_blocklist
+      @tracking_blocklist ||= User.where(tracking: false).pluck(:id)
     end
-    helper_method :tracking_blacklist
+    helper_method :tracking_blocklist
 
     private def transform_for_chart(data)
       data.sort_by { |_label, count| count }.reverse

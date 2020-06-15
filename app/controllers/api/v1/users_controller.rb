@@ -26,8 +26,8 @@ module Api
       end
 
       def signup
-        if blacklisted(user_params[:email])
-          render json: { code: 'blacklisted' }, status: :bad_request
+        if blocked(user_params[:email])
+          render json: { code: 'blocked' }, status: :bad_request
           return
         end
 
@@ -80,12 +80,12 @@ module Api
         end
       end
 
-      private def blacklisted(email)
-        return unless File.exist?(Rails.root.join('blacklist.json'))
+      private def blocked(email)
+        return unless File.exist?(Rails.root.join('blocklist.json'))
 
-        blacklist = JSON.parse(File.read(Rails.root.join('blacklist.json')))
+        blocklist = JSON.parse(File.read(Rails.root.join('blocklist.json')))
 
-        blacklist.include?(email)
+        blocklist.include?(email)
       end
     end
   end

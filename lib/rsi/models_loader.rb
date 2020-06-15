@@ -20,7 +20,7 @@ module RSI
       models = load_models
 
       models.each do |data|
-        next if blacklisted(data['id'])
+        next if blocked(data['id'])
 
         sync_model(data)
       end
@@ -35,7 +35,7 @@ module RSI
 
       return if model_data.blank?
 
-      sync_model(model_data) unless blacklisted(rsi_id)
+      sync_model(model_data) unless blocked(rsi_id)
 
       cleanup_variants
     end
@@ -394,7 +394,7 @@ module RSI
     end
     # rubocop:enable Metrics/MethodLength
 
-    private def blacklist
+    private def blocklist
       [{
         rsi_id: 205,
         replacements: [{
@@ -413,8 +413,8 @@ module RSI
       }]
     end
 
-    private def blacklisted(rsi_id)
-      blacklist.find { |item| item[:rsi_id] == rsi_id.to_i }
+    private def blocked(rsi_id)
+      blocklist.find { |item| item[:rsi_id] == rsi_id.to_i }
     end
 
     private def find_model_for_paint(data)
@@ -445,7 +445,7 @@ module RSI
         model.destroy
       end
 
-      blacklist.each do |item|
+      blocklist.each do |item|
         model = Model.find_by(rsi_id: item[:rsi_id])
         next if model.blank?
 

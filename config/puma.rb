@@ -15,7 +15,7 @@ environment rails_environment
 # Set up socket location
 bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock"
 
-# Set master PID and state locations
+# Set PID and state locations
 pidfile "#{ENV['APP_DIR']}/tmp/pids/puma.pid"
 state_path "#{ENV['APP_DIR']}/tmp/pids/puma.state"
 

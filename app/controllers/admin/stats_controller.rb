@@ -35,7 +35,7 @@ module Admin
     def visits_per_day
       authorize! :stats, :admin
 
-      visits_per_day = Ahoy::Visit.without_users(tracking_blacklist).one_month
+      visits_per_day = Ahoy::Visit.without_users(tracking_blocklist).one_month
                                   .group_by_day(:started_at).count
                                   .map do |created_at, count|
                                     {
@@ -51,7 +51,7 @@ module Admin
     def visits_per_month
       authorize! :stats, :admin
 
-      visits_per_month = Ahoy::Visit.without_users(tracking_blacklist).one_year
+      visits_per_month = Ahoy::Visit.without_users(tracking_blocklist).one_year
                                     .group_by_month(:started_at).count
                                     .map do |started_at, count|
                                       {
@@ -82,14 +82,14 @@ module Admin
     end
 
     private def online_count
-      Ahoy::Event.without_users(tracking_blacklist)
+      Ahoy::Event.without_users(tracking_blocklist)
                  .select(:visit_id).distinct
                  .where('time > ?', 15.minutes.ago).count
     end
     helper_method :online_count
 
-    private def tracking_blacklist
-      @tracking_blacklist ||= User.where(tracking: false).pluck(:id)
+    private def tracking_blocklist
+      @tracking_blocklist ||= User.where(tracking: false).pluck(:id)
     end
   end
 end

@@ -93,7 +93,7 @@ export default {
   privacy:
     'The use of our site is usually possible without providing any personal data. The collecting of personal data (eg E-mail address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by e-mail) can have security gaps. A complete protection of data against access by third parties is not possible.',
   signup: {
-    blacklisted:
-      'You have been blacklisted from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
+    blocked:
+      'You have been blocked from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
   },
 }
