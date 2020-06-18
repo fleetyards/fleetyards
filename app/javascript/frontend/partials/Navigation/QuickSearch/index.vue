@@ -44,12 +44,6 @@ export default {
 
       this.form = query
     },
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
-    },
   },
 
   methods: {

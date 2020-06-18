@@ -157,12 +157,6 @@ export default {
         shopTypeIn: query.shopTypeIn || [],
       }
     },
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
-    },
   },
   methods: {
     fetchShopTypes() {

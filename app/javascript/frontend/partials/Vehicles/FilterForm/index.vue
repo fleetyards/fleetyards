@@ -214,6 +214,11 @@ import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
+import {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+} from 'frontend/utils/Filters'
 
 export default {
   name: 'VehiclesFilterForm',
@@ -264,6 +269,20 @@ export default {
     }
   },
 
+  computed: {
+    booleanOptions() {
+      return booleanOptions
+    },
+
+    priceOptions() {
+      return priceOptions
+    },
+
+    pledgePriceOptions() {
+      return pledgePriceOptions
+    },
+  },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -289,13 +308,6 @@ export default {
         hangarGroupsIn: query.hangarGroupsIn || [],
         hangarGroupsNotIn: query.hangarGroupsNotIn || [],
       }
-    },
-
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
     },
   },
 }

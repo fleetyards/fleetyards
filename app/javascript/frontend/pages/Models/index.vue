@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <FilteredCollectionList
+    <FilteredList
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -44,7 +44,7 @@
           </div>
         </transition-group>
       </template>
-    </FilteredCollectionList>
+    </FilteredList>
   </section>
 </template>
 
@@ -54,26 +54,25 @@ import { Component } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
-import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
+import FilteredList from 'frontend/components/FilteredList'
 import ModelPanel from 'frontend/components/Models/Panel'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Filters from 'frontend/mixins/Filters'
-import ModelsCollection from 'frontend/collections/Models'
+import modelsCollection, { ModelsCollection } from 'frontend/collections/Models'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 
 @Component<Models>({
   components: {
     Btn,
     BtnDropdown,
-    FilteredCollectionList,
+    FilteredList,
     ModelPanel,
     ModelsFilterForm,
   },
-  mixins: [MetaInfo, Filters, HangarItemsMixin],
+  mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Models extends Vue {
-  collection = ModelsCollection
+  collection: ModelsCollection = modelsCollection
 
   @Action('toggleDetails', { namespace: 'models' }) toggleDetails: any
 

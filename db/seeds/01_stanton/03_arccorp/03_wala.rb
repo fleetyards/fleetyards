@@ -3,7 +3,7 @@
 wala = CelestialObject.find_or_create_by!(name: 'Wala')
 wala.update!(store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/wala.jpg').open, hidden: false)
 
-area_061 = Station.find_or_initialize_by(name: 'ArcCrop Mining Area 061')
+area_061 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 061')
 area_061.update!(
   celestial_object: wala,
   station_type: :outpost,
@@ -39,7 +39,7 @@ admin_office_area_061.update!(
   hidden: false
 )
 
-area_048 = Station.find_or_initialize_by(name: 'ArcCrop Mining Area 048')
+area_048 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 048')
 area_048.update!(
   celestial_object: wala,
   station_type: :outpost,
@@ -75,7 +75,7 @@ end
   end
 end
 
-area_045 = Station.find_or_initialize_by(name: 'ArcCrop Mining Area 045')
+area_045 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 045')
 area_045.update!(
   celestial_object: wala,
   station_type: :outpost,
@@ -111,7 +111,7 @@ end
   end
 end
 
-area_056 = Station.find_or_initialize_by(name: 'ArcCrop Mining Area 056')
+area_056 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 056')
 area_056.update!(
   celestial_object: wala,
   station_type: :outpost,

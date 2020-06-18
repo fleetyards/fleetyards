@@ -419,8 +419,9 @@ export default {
     buy: 'Buy for: %{uec}',
     sell: 'Sell for: %{uec}',
     cargoShip: 'for %{cargo} SCU',
-    sortByPercent: 'Sort by Profit Percent',
-    sortByProfit: 'Sort by Profit Value',
+    sortByPercent: 'Sort by Percent',
+    sortByProfit: 'Sort by Profit',
+    sortByStation: 'Sort by Station',
   },
   'erkul': {
     prefix: 'Tryout Loadouts with',

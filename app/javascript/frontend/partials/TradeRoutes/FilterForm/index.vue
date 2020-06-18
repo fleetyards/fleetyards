@@ -148,13 +148,6 @@ export default {
         delete storedFilters.cargoShip
       }
     },
-
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
-    },
   },
 }
 </script>

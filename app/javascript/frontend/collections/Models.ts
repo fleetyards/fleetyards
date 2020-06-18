@@ -4,6 +4,8 @@ import BaseCollection from './Base'
 export class ModelsCollection extends BaseCollection {
   records: Model[] = []
 
+  record: Model | null = null
+
   async findAll(params: ModelParams): Promise<Model[]> {
     const response = await get('models', {
       q: params.filters,
@@ -17,6 +19,16 @@ export class ModelsCollection extends BaseCollection {
     this.setPages(response.meta)
 
     return this.records
+  }
+
+  async findBySlug(slug: string): Promise<Model | null> {
+    const response = await get(`models/${slug}`)
+
+    if (!response.errors) {
+      this.record = response.data
+    }
+
+    return this.record
   }
 
   async latest(): Promise<Model[]> {

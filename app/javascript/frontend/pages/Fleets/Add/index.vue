@@ -74,6 +74,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import fleetsCollection from 'frontend/collections/Fleets'
 
 export default {
   name: 'FleetAdd',
@@ -100,11 +101,11 @@ export default {
     async submit() {
       this.submitting = true
 
-      const response = await this.$api.post('fleets', this.form)
+      const fleet = await fleetsCollection.create(this.form)
 
       this.submitting = false
 
-      if (!response.error) {
+      if (fleet) {
         this.$comlink.$emit('fleetCreate')
 
         displaySuccess({
@@ -113,7 +114,7 @@ export default {
 
         this.$router.push({
           name: 'fleet',
-          params: { slug: response.data.slug },
+          params: { slug: fleet.slug },
         })
       } else {
         displayAlert({

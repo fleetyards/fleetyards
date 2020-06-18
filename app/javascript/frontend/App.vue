@@ -15,7 +15,7 @@
       <div class="main-wrapper">
         <div class="main-inner">
           <transition name="fade" mode="out-in" appear>
-            <router-view class="main" />
+            <router-view :key="$route.path" class="main" />
           </transition>
         </div>
         ̦

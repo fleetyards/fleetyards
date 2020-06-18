@@ -40,14 +40,14 @@
     />
 
     <FormInput
-      :id="idFor('shopitems-min-price')"
+      id="shopitems-min-price"
       v-model="form.priceGteq"
       translation-key="filters.shopItems.minPrice"
       type="number"
     />
 
     <FormInput
-      :id="idFor('shopitems-max-price')"
+      id="shopitems-max-price"
       v-model="form.priceLteq"
       translation-key="filters.shopItems.maxPrice"
       type="number"
@@ -127,14 +127,6 @@ export default {
         priceGteq: query.priceGteq,
         priceLteq: query.priceLteq,
       }
-    },
-
-    form: {
-      handler() {
-        this.filter()
-      },
-
-      deep: true,
     },
   },
 

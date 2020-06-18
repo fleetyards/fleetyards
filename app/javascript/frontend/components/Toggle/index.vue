@@ -14,81 +14,62 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import BtnInner from 'frontend/components/Btn/Inner'
 
-export default {
-  name: 'Btn',
-
+@Component<Toggle>({
   components: {
     BtnInner,
   },
+})
+export default class Toggle extends Vue {
+  @Prop({ default: false }) loading: boolean
 
-  props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: true }) activeLeft: boolean
 
-    activeLeft: {
-      type: Boolean,
-      default: true,
-    },
+  @Prop({ default: false }) activeRight: boolean
 
-    activeRight: {
-      type: Boolean,
-      default: false,
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'danger'].includes(value)
     },
+  })
+  variant: string
 
-    variant: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'danger'].indexOf(value) !== -1
-      },
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'small', 'large'].includes(value)
     },
+  })
+  size: string
 
-    size: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'small', 'large'].indexOf(value) !== -1
-      },
-    },
+  @Prop({ default: false }) inline: boolean
 
-    inline: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) disabled: boolean
 
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    cssClasses() {
-      return {
-        'panel-btn': true,
-        'panel-btn-toggle': true,
-        'panel-btn-danger': this.variant === 'danger',
-        'panel-btn-small': this.size === 'small',
-        'panel-btn-large': this.size === 'large',
-        'panel-btn-inline': this.inline,
-        'active-left': this.activeLeft,
-        'active-right': this.activeRight,
-      }
-    },
-  },
+  get cssClasses() {
+    return {
+      'panel-btn': true,
+      'panel-btn-toggle': true,
+      'panel-btn-danger': this.variant === 'danger',
+      'panel-btn-small': this.size === 'small',
+      'panel-btn-large': this.size === 'large',
+      'panel-btn-inline': this.inline,
+      'active-left': this.activeLeft,
+      'active-right': this.activeRight,
+    }
+  }
 
-  methods: {
-    toggle() {
-      if (this.activeRight) {
-        this.$emit('toggle:left')
-      } else {
-        this.$emit('toggle:right')
-      }
-    },
-  },
+  toggle() {
+    if (this.activeRight) {
+      this.$emit('toggle:left')
+    } else {
+      this.$emit('toggle:right')
+    }
+  }
 }
 </script>

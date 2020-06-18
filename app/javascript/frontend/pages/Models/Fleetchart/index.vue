@@ -8,7 +8,7 @@
         </h1>
       </div>
     </div>
-    <FilteredCollectionList
+    <FilteredList
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -39,7 +39,7 @@
 
         <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
-    </FilteredCollectionList>
+    </FilteredList>
   </section>
 </template>
 
@@ -47,7 +47,7 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Mutation, Getter } from 'vuex-class'
-import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
+import FilteredList from 'frontend/components/FilteredList'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import FleetchartList from 'frontend/partials/Fleetchart/List'
@@ -59,7 +59,7 @@ import ModelsFleetchartCollection from 'frontend/collections/ModelsFleetchart'
 
 @Component<ModelsFleetchart>({
   components: {
-    FilteredCollectionList,
+    FilteredList,
     DownloadScreenshotBtn,
     ModelsFilterForm,
     FleetchartList,

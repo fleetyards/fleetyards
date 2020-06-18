@@ -22,35 +22,50 @@
   </transition>
 </template>
 
-<script>
-import Filters from 'frontend/mixins/Filters'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import Box from 'frontend/components/Box'
 import Btn from 'frontend/components/Btn'
 
-export default {
+@Component<EmptyBox>({
   components: {
     Box,
     Btn,
   },
+})
+export default class EmptyBox extends Vue {
+  @Prop({ required: true }) visible: boolean
 
-  mixins: [Filters],
+  @Prop({ default: false }) ignoreFilter: boolean
 
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
+  get isPagePresent() {
+    return !!this.$route.query.page
+  }
 
-    ignoreFilter: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  get isQueryPresent() {
+    return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
+  }
 
-  computed: {
-    isQueryPresent() {
-      return !this.ignoreFilter && Object.keys(this.$route.query).length > 0
-    },
-  },
+  resetPage() {
+    const query = {
+      ...JSON.parse(JSON.stringify(this.$route.query)),
+    }
+
+    if (query.page) {
+      delete query.page
+    }
+
+    this.$router
+      .replace({
+        name: this.$route.name,
+        query: {
+          ...query,
+          q: this.$route.query.q || {},
+        },
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(_err => {})
+  }
 }
 </script>

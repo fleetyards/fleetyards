@@ -81,7 +81,7 @@
     <div v-if="fleetCount" class="row">
       <div class="col-xs-12 col-md-8">
         <ModelClassLabels
-          v-if="myFleet"
+          v-if="fleet && fleet.myFleet"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetCount.classifications"
           filter-key="classificationIn"
@@ -89,7 +89,7 @@
       </div>
       <div class="col-xs-12 col-md-4">
         <div class="page-actions">
-          <Starship42Btn :vehicles="fleetchartVehicles" />
+          <!-- <Starship42Btn :vehicles="fleetchartVehicles" /> -->
 
           <Btn
             v-tooltip="$t('labels.hangarStats')"
@@ -102,7 +102,9 @@
     </div>
 
     <div
-      v-if="fleetCount && fleetCount.metrics && !mobile && myFleet"
+      v-if="
+        fleetCount && fleetCount.metrics && !mobile && fleet && fleet.myFleet
+      "
       class="row"
     >
       <div class="col-xs-12 fleet-metrics metrics-block" @click="toggleMoney">
@@ -148,16 +150,24 @@
         </div>
       </div>
     </div>
-    <FilteredList :hide-filter="!myFleet">
-      <template v-if="myFleet" slot="actions">
+    <FilteredList
+      v-if="fleet && fleet.myFleet"
+      :collection="grouped ? modelsCollection : vehiclesCollection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :params="$route.params"
+      :hash="$route.hash"
+      :paginated="true"
+    >
+      <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <Starship42Btn
+            <!-- <Starship42Btn
               :vehicles="fleetchartVehicles"
               size="small"
               variant="link"
               :with-icon="true"
-            />
+            /> -->
 
             <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
@@ -168,7 +178,6 @@
           </template>
 
           <Btn
-            v-show="!fleetchartVisible"
             :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
@@ -178,7 +187,7 @@
             <i class="fad fa-info-square" />
             {{ toggleDetailsTooltip }}
           </Btn>
-
+          <!--
           <DownloadScreenshotBtn
             v-if="fleet && fleetchartVisible"
             element="#fleetchart"
@@ -186,9 +195,9 @@
             size="small"
             variant="link"
             :show-tooltip="false"
-          />
+          /> -->
 
-          <Btn size="small" variant="link" @click.native="toggleFleetchart">
+          <!-- <Btn size="small" variant="link" @click.native="toggleFleetchart">
             <template v-if="fleetchartVisible">
               <i class="fas fa-th" />
               {{ $t('actions.hideFleetchart') }}
@@ -197,14 +206,9 @@
               <i class="fad fa-starship" />
               {{ $t('actions.showFleetchart') }}
             </template>
-          </Btn>
+          </Btn> -->
 
-          <Btn
-            v-if="!fleetchartVisible"
-            size="small"
-            variant="link"
-            @click.native="toggleGrouped"
-          >
+          <Btn size="small" variant="link" @click.native="toggleGrouped">
             <template v-if="grouped">
               <i class="fas fa-square" />
               {{ $t('actions.ungrouped') }}
@@ -217,21 +221,13 @@
         </BtnDropdown>
       </template>
 
-      <Paginator
-        v-if="!fleetchartVisible && (vehicles.length || models.length)"
-        slot="pagination-top"
-        :page="currentPage"
-        :total="totalPages"
-        :center="true"
-      />
-
       <template slot="filter">
         <FleetModelsFilterForm v-if="grouped" />
         <FleetVehiclesFilterForm v-else />
       </template>
 
-      <template v-slot:default="{ filterVisible }">
-        <transition name="fade" appear>
+      <template v-slot:default="{ records, filterVisible }">
+        <!-- <transition name="fade" appear>
           <div
             v-if="fleetchartVisible && fleetchartVehicles.length"
             class="row"
@@ -249,18 +245,12 @@
           v-if="fleetchartVisible"
           :items="fleetchartVehicles"
           :scale="fleetchartScale"
-        />
+        /> -->
 
-        <transition-group
-          v-else
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <template v-if="grouped">
             <div
-              v-for="model in models"
+              v-for="model in records"
               :key="model.id"
               :class="{
                 'col-lg-4': filterVisible,
@@ -277,7 +267,7 @@
           </template>
           <template v-else>
             <div
-              v-for="vehicle in vehicles"
+              v-for="vehicle in records"
               :key="vehicle.id"
               :class="{
                 'col-lg-4': filterVisible,
@@ -287,36 +277,23 @@
             >
               <ModelPanel
                 :model="vehicle.model"
-                :vehicle="vehicle"
                 :details="detailsVisible"
                 :on-addons="showAddonsModal"
               />
             </div>
           </template>
         </transition-group>
-
-        <EmptyBox :visible="emptyBoxVisible" />
-
-        <Loader :loading="loading" fixed />
       </template>
-
-      <Paginator
-        v-if="!fleetchartVisible && (vehicles.length || models.length)"
-        slot="pagination-bottom"
-        :page="currentPage"
-        :total="totalPages"
-        :center="true"
-      />
     </FilteredList>
 
     <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-
-import Loader from 'frontend/components/Loader'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
@@ -327,272 +304,152 @@ import FleetchartList from 'frontend/partials/Fleetchart/List'
 import FleetVehiclesFilterForm from 'frontend/partials/Fleets/FilterForm'
 import FleetModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import Avatar from 'frontend/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Filters from 'frontend/mixins/Filters'
-import Pagination from 'frontend/mixins/Pagination'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
+import { publicFleetRouteGuard } from 'frontend/utils/Fleet'
+import fleetModelsCollection from 'frontend/collections/FleetModels'
+import fleetVehiclesCollection from 'frontend/collections/FleetVehicles'
 
-export default {
-  name: 'Fleet',
-
+@Component<FleetDetail>({
   components: {
     Btn,
     BtnDropdown,
     Starship42Btn,
     FilteredList,
-    Loader,
     DownloadScreenshotBtn,
     ModelPanel,
     FleetchartList,
     ModelClassLabels,
-    EmptyBox,
     AddonsModal,
     FleetVehiclesFilterForm,
     FleetModelsFilterForm,
     FleetchartSlider,
     Avatar,
   },
+  mixins: [MetaInfo, HangarItemsMixin],
+  beforeRouteEnter: publicFleetRouteGuard,
+})
+export default class FleetDetail extends Vue {
+  fleetCount: FleetStats | null = null
 
-  mixins: [MetaInfo, Pagination, Filters, HangarItemsMixin],
+  fleet: Fleet | null = null
 
-  data() {
-    return {
-      loading: false,
-      fleet: null,
-      fleetCount: null,
-      vehicles: [],
-      models: [],
-      fleetchartVehicles: [],
+  modelsCollection: FleetModelsCollection = fleetModelsCollection
+
+  vehiclesCollection: FleetVehiclesCollection = fleetVehiclesCollection
+
+  @Getter('grouped', { namespace: 'fleet' }) grouped
+
+  @Getter('money', { namespace: 'fleet' }) money
+
+  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
+
+  @Getter('mobile') mobile
+
+  get metaTitle() {
+    if (!this.fleet) {
+      return null
     }
-  },
 
-  computed: {
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
+    return this.fleet.name
+  }
 
-      return this.fleet.name
-    },
+  // ...mapGetters(['mobile']),
 
-    ...mapGetters(['mobile']),
+  // ...mapGetters('session', ['currentUser']),
 
-    ...mapGetters('session', ['currentUser']),
+  // ...mapGetters('fleet', [
+  //   'detailsVisible',
+  //   'fleetchartVisible',
+  //   'fleetchartScale',
+  //   'grouped',
+  //   'money',
+  // ]),
 
-    ...mapGetters('fleet', [
-      'detailsVisible',
-      'fleetchartVisible',
-      'fleetchartScale',
-      'grouped',
-      'money',
-    ]),
+  get toggleDetailsTooltip() {
+    if (this.detailsVisible) {
+      return this.$t('actions.hideDetails')
+    }
+    return this.$t('actions.showDetails')
+  }
 
-    myFleet() {
-      if (!this.currentUser) {
-        return null
-      }
+  get filters() {
+    return {
+      slug: this.$route.params.slug,
+      filters: this.$route.query.q,
+      page: this.$route.query.page,
+    }
+  }
 
-      return this.currentUser.fleets.find(
-        fleet => !fleet.invitation && fleet.slug === this.$route.params.slug,
-      )
-    },
-
-    emptyBoxVisible() {
-      return (
-        !this.loading &&
-        (this.noVehicles || this.noFleetchartVehicles) &&
-        this.isFilterSelected
-      )
-    },
-
-    noVehicles() {
-      return !this.vehicles.length && !this.fleetchartVisible
-    },
-
-    noFleetchartVehicles() {
-      return !this.fleetchartVehicles.length && this.fleetchartVisible
-    },
-
-    toggleDetailsTooltip() {
-      if (this.detailsVisible) {
-        return this.$t('actions.hideDetails')
-      }
-      return this.$t('actions.showDetails')
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-
-    grouped() {
-      if (this.isFilterSelected) {
-        this.resetFilter()
-      } else if (this.grouped) {
-        this.fetchModels()
-      } else {
-        this.fetchVehicles()
-      }
-    },
-
-    fleetchartVisible() {
-      this.fetchAdditional()
-    },
-  },
+  @Watch('grouped')
+  onGroupedChange() {
+    if (this.grouped) {
+      this.modelsCollection.findAll(this.filters)
+    } else {
+      this.vehiclesCollection.findAll(this.filters)
+    }
+  }
 
   mounted() {
     this.fetch()
+  }
 
-    if (this.$route.query.fleetchart && !this.fleetchartVisible) {
-      this.$store.dispatch('fleet/toggleFleetchart')
+  showAddonsModal(vehicle) {
+    this.$refs.addonsModal.open(vehicle)
+  }
+
+  toggleDetails() {
+    this.$store.dispatch('fleet/toggleDetails')
+  }
+
+  toggleGrouped() {
+    this.$store.dispatch('fleet/toggleGrouped')
+  }
+
+  toggleMoney() {
+    this.$store.dispatch('fleet/toggleMoney')
+  }
+
+  // updateScale(value) {
+  //   this.$store.commit('fleet/setFleetchartScale', value)
+  // }
+
+  fetch() {
+    // await this.statsCollection.findAll(this.filters)
+  }
+
+  // async fetchFleetchart() {
+  //   this.loading = true
+
+  //   const response = await this.$api.get(
+  //     `fleets/${this.$route.params.slug}/fleetchart`,
+  //     {
+  //       q: this.$route.query.q,
+  //     },
+  //   )
+
+  //   if (!response.error) {
+  //     this.fleetchartVehicles = response.data
+  //   }
+
+  //   this.resetLoading()
+  // }
+
+  async fetchFleetCount() {
+    const response = await this.$api.get(
+      `fleets/${this.$route.params.slug}/quick-stats`,
+      {
+        q: this.$route.query.q,
+      },
+    )
+
+    if (!response.error) {
+      this.fleetCount = response.data
     }
-  },
-
-  methods: {
-    showAddonsModal(vehicle) {
-      this.$refs.addonsModal.open(vehicle)
-    },
-
-    toggleDetails() {
-      this.$store.dispatch('fleet/toggleDetails')
-    },
-
-    toggleFleetchart() {
-      this.$store.dispatch('fleet/toggleFleetchart')
-    },
-
-    toggleGrouped() {
-      this.$store.dispatch('fleet/toggleGrouped')
-    },
-
-    toggleMoney() {
-      this.$store.dispatch('fleet/toggleMoney')
-    },
-
-    updateScale(value) {
-      this.$store.commit('fleet/setFleetchartScale', value)
-    },
-
-    fetch() {
-      this.fetchFleet()
-    },
-
-    fetchAdditional() {
-      if (!this.myFleet) {
-        return
-      }
-
-      this.fetchFleetchart()
-
-      if (this.grouped) {
-        this.fetchModels()
-      } else {
-        this.fetchVehicles()
-      }
-
-      this.fetchFleetCount()
-    },
-
-    async fetchFleet() {
-      this.loading = true
-
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}`)
-
-      if (!response.error) {
-        this.fleet = response.data
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-
-      this.fetchAdditional()
-
-      this.resetLoading()
-    },
-
-    async fetchVehicles() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/vehicles`,
-        {
-          q: this.$route.query.q,
-          page: this.$route.query.page,
-        },
-      )
-
-      if (!response.error) {
-        this.vehicles = response.data
-      }
-
-      this.setPages(response.meta)
-
-      this.resetLoading()
-    },
-
-    async fetchModels() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/models`,
-        {
-          q: this.$route.query.q,
-          page: this.$route.query.page,
-        },
-      )
-
-      if (!response.error) {
-        this.models = response.data
-      }
-
-      this.setPages(response.meta)
-
-      this.resetLoading()
-    },
-
-    async fetchFleetchart() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/fleetchart`,
-        {
-          q: this.$route.query.q,
-        },
-      )
-
-      if (!response.error) {
-        this.fleetchartVehicles = response.data
-      }
-
-      this.resetLoading()
-    },
-
-    async fetchFleetCount() {
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/quick-stats`,
-        {
-          q: this.$route.query.q,
-        },
-      )
-
-      if (!response.error) {
-        this.fleetCount = response.data
-      }
-    },
-
-    resetLoading() {
-      setTimeout(() => {
-        this.loading = false
-      }, 300)
-    },
-  },
+  }
 }
 </script>
 

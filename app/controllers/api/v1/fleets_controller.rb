@@ -73,7 +73,7 @@ module Api
 
         @models = @q.result(distinct: true)
                     .page(params[:page])
-                    .per(per_page(Vehicle))
+                    .per(per_page(Model))
       end
 
       def members
@@ -89,7 +89,7 @@ module Api
                      .includes(:user)
                      .joins(:user)
                      .page(params[:page])
-                     .per(per_page(Vehicle))
+                     .per(per_page(FleetMembership))
       end
 
       def member_quick_stats

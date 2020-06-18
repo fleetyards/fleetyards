@@ -82,6 +82,7 @@ import FilterGroup from 'frontend/components/Form/FilterGroup'
 import RadioList from 'frontend/components/Form/RadioList'
 import FormInput from 'frontend/components/Form/FormInput'
 import Btn from 'frontend/components/Btn'
+import { booleanOptions } from 'frontend/utils/Filters'
 
 export default {
   components: {
@@ -90,7 +91,9 @@ export default {
     FormInput,
     Btn,
   },
+
   mixins: [Filters],
+
   data() {
     const query = this.$route.query.q || {}
     return {
@@ -107,6 +110,13 @@ export default {
       },
     }
   },
+
+  computed: {
+    booleanOptions() {
+      return booleanOptions
+    },
+  },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -121,13 +131,8 @@ export default {
         docksShipSizeIn: query.docksShipSizeIn || [],
       }
     },
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
-    },
   },
+
   methods: {
     fetchCelestialObjects({ page, search, missingValue }) {
       const query = {

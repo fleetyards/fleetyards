@@ -21,10 +21,17 @@
             </Btn>
           </div>
           <div class="pagination-wrapper">
-            <slot name="pagination-top" />
+            <slot name="pagination-top">
+              <Paginator
+                v-if="paginated && collection.records.length"
+                :page="collection.currentPage"
+                :total="collection.totalPages"
+                :center="true"
+              />
+            </slot>
           </div>
           <div class="page-actions page-actions-right">
-            <slot name="actions" />
+            <slot name="actions" :records="collection && collection.records" />
           </div>
         </div>
       </div>
@@ -45,12 +52,26 @@
           }"
           class="col-xs-12 col-animated"
         >
-          <slot :filterVisible="filterVisible" />
+          <slot
+            :filterVisible="filterVisible"
+            :records="collection && collection.records"
+          />
+
+          <EmptyBox :visible="emptyBoxVisible" />
+
+          <Loader :loading="loading" :fixed="true" />
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <slot name="pagination-bottom" />
+          <slot name="pagination-bottom">
+            <Paginator
+              v-if="paginated && collection.records.length"
+              :page="collection.currentPage"
+              :total="collection.totalPages"
+              :center="true"
+            />
+          </slot>
         </div>
       </div>
     </div>
@@ -62,16 +83,39 @@ import Vue from 'vue'
 import { Component, Watch, Prop } from 'vue-property-decorator'
 import { Action, Mutation, Getter } from 'vuex-class'
 import Btn from 'frontend/components/Btn'
+import Paginator from 'frontend/components/Paginator'
+import Loader from 'frontend/components/Loader'
+import EmptyBox from 'frontend/partials/EmptyBox'
 
-@Component({
+@Component<FilteredList>({
   components: {
     Btn,
+    Paginator,
+    Loader,
+    EmptyBox,
   },
 })
 export default class FilteredList extends Vue {
   loading: boolean = true
 
   fullscreen: boolean = false
+
+  @Prop({ required: true }) collection!: BaseCollection
+
+  @Prop({ required: true }) name!: string
+
+  @Prop({
+    default() {
+      return {}
+    },
+  })
+  params!: RouteParams
+
+  @Prop({ default: null }) routeQuery!: RouteQuery
+
+  @Prop({ default: null }) hash!: string
+
+  @Prop({ default: false }) paginated!: boolean
 
   @Prop({ default: false }) hideFilter!: boolean
 
@@ -85,8 +129,16 @@ export default class FilteredList extends Vue {
 
   @Mutation('setFilters') setFilters
 
+  get filters() {
+    return this.routeQuery.q
+  }
+
+  get page() {
+    return this.routeQuery.page
+  }
+
   get filterVisible() {
-    return !!this.filtersVisible[this.$route.name] && !this.hideFilter
+    return !!this.filtersVisible[this.name] && !this.hideFilter
   }
 
   get filterTooltip() {
@@ -98,26 +150,39 @@ export default class FilteredList extends Vue {
   }
 
   get isFilterSelected() {
-    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+    const query = JSON.parse(JSON.stringify(this.filters || {}))
     Object.keys(query)
       .filter(key => !query[key] || query[key].length === 0)
       .forEach(key => delete query[key])
     return Object.keys(query).length > 0
   }
 
-  get routeQuery() {
-    return this.$route.query.q
+  get emptyBoxVisible() {
+    return !!(
+      !this.loading &&
+      !this.collection.records.length &&
+      (this.isFilterSelected || (this.paginated && this.page))
+    )
   }
 
-  @Watch('routeQuery', { deep: true })
-  onRouteQueryChange() {
+  @Watch('filters', { deep: true })
+  onFiltersChange() {
     this.saveFilters()
+  }
+
+  @Watch('routeQuery')
+  onPageChange() {
+    this.fetch()
+  }
+
+  mounted() {
+    this.fetch()
   }
 
   created() {
     if (this.mobile) {
       this.setFiltersVisible({
-        [this.$route.name]: false,
+        [this.name]: false,
       })
     }
 
@@ -128,14 +193,14 @@ export default class FilteredList extends Vue {
   saveFilters() {
     if (this.isFilterSelected) {
       this.setFilters({
-        [this.$route.name]: { ...this.$route.query.q },
+        [this.name]: { ...this.filters },
       })
 
       return
     }
 
     this.setFilters({
-      [this.$route.name]: null,
+      [this.name]: null,
     })
   }
 
@@ -144,7 +209,43 @@ export default class FilteredList extends Vue {
   }
 
   toggleFilter() {
-    this.toggleFilterVisible(this.$route.name)
+    this.toggleFilterVisible(this.name)
+  }
+
+  scrollToAnchor() {
+    if (!this.hash) {
+      return
+    }
+
+    this.$nextTick(() => {
+      const element = document.getElementById(this.hash.slice(1))
+      if (element) {
+        element.scrollIntoView()
+        window.scrollBy(0, -120)
+      }
+    })
+  }
+
+  async fetch() {
+    this.loading = true
+
+    let params = {
+      filters: this.filters,
+    }
+
+    if (this.paginated) {
+      params = {
+        ...params,
+        ...this.params,
+        page: this.page,
+      }
+    }
+
+    await this.collection.findAll(params)
+
+    this.scrollToAnchor()
+
+    this.loading = false
   }
 }
 </script>

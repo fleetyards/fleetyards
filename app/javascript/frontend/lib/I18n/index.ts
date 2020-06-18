@@ -4,6 +4,7 @@ import de from 'translations/de'
 import { parseISO } from 'date-fns'
 import { format } from 'date-fns-tz'
 
+// @ts-ignore
 I18n.availableLocales = ['en', 'de']
 I18n.defaultLocale = 'en'
 I18n.locale = 'en'
@@ -12,16 +13,16 @@ I18n.translations.en = en
 I18n.translations.de = de
 
 const methods = {
-  t(key, options) {
+  t(key: string, options: Object) {
     return I18n.t(key, options)
   },
 
-  l(value, dateFormat = 'datetime.formats.default') {
+  l(value: string, dateFormat = 'datetime.formats.default') {
     return format(parseISO(value), I18n.t(dateFormat))
   },
 
-  toNumber(value, units) {
-    let count = I18n.l('number', value)
+  toNumber(value: number, units: string) {
+    let count: string | number = I18n.l('number', value)
     if (units === 'weight') {
       count = I18n.l('number', value / 1000)
     }
@@ -30,6 +31,7 @@ const methods = {
     }
     if (units === 'speed' && value) {
       count = value
+        // @ts-ignore
         .split(' - ')
         .map(item => I18n.l('number', item))
         .join(' - ')
@@ -42,14 +44,14 @@ const methods = {
     })
   },
 
-  toDollar(value) {
+  toDollar(value: number) {
     return I18n.toCurrency(value, {
       precision: 2,
       unit: '$',
     })
   },
 
-  toAu(value) {
+  toAu(value: number) {
     if (!value) {
       return '-'
     }
@@ -60,7 +62,7 @@ const methods = {
     })
   },
 
-  toUEC(value, unit) {
+  toUEC(value: number, unit: string) {
     if (!unit) {
       // eslint-disable-next-line no-param-reassign
       unit = I18n.t('labels.uec')

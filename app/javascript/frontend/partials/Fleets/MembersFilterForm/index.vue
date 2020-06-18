@@ -79,13 +79,6 @@ export default {
         sorts: query.sorts,
       }
     },
-
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
-    },
   },
 }
 </script>

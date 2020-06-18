@@ -40,10 +40,10 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async create(
-    vehicle: Vehicle,
+    form: VehicleForm,
     refetch: boolean = false,
   ): Promise<Vehicle | null> {
-    const response = await post('vehicles', vehicle)
+    const response = await post('vehicles', form)
 
     if (!response.error) {
       if (refetch) {
@@ -56,7 +56,7 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async update(vehicleId: string, form: Vehicle): Promise<boolean> {
+  async update(vehicleId: string, form: VehicleForm): Promise<boolean> {
     const response = await put(`vehicles/${vehicleId}`, form)
     if (!response.error) {
       this.findAll(this.params)

@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <FilteredCollectionList
+    <FilteredList
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -74,7 +74,7 @@
           :scale="fleetchartScale"
         />
       </template>
-    </FilteredCollectionList>
+    </FilteredList>
 
     <VehicleModal
       ref="vehicleModal"
@@ -95,7 +95,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
+import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import PrimaryAction from 'frontend/components/PrimaryAction'
@@ -122,7 +122,7 @@ import hangarStatsCollection, {
 
 @Component<HangarFleetchart>({
   components: {
-    FilteredCollectionList,
+    FilteredList,
     Btn,
     BreadCrumbs,
     Starship42Btn,

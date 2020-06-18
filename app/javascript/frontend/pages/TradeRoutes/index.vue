@@ -5,257 +5,235 @@
         <h1>{{ title }}</h1>
       </div>
     </div>
-    <FilteredList>
+    <FilteredList
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :hash="$route.hash"
+      :paginated="true"
+    >
       <template slot="actions">
-        <Toggle
+        <Btn
+          :active="sortByProfit"
           size="small"
-          :active-left="sortByProfit"
-          :active-right="sortByPercent"
-          @toggle:left="sortBy('profit')"
-          @toggle:right="sortBy('percent')"
+          :to="sortBy('profit_per_unit')"
+          :exact="true"
         >
-          <span slot="left" v-tooltip="$t('labels.tradeRoutes.sortByProfit')">
-            <i class="far fa-dollar-sign" />
-          </span>
-          <span slot="right" v-tooltip="$t('labels.tradeRoutes.sortByPercent')">
-            <i class="far fa-percent" />
-          </span>
-        </Toggle>
+          <i class="far fa-dollar-sign" />
+          {{ $t('labels.tradeRoutes.sortByProfit') }}
+        </Btn>
+        <Btn
+          :active="sortByPercent"
+          size="small"
+          :to="sortBy('profit_per_unit_percent')"
+          :exact="true"
+        >
+          <i class="far fa-percent" />
+          {{ $t('labels.tradeRoutes.sortByPercent') }}
+        </Btn>
+        <Btn
+          :active="sortByStation"
+          size="small"
+          :to="sortBy('origin_shop_station_name')"
+          :exact="true"
+        >
+          {{ $t('labels.tradeRoutes.sortByStation') }}
+        </Btn>
       </template>
-      <Paginator
-        v-if="tradeRoutes.length"
-        slot="pagination-top"
-        :page="currentPage"
-        :total="totalPages"
-        right
-      />
+
       <FilterForm slot="filter" />
-      <transition-group name="fade-list" class="row" tag="div" appear>
-        <QuickFilter v-if="!mobile" key="quickfilter" />
-        <div
-          v-for="route in tradeRoutes"
-          :key="
-            `${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`
-          "
-          class="col-xs-12 fade-list-item cargo-route"
-        >
-          <div class="flex-row">
-            <div class="col-xs-12 col-sm-4">
-              <Panel :outer-spacing="false">
-                <div class="cargo-route-point">
-                  <h3>
-                    <router-link
-                      :to="{
-                        name: 'station',
-                        params: {
-                          slug: route.origin.slug,
-                        },
-                      }"
-                    >
-                      {{ route.origin.name }}
-                    </router-link>
-                    <br />
-                    <small>
-                      {{ route.origin.locationLabel }}
-                    </small>
-                  </h3>
-                  {{
-                    $t('labels.tradeRoutes.buy', {
-                      uec: profit(route.buyPrice),
-                    })
-                  }}
+
+      <template v-slot:default="{ records }">
+        <transition-group name="fade-list" class="row" tag="div" :appear="true">
+          <QuickFilter v-if="!mobile" key="quickfilter" />
+          <div
+            v-for="route in records"
+            :key="
+              `${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`
+            "
+            class="col-xs-12 fade-list-item cargo-route"
+          >
+            <div class="flex-row">
+              <div class="col-xs-12 col-sm-4">
+                <Panel :outer-spacing="false">
+                  <div class="cargo-route-point">
+                    <h3>
+                      <router-link
+                        :to="{
+                          name: 'station',
+                          params: {
+                            slug: route.origin.slug,
+                          },
+                        }"
+                      >
+                        {{ route.origin.name }}
+                      </router-link>
+                      <br />
+                      <small>
+                        {{ route.origin.locationLabel }}
+                      </small>
+                    </h3>
+                    {{
+                      $t('labels.tradeRoutes.buy', {
+                        uec: profit(route.buyPrice),
+                      })
+                    }}
+                  </div>
+                </Panel>
+              </div>
+              <div class="col-xs-12 col-sm-4 cargo-route-center">
+                <h2 class="text-center">
+                  {{ route.commodity.name }}
+                </h2>
+                <i class="fa fa-angle-double-right" />
+                <div class="profit">
+                  {{ profit(route.profitPerUnit) }}
+                  <small class="profit-percent">
+                    ({{ route.profitPerUnitPercent }} %)
+                  </small>
                 </div>
-              </Panel>
-            </div>
-            <div class="col-xs-12 col-sm-4 cargo-route-center">
-              <h2 class="text-center">
-                {{ route.commodity.name }}
-              </h2>
-              <i class="fa fa-angle-double-right" />
-              <div class="profit">
-                {{ profit(route.profitPerUnit) }}
-                <small class="profit-percent">
-                  ({{ route.profitPerUnitPercent }} %)
-                </small>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <Panel :outer-spacing="false">
+                  <div class="cargo-route-point">
+                    <h3>
+                      <router-link
+                        :to="{
+                          name: 'station',
+                          params: {
+                            slug: route.destination.slug,
+                          },
+                        }"
+                      >
+                        {{ route.destination.name }}
+                      </router-link>
+                      <br />
+                      <small>
+                        {{ route.destination.locationLabel }}
+                      </small>
+                    </h3>
+                    {{
+                      $t('labels.tradeRoutes.sell', {
+                        uec: profit(route.sellPrice),
+                      })
+                    }}
+                  </div>
+                </Panel>
               </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
-              <Panel :outer-spacing="false">
-                <div class="cargo-route-point">
-                  <h3>
-                    <router-link
-                      :to="{
-                        name: 'station',
-                        params: {
-                          slug: route.destination.slug,
-                        },
-                      }"
-                    >
-                      {{ route.destination.name }}
-                    </router-link>
-                    <br />
-                    <small>
-                      {{ route.destination.locationLabel }}
-                    </small>
-                  </h3>
-                  {{
-                    $t('labels.tradeRoutes.sell', {
-                      uec: profit(route.sellPrice),
-                    })
-                  }}
-                </div>
-              </Panel>
-            </div>
           </div>
-        </div>
-      </transition-group>
-      <EmptyBox :visible="emptyBoxVisible" />
-      <Loader :loading="loading" fixed />
-      <Paginator
-        v-if="tradeRoutes.length"
-        slot="pagination-bottom"
-        :page="currentPage"
-        :total="totalPages"
-        right
-      />
+        </transition-group>
+      </template>
     </FilteredList>
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import { debounce } from 'debounce'
-
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
-import Toggle from 'frontend/components/Toggle'
-import Filters from 'frontend/mixins/Filters'
+import Btn from 'frontend/components/Btn'
 import Panel from 'frontend/components/Panel'
-import Loader from 'frontend/components/Loader'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import FilterForm from 'frontend/partials/TradeRoutes/FilterForm'
 import QuickFilter from 'frontend/partials/TradeRoutes/QuickFilter'
-import Pagination from 'frontend/mixins/Pagination'
+import { sortBy } from 'frontend/utils/Sorting'
+import tradeRoutesCollection from 'frontend/collections/TradeRoutes'
+import modelsCollection from 'frontend/collections/Models'
 
-export default {
+@Component<TradeRoutes>({
   components: {
     FilteredList,
-    Toggle,
+    Btn,
     Panel,
-    Loader,
-    EmptyBox,
     FilterForm,
     QuickFilter,
   },
 
-  mixins: [MetaInfo, Filters, Pagination],
+  mixins: [MetaInfo],
+})
+export default class TradeRoutes extends Vue {
+  collection: TradeRoutesCollection = tradeRoutesCollection
 
-  data() {
-    return {
-      cargoShip: null,
-      tradeRoutes: [],
-      loading: true,
-      sort: 'profit',
+  modelsCollection: ModelsCollection = modelsCollection
+
+  @Getter('mobile') mobile
+
+  get title(): string {
+    if (this.cargoShip) {
+      return this.$t('headlines.tradeRoutes.withShip', {
+        name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
+        cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
+      })
     }
-  },
+    return this.$t('headlines.tradeRoutes.index')
+  }
 
-  computed: {
-    ...mapGetters(['mobile']),
+  get cargoShip(): Model | null {
+    return this.modelsCollection.record
+  }
 
-    title() {
-      if (this.cargoShip) {
-        return this.$t('headlines.tradeRoutes.withShip', {
-          name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
-          cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
-        })
-      }
-      return this.$t('headlines.tradeRoutes.index')
-    },
+  get avaiableCargo(): number {
+    return this.cargoShip ? this.cargoShip.cargo * 100 : 1
+  }
 
-    avaiableCargo() {
-      return this.cargoShip ? this.cargoShip.cargo * 100 : 1
-    },
+  get sorts(): string[] {
+    return this.$route.query.q?.sorts || []
+  }
 
-    emptyBoxVisible() {
-      return !!(
-        !this.loading &&
-        !this.tradeRoutes.length &&
-        (this.isFilterSelected || this.$route.query.page)
-      )
-    },
+  get sortByPercent(): boolean {
+    return (
+      this.sorts.includes('profit_per_unit_percent asc') ||
+      this.sorts.includes('profit_per_unit_percent desc')
+    )
+  }
 
-    sortByPercent() {
-      return this.sort === 'percent'
-    },
+  get sortByProfit(): boolean {
+    return (
+      this.sorts.includes('profit_per_unit asc') ||
+      this.sorts.includes('profit_per_unit desc')
+    )
+  }
 
-    sortByProfit() {
-      return this.sort === 'profit'
-    },
-  },
+  get sortByStation(): boolean {
+    return (
+      this.sorts.includes('origin_shop_station_name asc') ||
+      this.sorts.includes('origin_shop_station_name desc') ||
+      !this.sorts.length
+    )
+  }
 
-  watch: {
-    $route() {
-      this.fetch()
-      this.fetchCargoShip()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetchCargoShip()
+  }
 
   mounted() {
-    this.fetch()
     this.fetchCargoShip()
-  },
+  }
 
-  methods: {
-    sortBy: debounce(function debounced(sort) {
-      this.sort = sort
+  sortBy(field) {
+    return sortBy(this.$route, field)
+  }
 
-      this.fetch()
-    }, 500),
+  profit(value: number): string {
+    if (this.cargoShip) {
+      return this.$toUEC(value * (this.cargoShip.cargo * 100))
+    }
 
-    profit(value) {
-      if (this.cargoShip) {
-        return this.$toUEC(value * (this.cargoShip.cargo * 100))
-      }
+    return this.$toUEC(value, this.$t('labels.uecPerUnit'))
+  }
 
-      return this.$toUEC(value, this.$t('labels.uecPerUnit'))
-    },
+  async fetchCargoShip() {
+    const query = this.$route.query.q || {}
 
-    async fetchCargoShip() {
-      this.cargoShip = null
+    if (!query.cargoShip) {
+      return
+    }
 
-      const query = this.$route.query.q || {}
-
-      if (!query.cargoShip) {
-        return
-      }
-
-      const response = await this.$api.get(`models/${query.cargoShip}`)
-
-      if (!response.errors) {
-        this.cargoShip = response.data
-      }
-    },
-
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get('trade-routes', {
-        q: {
-          ...this.$route.query.q,
-        },
-        sort: this.sort,
-        page: this.$route.query.page,
-      })
-
-      this.loading = false
-
-      if (!response.errors && response.data) {
-        this.tradeRoutes = response.data
-      }
-
-      this.setPages(response.meta)
-    },
-  },
+    await modelsCollection.findBySlug(query.cargoShip)
+  }
 }
 </script>
 

@@ -63,6 +63,12 @@ class Fleet < ApplicationRecord
     membership.role
   end
 
+  def my_fleet?(user_id)
+    membership = fleet_memberships.find_by(user_id: user_id)
+
+    membership.present? && !membership.invitation && membership.declined_at.blank?
+  end
+
   def invitation(user_id)
     fleet_memberships.find_by(user_id: user_id)&.invitation
   end

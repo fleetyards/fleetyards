@@ -1,0 +1,3 @@
+type FleetMemberStats = {
+  total: number
+}

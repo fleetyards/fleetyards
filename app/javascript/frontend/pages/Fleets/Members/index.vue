@@ -1,14 +1,18 @@
 <template>
-  <section class="container">
-    <div v-if="fleet && myFleet" class="row">
+  <section v-if="fleet" class="container">
+    <div class="row">
       <div class="col-xs-12">
         <BreadCrumbs :crumbs="crumbs" />
       </div>
       <div class="col-xs-8">
         <h1>
           {{ $t('headlines.fleets.members') }}
-          <small v-if="fleetCount">
-            {{ $t('labels.fleet.members.total', { count: fleetCount.total }) }}
+          <small v-if="statsCollection.record">
+            {{
+              $t('labels.fleet.members.total', {
+                count: statsCollection.record.total,
+              })
+            }}
           </small>
         </h1>
       </div>
@@ -22,516 +26,119 @@
       </div>
     </div>
 
-    <FilteredList>
-      <Paginator
-        v-if="members.length"
-        slot="pagination-top"
-        :page="currentPage"
-        :total="totalPages"
-        right
-      />
-
+    <FilteredList
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :params="$route.params"
+      :hash="$route.hash"
+      :paginated="true"
+    >
       <FleetMembersFilterForm slot="filter" />
 
-      <template slot="default">
-        <Panel v-if="members.length">
-          <transition-group
-            name="fade"
-            class="flex-list flex-list-users"
-            tag="div"
-            appear
-          >
-            <div
-              key="heading"
-              class="fade-list-item col-xs-12 flex-list-heading"
-            >
-              <div class="flex-list-row">
-                <div class="username">
-                  <router-link :to="sortByUsername">
-                    {{ $t('labels.username') }}
-                  </router-link>
-                </div>
-                <div class="rsi-handle">
-                  <router-link :to="sortByRsiHandle">
-                    {{ $t('labels.user.rsiHandle') }}
-                  </router-link>
-                </div>
-                <div class="role" />
-                <div class="joined">
-                  {{ $t('labels.fleet.members.invited') }} /
-                  {{ $t('labels.fleet.members.joined') }}
-                </div>
-                <div class="links" />
-                <div v-if="canEdit()" class="actions actions-3x">
-                  {{ $t('labels.actions') }}
-                </div>
-              </div>
-            </div>
-            <div
-              v-for="(member, index) in members"
-              :key="`members-${index}`"
-              class="fade-list-item col-xs-12 flex-list-item"
-            >
-              <div class="flex-list-row">
-                <div class="username">
-                  <Avatar :avatar="member.avatar" size="small" />
-                  {{ member.username }}
-                </div>
-                <div class="rsi-handle">
-                  <a
-                    v-if="member.rsiHandle"
-                    v-tooltip="$t('nav.rsiProfile')"
-                    :href="
-                      `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
-                    "
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {{ member.rsiHandle }}
-                  </a>
-                </div>
-                <div class="role">
-                  <template v-if="member.invitation">
-                    {{ $t('labels.fleet.members.invitation') }}
-                  </template>
-                  <span v-else-if="member.declinedAt" class="text-danger">
-                    {{ $t('labels.fleet.members.declined') }}
-                  </span>
-                  <template v-else>
-                    {{ member.roleLabel }}
-                  </template>
-                </div>
-                <div class="joined">
-                  <template v-if="member.invitation || member.declinedAt">
-                    {{ member.inviteSentAtLabel }}
-                  </template>
-                  <template v-else>
-                    {{ member.acceptedAtLabel }}
-                  </template>
-                </div>
-                <div class="links">
-                  <a
-                    v-tooltip="$t('labels.hangar')"
-                    :href="`/hangar/${member.username}`"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="fad fa-bookmark" />
-                  </a>
-                  <a
-                    v-if="member.homepage"
-                    v-tooltip="$t('labels.homepage')"
-                    :href="member.homepage"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="fad fa-home" />
-                  </a>
-                  <a
-                    v-if="member.youtube"
-                    v-tooltip="$t('labels.youtube')"
-                    :href="member.youtube"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="fab fa-youtube" />
-                  </a>
-                  <a
-                    v-if="member.twitch"
-                    v-tooltip="$t('labels.twitch')"
-                    :href="member.twitch"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="fab fa-twitch" />
-                  </a>
-                  <a
-                    v-if="member.guilded"
-                    v-tooltip="$t('labels.guilded')"
-                    :href="member.guilded"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="icon icon-rsi icon-small" />
-                  </a>
-                  <a
-                    v-if="member.discord"
-                    v-tooltip="$t('labels.discord')"
-                    :href="member.discord"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <i class="fab fa-discord" />
-                  </a>
-                </div>
-                <div v-if="canEdit()" class="actions actions-3x">
-                  <Btn
-                    v-if="
-                      member.role !== 'admin' &&
-                        !member.invitation &&
-                        !member.declinedAt
-                    "
-                    size="small"
-                    :disabled="!canEdit(member) || updating"
-                    :inline="true"
-                    @click.native="promoteMember(member)"
-                  >
-                    <i class="fal fa-chevron-up" />
-                  </Btn>
-                  <Btn
-                    v-if="
-                      member.role !== 'member' &&
-                        !member.invitation &&
-                        !member.declinedAt
-                    "
-                    size="small"
-                    :disabled="!canEdit(member) || updating"
-                    :inline="true"
-                    @click.native="demoteMember(member)"
-                  >
-                    <i class="fal fa-chevron-down" />
-                  </Btn>
-                  <Btn
-                    size="small"
-                    :disabled="!canEdit(member) || deleting"
-                    :inline="true"
-                    @click.native="removeMember(member)"
-                  >
-                    <i class="fad fa-trash-alt" />
-                  </Btn>
-                </div>
-              </div>
-            </div>
-          </transition-group>
-        </Panel>
-
-        <EmptyBox :visible="emptyBoxVisible" />
-
-        <Loader :loading="loading" fixed />
+      <template v-slot:default="{ records }">
+        <FleetMembersList :members="records" :role="fleet.myRole" />
       </template>
-
-      <Paginator
-        v-if="members.length"
-        slot="pagination-bottom"
-        :page="currentPage"
-        :total="totalPages"
-        right
-      />
     </FilteredList>
 
     <MemberModal v-if="fleet" ref="memberModal" :fleet="fleet" />
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import Loader from 'frontend/components/Loader'
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import Panel from 'frontend/components/Panel'
 import FilteredList from 'frontend/components/FilteredList'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import Btn from 'frontend/components/Btn'
-import EmptyBox from 'frontend/partials/EmptyBox'
 import FleetMembersFilterForm from 'frontend/partials/Fleets/MembersFilterForm'
 import MemberModal from 'frontend/partials/Fleets/MemberModal'
 import Avatar from 'frontend/components/Avatar'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
-import FiltersMixin from 'frontend/mixins/Filters'
-import PaginationMixin from 'frontend/mixins/Pagination'
-import FleetsMixin from 'frontend/mixins/Fleets'
-import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import fleetMembersCollection from 'frontend/collections/FleetMembers'
+import fleetMemberStatsCollection from 'frontend/collections/FleetMemberStats'
+import FleetMembersList from 'frontend/partials/Fleets/MembersList'
+import { fleetRouteGuard } from 'frontend/utils/Fleet'
 
-export default {
-  name: 'Fleet',
-
+@Component<FleetMembers>({
+  name: 'FleetMembers',
   components: {
     Btn,
     BreadCrumbs,
     Panel,
     FilteredList,
-    Loader,
-    EmptyBox,
     FleetMembersFilterForm,
     Avatar,
     MemberModal,
+    FleetMembersList,
   },
+  mixins: [MetaInfoMixin],
+  beforeRouteEnter: fleetRouteGuard,
+})
+export default class FleetMemmbers extends Vue {
+  fleet: Fleet | null = null
 
-  mixins: [MetaInfoMixin, PaginationMixin, FiltersMixin, FleetsMixin],
+  collection: FleetMembersCollection = fleetMembersCollection
 
-  data() {
-    return {
-      loading: false,
-      deleting: false,
-      updating: false,
-      fleet: null,
-      members: [],
-      invitations: [],
-      fleetCount: null,
-      sort: null,
+  statsCollection: FleetMembersStatsCollection = fleetMemberStatsCollection
+
+  get metaTitle(): string {
+    if (!this.fleet) {
+      return null
     }
-  },
 
-  computed: {
-    ...mapGetters('session', ['currentUser']),
+    return this.$t('title.fleets.members', { fleet: this.fleet.name })
+  }
 
-    sortByUsername() {
-      const currentSort = (this.$route.query.q || {}).sorts
+  get crumbs(): BreadCumb[] {
+    if (!this.fleet) {
+      return []
+    }
 
-      const sorts = []
-      if (Array.isArray(currentSort)) {
-        if (currentSort.includes('user_username asc')) {
-          sorts.push('user_username desc')
-        } else if (
-          !currentSort.includes('user_username asc') &&
-          !currentSort.includes('user_username desc')
-        ) {
-          sorts.push('user_username asc')
-        }
-      } else {
-        sorts.push('user_username asc')
-      }
-
-      return {
-        name: this.$route.name,
-        params: this.$route.params,
-        query: {
-          ...this.$route.query,
-          q: {
-            ...this.$route.query?.q,
-            sorts,
+    return [
+      {
+        to: {
+          name: 'fleet',
+          params: {
+            slug: this.fleet.slug,
           },
         },
-      }
-    },
+        label: this.fleet.name,
+      },
+    ]
+  }
 
-    sortByRsiHandle() {
-      const currentSort = (this.$route.query.q || {}).sorts
+  get filters(): FleetMembersParams {
+    return {
+      filters: this.$route.query.q,
+      slug: this.$route.params.slug,
+      page: this.$route.query.page,
+    }
+  }
 
-      const sorts = []
-      if (Array.isArray(currentSort)) {
-        if (currentSort.includes('user_rsi_handle asc')) {
-          sorts.push('user_rsi_handle desc')
-        } else if (
-          !currentSort.includes('user_rsi_handle asc') &&
-          !currentSort.includes('user_rsi_handle desc')
-        ) {
-          sorts.push('user_rsi_handle asc')
-        }
-      } else {
-        sorts.push('user_rsi_handle asc')
-      }
-
-      return {
-        name: this.$route.name,
-        params: this.$route.params,
-        query: {
-          ...this.$route.query,
-          q: {
-            ...this.$route.query?.q,
-            sorts,
-          },
-        },
-      }
-    },
-
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
-
-      return this.$t('title.fleets.members', { fleet: this.fleet.name })
-    },
-
-    emptyBoxVisible() {
-      return !this.loading && !this.members.length && this.isFilterSelected
-    },
-
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
-          },
-          label: this.fleet.name,
-        },
-      ]
-    },
-
-    canInvite() {
-      return ['admin', 'officer'].includes(this.myFleetRole)
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+  get canInvite(): boolean {
+    return ['admin', 'officer'].includes(this.fleet.myRole)
+  }
 
   mounted() {
-    if (!this.myFleet) {
-      this.$router.replace({ name: '404' })
-      return
-    }
-
     this.fetch()
     this.$comlink.$on('fleetMemberInvited', this.fetch)
-  },
+    this.$comlink.$on('fleetMemberUpdate', this.fetch)
+  }
 
   beforeDestroy() {
     this.$comlink.$off('fleetMemberInvited')
-  },
+    this.$comlink.$off('fleetMemberUpdate')
+  }
 
-  methods: {
-    canEdit(member) {
-      if (member) {
-        return (
-          this.myFleetRole === 'admin' &&
-          member.username !== this.currentUser.username
-        )
-      }
+  async fetch() {
+    await this.collection.findAll(this.filters)
+    await this.statsCollection.findAll(this.filters)
+  }
 
-      return this.myFleetRole === 'admin'
-    },
-
-    openInviteModal() {
-      this.$refs.memberModal.open()
-    },
-
-    async removeMember(member) {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.fleet.members.destroy'),
-        onConfirm: async () => {
-          const response = await this.$api.destroy(
-            `fleets/${this.$route.params.slug}/members/${member.username}`,
-          )
-
-          if (!response.error) {
-            displaySuccess({
-              text: this.$t('messages.fleet.members.destroy.success'),
-            })
-
-            this.fetch()
-          } else {
-            displayAlert({
-              text: this.$t('messages.fleet.members.destroy.failure'),
-            })
-            this.deleting = false
-          }
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
-    async demoteMember(member) {
-      this.updating = true
-
-      const response = await this.$api.put(
-        `fleets/${this.$route.params.slug}/members/${member.username}/demote`,
-      )
-
-      this.updating = false
-
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t('messages.fleet.members.demote.success'),
-        })
-        this.fetch()
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.members.demote.failure'),
-        })
-      }
-    },
-
-    async promoteMember(member) {
-      this.updating = true
-
-      const response = await this.$api.put(
-        `fleets/${this.$route.params.slug}/members/${member.username}/promote`,
-      )
-
-      this.updating = false
-
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t('messages.fleet.members.promote.success'),
-        })
-        this.fetch()
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.members.promote.failure'),
-        })
-      }
-    },
-
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}`)
-
-      if (!response.error) {
-        this.fleet = response.data
-
-        this.fetchMembers()
-        this.fetchFleetCount()
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-
-      this.resetLoading()
-    },
-
-    async fetchMembers() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/members`,
-        {
-          q: this.$route.query.q,
-          page: this.$route.query.page,
-        },
-      )
-
-      if (!response.error) {
-        this.members = response.data
-      }
-
-      this.setPages(response.meta)
-
-      this.resetLoading()
-    },
-
-    async fetchFleetCount() {
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}/member-quick-stats`,
-        {
-          q: this.$route.query.q,
-        },
-      )
-
-      if (!response.error) {
-        this.fleetCount = response.data
-      }
-    },
-
-    resetLoading() {
-      setTimeout(() => {
-        this.loading = false
-      }, 300)
-    },
-  },
+  openInviteModal() {
+    this.$refs.memberModal.open()
+  }
 }
 </script>

@@ -95,7 +95,6 @@ export default {
           this.modelIdEq = null
           this.stationIdEq = null
         }
-        this.filter()
       },
       deep: true,
     },

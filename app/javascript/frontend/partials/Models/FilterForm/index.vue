@@ -170,6 +170,11 @@ import RadioList from 'frontend/components/Form/RadioList'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
+import {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+} from 'frontend/utils/Filters'
 
 export default {
   components: {
@@ -207,6 +212,20 @@ export default {
     }
   },
 
+  computed: {
+    booleanOptions() {
+      return booleanOptions
+    },
+
+    priceOptions() {
+      return priceOptions
+    },
+
+    pledgePriceOptions() {
+      return pledgePriceOptions
+    },
+  },
+
   watch: {
     $route() {
       const query = this.$route.query.q || {}
@@ -230,13 +249,6 @@ export default {
         pledgePriceIn: query.pledgePriceIn || [],
         sizeIn: query.sizeIn || [],
       }
-    },
-
-    form: {
-      handler() {
-        this.filter()
-      },
-      deep: true,
     },
   },
 }

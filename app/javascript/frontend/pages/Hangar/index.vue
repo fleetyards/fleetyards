@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <FilteredCollectionList
+    <FilteredList
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -233,7 +233,7 @@
           </div>
         </transition-group>
       </template>
-    </FilteredCollectionList>
+    </FilteredList>
 
     <VehicleModal
       ref="vehicleModal"
@@ -253,7 +253,7 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import FilteredCollectionList from 'frontend/components/FilteredCollectionList'
+import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import PrimaryAction from 'frontend/components/PrimaryAction'
 import BtnDropdown from 'frontend/components/BtnDropdown'
@@ -267,7 +267,6 @@ import VehicleModal from 'frontend/partials/Vehicles/Modal'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Filters from 'frontend/mixins/Filters'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/collections/Vehicles'
@@ -277,7 +276,7 @@ import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 @Component<Hangar>({
   components: {
-    FilteredCollectionList,
+    FilteredList,
     Btn,
     PrimaryAction,
     BtnDropdown,
@@ -291,7 +290,7 @@ import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
     AddonsModal,
     NewVehiclesModal,
   },
-  mixins: [MetaInfo, Filters, HangarItemsMixin],
+  mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class Hangar extends Vue {
   deleting: boolean = false
