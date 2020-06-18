@@ -224,7 +224,7 @@ export default {
     ...mapGetters('session', ['currentUser']),
 
     avatarUrl() {
-      return this.newAvatar.url || this.currentUser.avatar
+      return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)
     },
 
     newAvatar() {

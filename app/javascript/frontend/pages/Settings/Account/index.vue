@@ -14,6 +14,7 @@
           :loading="deleting"
           variant="danger"
           size="large"
+          data-test="destroy-account"
           @click.native="destroy"
         >
           {{ $t('actions.destroyAccount') }}
