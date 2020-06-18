@@ -7,7 +7,7 @@ module Frontend
     include PrefetchHelper
 
     def index
-      route = request.fullpath.split('?').first.sub(%r{^\/}, '').tr('/', '_')
+      route = request.fullpath.split('?').first.sub(%r{^/}, '').tr('/', '_')
       route = 'home' if route.blank?
 
       @title = I18n.t("title.frontend.#{route}")

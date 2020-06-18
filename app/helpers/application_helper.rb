@@ -13,8 +13,7 @@ module ApplicationHelper
     elements << capture(&block) if block_given?
     elements << form_for(path, url: path, method: options[:method]) { |form| } if options[:method]
 
-    content_tag(
-      :a,
+    tag.a(
       href: (options[:method].blank? ? path : '#'),
       data: options[:data],
       title: options[:title],
