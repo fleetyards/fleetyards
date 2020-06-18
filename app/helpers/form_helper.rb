@@ -9,6 +9,6 @@ module FormHelper
     errors = obj.errors[method]
     return if errors.empty?
 
-    content_tag(:span, '', title: errors.join(' '), class: 'glyphicon glyphicon-warning-sign form-control-feedback', 'data-toggle' => 'tooltip')
+    tag.span('', title: errors.join(' '), class: 'glyphicon glyphicon-warning-sign form-control-feedback', 'data-toggle' => 'tooltip')
   end
 end
