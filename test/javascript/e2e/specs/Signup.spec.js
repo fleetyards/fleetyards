@@ -44,9 +44,7 @@ describe('Signup', () => {
 
       cy.url().should('include', '/settings/account')
 
-      cy.get('button')
-        .contains('Destroy')
-        .click()
+      cy.select('destroy-account').click()
 
       cy.acceptConfirm()
 
