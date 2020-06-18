@@ -11,7 +11,10 @@
         "limit": 120,
         "ignore-pattern": "^import |^export {(.*?)}|class [a-zA-Z]+ implements |// "
       }
-    ]
+    ],
+    "variable-name": {
+      "options": ["allow-leading-underscore"]
+    }
   },
   "linterOptions": {
     "exclude": ["**/*.js"]

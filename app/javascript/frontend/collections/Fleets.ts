@@ -16,6 +16,7 @@ export class FleetsCollection extends BaseCollection {
     return this.record
   }
 
+  // tslint:disable-next-line variable-name
   async create(form: FleetForm, _refetch: boolean = false) {
     const response = await post('fleets', form)
 

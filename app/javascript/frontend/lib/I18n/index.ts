@@ -13,10 +13,12 @@ I18n.translations.en = en
 I18n.translations.de = de
 
 const methods = {
+  // tslint:disable-next-line function-name
   t(key: string, options: Object) {
     return I18n.t(key, options)
   },
 
+  // tslint:disable-next-line function-name
   l(value: string, dateFormat = 'datetime.formats.default') {
     return format(parseISO(value), I18n.t(dateFormat))
   },
@@ -64,8 +66,10 @@ const methods = {
 
   toUEC(value: number, unit: string) {
     if (!unit) {
+      /* tslint:disable:no-parameter-reassignment */
       // eslint-disable-next-line no-param-reassign
       unit = I18n.t('labels.uec')
+      /* tslint:enable:no-parameter-reassignment */
     }
 
     if (!value) {
@@ -83,7 +87,8 @@ const methods = {
 export { I18n }
 
 export default {
-  install(Vue) {
+  // tslint:disable-next-line variable-name
+  install(Vue: any) {
     Object.keys(methods).forEach(methodName => {
       // eslint-disable-next-line no-param-reassign
       Vue.prototype[`$${methodName}`] = methods[methodName]
