@@ -19,3 +19,21 @@ type ModelsFilter = {
 interface ModelParams extends CollectionParams {
   filters: ModelsFilter
 }
+
+type ModelLoaner = {
+  id: string
+}
+
+type ModelModule = {
+  id: string
+}
+
+type ModelPaint = {
+  id: string
+  rsiId: string
+  rsiName: string
+}
+
+type ModelUpgrade = {
+  id: string
+}

@@ -162,10 +162,13 @@ import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import FleetsMixin from 'frontend/mixins/Fleets'
 import Chart from 'frontend/components/Chart'
 import Panel from 'frontend/components/Panel'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
 export default {
   name: 'Stats',
+
+  beforeRouteEnter: fleetRouteGuard,
 
   components: {
     Chart,
@@ -256,41 +259,14 @@ export default {
     },
   },
 
-  mounted() {
-    if (!this.myFleet) {
-      this.$router.replace({ name: '404' })
-      return
-    }
-
-    this.fetch()
-  },
-
   methods: {
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get(`fleets/${this.sid}`)
-
-      if (!response.error) {
-        this.fleet = response.data
-
-        this.loadQuickStats()
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-
-      this.resetLoading()
-    },
-
     async loadQuickStats() {
       const response = await this.$api.get(`fleets/${this.sid}/quick-stats`)
       if (!response.error) {
         this.quickStats = response.data
       }
     },
+
     async loadModelsByClassification() {
       const response = await this.$api.get(
         `fleets/${this.sid}/stats/models-by-classification`,
@@ -329,12 +305,6 @@ export default {
         return response.data
       }
       return []
-    },
-
-    resetLoading() {
-      setTimeout(() => {
-        this.loading = false
-      }, 300)
     },
   },
 }

@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container fleet-detail">
     <div v-if="fleet" class="row">
       <div class="col-xs-12 col-md-8">
         <h1>
@@ -78,22 +78,32 @@
         </a>
       </div>
     </div>
-    <div v-if="fleetCount" class="row">
+    <div v-if="fleetStats" class="row">
       <div class="col-xs-12 col-md-8">
         <ModelClassLabels
           v-if="fleet && fleet.myFleet"
           :label="$t('labels.fleet.classes')"
-          :count-data="fleetCount.classifications"
+          :count-data="fleetStats.classifications"
           filter-key="classificationIn"
         />
       </div>
       <div class="col-xs-12 col-md-4">
         <div class="page-actions">
-          <!-- <Starship42Btn :vehicles="fleetchartVehicles" /> -->
-
+          <Btn
+            :to="{
+              name: 'fleet-fleetchart',
+              params: { slug: $route.params.slug },
+            }"
+          >
+            <i class="fad fa-starship" />
+            {{ $t('labels.fleetchart') }}
+          </Btn>
           <Btn
             v-tooltip="$t('labels.hangarStats')"
-            :to="{ name: 'fleet-stats' }"
+            :to="{
+              name: 'fleet-stats',
+              params: { slug: $route.params.slug },
+            }"
           >
             <i class="fal fa-chart-bar" />
           </Btn>
@@ -103,7 +113,7 @@
 
     <div
       v-if="
-        fleetCount && fleetCount.metrics && !mobile && fleet && fleet.myFleet
+        fleetStats && fleetStats.metrics && !mobile && fleet && fleet.myFleet
       "
       class="row"
     >
@@ -113,7 +123,7 @@
             {{ $t('labels.hangarMetrics.totalMoney') }}:
           </div>
           <div class="metrics-value">
-            {{ $toDollar(fleetCount.metrics.totalMoney) }}
+            {{ $toDollar(fleetStats.metrics.totalMoney) }}
           </div>
         </div>
         <div class="metrics-item">
@@ -121,7 +131,7 @@
             {{ $t('labels.hangarMetrics.total') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.totalShips, 'ships') }}
+            {{ $toNumber(fleetStats.total, 'ships') }}
           </div>
         </div>
         <div class="metrics-item">
@@ -129,7 +139,7 @@
             {{ $t('labels.hangarMetrics.totalMinCrew') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.metrics.totalMinCrew, 'people') }}
+            {{ $toNumber(fleetStats.metrics.totalMinCrew, 'people') }}
           </div>
         </div>
         <div class="metrics-item">
@@ -137,7 +147,7 @@
             {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.metrics.totalMaxCrew, 'people') }}
+            {{ $toNumber(fleetStats.metrics.totalMaxCrew, 'people') }}
           </div>
         </div>
         <div class="metrics-item">
@@ -145,7 +155,7 @@
             {{ $t('labels.hangarMetrics.totalCargo') }}:
           </div>
           <div class="metrics-value">
-            {{ $toNumber(fleetCount.metrics.totalCargo, 'cargo') }}
+            {{ $toNumber(fleetStats.metrics.totalCargo, 'cargo') }}
           </div>
         </div>
       </div>
@@ -162,13 +172,6 @@
       <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <!-- <Starship42Btn
-              :vehicles="fleetchartVehicles"
-              size="small"
-              variant="link"
-              :with-icon="true"
-            /> -->
-
             <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
               <i class="fad fa-chart-bar" />
               {{ $t('labels.fleetStats') }}
@@ -187,26 +190,6 @@
             <i class="fad fa-info-square" />
             {{ toggleDetailsTooltip }}
           </Btn>
-          <!--
-          <DownloadScreenshotBtn
-            v-if="fleet && fleetchartVisible"
-            element="#fleetchart"
-            :filename="`${fleet.slug}-fleetchart`"
-            size="small"
-            variant="link"
-            :show-tooltip="false"
-          /> -->
-
-          <!-- <Btn size="small" variant="link" @click.native="toggleFleetchart">
-            <template v-if="fleetchartVisible">
-              <i class="fas fa-th" />
-              {{ $t('actions.hideFleetchart') }}
-            </template>
-            <template v-else>
-              <i class="fad fa-starship" />
-              {{ $t('actions.showFleetchart') }}
-            </template>
-          </Btn> -->
 
           <Btn size="small" variant="link" @click.native="toggleGrouped">
             <template v-if="grouped">
@@ -227,26 +210,6 @@
       </template>
 
       <template v-slot:default="{ records, filterVisible }">
-        <!-- <transition name="fade" appear>
-          <div
-            v-if="fleetchartVisible && fleetchartVehicles.length"
-            class="row"
-          >
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
-              <FleetchartSlider
-                :initial-scale="fleetchartScale"
-                @change="updateScale"
-              />
-            </div>
-          </div>
-        </transition>
-
-        <FleetchartList
-          v-if="fleetchartVisible"
-          :items="fleetchartVehicles"
-          :scale="fleetchartScale"
-        /> -->
-
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <template v-if="grouped">
             <div
@@ -297,19 +260,15 @@ import { Getter } from 'vuex-class'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
 import BtnDropdown from 'frontend/components/BtnDropdown'
-import Starship42Btn from 'frontend/components/Starship42Btn'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
 import FleetVehiclesFilterForm from 'frontend/partials/Fleets/FilterForm'
 import FleetModelsFilterForm from 'frontend/partials/Models/FilterForm'
 import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import Avatar from 'frontend/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
-import { publicFleetRouteGuard } from 'frontend/utils/Fleet'
+import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetModelsCollection from 'frontend/collections/FleetModels'
 import fleetVehiclesCollection from 'frontend/collections/FleetVehicles'
 
@@ -317,24 +276,18 @@ import fleetVehiclesCollection from 'frontend/collections/FleetVehicles'
   components: {
     Btn,
     BtnDropdown,
-    Starship42Btn,
     FilteredList,
-    DownloadScreenshotBtn,
     ModelPanel,
-    FleetchartList,
     ModelClassLabels,
     AddonsModal,
     FleetVehiclesFilterForm,
     FleetModelsFilterForm,
-    FleetchartSlider,
     Avatar,
   },
   mixins: [MetaInfo, HangarItemsMixin],
   beforeRouteEnter: publicFleetRouteGuard,
 })
 export default class FleetDetail extends Vue {
-  fleetCount: FleetStats | null = null
-
   fleet: Fleet | null = null
 
   modelsCollection: FleetModelsCollection = fleetModelsCollection
@@ -357,17 +310,9 @@ export default class FleetDetail extends Vue {
     return this.fleet.name
   }
 
-  // ...mapGetters(['mobile']),
-
-  // ...mapGetters('session', ['currentUser']),
-
-  // ...mapGetters('fleet', [
-  //   'detailsVisible',
-  //   'fleetchartVisible',
-  //   'fleetchartScale',
-  //   'grouped',
-  //   'money',
-  // ]),
+  get fleetStats() {
+    return this.vehiclesCollection.stats
+  }
 
   get toggleDetailsTooltip() {
     if (this.detailsVisible) {
@@ -390,6 +335,7 @@ export default class FleetDetail extends Vue {
       this.modelsCollection.findAll(this.filters)
     } else {
       this.vehiclesCollection.findAll(this.filters)
+      this.vehiclesCollection.findStats(this.filters)
     }
   }
 
@@ -413,46 +359,12 @@ export default class FleetDetail extends Vue {
     this.$store.dispatch('fleet/toggleMoney')
   }
 
-  // updateScale(value) {
-  //   this.$store.commit('fleet/setFleetchartScale', value)
-  // }
-
-  fetch() {
-    // await this.statsCollection.findAll(this.filters)
-  }
-
-  // async fetchFleetchart() {
-  //   this.loading = true
-
-  //   const response = await this.$api.get(
-  //     `fleets/${this.$route.params.slug}/fleetchart`,
-  //     {
-  //       q: this.$route.query.q,
-  //     },
-  //   )
-
-  //   if (!response.error) {
-  //     this.fleetchartVehicles = response.data
-  //   }
-
-  //   this.resetLoading()
-  // }
-
-  async fetchFleetCount() {
-    const response = await this.$api.get(
-      `fleets/${this.$route.params.slug}/quick-stats`,
-      {
-        q: this.$route.query.q,
-      },
-    )
-
-    if (!response.error) {
-      this.fleetCount = response.data
+  async fetch() {
+    if (this.grouped) {
+      return
     }
+
+    await this.vehiclesCollection.findStats(this.filters)
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

@@ -26,3 +26,9 @@ interface FleetModelsParams extends CollectionParams {
   slug: string
   filters: ModelsFilter
 }
+
+type FleetVehicleStats = {
+  total: number
+  classifications: ClassificationMetrics
+  metrics: VehicleMetrics
+}

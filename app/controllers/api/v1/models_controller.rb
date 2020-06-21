@@ -383,16 +383,6 @@ module Api
           id_not_in: []
         )
       end
-
-      private def without_images?
-        @without_images ||= params[:withoutImages] || params[:without_images]
-      end
-      helper_method :without_images?
-
-      private def without_videos?
-        @without_videos ||= params[:withoutVideos] || params[:without_videos]
-      end
-      helper_method :without_videos?
     end
   end
 end

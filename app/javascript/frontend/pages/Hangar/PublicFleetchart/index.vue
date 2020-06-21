@@ -89,9 +89,9 @@
         <div class="row">
           <div class="col-xs-12 col-md-9">
             <ModelClassLabels
-              v-if="statsCollection.record"
+              v-if="collection.stats"
               :label="$t('labels.hangar')"
-              :count-data="statsCollection.record.classifications"
+              :count-data="collection.stats.classifications"
             />
           </div>
           <div class="col-xs-12 col-md-3">
@@ -151,9 +151,8 @@ import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
 import Avatar from 'frontend/components/Avatar'
-import publicVehiclesFleetchartCollection from 'frontend/collections/PublicVehiclesFleetchart'
+import publicVehiclesCollection from 'frontend/collections/PublicVehicles'
 import publicUserCollection from 'frontend/collections/PublicUser'
-import publicHangarStatsCollection from 'frontend/collections/PublicHangarStats'
 
 @Component<PublicHangar>({
   components: {
@@ -173,11 +172,9 @@ import publicHangarStatsCollection from 'frontend/collections/PublicHangarStats'
 export default class PublicHangar extends Vue {
   loading: boolean = false
 
-  collection: PublicVehiclesFleetchartCollection = publicVehiclesFleetchartCollection
+  collection: PublicVehiclesCollection = publicVehiclesCollection
 
   userCollection: PublicUserCollection = publicUserCollection
-
-  statsCollection: PublicHangarStatsCollection = publicHangarStatsCollection
 
   @Getter('mobile') mobile
 
@@ -235,8 +232,11 @@ export default class PublicHangar extends Vue {
 
   async fetch() {
     await this.userCollection.findByUsername(this.username)
-    await this.collection.findAllByUsername(this.username, this.filters)
-    await this.statsCollection.findByUsername(this.username)
+    await this.collection.findAllFleetchartByUsername(
+      this.username,
+      this.filters,
+    )
+    await this.collection.findStatsByUsername(this.username)
   }
 }
 </script>

@@ -268,7 +268,10 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import AddToHangar from 'frontend/partials/Models/AddToHangar'
@@ -282,9 +285,9 @@ import ModelSpeedMetrics from 'frontend/partials/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
-import { mapGetters } from 'vuex'
+import { modelRouteGuard } from 'frontend/utils/RouteGuards'
 
-export default {
+@Component<ModelDetail>({
   components: {
     Loader,
     AddToHangar,
@@ -298,205 +301,171 @@ export default {
     ModelPanel,
     BreadCrumbs,
   },
-
   mixins: [MetaInfo, HangarItemsMixin],
+  beforeRouteEnter: modelRouteGuard,
+})
+export default class ModelDetail extends Vue {
+  loading: boolean = false
 
-  data() {
-    return {
-      loading: false,
-      loadingVariants: false,
-      loadingLoaners: false,
-      loadingPaints: false,
-      loadingModules: false,
-      loadingUpgrades: false,
-      show3d: false,
-      model: null,
-      variants: [],
-      paints: [],
-      loaners: [],
-      modules: [],
-      upgrades: [],
-      attributes: [
-        'length',
-        'beam',
-        'height',
-        'mass',
-        'cargo',
-        'minCrew',
-        'maxCrew',
-        'scmSpeed',
-        'afterburnerSpeed',
-      ],
+  loadingVariants: boolean = false
+
+  loadingLoaners: boolean = false
+
+  loadingPaints: boolean = false
+
+  loadingModules: boolean = false
+
+  loadingUpgrades: boolean = false
+
+  show3d: boolean = false
+
+  model: Model | null = null
+
+  variants: Model[] = []
+
+  paints: ModelPaint[] = []
+
+  loaners: ModelLoaner[] = []
+
+  modules: ModelModule[] = []
+
+  upgrades: ModelUpgrade[] = []
+
+  attributes: string[] = [
+    'length',
+    'beam',
+    'height',
+    'mass',
+    'cargo',
+    'minCrew',
+    'maxCrew',
+    'scmSpeed',
+    'afterburnerSpeed',
+  ]
+
+  @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
+
+  @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
+
+  get starship42Url(): string {
+    return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
+  }
+
+  get starship42IframeUrl(): string {
+    return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
+  }
+
+  get erkulUrl(): string | null {
+    if (!this.model || this.model.productionStatus !== 'flight-ready') {
+      return null
     }
-  },
 
-  computed: {
-    ...mapGetters('app', ['overlayVisible']),
+    return `https://www.erkul.games/calculator;ship=${this.model.erkulsSlug}`
+  }
 
-    ...mapGetters('models', ['holoviewerVisible']),
+  get metaTitle() {
+    if (!this.model) {
+      return null
+    }
 
-    starship42Url() {
-      return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
-    },
+    return this.$t('title.model', {
+      name: this.model.name,
+      manufacturer: this.model.manufacturer.name,
+    })
+  }
 
-    starship42IframeUrl() {
-      return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
-    },
+  get crumbs() {
+    if (!this.model) {
+      return null
+    }
 
-    erkulUrl() {
-      if (!this.model || this.model.productionStatus !== 'flight-ready') {
-        return null
-      }
-
-      return `https://www.erkul.games/calculator;ship=${this.model.erkulsSlug}`
-    },
-
-    metaTitle() {
-      if (!this.model) {
-        return null
-      }
-
-      return this.$t('title.model', {
-        name: this.model.name,
-        manufacturer: this.model.manufacturer.name,
-      })
-    },
-
-    crumbs() {
-      if (!this.model) {
-        return null
-      }
-
-      return [
-        {
-          to: {
-            name: 'models',
-            hash: `#${this.model.slug}`,
-          },
-          label: this.$t('nav.models.index'),
+    return [
+      {
+        to: {
+          name: 'models',
+          hash: `#${this.model.slug}`,
         },
-      ]
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-      this.fetchModules()
-      this.fetchUpgrades()
-      this.fetchPaints()
-      this.fetchVariants()
-      this.fetchLoaners()
-    },
-  },
+        label: this.$t('nav.models.index'),
+      },
+    ]
+  }
 
   created() {
-    this.fetch()
-  },
+    this.fetchExtras()
+  }
 
   mounted() {
     if (this.$route.query.holoviewer) {
       this.$store.dispatch('models/enableHoloviewer')
     }
-  },
+  }
 
-  methods: {
-    toggleHoloviewer() {
-      this.$store.dispatch('models/toggleHoloviewer')
-    },
+  toggleHoloviewer() {
+    this.$store.dispatch('models/toggleHoloviewer')
+  }
 
-    async fetch() {
-      this.model = this.$prefetch('model')
-      if (this.model) {
-        return
-      }
+  fetchExtras() {
+    this.fetchModules()
+    this.fetchUpgrades()
+    this.fetchPaints()
+    this.fetchVariants()
+    this.fetchLoaners()
+  }
 
-      this.loading = true
+  async fetchModules() {
+    this.loadingModules = true
+    const response = await this.$api.get(
+      `models/${this.$route.params.slug}/modules`,
+    )
+    this.loadingModules = false
+    if (!response.error) {
+      this.modules = response.data
+    }
+  }
 
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}`,
-        {
-          withoutImages: true,
-          withoutVideos: true,
-        },
-      )
+  async fetchUpgrades() {
+    this.loadingUpgrades = true
+    const response = await this.$api.get(
+      `models/${this.$route.params.slug}/upgrades`,
+    )
+    this.loadingUpgrades = false
+    if (!response.error) {
+      this.upgrades = response.data
+    }
+  }
 
-      this.loading = false
+  async fetchPaints() {
+    this.loadingPaints = true
+    const response = await this.$api.get(
+      `models/${this.$route.params.slug}/paints`,
+    )
+    this.loadingPaints = false
+    if (!response.error) {
+      this.paints = response.data
+    }
+  }
 
-      if (!response.error) {
-        this.model = response.data
-        this.fetchExtras()
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-    },
+  async fetchVariants() {
+    this.loadingVariants = true
+    const response = await this.$api.get(
+      `models/${this.$route.params.slug}/variants`,
+    )
+    this.loadingVariants = false
+    if (!response.error) {
+      this.variants = response.data
+    }
+  }
 
-    fetchExtras() {
-      this.fetchModules()
-      this.fetchUpgrades()
-      this.fetchPaints()
-      this.fetchVariants()
-      this.fetchLoaners()
-    },
-
-    async fetchModules() {
-      this.loadingModules = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/modules`,
-      )
-      this.loadingModules = false
-      if (!response.error) {
-        this.modules = response.data
-      }
-    },
-
-    async fetchUpgrades() {
-      this.loadingUpgrades = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/upgrades`,
-      )
-      this.loadingUpgrades = false
-      if (!response.error) {
-        this.upgrades = response.data
-      }
-    },
-
-    async fetchPaints() {
-      this.loadingPaints = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/paints`,
-      )
-      this.loadingPaints = false
-      if (!response.error) {
-        this.paints = response.data
-      }
-    },
-
-    async fetchVariants() {
-      this.loadingVariants = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/variants`,
-      )
-      this.loadingVariants = false
-      if (!response.error) {
-        this.variants = response.data
-      }
-    },
-
-    async fetchLoaners() {
-      this.loadingLoaners = true
-      const response = await this.$api.get(
-        `models/${this.$route.params.slug}/loaners`,
-      )
-      this.loadingLoaners = false
-      if (!response.error) {
-        this.loaners = response.data
-      }
-    },
-  },
+  async fetchLoaners() {
+    this.loadingLoaners = true
+    const response = await this.$api.get(
+      `models/${this.$route.params.slug}/loaners`,
+    )
+    this.loadingLoaners = false
+    if (!response.error) {
+      this.loaners = response.data
+    }
+  }
 }
 </script>
 

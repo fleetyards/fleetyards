@@ -109,15 +109,17 @@ export default class FilteredList extends Vue {
       return {}
     },
   })
-  params!: RouteParams
+  params: RouteParams
 
-  @Prop({ default: null }) routeQuery!: RouteQuery
+  @Prop({ default: 'findAll' }) collectionMethod: string
 
-  @Prop({ default: null }) hash!: string
+  @Prop({ default: null }) routeQuery: RouteQuery
 
-  @Prop({ default: false }) paginated!: boolean
+  @Prop({ default: null }) hash: string
 
-  @Prop({ default: false }) hideFilter!: boolean
+  @Prop({ default: false }) paginated: boolean
+
+  @Prop({ default: false }) hideFilter: boolean
 
   @Getter('filtersVisible') filtersVisible
 
@@ -241,7 +243,11 @@ export default class FilteredList extends Vue {
       }
     }
 
-    await this.collection.findAll(params)
+    if (!this.collection[this.collectionMethod]) {
+      throw Error(`Method "${this.collectionMethod}" not found on Collection`)
+    }
+
+    await this.collection[this.collectionMethod](params)
 
     this.scrollToAnchor()
 

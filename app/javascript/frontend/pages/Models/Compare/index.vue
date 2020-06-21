@@ -281,10 +281,7 @@ export default {
     },
 
     async fetchModel(slug) {
-      const response = await this.$api.get(`models/${slug}`, {
-        withoutImages: true,
-        withoutVideos: true,
-      })
+      const response = await this.$api.get(`models/${slug}`)
 
       if (!response.error) {
         return response.data

@@ -4,6 +4,8 @@ import BaseCollection from './Base'
 export class PublicVehiclesCollection extends BaseCollection {
   records: Vehicle[] = []
 
+  stats: PublicVehicleStats | null = null
+
   params: VehicleParams | null = null
 
   username: string | null = null
@@ -28,12 +30,34 @@ export class PublicVehiclesCollection extends BaseCollection {
     return this.records
   }
 
+  async findAllFleetchartByUsername(username: string): Promise<Vehicle[]> {
+    const response = await get(`vehicles/${username}/fleetchart`)
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    return this.records
+  }
+
   async refresh(): Promise<void> {
     if (!this.username) {
       return
     }
 
     await this.findAllByUsername(this.username, this.params)
+  }
+
+  async findStatsByUsername(
+    username: string,
+  ): Promise<PublicVehicleStats | null> {
+    const response = await get(`vehicles/${username}/quick-stats`)
+
+    if (!response.error) {
+      this.stats = response.data
+    }
+
+    return this.stats
   }
 }
 

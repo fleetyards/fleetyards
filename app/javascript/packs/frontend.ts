@@ -1,6 +1,6 @@
 import 'stylesheets/frontend'
 import Vue from 'vue'
-import App from 'frontend/App'
+import App from 'frontend/App.vue'
 import router from 'frontend/lib/Router'
 import store from 'frontend/lib/Store'
 import 'frontend/lib/LazyLoad'
@@ -10,7 +10,6 @@ import ApiClient from 'frontend/lib/ApiClient'
 import Subscriptions from 'frontend/lib/Subscriptions'
 import Comlink from 'frontend/lib/Comlink'
 import Meta from 'vue-meta'
-import DataPrefetch from 'frontend/lib/DataPrefetch'
 import Ahoy from 'frontend/lib/Ahoy'
 import Validations from 'frontend/lib/Validations'
 import VTooltip from 'v-tooltip'
@@ -19,7 +18,6 @@ Vue.use(Subscriptions)
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
-Vue.use(DataPrefetch)
 Vue.use(Ahoy)
 Vue.use(Validations)
 
@@ -36,17 +34,19 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.config.productionTip = false
 }
 
+// @ts-ignore
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
-// declare global {
-//   interface Window {
-//     APP_VERSION: string;
-//     STORE_VERSION: string;
-//     APP_CODENAME: string;
-//     API_ENDPOINT: string;
-//   }
-// }
+declare global {
+  interface Window {
+    APP_VERSION: string
+    STORE_VERSION: string
+    APP_CODENAME: string
+    API_ENDPOINT: string
+    DATA_PREFILL: KeyValuePair
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {

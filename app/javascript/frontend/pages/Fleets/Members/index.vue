@@ -7,10 +7,10 @@
       <div class="col-xs-8">
         <h1>
           {{ $t('headlines.fleets.members') }}
-          <small v-if="statsCollection.record">
+          <small v-if="collection.stats">
             {{
               $t('labels.fleet.members.total', {
-                count: statsCollection.record.total,
+                count: collection.stats.total,
               })
             }}
           </small>
@@ -57,9 +57,8 @@ import MemberModal from 'frontend/partials/Fleets/MemberModal'
 import Avatar from 'frontend/components/Avatar'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import fleetMembersCollection from 'frontend/collections/FleetMembers'
-import fleetMemberStatsCollection from 'frontend/collections/FleetMemberStats'
 import FleetMembersList from 'frontend/partials/Fleets/MembersList'
-import { fleetRouteGuard } from 'frontend/utils/Fleet'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 
 @Component<FleetMembers>({
   name: 'FleetMembers',
@@ -80,8 +79,6 @@ export default class FleetMemmbers extends Vue {
   fleet: Fleet | null = null
 
   collection: FleetMembersCollection = fleetMembersCollection
-
-  statsCollection: FleetMembersStatsCollection = fleetMemberStatsCollection
 
   get metaTitle(): string {
     if (!this.fleet) {
@@ -134,7 +131,7 @@ export default class FleetMemmbers extends Vue {
 
   async fetch() {
     await this.collection.findAll(this.filters)
-    await this.statsCollection.findAll(this.filters)
+    await this.collection.findStats(this.filters)
   }
 
   openInviteModal() {

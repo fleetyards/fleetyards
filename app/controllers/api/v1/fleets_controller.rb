@@ -161,8 +161,7 @@ module Api
         modules = vehicles.map(&:model_modules).flatten
 
         @quick_stats = OpenStruct.new(
-          total_ships: vehicles.count,
-          total_members: fleet.fleet_memberships.count,
+          total: vehicles.count,
           classifications: models.map(&:classification).uniq.compact.map do |classification|
             OpenStruct.new(
               count: models.count { |model| model.classification == classification },
@@ -172,7 +171,6 @@ module Api
             )
           end,
           metrics: {
-            total_members: fleet.fleet_memberships.size,
             total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
             total_min_crew: models.map(&:min_crew).sum(&:to_i),
             total_max_crew: models.map(&:max_crew).sum(&:to_i),
@@ -212,7 +210,7 @@ module Api
 
         models_by_manufacturer = transform_for_pie_chart(
           fleet.manufacturers.uniq
-              .map { |m| { m.name => m.models.where(id: fleet.public_models.pluck(:id)).count } }
+              .map { |m| { m.name => m.models.where(id: fleet.models.pluck(:id)).count } }
               .reduce(:merge) || []
         )
 

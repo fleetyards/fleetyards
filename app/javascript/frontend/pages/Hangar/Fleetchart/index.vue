@@ -15,8 +15,8 @@
         <div class="hangar-header">
           <div class="hangar-labels">
             <ModelClassLabels
-              v-if="statsCollection.record"
-              :count-data="statsCollection.record.classifications"
+              v-if="hangarStats"
+              :count-data="hangarStats.classifications"
               :label="$t('labels.hangar')"
               filter-key="classificationIn"
             />
@@ -36,6 +36,7 @@
 
     <FilteredList
       :collection="collection"
+      collection-method="findAllFleetchart"
       :name="$route.name"
       :route-query="$route.query"
       :hash="$route.hash"
@@ -110,15 +111,12 @@ import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
 import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import vehiclesFleetchartCollection, {
-  VehiclesFleetchartCollection,
-} from 'frontend/collections/VehiclesFleetchart'
+import vehiclesCollection, {
+  VehiclesCollection,
+} from 'frontend/collections/Vehicles'
 import hangarGroupsCollection, {
   HangarGroupsCollection,
 } from 'frontend/collections/HangarGroups'
-import hangarStatsCollection, {
-  HangarStatsCollection,
-} from 'frontend/collections/HangarStats'
 
 @Component<HangarFleetchart>({
   components: {
@@ -146,11 +144,9 @@ export default class HangarFleetchart extends Vue {
 
   vehiclesChannel = null
 
-  collection: VehiclesFleetchartCollection = vehiclesFleetchartCollection
+  collection: VehiclesCollection = vehiclesCollection
 
   groupsCollection: HangarGroupsCollection = hangarGroupsCollection
-
-  statsCollection: HangarStatsCollection = hangarStatsCollection
 
   @Getter('mobile') mobile
 
@@ -158,12 +154,16 @@ export default class HangarFleetchart extends Vue {
 
   @Getter('fleetchartScale', { namespace: 'hangar' }) fleetchartScale
 
-  get hangarGroupCounts() {
-    if (!this.statsCollection.record) {
+  get hangarGroupCounts(): HangarGroupMetrics[] {
+    if (!this.hangarStats) {
       return []
     }
 
-    return this.statsCollection.record.groups
+    return this.hangarStats.groups
+  }
+
+  get hangarStats(): VehicleStats | null {
+    return this.collection.stats
   }
 
   get filters() {
@@ -213,7 +213,7 @@ export default class HangarFleetchart extends Vue {
   async fetch() {
     await this.collection.findAll(this.filters)
     await this.groupsCollection.findAll()
-    await this.statsCollection.current(this.filters)
+    await this.collection.findStats(this.filters)
   }
 
   setupUpdates() {

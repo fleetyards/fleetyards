@@ -6,7 +6,7 @@ export const routes = [
     name: 'fleet-add',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.fleets" */
+        /* webpackChunkName: "frontend.page.fleets-add" */
         'frontend/pages/Fleets/Add'
       ),
     meta: {
@@ -19,7 +19,7 @@ export const routes = [
     name: 'fleet-preview',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.fleets" */
+        /* webpackChunkName: "frontend.page.fleets-preview" */
         'frontend/pages/Fleets/Preview'
       ),
     meta: {
@@ -31,7 +31,7 @@ export const routes = [
     name: 'fleet-invites',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.fleets" */
+        /* webpackChunkName: "frontend.page.fleets-invites" */
         'frontend/pages/Fleets/Invites'
       ),
     meta: {
@@ -46,6 +46,15 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.fleets" */
         'frontend/pages/Fleets/Show'
+      ),
+  },
+  {
+    path: ':slug/fleetchart/',
+    name: 'fleet-fleetchart',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.fleets" */
+        'frontend/pages/Fleets/Fleetchart'
       ),
   },
   {

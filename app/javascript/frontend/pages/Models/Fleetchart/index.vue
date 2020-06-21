@@ -10,6 +10,7 @@
     </div>
     <FilteredList
       :collection="collection"
+      collection-method="findAllFleetchart"
       :name="$route.name"
       :route-query="$route.query"
       :hash="$route.hash"
@@ -55,7 +56,7 @@ import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import ModelsFleetchartCollection from 'frontend/collections/ModelsFleetchart'
+import ModelsCollection from 'frontend/collections/Models'
 
 @Component<ModelsFleetchart>({
   components: {
@@ -69,7 +70,7 @@ import ModelsFleetchartCollection from 'frontend/collections/ModelsFleetchart'
   mixins: [MetaInfo, Filters],
 })
 export default class ModelsFleetchart extends Vue {
-  collection = ModelsFleetchartCollection
+  collection = ModelsCollection
 
   @Mutation('setFleetchartScale', { namespace: 'models' }) updateScale: any
 

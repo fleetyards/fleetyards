@@ -9,7 +9,8 @@ const cleanData = function cleanData(key) {
   window.DATA_PREFILL[key] = null
 }
 
-const prefetch = function prefetch(key) {
+// eslint-disable-next-line import/prefer-default-export
+export const prefetch = function prefetch(key) {
   const json = getByKey(key)
   cleanData(key)
 
@@ -22,11 +23,4 @@ const prefetch = function prefetch(key) {
     return element.map(item => JSON.parse(item))
   }
   return element
-}
-
-export default {
-  install(Vue) {
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$prefetch = prefetch
-  },
 }

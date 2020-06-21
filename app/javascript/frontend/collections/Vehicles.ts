@@ -4,6 +4,8 @@ import BaseCollection from './Base'
 export class VehiclesCollection extends BaseCollection {
   records: Vehicle[] = []
 
+  stats: VehicleStats | null = null
+
   params: VehicleParams | null = null
 
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
@@ -23,8 +25,34 @@ export class VehiclesCollection extends BaseCollection {
     return this.records
   }
 
+  async findAllFleetchart(params: VehicleParams | null): Promise<Vehicle[]> {
+    this.params = params
+
+    const response = await get('vehicles/fleetchart', {
+      q: params?.filters,
+    })
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    return this.records
+  }
+
   async refresh(): Promise<void> {
     await this.findAll(this.params)
+  }
+
+  async findStats(params: VehicleParams): Promise<VehicleStats | null> {
+    const response = await get('vehicles/quick-stats', {
+      q: params.filters,
+    })
+
+    if (!response.error) {
+      this.stats = response.data
+    }
+
+    return this.stats
   }
 
   async export(params: VehicleParams): Promise<Vehicle[] | null> {

@@ -26,3 +26,34 @@ type VehiclesFilter = {
 interface VehicleParams extends CollectionParams {
   filters: VehiclesFilter
 }
+
+type VehicleMetrics = {
+  totalMoney: number
+  totalMinCrew: number
+  totalMaxCrew: number
+  totalCargo: number
+}
+
+type ClassificationMetrics = {
+  name: string
+  label: string
+  count: number
+}
+
+type HangarGroupMetrics = {
+  id: string
+  slug: string
+  count: number
+}
+
+type VehicleStats = {
+  total: number
+  classifications: ClassificationMetrics
+  groups: HangarGroupMetrics[]
+  metrics: VehicleMetrics
+}
+
+type PublicVehicleStats = {
+  total: number
+  classifications: ClassificationMetrics
+}

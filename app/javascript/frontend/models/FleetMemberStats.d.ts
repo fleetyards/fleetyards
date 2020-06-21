@@ -1,3 +1,0 @@
-type FleetMemberStats = {
-  total: number
-}

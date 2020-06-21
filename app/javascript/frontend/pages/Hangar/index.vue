@@ -12,8 +12,8 @@
         <div class="hangar-header">
           <div class="hangar-labels">
             <ModelClassLabels
-              v-if="statsCollection.record"
-              :count-data="statsCollection.record.classifications"
+              v-if="hangarStats"
+              :count-data="hangarStats.classifications"
               :label="$t('labels.hangar')"
               filter-key="classificationIn"
             />
@@ -47,8 +47,8 @@
         <div
           v-if="
             collection.records.length &&
-              statsCollection.record &&
-              statsCollection.record.metrics &&
+              hangarStats &&
+              hangarStats.metrics &&
               !mobile
           "
           class="row"
@@ -62,7 +62,7 @@
                 {{ $t('labels.hangarMetrics.totalMoney') }}:
               </div>
               <div class="metrics-value">
-                {{ $toDollar(statsCollection.record.metrics.totalMoney) }}
+                {{ $toDollar(hangarStats.metrics.totalMoney) }}
               </div>
             </div>
             <div class="metrics-item">
@@ -70,7 +70,7 @@
                 {{ $t('labels.hangarMetrics.total') }}:
               </div>
               <div class="metrics-value">
-                {{ $toNumber(statsCollection.record.total, 'ships') }}
+                {{ $toNumber(hangarStats.total, 'ships') }}
               </div>
             </div>
             <div class="metrics-item">
@@ -78,12 +78,7 @@
                 {{ $t('labels.hangarMetrics.totalMinCrew') }}:
               </div>
               <div class="metrics-value">
-                {{
-                  $toNumber(
-                    statsCollection.record.metrics.totalMinCrew,
-                    'people',
-                  )
-                }}
+                {{ $toNumber(hangarStats.metrics.totalMinCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
@@ -91,12 +86,7 @@
                 {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
               </div>
               <div class="metrics-value">
-                {{
-                  $toNumber(
-                    statsCollection.record.metrics.totalMaxCrew,
-                    'people',
-                  )
-                }}
+                {{ $toNumber(hangarStats.metrics.totalMaxCrew, 'people') }}
               </div>
             </div>
             <div class="metrics-item">
@@ -104,9 +94,7 @@
                 {{ $t('labels.hangarMetrics.totalCargo') }}:
               </div>
               <div class="metrics-value">
-                {{
-                  $toNumber(statsCollection.record.metrics.totalCargo, 'cargo')
-                }}
+                {{ $toNumber(hangarStats.metrics.totalCargo, 'cargo') }}
               </div>
             </div>
           </div>
@@ -271,7 +259,6 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/collections/Vehicles'
 import hangarGroupsCollection from 'frontend/collections/HangarGroups'
-import hangarStatsCollection from 'frontend/collections/HangarStats'
 import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 @Component<Hangar>({
@@ -305,8 +292,6 @@ export default class Hangar extends Vue {
 
   groupsCollection: HangarGroupsCollection = hangarGroupsCollection
 
-  statsCollection: HangarStatsCollection = hangarStatsCollection
-
   @Getter('mobile') mobile
 
   @Getter('currentUser', { namespace: 'session' }) currentUser
@@ -317,12 +302,16 @@ export default class Hangar extends Vue {
 
   @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
 
-  get hangarGroupCounts() {
-    if (!this.statsCollection.record) {
+  get hangarGroupCounts(): HangarGroupMetrics[] {
+    if (!this.hangarStats) {
       return []
     }
 
-    return this.statsCollection.record.groups
+    return this.hangarStats.groups
+  }
+
+  get hangarStats(): VehicleStats | null {
+    return this.collection.stats
   }
 
   get toggleDetailsTooltip() {
@@ -415,7 +404,7 @@ export default class Hangar extends Vue {
   async fetch() {
     await this.collection.findAll(this.filters)
     await this.groupsCollection.findAll()
-    await this.statsCollection.current(this.filters)
+    await this.collection.findStats(this.filters)
   }
 
   setupUpdates() {

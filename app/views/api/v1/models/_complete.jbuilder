@@ -18,15 +18,5 @@ json.cache! ['v1', model] do
   json.rental_at do
     json.array! model.rental_at, partial: 'api/v1/models/shop', as: :shop_commodity
   end
-  unless without_images?
-    json.images do
-      json.array! model.images.enabled, partial: 'api/v1/images/base', as: :image
-    end
-  end
-  unless without_videos?
-    json.videos do
-      json.array! model.videos, partial: 'api/v1/models/video', as: :video
-    end
-  end
   json.partial! 'api/shared/dates', record: model
 end

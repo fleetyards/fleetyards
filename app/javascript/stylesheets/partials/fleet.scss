@@ -1,0 +1,48 @@
+.fleet-detail {
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .avatar {
+      margin-right: 20px;
+    }
+  }
+
+  .fleet-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+    .metrics-label,
+    .metrics-value {
+      display: inline-block;
+    }
+  }
+
+  .fleet-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 80px;
+    margin: 15px 0;
+    font-size: 30px;
+
+    > a {
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  @media (max-width: $desktop-breakpoint) {
+    .fleet-links {
+      justify-content: center;
+      height: 80px;
+    }
+  }
+}

@@ -3,6 +3,8 @@ export default class BaseCollection {
 
   totalPages: number | null = null
 
+  loaded: boolean = false
+
   setPages(meta: Pagination | null) {
     if (!meta) {
       this.currentPage = null
