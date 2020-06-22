@@ -52,6 +52,7 @@ module Api
 
           @models = fleet.models(loaner: loaner_included?)
                          .where(id: model_ids)
+                         .order(name: :asc)
                          .page(params[:page])
                          .per(per_page(Model))
 
