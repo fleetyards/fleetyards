@@ -8,7 +8,6 @@ module Api
       before_action :authenticate_api_user!, except: %i[show]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[vehicles]
-      after_action -> { pagination_header(:models) }, only: %i[models]
       after_action -> { pagination_header(:members) }, only: %i[members]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
