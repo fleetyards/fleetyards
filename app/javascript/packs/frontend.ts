@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line compat/compat
     navigator.serviceWorker
       .register('/service-worker.js', {
-        scope: '.',
+        scope: '/',
       })
       .then(
         registration => {
