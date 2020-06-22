@@ -1,6 +1,6 @@
 <template>
   <section class="container stats">
-    <div v-if="fleet && myFleet" class="row">
+    <div v-if="fleet" class="row">
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
@@ -156,156 +156,137 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
-import FleetsMixin from 'frontend/mixins/Fleets'
 import Chart from 'frontend/components/Chart'
 import Panel from 'frontend/components/Panel'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import fleetsCollection from 'frontend/collections/Fleets'
+import vehiclesCollection from 'frontend/collections/FleetVehicles'
+import membersCollection from 'frontend/collections/FleetMembers'
 
-export default {
-  name: 'Stats',
-
+@Component({
   beforeRouteEnter: fleetRouteGuard,
-
   components: {
     Chart,
     Panel,
     BreadCrumbs,
   },
+  mixins: [MetaInfoMixin],
+})
+export default class FleetStats extends Vue {
+  fleet: Fleet | null = null
 
-  mixins: [MetaInfoMixin, FleetsMixin],
+  collection: FleetsCollection = fleetsCollection
 
-  data() {
-    return {
-      quickStats: null,
-      fleet: null,
+  vehiclesCollection: FleetVehiclesCollection = vehiclesCollection
+
+  membersCollection: FleetMembersCollection = membersCollection
+
+  get slug() {
+    return this.$route.params.slug
+  }
+
+  get vehicleStats() {
+    return this.vehiclesCollection.stats
+  }
+
+  get memberStats() {
+    return this.membersCollection.stats
+  }
+
+  get totalMemberCount() {
+    if (!this.memberStats) {
+      return 0
     }
-  },
 
-  computed: {
-    ...mapGetters('session', ['currentUser']),
+    return this.memberStats.total
+  }
 
-    sid() {
-      return this.$route.params.slug
-    },
+  get totalShipCount() {
+    if (!this.vehicleStats) {
+      return 0
+    }
 
-    totalMemberCount() {
-      if (!this.quickStats) {
-        return 0
-      }
+    return this.vehicleStats.total
+  }
 
-      return this.quickStats.totalMembers
-    },
+  get minCrew() {
+    if (!this.vehicleStats) {
+      return this.$toNumber(0, 'people')
+    }
 
-    totalShipCount() {
-      if (!this.quickStats) {
-        return 0
-      }
+    return this.$toNumber(this.vehicleStats.metrics.totalMinCrew, 'people')
+  }
 
-      return this.quickStats.totalShips
-    },
+  get maxCrew() {
+    if (!this.vehicleStats) {
+      return this.$toNumber(0, 'people')
+    }
 
-    minCrew() {
-      if (!this.quickStats) {
-        return this.$toNumber(0, 'people')
-      }
+    return this.$toNumber(this.vehicleStats.metrics.totalMaxCrew, 'people')
+  }
 
-      return this.$toNumber(this.quickStats.metrics.totalMinCrew, 'people')
-    },
+  get totalCargo() {
+    if (!this.vehicleStats) {
+      return this.$toNumber(0, 'cargo')
+    }
 
-    maxCrew() {
-      if (!this.quickStats) {
-        return this.$toNumber(0, 'people')
-      }
+    return this.$toNumber(this.vehicleStats.metrics.totalCargo, 'cargo')
+  }
 
-      return this.$toNumber(this.quickStats.metrics.totalMaxCrew, 'people')
-    },
+  get crumbs() {
+    if (!this.fleet) {
+      return []
+    }
 
-    totalCargo() {
-      if (!this.quickStats) {
-        return this.$toNumber(0, 'cargo')
-      }
-
-      return this.$toNumber(this.quickStats.metrics.totalCargo, 'cargo')
-    },
-
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
+    return [
+      {
+        to: {
+          name: 'fleet',
+          params: {
+            slug: this.fleet.slug,
           },
-          label: this.fleet.name,
         },
-      ]
-    },
+        label: this.fleet.name,
+      },
+    ]
+  }
 
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
+  get metaTitle() {
+    if (!this.fleet) {
+      return null
+    }
 
-      return this.$t('title.fleets.stats', { fleet: this.fleet.name })
-    },
-  },
+    return this.$t('title.fleets.stats', { fleet: this.fleet.name })
+  }
 
-  methods: {
-    async loadQuickStats() {
-      const response = await this.$api.get(`fleets/${this.sid}/quick-stats`)
-      if (!response.error) {
-        this.quickStats = response.data
-      }
-    },
+  created() {
+    this.loadQuickStats()
+  }
 
-    async loadModelsByClassification() {
-      const response = await this.$api.get(
-        `fleets/${this.sid}/stats/models-by-classification`,
-      )
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
+  loadQuickStats() {
+    this.vehiclesCollection.findStats({ slug: this.slug })
+    this.membersCollection.findStats({ slug: this.slug })
+  }
 
-    async loadModelsBySize() {
-      const response = await this.$api.get(
-        `fleets/${this.sid}/stats/models-by-size`,
-      )
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
+  loadModelsByClassification() {
+    return this.collection.findModelsByClassificationBySlug(this.slug)
+  }
 
-    async loadModelsByManufacturer() {
-      const response = await this.$api.get(
-        `fleets/${this.sid}/stats/models-by-manufacturer`,
-      )
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
+  loadModelsBySize() {
+    return this.collection.findModelsBySizeBySlug(this.slug)
+  }
 
-    async loadModelsByProductionStatus() {
-      const response = await this.$api.get(
-        `fleets/${this.sid}/stats/models-by-production-status`,
-      )
-      if (!response.error) {
-        return response.data
-      }
-      return []
-    },
-  },
+  loadModelsByManufacturer() {
+    return this.collection.findModelsByManufacturerBySlug(this.slug)
+  }
+
+  loadModelsByProductionStatus() {
+    return this.collection.findModelsByProductionStatusBySlug(this.slug)
+  }
 }
 </script>

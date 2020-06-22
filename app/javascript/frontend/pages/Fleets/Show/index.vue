@@ -78,10 +78,10 @@
         </a>
       </div>
     </div>
-    <div v-if="fleetStats" class="row">
+    <div class="row">
       <div class="col-xs-12 col-md-8">
         <ModelClassLabels
-          v-if="fleet && fleet.myFleet"
+          v-if="fleet && fleet.myFleet && fleetStats"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetStats.classifications"
           filter-key="classificationIn"
@@ -162,10 +162,10 @@
     </div>
     <FilteredList
       v-if="fleet && fleet.myFleet"
-      :collection="grouped ? modelsCollection : vehiclesCollection"
+      :collection="vehiclesCollection"
       :name="$route.name"
       :route-query="$route.query"
-      :params="$route.params"
+      :params="routeParams"
       :hash="$route.hash"
       :paginated="true"
     >
@@ -204,47 +204,32 @@
         </BtnDropdown>
       </template>
 
-      <template slot="filter">
-        <FleetModelsFilterForm v-if="grouped" />
-        <FleetVehiclesFilterForm v-else />
-      </template>
+      <FleetVehiclesFilterForm slot="filter" />
 
       <template v-slot:default="{ records, filterVisible }">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
-          <template v-if="grouped">
-            <div
-              v-for="model in records"
-              :key="model.id"
-              :class="{
-                'col-lg-4': filterVisible,
-                'col-xlg-4': !filterVisible,
-              }"
-              class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-            >
-              <ModelPanel
-                :model="model"
-                :details="detailsVisible"
-                :count="model.count"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              v-for="vehicle in records"
-              :key="vehicle.id"
-              :class="{
-                'col-lg-4': filterVisible,
-                'col-xlg-4': !filterVisible,
-              }"
-              class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-            >
-              <ModelPanel
-                :model="vehicle.model"
-                :details="detailsVisible"
-                :on-addons="showAddonsModal"
-              />
-            </div>
-          </template>
+          <div
+            v-for="record in records"
+            :key="record.id"
+            :class="{
+              'col-lg-4': filterVisible,
+              'col-xlg-4': !filterVisible,
+            }"
+            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel
+              v-if="record.model"
+              :model="record.model"
+              :details="detailsVisible"
+              :on-addons="showAddonsModal"
+            />
+            <ModelPanel
+              v-else
+              :model="record"
+              :details="detailsVisible"
+              :count="record.count"
+            />
+          </div>
         </transition-group>
       </template>
     </FilteredList>
@@ -269,7 +254,6 @@ import Avatar from 'frontend/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
-import fleetModelsCollection from 'frontend/collections/FleetModels'
 import fleetVehiclesCollection from 'frontend/collections/FleetVehicles'
 
 @Component<FleetDetail>({
@@ -289,8 +273,6 @@ import fleetVehiclesCollection from 'frontend/collections/FleetVehicles'
 })
 export default class FleetDetail extends Vue {
   fleet: Fleet | null = null
-
-  modelsCollection: FleetModelsCollection = fleetModelsCollection
 
   vehiclesCollection: FleetVehiclesCollection = fleetVehiclesCollection
 
@@ -321,22 +303,30 @@ export default class FleetDetail extends Vue {
     return this.$t('actions.showDetails')
   }
 
+  get routeParams() {
+    return {
+      ...this.$route.params,
+      grouped: this.grouped,
+    }
+  }
+
   get filters() {
     return {
       slug: this.$route.params.slug,
       filters: this.$route.query.q,
+      grouped: this.grouped,
       page: this.$route.query.page,
     }
   }
 
   @Watch('grouped')
   onGroupedChange() {
-    if (this.grouped) {
-      this.modelsCollection.findAll(this.filters)
-    } else {
-      this.vehiclesCollection.findAll(this.filters)
-      this.vehiclesCollection.findStats(this.filters)
-    }
+    this.fetch()
+  }
+
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
   }
 
   mounted() {
@@ -359,12 +349,8 @@ export default class FleetDetail extends Vue {
     this.$store.dispatch('fleet/toggleMoney')
   }
 
-  async fetch() {
-    if (this.grouped) {
-      return
-    }
-
-    await this.vehiclesCollection.findStats(this.filters)
+  fetch() {
+    this.vehiclesCollection.findStats(this.filters)
   }
 }
 </script>

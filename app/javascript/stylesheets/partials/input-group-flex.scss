@@ -1,0 +1,18 @@
+.input-group-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  > input,
+  > select,
+  > textarea,
+  > button,
+  > div {
+    margin-right: 5px;
+    margin-bottom: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

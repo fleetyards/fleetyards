@@ -29,7 +29,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%
   get 'stations/:station_slug/shops/:slug' => 'base#shop'
   get 'starsystems' => 'base#index'
   get 'starsystems/:slug' => 'base#starsystem'
-  get 'celestial-objects/:slug' => 'base#celestial_object'
+  get 'starsystems/:starsystem_slug/celestial-objects/:slug' => 'base#celestial_object'
 
   get 'commodities' => 'base#index'
   get 'commodities/:id' => 'base#commodities'

@@ -30,6 +30,48 @@ export class FleetsCollection extends BaseCollection {
 
     return null
   }
+
+  async findModelsByClassificationBySlug(slug: string): Promise<ChartData[]> {
+    const response = await get(`fleets/${slug}/stats/models-by-classification`)
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return []
+  }
+
+  async findModelsBySizeBySlug(slug: string): Promise<ChartData[]> {
+    const response = await get(`fleets/${slug}/stats/models-by-size`)
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return []
+  }
+
+  async findModelsByManufacturerBySlug(slug: string): Promise<ChartData[]> {
+    const response = await get(`fleets/${slug}/stats/models-by-manufacturer`)
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return []
+  }
+
+  async findModelsByProductionStatusBySlug(slug: string): Promise<ChartData[]> {
+    const response = await get(
+      `fleets/${slug}/stats/models-by-production-status`,
+    )
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return []
+  }
 }
 
 export default new FleetsCollection()

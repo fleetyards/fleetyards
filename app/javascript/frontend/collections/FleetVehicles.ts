@@ -1,14 +1,15 @@
 import { get } from 'frontend/lib/ApiClient'
 
 export class FleetVehiclesCollection {
-  records: Vehicle[] = []
+  records: (Vehicle | Model)[] = []
 
   stats: FleetVehicleStats | null = null
 
-  async findAll(params: FleetVehicleParams): Promise<Vehicle[]> {
+  async findAll(params: FleetVehicleParams): Promise<(Vehicle | Model)[]> {
     const response = await get(`fleets/${params.slug}/vehicles`, {
       q: params?.filters,
       page: params?.page,
+      grouped: params?.grouped,
     })
 
     if (!response.error) {
@@ -18,7 +19,9 @@ export class FleetVehiclesCollection {
     return this.records
   }
 
-  async findAllFleetchart(params: FleetVehicleParams): Promise<Vehicle[]> {
+  async findAllFleetchart(
+    params: FleetVehicleParams,
+  ): Promise<(Vehicle | Model)[]> {
     const response = await get(`fleets/${params.slug}/fleetchart`, {
       q: params?.filters,
     })

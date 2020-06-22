@@ -7,7 +7,7 @@ module Api
 
       before_action :authenticate_api_user!, except: %i[show]
 
-      after_action -> { pagination_header(:vehicles) }, only: %i[vehicles]
+      after_action -> { pagination_header(%i[vehicles models]) }, only: %i[vehicles]
       after_action -> { pagination_header(:models) }, only: %i[models]
       after_action -> { pagination_header(:members) }, only: %i[members]
 
@@ -45,35 +45,25 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
-                      .page(params[:page])
-                      .per(per_page(Vehicle))
-      end
+        if ActiveModel::Type::Boolean.new.cast(params['grouped'])
+          model_ids = @q.result
+                        .includes(:model)
+                        .joins(:model)
+                        .pluck(:model_id)
 
-      def models
-        authorize! :show, fleet
+          @models = fleet.models(loaner: loaner_included?)
+                         .where(id: model_ids)
+                         .page(params[:page])
+                         .per(per_page(Model))
 
-        scope = fleet.models(loaner: loaner_included?)
-
-        if price_range.present?
-          model_query_params['sorts'] = 'price asc'
-          scope = scope.where(price: price_range)
+          render 'api/v1/fleets/models'
+        else
+          @vehicles = @q.result(distinct: true)
+                        .includes(:model)
+                        .joins(:model)
+                        .page(params[:page])
+                        .per(per_page(Vehicle))
         end
-
-        if pledge_price_range.present?
-          model_query_params['sorts'] = 'last_pledge_price asc'
-          scope = scope.where(last_pledge_price: pledge_price_range)
-        end
-
-        model_query_params['sorts'] = sort_by_name(['name asc'], 'name asc')
-
-        @q = scope.ransack(model_query_params)
-
-        @models = @q.result(distinct: true)
-                    .page(params[:page])
-                    .per(per_page(Model))
       end
 
       def members

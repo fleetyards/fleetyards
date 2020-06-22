@@ -2,7 +2,10 @@
 
 module Pagination
   def pagination_header(name)
-    headers['Link'] = pagination_links(instance_variable_get("@#{name}")).map do |k, v|
+    scope = name
+    scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
+
+    headers['Link'] = pagination_links(instance_variable_get("@#{scope}")).map do |k, v|
       next if v.blank?
 
       "<#{v}>; rel=\"#{k}\""

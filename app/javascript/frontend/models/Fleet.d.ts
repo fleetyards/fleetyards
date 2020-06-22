@@ -20,11 +20,7 @@ type FleetForm = {
 interface FleetVehicleParams extends CollectionParams {
   slug: string
   filters: VehicleParams
-}
-
-interface FleetModelsParams extends CollectionParams {
-  slug: string
-  filters: ModelsFilter
+  grouped: boolean
 }
 
 type FleetVehicleStats = {
