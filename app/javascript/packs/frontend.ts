@@ -51,19 +51,23 @@ declare global {
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat
-    navigator.serviceWorker.register('/service-worker.js').then(
-      registration => {
-        // Registration was successful
-        console.info(
-          'ServiceWorker registration successful with scope: ',
-          registration.scope,
-        )
-      },
-      err => {
-        // registration failed :(
-        console.error('ServiceWorker registration failed: ', err)
-      },
-    )
+    navigator.serviceWorker
+      .register('/service-worker.js', {
+        scope: '.',
+      })
+      .then(
+        registration => {
+          // Registration was successful
+          console.info(
+            'ServiceWorker registration successful with scope: ',
+            registration.scope,
+          )
+        },
+        err => {
+          // registration failed :(
+          console.error('ServiceWorker registration failed: ', err)
+        },
+      )
   }
 
   if (store.state.storeVersion !== window.STORE_VERSION) {
