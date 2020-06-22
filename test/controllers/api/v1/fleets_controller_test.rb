@@ -23,14 +23,6 @@ module Api
           assert_equal 'unauthorized', json['code']
         end
 
-        it 'should render 403 for models' do
-          get :models, params: { slug: starfleet.slug }
-
-          assert_response :unauthorized
-          json = JSON.parse response.body
-          assert_equal 'unauthorized', json['code']
-        end
-
         it 'should render 403 for quick-stats' do
           get :quick_stats, params: { slug: starfleet.slug }
 
@@ -87,9 +79,9 @@ module Api
           end
         end
 
-        describe '#models' do
+        describe '#vehicles grouped' do
           it 'should return list for index' do
-            get :models, params: { slug: starfleet.slug }
+            get :vehicles, params: { slug: starfleet.slug, grouped: true }
 
             assert_response :ok
             json = JSON.parse response.body
@@ -99,7 +91,7 @@ module Api
           end
 
           it 'should return list with loaners for index' do
-            get :models, params: { slug: starfleet.slug, q: { loanerEq: true } }
+            get :vehicles, params: { slug: starfleet.slug, grouped: true, q: { loanerEq: true } }
 
             assert_response :ok
             json = JSON.parse response.body
@@ -109,7 +101,7 @@ module Api
           end
 
           it 'should return list with only loaners for index' do
-            get :models, params: { slug: starfleet.slug, q: { loanerEq: 'only' } }
+            get :vehicles, params: { slug: starfleet.slug, grouped: true, q: { loanerEq: 'only' } }
 
             assert_response :ok
             json = JSON.parse response.body
