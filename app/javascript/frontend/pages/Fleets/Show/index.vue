@@ -78,10 +78,10 @@
         </a>
       </div>
     </div>
-    <div class="row">
+    <div v-if="fleet && fleet.myFleet" class="row">
       <div class="col-xs-12 col-md-8">
         <ModelClassLabels
-          v-if="fleet && fleet.myFleet && fleetStats"
+          v-if="fleetStats"
           :label="$t('labels.fleet.classes')"
           :count-data="fleetStats.classifications"
           filter-key="classificationIn"
@@ -329,6 +329,11 @@ export default class FleetDetail extends Vue {
     this.fetch()
   }
 
+  @Watch('fleet')
+  onFleetChange() {
+    this.fetch()
+  }
+
   mounted() {
     this.fetch()
   }
@@ -350,6 +355,10 @@ export default class FleetDetail extends Vue {
   }
 
   fetch() {
+    if (!this.fleet || !this.fleet.myFleet) {
+      return
+    }
+
     this.vehiclesCollection.findStats(this.filters)
   }
 }
