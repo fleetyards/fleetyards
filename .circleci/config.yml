@@ -249,6 +249,34 @@ jobs:
           name: Run Seeds
           command: bundle exec rails db:seed
 
+    assets:
+      <<: *ruby-defaults
+      steps:
+        - checkout
+        - attach_workspace:
+            at: /root
+        - run: bundle install
+        - run: yarn install
+        - restore_cache:
+            keys:
+              - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+              - v1-assets-
+        - run:
+            name: Webpacker & Assets Compile
+            command: NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
+        - save_cache:
+            key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
+            paths:
+              - ~/app/public/assets
+              - ~/app/public/packs
+              - ~/app/tmp/cache/webpacker
+        - persist_to_workspace:
+            root: /root
+            paths:
+              - app/public/assets
+              - app/public/packs
+              - app/tmp/cache/webpacker
+
   e2e-test:
     <<: *e2e
     steps:
@@ -257,19 +285,6 @@ jobs:
           at: /root
       - run: bundle install
       - run: yarn install
-      - restore_cache:
-          keys:
-            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-assets-
-      - run:
-          name: Webpacker & Assets Compile
-          command: NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
-      - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/app/public/assets
-            - ~/app/public/packs
-            - ~/app/tmp/cache/webpacker
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
@@ -440,10 +455,15 @@ workflows:
       - seeds:
           requires:
             - bundle
+      - assets:
+          requires:
+            - bundle
+            - yarn
       - e2e-test:
           requires:
             - bundle
             - yarn
+            - assets
       - smoke-test:
           filters:
             tags:
