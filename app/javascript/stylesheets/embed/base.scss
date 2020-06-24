@@ -1,0 +1,38 @@
+& {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: $text-color;
+  font-family: 'Open Sans', sans-serif;
+
+  .row > [class*='col-'] {
+    transition: width ease $transition-base-speed;
+  }
+
+  a,
+  input[type='button'],
+  button {
+    outline: 0 none !important;
+  }
+
+  hr {
+    height: 3px;
+    margin: 20px 5%;
+    background-color: $gray;
+    border: none;
+    border-radius: 50%;
+
+    &.large-spacer {
+      margin: 60px 5%;
+    }
+
+    &.dark {
+      background-color: $gray-black;
+    }
+
+    &.slim-spacer {
+      margin: 10px 5%;
+    }
+  }
+}

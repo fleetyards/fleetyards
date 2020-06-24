@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="row">
         <div class="col-12 filtered-list-header">
-          <div class="page-actions page-actions-left">
+          <div class="filtered-list-header-left">
             <Btn
               v-if="!hideFilter"
               v-tooltip="filterTooltip"
@@ -30,7 +30,7 @@
               />
             </slot>
           </div>
-          <div class="page-actions page-actions-right">
+          <div class="filtered-list-header-right">
             <slot name="actions" :records="collection && collection.records" />
           </div>
         </div>

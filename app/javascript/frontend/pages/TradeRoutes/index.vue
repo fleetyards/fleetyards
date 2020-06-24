@@ -13,32 +13,65 @@
       :paginated="true"
     >
       <template slot="actions">
-        <Btn
-          :active="sortByProfit"
-          size="small"
-          :to="sortBy('profit_per_unit')"
-          :exact="true"
-        >
-          <i class="far fa-dollar-sign" />
-          {{ $t('labels.tradeRoutes.sortByProfit') }}
-        </Btn>
-        <Btn
-          :active="sortByPercent"
-          size="small"
-          :to="sortBy('profit_per_unit_percent')"
-          :exact="true"
-        >
-          <i class="far fa-percent" />
-          {{ $t('labels.tradeRoutes.sortByPercent') }}
-        </Btn>
-        <Btn
-          :active="sortByStation"
-          size="small"
-          :to="sortBy('origin_shop_station_name')"
-          :exact="true"
-        >
-          {{ $t('labels.tradeRoutes.sortByStation') }}
-        </Btn>
+        <template v-if="!mobile">
+          <Btn
+            :active="sortByProfit"
+            size="small"
+            :to="sortBy('profit_per_unit')"
+            :exact="true"
+          >
+            <i class="far fa-dollar-sign" />
+            {{ $t('labels.tradeRoutes.sortByProfit') }}
+          </Btn>
+          <Btn
+            :active="sortByPercent"
+            size="small"
+            :to="sortBy('profit_per_unit_percent')"
+            :exact="true"
+          >
+            <i class="far fa-percent" />
+            {{ $t('labels.tradeRoutes.sortByPercent') }}
+          </Btn>
+          <Btn
+            :active="sortByStation"
+            size="small"
+            :to="sortBy('origin_shop_station_name')"
+            :exact="true"
+          >
+            {{ $t('labels.tradeRoutes.sortByStation') }}
+          </Btn>
+        </template>
+        <BtnDropdown v-else size="small">
+          <Btn
+            :active="sortByProfit"
+            size="small"
+            variant="link"
+            :to="sortBy('profit_per_unit')"
+            :exact="true"
+          >
+            <i class="far fa-dollar-sign" />
+            {{ $t('labels.tradeRoutes.sortByProfit') }}
+          </Btn>
+          <Btn
+            :active="sortByPercent"
+            size="small"
+            variant="link"
+            :to="sortBy('profit_per_unit_percent')"
+            :exact="true"
+          >
+            <i class="far fa-percent" />
+            {{ $t('labels.tradeRoutes.sortByPercent') }}
+          </Btn>
+          <Btn
+            :active="sortByStation"
+            size="small"
+            variant="link"
+            :to="sortBy('origin_shop_station_name')"
+            :exact="true"
+          >
+            {{ $t('labels.tradeRoutes.sortByStation') }}
+          </Btn>
+        </BtnDropdown>
       </template>
 
       <FilterForm slot="filter" />
@@ -135,6 +168,7 @@ import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/components/FilteredList'
 import Btn from 'frontend/components/Btn'
+import BtnDropdown from 'frontend/components/BtnDropdown'
 import Panel from 'frontend/components/Panel'
 import FilterForm from 'frontend/partials/TradeRoutes/FilterForm'
 import QuickFilter from 'frontend/partials/TradeRoutes/QuickFilter'
@@ -146,6 +180,7 @@ import modelsCollection from 'frontend/collections/Models'
   components: {
     FilteredList,
     Btn,
+    BtnDropdown,
     Panel,
     FilterForm,
     QuickFilter,
