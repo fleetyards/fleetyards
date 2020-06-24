@@ -225,7 +225,6 @@ export default {
     },
 
     edit(group) {
-      console.log('foo')
       this.selectedGroup = group
       this.$refs.groupModal.open()
     },
