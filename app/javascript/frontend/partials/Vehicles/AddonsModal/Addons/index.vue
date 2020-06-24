@@ -1,12 +1,12 @@
 <template>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="flex-row">
         <template v-for="addon in addons">
           <div
             v-for="(addonId, index) in idsForAddon(addon.id)"
             :key="`${index}-${addonId}`"
-            class="col-xs-12 col-sm-6 addon"
+            class="col-12 col-md-6 addon"
           >
             <Panel>
               <div
@@ -39,7 +39,7 @@
         </template>
       </div>
     </div>
-    <div v-if="modifiable" class="col-xs-12 col-sm-6 add-addons">
+    <div v-if="modifiable" class="col-12 col-md-6 add-addons">
       <FilterGroup
         v-model="addonToAdd"
         :label="label"

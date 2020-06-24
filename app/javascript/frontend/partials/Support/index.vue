@@ -7,13 +7,13 @@
       <div class="support-body">
         <br />
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <p v-html="$t('texts.support.info')" />
           </div>
         </div>
         <br />
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <p v-html="$t('texts.support.code', { code: 'STAR-5F32-SJZ4' })" />
           </div>
         </div>

@@ -2,14 +2,14 @@
   <section class="container">
     <ValidationObserver v-slot="{ handleSubmit }" small>
       <form @submit.prevent="handleSubmit(submit)">
-        <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="row justify-content-lg-center">
+          <div class="col-12 col-lg-6">
             <h1>{{ $t('headlines.fleets.add') }}</h1>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="row justify-content-lg-center">
+          <div class="col-12 col-lg-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="fid"
@@ -51,8 +51,8 @@
             </ValidationProvider>
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="row justify-content-lg-center">
+          <div class="col-12 col-lg-6">
             <br />
             <Btn
               :loading="submitting"

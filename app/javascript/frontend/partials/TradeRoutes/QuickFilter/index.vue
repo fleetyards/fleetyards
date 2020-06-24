@@ -1,8 +1,8 @@
 <template>
-  <div class="col-xs-12 fade-list-item quick-filter">
+  <div class="col-12 fade-list-item quick-filter">
     <form @submit.prevent="filter">
       <div class="flex-row">
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.originIn"
             :label="$t('labels.filters.tradeRoutes.origin')"
@@ -15,7 +15,7 @@
             :no-label="true"
           />
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.commodityIn"
             :label="$t('labels.filters.shops.commodity')"
@@ -28,7 +28,7 @@
             :no-label="true"
           />
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.destinationIn"
             :label="$t('labels.filters.tradeRoutes.destination')"

@@ -6,7 +6,7 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label"
+          class="col-12 compare-row-label"
         >
           <div
             :class="{
@@ -22,7 +22,7 @@
         <div
           v-for="model in models"
           :key="`${model.slug}-placeholder`"
-          class="col-xs-12 compare-row-item"
+          class="col-12 compare-row-item"
         />
       </div>
       <BCollapse :id="category" :visible="isVisible(category.toLowerCase())">
@@ -31,12 +31,12 @@
             :style="{
               left: `${scrollLeft}px`,
             }"
-            class="col-xs-12 compare-row-label text-right metrics-label"
+            class="col-12 compare-row-label text-right metrics-label"
           />
           <div
             v-for="model in models"
             :key="`${model.slug}-${category}`"
-            class="col-xs-6 text-center compare-row-item"
+            class="col-6 text-center compare-row-item"
           >
             <div class="well">
               <HardpointCategory

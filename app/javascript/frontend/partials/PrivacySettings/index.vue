@@ -42,7 +42,7 @@
       <p>{{ $t(`privacySettings.text`) }}</p>
       <form @submit.prevent="submit">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <fieldset>
               <legend>{{ $t('privacySettings.essential') }}</legend>
               <div class="form-item">

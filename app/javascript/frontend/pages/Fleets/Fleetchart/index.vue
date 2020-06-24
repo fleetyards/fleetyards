@@ -1,14 +1,14 @@
 <template>
   <section class="container fleet-detail">
     <div v-if="fleet" class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 class="sr-only">{{ fleet.name }} ({{ fleet.fid }})</h1>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <ModelClassLabels
           v-if="fleetStats"
           :label="$t('labels.fleet.classes')"
@@ -16,7 +16,7 @@
           filter-key="classificationIn"
         />
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <div class="page-actions">
           <Starship42Btn :vehicles="collection.records" />
         </div>
@@ -60,8 +60,8 @@
 
       <template v-slot:default="{ records }">
         <transition name="fade" appear>
-          <div v-if="records.length" class="row">
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+          <div v-if="records.length" class="row justify-content-lg-center">
+            <div class="col-12 col-lg-4 fleetchart-slider">
               <FleetchartSlider
                 :initial-scale="fleetchartScale"
                 @change="updateScale"

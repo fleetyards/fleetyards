@@ -1,9 +1,9 @@
 <template>
   <section class="container hangar">
     <div class="row">
-      <div class="col-xs-12 col-md-12">
+      <div class="col-12 col-lg-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h1 class="sr-only">
               {{ $t('headlines.hangar.index') }}
             </h1>
@@ -53,10 +53,7 @@
           "
           class="row"
         >
-          <div
-            class="col-xs-12 hangar-metrics metrics-block"
-            @click="toggleMoney"
-          >
+          <div class="col-12 hangar-metrics metrics-block" @click="toggleMoney">
             <div v-if="money" class="metrics-item">
               <div class="metrics-label">
                 {{ $t('labels.hangarMetrics.totalMoney') }}:
@@ -190,36 +187,18 @@
         :hangar-groups-options="groupsCollection.records"
       />
 
-      <template v-slot:default="{ records, filterVisible }">
-        <HangarGuideBox v-if="isGuideVisible" />
+      <HangarGuideBox v-if="isGuideVisible" />
 
-        <transition-group
-          v-else
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="vehicle in records"
-            :key="vehicle.id"
-            :class="{
-              'col-lg-4': filterVisible,
-              'col-xlg-4': !filterVisible,
-            }"
-            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel
-              :model="vehicle.model"
-              :vehicle="vehicle"
-              :details="detailsVisible"
-              :on-edit="showEditModal"
-              :on-addons="showAddonsModal"
-              :is-my-ship="true"
-              :highlight="vehicle.hangarGroupIds.includes(highlightedGroup)"
-            />
-          </div>
-        </transition-group>
+      <template v-slot:record="{ record }">
+        <ModelPanel
+          :model="record.model"
+          :vehicle="record"
+          :details="detailsVisible"
+          :on-edit="showEditModal"
+          :on-addons="showAddonsModal"
+          :is-my-ship="true"
+          :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+        />
       </template>
     </FilteredList>
 
@@ -231,7 +210,7 @@
 
     <AddonsModal ref="addonsModal" modifiable />
 
-    <NewVehiclesModal ref="newVehiclesModal" />
+    <NewVehiclesModal ref="newVehiclesModal" :collection="collection" />
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>

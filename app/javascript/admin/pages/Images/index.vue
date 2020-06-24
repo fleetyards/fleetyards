@@ -1,8 +1,8 @@
 <template>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-12 col-lg-6">
           <div class="page-actions page-actions-left">
             <Btn
               :active="filterVisible"
@@ -19,7 +19,7 @@
             </Btn>
           </div>
         </div>
-        <div class="col-xs-12 col-md-6">
+        <div class="col-12 col-lg-6">
           <Paginator
             v-if="images.length"
             :page="currentPage"
@@ -35,15 +35,15 @@
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
+          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
             <FilterForm />
           </div>
         </transition>
         <div
           :class="{
-            'col-md-9 col-xlg-10': !fullscreen,
+            'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-xs-12 col-animated"
+          class="col-12 col-animated"
         >
           <ImageUploader
             :loading="loading"
@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="images.length"
           :page="currentPage"

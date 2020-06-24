@@ -1,9 +1,9 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <h1>
               {{ metaTitle }}
@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <Paginator
               v-if="videos.length"
               :page="currentPage"
@@ -29,7 +29,7 @@
           <div
             v-for="video in videos"
             :key="video.id"
-            class="col-xs-12 col-md-6 col-lgx-3 fade-list-item"
+            class="col-12 col-lg-6 col-lgx-3 fade-list-item"
           >
             <div class="video embed-responsive embed-responsive-16by9">
               <template v-if="video.type === 'youtube' && youtubeEnabled">
@@ -53,7 +53,7 @@
           </div>
         </transition-group>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <Paginator
               v-if="videos.length"
               :page="currentPage"

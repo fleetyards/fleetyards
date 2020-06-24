@@ -1,7 +1,7 @@
 <template>
   <div id="fileupload">
     <div v-if="isUploadActive" class="row fileupload-buttonbar">
-      <div class="col-lg-7">
+      <div class="col-xl-7">
         <VueUploadComponent
           ref="upload"
           v-model="newImages"
@@ -39,7 +39,7 @@
 
       <div
         v-show="$refs.upload && $refs.upload.active"
-        class="col-lg-5 fileupload-progress fade in"
+        class="col-xl-5 fileupload-progress fade in"
       >
         <span class="fileupload-process">
           {{ speed | formatSize }}
@@ -74,7 +74,7 @@
 
     <Panel v-if="allImages.length">
       <transition-group name="fade" class="flex-list" tag="div" appear>
-        <div key="heading" class="fade-list-item col-xs-12 flex-list-heading">
+        <div key="heading" class="fade-list-item col-12 flex-list-heading">
           <div class="flex-list-row">
             <div class="store-image wide" />
 
@@ -93,7 +93,7 @@
         <div
           v-for="image in allImages"
           :key="image.id"
-          class="fade-list-item col-xs-12 flex-list-item"
+          class="fade-list-item col-12 flex-list-item"
         >
           <ImageRow
             :image="image"

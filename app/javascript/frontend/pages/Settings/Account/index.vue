@@ -1,12 +1,12 @@
 <template>
   <section>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12">
         <h1>{{ $t('headlines.settings.account') }}</h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12">
         <p>
           {{ $t('labels.account.destroyInfo') }}
         </p>

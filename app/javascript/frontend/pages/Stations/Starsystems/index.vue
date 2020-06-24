@@ -1,14 +1,14 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.starsystems') }}
         </h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Panel>
           <div class="starmap">
             <img :src="require('images/map.png').default" alt="map" />
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="starsystems.length"
           :page="currentPage"
@@ -42,12 +42,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="starsystem in starsystems"
             :key="starsystem.slug"
-            class="col-xs-12 fade-list-item"
+            class="col-12 fade-list-item"
           >
             <StarsystemList
               :item="starsystem"
@@ -71,7 +71,7 @@
                   <div
                     v-for="celestialObject in starsystem.celestialObjects"
                     :key="celestialObject.slug"
-                    class="col-xs-12 col-md-3 fade-list-item"
+                    class="col-12 col-lg-3 fade-list-item"
                   >
                     <PlanetPanel
                       :item="celestialObject"
@@ -93,7 +93,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="starsystems.length"
           :page="currentPage"

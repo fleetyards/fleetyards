@@ -1,21 +1,21 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="celestialObject">
           {{ celestialObject.name }}
-          <small>{{ celestialObject.designation }}</small>
+          <small class="text-muted">{{ celestialObject.designation }}</small>
         </h1>
       </div>
     </div>
     <div v-if="celestialObject" class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <blockquote v-if="celestialObject.description" class="description">
           <p v-html="celestialObject.description" />
         </blockquote>
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <Panel>
           <CelestialObjectMetrics :celestial-object="celestialObject" padding />
         </Panel>
@@ -24,14 +24,14 @@
     <div class="row">
       <div
         v-if="celestialObject && celestialObject.moons.length"
-        class="col-xs-12"
+        class="col-12"
       >
         <h2>{{ $t('headlines.moons') }}</h2>
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="moon in celestialObject.moons"
             :key="moon.slug"
-            class="col-xs-12 col-sm-6 col-md-3 fade-list-item"
+            class="col-12 col-md-6 col-lg-3 fade-list-item"
           >
             <ItemPanel
               :item="moon"
@@ -48,10 +48,10 @@
       </div>
     </div>
     <div v-if="celestialObject && stations.length" class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <h2>{{ $t('headlines.stations') }}</h2>
       </div>
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <Paginator
           v-if="stations.length"
           :page="currentPage"
@@ -59,19 +59,19 @@
           right
         />
       </div>
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"
-            class="col-xs-12 fade-list-item"
+            class="col-12 fade-list-item"
           >
             <StationPanel :station="station" />
           </div>
         </transition-group>
         <Loader :loading="loading" fixed />
       </div>
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="stations.length"
           :page="currentPage"

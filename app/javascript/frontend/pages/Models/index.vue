@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.models.index') }}
         </h1>
@@ -29,20 +29,8 @@
 
       <ModelsFilterForm slot="filter" />
 
-      <template v-slot:default="{ filterVisible, records }">
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
-          <div
-            v-for="model in records"
-            :key="model.slug"
-            :class="{
-              'col-lg-4': filterVisible,
-              'col-xlg-4': !filterVisible,
-            }"
-            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel :model="model" :details="detailsVisible" />
-          </div>
-        </transition-group>
+      <template v-slot:record="{ record }">
+        <ModelPanel :model="record" :details="detailsVisible" />
       </template>
     </FilteredList>
   </section>

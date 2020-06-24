@@ -6,7 +6,7 @@
       class="panel-bg lazy"
     />
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="panel-heading">
           <h2 class="panel-title">
             <router-link :to="route" :aria-label="item.name">
@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-lg-4" />
-      <div class="col-xs-12 col-sm-6 col-lg-8 items">
+      <div class="col-12 col-md-6 col-xl-4" />
+      <div class="col-12 col-md-6 col-xl-8 items">
         <slot />
       </div>
     </div>

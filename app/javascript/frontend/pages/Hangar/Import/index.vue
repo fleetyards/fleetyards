@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs
           :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
         />
@@ -11,18 +11,15 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <input type="file" :disabled="loading" @input="importData" />
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-animated">
+      <div class="col-12 col-animated">
         <Panel>
           <transition-group name="fade" class="flex-list" tag="div" appear>
-            <div
-              key="heading"
-              class="fade-list-item col-xs-12 flex-list-heading"
-            >
+            <div key="heading" class="fade-list-item col-12 flex-list-heading">
               <div class="flex-list-row">
                 <div class="name">
                   Name
@@ -38,7 +35,7 @@
             <div
               v-for="(item, index) in sortedData"
               :key="`import-${index}`"
-              class="fade-list-item col-xs-12 flex-list-item"
+              class="fade-list-item col-12 flex-list-item"
             >
               <div class="flex-list-row">
                 <div class="store-image">

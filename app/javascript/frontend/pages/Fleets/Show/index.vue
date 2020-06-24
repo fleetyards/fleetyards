@@ -1,7 +1,7 @@
 <template>
   <section class="container fleet-detail">
     <div v-if="fleet" class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <h1>
           <Avatar
             v-if="fleet.logo"
@@ -12,7 +12,7 @@
           {{ fleet.name }} ({{ fleet.fid }})
         </h1>
       </div>
-      <div class="col-xs-12 col-md-4 fleet-links">
+      <div class="col-12 col-lg-4 fleet-links">
         <a
           v-if="fleet.homepage"
           v-tooltip="$t('labels.homepage')"
@@ -79,7 +79,7 @@
       </div>
     </div>
     <div v-if="fleet && fleet.myFleet" class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <ModelClassLabels
           v-if="fleetStats"
           :label="$t('labels.fleet.classes')"
@@ -87,7 +87,7 @@
           filter-key="classificationIn"
         />
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <div class="page-actions">
           <Btn
             :to="{
@@ -117,7 +117,7 @@
       "
       class="row"
     >
-      <div class="col-xs-12 fleet-metrics metrics-block" @click="toggleMoney">
+      <div class="col-12 fleet-metrics metrics-block" @click="toggleMoney">
         <div v-if="money" class="metrics-item">
           <div class="metrics-label">
             {{ $t('labels.hangarMetrics.totalMoney') }}:
@@ -206,31 +206,19 @@
 
       <FleetVehiclesFilterForm slot="filter" />
 
-      <template v-slot:default="{ records, filterVisible }">
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
-          <div
-            v-for="record in records"
-            :key="record.id"
-            :class="{
-              'col-lg-4': filterVisible,
-              'col-xlg-4': !filterVisible,
-            }"
-            class="col-xs-12 col-sm-6 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel
-              v-if="record.model"
-              :model="record.model"
-              :details="detailsVisible"
-              :on-addons="showAddonsModal"
-            />
-            <ModelPanel
-              v-else
-              :model="record"
-              :details="detailsVisible"
-              :count="record.count"
-            />
-          </div>
-        </transition-group>
+      <template v-slot:record="{ record }">
+        <ModelPanel
+          v-if="record.model"
+          :model="record.model"
+          :details="detailsVisible"
+          :on-addons="showAddonsModal"
+        />
+        <ModelPanel
+          v-else
+          :model="record"
+          :details="detailsVisible"
+          :count="record.count"
+        />
       </template>
     </FilteredList>
 

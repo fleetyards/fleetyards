@@ -1,9 +1,9 @@
 <template>
   <section class="container hangar">
     <div class="row">
-      <div class="col-xs-12 col-md-12">
+      <div class="col-12 col-lg-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs
               :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
             />
@@ -58,8 +58,8 @@
 
       <template v-slot:default="{ records }">
         <transition name="fade" appear>
-          <div v-if="records.length" class="row">
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+          <div v-if="records.length" class="row justify-content-lg-center">
+            <div class="col-12 col-lg-4 fleetchart-slider">
               <FleetchartSlider
                 :initial-scale="fleetchartScale"
                 @change="updateScale"
@@ -85,7 +85,7 @@
 
     <AddonsModal ref="addonsModal" :modifiable="true" />
 
-    <NewVehiclesModal ref="newVehiclesModal" />
+    <NewVehiclesModal ref="newVehiclesModal" :collection="collection" />
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
@@ -211,7 +211,7 @@ export default class HangarFleetchart extends Vue {
   }
 
   async fetch() {
-    await this.collection.findAll(this.filters)
+    await this.collection.findAllFleetchart(this.filters)
     await this.groupsCollection.findAll()
     await this.collection.findStats(this.filters)
   }

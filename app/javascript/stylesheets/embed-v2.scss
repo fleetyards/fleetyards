@@ -2,17 +2,8 @@
 
 #fleetyards-view {
   @import 'variables';
-  @import 'colors/default';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/normalize';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/print';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/type';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/grid';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/utilities';
-  @import '~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities';
-  @import 'partials/responsive';
+  @import '~bootstrap';
+  @import '~bootstrap-vue';
   @import 'partials/typography';
   @import 'partials/transitions';
   @import 'partials/flex';

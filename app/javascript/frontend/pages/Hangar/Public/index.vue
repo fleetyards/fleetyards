@@ -1,12 +1,12 @@
 <template>
   <section class="container hangar hangar-public">
     <div v-if="user" class="row">
-      <div class="col-xs-12 col-md-12">
+      <div class="col-12 col-lg-12">
         <div class="row">
-          <div class="col-xs-12" />
+          <div class="col-12" />
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-12 col-lg-8">
             <h1>
               <Avatar :avatar="user.avatar" />
               <span>
@@ -14,7 +14,7 @@
               </span>
             </h1>
           </div>
-          <div class="col-xs-12 col-md-4 hangar-profile-links">
+          <div class="col-12 col-lg-4 hangar-profile-links">
             <a
               v-if="user.homepage"
               v-tooltip="$t('labels.homepage')"
@@ -74,14 +74,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-9">
+          <div class="col-12 col-lg-9">
             <ModelClassLabels
               v-if="collection.stats"
               :label="$t('labels.hangar')"
               :count-data="collection.stats.classifications"
             />
           </div>
-          <div class="col-xs-12 col-md-3">
+          <div class="col-12 col-lg-3">
             <div v-if="!mobile" class="page-actions">
               <Btn
                 :to="{
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <Paginator
               v-if="collection.records.length"
               :page="currentPage"
@@ -109,7 +109,7 @@
           <div
             v-for="vehicle in collection.records"
             :key="vehicle.id"
-            class="col-xs-12 col-sm-6 col-lg-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-md-6 col-xl-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
               :model="vehicle.model"
@@ -122,7 +122,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="collection.records.length"
           :page="currentPage"

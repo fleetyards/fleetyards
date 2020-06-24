@@ -1,9 +1,9 @@
 <template>
   <section class="container fleet">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h1 class="sr-only">
               {{ $t('headlines.fleets.preview.h1') }}
             </h1>
@@ -11,7 +11,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h2 class="text-center main-headline">
               {{ $t('headlines.fleets.preview.h2') }}
             </h2>
@@ -21,7 +21,7 @@
         <hr class="large-spacer" />
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h3 class="text-center main-subheadline">
               {{ $t('headlines.fleets.preview.h3') }}
             </h3>
@@ -31,7 +31,7 @@
         <br />
 
         <div class="flex-row">
-          <div class="col-xs-12 col-md-4">
+          <div class="col-12 col-lg-4">
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
@@ -43,7 +43,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-12 col-lg-4">
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
@@ -55,7 +55,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-12 col-lg-4">
             <Panel class="info-box" transparency="more">
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
@@ -72,7 +72,7 @@
         <hr class="large-spacer" />
 
         <div class="row">
-          <div class="col-xs-12 col-md-4 col-md-push-4">
+          <div class="col-12 col-lg-4 col-lg-push-4">
             <Btn
               :to="{
                 name: 'signup',

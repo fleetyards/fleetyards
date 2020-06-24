@@ -1,15 +1,15 @@
 <template>
-  <Modal ref="modal" :title="$t('headlines.newVehicles')" :visible="visible">
+  <Modal ref="modal" :title="$t('headlines.newVehicles')">
     <form id="new-vehicles" class="new-vehicles" @submit.prevent="save">
       <div v-for="(item, index) in form.vehicles" :key="index" class="row">
-        <div class="col-xs-8 col-sm-10">
+        <div class="col-8 col-md-10">
           <TeaserPanel
             :item="item.model"
             variant="text"
             :with-description="false"
           />
         </div>
-        <div class="col-xs-4 col-sm-2">
+        <div class="col-4 col-md-2">
           <Btn
             v-tooltip="$t('actions.remove')"
             :aria-label="$t('actions.remove')"
@@ -21,6 +21,7 @@
       </div>
 
       <FilterGroup
+        v-if="visible()"
         name="model"
         :search-label="$t('actions.findModel')"
         fetch-path="models"
@@ -28,14 +29,13 @@
         translation-key="newVehicle"
         :paginated="true"
         :searchable="true"
-        s
         :return-object="true"
         :no-label="true"
         @input="add"
       />
     </form>
     <template #footer>
-      <div class="pull-right">
+      <div class="float-sm-right">
         <Btn
           type="submit"
           form="new-vehicles"
@@ -57,6 +57,7 @@ import FilterGroup from 'frontend/components/Form/FilterGroup'
 import Modal from 'frontend/components/Modal'
 import TeaserPanel from 'frontend/components/TeaserPanel'
 import Btn from 'frontend/components/Btn'
+import { VehiclesCollection } from 'frontend/collections/Vehicles'
 
 @Component<NewVehiclesModal>({
   components: {
@@ -73,7 +74,11 @@ export default class NewVehiclesModal extends Vue {
     vehicles: [],
   }
 
-  @Prop({ default: false }) visible: boolean
+  @Prop({ required: true }) collection!: VehiclesCollection
+
+  visible() {
+    return this.$refs.modal && this.$refs.modal.isOpen
+  }
 
   add(value) {
     this.form.vehicles.push({

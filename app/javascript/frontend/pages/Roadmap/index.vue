@@ -2,14 +2,14 @@
   <router-view v-if="isSubRoute" />
   <section v-else class="container roadmap">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.roadmap') }}
         </h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="page-actions">
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="text-center">
           <a class="show-released" @click="toggleReleased">
             - {{ releasedToggleLabel }} -
@@ -27,12 +27,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
             :key="`releases-${release}`"
-            class="col-xs-12 fade-list-item release"
+            class="col-12 fade-list-item release"
           >
             <h2
               :class="{
@@ -45,7 +45,7 @@
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>
+              <small class="text-muted">
                 {{ $t('labels.roadmap.stories', { count: items.length }) }}
               </small>
               <i class="fa fa-chevron-right" />
@@ -72,7 +72,7 @@
                 <div
                   v-for="item in items"
                   :key="item.id"
-                  class="col-xs-12 col-xxlg-4 fade-list-item"
+                  class="col-12 col-xxlg-4 fade-list-item"
                 >
                   <RoadmapItem :item="item" slim />
                 </div>

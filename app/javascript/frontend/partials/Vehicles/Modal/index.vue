@@ -7,7 +7,7 @@
   >
     <form :id="`vehicle-${vehicle.id}`" @submit.prevent="save">
       <div class="row">
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="form-group">
             <FormInput
               id="vehicle-name"
@@ -18,10 +18,7 @@
             />
           </div>
         </div>
-        <div
-          v-if="vehicle && vehicle.model.hasPaints"
-          class="col-xs-12 col-sm-6"
-        >
+        <div v-if="vehicle && vehicle.model.hasPaints" class="col-12 col-md-6">
           <div class="form-group">
             <FilterGroup
               :key="`paints-${vehicle.model.id}`"
@@ -37,48 +34,48 @@
             />
           </div>
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-12 col-md-6">
           <Checkbox
             id="flagship"
             v-model="form.flagship"
             :label="$t('labels.vehicle.flagship')"
           />
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-12 col-md-6">
           <Checkbox
             id="purchased"
             v-model="form.purchased"
             :label="$t('labels.vehicle.purchased')"
           />
         </div>
-        <div v-if="!form.purchased" class="col-xs-12 col-sm-6">
+        <div v-if="!form.purchased" class="col-12 col-md-6">
           <Checkbox
             id="saleNotify"
             v-model="form.saleNotify"
             :label="$t('labels.vehicle.saleNotify')"
           />
         </div>
-        <div v-else class="col-xs-12 col-sm-6">
+        <div v-else class="col-12 col-md-6">
           <Checkbox
             id="public"
             v-model="form.public"
             :label="$t('labels.vehicle.public')"
           />
         </div>
-        <div v-if="form.public && form.purchased" class="col-xs-12 col-sm-6">
+        <div v-if="form.public && form.purchased" class="col-12 col-md-6">
           <Checkbox
             id="nameVisible"
             v-model="form.nameVisible"
             :label="$t('labels.vehicle.nameVisible')"
           />
         </div>
-        <div v-if="hangarGroups.length > 0" class="col-xs-12">
+        <div v-if="hangarGroups.length > 0" class="col-12">
           <h3>Groups:</h3>
           <div class="row">
             <div
               v-for="group in hangarGroups"
               :key="group.id"
-              class="col-xs-12 col-sm-6"
+              class="col-12 col-md-6"
             >
               <Checkbox
                 :label="group.name"
@@ -92,7 +89,7 @@
     </form>
 
     <template #footer>
-      <div class="pull-right">
+      <div class="float-sm-right">
         <Btn
           v-if="vehicle"
           :disabled="deleting"

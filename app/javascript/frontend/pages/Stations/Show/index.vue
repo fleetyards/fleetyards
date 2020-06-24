@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="station">
           {{ station.name }}
@@ -9,13 +9,13 @@
       </div>
     </div>
     <div class="row">
-      <div v-if="station" class="col-xs-12 col-md-8">
+      <div v-if="station" class="col-12 col-lg-8">
         <img :src="station.storeImage" class="image" alt="model image" />
         <blockquote v-if="station.description" class="description">
           <p v-html="station.description" />
         </blockquote>
       </div>
-      <div v-if="station" class="col-xs-12 col-md-4">
+      <div v-if="station" class="col-12 col-lg-4">
         <Panel>
           <StationBaseMetrics :station="station" padding />
           <StationDocks :station="station" padding />
@@ -34,14 +34,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <template v-if="station && station.shops.length">
           <h2>{{ $t('headlines.shops') }}</h2>
           <transition-group name="fade-list" class="flex-row" tag="div" appear>
             <div
               v-for="shop in station.shops"
               :key="shop.slug"
-              class="col-xs-12 col-md-3 fade-list-item"
+              class="col-12 col-lg-3 fade-list-item"
             >
               <ShopPanel
                 :item="shop"

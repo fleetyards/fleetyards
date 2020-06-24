@@ -1,9 +1,9 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <h1>
               {{ metaTitle }}
@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <Paginator
               v-if="images.length"
               :page="currentPage"
@@ -29,7 +29,7 @@
           <div
             v-for="(image, index) in images"
             :key="image.id"
-            class="col-xs-12 col-ms-6 col-sm-6 col-md-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-ms-6 col-md-6 col-lg-4 col-xxlg-2-4 fade-list-item"
           >
             <GalleryImage
               :src="image.smallUrl"
@@ -40,7 +40,7 @@
           </div>
         </transition-group>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <Paginator
               v-if="images.length"
               :page="currentPage"

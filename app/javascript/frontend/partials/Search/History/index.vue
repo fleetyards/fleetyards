@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-xs-12 col-md-6 col-md-push-3">
+    <div class="col-12 col-lg-6 col-lg-push-3">
       <Panel>
         <div class="panel-heading panel-heading-with-actions">
           <h2 class="panel-title">

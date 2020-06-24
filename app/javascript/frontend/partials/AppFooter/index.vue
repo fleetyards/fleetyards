@@ -25,10 +25,10 @@
         <router-link :to="{ name: 'impressum' }">
           {{ $t('nav.impressum') }}
         </router-link>
-        <span class="hidden-xs">
+        <span class="d-xs-none">
           |
         </span>
-        <br class="visible-xs" />
+        <br class="d-sm-none" />
         <a
           v-tooltip="'Twitter'"
           href="https://twitter.com/FleetYardsNet"

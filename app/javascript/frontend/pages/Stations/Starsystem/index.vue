@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="starsystem">
           {{ $t('headlines.starsystem', { starsystem: starsystem.name }) }}
@@ -9,12 +9,12 @@
       </div>
     </div>
     <div v-if="starsystem" class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <blockquote v-if="starsystem.description" class="description">
           <p v-html="starsystem.description" />
         </blockquote>
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <Panel>
           <StarsystemBaseMetrics :starsystem="starsystem" padding />
           <StarsystemLevelsMetrics :starsystem="starsystem" padding />
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="celestialObjects.length"
           :page="currentPage"
@@ -32,12 +32,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="celestialObject in celestialObjects"
             :key="celestialObject.slug"
-            class="col-xs-12 fade-list-item"
+            class="col-12 fade-list-item"
           >
             <PlanetList
               :item="celestialObject"
@@ -62,7 +62,7 @@
                   <div
                     v-for="moon in celestialObject.moons"
                     :key="moon.slug"
-                    class="col-xs-12 col-md-3 fade-list-item"
+                    class="col-12 col-lg-3 fade-list-item"
                   >
                     <MoonPanel
                       :item="moon"
@@ -84,7 +84,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="celestialObjects.length"
           :page="currentPage"

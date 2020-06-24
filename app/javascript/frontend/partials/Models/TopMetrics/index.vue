@@ -5,19 +5,19 @@
       'metrics-padding': padding,
     }"
   >
-    <div v-if="model.focus" class="col-xs-6 col-sm-4">
+    <div v-if="model.focus" class="col-6 col-md-4">
       <div class="metrics-label">{{ $t('model.focus') }}:</div>
       <div class="metrics-value">
         {{ model.focus }}
       </div>
     </div>
-    <div v-if="model.minCrew || model.maxCrew" class="col-xs-6 col-sm-4">
+    <div v-if="model.minCrew || model.maxCrew" class="col-6 col-md-4">
       <div class="metrics-label">{{ $t('model.crew') }}:</div>
       <div class="metrics-value">
         {{ crew }}
       </div>
     </div>
-    <div class="col-xs-12 col-sm-4">
+    <div class="col-12 col-md-4">
       <div class="metrics-label">{{ $t('model.speed') }}:</div>
       <div class="metrics-value" v-html="speeds" />
     </div>

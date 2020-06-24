@@ -6,17 +6,17 @@
       'metrics-padding': padding,
     }"
   >
-    <div class="col-xs-12 col-md-3">
+    <div class="col-12 col-lg-3">
       <div class="metrics-title">
         {{ $t('labels.station.habs') }}
       </div>
     </div>
-    <div class="col-xs-12 col-md-9 metrics-block">
+    <div class="col-12 col-lg-9 metrics-block">
       <div class="row">
         <div
           v-for="(habs, name) in habitationsByName"
           :key="name"
-          class="col-xs-6"
+          class="col-6"
         >
           <div class="metrics-label">{{ name }}:</div>
           <div class="metrics-value">

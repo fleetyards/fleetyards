@@ -1,16 +1,11 @@
 .primary-action {
   position: fixed;
-  right: 6px;
-  bottom: 6px;
+  right: 1rem;
+  bottom: 1rem;
   z-index: 1000;
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
   width: 59px;
   height: 59px;
-  margin: 10px;
-  padding: 2px;
-  font-size: 160%;
+  font-size: 1.75rem;
   background-color: rgba($gray-darker, .9);
   border: $panel-border-width solid $panel-inner-border;
   border-radius: 50%;
@@ -19,14 +14,12 @@
   transition: all ease .5s;
 
   .primary-action-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 6px 14px;
     color: $text-color;
-    font-size: 110%;
-    white-space: nowrap;
-    text-align: center;
-    text-overflow: ellipsis;
     border-radius: 50%;
     transition: all $transition-base-speed ease;
   }

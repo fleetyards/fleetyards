@@ -1,5 +1,5 @@
 <template>
-  <div class="fade-list-item col-xs-12 flex-list-heading">
+  <div class="fade-list-item col-12 flex-list-heading">
     <div class="flex-list-row">
       <div class="username">
         <router-link :to="sortByToggle('user_username')">

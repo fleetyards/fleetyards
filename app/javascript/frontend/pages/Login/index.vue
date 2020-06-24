@@ -1,7 +1,7 @@
 <template>
   <section class="container login">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
           <form @submit.prevent="handleSubmit(login)">
             <h1>

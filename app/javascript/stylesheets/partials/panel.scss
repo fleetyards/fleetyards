@@ -121,6 +121,15 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
   }
 
+  .production-status {
+    padding: 4px 6px;
+    color: $gray-light;
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, .6);
+  }
+
   .panel-heading {
     padding: 10px 15px;
 
@@ -194,16 +203,33 @@ $contentBorderRadius: $panelContentBorderRadius;
 
     &:last-child {
       border-bottom: none;
-      -webkit-border-bottom-right-radius: $contentBorderRadius;
-      border-bottom-right-radius: $contentBorderRadius;
-      -webkit-border-bottom-left-radius: $contentBorderRadius;
-      border-bottom-left-radius: $contentBorderRadius;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
 
       img {
-        -webkit-border-bottom-right-radius: $contentBorderRadius;
-        border-bottom-right-radius: $contentBorderRadius;
-        -webkit-border-bottom-left-radius: $contentBorderRadius;
-        border-bottom-left-radius: $contentBorderRadius;
+        -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+        border-bottom-right-radius: $panelContentBorderRadius;
+        -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+        border-bottom-left-radius: $panelContentBorderRadius;
+      }
+    }
+
+    &.no-details {
+      overflow: hidden;
+      border-bottom: none;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+
+      a {
+        overflow: hidden;
+        -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+        border-bottom-right-radius: $panelContentBorderRadius;
+        -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+        border-bottom-left-radius: $panelContentBorderRadius;
       }
     }
   }

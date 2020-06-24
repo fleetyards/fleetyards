@@ -6,7 +6,6 @@
       </router-link>
     </li>
     <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
-      /
       <router-link :to="crumb.to">
         {{ crumb.label }}
       </router-link>

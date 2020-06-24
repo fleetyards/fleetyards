@@ -1,4 +1,6 @@
 export default class BaseCollection {
+  primaryKey: string = 'slug'
+
   currentPage: number | null = null
 
   totalPages: number | null = null

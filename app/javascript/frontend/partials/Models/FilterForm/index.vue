@@ -87,7 +87,7 @@
     />
 
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-6">
         <FormInput
           id="model-length-gteq"
           v-model="form.lengthGteq"
@@ -97,7 +97,7 @@
         />
       </div>
 
-      <div class="col-xs-6">
+      <div class="col-6">
         <FormInput
           id="model-length-lteq"
           v-model="form.lengthLteq"
@@ -109,7 +109,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-6">
         <FormInput
           id="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
@@ -118,7 +118,7 @@
           no-placeholder
         />
       </div>
-      <div class="col-xs-6">
+      <div class="col-6">
         <FormInput
           id="model-pledge-price-lteq"
           v-model="form.pledgePriceLteq"

@@ -2,6 +2,8 @@ import { get, post, put, destroy, download } from 'frontend/lib/ApiClient'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: Vehicle[] = []
 
   stats: VehicleStats | null = null

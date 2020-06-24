@@ -4,10 +4,10 @@
     <div class="home-screen-intro">
       <section class="container">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <div class="search-form text-center">
               <h1 id="home-welcome">
-                <small>{{ $t('headlines.welcome') }}</small>
+                <small class="text-muted">{{ $t('headlines.welcome') }}</small>
                 <img
                   :src="require(`images/logo-home.png`).default"
                   class="logo"
@@ -15,8 +15,8 @@
                 />
                 {{ $t('app') }}
               </h1>
-              <div class="row">
-                <div class="col-xs-12 col-md-offset-3 col-md-6">
+              <div class="row justify-content-md-center">
+                <div class="col-12 col-lg-6">
                   <form @submit.prevent="search">
                     <div class="form-group">
                       <div class="input-group-flex">
@@ -48,10 +48,10 @@
       </section>
       <section class="container">
         <div class="row">
-          <div class="col-xs-12 col-md-8 col-md-offset-4">
-            <blockquote class="pull-right">
+          <div class="col-12">
+            <blockquote class="blockquote text-right">
               <p v-html="$t('texts.indexQuote')" />
-              <small>
+              <footer class="blockquote-footer">
                 {{ $t('texts.indexQuoteSource') }}
                 <a
                   href="https://robertsspaceindustries.com"
@@ -60,7 +60,7 @@
                 >
                   robertsspaceindustries.com
                 </a>
-              </small>
+              </footer>
             </blockquote>
           </div>
         </div>
@@ -77,7 +77,7 @@
     </div>
     <section class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 relative home-ships">
+        <div class="col-12 col-lg-6 relative home-ships">
           <h2 class="sr-only">
             {{ $t('headlines.welcomeShips') }}
           </h2>
@@ -90,7 +90,7 @@
             <div
               v-for="model in modelsCollection.records"
               :key="model.id"
-              class="col-xs-12 fade-list-item"
+              class="col-12 fade-list-item"
             >
               <TeaserPanel
                 :item="model"
@@ -104,7 +104,7 @@
           </transition-group>
           <Loader :loading="modelsLoading" fixed />
         </div>
-        <div class="col-xs-12 col-md-6 relative home-images">
+        <div class="col-12 col-lg-6 relative home-images">
           <Panel>
             <h2 class="sr-only">
               {{ $t('headlines.welcomeImages') }}
@@ -119,7 +119,7 @@
                 <div
                   v-for="image in imagesCollection.records"
                   :key="image.id"
-                  class="col-xs-12 col-sm-6 col-md-6"
+                  class="col-12 col-md-6 col-lg-6"
                 >
                   <LazyImage
                     :src="image.smallUrl"

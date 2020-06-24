@@ -6,7 +6,7 @@
       class="panel-bg lazy"
     />
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="panel-heading">
           <h2 class="panel-title">
             <router-link
@@ -25,12 +25,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-lg-4">
+      <div class="col-12 col-md-6 col-xl-4">
         <div class="panel-stats">
           <Stats :station="station" />
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-lg-8 items">
+      <div class="col-12 col-md-6 col-xl-8 items">
         <slot />
       </div>
     </div>

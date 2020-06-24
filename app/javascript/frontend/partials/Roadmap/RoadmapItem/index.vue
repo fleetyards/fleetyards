@@ -24,7 +24,10 @@
           <template v-else>
             {{ item.name }}
           </template>
-          <small v-tooltip="$t('labels.roadmap.lastUpdate')" class="pull-right">
+          <small
+            v-tooltip="$t('labels.roadmap.lastUpdate')"
+            class="float-sm-right text-muted"
+          >
             {{ item.lastVersionChangedAtLabel }}
             <i class="far fa-clock" />
           </small>

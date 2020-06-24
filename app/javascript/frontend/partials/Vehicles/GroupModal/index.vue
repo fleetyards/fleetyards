@@ -1,9 +1,9 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" small>
+  <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
     <Modal ref="modal" :title="title" :visible="visible">
       <form :id="`group-${id}`" @submit.prevent="handleSubmit(save)">
         <div class="row">
-          <div class="col-xs-12 col-sm-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="group-name"
@@ -20,7 +20,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-xs-12 col-sm-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="color"
@@ -42,7 +42,7 @@
         </div>
       </form>
       <template #footer>
-        <div class="pull-right">
+        <div class="float-sm-right">
           <Btn
             v-if="group"
             :disabled="deleting ? 'disabled' : null"

@@ -1,7 +1,7 @@
 <template>
   <section class="container request-password">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <ValidationObserver v-slot="{ handleSubmit }" slim>
           <form @submit.prevent="handleSubmit(requestPassword)">
             <h1>

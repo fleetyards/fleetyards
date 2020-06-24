@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div class="col-xs-12 compare-row-label">
+      <div class="col-12 compare-row-label">
         <div
           :class="{
             active: visible,
@@ -16,21 +16,21 @@
       <div
         v-for="model in models"
         :key="`${model.slug}-placeholder`"
-        class="col-xs-12 compare-row-item"
+        class="col-12 compare-row-item"
       />
     </div>
     <BCollapse id="legend" :visible="visible">
       <div class="row compare-row">
-        <div class="col-xs-12 compare-row-label text-right metrics-label" />
+        <div class="col-12 compare-row-label text-right metrics-label" />
         <div
           v-for="(model, index) in models"
           :key="`${model.slug}-legend`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <Panel v-if="index === 0">
             <div class="hardpoint-category hardpoint-legend">
               <div class="row">
-                <div class="col-xs-12 col-md-6 test-hardpoint">
+                <div class="col-12 col-lg-6 test-hardpoint">
                   <h3>{{ $t('labels.hardpoint.legend.slotTaken') }}</h3>
                   <HardpointIcon
                     key="testHardpoint"
@@ -46,7 +46,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 col-md-6 test-hardpoint-empty">
+                <div class="col-12 col-lg-6 test-hardpoint-empty">
                   <h3>{{ $t('labels.hardpoint.legend.slotAvailable') }}</h3>
                   <HardpointIcon
                     key="testHardpointEmpty"
@@ -62,7 +62,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 hardpoint-legend-additions">
+                <div class="col-12 hardpoint-legend-additions">
                   <div class="hardpoint-legend-addition">
                     <div class="hardpoint-icon">
                       <svg

@@ -5,7 +5,7 @@
         :style="{
           left: `${scrollLeft}px`,
         }"
-        class="col-xs-12 compare-row-label"
+        class="col-12 compare-row-label"
       >
         <div
           :class="{
@@ -21,7 +21,7 @@
       <div
         v-for="model in models"
         :key="`${model.slug}-placeholder`"
-        class="col-xs-12 compare-row-item"
+        class="col-12 compare-row-item"
       />
     </div>
     <BCollapse id="base" :visible="visible">
@@ -30,14 +30,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.manufacturer') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-manufacturer`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value" v-html="model.manufacturer.name" />
         </div>
@@ -47,14 +47,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.productionStatus') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-production-status`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $t(`labels.model.productionStatus.${model.productionStatus}`) }}
@@ -66,14 +66,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.focus') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-focus`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ model.focus }}
@@ -85,14 +85,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.classification') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-classification`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ model.classificationLabel }}
@@ -104,14 +104,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.size') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-size`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ model.sizeLabel }}
@@ -123,14 +123,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.length') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-length`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.length, 'distance') }}
@@ -142,14 +142,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.beam') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-beam`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.beam, 'distance') }}
@@ -161,14 +161,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.height') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-height`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.height, 'distance') }}
@@ -180,14 +180,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.mass') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-mass`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.mass, 'weight') }}
@@ -199,14 +199,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.cargo') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-cargo`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.cargo, 'cargo') }}
@@ -218,14 +218,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.price') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-cargo`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toUEC(model.price) }}
@@ -237,14 +237,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.pledgePrice') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-cargo`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toDollar(model.lastPledgePrice) }}

@@ -1,11 +1,11 @@
 .col-animated {
-  transition: width .4s ease;
+  transition: width .4s ease, max-width .4s ease;
 }
 
 .slide-enter-active,
 .slide-leave-active {
   overflow: hidden;
-  transition: width .5s ease, padding .5s ease;
+  transition: width .5s ease, max-width .5s ease, padding .5s ease;
 
   label,
   .filter-list-title {
@@ -20,6 +20,7 @@
 .slide-enter,
 .slide-leave-active {
   width: 0;
+  max-width: 0;
   padding: 0;
 }
 

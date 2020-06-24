@@ -76,7 +76,7 @@ export default class Modal extends Vue {
     this.isShow = true
     this.showOverlay()
 
-    this.$nextTick(function onOpen() {
+    this.$nextTick(() => {
       this.isOpen = true
       this.$refs.modal.focus()
       this.$emit('open')

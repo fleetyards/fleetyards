@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-xs-12 fleetchart-wrapper">
+    <div class="col-12 fleetchart-wrapper">
       <transition-group
         id="fleetchart"
         name="fade-list"

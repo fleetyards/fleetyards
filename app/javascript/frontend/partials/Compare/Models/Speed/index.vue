@@ -5,7 +5,7 @@
         :style="{
           left: `${scrollLeft}px`,
         }"
-        class="col-xs-12 compare-row-label"
+        class="col-12 compare-row-label"
       >
         <div
           :class="{
@@ -21,7 +21,7 @@
       <div
         v-for="model in models"
         :key="`${model.slug}-placeholder`"
-        class="col-xs-12 compare-row-item"
+        class="col-12 compare-row-item"
       />
     </div>
     <BCollapse id="speed" :visible="visible">
@@ -30,14 +30,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.scmSpeed') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.scmSpeed, 'speed') }}
@@ -49,14 +49,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.afterburnerSpeed') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.afterburnerSpeed, 'speed') }}
@@ -68,14 +68,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.groundSpeed') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.groundSpeed, 'speed') }}
@@ -87,14 +87,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.afterburnerGroundSpeed') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.afterburnerGroundSpeed, 'speed') }}
@@ -106,14 +106,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.pitchMax') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.pitchMax, 'rotation') }}
@@ -125,14 +125,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.yawMax') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.yawMax, 'rotation') }}
@@ -144,14 +144,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.rollMax') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.rollMax, 'rotation') }}
@@ -163,14 +163,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.xaxisAcceleration') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.xaxisAcceleration, 'speed') }}
@@ -182,14 +182,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.yaxisAcceleration') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.yaxisAcceleration, 'speed') }}
@@ -201,14 +201,14 @@
           :style="{
             left: `${scrollLeft}px`,
           }"
-          class="col-xs-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label"
         >
           {{ $t('model.zaxisAcceleration') }}
         </div>
         <div
           v-for="model in models"
           :key="`${model.slug}-min-crew`"
-          class="col-xs-6 text-center compare-row-item"
+          class="col-6 text-center compare-row-item"
         >
           <span class="metrics-value">
             {{ $toNumber(model.zaxisAcceleration, 'speed') }}

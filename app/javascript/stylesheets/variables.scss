@@ -1,10 +1,10 @@
+$background: #000;
+
 $text-color: #c8c8c8;
 $primary: #428bca;
 $success: #5cb85c;
 $danger: #dc3545;
 $warning: darken(#ffc107, 10%);
-
-$background: black;
 
 $gray-lighter: #999;
 $gray-light: #7a8288;
@@ -34,12 +34,38 @@ $panelOuterBorderRadius: 24px;
 $panelInnerBorderRadius: 20px;
 $panelContentBorderRadius: 16px;
 
-$font-size-base: 15px;
-$font-size-h1-base: floor(($font-size-base * 2.15));
-$font-size-h2-base: floor(($font-size-base * 1.7));
-$font-size-h3-base: floor(($font-size-base * 1.25));
-$font-size-h4-base: $font-size-base;
-$font-size-h5-base: floor(($font-size-base * .85));
-$font-size-h6-base: floor(($font-size-base * .85));
-
 $transition-base-speed: .5s;
+
+// bootstrap overrides
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1800px,
+  3xl: 2500px,
+);
+
+$container-max-widths: (
+  xs: 100%,
+  sm: 100%,
+  md: 95%,
+  lg: 95%,
+  xl: 95%,
+  xxl: 95%,
+  3xl: 95%,
+);
+
+$font-size-base: 1rem;
+$h1-font-size:                $font-size-base * 2.15;
+$h2-font-size:                $font-size-base * 1.7;
+$h3-font-size:                $font-size-base * 1.25;
+$h4-font-size:                $font-size-base;
+$h5-font-size:                $font-size-base * .85;
+$h6-font-size:                $font-size-base * .85;
+
+$body-bg: $background;
+$body-color: $text-color;
+
+$progress-bg: #1c1e22;

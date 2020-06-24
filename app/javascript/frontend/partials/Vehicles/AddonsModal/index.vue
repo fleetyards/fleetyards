@@ -12,7 +12,7 @@
       @submit.prevent="save"
     >
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <fieldset v-if="modules.length">
             <legend>
               <h3>{{ $t('labels.model.modules') }}:</h3>
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="flex-row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <fieldset v-if="upgrades.length">
             <legend>
               <h3>{{ $t('labels.model.upgrades') }}:</h3>
@@ -47,7 +47,7 @@
       </div>
     </form>
     <template v-if="modifiable" #footer>
-      <div class="pull-right">
+      <div class="float-sm-right">
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
           :loading="submitting"

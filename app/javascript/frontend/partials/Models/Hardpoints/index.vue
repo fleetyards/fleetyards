@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-row">
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <HardpointCategory
         v-for="category in ['RSIAvionic', 'RSIModular']"
         :key="category"
@@ -8,7 +8,7 @@
         :hardpoints="hardpointsForCategory(category)"
       />
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <HardpointCategory
         v-for="category in ['RSIPropulsion', 'RSIThruster']"
         :key="category"
@@ -16,7 +16,7 @@
         :hardpoints="hardpointsForCategory(category)"
       />
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <HardpointCategory
         v-for="category in ['RSIWeapon']"
         :key="category"
@@ -24,14 +24,14 @@
         :hardpoints="hardpointsForCategory(category)"
       />
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <h2 class="hardpoint-category-label">
             Legend
           </h2>
           <Panel>
             <div class="hardpoint-category hardpoint-legend">
               <div class="row">
-                <div class="col-xs-12 col-md-6 test-hardpoint">
+                <div class="col-12 col-lg-6 test-hardpoint">
                   <h3>Slot taken</h3>
                   <HardpointIcon
                     key="testHardpoint"
@@ -47,7 +47,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 col-md-6 test-hardpoint-empty">
+                <div class="col-12 col-lg-6 test-hardpoint-empty">
                   <h3>Slot available</h3>
                   <HardpointIcon
                     key="testHardpointEmpty"
@@ -63,7 +63,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 hardpoint-legend-additions">
+                <div class="col-12 hardpoint-legend-additions">
                   <div class="hardpoint-legend-addition">
                     <div class="hardpoint-icon">
                       <svg
@@ -111,7 +111,7 @@
         </div>
       </div>
       <div v-if="erkulUrl" class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <Btn :href="erkulUrl" :block="true" class="erkul-link">
             <small>{{ $t('labels.erkul.prefix') }}</small>
             <i />

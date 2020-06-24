@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1>{{ $t('headlines.fleets.settings.membership') }}</h1>
       </div>
@@ -9,7 +9,7 @@
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
       <form @submit.prevent="handleSubmit(submit)">
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <Checkbox
               id="primary"
               v-model="form.primary"
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="shipsFilter"
@@ -40,7 +40,7 @@
               </div>
             </ValidationProvider>
           </div>
-          <div v-if="shipsFilterIsHangarGroup" class="col-md-12 col-lg-6">
+          <div v-if="shipsFilterIsHangarGroup" class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="hangarGroupId"

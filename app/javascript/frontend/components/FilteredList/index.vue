@@ -1,8 +1,8 @@
 <template>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="row">
-        <div class="col-xs-12 filtered-list-header">
+        <div class="col-12 filtered-list-header">
           <div class="page-actions page-actions-left">
             <Btn
               v-if="!hideFilter"
@@ -42,20 +42,39 @@
           @before-enter="toggleFullscreen"
           @after-leave="toggleFullscreen"
         >
-          <div v-if="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
+          <div v-if="filterVisible" class="col-12 col-lg-3 col-xxl-2">
             <slot v-if="!hideFilter" name="filter" />
           </div>
         </transition>
         <div
           :class="{
-            'col-md-9 col-xlg-10': !fullscreen,
+            'col-lg-9 col-xxl-10': !fullscreen,
           }"
-          class="col-xs-12 col-animated"
+          class="col-12 col-animated"
         >
           <slot
-            :filterVisible="filterVisible"
             :records="collection && collection.records"
+            :filter-visible="filterVisible"
           />
+
+          <transition-group
+            name="fade-list"
+            class="row"
+            tag="div"
+            :appear="true"
+          >
+            <div
+              v-for="(record, index) in collection.records"
+              :key="`${record[collection.primaryKey]}-${index}`"
+              :class="{
+                'col-xxl-4 col-3xl-3': filterVisible,
+                'col-xl-4 col-xxl-3 col-3xl-2': !filterVisible,
+              }"
+              class="col-12 col-lg-6 fade-list-item"
+            >
+              <slot name="record" :record="record" />
+            </div>
+          </transition-group>
 
           <EmptyBox :visible="emptyBoxVisible" />
 
@@ -63,7 +82,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <slot name="pagination-bottom">
             <Paginator
               v-if="paginated && collection.records.length"

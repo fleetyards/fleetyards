@@ -8,9 +8,9 @@
     <div
       v-if="title"
       :class="{
-        'col-md-3': title,
+        'col-lg-3': title,
       }"
-      class="col-xs-12"
+      class="col-12"
     >
       <div class="metrics-title">
         {{ $t('labels.metrics.crew') }}
@@ -18,18 +18,18 @@
     </div>
     <div
       :class="{
-        'col-md-9': title,
+        'col-lg-9': title,
       }"
-      class="col-xs-12 metrics-block"
+      class="col-12 metrics-block"
     >
       <div class="row">
-        <div class="col-xs-6 col-sm-6">
+        <div class="col-6 col-md-6">
           <div class="metrics-label">{{ $t('model.minCrew') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.minCrew, 'people') }}
           </div>
         </div>
-        <div class="col-xs-6 col-sm-6">
+        <div class="col-6 col-md-6">
           <div class="metrics-label">{{ $t('model.maxCrew') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.maxCrew, 'people') }}

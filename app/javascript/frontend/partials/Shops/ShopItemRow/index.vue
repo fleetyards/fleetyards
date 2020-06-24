@@ -23,10 +23,10 @@
           <span v-html="name" />
         </router-link>
         <span v-else v-html="name" />
-        <small>{{ commodity.subCategoryLabel }}</small>
+        <small class="text-muted">{{ commodity.subCategoryLabel }}</small>
       </h2>
       <div v-if="showStats" class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-12 col-lg-6">
           <ul class="list-unstyled">
             <li v-if="commodity.item.grade">
               <b>{{ $t('commodityItem.grade') }}:</b>
@@ -54,7 +54,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-xs-12 col-md-6">
+        <div class="col-12 col-lg-6">
           <ul class="list-unstyled">
             <li v-if="commodity.item.range">
               <b>{{ $t('commodityItem.range') }}:</b>

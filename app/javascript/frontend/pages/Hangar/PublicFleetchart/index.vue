@@ -1,12 +1,12 @@
 <template>
   <section class="container hangar hangar-public">
     <div v-if="user" class="row">
-      <div class="col-xs-12 col-md-12">
+      <div class="col-12 col-lg-12">
         <div class="row">
-          <div class="col-xs-12" />
+          <div class="col-12" />
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-12 col-lg-8">
             <BreadCrumbs
               :crumbs="[
                 {
@@ -27,7 +27,7 @@
               </span>
             </h1>
           </div>
-          <div class="col-xs-12 col-md-4 hangar-profile-links">
+          <div class="col-12 col-lg-4 hangar-profile-links">
             <a
               v-if="user.homepage"
               v-tooltip="$t('labels.homepage')"
@@ -87,21 +87,21 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-9">
+          <div class="col-12 col-lg-9">
             <ModelClassLabels
               v-if="collection.stats"
               :label="$t('labels.hangar')"
               :count-data="collection.stats.classifications"
             />
           </div>
-          <div class="col-xs-12 col-md-3">
+          <div class="col-12 col-lg-3">
             <div v-if="!mobile" class="page-actions">
               <Starship42Btn :vehicles="collection.records" />
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <div class="page-actions">
               <DownloadScreenshotBtn
                 element="#fleetchart"
@@ -112,8 +112,11 @@
           </div>
         </div>
         <transition name="fade" appear>
-          <div v-if="collection.records.length" class="row">
-            <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+          <div
+            v-if="collection.records.length"
+            class="row justify-content-lg-center"
+          >
+            <div class="col-12 col-lg-4 fleetchart-slider">
               <FleetchartSlider
                 :initial-scale="publicFleetchartScale"
                 @change="updateScale"

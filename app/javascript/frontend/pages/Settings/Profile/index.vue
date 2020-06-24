@@ -2,13 +2,13 @@
   <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
           <h1>{{ $t('headlines.settings.profile') }}</h1>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="logo"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="username"
@@ -56,7 +56,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="email"
@@ -72,7 +72,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <FormInput
             id="rsiHandle"
             v-model="form.rsiHandle"
@@ -83,7 +83,7 @@
       </div>
       <hr />
       <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="homepage"
@@ -99,7 +99,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="discord"
@@ -119,7 +119,7 @@
       </div>
       <hr />
       <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="youtube"
@@ -136,7 +136,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="twitch"
@@ -153,7 +153,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="guilded"

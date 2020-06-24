@@ -8,7 +8,7 @@
 
         <br />
 
-        <small>
+        <small class="text-muted">
           {{ item.locationLabel }}
         </small>
       </h2>

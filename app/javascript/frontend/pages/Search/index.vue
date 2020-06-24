@@ -1,16 +1,16 @@
 <template>
   <section class="container search">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.search') }}
         </h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-push-3">
+          <div class="col-12 col-lg-6 col-lg-push-3">
             <form class="search-form" @submit.prevent="filter">
               <div class="form-group">
                 <div class="input-group-flex">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="results.length"
           :page="currentPage"
@@ -50,12 +50,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="result in results"
             :key="`${result.resultType}-${result.id}`"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel
               v-if="result.resultType === 'model'"
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="results.length"
           :page="currentPage"

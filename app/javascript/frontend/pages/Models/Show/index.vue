@@ -1,13 +1,13 @@
 <template>
   <section class="container">
     <div class="row">
-      <div v-if="model" class="col-xs-12">
+      <div v-if="model" class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <h1>
               {{ model.name }}
-              <small class="manufacturer">
+              <small class="text-muted manufacturer">
                 <span class="manufacturer-prefix">
                   from
                 </span>
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-12 col-lg-8">
             <div
               :class="{
                 'image-wrapper-holoviewer': holoviewerVisible,
@@ -63,7 +63,7 @@
               />
             </div>
             <div class="row production-status">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <template v-if="model.productionStatus">
                   <h3 class="text-uppercase">
                     {{
@@ -75,10 +75,10 @@
                   <p>{{ model.productionNote }}</p>
                 </template>
               </div>
-              <div class="col-xs-6">
+              <div class="col-6">
                 <template v-if="model.focus">
                   <h3 class="text-uppercase text-right">
-                    <small>{{ $t('model.focus') }}:</small>
+                    <small class="text-muted">{{ $t('model.focus') }}:</small>
                     {{ model.focus }}
                   </h3>
                 </template>
@@ -88,7 +88,7 @@
               <p v-html="model.description" />
             </blockquote>
           </div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-12 col-lg-4">
             <Panel>
               <ModelBaseMetrics :model="model" title detailed padding />
             </Panel>
@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="row components">
-          <div class="col-xs-12">
+          <div class="col-12">
             <ModelHardpoints
               :hardpoints="model.hardpoints"
               :erkul-url="erkulUrl"
@@ -163,7 +163,7 @@
       <Loader :loading="loading" />
     </div>
     <div class="row">
-      <div class="col-xs-12 paints">
+      <div class="col-12 paints">
         <h2 v-if="paints.length" class="text-uppercase">
           {{ $t('labels.model.paints') }}
         </h2>
@@ -177,7 +177,7 @@
           <div
             v-for="paint in paints"
             :key="`paint-${paint.slug}`"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
           >
             <TeaserPanel :item="paint" :fullscreen="true" />
           </div>
@@ -186,7 +186,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 modules">
+      <div class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
           {{ $t('labels.model.modules') }}
         </h2>
@@ -194,7 +194,7 @@
           <div
             v-for="module in modules"
             :key="module.id"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4"
           >
             <TeaserPanel :item="module" />
           </div>
@@ -203,7 +203,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 upgrades">
+      <div class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
           {{ $t('labels.model.upgrades') }}
         </h2>
@@ -211,7 +211,7 @@
           <div
             v-for="upgrade in upgrades"
             :key="upgrade.id"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4"
           >
             <TeaserPanel :item="upgrade" />
           </div>
@@ -220,7 +220,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 variants">
+      <div class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
           {{ $t('labels.model.variants') }}
         </h2>
@@ -234,7 +234,7 @@
           <div
             v-for="variant in variants"
             :key="`variant-${variant.slug}`"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel :model="variant" :details="true" />
           </div>
@@ -243,7 +243,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 loaners">
+      <div class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
           {{ $t('labels.model.loaners') }}
         </h2>
@@ -257,7 +257,7 @@
           <div
             v-for="loaner in loaners"
             :key="`loaner-${loaner.slug}`"
-            class="col-xs-12 col-sm-6 col-xlg-4 col-xxlg-2-4 fade-list-item"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
           >
             <ModelPanel :model="loaner" />
           </div>

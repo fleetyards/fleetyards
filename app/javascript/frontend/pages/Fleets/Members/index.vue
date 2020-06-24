@@ -1,13 +1,13 @@
 <template>
   <section v-if="fleet" class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
       </div>
-      <div class="col-xs-8">
+      <div class="col-8">
         <h1>
           {{ $t('headlines.fleets.members') }}
-          <small v-if="collection.stats">
+          <small v-if="collection.stats" class="text-muted">
             {{
               $t('labels.fleet.members.total', {
                 count: collection.stats.total,
@@ -16,7 +16,7 @@
           </small>
         </h1>
       </div>
-      <div class="col-xs-4">
+      <div class="col-4">
         <div class="page-main-actions">
           <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
             <i class="fal fa-plus" />

@@ -1,14 +1,14 @@
 <template>
   <section class="container roadmap">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.roadmap') }}
         </h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <FilterGroup
           v-model="selectedWeek"
           :label="$t('labels.roadmap.selectWeek')"
@@ -20,7 +20,7 @@
           @input="fetch"
         />
       </div>
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <div class="page-actions">
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
@@ -30,19 +30,19 @@
     </div>
     <hr class="dark" />
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="(items, release) in groupedByRelease"
             :key="`releases-${release}`"
-            class="col-xs-12 fade-list-item release"
+            class="col-12 fade-list-item release"
           >
             <h2>
               <span class="title">{{ release }}</span>
               <span class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
-              <small>
+              <small class="text-muted">
                 {{ $t('labels.roadmap.stories', { count: items.length }) }}
               </small>
             </h2>
@@ -51,7 +51,7 @@
               <div
                 v-for="item in items"
                 :key="item.id"
-                class="col-xs-12 col-sm-6 col-xxlg-4 fade-list-item"
+                class="col-12 col-md-6 col-xxlg-4 fade-list-item"
               >
                 <RoadmapItem :item="item" />
               </div>

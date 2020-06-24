@@ -19,7 +19,15 @@ address {
 }
 
 blockquote {
-  small {
+  padding-left: 15px;
+  border-right: 5px solid $gray-light;
+
+  &.text-right {
+    padding-right: 15px;
+    padding-left: 0;
+  }
+
+  footer {
     a {
       color: $gray-light;
 

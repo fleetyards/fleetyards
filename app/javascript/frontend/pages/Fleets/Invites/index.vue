@@ -1,14 +1,14 @@
 <template>
   <section class="container">
-    <div class="row">
-      <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="row justify-content-lg-center">
+      <div class="col-12 col-lg-6">
         <h1>
           {{ $t('headlines.fleets.invites') }}
         </h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="row justify-content-lg-center">
+      <div class="col-12 col-lg-6">
         <Panel>
           <transition-group
             name="fade"
@@ -16,10 +16,7 @@
             tag="div"
             appear
           >
-            <div
-              key="heading"
-              class="fade-list-item col-xs-12 flex-list-heading"
-            >
+            <div key="heading" class="fade-list-item col-12 flex-list-heading">
               <div class="flex-list-row">
                 <div class="fleet-name" />
                 <div class="actions">
@@ -30,7 +27,7 @@
             <div
               v-for="(invite, index) in invites"
               :key="`invites-${index}`"
-              class="fade-list-item col-xs-12 flex-list-item"
+              class="fade-list-item col-12 flex-list-item"
             >
               <div class="flex-list-row">
                 <div class="fleet-name">
@@ -62,7 +59,7 @@
             <div
               v-if="!invites.length && !loading"
               key="empty"
-              class="fade-list-item col-xs-12 flex-list-item"
+              class="fade-list-item col-12 flex-list-item"
             >
               <div class="flex-list-row">
                 <div class="empty">

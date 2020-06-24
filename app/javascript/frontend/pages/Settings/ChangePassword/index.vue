@@ -2,12 +2,12 @@
   <ValidationObserver v-slot="{ handleSubmit }" slim>
     <form @submit.prevent="handleSubmit(changePassword)">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
           <h1>{{ $t('headlines.changePassword') }}</h1>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-lg-12 col-xl-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="currentPassword"

@@ -1,9 +1,9 @@
 <template>
   <section class="container stats">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs
               :crumbs="[{ to: { name: 'hangar' }, label: $t('nav.hangar') }]"
             />
@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-12 col-md-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -28,7 +28,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-12 col-md-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -43,7 +43,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-12 col-md-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -58,7 +58,7 @@
               </div>
             </Panel>
           </div>
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-12 col-md-3">
             <Panel variant="primary">
               <div class="panel-box">
                 <div class="panel-box-icon">
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-6">
+          <div class="col-12 col-lg-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -90,7 +90,7 @@
               />
             </Panel>
           </div>
-          <div class="col-xs-12 col-md-6">
+          <div class="col-12 col-lg-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -107,7 +107,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-4">
+          <div class="col-12 col-lg-4">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">
@@ -122,7 +122,7 @@
               />
             </Panel>
           </div>
-          <div class="col-xs-12 col-md-6">
+          <div class="col-12 col-lg-6">
             <Panel>
               <div class="panel-heading">
                 <h2 class="panel-title">

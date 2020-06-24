@@ -6,18 +6,18 @@
       'metrics-padding': padding,
     }"
   >
-    <div class="col-xs-12 col-md-3">
+    <div class="col-12 col-lg-3">
       <div class="metrics-title">
         {{ $t('labels.station.docks') }}
       </div>
     </div>
-    <div class="col-xs-12 col-md-9 metrics-block">
+    <div class="col-12 col-lg-9 metrics-block">
       <div class="row">
         <template v-if="hasGroup">
           <div
             v-for="(groupDocks, group) in docksByGroup"
             :key="`docks-${group}`"
-            class="col-xs-12"
+            class="col-12"
           >
             <div class="metrics-group-label">
               <b>{{ group }}:</b>
@@ -26,7 +26,7 @@
               <div
                 v-for="(typedDocks, type) in docksByType(typedDocks)"
                 :key="`docks-${group}-${type}`"
-                class="col-xs-12"
+                class="col-12"
               >
                 <div class="metrics-label">
                   <b>{{ type }}:</b>
@@ -35,7 +35,7 @@
                   <div
                     v-for="(docks, size) in docksBySize(typedDocks)"
                     :key="`dock-${size}`"
-                    class="col-xs-6"
+                    class="col-6"
                   >
                     <DockItem :docks="docks" :size="size" />
                   </div>
@@ -48,7 +48,7 @@
           v-for="(groupDocks, group) in docksByType(station.docks)"
           v-else
           :key="`docks-${group}`"
-          class="col-xs-12"
+          class="col-12"
         >
           <div class="metrics-label">
             <b>{{ group }}:</b>
@@ -57,7 +57,7 @@
             <div
               v-for="(docks, size) in docksBySize(groupDocks)"
               :key="`dock-${size}`"
-              class="col-xs-6"
+              class="col-6"
             >
               <DockItem :docks="docks" :size="size" />
             </div>

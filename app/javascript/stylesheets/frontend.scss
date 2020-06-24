@@ -2,8 +2,8 @@
 @import '~photoswipe/dist/photoswipe';
 @import 'vendor/photoswipe/default-skin';
 @import 'variables';
-@import 'colors/default';
-@import 'bootstrap-custom';
+@import '~bootstrap';
+@import '~bootstrap-vue';
 @import 'nprogress-custom';
 @import 'partials';
 @import 'pages';
@@ -55,6 +55,7 @@ body {
     position: relative;
     left: 0;
     width: 100%;
+    max-width: 100%;
     margin-bottom: 50px;
     transition: left ease .5s, right ease .5s;
   }

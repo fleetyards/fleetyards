@@ -7,9 +7,9 @@
     class="container compare-models"
   >
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
             <br />
             <h1 class="sr-only">
@@ -18,9 +18,9 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <div class="row compare-row compare-row-headline">
-              <div class="col-xs-12 compare-row-label">
+              <div class="col-12 compare-row-label">
                 <FilterGroup
                   v-model="newModel"
                   v-tooltip="disabledTooltip"
@@ -43,7 +43,7 @@
               <div
                 v-for="model in sortedModels"
                 :key="`${model.slug}-image`"
-                class="col-xs-12 compare-row-item"
+                class="col-12 compare-row-item"
               >
                 <div class="compare-image">
                   <router-link
@@ -73,7 +73,7 @@
             </div>
 
             <div v-if="!sortedModels.length" class="row compare-row">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <Box class="info" large>
                   <h1>{{ $t('headlines.compare.models') }}</h1>
                   <p>{{ $t('texts.compare.models.info') }}</p>

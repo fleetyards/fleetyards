@@ -1,6 +1,6 @@
 <template>
   <div v-if="hardpoints.length" class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
       <h2 v-if="!withoutTitle" class="hardpoint-category-label">
         {{ $t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
       </h2>
@@ -30,9 +30,9 @@
       </Panel>
     </div>
     <Modal ref="componentModal" :title="(component && component.name) || ''">
-      <div v-if="component" class="col-xs-12 metrics-block">
+      <div v-if="component" class="col-12 metrics-block">
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-6">
             <div class="metrics-label">{{ $t('component.size') }}:</div>
             <div class="metrics-value">
               {{ component.size }}
@@ -40,7 +40,7 @@
             <div class="metrics-label">{{ $t('component.manufacturer') }}:</div>
             <div class="metrics-value" v-html="component.manufacturer.name" />
           </div>
-          <div v-if="selectedHardpoint.type === 'missiles'" class="col-xs-6">
+          <div v-if="selectedHardpoint.type === 'missiles'" class="col-6">
             <div class="metrics-label">
               {{ $t('labels.hardpoint.rackSize') }}:
             </div>

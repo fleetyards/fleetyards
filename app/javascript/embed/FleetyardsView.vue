@@ -1,9 +1,9 @@
 <template>
   <div id="fleetyards-view">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <div class="page-actions">
               <Btn
                 v-show="!fleetchart && groupedButton"
@@ -53,8 +53,8 @@
             </div>
           </div>
         </div>
-        <div v-if="fleetchart && slider" class="row">
-          <div class="col-xs-12 col-md-4 col-md-offset-4 fleetchart-slider">
+        <div v-if="fleetchart && slider" class="row justify-content-lg-center">
+          <div class="col-12 col-lg-4 fleetchart-slider">
             <FleetchartSlider
               :initial-scale="fleetchartScale"
               @change="updateFleetchartScale"
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div v-if="fleetchart" class="row">
-          <div class="col-xs-12 fleetchart-wrapper">
+          <div class="col-12 fleetchart-wrapper">
             <transition-group
               id="fleetchart"
               name="fade-list"
@@ -89,7 +89,7 @@
           <div
             v-for="(model, index) in displayModels"
             :key="`${index}-${model.slug}`"
-            class="col-xs-12 col-sm-6 col-lg-4 col-xlg-4 fade-list-item"
+            class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
           >
             <ModelPanel
               :model="model"

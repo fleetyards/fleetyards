@@ -11,7 +11,7 @@
         @submit.prevent="handleSubmit(save)"
       >
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <ValidationProvider
               v-slot="{ errors }"
               vid="username"
@@ -30,7 +30,7 @@
         </div>
       </form>
       <template #footer>
-        <div class="pull-right">
+        <div class="float-sm-right">
           <Btn
             :form="`fleet-member-${fleet.id}`"
             :loading="submitting"

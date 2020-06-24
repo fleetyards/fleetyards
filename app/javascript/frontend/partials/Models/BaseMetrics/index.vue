@@ -8,9 +8,9 @@
     <div
       v-if="title"
       :class="{
-        'col-md-3': title,
+        'col-lg-3': title,
       }"
-      class="col-xs-12"
+      class="col-12"
     >
       <div class="metrics-title">
         {{ $t('labels.metrics.base') }}
@@ -18,12 +18,12 @@
     </div>
     <div
       :class="{
-        'col-md-9': title,
+        'col-lg-9': title,
       }"
-      class="col-xs-12 metrics-block"
+      class="col-12 metrics-block"
     >
       <div class="row">
-        <div class="col-xs-6 col-md-4">
+        <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ $t('model.length') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.length, 'distance') }}
@@ -39,7 +39,7 @@
             </div>
           </template>
         </div>
-        <div class="col-xs-6 col-md-4">
+        <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ $t('model.height') }}:</div>
           <div class="metrics-value">
             {{ $toNumber(model.height, 'distance') }}
@@ -55,15 +55,15 @@
             </div>
           </template>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-12 col-lg-4">
           <div class="row">
-            <div class="col-xs-6 col-md-12">
+            <div class="col-6 col-lg-12">
               <div class="metrics-label">{{ $t('model.cargo') }}:</div>
               <div class="metrics-value">
                 {{ $toNumber(model.cargo, 'cargo') }}
               </div>
             </div>
-            <div v-if="model.price" class="col-xs-6 col-md-12">
+            <div v-if="model.price" class="col-6 col-lg-12">
               <div class="metrics-label">{{ $t('model.price') }}:</div>
               <div class="metrics-value">
                 {{ $toUEC(model.price) }}
@@ -71,7 +71,7 @@
             </div>
             <div
               v-if="detailed && model.lastPledgePrice"
-              class="col-xs-6 col-md-12"
+              class="col-6 col-lg-12"
             >
               <div class="metrics-label">{{ $t('model.pledgePrice') }}:</div>
               <div class="metrics-value">
@@ -80,17 +80,17 @@
             </div>
           </div>
         </div>
-        <div v-if="detailed && model.lastUpdatedAt" class="col-md-12">
+        <div v-if="detailed && model.lastUpdatedAt" class="col-lg-12">
           <div class="metrics-label">{{ $t('model.lastUpdatedAt') }}:</div>
           <div class="metrics-value">
             {{ model.lastUpdatedAtLabel }}
           </div>
         </div>
-        <div class="col-xs-12">
+        <div class="col-12">
           <div class="row">
             <div
               v-if="detailed && model.soldAt && model.soldAt.length"
-              class="col-xs-12 col-md-6"
+              class="col-12 col-lg-6"
             >
               <div class="metrics-label">{{ $t('model.soldAt') }}:</div>
               <div class="metrics-value">
@@ -113,7 +113,7 @@
             </div>
             <div
               v-if="detailed && model.rentalAt && model.rentalAt.length"
-              class="col-xs-12 col-md-6"
+              class="col-12 col-lg-6"
             >
               <div class="metrics-label">{{ $t('model.rentalAt') }}:</div>
               <div class="metrics-value">

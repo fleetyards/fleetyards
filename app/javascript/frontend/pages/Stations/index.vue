@@ -2,14 +2,14 @@
   <router-view v-if="isSubRoute" />
   <section v-else class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.stations') }}
         </h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
@@ -27,7 +27,7 @@
           </Btn>
         </div>
       </div>
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-lg-6">
         <Paginator
           v-if="stations.length"
           :page="currentPage"
@@ -43,21 +43,21 @@
         @before-enter="toggleFullscreen"
         @after-leave="toggleFullscreen"
       >
-        <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
+        <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
           <FilterForm />
         </div>
       </transition>
       <div
         :class="{
-          'col-md-9 col-xlg-10': !fullscreen,
+          'col-lg-9 col-xxl-10': !fullscreen,
         }"
-        class="col-xs-12 col-animated"
+        class="col-12 col-animated"
       >
         <transition-group name="fade-list" class="flex-row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"
-            class="col-xs-12 fade-list-item"
+            class="col-12 fade-list-item"
           >
             <StationPanel :station="station" />
           </div>
@@ -65,7 +65,7 @@
         <EmptyBox :visible="emptyBoxVisible" />
         <Loader :loading="loading" fixed />
       </div>
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="stations.length"
           :page="currentPage"

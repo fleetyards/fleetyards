@@ -3,7 +3,9 @@
     <h1>
       <template v-if="empty">
         {{ $t('headlines.hangarGuideEmpty') }}
-        <small>{{ $t('sublines.hangarGuide.headline') }}</small>
+        <small class="text-muted">
+          {{ $t('sublines.hangarGuide.headline') }}
+        </small>
       </template>
       <template v-else>
         {{ $t('headlines.hangarGuide') }}

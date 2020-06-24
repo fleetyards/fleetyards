@@ -7,7 +7,7 @@
             {{ countLabel }}{{ model.name }}
           </a>
           <br />
-          <small v-html="model.manufacturer.name" />
+          <small class="text-muted" v-html="model.manufacturer.name" />
         </h2>
       </div>
       <div
@@ -17,6 +17,7 @@
         class="panel-image text-center"
       >
         <LazyImage
+          v-if="model.storeImageMedium"
           :href="url"
           target="_blank"
           rel="noopener"

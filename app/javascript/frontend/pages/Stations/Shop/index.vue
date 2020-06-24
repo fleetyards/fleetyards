@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="shop">
           {{ shop.name }}
@@ -9,19 +9,19 @@
       </div>
     </div>
     <div class="row">
-      <div v-if="shop" class="col-xs-12 col-md-8">
+      <div v-if="shop" class="col-12 col-lg-8">
         <blockquote v-if="shop.description" class="description">
           <p v-html="shop.description" />
         </blockquote>
       </div>
-      <div v-if="shop" class="col-xs-12 col-md-4">
+      <div v-if="shop" class="col-12 col-lg-4">
         <Panel>
           <ShopBaseMetrics :shop="shop" padding />
         </Panel>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <div class="page-actions page-actions-left">
           <Btn
             v-tooltip="toggleFiltersTooltip"
@@ -52,7 +52,7 @@
           </template>
         </div>
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <Paginator
           v-if="commodities.length"
           :page="currentPage"
@@ -69,22 +69,19 @@
         @before-enter="toggleFullscreen"
         @after-leave="toggleFullscreen"
       >
-        <div v-show="filterVisible" class="col-xs-12 col-md-3 col-xlg-2">
+        <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
           <FilterForm />
         </div>
       </transition>
       <div
         :class="{
-          'col-md-9 col-xlg-10': !fullscreen,
+          'col-lg-9 col-xxl-10': !fullscreen,
         }"
-        class="col-xs-12 col-animated"
+        class="col-12 col-animated"
       >
         <Panel v-if="shop">
           <transition-group name="fade" class="flex-list" tag="div" appear>
-            <div
-              key="heading"
-              class="fade-list-item col-xs-12 flex-list-heading"
-            >
+            <div key="heading" class="fade-list-item col-12 flex-list-heading">
               <div class="flex-list-row">
                 <div class="store-image" />
                 <div class="description" />
@@ -102,7 +99,7 @@
             <div
               v-if="!loading && !commodities.length"
               key="empty"
-              class="fade-list-item col-xs-12 flex-list-item"
+              class="fade-list-item col-12 flex-list-item"
             >
               <div class="flex-list-row">
                 <div class="empty">
@@ -113,7 +110,7 @@
             <div
               v-for="(commodity, index) in commodities"
               :key="`commodities-${index}`"
-              class="fade-list-item col-xs-12 flex-list-item"
+              class="fade-list-item col-12 flex-list-item"
             >
               <ShopItemRow
                 :commodity="commodity"
@@ -128,7 +125,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <Paginator
           v-if="commodities.length"
           :page="currentPage"

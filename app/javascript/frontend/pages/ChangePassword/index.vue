@@ -1,8 +1,8 @@
 <template>
   <section class="container change-password">
     <div class="row">
-      <div class="col-xs-12">
-        <ValidationObserver v-slot="{ handleSubmit }" slim>
+      <div class="col-12">
+        <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
           <form @submit.prevent="handleSubmit(changePassword)">
             <h1>
               <router-link :to="{ name: 'home' }" exact>

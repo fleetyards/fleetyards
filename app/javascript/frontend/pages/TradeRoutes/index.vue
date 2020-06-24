@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1>{{ title }}</h1>
       </div>
     </div>
@@ -51,10 +51,10 @@
             :key="
               `${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`
             "
-            class="col-xs-12 fade-list-item cargo-route"
+            class="col-12 fade-list-item cargo-route"
           >
             <div class="flex-row">
-              <div class="col-xs-12 col-sm-4">
+              <div class="col-12 col-md-4">
                 <Panel :outer-spacing="false">
                   <div class="cargo-route-point">
                     <h3>
@@ -69,7 +69,7 @@
                         {{ route.origin.name }}
                       </router-link>
                       <br />
-                      <small>
+                      <small class="text-muted">
                         {{ route.origin.locationLabel }}
                       </small>
                     </h3>
@@ -81,7 +81,7 @@
                   </div>
                 </Panel>
               </div>
-              <div class="col-xs-12 col-sm-4 cargo-route-center">
+              <div class="col-12 col-md-4 cargo-route-center">
                 <h2 class="text-center">
                   {{ route.commodity.name }}
                 </h2>
@@ -93,7 +93,7 @@
                   </small>
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-4">
+              <div class="col-12 col-md-4">
                 <Panel :outer-spacing="false">
                   <div class="cargo-route-point">
                     <h3>
@@ -108,7 +108,7 @@
                         {{ route.destination.name }}
                       </router-link>
                       <br />
-                      <small>
+                      <small class="text-muted">
                         {{ route.destination.locationLabel }}
                       </small>
                     </h3>

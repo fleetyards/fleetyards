@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12">
         <BreadCrumbs :crumbs="crumbs" />
         <h1>{{ $t('headlines.fleets.settings.fleet') }}</h1>
       </div>
@@ -10,7 +10,7 @@
     <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
       <form v-if="canEdit && fleet" @submit.prevent="handleSubmit(submit)">
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="logo"
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="fid"
@@ -64,7 +64,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="name"
@@ -84,7 +84,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <FormInput
               id="rsiSid"
               v-model="form.rsiSid"
@@ -95,7 +95,7 @@
         </div>
         <hr />
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="homepage"
@@ -111,7 +111,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="discord"
@@ -128,7 +128,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="ts"
@@ -148,7 +148,7 @@
         </div>
         <hr />
         <div class="row">
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="youtube"
@@ -165,7 +165,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="twitch"
@@ -182,7 +182,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-md-12 col-lg-6">
+          <div class="col-lg-12 col-xl-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="guilded"

@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h1 class="sr-only">
           {{ $t('headlines.shops') }}
         </h1>
@@ -16,50 +16,8 @@
     >
       <FilterForm slot="filter" />
 
-      <template v-slot:default="{ records }">
-        <transition-group
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          :appear="true"
-        >
-          <div
-            v-for="(shop, index) in records"
-            :key="`shops-${index}`"
-            class="col-xs-12 col-md-6 fade-list-item"
-          >
-            <Panel :id="`${shop.station.slug}-${shop.slug}`" class="shop-list">
-              <div
-                :key="shop.storeImageMedium"
-                v-lazy:background-image="shop.storeImageMedium"
-                class="panel-bg lazy"
-              />
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="panel-heading">
-                    <h2 class="panel-title">
-                      <router-link
-                        :to="{
-                          name: 'shop',
-                          params: {
-                            station: shop.station.slug,
-                            slug: shop.slug,
-                          },
-                        }"
-                        :aria-label="shop.name"
-                      >
-                        <small>
-                          {{ shop.station.name }}
-                        </small>
-                        {{ shop.name }}
-                      </router-link>
-                    </h2>
-                  </div>
-                </div>
-              </div>
-            </Panel>
-          </div>
-        </transition-group>
+      <template v-slot:record="{ record }">
+        <ShopPanel :shop="record" />
       </template>
     </FilteredList>
   </section>
@@ -69,16 +27,16 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Panel from 'frontend/components/Panel'
 import FilterForm from 'frontend/partials/Shops/FilterForm'
 import FilteredList from 'frontend/components/FilteredList'
+import ShopPanel from 'frontend/components/Shops/Panel'
 import shopsCollection from 'frontend/collections/Shops'
 
 @Component<ShopList>({
   components: {
-    Panel,
     FilterForm,
     FilteredList,
+    ShopPanel,
   },
   mixins: [MetaInfo],
 })
