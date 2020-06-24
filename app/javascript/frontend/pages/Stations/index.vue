@@ -53,7 +53,7 @@
         }"
         class="col-12 col-animated"
       >
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"

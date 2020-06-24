@@ -53,7 +53,7 @@
             "
             class="col-12 fade-list-item cargo-route"
           >
-            <div class="flex-row">
+            <div class="row">
               <div class="col-12 col-md-4">
                 <Panel :outer-spacing="false">
                   <div class="cargo-route-point">

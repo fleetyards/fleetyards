@@ -1,0 +1,15 @@
+a {
+  color: $text-color;
+  text-decoration: none;
+  transition: all ease .5s;
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+
+  &:focus {
+    color: $text-color;
+    text-decoration: none;
+  }
+}

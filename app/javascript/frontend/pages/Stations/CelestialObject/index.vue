@@ -27,7 +27,7 @@
         class="col-12"
       >
         <h2>{{ $t('headlines.moons') }}</h2>
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="moon in celestialObject.moons"
             :key="moon.slug"
@@ -60,7 +60,7 @@
         />
       </div>
       <div class="col-12">
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="station in stations"
             :key="station.slug"

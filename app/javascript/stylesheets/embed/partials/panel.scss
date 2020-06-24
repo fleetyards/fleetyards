@@ -1,0 +1,259 @@
+$outerBorderWidth: 2px;
+$outerBorderRadius: $panelOuterBorderRadius;
+$innerBorderWidth: 3px;
+$innerBorderRadius: $panelInnerBorderRadius;
+$contentBorderRadius: $panelContentBorderRadius;
+
+.panel-wrapper {
+  position: relative;
+  box-sizing: border-box;
+  padding: $outerBorderWidth;
+  border: $outerBorderWidth solid $panel-outer-border;
+  border-radius: $outerBorderRadius;
+  transition: border-color $transition-base-speed ease;
+
+  &.panel-outer-spacing {
+    margin-bottom: 21px;
+  }
+
+  &.panel-highlight {
+    border: $outerBorderWidth solid $gold;
+  }
+
+  &::before {
+    position: absolute;
+    top: -$outerBorderWidth;
+    right: 80px;
+    left: 80px;
+    height: $outerBorderWidth;
+    background-color: #444;
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    right: 80px;
+    bottom: -$outerBorderWidth;
+    left: 80px;
+    height: $outerBorderWidth;
+    background-color: #444;
+    content: '';
+  }
+}
+
+.panel {
+  position: relative;
+  min-height: $innerBorderRadius * 2;
+  background-color: $panel-bg;
+  border: $innerBorderWidth solid $panel-inner-border;
+  border-radius: $innerBorderRadius;
+  box-shadow: 0 1px 1px rgba(#000, .05);
+
+  &::before {
+    position: absolute;
+    top: -$innerBorderWidth;
+    right: 40px;
+    left: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    right: 40px;
+    bottom: -$innerBorderWidth;
+    left: 40px;
+    height: ($innerBorderWidth + 1);
+    background-color: #444;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    content: '';
+  }
+
+  &.panel-primary {
+    color: white;
+    background-color: $primary;
+  }
+
+  &.panel-success {
+    color: white;
+    background-color: $success;
+  }
+
+  &.panel-transparency-more {
+    background-color: rgba($panel-bg, .6);
+  }
+
+  &.panel-transparency-complete {
+    background-color: transparent;
+  }
+
+  .text-huge {
+    font-size: 40px;
+  }
+
+  .panel-box {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+
+    .panel-box-icon {
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+
+      div {
+        margin-bottom: 2px;
+      }
+    }
+
+    .panel-box-text {
+      font-size: 40px;
+      text-align: right;
+
+      .panel-box-text-info {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .production-status {
+    padding: 4px 6px;
+    color: $gray-light;
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, .6);
+  }
+
+  .panel-heading {
+    padding: 10px 15px;
+
+    .panel-title {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 5px;
+      padding-right: 30px;
+      overflow: hidden;
+      font-weight: normal;
+      font-size: 22px;
+      font-family: 'Orbitron', sans-serif;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      small {
+        color: darken($text-color, 20%);
+        font-size: 15px;
+        font-family: 'Open Sans', sans-serif;
+
+        a {
+          color: darken($text-color, 20%);
+
+          &:hover {
+            color: $text-color;
+          }
+        }
+      }
+    }
+
+    &.panel-heading-with-actions {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        margin-bottom: 10.5px;
+        padding-right: 40px;
+      }
+    }
+  }
+
+  .panel-footer {
+    -webkit-border-bottom-right-radius: $contentBorderRadius;
+    border-bottom-right-radius: $contentBorderRadius;
+    -webkit-border-bottom-left-radius: $contentBorderRadius;
+    border-bottom-left-radius: $contentBorderRadius;
+  }
+
+  .panel-body {
+    padding: 15px;
+    padding-bottom: 0;
+  }
+
+  .panel-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0, 0, 0, .6);
+    transition: border-radius $transition-base-speed ease;
+
+    & > a {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .6);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      -webkit-animation-name: fadein;
+      animation-name: fadeIn;
+      -webkit-animation-duration: 1s;
+      animation-duration: 1s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
+
+    &:last-child {
+      border-bottom: none;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+
+      img {
+        -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+        border-bottom-right-radius: $panelContentBorderRadius;
+        -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+        border-bottom-left-radius: $panelContentBorderRadius;
+      }
+    }
+
+    &.no-details {
+      overflow: hidden;
+      border-bottom: none;
+      -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+      border-bottom-right-radius: $panelContentBorderRadius;
+      -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+      border-bottom-left-radius: $panelContentBorderRadius;
+
+      a {
+        overflow: hidden;
+        -webkit-border-bottom-right-radius: $panelContentBorderRadius;
+        border-bottom-right-radius: $panelContentBorderRadius;
+        -webkit-border-bottom-left-radius: $panelContentBorderRadius;
+        border-bottom-left-radius: $panelContentBorderRadius;
+      }
+    }
+  }
+
+  .panel-inner {
+    border-radius: $contentBorderRadius;
+
+    &.panel-inner-text {
+      padding: 20px;
+    }
+  }
+
+  table {
+    margin-bottom: 0;
+  }
+
+  table:first-child tbody:first-child tr:first-child td,
+  table:first-child thead tr:first-child th {
+    border-top: none;
+  }
+}

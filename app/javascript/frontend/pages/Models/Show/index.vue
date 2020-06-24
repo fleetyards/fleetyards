@@ -170,7 +170,7 @@
         <transition-group
           v-if="paints.length"
           name="fade-list"
-          class="flex-row"
+          class="row"
           tag="div"
           appear
         >
@@ -190,7 +190,7 @@
         <h2 v-if="modules.length" class="text-uppercase">
           {{ $t('labels.model.modules') }}
         </h2>
-        <div v-if="modules.length" class="flex-row">
+        <div v-if="modules.length" class="row">
           <div
             v-for="module in modules"
             :key="module.id"
@@ -207,7 +207,7 @@
         <h2 v-if="upgrades.length" class="text-uppercase">
           {{ $t('labels.model.upgrades') }}
         </h2>
-        <div v-if="upgrades.length" class="flex-row">
+        <div v-if="upgrades.length" class="row">
           <div
             v-for="upgrade in upgrades"
             :key="upgrade.id"
@@ -227,7 +227,7 @@
         <transition-group
           v-if="variants.length"
           name="fade-list"
-          class="flex-row"
+          class="row"
           tag="div"
           appear
         >
@@ -250,7 +250,7 @@
         <transition-group
           v-if="loaners.length"
           name="fade-list"
-          class="flex-row"
+          class="row"
           tag="div"
           appear
         >

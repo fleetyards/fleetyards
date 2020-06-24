@@ -22,7 +22,7 @@
         <transition-group
           v-if="videos"
           name="fade-list"
-          class="flex-row flex-center videos"
+          class="row flex-center videos"
           tag="div"
           appear
         >

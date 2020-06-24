@@ -43,7 +43,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="starsystem in starsystems"
             :key="starsystem.slug"
@@ -62,12 +62,7 @@
                 <h3 class="sr-only">
                   {{ $t('headlines.celestialObjects') }}
                 </h3>
-                <transition-group
-                  name="fade-list"
-                  class="flex-row"
-                  tag="div"
-                  appear
-                >
+                <transition-group name="fade-list" class="row" tag="div" appear>
                   <div
                     v-for="celestialObject in starsystem.celestialObjects"
                     :key="celestialObject.slug"

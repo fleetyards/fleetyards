@@ -33,3 +33,21 @@
 .metrics-padding {
   padding: 10px 15px;
 }
+
+.base-metrics {
+  .metrics-value {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.top-metrics {
+  min-height: 70px;
+
+  .metrics-value {
+    max-height: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

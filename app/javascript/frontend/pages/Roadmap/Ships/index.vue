@@ -45,7 +45,7 @@
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
             >
-              <div class="flex-row">
+              <div class="row">
                 <div
                   v-for="item in items"
                   :key="item.id"
@@ -84,7 +84,7 @@
               id="unscheduled-cards"
               :visible="visible.includes('unscheduled')"
             >
-              <div class="flex-row">
+              <div class="row">
                 <div
                   v-for="model in unscheduledModels"
                   :key="model.slug"

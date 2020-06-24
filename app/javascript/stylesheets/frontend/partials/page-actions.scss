@@ -1,0 +1,31 @@
+.page-actions {
+  text-align: right;
+
+  &.page-actions-left {
+    text-align: left;
+  }
+
+  &.page-actions-right {
+    > :last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+
+    > :last-child {
+      margin-right: 0;
+    }
+
+    .panel-btn {
+      flex-grow: 1;
+    }
+  }
+}

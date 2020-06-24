@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="flex-row">
+      <div class="row">
         <template v-for="addon in addons">
           <div
             v-for="(addonId, index) in idsForAddon(addon.id)"

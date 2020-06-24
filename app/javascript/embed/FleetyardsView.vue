@@ -66,7 +66,7 @@
             <transition-group
               id="fleetchart"
               name="fade-list"
-              class="flex-row fleetchart"
+              class="row fleetchart"
               tag="div"
               appear
             >
@@ -79,13 +79,7 @@
             </transition-group>
           </div>
         </div>
-        <transition-group
-          v-else
-          name="fade-list"
-          class="flex-row"
-          tag="div"
-          appear
-        >
+        <transition-group v-else name="fade-list" class="row" tag="div" appear>
           <div
             v-for="(model, index) in displayModels"
             :key="`${index}-${model.slug}`"
@@ -105,11 +99,11 @@
 </template>
 
 <script>
-import ModelPanel from 'embed/partials/Models/Panel'
-import FleetchartItem from 'embed/partials/Models/FleetchartItem'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
-import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
+import ModelPanel from 'embed/components/Models/Panel'
+import FleetchartItem from 'embed/components/FleetchartItem'
+import FleetchartSlider from 'embed/partials/Fleetchart/Slider'
+import Loader from 'embed/components/Loader'
+import Btn from 'embed/components/Btn'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -152,6 +146,7 @@ export default {
             model: this.models.find(model => model.slug === slug),
           }))
           .map(this.mapModel)
+          .filter(item => item)
           .sort(this.sortByName)
       }
 
@@ -237,13 +232,7 @@ export default {
 
     mapModel(item) {
       if (!item.model) {
-        return {
-          name: this.$t('labels.unknownModel', { slug: item.slug }),
-          slug: item.slug,
-          manufacturer: {
-            name: this.$t('labels.unknown'),
-          },
-        }
+        return null
       }
       return item.model
     },

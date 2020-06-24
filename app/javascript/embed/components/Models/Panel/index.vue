@@ -7,7 +7,11 @@
             {{ countLabel }}{{ model.name }}
           </a>
           <br />
-          <small class="text-muted" v-html="model.manufacturer.name" />
+          <small
+            v-if="model.manufacturer"
+            class="text-muted"
+            v-html="model.manufacturer.name"
+          />
         </h2>
       </div>
       <div
@@ -53,10 +57,10 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import Panel from 'frontend/components/Panel'
-import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
-import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
-import LazyImage from 'frontend/components/LazyImage'
+import Panel from 'embed/components/Panel'
+import ModelTopMetrics from 'embed/partials/Models/TopMetrics'
+import ModelBaseMetrics from 'embed/partials/Models/BaseMetrics'
+import LazyImage from 'embed/components/LazyImage'
 
 export default {
   components: {

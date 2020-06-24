@@ -105,7 +105,7 @@
           </div>
         </div>
 
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="vehicle in collection.records"
             :key="vehicle.id"

@@ -83,7 +83,7 @@
           </h2>
           <transition-group
             name="fade-list"
-            class="flex-row"
+            class="row"
             tag="div"
             :appear="true"
           >
@@ -112,7 +112,7 @@
             <div class="panel-body images">
               <transition-group
                 name="fade"
-                class="flex-row flex-center"
+                class="row flex-center"
                 tag="div"
                 :appear="true"
               >

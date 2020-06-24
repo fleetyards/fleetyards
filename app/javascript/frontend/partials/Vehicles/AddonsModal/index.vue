@@ -28,7 +28,7 @@
           <Loader :loading="loadingModules" />
         </div>
       </div>
-      <div class="flex-row">
+      <div class="row">
         <div class="col-12">
           <fieldset v-if="upgrades.length">
             <legend>

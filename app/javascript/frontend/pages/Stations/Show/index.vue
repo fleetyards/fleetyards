@@ -37,7 +37,7 @@
       <div class="col-12">
         <template v-if="station && station.shops.length">
           <h2>{{ $t('headlines.shops') }}</h2>
-          <transition-group name="fade-list" class="flex-row" tag="div" appear>
+          <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="shop in station.shops"
               :key="shop.slug"

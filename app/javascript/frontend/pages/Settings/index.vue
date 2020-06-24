@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-12 col-md-3 col-md-push-9">
+      <div class="col-12 col-md-3 order-md-12">
         <ul class="tabs">
           <router-link :to="{ name: 'settings-profile' }" tag="li">
             <a>{{ $t('nav.settings.profile') }}</a>
@@ -17,7 +17,7 @@
           </router-link>
         </ul>
       </div>
-      <div class="col-12 col-md-9 col-md-pull-3">
+      <div class="col-12 col-md-9 order-md-1">
         <router-view />
       </div>
     </div>

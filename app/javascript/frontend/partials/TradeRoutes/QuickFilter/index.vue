@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 fade-list-item quick-filter">
     <form @submit.prevent="filter">
-      <div class="flex-row">
+      <div class="row">
         <div class="col-12 col-md-4">
           <FilterGroup
             v-model="form.originIn"

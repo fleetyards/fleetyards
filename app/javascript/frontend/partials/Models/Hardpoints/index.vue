@@ -1,5 +1,5 @@
 <template>
-  <div class="row flex-row">
+  <div class="row row">
     <div class="col-12 col-md-6 col-lg-4">
       <HardpointCategory
         v-for="category in ['RSIAvionic', 'RSIModular']"

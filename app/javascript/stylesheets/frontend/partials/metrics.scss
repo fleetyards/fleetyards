@@ -1,0 +1,59 @@
+.metrics-title {
+  font-size: 18px;
+  font-family: 'Orbitron', tahoma, sans-serif;
+  text-transform: uppercase;
+}
+
+.metrics-block {
+  margin-top: -6px;
+
+  .seperator {
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba($gray-dark, .7);
+  }
+}
+
+.metrics-label,
+.metrics-group-label {
+  margin-top: 6px;
+  color: darken($text-color, 20%);
+}
+
+.metrics-group-label {
+  margin-top: 25px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  font-size: 110%;
+  border-bottom: 2px solid $gray-dark;
+}
+
+:first-child > .metrics-group-label {
+  margin-top: 0;
+}
+
+.metrics-value {
+  font-weight: bold;
+}
+
+.metrics-padding {
+  padding: 10px 15px;
+}
+
+.base-metrics {
+  .metrics-value {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.top-metrics {
+  min-height: 70px;
+
+  .metrics-value {
+    max-height: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

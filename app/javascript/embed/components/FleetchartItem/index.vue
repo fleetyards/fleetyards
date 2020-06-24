@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import FleetchartItemImage from 'frontend/partials/Fleetchart/List/Item/Image'
+import FleetchartItemImage from 'embed/partials/Fleetchart/Image'
 
 export default {
   components: {

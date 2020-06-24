@@ -48,18 +48,6 @@ a.navbar-brand {
   border-color: #666;
 }
 
-.flex-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.flex-row > [class*='col-'] {
-  display: flex;
-  flex-direction: column;
-}
-
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {

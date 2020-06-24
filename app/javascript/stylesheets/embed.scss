@@ -1,21 +1,7 @@
-@import '~noty/lib/noty';
-
 #fleetyards-view {
   @import 'variables';
-  @import '~bootstrap';
-  @import '~bootstrap-vue';
-  @import 'partials/typography';
-  @import 'partials/transitions';
-  @import 'partials/flex';
-  @import 'partials/media';
-  @import 'partials/buttons';
-  @import 'partials/tooltip';
-  @import 'partials/loader';
-  @import 'partials/metrics';
-  @import 'partials/labels';
-  @import 'partials/panel';
-  @import 'partials/fleetchart';
-  @import 'partials/slider';
+  @import 'embed/bootstrap-custom';
+  @import 'embed/partials';
 
   margin-right: auto;
   margin-left: auto;

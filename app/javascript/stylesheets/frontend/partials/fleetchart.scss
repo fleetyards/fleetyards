@@ -1,0 +1,58 @@
+.fleetchart-wrapper {
+  max-width: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.fleetchart {
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+
+  .fleetchart-item {
+    position: relative;
+    display: inline-block;
+    margin: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+
+    a {
+      display: block;
+    }
+
+    .fleetchart-item-image {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.fleetchart-slider {
+  margin-bottom: 20px;
+}
+
+.fleetchart-download-image {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+
+.fleetchart-download {
+  .fleetchart-download-image {
+    display: block;
+
+    img {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+.fleetchart-item-context-menu {
+  position: fixed !important;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart {
+    justify-content: center;
+  }
+}

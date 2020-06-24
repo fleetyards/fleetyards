@@ -1,12 +1,11 @@
 @import '~noty/lib/noty';
 @import '~photoswipe/dist/photoswipe';
-@import 'vendor/photoswipe/default-skin';
+@import 'frontend/vendor/photoswipe/default-skin';
 @import 'variables';
-@import '~bootstrap';
-@import '~bootstrap-vue';
-@import 'nprogress-custom';
-@import 'partials';
-@import 'pages';
+@import 'frontend/bootstrap-custom';
+@import 'frontend/nprogress-custom';
+@import 'frontend/partials';
+@import 'frontend/pages';
 
 .no-scroll {
   overflow: hidden !important;

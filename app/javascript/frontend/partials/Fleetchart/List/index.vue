@@ -4,7 +4,7 @@
       <transition-group
         id="fleetchart"
         name="fade-list"
-        class="flex-row fleetchart"
+        class="row fleetchart"
         tag="div"
         appear
       >

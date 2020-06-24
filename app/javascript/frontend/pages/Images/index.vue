@@ -22,7 +22,7 @@
         <transition-group
           v-if="collection.records.length"
           name="fade-list"
-          class="flex-row flex-center images"
+          class="row flex-center images"
           tag="div"
           appear
         >

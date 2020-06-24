@@ -51,7 +51,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <transition-group name="fade-list" class="flex-row" tag="div" appear>
+        <transition-group name="fade-list" class="row" tag="div" appear>
           <div
             v-for="result in results"
             :key="`${result.resultType}-${result.id}`"
