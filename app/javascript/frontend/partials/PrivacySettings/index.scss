@@ -39,5 +39,10 @@
 
 .cookies-banner-actions {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  button {
+    min-width: 150px;
+  }
 }

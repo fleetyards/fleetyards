@@ -8,175 +8,56 @@
         </h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 col-lg-6">
-        <div class="page-actions page-actions-left">
-          <Btn
-            v-tooltip="toggleFiltersTooltip"
-            :active="filterVisible"
-            :aria-label="toggleFiltersTooltip"
-            size="small"
-            @click.native="toggleFilter"
-          >
-            <span v-show="isFilterSelected">
-              <i class="fas fa-filter" />
-            </span>
-            <span v-show="!isFilterSelected">
-              <i class="far fa-filter" />
-            </span>
-          </Btn>
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-    <div class="row">
-      <transition
-        name="slide"
-        appear
-        @before-enter="toggleFullscreen"
-        @after-leave="toggleFullscreen"
-      >
-        <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
-          <FilterForm />
-        </div>
-      </transition>
-      <div
-        :class="{
-          'col-lg-9 col-xxl-10': !fullscreen,
-        }"
-        class="col-12 col-animated"
-      >
-        <transition-group name="fade-list" class="row" tag="div" appear>
+
+    <FilteredList
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :hash="$route.hash"
+      :paginated="true"
+    >
+      <FilterForm slot="filter" />
+
+      <template v-slot:default="{ filterVisible, records }">
+        <transition-group name="fade-list" class="row" tag="div" :appear="true">
           <div
-            v-for="station in stations"
-            :key="station.slug"
+            v-for="(record, index) in records"
+            :key="`${record.id}-${index}`"
+            :class="{
+              'col-3xl-6': !filterVisible,
+            }"
             class="col-12 fade-list-item"
           >
-            <StationPanel :station="station" />
+            <StationPanel :station="record" />
           </div>
         </transition-group>
-        <EmptyBox :visible="emptyBoxVisible" />
-        <Loader :loading="loading" fixed />
-      </div>
-      <div class="col-12">
-        <Paginator
-          v-if="stations.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
+      </template>
+    </FilteredList>
   </section>
 </template>
 
 <script>
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
+import FilteredList from 'frontend/components/FilteredList'
 import StationPanel from 'frontend/components/Stations/Panel'
-import EmptyBox from 'frontend/partials/EmptyBox'
-import Hash from 'frontend/mixins/Hash'
-import Pagination from 'frontend/mixins/Pagination'
-import Filters from 'frontend/mixins/Filters'
 import FilterForm from 'frontend/partials/Stations/FilterForm'
-import Btn from 'frontend/components/Btn'
-import { mapGetters } from 'vuex'
+import stationsCollection from 'frontend/collections/Stations'
 
-export default {
-  name: 'Stations',
-
+@Component<Stations>({
   components: {
-    Loader,
-    EmptyBox,
+    FilteredList,
     StationPanel,
     FilterForm,
-    Btn,
   },
+  mixins: [MetaInfo],
+})
+export default class Stations extends Vue {
+  collection: StationsCollection = stationsCollection
 
-  mixins: [MetaInfo, Hash, Filters, Pagination],
-
-  data() {
-    return {
-      loading: false,
-      stations: [],
-      fullscreen: false,
-    }
-  },
-
-  computed: {
-    ...mapGetters(['mobile']),
-
-    ...mapGetters('stations', ['filterVisible']),
-
-    isSubRoute() {
-      return this.$route.name !== 'stations'
-    },
-
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
-
-    emptyBoxVisible() {
-      return !this.loading && this.stations.length === 0
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
-
-  created() {
-    this.fetch()
-    if (this.mobile) {
-      this.$store.commit('stations/setFilterVisible', false)
-    }
-    this.toggleFullscreen()
-  },
-
-  methods: {
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
-    },
-
-    toggleFilter() {
-      this.$store.dispatch('stations/toggleFilter')
-    },
-
-    async fetch() {
-      if (this.isSubRoute) {
-        return
-      }
-
-      this.loading = true
-      const response = await this.$api.get('stations', {
-        q: {
-          ...this.$route.query.q,
-          sorts: ['station_type asc', 'name asc'],
-        },
-        page: this.$route.query.page,
-      })
-
-      this.loading = false
-
-      if (!response.error) {
-        this.stations = response.data
-        this.scrollToAnchor()
-      }
-
-      this.setPages(response.meta)
-    },
-  },
+  get isSubRoute() {
+    return this.$route.name !== 'stations'
+  }
 }
 </script>

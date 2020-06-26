@@ -1,21 +1,23 @@
 <template>
-  <dl v-if="station" class="dl-horizontal">
-    <dt>{{ $t('labels.station.type') }}:</dt>
-    <dd>{{ station.typeLabel }}</dd>
+  <dl v-if="station" class="row">
+    <dt class="col-sm-4 text-sm-right">{{ $t('labels.station.type') }}:</dt>
+    <dd class="col-sm-8">{{ station.typeLabel }}</dd>
 
-    <dt>{{ $t('labels.station.location') }}:</dt>
-    <dd>
+    <dt class="col-sm-4 text-sm-right">{{ $t('labels.station.location') }}:</dt>
+    <dd class="col-sm-8">
       <LocationLabel :station="station" />
     </dd>
 
-    <dt v-if="station.shopsListLabel">{{ $t('labels.station.shops') }}:</dt>
-    <dd v-if="station.shopsListLabel">
+    <dt v-if="station.shopsListLabel" class="col-sm-4 text-right">
+      {{ $t('labels.station.shops') }}:
+    </dt>
+    <dd v-if="station.shopsListLabel" class="col-sm-8">
       {{ station.shopListLabel }}
     </dd>
 
     <template v-if="station.dockCounts.length">
-      <dt>{{ $t('labels.station.docks') }}:</dt>
-      <dd>
+      <dt class="col-sm-4 text-sm-right">{{ $t('labels.station.docks') }}:</dt>
+      <dd class="col-sm-8">
         <ul class="list-unstyled">
           <li v-for="(dock, index) in station.dockCounts" :key="index">
             {{ dock.size }} {{ dock.typeLabel }}: {{ dock.count }}
@@ -25,8 +27,10 @@
     </template>
 
     <template v-if="station.habitationCounts.length">
-      <dt>{{ $t('labels.station.habitation') }}:</dt>
-      <dd>
+      <dt class="col-sm-4 text-sm-right">
+        {{ $t('labels.station.habitation') }}:
+      </dt>
+      <dd class="col-sm-8">
         <ul class="list-unstyled">
           <li
             v-for="(habitation, index) in station.habitationCounts"

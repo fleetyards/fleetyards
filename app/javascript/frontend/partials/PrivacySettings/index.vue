@@ -130,18 +130,12 @@
           <Btn
             data-test="show-settings"
             :inline="true"
-            :block="true"
             variant="link"
             @click.native="showSettings"
           >
             {{ $t('privacySettings.editSettings') }}
           </Btn>
-          <Btn
-            data-test="accept-cookies"
-            :inline="true"
-            :block="true"
-            @click.native="accept"
-          >
+          <Btn data-test="accept-cookies" :inline="true" @click.native="accept">
             {{ $t('privacySettings.accept') }}
           </Btn>
         </template>
