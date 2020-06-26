@@ -1,32 +1,28 @@
-nav#main-nav.navbar.navbar-default.navbar-fixed-top role="navigation"
-  .container-fluid
-    .navbar-header
-      button.navbar-toggle type='button' data-toggle='collapse' data-target='.navbar-ex1-collapse'
-        span.sr-only
-          = I18n.t(:"nav.header.toggle")
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a.navbar-brand{href: admin_root_path}
-        = I18n.t(:"title.admin")
+nav#main-nav.navbar.navbar-dark.fixed-top.bg-dark.navbar-expand-lg role="navigation"
+  a.navbar-brand{href: admin_root_path}
+    = I18n.t(:"title.admin")
 
-    .collapse.navbar-collapse.navbar-ex1-collapse
-      - if admin_user_signed_in?
-        = render "layouts/admin/nav"
-      = render "layouts/admin/user_nav"
+  button.navbar-toggler type='button' data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="#{I18n.t(:"nav.header.toggle")}"
+    span.navbar-toggler-icon
+
+  .collapse.navbar-collapse#navbarNavDropdown
+    = render "layouts/admin/nav"
+
+    .navbar-nav.environment-label.mr-3
       ruby:
         css_classes = {
           development: 'success',
           staging: 'warning',
           production: 'danger'
         }
-      .environment-label
-        span.pill class="pill-#{css_classes[Rails.env.to_sym]}"
-          i class="far fa-info-circle"
-          '
-          = Rails.env.upcase
+      span.pill class="pill-#{css_classes[Rails.env.to_sym]}"
+        i class="far fa-info-circle"
         '
-        span.pill class="pill-#{css_classes[Rails.env.to_sym]}"
-          i class="far fa-fingerprint"
-          '
-          = Git.revision_short
+        = Rails.env.upcase
+      '
+      span.pill class="pill-#{css_classes[Rails.env.to_sym]}"
+        i class="far fa-fingerprint"
+        '
+        = Git.revision_short
+
+    = render "layouts/admin/user_nav"

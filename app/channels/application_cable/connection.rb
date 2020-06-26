@@ -11,17 +11,8 @@ module ApplicationCable
     end
 
     private def find_verified_user
-      claim = ::JsonWebToken.decode(request.params[:token])
-
-      return unless claim
-      return unless claim.key?(:user)
-      return unless auth_token?(claim)
-
-      ::User.find_by(id: claim[:user])
-    end
-
-    private def auth_token?(claim)
-      ::AuthToken.exists?(user_id: claim[:user], client_key: claim[:client_key])
+      current_user = env['warden'].user
+      current_user || reject_unauthorized_connection
     end
   end
 end

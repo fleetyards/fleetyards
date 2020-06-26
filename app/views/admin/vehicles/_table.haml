@@ -2,8 +2,8 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
-        %th=sort_link(@q, :name)
         %th=sort_link(@q, :model_name, 'Model')
+        %th=sort_link(@q, :name)
         %th=sort_link(@q, :purchased)
         %th=sort_link(@q, :user_username, 'User')
         %th=sort_link(@q, :updated_at)

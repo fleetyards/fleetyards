@@ -160,6 +160,10 @@ class Model < ApplicationRecord
     includes(:docks).where.not(docks: { model_id: nil })
   end
 
+  def rsi_store_url
+    "#{Rails.application.secrets[:rsi_endpoint]}#{store_url}"
+  end
+
   def sold_at
     shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
   end

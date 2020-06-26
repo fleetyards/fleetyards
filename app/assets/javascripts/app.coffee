@@ -3,7 +3,8 @@ window.laddaButton ?= {}
 window.App ?= {}
 
 window.App.initSelect = () ->
-  $('select:not(.selectized)').selectize()
+  if $('select:not(.selectized)').length
+    $('select:not(.selectized)').selectize()
 
 window.App.unloadSelect = () ->
   $selectize = $('select.selectized')

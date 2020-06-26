@@ -4,6 +4,8 @@ window.App.Models.workerPath = null
 
 window.App.Models.checkWorkerState = (laddaButton, $element) ->
   $.ajax
+    beforeSend: (request) ->
+      request.withCredentials = true
     url: App.Models.workerPath
     dataType: "JSON"
     success: (data) ->
@@ -18,6 +20,8 @@ window.App.Models.reload = ($element) ->
   laddaButton.start() if laddaButton
   $element.addClass('disabled')
   $.ajax
+    beforeSend: (request) ->
+      request.withCredentials = true
     url: $element.data('action')
     type: 'PUT'
     dataType: "JSON"

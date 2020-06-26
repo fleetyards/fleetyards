@@ -4,8 +4,8 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   config.warden do |manager|
-    manager.strategies.add(:jwt, Devise::Strategies::JWT)
-    manager.default_strategies(scope: :api_user).unshift :jwt
+    # manager.strategies.add(:jwt, Devise::Strategies::JWT)
+    # manager.default_strategies(scope: :api_user).unshift :jwt
     manager.failure_app = JSONFailureApp
   end
 
@@ -132,14 +132,18 @@ Devise.setup do |config|
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.
-  config.remember_for = 3.months
+  config.remember_for = 6.months
 
   # If true, extends the user's remember period when remembered via cookie.
   config.extend_remember_period = true
 
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
-  config.rememberable_options = { key: 'fleetyards_session_remember', secure: Rails.env.production? }
+  config.rememberable_options = {
+    key: Rails.env.production? ? 'FLTYRD_STORED' : "FLTYRD_STORED_#{Rails.env.upcase}",
+    domain: ".#{Rails.application.secrets[:domain]}",
+    secure: Rails.env.production?
+  }
 
   # ==> Configuration for :validatable
   # Range for password length. Default is 8..128.
@@ -214,7 +218,7 @@ Devise.setup do |config|
 
   # Configure the default scope given to Warden. By default it's the first
   # devise role declared in your routes (usually :user).
-  # config.default_scope = :user
+  config.default_scope = :api_user
 
   # Set this configuration to false if you want /users/sign_out to sign out
   # only the current scope. By default, Devise signs out all scopes.

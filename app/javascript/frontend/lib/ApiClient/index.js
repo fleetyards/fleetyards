@@ -2,7 +2,6 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'
-import axiosDefaults from 'axios/lib/defaults'
 
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
@@ -12,14 +11,9 @@ const client = axios.create({
       'Content-Type': 'application/json',
     },
   },
-  transformRequest: axiosDefaults.transformRequest.concat((data, headers) => {
-    if (Store.getters['session/isAuthenticated']) {
-      // eslint-disable-next-line no-param-reassign
-      headers.Authorization = `Bearer ${Store.getters['session/authToken']}`
-    }
-
-    return data
-  }),
+  withCredentials: true,
+  xsrfCookieName: 'CSRF-TOKEN',
+  xsrfHeaderName: 'X-CSRF-Token',
 })
 
 const { CancelToken } = axios

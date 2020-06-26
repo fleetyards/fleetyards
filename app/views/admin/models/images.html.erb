@@ -3,25 +3,20 @@
   <%= I18n.t(:"title.model.images") %>
 <% end %>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="row">
-      <div class="col-xs-12 col-md-8">
+      <div class="col-12 col-md-8">
         <h2>
           <%= I18n.t(:"headlines.admin.model.images", model: model.name) %>
         </h2>
       </div>
-      <div class="col-xs-12 col-md-4">
-        <div class="btn-group pull-right resource-nav">
-          <%= link_to I18n.t(:"actions.back"), admin_models_path(params: index_back_params, anchor: model.id), class: "btn btn-default" %>
+      <div class="col-12 col-md-4">
+        <div class="d-flex justify-content-end">
+          <div class="btn-group">
+            <%= link_to I18n.t(:"actions.back"), admin_models_path(params: index_back_params, anchor: model.id), class: "btn btn-dark" %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
-  window.AUTH_TOKEN = '<%= jwt_token %>'
-  window.ON_SUBDOMAIN = '<%= ENV['ON_SUBDOMAIN']  %>'
-</script>
-<%= javascript_packs_with_chunks_tag 'admin' %>

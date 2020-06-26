@@ -1,16 +1,14 @@
-%ul.nav.navbar-nav.navbar-right
+%ul.navbar-nav.mr-3
   - if admin_user_signed_in?
     %li.dropdown{class: active_nav?('users')}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         %span.user-login
           = current_user.username
         %b.caret
-      %ul.dropdown-menu.navbar-right
-        -# %li{class: active_nav?('users')}
-        -#   = link_to I18n.t(:"nav.settings"), edit_user_registration_path
-        -# %li.divider
-        %li
-          = link_to I18n.t(:"actions.sign_out"), destroy_admin_user_session_path, method: :delete
+      .dropdown-menu.dropdown-menu-right
+        -# = link_to I18n.t(:"nav.settings"), edit_user_registration_path, class: "dropdown-item #{active_nav?('users')}"
+        -# .dropdown-divider
+        = link_to I18n.t(:"actions.sign_out"), destroy_admin_user_session_path, method: :delete, class: "dropdown-item"
   - else
     %li{class: active_nav?(%w(sessions users))}
       = link_to I18n.t(:"actions.sign_in"), new_admin_user_session_path

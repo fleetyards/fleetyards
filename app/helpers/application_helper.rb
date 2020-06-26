@@ -72,4 +72,8 @@ module ApplicationHelper
 
     "#{uri.scheme}://#{uri.host}#{path}"
   end
+
+  def app_enabled?
+    @app_enabled || false
+  end
 end

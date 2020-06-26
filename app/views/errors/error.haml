@@ -1,7 +1,8 @@
 - content_for(:title) do
   = I18n.t(:"title.#{params[:action]}")
-.cbox.cbox-error.cbox-large
-  .well
-    %h1= I18n.t(:"headlines.#{params[:action]}")
+.row.justify-content-md-center.align-items-center
+  .col-12.col-md-6
+    .card.bg-dark.p-3
+      %h1= I18n.t(:"headlines.#{params[:action]}")
 
-    %p= I18n.t(:"error_pages.#{params[:action]}")
+      %p.text-danger= I18n.t(:"error_pages.#{params[:action]}")

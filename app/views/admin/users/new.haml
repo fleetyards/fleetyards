@@ -1,15 +1,16 @@
 - content_for :title do
   = I18n.t(:"title.user.new")
 .row
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h2
           = I18n.t(:"headlines.admin.user.new")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t("actions.back"), admin_users_path(params: index_back_params), class: "btn btn-default"
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t("actions.back"), admin_users_path(params: index_back_params), class: "btn btn-dark"
 
     = render "form"

@@ -17,9 +17,9 @@
     = "(#{l(user.created_at, format: :short)})"
   %td
     .btn-group
-      = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-default" do
+      = link_to edit_admin_user_path(user), title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
         %i.fa.fa-edit
-      = confirm_link_to resend_confirmation_admin_user_path(user), data: { notyConfirm: I18n.t(:"messages.confirm.resend_confirmation") }, title: I18n.t(:"actions.resend_confirmation"), method: :put, class: "btn btn-default" do
+      = confirm_link_to resend_confirmation_admin_user_path(user), data: { notyConfirm: I18n.t(:"messages.confirm.resend_confirmation") }, title: I18n.t(:"actions.resend_confirmation"), method: :put, class: "btn btn-dark" do
         %i.fa.fa-envelope
       = confirm_link_to admin_user_path(user), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
         %i.fa.fa-trash

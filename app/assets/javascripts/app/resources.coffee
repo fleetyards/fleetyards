@@ -5,6 +5,8 @@ window.App.Resources.stateChange = ($element, attr) ->
   data = {}
   data[$element.data('resource')] = {"#{attr}": ($i.hasClass('fa-square') || $i.hasClass('fa-eye-slash'))}
   $.ajax
+    beforeSend: (request) ->
+      request.withCredentials = true
     url: $element.data('action')
     dataType: 'json'
     method: 'PUT'

@@ -42,6 +42,7 @@
 import NavItem from 'frontend/partials/Navigation/NavItem'
 import Avatar from 'frontend/components/Avatar'
 import NavigationMixin from 'frontend/mixins/Navigation'
+import sessionCollection from 'frontend/collections/Session'
 
 export default {
   components: {
@@ -64,6 +65,7 @@ export default {
 
   methods: {
     async logout() {
+      await sessionCollection.destroy()
       await this.$store.dispatch('session/logout')
     },
   },

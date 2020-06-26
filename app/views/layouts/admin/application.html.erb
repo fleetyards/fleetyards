@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+    <title><%= title %></title>
+
+    <title><%= content_for?(:title) ? "#{yield(:title)} | #{I18n.t(:"title.admin")}" : I18n.t(:"title.admin") %></title>
+
+    <link rel="shortcut icon" type="image/png" href="<%= asset_path('admin/favicon.png') %>">
+
+    <meta name="theme-color" content="#333333"/>
+    <meta name="application-name" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-title" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="<%= asset_path('admin/manifest.json') %>" />
+
+    <%= favicon_link_tag 'admin/icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://storage.googleapis.com">
+    <link rel="preconnect" href="https://kit-pro.fontawesome.com">
+
+    <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
+
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
+    <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
+
+    <%= stylesheet_link_tag 'application.css', rel: 'preload', as: 'style' %>
+    <%= stylesheet_link_tag "application.css" %>
+    <%= stylesheet_pack_tag 'admin.css', rel: 'preload', as: 'style' %>
+    <%= stylesheet_pack_tag 'admin.css' %>
+
+    <%= javascript_include_tag 'application.js' %>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <%= csrf_meta_tags %>
+  </head>
+  <body data-success="<%= notice %>" data-info="<%= alert %>" data-error="<%= flash[:error] %>" data-warning="<%= flash[:warning] %>" class="page-admin">
+    <div class="background-image"></div>
+    <%= render "layouts/admin/header" %>
+
+    <div class="container-fluid app-body">
+      <%= yield %>
+    </div>
+
+    <div class="<%= app_enabled? ? 'app-wrapper' : 'hidden' %>">
+      <div id="app">
+        <div
+          style="background-image: url(<%= image_path 'bg-6.jpg' %>)"
+          class="background-image"
+        >
+        </div>
+        <div class="app-intro">
+          <h1>
+            <%= image_tag 'admin/logo.png', class: 'logo' %>
+            <%= I18n.t(:"title.admin") %>
+          </h1>
+          <div>
+            <div class="loader">
+              <div class="cube1 cube"></div>
+              <div class="cube2 cube"></div>
+              <div class="cube4 cube"></div>
+              <div class="cube3 cube"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= render "layouts/admin/footer" %>
+
+    <script>
+      window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
+      window.ON_SUBDOMAIN = '<%= ENV['ON_SUBDOMAIN'] %>'
+    </script>
+
+    <%= javascript_packs_with_chunks_tag 'admin' %>
+  </body>
+</html>

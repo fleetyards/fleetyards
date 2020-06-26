@@ -1,24 +1,24 @@
 = form_for [:admin, celestial_object], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(celestial_object, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(celestial_object, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors celestial_object, :name
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(celestial_object, :starsystem_id)}
+    .col-12.col-md-6.form-group{class: form_error?(celestial_object, :starsystem_id)}
       = form.label :starsystem_id
       = form.select :starsystem_id, Starsystem.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.celestial_objects.starsystem") }, { class: 'form-control' }
       %small
         = form_errors celestial_object, :starsystem_id
 
-    .col-xs-12.col-sm-6
+    .col-12.col-sm-6
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.celestial_object.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.celestial_object.hidden")
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(celestial_object, :store_image)}
+    .col-12.col-md-6.form-group{class: form_error?(celestial_object, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache

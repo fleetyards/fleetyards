@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :api, path: (ENV['ON_SUBDOMAIN'] ? 'api' : ''), constraints: ->(req) { ENV['ON_SUBDOMAIN'] || req.subdomain == 'api' } do
-  devise_for :users, only: []
+  devise_for :users, singular: :api_user, only: []
 
   draw :api_v1_routes
 

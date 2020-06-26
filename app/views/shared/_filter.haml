@@ -5,7 +5,7 @@
     - reset_params.delete(name)
     %a.btn.btn-info{href: url_for(reset_params.permit!)}
       &times;
-  %a.btn.btn-default.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+  %a.btn.btn-dark.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
     = "#{I18n.t(:"filter.#{resource}.#{name}.title")}:"
     - current_value = I18n.t(:"filter.all")
     - if value = params.fetch(name, nil)

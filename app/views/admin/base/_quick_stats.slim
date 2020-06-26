@@ -1,79 +1,79 @@
 
 javascript:
   window.App.Dashboard.quickstats = {
-    url: '#{quick_stats_admin_stats_url}',
+    url: '#{quick_stats_admin_api_v1_stats_url}',
   }
 .row
-  .col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-sm-6.col-md-4.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-xs-3
+              .col-3
                 i.fad.fa-user.fa-4x
-              .col-xs-9.text-right
+              .col-9.text-right
                 .text-huge#online-count
                   = online_count
                 div
                   = I18n.t('labels.panels.online_count')
 
-  .col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-sm-6.col-md-4.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-xs-3
+              .col-3
                 i.fad.fa-rocket.fa-4x
-              .col-xs-9.text-right
+              .col-9.text-right
                 .text-huge#ships-count-year
                   = Model.year(Time.current.year).count
                 div
                   = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
 
-  .col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-sm-6.col-md-4.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-xs-3
+              .col-3
                 i.fad.fa-rocket-launch.fa-4x
-              .col-xs-9.text-right
+              .col-9.text-right
                 .text-huge#ships-count-total
                   = Model.count
                 div
                   = I18n.t('labels.panels.ships_count_total')
 
-  .col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-sm-6.col-md-4.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-xs-3
+              .col-3
                 i.fad.fa-users.fa-4x
-              .col-xs-9.text-right
+              .col-9.text-right
                 .text-huge#users-count-total
                   = User.count
                 div
                   = I18n.t('labels.panels.users_count_total')
 
-  .col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-sm-6.col-md-4.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-xs-3
+              .col-3
                 span.fa-4-icons
                   i.fad.fa-rocket-launch.fa-2x
                   i.fad.fa-rocket-launch.fa-2x
                   br
                   i.fad.fa-rocket-launch.fa-2x
                   i.fad.fa-rocket-launch.fa-2x
-              .col-xs-9.text-right
+              .col-9.text-right
                 .text-huge#fleets-count-total
                   = Fleet.count
                 div

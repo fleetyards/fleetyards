@@ -31,7 +31,7 @@ json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
 json.brochure model.brochure.url
-json.store_url rsi_store_url(model.store_url)
+json.store_url model.rsi_store_url
 json.price((model.price.to_f if model.price.present?))
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
 json.last_pledge_price((model.last_pledge_price.to_f if model.last_pledge_price.present?))

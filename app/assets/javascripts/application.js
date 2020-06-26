@@ -2,12 +2,10 @@
 //= require jquery_ujs
 //= require sifter
 //= require microplugin
-//= require bootstrap
 //= require spin.js/spin
 //= require ladda/js/ladda
 //= require noty
 //= require dynamic_fields_for
-//= require nprogress
 //= require selectize
 //= require vendor/date_fns.min
 //= require vendor/highcharts

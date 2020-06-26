@@ -6,10 +6,7 @@ module Admin
 
     def index
       authorize! :index, :images
-      @q = Image.ransack(params[:q])
-      @images = @q.result
-                  .page(params.fetch(:page, nil))
-                  .per(40)
+      @app_enabled = true
     end
 
     private def set_active_nav

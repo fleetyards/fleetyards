@@ -1,18 +1,18 @@
 = form_for [:admin, starsystem], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(starsystem, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(starsystem, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors starsystem, :name
 
-    .col-xs-12.col-sm-6
+    .col-12.col-sm-6
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.celestial_object.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.celestial_object.hidden")
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(starsystem, :store_image)}
+    .col-12.col-md-6.form-group{class: form_error?(starsystem, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache

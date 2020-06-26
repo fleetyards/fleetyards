@@ -2,17 +2,20 @@
 
 module Admin
   module Api
-    # rubocop:disable Rails/ApplicationController
-    class BaseController < ActionController::Base
+    class BaseController < ActionController::API
+      include ActionController::Cookies
+      include ActionController::RequestForgeryProtection
+      include ActionController::Caching
       include RansackHelper
       include Pagination
 
-      protect_from_forgery with: :null_session
+      protect_from_forgery with: :exception
+
       respond_to :json
 
       skip_before_action :track_ahoy_visit
 
-      before_action :authenticate_api_user!
+      before_action :authenticate_admin_user!
 
       check_authorization
 
@@ -20,8 +23,12 @@ module Admin
         render json: { code: 'forbidden', message: exception.message }, status: :forbidden
       end
 
+      rescue_from ActionController::InvalidAuthenticityToken do |_exception|
+        render json: { code: 'invalid_authenticity_token', message: I18n.t('error_pages.unprocessable_entity') }, status: :unprocessable_entity
+      end
+
       private def current_user
-        @current_user ||= current_api_user
+        @current_user ||= current_admin_user
       end
       helper_method :current_user
 
@@ -33,6 +40,5 @@ module Admin
         render json: { code: 'not_found', message: message }, status: :not_found
       end
     end
-    # rubocop:enable Rails/ApplicationController
   end
 end

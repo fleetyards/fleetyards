@@ -14,7 +14,7 @@ window.App.Shops.prefill = ($element) ->
 window.App.Shops.loadData = (url, callback) ->
   $.ajax
     beforeSend: (request) ->
-      request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
+      request.withCredentials = true
     url: url
     dataType: "JSON"
     success: (data) ->

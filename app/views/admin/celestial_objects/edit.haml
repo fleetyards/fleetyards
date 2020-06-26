@@ -1,16 +1,16 @@
 - content_for :title do
   = I18n.t(:"title.celestial_object.edit")
 .row
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h2
           = I18n.t(:"headlines.admin.celestial_object.edit", celestial_object: celestial_object.name)
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), class: "btn btn-default"
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.back"), admin_celestial_objects_path(params: index_back_params, anchor: celestial_object.id), class: "btn btn-dark"
 
-    .well
-      = render "form"
+    = render "form"

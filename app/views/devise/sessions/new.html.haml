@@ -1,31 +1,27 @@
 - content_for :title do
   = I18n.t(:"title.sign_in")
 .row
-  .col-xs-12
-    .cbox.cbox-login
-      .well
-        %h1=I18n.t(:"headlines.sign_in")
+  .col-12.col-sm-4.offset-md-4
+    .card.mt-5.p-3.text-white.bg-dark
+      %h1=I18n.t(:"headlines.sign_in")
 
-        = form_for resource, as: resource_name, url: session_path(resource_name), method: :post do |f|
+      = form_for resource, as: resource_name, url: session_path(resource_name), method: :post do |f|
 
+        .form-group
+          = f.text_field :login, required: false, autofocus: true, placeholder: I18n.t(:"helpers.placeholder.user.login"), class: 'form-control'
+
+        .form-group
+          = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
+
+        - if devise_mapping.rememberable?
           .form-group
-            = f.text_field :login, required: false, autofocus: true, placeholder: I18n.t(:"helpers.placeholder.user.login"), class: 'form-control'
-
-          .form-group
-            = f.password_field :password, required: false, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
-
-          - if devise_mapping.rememberable?
-            .form-group
-              = f.check_box :remember_me, class: 'checkbox'
-              %label{for: "admin_user_remember_me"}
-                = I18n.t(:"helpers.label.user.remember_me")
-          .text-right
-            %button.hidden-xs.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
-              = I18n.t(:"actions.sign_in")
-            %button.visible-xs.btn-block.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
-              = I18n.t(:"actions.sign_in")
-          .clearfix
-      %br
-      .text-center
-        %a.btn.btn-link{href: new_admin_user_password_path}
-          = I18n.t(:"actions.reset_password")
+            = f.check_box :remember_me, class: 'checkbox'
+            %label{for: "admin_user_remember_me"}
+              = I18n.t(:"helpers.label.user.remember_me")
+        .text-right
+          %button.btn-xs-block.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
+            = I18n.t(:"actions.sign_in")
+    %br
+    .text-center
+      %a.btn.btn-link{href: new_admin_user_password_path}
+        = I18n.t(:"actions.reset_password")

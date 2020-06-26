@@ -1,43 +1,43 @@
 = form_for [:admin, model_paint], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(model_paint, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(model_paint, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors model_paint, :name
-    .col-xs-12.col-md-6.form-group{class: form_error?(model_paint, :description)}
+    .col-12.col-md-6.form-group{class: form_error?(model_paint, :description)}
       = form.label :description
       = form.text_area :description, class: 'form-control'
       %small
         = form_errors model_paint, :description
 
   .row
-    .col-xs-12.col-sm-6.col-md-3
+    .col-12.col-sm-6.col-md-3
       = form.label :model
       .form-group{class: form_error?(model_paint, :model_id)}
         = form.select :model_id, options_from_collection_for_select(Model.all.order(:name), :id, :name, model_paint.model_id), { include_blank: true }, { class: 'form-control' }
         = form_errors model_paint, :model_id
 
-    .col-xs-12.col-sm-6.col-md-3
+    .col-12.col-sm-6.col-md-3
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-3
+    .col-12.col-sm-6.col-md-3
       .form-group
         = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active"), class: 'checkbox'
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
-    .col-xs-12.col-sm-6.col-md-3.form-group{class: form_error?(model_paint, :pledge_price)}
+    .col-12.col-sm-6.col-md-3.form-group{class: form_error?(model_paint, :pledge_price)}
       = form.label :pledge_price
       = form.text_field :pledge_price, class: 'form-control'
       %small
         = form_errors model_paint, :pledge_price
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :store_image)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
@@ -49,7 +49,7 @@
       %small
         = form_errors model_paint, :store_image
 
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :rsi_store_image)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :rsi_store_image)}
       = form.label :rsi_store_image
       = form.file_field :rsi_store_image, class: 'form-control'
       = form.hidden_field :rsi_store_image_cache
@@ -61,7 +61,7 @@
       %small
         = form_errors model_paint, :rsi_store_image
 
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :fleetchart_image)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_paint, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
       = form.hidden_field :fleetchart_image_cache

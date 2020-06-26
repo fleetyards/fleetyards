@@ -1,15 +1,15 @@
 = form_for [:admin, @user] do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(@user, :email)}
+    .col-12.col-md-6.form-group{class: form_error?(@user, :email)}
       = form.text_field :email, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
       %small
         = form_errors @user, :email
-    .col-xs-12.col-md-6.form-group{class: form_error?(@user, :username)}
+    .col-12.col-md-6.form-group{class: form_error?(@user, :username)}
       = form.text_field :username, placeholder: I18n.t(:"helpers.placeholder.user.username"), class: 'form-control'
       %small
         = form_errors @user, :username
   .row
-    .col-xs-6.col-md-3
+    .col-6.col-md-3
       - unless user.id == current_user.id
         .form-group
           = form.check_box :admin, placeholder: I18n.t(:"helpers.placeholder.user.admin"), class: 'checkbox'

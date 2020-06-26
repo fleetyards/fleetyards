@@ -1,16 +1,17 @@
 - content_for :title do
   = I18n.t(:"title.starsystem.edit")
 .row
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h2
           = I18n.t(:"headlines.admin.starsystem.edit", starsystem: starsystem.name)
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.back"), admin_starsystems_path(params: index_back_params, anchor: starsystem.id), class: "btn btn-default"
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.back"), admin_starsystems_path(params: index_back_params, anchor: starsystem.id), class: "btn btn-dark"
 
-    .well
+    .card.bg-dark.p-3
       = render "form"

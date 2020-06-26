@@ -1,28 +1,25 @@
 - content_for :title do
   = I18n.t(:"title.password.edit")
 .row
-  .col-xs-12
-    .cbox.cbox-password
-      .well
-        %h1
-          = I18n.t(:"headlines.change_password")
+  .col-12.col-sm-4.offset-md-4
+    .card.mt-5.p-3.text-white.bg-dark
+      %h1
+        = I18n.t(:"headlines.change_password")
 
-        = form_for(resource, as: resource_name, url: admin_user_password_path, html: { class: "form-horizontal", method: :put }) do |form|
+      = form_for(resource, as: resource_name, url: admin_user_password_path, html: { class: "form-horizontal", method: :put }) do |form|
 
-          = form.hidden_field :reset_password_token
+        = form.hidden_field :reset_password_token
 
-          .form-group{class: "#{form_error?(resource, :reset_password_token)}#{form_error?(resource, :password)}"}
-            .col-sm-12
-              = form.password_field :password, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
-              = form_errors resource, :reset_password_token
-              = form_errors resource, :password
+        .form-group{class: "#{form_error?(resource, :reset_password_token)}#{form_error?(resource, :password)}"}
+          .col-sm-12
+            = form.password_field :password, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password"), class: 'form-control'
+            = form_errors resource, :reset_password_token
+            = form_errors resource, :password
 
-          .form-group
-            .col-sm-12
-              = form.password_field :password_confirmation, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
+        .form-group
+          .col-sm-12
+            = form.password_field :password_confirmation, required: true, placeholder: I18n.t(:"helpers.placeholder.user.password_confirmation"), class: 'form-control'
 
-          .text-right
-            %button.hidden-xs.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
-              = I18n.t(:"actions.save_password")
-            %button.visible-xs.btn-block.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
-              = I18n.t(:"actions.save_password")
+        .text-right
+          %button.btn-xs-block.btn.btn-lg.btn-primary{data: {loading: {text: I18n.t(:"actions.loading")}}}
+            = I18n.t(:"actions.save_password")

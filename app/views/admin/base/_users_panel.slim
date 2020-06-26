@@ -1,5 +1,5 @@
 .row
-  .col-xs-12.col-md-7
+  .col-12.col-md-7
     .panel-wrapper.panel-outer-spacing
       .panel
         .panel-inner
@@ -10,7 +10,7 @@
             javascript:
               window.App.Dashboard.addChart({
                 id: 'registrations-per-month-chart',
-                url: '#{registrations_per_month_admin_stats_url}',
+                url: '#{registrations_per_month_admin_api_v1_stats_url}',
                 type: 'column',
                 height: '344px',
                 tooltip: 'user',
@@ -18,7 +18,7 @@
 
             #registrations-per-month-chart(style="height: 344px;")
 
-  .col-xs-12.col-md-5
+  .col-12.col-md-5
     .panel-wrapper.panel-outer-spacing
       .panel
         .panel-inner

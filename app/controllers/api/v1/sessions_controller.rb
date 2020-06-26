@@ -7,6 +7,7 @@ module Api
     class SessionsController < ::Api::BaseController
       skip_authorization_check
       before_action :authenticate_api_user!, except: [:create]
+      skip_before_action :verify_authenticity_token, only: [:create]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -26,14 +27,19 @@ module Api
           end
         end
 
-        auth_token = AuthToken.create(
-          user_id: resource.id,
-          browser: user_agent.browser,
-          platform: user_agent.platform,
-          permanent: params[:rememberMe]
-        )
+        resource.remember_me = login_params[:rememberMe]
 
-        render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
+        sign_in(:api_user, resource)
+
+        render json: { success: true, token: 'foobar' }
+        # auth_token = AuthToken.create(
+        #   user_id: resource.id,
+        #   browser: user_agent.browser,
+        #   platform: user_agent.platform,
+        #   permanent: params[:rememberMe]
+        # )
+
+        # render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
       end
 
       def renew
@@ -43,8 +49,9 @@ module Api
       end
 
       def destroy
-        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
-        auth_token.destroy
+        sign_out(:api_user)
+        # auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
+        # auth_token.destroy
         render json: { code: 'sessions.destroy', message: I18n.t('devise.sessions.signed_out') }
       end
 
@@ -66,7 +73,7 @@ module Api
       end
 
       private def login_params
-        @login_params ||= params.permit(:login, :password)
+        @login_params ||= params.permit(:login, :password, :rememberMe)
       end
 
       private def invalid_login_attempt

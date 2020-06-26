@@ -2,7 +2,7 @@
   - total = @options[:total_pages]
   - url = @options[:url]
   - page = @options[:current_page].number
-  %ul.pagination.pull-right
+  %ul.pagination.pagination-centered
     %li{class: ('disabled' if page - 1 < 1)}
       - if page - 1 >= 1
         %a{href: plumb(page: page - 1)}

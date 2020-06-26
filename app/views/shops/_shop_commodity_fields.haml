@@ -1,5 +1,5 @@
 .row.fields
-  .col-xs-12.col-md-5
+  .col-12.col-md-5
     .form-group{class: form_error?(fields.object, :commodity_item)}
       :ruby
         options = {
@@ -9,52 +9,54 @@
       = fields.grouped_collection_select :commodity_item_selected, [Model, Component, Commodity, Equipment, ModelModule], :ordered_by_name, :model_name, :to_global_id, :name, options, class: 'form-control', required: true
       = form_errors fields.object, :commodity_item
 
-  .col-xs-12.col-md-2
+  .col-12.col-md-2
     .row
-      .col-xs-12.col-md-5
+      .col-12.col-md-5
         .form-label.text-right
           = I18n.t(:"helpers.placeholder.shop_commodity.sell_price")
-      .col-xs-12.col-md-7
+      .col-12.col-md-7
         .form-group
           = fields.number_field :sell_price, class: 'form-control', step: 0.01
     .row
-      .col-xs-12.col-md-5
+      .col-12.col-md-5
         .form-label.text-right
           = I18n.t(:"helpers.placeholder.shop_commodity.buy_price")
-      .col-xs-12.col-md-7
+      .col-12.col-md-7
         .form-group
           = fields.number_field :buy_price, class: 'form-control', step: 0.01
 
-  .col-xs-12.col-md-3
+  .col-12.col-md-3
     .row
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         .form-label.text-right
           = I18n.t(:"helpers.placeholder.shop_commodity.rent_price")
-      .col-xs-12.col-md-9
+      .col-12.col-md-9
         .row
-          .col-xs-12.col-md-6
+          .col-12.col-md-6
             .form-group
               = fields.number_field :rent_price_1_day, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_1_day"), class: 'form-control', step: 0.01
-          .col-xs-12.col-md-6
+          .col-12.col-md-6
             .form-group
               = fields.number_field :rent_price_3_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_3_days"), class: 'form-control', step: 0.01
-          .col-xs-12.col-md-6
+          .col-12.col-md-6
             .form-group
               = fields.number_field :rent_price_7_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_7_days"), class: 'form-control', step: 0.01
-          .col-xs-12.col-md-6
+          .col-12.col-md-6
             .form-group
               = fields.number_field :rent_price_30_days, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.rent_price_30_days"), class: 'form-control', step: 0.01
 
-  .col-xs-12.col-md-2
-    .pull-left
-      = fields.check_box :price_per_unit, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.price_per_unit"), class: 'checkbox'
-      = fields.label :price_per_unit do
-        = I18n.t(:"activerecord.attributes.shop_commodity.price_per_unit")
+  .col-12.col-md-2
+    .d-flex.justify-content-between
+      %div
+        = fields.check_box :price_per_unit, placeholder: I18n.t(:"helpers.placeholder.shop_commodity.price_per_unit"), class: 'checkbox'
+        = fields.label :price_per_unit do
+          = I18n.t(:"activerecord.attributes.shop_commodity.price_per_unit")
 
-    .btn-group-responsive.form-group.pull-right
-      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
-        %i.fa.fa-trash
+
+      .btn-group-responsive.form-group
+        = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+          %i.fa.fa-trash
 
   .clearfix
-  .col-xs-12.visible-sm.visible-xs
+  .col-12.d-md-none.d-sm-block
     %hr

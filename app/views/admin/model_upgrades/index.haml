@@ -1,32 +1,33 @@
 - content_for :title do
   = I18n.t(:"title.model_upgrade.index")
 .row#model_upgrades
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h1
           = I18n.t(:"headlines.admin.model_upgrade.index")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.model_upgrade.new"), new_admin_model_upgrade_path, 'data-turbolinks': "false", class: "btn btn-default"
+          %small.text-muted
+            = @model_upgrades.count
+            of
+            = @model_upgrades.total_count
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.admin.model_upgrade.new"), new_admin_model_upgrade_path, 'data-turbolinks': "false", class: "btn btn-dark"
 
     .row
-      .col-xs-12.col-md-6
-        %p
-          = @model_upgrades.count
-          of
-          = @model_upgrades.total_count
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @model_upgrades
 
-    .row
-      .col-xs-12.col-md-9
+    .row.mb-3
+      .col-12.col-md-9
         .panel.panel-default
           = render partial: "admin/model_upgrades/table", :@model_upgrades => @model_upgrades
 
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_or_slug_cont
@@ -36,10 +37,9 @@
             %button.btn.btn-primary
               Filter
             - if params[:q].present?
-              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
 
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @model_upgrades

@@ -1,32 +1,32 @@
 - content_for :title do
   = I18n.t(:"title.station.index")
 .row#stations
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h1
           = I18n.t(:"headlines.admin.station.index")
+          %small.text-muted
+            = @stations.count
+            of
+            = @stations.total_count
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.station.new"), new_admin_station_path, 'data-turbolinks': "false", class: "btn btn-default"
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.admin.station.new"), new_admin_station_path, 'data-turbolinks': "false", class: "btn btn-dark"
 
     .row
-      .col-xs-12.col-md-6
-        %p
-          = @stations.count
-          of
-          = @stations.total_count
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @stations
 
-    .row
-      .col-xs-12.col-md-9
+    .row.mb-3
+      .col-12.col-md-9
         .panel.panel-default
           = render partial: "admin/stations/table", :@stations => @stations
 
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_or_slug_cont
@@ -44,10 +44,9 @@
             %button.btn.btn-primary
               Filter
             - if params[:q].present?
-              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
 
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @stations

@@ -16,6 +16,7 @@
   .modal-dialog {
     box-sizing: border-box;
     width: 600px;
+    max-width: 600px;
     margin: 30px auto;
     transition: transform ease $transition-base-speed ease-out;
     pointer-events: unset;

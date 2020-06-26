@@ -15,6 +15,8 @@ module Api
         authorize! :index, :api_hangar
         scope = current_user.vehicles.visible
 
+        Rails.logger.debug current_user.username.to_yaml
+
         if price_range.present?
           vehicle_query_params['sorts'] = 'model_price asc'
           scope = scope.includes(:model).where(models: { price: price_range })

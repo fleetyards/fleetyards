@@ -1,37 +1,37 @@
 = form_for [:admin, model_upgrade], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(model_upgrade, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(model_upgrade, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors model_upgrade, :name
-    .col-xs-12.col-md-6.form-group{class: form_error?(model_upgrade, :description)}
+    .col-12.col-md-6.form-group{class: form_error?(model_upgrade, :description)}
       = form.label :description
       = form.text_area :description, class: 'form-control'
       %small
         = form_errors model_upgrade, :description
 
   .row
-    .col-xs-12.col-sm-6.col-md-3
+    .col-12.col-sm-6.col-md-3
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.model.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.model.hidden")
 
-    .col-xs-12.col-sm-6.col-md-3
+    .col-12.col-sm-6.col-md-3
       .form-group
         = form.check_box :active, placeholder: I18n.t(:"helpers.placeholder.model.active"), class: 'checkbox'
         = form.label :active do
           = I18n.t(:"activerecord.attributes.model.active")
 
-    .col-xs-12.col-sm-6.col-md-3.form-group{class: form_error?(model_upgrade, :pledge_price)}
+    .col-12.col-sm-6.col-md-3.form-group{class: form_error?(model_upgrade, :pledge_price)}
       = form.label :pledge_price
       = form.text_field :pledge_price, class: 'form-control'
       %small
         = form_errors model_upgrade, :pledge_price
 
   .row
-    .col-xs-12.col-sm-6.col-md-4.form-group{class: form_error?(model_upgrade, :store_image)}
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model_upgrade, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
@@ -51,9 +51,10 @@
         = form.fields_for :upgrade_kits, model_upgrade.upgrade_kits do |builder|
           = render 'model_upgrades/upgrade_kit_fields', fields: builder
 
-    .btn-group-responsive.pull-right
-      = link_to_add_fields form, :upgrade_kits, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#upgrade_kits" do
-        %i.fa.fa-plus
-        = I18n.t(:"actions.add_upgrade_kit")
+    .d-flex.justify-content-end
+      .btn-group-responsive
+        = link_to_add_fields form, :upgrade_kits, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#upgrade_kits" do
+          %i.fa.fa-plus
+          = I18n.t(:"actions.add_upgrade_kit")
 
   = render "shared/submit", path: admin_model_upgrades_path

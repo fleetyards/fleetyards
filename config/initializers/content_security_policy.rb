@@ -29,7 +29,8 @@ Rails.application.config.content_security_policy do |policy|
   script_src = [
     :self, :unsafe_inline, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
     'https://kit.fontawesome.com', 'https://kit-pro.fontawesome.com',
-    'https://kit-free.fontawesome.com'
+    'https://kit-free.fontawesome.com', 'https://code.jquery.com', 'https://cdn.jsdelivr.net',
+    'https://stackpath.bootstrapcdn.com'
   ]
 
   style_src = [

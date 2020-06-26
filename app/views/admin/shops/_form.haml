@@ -1,48 +1,48 @@
 = form_for [:admin, shop], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(shop, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(shop, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors shop, :name
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(shop, :station_id)}
+    .col-12.col-md-6.form-group{class: form_error?(shop, :station_id)}
       = form.label :station_id
       = form.select :station_id, Station.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.shops.station") }, { class: 'form-control' }
       %small
         = form_errors shop, :station_id
 
-    .col-xs-12.col-sm-3
+    .col-12.col-sm-3
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.shop.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.shop.hidden")
 
-    .col-xs-12.col-sm-3
+    .col-12.col-sm-3
       .form-group
         = form.check_box :selling, placeholder: I18n.t(:"helpers.placeholder.shop.selling"), class: 'checkbox'
         = form.label :selling do
           = I18n.t(:"activerecord.attributes.shop.selling")
 
-    .col-xs-12.col-sm-3
+    .col-12.col-sm-3
       .form-group
         = form.check_box :buying, placeholder: I18n.t(:"helpers.placeholder.shop.buying"), class: 'checkbox'
         = form.label :buying do
           = I18n.t(:"activerecord.attributes.shop.buying")
 
-    .col-xs-12.col-sm-3
+    .col-12.col-sm-3
       .form-group
         = form.check_box :rental, placeholder: I18n.t(:"helpers.placeholder.shop.rental"), class: 'checkbox'
         = form.label :rental do
           = I18n.t(:"activerecord.attributes.shop.rental")
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(shop, :shop_type)}
+    .col-12.col-md-6.form-group{class: form_error?(shop, :shop_type)}
       = form.label :shop_type
       = form.select :shop_type, Shop.shop_types.keys.map { |w| [Shop.human_enum_name(:shop_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.shops.shop_type") }, { class: 'form-control' }
       %small
         = form_errors shop, :shop_type
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(shop, :store_image)}
+    .col-12.col-md-6.form-group{class: form_error?(shop, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
@@ -63,20 +63,22 @@
         = form.fields_for :shop_commodities, shop_commodities do |builder|
           = render 'shops/shop_commodity_fields', fields: builder
 
-    .btn-group-responsive.pull-right
-      = link_to_add_fields form, :shop_commodities, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#commodities" do
-        %i.fa.fa-plus
-        = I18n.t("actions.add_commodity")
-      &nbsp
-      &nbsp
-      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: attachments_admin_api_v1_equipment_url }}
-        %i.fa.fa-plus
-        = I18n.t("actions.prefill_attachments")
-      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: utilities_admin_api_v1_equipment_url }}
-        %i.fa.fa-plus
-        = I18n.t("actions.prefill_utilities")
-      %a.btn.btn-default{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: weapons_admin_api_v1_equipment_url }}
-        %i.fa.fa-plus
-        = I18n.t("actions.prefill_weapons")
+
+    .d-flex.justify-content-end
+      .btn-group-responsive
+        = link_to_add_fields form, :shop_commodities, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#commodities" do
+          %i.fa.fa-plus
+          = I18n.t("actions.add_commodity")
+        &nbsp
+        &nbsp
+        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: attachments_admin_api_v1_equipment_url }}
+          %i.fa.fa-plus
+          = I18n.t("actions.prefill_attachments")
+        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: utilities_admin_api_v1_equipment_url }}
+          %i.fa.fa-plus
+          = I18n.t("actions.prefill_utilities")
+        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: weapons_admin_api_v1_equipment_url }}
+          %i.fa.fa-plus
+          = I18n.t("actions.prefill_weapons")
 
   = render "shared/submit", path: admin_shops_path

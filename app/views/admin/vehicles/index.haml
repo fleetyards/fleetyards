@@ -1,27 +1,28 @@
 - content_for :title do
   = Vehicle.name.humanize
 .row#vehicles
-  .col-xs-12.col-md-12
+  .col-12
 
     .row
-      .col-xs-12
+      .col-12
         %h1
           = Vehicle.name.humanize
 
+          %small.text-muted
+            = @vehicles.count
+            of
+            = @vehicles.total_count
+
     .row
-      .col-xs-12.col-md-6
-        %p
-          = @vehicles.count
-          of
-          = @vehicles.total_count
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @vehicles
-    .row
-      .col-xs-12.col-md-9
+
+    .row.mb-3
+      .col-12.col-md-9
         .panel.panel-default
           = render partial: "admin/vehicles/table", :@vehicles => @vehicles
 
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_cont
@@ -31,9 +32,8 @@
             %button.btn.btn-primary
               Filter
             - if params[:q].present?
-              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @vehicles

@@ -1,41 +1,42 @@
 .row.fields
-  .col-xs-12.col-md-3
+  .col-12.col-md-3
     .form-group{class: form_error?(fields.object, :name)}
       = fields.text_field :name, placeholder: I18n.t(:"helpers.placeholder.dock.name"), class: 'form-control'
       = form_errors fields.object, :name
 
-  .col-xs-12.col-md-2
+  .col-12.col-md-2
     .form-group{class: form_error?(fields.object, :dock_type)}
       = fields.select :dock_type, Dock.dock_types.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.docks.dock_type") }, class: 'form-control'
       = form_errors fields.object, :dock_type
 
-  .col-xs-12.col-md-2
+  .col-12.col-md-2
     .form-group{class: form_error?(fields.object, :ship_size)}
       = fields.select :ship_size, Dock.ship_sizes.keys.map { |w| [w.humanize, w] }, { include_blank: I18n.t(:"helpers.prompt.docks.ship_size") }, {class: 'form-control'}
       = form_errors fields.object, :ship_size
 
-  .col-xs-12.col-md-4
+  .col-12.col-md-4
     .row
-      .col-xs-4
+      .col-4
         .form-group{class: form_error?(fields.object, :length)}
           = fields.number_field :length, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.length"), class: 'form-control'
           = form_errors fields.object, :length
 
-      .col-xs-4
+      .col-4
         .form-group{class: form_error?(fields.object, :beam)}
           = fields.number_field :beam, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.beam"), class: 'form-control'
           = form_errors fields.object, :beam
 
-      .col-xs-4
+      .col-4
         .form-group{class: form_error?(fields.object, :height)}
           = fields.number_field :height, step: '0.01', placeholder: I18n.t(:"helpers.placeholder.dock.height"), class: 'form-control'
           = form_errors fields.object, :height
 
-  .col-xs-12.col-md-1
-    .btn-group-responsive.form-group.pull-right
-      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
-        %i.fa.fa-trash
+  .col-12.col-md-1
+    .d-flex.justify-content-end
+      .btn-group-responsive.form-group
+        = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+          %i.fa.fa-trash
 
   .clearfix
-  .col-xs-12.visible-sm.visible-xs
+  .col-12.d-md-none.d-sm-block
     %hr

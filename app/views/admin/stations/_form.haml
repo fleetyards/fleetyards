@@ -1,31 +1,31 @@
 = form_for [:admin, station], html: { multipart: true } do |form|
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :name)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :name)}
       = form.label :name
       = form.text_field :name, class: 'form-control'
       %small
         = form_errors station, :name
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :station_type)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :station_type)}
       = form.label :station_type
       = form.select :station_type, Station.station_types.keys.map { |w| [Station.human_enum_name(:station_type, w), w] }, { include_blank: I18n.t(:"helpers.prompt.stations.station_type") }, { class: 'form-control' }
       %small
         = form_errors station, :station_type
 
   .row
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :celestial_object_id)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :celestial_object_id)}
       = form.label :celestial_object_id
       = form.select :celestial_object_id, CelestialObject.all.order(name: :asc).map { |c| [c.name, c.id] }, { include_blank: I18n.t(:"helpers.prompt.stations.celestial_object") }, { class: 'form-control' }
       %small
         = form_errors station, :celestial_object_id
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :location)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :location)}
       = form.label :location
       = form.text_field :location, class: 'form-control'
       %small
         = form_errors station, :location
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :store_image)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       = form.hidden_field :store_image_cache
@@ -37,7 +37,7 @@
       %small
         = form_errors station, :store_image
 
-    .col-xs-12.col-md-6.form-group{class: form_error?(station, :map)}
+    .col-12.col-md-6.form-group{class: form_error?(station, :map)}
       = form.label :map
       = form.file_field :map, class: 'form-control'
       = form.hidden_field :map_cache
@@ -50,7 +50,7 @@
       %small
         = form_errors station, :map
   .row
-    .col-xs-12.col-sm-6.col-md-4
+    .col-12.col-sm-6.col-md-4
       .form-group
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.station.hidden"), class: 'checkbox'
         = form.label :hidden do
@@ -64,9 +64,11 @@
         = form.fields_for :docks, station.docks do |builder|
           = render 'stations/dock_fields', fields: builder
 
-    .btn-group-responsive.pull-right
-      = link_to_add_fields form, :docks, name: I18n.t(:"actions.add"), class: "btn btn-default", target: "#docks" do
-        %i.fa.fa-plus
-        = I18n.t(:"actions.add_dock")
+
+    .d-flex.justify-content-end
+      .btn-group-responsive
+        = link_to_add_fields form, :docks, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#docks" do
+          %i.fa.fa-plus
+          = I18n.t(:"actions.add_dock")
 
   = render "shared/submit", path: admin_stations_path

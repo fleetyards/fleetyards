@@ -1,5 +1,7 @@
 ---
 en:
+  app: FleetYards.net
+  admin_app: FleetYards.net Command
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
     server_error: The Page is currently not available. Please try again later.
@@ -48,6 +50,7 @@ en:
         action: Join %{fleet}
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
+    admin_description: FleetYards.net Command App.
     keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
     compare_ships:
       description:
@@ -119,13 +122,15 @@ en:
       confirm: Confirm Account
       password_request: Request Password
       password_change: Change Password
-    admin: FleetYards.net Backend
+    admin: FleetYards.net Command
+    admin_short: FltYrd Command
     component:
       edit: Edit Component
       index: Components
       new: New Component
     confirm: Confirm Account
     default: FleetYards.net
+    default_short: FleetYards
     image:
       index: All Images
     manufacturer:

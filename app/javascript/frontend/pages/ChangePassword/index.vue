@@ -14,15 +14,15 @@
               vid="password"
               rules="required|min:8"
               :name="$t('labels.password')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="password"
                 v-model="form.password"
                 :error="errors[0]"
                 type="password"
-                autofocus
-                hide-label-on-empty
+                :autofocus="true"
+                :hide-label-on-empty="true"
               />
             </ValidationProvider>
 
@@ -31,14 +31,14 @@
               vid="passwordConfirmation"
               rules="required|confirmed:password"
               :name="$t('labels.passwordConfirmation')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="passwordConfirmation"
                 v-model="form.passwordConfirmation"
                 :error="errors[0]"
                 type="password"
-                hide-label-on-empty
+                :hide-label-on-empty="true"
               />
             </ValidationProvider>
 

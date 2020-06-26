@@ -1,28 +1,28 @@
 - content_for :title do
   = I18n.t(:"title.component.index")
 .row#components
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h1
           = I18n.t(:"headlines.admin.component.index")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.component.new"), new_admin_component_path, 'data-turbolinks': "false", class: "btn btn-default"
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.admin.component.new"), new_admin_component_path, 'data-turbolinks': "false", class: "btn btn-dark"
 
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @components
 
-    .row
-      .col-xs-12.col-md-9
+    .row.mb-3
+      .col-12.col-md-9
         .panel.panel-default
           = render partial: "admin/components/table", :@components => @components
 
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_cont
@@ -40,10 +40,9 @@
             %button.btn.btn-primary
               Filter
             - if params[:q].present?
-              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
 
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @components

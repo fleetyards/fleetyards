@@ -1,12 +1,9 @@
 import { createConsumer } from '@rails/actioncable'
-import Store from 'frontend/lib/Store'
 
 const setupConsumer = function setupConsumer() {
   console.info('Subscriptions: Setup consumer on:', window.CABLE_ENDPOINT)
 
-  const endpoint = `${window.CABLE_ENDPOINT}/?token=${Store.getters['session/authToken']}`
-
-  return createConsumer(endpoint)
+  return createConsumer(window.CABLE_ENDPOINT)
 }
 
 export default {

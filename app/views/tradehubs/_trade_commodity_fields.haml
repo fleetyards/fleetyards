@@ -1,35 +1,36 @@
 .row.fields
-  .col-xs-12.col-md-5
+  .col-12.col-md-5
     .form-group{class: form_error?(fields.object, :commodity_id)}
       - commodties = Commodity.all.order(name: :asc).map { |c| [c.name, c.id] }
       = fields.select :commodity_id, commodties, { include_blank: I18n.t(:"helpers.prompt.trade_commodity.commodity") }, class: 'form-control'
       = form_errors fields.object, :commodity_id
 
-  .col-xs-12.col-md-1
+  .col-12.col-md-1
     .form-group
       = fields.check_box :buy, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy"), class: 'checkbox'
       = fields.label :buy do
         = I18n.t(:"activerecord.attributes.trade_commodity.buy")
 
-  .col-xs-12.col-md-2
+  .col-12.col-md-2
     .form-group
       = fields.number_field :buy_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.buy_price"), class: 'form-control', step: 0.01
 
-  .col-xs-12.col-md-1
+  .col-12.col-md-1
     .form-group
       = fields.check_box :sell, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell"), class: 'checkbox'
       = fields.label :sell do
         = I18n.t(:"activerecord.attributes.trade_commodity.sell")
 
-  .col-xs-12.col-md-2
+  .col-12.col-md-2
     .form-group
       = fields.number_field :sell_price, placeholder: I18n.t(:"helpers.placeholder.trade_commodity.sell_price"), class: 'form-control', step: 0.01
 
-  .col-xs-12.col-md-1
-    .btn-group-responsive.form-group.pull-right
-      = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
-        %i.fa.fa-trash
+  .col-12.col-md-1
+    .d-flex.justify-content-end
+      .btn-group-responsive.form-group
+        = link_to_delete_fields fields, name: I18n.t(:"actions.delete"), class: "btn btn-danger" do
+          %i.fa.fa-trash
 
   .clearfix
-  .col-xs-12.visible-sm.visible-xs
+  .col-12.d-md-none.d-sm-block
     %hr

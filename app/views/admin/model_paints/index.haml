@@ -1,32 +1,33 @@
 - content_for :title do
   = I18n.t(:"title.model_paint.index")
 .row#model_paints
-  .col-xs-12.col-md-12
+  .col-12.col-md-12
 
     .row
-      .col-xs-12.col-md-8
+      .col-12.col-md-8
         %h1
           = I18n.t(:"headlines.admin.model_paint.index")
 
-      .col-xs-12.col-md-4
-        .btn-group.pull-right.resource-nav
-          = link_to I18n.t(:"actions.admin.model_paint.new"), new_admin_model_paint_path, 'data-turbolinks': "false", class: "btn btn-default"
+          %small.text-muted
+            = @model_paints.count
+            of
+            = @model_paints.total_count
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.admin.model_paint.new"), new_admin_model_paint_path, 'data-turbolinks': "false", class: "btn btn-dark"
 
     .row
-      .col-xs-12.col-md-6
-        %p
-          = @model_paints.count
-          of
-          = @model_paints.total_count
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @model_paints
 
     .row
-      .col-xs-12.col-md-9
+      .col-12.col-md-9
         .panel.panel-default
           = render partial: "admin/model_paints/table", :@model_paints => @model_paints
 
-      .col-xs-12.col-md-3
+      .col-12.col-md-3
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_cont
@@ -40,10 +41,9 @@
             %button.btn.btn-primary
               Filter
             - if params[:q].present?
-              %a.btn.btn-default{href: request.path, title: "Clear Search"}
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
                 %i.fa.fa-times
 
     .row
-      .col-xs-12.col-md-6
-      .col-xs-12.col-md-6
+      .col-12.d-flex.justify-content-center
         = paginate @model_paints

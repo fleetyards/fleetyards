@@ -7,7 +7,7 @@ export default function getStorePlugins() {
       paths: [
         'storeVersion',
         'app.navSlim',
-        'session.authToken',
+        'session.authenticated',
         'cookies.infoVisible',
         'cookies.cookies',
         'hangar.ships',

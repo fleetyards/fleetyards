@@ -20,7 +20,8 @@
               id="currentPassword"
               v-model="form.currentPassword"
               :error="errors[0]"
-              clearable
+              type="password"
+              :clearable="true"
             />
           </ValidationProvider>
 
@@ -35,7 +36,8 @@
               id="password"
               v-model="form.password"
               :error="errors[0]"
-              clearable
+              type="password"
+              :clearable="true"
             />
           </ValidationProvider>
 
@@ -50,7 +52,8 @@
               id="passwordConfirmation"
               v-model="form.passwordConfirmation"
               :error="errors[0]"
-              clearable
+              type="password"
+              :clearable="true"
             />
           </ValidationProvider>
           <br />

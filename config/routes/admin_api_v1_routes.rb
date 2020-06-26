@@ -17,6 +17,14 @@ v1_admin_api_routes = lambda do
     get :utilities, on: :collection
   end
 
+  resource :stats, only: [] do
+    get 'quick-stats' => 'stats#quick_stats'
+    get 'most-viewed-pages' => 'stats#most_viewed_pages'
+    get 'visits-per-day' => 'stats#visits_per_day'
+    get 'visits-per-month' => 'stats#visits_per_month'
+    get 'registrations-per-month' => 'stats#registrations_per_month'
+  end
+
   resources :images, only: %i[index create destroy update]
 end
 

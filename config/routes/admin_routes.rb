@@ -3,7 +3,7 @@
 namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(req) { ENV['ON_SUBDOMAIN'] || req.subdomain == 'admin' } do
   draw :admin_api_routes
 
-  devise_for :users, skip: %i[registration]
+  devise_for :users, singular: :admin_user, skip: %i[registration]
 
   resource :password, only: %i[edit update]
 
@@ -49,16 +49,6 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
   resources :shops, except: [:show]
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
-
-  get 'quick-stats' => 'base#quick_stats'
-
-  resource :stats, only: [] do
-    get 'quick-stats' => 'stats#quick_stats'
-    get 'most-viewed-pages' => 'stats#most_viewed_pages'
-    get 'visits-per-day' => 'stats#visits_per_day'
-    get 'visits-per-month' => 'stats#visits_per_month'
-    get 'registrations-per-month' => 'stats#registrations_per_month'
-  end
 
   root to: 'base#index'
 end

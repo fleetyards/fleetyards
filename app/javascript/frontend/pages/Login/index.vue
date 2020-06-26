@@ -92,6 +92,7 @@ import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import { displayAlert } from 'frontend/lib/Noty'
+import sessionCollection from 'frontend/collections/Session'
 
 export default {
   name: 'Login',
@@ -118,11 +119,13 @@ export default {
   methods: {
     async login() {
       this.submitting = true
-      const response = await this.$api.post('sessions', this.form)
+
+      const response = await sessionCollection.create(this.form)
+
       this.submitting = false
 
       if (!response.error) {
-        await this.$store.dispatch('session/login', response.data)
+        await this.$store.dispatch('session/login')
         if (this.$route.params.redirectToRoute) {
           await this.$router.replace({
             name: this.$route.params.redirectToRoute,

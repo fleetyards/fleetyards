@@ -1,23 +1,23 @@
 - content_for :title do
   = I18n.t(:"title.confirm")
 .row
-  .col-xs-12.col-md-5.col-md-offset-2
+  .col-12.col-sm-4.offset-md-4
+    .card.mt-5.p-3.text-white.bg-dark
+      %h1
+        = I18n.t(:"headlines.confirm")
 
-    %h1
-      = I18n.t(:"headlines.confirm")
+      = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post}) do |form|
 
-    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post}) do |form|
+        .form-group{class: form_error?(resource, :email)}
+          = form.text_field :email, required: true, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
+          %small
+            = form_errors resource, :email
 
-      .form-group{class: form_error?(resource, :email)}
-        = form.text_field :email, required: true, placeholder: I18n.t(:"helpers.placeholder.user.email"), class: 'form-control'
-        %small
-          = form_errors resource, :email
+        %br
 
-      %br
+        .form-group
+          %button.btn.btn-lg.btn-primary
+            = I18n.t(:"actions.confirm")
 
-      .form-group
-        %button.btn.btn-lg.btn-primary
-          = I18n.t(:"actions.confirm")
-
-  .col-xs-12.col-md-3
+  .col-12.col-md-3
     = render "devise/shared/links"

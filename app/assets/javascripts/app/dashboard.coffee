@@ -5,7 +5,7 @@ window.App.Dashboard.quickstats = {}
 window.App.Dashboard.checkQuickStats = (callback) ->
   $.ajax
     beforeSend: (request) ->
-      request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
+      request.withCredentials = true
     url: App.Dashboard.quickstats.url
     dataType: "JSON"
     success: (data) ->
@@ -27,7 +27,7 @@ window.App.Dashboard.findChart = (chartId) ->
 window.App.Dashboard.loadChartData = (url, callback) ->
   $.ajax
     beforeSend: (request) ->
-      request.setRequestHeader("Authorization", "Bearer #{window.JWT_TOKEN}")
+      request.withCredentials = true
     url: url
     dataType: "JSON"
     success: (data) ->

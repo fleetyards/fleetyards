@@ -1,5 +1,5 @@
 .row
-  .col-xs-12.col-lg-12
+  .col-12.col-lg-12
     .panel-wrapper.panel-outer-spacing
       .panel
         .panel-inner
@@ -10,7 +10,7 @@
             javascript:
               window.App.Dashboard.addChart({
                 id: 'visits-per-day-chart',
-                url: '#{visits_per_day_admin_stats_url}',
+                url: '#{visits_per_day_admin_api_v1_stats_url}',
                 type: 'area',
                 height: '250px',
                 tooltip: 'visit',
@@ -18,9 +18,9 @@
 
             #visits-per-day-chart.chart(style="height: 250px;")
 
-  .col-xs-12.col-lg-12
+  .col-12.col-lg-12
     .row
-      .col-xs-12.col-md-5
+      .col-12.col-md-5
         .panel-wrapper.panel-outer-spacing
           .panel
             .panel-inner
@@ -31,7 +31,7 @@
                 javascript:
                   window.App.Dashboard.addChart({
                     id: 'most-viewed-pages-chart',
-                    url: '#{most_viewed_pages_admin_stats_url}',
+                    url: '#{most_viewed_pages_admin_api_v1_stats_url}',
                     type: 'bar',
                     height: '344px',
                     tooltip: 'view',
@@ -39,7 +39,7 @@
 
                 #most-viewed-pages-chart.chart(style="height: 344px;")
 
-      .col-xs-12.col-md-7
+      .col-12.col-md-7
         .panel-wrapper.panel-outer-spacing
           .panel
             .panel-inner
@@ -50,7 +50,7 @@
                 javascript:
                   window.App.Dashboard.addChart({
                     id: 'visits-per-month-chart',
-                    url: '#{visits_per_month_admin_stats_url}',
+                    url: '#{visits_per_month_admin_api_v1_stats_url}',
                     type: 'column',
                     height: '344px',
                     tooltip: 'visit',
