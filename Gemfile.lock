@@ -249,7 +249,6 @@ GEM
       sprockets-rails
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    jwt (2.2.1)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -591,7 +590,6 @@ DEPENDENCIES
   jquery-rails
   js-routes
   js_cookie_rails
-  jwt
   kaminari
   listen
   lograge
