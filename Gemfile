@@ -38,8 +38,6 @@ gem 'cancancan'
 gem 'devise'
 gem 'devise-async'
 gem 'redis-session-store'
-gem 'jwt'
-gem 'redis-session-store'
 gem 'useragent'
 
 gem 'ransack'

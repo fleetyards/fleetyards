@@ -4,8 +4,6 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   config.warden do |manager|
-    # manager.strategies.add(:jwt, Devise::Strategies::JWT)
-    # manager.default_strategies(scope: :api_user).unshift :jwt
     manager.failure_app = JSONFailureApp
   end
 

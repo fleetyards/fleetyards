@@ -11,16 +11,7 @@ export default () => ({
   getters: {
     isAuthenticated(state) {
       return state.authenticated
-      // return state.authToken !== null
     },
-
-    // authTokenRenewAt(state) {
-    //   return state.authTokenRenewAt
-    // },
-
-    // authToken(state) {
-    //   return state.authToken
-    // },
 
     currentUser(state) {
       return state.currentUser
@@ -33,17 +24,9 @@ export default () => ({
       Object.assign(state, getDefaultState())
     },
 
-    // setAuthToken(state, payload) {
-    //   state.authToken = payload
-    // },
-
     setAuthenticated(state, payload) {
       state.authenticated = payload
     },
-
-    // setAuthTokenRenewAt(state, payload) {
-    //   state.authTokenRenewAt = payload
-    // },
 
     setCurrentUser(state, payload) {
       state.currentUser = payload

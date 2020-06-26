@@ -9,7 +9,7 @@ module Api
       def index
         authorize! :index, :api_trade_routes
 
-        trade_routes_query_params['sorts'] = sort_by_name('origin_shop_station_name asc')
+        trade_routes_query_params['sorts'] = sort_by_name(['origin_shop_station_name asc', 'created_at desc'])
 
         @q = TradeRoute.with_profit.ransack(trade_routes_query_params)
 

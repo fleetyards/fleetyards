@@ -30,9 +30,6 @@ require 'active_record/fixtures'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-# helper
-require 'support/session_helper'
-
 require 'vcr'
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
@@ -52,7 +49,6 @@ Searchkick.disable_callbacks
 # rubocop:disable Style/ClassAndModuleChildren
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers
-  include SessionHelper
   ActiveRecord::Migration.check_pending!
 
   fixtures :all

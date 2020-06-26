@@ -20,10 +20,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  window.API_ENDPOINT = '<%= Rails.application.secrets[:admin_api_endpoint] %>'
-  window.AUTH_TOKEN = '<%= jwt_token %>'
-  window.ON_SUBDOMAIN = '<%= ENV['ON_SUBDOMAIN']  %>'
-</script>
-<%= javascript_packs_with_chunks_tag 'admin' %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_193308) do
+ActiveRecord::Schema.define(version: 2020_06_26_125303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -62,18 +62,6 @@ ActiveRecord::Schema.define(version: 2020_05_30_193308) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "auth_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "expires_at"
-    t.boolean "permanent", default: false
-    t.string "client_key"
-    t.string "browser"
-    t.string "platform"
-    t.index ["user_id"], name: "index_auth_tokens_on_user_id"
   end
 
   create_table "celestial_objects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

@@ -12,7 +12,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, lo
     origins Rails.application.secrets[:cors_origins]
     resource '*', headers: :any,
                   methods: %i[get post delete put patch delete options head],
-                  expose: %w[Link X-Renew-JWT X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
+                  expose: %w[Link X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
                   credentials: true,
                   max_age: 0
   end
@@ -20,8 +20,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, lo
   allow do
     origins '*'
     resource '*', headers: :any,
-                  methods: %i[get post delete put patch delete options head],
-                  expose: %w[Link X-Renew-JWT X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
+                  methods: %i[get options head],
+                  expose: %w[Link X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],
                   max_age: 0
   end
 end

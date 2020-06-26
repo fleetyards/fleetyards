@@ -31,13 +31,11 @@ import axios from 'axios'
 import Updates from 'frontend/mixins/Updates'
 import userCollection from 'frontend/collections/User'
 import versionCollection from 'frontend/collections/Version'
-// import sessionCollection from 'frontend/collections/Session'
 import Navigation from 'frontend/partials/Navigation'
 import AppFooter from 'frontend/partials/AppFooter'
 import PrivacySettings from 'frontend/partials/PrivacySettings'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
-// import { parseISO, isBefore } from 'date-fns'
 
 const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
 
@@ -86,7 +84,6 @@ export default {
     isAuthenticated() {
       if (this.isAuthenticated) {
         requestPermission()
-        // this.setupSessionRenewInterval()
         this.fetchCurrentUser()
       } else {
         if (this.sessionRenewInterval) {
@@ -116,8 +113,6 @@ export default {
     if (this.isAuthenticated) {
       requestPermission()
       this.fetchCurrentUser()
-      // this.renew()
-      // this.setupSessionRenewInterval()
     }
 
     if (this.ahoyAccepted) {
@@ -143,10 +138,6 @@ export default {
     this.$comlink.$off('userUpdate')
     this.$comlink.$off('fleetCreate')
     this.$comlink.$off('fleetUpdate')
-
-    // if (this.sessionRenewInterval) {
-    //   clearInterval(this.sessionRenewInterval)
-    // }
   },
 
   methods: {
@@ -205,30 +196,6 @@ export default {
         await versionCollection.current(),
       )
     },
-
-    // setupSessionRenewInterval() {
-    //   if (this.sessionRenewInterval) {
-    //     return
-    //   }
-
-    //   this.sessionRenewInterval = setInterval(() => {
-    //     this.renew()
-    //   }, 60 * 1000)
-    // },
-
-    // async renew() {
-    //   if (
-    //     this.authTokenRenewAt &&
-    //     isBefore(new Date(), parseISO(this.authTokenRenewAt))
-    //   ) {
-    //     return
-    //   }
-
-    //   await this.$store.dispatch(
-    //     'session/login',
-    //     await sessionCollection.renew(),
-    //   )
-    // },
   },
 }
 </script>

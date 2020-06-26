@@ -31,41 +31,13 @@ module Api
 
         sign_in(:api_user, resource)
 
-        render json: { success: true, token: 'foobar' }
-        # auth_token = AuthToken.create(
-        #   user_id: resource.id,
-        #   browser: user_agent.browser,
-        #   platform: user_agent.platform,
-        #   permanent: params[:rememberMe]
-        # )
-
-        # render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
-      end
-
-      def renew
-        auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
-        auth_token.renew
-        render json: { token: ::JsonWebToken.encode(auth_token.to_jwt_payload), expires: auth_token.expires_at }
+        render json: { success: true }
       end
 
       def destroy
         sign_out(:api_user)
-        # auth_token = AuthToken.find_by!(user_id: current_user.id, client_key: authentication_claim[:client_key])
-        # auth_token.destroy
+
         render json: { code: 'sessions.destroy', message: I18n.t('devise.sessions.signed_out') }
-      end
-
-      def destroy_all
-        if AuthToken.where(user_id: current_user.id).destroy_all
-          render json: { code: 'sessions.destroy_all', message: I18n.t('devise.sessions.signed_out_from_all') }
-        else
-          render json: { code: 'sessions.destroy_all.failed', message: I18n.t('devise.failure.could_not_sign_out_all') }
-        end
-      end
-
-      private def authentication_claim
-        auth_params, _options = ActionController::HttpAuthentication::Token.token_and_options(request)
-        ::JsonWebToken.decode(auth_params)
       end
 
       private def user_agent
