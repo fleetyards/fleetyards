@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json_web_token'
-
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
