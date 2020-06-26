@@ -30,42 +30,6 @@ module Api
             'starsystemSlug' => 'stanton'
           },
           'destination' => {
-            'name' => 'ArcCorp 002',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Yela',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Yela',
-            'planetSlug' => 'yela',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'commodity' => {
-            'name' => 'Titan',
-            'slug' => 'titan',
-            'type' => nil
-          },
-          'buyPrice' => '10.0',
-          'sellPrice' => '20.0',
-          'profitPerUnit' => '10.0',
-          'profitPerUnitPercent' => '50.0',
-          'createdAt' => titan_daymar_yela.created_at.utc.iso8601,
-          'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
-        }, {
-          'origin' => {
-            'name' => 'ArcCorp 001',
-            'slug' => 'arccorp',
-            'type' => 'outpost',
-            'locationLabel' => 'on Daymar',
-            'shop' => 'Admin Office',
-            'shopSlug' => 'admin-office',
-            'planet' => 'Daymar',
-            'planetSlug' => 'daymar',
-            'starsystem' => 'Stanton',
-            'starsystemSlug' => 'stanton'
-          },
-          'destination' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
             'type' => 'hub',
@@ -88,6 +52,42 @@ module Api
           'profitPerUnitPercent' => '70.0',
           'createdAt' => titan_daymar_olisar.created_at.utc.iso8601,
           'updatedAt' => titan_daymar_olisar.updated_at.utc.iso8601
+        }, {
+          'origin' => {
+            'name' => 'ArcCorp 001',
+            'slug' => 'arccorp',
+            'type' => 'outpost',
+            'locationLabel' => 'on Daymar',
+            'shop' => 'Admin Office',
+            'shopSlug' => 'admin-office',
+            'planet' => 'Daymar',
+            'planetSlug' => 'daymar',
+            'starsystem' => 'Stanton',
+            'starsystemSlug' => 'stanton'
+          },
+          'destination' => {
+            'name' => 'ArcCorp 002',
+            'slug' => 'arccorp',
+            'type' => 'outpost',
+            'locationLabel' => 'on Yela',
+            'shop' => 'Admin Office',
+            'shopSlug' => 'admin-office',
+            'planet' => 'Yela',
+            'planetSlug' => 'yela',
+            'starsystem' => 'Stanton',
+            'starsystemSlug' => 'stanton'
+          },
+          'commodity' => {
+            'name' => 'Titan',
+            'slug' => 'titan',
+            'type' => nil
+          },
+          'buyPrice' => '10.0',
+          'sellPrice' => '20.0',
+          'profitPerUnit' => '10.0',
+          'profitPerUnitPercent' => '50.0',
+          'createdAt' => titan_daymar_yela.created_at.utc.iso8601,
+          'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
         }, {
           'origin' => {
             'name' => 'ArcCorp 002',

@@ -74,6 +74,8 @@ module ApplicationHelper
   end
 
   def app_enabled?
+    # rubocop:disable Rails/HelperInstanceVariable
     @app_enabled || false
+    # rubocop:enable Rails/HelperInstanceVariable
   end
 end
