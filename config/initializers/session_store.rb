@@ -11,7 +11,7 @@ redis_store_options = {
 
 session_store_options = {
   key: Rails.env.production? ? 'FLTYRD' : "FLTYRD_#{Rails.env.upcase}",
-  domain: ".#{Rails.application.secrets[:domain]}",
+  domain: Rails.env.test? || Rails.env.ci? ? :all : ".#{Rails.application.secrets[:domain]}",
   serializer: :json,
   secure: Rails.env.production?,
   expire_after: expire_after,
