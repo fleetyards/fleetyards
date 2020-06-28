@@ -148,6 +148,7 @@ module Frontend
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     private def compare_image(models)
       return models.first.store_image.url if models.size == 1
       return if models.blank?
@@ -192,6 +193,7 @@ module Frontend
 
       "https://fleetyards.net/compare/#{filename}"
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def compare_params
       @compare_params ||= params.permit(models: [])

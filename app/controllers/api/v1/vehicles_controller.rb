@@ -94,6 +94,7 @@ module Api
                       .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def quick_stats
         authorize! :index, :api_hangar
         scope = current_user.vehicles.visible.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
@@ -134,6 +135,7 @@ module Api
           }
         )
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       def public
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)

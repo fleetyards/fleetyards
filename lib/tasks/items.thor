@@ -15,6 +15,7 @@ class Items < Thor
 
   desc 'import', 'Import Items from json files'
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
   def import
     require './config/environment'
 
@@ -75,5 +76,6 @@ class Items < Thor
       end
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
 end

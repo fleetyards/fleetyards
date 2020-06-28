@@ -25,6 +25,7 @@ module Api
                               .per(per_page(ShopCommodity))
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def sub_categories
         authorize! :index, :api_shop_commodities
 
@@ -41,6 +42,7 @@ module Api
           Component.class_filters.select { |item| !allowed_categories || allowed_categories.include?(item.value) }
         ].flatten.sort_by { |category| [category.category, category.name] }
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       private def shop
         @shop ||= station.shops.visible.find_by!(slug: params[:shop_slug])
