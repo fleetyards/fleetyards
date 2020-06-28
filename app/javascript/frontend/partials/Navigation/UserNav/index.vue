@@ -18,16 +18,17 @@
         :label="$t('nav.settings.index')"
         icon="fad fa-cog"
       />
-      <NavItem divider />
-      <NavItem
-        v-if="currentUser.rsiHandle"
-        :href="
-          `https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`
-        "
-        :label="$t('nav.rsiProfile')"
-        :image="require('images/rsi_logo.png').default"
-      />
-      <NavItem divider />
+      <NavItem :divider="true" />
+      <template v-if="currentUser.rsiHandle">
+        <NavItem
+          :href="
+            `https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`
+          "
+          :label="$t('nav.rsiProfile')"
+          :image="require('images/rsi_logo.png').default"
+        />
+        <NavItem :divider="true" />
+      </template>
       <NavItem
         :action="logout"
         menu-key="logout"

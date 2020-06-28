@@ -70,7 +70,7 @@ module Api
     end
 
     private def set_csrf_cookie
-      cookies['CSRF-TOKEN'] = { value: form_authenticity_token, domain: Rails.application.secrets[:cookie_domain] || :all }
+      cookies['CSRF-TOKEN'] = { value: form_authenticity_token, domain: Rails.application.secrets[:cookie_domain] || :all, same_site: :none, secure: Rails.env.production? || Rails.env.staging? }
     end
   end
 end

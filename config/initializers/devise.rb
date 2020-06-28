@@ -140,7 +140,8 @@ Devise.setup do |config|
   config.rememberable_options = {
     key: Rails.env.production? ? 'FLTYRD_STORED' : "FLTYRD_STORED_#{Rails.env.upcase}",
     domain: ".#{Rails.application.secrets[:domain]}",
-    secure: Rails.env.production?
+    secure: Rails.env.production? || Rails.env.staging?,
+    same_site: :none
   }
 
   # ==> Configuration for :validatable
