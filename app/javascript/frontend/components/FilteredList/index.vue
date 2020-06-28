@@ -5,7 +5,7 @@
         <div class="col-12 filtered-list-header">
           <div class="filtered-list-header-left">
             <Btn
-              v-if="!hideFilter"
+              v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
               :active="filterVisible"
               :aria-label="filterTooltip"
@@ -72,7 +72,7 @@
               }"
               class="col-12 col-lg-6 fade-list-item"
             >
-              <slot name="record" :record="record" />
+              <slot name="record" :record="record" :index="index" />
             </div>
           </transition-group>
 
@@ -123,6 +123,8 @@ export default class FilteredList extends Vue {
 
   @Prop({ required: true }) name!: string
 
+  @Prop({ default: null }) recordListClass!: string
+
   @Prop({
     default() {
       return {}
@@ -138,8 +140,6 @@ export default class FilteredList extends Vue {
 
   @Prop({ default: false }) paginated: boolean
 
-  @Prop({ default: false }) hideFilter: boolean
-
   @Getter('filtersVisible') filtersVisible
 
   @Getter('mobile') mobile
@@ -152,6 +152,10 @@ export default class FilteredList extends Vue {
 
   get filters() {
     return this.routeQuery.q
+  }
+
+  get hasFilterSlot() {
+    return !!this.$slots.filter
   }
 
   get page() {

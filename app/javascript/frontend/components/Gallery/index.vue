@@ -129,7 +129,7 @@ export default {
 
     open(index = 0) {
       this.index = parseInt(index, 10)
-      this.$store.commit('app/showOverlay')
+      this.$store.dispatch('app/showOverlay')
       this.setup()
       this.gallery.init()
     },

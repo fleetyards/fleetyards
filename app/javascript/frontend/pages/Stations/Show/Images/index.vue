@@ -10,189 +10,153 @@
             </h1>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <Paginator
-              v-if="images.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-        </div>
-        <transition-group
-          v-if="images"
-          name="fade-list"
-          class="row flex-center images"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="(image, index) in images"
-            :key="image.id"
-            class="col-12 col-ms-6 col-md-6 col-lg-4 col-xxlg-2-4 fade-list-item"
-          >
-            <GalleryImage
-              :src="image.smallUrl"
-              :href="image.url"
-              :alt="image.name"
-              @click.native.prevent.exact="openGallery(index)"
-            />
-          </div>
-        </transition-group>
-        <div class="row">
-          <div class="col-12">
-            <Paginator
-              v-if="images.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-        </div>
-        <Loader :loading="loading" />
       </div>
     </div>
+    <FilteredList
+      :collection="collection"
+      collection-method="findAllForGallery"
+      :name="$route.name"
+      :route-query="$route.query"
+      :hash="$route.hash"
+      :params="routeParams"
+      :paginated="true"
+      class="images"
+    >
+      <template v-slot:record="{ record, index }">
+        <GalleryImage
+          :src="record.smallUrl"
+          :href="record.url"
+          :alt="record.name"
+          @click.native.prevent.exact="openGallery(index)"
+        />
+      </template>
+    </FilteredList>
 
-    <Gallery ref="gallery" :items="images" />
+    <Gallery ref="gallery" :items="collection.records" />
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
-import Loader from 'frontend/components/Loader'
-import GalleryHelpers from 'frontend/mixins/GalleryHelpers'
+import FilteredList from 'frontend/components/FilteredList'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import Gallery from 'frontend/components/Gallery'
+import GalleryImage from 'frontend/components/GalleryImage'
+import imagesCollection from 'frontend/collections/Images'
 
-export default {
+@Component<ModelImages>({
   components: {
-    Loader,
+    FilteredList,
     BreadCrumbs,
+    Gallery,
+    GalleryImage,
   },
+  mixins: [MetaInfo],
+})
+export default class ModelImages extends Vue {
+  collection: ImagesCollection = imagesCollection
 
-  mixins: [GalleryHelpers, MetaInfo, Pagination],
+  station: Station | null = null
 
-  data() {
-    return {
-      images: [],
-      station: null,
-      loading: false,
+  get metaTitle() {
+    if (!this.station) {
+      return null
     }
-  },
 
-  computed: {
-    metaTitle() {
-      if (!this.station) {
-        return null
-      }
+    return this.$t('title.stationImages', {
+      station: this.station.name,
+      celestialObject: this.station.celestialObject.name,
+    })
+  }
 
-      return this.$t('title.stationImages', {
-        station: this.station.name,
-        celestialObject: this.station.celestialObject.name,
-      })
-    },
+  get routeParams() {
+    return {
+      ...this.$route.params,
+      galleryType: 'stations',
+    }
+  }
 
-    crumbs() {
-      if (!this.station) {
-        return null
-      }
+  get crumbs() {
+    if (!this.station) {
+      return null
+    }
 
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.station.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
+    const crumbs = [
+      {
+        to: {
+          name: 'starsystems',
+          hash: `#${this.station.celestialObject.starsystem.slug}`,
         },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.station.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.station.celestialObject.slug}`,
+        label: this.$t('nav.starsystems'),
+      },
+      {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.station.celestialObject.starsystem.slug,
           },
-          label: this.station.celestialObject.starsystem.name,
+          hash: `#${this.station.celestialObject.slug}`,
         },
-      ]
+        label: this.station.celestialObject.starsystem.name,
+      },
+    ]
 
-      if (this.station.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.station.celestialObject.starsystem.slug,
-              slug: this.station.celestialObject.parent.slug,
-            },
-          },
-          label: this.station.celestialObject.parent.name,
-        })
-      }
-
+    if (this.station.celestialObject.parent) {
       crumbs.push({
         to: {
           name: 'celestial-object',
           params: {
             starsystem: this.station.celestialObject.starsystem.slug,
-            slug: this.station.celestialObject.slug,
-          },
-          hash: `#${this.station.slug}`,
-        },
-        label: this.station.celestialObject.name,
-      })
-
-      crumbs.push({
-        to: {
-          name: 'station',
-          params: {
-            slug: this.station.slug,
+            slug: this.station.celestialObject.parent.slug,
           },
         },
-        label: this.station.name,
+        label: this.station.celestialObject.parent.name,
       })
+    }
 
-      return crumbs
-    },
-  },
+    crumbs.push({
+      to: {
+        name: 'celestial-object',
+        params: {
+          starsystem: this.station.celestialObject.starsystem.slug,
+          slug: this.station.celestialObject.slug,
+        },
+        hash: `#${this.station.slug}`,
+      },
+      label: this.station.celestialObject.name,
+    })
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+    crumbs.push({
+      to: {
+        name: 'station',
+        params: {
+          slug: this.station.slug,
+        },
+      },
+      label: this.station.name,
+    })
+
+    return crumbs
+  }
 
   created() {
     this.fetchStation()
-    this.fetch()
-  },
+  }
 
-  methods: {
-    async fetch() {
-      this.loading = true
-      const response = await this.$api.get(
-        `stations/${this.$route.params.slug}/images`,
-        {
-          page: this.$route.query.page,
-        },
-      )
-      this.loading = false
-      if (!response.error) {
-        this.images = response.data
-      }
-      this.setPages(response.meta)
-    },
+  openGallery(index) {
+    this.$refs.gallery.open(index)
+  }
 
-    async fetchStation() {
-      const response = await this.$api.get(
-        `stations/${this.$route.params.slug}`,
-      )
+  async fetchStation() {
+    const response = await this.$api.get(`stations/${this.$route.params.slug}`)
 
-      if (!response.error) {
-        this.station = response.data
-      } else if (response.error.response.status === 404) {
-        this.$router.replace({ name: '404' })
-      }
-    },
-  },
+    if (!response.error) {
+      this.station = response.data
+    } else if (response.error.response.status === 404) {
+      this.$router.replace({ name: '404' })
+    }
+  }
 }
 </script>

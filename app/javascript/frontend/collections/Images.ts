@@ -18,6 +18,20 @@ export class ImagesCollection extends BaseCollection {
     return this.records
   }
 
+  async findAllForGallery(params: GalleryParams): Promise<Image[]> {
+    const response = await get(`${params.galleryType}/${params.slug}/images`, {
+      page: params.page,
+    })
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    this.setPages(response.meta)
+
+    return this.records
+  }
+
   async random(): Promise<Image[]> {
     const response = await get('images/random')
 
