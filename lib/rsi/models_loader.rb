@@ -433,6 +433,7 @@ module RSI
       model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     def cleanup_variants
       ModelPaint.where.not(rsi_id: nil).find_each do |paint|
         model = Model.find_by(rsi_id: paint.rsi_id)
@@ -470,5 +471,6 @@ module RSI
         model.destroy
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end

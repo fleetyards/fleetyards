@@ -88,6 +88,9 @@ Style/SignalException:
 Style/TrivialAccessors:
   ExactNameMatch: true
 
+Style/RedundantFetchBlock:
+  Enabled: false
+
 Rails/BulkChangeTable:
   Enabled: false
 

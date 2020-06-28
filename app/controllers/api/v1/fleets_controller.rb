@@ -142,6 +142,7 @@ module Api
                       .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def quick_stats
         authorize! :show, fleet
 
@@ -174,6 +175,7 @@ module Api
           }
         )
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       def models_by_size
         authorize! :show, fleet
