@@ -6,6 +6,18 @@ export class FleetsCollection extends BaseCollection {
 
   record: Fleet | null = null
 
+  async findAllForCurrent(identifier: string = 'default'): Promise<Fleet[]> {
+    const response = await get(`fleets/current`, {
+      [identifier]: true,
+    })
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    return this.records
+  }
+
   async findBySlug(slug: string): Promise<Fleet | null> {
     const response = await get(`fleets/${slug}`)
 

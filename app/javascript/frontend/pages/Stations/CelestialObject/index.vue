@@ -89,7 +89,7 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import StationPanel from 'frontend/components/Stations/Panel'
 import ItemPanel from 'frontend/partials/Stations/Panel'
-import Hash from 'frontend/mixins/Hash'
+// import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import CelestialObjectMetrics from 'frontend/partials/CelestialObjects/Metrics'
@@ -104,7 +104,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Pagination],
 
   data() {
     return {

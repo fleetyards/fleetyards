@@ -7,7 +7,7 @@ module Admin
     tests Admin::ModelsController
 
     let(:data) { users :data }
-    let(:jeanluc) { users :jeanluc }
+    let(:jeanluc) { admin_users :jeanluc }
 
     describe 'without session' do
       it 'should render not_found for index'

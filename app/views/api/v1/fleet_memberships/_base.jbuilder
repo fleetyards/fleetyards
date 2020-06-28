@@ -15,3 +15,5 @@ json.homepage member.user.homepage
 json.discord member.user.discord
 json.youtube member.user.youtube
 json.twitch member.user.twitch
+json.ships_filter member.ships_filter
+json.hangar_group_id member.hangar_group_id

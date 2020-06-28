@@ -4,8 +4,7 @@ module Api
   module V1
     class SessionsController < ::Api::BaseController
       skip_authorization_check
-      before_action :authenticate_api_user!, except: [:create]
-      skip_before_action :verify_authenticity_token, only: [:create]
+      before_action :authenticate_user!, except: [:create]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -27,7 +26,7 @@ module Api
 
         resource.remember_me = login_params[:rememberMe]
 
-        sign_in(:api_user, resource)
+        sign_in(:user, resource)
 
         render json: { success: true }
       end

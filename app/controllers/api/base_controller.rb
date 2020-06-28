@@ -7,7 +7,6 @@ module Api
     include ActionController::Caching
     include RansackHelper
     include Pagination
-    include ApiAuthorization
 
     protect_from_forgery with: :exception
 
@@ -15,7 +14,7 @@ module Api
 
     skip_before_action :track_ahoy_visit
 
-    before_action :authenticate_api_user!, except: %i[root version]
+    before_action :authenticate_user!, except: %i[root version]
     before_action :current_ability
     before_action :set_csrf_cookie
 
@@ -29,6 +28,10 @@ module Api
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|
       render json: { code: 'invalid_authenticity_token', message: I18n.t('error_pages.unprocessable_entity') }, status: :unprocessable_entity
+    end
+
+    def current_ability
+      @current_ability ||= Ability.new(current_user)
     end
 
     def root

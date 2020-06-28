@@ -135,6 +135,7 @@ v1_api_routes = lambda do
     collection do
       post :check
       get :invites
+      get :current
     end
 
     member do
@@ -152,6 +153,7 @@ v1_api_routes = lambda do
 
     resources :fleet_memberships, path: 'members', param: :username, only: %i[create destroy] do
       collection do
+        get :current
         put :update
         patch :update
         put 'accept-invite' => 'fleet_memberships#accept_invite'

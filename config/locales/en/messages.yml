@@ -36,3 +36,5 @@ en:
     rsi_verification:
       success: "Account successfully verified."
       failure: "Account could not be verified."
+    signup:
+      reserved_username: "The Username is reserved/forbidden on FleetYards.net. Please choose something else!"

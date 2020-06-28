@@ -3,7 +3,12 @@
 namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(req) { ENV['ON_SUBDOMAIN'] || req.subdomain == 'admin' } do
   draw :admin_api_routes
 
-  devise_for :users, singular: :admin_user, skip: %i[registration]
+  devise_for :admin_users,
+             singular: :admin_user, path: '', skip: %i[registration],
+             path_names: {
+               sign_in: 'login',
+               sign_out: 'logout',
+             }
 
   resource :password, only: %i[edit update]
 

@@ -3,7 +3,7 @@
 module Api
   module V1
     class ModelsController < ::Api::BaseController
-      before_action :authenticate_api_user!, only: []
+      before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:models) }, only: %i[index with_docks cargo_options]
       after_action -> { pagination_header(:variants) }, only: [:variants]
       after_action -> { pagination_header(:loaners) }, only: [:loaners]

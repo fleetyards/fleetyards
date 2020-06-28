@@ -7,6 +7,12 @@ module Api
         not_found(I18n.t('messages.record_not_found.fleet', slug: params[:slug]))
       end
 
+      def current
+        authorize! :show, my_membership
+
+        @member = my_membership
+      end
+
       def create
         user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
 

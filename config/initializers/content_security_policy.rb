@@ -21,7 +21,8 @@ Rails.application.config.content_security_policy do |policy|
     :self, :data, cable_endpoint, api_endpoint, 'https://img.youtube.com',
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
     'https://pro.fontawesome.com', Rails.application.secrets[:rsi_endpoint],
-    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com'
+    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com',
+    'https://ka-p.fontawesome.com'
   ]
 
   connect_src.concat ['ws://localhost:3035', 'http://localhost:3035'] if Rails.env.development?
@@ -35,7 +36,7 @@ Rails.application.config.content_security_policy do |policy|
 
   style_src = [
     :self, :unsafe_inline, 'https://fonts.googleapis.com', 'https://pro.fontawesome.com',
-    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com'
+    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com', 'https://ka-p.fontawesome.com'
   ]
 
   img_src = [
@@ -48,7 +49,8 @@ Rails.application.config.content_security_policy do |policy|
 
   font_src = [
     :self, 'https://fonts.gstatic.com', 'https://pro.fontawesome.com',
-    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com'
+    'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com',
+    'https://ka-p.fontawesome.com'
   ]
 
   frame_src = [

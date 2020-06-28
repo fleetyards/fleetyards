@@ -4,7 +4,7 @@ module Api
   module V1
     class UsersController < ::Api::BaseController
       skip_authorization_check only: %i[signup confirm]
-      before_action :authenticate_api_user!, except: %i[signup confirm check_email check_username public]
+      before_action :authenticate_user!, except: %i[signup confirm check_email check_username public]
 
       def current
         authorize! :read, current_user
@@ -28,6 +28,11 @@ module Api
       def signup
         if blocked(user_params[:email])
           render json: { code: 'blocked' }, status: :bad_request
+          return
+        end
+
+        if reserved_name(user_params[:username])
+          render json: { code: 'reserved_username', message: I18n.t('messages.signup.reserved_username') }, status: :bad_request
           return
         end
 
@@ -85,7 +90,15 @@ module Api
 
         blocklist = JSON.parse(File.read(Rails.root.join('blocklist.json')))
 
-        blocklist.include?(email)
+        blocklist.include?(email.downcase.strip)
+      end
+
+      private def reserved_name(username)
+        return unless File.exist?(Rails.root.join('reserved_usernames.json'))
+
+        reserved_usernames = JSON.parse(File.read(Rails.root.join('reserved_usernames.json')))
+
+        reserved_usernames.include?(username.downcase.strip)
       end
     end
   end

@@ -140,7 +140,7 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
-import Hash from 'frontend/mixins/Hash'
+// import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/components/Panel'
 import ShopBaseMetrics from 'frontend/partials/Shops/BaseMetrics'
 import ShopItemRow from 'frontend/partials/Shops/ShopItemRow'
@@ -162,7 +162,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo, Filters, Hash, Pagination],
+  mixins: [MetaInfo, Filters, Pagination],
 
   data() {
     return {

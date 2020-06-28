@@ -5,9 +5,9 @@ require 'rsi/orgs_loader'
 module Api
   module V1
     module Rsi
-      class CitizensController < ::Api::V1::BaseController
+      class CitizensController < ::Api::BaseController
         skip_authorization_check
-        before_action :authenticate_api_user!, only: %i[]
+        before_action :authenticate_user!, only: %i[]
 
         def show
           success, @citizen = ::RSI::OrgsLoader.new.fetch_citizen(handle)

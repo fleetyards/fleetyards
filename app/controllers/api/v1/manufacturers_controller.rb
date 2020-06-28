@@ -3,7 +3,7 @@
 module Api
   module V1
     class ManufacturersController < ::Api::BaseController
-      before_action :authenticate_api_user!, only: []
+      before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:manufacturers) }, only: [:index]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|

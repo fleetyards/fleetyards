@@ -5,7 +5,7 @@ module Api
     class StatsController < Api::BaseController
       include ChartHelper
 
-      before_action :authenticate_api_user!, only: []
+      before_action :authenticate_user!, only: []
 
       def quick_stats
         authorize! :read, :api_stats

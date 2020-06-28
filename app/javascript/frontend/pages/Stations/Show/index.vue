@@ -66,7 +66,7 @@
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/components/Loader'
 import Btn from 'frontend/components/Btn'
-import Hash from 'frontend/mixins/Hash'
+// import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/components/Panel'
 import ShopPanel from 'frontend/partials/Stations/Panel'
 import StationBaseMetrics from 'frontend/partials/Stations/BaseMetrics'
@@ -88,7 +88,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo, Hash],
+  mixins: [MetaInfo],
 
   data() {
     return {

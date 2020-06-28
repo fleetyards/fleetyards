@@ -7,7 +7,7 @@
       :active="$route.name === 'fleet'"
       exact
     />
-    <template v-if="myFleet">
+    <template v-if="currentFleet.myFleet">
       <NavItem
         :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
         :label="$t('nav.fleets.members')"
@@ -22,38 +22,31 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import NavItem from 'frontend/partials/Navigation/NavItem'
-import FleetsMixin from 'frontend/mixins/Fleets'
+import fleetsCollection from 'frontend/collections/Fleets'
 
-export default {
+@Component<FleetNav>({
   components: {
     NavItem,
   },
+})
+export default class FleetNav extends Vue {
+  collection: FleetsCollection = fleetsCollection
 
-  mixins: [FleetsMixin],
-
-  data() {
-    return {
-      currentFleet: null,
-    }
-  },
+  get currentFleet(): Fleet | null {
+    return this.collection.record
+  }
 
   mounted() {
     this.fetch()
     this.$comlink.$on('fleetUpdate', this.fetch)
-  },
+  }
 
-  methods: {
-    async fetch() {
-      const response = await this.$api.get(
-        `fleets/${this.$route.params.slug}?nav`,
-      )
-
-      if (!response.error) {
-        this.currentFleet = response.data
-      }
-    },
-  },
+  async fetch() {
+    await this.collection.findBySlug(this.$route.params.slug)
+  }
 }
 </script>

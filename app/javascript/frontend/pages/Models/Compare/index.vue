@@ -74,7 +74,7 @@
 
             <div v-if="!sortedModels.length" class="row compare-row">
               <div class="col-12">
-                <Box class="info" large>
+                <Box class="info" :large="true">
                   <h1>{{ $t('headlines.compare.models') }}</h1>
                   <p>{{ $t('texts.compare.models.info') }}</p>
                 </Box>

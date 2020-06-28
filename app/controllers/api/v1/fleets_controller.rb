@@ -5,7 +5,7 @@ module Api
     class FleetsController < ::Api::BaseController
       include ChartHelper
 
-      before_action :authenticate_api_user!, except: %i[show]
+      before_action :authenticate_user!, except: %i[show]
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[vehicles]
       after_action -> { pagination_header(:members) }, only: %i[members]
@@ -18,6 +18,12 @@ module Api
         authorize! :invites, :api_fleet
 
         @invites = current_user.fleet_memberships.where(accepted_at: nil, declined_at: nil).all
+      end
+
+      def current
+        authorize! :read, :api_fleet
+
+        @fleets = current_user.fleets.not_declined.all
       end
 
       def show

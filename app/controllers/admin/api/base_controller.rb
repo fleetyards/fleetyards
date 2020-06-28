@@ -32,6 +32,10 @@ module Admin
       end
       helper_method :current_user
 
+      def current_ability
+        @current_ability ||= AdminAbility.new(current_user)
+      end
+
       def resource_message(resource, action, state)
         I18n.t(state, scope: "resources.messages.#{action}", resource: I18n.t(:"resources.#{resource}"))
       end

@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div v-if="visible" class="empty-box">
-      <Box class="info" large>
+      <Box class="info" :large="true">
         <h1>{{ $t('headlines.empty') }}</h1>
         <template v-if="isQueryPresent">
           <p>{{ $t('texts.empty.query') }}</p>

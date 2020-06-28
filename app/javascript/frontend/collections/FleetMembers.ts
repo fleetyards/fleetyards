@@ -3,6 +3,8 @@ import { get } from 'frontend/lib/ApiClient'
 export class FleetMembersCollection {
   records: FleetMember[] = []
 
+  record: FleetMember | null = null
+
   stats: FleetMemberStats | null = null
 
   async findAll(params: FleetMembersParams): Promise<FleetMember[]> {
@@ -30,6 +32,16 @@ export class FleetMembersCollection {
     }
 
     return this.stats
+  }
+
+  async findByFleet(slug: string): Promise<FleetMember | null> {
+    const response = await get(`fleets/${slug}/members/current`)
+
+    if (!response.error) {
+      this.record = response.data
+    }
+
+    return this.record
   }
 }
 

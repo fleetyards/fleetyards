@@ -2,19 +2,16 @@
   <router-view />
 </template>
 
-<script>
-export default {
-  name: 'Fleets',
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 
+@Component<Fleets>({})
+export default class Fleets extends Vue {
   mounted() {
     if (this.$route.name === 'fleets') {
-      if (this.currentUser && this.currentUser.fleets[0]) {
-        const fleet = this.currentUser.fleets[0]
-        this.$router.push({ name: 'fleet', params: { slug: fleet.slug } })
-      } else {
-        this.$router.push({ name: 'home' })
-      }
+      this.$router.push({ name: 'home' })
     }
-  },
+  }
 }
 </script>

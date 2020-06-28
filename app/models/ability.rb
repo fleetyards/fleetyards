@@ -9,8 +9,6 @@ class Ability
     guest_rules
 
     user_rules(user)
-
-    admin_rules(user)
   end
 
   private def guest_rules
@@ -62,7 +60,7 @@ class Ability
 
     can %i[check invites], :api_fleet
     can %i[index destroy_all], :api_hangar
-    can %i[accept update destroy], FleetMembership, user_id: user.id
+    can %i[show accept update destroy], FleetMembership, user_id: user.id
     can %i[create], FleetMembership, fleet_id: officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
     can :create, Fleet
@@ -72,11 +70,5 @@ class Ability
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update destroy], User, id: user.id
-  end
-
-  private def admin_rules(user)
-    return if user.id.blank? || !user.admin?
-
-    can :manage, :all
   end
 end

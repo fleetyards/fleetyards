@@ -3,7 +3,7 @@
 module Api
   module V1
     class CelestialObjectsController < ::Api::BaseController
-      before_action :authenticate_api_user!, only: []
+      before_action :authenticate_user!, only: []
       after_action -> { pagination_header(:celestial_objects) }, only: [:index]
 
       def index

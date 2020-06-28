@@ -10,6 +10,11 @@ en:
       trade_commodity:
         sell: Sale?
         buy: Buy?
+      admin_user:
+        email: E-Mail
+        username: Username
+        password: Password
+        password_confirmation: Password Confirmation
       user:
         email: E-Mail
         login: Username or E-Mail

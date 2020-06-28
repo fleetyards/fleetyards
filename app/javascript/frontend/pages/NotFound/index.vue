@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Box class="error" large>
+    <Box class="error" :large="true">
       <h1>{{ $t('headlines.error') }}</h1>
       <p>{{ $t('texts.error') }}</p>
       <template #footer>
@@ -13,19 +13,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Box from 'frontend/components/Box'
 import Btn from 'frontend/components/Btn'
 
-export default {
+@Component<NotFound>({
   components: {
     Box,
     Btn,
   },
-
   mixins: [MetaInfo],
-}
+})
+export default class NotFound extends Vue {}
 </script>
 
 <style lang="scss" scoped>

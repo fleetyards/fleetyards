@@ -5,9 +5,9 @@ require 'rsi/orgs_loader'
 module Api
   module V1
     module Rsi
-      class OrgsController < ::Api::V1::BaseController
+      class OrgsController < ::Api::BaseController
         skip_authorization_check
-        before_action :authenticate_api_user!, only: %i[]
+        before_action :authenticate_user!, only: %i[]
 
         def show
           success, @org = ::RSI::OrgsLoader.new.fetch(params[:sid].downcase)

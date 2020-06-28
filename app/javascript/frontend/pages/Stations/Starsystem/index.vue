@@ -99,7 +99,7 @@ import PlanetList from 'frontend/partials/Planets/List'
 import MoonPanel from 'frontend/partials/Planets/Panel'
 import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
 import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
-import Hash from 'frontend/mixins/Hash'
+// import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 
@@ -116,7 +116,7 @@ export default {
     BreadCrumbs,
   },
 
-  mixins: [MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Pagination],
 
   data() {
     return {

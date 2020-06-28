@@ -223,19 +223,19 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/components/Btn'
 import FormInput from 'frontend/components/Form/FormInput'
 import Avatar from 'frontend/components/Avatar'
-import FleetsMixin from 'frontend/mixins/Fleets'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 
-export default {
-  name: 'FleetSettings',
-
+@Component<FleetSettings>({
   components: {
     VueUploadComponent,
     BreadCrumbs,
@@ -243,101 +243,97 @@ export default {
     FormInput,
     Avatar,
   },
+  mixins: [MetaInfo],
+  beforeRouteEnter: fleetRouteGuard,
+})
+export default class FleetSettings extends Vue {
+  fleet: Fleet | null = null
 
-  mixins: [MetaInfo, FleetsMixin],
+  leaving: boolean = false
 
-  props: {
-    fleet: {
-      type: Object,
-      required: true,
-    },
-  },
+  submitting: boolean = false
 
-  data() {
-    return {
-      form: {
-        fid: null,
-        name: null,
-        rsiSid: null,
-        discord: null,
-        ts: null,
-        homepage: null,
-        twitch: null,
-        youtube: null,
-        guilded: null,
-        removeLogo: false,
-      },
-      loading: false,
-      leaving: false,
-      submitting: false,
-      deleting: false,
-      files: [],
-      fileExtensions: 'jpg,jpeg,png,webp',
-      acceptedMimeTypes: 'image/png,image/jpeg,image/webp',
-    }
-  },
+  deleting: boolean = false
 
-  computed: {
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
+  files: any[] = []
 
-      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
-    },
+  fileExtensions: string = 'jpg,jpeg,png,webp'
 
-    logoUrl() {
-      if (this.fleet) {
-        return this.newLogo.url || this.fleet.logo
-      }
+  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
 
-      return this.newLogo.url
-    },
+  form: FleetForm = {
+    fid: null,
+    name: null,
+    rsiSid: null,
+    discord: null,
+    ts: null,
+    homepage: null,
+    twitch: null,
+    youtube: null,
+    guilded: null,
+    removeLogo: false,
+  }
 
-    newLogo() {
-      return (this.files && this.files[0]) || {}
-    },
-
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
-          },
-          label: this.fleet.name,
-        },
-      ]
-    },
-
-    canEdit() {
-      return this.myFleetRole === 'admin'
-    },
-
-    leaveTooltip() {
-      if (this.myFleet && this.myFleet.role === 'admin') {
-        return this.$t('texts.fleets.leaveInfo')
-      }
-
+  get metaTitle() {
+    if (!this.fleet) {
       return null
-    },
-  },
+    }
 
-  watch: {
-    fleet: 'setupForm',
-  },
+    return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+  }
+
+  get logoUrl() {
+    if (this.fleet) {
+      return this.newLogo.url || this.fleet.logo
+    }
+
+    return this.newLogo.url
+  }
+
+  get newLogo() {
+    return (this.files && this.files[0]) || {}
+  }
+
+  get crumbs() {
+    if (!this.fleet) {
+      return []
+    }
+
+    return [
+      {
+        to: {
+          name: 'fleet',
+          params: {
+            slug: this.fleet.slug,
+          },
+        },
+        label: this.fleet.name,
+      },
+    ]
+  }
+
+  get canEdit() {
+    return this.fleet?.myRole === 'admin'
+  }
+
+  get leaveTooltip() {
+    if (this.canEdit) {
+      return this.$t('texts.fleets.leaveInfo')
+    }
+
+    return null
+  }
+
+  @Watch('fleet')
+  onFleetChange() {
+    this.setupForm()
+  }
 
   mounted() {
-    if (!this.canEdit) {
+    if (this.fleet && !this.canEdit) {
       this.$router.replace({
         name: 'fleet-settings-membership',
-        params: { slug: this.myFleet.slug },
+        params: { slug: this.$route.params.slug },
       })
       return
     }
@@ -345,151 +341,149 @@ export default {
     if (this.fleet) {
       this.setupForm()
     }
-  },
+  }
 
-  methods: {
-    selectLogo() {
-      this.form.removeLogo = false
-      this.$refs.upload.$el.querySelector('input').click()
-    },
+  selectLogo() {
+    this.form.removeLogo = false
+    this.$refs.upload.$el.querySelector('input').click()
+  }
 
-    removeLogo() {
-      this.files = []
-      this.fleet.logo = null
-      this.form.removeLogo = true
-    },
+  removeLogo() {
+    this.files = []
+    this.fleet.logo = null
+    this.form.removeLogo = true
+  }
 
-    setupForm() {
-      this.form = {
-        fid: this.fleet.fid,
-        rsiSid: this.fleet.rsiSid,
-        name: this.fleet.name,
-        discord: this.fleet.discord,
-        ts: this.fleet.ts,
-        homepage: this.fleet.homepage,
-        twitch: this.fleet.twitch,
-        youtube: this.fleet.youtube,
-        guilded: this.fleet.guilded,
-        removeLogo: false,
-      }
-    },
+  setupForm() {
+    this.form = {
+      fid: this.fleet.fid,
+      rsiSid: this.fleet.rsiSid,
+      name: this.fleet.name,
+      discord: this.fleet.discord,
+      ts: this.fleet.ts,
+      homepage: this.fleet.homepage,
+      twitch: this.fleet.twitch,
+      youtube: this.fleet.youtube,
+      guilded: this.fleet.guilded,
+      removeLogo: false,
+    }
+  }
 
-    async submit() {
-      this.submitting = true
+  async submit() {
+    this.submitting = true
 
-      const uploadResponse = await this.uploadLogo()
+    const uploadResponse = await this.uploadLogo()
 
-      const response = await this.$api.put(
-        `fleets/${this.$route.params.slug}`,
-        this.form,
-      )
+    const response = await this.$api.put(
+      `fleets/${this.$route.params.slug}`,
+      this.form,
+    )
 
-      this.submitting = false
+    this.submitting = false
 
-      if (!uploadResponse.error && !response.error) {
-        displaySuccess({
-          text: this.$t('messages.fleet.update.success'),
-        })
-
-        this.$comlink.$emit('fleetUpdate')
-
-        if (response.data.slug !== this.$route.params.slug) {
-          await this.$router.push({
-            name: 'fleet-settings',
-            params: { slug: response.data.slug },
-          })
-        } else {
-          setTimeout(() => {
-            this.files = []
-          }, 1000)
-        }
-      } else {
-        const { error } = response
-        if (error.response && error.response.data) {
-          const { data: errorData } = error.response
-
-          this.$refs.form.setErrors(errorData.errors)
-
-          displayAlert({
-            text: errorData.message,
-          })
-        } else {
-          displayAlert({
-            text: this.$t('messages.fleet.update.failure'),
-          })
-        }
-      }
-    },
-
-    async uploadLogo() {
-      let uploadResponse = { error: null }
-
-      if (this.newLogo && this.newLogo.file) {
-        const uploadData = new FormData()
-        uploadData.append('logo', this.newLogo.file)
-
-        uploadResponse = await this.$api.upload(
-          `fleets/${this.$route.params.slug}`,
-          uploadData,
-        )
-      }
-
-      return uploadResponse
-    },
-
-    async destroy() {
-      this.deleting = true
-      displayConfirm({
-        text: this.$t('messages.confirm.fleet.destroy'),
-        onConfirm: async () => {
-          const response = await this.$api.destroy(
-            `fleets/${this.$route.params.slug}`,
-          )
-
-          if (!response.error) {
-            this.$router.push({ name: 'home' })
-
-            this.$comlink.$emit('fleetUpdate')
-
-            displaySuccess({
-              text: this.$t('messages.fleet.destroy.success'),
-            })
-          } else {
-            displayAlert({
-              text: this.$t('messages.fleet.destroy.failure'),
-            })
-            this.deleting = false
-          }
-        },
-        onClose: () => {
-          this.deleting = false
-        },
+    if (!uploadResponse.error && !response.error) {
+      displaySuccess({
+        text: this.$t('messages.fleet.update.success'),
       })
-    },
 
-    updatedValue(value) {
-      this.files = value
-    },
+      this.$comlink.$emit('fleetUpdate')
 
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-          this.alert('Your choice is not a picture')
-          return prevent()
-        }
+      if (response.data.slug !== this.$route.params.slug) {
+        await this.$router.push({
+          name: 'fleet-settings',
+          params: { slug: response.data.slug },
+        })
+      } else {
+        setTimeout(() => {
+          this.files = []
+        }, 1000)
       }
-      if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+    } else {
+      const { error } = response
+      if (error.response && error.response.data) {
+        const { data: errorData } = error.response
+
+        this.$refs.form.setErrors(errorData.errors)
+
+        displayAlert({
+          text: errorData.message,
+        })
+      } else {
+        displayAlert({
+          text: this.$t('messages.fleet.update.failure'),
+        })
+      }
+    }
+  }
+
+  async uploadLogo() {
+    let uploadResponse = { error: null }
+
+    if (this.newLogo && this.newLogo.file) {
+      const uploadData = new FormData()
+      uploadData.append('logo', this.newLogo.file)
+
+      uploadResponse = await this.$api.upload(
+        `fleets/${this.$route.params.slug}`,
+        uploadData,
+      )
+    }
+
+    return uploadResponse
+  }
+
+  async destroy() {
+    this.deleting = true
+    displayConfirm({
+      text: this.$t('messages.confirm.fleet.destroy'),
+      onConfirm: async () => {
+        const response = await this.$api.destroy(
+          `fleets/${this.$route.params.slug}`,
+        )
+
+        if (!response.error) {
+          this.$router.push({ name: 'home' })
+
+          this.$comlink.$emit('fleetUpdate')
+
+          displaySuccess({
+            text: this.$t('messages.fleet.destroy.success'),
+          })
+        } else {
+          displayAlert({
+            text: this.$t('messages.fleet.destroy.failure'),
+          })
+          this.deleting = false
+        }
+      },
+      onClose: () => {
+        this.deleting = false
+      },
+    })
+  }
+
+  updatedValue(value) {
+    this.files = value
+  }
+
+  inputFilter(newFile, oldFile, prevent) {
+    if (newFile && !oldFile) {
+      if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
+        this.alert('Your choice is not a picture')
+        return prevent()
+      }
+    }
+    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+      // eslint-disable-next-line no-param-reassign
+      newFile.url = ''
+      const URL = window.URL || window.webkitURL
+      if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign
-        newFile.url = ''
-        const URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-          // eslint-disable-next-line no-param-reassign
-          newFile.url = URL.createObjectURL(newFile.file)
-        }
+        newFile.url = URL.createObjectURL(newFile.file)
       }
+    }
 
-      return null
-    },
-  },
+    return null
+  }
 }
 </script>

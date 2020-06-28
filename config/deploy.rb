@@ -31,7 +31,8 @@ set :linked_dirs, [
 set :linked_files, [
   'config/database.yml',
   '.rbenv-vars',
-  'blocklist.json'
+  'blocklist.json',
+  'reserved_usernames.json'
 ]
 
 before :'rbenv:validate', :'ruby:prepare'

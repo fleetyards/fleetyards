@@ -106,7 +106,7 @@ import Loader from 'frontend/components/Loader'
 import Panel from 'frontend/components/Panel'
 import StarsystemList from 'frontend/partials/Starsystems/List'
 import PlanetPanel from 'frontend/partials/Planets/Panel'
-import Hash from 'frontend/mixins/Hash'
+// import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 
 export default {
@@ -119,7 +119,7 @@ export default {
     PlanetPanel,
   },
 
-  mixins: [MetaInfo, Hash, Pagination],
+  mixins: [MetaInfo, Pagination],
 
   data() {
     return {

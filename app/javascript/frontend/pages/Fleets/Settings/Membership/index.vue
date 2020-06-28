@@ -78,142 +78,146 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import BreadCrumbs from 'frontend/components/BreadCrumbs'
 import Btn from 'frontend/components/Btn'
 import Checkbox from 'frontend/components/Form/Checkbox'
 import FilterGroup from 'frontend/components/Form/FilterGroup'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FleetsMixin from 'frontend/mixins/Fleets'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import fleetMembersCollection from 'frontend/collections/FleetMembers'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 
-export default {
-  name: 'FleetSettings',
-
+@Component<FleetMembershipSettings>({
   components: {
     BreadCrumbs,
     Btn,
     Checkbox,
     FilterGroup,
   },
+  mixins: [MetaInfo],
+  beforeRouteEnter: fleetRouteGuard,
+})
+export default class FleetMembershipSettings extends Vue {
+  fleet: Fleet | null = null
 
-  mixins: [MetaInfo, FleetsMixin],
+  collection: FleetMembersCollection = fleetMembersCollection
 
-  props: {
-    fleet: {
-      type: Object,
-      required: true,
-    },
-  },
+  submitting: boolean = false
 
-  data() {
-    return {
-      submitting: false,
-      form: {
-        primary: false,
-        shipsFilter: null,
-        hangarGroupId: null,
-      },
+  form: FleetMembershipForm = {
+    primary: false,
+    shipsFilter: null,
+    hangarGroupId: null,
+  }
+
+  get metaTitle() {
+    if (!this.fleet) {
+      return null
     }
-  },
 
-  computed: {
-    metaTitle() {
-      if (!this.fleet) {
-        return null
-      }
+    return this.$t('title.fleets.settings', { fleet: this.fleet.name })
+  }
 
-      return this.$t('title.fleets.settings', { fleet: this.fleet.name })
-    },
+  get crumbs() {
+    if (!this.fleet) {
+      return []
+    }
 
-    crumbs() {
-      if (!this.fleet) {
-        return []
-      }
-
-      return [
-        {
-          to: {
-            name: 'fleet',
-            params: {
-              slug: this.fleet.slug,
-            },
+    return [
+      {
+        to: {
+          name: 'fleet',
+          params: {
+            slug: this.fleet.slug,
           },
-
-          label: this.fleet.name,
         },
-      ]
-    },
 
-    shipsFilterIsHangarGroup() {
-      return this.form.shipsFilter === 'hangar_group'
-    },
+        label: this.fleet.name,
+      },
+    ]
+  }
 
-    shipsFilterOptions() {
-      return [
-        {
-          name: this.$t('labels.fleet.members.shipsFilter.values.purchased'),
-          value: 'purchased',
-        },
-        {
-          name: this.$t('labels.fleet.members.shipsFilter.values.hangar_group'),
-          value: 'hangar_group',
-        },
-        {
-          name: this.$t('labels.fleet.members.shipsFilter.values.hide'),
-          value: 'hide',
-        },
-      ]
-    },
-  },
+  get shipsFilterIsHangarGroup() {
+    return this.form.shipsFilter === 'hangar_group'
+  }
 
-  watch: {
-    $route() {
-      this.setupForm()
-    },
+  get shipsFilterOptions() {
+    return [
+      {
+        name: this.$t('labels.fleet.members.shipsFilter.values.purchased'),
+        value: 'purchased',
+      },
+      {
+        name: this.$t('labels.fleet.members.shipsFilter.values.hangar_group'),
+        value: 'hangar_group',
+      },
+      {
+        name: this.$t('labels.fleet.members.shipsFilter.values.hide'),
+        value: 'hide',
+      },
+    ]
+  }
 
-    shipsFilterIsHangarGroup() {
-      if (!this.shipsFilterIsHangarGroup) {
-        this.form.hangarGroupId = null
-      }
-    },
-  },
+  get membership() {
+    return this.collection.record
+  }
+
+  @Watch('fleet')
+  onFleetChange() {
+    this.fetch()
+  }
+
+  @Watch('shipsFilterIsHangarGroup')
+  onShipsFilterChange() {
+    if (!this.shipsFilterIsHangarGroup) {
+      this.form.hangarGroupId = null
+    }
+  }
 
   mounted() {
+    if (this.fleet) {
+      this.fetch()
+    }
+  }
+
+  setupForm() {
+    this.form = {
+      primary: this.membership.primary,
+      shipsFilter: this.membership.shipsFilter,
+      hangarGroupId: this.membership.hangarGroupId,
+    }
+  }
+
+  async fetch() {
+    await this.collection.findByFleet(this.fleet.slug)
+
     this.setupForm()
-  },
+  }
 
-  methods: {
-    setupForm() {
-      this.form = {
-        primary: this.myFleet.primary,
-        shipsFilter: this.myFleet.shipsFilter,
-        hangarGroupId: this.myFleet.hangarGroupId,
-      }
-    },
+  async submit() {
+    this.submitting = true
 
-    async submit() {
-      this.submitting = true
+    const response = await this.$api.put(
+      `fleets/${this.$route.params.slug}/members`,
+      this.form,
+    )
 
-      const response = await this.$api.put(
-        `fleets/${this.$route.params.slug}/members`,
-        this.form,
-      )
+    this.submitting = false
 
-      this.submitting = false
+    if (!response.error) {
+      displaySuccess({
+        text: this.$t('messages.fleet.members.update.success'),
+      })
 
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t('messages.fleet.members.update.success'),
-        })
-
-        this.$comlink.$emit('fleetUpdate')
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.members.update.failure'),
-        })
-      }
-    },
-  },
+      this.$comlink.$emit('fleetUpdate')
+    } else {
+      displayAlert({
+        text: this.$t('messages.fleet.members.update.failure'),
+      })
+    }
+  }
 }
 </script>

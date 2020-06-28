@@ -43,5 +43,6 @@ build
 .eslintcache
 
 blocklist.json
+reserved_usernames.json
 
 REVISION

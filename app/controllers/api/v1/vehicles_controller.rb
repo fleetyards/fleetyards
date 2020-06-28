@@ -8,7 +8,7 @@ module Api
       include ChartHelper
 
       skip_authorization_check only: %i[public public_quick_stats public_fleetchart embed]
-      before_action :authenticate_api_user!, except: %i[public public_quick_stats public_fleetchart embed]
+      before_action :authenticate_user!, except: %i[public public_quick_stats public_fleetchart embed]
       after_action -> { pagination_header(:vehicles) }, only: %i[index public]
 
       def index

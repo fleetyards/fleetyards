@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-6 col-lg-push-3">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
       <Panel>
         <div class="panel-heading panel-heading-with-actions">
           <h2 class="panel-title">

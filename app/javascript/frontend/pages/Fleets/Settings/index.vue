@@ -4,7 +4,7 @@
       <div class="col-12 col-md-3 order-md-12">
         <ul class="tabs">
           <router-link
-            v-if="myFleetRole === 'admin'"
+            v-if="canEdit"
             :to="{ name: 'fleet-settings-fleet' }"
             tag="li"
           >
@@ -14,10 +14,10 @@
             <a>{{ $t('nav.fleets.settings.membership') }}</a>
           </router-link>
           <li
-            v-if="fleet && myFleet"
+            v-if="fleet"
             v-tooltip="leaveTooltip"
             :class="{
-              disabled: myFleet.role === 'admin' || leaving,
+              disabled: canEdit || leaving,
             }"
           >
             <a @click="leave">
@@ -28,118 +28,94 @@
         </ul>
       </div>
       <div class="col-12 col-md-9 order-md-1">
-        <router-view v-if="fleet && myFleet" :fleet="fleet" />
+        <router-view />
       </div>
     </div>
   </section>
 </template>
 
-<script>
-import FleetsMixin from 'frontend/mixins/Fleets'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import fleetsCollection from 'frontend/collections/Fleets'
 
-export default {
-  name: 'FleetSettings',
+@Component<FleetSettingsIndex>({})
+export default class FleetSettingsIndex extends Vue {
+  leaving: boolean = false
 
-  mixins: [FleetsMixin],
+  collection: FleetsCollection = fleetsCollection
 
-  data() {
-    return {
-      fleet: null,
-      loading: false,
-      leaving: false,
+  get fleet(): Fleet | null {
+    return this.collection.record
+  }
+
+  get leaveTooltip() {
+    if (this.fleet.myFleet && this.fleet.myRole === 'admin') {
+      return this.$t('texts.fleets.leaveInfo')
     }
-  },
 
-  computed: {
-    leaveTooltip() {
-      if (this.myFleet && this.myFleet.role === 'admin') {
-        return this.$t('texts.fleets.leaveInfo')
-      }
+    return null
+  }
 
-      return null
-    },
-  },
+  get canEdit(): boolean {
+    return this.fleet?.myRole === 'admin'
+  }
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
 
   mounted() {
-    if (!this.myFleet) {
-      this.$router.replace({ name: '404' })
-      return
-    }
-
     this.fetch()
     this.$comlink.$on('fleetUpdate', this.fetch)
-  },
+  }
 
-  methods: {
-    async fetch() {
-      if (!this.myFleet) {
-        return
-      }
+  async fetch() {
+    await this.collection.findBySlug(this.$route.params.slug)
+  }
 
-      this.loading = true
+  async leave() {
+    if (this.myFleet.role === 'admin' || this.leaving) return
 
-      const response = await this.$api.get(`fleets/${this.$route.params.slug}`)
+    this.leaving = true
+    displayConfirm({
+      text: this.$t('messages.confirm.fleet.leave'),
+      onConfirm: async () => {
+        const response = await this.$api.destroy(
+          `fleets/${this.fleet.slug}/members/leave`,
+        )
 
-      this.loading = false
+        this.leaving = false
 
-      if (!response.error) {
-        this.fleet = response.data
-      } else if (
-        response.error.response &&
-        response.error.response.status === 404
-      ) {
-        this.$router.replace({ name: '404' })
-      }
-    },
+        if (!response.error) {
+          this.$comlink.$emit('fleetUpdate')
 
-    async leave() {
-      if (this.myFleet.role === 'admin' || this.leaving) return
+          displaySuccess({
+            text: this.$t('messages.fleet.leave.success'),
+          })
 
-      this.leaving = true
-      displayConfirm({
-        text: this.$t('messages.confirm.fleet.leave'),
-        onConfirm: async () => {
-          const response = await this.$api.destroy(
-            `fleets/${this.fleet.slug}/members/leave`,
-          )
+          this.$router.push({ name: 'home' })
+        } else {
+          const { error } = response
+          if (error.response && error.response.data) {
+            const { data: errorData } = error.response
 
-          this.leaving = false
-
-          if (!response.error) {
-            this.$comlink.$emit('fleetUpdate')
-
-            displaySuccess({
-              text: this.$t('messages.fleet.leave.success'),
+            displayAlert({
+              text: errorData.message,
             })
-
-            this.$router.push({ name: 'home' })
           } else {
-            const { error } = response
-            if (error.response && error.response.data) {
-              const { data: errorData } = error.response
-
-              displayAlert({
-                text: errorData.message,
-              })
-            } else {
-              displayAlert({
-                text: this.$t('messages.fleet.leave.failure'),
-              })
-            }
+            displayAlert({
+              text: this.$t('messages.fleet.leave.failure'),
+            })
           }
-        },
-        onClose: () => {
-          this.leaving = false
-        },
-      })
-    },
-  },
+        }
+      },
+      onClose: () => {
+        this.leaving = false
+      },
+    })
+  }
 }
 </script>

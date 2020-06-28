@@ -3,7 +3,7 @@
 module Api
   module V1
     class RoadmapController < ::Api::BaseController
-      before_action :authenticate_api_user!, only: %i[]
+      before_action :authenticate_user!, only: %i[]
 
       def index
         authorize! :index, :api_roadmap

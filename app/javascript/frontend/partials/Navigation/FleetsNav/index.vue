@@ -19,7 +19,7 @@
     </transition>
     <template slot="submenu">
       <NavItem
-        v-for="fleet in myFleets"
+        v-for="fleet in collection.records"
         :key="fleet.slug"
         :menu-key="fleet.slug"
         :to="{ name: 'fleet', params: { slug: fleet.slug } }"
@@ -27,7 +27,7 @@
         :image="fleet.logo"
       />
       <NavItem
-        v-if="isAuthenticated && invites.length"
+        v-if="isAuthenticated && invitesCollection.records.length"
         :to="{ name: 'fleet-invites' }"
         :label="$t('nav.fleets.invites')"
         icon="fad fa-envelope-open-text"
@@ -48,60 +48,53 @@
   </NavItem>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import NavItem from 'frontend/partials/Navigation/NavItem'
 import NavigationMixin from 'frontend/mixins/Navigation'
-import FleetsMixin from 'frontend/mixins/Fleets'
+import fleetsCollection from 'frontend/collections/Fleets'
+import fleetInvitesCollection from 'frontend/collections/FleetInvites'
 
-export default {
+@Component<FleetsNav>({
   components: {
     NavItem,
   },
+  mixins: [NavigationMixin],
+})
+export default class FleetsNav extends Vue {
+  collection: FleetsCollection = fleetsCollection
 
-  mixins: [NavigationMixin, FleetsMixin],
+  invitesCollection: FleetInvitesCollection = fleetInvitesCollection
 
-  data() {
-    return {
-      invites: [],
-    }
-  },
+  @Getter('preview', { namespace: 'fleet' }) fleetPreview
 
-  computed: {
-    ...mapGetters('fleet', {
-      fleetPreview: 'preview',
-    }),
+  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
 
-    active() {
-      return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
-        this.$route.name,
-      )
-    },
-  },
+  get active() {
+    return ['fleets', 'fleet-add', 'fleet-preview', 'fleet-invites'].includes(
+      this.$route.name,
+    )
+  }
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
 
   mounted() {
     this.fetch()
-  },
+  }
 
-  methods: {
-    async fetch() {
-      if (!this.isAuthenticated) {
-        return
-      }
+  async fetch() {
+    if (!this.isAuthenticated) {
+      return
+    }
 
-      const response = await this.$api.get('fleets/invites?nav')
-
-      if (!response.error) {
-        this.invites = response.data
-      }
-    },
-  },
+    await this.collection.findAllForCurrent('nav')
+    await this.invitesCollection.findAllForCurrent('nav')
+  }
 }
 </script>
 
