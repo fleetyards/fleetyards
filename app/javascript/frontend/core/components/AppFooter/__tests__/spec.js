@@ -1,5 +1,5 @@
 import mountVM from 'helpers/mount'
-import AppFooter from 'frontend/components/AppFooter'
+import AppFooter from 'frontend/core/components/AppFooter'
 
 describe('AppFooter', () => {
   it('renders all links', () => {
