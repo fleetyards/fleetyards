@@ -37,7 +37,7 @@
 import Vue from 'vue'
 import { Component, Prop, Ref } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import Panel from 'frontend/components/Panel/index.vue'
+import Panel from 'frontend/core/components/Panel/index.vue'
 
 @Component({
   components: {

@@ -40,13 +40,15 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
-import Btn from 'frontend/components/Btn'
-import BtnDropdown from 'frontend/components/BtnDropdown'
-import FilteredList from 'frontend/components/FilteredList'
+import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
+import FilteredList from 'frontend/core/components/FilteredList'
 import ModelPanel from 'frontend/components/Models/Panel'
-import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
+import ModelsFilterForm from 'frontend/components/Models/FilterForm'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import modelsCollection, { ModelsCollection } from 'frontend/collections/Models'
+import modelsCollection, {
+  ModelsCollection,
+} from 'frontend/api/collections/Models'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 
 @Component<Models>({

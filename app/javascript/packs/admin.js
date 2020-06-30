@@ -2,10 +2,10 @@ import 'stylesheets/admin'
 import Vue from 'vue'
 import App from 'admin/App'
 import ApiClient from 'admin/lib/ApiClient'
-import 'frontend/lib/LazyLoad'
+import 'frontend/plugins/LazyLoad'
 import 'frontend/lib/Sentry'
 import router from 'admin/lib/Router'
-import Comlink from 'frontend/lib/Comlink'
+import Comlink from 'frontend/plugins/Comlink'
 import I18nPlugin from 'frontend/lib/I18n'
 
 Vue.use(ApiClient)

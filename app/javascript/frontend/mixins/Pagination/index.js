@@ -1,4 +1,4 @@
-import Paginator from 'frontend/components/Paginator'
+import Paginator from 'frontend/core/components/Paginator'
 
 export default {
   components: {

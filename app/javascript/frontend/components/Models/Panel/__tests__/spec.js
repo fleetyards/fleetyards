@@ -1,5 +1,5 @@
 import ModelPanel from 'frontend/components/Models/Panel'
-import Panel from 'frontend/components/Panel'
+import Panel from 'frontend/core/components/Panel'
 import mountVM from 'helpers/mount'
 
 describe('ShipPanel', () => {

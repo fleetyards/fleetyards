@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import FormInput from 'frontend/components/Form/FormInput'
-import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/core/components/Form/FormInput'
+import Btn from 'frontend/core/components/Btn'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { mapGetters } from 'vuex'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'

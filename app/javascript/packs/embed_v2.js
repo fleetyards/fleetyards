@@ -3,9 +3,9 @@ import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
 import store from 'embed/lib/Store'
-import ApiClient from 'frontend/lib/ApiClient'
 import I18nPlugin from 'frontend/lib/I18n'
-import 'frontend/lib/LazyLoad'
+import ApiClient from 'frontend/api/client'
+import 'frontend/plugins/LazyLoad'
 
 Vue.use(ApiClient)
 Vue.use(I18nPlugin)

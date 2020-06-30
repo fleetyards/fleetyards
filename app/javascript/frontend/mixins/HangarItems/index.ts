@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import HangarItemsCollection from 'frontend/collections/HangarItems'
+import HangarItemsCollection from 'frontend/api/collections/HangarItems'
 
 @Component<HangarItemsMixin>({})
 export default class HangarItemsMixin extends Vue {

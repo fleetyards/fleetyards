@@ -27,8 +27,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import html2canvas from 'html2canvas'
 import download from 'downloadjs'
-import Btn from 'frontend/components/Btn/index.vue'
-import SmallLoader from 'frontend/components/SmallLoader/index.vue'
+import Btn from 'frontend/core/components/Btn/index.vue'
+import SmallLoader from 'frontend/core/components/SmallLoader/index.vue'
 
 @Component({
   components: {

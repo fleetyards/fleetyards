@@ -24,7 +24,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
-import Btn from 'frontend/components/Btn'
+import Btn from 'frontend/core/components/Btn'
 import {
   displayWarning,
   displayAlert,

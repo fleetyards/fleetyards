@@ -33,8 +33,8 @@
 
 <script>
 import Filters from 'frontend/mixins/Filters'
-import FilterGroup from 'frontend/components/Form/FilterGroup'
-import Btn from 'frontend/components/Btn'
+import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import Btn from 'frontend/core/components/Btn'
 
 export default {
   components: {

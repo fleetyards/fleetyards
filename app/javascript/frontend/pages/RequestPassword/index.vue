@@ -49,8 +49,8 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/components/Form/FormInput'
-import Btn from 'frontend/components/Btn'
+import FormInput from 'frontend/core/components/Form/FormInput'
+import Btn from 'frontend/core/components/Btn'
 import { displaySuccess } from 'frontend/lib/Noty'
 
 export default {

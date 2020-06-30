@@ -236,8 +236,8 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Panel from 'frontend/components/Panel'
-import Btn from 'frontend/components/Btn'
+import Panel from 'frontend/core/components/Panel'
+import Btn from 'frontend/core/components/Btn'
 
 export default {
   components: {

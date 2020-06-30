@@ -74,7 +74,7 @@ import ImageUploader from 'admin/components/ImageUploader'
 import FilterForm from 'admin/partials/Images/FilterForm'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
-import Btn from 'frontend/components/Btn'
+import Btn from 'frontend/core/components/Btn'
 
 export default {
   components: {

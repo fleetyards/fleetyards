@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Panel from 'frontend/components/Panel'
-import Stats from 'frontend/partials/Stations/ListStats'
+import Panel from 'frontend/core/components/Panel'
+import Stats from 'frontend/components/Stations/ListStats'
 
 export default {
   components: {

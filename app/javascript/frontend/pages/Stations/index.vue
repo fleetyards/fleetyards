@@ -40,10 +40,10 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilteredList from 'frontend/components/FilteredList'
+import FilteredList from 'frontend/core/components/FilteredList'
 import StationPanel from 'frontend/components/Stations/Panel'
-import FilterForm from 'frontend/partials/Stations/FilterForm'
-import stationsCollection from 'frontend/collections/Stations'
+import FilterForm from 'frontend/components/Stations/FilterForm'
+import stationsCollection from 'frontend/api/collections/Stations'
 
 @Component<Stations>({
   components: {

@@ -183,9 +183,9 @@
 import { mapGetters } from 'vuex'
 import VueUploadComponent from 'vue-upload-component'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/components/Form/FormInput'
-import Btn from 'frontend/components/Btn'
-import Avatar from 'frontend/components/Avatar'
+import FormInput from 'frontend/core/components/Form/FormInput'
+import Btn from 'frontend/core/components/Btn'
+import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {

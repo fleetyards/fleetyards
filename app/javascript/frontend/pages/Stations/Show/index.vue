@@ -64,15 +64,15 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
+import Loader from 'frontend/core/components/Loader'
+import Btn from 'frontend/core/components/Btn'
 // import Hash from 'frontend/mixins/Hash'
-import Panel from 'frontend/components/Panel'
-import ShopPanel from 'frontend/partials/Stations/Panel'
-import StationBaseMetrics from 'frontend/partials/Stations/BaseMetrics'
-import StationDocks from 'frontend/partials/Stations/Docks'
-import StationHabitations from 'frontend/partials/Stations/Habitations'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import Panel from 'frontend/core/components/Panel'
+import ShopPanel from 'frontend/components/Stations/Item'
+import StationBaseMetrics from 'frontend/components/Stations/BaseMetrics'
+import StationDocks from 'frontend/components/Stations/Docks'
+import StationHabitations from 'frontend/components/Stations/Habitations'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 
 export default {
   name: 'Station',

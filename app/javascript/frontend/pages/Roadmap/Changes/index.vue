@@ -67,11 +67,11 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/components/Btn'
-import Loader from 'frontend/components/Loader'
-import FilterGroup from 'frontend/components/Form/FilterGroup'
-import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
-import EmptyBox from 'frontend/partials/EmptyBox'
+import Btn from 'frontend/core/components/Btn'
+import Loader from 'frontend/core/components/Loader'
+import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
+import EmptyBox from 'frontend/core/components/EmptyBox'
 
 export default {
   name: 'RoadmapChanges',

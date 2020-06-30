@@ -90,10 +90,10 @@
 <script>
 import { BCollapse, BProgress, BProgressBar } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
-import Btn from 'frontend/components/Btn'
-import EmptyBox from 'frontend/partials/EmptyBox'
+import Loader from 'frontend/core/components/Loader'
+import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
+import Btn from 'frontend/core/components/Btn'
+import EmptyBox from 'frontend/core/components/EmptyBox'
 
 export default {
   name: 'RoadmapReleases',

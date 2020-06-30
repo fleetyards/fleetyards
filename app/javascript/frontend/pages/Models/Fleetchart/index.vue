@@ -48,15 +48,15 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Mutation, Getter } from 'vuex-class'
-import FilteredList from 'frontend/components/FilteredList'
+import FilteredList from 'frontend/core/components/FilteredList'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import ModelsFilterForm from 'frontend/partials/Models/FilterForm'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
+import ModelsFilterForm from 'frontend/components/Models/FilterForm'
+import FleetchartList from 'frontend/components/Fleetchart/List'
+import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import ModelsCollection from 'frontend/collections/Models'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import ModelsCollection from 'frontend/api/collections/Models'
 
 @Component<ModelsFleetchart>({
   components: {

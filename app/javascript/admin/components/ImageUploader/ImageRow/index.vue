@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import Btn from 'frontend/components/Btn'
+import Btn from 'frontend/core/components/Btn'
 
 export default {
   components: {

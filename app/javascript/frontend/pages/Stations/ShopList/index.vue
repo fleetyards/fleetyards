@@ -27,10 +27,10 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilterForm from 'frontend/partials/Shops/FilterForm'
-import FilteredList from 'frontend/components/FilteredList'
+import FilterForm from 'frontend/components/Shops/FilterForm'
+import FilteredList from 'frontend/core/components/FilteredList'
 import ShopPanel from 'frontend/components/Shops/Panel'
-import shopsCollection from 'frontend/collections/Shops'
+import shopsCollection from 'frontend/api/collections/Shops'
 
 @Component<ShopList>({
   components: {

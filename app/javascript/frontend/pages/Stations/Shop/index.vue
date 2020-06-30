@@ -139,16 +139,16 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
+import Loader from 'frontend/core/components/Loader'
 // import Hash from 'frontend/mixins/Hash'
-import Panel from 'frontend/components/Panel'
-import ShopBaseMetrics from 'frontend/partials/Shops/BaseMetrics'
-import ShopItemRow from 'frontend/partials/Shops/ShopItemRow'
-import FilterForm from 'frontend/partials/Shops/ShopItemFilterForm'
+import Panel from 'frontend/core/components/Panel'
+import ShopBaseMetrics from 'frontend/components/Shops/BaseMetrics'
+import ShopItemRow from 'frontend/components/Shops/ShopItemRow'
+import FilterForm from 'frontend/components/Shops/ShopItemFilterForm'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
-import Btn from 'frontend/components/Btn'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import Btn from 'frontend/core/components/Btn'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 
 export default {

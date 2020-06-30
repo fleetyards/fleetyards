@@ -17,8 +17,8 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Box from 'frontend/components/Box'
-import Btn from 'frontend/components/Btn'
+import Box from 'frontend/core/components/Box'
+import Btn from 'frontend/core/components/Btn'
 
 @Component<NotFound>({
   components: {

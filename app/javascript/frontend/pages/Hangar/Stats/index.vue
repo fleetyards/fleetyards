@@ -145,9 +145,9 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Chart from 'frontend/components/Chart'
-import Panel from 'frontend/components/Panel'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import Chart from 'frontend/core/components/Chart'
+import Panel from 'frontend/core/components/Panel'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 
 export default {
   name: 'Stats',

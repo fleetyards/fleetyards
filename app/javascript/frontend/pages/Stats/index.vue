@@ -133,8 +133,8 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Chart from 'frontend/components/Chart'
-import Panel from 'frontend/components/Panel'
+import Chart from 'frontend/core/components/Chart'
+import Panel from 'frontend/core/components/Panel'
 
 export default {
   name: 'Stats',

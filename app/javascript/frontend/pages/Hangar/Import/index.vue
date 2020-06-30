@@ -69,10 +69,10 @@
 <script>
 import { sortBy } from 'frontend/lib/Helpers'
 import Papa from 'papaparse'
-import Panel from 'frontend/components/Panel'
+import Panel from 'frontend/core/components/Panel'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import LazyImage from 'frontend/components/LazyImage'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import LazyImage from 'frontend/core/components/LazyImage'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import { displayAlert } from 'frontend/lib/Noty'
 
 export default {

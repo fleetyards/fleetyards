@@ -26,7 +26,7 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/components/Btn'
+import Btn from 'frontend/core/components/Btn'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {

@@ -112,15 +112,15 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import FilterGroup from 'frontend/components/Form/FilterGroup'
-import Box from 'frontend/components/Box'
-import Btn from 'frontend/components/Btn'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import BaseRows from 'frontend/partials/Compare/Models/Base'
-import CrewRows from 'frontend/partials/Compare/Models/Crew'
-import SpeedRows from 'frontend/partials/Compare/Models/Speed'
-import CategoryRows from 'frontend/partials/Compare/Models/Categories'
-import Legend from 'frontend/partials/Compare/Models/Legend'
+import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import Box from 'frontend/core/components/Box'
+import Btn from 'frontend/core/components/Btn'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import BaseRows from 'frontend/components/Compare/Models/Base'
+import CrewRows from 'frontend/components/Compare/Models/Crew'
+import SpeedRows from 'frontend/components/Compare/Models/Speed'
+import CategoryRows from 'frontend/components/Compare/Models/Categories'
+import Legend from 'frontend/components/Compare/Models/Legend'
 
 export default {
   name: 'ModelsCompare',

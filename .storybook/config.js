@@ -4,7 +4,7 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import backgrounds from './addons/background'
 import VTooltip from 'v-tooltip'
-import 'frontend/lib/LazyLoad'
+import 'frontend/plugins/LazyLoad'
 
 import '../app/javascript/stylesheets/main.scss'
 

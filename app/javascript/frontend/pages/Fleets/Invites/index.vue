@@ -78,9 +78,9 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Panel from 'frontend/components/Panel'
-import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
+import Panel from 'frontend/core/components/Panel'
+import Loader from 'frontend/core/components/Loader'
+import Btn from 'frontend/core/components/Btn'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 
 export default {

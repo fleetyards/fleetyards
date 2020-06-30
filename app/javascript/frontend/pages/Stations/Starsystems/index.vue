@@ -102,10 +102,10 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
-import StarsystemList from 'frontend/partials/Starsystems/List'
-import PlanetPanel from 'frontend/partials/Planets/Panel'
+import Loader from 'frontend/core/components/Loader'
+import Panel from 'frontend/core/components/Panel'
+import StarsystemList from 'frontend/components/Starsystems/List'
+import PlanetPanel from 'frontend/components/Planets/Panel'
 // import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 

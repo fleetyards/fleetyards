@@ -95,28 +95,28 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import FilteredList from 'frontend/components/FilteredList'
-import Btn from 'frontend/components/Btn'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import FilteredList from 'frontend/core/components/FilteredList'
+import Btn from 'frontend/core/components/Btn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
-import PrimaryAction from 'frontend/components/PrimaryAction'
+import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
-import FleetchartList from 'frontend/partials/Fleetchart/List'
-import VehiclesFilterForm from 'frontend/partials/Vehicles/FilterForm'
-import ModelClassLabels from 'frontend/partials/Models/ClassLabels'
-import GroupLabels from 'frontend/partials/Vehicles/GroupLabels'
-import VehicleModal from 'frontend/partials/Vehicles/Modal'
-import AddonsModal from 'frontend/partials/Vehicles/AddonsModal'
-import NewVehiclesModal from 'frontend/partials/Vehicles/NewVehiclesModal'
-import FleetchartSlider from 'frontend/partials/Fleetchart/Slider'
+import FleetchartList from 'frontend/components/Fleetchart/List'
+import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
+import ModelClassLabels from 'frontend/components/Models/ClassLabels'
+import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
+import VehicleModal from 'frontend/components/Vehicles/Modal'
+import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
+import NewVehiclesModal from 'frontend/components/Vehicles/NewVehiclesModal'
+import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Filters from 'frontend/mixins/Filters'
 import vehiclesCollection, {
   VehiclesCollection,
-} from 'frontend/collections/Vehicles'
+} from 'frontend/api/collections/Vehicles'
 import hangarGroupsCollection, {
   HangarGroupsCollection,
-} from 'frontend/collections/HangarGroups'
+} from 'frontend/api/collections/HangarGroups'
 
 @Component<HangarFleetchart>({
   components: {

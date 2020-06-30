@@ -20,7 +20,7 @@
 <script lang="ts">
 import qs from 'qs'
 import { Component, Prop } from 'vue-property-decorator'
-import Btn from 'frontend/components/Btn/index.vue'
+import Btn from 'frontend/core/components/Btn/index.vue'
 import { Getter } from 'vuex-class'
 
 @Component({

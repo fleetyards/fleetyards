@@ -56,8 +56,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/components/Btn'
-import Checkbox from 'frontend/components/Form/Checkbox'
+import Btn from 'frontend/core/components/Btn'
+import Checkbox from 'frontend/core/components/Form/Checkbox'
 import { displaySuccess } from 'frontend/lib/Noty'
 
 export default {

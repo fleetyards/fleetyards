@@ -88,11 +88,11 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Btn from 'frontend/components/Btn'
-import FormInput from 'frontend/components/Form/FormInput'
-import Checkbox from 'frontend/components/Form/Checkbox'
+import Btn from 'frontend/core/components/Btn'
+import FormInput from 'frontend/core/components/Form/FormInput'
+import Checkbox from 'frontend/core/components/Form/Checkbox'
 import { displayAlert } from 'frontend/lib/Noty'
-import sessionCollection from 'frontend/collections/Session'
+import sessionCollection from 'frontend/api/collections/Session'
 
 export default {
   name: 'Login',

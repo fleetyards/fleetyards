@@ -93,15 +93,15 @@
 
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import Panel from 'frontend/components/Panel'
-import PlanetList from 'frontend/partials/Planets/List'
-import MoonPanel from 'frontend/partials/Planets/Panel'
-import StarsystemBaseMetrics from 'frontend/partials/Starsystems/BaseMetrics'
-import StarsystemLevelsMetrics from 'frontend/partials/Starsystems/LevelsMetrics'
+import Loader from 'frontend/core/components/Loader'
+import Panel from 'frontend/core/components/Panel'
+import PlanetList from 'frontend/components/Planets/List'
+import MoonPanel from 'frontend/components/Planets/Panel'
+import StarsystemBaseMetrics from 'frontend/components/Starsystems/BaseMetrics'
+import StarsystemLevelsMetrics from 'frontend/components/Starsystems/LevelsMetrics'
 // import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 
 export default {
   name: 'Starsystem',

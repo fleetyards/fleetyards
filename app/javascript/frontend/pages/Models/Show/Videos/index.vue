@@ -71,10 +71,10 @@
 import { mapGetters } from 'vuex'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Pagination from 'frontend/mixins/Pagination'
-import Loader from 'frontend/components/Loader'
-import Btn from 'frontend/components/Btn'
-import BreadCrumbs from 'frontend/components/BreadCrumbs'
-import copyText from 'frontend/lib/CopyText'
+import Loader from 'frontend/core/components/Loader'
+import Btn from 'frontend/core/components/Btn'
+import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import copyText from 'frontend/utils/CopyText'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
 export default {

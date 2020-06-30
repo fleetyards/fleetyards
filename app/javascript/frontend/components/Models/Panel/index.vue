@@ -145,12 +145,12 @@
 
 <script>
 import { BCollapse } from 'bootstrap-vue'
-import Panel from 'frontend/components/Panel'
-import Btn from 'frontend/components/Btn'
-import LazyImage from 'frontend/components/LazyImage'
-import AddToHangar from 'frontend/partials/Models/AddToHangar'
-import ModelTopMetrics from 'frontend/partials/Models/TopMetrics'
-import ModelBaseMetrics from 'frontend/partials/Models/BaseMetrics'
+import Panel from 'frontend/core/components/Panel'
+import Btn from 'frontend/core/components/Btn'
+import LazyImage from 'frontend/core/components/LazyImage'
+import AddToHangar from 'frontend/components/Models/AddToHangar'
+import ModelTopMetrics from 'frontend/components/Models/TopMetrics'
+import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
 
 export default {
   name: 'ModelPanel',

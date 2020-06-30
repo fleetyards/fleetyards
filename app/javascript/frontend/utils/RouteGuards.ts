@@ -1,5 +1,5 @@
-import fleetsCollection from 'frontend/collections/Fleets'
-import modelsCollection from 'frontend/collections/Models'
+import fleetsCollection from 'frontend/api/collections/Fleets'
+import modelsCollection from 'frontend/api/collections/Models'
 import { Route, NavigationGuardNext } from 'vue-router'
 
 export const fleetRouteGuard = async function fleetRouteGuard(

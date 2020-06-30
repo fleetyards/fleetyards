@@ -84,7 +84,7 @@ import Component from 'vue-class-component'
 import Vue from 'vue'
 
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Panel from 'frontend/components/Panel'
+import Panel from 'frontend/core/components/Panel'
 
 @Component({
   components: {

@@ -29,11 +29,11 @@
 <script>
 import axios from 'axios'
 import Updates from 'frontend/mixins/Updates'
-import userCollection from 'frontend/collections/User'
-import versionCollection from 'frontend/collections/Version'
-import Navigation from 'frontend/partials/Navigation'
-import AppFooter from 'frontend/partials/AppFooter'
-import PrivacySettings from 'frontend/partials/PrivacySettings'
+import userCollection from 'frontend/api/collections/User'
+import versionCollection from 'frontend/api/collections/Version'
+import Navigation from 'frontend/core/components/Navigation'
+import AppFooter from 'frontend/core/components/AppFooter'
+import PrivacySettings from 'frontend/core/components/PrivacySettings'
 import { mapGetters } from 'vuex'
 import { requestPermission } from 'frontend/lib/Noty'
 

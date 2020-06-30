@@ -104,10 +104,10 @@
 <script>
 import { BCollapse } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/components/Loader'
-import RoadmapItem from 'frontend/partials/Roadmap/RoadmapItem'
-import EmptyBox from 'frontend/partials/EmptyBox'
-import Btn from 'frontend/components/Btn'
+import Loader from 'frontend/core/components/Loader'
+import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
+import EmptyBox from 'frontend/core/components/EmptyBox'
+import Btn from 'frontend/core/components/Btn'
 
 export default {
   name: 'Roadmap',

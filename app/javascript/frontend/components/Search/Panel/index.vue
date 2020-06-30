@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import Panel from 'frontend/components/Panel'
-import LazyImage from 'frontend/components/LazyImage'
+import Panel from 'frontend/core/components/Panel'
+import LazyImage from 'frontend/core/components/LazyImage'
 
 export default {
   components: {
