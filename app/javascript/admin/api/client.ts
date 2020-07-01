@@ -117,6 +117,7 @@ const apiClient = {
 export { apiClient }
 
 export default {
+  // tslint:disable-next-line variable-name
   install(Vue) {
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$api = apiClient
