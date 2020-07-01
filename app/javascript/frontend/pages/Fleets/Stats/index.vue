@@ -178,13 +178,15 @@ import membersCollection from 'frontend/api/collections/FleetMembers'
   mixins: [MetaInfoMixin],
 })
 export default class FleetStats extends Vue {
-  fleet: Fleet | null = null
-
   collection: FleetsCollection = fleetsCollection
 
   vehiclesCollection: FleetVehiclesCollection = vehiclesCollection
 
   membersCollection: FleetMembersCollection = membersCollection
+
+  get fleet() {
+    return this.collection.record
+  }
 
   get slug() {
     return this.$route.params.slug
@@ -264,7 +266,8 @@ export default class FleetStats extends Vue {
     return this.$t('title.fleets.stats', { fleet: this.fleet.name })
   }
 
-  created() {
+  mounted() {
+    this.fetchFleet()
     this.loadQuickStats()
   }
 
@@ -287,6 +290,10 @@ export default class FleetStats extends Vue {
 
   loadModelsByProductionStatus() {
     return this.collection.findModelsByProductionStatusBySlug(this.slug)
+  }
+
+  async fetchFleet() {
+    await this.collection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

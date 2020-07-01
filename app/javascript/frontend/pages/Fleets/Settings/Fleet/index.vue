@@ -234,8 +234,10 @@ import FormInput from 'frontend/core/components/Form/FormInput'
 import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetSettings>({
+  beforeRouteEnter: fleetRouteGuard,
   components: {
     VueUploadComponent,
     BreadCrumbs,
@@ -244,11 +246,8 @@ import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
     Avatar,
   },
   mixins: [MetaInfo],
-  beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetSettings extends Vue {
-  fleet: Fleet | null = null
-
   leaving: boolean = false
 
   submitting: boolean = false
@@ -272,6 +271,10 @@ export default class FleetSettings extends Vue {
     youtube: null,
     guilded: null,
     removeLogo: false,
+  }
+
+  get fleet() {
+    return fleetsCollection.record
   }
 
   get metaTitle() {
@@ -324,12 +327,19 @@ export default class FleetSettings extends Vue {
     return null
   }
 
+  @Watch('$route')
+  onRouteChange() {
+    this.fetch()
+  }
+
   @Watch('fleet')
   onFleetChange() {
     this.setupForm()
   }
 
   mounted() {
+    this.fetch()
+
     if (this.fleet && !this.canEdit) {
       this.$router.replace({
         name: 'fleet-settings-membership',
@@ -372,7 +382,7 @@ export default class FleetSettings extends Vue {
   async submit() {
     this.submitting = true
 
-    const uploadResponse = await this.uploadLogo()
+    await this.uploadLogo()
 
     const response = await this.$api.put(
       `fleets/${this.$route.params.slug}`,
@@ -381,7 +391,7 @@ export default class FleetSettings extends Vue {
 
     this.submitting = false
 
-    if (!uploadResponse.error && !response.error) {
+    if (!response.error) {
       displaySuccess({
         text: this.$t('messages.fleet.update.success'),
       })
@@ -389,47 +399,58 @@ export default class FleetSettings extends Vue {
       this.$comlink.$emit('fleetUpdate')
 
       if (response.data.slug !== this.$route.params.slug) {
-        await this.$router.push({
+        await this.$router.replace({
           name: 'fleet-settings',
           params: { slug: response.data.slug },
         })
-      } else {
-        setTimeout(() => {
-          this.files = []
-        }, 1000)
       }
     } else {
-      const { error } = response
-      if (error.response && error.response.data) {
-        const { data: errorData } = error.response
-
-        this.$refs.form.setErrors(errorData.errors)
-
-        displayAlert({
-          text: errorData.message,
-        })
-      } else {
-        displayAlert({
-          text: this.$t('messages.fleet.update.failure'),
-        })
-      }
+      this.handlerUpdateError(response.error)
     }
   }
 
   async uploadLogo() {
-    let uploadResponse = { error: null }
-
-    if (this.newLogo && this.newLogo.file) {
-      const uploadData = new FormData()
-      uploadData.append('logo', this.newLogo.file)
-
-      uploadResponse = await this.$api.upload(
-        `fleets/${this.$route.params.slug}`,
-        uploadData,
-      )
+    if (!this.newLogo || !this.newLogo.file) {
+      return
     }
 
-    return uploadResponse
+    const uploadData = new FormData()
+    uploadData.append('logo', this.newLogo.file)
+
+    const response = await this.$api.upload(
+      `fleets/${this.$route.params.slug}`,
+      uploadData,
+    )
+
+    if (!response.error) {
+      displaySuccess({
+        text: this.$t('messages.fleet.update.logo.success'),
+      })
+
+      this.$comlink.$emit('fleetUpdate')
+
+      setTimeout(() => {
+        this.files = []
+      }, 1000)
+    } else {
+      this.handleUpdateError(response.error)
+    }
+  }
+
+  handleUpdateError(error) {
+    if (error.response && error.response.data) {
+      const { data: errorData } = error.response
+
+      this.$refs.form.setErrors(errorData.errors)
+
+      displayAlert({
+        text: errorData.message,
+      })
+    } else {
+      displayAlert({
+        text: this.$t('messages.fleet.update.failure'),
+      })
+    }
   }
 
   async destroy() {
@@ -484,6 +505,10 @@ export default class FleetSettings extends Vue {
     }
 
     return null
+  }
+
+  async fetch() {
+    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

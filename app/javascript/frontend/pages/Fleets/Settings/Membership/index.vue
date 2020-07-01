@@ -7,7 +7,7 @@
       </div>
     </div>
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
-      <form @submit.prevent="handleSubmit(submit)">
+      <form v-if="fleet" @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-lg-12 col-xl-6">
             <Checkbox
@@ -89,8 +89,10 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetMembershipSettings>({
+  beforeRouteEnter: fleetRouteGuard,
   components: {
     BreadCrumbs,
     Btn,
@@ -98,11 +100,8 @@ import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
     FilterGroup,
   },
   mixins: [MetaInfo],
-  beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetMembershipSettings extends Vue {
-  fleet: Fleet | null = null
-
   collection: FleetMembersCollection = fleetMembersCollection
 
   submitting: boolean = false
@@ -111,6 +110,10 @@ export default class FleetMembershipSettings extends Vue {
     primary: false,
     shipsFilter: null,
     hangarGroupId: null,
+  }
+
+  get fleet() {
+    return fleetsCollection.record
   }
 
   get metaTitle() {
@@ -165,6 +168,11 @@ export default class FleetMembershipSettings extends Vue {
     return this.collection.record
   }
 
+  @Watch('$route')
+  onRouteChange() {
+    this.fetchFleet()
+  }
+
   @Watch('fleet')
   onFleetChange() {
     this.fetch()
@@ -178,9 +186,8 @@ export default class FleetMembershipSettings extends Vue {
   }
 
   mounted() {
-    if (this.fleet) {
-      this.fetch()
-    }
+    this.fetchFleet()
+    this.fetch()
   }
 
   setupForm() {
@@ -192,9 +199,13 @@ export default class FleetMembershipSettings extends Vue {
   }
 
   async fetch() {
-    await this.collection.findByFleet(this.fleet.slug)
+    await this.collection.findByFleet(this.$route.params.slug)
 
     this.setupForm()
+  }
+
+  async fetchFleet() {
+    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 
   async submit() {

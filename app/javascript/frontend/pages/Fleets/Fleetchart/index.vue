@@ -101,6 +101,7 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetFleetchart>({
   components: {
@@ -120,8 +121,6 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
   beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetFleetchart extends Vue {
-  fleet: Fleet | null = null
-
   collection: FleetVehiclesCollection = fleetVehiclesCollection
 
   @Getter('fleetchartScale', { namespace: 'fleet' }) fleetchartScale
@@ -129,6 +128,10 @@ export default class FleetFleetchart extends Vue {
   @Getter('mobile') mobile
 
   @Getter('money', { namespace: 'fleet' }) money
+
+  get fleet() {
+    return fleetsCollection.record
+  }
 
   get metaTitle() {
     if (!this.fleet) {
@@ -168,6 +171,7 @@ export default class FleetFleetchart extends Vue {
   }
 
   mounted() {
+    this.fetchFleet()
     this.fetch()
   }
 
@@ -189,6 +193,10 @@ export default class FleetFleetchart extends Vue {
 
   async fetch() {
     await this.collection.findStats(this.filters)
+  }
+
+  async fetchFleet() {
+    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

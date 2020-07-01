@@ -4,7 +4,7 @@ export const routes = [
     name: 'model-images',
     component: () =>
       import(
-        /* webpackChunkName: "page.admin.model-images" */ 'admin/pages/Models/Images'
+        /* webpackChunkName: "page.admin.model-images" */ 'admin/pages/Models/Images/index.vue'
       ),
   },
   {
@@ -12,14 +12,16 @@ export const routes = [
     name: 'station-images',
     component: () =>
       import(
-        /* webpackChunkName: "page.admin.station-images" */ 'admin/pages/Stations/Images'
+        /* webpackChunkName: "page.admin.station-images" */ 'admin/pages/Stations/Images/index.vue'
       ),
   },
   {
     path: '/images',
     name: 'images',
     component: () =>
-      import(/* webpackChunkName: "page.admin.images" */ 'admin/pages/Images'),
+      import(
+        /* webpackChunkName: "page.admin.images" */ 'admin/pages/Images/index.vue'
+      ),
   },
 ]
 

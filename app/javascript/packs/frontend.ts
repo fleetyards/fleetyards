@@ -39,13 +39,7 @@ VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
 declare global {
-  interface Window {
-    APP_VERSION: string
-    STORE_VERSION: string
-    APP_CODENAME: string
-    API_ENDPOINT: string
-    DATA_PREFILL: KeyValuePair
-  }
+  interface Window extends FleetYardsWindow {}
 }
 
 document.addEventListener('DOMContentLoaded', () => {

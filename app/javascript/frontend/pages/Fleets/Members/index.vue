@@ -59,6 +59,7 @@ import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 import FleetMembersList from 'frontend/components/Fleets/MembersList'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetMembers>({
   name: 'FleetMembers',
@@ -76,9 +77,11 @@ import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
   beforeRouteEnter: fleetRouteGuard,
 })
 export default class FleetMemmbers extends Vue {
-  fleet: Fleet | null = null
-
   collection: FleetMembersCollection = fleetMembersCollection
+
+  get fleet() {
+    return fleetsCollection.record
+  }
 
   get metaTitle(): string {
     if (!this.fleet) {
@@ -119,6 +122,7 @@ export default class FleetMemmbers extends Vue {
   }
 
   mounted() {
+    this.fetchFleet()
     this.fetch()
     this.$comlink.$on('fleetMemberInvited', this.fetch)
     this.$comlink.$on('fleetMemberUpdate', this.fetch)
@@ -136,6 +140,10 @@ export default class FleetMemmbers extends Vue {
 
   openInviteModal() {
     this.$refs.memberModal.open()
+  }
+
+  async fetchFleet() {
+    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

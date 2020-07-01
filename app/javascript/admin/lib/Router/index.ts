@@ -14,7 +14,7 @@ const router = new Router({
     new Promise(resolve => {
       setTimeout(() => {
         if (to.hash) {
-          resolve(false)
+          resolve()
         } else if (savedPosition) {
           resolve(savedPosition)
         } else {

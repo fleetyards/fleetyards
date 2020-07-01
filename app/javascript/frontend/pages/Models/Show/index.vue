@@ -286,6 +286,7 @@ import ModelPanel from 'frontend/components/Models/Panel'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { modelRouteGuard } from 'frontend/utils/RouteGuards'
+import modelsCollection from 'frontend/api/collections/Models'
 
 @Component<ModelDetail>({
   components: {
@@ -319,8 +320,6 @@ export default class ModelDetail extends Vue {
 
   show3d: boolean = false
 
-  model: Model | null = null
-
   variants: Model[] = []
 
   paints: ModelPaint[] = []
@@ -346,6 +345,10 @@ export default class ModelDetail extends Vue {
   @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
 
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
+
+  get model(): Model | null {
+    return modelsCollection.record
+  }
 
   get starship42Url(): string {
     return `https://starship42.com/inverse/?ship=${this.model.name}&mode=color`
@@ -390,11 +393,10 @@ export default class ModelDetail extends Vue {
     ]
   }
 
-  created() {
-    this.fetchExtras()
-  }
-
   mounted() {
+    this.fetch()
+    this.fetchExtras()
+
     if (this.$route.query.holoviewer) {
       this.$store.dispatch('models/enableHoloviewer')
     }
@@ -465,6 +467,10 @@ export default class ModelDetail extends Vue {
     if (!response.error) {
       this.loaners = response.data
     }
+  }
+
+  async fetch() {
+    await modelsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

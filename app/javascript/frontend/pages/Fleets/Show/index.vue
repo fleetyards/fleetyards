@@ -243,8 +243,10 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
+import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetDetail>({
+  beforeRouteEnter: publicFleetRouteGuard,
   components: {
     Btn,
     BtnDropdown,
@@ -257,11 +259,8 @@ import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
     Avatar,
   },
   mixins: [MetaInfo, HangarItemsMixin],
-  beforeRouteEnter: publicFleetRouteGuard,
 })
 export default class FleetDetail extends Vue {
-  fleet: Fleet | null = null
-
   vehiclesCollection: FleetVehiclesCollection = fleetVehiclesCollection
 
   @Getter('grouped', { namespace: 'fleet' }) grouped
@@ -271,6 +270,10 @@ export default class FleetDetail extends Vue {
   @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
 
   @Getter('mobile') mobile
+
+  get fleet() {
+    return fleetsCollection.record
+  }
 
   get metaTitle() {
     if (!this.fleet) {
@@ -323,6 +326,7 @@ export default class FleetDetail extends Vue {
   }
 
   mounted() {
+    this.fetchFleet()
     this.fetch()
   }
 
@@ -348,6 +352,10 @@ export default class FleetDetail extends Vue {
     }
 
     this.vehiclesCollection.findStats(this.filters)
+  }
+
+  async fetchFleet() {
+    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

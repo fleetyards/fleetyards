@@ -27,7 +27,7 @@ const cancelations = {}
 
 const extractMetaInfo = function extractMetaInfo(headers, params) {
   const links = linkHeaderParser(headers.link)
-  let meta = null
+  let meta: ApiResponseMeta | null = null
   if (links) {
     meta = {
       currentPage: parseInt(params.page || 1, 10),
@@ -50,7 +50,7 @@ const handleError = async function handleError(error) {
   }
 }
 
-const handleResponse = function handleResponse(response, params) {
+const handleResponse = function handleResponse(response, params = {}) {
   nprogress.done()
 
   const meta = extractMetaInfo(response.headers, params)

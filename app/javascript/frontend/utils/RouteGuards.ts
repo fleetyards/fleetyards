@@ -12,11 +12,7 @@ export const fleetRouteGuard = async function fleetRouteGuard(
   if (!fleet || !fleet.myFleet) {
     next({ name: '404' })
   } else {
-    next(vm => {
-      // @ts-ignore
-      // eslint-disable-next-line no-param-reassign
-      vm.fleet = fleet
-    })
+    next()
   }
 }
 
@@ -30,11 +26,7 @@ export const publicFleetRouteGuard = async function publicFleetRouteGuard(
   if (!fleet) {
     next({ name: '404' })
   } else {
-    next(vm => {
-      // @ts-ignore
-      // eslint-disable-next-line no-param-reassign
-      vm.fleet = fleet
-    })
+    next()
   }
 }
 
@@ -48,10 +40,6 @@ export const modelRouteGuard = async function modelRouteGuard(
   if (!model) {
     next({ name: '404' })
   } else {
-    next(vm => {
-      // @ts-ignore
-      // eslint-disable-next-line no-param-reassign
-      vm.model = model
-    })
+    next()
   }
 }
