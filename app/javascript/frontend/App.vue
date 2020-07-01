@@ -18,7 +18,6 @@
             <router-view :key="$route.path" class="main" />
           </transition>
         </div>
-        ̦
         <AppFooter />
       </div>
     </div>

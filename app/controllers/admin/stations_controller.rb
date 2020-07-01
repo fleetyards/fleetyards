@@ -55,6 +55,7 @@ module Admin
 
     def images
       authorize! :images, :admin_stations
+      @app_enabled = true
     end
 
     private def station_params

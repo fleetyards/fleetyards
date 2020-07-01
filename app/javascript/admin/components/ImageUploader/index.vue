@@ -119,6 +119,7 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
 import Btn from 'frontend/core/components/Btn'
 import Panel from 'frontend/core/components/Panel'
 import { displayAlert } from 'frontend/lib/Noty'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'ImageUploader',
@@ -160,8 +161,8 @@ export default {
       postAction: `${window.API_ENDPOINT}/images`,
       uploadCount: 1,
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${window.AUTH_TOKEN}`,
+        'Accept': 'application/json',
+        'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
       },
     }
   },

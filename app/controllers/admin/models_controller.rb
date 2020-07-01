@@ -56,6 +56,7 @@ module Admin
 
     def images
       authorize! :images, :admin_models
+      @app_enabled = true
     end
 
     def reload

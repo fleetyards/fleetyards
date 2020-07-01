@@ -9,11 +9,10 @@ const client = axios.create({
     common: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${window.AUTH_TOKEN}`,
     },
   },
   withCredentials: true,
-  xsrfCookieName: 'CSRF-TOKEN',
+  xsrfCookieName: 'COMMAND-CSRF-TOKEN',
   xsrfHeaderName: 'X-CSRF-Token',
   transformRequest: axiosDefaults.transformRequest.concat(data => {
     nprogress.start()

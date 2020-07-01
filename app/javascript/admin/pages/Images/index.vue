@@ -1,153 +1,68 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 col-lg-6">
-          <div class="page-actions page-actions-left">
-            <Btn
-              :active="filterVisible"
-              :aria-label="toggleFiltersTooltip"
-              size="small"
-              @click.native="toggleFilter"
-            >
-              <span v-show="isFilterSelected">
-                <i class="fas fa-filter" />
-              </span>
-              <span v-show="!isFilterSelected">
-                <i class="far fa-filter" />
-              </span>
-            </Btn>
-          </div>
-        </div>
-        <div class="col-12 col-lg-6">
-          <Paginator
-            v-if="images.length"
-            :page="currentPage"
-            :total="totalPages"
-            right
-          />
-        </div>
-      </div>
-      <div class="row">
-        <transition
-          name="slide"
-          appear
-          @before-enter="toggleFullscreen"
-          @after-leave="toggleFullscreen"
-        >
-          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
-            <FilterForm />
-          </div>
-        </transition>
-        <div
-          :class="{
-            'col-lg-9 col-xxl-10': !fullscreen,
-          }"
-          class="col-12 col-animated"
-        >
-          <ImageUploader
-            :loading="loading"
-            :images="images"
-            :gallery-id="galleryId"
-            :gallery-type="galleryType"
-            @imageDeleted="fetch"
-            @imageUploaded="fetch"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="images.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
-  </div>
+  <FilteredList
+    :collection="collection"
+    :name="$route.name"
+    :route-query="$route.query"
+    :hash="$route.hash"
+    :paginated="true"
+    class="images"
+  >
+    <FilterForm slot="filter" />
+
+    <template v-slot:default="{ records, loading }">
+      <ImageUploader
+        :loading="loading"
+        :images="records"
+        :gallery-id="galleryId"
+        :gallery-type="galleryType"
+        @imageDeleted="fetch"
+        @imageUploaded="fetch"
+      />
+    </template>
+  </FilteredList>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import ImageUploader from 'admin/components/ImageUploader'
-import FilterForm from 'admin/partials/Images/FilterForm'
-import Pagination from 'frontend/mixins/Pagination'
-import Filters from 'frontend/mixins/Filters'
-import Btn from 'frontend/core/components/Btn'
+import FilterForm from 'admin/components/Images/FilterForm'
+import FilteredList from 'frontend/core/components/FilteredList'
+import imagesCollection, {
+  AdminImagesCollection,
+} from 'admin/api/collections/Images'
 
-export default {
+@Component<AdminImages>({
   components: {
     ImageUploader,
     FilterForm,
-    Btn,
+    FilteredList,
   },
+})
+export default class AdminImages extends Vue {
+  collection: AdminImagesCollection = imagesCollection
 
-  mixins: [Filters, Pagination],
-
-  data() {
-    return {
-      loading: true,
-      images: [],
-      filterVisible: true,
-      fullscreen: false,
+  get toggleFiltersTooltip() {
+    if (this.filterVisible) {
+      return this.$t('actions.hideFilter')
     }
-  },
+    return this.$t('actions.showFilter')
+  }
 
-  computed: {
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
+  get query() {
+    return this.$route.query.q || {}
+  }
 
-    query() {
-      return this.$route.query.q || {}
-    },
+  get galleryId() {
+    return this.query.galleryIdEq
+  }
 
-    galleryId() {
-      return this.query.galleryIdEq
-    },
+  get galleryType() {
+    return this.query.galleryTypeEq
+  }
 
-    galleryType() {
-      return this.query.galleryTypeEq
-    },
-  },
-
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
-
-  mounted() {
-    this.fetch()
-  },
-
-  methods: {
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
-    },
-
-    toggleFilter() {
-      this.filterVisible = !this.filterVisible
-    },
-
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get('images', {
-        q: this.$route.query.q,
-        page: this.$route.query.page,
-      })
-
-      this.loading = false
-      if (!response.error) {
-        this.images = response.data
-      }
-      this.setPages(response.meta)
-    },
-  },
+  async fetch() {
+    await this.collection.refresh()
+  }
 }
 </script>

@@ -10,6 +10,10 @@ body {
   background-color: $background;
 }
 
+.hidden {
+  display: none;
+}
+
 .app-body {
   display: flex;
   flex-direction: column;
@@ -20,6 +24,10 @@ body {
   .app-body {
     padding-top: 20px;
   }
+}
+
+.admin-app-body {
+  min-height: 100vh;
 }
 
 .version {
@@ -63,4 +71,8 @@ body {
     background-size: 100%;
     content: '';
   }
+}
+
+.app-footer {
+  margin-top: 30px;
 }

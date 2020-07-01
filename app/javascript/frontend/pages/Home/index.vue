@@ -155,8 +155,8 @@ import Btn from 'frontend/core/components/Btn'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Support from 'frontend/components/Support'
 import LazyImage from 'frontend/core/components/LazyImage'
-import models from 'frontend/api/collections/Models'
-import images from 'frontend/api/collections/Images'
+import modelsCollection from 'frontend/api/collections/Models'
+import imagesCollection from 'frontend/api/collections/Images'
 
 @Component<Home>({
   components: {
@@ -171,9 +171,9 @@ import images from 'frontend/api/collections/Images'
   mixins: [MetaInfo],
 })
 export default class Home extends Vue {
-  modelsCollection: ModelsCollection = models
+  modelsCollection: ModelsCollection = modelsCollection
 
-  imagesCollection: ImagesCollection = images
+  imagesCollection: ImagesCollection = imagesCollection
 
   modelsLoading: boolean = false
 

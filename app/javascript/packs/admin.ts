@@ -1,12 +1,14 @@
 import 'stylesheets/admin'
 import Vue from 'vue'
-import App from 'admin/App'
-import ApiClient from 'admin/lib/ApiClient'
+import App from 'admin/App.vue'
+import ApiClient from 'admin/api/client'
+import store from 'admin/lib/Store'
 import 'frontend/plugins/LazyLoad'
 import 'frontend/lib/Sentry'
 import router from 'admin/lib/Router'
 import Comlink from 'frontend/plugins/Comlink'
 import I18nPlugin from 'frontend/lib/I18n'
+import VTooltip from 'v-tooltip'
 
 Vue.use(ApiClient)
 Vue.use(Comlink)
@@ -34,6 +36,10 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.config.productionTip = false
 }
 
+// @ts-ignore
+VTooltip.enabled = window.innerWidth > 768
+Vue.use(VTooltip)
+
 console.info(`API Endpoint: ${window.API_ENDPOINT}`)
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -41,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App),
   })
 })

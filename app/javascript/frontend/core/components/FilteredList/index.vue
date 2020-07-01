@@ -43,7 +43,7 @@
           @after-leave="toggleFullscreen"
         >
           <div v-if="filterVisible" class="col-12 col-lg-3 col-xxl-2">
-            <slot v-if="!hideFilter" name="filter" />
+            <slot name="filter" />
           </div>
         </transition>
         <div
@@ -55,6 +55,7 @@
           <slot
             :records="collection && collection.records"
             :filter-visible="filterVisible"
+            :loading="loading"
           />
 
           <transition-group
@@ -72,7 +73,12 @@
               }"
               class="col-12 col-lg-6 fade-list-item"
             >
-              <slot name="record" :record="record" :index="index" />
+              <slot
+                name="record"
+                :record="record"
+                :index="index"
+                :loading="loading"
+              />
             </div>
           </transition-group>
 
@@ -163,7 +169,7 @@ export default class FilteredList extends Vue {
   }
 
   get filterVisible() {
-    return !!this.filtersVisible[this.name] && !this.hideFilter
+    return !!this.filtersVisible[this.name] && this.hasFilterSlot
   }
 
   get filterTooltip() {

@@ -46,31 +46,33 @@
     <%= csrf_meta_tags %>
   </head>
   <body data-success="<%= notice %>" data-info="<%= alert %>" data-error="<%= flash[:error] %>" data-warning="<%= flash[:warning] %>" class="page-admin">
-    <div class="background-image"></div>
-    <%= render "layouts/admin/header" %>
+    <div class="admin-app-body">
+      <div class="background-image"></div>
+      <%= render "layouts/admin/header" %>
 
-    <div class="container-fluid app-body">
-      <%= yield %>
-    </div>
+      <div class="container-fluid app-body">
+        <%= yield %>
+      </div>
 
-    <div class="<%= app_enabled? ? 'app-wrapper' : 'hidden' %>">
-      <div id="app">
-        <div
-          style="background-image: url(<%= image_path 'bg-6.jpg' %>)"
-          class="background-image"
-        >
-        </div>
-        <div class="app-intro">
-          <h1>
-            <%= image_tag 'admin/logo.png', class: 'logo' %>
-            <%= I18n.t(:"title.admin") %>
-          </h1>
-          <div>
-            <div class="loader">
-              <div class="cube1 cube"></div>
-              <div class="cube2 cube"></div>
-              <div class="cube4 cube"></div>
-              <div class="cube3 cube"></div>
+      <div class="<%= app_enabled? ? 'app-wrapper' : 'hidden' %>">
+        <div id="app">
+          <div
+            style="background-image: url(<%= image_path 'bg-6.jpg' %>)"
+            class="background-image"
+          >
+          </div>
+          <div class="app-intro">
+            <h1>
+              <%= image_tag 'admin/logo.png', class: 'logo' %>
+              <%= I18n.t(:"title.admin") %>
+            </h1>
+            <div>
+              <div class="loader">
+                <div class="cube1 cube"></div>
+                <div class="cube2 cube"></div>
+                <div class="cube4 cube"></div>
+                <div class="cube3 cube"></div>
+              </div>
             </div>
           </div>
         </div>
