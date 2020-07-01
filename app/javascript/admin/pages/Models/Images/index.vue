@@ -31,7 +31,7 @@ import imagesCollection, {
   AdminImagesCollection,
 } from 'admin/api/collections/Images'
 
-@Component<AdminImages>({
+@Component<AdminModelImages>({
   components: {
     ImageUploader,
     FilteredList,

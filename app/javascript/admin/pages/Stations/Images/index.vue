@@ -1,91 +1,65 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <ImageUploader
-            :loading="loading"
-            :images="images"
-            :gallery-id="uuid"
-            gallery-type="Station"
-            @imageDeleted="fetch"
-            @imageUploaded="fetch"
-          >
-            <template #header>
-              <div class="row">
-                <div class="col-12">
-                  <Paginator
-                    v-if="images.length"
-                    :page="currentPage"
-                    :total="totalPages"
-                  />
-                </div>
-              </div>
-            </template>
-          </ImageUploader>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <Paginator
-            v-if="images.length"
-            :page="currentPage"
-            :total="totalPages"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+  <FilteredList
+    :collection="collection"
+    collection-method="findAllForGallery"
+    :name="$route.name"
+    :route-query="$route.query"
+    :hash="$route.hash"
+    :params="routeParams"
+    :paginated="true"
+    class="images"
+  >
+    <template v-slot:default="{ records, loading }">
+      <ImageUploader
+        :loading="loading"
+        :images="records"
+        :gallery-id="galleryId"
+        gallery-type="Model"
+        @imageDeleted="fetch"
+        @imageUploaded="fetch"
+      />
+    </template>
+  </FilteredList>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import ImageUploader from 'admin/components/ImageUploader'
-import Pagination from 'frontend/mixins/Pagination'
+import FilteredList from 'frontend/core/components/FilteredList'
+import imagesCollection, {
+  AdminImagesCollection,
+} from 'admin/api/collections/Images'
 
-export default {
+@Component<AdminStationImages>({
   components: {
     ImageUploader,
+    FilteredList,
   },
+})
+export default class AdminStationImages extends Vue {
+  collection: AdminImagesCollection = imagesCollection
 
-  mixins: [Pagination],
+  get galleryId() {
+    return this.$route.params.uuid
+  }
 
-  data() {
+  get routeParams() {
     return {
-      loading: true,
-      images: [],
+      galleryType: 'stations',
+      galleryId: this.galleryId,
     }
-  },
+  }
 
-  computed: {
-    uuid() {
-      return this.$route.params.uuid
-    },
-  },
+  get filters() {
+    return {
+      ...this.routeParams,
+      page: this.$route.query.page,
+    }
+  }
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
-
-  mounted() {
-    this.fetch()
-  },
-
-  methods: {
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get(`stations/${this.uuid}/images`, {
-        page: this.$route.query.page,
-      })
-
-      this.loading = false
-      if (!response.error) {
-        this.images = response.data
-      }
-      this.setPages(response.meta)
-    },
-  },
+  async fetch() {
+    await this.collection.findAllForGallery(this.filters)
+  }
 }
 </script>
