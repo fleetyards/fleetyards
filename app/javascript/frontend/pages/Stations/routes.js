@@ -8,6 +8,7 @@ export const routes = [
       ),
     meta: {
       title: 'starsystems',
+      backgroundImage: 'bg-0',
     },
   },
   {
@@ -17,6 +18,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Starsystem'
       ),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
   },
   {
     path: '/starsystems/:starsystem/celestial-objects/:slug/',
@@ -25,6 +29,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/CelestialObject'
       ),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
   },
   {
     path: '/shops/',
@@ -35,6 +42,7 @@ export const routes = [
       ),
     meta: {
       title: 'shops',
+      backgroundImage: 'bg-2',
     },
   },
   {
@@ -44,6 +52,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show'
       ),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
   },
   {
     path: ':slug/images/',
@@ -52,6 +63,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Show/Images'
       ),
+    meta: {
+      backgroundImage: 'bg-0',
+    },
   },
   {
     path: ':station/shops/:slug/',
@@ -60,6 +74,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/Shop'
       ),
+    meta: {
+      backgroundImage: 'bg-2',
+    },
   },
 ]
 

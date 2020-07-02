@@ -61,7 +61,7 @@ Rails.application.config.content_security_policy do |policy|
     :self, api_endpoint,
   ]
 
-  policy.default_src :self, Rails.application.secrets[:frontend_endpoint]
+  policy.default_src :none
   policy.base_uri :self
   policy.manifest_src :self
   policy.form_action(*form_src)

@@ -60,6 +60,7 @@ export const routes = [
       quickSearch: 'nameCont',
       title: 'hangar.index',
       primaryAction: true,
+      backgroundImage: 'bg-5',
     },
   },
   {
@@ -71,6 +72,7 @@ export const routes = [
       ),
     meta: {
       title: 'hangar.preview',
+      backgroundImage: 'bg-5',
     },
   },
   {
@@ -83,6 +85,7 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'hangar.fleetchart',
+      backgroundImage: 'bg-5',
     },
   },
   {
@@ -95,6 +98,7 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'hangar.stats',
+      backgroundImage: 'bg-5',
     },
   },
   {
@@ -104,6 +108,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.hangar-public" */ 'frontend/pages/Hangar/Public'
       ),
+    meta: {
+      backgroundImage: 'bg-5',
+    },
   },
   {
     path: '/hangar/:user/fleetchart',
@@ -112,6 +119,9 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart'
       ),
+    meta: {
+      backgroundImage: 'bg-5',
+    },
   },
   {
     path: '/ships/',
@@ -193,6 +203,7 @@ export const routes = [
     children: FleetsRoutes,
     meta: {
       title: 'fleets',
+      backgroundImage: 'bg-8',
     },
   },
   {
@@ -217,6 +228,7 @@ export const routes = [
     meta: {
       title: 'stations',
       quickSearch: 'searchCont',
+      backgroundImage: 'bg-0',
     },
   },
   {
@@ -228,6 +240,7 @@ export const routes = [
       ),
     meta: {
       title: 'tradeRoutes',
+      backgroundImage: 'bg-7',
     },
   },
   {

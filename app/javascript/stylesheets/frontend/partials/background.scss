@@ -4,74 +4,9 @@
   width: 100vw;
   height: 100vh;
   background-color: black;
-  background-image: url('~images/bg-6.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   opacity: .4;
   transition: background-image ease .5s;
-
-  &.webp {
-    background-image: url('~images/bg-6.webp');
-  }
-}
-
-.page-hangar,
-.page-hangar-fleetchart,
-.page-hangar-public,
-.page-hangar-public-fleetchart {
-  .background-image {
-    background-image: url('~images/bg-5.jpg');
-
-    &.webp {
-      background-image: url('~images/bg-5.webp');
-    }
-  }
-}
-
-.page-trade-routes {
-  .background-image {
-    background-image: url('~images/bg-7.jpg');
-
-    &.webp {
-      background-image: url('~images/bg-7.webp');
-    }
-  }
-}
-
-.page-admin,
-.page-stations,
-.page-station {
-  .background-image {
-    background-image: url('~images/bg-0.jpg');
-
-    &.webp {
-      background-image: url('~images/bg-0.webp');
-    }
-  }
-}
-
-.page-shops,
-.page-shop {
-  .background-image {
-    background-image: url('~images/bg-2.jpg');
-
-    &.webp {
-      background-image: url('~images/bg-2.webp');
-    }
-  }
-}
-
-.page-fleet,
-.page-fleet-add,
-.page-fleet-members,
-.page-fleet-settings-fleet,
-.page-fleet-settings-membership {
-  .background-image {
-    background-image: url('~images/bg-8.jpg');
-
-    &.webp {
-      background-image: url('~images/bg-8.webp');
-    }
-  }
 }

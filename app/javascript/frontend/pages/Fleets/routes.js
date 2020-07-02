@@ -12,6 +12,7 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.add',
+      backgroundImage: 'bg-8',
     },
   },
   {
@@ -24,6 +25,7 @@ export const routes = [
       ),
     meta: {
       title: 'fleets.preview',
+      backgroundImage: 'bg-8',
     },
   },
   {
@@ -37,6 +39,7 @@ export const routes = [
     meta: {
       needsAuthentication: true,
       title: 'fleets.invites',
+      backgroundImage: 'bg-8',
     },
   },
   {
@@ -47,6 +50,9 @@ export const routes = [
         /* webpackChunkName: "frontend.page.fleets" */
         'frontend/pages/Fleets/Show'
       ),
+    meta: {
+      backgroundImage: 'bg-8',
+    },
   },
   {
     path: ':slug/fleetchart/',
@@ -56,6 +62,9 @@ export const routes = [
         /* webpackChunkName: "frontend.page.fleets" */
         'frontend/pages/Fleets/Fleetchart'
       ),
+    meta: {
+      backgroundImage: 'bg-8',
+    },
   },
   {
     path: ':slug/members/',
@@ -67,6 +76,7 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
+      backgroundImage: 'bg-8',
     },
   },
   {
@@ -79,6 +89,7 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
+      backgroundImage: 'bg-8',
     },
     redirect: {
       name: 'fleet-settings-fleet',
@@ -95,6 +106,7 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
+      backgroundImage: 'bg-8',
     },
   },
 ]
