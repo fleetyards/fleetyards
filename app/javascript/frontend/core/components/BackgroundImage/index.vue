@@ -36,6 +36,9 @@ export default class BackgroundImage extends Vue {
       'bg-8': () => {
         return require('images/bg-8.webp').default
       },
+      'bg-404': () => {
+        return require('images/bg-404.webp').default
+      },
     },
     jpg: {
       'bg-0': () => {
@@ -56,16 +59,11 @@ export default class BackgroundImage extends Vue {
       'bg-8': () => {
         return require('images/bg-8.jpg').default
       },
+      'bg-404': () => {
+        return require('images/bg-404.jpg').default
+      },
     },
     /* eslint-enable global-require */
-  }
-
-  get backgroundExtension() {
-    if (!this.webpSupported) {
-      return 'jpg'
-    }
-
-    return 'webp'
   }
 
   get backgroundImageKey() {

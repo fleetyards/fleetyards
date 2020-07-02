@@ -76,21 +76,3 @@ body {
 .app-footer {
   margin-top: 30px;
 }
-
-.background-image {
-  position: fixed;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
-  background-image: url('~images/bg-0.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  opacity: .4;
-  transition: background-image ease .5s;
-
-  &.webp {
-    background-image: url('~images/bg-0.webp');
-  }
-}

@@ -331,6 +331,7 @@ export const routes = [
       ),
     meta: {
       title: 'notFound',
+      backgroundImage: 'bg-404',
     },
   },
   {
@@ -339,6 +340,10 @@ export const routes = [
       import(
         /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'
       ),
+    meta: {
+      title: 'notFound',
+      backgroundImage: 'bg-404',
+    },
   },
 ]
 
