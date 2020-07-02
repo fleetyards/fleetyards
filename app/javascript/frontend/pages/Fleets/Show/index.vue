@@ -213,6 +213,7 @@
           :model="record.model"
           :details="detailsVisible"
           :on-addons="showAddonsModal"
+          :username="record.username"
         />
         <ModelPanel
           v-else

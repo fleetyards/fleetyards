@@ -270,6 +270,7 @@ export default {
   },
   'vehicle': {
     name: 'Name',
+    owner: 'commanded by',
     flagship: 'Flagship',
     purchased: 'Purchased',
     loaner: 'Loaner',

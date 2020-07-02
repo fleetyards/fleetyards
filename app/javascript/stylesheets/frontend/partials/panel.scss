@@ -242,6 +242,31 @@ $contentBorderRadius: $panelContentBorderRadius;
     }
   }
 
+  .owner {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 100%;
+    padding: 4px 12px;
+    padding-left: 1.5rem;
+    font-style: italic;
+    white-space: nowrap;
+    background-color: rgba($gray-dark, .9);
+    border-top-left-radius: $panelOuterBorderRadius;
+
+    a {
+      max-width: 50%;
+      margin-left: 5px;
+
+      .panel-btn-inner {
+        padding-right: 4px;
+      }
+    }
+  }
+
   table {
     margin-bottom: 0;
   }

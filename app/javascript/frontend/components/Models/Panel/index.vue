@@ -35,10 +35,12 @@
 
           <br />
 
-          <small>
+          <small class="d-flex justify-content-between">
             <router-link
               :to="{
-                query: { q: filterManufacturerQuery(model.manufacturer.slug) },
+                query: {
+                  q: filterManufacturerQuery(model.manufacturer.slug),
+                },
               }"
               v-html="model.manufacturer.name"
             />
@@ -61,7 +63,7 @@
           </Btn>
 
           <AddToHangar
-            v-else-if="!isMyShip"
+            v-else-if="!isMyShip && !username"
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
@@ -118,6 +120,12 @@
             <i class="far fa-plus-octagon" />
           </span>
         </div>
+        <div v-if="username" class="owner">
+          {{ $t('labels.vehicle.owner') }}
+          <Btn :href="`/hangar/${username}`" variant="link" :text-inline="true">
+            {{ username }}
+          </Btn>
+        </div>
       </div>
       <BCollapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
@@ -135,15 +143,17 @@
             </template>
           </strong>
         </div>
-        <ModelTopMetrics :model="model" padding />
+        <ModelTopMetrics :model="model" :padding="true" />
         <hr class="dark slim-spacer" />
-        <ModelBaseMetrics :model="model" padding />
+        <ModelBaseMetrics :model="model" :padding="true" />
       </BCollapse>
     </Panel>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
@@ -152,9 +162,7 @@ import AddToHangar from 'frontend/components/Models/AddToHangar'
 import ModelTopMetrics from 'frontend/components/Models/TopMetrics'
 import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
 
-export default {
-  name: 'ModelPanel',
-
+@Component<ModelPanel>({
   components: {
     BCollapse,
     Panel,
@@ -164,123 +172,97 @@ export default {
     ModelTopMetrics,
     ModelBaseMetrics,
   },
+})
+export default class ModelPanel extends Vue {
+  @Prop({ required: true }) model: Model
 
-  props: {
-    model: {
-      type: Object,
-      required: true,
-    },
+  @Prop({ default: null }) vehicle: Vehicle | null
 
-    vehicle: {
-      type: Object,
-      default: null,
-    },
+  @Prop({ default: null }) onEdit: Function | null
 
-    onEdit: {
-      type: Function,
-      default: null,
-    },
+  @Prop({ default: null }) onAddons: Function | null
 
-    onAddons: {
-      type: Function,
-      default: null,
-    },
+  @Prop({ default: false }) details: boolean
 
-    details: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: null }) count: number
 
-    count: {
-      type: Number,
-      default: null,
-    },
+  @Prop({ default: false }) isMyShip: boolean
 
-    isMyShip: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) highlight: boolean
 
-    highlight: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  @Prop({ default: null }) username: string
 
-  computed: {
-    uuid() {
-      return this._uid
-    },
+  get uuid() {
+    return this._uid
+  }
 
-    storeImage() {
-      if (this.vehicle && this.vehicle.paint) {
-        return this.vehicle.paint.storeImageMedium
-      }
+  get storeImage() {
+    if (this.vehicle && this.vehicle.paint) {
+      return this.vehicle.paint.storeImageMedium
+    }
 
-      if (this.vehicle && this.vehicle.upgrade) {
-        return this.vehicle.upgrade.storeImageMedium
-      }
+    if (this.vehicle && this.vehicle.upgrade) {
+      return this.vehicle.upgrade.storeImageMedium
+    }
 
-      return this.model.storeImageMedium
-    },
+    return this.model.storeImageMedium
+  }
 
-    modelName() {
-      return this.model.name
-    },
+  get modelName() {
+    return this.model.name
+  }
 
-    id() {
-      if (this.vehicle) {
-        return this.vehicle.id
-      }
+  get id() {
+    if (this.vehicle) {
+      return this.vehicle.id
+    }
 
-      return this.model.slug
-    },
+    return this.model.slug
+  }
 
-    customName() {
-      if (this.vehicle && this.vehicle.name) {
-        return this.vehicle.name
-      }
-      return null
-    },
+  get customName() {
+    if (this.vehicle && this.vehicle.name) {
+      return this.vehicle.name
+    }
 
-    countLabel() {
-      if (!this.count) {
-        return ''
-      }
-      return `${this.count}x `
-    },
+    return null
+  }
 
-    flagshipTooltip() {
-      if (!this.vehicle) {
-        return ''
-      }
-      if (this.$route.name === 'hangar') {
-        return this.$t('labels.yourFlagship')
-      }
-      return this.$t('labels.flagship')
-    },
+  get countLabel() {
+    if (!this.count) {
+      return ''
+    }
+    return `${this.count}x `
+  }
 
-    hasAddons() {
-      return (
-        this.vehicle &&
-        (this.vehicle.modelModuleIds.length ||
-          this.vehicle.modelUpgradeIds.length)
-      )
-    },
+  get flagshipTooltip() {
+    if (!this.vehicle) {
+      return ''
+    }
+    if (this.$route.name === 'hangar') {
+      return this.$t('labels.yourFlagship')
+    }
+    return this.$t('labels.flagship')
+  }
 
-    upgradable() {
-      return (
-        (this.isMyShip || this.hasAddons) &&
-        (this.model.hasModules || this.model.hasUpgrades)
-      )
-    },
-  },
+  get hasAddons() {
+    return (
+      this.vehicle &&
+      (this.vehicle.modelModuleIds.length ||
+        this.vehicle.modelUpgradeIds.length)
+    )
+  }
 
-  methods: {
-    filterManufacturerQuery(manufacturer) {
-      return { manufacturerIn: [manufacturer] }
-    },
-  },
+  get upgradable() {
+    return (
+      (this.isMyShip || this.hasAddons) &&
+      (this.model.hasModules || this.model.hasUpgrades)
+    )
+  }
+
+  filterManufacturerQuery(manufacturer) {
+    return { manufacturerIn: [manufacturer] }
+  }
 }
 </script>
 

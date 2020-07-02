@@ -34,6 +34,7 @@
 
   .panel-btn-inner {
     padding: 6px 14px;
+    overflow: hidden;
     color: $text-color;
     font-size: 110%;
     white-space: nowrap;
@@ -99,7 +100,12 @@
   &.panel-btn-text-inline {
     min-height: auto;
     margin: 0;
+    margin-bottom: 0;
     padding: 0;
+
+    &.panel-btn-link {
+      border-radius: 0;
+    }
 
     .panel-btn-inner {
       margin: 0;
