@@ -15,11 +15,11 @@
               v-slot="{ errors }"
               vid="logo"
               :name="$t('labels.fleet.logo')"
-              slim
+              :slim="true"
             >
               <div
                 :class="{ 'has-error has-feedback': errors[0] }"
-                class="form-group"
+                class="form-group mb-3"
               >
                 <VueUploadComponent
                   ref="upload"
@@ -54,7 +54,7 @@
                 regex: /^[a-zA-Z0-9\-_]{3,}$/,
               }"
               :name="$t('labels.fleet.fid')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="fid"
@@ -74,7 +74,7 @@
                 regex: /^[a-zA-Z0-9\-_\. ]{3,}$/,
               }"
               :name="$t('labels.name')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="name"
@@ -101,7 +101,7 @@
               vid="homepage"
               rules="url"
               :name="$t('labels.homepage')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="homepage"
@@ -117,7 +117,7 @@
               vid="discord"
               rules="url"
               :name="$t('labels.discord')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="discord"
@@ -134,7 +134,7 @@
               vid="ts"
               rules="url"
               :name="$t('labels.fleet.ts')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="ts"
@@ -154,7 +154,7 @@
               vid="youtube"
               rules="url"
               :name="$t('labels.youtube')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="youtube"
@@ -171,7 +171,7 @@
               vid="twitch"
               rules="url"
               :name="$t('labels.twitch')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="twitch"
@@ -188,7 +188,7 @@
               vid="guilded"
               rules="url"
               :name="$t('labels.guilded')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="guilded"

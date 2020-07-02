@@ -17,7 +17,7 @@
           >
             <div
               :class="{ 'has-error has-feedback': errors[0] }"
-              class="form-group"
+              class="form-group mb-3"
             >
               <VueUploadComponent
                 ref="upload"
