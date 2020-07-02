@@ -57,20 +57,21 @@ Rails.application.config.content_security_policy do |policy|
     :self, 'https://www.youtube.com', 'https://www.youtube-nocookie.com', 'https://starship42.com', 'https://starship42.fleetyards.net'
   ]
 
-  form_action = [
+  form_src = [
     :self, api_endpoint,
   ]
 
-  policy.default_src :none
+  policy.default_src :self, Rails.application.secrets[:frontend_endpoint]
   policy.base_uri :self
   policy.manifest_src :self
-  policy.form_action(*form_action)
+  policy.form_action(*form_src)
   policy.connect_src(*connect_src)
   policy.script_src(*script_src)
   policy.style_src(*style_src)
   policy.img_src(*img_src)
   policy.font_src(*font_src)
   policy.frame_src(*frame_src)
+  policy.prefetch_src(*img_src)
   policy.worker_src :self
   policy.object_src :self
   policy.frame_ancestors :none
