@@ -208,9 +208,7 @@ export default class FilteredList extends Vue {
 
   mounted() {
     this.fetch()
-  }
 
-  created() {
     if (this.mobile) {
       this.setFiltersVisible({
         [this.name]: false,
@@ -219,6 +217,12 @@ export default class FilteredList extends Vue {
 
     this.toggleFullscreen()
     this.saveFilters()
+
+    this.$comlink.$on('filteredListUpdate', this.fetch)
+  }
+
+  beforeDestroy() {
+    this.$comlink.$off('filteredListUpdate')
   }
 
   saveFilters() {

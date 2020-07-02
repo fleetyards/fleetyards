@@ -160,6 +160,7 @@
         </div>
       </div>
     </div>
+
     <FilteredList
       v-if="fleet && fleet.myFleet"
       :collection="vehiclesCollection"
@@ -312,11 +313,13 @@ export default class FleetDetail extends Vue {
 
   @Watch('grouped')
   onGroupedChange() {
+    this.vehiclesCollection.findAll(this.filters)
     this.fetch()
   }
 
   @Watch('$route')
   onRouteChange() {
+    this.fetchFleet()
     this.fetch()
   }
 
@@ -346,12 +349,12 @@ export default class FleetDetail extends Vue {
     this.$store.dispatch('fleet/toggleMoney')
   }
 
-  fetch() {
+  async fetch() {
     if (!this.fleet || !this.fleet.myFleet) {
       return
     }
 
-    this.vehiclesCollection.findStats(this.filters)
+    await this.vehiclesCollection.findStats(this.filters)
   }
 
   async fetchFleet() {
