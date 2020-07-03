@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Devise::MailerPreview < ActionMailer::Preview # rubocop:disable Style/ClassAndModuleChildren
+class DeviseMailerPreview < ActionMailer::Preview
   def confirmation_instructions
     user = User.first
     raise 'Please Create a User' if user.nil?
