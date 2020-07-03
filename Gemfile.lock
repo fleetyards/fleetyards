@@ -219,7 +219,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
-    i18n-js (3.7.0)
+    i18n-js (3.7.1)
       i18n (>= 0.6.6)
     i18n-tasks (0.9.31)
       activesupport (>= 4.0.2)
@@ -343,8 +343,6 @@ GEM
       rack (>= 1.0, < 3)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
-    rack-protection (2.0.8.1)
-      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -464,11 +462,10 @@ GEM
     shoulda-context (2.0.0)
     shoulda-matchers (4.3.0)
       activesupport (>= 4.2.0)
-    sidekiq (6.0.7)
+    sidekiq (6.1.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     sidekiq-cron (1.2.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
@@ -545,7 +542,7 @@ GEM
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.3.0)
+    zeitwerk (2.3.1)
 
 PLATFORMS
   ruby
