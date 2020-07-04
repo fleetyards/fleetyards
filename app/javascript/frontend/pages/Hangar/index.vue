@@ -404,13 +404,15 @@ export default class Hangar extends Vue {
   async exportJson() {
     const exportedData = await this.collection.export(this.filters)
 
-    if (!exportedData) {
+    // eslint-disable-next-line compat/compat
+    if (!exportedData || !window.URL) {
       displayAlert({ text: this.$t('messages.hangarExport.failure') })
       return
     }
 
     const link = document.createElement('a')
 
+    // eslint-disable-next-line compat/compat
     link.href = window.URL.createObjectURL(new Blob([exportedData]))
 
     link.setAttribute(

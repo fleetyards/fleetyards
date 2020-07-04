@@ -111,7 +111,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import VueUploadComponent from 'vue-upload-component'
 import ImageRow from 'admin/components/ImageUploader/ImageRow'
 import Loader from 'frontend/core/components/Loader'
@@ -121,9 +123,7 @@ import Panel from 'frontend/core/components/Panel'
 import { displayAlert } from 'frontend/lib/Noty'
 import Cookies from 'js-cookie'
 
-export default {
-  name: 'ImageUploader',
-
+@Component<ImageUploader>({
   components: {
     Loader,
     VueUploadComponent,
@@ -132,185 +132,172 @@ export default {
     Btn,
     Panel,
   },
+})
+export default class ImageUploader extends Vue {
+  @Prop({ required: true }) images: Image[]
 
-  props: {
-    images: {
-      type: Array,
-      required: true,
-    },
+  @Prop({ default: null }) galleryId: string | null
 
-    galleryId: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) galleryType: string | null
 
-    galleryType: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: false }) loading: boolean
 
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  newImages = []
 
-  data() {
+  postAction: string = `${window.API_ENDPOINT}/images`
+
+  uploadCount: number = 1
+
+  headers = {
+    'Accept': 'application/json',
+    'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
+  }
+
+  get isUploadActive() {
+    return !!this.galleryId && !!this.galleryType
+  }
+
+  get allImages() {
+    return [...this.newImages, ...this.images]
+  }
+
+  get metaData() {
     return {
-      newImages: [],
-      postAction: `${window.API_ENDPOINT}/images`,
-      uploadCount: 1,
-      headers: {
-        'Accept': 'application/json',
-        'X-CSRF-Token': Cookies.get('COMMAND-CSRF-TOKEN'),
-      },
+      galleryId: this.galleryId,
+      galleryType: this.galleryType,
     }
-  },
+  }
 
-  computed: {
-    isUploadActive() {
-      return !!this.galleryId && !!this.galleryType
-    },
+  get emptyBoxVisible() {
+    return !this.loading && !this.allImages.length
+  }
 
-    allImages() {
-      return [...this.newImages, ...this.images]
-    },
+  get activeImages() {
+    return this.newImages.filter(item => item.active)
+  }
 
-    metaData() {
-      return {
-        galleryId: this.galleryId,
-        galleryType: this.galleryType,
-      }
-    },
-    emptyBoxVisible() {
-      return !this.loading && !this.allImages.length
-    },
-    activeImages() {
-      return this.newImages.filter(item => item.active)
-    },
-    progress() {
-      if (!this.newImages.length) {
-        return 0
-      }
+  get progress() {
+    if (!this.newImages.length) {
+      return 0
+    }
 
-      const pendingProgress = this.newImages
-        .map(item => parseFloat(item.progress))
-        .reduce((pv, cv) => pv + cv, 0)
-      const completedUploads = this.uploadCount - this.newImages.length
+    const pendingProgress = this.newImages
+      .map(item => parseFloat(item.progress))
+      .reduce((pv, cv) => pv + cv, 0)
+    const completedUploads = this.uploadCount - this.newImages.length
 
-      return Math.ceil(
-        (pendingProgress + completedUploads * 100) / this.uploadCount,
-      )
-    },
-    speed() {
-      if (!this.activeImages.length) {
-        return 0
-      }
+    return Math.ceil(
+      (pendingProgress + completedUploads * 100) / this.uploadCount,
+    )
+  }
 
-      return (
-        this.activeImages
-          .map(item => parseFloat(item.speed))
-          .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
-      )
-    },
-  },
+  get speed() {
+    if (!this.activeImages.length) {
+      return 0
+    }
+
+    return (
+      this.activeImages
+        .map(item => parseFloat(item.speed))
+        .reduce((pv, cv) => pv + cv, 0) / this.activeImages.length
+    )
+  }
 
   mounted() {
     document.addEventListener('paste', this.addFileFromClipboard)
-  },
+  }
 
   destroyed() {
     document.removeEventListener('paste')
-  },
+  }
 
-  methods: {
-    addFileFromClipboard(event) {
-      if (event.clipboardData && event.clipboardData.files.length > 0) {
-        this.$refs.upload.add(event.clipboardData.files[0])
+  addFileFromClipboard(event) {
+    if (event.clipboardData && event.clipboardData.files.length > 0) {
+      this.$refs.upload.add(event.clipboardData.files[0])
+    }
+  }
+
+  selectImages() {
+    this.$refs.upload.$el.querySelector('input').click()
+  }
+
+  selectFolder() {
+    if (!this.$refs.upload.features.directory) {
+      displayAlert({
+        text: 'Your browser does not support',
+      })
+
+      return
+    }
+
+    const input = this.$refs.upload.$el.querySelector('input')
+    input.directory = true
+    input.webkitdirectory = true
+    this.directory = true
+    input.onclick = null
+    input.click()
+    input.onclick = _e => {
+      this.directory = false
+      input.directory = false
+      input.webkitdirectory = false
+    }
+  }
+
+  setUploadCount() {
+    this.uploadCount = this.newImages.length
+  }
+
+  startUpload() {
+    this.setUploadCount()
+    this.$refs.upload.active = true
+  }
+
+  startSingleUpload(image) {
+    this.$refs.upload.update(image, { active: true })
+  }
+
+  cancelUpload() {
+    this.newImages = []
+  }
+
+  cancelSingleUpload(image) {
+    this.$refs.upload.remove(image)
+  }
+
+  async inputImage(newImage, oldImage) {
+    if (newImage && oldImage && !newImage.active && oldImage.active) {
+      if (newImage.xhr && newImage.xhr.status === 200) {
+        this.$emit('imageUploaded', newImage)
+        const index = this.newImages.indexOf(newImage)
+        this.newImages.splice(index, 1)
       }
-    },
+    }
+  }
 
-    selectImages() {
-      this.$refs.upload.$el.querySelector('input').click()
-    },
-
-    selectFolder() {
-      if (!this.$refs.upload.features.directory) {
-        displayAlert({
-          text: 'Your browser does not support',
-        })
-
-        return
+  inputFilter(newImage, oldImage, prevent) {
+    if (newImage && !oldImage) {
+      if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
+        prevent()
       }
+    }
 
-      const input = this.$refs.upload.$el.querySelector('input')
-      input.directory = true
-      input.webkitdirectory = true
-      this.directory = true
-      input.onclick = null
-      input.click()
-      input.onclick = _e => {
-        this.directory = false
-        input.directory = false
-        input.webkitdirectory = false
-      }
-    },
+    if (!newImage) {
+      return
+    }
 
-    setUploadCount() {
-      this.uploadCount = this.newImages.length
-    },
-
-    startUpload() {
-      this.setUploadCount()
-      this.$refs.upload.active = true
-    },
-
-    startSingleUpload(image) {
-      this.$refs.upload.update(image, { active: true })
-    },
-
-    cancelUpload() {
-      this.newImages = []
-    },
-
-    cancelSingleUpload(image) {
-      this.$refs.upload.remove(image)
-    },
-
-    async inputImage(newImage, oldImage) {
-      if (newImage && oldImage && !newImage.active && oldImage.active) {
-        if (newImage.xhr && newImage.xhr.status === 200) {
-          this.$emit('imageUploaded', newImage)
-          const index = this.newImages.indexOf(newImage)
-          this.newImages.splice(index, 1)
-        }
-      }
-    },
-
-    inputFilter(newImage, oldImage, prevent) {
-      if (newImage && !oldImage) {
-        if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newImage.name)) {
-          prevent()
-        }
-      }
-
-      if (!newImage) {
-        return
-      }
-
-      /* eslint-disable no-param-reassign */
-      newImage.blob = ''
-      const URL = window.URL || window.webkitURL
-      if (URL && URL.createObjectURL) {
-        newImage.blob = URL.createObjectURL(newImage.file)
-      }
-      newImage.smallUrl = ''
-      if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
-        newImage.smallUrl = newImage.blob
-      }
-      /* eslint-enable no-param-reassign */
-    },
-  },
+    /* eslint-disable no-param-reassign */
+    newImage.blob = ''
+    // eslint-disable-next-line compat/compat
+    const URL = window.URL || window.webkitURL
+    if (URL && URL.createObjectURL) {
+      newImage.blob = URL.createObjectURL(newImage.file)
+    }
+    newImage.smallUrl = ''
+    if (newImage.blob && newImage.type.substr(0, 6) === 'image/') {
+      newImage.smallUrl = newImage.blob
+    }
+    /* eslint-enable no-param-reassign */
+  }
 }
 </script>
 

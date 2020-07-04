@@ -54,6 +54,7 @@ Noty.overrideDefaults({
 
 const notifyPermissionGranted = function notifyPermissionGranted() {
   return (
+    // eslint-disable-next-line compat/compat
     'Notification' in window && window.Notification.permission === 'granted'
   )
 }
@@ -61,6 +62,7 @@ const notifyPermissionGranted = function notifyPermissionGranted() {
 const displayDesktopNotification = function displayDesktopNotification(
   message,
 ) {
+  // eslint-disable-next-line compat/compat
   const notification = new window.Notification(message, {
     // eslint-disable-next-line global-require
     icon: `${window.FRONTEND_ENDPOINT}${require('images/favicon.png')}`,
@@ -213,6 +215,7 @@ export function requestPermission() {
     return
   }
 
+  // eslint-disable-next-line compat/compat
   window.Notification.requestPermission(permission => {
     if (permission === 'granted') {
       displayNativeNotification(I18n.t('messages.notification.granted'))
