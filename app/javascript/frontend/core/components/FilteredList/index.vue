@@ -68,10 +68,10 @@
               v-for="(record, index) in collection.records"
               :key="`${record[collection.primaryKey]}-${index}`"
               :class="{
-                'col-xxl-4 col-3xl-3': filterVisible,
-                'col-xl-4 col-xxl-3 col-3xl-2': !filterVisible,
+                'col-xxl-3 col-3xl-2dot4': filterVisible,
+                'col-xl-3 col-xxl-2dot4 col-3xl-2': !filterVisible,
               }"
-              class="col-12 col-lg-6 fade-list-item"
+              class="col-12 col-md-6 col-lg-4 fade-list-item"
             >
               <slot
                 name="record"

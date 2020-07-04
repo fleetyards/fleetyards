@@ -35,3 +35,46 @@
 //  @import "spinners";
 @import '~bootstrap/scss/utilities';
 @import '~bootstrap/scss/print';
+
+// Grid Overrides for 5 col layout
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+  @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+    @for $i from 1 through 2 {
+      .col#{$infix}-#{$i} {
+        @include make-col($i, $grid-columns);
+      }
+    }
+
+    @for $i from 0 through 2 {
+      @if not ($infix == '' and $i == 0) {
+        .offset#{$infix}-#{$i} {
+          @include make-col-offset($i, $grid-columns);
+        }
+      }
+    }
+
+    .col#{$infix}-2dot4 {
+      @include make-col(2.4, $grid-columns);
+    }
+
+    .offset#{$infix}-2dot4 {
+      @include make-col-offset(2.4, $grid-columns);
+    }
+
+    @for $i from 3 through $grid-columns {
+      .col#{$infix}-#{$i} {
+        @include make-col($i, $grid-columns);
+      }
+    }
+
+    @for $i from 3 through ($grid-columns - 1) {
+      @if not ($infix == '' and $i == 0) {
+        .offset#{$infix}-#{$i} {
+          @include make-col-offset($i, $grid-columns);
+        }
+      }
+    }
+  }
+}
