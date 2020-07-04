@@ -100,6 +100,7 @@ export default class HangarImportBtn extends Vue {
     if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
       // eslint-disable-next-line no-param-reassign
       newFile.url = ''
+      // eslint-disable-next-line compat/compat
       const URL = window.URL || window.webkitURL
       if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign
