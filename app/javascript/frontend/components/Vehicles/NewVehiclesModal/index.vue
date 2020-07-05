@@ -20,11 +20,11 @@
         </div>
       </div>
 
-      <FilterGroup
+      <CollectionFilterGroup
         v-if="visible()"
         name="model"
         :search-label="$t('actions.findModel')"
-        fetch-path="models"
+        :collection="modelsCollection"
         value-attr="id"
         translation-key="newVehicle"
         :paginated="true"
@@ -53,22 +53,25 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
 import Modal from 'frontend/components/Modal'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Btn from 'frontend/core/components/Btn'
 import { VehiclesCollection } from 'frontend/api/collections/Vehicles'
+import modelsCollection from 'frontend/api/collections/Models'
 
 @Component<NewVehiclesModal>({
   components: {
     Modal,
-    FilterGroup,
+    CollectionFilterGroup,
     Btn,
     TeaserPanel,
   },
 })
 export default class NewVehiclesModal extends Vue {
   submitting: boolean = false
+
+  modelsCollection: ModelsCollection = modelsCollection
 
   form: Object = {
     vehicles: [],
