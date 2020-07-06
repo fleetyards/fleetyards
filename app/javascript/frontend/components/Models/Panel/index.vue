@@ -35,7 +35,7 @@
 
           <br />
 
-          <small class="d-flex justify-content-between">
+          <small>
             <router-link
               :to="{
                 query: {
