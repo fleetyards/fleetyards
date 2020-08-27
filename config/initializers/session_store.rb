@@ -16,7 +16,7 @@ session_store_options = {
   secure: Rails.env.production? || Rails.env.staging?,
   expire_after: expire_after,
   redis: redis_store_options,
-  same_site: :none
+  same_site: :lax
 }
 
 Fleetyards::Application.config.session_store session_store, session_store_options
