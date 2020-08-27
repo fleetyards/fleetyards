@@ -141,7 +141,7 @@ Devise.setup do |config|
     key: Rails.env.production? ? 'FLTYRD_STORED' : "FLTYRD_STORED_#{Rails.env.upcase}",
     domain: ".#{Rails.application.secrets[:domain]}",
     secure: Rails.env.production? || Rails.env.staging?,
-    same_site: :none
+    same_site: :lax
   }
 
   # ==> Configuration for :validatable
