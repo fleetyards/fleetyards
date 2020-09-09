@@ -23,14 +23,14 @@ module Api
       def with_models
         authorize! :index, :api_manufacturers
 
-        @q = index_scope(true)
+        @q = index_scope(with_model: true)
 
         @manufacturers = @q.result(distinct: true)
                            .page(params[:page])
                            .per(per_page(Manufacturer))
       end
 
-      private def index_scope(with_model = false)
+      private def index_scope(with_model: false)
         scope = Manufacturer.with_name
 
         scope = scope.with_model if with_model

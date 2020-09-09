@@ -116,7 +116,7 @@ module RSI
           raw_price = price_element.text
           price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
           if price_match.present?
-            price_with_local_vat = price_match[1].to_f
+            price_with_local_vat = price_match[1].to_d
             price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
           end
         end
@@ -147,19 +147,19 @@ module RSI
       end
 
       %w[length beam height mass].each do |attr|
-        updates["rsi_#{attr}"] = data[attr].to_f
-        updates[attr.to_sym] = data[attr].to_f if (model_updated(model, data) && data[attr].to_f != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+        updates["rsi_#{attr}"] = data[attr].to_d
+        updates[attr.to_sym] = data[attr].to_d if (model_updated(model, data) && data[attr].to_d != model.send("rsi_#{attr}").to_d) || model.send(attr).blank? || model.send(attr).zero?
       end
 
       updates[:rsi_description] = data['description']
       updates[:description] = data['description'] if (model_updated(model, data) && data['description'] != model.rsi_description) || model.description.blank?
 
-      updates[:rsi_cargo] = nil_or_float(data['cargocapacity'])
-      updates[:cargo] = nil_or_float(data['cargocapacity']) if (model_updated(model, data) && nil_or_float(data['cargocapacity']) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
+      updates[:rsi_cargo] = nil_or_decimal(data['cargocapacity'])
+      updates[:cargo] = nil_or_decimal(data['cargocapacity']) if (model_updated(model, data) && nil_or_decimal(data['cargocapacity']) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
 
       %w[max_crew min_crew scm_speed afterburner_speed pitch_max yaw_max roll_max xaxis_acceleration yaxis_acceleration zaxis_acceleration].each do |attr|
-        updates["rsi_#{attr}"] = nil_or_float(data[attr])
-        updates[attr.to_sym] = nil_or_float(data[attr]) if (model_updated(model, data) && nil_or_float(data[attr]) != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+        updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
+        updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send("rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
 
       updates[:ground] = true if data['type'] == 'ground' && model_updated(model, data) && data['type'] != model.classification

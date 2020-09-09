@@ -6,7 +6,7 @@ module Api
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)
-                             .order([sort: :asc, name: :asc])
+                             .order([{ sort: :asc, name: :asc }])
                              .all
       end
 
@@ -53,7 +53,7 @@ module Api
       end
 
       private def hangar_group
-        @hangar_group ||= HangarGroup.find_by!(id: params[:id])
+        @hangar_group ||= HangarGroup.find(params[:id])
       end
       helper_method :hangar_group
 

@@ -24,10 +24,10 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name].freeze
   before_save :nil_if_blank
+  after_create :add_loaners, :broadcast_create
+  after_destroy :remove_loaners, :broadcast_destroy
   after_save :set_flagship
   after_commit :broadcast_update
-  after_destroy :remove_loaners, :broadcast_destroy
-  after_create :add_loaners, :broadcast_create
   after_touch :clear_association_cache
 
   ransack_alias :name, :name_or_model_name_or_model_slug

@@ -6,6 +6,10 @@ module RSI
   class LocationLoader < ::RSI::BaseLoader
     attr_accessor :locations
 
+    LOCATION_TYPES = %w[PLANET SATELLITE ASTEROID_BELT ASTEROID_FIELD].freeze
+
+    LOCATION_BUILD_TYPES = %w[MANMADE].freeze
+
     def initialize(options = {})
       super
 
@@ -23,13 +27,13 @@ module RSI
         objects = load_celestial_objects(starsystem.code)
 
         objects.select do |object|
-          %w[PLANET SATELLITE ASTEROID_BELT ASTEROID_FIELD].include?(object['type'])
+          LOCATION_TYPES.include?(object['type'])
         end.each do |object|
           sync_celestial_object(object, starsystem.id)
         end
 
         objects.select do |object|
-          %w[MANMADE].include?(object['type'])
+          LOCATION_BUILD_TYPES.include?(object['type'])
         end.each do |object|
           update_stations(object)
         end
