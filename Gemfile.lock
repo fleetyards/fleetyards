@@ -453,7 +453,7 @@ GEM
       hashie
     selectize-rails (0.12.6)
     semantic_range (2.3.0)
-    sentry-raven (3.0.3)
+    sentry-raven (3.0.4)
       faraday (>= 1.0)
     sexp_processor (4.15.0)
     shoulda (4.0.0)
