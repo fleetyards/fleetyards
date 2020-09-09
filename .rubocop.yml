@@ -12,9 +12,13 @@ AllCops:
     - 'log/**/*'
     - 'Brewfile'
     - 'Rakefile'
+  NewCops: enable
 
 Rails:
   Enabled: true
+
+Rails/HelperInstanceVariable:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false # for now
@@ -105,66 +109,3 @@ Rails/UnknownEnv:
     - test
     - development
     - ci
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-
-Style/ExponentialNotation:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/AccessorGrouping:
-  Enabled: true
-
-Style/BisectedAttrAccessor:
-  Enabled: true
-
-Style/RedundantAssignment:
-  Enabled: true
-
-Performance/AncestorsInclude:
-  Enabled: true
-
-Performance/BigDecimalWithNumericArgument:
-  Enabled: true
-
-Performance/RedundantSortBlock:
-  Enabled: true
-
-Performance/RedundantStringChars:
-  Enabled: true
-
-Performance/ReverseFirst:
-  Enabled: true
-
-Performance/SortReverse:
-  Enabled: true
-
-Performance/Squeeze:
-  Enabled: true
-
-Performance/StringInclude:
-  Enabled: true

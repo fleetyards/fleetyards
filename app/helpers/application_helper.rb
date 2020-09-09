@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def sortable(column, title = nil, _remote = true)
+  def sortable(column, title = nil)
     title ||= column.titleize
     css_class = column == sort_column ? "current #{sort_direction}" : nil
     direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
@@ -24,21 +24,15 @@ module ApplicationHelper
   end
 
   def title
-    # rubocop:disable Rails/HelperInstanceVariable
     @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def description
-    # rubocop:disable Rails/HelperInstanceVariable
     @description || I18n.t(:"meta.description")
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def keywords
-    # rubocop:disable Rails/HelperInstanceVariable
     @keywords || I18n.t(:"meta.keywords")
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def og_title
@@ -46,21 +40,15 @@ module ApplicationHelper
   end
 
   def og_type
-    # rubocop:disable Rails/HelperInstanceVariable
     @og_type || 'website'
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def og_url
-    # rubocop:disable Rails/HelperInstanceVariable
     @og_url || request.original_url
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def og_image
-    # rubocop:disable Rails/HelperInstanceVariable
     @og_image || asset_url('icon-512.png')
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 
   def og_description
@@ -74,8 +62,6 @@ module ApplicationHelper
   end
 
   def app_enabled?
-    # rubocop:disable Rails/HelperInstanceVariable
     @app_enabled || false
-    # rubocop:enable Rails/HelperInstanceVariable
   end
 end

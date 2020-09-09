@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || !%w[admin api].include?(req.subdomain) } do
+namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
   get 'compare/ships', to: redirect('/ships/compare')
 

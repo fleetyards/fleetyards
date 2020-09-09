@@ -6,7 +6,7 @@ namespace :cache do
     puts '=> Clearning Rails cache...'
     Rake::Task['cache:stats'].invoke
 
-    puts "\n `Rails.cache.clear` => " + Rails.cache.clear.to_s + "\n\n"
+    puts "\n `Rails.cache.clear` => #{Rails.cache.clear}\n\n"
     # manually reset the stats, as clearing the cache doesn't do so
     Rails.cache.dalli.reset_stats if Rails.cache.try(:dalli).respond_to? :reset_stats
 

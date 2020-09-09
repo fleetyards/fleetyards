@@ -20,10 +20,10 @@ module RSI
       name.gsub(/(?:AEGIS|Aegis|ARGO|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|Consolidated Outland)/, '').strip
     end
 
-    private def nil_or_float(value)
+    private def nil_or_decimal(value)
       return if value.blank?
 
-      value.to_f
+      value.to_d
     end
 
     private def nil_or_int(value)
