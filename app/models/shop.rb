@@ -45,8 +45,8 @@ class Shop < ApplicationRecord
   ransack_alias :celestial_object, :station_celestial_object_slug
   ransack_alias :starsystem, :station_celestial_object_starsystem_slug
 
-  before_save :update_slugs
   before_validation :update_shop_commodities
+  before_save :update_slugs
 
   def self.visible
     where(hidden: false)

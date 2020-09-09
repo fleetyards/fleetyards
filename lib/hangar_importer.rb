@@ -3,6 +3,17 @@
 class HangarImporter
   attr_accessor :data
 
+  MODEL_FIND_QUERY = [
+    'lower(name) = :name',
+    'lower(rsi_name) = :name',
+    'slug = :slug',
+    'rsi_slug = :slug',
+    'lower(name) = :normalized_name',
+    'lower(rsi_name) = :normalized_name',
+    'slug = :normalized_name',
+    'rsi_slug = :normalized_name'
+  ].freeze
+
   def initialize(data)
     @data = data.map do |item|
       item.transform_keys(&:underscore)
@@ -26,16 +37,7 @@ class HangarImporter
       slug = item[:slug].downcase if item[:slug].present?
 
       query = [
-        [
-          'lower(name) = :name',
-          'lower(rsi_name) = :name',
-          'slug = :slug',
-          'rsi_slug = :slug',
-          'lower(name) = :normalized_name',
-          'lower(rsi_name) = :normalized_name',
-          'slug = :normalized_name',
-          'rsi_slug = :normalized_name'
-        ].join(' OR '),
+        MODEL_FIND_QUERY.join(' OR '),
         {
           name: name.downcase,
           slug: slug,
