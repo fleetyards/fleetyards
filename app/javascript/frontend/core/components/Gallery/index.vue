@@ -53,8 +53,7 @@
 
 <script>
 import PhotoSwipe from 'photoswipe'
-// eslint-disable-next-line camelcase
-import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default'
+import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
 import copyText from 'frontend/utils/CopyText'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
@@ -143,7 +142,7 @@ export default {
 
       this.gallery = new PhotoSwipe(
         pswpElement,
-        PhotoSwipeUI_Default,
+        PhotoSwipeUIDefault,
         this.galleryItems,
         this.options,
       )
