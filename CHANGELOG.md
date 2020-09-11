@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.80.0](https://github.com/fleetyards/fleetyards/compare/v3.79.7...v3.80.0) (2020-09-11)
+
+
+### Features
+
+* owner label adjustments ([47a21d7](https://github.com/fleetyards/fleetyards/commit/47a21d7894fc7c12553a1ef5e871babdc2339336))
+* show owner on fleets page ([6911d6c](https://github.com/fleetyards/fleetyards/commit/6911d6c429f948197fc491e4a0c60480321faa92))
+
+
+### Bug Fixes
+
+* bootstrap 4 alignment ([ef83885](https://github.com/fleetyards/fleetyards/commit/ef838850b441c16bd561c23798f8e3cca55f37f1))
+* ci ([6109f44](https://github.com/fleetyards/fleetyards/commit/6109f442718194e1a6af3ea15f62501113025d52))
+* cookie samesite setting ([65fde1a](https://github.com/fleetyards/fleetyards/commit/65fde1a7f246fce1d07dbb26cb60645a2465e331))
+* e2e cookies ([b1514f9](https://github.com/fleetyards/fleetyards/commit/b1514f92ccbab704723abcf208a39ab7fe28a2aa))
+* e2e specs ([4ba491d](https://github.com/fleetyards/fleetyards/commit/4ba491d0c803775f984bd5951d3330061c396c0b))
+* e2e specs ([0625abb](https://github.com/fleetyards/fleetyards/commit/0625abbea3f191d4182d9c66129cbe7b9890a4dc))
+* e2e tests for signup ([2e66b04](https://github.com/fleetyards/fleetyards/commit/2e66b04571b979603771a04b5b905a48366af156))
+* filtered header and background animation ([b0c414a](https://github.com/fleetyards/fleetyards/commit/b0c414ac0f5f8915206e4871073668e243b98299))
+* fleets reload after grouped change ([887ff39](https://github.com/fleetyards/fleetyards/commit/887ff39f8ead8e17fc1a43b20758fe03686c3994))
+* form input padding ([62d53b2](https://github.com/fleetyards/fleetyards/commit/62d53b24e1413d9156805ea6fb91a17acdf0cbba))
+* form input type check ([36d3bdb](https://github.com/fleetyards/fleetyards/commit/36d3bdb0f46c3540a89c4914bb4be917fc16d6d3))
+* image galleries ([774a4ff](https://github.com/fleetyards/fleetyards/commit/774a4ff600f3cc920f524549a1f01db13d3b4e22))
+* iphone camera bump margin ([414c4db](https://github.com/fleetyards/fleetyards/commit/414c4dbe551fa290197dbf46f9eab11765fdb66e))
+* linting ([dcbbd0e](https://github.com/fleetyards/fleetyards/commit/dcbbd0e6b0ced092444d9fe7a115d92f892d72c5))
+* mailer preview class ([143eaa0](https://github.com/fleetyards/fleetyards/commit/143eaa0740203acad6e96a63f1e376d56c436512))
+* model panel subline ([71ef060](https://github.com/fleetyards/fleetyards/commit/71ef0602b5ae6cba66680004032f9a0787dbd42f))
+* remove unused require ([6a0e93a](https://github.com/fleetyards/fleetyards/commit/6a0e93ac9f37ff1356ff54c19f81594ede5b12a0))
+* service-worker ([338c03d](https://github.com/fleetyards/fleetyards/commit/338c03de572c70bf91540ae99319fded092f51e3))
+* service-worker ([edecf83](https://github.com/fleetyards/fleetyards/commit/edecf83cccae74bdba2b810af956c454ea0be567))
+* service-worker scope ([7b8ae95](https://github.com/fleetyards/fleetyards/commit/7b8ae95cd649d8da8899f84607ecf3cd4acb2d96))
+* specs ([2ef9b23](https://github.com/fleetyards/fleetyards/commit/2ef9b23c745802b805e12eb0c28fc185c909e6e9))
+* specs ([a00bc52](https://github.com/fleetyards/fleetyards/commit/a00bc52892f04b97d4e3fb940f560034c5ad1b0e))
+* specs ([4d60e89](https://github.com/fleetyards/fleetyards/commit/4d60e89cc96b00f82deae83ea1b671103000b0ec))
+* webpacker config ([e342321](https://github.com/fleetyards/fleetyards/commit/e342321f5445d23b46d3a9999bfb038cd216b2f2))
+* **fleet:** hide deeplinks and load statistics after fleet is loaded ([a5c2cc7](https://github.com/fleetyards/fleetyards/commit/a5c2cc7ba939a2a1bde5a90e87512609c86ca044))
+
+
+### Refactorings
+
+* hangar and migrate components to typescript ([#1225](https://github.com/fleetyards/fleetyards/issues/1225)) ([8ac9a72](https://github.com/fleetyards/fleetyards/commit/8ac9a72e5c12cdfcb631b42ba40e42a7f0fe7bef))
+
 ### [3.79.7](https://github.com/fleetyards/fleetyards/compare/v3.79.6...v3.79.7) (2020-06-06)
 
 
