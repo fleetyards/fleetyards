@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.1](https://github.com/fleetyards/fleetyards/compare/v3.80.0...v3.80.1) (2020-09-11)
+
+
+### Bug Fixes
+
+* e2e specs for images ([ce2274e](https://github.com/fleetyards/fleetyards/commit/ce2274e14d635af8eb24fa2b09725d622160a640))
+* node-fetch ([6ff0ba9](https://github.com/fleetyards/fleetyards/commit/6ff0ba9570f81a67c26078bbf0ffed22a1a39217))
+
 ## [3.80.0](https://github.com/fleetyards/fleetyards/compare/v3.79.7...v3.80.0) (2020-09-11)
 
 
