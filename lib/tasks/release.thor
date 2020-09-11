@@ -28,8 +28,8 @@ class Release < Thor
   def push
     puts 'Pushing new Version'
 
-    run('git push origin releases --tags --no-verify')
-    run('git push origin releases --no-verify', capture: true) # push your changes to update your local state
+    run('git push origin main --tags --no-verify')
+    run('git push origin main --no-verify', capture: true) # push your changes to update your local state
   end
 
   no_commands do
