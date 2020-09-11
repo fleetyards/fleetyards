@@ -8,6 +8,6 @@ describe('Images', () => {
 
     cy.url().should('include', '/images')
 
-    cy.get('.images a').should('have.length', Cypress.env('CI') ? 20 : 30)
+    cy.get('.images a').should('have.length.of.at.least', 20)
   })
 })
