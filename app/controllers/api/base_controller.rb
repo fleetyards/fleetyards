@@ -2,6 +2,7 @@
 
 module Api
   class BaseController < ActionController::API
+    include ActionController::MimeResponds
     include ActionController::Cookies
     include ActionController::RequestForgeryProtection
     include ActionController::Caching
