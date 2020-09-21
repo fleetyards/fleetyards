@@ -68,6 +68,6 @@ CarrierWave.configure do |config|
     config.fog_public = true
 
     # config.asset_host = 'https://cdn.s3.fleetyards.net' if Rails.env.production?
-    config.asset_host = "https://#{Rails.application.secrets.aws_s3_bucket}.#{Rails.application.secrets.aws_s3_region}.amazonaws.com"
+    config.asset_host = "https://#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com"
   end
 end
