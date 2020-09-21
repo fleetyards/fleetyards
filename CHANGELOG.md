@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.3](https://github.com/fleetyards/fleetyards/compare/v3.80.2...v3.80.3) (2020-09-21)
+
+
+### Bug Fixes
+
+* asset host ([a21af0d](https://github.com/fleetyards/fleetyards/commit/a21af0d589315a6e09df70da9de81a2d85cc9251))
+
 ### [3.80.2](https://github.com/fleetyards/fleetyards/compare/v3.80.1...v3.80.2) (2020-09-20)
 
 
