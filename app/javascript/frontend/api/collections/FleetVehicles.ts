@@ -1,6 +1,7 @@
 import { get } from 'frontend/api/client'
+import BaseCollection from './Base'
 
-export class FleetVehiclesCollection {
+export class FleetVehiclesCollection extends BaseCollection {
   records: (Vehicle | Model)[] = []
 
   stats: FleetVehicleStats | null = null
@@ -15,6 +16,8 @@ export class FleetVehiclesCollection {
     if (!response.error) {
       this.records = response.data
     }
+
+    this.setPages(response.meta)
 
     return this.records
   }
