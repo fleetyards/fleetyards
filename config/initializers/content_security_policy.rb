@@ -9,18 +9,18 @@
 require 'uri'
 
 Rails.application.config.content_security_policy do |policy|
-  api_endpoint = "https://#{URI.parse(Rails.application.secrets[:api_endpoint]).host}"
-  cable_endpoint = "wss://#{URI.parse(Rails.application.secrets[:cable_endpoint]).host}"
+  api_endpoint = "https://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
+  cable_endpoint = "wss://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
 
   if Rails.env.development?
-    api_endpoint = "http://#{URI.parse(Rails.application.secrets[:api_endpoint]).host}"
-    cable_endpoint = "ws://#{URI.parse(Rails.application.secrets[:cable_endpoint]).host}"
+    api_endpoint = "http://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
+    cable_endpoint = "ws://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
   end
 
   connect_src = [
     :self, :data, cable_endpoint, api_endpoint, 'https://img.youtube.com',
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
-    'https://pro.fontawesome.com', Rails.application.secrets[:rsi_endpoint],
+    'https://pro.fontawesome.com', Rails.application.secrets.rsi_endpoint,
     'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com',
     'https://ka-p.fontawesome.com'
   ]
@@ -41,9 +41,8 @@ Rails.application.config.content_security_policy do |policy|
 
   img_src = [
     :self, :data, :blob, Rails.application.secrets[:frontend_endpoint],
-    Rails.application.secrets[:rsi_endpoint], 'https://img.youtube.com',
-    'https://fleetyards.s3-eu-west-1.amazonaws.com',
-    'https://fleetyards-stage.s3.eu-central-1.amazonaws.com',
+    Rails.application.secrets.rsi_endpoint, 'https://img.youtube.com',
+    "https://#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com",
     'https://cdn.s3.fleetyards.net'
   ]
 
