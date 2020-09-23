@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.6'
+ruby File.read('.ruby-version').chomp
 
 gem 'rails', '6.0.3.3'
 
