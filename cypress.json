@@ -3,7 +3,6 @@
   "projectId": "vngu15",
   "fixturesFolder": "test/javascript/e2e/fixtures",
   "integrationFolder": "test/javascript/e2e/specs",
-  "pluginsFile": "test/javascript/e2e/plugins",
   "screenshotsFolder": "test/javascript/e2e/screenshots",
   "supportFile": "test/javascript/e2e/support",
   "videosFolder": "test/javascript/e2e/videos",

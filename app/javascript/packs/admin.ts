@@ -36,10 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.config.productionTip = false
 }
 
-declare global {
-  interface Window extends FleetYardsWindow {}
-}
-
 // @ts-ignore
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
