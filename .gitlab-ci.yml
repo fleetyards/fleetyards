@@ -1,4 +1,4 @@
-image: fleetyards/base:2.6.6
+image: fleetyards/base:2.7.1
 
 stages:
   - prep
