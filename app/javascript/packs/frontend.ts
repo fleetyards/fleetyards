@@ -38,10 +38,6 @@ if (process.env.NODE_ENV !== 'production') {
 VTooltip.enabled = window.innerWidth > 768
 Vue.use(VTooltip)
 
-declare global {
-  interface Window extends FleetYardsWindow {}
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     // eslint-disable-next-line compat/compat

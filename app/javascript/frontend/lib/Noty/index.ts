@@ -16,6 +16,7 @@ Noty.overrideDefaults({
           inner.textContent = button.dom.textContent
           button.dom.removeChild(button.dom.childNodes[0])
           button.dom.appendChild(inner)
+          // @ts-ignore
           buttons.push(button.dom.outerHTML)
         })
 
@@ -99,7 +100,7 @@ const notifyInBackground = function notifyInBackground(text) {
 }
 
 let lastNotyText = ''
-let lastNotyAt = null
+let lastNotyAt: Date | null = null
 
 const notyBackoff = function notyBackoff(text) {
   if (lastNotyText !== text) {
@@ -140,6 +141,7 @@ const displayNotification = function displayNotification(options) {
       new Noty({
         text: displayText,
         type: defaults.type,
+        // @ts-ignore
         icon: defaults.icon,
         timeout: defaults.timeout,
         category: 'notification',
@@ -161,8 +163,11 @@ export const displayConfirm = function displayConfirm(options) {
     text: null,
     layout: 'center',
     confirmBtnLayout: 'danger',
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onConfirm: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCancel: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onClose: () => {},
     ...options,
   }
@@ -178,6 +183,7 @@ export const displayConfirm = function displayConfirm(options) {
     theme: 'metroui',
     closeWith: ['click', 'button'],
     id: 'noty-confirm',
+    // @ts-ignore
     category: 'confirm',
     animation: {
       open: 'noty_effects_open',
@@ -188,6 +194,7 @@ export const displayConfirm = function displayConfirm(options) {
         I18n.t('actions.confirm'),
         `panel-btn panel-btn-inline${btnClass}`,
         () => {
+          // @ts-ignore
           n.close()
           defaults.onConfirm()
         },
@@ -197,6 +204,7 @@ export const displayConfirm = function displayConfirm(options) {
         I18n.t('actions.cancel'),
         'panel-btn panel-btn-inline',
         () => {
+          // @ts-ignore
           n.close()
           defaults.onCancel()
         },

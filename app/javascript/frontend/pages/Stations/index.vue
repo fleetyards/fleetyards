@@ -43,7 +43,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/core/components/FilteredList'
 import StationPanel from 'frontend/components/Stations/Panel'
 import FilterForm from 'frontend/components/Stations/FilterForm'
-import stationsCollection from 'frontend/api/collections/Stations'
+import stationsCollection, { StationsCollection } from 'frontend/api/collections/Stations'
 
 @Component<Stations>({
   components: {
