@@ -8,11 +8,11 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/recommended',
-    'plugin:vue-types/strongly-recommended',
-    'plugin:jest/recommended',
     'airbnb-base',
     'plugin:compat/recommended',
+    'plugin:jest/recommended',
+    'plugin:vue/recommended',
+    'plugin:vue-types/strongly-recommended',
     'prettier',
     'prettier/@typescript-eslint',
     'prettier/babel',
@@ -21,10 +21,16 @@ module.exports = {
   ],
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
   },
 
-  plugins: ['sort-class-members', 'import', 'prettier', 'cypress'],
+  plugins: [
+    '@typescript-eslint',
+    'cypress',
+    'import',
+    'prettier',
+    'sort-class-members',
+  ],
 
   settings: {
     'html/indent': 'tab',
@@ -35,12 +41,43 @@ module.exports = {
       'Object.values',
       'Array.iterator',
     ],
-    // 'import/resolver': {
-    //   typescript: {},
-    // },
   },
 
   rules: {
+    '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+      },
+    ],
+    'class-methods-use-this': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
+    'jest/expect-expect': 'off',
+    'jest/no-mocks-import': 'off',
+    'no-bitwise': 'off',
+    'no-console': [
+      'error',
+      {
+        allow: ['info', 'warn', 'error'],
+      },
+    ],
+    'no-empty-function': 'off',
+    'no-param-reassign': 'off',
+    'no-underscore-dangle': 'off',
+    'no-undef': 'off',
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+      },
+    ],
+    'no-useless-constructor': 'off',
+    'no-useless-escape': 'off',
+    'no-use-before-define': 'off',
     'prettier/prettier': [
       'warn',
       {
@@ -51,28 +88,21 @@ module.exports = {
         htmlWhitespaceSensitivity: 'ignore',
       },
     ],
-    'no-bitwise': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'no-underscore-dangle': 'off',
     'semi': ['error', 'never'],
-    'no-console': [
-      'error',
+    'sort-class-members/sort-class-members': [
+      2,
       {
-        allow: ['info', 'warn', 'error'],
+        order: [
+          '[static-properties]',
+          '[static-methods]',
+          '[properties]',
+          'constructor',
+          '[getters]',
+          '[everything-else]',
+        ],
       },
     ],
-    'no-unused-vars': [
-      'error',
-      {
-        argsIgnorePattern: '^_',
-      },
-    ],
-    'no-useless-escape': 0,
-    'space-before-function-paren': 0,
-    'vue/no-v-html': 'off',
-    'vue/component-name-in-template-casing': 'error',
+    'space-before-function-paren': 'off',
     'spaced-comment': [
       2,
       'always',
@@ -81,7 +111,8 @@ module.exports = {
         markers: ['/'],
       },
     ],
-    'jest/no-mocks-import': 'off',
+    'vue/component-name-in-template-casing': 'error',
+    'vue/no-v-html': 'off',
   },
 
   overrides: [
@@ -91,39 +122,6 @@ module.exports = {
         'jest/valid-expect': 'off',
         'jest/no-standalone-expect': 'off',
         'jest/expect-expect': 'off',
-      },
-    },
-    {
-      files: ['**/*.ts', '**/*.vue'],
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-      },
-      rules: {
-        'sort-class-members/sort-class-members': [
-          2,
-          {
-            order: [
-              '[static-properties]',
-              '[static-methods]',
-              '[properties]',
-              'constructor',
-              '[getters]',
-              '[everything-else]',
-            ],
-          },
-        ],
-        'class-methods-use-this': 'off',
-        'no-unused-vars': 'off',
-        'no-useless-constructor': 'off',
-        '@typescript-eslint/no-useless-constructor': 'error',
-        'no-empty-function': 'off',
-        '@typescript-eslint/no-empty-function': 'error',
-        '@typescript-eslint/no-unused-vars': [
-          'error',
-          {
-            argsIgnorePattern: '^_',
-          },
-        ],
       },
     },
   ],

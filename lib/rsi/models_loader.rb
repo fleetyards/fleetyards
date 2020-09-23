@@ -181,10 +181,10 @@ module RSI
 
       model.update(updates)
       store_images_updated_at = begin
-                                  Time.zone.parse(data['media'][0]['time_modified'])
-                                rescue StandardError
-                                  nil
-                                end
+        Time.zone.parse(data['media'][0]['time_modified'])
+      rescue StandardError
+        nil
+      end
 
       if !Rails.env.test? && (model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at)
         model.store_images_updated_at = data['media'][0]['time_modified']
@@ -228,10 +228,10 @@ module RSI
 
       paint.update(updates)
       store_images_updated_at = begin
-                                  Time.zone.parse(data['media'][0]['time_modified'])
-                                rescue StandardError
-                                  nil
-                                end
+        Time.zone.parse(data['media'][0]['time_modified'])
+      rescue StandardError
+        nil
+      end
 
       if !Rails.env.test? && (paint.rsi_store_image.blank? || paint.store_images_updated_at != store_images_updated_at)
         paint.store_images_updated_at = data['media'][0]['time_modified']
