@@ -39,11 +39,10 @@ class User < ApplicationRecord
 
   before_validation :clean_username
 
+  before_create :setup_otp_secret
   after_save :touch_fleet_memberships
 
   mount_uploader :avatar, AvatarUploader
-
-  before_create :setup_otp_secret
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
