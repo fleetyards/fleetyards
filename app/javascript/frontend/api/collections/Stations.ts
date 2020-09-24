@@ -1,8 +1,11 @@
 import { get } from 'frontend/api/client'
+import { prefetch } from 'frontend/api/prefetch'
 import BaseCollection from './Base'
 
 export class StationsCollection extends BaseCollection {
   records: Station[] = []
+
+  record: Station | null = null
 
   params: StationParams | null = null
 
@@ -25,6 +28,21 @@ export class StationsCollection extends BaseCollection {
     this.setPages(response.meta)
 
     return this.records
+  }
+
+  async findBySlug(slug: string): Promise<Station | null> {
+    if (prefetch('station')) {
+      this.record = prefetch('station')
+      return this.record
+    }
+
+    const response = await get(`stations/${slug}`)
+
+    if (!response.errors) {
+      this.record = response.data
+    }
+
+    return this.record
   }
 }
 

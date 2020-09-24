@@ -24,7 +24,7 @@
             </div>
             <div class="row">
               <div
-                v-for="(typedDocks, type) in docksByType(typedDocks)"
+                v-for="(typedDocks, type) in docksByType(groupDocks)"
                 :key="`docks-${group}-${type}`"
                 class="col-12"
               >

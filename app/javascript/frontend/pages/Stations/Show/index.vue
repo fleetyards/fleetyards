@@ -17,9 +17,9 @@
       </div>
       <div v-if="station" class="col-12 col-lg-4">
         <Panel>
-          <StationBaseMetrics :station="station" padding />
-          <StationDocks :station="station" padding />
-          <StationHabitations :station="station" padding />
+          <StationBaseMetrics :station="station" :padding="true" />
+          <StationDocks :station="station" :padding="true" />
+          <StationHabitations :station="station" :padding="true" />
         </Panel>
         <div class="text-right">
           <div class="page-actions">
@@ -62,21 +62,23 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
 import Btn from 'frontend/core/components/Btn'
-// import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/core/components/Panel'
 import ShopPanel from 'frontend/components/Stations/Item'
 import StationBaseMetrics from 'frontend/components/Stations/BaseMetrics'
 import StationDocks from 'frontend/components/Stations/Docks'
 import StationHabitations from 'frontend/components/Stations/Habitations'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import { stationRouteGuard } from 'frontend/utils/RouteGuards'
+import stationsCollection from 'frontend/api/collections/Stations'
 
-export default {
-  name: 'Station',
-
+@Component<StationDetail>({
+  beforeRouteEnter: stationRouteGuard,
   components: {
     Loader,
     Btn,
@@ -87,107 +89,88 @@ export default {
     StationHabitations,
     BreadCrumbs,
   },
-
   mixins: [MetaInfo],
+})
+export default class StationDetail extends Vue {
+  loading: boolean = false
 
-  data() {
-    return {
-      loading: false,
-      station: null,
+  get station() {
+    return stationsCollection.record
+  }
+
+  get metaTitle() {
+    if (!this.station) {
+      return null
     }
-  },
 
-  computed: {
-    metaTitle() {
-      if (!this.station) {
-        return null
-      }
+    return this.$t('title.station', {
+      station: this.station.name,
+      celestialObject: this.station.celestialObject.name,
+    })
+  }
 
-      return this.$t('title.station', {
-        station: this.station.name,
-        celestialObject: this.station.celestialObject.name,
-      })
-    },
+  get crumbs() {
+    if (!this.station) {
+      return null
+    }
 
-    crumbs() {
-      if (!this.station) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.station.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
+    const crumbs = [
+      {
+        to: {
+          name: 'starsystems',
+          hash: `#${this.station.celestialObject.starsystem.slug}`,
         },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.station.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.station.celestialObject.slug}`,
+        label: this.$t('nav.starsystems'),
+      },
+      {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.station.celestialObject.starsystem.slug,
           },
-          label: this.station.celestialObject.starsystem.name,
+          hash: `#${this.station.celestialObject.slug}`,
         },
-      ]
+        label: this.station.celestialObject.starsystem.name,
+      },
+    ]
 
-      if (this.station.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.station.celestialObject.starsystem.slug,
-              slug: this.station.celestialObject.parent.slug,
-            },
-          },
-          label: this.station.celestialObject.parent.name,
-        })
-      }
-
+    if (this.station.celestialObject.parent) {
       crumbs.push({
         to: {
           name: 'celestial-object',
           params: {
             starsystem: this.station.celestialObject.starsystem.slug,
-            slug: this.station.celestialObject.slug,
+            slug: this.station.celestialObject.parent.slug,
           },
-          hash: `#${this.station.slug}`,
         },
-        label: this.station.celestialObject.name,
+        label: this.station.celestialObject.parent.name,
       })
+    }
 
-      return crumbs
-    },
-  },
+    crumbs.push({
+      to: {
+        name: 'celestial-object',
+        params: {
+          starsystem: this.station.celestialObject.starsystem.slug,
+          slug: this.station.celestialObject.slug,
+        },
+        hash: `#${this.station.slug}`,
+      },
+      label: this.station.celestialObject.name,
+    })
 
-  watch: {
-    $route() {
-      this.fetch()
-    },
-  },
+    return crumbs
+  }
 
   mounted() {
     this.fetch()
-  },
+  }
 
-  methods: {
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get(
-        `stations/${this.$route.params.slug}`,
-      )
-
-      this.loading = false
-
-      if (!response.error) {
-        this.station = response.data
-      }
-    },
-  },
+  async fetch() {
+    this.loading = true
+    await stationsCollection.findBySlug(this.$route.params.slug)
+    this.loading = false
+  }
 }
 </script>
 

@@ -470,7 +470,9 @@ export default class ModelDetail extends Vue {
   }
 
   async fetch() {
+    this.loading = true
     await modelsCollection.findBySlug(this.$route.params.slug)
+    this.loading = false
   }
 }
 </script>
