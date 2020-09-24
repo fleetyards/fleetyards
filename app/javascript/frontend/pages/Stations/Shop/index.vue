@@ -140,7 +140,6 @@
 <script>
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
-// import Hash from 'frontend/mixins/Hash'
 import Panel from 'frontend/core/components/Panel'
 import ShopBaseMetrics from 'frontend/components/Shops/BaseMetrics'
 import ShopItemRow from 'frontend/components/Shops/ShopItemRow'
@@ -150,6 +149,7 @@ import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
+import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 export default {
   components: {
@@ -380,7 +380,10 @@ export default {
       this.loading = false
       if (!response.error) {
         this.commodities = response.data
-        this.scrollToAnchor()
+
+        this.$nextTick(() => {
+          scrollToAnchor(this.$route.hash)
+        })
       }
       this.setPages(response.meta)
     },

@@ -99,9 +99,9 @@ import PlanetList from 'frontend/components/Planets/List'
 import MoonPanel from 'frontend/components/Planets/Panel'
 import StarsystemBaseMetrics from 'frontend/components/Starsystems/BaseMetrics'
 import StarsystemLevelsMetrics from 'frontend/components/Starsystems/LevelsMetrics'
-// import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 export default {
   name: 'Starsystem',
@@ -192,7 +192,10 @@ export default {
       this.loading = false
       if (!response.error) {
         this.celestialObjects = response.data
-        this.scrollToAnchor()
+
+        this.$nextTick(() => {
+          scrollToAnchor(this.$route.hash)
+        })
       }
       this.setPages(response.meta)
     },

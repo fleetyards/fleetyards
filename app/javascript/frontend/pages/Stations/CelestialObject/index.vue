@@ -90,6 +90,7 @@ import Panel from 'frontend/core/components/Panel'
 import StationPanel from 'frontend/components/Stations/Panel'
 import ItemPanel from 'frontend/components/Stations/Item'
 // import Hash from 'frontend/mixins/Hash'
+import { scrollToAnchor } from 'frontend/utils/scrolling'
 import Pagination from 'frontend/mixins/Pagination'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import CelestialObjectMetrics from 'frontend/components/CelestialObjects/Metrics'
@@ -205,7 +206,10 @@ export default {
       this.loading = false
       if (!response.error) {
         this.stations = response.data
-        this.scrollToAnchor()
+
+        this.$nextTick(() => {
+          scrollToAnchor(this.$route.hash)
+        })
       }
 
       this.setPages(response.meta)

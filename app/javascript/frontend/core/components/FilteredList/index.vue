@@ -111,6 +111,7 @@ import Btn from 'frontend/core/components/Btn'
 import Paginator from 'frontend/core/components/Paginator'
 import Loader from 'frontend/core/components/Loader'
 import EmptyBox from 'frontend/core/components/EmptyBox'
+import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 @Component<FilteredList>({
   components: {
@@ -247,20 +248,6 @@ export default class FilteredList extends Vue {
     this.toggleFilterVisible(this.name)
   }
 
-  scrollToAnchor() {
-    if (!this.hash) {
-      return
-    }
-
-    this.$nextTick(() => {
-      const element = document.getElementById(this.hash.slice(1))
-      if (element) {
-        element.scrollIntoView()
-        window.scrollBy(0, -120)
-      }
-    })
-  }
-
   async fetch() {
     this.loading = true
 
@@ -282,7 +269,9 @@ export default class FilteredList extends Vue {
 
     await this.collection[this.collectionMethod](params)
 
-    this.scrollToAnchor()
+    this.$nextTick(() => {
+      scrollToAnchor(this.hash)
+    })
 
     this.loading = false
   }

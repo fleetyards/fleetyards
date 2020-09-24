@@ -106,8 +106,8 @@ import Loader from 'frontend/core/components/Loader'
 import Panel from 'frontend/core/components/Panel'
 import StarsystemList from 'frontend/components/Starsystems/List'
 import PlanetPanel from 'frontend/components/Planets/Panel'
-// import Hash from 'frontend/mixins/Hash'
 import Pagination from 'frontend/mixins/Pagination'
+import { scrollToAnchor } from 'frontend/utils/scrolling'
 
 export default {
   name: 'Starsystems',
@@ -148,7 +148,10 @@ export default {
       this.loading = false
       if (!response.error) {
         this.starsystems = response.data
-        this.scrollToAnchor()
+
+        this.$nextTick(() => {
+          scrollToAnchor(this.$route.hash)
+        })
       }
       this.setPages(response.meta)
     },
