@@ -37,6 +37,10 @@ export default class Panel extends Btn {
 
   get url() {
     const shipList = this.vehicles.map(vehicle => {
+      if (!vehicle.model) {
+        return null
+      }
+
       if (vehicle.paint && vehicle.paint.rsiId) {
         return vehicle.paint.rsiName
       }
