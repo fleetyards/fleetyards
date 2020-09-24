@@ -2,7 +2,7 @@
   <form @submit.prevent="filter">
     <template v-if="mobile">
       <FilterGroup
-        v-model="form.originIn"
+        v-model="form.originStationIn"
         :label="$t('labels.filters.tradeRoutes.origin')"
         fetch-path="stations?origin"
         name="origin"
@@ -14,7 +14,7 @@
       />
 
       <FilterGroup
-        v-model="form.destinationIn"
+        v-model="form.destinationStationIn"
         :label="$t('labels.filters.tradeRoutes.destination')"
         fetch-path="stations?destination"
         name="destination"
