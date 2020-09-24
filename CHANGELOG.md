@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.6](https://github.com/fleetyards/fleetyards/compare/v3.80.5...v3.80.6) (2020-09-24)
+
+
+### Bug Fixes
+
+* filtergroup ([be15aec](https://github.com/fleetyards/fleetyards/commit/be15aec953396c743024d4e3f8060559f03348f4))
+* scrollToAnchor ([ba66e20](https://github.com/fleetyards/fleetyards/commit/ba66e20eeb67b8ce9383f69f3d174756b689b6cc))
+
 ### [3.80.5](https://github.com/fleetyards/fleetyards/compare/v3.80.4...v3.80.5) (2020-09-24)
 
 
