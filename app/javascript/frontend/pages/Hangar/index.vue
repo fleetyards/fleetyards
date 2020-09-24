@@ -352,14 +352,26 @@ export default class Hangar extends Vue {
   }
 
   showEditModal(vehicle) {
+    if (!this.$refs.vehicleModal) {
+      return
+    }
+
     this.$refs.vehicleModal.open(vehicle)
   }
 
   showNewModal() {
+    if (!this.$refs.newVehiclesModal) {
+      return
+    }
+
     this.$refs.newVehiclesModal.open()
   }
 
   showAddonsModal(vehicle) {
+    if (!this.$refs.addonsModal) {
+      return
+    }
+
     this.$refs.addonsModal.open(vehicle)
   }
 

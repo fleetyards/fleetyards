@@ -195,6 +195,10 @@ export default class HangarFleetchart extends Vue {
   }
 
   showEditModal(vehicle) {
+    if (!this.$refs.vehicleModal) {
+      return
+    }
+
     this.$refs.vehicleModal.open(vehicle)
   }
 
@@ -203,10 +207,18 @@ export default class HangarFleetchart extends Vue {
   }
 
   showNewModal() {
+    if (!this.$refs.newVehiclesModal) {
+      return
+    }
+
     this.$refs.newVehiclesModal.open()
   }
 
   showAddonsModal(vehicle) {
+    if (!this.$refs.addonsModal) {
+      return
+    }
+
     this.$refs.addonsModal.open(vehicle)
   }
 

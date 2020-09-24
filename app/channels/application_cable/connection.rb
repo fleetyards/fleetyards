@@ -8,9 +8,8 @@ module ApplicationCable
       self.current_user = find_verified_user
     end
 
-    private def find_verified_user
-      current_user = env['warden'].user
-      current_user || reject_unauthorized_connection
+    protected def find_verified_user
+      env['warden'].user
     end
   end
 end
