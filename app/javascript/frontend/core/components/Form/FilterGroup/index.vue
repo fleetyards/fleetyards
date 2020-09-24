@@ -288,8 +288,8 @@ export default {
 
     selectedOptions() {
       if (this.multiple) {
-        return this.availableOptions.filter(item =>
-          this.value.includes(item[this.valueAttr]),
+        return this.availableOptions.filter(
+          item => this.value && this.value.includes(item[this.valueAttr]),
         )
       }
       const selectedOption = this.availableOptions.find(
