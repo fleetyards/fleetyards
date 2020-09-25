@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.8](https://github.com/fleetyards/fleetyards/compare/v3.80.7...v3.80.8) (2020-09-25)
+
+
+### Bug Fixes
+
+* filtergroup ([7c20b09](https://github.com/fleetyards/fleetyards/commit/7c20b094a10272d3c18608145569a79ac6be78f3))
+* specs ([708ff4f](https://github.com/fleetyards/fleetyards/commit/708ff4ff6907d867ae0cb2a62eb3599a1149d131))
+* stations detail ([35a16af](https://github.com/fleetyards/fleetyards/commit/35a16afcc07bab0648b0d7b677eaeb0ad9a66527))
+* traderoutes filters ([750f899](https://github.com/fleetyards/fleetyards/commit/750f8990090190be5bfce444da2787a5790d3952))
+
 ### [3.80.7](https://github.com/fleetyards/fleetyards/compare/v3.80.6...v3.80.7) (2020-09-24)
 
 
