@@ -212,12 +212,21 @@ module Api
         end
 
         it 'should return an filtered list for planet' do
-          get :index, params: { q: { celestialObjectIn: ['yela'] } }
+          get :index, params: { q: { originCelestialObjectIn: ['yela'] } }
 
           assert_response :ok
           json = JSON.parse response.body
 
-          assert_equal 2, json.size
+          assert_equal 1, json.size
+        end
+
+        it 'should return an filtered list for planet' do
+          get :index, params: { q: { destinationCelestialObjectIn: ['yela'] } }
+
+          assert_response :ok
+          json = JSON.parse response.body
+
+          assert_equal 1, json.size
         end
       end
     end
