@@ -223,8 +223,8 @@ export default class FilterGroup extends Vue {
 
   get selectedOptions() {
     if (this.multiple) {
-      return this.availableOptions.filter(item =>
-        this.value.includes(item[this.valueAttr]),
+      return this.availableOptions.filter(
+        item => this.value && this.value.includes(item[this.valueAttr]),
       )
     }
     const selectedOption = this.availableOptions.find(
@@ -385,7 +385,7 @@ export default class FilterGroup extends Vue {
 
   selected(option) {
     if (this.multiple) {
-      return this.value.includes(option)
+      return this.value && this.value.includes(option)
     }
 
     return this.value === option

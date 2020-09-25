@@ -446,7 +446,7 @@ export default {
 
     selected(option) {
       if (this.multiple) {
-        return this.value.includes(option)
+        return this.value && this.value.includes(option)
       }
 
       return this.value === option
