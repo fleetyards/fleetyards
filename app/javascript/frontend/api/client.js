@@ -16,10 +16,6 @@ const client = axios.create({
   xsrfHeaderName: 'X-CSRF-Token',
 })
 
-const { CancelToken } = axios
-
-const cancelations = {}
-
 const extractMetaInfo = function extractMetaInfo(headers, params) {
   const links = linkHeaderParser(headers.link)
   let meta = null
@@ -78,12 +74,6 @@ export async function get(path, params = {}, silent = false) {
     return handleResponse(
       await client.get(path, {
         params,
-        cancelToken: new CancelToken(c => {
-          if (cancelations[path]) {
-            cancelations[path]('cancel')
-          }
-          cancelations[path] = c
-        }),
       }),
       params,
       silent,

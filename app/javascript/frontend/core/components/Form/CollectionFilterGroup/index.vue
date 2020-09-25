@@ -291,7 +291,7 @@ export default class FilterGroup extends Vue {
   async fetchOptions() {
     this.loading = true
 
-    const options = await this.collection[this.collectionMethod](
+    await this.collection[this.collectionMethod](
       this.queryParams({
         page: this.page,
         search: this.search,
@@ -304,8 +304,8 @@ export default class FilterGroup extends Vue {
       this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
     }
 
-    if (options.length) {
-      this.addOptions(options)
+    if (this.collection.records.length) {
+      this.addOptions(this.collection.records)
       this.fetchMissingOption()
     }
   }

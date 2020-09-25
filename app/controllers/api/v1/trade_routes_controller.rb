@@ -21,9 +21,10 @@ module Api
       private def trade_routes_query_params
         @trade_routes_query_params ||= query_params(
           :cargo_ship,
-          station_in: [], origin_in: [], destination_in: [], celestial_object_in: [],
-          starsystem_in: [], commodity_in: [], commodity_type_in: [], commodity_type_not_in: [],
-          sorts: []
+          origin_station_in: [], destination_station_in: [], origin_celestial_object_in: [],
+          destination_celestial_object_in: [], origin_starsystem_in: [],
+          destination_starsystem_in: [], commodity_in: [], commodity_type_in: [],
+          commodity_type_not_in: [], sorts: []
         )
       end
     end

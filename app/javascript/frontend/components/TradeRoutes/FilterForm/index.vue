@@ -59,11 +59,11 @@
       :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.celestialObjectIn"
-      :label="$t('labels.filters.stations.celestialObject')"
-      fetch-path="celestial-objects"
-      name="celestial-objects"
+    <CollectionFilterGroup
+      v-model="form.originCelestialObjectIn"
+      :label="$t('labels.filters.tradeRoutes.originCelestialObject')"
+      :collection="celestialObjectCollection"
+      name="origin-celestial-objects"
       value-attr="slug"
       :paginated="true"
       :searchable="true"
@@ -71,11 +71,35 @@
       :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.starsystemIn"
-      :label="$t('labels.filters.stations.starsystem')"
-      fetch-path="starsystems"
-      name="starsystems"
+    <CollectionFilterGroup
+      v-model="form.destinationCelestialObjectIn"
+      :label="$t('labels.filters.tradeRoutes.destinationCelestialObject')"
+      :collection="celestialObjectCollection"
+      name="destination-celestial-objects"
+      value-attr="slug"
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <CollectionFilterGroup
+      v-model="form.originStarsystemIn"
+      :collection="starsystemCollection"
+      :label="$t('labels.filters.tradeRoutes.originStarsystem')"
+      name="origin-starsystems"
+      value-attr="slug"
+      :paginated="true"
+      :searchable="true"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <CollectionFilterGroup
+      v-model="form.destinationStarsystemIn"
+      :collection="starsystemCollection"
+      :label="$t('labels.filters.tradeRoutes.destinationStarsystem')"
+      name="destination-starsystems"
       value-attr="slug"
       :paginated="true"
       :searchable="true"
@@ -94,60 +118,70 @@
   </form>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import Filters from 'frontend/mixins/Filters'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
 import Btn from 'frontend/core/components/Btn'
+import { Getter } from 'vuex-class'
+import celestialObjectCollection from 'frontend/api/collections/CelestialObjects'
+import starsystemCollection from 'frontend/api/collections/Starsystems'
 
-export default {
+@Component<TradeRoutesFilterForm>({
   components: {
     FilterGroup,
+    CollectionFilterGroup,
     Btn,
   },
-
   mixins: [Filters],
+})
+export default class TradeRoutesFilterForm extends Vue {
+  celestialObjectCollection: CelestialObjectCollection = celestialObjectCollection
 
-  data() {
+  starsystemCollection: StarsystemCollection = starsystemCollection
+
+  form: TradeRoutesFilters
+
+  @Getter('mobile') mobile
+
+  mounted() {
     const query = this.$route.query.q || {}
-    return {
-      form: {
-        cargoShip: query.cargoShip || null,
-        commodityIn: query.commodityIn || [],
-        commodityTypeNotIn: query.commodityTypeNotIn || [],
-        originIn: query.originIn || [],
-        destinationIn: query.destinationIn || [],
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-      },
+    this.form = {
+      cargoShip: query.cargoShip || null,
+      commodityIn: query.commodityIn || [],
+      commodityTypeNotIn: query.commodityTypeNotIn || [],
+      originStationIn: query.originStationIn || [],
+      destinationStationIn: query.destinationStationIn || [],
+      originCelestialObjectIn: query.originCelestialObjectIn || [],
+      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
+      originStarsystemIn: query.originStarsystemIn || [],
+      destinationStarsystemIn: query.destinationStarsystemIn || [],
     }
-  },
+  }
 
-  computed: {
-    ...mapGetters(['mobile']),
-  },
+  @Watch('$route')
+  onRouteChange() {
+    const query = this.$route.query.q || {}
 
-  watch: {
-    $route() {
-      const query = this.$route.query.q || {}
+    this.form = {
+      cargoShip: query.cargoShip || null,
+      commodityIn: query.commodityIn || [],
+      commodityTypeNotIn: query.commodityTypeNotIn || [],
+      originStationIn: query.originStationIn || [],
+      destinationStationIn: query.destinationStationIn || [],
+      originCelestialObjectIn: query.originCelestialObjectIn || [],
+      destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
+      originStarsystemIn: query.originStarsystemIn || [],
+      destinationStarsystemIn: query.destinationStarsystemIn || [],
+    }
 
-      this.form = {
-        cargoShip: query.cargoShip || null,
-        commodityIn: query.commodityIn || [],
-        commodityTypeNotIn: query.commodityTypeNotIn || [],
-        originIn: query.originIn || [],
-        destinationIn: query.destinationIn || [],
-        celestialObjectIn: query.celestialObjectIn || [],
-        starsystemIn: query.starsystemIn || [],
-      }
+    const storedFilters = JSON.parse(JSON.stringify(this.form))
 
-      const storedFilters = JSON.parse(JSON.stringify(this.form))
-
-      if (!storedFilters.cargoShip) {
-        delete storedFilters.cargoShip
-      }
-    },
-  },
+    if (!storedFilters.cargoShip) {
+      delete storedFilters.cargoShip
+    }
+  }
 }
 </script>
