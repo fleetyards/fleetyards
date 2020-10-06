@@ -22,7 +22,7 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resources :settings, except: %i[index show]
 
-  authenticate :admin_user, (->(u) { u.admin? }) do
+  authenticate :admin_user, (->(u) { u.present? }) do
     mount Sidekiq::Web => '/workers'
   end
 
