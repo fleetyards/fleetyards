@@ -42,7 +42,7 @@ export default class FleetNav extends Vue {
 
   mounted() {
     this.fetch()
-    this.$comlink.$on('fleetUpdate', this.fetch)
+    this.$comlink.$on('fleet-update', this.fetch)
   }
 
   async fetch() {

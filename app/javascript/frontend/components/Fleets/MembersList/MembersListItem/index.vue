@@ -162,7 +162,7 @@ export default class MembersListItem extends Vue {
         )
 
         if (!response.error) {
-          this.$comlink.$emit('fleetMemberUpdate')
+          this.$comlink.$emit('fleet-member-update')
           displaySuccess({
             text: this.$t('messages.fleet.members.destroy.success'),
           })
@@ -189,7 +189,7 @@ export default class MembersListItem extends Vue {
     this.updating = false
 
     if (!response.error) {
-      this.$comlink.$emit('fleetMemberUpdate')
+      this.$comlink.$emit('fleet-member-update')
       displaySuccess({
         text: this.$t('messages.fleet.members.demote.success'),
       })
@@ -210,7 +210,7 @@ export default class MembersListItem extends Vue {
     this.updating = false
 
     if (!response.error) {
-      this.$comlink.$emit('fleetMemberUpdate')
+      this.$comlink.$emit('fleet-member-update')
       displaySuccess({
         text: this.$t('messages.fleet.members.promote.success'),
       })

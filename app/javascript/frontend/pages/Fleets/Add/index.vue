@@ -106,7 +106,7 @@ export default {
       this.submitting = false
 
       if (fleet) {
-        this.$comlink.$emit('fleetCreate')
+        this.$comlink.$emit('fleet-create')
 
         displaySuccess({
           text: this.$t('messages.fleet.create.success'),

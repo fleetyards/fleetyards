@@ -117,7 +117,7 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$comlink.$emit('fleetUpdate')
+        this.$comlink.$emit('fleet-update')
 
         displaySuccess({
           text: this.$t('messages.fleet.invites.accept.success'),
@@ -145,7 +145,7 @@ export default {
           )
 
           if (!response.error) {
-            this.$comlink.$emit('fleetUpdate')
+            this.$comlink.$emit('fleet-update')
 
             displaySuccess({
               text: this.$t('messages.fleet.invites.decline.success'),

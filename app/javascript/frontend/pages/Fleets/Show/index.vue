@@ -207,7 +207,7 @@
 
       <FleetVehiclesFilterForm slot="filter" />
 
-      <template v-slot:record="{ record }">
+      <template #record="{ record }">
         <ModelPanel
           v-if="record.model"
           :model="record.model"

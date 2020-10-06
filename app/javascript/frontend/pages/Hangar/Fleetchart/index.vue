@@ -41,7 +41,7 @@
       :route-query="$route.query"
       :hash="$route.hash"
     >
-      <template v-slot:actions="{ records }">
+      <template #actions="{ records }">
         <Starship42Btn v-if="mobile" :vehicles="records" size="small" />
         <DownloadScreenshotBtn
           element="#fleetchart"
@@ -56,7 +56,7 @@
         :hangar-groups-options="groupsCollection.records"
       />
 
-      <template v-slot:default="{ records }">
+      <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
             <div class="col-12 col-lg-4 fleetchart-slider">
@@ -181,8 +181,8 @@ export default class HangarFleetchart extends Vue {
     this.fetch()
     this.setupUpdates()
 
-    this.$comlink.$on('hangarGroupDelete', this.fetch)
-    this.$comlink.$on('hangarGroupSave', this.groupsCollection.findAll)
+    this.$comlink.$on('hangar-group-delete', this.fetch)
+    this.$comlink.$on('hangar-group-save', this.groupsCollection.findAll)
   }
 
   beforeDestroy() {
@@ -190,8 +190,8 @@ export default class HangarFleetchart extends Vue {
       this.vehiclesChannel.unsubscribe()
     }
 
-    this.$comlink.$off('hangarGroupDelete')
-    this.$comlink.$off('hangarGroupSave')
+    this.$comlink.$off('hangar-group-delete')
+    this.$comlink.$off('hangar-group-save')
   }
 
   showEditModal(vehicle) {

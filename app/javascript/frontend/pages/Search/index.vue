@@ -49,7 +49,7 @@
         :hash="$route.hash"
         :paginated="true"
       >
-        <template v-slot:default="{ records }">
+        <template #default="{ records }">
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="result in records"

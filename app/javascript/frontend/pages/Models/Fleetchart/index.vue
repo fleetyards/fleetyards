@@ -26,7 +26,7 @@
 
       <ModelsFilterForm slot="filter" />
 
-      <template v-slot:default="{ records }">
+      <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
             <div class="col-12 col-lg-4 fleetchart-slider">
