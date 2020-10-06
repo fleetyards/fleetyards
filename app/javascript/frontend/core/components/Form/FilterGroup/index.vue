@@ -374,7 +374,7 @@ export default {
       this.loading = false
 
       if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
+        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
       }
 
       if (!response.error) {

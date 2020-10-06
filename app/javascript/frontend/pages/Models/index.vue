@@ -29,7 +29,7 @@
 
       <ModelsFilterForm slot="filter" />
 
-      <template v-slot:record="{ record }">
+      <template #record="{ record }">
         <ModelPanel :model="record" :details="detailsVisible" />
       </template>
     </FilteredList>

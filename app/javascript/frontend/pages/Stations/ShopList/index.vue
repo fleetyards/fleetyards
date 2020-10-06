@@ -16,7 +16,7 @@
     >
       <FilterForm slot="filter" />
 
-      <template v-slot:record="{ record }">
+      <template #record="{ record }">
         <ShopPanel :shop="record" />
       </template>
     </FilteredList>

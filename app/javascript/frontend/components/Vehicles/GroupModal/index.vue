@@ -149,7 +149,7 @@ export default {
 
       if (!response.error) {
         this.$refs.modal.close()
-        this.$comlink.$emit('hangarGroupDelete', response.data)
+        this.$comlink.$emit('hangar-group-delete', response.data)
       } else {
         this.deleting = false
       }
@@ -175,7 +175,7 @@ export default {
 
       if (!response.error) {
         this.$refs.modal.close()
-        this.$comlink.$emit('hangarGroupSave', response.data)
+        this.$comlink.$emit('hangar-group-save', response.data)
       } else {
         displayAlert({
           text: response.error.response.data.message,
@@ -190,7 +190,7 @@ export default {
 
       if (!response.error) {
         this.$refs.modal.close()
-        this.$comlink.$emit('hangarGroupSave', response.data)
+        this.$comlink.$emit('hangar-group-save', response.data)
       } else {
         displayAlert({
           text: response.error.response.data.message,

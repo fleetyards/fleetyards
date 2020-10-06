@@ -108,7 +108,7 @@ export default {
       this.submitting = false
 
       if (!response.error) {
-        this.$comlink.$emit('userUpdate')
+        this.$comlink.$emit('user-update')
 
         displaySuccess({
           text: this.$t('messages.updateProfile.success'),

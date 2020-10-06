@@ -9,14 +9,14 @@
   >
     <FilterForm slot="filter" />
 
-    <template v-slot:default="{ records, loading }">
+    <template #default="{ records, loading }">
       <ImageUploader
         :loading="loading"
         :images="records"
         :gallery-id="galleryId"
         :gallery-type="galleryType"
-        @imageDeleted="fetch"
-        @imageUploaded="fetch"
+        @image-deleted="fetch"
+        @image-uploaded="fetch"
       />
     </template>
   </FilteredList>

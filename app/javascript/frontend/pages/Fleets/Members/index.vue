@@ -36,7 +36,7 @@
     >
       <FleetMembersFilterForm slot="filter" />
 
-      <template v-slot:default="{ records }">
+      <template #default="{ records }">
         <FleetMembersList :members="records" :role="fleet.myRole" />
       </template>
     </FilteredList>
@@ -124,13 +124,13 @@ export default class FleetMemmbers extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
-    this.$comlink.$on('fleetMemberInvited', this.fetch)
-    this.$comlink.$on('fleetMemberUpdate', this.fetch)
+    this.$comlink.$on('fleet-member-invited', this.fetch)
+    this.$comlink.$on('fleet-member-update', this.fetch)
   }
 
   beforeDestroy() {
-    this.$comlink.$off('fleetMemberInvited')
-    this.$comlink.$off('fleetMemberUpdate')
+    this.$comlink.$off('fleet-member-invited')
+    this.$comlink.$off('fleet-member-update')
   }
 
   async fetch() {

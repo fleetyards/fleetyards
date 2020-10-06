@@ -3,23 +3,23 @@
     <div class="store-image wide">
       <a
         v-if="uploaded"
-        :href="image.url"
-        :title="image.name"
-        :download="image.name"
+        :href="internalImage.url"
+        :title="internalImage.name"
+        :download="internalImage.name"
         target="_blank"
         rel="noopener"
       >
         <div
-          :key="image.smallUrl"
-          v-lazy:background-image="image.smallUrl"
+          :key="internalImage.smallUrl"
+          v-lazy:background-image="internalImage.smallUrl"
           class="image lazy"
           alt="storeImage"
         />
       </a>
       <div
         v-else
-        :key="image.smallUrl"
-        v-lazy:background-image="image.smallUrl"
+        :key="internalImage.smallUrl"
+        v-lazy:background-image="internalImage.smallUrl"
         class="image lazy"
         alt="storeImage"
       />
@@ -28,59 +28,62 @@
       <h2>
         <a
           v-if="uploaded"
-          :href="image.url"
-          :title="image.name"
-          :download="image.name"
+          :href="internalImage.url"
+          :title="internalImage.name"
+          :download="internalImage.name"
         >
-          {{ image.name }}
+          {{ internalImage.name }}
         </a>
         <span v-else>
-          {{ image.name }}
+          {{ internalImage.name }}
         </span>
       </h2>
-      <div v-if="image.error">
+      <div v-if="internalImage.error">
         <span class="pill pill-danger">
           {{ $t('labels.image.error') }}
         </span>
       </div>
       <template v-if="!uploaded">
-        <p v-if="image.active">
+        <p v-if="internalImage.active">
           {{ $t('labels.image.processing') }}
-          {{ image.speed | formatSize }}
+          {{ internalImage.speed | formatSize }}
         </p>
-        <div v-if="image.active || image.progress !== '0.00'" class="progress">
+        <div
+          v-if="internalImage.active || internalImage.progress !== '0.00'"
+          class="progress"
+        >
           <div
             class="progress-bar progress-bar-info progress-bar-striped"
             :class="{
-              'progress-bar-danger': image.error,
-              'progress-bar-animated': image.active,
+              'progress-bar-danger': internalImage.error,
+              'progress-bar-animated': internalImage.active,
             }"
             role="progressbar"
-            :style="{ width: image.progress + '%' }"
+            :style="{ width: internalImage.progress + '%' }"
           >
-            {{ image.progress }} %
+            {{ internalImage.progress }} %
           </div>
         </div>
       </template>
     </div>
     <div class="size">
-      {{ image.size | formatSize }}
+      {{ internalImage.size | formatSize }}
     </div>
     <div class="actions">
       <template v-if="uploaded">
         <Btn :disabled="updating" size="small" @click.native="toggleEnabled">
-          <span v-show="image.enabled">
+          <span v-show="internalImage.enabled">
             <i class="fa fa-check-square" />
           </span>
-          <span v-show="!image.enabled">
+          <span v-show="!internalImage.enabled">
             <i class="far fa-square" />
           </span>
         </Btn>
         <Btn :disabled="updating" size="small" @click.native="toggleGlobal">
-          <span v-show="image.global">
+          <span v-show="internalImage.global">
             <i class="fas fa-globe" />
           </span>
-          <span v-show="!image.global">
+          <span v-show="!internalImage.global">
             <i class="fal fa-globe icon-disabled" />
           </span>
         </Btn>
@@ -90,11 +93,11 @@
         </Btn>
       </template>
       <template v-else>
-        <Btn v-if="!image.success" @click.native="start(image)">
+        <Btn v-if="!internalImage.success" @click.native="start(internalImage)">
           <i class="fa fa-upload" />
           <span>{{ $t('labels.image.start') }}</span>
         </Btn>
-        <Btn @click.native="cancel(image)">
+        <Btn @click.native="cancel(internalImage)">
           <i class="fa fa-ban-circle" />
           <span>{{ $t('labels.image.cancel') }}</span>
         </Btn>
@@ -122,58 +125,71 @@ export default {
     return {
       deleting: false,
       updating: false,
+      internalImage: null,
     }
   },
 
   computed: {
     uploaded() {
-      return !!this.image.url
+      return !!this.internalImage.url
     },
+  },
+
+  watch: {
+    image() {
+      this.internalImage = this.image
+    },
+  },
+
+  mounted() {
+    this.internalImage = this.image
   },
 
   methods: {
     start() {
-      this.$emit('start', this.image)
+      this.$emit('start', this.internalImage)
     },
 
     cancel() {
-      this.$emit('cancel', this.image)
+      this.$emit('cancel', this.internalImage)
     },
 
     async toggleEnabled() {
       this.updating = true
-      this.image.enabled = !this.image.enabled
-      const response = await this.$api.put(`images/${this.image.id}`, {
-        enabled: this.image.enabled,
+      this.internalImage.enabled = !this.internalImage.enabled
+      const response = await this.$api.put(`images/${this.internalImage.id}`, {
+        enabled: this.internalImage.enabled,
       })
 
       this.updating = false
 
       if (response.error) {
-        this.image.enabled = !this.image.enabled
+        this.internalImage.enabled = !this.internalImage.enabled
       }
     },
 
     async toggleGlobal() {
       this.updating = true
-      this.image.global = !this.image.global
-      const response = await this.$api.put(`images/${this.image.id}`, {
-        global: this.image.global,
+      this.internalImage.global = !this.internalImage.global
+      const response = await this.$api.put(`images/${this.internalImage.id}`, {
+        global: this.internalImage.global,
       })
 
       this.updating = false
 
       if (response.error) {
-        this.image.global = !this.image.global
+        this.internalImage.global = !this.internalImage.global
       }
     },
 
     async deleteImage() {
       this.deleting = true
-      const response = await this.$api.destroy(`images/${this.image.id}`)
+      const response = await this.$api.destroy(
+        `images/${this.internalImage.id}`,
+      )
 
       if (!response.error) {
-        this.$emit('imageDeleted', this.image)
+        this.$emit('image-deleted', this.internalImage)
         this.deleting = false
       }
     },

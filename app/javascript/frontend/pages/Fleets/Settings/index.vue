@@ -69,7 +69,7 @@ export default class FleetSettingsIndex extends Vue {
 
   mounted() {
     this.fetch()
-    this.$comlink.$on('fleetUpdate', this.fetch)
+    this.$comlink.$on('fleet-update', this.fetch)
   }
 
   async fetch() {
@@ -90,7 +90,7 @@ export default class FleetSettingsIndex extends Vue {
         this.leaving = false
 
         if (!response.error) {
-          this.$comlink.$emit('fleetUpdate')
+          this.$comlink.$emit('fleet-update')
 
           displaySuccess({
             text: this.$t('messages.fleet.leave.success'),
