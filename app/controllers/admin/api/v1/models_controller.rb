@@ -17,8 +17,8 @@ module Admin
           @q = index_scope
 
           @models = @q.result
-                      .page(params[:page])
-                      .per(per_page(Model))
+            .page(params[:page])
+            .per(per_page(Model))
         end
 
         def options
@@ -27,17 +27,17 @@ module Admin
           @q = index_scope
 
           @models = @q.result
-                      .page(params[:page])
-                      .per(per_page(Model))
+            .page(params[:page])
+            .per(per_page(Model))
         end
 
         def images
           authorize! :show, :admin_api_models
           model = Model.find(params[:id])
           @images = model.images
-                         .order('images.created_at desc')
-                         .page(params[:page])
-                         .per(per_page(Image))
+            .order('images.created_at desc')
+            .page(params[:page])
+            .per(per_page(Image))
         end
 
         private def index_scope

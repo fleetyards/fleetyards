@@ -52,23 +52,23 @@ module Api
 
         if ActiveModel::Type::Boolean.new.cast(params['grouped'])
           model_ids = @q.result
-                        .includes(:model)
-                        .joins(:model)
-                        .pluck(:model_id)
+            .includes(:model)
+            .joins(:model)
+            .pluck(:model_id)
 
           @models = fleet.models(loaner: loaner_included?)
-                         .where(id: model_ids)
-                         .order(name: :asc)
-                         .page(params[:page])
-                         .per(per_page(Model))
+            .where(id: model_ids)
+            .order(name: :asc)
+            .page(params[:page])
+            .per(per_page(Model))
 
           render 'api/v1/fleets/models'
         else
           @vehicles = @q.result(distinct: true)
-                        .includes(:model)
-                        .joins(:model)
-                        .page(params[:page])
-                        .per(per_page(Vehicle))
+            .includes(:model)
+            .joins(:model)
+            .page(params[:page])
+            .per(per_page(Vehicle))
         end
       end
 
@@ -82,10 +82,10 @@ module Api
         @q = scope.ransack(member_query_params)
 
         @members = @q.result(distinct: true)
-                     .includes(:user)
-                     .joins(:user)
-                     .page(params[:page])
-                     .per(per_page(FleetMembership))
+          .includes(:user)
+          .joins(:user)
+          .page(params[:page])
+          .per(per_page(FleetMembership))
       end
 
       def member_quick_stats
@@ -137,9 +137,9 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
-                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+          .includes(:model)
+          .joins(:model)
+          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       # rubocop:disable Metrics/CyclomaticComplexity
@@ -239,11 +239,11 @@ module Api
 
       private def fleet_params
         @fleet_params ||= params.transform_keys(&:underscore)
-                                .permit(
-                                  :fid, :name, :logo, :background_image, :public, :remove_logo,
-                                  :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-                                  :twitch, :guilded
-                                )
+          .permit(
+            :fid, :name, :logo, :background_image, :public, :remove_logo,
+            :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
+            :twitch, :guilded
+          )
       end
 
       private def price_range

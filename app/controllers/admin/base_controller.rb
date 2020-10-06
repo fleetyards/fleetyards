@@ -16,8 +16,8 @@ module Admin
 
     private def online_count
       Ahoy::Event.without_users(tracking_blocklist)
-                 .select(:visit_id).distinct
-                 .where('time > ?', 15.minutes.ago).count
+        .select(:visit_id).distinct
+        .where('time > ?', 15.minutes.ago).count
     end
     helper_method :online_count
 
@@ -28,17 +28,17 @@ module Admin
 
     private def transform_for_chart(data)
       data.sort_by { |_label, count| count }.reverse
-          .each_with_index.map do |(label, count), index|
-            point = {
-              name: label,
-              y: count
-            }
-            if index.zero?
-              point[:selected] = true
-              point[:sliced] = true
-            end
-            point
-          end
+        .each_with_index.map do |(label, count), index|
+        point = {
+          name: label,
+          y: count
+        }
+        if index.zero?
+          point[:selected] = true
+          point[:sliced] = true
+        end
+        point
+      end
     end
   end
 end

@@ -14,8 +14,8 @@ module Api
         @q = TradeRoute.with_profit.ransack(trade_routes_query_params)
 
         @trade_routes = @q.result
-                          .page(params[:page])
-                          .per(per_page(TradeRoute))
+          .page(params[:page])
+          .per(per_page(TradeRoute))
       end
 
       private def trade_routes_query_params

@@ -88,7 +88,7 @@ module Api
 
       private def membeship_params
         @membeship_params ||= params.transform_keys(&:underscore)
-                                    .permit(:primary, :ships_filter, :hangar_group_id)
+          .permit(:primary, :ships_filter, :hangar_group_id)
       end
 
       private def fleet
@@ -97,18 +97,18 @@ module Api
 
       private def member
         @member ||= fleet.fleet_memberships
-                         .includes(:user)
-                         .joins(:user)
-                         .where(users: { username: params[:username] })
-                         .first!
+          .includes(:user)
+          .joins(:user)
+          .where(users: { username: params[:username] })
+          .first!
       end
 
       private def my_membership
         @my_membership ||= fleet.fleet_memberships
-                                .includes(:user)
-                                .joins(:user)
-                                .where(user_id: current_user.id)
-                                .first!
+          .includes(:user)
+          .joins(:user)
+          .where(user_id: current_user.id)
+          .first!
       end
     end
   end

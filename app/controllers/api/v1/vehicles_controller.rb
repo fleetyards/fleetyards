@@ -32,10 +32,10 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(model: [:manufacturer])
-                      .joins(model: [:manufacturer])
-                      .page(params[:page])
-                      .per(per_page(Vehicle))
+          .includes(model: [:manufacturer])
+          .joins(model: [:manufacturer])
+          .page(params[:page])
+          .per(per_page(Vehicle))
       end
 
       def export
@@ -50,8 +50,8 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(model: [:manufacturer])
-                      .joins(model: [:manufacturer])
+          .includes(model: [:manufacturer])
+          .joins(model: [:manufacturer])
       end
 
       def import
@@ -87,9 +87,9 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(model: [:manufacturer])
-                      .joins(model: [:manufacturer])
-                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+          .includes(model: [:manufacturer])
+          .joins(model: [:manufacturer])
+          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       # rubocop:disable Metrics/CyclomaticComplexity
@@ -141,41 +141,41 @@ module Api
         vehicle_query_params['sorts'] = sort_by_name(['flagship desc', 'name asc', 'model_name asc'], 'model_name asc')
 
         @q = user.vehicles
-                 .public
-                 .ransack(vehicle_query_params)
+          .public
+          .ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
-                      .page(params[:page])
-                      .per(per_page(Vehicle))
+          .includes(:model)
+          .joins(:model)
+          .page(params[:page])
+          .per(per_page(Vehicle))
       end
 
       def public_fleetchart
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         @q = user.vehicles
-                 .visible
-                 .public
-                 .ransack(vehicle_query_params)
+          .visible
+          .public
+          .ransack(vehicle_query_params)
 
         @vehicles = []
         return unless user.public_hangar?
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
-                      .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+          .includes(:model)
+          .joins(:model)
+          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
         vehicles = user.vehicles
-                       .public
-                       .where(loaner: false)
-                       .includes(:model)
-                       .order('models.classification asc')
+          .public
+          .where(loaner: false)
+          .includes(:model)
+          .order('models.classification asc')
 
         models = vehicles.map(&:model)
 
@@ -195,18 +195,18 @@ module Api
       def embed
         usernames = params.fetch(:usernames, []).map(&:downcase)
         user_ids = User.where('lower(username) IN (?)', usernames)
-                       .where(public_hangar: true)
-                       .pluck(:id)
+          .where(public_hangar: true)
+          .pluck(:id)
 
         vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
 
         @q = Vehicle.where(user_id: user_ids)
-                    .public
-                    .ransack(vehicle_query_params)
+          .public
+          .ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-                      .includes(:model)
-                      .joins(:model)
+          .includes(:model)
+          .joins(:model)
 
         render 'api/v1/vehicles/public'
       end
@@ -214,9 +214,9 @@ module Api
       def hangar_items
         authorize! :index, :api_hangar
         model_ids = current_user.vehicles
-                                .where(loaner: false)
-                                .visible
-                                .pluck(:model_id)
+          .where(loaner: false)
+          .visible
+          .pluck(:model_id)
         @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
       end
 
@@ -315,10 +315,10 @@ module Api
       private def vehicle_params
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
-                .permit(
-                  :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
-                  hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
-                ).merge(user_id: current_user.id)
+            .permit(
+              :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
+              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
+            ).merge(user_id: current_user.id)
         end
       end
 

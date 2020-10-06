@@ -9,8 +9,8 @@ module Admin
       authorize! :index, :admin_vehicles
       @q = Vehicle.ransack(params[:q])
       @vehicles = @q.result
-                    .page(params.fetch(:page) { nil })
-                    .per(40)
+        .page(params.fetch(:page) { nil })
+        .per(40)
     end
 
     private def save_filters

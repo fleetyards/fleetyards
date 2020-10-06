@@ -17,7 +17,7 @@ class HangarImporter
   def initialize(data)
     @data = data.map do |item|
       item.transform_keys(&:underscore)
-          .transform_keys(&:to_sym)
+        .transform_keys(&:to_sym)
     end.filter do |item|
       item[:type].blank? || item[:type] == 'ship'
     end

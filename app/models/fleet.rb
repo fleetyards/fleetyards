@@ -30,7 +30,7 @@ class Fleet < ApplicationRecord
 
   def self.not_declined
     includes(:fleet_memberships).joins(:fleet_memberships)
-                                .where(fleet_memberships: { declined_at: nil })
+      .where(fleet_memberships: { declined_at: nil })
   end
 
   def vehicles(filters = nil)
