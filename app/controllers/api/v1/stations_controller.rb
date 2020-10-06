@@ -12,12 +12,12 @@ module Api
         station_query_params['sorts'] = sort_by_name if station_query_params['sorts'].blank?
 
         @q = Station.includes(:docks, :habitations, :shops, celestial_object: %i[starsystem parent])
-                    .visible
-                    .ransack(station_query_params)
+          .visible
+          .ransack(station_query_params)
 
         @stations = @q.result(distinct: true)
-                      .page(params[:page])
-                      .per(per_page(Station))
+          .page(params[:page])
+          .per(per_page(Station))
       end
 
       def show
@@ -45,10 +45,10 @@ module Api
         authorize! :show, :api_models
         station = Station.visible.find_by!(slug: params[:slug])
         @images = station.images
-                         .enabled
-                         .order('images.created_at desc')
-                         .page(params[:page])
-                         .per(per_page(Image))
+          .enabled
+          .order('images.created_at desc')
+          .page(params[:page])
+          .per(per_page(Image))
       end
 
       private def station_query_params

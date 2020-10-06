@@ -83,16 +83,16 @@ module Api
         authorize! :read, :api_stats
 
         models_per_month = Model.visible.active
-                                .where('created_at > ?', Time.zone.now - 1.year)
-                                .group_by_month(:created_at)
-                                .count
-                                .map do |created_at, count|
-                                  {
-                                    label: I18n.l(created_at.to_date, format: :month_year_short),
-                                    count: count,
-                                    tooltip: I18n.l(created_at.to_date, format: :month_year)
-                                  }
-                                end
+          .where('created_at > ?', Time.zone.now - 1.year)
+          .group_by_month(:created_at)
+          .count
+          .map do |created_at, count|
+          {
+            label: I18n.l(created_at.to_date, format: :month_year_short),
+            count: count,
+            tooltip: I18n.l(created_at.to_date, format: :month_year)
+          }
+        end
 
         render json: models_per_month.to_json
       end

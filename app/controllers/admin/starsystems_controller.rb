@@ -13,8 +13,8 @@ module Admin
       @q = Starsystem.ransack(query_params)
 
       @starsystems = @q.result
-                       .page(params.fetch(:page) { nil })
-                       .per(40)
+        .page(params.fetch(:page) { nil })
+        .per(40)
     end
 
     def new

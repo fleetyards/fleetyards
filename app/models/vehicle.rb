@@ -114,8 +114,8 @@ class Vehicle < ApplicationRecord
     return unless flagship?
 
     Vehicle.where(user_id: user_id, flagship: true)
-           .where.not(id: id)
-           .find_each do |vehicle|
+      .where.not(id: id)
+      .find_each do |vehicle|
       vehicle.update(flagship: false)
     end
   end

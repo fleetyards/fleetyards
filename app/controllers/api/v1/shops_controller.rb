@@ -17,12 +17,12 @@ module Api
         shop_query_params['sorts'] = sort_by_name
 
         @q = Shop.includes(station: { celestial_object: %i[starsystem parent] })
-                 .visible
-                 .ransack(shop_query_params)
+          .visible
+          .ransack(shop_query_params)
 
         @shops = @q.result(distinct: true)
-                   .page(params[:page])
-                   .per(per_page(Shop))
+          .page(params[:page])
+          .per(per_page(Shop))
       end
 
       def shop_types

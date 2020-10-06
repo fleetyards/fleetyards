@@ -14,8 +14,8 @@ module Api
         @q = Commodity.ransack(commodity_query_params)
 
         @commodities = @q.result
-                         .page(params[:page])
-                         .per(per_page(Commodity))
+          .page(params[:page])
+          .per(per_page(Commodity))
       end
 
       def commodity_types

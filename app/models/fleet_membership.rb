@@ -23,8 +23,8 @@ class FleetMembership < ApplicationRecord
 
     # rubocop:disable Rails/SkipsModelValidations
     FleetMembership.where(user_id: user_id, primary: true)
-                   .where.not(id: id)
-                   .update_all(primary: false)
+      .where.not(id: id)
+      .update_all(primary: false)
     # rubocop:enable Rails/SkipsModelValidations
   end
 

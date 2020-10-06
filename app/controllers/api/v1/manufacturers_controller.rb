@@ -16,8 +16,8 @@ module Api
         @q = index_scope
 
         @manufacturers = @q.result(distinct: true)
-                           .page(params[:page])
-                           .per(per_page(Manufacturer))
+          .page(params[:page])
+          .per(per_page(Manufacturer))
       end
 
       def with_models
@@ -26,8 +26,8 @@ module Api
         @q = index_scope(with_model: true)
 
         @manufacturers = @q.result(distinct: true)
-                           .page(params[:page])
-                           .per(per_page(Manufacturer))
+          .page(params[:page])
+          .per(per_page(Manufacturer))
       end
 
       private def index_scope(with_model: false)

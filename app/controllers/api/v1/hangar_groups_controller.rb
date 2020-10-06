@@ -6,8 +6,8 @@ module Api
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)
-                             .order([{ sort: :asc, name: :asc }])
-                             .all
+          .order([{ sort: :asc, name: :asc }])
+          .all
       end
 
       def create

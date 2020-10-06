@@ -14,8 +14,8 @@ module Api
         @q = Equipment.includes(:manufacturer).ransack(equipment_query_params)
 
         @equipment = @q.result
-                       .page(params[:page])
-                       .per(per_page(Equipment))
+          .page(params[:page])
+          .per(per_page(Equipment))
       end
 
       private def equipment_query_params

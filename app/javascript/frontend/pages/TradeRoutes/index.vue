@@ -202,6 +202,7 @@ export default class TradeRoutes extends Vue {
         cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
       })
     }
+
     return this.$t('headlines.tradeRoutes.index')
   }
 

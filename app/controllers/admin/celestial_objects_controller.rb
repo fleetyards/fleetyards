@@ -13,8 +13,8 @@ module Admin
       @q = CelestialObject.ransack(query_params)
 
       @celestial_objects = @q.result
-                             .page(params.fetch(:page) { nil })
-                             .per(40)
+        .page(params.fetch(:page) { nil })
+        .per(40)
     end
 
     def new

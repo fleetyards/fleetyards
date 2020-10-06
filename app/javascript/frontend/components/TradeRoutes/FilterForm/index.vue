@@ -148,6 +148,7 @@ export default class TradeRoutesFilterForm extends Vue {
 
   mounted() {
     const query = this.$route.query.q || {}
+
     this.form = {
       cargoShip: query.cargoShip || null,
       commodityIn: query.commodityIn || [],
