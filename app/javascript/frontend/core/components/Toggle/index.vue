@@ -66,9 +66,9 @@ export default class Toggle extends Vue {
 
   toggle() {
     if (this.activeRight) {
-      this.$emit('toggle:left')
+      this.$emit('toggle-left')
     } else {
-      this.$emit('toggle:right')
+      this.$emit('toggle-right')
     }
   }
 }

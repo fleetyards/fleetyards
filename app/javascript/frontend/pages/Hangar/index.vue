@@ -189,7 +189,7 @@
 
       <HangarGuideBox v-if="isGuideVisible" />
 
-      <template v-slot:record="{ record }">
+      <template #record="{ record }">
         <ModelPanel
           :model="record.model"
           :vehicle="record"
@@ -334,8 +334,8 @@ export default class Hangar extends Vue {
     this.fetch()
     this.setupUpdates()
 
-    this.$comlink.$on('hangarGroupDelete', this.fetch)
-    this.$comlink.$on('hangarGroupSave', this.fetchGroups)
+    this.$comlink.$on('hangar-group-delete', this.fetch)
+    this.$comlink.$on('hangar-group-save', this.fetchGroups)
   }
 
   beforeDestroy() {
@@ -343,8 +343,8 @@ export default class Hangar extends Vue {
       this.vehiclesChannel.unsubscribe()
     }
 
-    this.$comlink.$off('hangarGroupDelete')
-    this.$comlink.$off('hangarGroupSave')
+    this.$comlink.$off('hangar-group-delete')
+    this.$comlink.$off('hangar-group-save')
   }
 
   toggleGuide() {

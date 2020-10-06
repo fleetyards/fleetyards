@@ -396,7 +396,7 @@ export default class FleetSettings extends Vue {
         text: this.$t('messages.fleet.update.success'),
       })
 
-      this.$comlink.$emit('fleetUpdate')
+      this.$comlink.$emit('fleet-update')
 
       if (response.data.slug !== this.$route.params.slug) {
         await this.$router.replace({
@@ -427,7 +427,7 @@ export default class FleetSettings extends Vue {
         text: this.$t('messages.fleet.update.logo.success'),
       })
 
-      this.$comlink.$emit('fleetUpdate')
+      this.$comlink.$emit('fleet-update')
 
       setTimeout(() => {
         this.files = []
@@ -465,7 +465,7 @@ export default class FleetSettings extends Vue {
         if (!response.error) {
           this.$router.push({ name: 'home' })
 
-          this.$comlink.$emit('fleetUpdate')
+          this.$comlink.$emit('fleet-update')
 
           displaySuccess({
             text: this.$t('messages.fleet.destroy.success'),

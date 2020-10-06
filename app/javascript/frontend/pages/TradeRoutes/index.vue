@@ -76,7 +76,7 @@
 
       <FilterForm slot="filter" />
 
-      <template v-slot:default="{ records }">
+      <template #default="{ records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
           <QuickFilter v-if="!mobile" key="quickfilter" />
           <div

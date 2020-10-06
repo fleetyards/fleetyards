@@ -155,7 +155,7 @@ export default {
       this.submitting = false
       if (!response.error) {
         this.$refs.modal.close()
-        this.$comlink.$emit('vehicleSave', response.data)
+        this.$comlink.$emit('vehicle-save', response.data)
       }
     },
 

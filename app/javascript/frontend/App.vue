@@ -123,19 +123,19 @@ export default class FrontendApp extends Vue {
       this.checkVersion()
     }, CHECK_VERSION_INTERVAL)
 
-    this.$comlink.$on('openPrivacySettings', this.openPrivacySettings)
+    this.$comlink.$on('open-privacy-settings', this.openPrivacySettings)
 
     window.addEventListener('resize', this.checkMobile)
-    this.$comlink.$on('userUpdate', this.fetchCurrentUser)
-    this.$comlink.$on('fleetCreate', this.fetchCurrentUser)
-    this.$comlink.$on('fleetUpdate', this.fetchCurrentUser)
+    this.$comlink.$on('user-update', this.fetchCurrentUser)
+    this.$comlink.$on('fleet-create', this.fetchCurrentUser)
+    this.$comlink.$on('fleet-update', this.fetchCurrentUser)
   }
 
   beforeDestroy() {
     window.removeEventListener('resize', this.checkMobile)
-    this.$comlink.$off('userUpdate')
-    this.$comlink.$off('fleetCreate')
-    this.$comlink.$off('fleetUpdate')
+    this.$comlink.$off('user-update')
+    this.$comlink.$off('fleet-create')
+    this.$comlink.$off('fleet-update')
   }
 
   openPrivacySettings(settings = false) {

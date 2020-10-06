@@ -160,7 +160,7 @@ export default {
     },
 
     enableYoutube() {
-      this.$comlink.$emit('openPrivacySettings')
+      this.$comlink.$emit('open-privacy-settings')
     },
 
     async fetch() {

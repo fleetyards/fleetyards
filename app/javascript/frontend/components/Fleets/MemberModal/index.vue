@@ -102,7 +102,7 @@ export default {
 
       if (!response.error) {
         this.$refs.modal.close()
-        this.$comlink.$emit('fleetMemberInvited', response.data)
+        this.$comlink.$emit('fleet-member-invited', response.data)
       }
     },
   },

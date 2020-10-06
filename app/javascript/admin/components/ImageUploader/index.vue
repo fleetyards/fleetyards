@@ -99,7 +99,7 @@
             :image="image"
             @start="startSingleUpload"
             @cancel="cancelSingleUpload"
-            @imageDeleted="$emit('imageDeleted')"
+            @image-deleted="$emit('image-deleted')"
           />
         </div>
       </transition-group>
@@ -267,7 +267,7 @@ export default class ImageUploader extends Vue {
   async inputImage(newImage, oldImage) {
     if (newImage && oldImage && !newImage.active && oldImage.active) {
       if (newImage.xhr && newImage.xhr.status === 200) {
-        this.$emit('imageUploaded', newImage)
+        this.$emit('image-uploaded', newImage)
         const index = this.newImages.indexOf(newImage)
         this.newImages.splice(index, 1)
       }

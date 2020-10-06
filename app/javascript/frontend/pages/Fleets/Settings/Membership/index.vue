@@ -223,7 +223,7 @@ export default class FleetMembershipSettings extends Vue {
         text: this.$t('messages.fleet.members.update.success'),
       })
 
-      this.$comlink.$emit('fleetUpdate')
+      this.$comlink.$emit('fleet-update')
     } else {
       displayAlert({
         text: this.$t('messages.fleet.members.update.failure'),
