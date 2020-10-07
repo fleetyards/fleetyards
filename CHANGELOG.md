@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.9](https://github.com/fleetyards/fleetyards/compare/v3.80.8...v3.80.9) (2020-10-07)
+
+
+### Bug Fixes
+
+* sidekiq admin dashboard ([a60338a](https://github.com/fleetyards/fleetyards/commit/a60338ab24d0c5ec19503d254022cd4d87e515b0))
+
 ### [3.80.8](https://github.com/fleetyards/fleetyards/compare/v3.80.7...v3.80.8) (2020-09-25)
 
 
