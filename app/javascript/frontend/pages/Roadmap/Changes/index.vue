@@ -21,7 +21,7 @@
         />
       </div>
       <div class="col-12 col-lg-6">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>

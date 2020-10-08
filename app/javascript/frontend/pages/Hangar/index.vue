@@ -25,7 +25,7 @@
               @highlight="highlightGroup"
             />
           </div>
-          <div v-if="!mobile" class="page-actions">
+          <div v-if="!mobile" class="page-actions page-actions-right">
             <Btn
               :to="{ name: 'hangar-fleetchart' }"
               data-test="fleetchart-link"

@@ -95,14 +95,14 @@
             />
           </div>
           <div class="col-12 col-lg-3">
-            <div v-if="!mobile" class="page-actions">
+            <div v-if="!mobile" class="page-actions page-actions-right">
               <Starship42Btn :vehicles="collection.records" />
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
-            <div class="page-actions">
+            <div class="page-actions page-actions-right">
               <DownloadScreenshotBtn
                 element="#fleetchart"
                 size="small"

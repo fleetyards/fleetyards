@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>

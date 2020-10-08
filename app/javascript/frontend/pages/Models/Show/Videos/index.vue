@@ -118,7 +118,7 @@ export default {
             name: 'models',
             hash: `#${this.model.slug}`,
           },
-          label: this.$t('nav.models'),
+          label: this.$t('nav.models.index'),
         },
         {
           to: { name: 'model', param: { slug: this.$route.params.slug } },

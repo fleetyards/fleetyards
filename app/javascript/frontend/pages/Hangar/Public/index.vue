@@ -82,7 +82,7 @@
             />
           </div>
           <div class="col-12 col-lg-3">
-            <div v-if="!mobile" class="page-actions">
+            <div v-if="!mobile" class="page-actions page-actions-right">
               <Btn
                 :to="{
                   name: 'hangar-public-fleetchart',

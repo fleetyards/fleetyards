@@ -27,7 +27,7 @@
               :label="$t('labels.groups')"
             />
           </div>
-          <div v-if="!mobile" class="page-actions">
+          <div v-if="!mobile" class="page-actions page-actions-right">
             <Starship42Btn :vehicles="collection.records" />
           </div>
         </div>

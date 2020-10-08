@@ -1,13 +1,25 @@
 .page-actions {
-  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   &.page-actions-left {
-    text-align: left;
+    justify-content: flex-start;
+
+    & > a,
+    & > button {
+      margin-right: 10px;
+      margin-left: 0;
+    }
   }
 
   &.page-actions-right {
-    > :last-child {
+    justify-content: flex-end;
+
+    & > a,
+    & > button {
       margin-right: 0;
+      margin-left: 10px;
     }
   }
 }
@@ -16,12 +28,24 @@
   .page-actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     text-align: center;
 
-    > :last-child {
-      margin-right: 0;
+    &.page-actions-left {
+      justify-content: space-between;
+
+      > :last-child {
+        margin-right: 0;
+      }
+    }
+
+    &.page-actions-right {
+      justify-content: space-between;
+
+      > :first-child {
+        margin-left: 0;
+      }
     }
 
     .panel-btn {
