@@ -18,7 +18,7 @@
 
         <div key="made-by-the-community" class="fleetchart-download-image">
           <img
-            :src="require('images/community-logo.png').default"
+            :src="require('images/community-logo.png')"
             alt="made-by-the-community"
           />
         </div>

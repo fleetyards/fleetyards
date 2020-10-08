@@ -88,7 +88,7 @@
         />
       </div>
       <div class="col-12 col-lg-4">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Btn
             :to="{
               name: 'fleet-fleetchart',

@@ -125,9 +125,6 @@
                 >
                   {{ $t('actions.compare.models') }}
                 </Btn>
-                <Btn :href="model.storeUrl">
-                  {{ $t('actions.model.store') }}
-                </Btn>
                 <AddToHangar :model="model" />
               </div>
             </div>
