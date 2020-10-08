@@ -86,25 +86,22 @@ export default {
       selectedHardpoint: null,
       icons: {
         /* eslint-disable global-require */
-        radar: require('images/hardpoints/radar.svg').default,
-        computers: require('images/hardpoints/computers.svg').default,
-        power_plants: require('images/hardpoints/power_plants.svg').default,
-        coolers: require('images/hardpoints/coolers.svg').default,
-        shield_generators: require('images/hardpoints/shield_generators.svg')
-          .default,
-        fuel_intakes: require('images/hardpoints/fuel_intakes.svg').default,
-        fuel_tanks: require('images/hardpoints/fuel_tanks.svg').default,
-        quantum_drives: require('images/hardpoints/quantum_drives.svg').default,
-        jump_modules: require('images/hardpoints/jump_modules.svg').default,
-        quantum_fuel_tanks: require('images/hardpoints/quantum_fuel_tanks.svg')
-          .default,
-        main_thrusters: require('images/hardpoints/main_thrusters.svg').default,
-        maneuvering_thrusters: require('images/hardpoints/maneuvering_thrusters.svg')
-          .default,
-        weapons: require('images/hardpoints/weapons.svg').default,
-        turrets: require('images/hardpoints/turrets.svg').default,
-        missiles: require('images/hardpoints/missiles.svg').default,
-        utility_items: require('images/hardpoints/utility_items.svg').default,
+        radar: require('images/hardpoints/radar.svg'),
+        computers: require('images/hardpoints/computers.svg'),
+        power_plants: require('images/hardpoints/power_plants.svg'),
+        coolers: require('images/hardpoints/coolers.svg'),
+        shield_generators: require('images/hardpoints/shield_generators.svg'),
+        fuel_intakes: require('images/hardpoints/fuel_intakes.svg'),
+        fuel_tanks: require('images/hardpoints/fuel_tanks.svg'),
+        quantum_drives: require('images/hardpoints/quantum_drives.svg'),
+        jump_modules: require('images/hardpoints/jump_modules.svg'),
+        quantum_fuel_tanks: require('images/hardpoints/quantum_fuel_tanks.svg'),
+        main_thrusters: require('images/hardpoints/main_thrusters.svg'),
+        maneuvering_thrusters: require('images/hardpoints/maneuvering_thrusters.svg'),
+        weapons: require('images/hardpoints/weapons.svg'),
+        turrets: require('images/hardpoints/turrets.svg'),
+        missiles: require('images/hardpoints/missiles.svg'),
+        utility_items: require('images/hardpoints/utility_items.svg'),
         /* eslint-enable global-require */
       },
     }
