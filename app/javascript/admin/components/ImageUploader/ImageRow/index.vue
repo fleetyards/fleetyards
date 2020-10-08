@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-list-row">
+  <div v-if="internalImage" class="flex-list-row">
     <div class="store-image wide">
       <a
         v-if="uploaded"
