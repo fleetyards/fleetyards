@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.14](https://github.com/fleetyards/fleetyards/compare/v3.80.13...v3.80.14) (2020-10-10)
+
+
+### Bug Fixes
+
+* fade-list transitions ([8f278c2](https://github.com/fleetyards/fleetyards/commit/8f278c2690321aabfb0e4a9d955ad2dc7a8eec35))
+
 ### [3.80.13](https://github.com/fleetyards/fleetyards/compare/v3.80.12...v3.80.13) (2020-10-08)
 
 
