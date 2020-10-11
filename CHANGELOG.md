@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.15](https://github.com/fleetyards/fleetyards/compare/v3.80.14...v3.80.15) (2020-10-11)
+
+
+### Bug Fixes
+
+* roadmap responsive classes ([73b8f67](https://github.com/fleetyards/fleetyards/commit/73b8f67488270edf82f839a1d6c277597f782c08))
+
 ### [3.80.14](https://github.com/fleetyards/fleetyards/compare/v3.80.13...v3.80.14) (2020-10-10)
 
 
