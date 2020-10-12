@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-12 col-md-4">
           <FilterGroup
-            v-model="form.originIn"
+            v-model="form.originStationIn"
             :label="$t('labels.filters.tradeRoutes.origin')"
             fetch-path="stations?quickfilter-origin"
             name="origin"
@@ -30,7 +30,7 @@
         </div>
         <div class="col-12 col-md-4">
           <FilterGroup
-            v-model="form.destinationIn"
+            v-model="form.destinationStationIn"
             :label="$t('labels.filters.tradeRoutes.destination')"
             fetch-path="stations?quickfilter-destination"
             name="destination"
@@ -60,9 +60,9 @@ export default {
   data() {
     const query = this.queryParams()
 
-    query.originIn = query.originIn || []
+    query.originStationIn = query.originStationIn || []
     query.commodityIn = query.commodityIn || []
-    query.destinationIn = query.destinationIn || []
+    query.destinationStationIn = query.destinationStationIn || []
 
     return {
       form: query,
@@ -73,9 +73,9 @@ export default {
     $route() {
       const query = this.queryParams()
 
-      query.originIn = query.originIn || []
+      query.originStationIn = query.originStationIn || []
       query.commodityIn = query.commodityIn || []
-      query.destinationIn = query.destinationIn || []
+      query.destinationStationIn = query.destinationStationIn || []
 
       this.form = query
     },
