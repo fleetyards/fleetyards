@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.80.16](https://github.com/fleetyards/fleetyards/compare/v3.80.15...v3.80.16) (2020-10-12)
+
+
+### Bug Fixes
+
+* trade routes quick filter ([839f50c](https://github.com/fleetyards/fleetyards/commit/839f50cf178bf22483031fee4efcc90c6836781d))
+
 ### [3.80.15](https://github.com/fleetyards/fleetyards/compare/v3.80.14...v3.80.15) (2020-10-11)
 
 
