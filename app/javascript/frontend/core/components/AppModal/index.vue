@@ -24,7 +24,7 @@ type AppModalOptions = {
   component: Promise<VueComponent>
   title: string
   wide: boolean
-  closable: boolean
+  fixed: boolean
   props: any
 }
 
@@ -72,11 +72,11 @@ export default class AppModal extends Vue {
     this.$nextTick(() => {
       this.isOpen = true
       this.$refs.modal.focus()
-      this.$emit('open')
+      this.$emit('modal-opened')
     })
   }
 
-  public close(force = false) {
+  public close(force: boolean = false) {
     if (this.fixed && !force) {
       return
     }
@@ -89,7 +89,7 @@ export default class AppModal extends Vue {
         this.isShow = false
         this.component = null
         this.props = null
-        this.$emit('close')
+        this.$emit('modal-closed')
       }, 500)
     })
   }

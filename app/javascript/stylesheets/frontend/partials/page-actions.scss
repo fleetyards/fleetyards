@@ -1,7 +1,12 @@
 .page-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
+
+  &.page-actions-center {
+    justify-content: center;
+  }
 
   &.page-actions-block {
     .panel-btn {

@@ -16,6 +16,9 @@ module Api
       let(:yela) { celestial_objects :yela }
       let(:daymar) { celestial_objects :daymar }
       let(:portolisar) { stations :portolisar }
+      let(:portolisar_admin) { portolisar.shops.visible.order(:name).first }
+      let(:portolisar_dumpers) { portolisar.shops.visible.order(:name).second }
+      let(:portolisar_new_deal) { portolisar.shops.visible.order(:name).last }
       let(:corvolex) { stations :corvolex }
       let(:arccorp_daymar) { stations :arccorp_daymar }
       let(:arccorp_yela) { stations :arccorp_yela }
@@ -442,49 +445,52 @@ module Api
             'locationLabel' => portolisar.starsystem.location_label,
           },
           'shops' => [{
+            'id' => portolisar_admin.id,
             'name' => 'Admin Office',
             'slug' => 'admin-office',
             'type' => 'admin',
             'typeLabel' => 'Admin Office',
-            'locationLabel' => portolisar.shops.first.location_label,
+            'locationLabel' => portolisar_admin.location_label,
             'rental' => false,
             'buying' => false,
             'selling' => false,
-            'storeImage' => portolisar.shops.first.store_image.url,
-            'storeImageMedium' => portolisar.shops.first.store_image.medium.url,
-            'storeImageSmall' => portolisar.shops.first.store_image.small.url,
+            'storeImage' => portolisar_admin.store_image.url,
+            'storeImageMedium' => portolisar_admin.store_image.medium.url,
+            'storeImageSmall' => portolisar_admin.store_image.small.url,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,
             },
           }, {
+            'id' => portolisar_dumpers.id,
             'name' => 'Dumpers Depot',
             'slug' => 'dumpers-depot',
             'type' => 'components',
             'typeLabel' => 'Components Store',
-            'locationLabel' => portolisar.shops.first.location_label,
+            'locationLabel' => portolisar_dumpers.location_label,
             'rental' => false,
             'buying' => false,
             'selling' => false,
-            'storeImage' => portolisar.shops.first.store_image.url,
-            'storeImageMedium' => portolisar.shops.first.store_image.medium.url,
-            'storeImageSmall' => portolisar.shops.first.store_image.small.url,
+            'storeImage' => portolisar_dumpers.store_image.url,
+            'storeImageMedium' => portolisar_dumpers.store_image.medium.url,
+            'storeImageSmall' => portolisar_dumpers.store_image.small.url,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,
             },
           }, {
+            'id' => portolisar_new_deal.id,
             'name' => 'New Deal',
             'slug' => 'new-deal',
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
-            'locationLabel' => portolisar.shops.last.location_label,
+            'locationLabel' => portolisar_new_deal.location_label,
             'rental' => false,
             'buying' => false,
             'selling' => false,
-            'storeImage' => portolisar.shops.last.store_image.url,
-            'storeImageMedium' => portolisar.shops.last.store_image.medium.url,
-            'storeImageSmall' => portolisar.shops.last.store_image.small.url,
+            'storeImage' => portolisar_new_deal.store_image.url,
+            'storeImageMedium' => portolisar_new_deal.store_image.medium.url,
+            'storeImageSmall' => portolisar_new_deal.store_image.small.url,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,

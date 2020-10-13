@@ -194,14 +194,11 @@
           :model="record.model"
           :vehicle="record"
           :details="detailsVisible"
-          :on-addons="showAddonsModal"
           :is-my-ship="true"
           :highlight="record.hangarGroupIds.includes(highlightedGroup)"
         />
       </template>
     </FilteredList>
-
-    <AddonsModal ref="addonsModal" modifiable />
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
@@ -342,14 +339,6 @@ export default class Hangar extends Vue {
     this.$comlink.$emit('open-modal', {
       component: () => import('frontend/components/Vehicles/NewVehiclesModal'),
     })
-  }
-
-  showAddonsModal(vehicle) {
-    if (!this.$refs.addonsModal) {
-      return
-    }
-
-    this.$refs.addonsModal.open(vehicle)
   }
 
   toggleDetails() {

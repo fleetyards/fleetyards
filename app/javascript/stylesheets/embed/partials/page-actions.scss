@@ -9,6 +9,10 @@
     }
   }
 
+  &.page-actions-center {
+    justify-content: center;
+  }
+
   &.page-actions-left {
     justify-content: flex-start;
 

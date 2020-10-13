@@ -1,17 +1,23 @@
-import { get } from 'frontend/api/client'
+import { get, post } from 'frontend/api/client'
 
 export class FleetMembersCollection {
+  primaryKey: string = 'id'
+
   records: FleetMember[] = []
 
   record: FleetMember | null = null
 
   stats: FleetMemberStats | null = null
 
-  async findAll(params: FleetMembersParams): Promise<FleetMember[]> {
-    const response = await get(`fleets/${params.slug}/members`, {
+  params: FleetMembersParams | null = null
+
+  async findAll(params: FleetMembersParams | null): Promise<FleetMember[]> {
+    const response = await get(`fleets/${params?.slug}/members`, {
       q: params?.filters,
       page: params?.page,
     })
+
+    this.params = params
 
     if (!response.error) {
       this.records = response.data
@@ -21,9 +27,9 @@ export class FleetMembersCollection {
   }
 
   async findStats(
-    params: FleetMembersParams,
+    params: FleetMembersParams | null,
   ): Promise<FleetMemberStats | null> {
-    const response = await get(`fleets/${params.slug}/member-quick-stats`, {
+    const response = await get(`fleets/${params?.slug}/member-quick-stats`, {
       q: params?.filters,
     })
 
@@ -42,6 +48,20 @@ export class FleetMembersCollection {
     }
 
     return this.record
+  }
+
+  async create(slug: string, form: FleetMemberForm, refetch: boolean = false) {
+    const response = await post(`fleets/${slug}/members`, form)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
   }
 }
 

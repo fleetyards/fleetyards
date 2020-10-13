@@ -68,24 +68,9 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :on-edit="showEditModal"
-          :on-addons="showAddonsModal"
-          :scale="fleetchartScale"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
-
-    <VehicleModal
-      ref="vehicleModal"
-      :collection="collection"
-      :hangar-groups="groupsCollection.records"
-    />
-
-    <AddonsModal ref="addonsModal" :modifiable="true" />
-
-    <NewVehiclesModal ref="newVehiclesModal" :collection="collection" />
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
@@ -194,32 +179,14 @@ export default class HangarFleetchart extends Vue {
     this.$comlink.$off('hangar-group-save')
   }
 
-  showEditModal(vehicle) {
-    if (!this.$refs.vehicleModal) {
-      return
-    }
-
-    this.$refs.vehicleModal.open(vehicle)
-  }
-
   updateScale(value) {
     this.$store.commit('hangar/setFleetchartScale', value)
   }
 
   showNewModal() {
-    if (!this.$refs.newVehiclesModal) {
-      return
-    }
-
-    this.$refs.newVehiclesModal.open()
-  }
-
-  showAddonsModal(vehicle) {
-    if (!this.$refs.addonsModal) {
-      return
-    }
-
-    this.$refs.addonsModal.open(vehicle)
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/NewVehiclesModal'),
+    })
   }
 
   async fetch() {
