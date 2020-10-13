@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" :small="true" :slim="true">
-    <Modal ref="modal" :title="title" :visible="visible">
-      <form :id="`group-${id}`" @submit.prevent="handleSubmit(save)">
+    <Modal v-if="hangarGroup && form" :title="title">
+      <form :id="`hangar-group-${id}`" @submit.prevent="handleSubmit(save)">
         <div class="row">
           <div class="col-12 col-md-6">
             <ValidationProvider
@@ -24,7 +24,7 @@
             <ValidationProvider
               v-slot="{ errors }"
               vid="color"
-              rules="required"
+              rules="required|hexColor"
               :name="$t('labels.hangarGroup.color')"
               :immediate="true"
               :slim="true"
@@ -35,16 +35,19 @@
                 translation-key="color"
                 :no-label="true"
                 :error="errors[0]"
-                type="color"
+                type="text"
               />
             </ValidationProvider>
+          </div>
+          <div class="col-12">
+            <VSwatches v-model="form.color" :inline="true" />
           </div>
         </div>
       </form>
       <template #footer>
         <div class="float-sm-right">
           <Btn
-            v-if="group"
+            v-if="hangarGroup && hangarGroup.id"
             :disabled="deleting ? 'disabled' : null"
             :inline="true"
             @click.native="remove"
@@ -52,7 +55,7 @@
             <i class="fal fa-trash" />
           </Btn>
           <Btn
-            :form="`group-${id}`"
+            :form="`hangar-group-${id}`"
             :loading="submitting"
             type="submit"
             size="large"
@@ -66,138 +69,133 @@
   </ValidationObserver>
 </template>
 
-<script>
-import Modal from 'frontend/components/Modal'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
+import Modal from 'frontend/core/components/AppModal/Modal'
 import Btn from 'frontend/core/components/Btn'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
+import VSwatches from 'vue-swatches'
 
-export default {
+@Component<GroupModal>({
   components: {
     Modal,
     Btn,
     FormInput,
+    VSwatches,
   },
-
-  props: {
-    group: {
-      type: Object,
-      required: true,
+})
+export default class GroupModal extends Vue {
+  @Prop({
+    default() {
+      return {}
     },
+  })
+  hangarGroup: HangarGroup
 
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  submitting: boolean = false
 
-  data() {
-    return {
-      submitting: false,
-      deleting: false,
-      form: {
-        name: this.group.name,
-        color: this.group.color,
-      },
+  deleting: boolean = false
+
+  form: HangarGroupForm | null = null
+
+  get title() {
+    if (this.hangarGroup && this.hangarGroup.id) {
+      return this.$t('headlines.hangarGroup.edit')
     }
-  },
 
-  computed: {
-    title() {
-      if (this.group.id) {
-        return this.$t('headlines.hangarGroup.edit')
-      }
+    return this.$t('headlines.hangarGroup.create')
+  }
 
-      return this.$t('headlines.hangarGroup.create')
-    },
+  get id() {
+    return (this.hangarGroup && this.hangarGroup.id) || 'new'
+  }
 
-    id() {
-      return this.group.id || 'new'
-    },
-  },
+  mounted() {
+    this.setupForm()
+  }
 
-  watch: {
-    group() {
-      this.form = {
-        name: this.group.name,
-        color: this.group.color,
-      }
-    },
-  },
+  @Watch('hangarGroup')
+  onHangarGroupChange() {
+    this.setupForm()
+  }
 
-  methods: {
-    open() {
-      this.$refs.modal.open()
-    },
+  setupForm() {
+    this.form = {
+      name: this.hangarGroup?.name,
+      color: this.hangarGroup?.color,
+    }
+  }
 
-    remove() {
-      this.deleting = true
+  remove() {
+    this.deleting = true
 
-      displayConfirm({
-        text: this.$t('messages.confirm.hangarGroup.destroy'),
-        onConfirm: () => {
-          this.destroy()
-        },
-        onClose: () => {
-          this.deleting = false
-        },
-      })
-    },
-
-    async destroy() {
-      const response = await this.$api.destroy(`hangar-groups/${this.group.id}`)
-
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('hangar-group-delete', response.data)
-      } else {
+    displayConfirm({
+      text: this.$t('messages.confirm.hangarGroup.destroy'),
+      onConfirm: () => {
+        this.destroy()
+      },
+      onClose: () => {
         this.deleting = false
-      }
-    },
+      },
+    })
+  }
 
-    async save() {
-      this.submitting = true
+  async destroy() {
+    const success = await hangarGroupsCollection.destroy(this.hangarGroup.id)
 
-      if (this.group.id) {
-        this.update()
-      } else {
-        this.create()
-      }
-    },
+    if (success) {
+      this.$comlink.$emit('hangar-group-delete', this.hangarGroup)
+      this.$comlink.$emit('close-modal')
+    } else {
+      this.deleting = false
+    }
+  }
 
-    async update() {
-      const response = await this.$api.put(
-        `hangar-groups/${this.group.id}`,
-        this.form,
-      )
+  async save() {
+    this.submitting = true
 
-      this.submitting = false
+    if (this.hangarGroup && this.hangarGroup.id) {
+      this.update()
+    } else {
+      this.create()
+    }
+  }
 
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('hangar-group-save', response.data)
-      } else {
-        displayAlert({
-          text: response.error.response.data.message,
-        })
-      }
-    },
+  async update() {
+    const success = await hangarGroupsCollection.update(
+      this.hangarGroup.id,
+      this.form,
+    )
 
-    async create() {
-      const response = await this.$api.post('hangar-groups', this.form)
+    this.submitting = false
 
-      this.submitting = false
+    if (success) {
+      this.$comlink.$emit('hangar-group-save')
+      this.$comlink.$emit('close-modal')
+    } else {
+      displayAlert({
+        text: response.error.response.data.message,
+      })
+    }
+  }
 
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('hangar-group-save', response.data)
-      } else {
-        displayAlert({
-          text: response.error.response.data.message,
-        })
-      }
-    },
-  },
+  async create() {
+    const newHangarGroup = await hangarGroupsCollection.create(this.form)
+
+    this.submitting = false
+
+    if (newHangarGroup) {
+      this.$comlink.$emit('hangar-group-save')
+      this.$comlink.$emit('close-modal')
+    } else {
+      displayAlert({
+        text: response.error.response.data.message,
+      })
+    }
+  }
 }
 </script>
 

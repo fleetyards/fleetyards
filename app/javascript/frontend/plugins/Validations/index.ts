@@ -15,7 +15,14 @@ import {
 } from 'vee-validate/dist/rules'
 /* eslint-enable camelcase */
 import { I18n } from 'frontend/lib/I18n'
-import { emailTaken, fidTaken, user, usernameTaken, url } from './rules'
+import {
+  emailTaken,
+  fidTaken,
+  user,
+  usernameTaken,
+  url,
+  hexColor,
+} from './rules'
 
 configure({
   defaultMessage(_, values) {
@@ -24,9 +31,9 @@ configure({
 })
 
 export default {
-  install(Vue) {
-    Vue.component('ValidationObserver', ValidationObserver)
-    Vue.component('ValidationProvider', ValidationProvider)
+  install(vue: any) {
+    vue.component('ValidationObserver', ValidationObserver)
+    vue.component('ValidationProvider', ValidationProvider)
 
     extend('required', required)
     extend('url', url)
@@ -39,5 +46,6 @@ export default {
     extend('usernameTaken', usernameTaken)
     extend('user', user)
     extend('fidTaken', fidTaken)
+    extend('hexColor', hexColor)
   },
 }

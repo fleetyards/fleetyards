@@ -1,9 +1,7 @@
 <template>
   <Modal
-    v-if="vehicle"
-    ref="modal"
+    v-if="vehicle && form"
     :title="$t('headlines.myVehicle', { vehicle: vehicle.model.name })"
-    :visible="visible"
   >
     <form :id="`vehicle-${vehicle.id}`" @submit.prevent="save">
       <div class="row">
@@ -69,7 +67,7 @@
             :label="$t('labels.vehicle.nameVisible')"
           />
         </div>
-        <div v-if="hangarGroups.length > 0" class="col-12">
+        <div v-if="hangarGroups.length" class="col-12">
           <h3>Groups:</h3>
           <div class="row">
             <div
@@ -117,12 +115,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
-import Modal from 'frontend/components/Modal'
+import Modal from 'frontend/core/components/AppModal/Modal'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Btn from 'frontend/core/components/Btn'
 import { displayConfirm } from 'frontend/lib/Noty'
+import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
 
 @Component<VehicleModal>({
   components: {
@@ -134,27 +134,28 @@ import { displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class VehicleModal extends Vue {
-  @Prop({ default: null }) collection: VehiclesCollection
-
-  @Prop({
-    default() {
-      return []
-    },
-  })
-  hangarGroups: HangarGroup[]
-
-  @Prop({ default: false }) visible: boolean
+  @Prop({ required: true }) vehicle: Vehicle
 
   submitting: boolean = false
 
   deleting: boolean = false
 
-  vehicle: Vehicle | null = null
+  form: Object | null = null
 
-  form: Object = {}
+  get hangarGroups() {
+    return hangarGroupsCollection.records
+  }
+
+  mounted() {
+    this.setupForm()
+  }
 
   @Watch('vehicle')
   onVehicleChange() {
+    this.setupForm()
+  }
+
+  setupForm() {
     this.form = {
       name: this.vehicle.name,
       purchased: this.vehicle.purchased,
@@ -168,15 +169,7 @@ export default class VehicleModal extends Vue {
   }
 
   selected(groupId) {
-    return this.form.hangarGroupIds.includes(groupId)
-  }
-
-  open(vehicle) {
-    this.vehicle = vehicle
-
-    this.$nextTick(() => {
-      this.$refs.modal.open()
-    })
+    return (this.form.hangarGroupIds || []).includes(groupId)
   }
 
   remove() {
@@ -193,8 +186,8 @@ export default class VehicleModal extends Vue {
   }
 
   async destroy() {
-    if (await this.collection.destroy(this.vehicle.id)) {
-      this.$refs.modal.close()
+    if (await vehiclesCollection.destroy(this.vehicle.id)) {
+      this.$comlink.$emit('close-modal')
     }
 
     this.deleting = false
@@ -216,8 +209,8 @@ export default class VehicleModal extends Vue {
   async save() {
     this.submitting = true
 
-    if (await this.collection.update(this.vehicle.id, this.form)) {
-      this.$refs.modal.close()
+    if (await vehiclesCollection.update(this.vehicle.id, this.form)) {
+      this.$comlink.$emit('close-modal')
     }
 
     this.submitting = false

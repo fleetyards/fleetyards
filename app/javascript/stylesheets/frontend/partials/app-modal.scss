@@ -1,6 +1,4 @@
-@import '~stylesheets/variables';
-
-.modal {
+.app-modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -91,10 +89,16 @@
   &.show {
     display: flex;
   }
+
+  &.fixed {
+    .close {
+      display: none;
+    }
+  }
 }
 
 @media (max-width: $tablet-breakpoint) {
-  .modal {
+  .app-modal {
     .modal-dialog {
       width: 100%;
       margin: 0;

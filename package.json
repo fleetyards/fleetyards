@@ -81,6 +81,7 @@
     "vue-scrollto": "^2.18.2",
     "vue-server-renderer": "2.6.12",
     "vue-slider-component": "3.2.5",
+    "vue-swatches": "^2.1.0",
     "vue-template-compiler": "2.6.12",
     "vue-upload-component": "2.8.20",
     "vuedraggable": "2.24.1",

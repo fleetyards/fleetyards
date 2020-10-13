@@ -178,8 +178,6 @@ export default class ModelPanel extends Vue {
 
   @Prop({ default: null }) vehicle: Vehicle | null
 
-  @Prop({ default: null }) onEdit: Function | null
-
   @Prop({ default: null }) onAddons: Function | null
 
   @Prop({ default: false }) details: boolean
@@ -262,6 +260,15 @@ export default class ModelPanel extends Vue {
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }
+  }
+
+  onEdit() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/Modal'),
+      props: {
+        vehicle: this.vehicle,
+      },
+    })
   }
 }
 </script>

@@ -21,7 +21,8 @@
         <AppFooter />
       </div>
     </div>
-    <PrivacySettings ref="privacySettings" :open="cookiesInfoVisible" />
+    <AppModal />
+    <PrivacySettings v-if="cookiesInfoVisible" ref="privacySettings" />
   </div>
 </template>
 
@@ -35,6 +36,7 @@ import versionCollection from 'frontend/api/collections/Version'
 import Navigation from 'frontend/core/components/Navigation'
 import AppFooter from 'frontend/core/components/AppFooter'
 import PrivacySettings from 'frontend/core/components/PrivacySettings'
+import AppModal from 'frontend/core/components/AppModal'
 import BackgroundImage from 'frontend/core/components/BackgroundImage'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -46,6 +48,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
     Navigation,
     AppFooter,
     PrivacySettings,
+    AppModal,
   },
   mixins: [Updates],
 })
