@@ -4,10 +4,18 @@
     :title="$t('headlines.addToHangar', { model: model.name })"
   >
     <div class="page-actions page-actions-block">
-      <Btn :inline="true" @click.native="saveVehicleAsPurchase">
+      <Btn
+        :inline="true"
+        data-test="add-to-hangar-as-purchased"
+        @click.native="saveVehicleAsPurchase"
+      >
         {{ $t('actions.addAsPurchased') }}
       </Btn>
-      <Btn :inline="true" @click.native="saveVehicle">
+      <Btn
+        :inline="true"
+        data-test="add-to-hangar-as-normal"
+        @click.native="saveVehicle"
+      >
         {{ $t('actions.add') }}
       </Btn>
     </div>

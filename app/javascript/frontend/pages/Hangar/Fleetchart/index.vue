@@ -68,7 +68,11 @@
           </div>
         </transition>
 
-        <FleetchartList :items="records" :scale="fleetchartScale" />
+        <FleetchartList
+          :items="records"
+          :scale="fleetchartScale"
+          :my-ship="true"
+        />
       </template>
     </FilteredList>
 
