@@ -46,6 +46,10 @@
     &.page-actions-block {
       .panel-btn {
         margin-bottom: 20px;
+
+        &.panel-btn-inline {
+          margin-bottom: 0;
+        }
       }
     }
 
