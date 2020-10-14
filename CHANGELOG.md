@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.81.0](https://github.com/fleetyards/fleetyards/compare/v3.80.16...v3.81.0) (2020-10-14)
+
+
+### Features
+
+* rework Modals and update AddToHangar Workflow ([#1266](https://github.com/fleetyards/fleetyards/issues/1266)) ([572e91d](https://github.com/fleetyards/fleetyards/commit/572e91d8143c96f8237c6a619e333d82d9a8a130))
+
+
+### Bug Fixes
+
+* addToHangar on mobile ([261bf6c](https://github.com/fleetyards/fleetyards/commit/261bf6c38b310e6676c115a8d9841c667ac8aca1))
+
 ### [3.80.16](https://github.com/fleetyards/fleetyards/compare/v3.80.15...v3.80.16) (2020-10-12)
 
 
