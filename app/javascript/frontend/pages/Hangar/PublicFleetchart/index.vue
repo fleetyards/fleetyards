@@ -127,15 +127,12 @@
 
         <FleetchartList
           :items="collection.records"
-          :on-addons="showAddonsModal"
           :scale="publicFleetchartScale"
         />
 
         <Loader :loading="loading" fixed />
       </div>
     </div>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -219,10 +216,6 @@ export default class PublicHangar extends Vue {
 
   created() {
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   updateScale(value) {

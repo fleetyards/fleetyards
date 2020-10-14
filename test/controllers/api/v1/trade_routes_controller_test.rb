@@ -17,6 +17,7 @@ module Api
       let(:titan_daymar_olisar) { trade_routes :titan_daymar_olisar }
       let(:index_result) do
         [{
+          'id' => titan_daymar_yela.id,
           'origin' => {
             'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
@@ -53,6 +54,7 @@ module Api
           'createdAt' => titan_daymar_yela.created_at.utc.iso8601,
           'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
         }, {
+          'id' => titan_daymar_olisar.id,
           'origin' => {
             'name' => 'ArcCorp 001',
             'slug' => 'arccorp',
@@ -89,6 +91,7 @@ module Api
           'createdAt' => titan_daymar_olisar.created_at.utc.iso8601,
           'updatedAt' => titan_daymar_olisar.updated_at.utc.iso8601
         }, {
+          'id' => gold_yela_daymar.id,
           'origin' => {
             'name' => 'ArcCorp 002',
             'slug' => 'arccorp',
@@ -128,6 +131,7 @@ module Api
       end
       let(:filtered_index_result) do
         [{
+          'id' => gold_yela_daymar.id,
           'origin' => {
             'name' => 'ArcCorp 002',
             'slug' => 'arccorp',

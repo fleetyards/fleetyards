@@ -25,12 +25,7 @@
       </transition-group>
     </div>
 
-    <FleetchartItemContextMenu
-      ref="contextMenu"
-      data-test="context-menu"
-      :on-edit="onEdit"
-      :on-addons="onAddons"
-    />
+    <FleetchartItemContextMenu ref="contextMenu" data-test="context-menu" />
   </div>
 </template>
 
@@ -47,13 +42,16 @@ import FleetchartItemContextMenu from 'frontend/components/Fleetchart/List/Conte
   },
 })
 export default class FleetchartList extends Vue {
-  @Prop() items!: Vehicle[] | Model[]
+  @Prop({
+    default() {
+      return []
+    },
+  })
+  items!: Vehicle[] | Model[]
 
-  @Prop() onEdit!: Function
+  @Prop({ default: false }) myShip!: boolean
 
-  @Prop() onAddons!: Function
-
-  @Prop() scale!: number
+  @Prop({ default: 100 }) scale!: number
 
   selectedModel: Model | null = null
 
@@ -61,7 +59,7 @@ export default class FleetchartList extends Vue {
 
   openContextMenu(event, item) {
     // @ts-ignore
-    this.$refs.contextMenu.open(item, event)
+    this.$refs.contextMenu.open(item, this.myShip, event)
   }
 }
 </script>

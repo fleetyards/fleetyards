@@ -20,10 +20,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
+import { Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
-import { displayWarning, displaySuccess } from 'frontend/lib/Noty'
-import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import { displayWarning } from 'frontend/lib/Noty'
 
 @Component<AddToHangar>({
   components: {
@@ -44,8 +43,6 @@ export default class AddToHangar extends Vue {
   @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated
 
   @Getter('ships', { namespace: 'hangar' }) ships
-
-  @Action('add', { namespace: 'hangar' }) addToHangar
 
   get inHangar() {
     return !!(this.ships || []).find(item => item === this.model.slug)
@@ -75,20 +72,12 @@ export default class AddToHangar extends Vue {
       return
     }
 
-    const success = await vehiclesCollection.create({
-      modelId: this.model.id,
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Models/AddToHangarModal'),
+      props: {
+        model: this.model,
+      },
     })
-
-    if (success) {
-      await this.addToHangar(this.model.slug)
-
-      displaySuccess({
-        text: this.$t('messages.vehicle.add.success', {
-          model: this.model.name,
-        }),
-        icon: this.model.storeImageSmall,
-      })
-    }
   }
 }
 </script>

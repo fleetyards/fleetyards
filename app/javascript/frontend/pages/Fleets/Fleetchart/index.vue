@@ -70,15 +70,9 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :scale="fleetchartScale"
-          :on-addons="showAddonsModal"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -173,10 +167,6 @@ export default class FleetFleetchart extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   toggleGrouped() {

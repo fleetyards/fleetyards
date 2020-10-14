@@ -1,0 +1,131 @@
+.app-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  overflow-y: auto;
+  background-color: rgba(black, .7);
+  outline: 0;
+
+  .modal-dialog {
+    box-sizing: border-box;
+    width: 600px;
+    max-width: 600px;
+    margin: 30px auto;
+    transition: transform ease $transition-base-speed ease-out;
+    pointer-events: unset;
+  }
+
+  .modal-content {
+    padding: 15px;
+    background-color: transparent;
+    border-radius: $border-radius-base;
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+
+  .modal-header {
+    position: relative;
+    padding: 0;
+    padding-bottom: 1rem;
+    border-bottom: none;
+    border-radius: 0;
+
+    .modal-title {
+      padding-right: 20px;
+      font-weight: normal;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .close {
+      position: absolute;
+      top: 0;
+      right: -10px;
+      margin: 0;
+      padding: 3px 10px;
+      color: white;
+      font-size: 1rem;
+      text-shadow: none;
+      cursor: pointer;
+      opacity: 1;
+    }
+  }
+
+  .modal-footer {
+    padding: .75rem 0;
+    border-top: none;
+    border-radius: 0;
+  }
+
+  &.wide {
+    .modal-dialog {
+      width: 1000px;
+    }
+  }
+
+  &.fade {
+    opacity: 0;
+    transition: opacity ease $transition-base-speed / 2 linear;
+
+    .modal-dialog {
+      transform: translate(0, -25%);
+    }
+
+    &.in {
+      opacity: 1;
+
+      .modal-dialog {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  &.fixed {
+    .close {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .app-modal {
+    .modal-dialog {
+      width: 100%;
+      margin: 0;
+      margin-top: auto !important;
+      padding: 20px 0;
+
+      > :first-child {
+        margin-top: env(safe-area-inset-top);
+      }
+
+      .modal-content {
+        border-width: 1px 0 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+
+    &.fade {
+      .modal-dialog {
+        transform: translate(0, 25%);
+      }
+
+      &.in {
+        .modal-dialog {
+          transform: translate(0, 0);
+        }
+      }
+    }
+  }
+}

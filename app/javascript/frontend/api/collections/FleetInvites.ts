@@ -2,6 +2,8 @@ import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetInvitessCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: FleetInvite[] = []
 
   async findAllForCurrent(

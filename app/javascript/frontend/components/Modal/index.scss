@@ -48,7 +48,7 @@
     .close {
       position: absolute;
       top: 0;
-      right: 0;
+      right: -10px;
       margin: 0;
       padding: 3px 10px;
       color: white;
@@ -89,16 +89,12 @@
   }
 
   &.show {
-    display: block;
+    display: flex;
   }
 }
 
 @media (max-width: $tablet-breakpoint) {
   .modal {
-    &.show {
-      display: flex !important;
-    }
-
     .modal-dialog {
       width: 100%;
       margin: 0;

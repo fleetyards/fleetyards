@@ -50,14 +50,14 @@
           </small>
 
           <Btn
-            v-if="vehicle && onEdit && !vehicle.loaner"
+            v-if="vehicle && isMyShip && !vehicle.loaner"
             :title="$t('actions.edit')"
             :aria-label="$t('actions.edit')"
             class="panel-edit-button"
             variant="link"
             size="small"
             data-test="vehicle-edit"
-            @click.native="onEdit(vehicle)"
+            @click.native="openEditModal"
           >
             <i class="fa fa-pencil" />
           </Btn>
@@ -105,13 +105,13 @@
           </div>
         </LazyImage>
         <div
-          v-if="upgradable && onAddons && vehicle"
+          v-if="upgradable && vehicle"
           v-tooltip="$t('labels.model.addons')"
           class="addons"
           :class="{
             selected: hasAddons,
           }"
-          @click="onAddons(vehicle)"
+          @click="openAddonsModal"
         >
           <span v-show="hasAddons">
             <i class="fa fa-plus-octagon" />
@@ -177,10 +177,6 @@ export default class ModelPanel extends Vue {
   @Prop({ required: true }) model: Model
 
   @Prop({ default: null }) vehicle: Vehicle | null
-
-  @Prop({ default: null }) onEdit: Function | null
-
-  @Prop({ default: null }) onAddons: Function | null
 
   @Prop({ default: false }) details: boolean
 
@@ -262,6 +258,25 @@ export default class ModelPanel extends Vue {
 
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }
+  }
+
+  openEditModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/Modal'),
+      props: {
+        vehicle: this.vehicle,
+      },
+    })
+  }
+
+  openAddonsModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/AddonsModal'),
+      props: {
+        vehicle: this.vehicle,
+        modifiable: this.isMyShip,
+      },
+    })
   }
 }
 </script>

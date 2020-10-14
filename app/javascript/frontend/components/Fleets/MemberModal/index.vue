@@ -1,11 +1,6 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit }" slim>
-    <Modal
-      v-if="fleet"
-      ref="modal"
-      :title="$t('headlines.fleets.inviteMember')"
-      :visible="visible"
-    >
+    <Modal v-if="fleet && form" :title="$t('headlines.fleets.inviteMember')">
       <form
         :id="`fleet-member-${fleet.id}`"
         @submit.prevent="handleSubmit(save)"
@@ -46,65 +41,49 @@
   </ValidationObserver>
 </template>
 
-<script>
-import Modal from 'frontend/components/Modal'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import Modal from 'frontend/core/components/AppModal/Modal'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
+import memberCollection from 'frontend/api/collections/FleetMembers'
 
-export default {
+@Component<MemberModal>({
   components: {
     Modal,
     FormInput,
     Btn,
   },
+})
+export default class MemberModal extends Vue {
+  @Prop({ required: true }) fleet: Fleet
 
-  props: {
-    fleet: {
-      type: Object,
-      required: true,
-    },
+  submitting: boolean = false
 
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  form: FleetMemberForm | null = null
 
-  data() {
-    return {
-      submitting: false,
-      form: {
-        username: null,
-      },
+  mounted() {
+    this.setupForm()
+  }
+
+  setupForm() {
+    this.form = {
+      username: null,
     }
-  },
+  }
 
-  methods: {
-    open() {
-      this.form = {
-        username: null,
-      }
+  async save() {
+    this.submitting = true
 
-      this.$nextTick(() => {
-        this.$refs.modal.open()
-      })
-    },
+    const newMember = await memberCollection.create(this.fleet.slug, this.form)
 
-    async save() {
-      this.submitting = true
+    this.submitting = false
 
-      const response = await this.$api.post(
-        `fleets/${this.fleet.slug}/members`,
-        this.form,
-      )
-
-      this.submitting = false
-
-      if (!response.error) {
-        this.$refs.modal.close()
-        this.$comlink.$emit('fleet-member-invited', response.data)
-      }
-    },
-  },
+    if (newMember) {
+      this.$comlink.$emit('fleet-member-invited', newMember)
+      this.$comlink.$emit('close-modal')
+    }
+  }
 }
 </script>

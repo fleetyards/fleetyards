@@ -1,0 +1,16 @@
+@import '~vue-swatches/dist/vue-swatches';
+
+.vue-swatches__container {
+  background-color: transparent !important;
+
+  .vue-swatches__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .vue-swatches__swatch {
+      margin-right: 6px !important;
+      margin-left: 6px !important;
+    }
+  }
+}

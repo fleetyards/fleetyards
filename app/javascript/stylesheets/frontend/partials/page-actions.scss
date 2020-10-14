@@ -1,7 +1,18 @@
 .page-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
+
+  &.page-actions-center {
+    justify-content: center;
+  }
+
+  &.page-actions-block {
+    .panel-btn {
+      flex-grow: 1;
+    }
+  }
 
   &.page-actions-left {
     justify-content: flex-start;
@@ -31,6 +42,12 @@
     justify-content: space-between;
     width: 100%;
     text-align: center;
+
+    &.page-actions-block {
+      .panel-btn {
+        margin-bottom: 20px;
+      }
+    }
 
     &.page-actions-left {
       justify-content: space-between;

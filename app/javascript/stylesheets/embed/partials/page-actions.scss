@@ -3,6 +3,16 @@
   flex-wrap: wrap;
   justify-content: center;
 
+  &.page-actions-block {
+    .panel-btn {
+      flex-grow: 1;
+    }
+  }
+
+  &.page-actions-center {
+    justify-content: center;
+  }
+
   &.page-actions-left {
     justify-content: flex-start;
 

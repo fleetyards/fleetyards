@@ -40,8 +40,6 @@
         <FleetMembersList :members="records" :role="fleet.myRole" />
       </template>
     </FilteredList>
-
-    <MemberModal v-if="fleet" ref="memberModal" :fleet="fleet" />
   </section>
 </template>
 
@@ -53,7 +51,6 @@ import FilteredList from 'frontend/core/components/FilteredList'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import Btn from 'frontend/core/components/Btn'
 import FleetMembersFilterForm from 'frontend/components/Fleets/MembersFilterForm'
-import MemberModal from 'frontend/components/Fleets/MemberModal'
 import Avatar from 'frontend/core/components/Avatar'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
@@ -70,7 +67,6 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     FilteredList,
     FleetMembersFilterForm,
     Avatar,
-    MemberModal,
     FleetMembersList,
   },
   mixins: [MetaInfoMixin],
@@ -111,8 +107,8 @@ export default class FleetMemmbers extends Vue {
 
   get filters(): FleetMembersParams {
     return {
-      filters: this.$route.query.q,
       slug: this.$route.params.slug,
+      filters: this.$route.query.q,
       page: this.$route.query.page,
     }
   }
@@ -139,7 +135,12 @@ export default class FleetMemmbers extends Vue {
   }
 
   openInviteModal() {
-    this.$refs.memberModal.open()
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Fleets/MemberModal'),
+      props: {
+        fleet: this.fleet,
+      },
+    })
   }
 
   async fetchFleet() {
