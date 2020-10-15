@@ -70,9 +70,11 @@ export default class AppModal extends Vue {
     this.showOverlay()
 
     this.$nextTick(() => {
-      this.isOpen = true
-      this.$refs.modal.focus()
-      this.$emit('modal-opened')
+      setTimeout(() => {
+        this.isOpen = true
+        this.$refs.modal.focus()
+        this.$emit('modal-opened')
+      }, 300)
     })
   }
 
@@ -90,7 +92,7 @@ export default class AppModal extends Vue {
         this.component = null
         this.props = null
         this.$emit('modal-closed')
-      }, 500)
+      }, 300)
     })
   }
 }

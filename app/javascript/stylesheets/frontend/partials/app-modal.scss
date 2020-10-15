@@ -10,13 +10,14 @@
   overflow-y: auto;
   background-color: rgba(black, .7);
   outline: 0;
+  transition: opacity $transition-base-speed ease-in-out;
 
   .modal-dialog {
     box-sizing: border-box;
     width: 600px;
     max-width: 600px;
     margin: 30px auto;
-    transition: transform ease $transition-base-speed ease-out;
+    transition: $transition-base-speed ease-in-out;
     pointer-events: unset;
   }
 
@@ -71,7 +72,6 @@
 
   &.fade {
     opacity: 0;
-    transition: opacity ease $transition-base-speed / 2 linear;
 
     .modal-dialog {
       transform: translate(0, -25%);
