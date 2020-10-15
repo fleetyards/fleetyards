@@ -172,24 +172,6 @@ jobs:
       - run: yarn install
       - run: yarn run lint:js
 
-  vue-lint:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: yarn install
-      - run: yarn run lint:vue
-
-  ts-lint:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: yarn install
-      - run: yarn run lint:ts
-
   style-lint:
     <<: *defaults
     steps:
@@ -429,12 +411,6 @@ workflows:
       - js-lint:
           requires:
             - yarn
-      - vue-lint:
-          requires:
-            - yarn
-      - ts-lint:
-          requires:
-            - yarn
       - style-lint:
           requires:
             - yarn
@@ -470,8 +446,6 @@ workflows:
             - ruby-tests
             - js-tests
             - js-lint
-            - vue-lint
-            - ts-lint
             - style-lint
           filters:
             branches:

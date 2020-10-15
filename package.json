@@ -14,10 +14,8 @@
     "test:ci": "jest -w 1",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch --notify",
-    "lint": "yarn run lint:js && yarn run lint:ts && yarn run lint:vue && yarn run lint:style",
-    "lint:js": "eslint --ext .js --fix app/javascript test/javascript",
-    "lint:ts": "eslint --ext .ts --fix app/javascript && tslint -p ./tsconfig.json",
-    "lint:vue": "eslint --ext .vue --fix app/javascript test/javascript",
+    "lint": "yarn run lint:js && yarn run lint:style",
+    "lint:js": "eslint --ext .js,.ts,.vue --fix app/javascript test/javascript",
     "lint:style": "stylelint \"app/javascript/**/*.scss\" \"app/javascript/**/*.vue\" \"app/assets/**/*.scss\" --fix",
     "test:e2e": "cypress run --browser chrome",
     "webpack:analyze": "mkdir -p public/packs && node_modules/.bin/webpack --config config/webpack/production.js --profile --json > public/packs/stats.json && node_modules/.bin/webpack-bundle-analyzer public/packs/stats.json"
