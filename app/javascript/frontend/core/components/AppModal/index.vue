@@ -76,7 +76,7 @@ export default class AppModal extends Vue {
         this.isOpen = true
         this.$refs.modal.focus()
         this.$emit('modal-opened')
-      }, 50)
+      }, 100)
     })
   }
 
