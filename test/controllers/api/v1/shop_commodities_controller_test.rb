@@ -35,6 +35,7 @@ module Api
           'rentPrice30Days' => nil,
           'locationLabel' => andromeda.location_label,
           'shop' => {
+            'id' => andromeda.shop.id,
             'name' => 'New Deal',
             'slug' => 'new-deal',
             'type' => 'ships',
@@ -131,6 +132,7 @@ module Api
           'rentPrice30Days' => nil,
           'locationLabel' => andromeda.location_label,
           'shop' => {
+            'id' => andromeda.shop.id,
             'name' => 'New Deal',
             'slug' => 'new-deal',
             'type' => 'ships',

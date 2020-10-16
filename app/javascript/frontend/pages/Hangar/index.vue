@@ -194,23 +194,11 @@
           :model="record.model"
           :vehicle="record"
           :details="detailsVisible"
-          :on-edit="showEditModal"
-          :on-addons="showAddonsModal"
           :is-my-ship="true"
           :highlight="record.hangarGroupIds.includes(highlightedGroup)"
         />
       </template>
     </FilteredList>
-
-    <VehicleModal
-      ref="vehicleModal"
-      :collection="collection"
-      :hangar-groups="groupsCollection.records"
-    />
-
-    <AddonsModal ref="addonsModal" modifiable />
-
-    <NewVehiclesModal ref="newVehiclesModal" :collection="collection" />
 
     <PrimaryAction :label="$t('actions.addVehicle')" :action="showNewModal" />
   </section>
@@ -230,9 +218,7 @@ import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
 import HangarGuideBox from 'frontend/components/HangarGuideBox'
-import VehicleModal from 'frontend/components/Vehicles/Modal'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
-import NewVehiclesModal from 'frontend/components/Vehicles/NewVehiclesModal'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
@@ -252,9 +238,7 @@ import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
     ModelClassLabels,
     GroupLabels,
     HangarGuideBox,
-    VehicleModal,
     AddonsModal,
-    NewVehiclesModal,
   },
   mixins: [MetaInfo, HangarItemsMixin],
 })
@@ -335,7 +319,7 @@ export default class Hangar extends Vue {
     this.setupUpdates()
 
     this.$comlink.$on('hangar-group-delete', this.fetch)
-    this.$comlink.$on('hangar-group-save', this.fetchGroups)
+    this.$comlink.$on('hangar-group-save', this.groupsCollection.findAll)
   }
 
   beforeDestroy() {
@@ -351,28 +335,10 @@ export default class Hangar extends Vue {
     this.guideVisible = !this.guideVisible
   }
 
-  showEditModal(vehicle) {
-    if (!this.$refs.vehicleModal) {
-      return
-    }
-
-    this.$refs.vehicleModal.open(vehicle)
-  }
-
   showNewModal() {
-    if (!this.$refs.newVehiclesModal) {
-      return
-    }
-
-    this.$refs.newVehiclesModal.open()
-  }
-
-  showAddonsModal(vehicle) {
-    if (!this.$refs.addonsModal) {
-      return
-    }
-
-    this.$refs.addonsModal.open(vehicle)
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/NewVehiclesModal'),
+    })
   }
 
   toggleDetails() {

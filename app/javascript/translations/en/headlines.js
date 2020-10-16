@@ -25,6 +25,7 @@ export default {
   myVehicle: 'My %{vehicle}',
   newVehicles: 'Add Ships',
   myVehicleAddons: 'Add Modules / Upgrades for %{vehicle}',
+  addToHangar: 'Add "%{model}" to your Hangar',
   impressum: 'Impressum',
   privacy: 'Privacy policy',
   cookie: 'Cookie policy',

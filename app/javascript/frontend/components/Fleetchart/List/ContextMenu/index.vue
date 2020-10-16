@@ -22,27 +22,27 @@
 
     <template v-if="vehicle && !vehicle.loaner">
       <Btn
-        v-if="onEdit"
+        v-if="myShip"
         :title="$t('actions.edit')"
         :aria-label="$t('actions.edit')"
         variant="link"
         size="small"
         data-test="vehicle-edit"
         :inline="true"
-        @click.native="onEdit(vehicle)"
+        @click.native="openEditModal"
       >
         <i class="fa fa-pencil" />
       </Btn>
 
       <Btn
-        v-if="upgradable && onAddons"
+        v-if="upgradable"
         :title="$t('labels.model.addons')"
         :aria-label="$t('labels.model.addons')"
         variant="link"
         size="small"
         data-test="vehicle-addons"
         :inline="true"
-        @click.native="onAddons(vehicle)"
+        @click.native="openAddonsModal"
       >
         <span v-show="hasAddons">
           <i class="fa fa-plus-octagon" />
@@ -52,18 +52,12 @@
         </span>
       </Btn>
     </template>
-
-    <AddToHangar
-      v-else-if="model || (vehicle && !vehicle.loaner)"
-      :model="model"
-      variant="menu"
-    />
   </BtnGroup>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import BtnGroup from 'frontend/core/components/BtnGroup/index.vue'
 import Btn from 'frontend/core/components/Btn/index.vue'
 import AddToHangar from 'frontend/components/Models/AddToHangar/index.vue'
@@ -78,10 +72,6 @@ import AddToHangar from 'frontend/components/Models/AddToHangar/index.vue'
 export default class FleetchartItemContextMenu extends Vue {
   visible: boolean = false
 
-  @Prop() onEdit!: Function
-
-  @Prop() onAddons!: Function
-
   startEvent: MouseEvent | null = null
 
   topPosition: number = 0
@@ -91,6 +81,8 @@ export default class FleetchartItemContextMenu extends Vue {
   model: Model = null
 
   vehicle: Vehicle = null
+
+  myShip: boolean = false
 
   get hasAddons() {
     return (
@@ -129,7 +121,9 @@ export default class FleetchartItemContextMenu extends Vue {
     }
   }
 
-  async open(item: Vehicle | Model, ev: MouseEvent) {
+  async open(item: Vehicle | Model, myShip: boolean, ev: MouseEvent) {
+    this.myShip = myShip
+
     if (item.model) {
       this.model = item.model
       this.vehicle = item
@@ -172,6 +166,25 @@ export default class FleetchartItemContextMenu extends Vue {
     } else {
       this.topPosition = ev.clientY
     }
+  }
+
+  openEditModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/Modal'),
+      props: {
+        vehicle: this.vehicle,
+      },
+    })
+  }
+
+  openAddonsModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/AddonsModal'),
+      props: {
+        vehicle: this.vehicle,
+        modifiable: this.isMyShip,
+      },
+    })
   }
 
   close() {

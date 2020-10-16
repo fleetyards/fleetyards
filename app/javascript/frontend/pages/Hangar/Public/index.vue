@@ -111,11 +111,7 @@
             :key="vehicle.id"
             class="col-12 col-md-6 col-xl-4 col-xxlg-2-4 fade-list-item"
           >
-            <ModelPanel
-              :model="vehicle.model"
-              :vehicle="vehicle"
-              :on-addons="showAddonsModal"
-            />
+            <ModelPanel :model="vehicle.model" :vehicle="vehicle" />
           </div>
         </transition-group>
         <Loader :loading="loading" fixed />
@@ -130,8 +126,6 @@
         />
       </div>
     </div>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -213,10 +207,6 @@ export default class PublicHangar extends Vue {
 
   created() {
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   async fetch() {

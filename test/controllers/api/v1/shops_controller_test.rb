@@ -22,6 +22,7 @@ module Api
       let(:admin_yela) { shops :admin_yela }
       let(:show_result) do
         {
+          'id' => new_deal.id,
           'name' => 'New Deal',
           'slug' => 'new-deal',
           'type' => 'ships',
@@ -78,6 +79,7 @@ module Api
       end
       let(:index_result) do
         [{
+          'id' => admin_daymar.id,
           'name' => 'Admin Office',
           'slug' => 'admin-office',
           'type' => 'admin',
@@ -166,6 +168,7 @@ module Api
           'createdAt' => admin_daymar.created_at.utc.iso8601,
           'updatedAt' => admin_daymar.updated_at.utc.iso8601
         }, {
+          'id' => admin_yela.id,
           'name' => 'Admin Office',
           'slug' => 'admin-office',
           'type' => 'admin',
@@ -254,6 +257,7 @@ module Api
           'createdAt' => admin_yela.created_at.utc.iso8601,
           'updatedAt' => admin_yela.updated_at.utc.iso8601
         }, {
+          'id' => admin_olisar.id,
           'name' => 'Admin Office',
           'slug' => 'admin-office',
           'type' => 'admin',
@@ -307,6 +311,7 @@ module Api
           'createdAt' => admin_olisar.created_at.utc.iso8601,
           'updatedAt' => admin_olisar.updated_at.utc.iso8601
         }, {
+          'id' => dumpers.id,
           'name' => 'Dumpers Depot',
           'slug' => 'dumpers-depot',
           'type' => 'components',
@@ -360,6 +365,7 @@ module Api
           'createdAt' => dumpers.created_at.utc.iso8601,
           'updatedAt' => dumpers.updated_at.utc.iso8601
         }, {
+          'id' => new_deal.id,
           'name' => 'New Deal',
           'slug' => 'new-deal',
           'type' => 'ships',

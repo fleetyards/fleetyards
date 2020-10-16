@@ -55,13 +55,13 @@ export default {
       delete this.channels[channel]
     },
 
-    connected(channel) {
-      console.info('Connected to Channel:', channel)
+    connected(_channel) {
+      // console.info('Connected to Channel:', channel)
     },
 
     disconnected(channel) {
       this.unsubscribeChannel(channel)
-      console.info('Disconnected from Channel:', channel)
+      // console.info('Disconnected from Channel:', channel)
     },
 
     setupAppVersionChannel() {

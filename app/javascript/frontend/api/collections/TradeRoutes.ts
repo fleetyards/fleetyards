@@ -2,6 +2,8 @@ import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class TradeRoutesCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: TradeRoute[] = []
 
   params: TradeRouteParams | null = null

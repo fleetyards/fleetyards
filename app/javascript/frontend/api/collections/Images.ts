@@ -2,6 +2,8 @@ import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class ImagesCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: Image[] = []
 
   async findAll(params: CollectionParams): Promise<Image[]> {
