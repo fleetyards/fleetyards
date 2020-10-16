@@ -59,6 +59,7 @@ export default {
   'requestPassword': 'Request Password E-Mail',
   'changePassword': 'Change Password',
   'add': 'Add',
+  'addAsPurchased': 'Add as Purchased',
   'addAnother': 'Add another',
   'addVehicle': 'Add Ships',
   'addGroup': 'Add Group',

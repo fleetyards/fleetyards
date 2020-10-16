@@ -66,7 +66,7 @@
           >
             <div
               v-for="(record, index) in collection.records"
-              :key="`${record[collection.primaryKey]}-${index}`"
+              :key="record[collection.primaryKey]"
               :class="{
                 'col-xxl-3 col-3xl-2dot4': filterVisible,
                 'col-xl-3 col-xxl-2dot4 col-3xl-2': !filterVisible,

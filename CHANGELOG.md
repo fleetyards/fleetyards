@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.81.2](https://github.com/fleetyards/fleetyards/compare/v3.81.1...v3.81.2) (2020-10-16)
+
+### [3.81.1](https://github.com/fleetyards/fleetyards/compare/v3.81.0...v3.81.1) (2020-10-15)
+
+
+### Bug Fixes
+
+* modal animations ([30f38b5](https://github.com/fleetyards/fleetyards/commit/30f38b50e5e09726e6adefc7e82020020f0b179b))
+
+## [3.81.0](https://github.com/fleetyards/fleetyards/compare/v3.80.16...v3.81.0) (2020-10-14)
+
+
+### Features
+
+* rework Modals and update AddToHangar Workflow ([#1266](https://github.com/fleetyards/fleetyards/issues/1266)) ([572e91d](https://github.com/fleetyards/fleetyards/commit/572e91d8143c96f8237c6a619e333d82d9a8a130))
+
+
+### Bug Fixes
+
+* addToHangar on mobile ([261bf6c](https://github.com/fleetyards/fleetyards/commit/261bf6c38b310e6676c115a8d9841c667ac8aca1))
+
+### [3.80.16](https://github.com/fleetyards/fleetyards/compare/v3.80.15...v3.80.16) (2020-10-12)
+
+
+### Bug Fixes
+
+* trade routes quick filter ([839f50c](https://github.com/fleetyards/fleetyards/commit/839f50cf178bf22483031fee4efcc90c6836781d))
+
+### [3.80.15](https://github.com/fleetyards/fleetyards/compare/v3.80.14...v3.80.15) (2020-10-11)
+
+
+### Bug Fixes
+
+* roadmap responsive classes ([73b8f67](https://github.com/fleetyards/fleetyards/commit/73b8f67488270edf82f839a1d6c277597f782c08))
+
+### [3.80.14](https://github.com/fleetyards/fleetyards/compare/v3.80.13...v3.80.14) (2020-10-10)
+
+
+### Bug Fixes
+
+* fade-list transitions ([8f278c2](https://github.com/fleetyards/fleetyards/commit/8f278c2690321aabfb0e4a9d955ad2dc7a8eec35))
+
 ### [3.80.13](https://github.com/fleetyards/fleetyards/compare/v3.80.12...v3.80.13) (2020-10-08)
 
 

@@ -53,6 +53,7 @@
 }
 
 .fade-list-item {
+  opacity: 1;
   transition: all .5s;
 }
 
@@ -63,10 +64,6 @@
 }
 
 .fade-list-leave-active {
-  position: absolute;
-  top: 70vh;
-  left: 50%;
-  transform: translate(-50%, 0);
   opacity: 0;
 }
 
