@@ -4,7 +4,7 @@ import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'
 import store from 'embed/lib/Store'
 import I18nPlugin from 'frontend/lib/I18n'
-import ApiClient from 'frontend/api/client'
+import ApiClient from 'embed/api/client'
 import 'frontend/plugins/LazyLoad'
 
 Vue.use(ApiClient)
