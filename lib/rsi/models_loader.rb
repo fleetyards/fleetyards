@@ -112,14 +112,7 @@ module RSI
 
       prices = []
       (page.css('#buying-options .final-price') || []).each do |price_element|
-        prices << begin
-          raw_price = price_element.text
-          price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
-          if price_match.present?
-            price_with_local_vat = price_match[1].to_d
-            price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
-          end
-        end
+        prices << extract_price(price_element)
       end
 
       prices.compact.sort!
@@ -129,6 +122,13 @@ module RSI
         on_sale: prices.present?,
         prices: prices
       )
+    end
+
+    private def extract_price(element)
+      raw_price = element.text
+      price_match = raw_price.match(/^\$(\d+.\d+) USD$/)
+      price_with_local_vat = price_match[1].to_d if price_match.present?
+      price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
     end
 
     # rubocop:disable Metrics/MethodLength
