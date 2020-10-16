@@ -70,11 +70,13 @@ export default class AppModal extends Vue {
     this.showOverlay()
 
     this.$nextTick(() => {
+      // make sure the component is present
       setTimeout(() => {
+        // make sure initial animations have enough time
         this.isOpen = true
         this.$refs.modal.focus()
         this.$emit('modal-opened')
-      }, 300)
+      }, 50)
     })
   }
 
