@@ -22,7 +22,7 @@
           <StationHabitations :station="station" :padding="true" />
         </Panel>
         <div class="text-right">
-          <div class="page-actions">
+          <div class="page-actions page-actions-right">
             <Btn
               v-if="station.hasImages"
               :to="{ name: 'station-images', params: { slug: station.slug } }"

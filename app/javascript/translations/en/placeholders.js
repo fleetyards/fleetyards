@@ -12,6 +12,7 @@ export default {
   youtube: 'Youtube Channel',
   twitch: 'Twitch Channel',
   guilded: 'Guilded Server',
+  color: 'Color',
   quicksearch: {
     'models': 'Avenger, Carrack, Cutlass...',
     'models-fleetchart': 'Avenger, Carrack, Cutlass...',

@@ -17,7 +17,7 @@
         />
       </div>
       <div class="col-12 col-lg-4">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Starship42Btn :vehicles="collection.records" />
         </div>
       </div>
@@ -70,15 +70,9 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :scale="fleetchartScale"
-          :on-addons="showAddonsModal"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -173,10 +167,6 @@ export default class FleetFleetchart extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   toggleGrouped() {

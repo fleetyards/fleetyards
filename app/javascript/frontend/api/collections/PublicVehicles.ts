@@ -2,6 +2,8 @@ import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class PublicVehiclesCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: Vehicle[] = []
 
   stats: PublicVehicleStats | null = null

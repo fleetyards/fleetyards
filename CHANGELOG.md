@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.81.2](https://github.com/fleetyards/fleetyards/compare/v3.81.1...v3.81.2) (2020-10-16)
+
+### [3.81.1](https://github.com/fleetyards/fleetyards/compare/v3.81.0...v3.81.1) (2020-10-15)
+
+
+### Bug Fixes
+
+* modal animations ([30f38b5](https://github.com/fleetyards/fleetyards/commit/30f38b50e5e09726e6adefc7e82020020f0b179b))
+
+## [3.81.0](https://github.com/fleetyards/fleetyards/compare/v3.80.16...v3.81.0) (2020-10-14)
+
+
+### Features
+
+* rework Modals and update AddToHangar Workflow ([#1266](https://github.com/fleetyards/fleetyards/issues/1266)) ([572e91d](https://github.com/fleetyards/fleetyards/commit/572e91d8143c96f8237c6a619e333d82d9a8a130))
+
+
+### Bug Fixes
+
+* addToHangar on mobile ([261bf6c](https://github.com/fleetyards/fleetyards/commit/261bf6c38b310e6676c115a8d9841c667ac8aca1))
+
+### [3.80.16](https://github.com/fleetyards/fleetyards/compare/v3.80.15...v3.80.16) (2020-10-12)
+
+
+### Bug Fixes
+
+* trade routes quick filter ([839f50c](https://github.com/fleetyards/fleetyards/commit/839f50cf178bf22483031fee4efcc90c6836781d))
+
+### [3.80.15](https://github.com/fleetyards/fleetyards/compare/v3.80.14...v3.80.15) (2020-10-11)
+
+
+### Bug Fixes
+
+* roadmap responsive classes ([73b8f67](https://github.com/fleetyards/fleetyards/commit/73b8f67488270edf82f839a1d6c277597f782c08))
+
+### [3.80.14](https://github.com/fleetyards/fleetyards/compare/v3.80.13...v3.80.14) (2020-10-10)
+
+
+### Bug Fixes
+
+* fade-list transitions ([8f278c2](https://github.com/fleetyards/fleetyards/commit/8f278c2690321aabfb0e4a9d955ad2dc7a8eec35))
+
+### [3.80.13](https://github.com/fleetyards/fleetyards/compare/v3.80.12...v3.80.13) (2020-10-08)
+
+
+### Bug Fixes
+
+* images ([9a5fc9b](https://github.com/fleetyards/fleetyards/commit/9a5fc9b03bdaa819d9893db0bb2a8f11e0114e72))
+
+### [3.80.12](https://github.com/fleetyards/fleetyards/compare/v3.80.11...v3.80.12) (2020-10-08)
+
+
+### Bug Fixes
+
+* images ([f60d118](https://github.com/fleetyards/fleetyards/commit/f60d118b9e6d382f3fb1fa71d9fce0ae7abb65d7))
+
+### [3.80.11](https://github.com/fleetyards/fleetyards/compare/v3.80.10...v3.80.11) (2020-10-08)
+
+
+### Bug Fixes
+
+* page actions ([6d24620](https://github.com/fleetyards/fleetyards/commit/6d246202c1ccf3285776081283ad6a9032356c05))
+
+### [3.80.10](https://github.com/fleetyards/fleetyards/compare/v3.80.9...v3.80.10) (2020-10-08)
+
+
+### Bug Fixes
+
+* admin image row ([132ffaa](https://github.com/fleetyards/fleetyards/commit/132ffaa301f935123867f77fb9865e769e835b3b))
+
+### [3.80.9](https://github.com/fleetyards/fleetyards/compare/v3.80.8...v3.80.9) (2020-10-07)
+
+
+### Bug Fixes
+
+* sidekiq admin dashboard ([a60338a](https://github.com/fleetyards/fleetyards/commit/a60338ab24d0c5ec19503d254022cd4d87e515b0))
+
 ### [3.80.8](https://github.com/fleetyards/fleetyards/compare/v3.80.7...v3.80.8) (2020-09-25)
 
 

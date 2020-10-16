@@ -3,6 +3,10 @@ type FleetMember = {
   username: string
 }
 
+type FleetMemberForm = {
+  username: string
+}
+
 type FleetMembersFilter = {
   usernameCont: string
   roleIn: string[]

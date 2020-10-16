@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id member.id
 json.username member.user.username
 json.role member.role
 json.role_Label FleetMembership.human_enum_name(:role, member.role)

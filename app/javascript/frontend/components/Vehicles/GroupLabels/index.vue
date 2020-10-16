@@ -44,7 +44,7 @@
           }"
           class="label label-link fade-list-item"
           @click.exact="filter(group.slug)"
-          @click.right.prevent="edit(group)"
+          @click.right.prevent="openGroupModal(group)"
           @mouseenter="highlight(group)"
           @mouseleave="highlight(null)"
         >
@@ -60,179 +60,172 @@
         </a>
       </transition-group>
     </draggable>
-    <a v-tooltip="$t('actions.addGroup')" class="label label-link" @click="add">
+    <a
+      v-tooltip="$t('actions.addGroup')"
+      class="label label-link"
+      @click="openGroupModal()"
+    >
       <span class="label-inner">
         <i class="far fa-plus" />
       </span>
     </a>
-    <GroupModal ref="groupModal" :group="selectedGroup" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Btn from 'frontend/core/components/Btn'
-import GroupModal from 'frontend/components/Vehicles/GroupModal'
-import { mapGetters } from 'vuex'
 import { displayAlert } from 'frontend/lib/Noty'
+import { Getter } from 'vuex-class'
 
-export default {
+@Component<GroupLabels>({
   components: {
     BtnDropdown,
     Btn,
-    GroupModal,
     draggable,
   },
+})
+export default class GroupLabels extends Vue {
+  groups: HangarGroup[] = []
 
-  props: {
-    hangarGroups: {
-      type: Array,
-      default() {
-        return []
-      },
+  @Prop({
+    default() {
+      return []
     },
+  })
+  hangarGroups: HangarGroup[]
 
-    hangarGroupCounts: {
-      type: Array,
-      default() {
-        return []
-      },
+  @Prop({
+    default() {
+      return []
     },
-  },
+  })
+  hangarGroupCounts: Array
 
-  data() {
-    return {
-      selectedGroup: {},
-      groups: this.hangarGroups,
-      delay: 300,
-      clicks: 0,
-      timer: null,
+  @Getter('mobile') mobile
+
+  get sortIndex() {
+    return this.groups.map(item => item.id)
+  }
+
+  mounted() {
+    this.groups = this.hangarGroups
+  }
+
+  @Watch('hangarGroups')
+  onHangarGroupsChange() {
+    this.groups = this.hangarGroups
+  }
+
+  @Watch('groups')
+  onGroupsFake() {
+    if (this.groups !== this.hangarGroups) {
+      this.updateSort()
     }
-  },
+  }
 
-  computed: {
-    ...mapGetters(['mobile']),
-
-    sortIndex() {
-      return this.groups.map(item => item.id)
-    },
-  },
-
-  watch: {
-    hangarGroups() {
-      this.groups = this.hangarGroups
-    },
-
-    groups() {
-      if (this.groups !== this.hangarGroups) {
-        this.updateSort()
+  groupCount(group) {
+    return (
+      this.hangarGroupCounts.find(count => count.id === group.id) || {
+        count: 0,
       }
-    },
-  },
+    )
+  }
 
-  methods: {
-    groupCount(group) {
-      return (
-        this.hangarGroupCounts.find(count => count.id === group.id) || {
-          count: 0,
-        }
-      )
-    },
+  filter(filter) {
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
 
-    filter(filter) {
-      const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
-
-      if ((query.hangarGroupsIn || []).includes(filter)) {
-        if (!query.hangarGroupsNotIn) {
-          query.hangarGroupsNotIn = []
-        }
-        query.hangarGroupsNotIn.push(filter)
-
-        const index = query.hangarGroupsIn.findIndex(item => item === filter)
-        if (index > -1) {
-          query.hangarGroupsIn.splice(index, 1)
-        }
-      } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
-        const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
-        if (index > -1) {
-          query.hangarGroupsNotIn.splice(index, 1)
-        }
-      } else {
-        if (!query.hangarGroupsIn) {
-          query.hangarGroupsIn = []
-        }
-        query.hangarGroupsIn.push(filter)
+    if ((query.hangarGroupsIn || []).includes(filter)) {
+      if (!query.hangarGroupsNotIn) {
+        query.hangarGroupsNotIn = []
       }
+      query.hangarGroupsNotIn.push(filter)
 
-      this.$router.replace({
-        name: this.$route.name,
-        query: {
-          q: query,
-        },
-      })
-    },
-
-    isActive(group) {
-      if (!this.$route.query.q) {
-        return false
+      const index = query.hangarGroupsIn.findIndex(item => item === filter)
+      if (index > -1) {
+        query.hangarGroupsIn.splice(index, 1)
       }
-
-      const filter = this.$route.query.q.hangarGroupsIn
-      if (!filter) {
-        return false
+    } else if ((query.hangarGroupsNotIn || []).includes(filter)) {
+      const index = query.hangarGroupsNotIn.findIndex(item => item === filter)
+      if (index > -1) {
+        query.hangarGroupsNotIn.splice(index, 1)
       }
-
-      if (filter.includes(group)) {
-        return true
+    } else {
+      if (!query.hangarGroupsIn) {
+        query.hangarGroupsIn = []
       }
+      query.hangarGroupsIn.push(filter)
+    }
 
+    this.$router.replace({
+      name: this.$route.name,
+      query: {
+        q: query,
+      },
+    })
+  }
+
+  isActive(group) {
+    if (!this.$route.query.q) {
       return false
-    },
+    }
 
-    isInverted(group) {
-      if (!this.$route.query.q) {
-        return false
-      }
-
-      const filter = this.$route.query.q.hangarGroupsNotIn
-      if (!filter) {
-        return false
-      }
-
-      if (filter.includes(group)) {
-        return true
-      }
-
+    const filter = this.$route.query.q.hangarGroupsIn
+    if (!filter) {
       return false
-    },
+    }
 
-    async updateSort() {
-      const response = await this.$api.put('hangar-groups/sort', {
-        sorting: this.sortIndex,
+    if (filter.includes(group)) {
+      return true
+    }
+
+    return false
+  }
+
+  isInverted(group) {
+    if (!this.$route.query.q) {
+      return false
+    }
+
+    const filter = this.$route.query.q.hangarGroupsNotIn
+    if (!filter) {
+      return false
+    }
+
+    if (filter.includes(group)) {
+      return true
+    }
+
+    return false
+  }
+
+  async updateSort() {
+    const response = await this.$api.put('hangar-groups/sort', {
+      sorting: this.sortIndex,
+    })
+
+    if (response.error) {
+      displayAlert({
+        text: response.error.response.data.message,
       })
+    }
+  }
 
-      if (response.error) {
-        displayAlert({
-          text: response.error.response.data.message,
-        })
-      }
-    },
+  openGroupModal(hangarGroup) {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Vehicles/GroupModal'),
+      props: {
+        hangarGroup,
+      },
+    })
+  }
 
-    add() {
-      this.selectedGroup = {}
-      this.$refs.groupModal.open()
-    },
-
-    edit(group) {
-      this.selectedGroup = group
-      this.$refs.groupModal.open()
-    },
-
-    highlight(group) {
-      this.$emit('highlight', group)
-    },
-  },
+  highlight(group) {
+    this.$emit('highlight', group)
+  }
 }
 </script>
 

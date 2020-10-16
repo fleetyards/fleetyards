@@ -19,48 +19,48 @@ export default class BackgroundImage extends Vue {
     /* eslint-disable global-require */
     webp: {
       'bg-0': () => {
-        return require('images/bg-0.webp').default
+        return require('images/bg-0.webp')
       },
       'bg-2': () => {
-        return require('images/bg-2.webp').default
+        return require('images/bg-2.webp')
       },
       'bg-5': () => {
-        return require('images/bg-5.webp').default
+        return require('images/bg-5.webp')
       },
       'bg-6': () => {
-        return require('images/bg-6.webp').default
+        return require('images/bg-6.webp')
       },
       'bg-7': () => {
-        return require('images/bg-7.webp').default
+        return require('images/bg-7.webp')
       },
       'bg-8': () => {
-        return require('images/bg-8.webp').default
+        return require('images/bg-8.webp')
       },
       'bg-404': () => {
-        return require('images/bg-404.webp').default
+        return require('images/bg-404.webp')
       },
     },
     jpg: {
       'bg-0': () => {
-        return require('images/bg-0.jpg').default
+        return require('images/bg-0.jpg')
       },
       'bg-2': () => {
-        return require('images/bg-2.jpg').default
+        return require('images/bg-2.jpg')
       },
       'bg-5': () => {
-        return require('images/bg-5.jpg').default
+        return require('images/bg-5.jpg')
       },
       'bg-6': () => {
-        return require('images/bg-6.jpg').default
+        return require('images/bg-6.jpg')
       },
       'bg-7': () => {
-        return require('images/bg-7.jpg').default
+        return require('images/bg-7.jpg')
       },
       'bg-8': () => {
-        return require('images/bg-8.jpg').default
+        return require('images/bg-8.jpg')
       },
       'bg-404': () => {
-        return require('images/bg-404.jpg').default
+        return require('images/bg-404.jpg')
       },
     },
     /* eslint-enable global-require */

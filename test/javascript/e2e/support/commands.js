@@ -26,8 +26,13 @@ Cypress.Commands.add('success', message => {
   })
 })
 
-Cypress.Commands.add('addToHangar', ship => {
+Cypress.Commands.add('addToHangar', (ship, purchased = false) => {
   cy.get(`.model-panel#${ship} [data-test="add-to-hangar"]`).click()
+  if (purchased) {
+    cy.get(`[data-test="add-to-hangar-as-purchased"]`).click()
+  } else {
+    cy.get(`[data-test="add-to-hangar-as-normal"]`).click()
+  }
 })
 
 Cypress.Commands.add('openContextMenu', ship => {

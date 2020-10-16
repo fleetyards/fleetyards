@@ -99,7 +99,7 @@
               <ModelSpeedMetrics :model="model" title padding />
             </Panel>
             <div class="text-right">
-              <div class="page-actions">
+              <div class="page-actions page-actions-right">
                 <Btn
                   v-if="model.hasImages"
                   :to="{ name: 'model-images', params: { slug: model.slug } }"
@@ -125,15 +125,13 @@
                 >
                   {{ $t('actions.compare.models') }}
                 </Btn>
-                <Btn :href="model.storeUrl">
-                  {{ $t('actions.model.store') }}
-                </Btn>
                 <AddToHangar :model="model" />
               </div>
             </div>
             <br />
-            <div v-if="model.onSale" class="text-center">
+            <div class="text-center">
               <Btn
+                v-if="model.onSale"
                 :href="`${model.storeUrl}#buying-options`"
                 class="sale-button"
                 size="large"
@@ -146,6 +144,15 @@
                 <small class="price-info">
                   {{ $t('labels.taxExcluded') }}
                 </small>
+              </Btn>
+
+              <Btn
+                v-else
+                class="sale-button"
+                :href="model.storeUrl"
+                size="large"
+              >
+                {{ $t('actions.model.store') }}
               </Btn>
             </div>
             <br />

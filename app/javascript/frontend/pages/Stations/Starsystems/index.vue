@@ -11,7 +11,7 @@
       <div class="col-12">
         <Panel>
           <div class="starmap">
-            <img :src="require('images/map.png').default" alt="map" />
+            <img :src="require('images/map.png')" alt="map" />
             <router-link
               v-for="starsystem in starsystems"
               :key="starsystem.slug"

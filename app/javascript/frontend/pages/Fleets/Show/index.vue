@@ -88,7 +88,7 @@
         />
       </div>
       <div class="col-12 col-lg-4">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Btn
             :to="{
               name: 'fleet-fleetchart',
@@ -212,7 +212,6 @@
           v-if="record.model"
           :model="record.model"
           :details="detailsVisible"
-          :on-addons="showAddonsModal"
           :username="record.username"
         />
         <ModelPanel
@@ -223,8 +222,6 @@
         />
       </template>
     </FilteredList>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -332,10 +329,6 @@ export default class FleetDetail extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   toggleDetails() {

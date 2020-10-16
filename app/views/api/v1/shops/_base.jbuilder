@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id shop.id
 json.name shop.name
 json.slug shop.slug
 json.type shop.shop_type

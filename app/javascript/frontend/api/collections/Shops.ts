@@ -2,6 +2,8 @@ import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class ShopsCollection extends BaseCollection {
+  primaryKey: string = 'id'
+
   records: Shop[] = []
 
   params: ShopParams | null = null

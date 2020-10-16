@@ -25,7 +25,7 @@
             `https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`
           "
           :label="$t('nav.rsiProfile')"
-          :image="require('images/rsi_logo.png').default"
+          :image="require('images/rsi_logo.png')"
         />
         <NavItem :divider="true" />
       </template>
