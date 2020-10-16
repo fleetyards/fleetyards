@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.81.3](https://github.com/fleetyards/fleetyards/compare/v3.81.2...v3.81.3) (2020-10-16)
+
+
+### Bug Fixes
+
+* embed api client ([638417d](https://github.com/fleetyards/fleetyards/commit/638417d6ccb07eb1923176ba0386a669fe4d4e7a))
+
 ### [3.81.2](https://github.com/fleetyards/fleetyards/compare/v3.81.1...v3.81.2) (2020-10-16)
 
 ### [3.81.1](https://github.com/fleetyards/fleetyards/compare/v3.81.0...v3.81.1) (2020-10-15)
