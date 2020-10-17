@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.82.0](https://github.com/fleetyards/fleetyards/compare/v3.81.3...v3.82.0) (2020-10-17)
+
+
+### Features
+
+* add status color for fleetcharts ([17643ef](https://github.com/fleetyards/fleetyards/commit/17643ef20002a73e77dd2a1190f563aeed452c8d))
+
+
+### Bug Fixes
+
+* images ([9d61818](https://github.com/fleetyards/fleetyards/commit/9d61818c16c451ee37cce020118986927aacdc5b))
+
 ### [3.81.3](https://github.com/fleetyards/fleetyards/compare/v3.81.2...v3.81.3) (2020-10-16)
 
 
