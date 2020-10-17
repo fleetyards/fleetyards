@@ -88,7 +88,7 @@
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.1.0",
     "webpack": "4.44.2",
-    "webpack-cli": "4.0.0"
+    "webpack-cli": "3.3.12"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
