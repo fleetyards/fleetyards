@@ -54,7 +54,9 @@ module Admin
     end
 
     private def save_filters
-      session[:commodities_filters] = params[:q]
+      session[:commodities_filters] = query_params(
+        :name_cont, :commodity_type_eq
+      ).to_h
       session[:commodities_page] = params[:page]
     end
 

@@ -55,7 +55,9 @@ module Admin
     end
 
     private def save_filters
-      session[:celestial_objects_filters] = params[:q]
+      session[:celestial_objects_filters] = query_params(
+        :name_or_slug_cont, :starsystem_id_eq
+      ).to_h
       session[:celestial_objects_page] = params[:page]
     end
 

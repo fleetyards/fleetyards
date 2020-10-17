@@ -102,7 +102,9 @@ module Admin
     end
 
     private def save_filters
-      session[:models_filters] = params[:q]
+      session[:models_filters] = query_params(
+        :manufacturer_id_eq, :name_or_slug_cont
+      ).to_h
       session[:models_page] = params[:page]
     end
 

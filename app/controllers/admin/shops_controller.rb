@@ -65,7 +65,9 @@ module Admin
     end
 
     private def save_filters
-      session[:shops_filters] = params[:q]
+      session[:shops_filters] = query_params(
+        :shop_type_eq, :station_id_eq, :name_or_slug_cont
+      ).to_h
       session[:shops_page] = params[:page]
     end
 

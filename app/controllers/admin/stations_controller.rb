@@ -67,7 +67,9 @@ module Admin
     end
 
     private def save_filters
-      session[:stations_filters] = params[:q]
+      session[:stations_filters] = query_params(
+        :name_or_slug_cont, :station_type_eq, :celestial_object_id_eq
+      ).to_h
       session[:stations_page] = params[:page]
     end
 
