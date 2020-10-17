@@ -9,59 +9,50 @@
     :marks="mark"
     :tooltip-formatter="label"
     :process="false"
-    lazy
+    :lazy="true"
+    class="fleetchart-slider"
     @change="updateScale"
   />
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import VueSlider from 'vue-slider-component'
 
-export default {
+@Component<FleetchartSlider>({
   components: {
     VueSlider,
   },
+})
+export default class FleetchartSlider extends Vue {
+  @Prop({ required: true }) initialScale: Number
 
-  props: {
-    initialScale: {
-      type: Number,
-      required: true,
-    },
-  },
+  scale: Number = null
 
-  data() {
-    return {
-      scale: null,
-    }
-  },
-
-  computed: {
-    max() {
-      return this.mobile ? 100 : 300
-    },
-  },
+  get max() {
+    return this.mobile ? 100 : 300
+  }
 
   mounted() {
     this.scale = this.initialScale
-  },
+  }
 
-  methods: {
-    updateScale(value) {
-      this.$emit('change', value)
-    },
+  updateScale(value) {
+    this.$emit('change', value)
+  }
 
-    mark(value) {
-      if (value % 50 === 0 || value === 10) {
-        return {
-          label: this.label(value),
-        }
+  mark(value) {
+    if (value % 50 === 0 || value === 10) {
+      return {
+        label: this.label(value),
       }
-      return false
-    },
+    }
+    return false
+  }
 
-    label(value) {
-      return `${value} %`
-    },
-  },
+  label(value) {
+    return `${value} %`
+  }
 }
 </script>

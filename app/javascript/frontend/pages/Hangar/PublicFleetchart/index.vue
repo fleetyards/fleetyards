@@ -116,7 +116,7 @@
             v-if="collection.records.length"
             class="row justify-content-lg-center"
           >
-            <div class="col-12 col-lg-4 fleetchart-slider">
+            <div class="col-12 col-lg-4">
               <FleetchartSlider
                 :initial-scale="publicFleetchartScale"
                 @change="updateScale"

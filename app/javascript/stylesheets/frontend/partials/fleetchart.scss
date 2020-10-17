@@ -36,7 +36,7 @@
 }
 
 .fleetchart-slider {
-  margin-bottom: 20px;
+  margin: 20px;
 }
 
 .fleetchart-download-image {
@@ -63,5 +63,9 @@
 @media (max-width: $desktop-breakpoint) {
   .fleetchart {
     justify-content: center;
+  }
+
+  .fleetchart-slider {
+    margin: 40px 30px;
   }
 }

@@ -74,9 +74,15 @@ export default class FleetchartListItem extends Vue {
     return this.model.fleetchartImage
   }
 
+  get productionStatus() {
+    return this.$t(
+      `labels.model.productionStatus.${this.model.productionStatus}`,
+    )
+  }
+
   get tooltip() {
     if (this.showStatus) {
-      return `${this.label} (${this.model.productionStatus})`
+      return `${this.label} (${this.productionStatus})`
     }
 
     return this.label
