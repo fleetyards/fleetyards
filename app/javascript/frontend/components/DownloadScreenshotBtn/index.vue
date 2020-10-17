@@ -58,7 +58,7 @@ export default class DownloadScreenshotBtn extends Btn {
 
     html2canvas(element, {
       backgroundColor: null,
-      useCORS: true,
+      useCORS: false,
     })
       .then(canvas => {
         element.classList.remove('fleetchart-download')
