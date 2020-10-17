@@ -17,11 +17,11 @@ module Admin
           station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
 
           @q = Station.visible
-                      .ransack(station_query_params)
+            .ransack(station_query_params)
 
           @stations = @q.result(distinct: true)
-                        .page(params[:page])
-                        .per(per_page(Station))
+            .page(params[:page])
+            .per(per_page(Station))
         end
 
         def options
@@ -29,20 +29,20 @@ module Admin
           station_query_params['sorts'] = sort_by_name(['station_type asc', 'name asc'])
 
           @q = Station.visible
-                      .ransack(station_query_params)
+            .ransack(station_query_params)
 
           @stations = @q.result(distinct: true)
-                        .page(params[:page])
-                        .per(per_page(Station))
+            .page(params[:page])
+            .per(per_page(Station))
         end
 
         def images
           authorize! :show, :admin_api_stations
           station = Station.find(params[:id])
           @images = station.images
-                           .order('images.created_at desc')
-                           .page(params[:page])
-                           .per(per_page(Image))
+            .order('images.created_at desc')
+            .page(params[:page])
+            .per(per_page(Image))
         end
 
         private def station_query_params

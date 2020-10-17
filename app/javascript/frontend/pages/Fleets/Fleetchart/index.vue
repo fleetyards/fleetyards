@@ -17,7 +17,7 @@
         />
       </div>
       <div class="col-12 col-lg-4">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Starship42Btn :vehicles="collection.records" />
         </div>
       </div>
@@ -32,7 +32,7 @@
       :hash="$route.hash"
       :paginated="true"
     >
-      <template v-slot:actions="{ records }">
+      <template #actions="{ records }">
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Starship42Btn
@@ -58,7 +58,7 @@
 
       <FleetVehiclesFilterForm slot="filter" />
 
-      <template v-slot:default="{ records }">
+      <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
             <div class="col-12 col-lg-4 fleetchart-slider">
@@ -70,15 +70,9 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="records"
-          :scale="fleetchartScale"
-          :on-addons="showAddonsModal"
-        />
+        <FleetchartList :items="records" :scale="fleetchartScale" />
       </template>
     </FilteredList>
-
-    <AddonsModal ref="addonsModal" />
   </section>
 </template>
 
@@ -173,10 +167,6 @@ export default class FleetFleetchart extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
-  }
-
-  showAddonsModal(vehicle) {
-    this.$refs.addonsModal.open(vehicle)
   }
 
   toggleGrouped() {

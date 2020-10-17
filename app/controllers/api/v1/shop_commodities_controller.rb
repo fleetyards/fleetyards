@@ -18,11 +18,11 @@ module Api
         shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 
         @q = shop.shop_commodities.includes(:shop, :commodity_item)
-                 .ransack(shop_commodities_query_params)
+          .ransack(shop_commodities_query_params)
 
         @shop_commodities = @q.result
-                              .page(params[:page])
-                              .per(per_page(ShopCommodity))
+          .page(params[:page])
+          .per(per_page(ShopCommodity))
       end
 
       # rubocop:disable Metrics/CyclomaticComplexity

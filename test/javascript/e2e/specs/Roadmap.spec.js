@@ -9,7 +9,7 @@ describe('Roadmap', () => {
 
     cy.url().should('include', '/roadmap')
 
-    cy.get('.roadmap-item').should('have.length', Cypress.env('CI') ? 1 : 50)
+    cy.get('.roadmap-item').should('have.length.of.at.least', 1)
   })
 
   it('Loads ships', () => {

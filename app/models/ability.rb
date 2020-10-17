@@ -46,17 +46,17 @@ class Ability
     return if user.id.blank?
 
     officer_fleet_ids = user.fleets
-                            .includes(:fleet_memberships)
-                            .joins(:fleet_memberships)
-                            .where(fleet_memberships: { role: %i[officer admin] })
-                            .where.not(fleet_memberships: { accepted_at: nil })
-                            .pluck(:id)
+      .includes(:fleet_memberships)
+      .joins(:fleet_memberships)
+      .where(fleet_memberships: { role: %i[officer admin] })
+      .where.not(fleet_memberships: { accepted_at: nil })
+      .pluck(:id)
     admin_fleet_ids = user.fleets
-                          .includes(:fleet_memberships)
-                          .joins(:fleet_memberships)
-                          .where(fleet_memberships: { role: :admin })
-                          .where.not(fleet_memberships: { accepted_at: nil })
-                          .pluck(:id)
+      .includes(:fleet_memberships)
+      .joins(:fleet_memberships)
+      .where(fleet_memberships: { role: :admin })
+      .where.not(fleet_memberships: { accepted_at: nil })
+      .pluck(:id)
 
     can %i[check invites], :api_fleet
     can %i[index destroy_all], :api_hangar

@@ -20,8 +20,8 @@ module Api
         @q = index_scope
 
         @models = @q.result
-                    .page(params[:page])
-                    .per(per_page(Model))
+          .page(params[:page])
+          .per(per_page(Model))
       end
 
       def with_docks
@@ -32,8 +32,8 @@ module Api
         @q = index_scope
 
         @models = @q.result
-                    .page(params[:page])
-                    .per(per_page(Model))
+          .page(params[:page])
+          .per(per_page(Model))
       end
 
       def fleetchart
@@ -42,19 +42,19 @@ module Api
         @q = index_scope
 
         @models = @q.result
-                    .sort_by { |model| [-model.length, model.name] }
+          .sort_by { |model| [-model.length, model.name] }
       end
 
       def unscheduled
         authorize! :index, :api_models
 
         @models = Model.visible
-                       .active
-                       .where.not(id: RoadmapItem.pluck(:model_id).compact)
-                       .where.not(rsi_id: nil)
-                       .where.not(production_status: ['flight-ready'])
-                       .order(name: :asc)
-                       .all
+          .active
+          .where.not(id: RoadmapItem.pluck(:model_id).compact)
+          .where.not(rsi_id: nil)
+          .where.not(production_status: ['flight-ready'])
+          .order(name: :asc)
+          .all
       end
 
       def slugs
@@ -92,7 +92,7 @@ module Api
           filters << Model.focus_filters
           filters << Model.size_filters
           filters.flatten
-                 .sort_by { |filter| [filter.category, filter.name] }
+            .sort_by { |filter| [filter.category, filter.name] }
         end
       end
 
@@ -102,21 +102,21 @@ module Api
         model_query_params['sorts'] = sort_by_name
 
         @q = Model.visible
-                  .active
-                  .where('cargo > 0')
-                  .ransack(model_query_params)
+          .active
+          .where('cargo > 0')
+          .ransack(model_query_params)
 
         @models = @q.result
-                    .page(params[:page])
-                    .per(per_page(Model))
+          .page(params[:page])
+          .per(per_page(Model))
       end
 
       def latest
         authorize! :index, :api_models
         @models = Model.visible.includes(:manufacturer)
-                       .active
-                       .order(last_updated_at: :desc, name: :asc)
-                       .limit(9)
+          .active
+          .order(last_updated_at: :desc, name: :asc)
+          .limit(9)
       end
 
       def embed
@@ -146,19 +146,19 @@ module Api
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @images = model.images
-                       .enabled
-                       .order('images.created_at desc')
-                       .page(params[:page])
-                       .per(per_page(Image))
+          .enabled
+          .order('images.created_at desc')
+          .page(params[:page])
+          .per(per_page(Image))
       end
 
       def videos
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
         @videos = model.videos
-                       .order('videos.created_at desc')
-                       .page(params[:page])
-                       .per(per_page(Video))
+          .order('videos.created_at desc')
+          .page(params[:page])
+          .per(per_page(Video))
       end
 
       def variants
@@ -180,8 +180,8 @@ module Api
         @q = scope.ransack(model_query_params)
 
         @variants = @q.result
-                      .page(params[:page])
-                      .per(per_page(Model))
+          .page(params[:page])
+          .per(per_page(Model))
       end
 
       def loaners
@@ -203,8 +203,8 @@ module Api
         @q = scope.ransack(model_query_params)
 
         @loaners = @q.result
-                     .page(params[:page])
-                     .per(per_page(Model))
+          .page(params[:page])
+          .per(per_page(Model))
       end
 
       def modules
@@ -212,10 +212,10 @@ module Api
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_modules = model.modules
-                              .visible
-                              .active
-                              .page(params[:page])
-                              .per(per_page(ModelModule))
+          .visible
+          .active
+          .page(params[:page])
+          .per(per_page(ModelModule))
       end
 
       def upgrades
@@ -223,8 +223,8 @@ module Api
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @model_upgrades = model.upgrades
-                               .visible
-                               .active
+          .visible
+          .active
       end
 
       def paints
@@ -232,8 +232,8 @@ module Api
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
         @paints = model.paints
-                       .visible
-                       .active
+          .visible
+          .active
       end
 
       def store_image

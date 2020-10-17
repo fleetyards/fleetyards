@@ -104,7 +104,7 @@
       </div>
       <div class="app-community-logo">
         <img
-          v-lazy="require('images/community-logo.png').default"
+          v-lazy="require('images/community-logo.png')"
           alt="community-logo"
         />
       </div>

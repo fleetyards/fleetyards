@@ -10,7 +10,7 @@
     />
     <NavItem class="logo-menu">
       <img
-        v-lazy="require('images/favicon-small.png').default"
+        v-lazy="require('images/favicon-small.png')"
         class="logo-menu-image"
         alt="logo"
       />

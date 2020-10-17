@@ -8,6 +8,7 @@
     class="app-body"
   >
     <BackgroundImage />
+
     <div class="app-content">
       <transition name="fade" mode="out-in" appear>
         <Navigation />
@@ -21,7 +22,8 @@
         <AppFooter />
       </div>
     </div>
-    <PrivacySettings ref="privacySettings" :open="cookiesInfoVisible" />
+
+    <AppModal />
   </div>
 </template>
 
@@ -34,7 +36,7 @@ import userCollection from 'frontend/api/collections/User'
 import versionCollection from 'frontend/api/collections/Version'
 import Navigation from 'frontend/core/components/Navigation'
 import AppFooter from 'frontend/core/components/AppFooter'
-import PrivacySettings from 'frontend/core/components/PrivacySettings'
+import AppModal from 'frontend/core/components/AppModal'
 import BackgroundImage from 'frontend/core/components/BackgroundImage'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -45,7 +47,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
     BackgroundImage,
     Navigation,
     AppFooter,
-    PrivacySettings,
+    AppModal,
   },
   mixins: [Updates],
 })
@@ -95,6 +97,18 @@ export default class FrontendApp extends Vue {
     }
   }
 
+  @Watch('$route')
+  onRouteChange() {
+    if (this.cookiesInfoVisible && this.$route.name !== 'privacy-policy') {
+      this.openPrivacySettings()
+    } else if (
+      this.cookiesInfoVisible &&
+      this.$route.name === 'privacy-policy'
+    ) {
+      this.$comlink.$emit('close-modal', true)
+    }
+  }
+
   @Watch('ahoyAccepted')
   onAhoyAcceptedChange() {
     if (this.ahoyAccepted) {
@@ -123,23 +137,29 @@ export default class FrontendApp extends Vue {
       this.checkVersion()
     }, CHECK_VERSION_INTERVAL)
 
-    this.$comlink.$on('openPrivacySettings', this.openPrivacySettings)
+    this.$comlink.$on('open-privacy-settings', this.openPrivacySettings)
 
     window.addEventListener('resize', this.checkMobile)
-    this.$comlink.$on('userUpdate', this.fetchCurrentUser)
-    this.$comlink.$on('fleetCreate', this.fetchCurrentUser)
-    this.$comlink.$on('fleetUpdate', this.fetchCurrentUser)
+    this.$comlink.$on('user-update', this.fetchCurrentUser)
+    this.$comlink.$on('fleet-create', this.fetchCurrentUser)
+    this.$comlink.$on('fleet-update', this.fetchCurrentUser)
   }
 
   beforeDestroy() {
     window.removeEventListener('resize', this.checkMobile)
-    this.$comlink.$off('userUpdate')
-    this.$comlink.$off('fleetCreate')
-    this.$comlink.$off('fleetUpdate')
+    this.$comlink.$off('user-update')
+    this.$comlink.$off('fleet-create')
+    this.$comlink.$off('fleet-update')
   }
 
   openPrivacySettings(settings = false) {
-    this.$refs.privacySettings.open(settings)
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/core/components/PrivacySettings'),
+      fixed: true,
+      props: {
+        settings,
+      },
+    })
   }
 
   checkMobile() {

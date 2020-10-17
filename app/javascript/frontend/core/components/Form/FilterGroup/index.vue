@@ -288,8 +288,8 @@ export default {
 
     selectedOptions() {
       if (this.multiple) {
-        return this.availableOptions.filter(item =>
-          this.value.includes(item[this.valueAttr]),
+        return this.availableOptions.filter(
+          item => this.value && this.value.includes(item[this.valueAttr]),
         )
       }
       const selectedOption = this.availableOptions.find(
@@ -374,7 +374,7 @@ export default {
       this.loading = false
 
       if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
+        this.$refs.infiniteLoading.$emit('infinite-loading-reset')
       }
 
       if (!response.error) {
@@ -446,7 +446,7 @@ export default {
 
     selected(option) {
       if (this.multiple) {
-        return this.value.includes(option)
+        return this.value && this.value.includes(option)
       }
 
       return this.value === option

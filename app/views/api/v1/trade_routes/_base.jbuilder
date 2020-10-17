@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id trade_route.id
 json.origin do
   json.partial! 'api/v1/trade_routes/leg', leg: trade_route.origin
 end

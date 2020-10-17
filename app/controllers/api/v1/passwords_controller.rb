@@ -37,9 +37,9 @@ module Api
 
       private def change_password_params
         @change_password_params ||= params.transform_keys(&:underscore)
-                                          .permit(
-                                            :reset_password_token, :current_password, :password, :password_confirmation
-                                          )
+          .permit(
+            :reset_password_token, :current_password, :password, :password_confirmation
+          )
       end
     end
   end

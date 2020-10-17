@@ -14,8 +14,8 @@ module Api
         @q = Component.includes(:manufacturer).ransack(components_query_params)
 
         @components = @q.result
-                        .page(params[:page])
-                        .per(per_page(Component))
+          .page(params[:page])
+          .per(per_page(Component))
       end
 
       private def components_query_params

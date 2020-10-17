@@ -282,7 +282,7 @@ export default {
       this.submitting = false
 
       if (!uploadResponse.error && !response.error) {
-        this.$comlink.$emit('userUpdate')
+        this.$comlink.$emit('user-update')
 
         setTimeout(() => {
           this.files = []

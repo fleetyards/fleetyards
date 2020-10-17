@@ -59,6 +59,9 @@ Layout/RescueEnsureAlignment:
 Style/AccessModifierDeclarations:
   EnforcedStyle: inline
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Layout/LineLength:
   Enabled: false
 

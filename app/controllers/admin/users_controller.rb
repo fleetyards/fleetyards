@@ -9,8 +9,8 @@ module Admin
       authorize! :index, :admin_users
       @q = User.ransack(params[:q])
       @users = @q.result
-                 .page(params.fetch(:page) { nil })
-                 .per(40)
+        .page(params.fetch(:page) { nil })
+        .per(40)
     end
 
     def new

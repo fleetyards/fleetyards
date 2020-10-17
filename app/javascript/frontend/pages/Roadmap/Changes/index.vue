@@ -21,7 +21,7 @@
         />
       </div>
       <div class="col-12 col-lg-6">
-        <div class="page-actions">
+        <div class="page-actions page-actions-right">
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>
@@ -51,7 +51,7 @@
               <div
                 v-for="item in items"
                 :key="item.id"
-                class="col-12 col-md-6 col-xxlg-4 fade-list-item"
+                class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
               >
                 <RoadmapItem :item="item" />
               </div>

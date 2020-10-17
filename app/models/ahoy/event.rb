@@ -11,7 +11,7 @@ module Ahoy
 
     def self.without_users(user_ids)
       includes(:visit).where.not(ahoy_visits: { user_id: user_ids }).references(:ahoy_visits)
-                      .or(user_empty)
+        .or(user_empty)
     end
 
     def self.user_empty

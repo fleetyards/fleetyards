@@ -4,7 +4,7 @@
       <div class="col-12">
         <div class="row">
           <div class="col-12">
-            <div class="page-actions">
+            <div class="page-actions page-actions-right">
               <Btn
                 v-show="!fleetchart && groupedButton"
                 size="small"

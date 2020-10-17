@@ -18,7 +18,7 @@
     >
       <FilterForm slot="filter" />
 
-      <template v-slot:default="{ filterVisible, records }">
+      <template #default="{ filterVisible, records }">
         <transition-group name="fade-list" class="row" tag="div" :appear="true">
           <div
             v-for="(record, index) in records"

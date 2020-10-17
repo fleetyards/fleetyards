@@ -12,8 +12,8 @@ module Admin
       @q.sorts = ['model_name asc', 'name asc'] if @q.sorts.empty?
 
       @model_paints = @q.result
-                        .page(params.fetch(:page) { nil })
-                        .per(40)
+        .page(params.fetch(:page) { nil })
+        .per(40)
     end
 
     def new

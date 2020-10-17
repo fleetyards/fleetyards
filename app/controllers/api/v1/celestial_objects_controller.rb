@@ -13,12 +13,12 @@ module Api
         celestial_object_query_params['sorts'] = sort_by_name(sorts, sorts)
 
         @q = CelestialObject.includes(:starsystem, :parent)
-                            .visible
-                            .ransack(celestial_object_query_params)
+          .visible
+          .ransack(celestial_object_query_params)
 
         @celestial_objects = @q.result(distinct: true)
-                               .page(params[:page])
-                               .per(per_page(CelestialObject))
+          .page(params[:page])
+          .per(per_page(CelestialObject))
       end
 
       def show

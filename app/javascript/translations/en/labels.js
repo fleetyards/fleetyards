@@ -373,6 +373,10 @@ export default {
       origin: 'From?',
       destination: 'To?',
       excludeCommodityType: 'Exclude Commodity Type',
+      originCelestialObject: 'Origin Celestial Object',
+      destinationCelestialObject: 'Destination Celestial Object',
+      originStarsystem: 'Origin Starsystem',
+      destinationStarsystem: 'Destination Starsystem',
     },
     models: {
       shipRole: 'Ship Role',

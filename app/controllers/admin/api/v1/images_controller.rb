@@ -14,8 +14,8 @@ module Admin
           @q = Image.ransack(image_query_params)
 
           @images = @q.result
-                      .page(params.fetch(:page, nil))
-                      .per(40)
+            .page(params.fetch(:page, nil))
+            .per(40)
         end
 
         def create
@@ -53,10 +53,10 @@ module Admin
 
         private def image_params
           @image_params ||= params.transform_keys(&:underscore)
-                                  .permit(
-                                    :name, :file, :gallery_id, :gallery_type, :enabled,
-                                    :global, :background
-                                  )
+            .permit(
+              :name, :file, :gallery_id, :gallery_type, :enabled,
+              :global, :background
+            )
         end
 
         private def image

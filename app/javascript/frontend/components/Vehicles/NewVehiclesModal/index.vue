@@ -1,5 +1,5 @@
 <template>
-  <Modal ref="modal" :title="$t('headlines.newVehicles')">
+  <Modal :title="$t('headlines.newVehicles')">
     <form id="new-vehicles" class="new-vehicles" @submit.prevent="save">
       <div v-for="(item, index) in form.vehicles" :key="index" class="row">
         <div class="col-8 col-md-10">
@@ -21,7 +21,6 @@
       </div>
 
       <CollectionFilterGroup
-        v-if="visible()"
         name="model"
         :search-label="$t('actions.findModel')"
         :collection="modelsCollection"
@@ -52,12 +51,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
-import Modal from 'frontend/components/Modal'
+import Modal from 'frontend/core/components/AppModal/Modal'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Btn from 'frontend/core/components/Btn'
-import { VehiclesCollection } from 'frontend/api/collections/Vehicles'
+import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import modelsCollection from 'frontend/api/collections/Models'
 
 @Component<NewVehiclesModal>({
@@ -77,12 +76,6 @@ export default class NewVehiclesModal extends Vue {
     vehicles: [],
   }
 
-  @Prop({ required: true }) collection!: VehiclesCollection
-
-  visible() {
-    return this.$refs.modal && this.$refs.modal.isOpen
-  }
-
   add(value) {
     this.form.vehicles.push({
       model: value,
@@ -93,28 +86,24 @@ export default class NewVehiclesModal extends Vue {
     this.form.vehicles.splice(index, 1)
   }
 
-  open() {
+  mounted() {
     this.form = {
       vehicles: [],
     }
-
-    this.$nextTick(() => {
-      this.$refs.modal.open()
-    })
   }
 
   async save() {
     this.submitting = true
 
     await this.form.vehicles.forEach(async item => {
-      await this.collection.create({ modelId: item.model.id })
+      await vehiclesCollection.create({ modelId: item.model.id })
     })
 
-    this.collection.refresh()
+    vehiclesCollection.refresh()
 
     this.submitting = false
 
-    this.$refs.modal.close()
+    this.$comlink.$emit('close-modal')
   }
 }
 </script>

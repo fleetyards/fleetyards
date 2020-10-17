@@ -22,7 +22,7 @@
       :paginated="true"
       class="images"
     >
-      <template v-slot:record="{ record, index }">
+      <template #record="{ record, index }">
         <GalleryImage
           :src="record.smallUrl"
           :href="record.url"

@@ -38,14 +38,14 @@ module Admin
           authorize! :stats, :admin
 
           visits_per_day = Ahoy::Visit.without_users(tracking_blocklist).one_month
-                                      .group_by_day(:started_at).count
-                                      .map do |created_at, count|
-                                        {
-                                          label: I18n.l(created_at.to_date, format: :day_month_short),
-                                          count: count,
-                                          tooltip: I18n.l(created_at.to_date, format: :day_month)
-                                        }
-                                      end
+            .group_by_day(:started_at).count
+            .map do |created_at, count|
+            {
+              label: I18n.l(created_at.to_date, format: :day_month_short),
+              count: count,
+              tooltip: I18n.l(created_at.to_date, format: :day_month)
+            }
+          end
 
           render json: visits_per_day.to_json
         end
@@ -54,14 +54,14 @@ module Admin
           authorize! :stats, :admin
 
           visits_per_month = Ahoy::Visit.without_users(tracking_blocklist).one_year
-                                        .group_by_month(:started_at).count
-                                        .map do |started_at, count|
-                                          {
-                                            label: I18n.l(started_at.to_date, format: :month_year_short),
-                                            count: count,
-                                            tooltip: I18n.l(started_at.to_date, format: :month_year)
-                                          }
-                                        end
+            .group_by_month(:started_at).count
+            .map do |started_at, count|
+            {
+              label: I18n.l(started_at.to_date, format: :month_year_short),
+              count: count,
+              tooltip: I18n.l(started_at.to_date, format: :month_year)
+            }
+          end
 
           render json: visits_per_month.to_json
         end
@@ -70,23 +70,23 @@ module Admin
           authorize! :stats, :admin
 
           registrations_per_month = User.where('created_at > ?', Time.zone.now - 1.year)
-                                        .group_by_month(:created_at)
-                                        .count
-                                        .map do |created_at, count|
-                                          {
-                                            label: I18n.l(created_at.to_date, format: :month_year_short),
-                                            count: count,
-                                            tooltip: I18n.l(created_at.to_date, format: :month_year)
-                                          }
-                                        end
+            .group_by_month(:created_at)
+            .count
+            .map do |created_at, count|
+            {
+              label: I18n.l(created_at.to_date, format: :month_year_short),
+              count: count,
+              tooltip: I18n.l(created_at.to_date, format: :month_year)
+            }
+          end
 
           render json: registrations_per_month.to_json
         end
 
         private def online_count
           Ahoy::Event.without_users(tracking_blocklist)
-                     .select(:visit_id).distinct
-                     .where('time > ?', 15.minutes.ago).count
+            .select(:visit_id).distinct
+            .where('time > ?', 15.minutes.ago).count
         end
         helper_method :online_count
 
