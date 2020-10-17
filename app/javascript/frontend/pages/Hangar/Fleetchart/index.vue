@@ -42,13 +42,29 @@
       :hash="$route.hash"
     >
       <template #actions="{ records }">
-        <Starship42Btn v-if="mobile" :vehicles="records" size="small" />
-        <DownloadScreenshotBtn
-          element="#fleetchart"
-          filename="my-hangar-fleetchart"
-          size="small"
-          :with-label="false"
-        />
+        <BtnDropdown size="small">
+          <template v-if="mobile">
+            <Starship42Btn
+              :vehicles="records"
+              size="small"
+              variant="link"
+              :with-icon="true"
+            />
+
+            <hr />
+          </template>
+
+          <DownloadScreenshotBtn
+            element="#fleetchart"
+            filename="my-hangar-fleetchart"
+            size="small"
+            variant="link"
+          />
+
+          <hr />
+
+          <FleetChartStatusBtn size="small" variant="link" />
+        </BtnDropdown>
       </template>
 
       <VehiclesFilterForm
@@ -85,11 +101,13 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FilteredList from 'frontend/core/components/FilteredList'
 import Btn from 'frontend/core/components/Btn'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -112,9 +130,11 @@ import hangarGroupsCollection, {
     FilteredList,
     Btn,
     BreadCrumbs,
+    BtnDropdown,
     Starship42Btn,
     PrimaryAction,
     DownloadScreenshotBtn,
+    FleetChartStatusBtn,
     FleetchartList,
     VehiclesFilterForm,
     ModelClassLabels,

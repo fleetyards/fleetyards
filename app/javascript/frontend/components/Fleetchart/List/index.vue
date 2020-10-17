@@ -13,6 +13,7 @@
           :key="item.id"
           :item="item"
           :scale="scale"
+          :show-status="showStatus"
           @click.native="openContextMenu($event, item)"
         />
 
@@ -53,6 +54,8 @@ export default class FleetchartList extends Vue {
 
   @Prop({ default: 100 }) scale!: number
 
+  showStatus: boolean = false
+
   selectedModel: Model | null = null
 
   selectedVehicle: Vehicle | null = null
@@ -60,6 +63,20 @@ export default class FleetchartList extends Vue {
   openContextMenu(event, item) {
     // @ts-ignore
     this.$refs.contextMenu.open(item, this.myShip, event)
+  }
+
+  mounted() {
+    this.showStatus = !!this.$route.query?.showStatus
+
+    this.$comlink.$on('fleetchart-toggle-status', this.toggleStatus)
+  }
+
+  beforeDestroy() {
+    this.$comlink.$off('fleetchart-toggle-status')
+  }
+
+  toggleStatus() {
+    this.showStatus = !this.showStatus
   }
 }
 </script>

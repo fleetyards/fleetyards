@@ -53,6 +53,10 @@
             variant="link"
             :show-tooltip="false"
           />
+
+          <hr />
+
+          <FleetChartStatusBtn size="small" variant="link" />
         </BtnDropdown>
       </template>
 
@@ -85,6 +89,7 @@ import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -105,6 +110,7 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     Starship42Btn,
     FilteredList,
     DownloadScreenshotBtn,
+    FleetChartStatusBtn,
     FleetchartList,
     ModelClassLabels,
     AddonsModal,

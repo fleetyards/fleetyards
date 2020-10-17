@@ -1,8 +1,8 @@
 <template>
   <div
-    v-tooltip.bottom="label"
+    v-tooltip.bottom="tooltip"
     class="fleetchart-item fade-list-item"
-    :class="`fleetchart-item-${model.slug}`"
+    :class="cssClasses"
   >
     <FleetchartItemImage
       :label="label"
@@ -29,6 +29,18 @@ export default class FleetchartListItem extends Vue {
   @Prop() item!: Model | Vehicle
 
   @Prop() scale!: number
+
+  @Prop({ default: false }) showStatus!: boolean
+
+  get cssClasses() {
+    const cssClasses = [`fleetchart-item-${this.model.slug}`]
+
+    if (this.showStatus) {
+      cssClasses.push(`status-${this.model.productionStatus}`)
+    }
+
+    return cssClasses
+  }
 
   get model() {
     if (this.item && this.item.model) {
@@ -60,6 +72,14 @@ export default class FleetchartListItem extends Vue {
     }
 
     return this.model.fleetchartImage
+  }
+
+  get tooltip() {
+    if (this.showStatus) {
+      return `${this.label} (${this.model.productionStatus})`
+    }
+
+    return this.label
   }
 
   get label() {

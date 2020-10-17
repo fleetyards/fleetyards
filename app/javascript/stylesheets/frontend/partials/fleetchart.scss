@@ -15,6 +15,7 @@
     margin: 30px 20px;
     text-align: center;
     cursor: pointer;
+    filter: drop-shadow(2px 4px 6px black);
 
     a {
       display: block;
@@ -23,6 +24,14 @@
     .fleetchart-item-image {
       transform: rotate(180deg);
     }
+  }
+
+  .status-in-concept {
+    filter: opacity(.5) drop-shadow(0 0 0 black);
+  }
+
+  .status-in-production {
+    filter: opacity(.5) drop-shadow(0 0 0 #06f);
   }
 }
 

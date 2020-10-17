@@ -30,7 +30,7 @@ import download from 'downloadjs'
 import Btn from 'frontend/core/components/Btn/index.vue'
 import SmallLoader from 'frontend/core/components/SmallLoader/index.vue'
 
-@Component({
+@Component<DownloadScreenshotBtn>({
   components: {
     SmallLoader,
     Btn,

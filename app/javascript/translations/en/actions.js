@@ -53,6 +53,8 @@ export default {
   'delete': 'Delete',
   'close': 'Close',
   'filter': 'Filter',
+  'showStatusColor': 'Show Status as Color',
+  'hideStatusColor': 'Hide Status as Color',
   'addToHangar': 'Add to your Hangar',
   'resetFilter': 'Reset Filter',
   'resetPrices': 'Reset Prices',
