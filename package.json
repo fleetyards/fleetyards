@@ -146,6 +146,7 @@
     "yorkie": "2.0.0"
   },
   "resolutions": {
+    "node-forge": ">= 0.10.0",
     "serialize-javascript": ">=5.0.1",
     "yargs-parser": ">=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2",
     "elliptic": ">=6.5.3",
