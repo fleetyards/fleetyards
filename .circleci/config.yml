@@ -11,9 +11,6 @@ ciImage: &ciImage
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
 
-baseImage: &baseImage
-  image: fleetyards/base:2.7.2
-
 e2eImage: &e2eImage
   image: fleetyards/e2e:2.7.2
   environment:
@@ -53,10 +50,6 @@ defaults: &defaults
   working_directory: ~/app
   docker:
     - *ciImage
-
-notifierDefaults: &notifierDefaults
-  docker:
-    - *baseImage
 
 ruby-defaults: &ruby-defaults
   working_directory: ~/app
@@ -362,7 +355,7 @@ jobs:
           command: bundle exec cap live deploy
 
   notify-discord-stage:
-    <<: *notifierDefaults
+    <<: *defaults
     steps:
       - run: |
           curl -X POST $DISCORD_WEBHOOK_STAGE \
@@ -370,7 +363,7 @@ jobs:
           -d "{\"content\": \"**New Stage Release:**\" }"
 
   notify-discord-live:
-    <<: *notifierDefaults
+    <<: *defaults
     steps:
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
