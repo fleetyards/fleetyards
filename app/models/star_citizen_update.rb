@@ -6,6 +6,6 @@ class StarCitizenUpdate < ApplicationRecord
   after_create :notify_discord
 
   def notify_discord
-    Discord::RsiNews.new(news: self).run
+    Discord::RSINews.new(news: self).run
   end
 end

@@ -6,7 +6,7 @@ production: &production
     class: 'YoutubeWorker'
   rsi_news_worker_job:
     cron: '*/15 * * * *' # Every 15 Minutes
-    class: 'RsiNewsWorker'
+    class: 'RSINewsWorker'
   models_worker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'ModelsWorker'

@@ -2,7 +2,7 @@
 
 require 'rsi/news_loader'
 
-class RsiNewsWorker
+class RSINewsWorker
   include Sidekiq::Worker
   sidekiq_options retry: false, queue: (ENV['RSI_NEWS_QUEUE'] || 'fleetyards_rsi_news_loader').to_sym
 

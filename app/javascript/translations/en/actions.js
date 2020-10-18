@@ -8,7 +8,6 @@ export default {
   'groupedByModel': 'Grouped by Model',
   'ungrouped': 'Ungrouped',
   'destroyAccount': 'Destroy Account',
-  'startRsiVerification': 'Verify your RSI Account',
   'saveScreenshot': 'Save as PNG',
   'verify': 'Verify',
   'findModel': 'Type to find a Ship',

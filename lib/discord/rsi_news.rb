@@ -4,7 +4,7 @@ require 'discord/webhook'
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord
-  class RsiNews < ::Discord::Webhook
+  class RSINews < ::Discord::Webhook
     private def news
       options[:news]
     end

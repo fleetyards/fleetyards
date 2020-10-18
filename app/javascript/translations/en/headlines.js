@@ -31,7 +31,6 @@ export default {
   cookie: 'Cookie policy',
   requestPassword: 'Request Password',
   changePassword: 'Change Password',
-  settingsRsiVerification: 'RSI Verification',
   filterModels: 'Filter Ships',
   filterVehicles: 'Filter Hangar',
   filterCargoRoutes: 'Filter Cargo routes',

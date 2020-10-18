@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'rsi/models_loader'
 
-class RsiModelsLoaderTest < ActiveSupport::TestCase
+class RSIModelsLoaderTest < ActiveSupport::TestCase
   let(:loader) { ::RSI::ModelsLoader.new }
 
   before do
