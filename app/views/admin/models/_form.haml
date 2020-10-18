@@ -180,7 +180,7 @@
         = form.hidden_field :store_image_cache
       %br
       - if model.store_image?
-        = image_tag(model.store_image.url)
+        = image_tag(model.store_image.small.url)
         = form.check_box :remove_store_image
         Remove Image
       %small
@@ -193,7 +193,7 @@
         = form.hidden_field :rsi_store_image_cache
       %br
       - if model.rsi_store_image?
-        = image_tag(model.rsi_store_image.url)
+        = image_tag(model.rsi_store_image.small.url)
         = form.check_box :remove_rsi_store_image
         Remove RSI Image
       %small
