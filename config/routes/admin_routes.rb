@@ -31,6 +31,7 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
     member do
       get 'images'
       put 'reload_one'
+      put 'use_rsi_image'
     end
   end
 

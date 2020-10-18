@@ -54,6 +54,14 @@ module Admin
       end
     end
 
+    def use_rsi_image
+      authorize! :update, model
+
+      model.update(remote_store_image_url: model.rsi_store_image_url)
+
+      redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
+    end
+
     def images
       authorize! :images, :admin_models
       @app_enabled = true
