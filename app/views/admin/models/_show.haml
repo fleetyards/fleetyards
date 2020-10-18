@@ -28,7 +28,7 @@
     .btn-group
       %button.reload-models.btn.btn-dark.ladda-button{data: {style: "expand-right", action: reload_one_admin_model_path(model), workerPath: admin_check_worker_state_path('ModelsWorker')}, onclick: "App.Models.reload($(this)); return false;"}
         %i.fa.fa-sync
-      = link_to use_rsi_image_admin_model_path(model), 'data-turbolinks': "false", title: I18n.t(:"actions.model.use_rsi_image"), class: "btn btn-dark" do
+      = link_to use_rsi_image_admin_model_path(model), 'data-turbolinks': "false", title: I18n.t(:"actions.model.use_rsi_image"), method: :put, class: "btn btn-dark" do
         %i.fad.fa-images
       = link_to images_admin_model_path(model), 'data-turbolinks': "false", title: I18n.t(:"actions.model.images"), class: "btn btn-dark" do
         %i.fa.fa-image

@@ -12,19 +12,58 @@ class Images < Thor
     Image.find_each do |image|
       image.name.cache_stored_file!
       image.name.retrieve_from_cache!(image.name.cache_name)
-      image.name.recreate_versions!(:dark, :big, :small)
+      image.name.recreate_versions!
       image.save!
     rescue StandardError => e
-      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+      puts "ERROR: YourModel: #{image.id} -> #{e}"
     end
 
     Model.find_each do |model|
       model.store_image.cache_stored_file!
       model.store_image.retrieve_from_cache!(model.store_image.cache_name)
-      model.store_image.recreate_versions!(:dark, :big, :small)
+      model.store_image.recreate_versions!
+      model.fleetchart_image.cache_stored_file!
+      model.fleetchart_image.retrieve_from_cache!(model.fleetchart_image.cache_name)
+      model.fleetchart_image.recreate_versions!
       model.save!
     rescue StandardError => e
-      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+      puts "ERROR: YourModel: #{model.id} -> #{e}"
+    end
+  end
+
+  desc 'recreate_images', 'Recreate Image Versions'
+  def recreate_images
+    Image.find_each do |image|
+      image.name.cache_stored_file!
+      image.name.retrieve_from_cache!(image.name.cache_name)
+      image.name.recreate_versions!
+      image.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{image.id} -> #{e}"
+    end
+  end
+
+  desc 'recreate_fleetchart', 'Recreate Fleetchart Versions'
+  def recreate_fleetchart
+    Model.find_each do |model|
+      model.fleetchart_image.cache_stored_file!
+      model.fleetchart_image.retrieve_from_cache!(model.fleetchart_image.cache_name)
+      model.fleetchart_image.recreate_versions!
+      model.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{model.id} -> #{e}"
+    end
+  end
+
+  desc 'recreate_store_images', 'Recreate Store Images Versions'
+  def recreate_store_images
+    Model.find_each do |model|
+      model.store_image.cache_stored_file!
+      model.store_image.retrieve_from_cache!(model.store_image.cache_name)
+      model.store_image.recreate_versions!
+      model.save!
+    rescue StandardError => e
+      puts "ERROR: YourModel: #{model.id} -> #{e}"
     end
   end
 
@@ -42,7 +81,7 @@ class Images < Thor
       image.height = dimensions.height
       image.save!
     rescue StandardError => e
-      puts "ERROR: YourModel: #{ym.id} -> #{e}"
+      puts "ERROR: YourModel: #{image.id} -> #{e}"
     end
   end
 
