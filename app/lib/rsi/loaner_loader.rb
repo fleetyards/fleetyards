@@ -64,6 +64,7 @@ module RSI
         'Hull A & B' => ['Hull A', 'Hull B'],
         'Hull D, E' => ['Hull D', 'Hull E'],
         'Idris-M & P' => %w[Idris-P Idris-M],
+        'Talon & Talon Shrike' => ['Talon', 'Talon Shrike'],
         'Kraken (+ Privateer)' => ['Kraken', 'Kraken Privateer'],
         'Mercury' => ['Mercury Star Runner'],
         'Mole' => ['Mole'],
