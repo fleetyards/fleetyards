@@ -7,7 +7,6 @@
     }"
     :alt="label"
     class="fleetchart-item-image"
-    :crossorigin="true"
   />
   <span v-else>
     <i class="fal fa-question-circle" />

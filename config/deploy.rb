@@ -20,7 +20,6 @@ set :linked_dirs, [
   'public/compare',
   'public/assets',
   'public/packs',
-  'public/uploads',
   'log',
   'tmp/cache',
   'tmp/pids',
