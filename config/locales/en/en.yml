@@ -74,6 +74,7 @@ en:
     commodities: Commodities
     celestial_objects: Celestial Objects
     starsystems: Starsystems
+    admin_users: Admins
   title:
     frontend:
       home: Home
@@ -191,3 +192,7 @@ en:
       edit: Edit User
       index: Users
       new: New User
+    admin_user:
+      edit: Edit Admin User
+      index: Admin Users
+      new: New Admin User

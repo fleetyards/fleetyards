@@ -1,0 +1,47 @@
+- content_for :title do
+  = I18n.t(:"title.admin_user.index")
+.row#admin_users
+  .col-12.col-md-12
+
+    .row
+      .col-12.col-md-8
+        %h1
+          = I18n.t(:"headlines.admin.admin_user.index")
+          %small.text-muted
+            = @admin_users.count
+            of
+            = @admin_users.total_count
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t(:"actions.admin.user.new"), new_admin_admin_user_path, class: "btn btn-dark"
+
+    .row
+      .col-12.d-flex.justify-content-center
+        = paginate @admin_users
+
+    .row.mb-3
+      .col-12.col-md-9
+        .panel.panel-default
+          = render partial: "admin/admin_users/table", :@admin_users => @admin_users
+
+      .col-12.col-md-3
+        = search_form_for [:admin, @q] do |f|
+          .form-group
+            = f.label :username_cont
+            = f.search_field :username_cont, class: 'form-control'
+
+          .form-group
+            = f.label :email_cont
+            = f.search_field :email_cont, class: 'form-control'
+
+          .btn-group
+            %button.btn.btn-primary
+              Filter
+            - if params[:q].present?
+              %a.btn.btn-dark{href: request.path, title: "Clear Search"}
+                %i.fa.fa-times
+    .row
+      .col-12.justify-content-center
+        = paginate @admin_users

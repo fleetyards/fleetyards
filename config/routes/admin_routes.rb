@@ -18,6 +18,12 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
     end
   end
 
+  resources :admin_users, except: [:show] do
+    member do
+      put 'resend-confirmation' => 'admin_users#resend_confirmation', as: :resend_confirmation
+    end
+  end
+
   resources :vehicles, only: [:index]
 
   resources :settings, except: %i[index show]

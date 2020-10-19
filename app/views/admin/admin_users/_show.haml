@@ -1,0 +1,21 @@
+%tr{id: admin_user.id}
+  %td
+    = admin_user.username
+  %td
+    = admin_user.email
+  %td
+    - if admin_user.current_sign_in_at.present?
+      = time_ago_in_words(admin_user.current_sign_in_at)
+      = "(#{l(admin_user.current_sign_in_at, format: :short)})"
+  %td
+    = time_ago_in_words(admin_user.created_at)
+    = "(#{l(admin_user.created_at, format: :short)})"
+  %td
+    .btn-group
+      = link_to edit_admin_admin_user_path(admin_user), title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
+        %i.fa.fa-edit
+      - unless admin_user.id == current_user.id
+        = confirm_link_to resend_confirmation_admin_admin_user_path(admin_user), data: { notyConfirm: I18n.t(:"messages.confirm.resend_confirmation") }, title: I18n.t(:"actions.resend_confirmation"), method: :put, class: "btn btn-dark" do
+          %i.fa.fa-envelope
+        = confirm_link_to admin_admin_user_path(admin_user), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
+          %i.fa.fa-trash

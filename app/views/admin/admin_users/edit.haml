@@ -1,0 +1,16 @@
+- content_for :title do
+  = I18n.t(:"title.admin_user.edit")
+.row
+  .col-12.col-md-12
+
+    .row
+      .col-12.col-md-8
+        %h2
+          = I18n.t(:"headlines.admin.admin_user.edit", admin_user: @admin_user.email)
+
+      .col-12.col-md-4
+        .d-flex.justify-content-end
+          .btn-group
+            = link_to I18n.t("actions.back"), admin_admin_users_path(params: index_back_params, anchor: admin_user.id), class: "btn btn-dark"
+
+    = render "form"

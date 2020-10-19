@@ -34,6 +34,8 @@
       = link_to I18n.t(:"nav.users"), admin_users_path, class: 'nav-link'
     %li.nav-item{class: active_nav?('admin-vehicles')}
       = link_to Vehicle.name.humanize.pluralize, admin_vehicles_path, class: 'nav-link'
+    %li.nav-item{class: active_nav?('admin-admin_users')}
+      = link_to I18n.t(:"nav.admin_users"), admin_admin_users_path, class: 'nav-link'
     %li.nav-item
       %a.nav-link{href: admin_sidekiq_web_url, target: "_blank"}
         = I18n.t(:"nav.workers")

@@ -8,7 +8,7 @@
         %th=sort_link(@q, :created_at)
         %th.actions.actions-three
     %tbody
-      = render partial: "admin/users/show", collection: @users, as: :user
+      = render partial: "admin/admin_users/show", collection: @admin_users, as: :admin_user
 
-      - if @users.blank?
-        = render "shared/tables/blank", count: 3, resource: "user"
+      - if @admin_users.blank?
+        = render "shared/tables/blank", count: 3, resource: "admin_user"

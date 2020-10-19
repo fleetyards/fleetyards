@@ -23,6 +23,10 @@ en:
         edit: Edit %{user}
         index: Users
         new: New User
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Admin Users
+        new: New Admin User
       commodity:
         edit: Commodity %{commodity}
         index: Commodities
