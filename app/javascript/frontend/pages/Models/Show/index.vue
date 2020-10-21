@@ -102,6 +102,7 @@
               <Btn
                 v-if="model.onSale"
                 :href="`${model.storeUrl}#buying-options`"
+                style="flex-grow: 3;"
               >
                 {{
                   $t('actions.model.onSale', {
