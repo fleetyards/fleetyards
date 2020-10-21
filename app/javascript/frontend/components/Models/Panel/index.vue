@@ -143,9 +143,7 @@
             </template>
           </strong>
         </div>
-        <ModelTopMetrics :model="model" :padding="true" />
-        <hr class="dark slim-spacer" />
-        <ModelBaseMetrics :model="model" :padding="true" />
+        <ModelPanelMetrics :model="model" />
       </BCollapse>
     </Panel>
   </div>
@@ -159,8 +157,7 @@ import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
 import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
-import ModelTopMetrics from 'frontend/components/Models/TopMetrics'
-import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
+import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
 
 @Component<ModelPanel>({
   components: {
@@ -169,8 +166,7 @@ import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
     Btn,
     LazyImage,
     AddToHangar,
-    ModelTopMetrics,
-    ModelBaseMetrics,
+    ModelPanelMetrics,
   },
 })
 export default class ModelPanel extends Vue {

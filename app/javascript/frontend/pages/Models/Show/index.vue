@@ -90,13 +90,13 @@
           </div>
           <div class="col-12 col-lg-4">
             <Panel>
-              <ModelBaseMetrics :model="model" title detailed padding />
+              <ModelBaseMetrics :model="model" />
             </Panel>
             <Panel>
-              <ModelCrewMetrics :model="model" title padding />
+              <ModelCrewMetrics :model="model" />
             </Panel>
             <Panel>
-              <ModelSpeedMetrics :model="model" title padding />
+              <ModelSpeedMetrics :model="model" />
             </Panel>
             <div class="page-actions page-actions-block">
               <Btn
