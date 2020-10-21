@@ -119,7 +119,7 @@
 
               <AddToHangar :model="model" />
 
-              <BtnDropdown>
+              <BtnDropdown data-test="model-dropdown">
                 <Btn
                   v-if="model.hasImages"
                   :to="{ name: 'model-images', params: { slug: model.slug } }"
