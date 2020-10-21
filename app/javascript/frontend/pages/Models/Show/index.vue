@@ -98,43 +98,10 @@
             <Panel>
               <ModelSpeedMetrics :model="model" title padding />
             </Panel>
-            <div class="text-right">
-              <div class="page-actions page-actions-right">
-                <Btn
-                  v-if="model.hasImages"
-                  :to="{ name: 'model-images', params: { slug: model.slug } }"
-                >
-                  <i class="fa fa-images" />
-                </Btn>
-                <Btn
-                  v-if="model.hasVideos"
-                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
-                >
-                  <i class="fal fa-video" />
-                </Btn>
-                <Btn v-if="model.brochure" :href="model.brochure">
-                  {{ $t('labels.model.brochure') }}
-                  <i class="fal fa-download" />
-                </Btn>
-                <Btn
-                  :to="{
-                    name: 'models-compare',
-                    query: { models: [model.slug] },
-                  }"
-                  data-test="compare"
-                >
-                  {{ $t('actions.compare.models') }}
-                </Btn>
-                <AddToHangar :model="model" />
-              </div>
-            </div>
-            <br />
-            <div class="text-center">
+            <div class="page-actions page-actions-block">
               <Btn
                 v-if="model.onSale"
                 :href="`${model.storeUrl}#buying-options`"
-                class="sale-button"
-                size="large"
               >
                 {{
                   $t('actions.model.onSale', {
@@ -145,19 +112,53 @@
                   {{ $t('labels.taxExcluded') }}
                 </small>
               </Btn>
-
-              <Btn
-                v-else
-                class="sale-button"
-                :href="model.storeUrl"
-                size="large"
-              >
+              <Btn v-else :href="model.storeUrl" style="flex-grow: 3;">
                 {{ $t('actions.model.store') }}
               </Btn>
+
+              <AddToHangar :model="model" />
+
+              <BtnDropdown>
+                <Btn
+                  v-if="model.hasImages"
+                  :to="{ name: 'model-images', params: { slug: model.slug } }"
+                  variant="dropdown"
+                >
+                  <i class="fa fa-images" />
+                  {{ $t('nav.images') }}
+                </Btn>
+                <Btn
+                  v-if="model.hasVideos"
+                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-video" />
+                  {{ $t('nav.videos') }}
+                </Btn>
+                <Btn
+                  v-if="model.brochure"
+                  :href="model.brochure"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-download" />
+                  {{ $t('labels.model.brochure') }}
+                </Btn>
+                <Btn
+                  :to="{
+                    name: 'models-compare',
+                    query: { models: [model.slug] },
+                  }"
+                  data-test="compare"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-exchange" />
+                  {{ $t('actions.compare.models') }}
+                </Btn>
+              </BtnDropdown>
             </div>
-            <br />
           </div>
         </div>
+        <hr />
         <div class="row components">
           <div class="col-12">
             <ModelHardpoints
@@ -169,6 +170,7 @@
       </div>
       <Loader :loading="loading" />
     </div>
+    <hr v-if="paints.length" />
     <div class="row">
       <div class="col-12 paints">
         <h2 v-if="paints.length" class="text-uppercase">
@@ -192,6 +194,7 @@
         <Loader :loading="loadingPaints" :fixed="true" />
       </div>
     </div>
+    <hr v-if="modules.length" />
     <div class="row">
       <div class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
@@ -209,6 +212,7 @@
         <Loader :loading="loadingModules" :fixed="true" />
       </div>
     </div>
+    <hr v-if="upgrades.length" />
     <div class="row">
       <div class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
@@ -226,6 +230,7 @@
         <Loader :loading="loadingUpgrades" :fixed="true" />
       </div>
     </div>
+    <hr v-if="variants.length" />
     <div class="row">
       <div class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
@@ -249,6 +254,7 @@
         <Loader :loading="loadingVariants" :fixed="true" />
       </div>
     </div>
+    <hr v-if="loaners.length" />
     <div class="row">
       <div class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
@@ -285,6 +291,7 @@ import AddToHangar from 'frontend/components/Models/AddToHangar'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import ModelHardpoints from 'frontend/components/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/components/Models/CrewMetrics'
@@ -302,6 +309,7 @@ import modelsCollection from 'frontend/api/collections/Models'
     Panel,
     TeaserPanel,
     Btn,
+    BtnDropdown,
     ModelHardpoints,
     ModelBaseMetrics,
     ModelCrewMetrics,

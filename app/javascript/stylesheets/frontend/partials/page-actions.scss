@@ -9,7 +9,7 @@
   }
 
   &.page-actions-block {
-    .panel-btn {
+    > .panel-btn {
       flex-grow: 1;
     }
   }
@@ -44,7 +44,7 @@
     text-align: center;
 
     &.page-actions-block {
-      .panel-btn {
+      > .panel-btn {
         margin-bottom: 20px;
 
         &.panel-btn-inline {

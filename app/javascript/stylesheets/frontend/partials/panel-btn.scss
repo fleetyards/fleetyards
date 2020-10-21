@@ -48,6 +48,7 @@
     background: transparent;
   }
 
+  &.panel-btn-dropdown-link,
   &.panel-btn-link {
     background: transparent;
     border: none;
@@ -93,6 +94,7 @@
     min-width: 140px;
   }
 
+  &.panel-btn-dropdown-link,
   &.panel-btn-inline {
     margin-bottom: 0;
   }

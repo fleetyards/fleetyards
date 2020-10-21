@@ -9,6 +9,7 @@ export default {
   },
   manufacturers: 'Manufacturers',
   images: 'Images',
+  videos: 'Videos',
   hangar: 'My Hangar',
   login: 'Login',
   logout: 'Logout',
