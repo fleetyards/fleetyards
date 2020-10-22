@@ -3,8 +3,8 @@
 require 'test_helper'
 require 'rsi/models_loader'
 
-class RSIModelsLoaderTest < ActiveSupport::TestCase
-  let(:loader) { ::RSI::ModelsLoader.new }
+class RsiModelsLoaderTest < ActiveSupport::TestCase
+  let(:loader) { ::Rsi::ModelsLoader.new }
 
   before do
     Timecop.freeze('2017-01-01 14:00:00')

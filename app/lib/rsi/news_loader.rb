@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module RSI
+module Rsi
   class NewsLoader
     attr_accessor :base_url
 

@@ -2,8 +2,8 @@
 
 require 'rsi/base_loader'
 
-module RSI
-  class LoanerLoader < ::RSI::BaseLoader
+module Rsi
+  class LoanerLoader < ::Rsi::BaseLoader
     def initialize(options = {})
       super
 

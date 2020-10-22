@@ -7,7 +7,7 @@ class LoanerWorker
   sidekiq_options retry: false, queue: (ENV['LOANER_LOADER_QUEUE'] || 'fleetyards_loaner_loader').to_sym
 
   def perform
-    missing_loaners = ::RSI::LoanerLoader.new.run
+    missing_loaners = ::Rsi::LoanerLoader.new.run
 
     Vehicle.where(loaner: true, notify: true).destroy_all
 

@@ -2,8 +2,8 @@
 
 require 'rsi/base_loader'
 
-module RSI
-  class LocationLoader < ::RSI::BaseLoader
+module Rsi
+  class LocationLoader < ::Rsi::BaseLoader
     attr_accessor :locations
 
     LOCATION_TYPES = %w[PLANET SATELLITE ASTEROID_BELT ASTEROID_FIELD].freeze

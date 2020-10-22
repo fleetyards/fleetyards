@@ -5,7 +5,7 @@ require 'hangar_importer'
 require 'rsi/models_loader'
 
 class HangarImporterTest < ActiveSupport::TestCase
-  let(:loader) { ::RSI::ModelsLoader.new }
+  let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:user) { users :data }
   let(:subject) { ::HangarImporter.new(data).run(user.id) }

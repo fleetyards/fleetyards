@@ -2,10 +2,10 @@
 
 require 'rsi/base_loader'
 
-# loader = ::RSI::RoadmapLoader.new; ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.fetch
+# loader = ::Rsi::RoadmapLoader.new; ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.fetch
 
-module RSI
-  class RoadmapLoader < ::RSI::BaseLoader
+module Rsi
+  class RoadmapLoader < ::Rsi::BaseLoader
     attr_accessor :json_file_path
 
     def initialize(options = {})

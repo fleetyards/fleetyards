@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module RSI
+module Rsi
   class BaseLoader
     attr_accessor :base_url
 

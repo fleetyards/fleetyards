@@ -6,7 +6,7 @@ production: &production
     class: 'YoutubeWorker'
   rsi_news_worker_job:
     cron: '*/15 * * * *' # Every 15 Minutes
-    class: 'RSINewsWorker'
+    class: 'RsiNewsWorker'
   models_worker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'ModelsWorker'
@@ -16,9 +16,6 @@ production: &production
   trade_route_calculator_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'
-  cleanup_auth_tokens_worker:
-    cron: '0 2 * * *' # Daily at 2:00
-    class: 'CleanupAuthTokensWorker'
   locations_worker_job:
     cron: '0 3 * * 0' # Weekly on Sunday 3:00
     class: 'LocationsWorker'

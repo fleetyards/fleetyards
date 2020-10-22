@@ -12,6 +12,6 @@
 #   inflect.uncountable %w( fish sheep )
 # end
 
-ActiveSupport::Inflector.inflections do |inflect|
-  inflect.acronym 'RSI'
-end
+# ActiveSupport::Inflector.inflections do |inflect|
+#   inflect.acronym 'RSI'
+# end
