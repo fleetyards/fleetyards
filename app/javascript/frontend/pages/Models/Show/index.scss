@@ -59,7 +59,9 @@
   padding-right: 74px;
   color: $text-color;
   color: darken($text-color, 15%);
+  font-family: 'Orbitron', sans-serif;
   line-height: 1.4;
+  text-transform: uppercase;
 
   .manufacturer-prefix {
     margin-right: 5px;
