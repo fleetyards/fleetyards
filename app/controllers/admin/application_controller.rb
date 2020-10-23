@@ -8,7 +8,6 @@ module Admin
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_admin_user!, :set_default_nav
-    before_action :set_csrf_cookie
 
     protect_from_forgery with: :exception
 
@@ -69,10 +68,6 @@ module Admin
       devise_parameter_sanitizer.permit :sign_in, keys: %i[login password remember_me]
       devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
       devise_parameter_sanitizer.permit :account_update, keys: added_attrs
-    end
-
-    private def set_csrf_cookie
-      cookies['COMMAND-CSRF-TOKEN'] = { value: form_authenticity_token, domain: Rails.application.secrets[:cookie_domain] || :all, same_site: :none, secure: Rails.env.production? || Rails.env.staging? }
     end
   end
 end

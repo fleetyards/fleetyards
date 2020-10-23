@@ -4,12 +4,9 @@ module Api
   class BaseController < ActionController::API
     include ActionController::MimeResponds
     include ActionController::Cookies
-    include ActionController::RequestForgeryProtection
     include ActionController::Caching
     include RansackHelper
     include Pagination
-
-    protect_from_forgery with: :exception
 
     respond_to :json
 
@@ -17,7 +14,6 @@ module Api
 
     before_action :authenticate_user!, except: %i[root version]
     before_action :current_ability
-    before_action :set_csrf_cookie
 
     check_authorization except: %i[root version]
 
@@ -68,10 +64,6 @@ module Api
       headers['X-RateLimit-Limit'] = match_data[:limit].to_s
       headers['X-RateLimit-Remaining'] = (match_data[:limit] - match_data[:count]).to_s
       headers['X-RateLimit-Reset'] = (now + (match_data[:period] - now.to_i % match_data[:period])).iso8601
-    end
-
-    private def set_csrf_cookie
-      cookies['CSRF-TOKEN'] = { value: form_authenticity_token, domain: Rails.application.secrets[:cookie_domain] || :all, same_site: :lax, secure: Rails.env.production? || Rails.env.staging? }
     end
   end
 end

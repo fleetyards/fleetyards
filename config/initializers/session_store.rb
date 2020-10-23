@@ -9,4 +9,4 @@ session_store_options = {
   same_site: :lax
 }
 
-Fleetyards::Application.config.session_store :cache_store, **session_store_options
+Fleetyards::Application.config.session_store :cookie_store, **session_store_options

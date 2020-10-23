@@ -12,8 +12,6 @@ const client = axios.create({
     },
   },
   withCredentials: true,
-  xsrfCookieName: 'COMMAND-CSRF-TOKEN',
-  xsrfHeaderName: 'X-CSRF-Token',
   transformRequest: axiosDefaults.transformRequest.concat(data => {
     nprogress.start()
 

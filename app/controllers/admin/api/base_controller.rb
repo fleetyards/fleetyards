@@ -4,12 +4,9 @@ module Admin
   module Api
     class BaseController < ActionController::API
       include ActionController::Cookies
-      include ActionController::RequestForgeryProtection
       include ActionController::Caching
       include RansackHelper
       include Pagination
-
-      protect_from_forgery with: :exception
 
       respond_to :json
 

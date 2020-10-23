@@ -12,8 +12,6 @@ const client = axios.create({
     },
   },
   withCredentials: true,
-  xsrfCookieName: 'CSRF-TOKEN',
-  xsrfHeaderName: 'X-CSRF-Token',
 })
 
 const extractMetaInfo = function extractMetaInfo(headers, params) {
