@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.82.11](https://github.com/fleetyards/fleetyards/compare/v3.82.10...v3.82.11) (2020-10-23)
+
+
+### Bug Fixes
+
+* local session store ([e4398f9](https://github.com/fleetyards/fleetyards/commit/e4398f9a77798245a8e513a3dfa994c7e4c1108b))
+* session_storage ([21bc631](https://github.com/fleetyards/fleetyards/commit/21bc63196d0edd8192a930d54ec11767fbaca020))
+* session-store ([1b10025](https://github.com/fleetyards/fleetyards/commit/1b10025015a6b9c784bf748363591808f9f84cdc))
+
 ### [3.82.10](https://github.com/fleetyards/fleetyards/compare/v3.82.9...v3.82.10) (2020-10-22)
 
 ### [3.82.9](https://github.com/fleetyards/fleetyards/compare/v3.82.8...v3.82.9) (2020-10-22)
