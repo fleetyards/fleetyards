@@ -12,11 +12,11 @@ module Ahoy
     end
 
     def self.one_month
-      where('started_at > ?', 1.month.ago)
+      where(started_at: 1.month.ago..)
     end
 
     def self.one_year
-      where('started_at > ?', 1.year.ago)
+      where(started_at: 1.year.ago..)
     end
   end
 end

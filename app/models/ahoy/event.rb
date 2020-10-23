@@ -17,5 +17,9 @@ module Ahoy
     def self.user_empty
       includes(:visit).where(ahoy_visits: { user_id: nil }).references(:ahoy_visits)
     end
+
+    def self.one_month
+      where(time: 1.month.ago..)
+    end
   end
 end

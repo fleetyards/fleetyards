@@ -3,7 +3,6 @@
 module Admin
   module Api
     class BaseController < ActionController::API
-      include ActionController::Cookies
       include ActionController::Caching
       include RansackHelper
       include Pagination
