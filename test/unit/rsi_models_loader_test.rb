@@ -48,8 +48,8 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       loader.one(model.rsi_id)
       model.reload
 
-      assert(model.updated_at.day != Time.zone.now.day)
-      assert_equal(27.0, model.length.to_f)
+      assert_not_equal(model.updated_at.day, Time.zone.now.day)
+      assert_in_delta(27.0, model.length.to_f)
     end
   end
 
@@ -80,7 +80,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
         length: 20.0
       )
 
-      assert_equal(20.0, model_polaris.length.to_f)
+      assert_in_delta(20.0, model_polaris.length.to_f)
       assert_equal(model_polaris.last_updated_at.utc.iso8601, model_polaris.created_at.utc.iso8601)
 
       Timecop.travel(1.day)
@@ -89,7 +89,7 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
 
       model_polaris.reload
 
-      assert_equal(155.0, model_polaris.length.to_f)
+      assert_in_delta(155.0, model_polaris.length.to_f)
       assert_equal('2020-02-26T22:17:02Z', model_polaris.last_updated_at.utc.iso8601)
     end
   end

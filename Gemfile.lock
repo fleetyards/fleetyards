@@ -416,6 +416,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 2.0)
     rubocop-ast (0.8.0)
       parser (>= 2.7.1.5)
+    rubocop-minitest (0.10.1)
+      rubocop (>= 0.87)
     rubocop-performance (1.8.1)
       rubocop (>= 0.87.0)
       rubocop-ast (>= 0.4.0)
@@ -423,6 +425,8 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 0.87.0)
+    rubocop-rake (0.5.1)
+      rubocop
     ruby-graphviz (1.2.5)
       rexml
     ruby-prof (1.4.1)
@@ -609,8 +613,11 @@ DEPENDENCIES
   ransack
   redcarpet
   rubocop
+  rubocop-ast
+  rubocop-minitest
   rubocop-performance
   rubocop-rails
+  rubocop-rake
   ruby-prof
   sass-rails
   searchkick
