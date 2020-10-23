@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.82.12](https://github.com/fleetyards/fleetyards/compare/v3.82.11...v3.82.12) (2020-10-23)
+
+
+### Bug Fixes
+
+* session logout ([5828e85](https://github.com/fleetyards/fleetyards/commit/5828e853b802da52307c5cfc3d5ee8723e8db803))
+
 ### [3.82.11](https://github.com/fleetyards/fleetyards/compare/v3.82.10...v3.82.11) (2020-10-23)
 
 
