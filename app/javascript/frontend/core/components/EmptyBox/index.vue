@@ -5,7 +5,7 @@
         <h1>{{ $t('headlines.empty') }}</h1>
         <template v-if="isQueryPresent">
           <p>{{ $t('texts.empty.query') }}</p>
-          <div slot="footer" class="float-sm-right">
+          <div slot="footer" class="empty-box-actions">
             <Btn v-if="isPagePresent" @click.native="resetPage">
               {{ $t('actions.empty.resetPage') }}
             </Btn>

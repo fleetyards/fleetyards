@@ -107,6 +107,11 @@
       :paginated="true"
     >
       <template slot="actions">
+        <PerPageDropdown
+          :per-page="perPage"
+          :steps="[15, 30, 60, 120, 240]"
+          @change="updatePerPage"
+        />
         <BtnDropdown size="small">
           <template v-if="mobile">
             <Btn
@@ -207,11 +212,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
 import Btn from 'frontend/core/components/Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
+import PerPageDropdown from 'frontend/core/components/Paginator/PerPageDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
 import HangarImportBtn from 'frontend/components/HangarImportBtn'
 import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
@@ -232,6 +238,7 @@ import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
     Btn,
     PrimaryAction,
     BtnDropdown,
+    PerPageDropdown,
     HangarImportBtn,
     ModelPanel,
     VehiclesFilterForm,
@@ -261,9 +268,13 @@ export default class Hangar extends Vue {
 
   @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
 
+  @Getter('perPage', { namespace: 'hangar' }) perPage
+
   @Getter('money', { namespace: 'hangar' }) money
 
   @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
+
+  @Action('updatePerPage', { namespace: 'hangar' }) updatePerPage: any
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
@@ -311,6 +322,11 @@ export default class Hangar extends Vue {
 
   @Watch('$route')
   onRouteChange() {
+    this.fetch()
+  }
+
+  @Watch('perPage')
+  onPerPageChange() {
     this.fetch()
   }
 

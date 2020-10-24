@@ -52,6 +52,10 @@ export default () => ({
     starterGuideVisible(state) {
       return state.starterGuideVisible
     },
+
+    perPage(state) {
+      return state.perPage
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -106,6 +110,10 @@ export default () => ({
 
     setStarterGuideVisible(state, payload) {
       state.starterGuideVisible = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
     },
   },
   /* eslint-enable no-param-reassign */

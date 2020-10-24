@@ -442,4 +442,5 @@ export default {
   'addAddon': {
     nullablePrompt: '',
   },
+  'perPage': 'Per Page',
 }

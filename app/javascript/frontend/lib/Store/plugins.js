@@ -17,6 +17,7 @@ export default function getStorePlugins() {
         'hangar.preview',
         'hangar.money',
         'hangar.starterGuideVisible',
+        'hangar.perPage',
         'models.detailsVisible',
         'models.fleetchartScale',
         'models.holoviewerVisible',

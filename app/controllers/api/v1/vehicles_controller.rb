@@ -32,7 +32,7 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-          .includes(model: [:manufacturer])
+          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
           .page(params[:page])
           .per(per_page(Vehicle))

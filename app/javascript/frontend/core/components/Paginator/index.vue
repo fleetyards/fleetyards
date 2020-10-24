@@ -10,7 +10,7 @@
     <li :class="{ disabled: page < 2 }" class="arrow">
       <router-link
         v-if="page > 1"
-        :to="{ query: { page: page - 1, q } }"
+        :to="pageRoute(page - 1)"
         :aria-label="$t('pagination.previous')"
       >
         <i class="fa fa-chevron-left" />
@@ -20,38 +20,36 @@
       </a>
     </li>
     <li v-if="page > 1">
-      <router-link :to="{ query: { page: 1, q } }">
+      <router-link :to="pageRoute(1)">
         1
       </router-link>
     </li>
     <Gap v-if="showLeftGap" />
     <li v-for="n in leftPagesCount" :key="`left-${n}`">
-      <router-link
-        :to="{ query: { page: page + (n - (leftPagesCount + 1)), q } }"
-      >
+      <router-link :to="pageRoute(page + (n - (leftPagesCount + 1)))">
         {{ page + (n - (leftPagesCount + 1)) }}
       </router-link>
     </li>
     <li class="active">
-      <router-link :to="{ query: { page: page, q } }">
+      <router-link :to="pageRoute(page)">
         {{ page }}
       </router-link>
     </li>
     <li v-for="n in rightPagesCount" :key="`right-${n}`">
-      <router-link :to="{ query: { page: page + n, q } }">
+      <router-link :to="pageRoute(page + n)">
         {{ page + n }}
       </router-link>
     </li>
     <Gap v-if="showRightGap" />
     <li v-if="page < total">
-      <router-link :to="{ query: { page: total, q } }">
+      <router-link :to="pageRoute(total)">
         {{ total }}
       </router-link>
     </li>
     <li :class="{ disabled: page + 1 > total }" class="arrow">
       <router-link
         v-if="page + 1 <= total"
-        :to="{ query: { page: page + 1, q } }"
+        :to="pageRoute(page + 1)"
         :aria-label="$t('pagination.next')"
       >
         <i class="fa fa-chevron-right" />
@@ -89,8 +87,8 @@ export default class Paginator extends Vue {
     return document.documentElement.clientWidth < 992
   }
 
-  get q() {
-    return this.$route.query.q
+  get perPage() {
+    return this.$route.query.perPage
   }
 
   get totalVisible() {
@@ -160,6 +158,10 @@ export default class Paginator extends Vue {
       this.showGap &&
       this.page < this.total - (Math.round(this.totalVisible / 2) - 1)
     )
+  }
+
+  pageRoute(page) {
+    return { query: { page, q: this.$route.query.q } }
   }
 }
 </script>

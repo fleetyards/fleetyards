@@ -1,4 +1,5 @@
 import { get, post, put, destroy, download } from 'frontend/api/client'
+import Store from 'frontend/lib/Store'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
@@ -10,12 +11,17 @@ export class VehiclesCollection extends BaseCollection {
 
   params: VehicleParams | null = null
 
+  get perPage() {
+    return Store.getters['hangar/perPage']
+  }
+
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
     this.params = params
 
     const response = await get('vehicles', {
       q: params?.filters,
       page: params?.page,
+      perPage: this.perPage,
     })
 
     if (!response.error) {

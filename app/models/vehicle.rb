@@ -4,6 +4,7 @@ require 'csv'
 
 class Vehicle < ApplicationRecord
   paginates_per 30
+  max_paginates_per 240
 
   scope :visible, -> { where(hidden: false) }
 

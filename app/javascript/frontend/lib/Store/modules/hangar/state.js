@@ -9,4 +9,5 @@ export default () => ({
   preview: true,
   money: true,
   starterGuideVisible: false,
+  perPage: 30,
 })
