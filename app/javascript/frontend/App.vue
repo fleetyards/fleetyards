@@ -92,7 +92,8 @@ export default class FrontendApp extends Vue {
       }
 
       if (this.$route.meta.needsAuthentication) {
-        this.$router.push({ name: 'login' })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this.$router.push({ name: 'login' }).catch(() => {})
       }
     }
   }

@@ -131,7 +131,8 @@ export default {
             name: this.$route.params.redirectToRoute,
           })
         } else {
-          await this.$router.push('/')
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          await this.$router.push('/').catch(() => {})
         }
       } else {
         displayAlert({

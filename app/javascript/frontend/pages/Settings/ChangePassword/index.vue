@@ -111,7 +111,8 @@ export default {
           text: this.$t('messages.changePassword.success'),
         })
 
-        this.$router.push('/')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this.$router.push('/').catch(() => {})
       } else {
         displayAlert({
           text: this.$t('messages.changePassword.failure'),

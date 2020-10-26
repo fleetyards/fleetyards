@@ -10,7 +10,8 @@ import { Component } from 'vue-property-decorator'
 export default class Fleets extends Vue {
   mounted() {
     if (this.$route.name === 'fleets') {
-      this.$router.push({ name: 'home' })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this.$router.push({ name: 'home' }).catch(() => {})
     }
   }
 }

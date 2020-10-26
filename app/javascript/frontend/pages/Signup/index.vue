@@ -154,7 +154,9 @@ export default {
         displaySuccess({
           text: this.$t('messages.signup.success'),
         })
-        this.$router.push('/')
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this.$router.push('/').catch(() => {})
       } else if (
         response.error.response &&
         response.error.response.data &&

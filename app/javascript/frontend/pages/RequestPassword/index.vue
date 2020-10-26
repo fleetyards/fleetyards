@@ -82,7 +82,8 @@ export default {
         text: this.$t('messages.requestPasswordChange.success'),
       })
 
-      this.$router.push('/')
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this.$router.push('/').catch(() => {})
     },
   },
 }

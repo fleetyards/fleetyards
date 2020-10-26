@@ -199,14 +199,17 @@ export default class Home extends Vue {
       return
     }
 
-    this.$router.push({
-      name: 'search',
-      query: {
-        q: {
-          search: this.searchQuery,
+    this.$router
+      .push({
+        name: 'search',
+        query: {
+          q: {
+            search: this.searchQuery,
+          },
         },
-      },
-    })
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {})
   }
 
   async fetchModels() {
