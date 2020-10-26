@@ -291,12 +291,13 @@ export default class FilterGroup extends Vue {
   async fetchOptions() {
     this.loading = true
 
-    await this.collection[this.collectionMethod](
-      this.queryParams({
+    await this.collection[this.collectionMethod]({
+      ...this.queryParams({
         page: this.page,
         search: this.search,
       }),
-    )
+      cacheId: this.groupID,
+    })
 
     this.loading = false
 

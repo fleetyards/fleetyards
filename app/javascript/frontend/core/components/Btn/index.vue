@@ -71,6 +71,8 @@ export default class Btn extends Vue {
 
   @Prop({ default: false }) disabled!: boolean
 
+  @Prop({ default: null }) routeActiveClass!: boolean
+
   get btnType() {
     if (this.to) return 'router-link'
 
@@ -84,6 +86,7 @@ export default class Btn extends Vue {
       return {
         to: this.to,
         exact: this.exact,
+        activeClass: this.routeActiveClass,
       }
     }
 
@@ -115,6 +118,7 @@ export default class Btn extends Vue {
       'panel-btn-text-inline': this.textInline,
       'panel-btn-mobile-block': this.mobileBlock,
       'active': this.active,
+      'disabled': this.disabled,
     }
   }
 }

@@ -11,8 +11,16 @@ export class VehiclesCollection extends BaseCollection {
 
   params: VehicleParams | null = null
 
-  get perPage() {
+  get perPage(): number {
     return Store.getters['hangar/perPage']
+  }
+
+  get perPageSteps(): number[] {
+    return [15, 30, 60, 120, 240]
+  }
+
+  updatePerPage(perPage) {
+    Store.dispatch('hangar/updatePerPage', perPage)
   }
 
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
@@ -26,9 +34,8 @@ export class VehiclesCollection extends BaseCollection {
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }

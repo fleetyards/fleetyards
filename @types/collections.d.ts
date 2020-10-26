@@ -5,4 +5,5 @@ type Pagination = {
 
 type CollectionParams = {
   page?: number
+  cacheId?: string
 }
