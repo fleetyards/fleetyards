@@ -62,22 +62,6 @@ module Api
         render json: ValidationError.new('vehicle.import', e), status: :bad_request
       end
 
-      def destroy_all
-        authorize! :destroy_all, :api_hangar
-
-        Vehicle.transaction do
-          # rubocop:disable Rails/SkipsModelValidations
-          current_user.vehicles.update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
-
-          vehicle_ids = current_user.vehicle_ids
-
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
-        end
-      end
-
       def fleetchart
         authorize! :index, :api_hangar
         scope = current_user.vehicles.visible
@@ -248,12 +232,68 @@ module Api
         render json: ValidationError.new('vehicle.update', @vehicle.errors), status: :bad_request
       end
 
+      def update_bulk
+        authorize! :update_bulk, :api_hangar
+
+        errors = []
+
+        Vehicle.transaction do
+          scope = current_user.vehicles.where(id: params[:ids])
+
+          scope.find_each do |vehicle|
+            vehicle.task_forces.destroy_all if vehicle_params[:hangar_group_ids].blank?
+
+            next if vehicle.update(vehicle_bulk_params)
+
+            errors << vehicle.errors
+          end
+        end
+
+        return if errors.blank?
+
+        render json: ValidationError.new('vehicle.bulk_update', errors), status: :bad_request
+      end
+
       def destroy
         authorize! :destroy, vehicle
 
         return if vehicle.destroy
 
         render json: ValidationError.new('vehicle.destroy', @vehicle.errors), status: :bad_request
+      end
+
+      def destroy_bulk
+        authorize! :destroy_bulk, :api_hangar
+
+        Vehicle.transaction do
+          scope = current_user.vehicles.where(id: params[:ids])
+
+          # rubocop:disable Rails/SkipsModelValidations
+          scope.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
+
+          vehicle_ids = scope.pluck(:id)
+
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
+      end
+
+      def destroy_all
+        authorize! :destroy_all, :api_hangar
+
+        Vehicle.transaction do
+          # rubocop:disable Rails/SkipsModelValidations
+          current_user.vehicles.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
+
+          vehicle_ids = current_user.vehicle_ids
+
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
       end
 
       def models_by_size
@@ -318,6 +358,15 @@ module Api
             .permit(
               :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
               hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
+            ).merge(user_id: current_user.id)
+        end
+      end
+
+      private def vehicle_bulk_params
+        @vehicle_bulk_params ||= begin
+          params.transform_keys(&:underscore)
+            .permit(
+              :purchased, hangar_group_ids: []
             ).merge(user_id: current_user.id)
         end
       end

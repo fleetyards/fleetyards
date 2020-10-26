@@ -276,12 +276,17 @@ export default {
     purchased: 'Purchased',
     loaner: 'Loaner',
     public: 'Visible on Public Hangar',
+    fullPublic: 'Visible including Name on Public Hangar',
     publicShort: 'Public',
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',
+    hangarGroups: 'Groups',
     selectGroup: 'Select a Group',
     modelPaintSelect: {
       nullablePrompt: 'Select a Paint',
+    },
+    bulkGroupEdit: {
+      hint: 'Existing Groups will be overridden!',
     },
   },
   'image': {
@@ -447,5 +452,8 @@ export default {
   'pagination': {
     perPage: 'Per Page',
     pages: '%{page} of %{total}',
+  },
+  'table': {
+    selected: '%{count} Selected',
   },
 }

@@ -99,8 +99,9 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async update(vehicleId: string, form: VehicleForm): Promise<boolean> {
-    const response = await put(`vehicles/${vehicleId}`, form)
+  async update(id: string, form: VehicleForm): Promise<boolean> {
+    const response = await put(`vehicles/${id}`, form)
+
     if (!response.error) {
       this.findAll(this.params)
 
@@ -110,8 +111,55 @@ export class VehiclesCollection extends BaseCollection {
     return false
   }
 
-  async destroy(vehicleId: string): Promise<boolean> {
-    const response = await destroy(`vehicles/${vehicleId}`)
+  async markAsPurchasedBulk(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      purchased: true,
+      ids,
+    })
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
+
+  async updateHangarGroupsBulk(
+    ids: string,
+    hangarGroupIds: string[],
+  ): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      hangarGroupIds,
+      ids,
+    })
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
+
+  async destroy(id: string): Promise<boolean> {
+    const response = await destroy(`vehicles/${id}`)
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
+
+  async destroyBulk(ids: string[]): Promise<boolean> {
+    const response = await put('vehicles/destroy-bulk', {
+      ids,
+    })
 
     if (!response.error) {
       this.findAll(this.params)

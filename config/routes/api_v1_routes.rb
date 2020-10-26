@@ -79,6 +79,8 @@ v1_api_routes = lambda do
       get :fleetchart
       get :export
       put :import
+      put 'bulk' => 'vehicles#update_bulk'
+      put 'destroy-bulk' => 'vehicles#destroy_bulk'
       delete 'destroy-all' => 'vehicles#destroy_all'
       get :embed
       get 'hangar-items' => 'vehicles#hangar_items'

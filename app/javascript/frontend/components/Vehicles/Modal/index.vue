@@ -217,7 +217,3 @@ export default class VehicleModal extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

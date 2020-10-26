@@ -50,7 +50,7 @@
           </small>
 
           <Btn
-            v-if="vehicle && isMyShip && !vehicle.loaner"
+            v-if="vehicle && editable && !vehicle.loaner"
             :title="$t('actions.edit')"
             :aria-label="$t('actions.edit')"
             class="panel-edit-button"
@@ -63,7 +63,7 @@
           </Btn>
 
           <AddToHangar
-            v-else-if="!isMyShip && !username"
+            v-else-if="!editable && !username"
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
@@ -84,7 +84,7 @@
           class="image"
         >
           <div
-            v-if="isMyShip"
+            v-if="editable"
             v-show="vehicle.purchased || vehicle.loaner"
             v-tooltip="
               vehicle.loaner
@@ -178,7 +178,7 @@ export default class ModelPanel extends Vue {
 
   @Prop({ default: null }) count: number
 
-  @Prop({ default: false }) isMyShip: boolean
+  @Prop({ default: false }) editable: boolean
 
   @Prop({ default: false }) highlight: boolean
 
@@ -247,7 +247,7 @@ export default class ModelPanel extends Vue {
 
   get upgradable() {
     return (
-      (this.isMyShip || this.hasAddons) &&
+      (this.editable || this.hasAddons) &&
       (this.model.hasModules || this.model.hasUpgrades)
     )
   }
@@ -270,7 +270,7 @@ export default class ModelPanel extends Vue {
       component: () => import('frontend/components/Vehicles/AddonsModal'),
       props: {
         vehicle: this.vehicle,
-        modifiable: this.isMyShip,
+        editable: this.editable,
       },
     })
   }

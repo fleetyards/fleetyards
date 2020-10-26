@@ -212,12 +212,17 @@
               :model="record.model"
               :vehicle="record"
               :details="detailsVisible"
-              :is-my-ship="true"
+              :editable="true"
               :highlight="record.hangarGroupIds.includes(highlightedGroup)"
             />
           </template>
         </FilteredGrid>
-        <VehiclesTable v-else :vehicles="records" :primary-key="primaryKey" />
+        <VehiclesTable
+          v-else
+          :vehicles="records"
+          :primary-key="primaryKey"
+          :editable="true"
+        />
       </template>
     </FilteredList>
 
@@ -454,6 +459,8 @@ export default class Hangar extends Vue {
       text: this.$t('messages.confirm.hangar.destroyAll'),
       onConfirm: async () => {
         await this.collection.destroyAll()
+
+        this.$comlink.$emit('vehicles-delete-all')
 
         this.deleting = false
       },

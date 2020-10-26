@@ -4,6 +4,7 @@
       :size="size"
       :variant="variant"
       :active="visible"
+      :inline="inline"
       :mobile-block="mobileBlock"
       @click.native="toggle"
     >
@@ -59,6 +60,8 @@ export default class BtnDropdown extends Vue {
   variant!: string
 
   @Prop({ default: false }) mobileBlock!: boolean
+
+  @Prop({ default: false }) inline!: boolean
 
   created() {
     document.addEventListener('click', this.documentClick)

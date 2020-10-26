@@ -121,6 +121,7 @@ export async function destroy(path, data = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
+
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {

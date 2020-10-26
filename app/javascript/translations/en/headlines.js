@@ -86,4 +86,7 @@ export default {
   hangarGuideEmpty: 'Not much to see here?',
   hangarGuide: 'Hangar Guide',
   support: 'Support FleetYards.net',
+  vehicle: {
+    bulkGroupEdit: 'Add/Remove Groups',
+  },
 }

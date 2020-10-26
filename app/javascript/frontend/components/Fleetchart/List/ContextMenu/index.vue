@@ -182,7 +182,7 @@ export default class FleetchartItemContextMenu extends Vue {
       component: () => import('frontend/components/Vehicles/AddonsModal'),
       props: {
         vehicle: this.vehicle,
-        modifiable: this.isMyShip,
+        editable: this.editable,
       },
     })
   }

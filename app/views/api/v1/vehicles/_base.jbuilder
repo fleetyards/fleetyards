@@ -21,6 +21,9 @@ json.upgrade do
 end
 json.upgrade nil if vehicle.model_upgrades.blank?
 json.hangar_group_ids vehicle.hangar_group_ids
+json.hangar_groups do
+  json.array! vehicle.hangar_groups, partial: 'api/v1/vehicles/hangar_group', as: :hangar_group
+end
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.partial! 'api/shared/dates', record: vehicle

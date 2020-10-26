@@ -239,7 +239,9 @@ export default class FilteredList extends Vue {
       scrollToAnchor(this.hash)
     })
 
-    this.loading = false
+    setTimeout(() => {
+      this.loading = false
+    }, 300)
   }
 }
 </script>

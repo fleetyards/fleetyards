@@ -1,6 +1,56 @@
 @import '~stylesheets/variables';
 
-.purchased,
-.public {
-  font-size: 130%;
+.vehicle-states {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  font-size: 150%;
+
+  > * {
+    margin: 0 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  .on-sale {
+    color: $success;
+  }
+
+  .flagship-icon {
+    color: $gold;
+  }
+
+  .full-public-icon {
+    color: $gray-lighter;
+  }
+}
+
+.hangar-groups {
+  display: flex;
+  flex-wrap: wrap;
+
+  .hangar-group {
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 13px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .vehicle-states,
+  .hangar-groups {
+    justify-content: center;
+  }
 }

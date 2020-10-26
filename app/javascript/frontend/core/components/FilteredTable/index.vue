@@ -1,5 +1,5 @@
 <template>
-  <Panel>
+  <Panel v-if="records.length">
     <transition-group
       name="fade"
       class="filtered-table"
@@ -12,12 +12,29 @@
         class="fade-list-item col-12 filtered-table-selected"
       >
         <div class="filtered-table-row">
-          <div>{{ internalSelected.length }} Selected</div>
+          <div>
+            {{
+              $t('labels.table.selected', { count: internalSelected.length })
+            }}
+            <Btn
+              v-tooltip="$t('actions.unselect')"
+              size="small"
+              variant="link"
+              :inline="true"
+              @click.native="resetSelected"
+            >
+              <i class="fal fa-times" />
+            </Btn>
+          </div>
+          <slot
+            :selectedCount="internalSelected.length"
+            name="selected-actions"
+          />
         </div>
       </div>
       <div key="heading" class="fade-list-item col-12 filtered-table-heading">
         <div class="filtered-table-row">
-          <div>
+          <div v-if="selectable && !mobile">
             <Checkbox :value="allSelected" @input="onAllSelectedChange" />
           </div>
           <div
@@ -33,17 +50,6 @@
           </div>
         </div>
       </div>
-      <!-- <div
-        v-if="!loading && !records.length"
-        key="empty"
-        class="fade-list-item col-12 flex-list-item"
-      >
-        <div class="flex-list-row">
-          <div class="empty">
-            {{ $t('labels.blank.table') }}
-          </div>
-        </div>
-      </div> -->
       <div
         v-for="(record, index) in records"
         :key="record[primaryKey]"
@@ -51,7 +57,7 @@
       >
         <slot :record="record" :index="index">
           <div class="filtered-table-row">
-            <div>
+            <div v-if="selectable && !mobile">
               <Checkbox
                 v-model="internalSelected"
                 :checkbox-value="record.id"
@@ -81,8 +87,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import Panel from 'frontend/core/components/Panel'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
+import Btn from 'frontend/core/components/Btn'
 import { uniq as uniqArray } from 'frontend/utils/Array'
 
 export type FilteredTableColumn = {
@@ -95,6 +103,7 @@ export type FilteredTableColumn = {
   components: {
     Panel,
     Checkbox,
+    Btn,
   },
 })
 export default class FilteredTable extends Vue {
@@ -103,6 +112,8 @@ export default class FilteredTable extends Vue {
   @Prop({ required: true }) columns!: FilteredTableColumn[]
 
   @Prop({ required: true }) primaryKey!: string
+
+  @Prop({ default: false }) selectable!: boolean
 
   @Prop({
     default: () => {
@@ -113,11 +124,17 @@ export default class FilteredTable extends Vue {
 
   internalSelected: string[] = []
 
+  @Getter('mobile') mobile
+
   get uuid() {
     return this._uid
   }
 
   get allSelected() {
+    if (!this.records.length) {
+      return false
+    }
+
     return this.records
       .map(record => record.id)
       .every(recordId => {
@@ -149,8 +166,14 @@ export default class FilteredTable extends Vue {
         ...this.records.map(record => record.id),
       ].filter(uniqArray)
     } else {
-      this.internalSelected = []
+      this.internalSelected = [...this.internalSelected].filter(selected => {
+        return !this.records.map(record => record.id).includes(selected)
+      })
     }
+  }
+
+  resetSelected() {
+    this.internalSelected = []
   }
 }
 </script>
