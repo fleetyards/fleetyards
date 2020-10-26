@@ -64,6 +64,9 @@ module Admin
 
     def images
       authorize! :images, :admin_models
+
+      redirect_to admin_models_path(params: index_back_params, anchor: model&.id) if model.blank?
+
       @app_enabled = true
     end
 

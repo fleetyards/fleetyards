@@ -21,23 +21,23 @@
 
 /* <button> css reset */
 .pswp__button {
+  position: relative;
+  display: block;
+  float: right;
   width: 44px;
   height: 44px;
-  position: relative;
-  background: none;
-  cursor: pointer;
-  overflow: visible;
-  -webkit-appearance: none;
-  display: block;
-  border: 0;
-  padding: 0;
   margin: 0;
-  float: right;
+  padding: 0;
+  overflow: visible;
+  background: none;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
   opacity: .75;
   -webkit-transition: opacity .2s;
   transition: opacity .2s;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+  -webkit-appearance: none;
 }
 
 .pswp__button:focus,
@@ -63,10 +63,10 @@
 .pswp__button,
 .pswp__button--arrow--left::before,
 .pswp__button--arrow--right::before {
-  background: url('~images/photoswipe/default-skin.png') 0 0 no-repeat;
-  background-size: 264px 88px;
   width: 44px;
   height: 44px;
+  background: url('~images/photoswipe/default-skin.png') 0 0 no-repeat;
+  background-size: 264px 88px;
 }
 
 @media (-webkit-min-device-pixel-ratio: 1.1), (-webkit-min-device-pixel-ratio: 1.09375), (min-resolution: 105dpi), (min-resolution: 1.1dppx) {
@@ -83,6 +83,7 @@
   }
 
   .pswp__button--copy {
+    color: white;
     background: transparent !important;
     background-image: none !important;
   }
@@ -138,12 +139,12 @@
 */
 .pswp__button--arrow--left,
 .pswp__button--arrow--right {
-  background: none;
+  position: absolute;
   top: 50%;
-  margin-top: -50px;
   width: 70px;
   height: 100px;
-  position: absolute;
+  margin-top: -50px;
+  background: none;
 }
 
 .pswp__button--arrow--left {
@@ -156,12 +157,12 @@
 
 .pswp__button--arrow--left::before,
 .pswp__button--arrow--right::before {
-  content: '';
-  top: 35px;
-  background-color: rgba(0, 0, 0, .3);
-  height: 30px;
-  width: 32px;
   position: absolute;
+  top: 35px;
+  width: 32px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, .3);
+  content: '';
 }
 
 .pswp__button--arrow--left::before {
@@ -188,20 +189,20 @@
 }
 
 .pswp__share-modal {
-  display: block;
-  background: rgba(0, 0, 0, .5);
-  width: 100%;
-  height: 100%;
+  position: absolute;
   top: 0;
   left: 0;
-  padding: 10px;
-  position: absolute;
   z-index: 1600;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, .5);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   opacity: 0;
   -webkit-transition: opacity .25s ease-out;
   transition: opacity .25s ease-out;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
   will-change: opacity;
 }
 
@@ -210,23 +211,23 @@
 }
 
 .pswp__share-tooltip {
-  z-index: 1620;
   position: absolute;
-  background: #fff;
   top: 56px;
-  border-radius: 2px;
+  right: 44px;
+  z-index: 1620;
   display: block;
   width: auto;
-  right: 44px;
+  background: #fff;
+  border-radius: 2px;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
   box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
   -webkit-transform: translateY(6px);
   -ms-transform: translateY(6px);
   transform: translateY(6px);
-  -webkit-transition: -webkit-transform .25s;
-  transition: transform .25s;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-transition: -webkit-transform .25s;
+  transition: transform .25s;
   will-change: transform;
 }
 
@@ -234,14 +235,14 @@
   display: block;
   padding: 8px 12px;
   color: #000;
-  text-decoration: none;
   font-size: 14px;
   line-height: 18px;
+  text-decoration: none;
 }
 
 .pswp__share-tooltip a:hover {
-  text-decoration: none;
   color: #000;
+  text-decoration: none;
 }
 
 .pswp__share-tooltip a:first-child {
@@ -269,23 +270,23 @@
 }
 
 a.pswp__share--facebook::before {
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
   position: absolute;
   top: -12px;
   right: 15px;
+  display: block;
+  width: 0;
+  height: 0;
   border: 6px solid transparent;
   border-bottom-color: #fff;
+  content: '';
   -webkit-pointer-events: none;
   -moz-pointer-events: none;
   pointer-events: none;
 }
 
 a.pswp__share--facebook:hover {
-  background: #3e5c9a;
   color: #fff;
+  background: #3e5c9a;
 }
 
 a.pswp__share--facebook:hover::before {
@@ -293,13 +294,13 @@ a.pswp__share--facebook:hover::before {
 }
 
 a.pswp__share--twitter:hover {
-  background: #55acee;
   color: #fff;
+  background: #55acee;
 }
 
 a.pswp__share--pinterest:hover {
-  background: #ccc;
   color: #ce272d;
+  background: #ccc;
 }
 
 a.pswp__share--download:hover {
@@ -313,14 +314,14 @@ a.pswp__share--download:hover {
  */
 .pswp__counter {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   height: 44px;
+  padding: 0 10px;
+  color: #fff;
   font-size: 13px;
   line-height: 44px;
-  color: #fff;
   opacity: .75;
-  padding: 0 10px;
 }
 
 /*
@@ -330,25 +331,25 @@ a.pswp__share--download:hover {
  */
 .pswp__caption {
   position: absolute;
-  left: 0;
   bottom: 0;
+  left: 0;
   width: 100%;
   min-height: 44px;
 }
 
 .pswp__caption small {
-  font-size: 11px;
   color: #bbb;
+  font-size: 11px;
 }
 
 .pswp__caption__center {
-  text-align: left;
   max-width: 420px;
   margin: 0 auto;
-  font-size: 13px;
   padding: 10px;
-  line-height: 20px;
   color: #ccc;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: left;
 }
 
 .pswp__caption--empty {
@@ -368,17 +369,17 @@ a.pswp__share--download:hover {
 
  */
 .pswp__preloader {
-  width: 44px;
-  height: 44px;
   position: absolute;
   top: 0;
   left: 50%;
+  width: 44px;
+  height: 44px;
   margin-left: -22px;
+  direction: ltr;
   opacity: 0;
   -webkit-transition: opacity .25s ease-out;
   transition: opacity .25s ease-out;
   will-change: opacity;
-  direction: ltr;
 }
 
 .pswp__preloader__icn {
@@ -411,14 +412,14 @@ a.pswp__share--download:hover {
 }
 
 .pswp--css_animation .pswp__preloader__icn {
-  background: none;
-  opacity: .75;
+  position: absolute;
+  top: 15px;
+  left: 15px;
   width: 14px;
   height: 14px;
-  position: absolute;
-  left: 15px;
-  top: 15px;
   margin: 0;
+  background: none;
+  opacity: .75;
 }
 
 .pswp--css_animation .pswp__preloader__cut {
@@ -433,28 +434,28 @@ a.pswp__share--download:hover {
 }
 
 .pswp--css_animation .pswp__preloader__donut {
+  position: absolute;
+  top: 0;
+  left: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 14px;
   height: 14px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: none;
   margin: 0;
+  background: none;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
 }
 
 @media screen and (max-width: 1024px) {
   .pswp__preloader {
     position: relative;
-    left: auto;
     top: auto;
-    margin: 0;
+    left: auto;
     float: right;
+    margin: 0;
   }
 }
 
@@ -524,20 +525,20 @@ a.pswp__share--download:hover {
 
 /* root element of UI */
 .pswp__ui {
-  -webkit-font-smoothing: auto;
+  z-index: 1550;
   visibility: visible;
   opacity: 1;
-  z-index: 1550;
+  -webkit-font-smoothing: auto;
 }
 
 /* top black bar with buttons and "1 of X" indicator */
 .pswp__top-bar {
-  padding-top: env(safe-area-inset-top);
   position: absolute;
-  left: 0;
   top: 0;
-  height: 44px;
+  left: 0;
   width: 100%;
+  height: 44px;
+  padding-top: env(safe-area-inset-top);
 }
 
 .pswp__caption,
@@ -546,9 +547,9 @@ a.pswp__share--download:hover {
 .pswp--has_mouse .pswp__button--arrow--right {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: opacity;
   -webkit-transition: opacity 333ms cubic-bezier(.4, 0, .22, 1);
   transition: opacity 333ms cubic-bezier(.4, 0, .22, 1);
+  will-change: opacity;
 }
 
 /* pswp--has_mouse class is added only when two subsequent mousemove events occur */

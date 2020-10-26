@@ -34,6 +34,7 @@
               :src="record.smallUrl"
               :href="record.url"
               :alt="record.name"
+              :title="record.caption || record.name"
               @click.native.prevent.exact="openGallery(index)"
             />
           </template>
