@@ -72,7 +72,7 @@
                   'width': column.width,
                 }"
               >
-                <slot :record="record" :name="`col.${column.name}`">
+                <slot :record="record" :name="`col-${column.name}`">
                   {{ record[column.field || column.name] }}
                 </slot>
               </div>

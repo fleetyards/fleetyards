@@ -30,7 +30,7 @@
         </Btn>
       </div>
     </template>
-    <template #col.store_image="{ record }">
+    <template #col-store_image="{ record }">
       <div
         :key="record.model.storeImageSmall"
         v-lazy:background-image="record.model.storeImageSmall"
@@ -38,7 +38,7 @@
         alt="storeImage"
       />
     </template>
-    <template #col.name="{ record }">
+    <template #col-name="{ record }">
       <div class="name">
         <router-link
           :to="{
@@ -63,7 +63,7 @@
         </small>
       </div>
     </template>
-    <template #col.states="{ record }">
+    <template #col-states="{ record }">
       <div class="vehicle-states">
         <i
           v-if="record.flagship"
@@ -97,7 +97,7 @@
         />
       </div>
     </template>
-    <template #col.groups="{ record }">
+    <template #col-groups="{ record }">
       <div class="hangar-groups">
         <div
           v-for="(hangarGroup, index) in record.hangarGroups"
@@ -108,7 +108,7 @@
         />
       </div>
     </template>
-    <template #col.actions="{ record }">
+    <template #col-actions="{ record }">
       <div class="page-actions page-actions-block">
         <Btn
           v-if="record && editable && !record.loaner"
