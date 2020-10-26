@@ -56,6 +56,10 @@ export default () => ({
     perPage(state) {
       return state.perPage
     },
+
+    gridView(state) {
+      return state.gridView
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -114,6 +118,10 @@ export default () => ({
 
     setPerPage(state, payload) {
       state.perPage = payload
+    },
+
+    setGridView(state, payload) {
+      state.gridView = payload
     },
   },
   /* eslint-enable no-param-reassign */

@@ -207,19 +207,28 @@
 
       <FleetVehiclesFilterForm slot="filter" />
 
-      <template #record="{ record }">
-        <ModelPanel
-          v-if="record.model"
-          :model="record.model"
-          :details="detailsVisible"
-          :username="record.username"
-        />
-        <ModelPanel
-          v-else
-          :model="record"
-          :details="detailsVisible"
-          :count="record.count"
-        />
+      <template #default="{ records, loading, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :loading="loading"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ModelPanel
+              v-if="record.model"
+              :model="record.model"
+              :details="detailsVisible"
+              :username="record.username"
+            />
+            <ModelPanel
+              v-else
+              :model="record"
+              :details="detailsVisible"
+              :count="record.count"
+            />
+          </template>
+        </FilteredGrid>
       </template>
     </FilteredList>
   </section>
@@ -230,6 +239,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
@@ -250,6 +260,7 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     Btn,
     BtnDropdown,
     FilteredList,
+    FilteredGrid,
     ModelPanel,
     ModelClassLabels,
     AddonsModal,

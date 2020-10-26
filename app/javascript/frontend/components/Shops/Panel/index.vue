@@ -22,6 +22,7 @@
               <small class="text-muted">
                 {{ shop.station.name }}
               </small>
+              <br />
               {{ shop.name }}
             </router-link>
           </h2>

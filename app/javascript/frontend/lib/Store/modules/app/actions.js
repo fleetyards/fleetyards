@@ -4,7 +4,7 @@ export default {
   },
 
   updateVersion({ state, commit }, payload = {}) {
-    if (payload.version && state.appVersion !== payload.version) {
+    if (payload && payload.version && state.appVersion !== payload.version) {
       commit('setVersion', payload.version)
       commit('setCodename', payload.codename)
     }

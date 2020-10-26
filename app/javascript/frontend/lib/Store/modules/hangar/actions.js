@@ -54,4 +54,8 @@ export default {
   updatePerPage({ commit }, payload) {
     commit('setPerPage', payload)
   },
+
+  toggleGridView({ commit, state }) {
+    commit('setGridView', !state.gridView)
+  },
 }

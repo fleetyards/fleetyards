@@ -66,6 +66,8 @@ export default {
   'addGroup': 'Add Group',
   'addModule': 'Add another Module',
   'addUpgrade': 'Add another Upgrade',
+  'showTableView': 'Display as List',
+  'showGridView': 'Display as Grid',
   'compare': {
     models: 'Compare',
   },

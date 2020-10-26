@@ -20,13 +20,22 @@
       :paginated="true"
       class="images"
     >
-      <template #record="{ record, index }">
-        <GalleryImage
-          :src="record.smallUrl"
-          :href="record.url"
-          :alt="record.name"
-          @click.native.prevent.exact="openGallery(index)"
-        />
+      <template #default="{ records, loading, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :loading="loading"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record, index }">
+            <GalleryImage
+              :src="record.smallUrl"
+              :href="record.url"
+              :alt="record.name"
+              @click.native.prevent.exact="openGallery(index)"
+            />
+          </template>
+        </FilteredGrid>
       </template>
     </FilteredList>
 
@@ -42,10 +51,12 @@ import Gallery from 'frontend/core/components/Gallery'
 import GalleryImage from 'frontend/core/components/Gallery/Image'
 import imagesCollection from 'frontend/api/collections/Images'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 
 @Component<Images>({
   components: {
     FilteredList,
+    FilteredGrid,
     Gallery,
     GalleryImage,
   },

@@ -9,7 +9,10 @@ $borderRadius: 16px;
 
     .panel-heading .panel-title {
       margin-top: 10px;
+      overflow: auto;
       font-size: 30px;
+      white-space: normal;
+      text-overflow: inherit;
       text-shadow: 0 0 2px black;
     }
 

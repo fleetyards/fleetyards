@@ -10,4 +10,5 @@ export default () => ({
   money: true,
   starterGuideVisible: false,
   perPage: 30,
+  gridView: true,
 })

@@ -16,8 +16,17 @@
     >
       <FilterForm slot="filter" />
 
-      <template #record="{ record }">
-        <ShopPanel :shop="record" />
+      <template #default="{ records, loading, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :loading="loading"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ShopPanel :shop="record" />
+          </template>
+        </FilteredGrid>
       </template>
     </FilteredList>
   </section>
@@ -29,6 +38,7 @@ import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterForm from 'frontend/components/Shops/FilterForm'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import ShopPanel from 'frontend/components/Shops/Panel'
 import shopsCollection from 'frontend/api/collections/Shops'
 
@@ -36,6 +46,7 @@ import shopsCollection from 'frontend/api/collections/Shops'
   components: {
     FilterForm,
     FilteredList,
+    FilteredGrid,
     ShopPanel,
   },
   mixins: [MetaInfo],

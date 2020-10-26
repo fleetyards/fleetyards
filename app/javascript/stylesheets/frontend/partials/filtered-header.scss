@@ -1,4 +1,4 @@
-.filtered-list-header {
+.filtered-header {
   display: flex;
   justify-content: space-between;
 
@@ -23,7 +23,7 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .filtered-list-header {
+  .filtered-header {
     flex-wrap: wrap;
 
     > * {

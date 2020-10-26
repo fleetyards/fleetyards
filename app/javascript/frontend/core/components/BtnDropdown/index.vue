@@ -2,6 +2,7 @@
   <div ref="wrapper" class="panel-btn-dropdown">
     <Btn
       :size="size"
+      :variant="variant"
       :active="visible"
       :mobile-block="mobileBlock"
       @click.native="toggle"
@@ -44,6 +45,18 @@ export default class BtnDropdown extends Vue {
     },
   })
   size!: string
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
+    },
+  })
+  variant!: string
 
   @Prop({ default: false }) mobileBlock!: boolean
 

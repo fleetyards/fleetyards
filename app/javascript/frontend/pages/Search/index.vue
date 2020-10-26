@@ -41,6 +41,7 @@
     </div>
     <transition name="fade">
       <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
+
       <FilteredList
         v-else
         :collection="collection"

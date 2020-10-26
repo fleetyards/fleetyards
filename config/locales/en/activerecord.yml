@@ -220,6 +220,7 @@ en:
           waste: Waste
           scrap: Scrap
           vice: Vice
+          harvestable: Harvestable
       shop_commodity:
         location_prefix:
           default: 'sold at'

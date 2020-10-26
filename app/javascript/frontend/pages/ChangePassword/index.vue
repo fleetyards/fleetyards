@@ -94,7 +94,7 @@ export default {
 
   mounted() {
     if (this.isAuthenticated) {
-      this.$router.push({ name: 'settings-change-password' })
+      this.$router.push({ name: 'settings-change-password' }).catch(() => {})
     }
   },
 

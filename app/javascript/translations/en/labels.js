@@ -16,8 +16,8 @@ export default {
   'groups': 'Groups',
   'shop': {
     rentPrice: 'rental',
-    sellPrice: 'price',
-    buyPrice: 'buying price',
+    sellPrice: 'sells for',
+    buyPrice: 'buys for',
   },
   'stats': {
     quickStats: {
@@ -188,6 +188,7 @@ export default {
   'source': 'Source',
   'model': {
     variants: 'Variants',
+    manufacturer: 'Manufacturer',
     loaners: 'Loaners',
     paints: 'Paints',
     modules: 'Modules',
@@ -275,6 +276,7 @@ export default {
     purchased: 'Purchased',
     loaner: 'Loaner',
     public: 'Visible on Public Hangar',
+    publicShort: 'Public',
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',
     selectGroup: 'Select a Group',
@@ -442,5 +444,8 @@ export default {
   'addAddon': {
     nullablePrompt: '',
   },
-  'perPage': 'Per Page',
+  'pagination': {
+    perPage: 'Per Page',
+    pages: '%{page} of %{total}',
+  },
 }

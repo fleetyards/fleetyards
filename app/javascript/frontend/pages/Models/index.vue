@@ -29,8 +29,17 @@
 
       <ModelsFilterForm slot="filter" />
 
-      <template #record="{ record }">
-        <ModelPanel :model="record" :details="detailsVisible" />
+      <template #default="{ records, loading, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :loading="loading"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ModelPanel :model="record" :details="detailsVisible" />
+          </template>
+        </FilteredGrid>
       </template>
     </FilteredList>
   </section>
@@ -43,6 +52,7 @@ import { Action, Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import ModelPanel from 'frontend/components/Models/Panel'
 import ModelsFilterForm from 'frontend/components/Models/FilterForm'
 import MetaInfo from 'frontend/mixins/MetaInfo'
@@ -56,6 +66,7 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
     Btn,
     BtnDropdown,
     FilteredList,
+    FilteredGrid,
     ModelPanel,
     ModelsFilterForm,
   },
