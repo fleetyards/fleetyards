@@ -1,6 +1,6 @@
 <template>
   <div
-    :key="backgroundImage"
+    :key="`${backgroundImage}-${uuid}`"
     v-lazy:background-image="backgroundImage"
     class="background-image"
   />
@@ -64,6 +64,10 @@ export default class BackgroundImage extends Vue {
       },
     },
     /* eslint-enable global-require */
+  }
+
+    get uuid() {
+    return this._uid
   }
 
   get backgroundImageKey() {

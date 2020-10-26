@@ -2,7 +2,7 @@
   <component
     :is="componentType"
     v-if="src"
-    :key="src"
+    :key="`${src}-${uuid}`"
     v-lazy:background-image="src"
     v-bind="componentArgs"
     class="lazy-image"
@@ -24,6 +24,10 @@ export default class LazyImage extends Vue {
   @Prop({ default: null }) href!: string
 
   @Prop({ to: null }) to!: Object
+
+  get uuid() {
+    return this._uid
+  }
 
   get componentType() {
     if (this.to) {
