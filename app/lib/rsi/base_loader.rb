@@ -11,7 +11,13 @@ module Rsi
     private def fetch_remote(url)
       response = Typhoeus.get(url)
 
-      AdminMailer.notify_block.deliver_later if response.code == 403
+      case response.code
+      when 403
+        RsiRequestLog.find_or_create_by(url: url)
+      when 200
+        log_entry = RsiRequestLog.find_by(url: url, resolved: false)
+        log_entry.update(resolved: true) if log_entry.present?
+      end
 
       response
     end

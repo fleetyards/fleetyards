@@ -22,6 +22,10 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def notify_block
-    AdminMailer.notify_block
+    AdminMailer.notify_block('https://foo.bar')
+  end
+
+  def notify_unblock
+    AdminMailer.notify_unblock('https://foo.bar')
   end
 end

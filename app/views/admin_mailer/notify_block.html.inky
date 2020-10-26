@@ -2,5 +2,5 @@
   <%= I18n.t("mailer.admin.notify_block.headline") %>
 </h4>
 <p>
-  <%= I18n.t("mailer.admin.notify_block.text") %>
+  <%= I18n.t("mailer.admin.notify_block.text", url: @url) %>
 </p>

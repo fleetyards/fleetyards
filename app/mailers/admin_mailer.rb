@@ -21,7 +21,18 @@ class AdminMailer < ApplicationMailer
     )
   end
 
-  def notify_block
+  def notify_block(url)
+    @url = url
+
+    mail(
+      to: Rails.application.secrets[:mailer_admin_mail],
+      subject: I18n.t(:"mailer.admin.notify_block.subject")
+    )
+  end
+
+  def notify_unblock(url)
+    @url = url
+
     mail(
       to: Rails.application.secrets[:mailer_admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")
