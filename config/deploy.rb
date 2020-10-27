@@ -6,7 +6,7 @@ set :application, 'fleetyards'
 set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
 set :keep_releases, 10
-set :keep_assets, 20
+set :keep_assets, 10
 
 set :conditionally_migrate, true
 
