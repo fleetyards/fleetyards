@@ -83,7 +83,6 @@
   }
 
   .pswp__button--copy {
-    color: white;
     background: transparent !important;
     background-image: none !important;
   }
@@ -94,6 +93,7 @@
 }
 
 .pswp__button--copy {
+  color: white;
   background: transparent;
   background-image: none;
 }
