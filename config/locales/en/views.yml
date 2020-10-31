@@ -1,6 +1,0 @@
----
-en:
-  views:
-    pagination:
-      next: "&rsaquo;"
-      previous: "&lsaquo;"

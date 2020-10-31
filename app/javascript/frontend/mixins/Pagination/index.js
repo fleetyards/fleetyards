@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       totalPages: null,
-      currentPage: null,
+      currentPage: 1,
     }
   },
   methods: {
@@ -16,7 +16,7 @@ export default {
         this.currentPage = data.currentPage
         this.totalPages = data.totalPages
       } else {
-        this.currentPage = null
+        this.currentPage = 1
         this.totalPages = null
       }
     },

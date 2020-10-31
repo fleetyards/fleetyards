@@ -77,7 +77,9 @@
   }
 
   .roadmap-item {
-    display: flex;
+    .panel-inner {
+      display: flex;
+    }
 
     .item-body {
       position: relative;
@@ -126,6 +128,16 @@
       position: relative;
       z-index: 20;
       margin-bottom: 10px;
+    }
+
+    &.compact {
+      h3 small span {
+        display: none;
+      }
+    }
+
+    &.inactive {
+      opacity: .5;
     }
   }
 }

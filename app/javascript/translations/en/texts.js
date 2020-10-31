@@ -96,4 +96,8 @@ export default {
     blocked:
       'You have been blocked from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
   },
+  roadmap: {
+    inactive:
+      'This Item was removed from the Roadmap. This is its last location',
+  },
 }

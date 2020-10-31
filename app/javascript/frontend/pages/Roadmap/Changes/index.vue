@@ -22,6 +22,13 @@
       </div>
       <div class="col-12 col-lg-6">
         <div class="page-actions page-actions-right">
+          <Btn
+            :active="!compact"
+            :aria-label="toggleCompactTooltip"
+            @click.native="toggleCompact"
+          >
+            {{ toggleCompactTooltip }}
+          </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>
@@ -64,8 +71,9 @@
     </div>
   </section>
 </template>
-
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/core/components/Btn'
 import Loader from 'frontend/core/components/Loader'
@@ -73,9 +81,7 @@ import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
 import EmptyBox from 'frontend/core/components/EmptyBox'
 
-export default {
-  name: 'RoadmapChanges',
-
+@Component<RoadmapChanges>({
   components: {
     Btn,
     Loader,
@@ -85,94 +91,105 @@ export default {
   },
 
   mixins: [MetaInfo],
+})
+export default class RoadmapChanges extends Vue {
+  loading: boolean = true
 
-  data() {
-    return {
-      loading: true,
-      roadmapChanges: [],
-      options: [],
-      roadmapChannel: null,
-      selectedWeek: 0,
+  compact: boolean = false
+
+  roadmapChanges = []
+
+  options = []
+
+  roadmapChannel = null
+
+  selectedWeek = 0
+
+  get toggleCompactTooltip() {
+    if (this.compact) {
+      return this.$t('actions.showDetails')
     }
-  },
 
-  computed: {
-    emptyBoxVisible() {
-      return !this.loading && this.roadmapChanges.length === 0
-    },
+    return this.$t('actions.hideDetails')
+  }
 
-    query() {
-      if (!this.options.length) {
-        return null
-      }
+  get emptyBoxVisible() {
+    return !this.loading && this.roadmapChanges.length === 0
+  }
 
-      return this.options[this.selectedWeek].query
-    },
+  get query() {
+    if (!this.options.length) {
+      return null
+    }
 
-    groupedByRelease() {
-      return this.roadmapChanges.reduce((rv, x) => {
-        const value = JSON.parse(JSON.stringify(rv))
+    return this.options[this.selectedWeek].query
+  }
 
-        value[x.release] = rv[x.release] || []
-        value[x.release].push(x)
+  get groupedByRelease() {
+    return this.roadmapChanges.reduce((rv, x) => {
+      const value = JSON.parse(JSON.stringify(rv))
 
-        return value
-      }, {})
-    },
-  },
+      value[x.release] = rv[x.release] || []
+      value[x.release].push(x)
+
+      return value
+    }, {})
+  }
 
   async mounted() {
     await this.fetchOptions()
     this.fetch()
     this.setupUpdates()
-  },
+  }
 
   beforeDestroy() {
     if (this.roadmapChannel) {
       this.roadmapChannel.unsubscribe()
     }
-  },
+  }
 
-  methods: {
-    setupUpdates() {
-      if (this.roadmapChannel) {
-        this.roadmapChannel.unsubscribe()
-      }
+  setupUpdates() {
+    if (this.roadmapChannel) {
+      this.roadmapChannel.unsubscribe()
+    }
 
-      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'RoadmapChannel',
-        },
-        {
-          received: this.fetch,
-        },
-      )
-    },
+    this.roadmapChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'RoadmapChannel',
+      },
+      {
+        received: this.fetch,
+      },
+    )
+  }
 
-    async fetchOptions() {
-      const response = await this.$api.get('roadmap/weeks')
+  toggleCompact() {
+    this.compact = !this.compact
+  }
 
-      if (!response.error) {
-        this.options = response.data
-      }
-    },
+  async fetchOptions() {
+    const response = await this.$api.get('roadmap/weeks')
 
-    async fetch() {
-      if (!this.query) {
-        return
-      }
+    if (!response.error) {
+      this.options = response.data
+    }
+  }
 
-      this.loading = true
-      const response = await this.$api.get('roadmap?changes=1', {
-        q: this.query,
-      })
+  async fetch() {
+    if (!this.query) {
+      return
+    }
 
-      this.loading = false
+    this.loading = true
+    const response = await this.$api.get('roadmap?changes=1', {
+      q: this.query,
+    })
 
-      if (!response.error) {
-        this.roadmapChanges = response.data.filter(item => item.lastVersion)
-      }
-    },
-  },
+    this.loading = false
+
+    if (!response.error) {
+      this.roadmapChanges = response.data.filter(item => item.lastVersion)
+    }
+  }
 }
 </script>

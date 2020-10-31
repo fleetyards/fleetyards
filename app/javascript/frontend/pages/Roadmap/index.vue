@@ -11,6 +11,13 @@
     <div class="row">
       <div class="col-12">
         <div class="page-actions page-actions-right">
+          <Btn
+            :active="!compact"
+            :aria-label="toggleCompactTooltip"
+            @click.native="toggleCompact"
+          >
+            {{ toggleCompactTooltip }}
+          </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>
@@ -74,7 +81,7 @@
                   :key="item.id"
                   class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
                 >
-                  <RoadmapItem :item="item" slim />
+                  <RoadmapItem :item="item" :compact="compact" />
                 </div>
               </div>
             </BCollapse>
@@ -87,17 +94,18 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import { BCollapse, BProgress, BProgressBar } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
 import Btn from 'frontend/core/components/Btn'
 import EmptyBox from 'frontend/core/components/EmptyBox'
+import { head } from 'frontend/utils/Meta'
 
-export default {
-  name: 'RoadmapReleases',
-
+@Component<RoadmapReleases>({
   components: {
     BProgress,
     BProgressBar,
@@ -107,161 +115,182 @@ export default {
     RoadmapItem,
     Btn,
   },
-
   mixins: [MetaInfo],
+})
+export default class RoadmapReleases extends Vue {
+  loading: boolean = true
 
-  data() {
-    return {
-      loading: true,
-      onlyReleased: true,
-      roadmapItems: [],
-      visible: [],
-      roadmapChannel: null,
+  onlyReleased: boolean = true
+
+  compact: boolean = true
+
+  roadmapItems: any[] = []
+
+  visible: string[] = []
+
+  roadmapChannel = null
+
+  get releasedToggleLabel() {
+    if (this.onlyReleased) {
+      return this.$t('actions.showReleased')
     }
-  },
 
-  computed: {
-    releasedToggleLabel() {
-      if (this.onlyReleased) {
-        return this.$t('actions.showReleased')
-      }
+    return this.$t('actions.hideReleased')
+  }
 
-      return this.$t('actions.hideReleased')
-    },
+  get toggleCompactTooltip() {
+    if (this.compact) {
+      return this.$t('actions.showDetails')
+    }
 
-    isSubRoute() {
-      return this.$route.name !== 'roadmap'
-    },
+    return this.$t('actions.hideDetails')
+  }
 
-    emptyBoxVisible() {
-      return !this.loading && this.roadmapItems.length === 0
-    },
+  get isSubRoute() {
+    return this.$route.name !== 'roadmap'
+  }
 
-    filteredItems() {
-      if (this.onlyReleased) {
-        return this.roadmapItems.filter(item => !item.released)
-      }
+  get emptyBoxVisible() {
+    return !this.loading && this.roadmapItems.length === 0
+  }
 
-      return this.roadmapItems
-    },
+  get filteredItems() {
+    if (this.onlyReleased) {
+      return this.roadmapItems.filter(item => !item.released)
+    }
 
-    groupedByRelease() {
-      return this.filteredItems.reduce((rv, x) => {
-        const value = JSON.parse(JSON.stringify(rv))
+    return this.roadmapItems
+  }
 
-        value[x.release] = rv[x.release] || []
-        value[x.release].push(x)
+  get groupedByRelease() {
+    return this.filteredItems.reduce((rv, x) => {
+      const value = JSON.parse(JSON.stringify(rv))
 
-        return value
-      }, {})
-    },
+      value[x.release] = rv[x.release] || []
+      value[x.release].push(x)
 
-    otherModels() {
-      return this.models
-    },
+      return value
+    }, {})
+  }
 
-    modelsOnRoadmap() {
-      return this.roadmapItems
-        .filter(item => item.model)
-        .map(item => item.model.id)
-        .filter(item => item)
-    },
-  },
+  get otherModels() {
+    return this.models
+  }
+
+  get modelsOnRoadmap() {
+    return this.roadmapItems
+      .filter(item => item.model)
+      .map(item => item.model.id)
+      .filter(item => item)
+  }
 
   mounted() {
     this.fetch()
     this.setupUpdates()
-  },
+  }
+
+  @Watch('onlyReleased')
+  onOnlyReleasedChange() {
+    this.fetch()
+  }
 
   beforeDestroy() {
     if (this.roadmapChannel) {
       this.roadmapChannel.unsubscribe()
     }
-  },
+  }
 
-  methods: {
-    tasks(items) {
-      return items
-        .map(item => Math.max(0, item.tasks))
-        .reduce((ac, count) => ac + count, 0)
-    },
+  head() {
+    console.log('foo')
+    head(this.$route)
+  }
 
-    completed(items) {
-      return items
-        .map(item => Math.max(0, item.completed))
-        .reduce((ac, count) => ac + count, 0)
-    },
+  tasks(items) {
+    return items
+      .map(item => Math.max(0, item.tasks))
+      .reduce((ac, count) => ac + count, 0)
+  }
 
-    progressLabel(items) {
-      return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', {
-        count: this.tasks(items),
-      })}`
-    },
+  completed(items) {
+    return items
+      .map(item => Math.max(0, item.completed))
+      .reduce((ac, count) => ac + count, 0)
+  }
 
-    completedPercent(items) {
-      if (!this.tasks(items)) {
-        return '?'
+  progressLabel(items) {
+    return `${this.completed(items)} ${this.$t('labels.roadmap.tasks', {
+      count: this.tasks(items),
+    })}`
+  }
+
+  completedPercent(items) {
+    if (!this.tasks(items)) {
+      return '?'
+    }
+
+    return Math.round((100 * this.completed(items)) / this.tasks(items))
+  }
+
+  setupUpdates() {
+    if (this.roadmapChannel) {
+      this.roadmapChannel.unsubscribe()
+    }
+
+    this.roadmapChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'RoadmapChannel',
+      },
+      {
+        received: this.fetch,
+      },
+    )
+  }
+
+  toggleReleased() {
+    this.onlyReleased = !this.onlyReleased
+  }
+
+  toggleCompact() {
+    this.compact = !this.compact
+  }
+
+  toggle(release) {
+    if (this.visible.includes(release)) {
+      const index = this.visible.indexOf(release)
+      this.visible.splice(index, 1)
+
+      return null
+    }
+
+    return this.visible.push(release)
+  }
+
+  openReleased() {
+    Object.keys(this.groupedByRelease).forEach(release => {
+      const items = this.groupedByRelease[release]
+
+      if (items.length && !items[0].released) {
+        this.visible.push(release)
       }
+    })
+  }
 
-      return Math.round((100 * this.completed(items)) / this.tasks(items))
-    },
+  async fetch() {
+    this.loading = true
 
-    setupUpdates() {
-      if (this.roadmapChannel) {
-        this.roadmapChannel.unsubscribe()
-      }
+    const response = await this.$api.get('roadmap?overview=1', {
+      q: {
+        rsiReleaseIdGteq: this.onlyReleased ? 39 : 1,
+        // activeEq: true,
+      },
+    })
 
-      this.roadmapChannel = this.$cable.consumer.subscriptions.create(
-        {
-          channel: 'RoadmapChannel',
-        },
-        {
-          received: this.fetch,
-        },
-      )
-    },
+    this.loading = false
 
-    toggleReleased() {
-      this.onlyReleased = !this.onlyReleased
-    },
-
-    toggle(release) {
-      if (this.visible.includes(release)) {
-        const index = this.visible.indexOf(release)
-        this.visible.splice(index, 1)
-
-        return null
-      }
-
-      return this.visible.push(release)
-    },
-
-    openReleased() {
-      Object.keys(this.groupedByRelease).forEach(release => {
-        const items = this.groupedByRelease[release]
-
-        if (items.length && !items[0].released) {
-          this.visible.push(release)
-        }
-      })
-    },
-
-    async fetch() {
-      this.loading = true
-
-      const response = await this.$api.get('roadmap?overview=1', {
-        q: {
-          activeEq: true,
-        },
-      })
-
-      this.loading = false
-
-      if (!response.error) {
-        this.roadmapItems = response.data
-        this.openReleased()
-      }
-    },
-  },
+    if (!response.error) {
+      this.roadmapItems = response.data
+      this.openReleased()
+    }
+  }
 }
 </script>
