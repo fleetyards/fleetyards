@@ -173,7 +173,7 @@ class Model < ApplicationRecord
   end
 
   def rental_at
-    shop_commodities.where.not(rent_price_1_day: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(rental_price_1_day: nil).uniq { |item| item.shop.slug }
   end
 
   def dock_counts

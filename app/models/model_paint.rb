@@ -6,6 +6,7 @@ class ModelPaint < ApplicationRecord
   belongs_to :model, optional: true, touch: true, counter_cache: true
 
   has_many :vehicles, dependent: :nullify
+  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   mount_uploader :store_image, StoreImageUploader
   mount_uploader :rsi_store_image, StoreImageUploader
@@ -19,6 +20,10 @@ class ModelPaint < ApplicationRecord
 
   def self.active
     where(active: true)
+  end
+
+  def name_with_model
+    "#{model.name} - #{name}"
   end
 
   private def update_slugs

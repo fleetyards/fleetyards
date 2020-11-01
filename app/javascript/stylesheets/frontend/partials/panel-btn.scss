@@ -42,6 +42,10 @@
     text-overflow: ellipsis;
     border-radius: $panel-content-border-radius;
     transition: all $transition-base-speed ease;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &.panel-btn-transparent {
@@ -73,7 +77,7 @@
   }
 
   &.panel-btn-small {
-    min-width: 40px;
+    min-width: 45px;
 
     .panel-btn-inner {
       padding: 5px 10px;
@@ -137,6 +141,14 @@
     .panel-btn-inner {
       color: invert($text-color);
       background-color: $panel-inner-border;
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    .panel-btn-inner {
+      outline: none;
     }
   }
 

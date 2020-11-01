@@ -35,11 +35,11 @@ en:
         description: Description
         buy_price: Buy Price
         sell_price: Sell Price
-        rent_price: Rent Prices
-        rent_price_1_day: 1 Day
-        rent_price_3_days: 3 Days
-        rent_price_7_days: 7 Days
-        rent_price_30_days: 30 Days
+        rental_price: Rental Prices
+        rental_price_1_day: 1 Day
+        rental_price_3_days: 3 Days
+        rental_price_7_days: 7 Days
+        rental_price_30_days: 30 Days
       component:
         grade: Grade
         size: Size

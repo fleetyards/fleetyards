@@ -58,7 +58,9 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
   resources :stations, except: [:show] do
     get 'images', on: :member
   end
-  resources :shops, except: [:show]
+  resources :shops, except: [:show] do
+    resources :shop_commodities, path: 'commodities', only: %i[index]
+  end
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 

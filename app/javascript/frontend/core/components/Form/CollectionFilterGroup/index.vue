@@ -1,18 +1,19 @@
 <template>
-  <div ref="filterGroup" class="filter-list">
+  <div ref="filterGroup" class="filter-group" :class="cssClasses">
     <transition name="fade">
       <label v-show="labelVisible" v-if="innerLabel && !noLabel" :for="id">
         {{ innerLabel }}
       </label>
     </transition>
     <div
+      v-tooltip.right="error"
       :class="{
         active: visible,
         disabled,
         selected: selectedOptions.length > 0,
         hasLabel: labelVisible,
       }"
-      class="filter-list-title"
+      class="filter-group-title"
       @click="toggle"
     >
       {{ prompt }}
@@ -23,7 +24,7 @@
       v-if="multiple"
       :id="`${groupID}-${selectedId}`"
       :visible="selectedOptions.length > 0 && !visible"
-      class="filter-list-items"
+      class="filter-group-items"
     >
       <a
         v-for="(option, index) in selectedOptions"
@@ -32,10 +33,10 @@
           active: selected(option[valueAttr]),
           bigIcon,
         }"
-        class="filter-list-item fade-list-item"
+        class="filter-group-item fade-list-item"
         @click="select(option[valueAttr])"
       >
-        <span v-if="option[iconAttr]" class="filter-list-item-icon">
+        <span v-if="option[iconAttr]" class="filter-group-item-icon">
           <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
         </span>
         <span v-html="option[labelAttr]" />
@@ -47,7 +48,7 @@
     <BCollapse
       :id="`${groupID}-${id}`"
       :visible="visible"
-      class="filter-list-items-wrapper"
+      class="filter-group-items-wrapper"
     >
       <FormInput
         v-if="searchable"
@@ -56,13 +57,13 @@
         v-model="search"
         :placeholder="searchLabel || $t('actions.find')"
         :label="$t('actions.find')"
-        class="filter-list-search"
+        class="filter-group-search"
         variant="clean"
-        no-label
-        clearable
+        :no-label="true"
+        :clearable="true"
         @input="onSearch"
       />
-      <div class="filter-list-items">
+      <div class="filter-group-items">
         <a
           v-for="(option, index) in filteredOptions"
           :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
@@ -70,10 +71,10 @@
             active: selected(option[valueAttr]),
             bigIcon,
           }"
-          class="filter-list-item fade-list-item"
+          class="filter-group-item fade-list-item"
           @click="select(returnObject ? option : option[valueAttr])"
         >
-          <span v-if="option[iconAttr]" class="filter-list-item-icon">
+          <span v-if="option[iconAttr]" class="filter-group-item-icon">
             <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
           </span>
           <span v-html="option[labelAttr]" />
@@ -164,6 +165,8 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: true }) nullable!: boolean
 
+  @Prop({ default: null }) error!: string
+
   @Prop({ default: false }) paginated!: boolean
 
   @Prop({ default: false }) hideLabelOnEmpty!: boolean
@@ -242,6 +245,12 @@ export default class FilterGroup extends Vue {
     return this.availableOptions
   }
 
+  get cssClasses() {
+    return {
+      'has-error has-feedback': this.error,
+    }
+  }
+
   queryParams(args) {
     const query = {
       filters: {},
@@ -249,7 +258,7 @@ export default class FilterGroup extends Vue {
     if (args.search && this.searchable) {
       query.filters.nameCont = args.search
     } else if (args.missingValue && this.paginated) {
-      query.filters.nameIn = args.missingValue
+      query.filters[`${this.valueAttr}Eq`] = args.missingValue
     } else if (args.page && this.paginated) {
       query.page = args.page
     }
@@ -322,11 +331,11 @@ export default class FilterGroup extends Vue {
 
     this.loading = true
 
-    const options = await this.collection[this.collectionMethod](
-      this.queryParams({
+    const options = await this.collection[this.collectionMethod]({
+      ...this.queryParams({
         missingValue: this.value,
       }),
-    )
+    })
 
     this.loading = false
     if (options.length) {

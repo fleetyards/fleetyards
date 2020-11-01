@@ -14,15 +14,15 @@
               vid="login"
               rules="required"
               :name="$t('labels.login')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="login"
                 v-model="form.login"
                 :error="errors[0]"
-                autofocus
-                hide-label-on-empty
-                clearable
+                :autofocus="true"
+                :hide-label-on-empty="true"
+                :clearable="true"
               />
             </ValidationProvider>
 
@@ -31,15 +31,15 @@
               vid="password"
               rules="required"
               :name="$t('labels.password')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="password"
                 v-model="form.password"
                 :error="errors[0]"
                 type="password"
-                hide-label-on-empty
-                clearable
+                :hide-label-on-empty="true"
+                :clearable="true"
               />
             </ValidationProvider>
             <Checkbox

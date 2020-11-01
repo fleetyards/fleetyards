@@ -54,6 +54,16 @@ class ShopCommodity < ApplicationRecord
              inverse_of: :shop_commodities,
              required: false
 
+  belongs_to :model_paint,
+             -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelPaint' }) },
+             foreign_key: 'commodity_item_id',
+             inverse_of: :shop_commodities,
+             required: false
+
+  has_many :commodity_sell_prices, dependent: :destroy
+  has_many :commodity_buy_prices, dependent: :destroy
+  has_many :commodity_rental_prices, dependent: :destroy
+
   has_many :trade_route_origins,
            class_name: 'TradeRoute',
            dependent: :destroy,
@@ -95,10 +105,147 @@ class ShopCommodity < ApplicationRecord
     self.commodity_item = GlobalID::Locator.locate(commodity_item_selected)
   end
 
+  def update_prices
+    update_buy_prices
+    update_sell_prices
+    update_rental_prices
+  end
+
+  def update_buy_prices
+    buy_prices = commodity_buy_prices
+      .where(created_at: (Time.zone.today - 1.month)..)
+      .order(created_at: :desc).pluck(:price)
+
+    if buy_prices.present?
+      update(
+        buy_price: buy_prices.first,
+        average_buy_price: buy_prices.sum / buy_prices.size
+      )
+    else
+      update(
+        buy_price: nil,
+        average_buy_price: nil
+      )
+    end
+  end
+
+  def update_sell_prices
+    sell_prices = commodity_sell_prices
+      .where(created_at: (Time.zone.today - 1.month)..)
+      .order(created_at: :desc).pluck(:price)
+
+    if sell_prices.present?
+      update(
+        sell_price: sell_prices.first,
+        average_sell_price: sell_prices.sum / sell_prices.size
+      )
+    else
+      update(
+        sell_price: nil,
+        average_sell_price: nil
+      )
+    end
+  end
+
+  def update_rental_prices
+    update_1_day_prices
+    update_3_days_prices
+    update_7_days_prices
+    update_30_days_prices
+  end
+
+  def update_1_day_prices
+    rental_prices_1_day = commodity_rental_prices
+      .where(
+        created_at: (Time.zone.today - 1.month)..,
+        time_range: '1-day'
+      )
+      .order(created_at: :desc)
+      .pluck(:price)
+
+    if rental_prices_1_day.present?
+      update(
+        rental_price_1_day: rental_prices_1_day.first,
+        average_rental_price_1_day: (rental_prices_1_day.sum / rental_prices_1_day.size)
+      )
+    else
+      update(
+        rental_price_1_day: nil,
+        average_rental_price_1_day: nil
+      )
+    end
+  end
+
+  def update_3_days_prices
+    rental_prices_3_days = commodity_rental_prices
+      .where(
+        created_at: (Time.zone.today - 1.month)..,
+        time_range: '3-days'
+      )
+      .order(created_at: :desc)
+      .pluck(:price)
+
+    if rental_prices_3_days.present?
+      update(
+        rental_price_3_days: rental_prices_3_days.first,
+        average_rental_price_3_days: (rental_prices_3_days.sum / rental_prices_3_days.size)
+      )
+    else
+      update(
+        rental_price_3_days: nil,
+        average_rental_price_3_days: nil
+      )
+    end
+  end
+
+  def update_7_days_prices
+    rental_prices_7_days = commodity_rental_prices
+      .where(
+        created_at: (Time.zone.today - 1.month)..,
+        time_range: '7-days'
+      )
+      .order(created_at: :desc)
+      .pluck(:price)
+
+    if rental_prices_7_days.present?
+      update(
+        rental_price_7_days: rental_prices_7_days.first,
+        average_rental_price_7_days: (rental_prices_7_days.sum / rental_prices_7_days.size)
+      )
+    else
+      update(
+        rental_price_7_days: nil,
+        average_rental_price_7_days: nil
+      )
+    end
+  end
+
+  def update_30_days_prices
+    rental_prices_30_days = commodity_rental_prices
+      .where(
+        created_at: (Time.zone.today - 1.month)..,
+        time_range: '30-days'
+      )
+      .order(created_at: :desc)
+      .pluck(:price)
+
+    if rental_prices_30_days.present?
+      update(
+        rental_price_30_days: rental_prices_30_days.first,
+        average_rental_price_30_days: (rental_prices_30_days.sum / rental_prices_30_days.size)
+      )
+    else
+      update(
+        rental_price_30_days: nil,
+        average_rental_price_30_days: nil
+      )
+    end
+  end
+
   def update_model_price
     return if model.blank?
 
-    model.update(price: ShopCommodity.where(commodity_item_id: model.id, commodity_item_type: 'Model').order(sell_price: :desc).first&.sell_price)
+    model.update(price: CommoditySellPrice.where(shop_commodity_id: model.shop_commodity_ids).order(price: :asc).first&.price)
   end
 
   def category

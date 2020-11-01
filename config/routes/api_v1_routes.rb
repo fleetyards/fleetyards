@@ -121,7 +121,7 @@ v1_api_routes = lambda do
       get :images
     end
     resources :shops, param: :slug, only: %i[show] do
-      resources :shop_commodities, path: 'shop-commodities', only: %i[index]
+      resources :shop_commodities, path: 'commodities', only: %i[index]
     end
   end
 

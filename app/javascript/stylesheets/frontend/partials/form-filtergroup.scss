@@ -1,9 +1,9 @@
-.filter-list {
+.filter-group {
   position: relative;
   margin-bottom: 15px;
 
-  .filter-list-title,
-  .filter-list-item {
+  .filter-group-title,
+  .filter-group-item {
     i,
     svg {
       position: absolute;
@@ -13,15 +13,22 @@
     }
   }
 
-  .filter-list-search {
+  .filter-group-search {
     border: 1px solid $input-border;
     border-top: none;
     border-bottom: none;
   }
 
-  .filter-list-title {
+  .filter-group-title {
     position: relative;
-    padding: 10px 40px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 200px;
+    height: 43px;
+    padding-right: 40px;
+    padding-left: 12px;
     font-weight: bold;
     background: rgba($input-bg, .9);
     border: 1px solid $input-border;
@@ -61,7 +68,7 @@
     }
   }
 
-  .filter-list-items {
+  .filter-group-items {
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -72,7 +79,7 @@
     border-bottom-left-radius: $border-radius-base;
   }
 
-  .filter-list-items-wrapper {
+  .filter-group-items-wrapper {
     position: absolute;
     right: 0;
     left: 0;
@@ -80,7 +87,7 @@
     box-shadow: 0 1px 3px rgba(black, .9);
   }
 
-  .filter-list-item {
+  .filter-group-item {
     position: relative;
     display: flex;
     align-items: center;
@@ -91,7 +98,7 @@
     border-left: 4px solid transparent;
     cursor: pointer;
 
-    .filter-list-item-icon {
+    .filter-group-item-icon {
       width: 30px;
       height: 21px;
       margin-right: 10px;
@@ -159,14 +166,14 @@
     }
 
     &.bigIcon {
-      .filter-list-item-icon {
+      .filter-group-item-icon {
         width: 60px;
       }
     }
   }
 }
 
-.has-error .filter-list-title {
+.has-error .filter-group-title {
   border-color: darken($danger, 15%);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 }

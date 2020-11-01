@@ -44,6 +44,8 @@ en:
         edit: Shop %{shop}
         index: Shops
         new: New Shop
+      shop_commodities:
+        index: Shop Commodities for %{shop}
       celestial_object:
         edit: Celestial Object %{celestial_object}
         index: Celestial Objects

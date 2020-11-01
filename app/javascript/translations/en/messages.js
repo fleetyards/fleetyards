@@ -153,6 +153,10 @@ export default {
       destroy:
         "Are you sure you want to destroy your Account? This Action can't be reverted.",
     },
+    shopCommodity: {
+      destroy:
+        "Are you sure you want to destroy this Commodity? This Action can't be reverted.",
+    },
     fleet: {
       leave:
         "Are you sure you want to leave the Fleet? This Action can't be reverted.",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_140352) do
+ActiveRecord::Schema.define(version: 2020_10_30_193800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -120,6 +120,16 @@ ActiveRecord::Schema.define(version: 2020_10_26_140352) do
     t.string "store_image"
     t.integer "commodity_type"
     t.index ["name"], name: "index_commodities_on_name", unique: true
+  end
+
+  create_table "commodity_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.uuid "shop_commodity_id"
+    t.decimal "price", precision: 15, scale: 2
+    t.integer "time_range"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["shop_commodity_id"], name: "index_commodity_prices_on_shop_commodity_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -496,10 +506,16 @@ ActiveRecord::Schema.define(version: 2020_10_26_140352) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "price_per_unit", default: false
-    t.decimal "rent_price_1_day", precision: 15, scale: 2
-    t.decimal "rent_price_7_days", precision: 15, scale: 2
-    t.decimal "rent_price_30_days", precision: 15, scale: 2
-    t.decimal "rent_price_3_days", precision: 15, scale: 2
+    t.decimal "rental_price_1_day", precision: 15, scale: 2
+    t.decimal "rental_price_7_days", precision: 15, scale: 2
+    t.decimal "rental_price_30_days", precision: 15, scale: 2
+    t.decimal "rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_buy_price", precision: 15, scale: 2
+    t.decimal "average_sell_price", precision: 15, scale: 2
+    t.decimal "average_rental_price_1_day", precision: 15, scale: 2
+    t.decimal "average_rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_7_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_30_days", precision: 15, scale: 2
     t.index ["commodity_item_id"], name: "index_shop_commodities_on_commodity_item_id"
     t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
     t.index ["shop_id"], name: "index_shop_commodities_on_shop_id"
@@ -597,6 +613,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_140352) do
     t.decimal "profit_per_unit_percent", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_profit_per_unit", precision: 15, scale: 2
+    t.decimal "average_profit_per_unit_percent", precision: 15, scale: 2
     t.index ["destination_celestial_object_id"], name: "index_trade_routes_on_destination_celestial_object_id"
     t.index ["destination_id"], name: "index_trade_routes_on_destination_id"
     t.index ["destination_starsystem_id"], name: "index_trade_routes_on_destination_starsystem_id"

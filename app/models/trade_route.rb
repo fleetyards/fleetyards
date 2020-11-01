@@ -34,6 +34,8 @@ class TradeRoute < ApplicationRecord
   def calculate_profit
     self.profit_per_unit = destination.buy_price - origin.sell_price
     self.profit_per_unit_percent = ((100 * (destination.buy_price - origin.sell_price)) / origin.sell_price).round(2)
+    self.average_profit_per_unit = destination.average_buy_price - origin.average_sell_price
+    self.average_profit_per_unit_percent = ((100 * (destination.average_buy_price - origin.average_sell_price)) / origin.average_sell_price).round(2)
   end
 
   def set_location

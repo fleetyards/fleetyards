@@ -20,6 +20,7 @@
       :data-test="`input-${id}`"
       :aria-label="innerLabel"
       :autofocus="autofocus"
+      :disabled="disabled ? 'disabled' : null"
       :name="id"
       @input="update"
       @blur="update"
@@ -35,168 +36,127 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 
-    icon: {
-      type: String,
-      default: null,
-    },
+@Component<FormInput>({})
+export default class FormInput extends Vue {
+  @Prop({ required: true }) id!: string
 
-    value: {
-      type: [String, Number],
-      default: null,
-    },
+  @Prop({ default: null }) icon!: string
 
-    type: {
-      type: String,
-      default: 'text',
-      validator(value) {
-        return ['text', 'number', 'password', 'email', 'url', 'color'].includes(
-          value,
-        )
-      },
-    },
+  @Prop({ default: null }) value!: string | number
 
-    error: {
-      type: String,
-      default: null,
+  @Prop({
+    default: 'text',
+    validator(value) {
+      return ['text', 'number', 'password', 'email', 'url', 'color'].includes(
+        value,
+      )
     },
+  })
+  type!: string
 
-    translationKey: {
-      type: String,
-      default: null,
+  @Prop({ default: null }) error!: string
+
+  @Prop({ default: null }) translationKey!: string
+
+  @Prop({ default: false }) autofocus!: boolean
+
+  @Prop({ default: false }) hideLabelOnEmpty!: boolean
+
+  @Prop({ default: null }) label!: string
+
+  @Prop({ default: false }) noLabel!: boolean
+
+  @Prop({ default: false }) noPlaceholder!: boolean
+
+  @Prop({ default: null }) placeholder!: string
+
+  @Prop({ default: false }) clearable!: boolean
+
+  @Prop({ default: false }) disabled!: boolean
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'clean'].indexOf(value) !== -1
     },
+  })
+  variant!: string
 
-    autofocus: {
-      type: Boolean,
-      default: false,
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'large'].indexOf(value) !== -1
     },
+  })
+  size!: string
 
-    hideLabelOnEmpty: {
-      type: Boolean,
-      default: false,
-    },
+  inputValue: any = null
 
-    label: {
-      type: String,
-      default: null,
-    },
+  get innerId() {
+    return `${this.id}-${this._uid}`
+  }
 
-    noLabel: {
-      type: Boolean,
-      default: false,
-    },
-
-    noPlaceholder: {
-      type: Boolean,
-      default: false,
-    },
-
-    placeholder: {
-      type: String,
-      default: null,
-    },
-
-    clearable: {
-      type: Boolean,
-      default: false,
-    },
-
-    variant: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'clean'].indexOf(value) !== -1
-      },
-    },
-
-    size: {
-      type: String,
-      default: 'default',
-      validator(value) {
-        return ['default', 'large'].indexOf(value) !== -1
-      },
-    },
-  },
-
-  data() {
-    return {
-      inputValue: null,
+  get innerLabel() {
+    if (this.label) {
+      return this.label
     }
-  },
 
-  computed: {
-    innerId() {
-      return `${this.id}-${this._uid}`
-    },
+    if (this.translationKey) {
+      return this.$t(`labels.${this.translationKey}`)
+    }
 
-    innerLabel() {
-      if (this.label) {
-        return this.label
-      }
+    return this.$t(`labels.${this.id}`)
+  }
 
-      if (this.translationKey) {
-        return this.$t(`labels.${this.translationKey}`)
-      }
+  get innerPlaceholder() {
+    if (this.noPlaceholder) {
+      return null
+    }
 
-      return this.$t(`labels.${this.id}`)
-    },
+    if (this.placeholder) {
+      return this.placeholder
+    }
 
-    innerPlaceholder() {
-      if (this.noPlaceholder) {
-        return null
-      }
+    if (this.translationKey) {
+      return this.$t(`placeholders.${this.translationKey}`)
+    }
 
-      if (this.placeholder) {
-        return this.placeholder
-      }
+    return this.$t(`placeholders.${this.id}`)
+  }
 
-      if (this.translationKey) {
-        return this.$t(`placeholders.${this.translationKey}`)
-      }
+  get cssClasses() {
+    return {
+      'has-error has-feedback': this.error,
+      'form-input-large': this.size === 'large',
+      'form-input-clean': this.variant === 'clean',
+      'form-input-clearable': this.clearable,
+    }
+  }
 
-      return this.$t(`placeholders.${this.id}`)
-    },
-
-    cssClasses() {
-      return {
-        'has-error has-feedback': this.error,
-        'form-input-large': this.size === 'large',
-        'form-input-clean': this.variant === 'clean',
-        'form-input-clearable': this.clearable,
-      }
-    },
-  },
-
-  watch: {
-    value() {
-      this.inputValue = this.value
-    },
-  },
+  @Watch('value')
+  onValueChange() {
+    this.inputValue = this.value
+  }
 
   mounted() {
     this.inputValue = this.value
-  },
+  }
 
-  methods: {
-    setFocus() {
-      this.$refs.input.focus()
-    },
+  setFocus() {
+    this.$refs.input.focus()
+  }
 
-    update() {
-      this.$emit('input', this.inputValue)
-    },
+  update() {
+    this.$emit('input', this.inputValue)
+  }
 
-    clear() {
-      this.$emit('input', null)
-      this.$emit('clear')
-    },
-  },
+  clear() {
+    this.$emit('input', null)
+    this.$emit('clear')
+  }
 }
 </script>

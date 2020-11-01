@@ -15,15 +15,15 @@
               vid="email"
               rules="required|email"
               :name="$t('labels.email')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="email"
                 v-model="form.email"
                 :error="errors[0]"
                 type="email"
-                hide-label-on-empty
-                autofocus
+                :hide-label-on-empty="true"
+                :autofocus="true"
               />
             </ValidationProvider>
 

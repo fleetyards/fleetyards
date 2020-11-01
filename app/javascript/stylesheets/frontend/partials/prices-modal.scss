@@ -1,0 +1,48 @@
+.prices-modal {
+  .price-item,
+  .new-price {
+    display: flex;
+    justify-content: space-between;
+
+    .date-label,
+    .time-range-label {
+      margin-right: 20px;
+      padding: 8px 0;
+      white-space: nowrap;
+    }
+
+    .time-range-label {
+      width: 60px;
+    }
+
+    .input {
+      width: 150px;
+      margin-right: 20px;
+    }
+
+    .filter-group {
+      margin-right: 20px;
+    }
+  }
+
+  .new-price {
+    .input {
+      flex-grow: 1;
+      width: auto;
+    }
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .prices-modal {
+    .price-item,
+    .new-price {
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .input {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -37,7 +37,12 @@ class Station < ApplicationRecord
 
   belongs_to :celestial_object
 
-  enum station_type: { spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5, "mining-hub": 13, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9, "salvage-outpost": 14, aid_shelter: 10, gate: 11, drug_lab: 12 }
+  enum station_type: {
+    spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5,
+    "mining-hub": 13, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9,
+    "salvage-outpost": 14, aid_shelter: 10, gate: 11, drug_lab: 12, poi: 15, town: 16, city: 17
+  }
+
   ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
     parent.table[:station_type]
   end

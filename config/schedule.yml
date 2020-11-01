@@ -16,6 +16,9 @@ production: &production
   trade_route_calculator_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'
+  prices_worker_job:
+    cron: '0 21 */1 * *' # Daily at 21:00
+    class: 'PricesWorker'
   locations_worker_job:
     cron: '0 3 * * 0' # Weekly on Sunday 3:00
     class: 'LocationsWorker'

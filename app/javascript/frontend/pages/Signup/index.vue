@@ -20,8 +20,8 @@
                 id="username"
                 v-model="form.username"
                 :error="errors[0]"
-                autofocus
-                hide-label-on-empty
+                :hide-label-on-empty="true"
+                :autofocus="true"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -35,8 +35,8 @@
                 id="email"
                 v-model="form.email"
                 :error="errors[0]"
-                autofocus
-                hide-label-on-empty
+                :hide-label-on-empty="true"
+                :autofocus="true"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -51,8 +51,8 @@
                 v-model="form.password"
                 :error="errors[0]"
                 type="password"
-                autofocus
-                hide-label-on-empty
+                :hide-label-on-empty="true"
+                :autofocus="true"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -67,8 +67,8 @@
                 v-model="form.passwordConfirmation"
                 :error="errors[0]"
                 type="password"
-                autofocus
-                hide-label-on-empty
+                :hide-label-on-empty="true"
+                :autofocus="true"
               />
             </ValidationProvider>
 

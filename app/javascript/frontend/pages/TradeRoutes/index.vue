@@ -46,7 +46,7 @@
             :active="sortByProfit"
             size="small"
             variant="link"
-            :to="sortBy('profit_per_unit')"
+            :to="sortBy('profit_per_unit', 'desc')"
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
@@ -56,7 +56,7 @@
             :active="sortByPercent"
             size="small"
             variant="link"
-            :to="sortBy('profit_per_unit_percent')"
+            :to="sortBy('profit_per_unit_percent', 'desc')"
             :exact="true"
           >
             <i class="far fa-percent" />
@@ -66,7 +66,7 @@
             :active="sortByStation"
             size="small"
             variant="link"
-            :to="sortBy('origin_shop_station_name')"
+            :to="sortBy('origin_shop_station_name', 'asc')"
             :exact="true"
           >
             {{ $t('labels.tradeRoutes.sortByStation') }}
@@ -249,7 +249,7 @@ export default class TradeRoutes extends Vue {
     this.fetchCargoShip()
   }
 
-  sortBy(field) {
+  sortBy(field, direction) {
     return sortBy(this.$route, field)
   }
 

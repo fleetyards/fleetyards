@@ -15,3 +15,4 @@ json.store_image_small item.store_image.small.url
 json.released item.released
 json.tasks item.tasks
 json.completed item.completed
+json.active item.active

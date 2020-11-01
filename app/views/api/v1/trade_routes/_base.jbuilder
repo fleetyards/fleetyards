@@ -14,3 +14,5 @@ json.buy_price trade_route.origin.sell_price
 json.sell_price trade_route.destination.buy_price
 json.profit_per_unit trade_route.profit_per_unit
 json.profit_per_unit_percent trade_route.profit_per_unit_percent
+json.average_profit_per_unit trade_route.average_profit_per_unit
+json.average_profit_per_unit_percent trade_route.average_profit_per_unit_percent

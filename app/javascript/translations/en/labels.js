@@ -15,9 +15,32 @@ export default {
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
   'shop': {
-    rentPrice: 'rental',
+    rentalPrice: 'rental',
     sellPrice: 'sells for',
     buyPrice: 'buys for',
+  },
+  'shopCommodity': {
+    item: 'Item',
+    sellPrices: 'Sell Prices',
+    buyPrices: 'Buy Prices',
+    rentalPrices: 'Rental Prices',
+    prices: {
+      label: 'Prices',
+      rentalPrice: 'rental',
+      averageRentalPrice: 'rental (Ø)',
+      sellPrice: 'sells for',
+      averageSellPrice: 'sells for (Ø)',
+      buyPrice: 'buys for',
+      averageBuyPrice: 'buys for (Ø)',
+      rentalPrice1Day: '1 day for',
+      averageRentalPrice1Day: '1 day for (Ø)',
+      rentalPrice3Days: '3 days for',
+      averageRentalPrice3Days: '3 days for (Ø)',
+      rentalPrice7Days: '7 days for',
+      averageRentalPrice7Days: '7 days for (Ø)',
+      rentalPrice30Days: '30 days for',
+      averageRentalPrice30Days: '30 days for (Ø)',
+    },
   },
   'stats': {
     quickStats: {

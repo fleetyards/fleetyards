@@ -55,30 +55,4 @@
       %small
         = form_errors shop, :store_image
 
-  %fieldset
-    %legend
-      Commodities:
-    #commodities
-      - if shop_commodities.any?
-        = form.fields_for :shop_commodities, shop_commodities do |builder|
-          = render 'shops/shop_commodity_fields', fields: builder
-
-
-    .d-flex.justify-content-end
-      .btn-group-responsive
-        = link_to_add_fields form, :shop_commodities, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#commodities" do
-          %i.fa.fa-plus
-          = I18n.t("actions.add_commodity")
-        &nbsp
-        &nbsp
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: attachments_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_attachments")
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: utilities_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_utilities")
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: weapons_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_weapons")
-
   = render "shared/submit", path: admin_shops_path

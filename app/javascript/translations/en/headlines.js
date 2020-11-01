@@ -89,4 +89,13 @@ export default {
   vehicle: {
     bulkGroupEdit: 'Add/Remove Groups',
   },
+  modals: {
+    shopCommodity: {
+      update: 'Update Commodity %{shopCommodity}',
+      create: 'Add Commodity',
+      sellPrices: '%{shopCommodity} Sell Prices',
+      buyPrices: '%{shopCommodity} Buy Prices',
+      rentalPrices: '%{shopCommodity} Rental Prices',
+    },
+  },
 }

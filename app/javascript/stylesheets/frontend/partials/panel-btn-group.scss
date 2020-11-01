@@ -51,4 +51,8 @@
   > :last-child {
     border-right: none !important;
   }
+
+  &.panel-btn-group-inline {
+    margin-bottom: 0;
+  }
 }

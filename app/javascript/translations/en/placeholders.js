@@ -30,6 +30,9 @@ export default {
   user: {
     rsiHandle: 'RSI Handle',
   },
+  commodityPrice: {
+    price: 'Price',
+  },
   filters: {
     shops: {
       name: 'Casaba, Platinum Bay...',

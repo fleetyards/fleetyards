@@ -16,6 +16,14 @@ export const routes = [
       ),
   },
   {
+    path: '/shops/:shopId/commodities',
+    name: 'shop-commodities',
+    component: () =>
+      import(
+        /* webpackChunkName: "page.admin.shop-commodities" */ 'admin/pages/Shops/Commodities/index.vue'
+      ),
+  },
+  {
     path: '/images',
     name: 'images',
     component: () =>

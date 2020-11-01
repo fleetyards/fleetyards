@@ -92,7 +92,7 @@
                   {{ $t('labels.shop.buyPrice') }}
                 </div>
                 <div v-if="shop.rental" class="rent-price">
-                  {{ $t('labels.shop.rentPrice') }}
+                  {{ $t('labels.shop.rentalPrice') }}
                 </div>
               </div>
             </div>
@@ -368,7 +368,7 @@ export default {
     async fetchCommodities() {
       this.loading = true
       const response = await this.$api.get(
-        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/shop-commodities`,
+        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/commodities`,
         {
           q: {
             ...this.$route.query.q,
