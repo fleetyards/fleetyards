@@ -275,7 +275,6 @@ export default class RoadmapReleases extends Vue {
     const response = await this.$api.get('roadmap?overview=1', {
       q: {
         rsiReleaseIdGteq: this.onlyReleased ? 39 : 1,
-        // activeEq: true,
       },
     })
 
