@@ -103,7 +103,6 @@ import Loader from 'frontend/core/components/Loader'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
 import Btn from 'frontend/core/components/Btn'
 import EmptyBox from 'frontend/core/components/EmptyBox'
-import { head } from 'frontend/utils/Meta'
 
 @Component<RoadmapReleases>({
   components: {
@@ -198,11 +197,6 @@ export default class RoadmapReleases extends Vue {
     if (this.roadmapChannel) {
       this.roadmapChannel.unsubscribe()
     }
-  }
-
-  head() {
-    console.log('foo')
-    head(this.$route)
   }
 
   tasks(items) {

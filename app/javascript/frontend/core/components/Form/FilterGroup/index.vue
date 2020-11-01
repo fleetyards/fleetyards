@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import SmallLoader from 'frontend/core/components/SmallLoader'
 import FormInput from 'frontend/core/components/Form/FormInput'

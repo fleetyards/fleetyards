@@ -17,7 +17,7 @@
           <Btn
             :active="sortByProfit"
             size="small"
-            :to="sortBy('profit_per_unit')"
+            :to="sortBy('profit_per_unit', 'desc')"
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
@@ -26,7 +26,7 @@
           <Btn
             :active="sortByPercent"
             size="small"
-            :to="sortBy('profit_per_unit_percent')"
+            :to="sortBy('profit_per_unit_percent', 'desc')"
             :exact="true"
           >
             <i class="far fa-percent" />
@@ -35,7 +35,7 @@
           <Btn
             :active="sortByStation"
             size="small"
-            :to="sortBy('origin_shop_station_name')"
+            :to="sortBy('origin_shop_station_name', 'asc')"
             :exact="true"
           >
             {{ $t('labels.tradeRoutes.sortByStation') }}
@@ -250,7 +250,7 @@ export default class TradeRoutes extends Vue {
   }
 
   sortBy(field, direction) {
-    return sortBy(this.$route, field)
+    return sortBy(this.$route, field, direction)
   }
 
   profit(value: number): string {

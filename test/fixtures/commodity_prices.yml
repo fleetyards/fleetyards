@@ -1,9 +1,24 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+commodity_gold_daymar_price:
+  price: 10
+  type: CommodityBuyPrice
+  shop_commodity: commodity_gold_daymar
 
-one:
-  price: 9.99
-  shop_commodity: 
+commodity_gold_yela_price:
+  price: 5
+  type: CommoditySellPrice
+  shop_commodity: commodity_gold_yela
 
-two:
-  price: 9.99
-  shop_commodity: 
+commodity_titan_daymar_price:
+  price: 10
+  type: CommoditySellPrice
+  shop_commodity: commodity_titan_daymar
+
+commodity_titan_yela_price:
+  price: 20
+  type: CommodityBuyPrice
+  shop_commodity: commodity_titan_yela
+
+commodity_titan_olisar_price:
+  price: 17
+  type: CommodityBuyPrice
+  shop_commodity: commodity_titan_olisar

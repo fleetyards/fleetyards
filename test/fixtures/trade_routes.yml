@@ -10,7 +10,9 @@ gold_yela_daymar:
   destination_celestial_object: daymar
   destination_starsystem: stanton
   profit_per_unit: 5
+  average_profit_per_unit: 5
   profit_per_unit_percent: 50
+  average_profit_per_unit_percent: 50
 
 titan_daymar_yela:
   origin: commodity_titan_daymar
@@ -22,7 +24,9 @@ titan_daymar_yela:
   destination_celestial_object: yela
   destination_starsystem: stanton
   profit_per_unit: 10
+  average_profit_per_unit: 10
   profit_per_unit_percent: 50
+  average_profit_per_unit_percent: 50
 
 titan_daymar_olisar:
   origin: commodity_titan_daymar
@@ -34,4 +38,6 @@ titan_daymar_olisar:
   destination_celestial_object: crusader
   destination_starsystem: stanton
   profit_per_unit: 7
+  average_profit_per_unit: 7
   profit_per_unit_percent: 70
+  average_profit_per_unit_percent: 70
