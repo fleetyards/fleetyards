@@ -77,6 +77,8 @@
   }
 
   .roadmap-item {
+    width: 100%;
+
     .panel-inner {
       display: flex;
     }
@@ -90,6 +92,7 @@
     .item-image {
       position: relative;
       flex: .2;
+      width: 120px;
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
@@ -119,8 +122,8 @@
       font-size: 20px;
       font-family: 'Orbitron', tahoma, sans-serif;
 
-      i {
-        margin-left: 5px;
+      small {
+        display: block;
       }
     }
 
@@ -131,8 +134,15 @@
     }
 
     &.compact {
-      h3 small span {
-        display: none;
+      h3 {
+        display: flex;
+        justify-content: space-between;
+
+        small {
+          span {
+            display: none;
+          }
+        }
       }
     }
 

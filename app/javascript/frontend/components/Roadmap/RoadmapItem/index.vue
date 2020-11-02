@@ -11,6 +11,7 @@
       <h3>
         <router-link
           v-if="item.model"
+          v-tooltip="item.name"
           :to="{
             name: 'model',
             params: {
@@ -20,13 +21,10 @@
         >
           {{ item.name }}
         </router-link>
-        <template v-else>
+        <span v-else v-tooltip="item.name">
           {{ item.name }}
-        </template>
-        <small
-          v-tooltip="$t('labels.roadmap.lastUpdate')"
-          class="float-sm-right text-muted"
-        >
+        </span>
+        <small v-tooltip="$t('labels.roadmap.lastUpdate')" class="text-muted">
           <span>{{ item.lastVersionChangedAtLabel }}</span>
           <i v-tooltip="item.lastVersionChangedAtLabel" class="far fa-clock" />
         </small>
