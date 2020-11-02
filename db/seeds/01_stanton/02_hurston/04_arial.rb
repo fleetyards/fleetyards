@@ -8,7 +8,13 @@ arial.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/aria
 lathan = Station.find_or_initialize_by(name: 'HDMS-Lathan')
 lathan.update!(celestial_object: arial, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/lathan.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: lathan)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/lathan_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/lathan_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 lathan.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
@@ -33,7 +39,13 @@ end
 bezdek = Station.find_or_initialize_by(name: 'HDMS-Bezdek')
 bezdek.update!(celestial_object: arial, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/bezdek.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: bezdek)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/bezdek_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/arial/bezdek_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 bezdek.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|

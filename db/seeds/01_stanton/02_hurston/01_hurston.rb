@@ -112,6 +112,8 @@ admin = Shop.find_or_initialize_by(name: 'Admin Office', station: l19)
 admin.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )
 
@@ -119,6 +121,7 @@ tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station:
 tammany_and_sons.update!(
   shop_type: :superstore,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/tammany_and_sons.jpg').open,
+  selling: true,
   hidden: false
 )
 

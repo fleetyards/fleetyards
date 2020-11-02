@@ -75,6 +75,8 @@ tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division', station: 
 tdd.update!(
   shop_type: :resources,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/jobwell.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -82,6 +84,8 @@ arccorp_tower = Shop.find_or_initialize_by(name: 'ArcCorp Tower', station: area1
 arccorp_tower.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -89,6 +93,7 @@ centermass = Shop.find_or_initialize_by(name: 'CenterMass', station: area18)
 centermass.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
+  selling: true,
   hidden: false
 )
 

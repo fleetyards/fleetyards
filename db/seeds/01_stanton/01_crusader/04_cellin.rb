@@ -22,12 +22,24 @@ end
 gallete = Station.find_or_initialize_by(name: 'Gallete Family Farms')
 gallete.update!(celestial_object: cellin, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/gallete.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: gallete)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/gallete_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/gallete_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 hickes = Station.find_or_initialize_by(name: 'Hickes Research Outpost')
 hickes.update!(celestial_object: cellin, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hickes)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/hickes_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 hickes.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
@@ -52,7 +64,13 @@ end
 terra_mills = Station.find_or_initialize_by(name: 'Terra Mills HydroFarm')
 terra_mills.update!(celestial_object: cellin, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: terra_mills)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/terra_mills_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 terra_mills.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
@@ -77,7 +95,13 @@ end
 tram_n_myers = Station.find_or_initialize_by(name: 'Tram & Myers Mining')
 tram_n_myers.update!(celestial_object: cellin, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/tram_n_myers.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: tram_n_myers)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/tram_n_myers_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/tram_n_myers_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 ashburn = Station.find_or_initialize_by(name: 'Ashburn Channel Aid Shelter')
 ashburn.update!(celestial_object: cellin, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/ashburn.jpg').open, hidden: false)
@@ -103,5 +127,7 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: private
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cellin/private_property_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )

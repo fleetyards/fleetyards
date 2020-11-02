@@ -16,6 +16,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -56,6 +58,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: rayari_
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 

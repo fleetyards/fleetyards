@@ -40,6 +40,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: levski)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/admin_levski.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -47,6 +49,7 @@ dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: levs
 dumpers_depot.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/dumpers_depot_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -54,6 +57,7 @@ conscientious_objects = Shop.find_or_initialize_by(name: 'Conscientious Objects'
 conscientious_objects.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/conscientious_objects_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -61,6 +65,7 @@ cordrys = Shop.find_or_initialize_by(name: "Cordry's", station: levski, shop_typ
 cordrys.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/cordrys_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -89,6 +94,6 @@ teachs = Shop.find_or_initialize_by(name: "Teach's Ship Shop", station: levski)
 teachs.update!(
   shop_type: :ships,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/teachs.jpg').open,
-  hidden: false,
-  selling: true
+  selling: true,
+  hidden: false
 )

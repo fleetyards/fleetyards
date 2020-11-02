@@ -69,6 +69,8 @@ planetary_services = Shop.find_or_initialize_by(name: 'Planetary Services', stat
 planetary_services.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -76,6 +78,7 @@ tdd = Shop.find_or_initialize_by(name: 'Trade & Development Devision', station: 
 tdd.update!(
   shop_type: :resources,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/tdd.png').open,
+  buying: true,
   selling: true,
   hidden: false
 )
