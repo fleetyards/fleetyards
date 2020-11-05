@@ -18,6 +18,12 @@
             {{ hardpoint.size }}
           </div>
         </div>
+        <div v-if="hardpoint.details" class="col-6">
+          <div class="metrics-label">{{ $t('labels.hardpoint.details') }}:</div>
+          <div class="metrics-value">
+            {{ hardpoint.details }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="clearfix" />

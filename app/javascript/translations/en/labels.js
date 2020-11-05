@@ -248,6 +248,7 @@ export default {
     quantity: 'Per Mount',
     size: 'Size',
     rackSize: 'Rack Size',
+    details: 'Details',
     category: 'Category',
     categoryOrRackSize: 'Category / Rack Size',
     categories: {
