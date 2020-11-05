@@ -1,5 +1,6 @@
 <template>
   <div
+    v-tooltip="hardpoint.details"
     :class="{
       'hardpoint-empty': hardpoint.defaultEmpty,
       'hardpoint-with-component': !!hardpoint.component,

@@ -286,7 +286,8 @@ module Rsi
       hardpoint.update(
         details: hardpoint_data['details'],
         component_class: hardpoint_data['component_class'],
-        default_empty: hardpoint_data['name'].blank?
+        default_empty: hardpoint_data['name'].blank?,
+        deleted_at: nil
       )
 
       if hardpoint_data['name'].present? && hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
