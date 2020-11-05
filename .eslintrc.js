@@ -41,6 +41,14 @@ module.exports = {
       'Object.values',
       'Array.iterator',
     ],
+    'import/resolver': {
+      webpack: {
+        config: 'config/webpack/development.js',
+      },
+      alias: {
+        map: [['helpers', './test/javascript/unit/helpers']],
+      },
+    },
   },
 
   rules: {
@@ -54,7 +62,6 @@ module.exports = {
     ],
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': 'off',
-    'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'jest/expect-expect': 'off',
     'jest/no-mocks-import': 'off',
