@@ -1,5 +1,28 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: components
+#
+#  id              :uuid             not null, primary key
+#  component_class :string
+#  description     :text
+#  grade           :string
+#  item_class      :integer
+#  item_type       :string
+#  name            :string(255)
+#  size            :string(255)
+#  slug            :string
+#  store_image     :string
+#  tracking_signal :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  manufacturer_id :uuid
+#
+# Indexes
+#
+#  index_components_on_manufacturer_id  (manufacturer_id)
+#
 class Component < ApplicationRecord
   paginates_per 50
 

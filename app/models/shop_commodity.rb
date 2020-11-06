@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: shop_commodities
+#
+#  id                           :uuid             not null, primary key
+#  average_buy_price            :decimal(15, 2)
+#  average_rental_price_1_day   :decimal(15, 2)
+#  average_rental_price_30_days :decimal(15, 2)
+#  average_rental_price_3_days  :decimal(15, 2)
+#  average_rental_price_7_days  :decimal(15, 2)
+#  average_sell_price           :decimal(15, 2)
+#  buy_price                    :decimal(15, 2)
+#  commodity_item_type          :string
+#  confirmed                    :boolean          default(FALSE)
+#  price_per_unit               :boolean          default(FALSE)
+#  rental_price_1_day           :decimal(15, 2)
+#  rental_price_30_days         :decimal(15, 2)
+#  rental_price_3_days          :decimal(15, 2)
+#  rental_price_7_days          :decimal(15, 2)
+#  sell_price                   :decimal(15, 2)
+#  submitted_by                 :uuid
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  commodity_item_id            :uuid
+#  shop_id                      :uuid
+#
+# Indexes
+#
+#  index_shop_commodities_on_commodity_item_id      (commodity_item_id)
+#  index_shop_commodities_on_item_type_and_item_id  (commodity_item_type,commodity_item_id)
+#  index_shop_commodities_on_shop_id                (shop_id)
+#
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
@@ -90,6 +122,10 @@ class ShopCommodity < ApplicationRecord
   ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
   ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
   ransack_alias :price, :sell_price_or_buy_price_or_rent_price
+
+  def self.commodity_item_types
+    %w[Model Equipment Commodity Component ModelModule ModelPaint]
+  end
 
   def self.commodity
     where(commodity_item_type: ['Commodity'])

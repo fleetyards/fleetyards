@@ -70,5 +70,6 @@ class Ability
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update destroy], User, id: user.id
+    can %i[create], CommodityPrice, submitted_by: user.id
   end
 end

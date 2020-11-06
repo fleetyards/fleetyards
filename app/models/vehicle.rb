@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: vehicles
+#
+#  id             :uuid             not null, primary key
+#  flagship       :boolean          default(FALSE)
+#  hidden         :boolean          default(FALSE)
+#  loaner         :boolean          default(FALSE)
+#  name           :string(255)
+#  name_visible   :boolean          default(FALSE)
+#  notify         :boolean          default(TRUE)
+#  public         :boolean          default(TRUE)
+#  purchased      :boolean          default(FALSE)
+#  sale_notify    :boolean          default(FALSE)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  model_id       :uuid
+#  model_paint_id :uuid
+#  user_id        :uuid
+#  vehicle_id     :uuid
+#
+# Indexes
+#
+#  index_vehicles_on_model_id  (model_id)
+#  index_vehicles_on_user_id   (user_id)
+#
 require 'csv'
 
 class Vehicle < ApplicationRecord

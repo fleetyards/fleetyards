@@ -65,6 +65,9 @@ GEM
       safely_block (>= 0.2.1)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
+    annotate (3.1.1)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 14.0)
     ansi (1.5.0)
     ast (2.4.1)
     autoprefixer-rails (10.0.1.0)
@@ -549,6 +552,7 @@ PLATFORMS
 
 DEPENDENCIES
   ahoy_matey
+  annotate
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
   bootstrap-sass

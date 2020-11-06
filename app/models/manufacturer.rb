@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: manufacturers
+#
+#  id          :uuid             not null, primary key
+#  code        :string
+#  description :text
+#  known_for   :string(255)
+#  logo        :string(255)
+#  name        :string(255)
+#  slug        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  rsi_id      :integer
+#
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
 

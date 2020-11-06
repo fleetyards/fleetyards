@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: stations
+#
+#  id                  :uuid             not null, primary key
+#  description         :text
+#  hidden              :boolean          default(TRUE)
+#  images_count        :integer          default(0)
+#  location            :string
+#  map                 :string
+#  name                :string
+#  slug                :string
+#  station_type        :integer
+#  status              :integer
+#  store_image         :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  celestial_object_id :uuid
+#  planet_id           :uuid
+#
+# Indexes
+#
+#  index_stations_on_celestial_object_id  (celestial_object_id)
+#  index_stations_on_name                 (name) UNIQUE
+#  index_stations_on_planet_id            (planet_id)
+#
 class Station < ApplicationRecord
   paginates_per 10
 
