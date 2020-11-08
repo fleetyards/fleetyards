@@ -38,6 +38,10 @@
             </div>
           </div>
         </template>
+        <template #col-confirmed="{ record }">
+          <i v-if="record.confirmed" class="fal fa-check" />
+          <i v-else class="fal fa-times" />
+        </template>
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">
             <Btn
@@ -122,6 +126,11 @@ export default class AdminStationImages extends Vue {
       name: 'prices',
       label: this.$t('labels.shopCommodity.prices.label'),
       width: '20%',
+    },
+    {
+      name: 'confirmed',
+      label: this.$t('labels.shopCommodity.confirmed'),
+      width: '10%',
     },
     { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
   ]

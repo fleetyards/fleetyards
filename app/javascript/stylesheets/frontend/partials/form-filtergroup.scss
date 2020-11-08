@@ -35,6 +35,14 @@
     border-radius: $border-radius-base;
     cursor: pointer;
 
+    .filter-group-title-prompt {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     &:hover {
       color: white;
       background: $input-bg;

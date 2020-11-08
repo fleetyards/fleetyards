@@ -26,6 +26,16 @@ class CommodityRentalPrice < CommodityPrice
 
   validates :time_range, presence: true
 
+  def self.time_range_filters
+    CommodityRentalPrice.time_ranges.map do |(item, _index)|
+      Filter.new(
+        category: 'time_range',
+        name: CommodityRentalPrice.human_enum_name(:time_range, item),
+        value: item
+      )
+    end
+  end
+
   def update_shop_commodity
     shop_commodity.update_1_day_prices if time_range == '1-day'
     shop_commodity.update_3_days_prices if time_range == '3-days'

@@ -38,6 +38,7 @@ class Ability
     can %i[index], :api_search
     can %i[index], :api_trade_routes
     can %i[read], :api_fleet
+    can %i[read], :api_commodity_prices
 
     can %i[read_public], :api_user
   end

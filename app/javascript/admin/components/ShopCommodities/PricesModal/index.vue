@@ -20,6 +20,13 @@
         <span class="date-label">
           {{ $l(record.createdAt) }}
         </span>
+        <span
+          v-tooltip="$t('labels.shopCommodity.confirmed')"
+          class="confirmed-label"
+        >
+          <i v-if="record.confirmed" class="fal fa-check" />
+          <i v-else class="fal fa-times" />
+        </span>
         <Btn size="small" @click.native="destroy(record)">
           <i class="fa fa-times" />
         </Btn>
@@ -47,14 +54,16 @@
           v-slot="{ errors }"
           vid="timeRange"
           rules="required"
-          :name="$t('labels.timeRange')"
+          :name="$t('labels.commodityPrice.timeRange')"
           :slim="true"
         >
-          <FilterGroup
+          <CollectionFilterGroup
             v-model="form.timeRange"
             name="time-range"
             :error="errors[0]"
-            :options="timeRanges"
+            :label="$t('labels.filters.commodityPrice.timeRange')"
+            :collection="collection"
+            collection-method="timeRanges"
             :no-label="true"
           />
         </ValidationProvider>
@@ -72,7 +81,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Modal from 'frontend/core/components/AppModal/Modal'
 import commodityPricesCollection from 'admin/api/collections/CommodityPrices'
 import FormInput from 'frontend/core/components/Form/FormInput'
-import FilterGroup from 'frontend/core/components/Form/FilterGroup'
+import CollectionFilterGroup from 'frontend/core/components/Form/CollectionFilterGroup'
 import Btn from 'frontend/core/components/Btn'
 
 @Component<BuyPricesModal>({
@@ -80,7 +89,7 @@ import Btn from 'frontend/core/components/Btn'
     Modal,
     FormInput,
     Btn,
-    FilterGroup,
+    CollectionFilterGroup,
   },
 })
 export default class BuyPricesModal extends Vue {
@@ -95,11 +104,6 @@ export default class BuyPricesModal extends Vue {
   prices: ShopCommodityPrice[] = []
 
   form: AdminCommodityPriceForm = null
-
-  timeRanges = commodityPricesCollection.timeRanges.map(item => ({
-    value: item,
-    name: item,
-  }))
 
   get title() {
     return this.$t(`headlines.modals.shopCommodity.${this.path}Prices`, {

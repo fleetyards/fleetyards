@@ -1,11 +1,16 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 col-md-8">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="station">
           {{ station.name }}
         </h1>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="page-actions page-actions-right">
+          <PriceModalBtn v-if="station" :station-slug="station.slug" />
+        </div>
       </div>
     </div>
     <div class="row">
@@ -68,6 +73,7 @@ import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
 import Btn from 'frontend/core/components/Btn'
+import PriceModalBtn from 'frontend/components/ShopCommodities/PriceModalBtn'
 import Panel from 'frontend/core/components/Panel'
 import ShopPanel from 'frontend/components/Stations/Item'
 import StationBaseMetrics from 'frontend/components/Stations/BaseMetrics'
@@ -82,6 +88,7 @@ import stationsCollection from 'frontend/api/collections/Stations'
   components: {
     Loader,
     Btn,
+    PriceModalBtn,
     Panel,
     ShopPanel,
     StationBaseMetrics,

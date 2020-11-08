@@ -64,7 +64,9 @@
     &::after {
       display: none;
     }
+  }
 
+  &.panel-btn-link {
     &:hover {
       background: transparent;
       border: none;

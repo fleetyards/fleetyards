@@ -4,11 +4,11 @@ import BaseCollection from 'frontend/api/collections/Base'
 export class AdminCommoditiesCollection extends BaseCollection {
   primaryKey: string = 'id'
 
-  records: Commodity[] = []
+  records: AdminCommodity[] = []
 
   params: AdminCommodityParams | null = null
 
-  async findAll(params: AdminCommodityParams): Promise<Commodity[]> {
+  async findAll(params: AdminCommodityParams): Promise<AdminCommodity[]> {
     this.params = params
 
     const response = await get('commodities', {

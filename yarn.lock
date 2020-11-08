@@ -7080,10 +7080,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress-mochawesome-reporter@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-1.2.0.tgz#03cd25f8db0ebb99c41470191733deea1bbeeb0e"
-  integrity sha512-pl0PH2CtKVvcx4SC9QZTJ+Km90ZxK5k+w6zyCuzscT/GQRJWk3IZHU2zXOdP2RR0VXaF9qw6HBq5RIN+Sw6VyQ==
+cypress-mochawesome-reporter@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-1.3.0.tgz#a3a23925c3f9fd52e847a992a0e2e92e6fb22571"
+  integrity sha512-9EX5W+o49yqn0wmCQCYl2hZVRZNyg87fSciaLfbSqR9bybyACI0tecpQDQeAT76MFPhPFhEq8AdWvCgZyMtdew==
   dependencies:
     fs-extra "^9.0.0"
     mocha "^7.1.1"
@@ -12606,7 +12606,7 @@ mocha@^7.1.1:
     yargs-parser "13.1.2"
     yargs-unparser "1.6.0"
 
-mochawesome-merge@^4.0.3, mochawesome-merge@^4.2.0:
+mochawesome-merge@^4.0.3:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/mochawesome-merge/-/mochawesome-merge-4.2.0.tgz#970ea141165039bfdd6772b1232a1ef6ba99af1a"
   integrity sha512-FSMzagh+8hTShhFXdBLE4/zS2WALcDruoD0bmtiwHEjfyQszR/iEGFTgbuM5ewA5At3qeSGwGsT0k2Stt64NdQ==
@@ -12634,7 +12634,7 @@ mochawesome-report-generator@^5.1.0:
     validator "^10.11.0"
     yargs "^13.2.2"
 
-mochawesome@^6.1.0, mochawesome@^6.2.1:
+mochawesome@^6.1.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/mochawesome/-/mochawesome-6.2.1.tgz#38ed75cf1b2ff86e7c894d6f33499183a49dd0b7"
   integrity sha512-zew/N1Gb4JYCTl3scu9i8OW0ay7b0ZOGczCrSW/P+XdBrLntqI5/JlJiYV1/Nn/SY4qahddsIE+qWL8ACNerPA==

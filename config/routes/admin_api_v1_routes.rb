@@ -48,6 +48,7 @@ v1_admin_api_routes = lambda do
       post 'create-sell-price' => 'commodity_prices#create_sell_price'
       post 'create-buy-price' => 'commodity_prices#create_buy_price'
       post 'create-rental-price' => 'commodity_prices#create_rental_price'
+      get 'time-ranges' => 'commodity_prices#time_ranges'
     end
   end
 end

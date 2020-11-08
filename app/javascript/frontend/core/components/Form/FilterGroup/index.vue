@@ -16,7 +16,9 @@
       class="filter-group-title"
       @click="toggle"
     >
-      {{ prompt }}
+      <span class="filter-group-title-prompt">
+        {{ prompt }}
+      </span>
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>

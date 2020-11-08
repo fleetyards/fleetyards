@@ -16,7 +16,9 @@
       class="filter-group-title"
       @click="toggle"
     >
-      {{ prompt }}
+      <span class="filter-group-title-prompt">
+        {{ prompt }}
+      </span>
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
@@ -99,7 +101,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import SmallLoader from 'frontend/core/components/SmallLoader'
 import FormInput from 'frontend/core/components/Form/FormInput'
@@ -135,6 +137,13 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: 'findAll' }) collectionMethod: string
 
+  @Prop({
+    default: () => {
+      return {}
+    },
+  })
+  collectionFilter!: Object
+
   @Prop({ required: true }) name!: string
 
   @Prop({
@@ -156,8 +165,6 @@ export default class FilterGroup extends Vue {
   @Prop({ default: false }) multiple!: boolean
 
   @Prop({ default: false }) disabled!: boolean
-
-  @Prop({ default: false }) searchable!: boolean
 
   @Prop({ default: false }) searchable!: boolean
 
@@ -251,9 +258,16 @@ export default class FilterGroup extends Vue {
     }
   }
 
+  @Watch('disabled')
+  onDisabled() {
+    this.fetchOptions()
+  }
+
   queryParams(args) {
     const query = {
-      filters: {},
+      filters: {
+        ...this.collectionFilter,
+      },
     }
     if (args.search && this.searchable) {
       query.filters.nameCont = args.search
@@ -298,9 +312,14 @@ export default class FilterGroup extends Vue {
   }
 
   async fetchOptions() {
+    if (this.disabled) {
+      this.fetchMissingOption()
+      return
+    }
+
     this.loading = true
 
-    await this.collection[this.collectionMethod]({
+    const options = await this.collection[this.collectionMethod]({
       ...this.queryParams({
         page: this.page,
         search: this.search,
@@ -314,8 +333,8 @@ export default class FilterGroup extends Vue {
       this.$refs.infiniteLoading.$emit('infinite-loading-reset')
     }
 
-    if (this.collection.records.length) {
-      this.addOptions(this.collection.records)
+    if (options) {
+      this.addOptions(options)
       this.fetchMissingOption()
     }
   }
@@ -335,6 +354,7 @@ export default class FilterGroup extends Vue {
       ...this.queryParams({
         missingValue: this.value,
       }),
+      cacheId: `${this.groupID}-missing`,
     })
 
     this.loading = false

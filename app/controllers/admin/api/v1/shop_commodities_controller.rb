@@ -76,7 +76,7 @@ module Admin
 
         private def shop_commodity_params
           @shop_commodity_params ||= params.transform_keys(&:underscore)
-            .permit(:commodity_item_id, :commodity_item_type).merge(shop_id: shop.id)
+            .permit(:commodity_item_id, :commodity_item_type).merge(shop_id: shop.id, confirmed: true)
         end
 
         private def shop_commodity

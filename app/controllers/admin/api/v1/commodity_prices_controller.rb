@@ -42,6 +42,14 @@ module Admin
           render json: ValidationError.new('commodity_price.destroy', commodity_price.errors), status: :bad_request
         end
 
+        def time_ranges
+          authorize! :show, :admin_api_commodity_prices
+
+          @filters = CommodityRentalPrice.time_range_filters
+
+          render 'api/v1/shared/filters'
+        end
+
         private def commodity_price
           @commodity_price ||= CommodityPrice.find(params[:id])
         end
@@ -49,7 +57,7 @@ module Admin
 
         private def commodity_price_params
           @commodity_price_params ||= params.transform_keys(&:underscore)
-            .permit(:shop_commodity_id, :price, :time_range)
+            .permit(:shop_commodity_id, :price, :time_range).merge(confirmed: true)
         end
       end
     end

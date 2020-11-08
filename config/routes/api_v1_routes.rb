@@ -125,6 +125,13 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :commodity_prices, path: 'commodity-prices', only: [:create] do
+    collection do
+      get 'time-ranges' => 'commodity_prices#time_ranges'
+    end
+  end
+
+  get 'shop-commodities/commodity-type-options' => 'shop_commodities#commodity_item_types'
   get 'filters/shop-commodities/sub-categories' => 'shop_commodities#sub_categories'
 
   resources :shops, param: :slug, only: %i[index] do

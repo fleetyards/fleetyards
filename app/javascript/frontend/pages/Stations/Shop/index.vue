@@ -1,11 +1,20 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 col-md-8">
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="shop">
           {{ shop.name }}
         </h1>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="page-actions page-actions-right">
+          <PriceModalBtn
+            v-if="shop"
+            :station-slug="shop.station.slug"
+            :shop-id="shop.id"
+          />
+        </div>
       </div>
     </div>
     <div class="row">
@@ -137,21 +146,24 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
 import Panel from 'frontend/core/components/Panel'
 import ShopBaseMetrics from 'frontend/components/Shops/BaseMetrics'
 import ShopItemRow from 'frontend/components/Shops/ShopItemRow'
+import PriceModalBtn from 'frontend/components/ShopCommodities/PriceModalBtn'
 import FilterForm from 'frontend/components/Shops/ShopItemFilterForm'
 import Pagination from 'frontend/mixins/Pagination'
 import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import { mapGetters } from 'vuex'
 import { scrollToAnchor } from 'frontend/utils/scrolling'
+import { Getter } from 'vuex-class'
 
-export default {
+@Component<Shop>({
   components: {
     Loader,
     Panel,
@@ -159,128 +171,127 @@ export default {
     ShopItemRow,
     FilterForm,
     Btn,
+    PriceModalBtn,
     BreadCrumbs,
   },
 
   mixins: [MetaInfo, Filters, Pagination],
+})
+export default class Shop extends Vue {
+  loading: boolean = false
 
-  data() {
-    return {
-      loading: false,
-      shop: null,
-      commodities: [],
-      subCategories: [],
-      fullscreen: false,
+  shop: Shop = null
+
+  commodities = []
+
+  subCategories = []
+
+  fullscreen: boolean = false
+
+  @Getter('mobile') mobile
+
+  @Getter('filterVisible', { namespace: 'shop' }) filterVisible
+
+  get toggleFiltersTooltip() {
+    if (this.filterVisible) {
+      return this.$t('actions.hideFilter')
     }
-  },
+    return this.$t('actions.showFilter')
+  }
 
-  computed: {
-    ...mapGetters(['mobile']),
+  get title() {
+    if (!this.shop) {
+      return ''
+    }
+    return this.$t('title.shop', {
+      shop: this.shop.name,
+      station: this.shop.station.name,
+    })
+  }
 
-    ...mapGetters('shop', ['filterVisible']),
+  get subCategory() {
+    if (
+      !this.$route.query ||
+      !this.$route.query.q ||
+      !this.$route.query.q.subCategoryIn
+    ) {
+      return null
+    }
 
-    toggleFiltersTooltip() {
-      if (this.filterVisible) {
-        return this.$t('actions.hideFilter')
-      }
-      return this.$t('actions.showFilter')
-    },
+    return this.$route.query.q.subCategoryIn
+  }
 
-    title() {
-      if (!this.shop) {
-        return ''
-      }
-      return this.$t('title.shop', {
-        shop: this.shop.name,
-        station: this.shop.station.name,
-      })
-    },
+  get station() {
+    return this.shop.station
+  }
 
-    subCategory() {
-      if (
-        !this.$route.query ||
-        !this.$route.query.q ||
-        !this.$route.query.q.subCategoryIn
-      ) {
-        return null
-      }
+  get crumbs() {
+    if (!this.shop) {
+      return null
+    }
 
-      return this.$route.query.q.subCategoryIn
-    },
-
-    station() {
-      return this.shop.station
-    },
-
-    crumbs() {
-      if (!this.shop) {
-        return null
-      }
-
-      const crumbs = [
-        {
-          to: {
-            name: 'starsystems',
-            hash: `#${this.shop.celestialObject.starsystem.slug}`,
-          },
-          label: this.$t('nav.starsystems'),
+    const crumbs = [
+      {
+        to: {
+          name: 'starsystems',
+          hash: `#${this.shop.celestialObject.starsystem.slug}`,
         },
-        {
-          to: {
-            name: 'starsystem',
-            params: {
-              slug: this.shop.celestialObject.starsystem.slug,
-            },
-            hash: `#${this.shop.celestialObject.slug}`,
+        label: this.$t('nav.starsystems'),
+      },
+      {
+        to: {
+          name: 'starsystem',
+          params: {
+            slug: this.shop.celestialObject.starsystem.slug,
           },
-          label: this.shop.celestialObject.starsystem.name,
+          hash: `#${this.shop.celestialObject.slug}`,
         },
-      ]
+        label: this.shop.celestialObject.starsystem.name,
+      },
+    ]
 
-      if (this.shop.celestialObject.parent) {
-        crumbs.push({
-          to: {
-            name: 'celestial-object',
-            params: {
-              starsystem: this.shop.celestialObject.starsystem.slug,
-              slug: this.shop.celestialObject.parent.slug,
-            },
-          },
-          label: this.shop.celestialObject.parent.name,
-        })
-      }
-
+    if (this.shop.celestialObject.parent) {
       crumbs.push({
         to: {
           name: 'celestial-object',
           params: {
             starsystem: this.shop.celestialObject.starsystem.slug,
-            slug: this.shop.celestialObject.slug,
-          },
-          hash: `#${this.station.slug}`,
-        },
-        label: this.shop.celestialObject.name,
-      })
-
-      crumbs.push({
-        to: {
-          name: 'station',
-          params: {
-            slug: this.station.slug,
+            slug: this.shop.celestialObject.parent.slug,
           },
         },
-        label: this.station.name,
+        label: this.shop.celestialObject.parent.name,
       })
+    }
 
-      return crumbs
-    },
-  },
+    crumbs.push({
+      to: {
+        name: 'celestial-object',
+        params: {
+          starsystem: this.shop.celestialObject.starsystem.slug,
+          slug: this.shop.celestialObject.slug,
+        },
+        hash: `#${this.station.slug}`,
+      },
+      label: this.shop.celestialObject.name,
+    })
 
-  watch: {
-    $route() {
-      this.fetchCommodities()
-    },
-  },
+    crumbs.push({
+      to: {
+        name: 'station',
+        params: {
+          slug: this.station.slug,
+        },
+      },
+      label: this.station.name,
+    })
+
+    return crumbs
+  }
+
+  @Watch('$route')
+  onRouteChange() {
+    this.fetchCommodities()
+  }
 
   async mounted() {
     if (this.mobile) {
@@ -290,103 +301,101 @@ export default {
     await this.fetch()
 
     this.toggleFullscreen()
-  },
+  }
 
-  methods: {
-    toggleFullscreen() {
-      this.fullscreen = !this.filterVisible
-    },
+  toggleFullscreen() {
+    this.fullscreen = !this.filterVisible
+  }
 
-    toggleFilter() {
-      this.$store.dispatch('shop/toggleFilter')
-    },
+  toggleFilter() {
+    this.$store.dispatch('shop/toggleFilter')
+  }
 
-    toggleSubcategory(value) {
-      if ((this.subCategory || []).includes(value)) {
-        const q = {
-          ...JSON.parse(JSON.stringify(this.$route.query.q)),
-        }
+  toggleSubcategory(value) {
+    if ((this.subCategory || []).includes(value)) {
+      const q = {
+        ...JSON.parse(JSON.stringify(this.$route.query.q)),
+      }
 
-        delete q.subCategoryIn
+      delete q.subCategoryIn
 
-        this.$router
-          .replace({
-            name: this.$route.name,
-            query: {
-              ...this.$route.query,
-              q: {
-                ...q,
-              },
+      this.$router
+        .replace({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            q: {
+              ...q,
             },
-          })
-          .catch(err => {
-            console.info(err)
-          })
-      } else {
-        this.$router
-          .replace({
-            name: this.$route.name,
-            query: {
-              ...this.$route.query,
-              q: {
-                ...this.$route.query.q,
-                subCategoryIn: [value],
-              },
-            },
-          })
-          .catch(err => {
-            console.info(err)
-          })
-      }
-    },
-
-    async fetchSubCategories() {
-      const response = await this.$api.get(
-        'filters/shop-commodities/sub-categories',
-        {
-          stationSlug: this.shop.station.slug,
-          shopSlug: this.shop.slug,
-        },
-      )
-
-      if (!response.error) {
-        this.subCategories = response.data
-        await this.fetchCommodities()
-      }
-    },
-
-    async fetch() {
-      const response = await this.$api.get(
-        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}`,
-      )
-      if (!response.error) {
-        this.shop = response.data
-        await this.fetchSubCategories()
-      }
-    },
-
-    async fetchCommodities() {
-      this.loading = true
-      const response = await this.$api.get(
-        `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/commodities`,
-        {
-          q: {
-            ...this.$route.query.q,
-            subCategoryIn: this.subCategory,
           },
-          page: this.$route.query.page,
-        },
-      )
-      this.loading = false
-      if (!response.error) {
-        this.commodities = response.data
-
-        this.$nextTick(() => {
-          scrollToAnchor(this.$route.hash)
         })
-      }
-      this.setPages(response.meta)
-    },
-  },
+        .catch(err => {
+          console.info(err)
+        })
+    } else {
+      this.$router
+        .replace({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            q: {
+              ...this.$route.query.q,
+              subCategoryIn: [value],
+            },
+          },
+        })
+        .catch(err => {
+          console.info(err)
+        })
+    }
+  }
+
+  async fetchSubCategories() {
+    const response = await this.$api.get(
+      'filters/shop-commodities/sub-categories',
+      {
+        stationSlug: this.shop.station.slug,
+        shopSlug: this.shop.slug,
+      },
+    )
+
+    if (!response.error) {
+      this.subCategories = response.data
+      await this.fetchCommodities()
+    }
+  }
+
+  async fetch() {
+    const response = await this.$api.get(
+      `stations/${this.$route.params.station}/shops/${this.$route.params.slug}`,
+    )
+    if (!response.error) {
+      this.shop = response.data
+      await this.fetchSubCategories()
+    }
+  }
+
+  async fetchCommodities() {
+    this.loading = true
+    const response = await this.$api.get(
+      `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/commodities`,
+      {
+        q: {
+          ...this.$route.query.q,
+          subCategoryIn: this.subCategory,
+        },
+        page: this.$route.query.page,
+      },
+    )
+    this.loading = false
+    if (!response.error) {
+      this.commodities = response.data
+
+      this.$nextTick(() => {
+        scrollToAnchor(this.$route.hash)
+      })
+    }
+    this.setPages(response.meta)
+  }
 }
 </script>

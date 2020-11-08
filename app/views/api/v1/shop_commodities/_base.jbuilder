@@ -23,6 +23,7 @@ json.average_rental_price_7_days shop_commodity.average_rental_price_7_days
 json.rental_price_30_days shop_commodity.rental_price_30_days
 json.average_rental_price_30_days shop_commodity.average_rental_price_30_days
 json.location_label shop_commodity.location_label
+json.confirmed shop_commodity.confirmed
 json.shop do
   json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
 end

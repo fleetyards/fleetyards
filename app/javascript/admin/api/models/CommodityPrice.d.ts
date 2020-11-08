@@ -1,4 +1,4 @@
-type CommodityPrice = {
+type AdminCommodityPrice = {
   id: string
 }
 

@@ -70,8 +70,14 @@ export default {
     urlInvalid: 'URL is invalid',
     emailTaken: 'E-Mail is already taken.',
     fleetTaken: 'Fleet is already taken.',
-    accountRequired:
-      'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
+    hangar: {
+      accountRequired:
+        'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
+    },
+    commodityPrice: {
+      accountRequired:
+        'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to submit Prices.',
+    },
     default:
       '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
@@ -80,6 +86,11 @@ export default {
       success:
         "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
       failure: 'We could not destroy your Account! Please try again later.',
+    },
+  },
+  commodityPrice: {
+    create: {
+      success: 'Thank you for your price submission.',
     },
   },
   fleet: {

@@ -48,6 +48,28 @@
     border-radius: 0 !important;
   }
 
+  > .panel-btn {
+    padding: 0;
+
+    .panel-btn-inner {
+      border-radius: 0;
+    }
+
+    &:first-child {
+      .panel-btn-inner {
+        border-top-left-radius: $panel-content-border-radius;
+        border-bottom-left-radius: $panel-content-border-radius;
+      }
+    }
+
+    &:last-child {
+      .panel-btn-inner {
+        border-top-right-radius: $panel-content-border-radius;
+        border-bottom-right-radius: $panel-content-border-radius;
+      }
+    }
+  }
+
   > :last-child {
     border-right: none !important;
   }

@@ -9,7 +9,10 @@ import {
   required,
   email,
   alpha_dash,
+  numeric,
+  between,
   min,
+  min_value,
   confirmed,
   regex,
 } from 'vee-validate/dist/rules'
@@ -41,6 +44,9 @@ export default {
     extend('confirmed', confirmed)
     extend('regex', regex)
     extend('min', min)
+    extend('min_value', min_value)
+    extend('numeric', numeric)
+    extend('between', between)
     extend('email', email)
     extend('emailTaken', emailTaken)
     extend('usernameTaken', usernameTaken)

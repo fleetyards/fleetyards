@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id component.id
 json.name component.name
 json.slug component.slug
 json.grade component.grade

@@ -102,4 +102,5 @@ export default {
     store: 'RSI Page',
   },
   'unselect': 'Unselect all Selected',
+  'openPriceModal': 'Submit Price',
 }

@@ -13,11 +13,12 @@ module Api
           'component_name asc',
           'commodity_name asc',
           'equipment_name asc',
-          'model_module_name asc'
+          'model_module_name asc',
+          'model_paint_name asc'
         ]
         shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 
-        @q = shop.shop_commodities.includes(:shop, :commodity_item)
+        @q = shop.shop_commodities.where(confirmed: true).includes(:shop, :commodity_item)
           .ransack(shop_commodities_query_params)
 
         @shop_commodities = @q.result
@@ -43,6 +44,17 @@ module Api
         ].flatten.sort_by { |category| [category.category, category.name] }
       end
       # rubocop:enable Metrics/CyclomaticComplexity
+
+      def commodity_item_types
+        authorize! :index, :api_shop_commodities
+
+        @commodity_item_types = ShopCommodity.commodity_item_types.map do |item_type|
+          {
+            name: I18n.t("activerecord.attributes.shop_commodity.commodity_item_types.#{item_type}"),
+            value: item_type,
+          }
+        end.sort_by { |item| item[:name] }
+      end
 
       private def shop
         @shop ||= station.shops.visible.find_by!(slug: params[:shop_slug])

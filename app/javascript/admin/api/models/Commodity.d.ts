@@ -1,4 +1,4 @@
-type Commodity = {
+type AdminCommodity = {
   id: string
 }
 

@@ -10,29 +10,46 @@
         {{ innerLabel }}
       </label>
     </transition>
-    <input
-      :id="innerId"
-      ref="input"
-      v-model="inputValue"
-      v-tooltip.right="error"
-      :placeholder="innerPlaceholder"
-      :type="type"
-      :data-test="`input-${id}`"
-      :aria-label="innerLabel"
-      :autofocus="autofocus"
-      :disabled="disabled ? 'disabled' : null"
-      :name="id"
-      @input="update"
-      @blur="update"
-    />
-    <i
-      v-if="inputValue && clearable"
-      class="fal fa-times clear"
+    <div
+      class="form-input-wrapper"
       :class="{
-        'with-label': !!innerLabel && !noLabel,
+        'from-input-wrapper-with-prefix': !!prefix,
+        'from-input-wrapper-with-suffix': !!suffix,
       }"
-      @click="clear"
-    />
+    >
+      <div v-if="prefix" class="form-input-prefix">
+        {{ prefix }}
+      </div>
+      <input
+        :id="innerId"
+        ref="input"
+        v-model="inputValue"
+        v-tooltip.right="error"
+        :placeholder="innerPlaceholder"
+        :type="type"
+        :data-test="`input-${id}`"
+        :aria-label="innerLabel"
+        :autofocus="autofocus"
+        :disabled="disabled ? 'disabled' : null"
+        :name="id"
+        :min="min"
+        :max="max"
+        :step="step"
+        @input="update"
+        @blur="update"
+      />
+      <div v-if="suffix" class="form-input-suffix">
+        {{ suffix }}
+      </div>
+      <i
+        v-if="inputValue && clearable"
+        class="fal fa-times clear"
+        :class="{
+          'with-label': !!innerLabel && !noLabel,
+        }"
+        @click="clear"
+      />
+    </div>
   </div>
 </template>
 
@@ -68,6 +85,12 @@ export default class FormInput extends Vue {
 
   @Prop({ default: null }) label!: string
 
+  @Prop({ default: null }) min!: number
+
+  @Prop({ default: null }) max!: number
+
+  @Prop({ default: 0.01 }) step!: number
+
   @Prop({ default: false }) noLabel!: boolean
 
   @Prop({ default: false }) noPlaceholder!: boolean
@@ -77,6 +100,10 @@ export default class FormInput extends Vue {
   @Prop({ default: false }) clearable!: boolean
 
   @Prop({ default: false }) disabled!: boolean
+
+  @Prop({ default: null }) prefix!: string
+
+  @Prop({ default: null }) suffix!: string
 
   @Prop({
     default: 'default',
@@ -134,6 +161,7 @@ export default class FormInput extends Vue {
       'form-input-large': this.size === 'large',
       'form-input-clean': this.variant === 'clean',
       'form-input-clearable': this.clearable,
+      [`form-input-${this.type}`]: true,
     }
   }
 

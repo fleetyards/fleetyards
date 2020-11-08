@@ -97,5 +97,8 @@ export default {
       buyPrices: '%{shopCommodity} Buy Prices',
       rentalPrices: '%{shopCommodity} Rental Prices',
     },
+    commodityPrice: {
+      create: 'Submit Price',
+    },
   },
 }

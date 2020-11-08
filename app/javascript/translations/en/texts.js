@@ -100,4 +100,8 @@ export default {
     inactive:
       'This Item was removed from the Roadmap. This is its last location',
   },
+  commodityPrice: {
+    info:
+      'Please report missing Stations, Shops and Commodity Items via Email to <a href="mailto:info@fleetyards.net">info@fleetyards.net</a>',
+  },
 }

@@ -119,6 +119,7 @@ export default {
     slot: 'Slot',
     storage: 'Storage',
     shop: 'Shop',
+    unconfirmed: 'Item is unconfirmed',
   },
   resources: {
     models: 'Ships',

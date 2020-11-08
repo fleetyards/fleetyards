@@ -1,8 +1,16 @@
 <template>
   <section class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 col-md-8">
         <h1>{{ title }}</h1>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="page-actions page-actions-right">
+          <PriceModalBtn
+            commodity-item-type="Commodity"
+            :withouth-rental="true"
+          />
+        </div>
       </div>
     </div>
     <FilteredList
@@ -14,49 +22,90 @@
     >
       <template slot="actions">
         <template v-if="!mobile">
-          <Btn
-            :active="sortByProfit"
-            size="small"
-            :to="sortBy('profit_per_unit', 'desc')"
-            :exact="true"
-          >
-            <i class="far fa-dollar-sign" />
-            {{ $t('labels.tradeRoutes.sortByProfit') }}
-          </Btn>
-          <Btn
-            :active="sortByPercent"
-            size="small"
-            :to="sortBy('profit_per_unit_percent', 'desc')"
-            :exact="true"
-          >
-            <i class="far fa-percent" />
-            {{ $t('labels.tradeRoutes.sortByPercent') }}
-          </Btn>
-          <Btn
-            :active="sortByStation"
-            size="small"
-            :to="sortBy('origin_shop_station_name', 'asc')"
-            :exact="true"
-          >
-            {{ $t('labels.tradeRoutes.sortByStation') }}
-          </Btn>
+          <BtnGroup>
+            <Btn
+              v-tooltip="$t('labels.tradeRoutes.showLatestPrices')"
+              :active="!averagePrices"
+              size="small"
+              variant="dropdown"
+              @click.native="showLatestPrices"
+            >
+              <i class="far fa-sort-amount-down" />
+            </Btn>
+            <Btn
+              v-tooltip="$t('labels.tradeRoutes.showAveragePrices')"
+              :active="averagePrices"
+              size="small"
+              variant="dropdown"
+              @click.native="showAveragePrices"
+            >
+              <i class="far fa-empty-set" />
+            </Btn>
+          </BtnGroup>
+          <BtnGroup>
+            <Btn
+              v-tooltip="$t('labels.tradeRoutes.sortByProfit')"
+              :active="sortByProfit || sortByAverageProfit"
+              size="small"
+              variant="dropdown"
+              :to="
+                averagePrices
+                  ? sortBy('average_profit_per_unit', 'desc')
+                  : sortBy('profit_per_unit', 'desc')
+              "
+              :exact="true"
+            >
+              <i class="far fa-dollar-sign" />
+            </Btn>
+            <Btn
+              v-tooltip="$t('labels.tradeRoutes.sortByPercent')"
+              :active="sortByPercent || sortByAveragePercent"
+              size="small"
+              variant="dropdown"
+              :to="
+                averagePrices
+                  ? sortBy('average_profit_per_unit_percent', 'desc')
+                  : sortBy('profit_per_unit_percent', 'desc')
+              "
+              :exact="true"
+            >
+              <i class="far fa-percent" />
+            </Btn>
+            <Btn
+              :active="sortByStation"
+              size="small"
+              variant="dropdown"
+              :to="sortBy('origin_shop_station_name', 'asc')"
+              :exact="true"
+            >
+              {{ $t('labels.tradeRoutes.sortByStation') }}
+            </Btn>
+          </BtnGroup>
         </template>
         <BtnDropdown v-else size="small">
           <Btn
-            :active="sortByProfit"
+            :active="sortByProfit || sortByAverageProfit"
             size="small"
             variant="link"
-            :to="sortBy('profit_per_unit', 'desc')"
+            :to="
+              averagePrices
+                ? sortBy('average_profit_per_unit', 'desc')
+                : sortBy('profit_per_unit', 'desc')
+            "
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
             {{ $t('labels.tradeRoutes.sortByProfit') }}
           </Btn>
           <Btn
-            :active="sortByPercent"
+            :active="sortByPercent || sortByAveragePercent"
             size="small"
             variant="link"
-            :to="sortBy('profit_per_unit_percent', 'desc')"
+            :to="
+              averagePrices
+                ? sortBy('average_profit_per_unit_percent', 'desc')
+                : sortBy('profit_per_unit_percent', 'desc')
+            "
             :exact="true"
           >
             <i class="far fa-percent" />
@@ -106,11 +155,20 @@
                         {{ route.origin.locationLabel }}
                       </small>
                     </h3>
-                    {{
-                      $t('labels.tradeRoutes.buy', {
-                        uec: profit(route.buyPrice),
-                      })
-                    }}
+                    <template v-if="averagePrices">
+                      {{
+                        $t('labels.tradeRoutes.buy', {
+                          uec: profit(route.averageBuyPrice),
+                        })
+                      }}
+                    </template>
+                    <template v-else>
+                      {{
+                        $t('labels.tradeRoutes.buy', {
+                          uec: profit(route.buyPrice),
+                        })
+                      }}
+                    </template>
                   </div>
                 </Panel>
               </div>
@@ -120,10 +178,18 @@
                 </h2>
                 <i class="fa fa-angle-double-right" />
                 <div class="profit">
-                  {{ profit(route.profitPerUnit) }}
-                  <small class="profit-percent">
-                    ({{ route.profitPerUnitPercent }} %)
-                  </small>
+                  <template v-if="averagePrices">
+                    {{ profit(route.averageProfitPerUnit) }}
+                    <small class="profit-percent">
+                      ({{ route.averageProfitPerUnitPercent }} %)
+                    </small>
+                  </template>
+                  <template v-else>
+                    {{ profit(route.profitPerUnit) }}
+                    <small class="profit-percent">
+                      ({{ route.profitPerUnitPercent }} %)
+                    </small>
+                  </template>
                 </div>
               </div>
               <div class="col-12 col-md-4">
@@ -145,11 +211,20 @@
                         {{ route.destination.locationLabel }}
                       </small>
                     </h3>
-                    {{
-                      $t('labels.tradeRoutes.sell', {
-                        uec: profit(route.sellPrice),
-                      })
-                    }}
+                    <template v-if="averagePrices">
+                      {{
+                        $t('labels.tradeRoutes.sell', {
+                          uec: profit(route.averageSellPrice),
+                        })
+                      }}
+                    </template>
+                    <template v-else>
+                      {{
+                        $t('labels.tradeRoutes.sell', {
+                          uec: profit(route.sellPrice),
+                        })
+                      }}
+                    </template>
                   </div>
                 </Panel>
               </div>
@@ -168,6 +243,8 @@ import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilteredList from 'frontend/core/components/FilteredList'
 import Btn from 'frontend/core/components/Btn'
+import BtnGroup from 'frontend/core/components/BtnGroup'
+import PriceModalBtn from 'frontend/components/ShopCommodities/PriceModalBtn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Panel from 'frontend/core/components/Panel'
 import FilterForm from 'frontend/components/TradeRoutes/FilterForm'
@@ -180,6 +257,8 @@ import modelsCollection from 'frontend/api/collections/Models'
   components: {
     FilteredList,
     Btn,
+    BtnGroup,
+    PriceModalBtn,
     BtnDropdown,
     Panel,
     FilterForm,
@@ -192,6 +271,8 @@ export default class TradeRoutes extends Vue {
   collection: TradeRoutesCollection = tradeRoutesCollection
 
   modelsCollection: ModelsCollection = modelsCollection
+
+  averagePrices: boolean = false
 
   @Getter('mobile') mobile
 
@@ -218,6 +299,13 @@ export default class TradeRoutes extends Vue {
     return this.$route.query.q?.sorts || []
   }
 
+  get sortByAveragePercent(): boolean {
+    return (
+      this.sorts.includes('average_profit_per_unit_percent asc') ||
+      this.sorts.includes('average_profit_per_unit_percent desc')
+    )
+  }
+
   get sortByPercent(): boolean {
     return (
       this.sorts.includes('profit_per_unit_percent asc') ||
@@ -225,18 +313,25 @@ export default class TradeRoutes extends Vue {
     )
   }
 
+  get sortByAverageProfit(): boolean {
+    return (
+      this.sorts.includes('average_profit_per_unit asc') ||
+      this.sorts.includes('average_profit_per_unit desc')
+    )
+  }
+
   get sortByProfit(): boolean {
     return (
       this.sorts.includes('profit_per_unit asc') ||
-      this.sorts.includes('profit_per_unit desc')
+      this.sorts.includes('profit_per_unit desc') ||
+      !this.sorts.length
     )
   }
 
   get sortByStation(): boolean {
     return (
       this.sorts.includes('origin_shop_station_name asc') ||
-      this.sorts.includes('origin_shop_station_name desc') ||
-      !this.sorts.length
+      this.sorts.includes('origin_shop_station_name desc')
     )
   }
 
@@ -246,11 +341,32 @@ export default class TradeRoutes extends Vue {
   }
 
   mounted() {
+    this.averagePrices = this.sortByAverageProfit || this.sortByAveragePercent
     this.fetchCargoShip()
   }
 
   sortBy(field, direction) {
     return sortBy(this.$route, field, direction)
+  }
+
+  showLatestPrices() {
+    this.averagePrices = false
+
+    if (this.sortByProfit || this.sortByAverageProfit) {
+      this.$router.push(this.sortBy('profit_per_unit', 'desc'))
+    } else if (this.sortByPercent || this.sortByAveragePercent) {
+      this.$router.push(this.sortBy('profit_per_unit_percent', 'desc'))
+    }
+  }
+
+  showAveragePrices() {
+    this.averagePrices = true
+
+    if (this.sortByProfit || this.sortByAverageProfit) {
+      this.$router.push(this.sortBy('average_profit_per_unit', 'desc'))
+    } else if (this.sortByPercent || this.sortByAveragePercent) {
+      this.$router.push(this.sortBy('average_profit_per_unit_percent', 'desc'))
+    }
   }
 
   profit(value: number): string {

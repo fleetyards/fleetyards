@@ -225,6 +225,19 @@ en:
         location_prefix:
           default: 'sold at'
         price_per_unit: Price per Unit?
+        commodity_item_types:
+          Model: 'Ships'
+          ModelModule: 'Ship Modules'
+          ModelPaint: 'Ship Paints'
+          Component: 'Components'
+          Commodity: 'Commodities'
+          Equipment: 'Equipment'
+      commodity_rental_price:
+        time_ranges:
+          1-day: 1 Day
+          3-days: 3 Days
+          7-days: 7 Days
+          30-days: 30 Days
     errors:
       messages:
         blank: Please fill out the Field

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_193800) do
+ActiveRecord::Schema.define(version: 2020_11_02_221120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -129,6 +129,8 @@ ActiveRecord::Schema.define(version: 2020_10_30_193800) do
     t.integer "time_range"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "confirmed", default: false
+    t.uuid "submitted_by"
     t.index ["shop_commodity_id"], name: "index_commodity_prices_on_shop_commodity_id"
   end
 
@@ -516,6 +518,8 @@ ActiveRecord::Schema.define(version: 2020_10_30_193800) do
     t.decimal "average_rental_price_3_days", precision: 15, scale: 2
     t.decimal "average_rental_price_7_days", precision: 15, scale: 2
     t.decimal "average_rental_price_30_days", precision: 15, scale: 2
+    t.boolean "confirmed", default: false
+    t.uuid "submitted_by"
     t.index ["commodity_item_id"], name: "index_shop_commodities_on_commodity_item_id"
     t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
     t.index ["shop_id"], name: "index_shop_commodities_on_shop_id"

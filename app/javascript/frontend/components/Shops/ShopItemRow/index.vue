@@ -1,5 +1,12 @@
 <template>
-  <div :id="commodity.slug" class="flex-list-row">
+  <div
+    :id="commodity.slug"
+    v-tooltip="!commodity.confirmed ? $t('commodityItem.unconfirmed') : null"
+    class="flex-list-row"
+    :class="{
+      'shop-item-row-unconfirmed': !commodity.confirmed,
+    }"
+  >
     <div class="store-image">
       <router-link v-if="link" :to="link">
         <div
@@ -78,35 +85,35 @@
     </div>
     <div v-if="selling" class="price">
       <span class="price-label">
-        {{ $t('labels.shopCommodities.prices.sellPrice') }}:&nbsp;
+        {{ $t('labels.shopCommodity.prices.sellPrice') }}:&nbsp;
       </span>
       <b>{{ $toUEC(commodity.sellPrice) }}</b>
     </div>
     <div v-if="buying" class="price">
       <span class="price-label">
-        {{ $t('labels.shopCommodities.prices.buyPrice') }}:&nbsp;
+        {{ $t('labels.shopCommodity.prices.buyPrice') }}:&nbsp;
       </span>
       <b>{{ $toUEC(commodity.buyPrice) }}</b>
     </div>
     <div v-if="rental" class="rent-price">
       <span class="price-label">
-        {{ $t('labels.shopCommodities.prices.rentalPrice') }}:&nbsp;
+        {{ $t('labels.shopCommodity.prices.rentalPrice') }}:&nbsp;
       </span>
       <ul class="list-unstyled">
         <li v-if="commodity.rentalPrice1Day">
-          {{ $t('labels.shopCommodities.prices.rentalPrice1Day') }}
+          {{ $t('labels.shopCommodity.prices.rentalPrice1Day') }}
           <b>{{ $toUEC(commodity.rentalPrice1Day) }}</b>
         </li>
         <li v-if="commodity.rentalPrice3Days">
-          {{ $t('labels.shopCommodities.prices.rentalPrice3Days') }}
+          {{ $t('labels.shopCommodity.prices.rentalPrice3Days') }}
           <b>{{ $toUEC(commodity.rentalPrice3Days) }}</b>
         </li>
         <li v-if="commodity.rentalPrice7Days">
-          {{ $t('labels.shopCommodities.prices.rentalPrice7Days') }}
+          {{ $t('labels.shopCommodity.prices.rentalPrice7Days') }}
           <b>{{ $toUEC(commodity.rentalPrice7Days) }}</b>
         </li>
         <li v-if="commodity.rentalPrice30Days">
-          {{ $t('labels.shopCommodities.prices.rentalPrice30Days') }}
+          {{ $t('labels.shopCommodity.prices.rentalPrice30Days') }}
           <b>{{ $toUEC(commodity.rentalPrice30Days) }}</b>
         </li>
       </ul>
@@ -167,3 +174,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.shop-item-row-unconfirmed {
+  opacity: .5;
+}
+</style>

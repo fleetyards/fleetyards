@@ -4,15 +4,13 @@ import BaseCollection from 'frontend/api/collections/Base'
 export class AdminCommodityPricesCollection extends BaseCollection {
   primaryKey: string = 'id'
 
-  records: CommodityPrice[] = []
+  records: AdminCommodityPrice[] = []
 
   params: AdminCommodityPriceParams | null = null
 
-  timeRanges = ['1-day', '3-days', '7-days', '30-days']
-
   async findAll(
     params: AdminCommodityPriceParams | null,
-  ): Promise<CommodityPrice[]> {
+  ): Promise<AdminCommodityPrice[]> {
     this.params = params
 
     const response = await get(
@@ -30,7 +28,9 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     return this.records
   }
 
-  async create(form: AdminCommodityPriceForm): Promise<CommodityPrice | null> {
+  async create(
+    form: AdminCommodityPriceForm,
+  ): Promise<AdminCommodityPrice | null> {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const { path, ...cleanForm } = form
 
@@ -57,6 +57,16 @@ export class AdminCommodityPricesCollection extends BaseCollection {
     }
 
     return false
+  }
+
+  async timeRanges(): Promise<FilterGroupItem[]> {
+    const response = await get('commodity-prices/time-ranges')
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return []
   }
 }
 
