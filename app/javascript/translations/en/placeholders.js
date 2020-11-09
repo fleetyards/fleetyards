@@ -31,7 +31,7 @@ export default {
     rsiHandle: 'RSI Handle',
   },
   commodityPrice: {
-    price: 'Price',
+    price: '100.00',
   },
   filters: {
     shops: {

@@ -23,7 +23,6 @@
                 value-attr="slug"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
                 name="station"
               />
             </ValidationProvider>
@@ -45,7 +44,6 @@
                 :collection-filter="shopsCollectionFilter"
                 :disabled="!internalStationSlug"
                 :error="errors[0]"
-                :no-label="true"
                 name="shopId"
               />
             </ValidationProvider>
@@ -66,7 +64,6 @@
                 :label="$t('labels.filters.shopCommodities.commodityType')"
                 :collection="shopCommodityTypesCollection"
                 :error="errors[0]"
-                :no-label="true"
                 name="commodityItemType"
               />
             </ValidationProvider>
@@ -94,7 +91,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Component'"
@@ -107,7 +103,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Equipment'"
@@ -120,7 +115,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'Model'"
@@ -133,7 +127,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'ModelModule'"
@@ -146,7 +139,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
               <CollectionFilterGroup
                 v-if="form.commodityItemType === 'ModelPaint'"
@@ -160,7 +152,6 @@
                 :error="errors[0]"
                 :paginated="true"
                 :searchable="true"
-                :no-label="true"
               />
             </ValidationProvider>
           </div>
@@ -172,15 +163,15 @@
               v-slot="{ errors }"
               vid="path"
               rules="required"
-              :name="$t('labels.commodityPrice.path')"
+              :name="$t('labels.commodityPrice.type')"
               :slim="true"
             >
               <FilterGroup
                 v-model="form.path"
                 name="path"
                 :error="errors[0]"
+                :label="$t('labels.commodityPrice.type')"
                 :options="pathOptions"
-                :no-label="true"
               />
             </ValidationProvider>
           </div>
@@ -196,8 +187,8 @@
                 id="commodityPrice-price"
                 v-model="form.price"
                 translation-key="commodityPrice.price"
-                :no-label="true"
                 :error="errors[0]"
+                :label="$t('labels.commodityPrice.price')"
                 step="0.01"
                 min="0.01"
                 type="number"
@@ -222,7 +213,6 @@
                   :label="$t('labels.filters.commodityPrice.timeRange')"
                   :collection="commodityPricesCollction"
                   collection-method="timeRanges"
-                  :no-label="true"
                 />
               </ValidationProvider>
             </div>

@@ -352,6 +352,7 @@ export default {
     destroyInfo:
       "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
   },
+
   'filters': {
     shops: {
       name: 'Name',
@@ -364,6 +365,15 @@ export default {
       commodityType: 'Commodity Type',
       starsystem: 'Starsystem',
       station: 'Station',
+    },
+    shopCommodities: {
+      commodityType: 'Commodity Type',
+      station: 'Station',
+      shopId: 'Shop',
+      equipment: 'Equipment',
+      component: 'Component',
+      commodity: 'Commodity',
+      model: 'Ship',
     },
     shopItems: {
       category: 'Category',
@@ -484,6 +494,10 @@ export default {
     selected: '%{count} Selected',
   },
   'commodityPrice': {
+    shopId: 'Shop',
+    station: 'Station',
+    commodityItemType: 'Commodity Type',
+    commodityItemId: 'Commodity Item',
     item: 'ShopCommodity',
     price: 'Price',
     type: 'Type',
