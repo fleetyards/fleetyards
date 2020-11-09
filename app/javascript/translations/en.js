@@ -105,6 +105,7 @@ export default {
     celestialObject: 'Location',
     station: 'Station',
     location: '%{name} at %{location}',
+    refinaryTerminal: 'Refinary Terminal',
   },
   commodityItem: {
     grade: 'Grade',

@@ -4,18 +4,19 @@
 #
 # Table name: shops
 #
-#  id          :uuid             not null, primary key
-#  buying      :boolean          default(FALSE)
-#  hidden      :boolean          default(TRUE)
-#  name        :string
-#  rental      :boolean          default(FALSE)
-#  selling     :boolean          default(FALSE)
-#  shop_type   :integer
-#  slug        :string
-#  store_image :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  station_id  :uuid
+#  id                :uuid             not null, primary key
+#  buying            :boolean          default(FALSE)
+#  hidden            :boolean          default(TRUE)
+#  name              :string
+#  refinary_terminal :boolean
+#  rental            :boolean          default(FALSE)
+#  selling           :boolean          default(FALSE)
+#  shop_type         :integer
+#  slug              :string
+#  store_image       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  station_id        :uuid
 #
 # Indexes
 #
@@ -24,7 +25,7 @@
 class Shop < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name shop_type station celestial_object starsystem],
+  searchkick searchable: %i[name shop_type station celestial_object starsystem refinary],
              word_start: %i[name],
              filterable: []
 
@@ -34,7 +35,8 @@ class Shop < ApplicationRecord
       shop_type: shop_type,
       station: station.name,
       celestial_object: station.celestial_object.name,
-      starsystem: station.celestial_object.starsystem&.name
+      starsystem: station.celestial_object.starsystem&.name,
+      refinary: refinary_terminal? ? 'Refinary' : ''
     }
   end
 

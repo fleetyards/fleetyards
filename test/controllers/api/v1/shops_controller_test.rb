@@ -34,6 +34,7 @@ module Api
           'storeImage' => new_deal.store_image.url,
           'storeImageMedium' => new_deal.store_image.medium.url,
           'storeImageSmall' => new_deal.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -91,6 +92,7 @@ module Api
           'storeImage' => admin_daymar.store_image.url,
           'storeImageMedium' => admin_daymar.store_image.medium.url,
           'storeImageSmall' => admin_daymar.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 001',
             'slug' => 'arccorp'
@@ -180,6 +182,7 @@ module Api
           'storeImage' => admin_yela.store_image.url,
           'storeImageMedium' => admin_yela.store_image.medium.url,
           'storeImageSmall' => admin_yela.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 002',
             'slug' => 'arccorp'
@@ -269,6 +272,7 @@ module Api
           'storeImage' => admin_olisar.store_image.url,
           'storeImageMedium' => admin_olisar.store_image.medium.url,
           'storeImageSmall' => admin_olisar.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -323,6 +327,7 @@ module Api
           'storeImage' => dumpers.store_image.url,
           'storeImageMedium' => dumpers.store_image.medium.url,
           'storeImageSmall' => dumpers.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -377,6 +382,7 @@ module Api
           'storeImage' => new_deal.store_image.url,
           'storeImageMedium' => new_deal.store_image.medium.url,
           'storeImageSmall' => new_deal.store_image.small.url,
+          'refinaryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'

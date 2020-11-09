@@ -165,6 +165,7 @@ en:
         rental: Does offer Rentals?
         buying: Does buy Items?
         selling: Does sell Items?
+        refinary_terminal: Has a Refinary Terminal?
         shop_types:
           clothing: Clothing Store
           armor: Armor Store

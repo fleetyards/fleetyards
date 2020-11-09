@@ -1,6 +1,7 @@
 export default {
   'true': 'Yes',
   'false': 'No',
+  'null': '-',
   'hide': 'Hide',
   'show': 'Show',
   'selected': 'Selected',

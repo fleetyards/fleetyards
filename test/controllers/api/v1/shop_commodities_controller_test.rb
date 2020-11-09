@@ -54,6 +54,7 @@ module Api
             'storeImage' => andromeda.shop.store_image.url,
             'storeImageMedium' => andromeda.shop.store_image.medium.url,
             'storeImageSmall' => andromeda.shop.store_image.small.url,
+            'refinaryTerminal' => nil,
             'station' => {
               'name' => andromeda.shop.station.name,
               'slug' => andromeda.shop.station.slug,
@@ -158,6 +159,7 @@ module Api
             'storeImage' => andromeda.shop.store_image.url,
             'storeImageMedium' => andromeda.shop.store_image.medium.url,
             'storeImageSmall' => andromeda.shop.store_image.small.url,
+            'refinaryTerminal' => nil,
             'station' => {
               'name' => andromeda.shop.station.name,
               'slug' => andromeda.shop.station.slug,
