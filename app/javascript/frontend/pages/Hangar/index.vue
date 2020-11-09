@@ -142,6 +142,7 @@
           </Btn>
 
           <Btn
+            v-if="gridView"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
