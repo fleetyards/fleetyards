@@ -40,6 +40,7 @@ module Api
           'rentalPrice30Days' => nil,
           'averageRentalPrice30Days' => nil,
           'locationLabel' => andromeda.location_label,
+          'confirmed' => true,
           'shop' => {
             'id' => andromeda.shop.id,
             'name' => 'New Deal',
@@ -143,6 +144,7 @@ module Api
           'rentalPrice30Days' => nil,
           'averageRentalPrice30Days' => nil,
           'locationLabel' => andromeda.location_label,
+          'confirmed' => true,
           'shop' => {
             'id' => andromeda.shop.id,
             'name' => 'New Deal',

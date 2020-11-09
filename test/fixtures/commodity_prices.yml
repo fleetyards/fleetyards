@@ -20,23 +20,28 @@ commodity_gold_daymar_price:
   price: 10
   type: CommodityBuyPrice
   shop_commodity: commodity_gold_daymar
+  confirmed: true
 
 commodity_gold_yela_price:
   price: 5
   type: CommoditySellPrice
   shop_commodity: commodity_gold_yela
+  confirmed: true
 
 commodity_titan_daymar_price:
   price: 10
   type: CommoditySellPrice
   shop_commodity: commodity_titan_daymar
+  confirmed: true
 
 commodity_titan_yela_price:
   price: 20
   type: CommodityBuyPrice
   shop_commodity: commodity_titan_yela
+  confirmed: true
 
 commodity_titan_olisar_price:
   price: 17
   type: CommodityBuyPrice
   shop_commodity: commodity_titan_olisar
+  confirmed: true

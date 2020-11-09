@@ -34,41 +34,49 @@
 commodity_one:
   shop: dumpers
   commodity_item: explorer (Model)
+  confirmed: true
 
 commodity_three:
   shop: new_deal
   commodity_item: explorer (Model)
+  confirmed: true
 
 commodity_four:
   shop: new_deal
   commodity_item: andromeda (Model)
+  confirmed: true
 
 commodity_gold_daymar:
   shop: admin_daymar
   commodity_item: gold (Commodity)
   buy_price: 10
   average_buy_price: 10
+  confirmed: true
 
 commodity_gold_yela:
   shop: admin_yela
   commodity_item: gold (Commodity)
   sell_price: 5
   average_sell_price: 5
+  confirmed: true
 
 commodity_titan_daymar:
   shop: admin_daymar
   commodity_item: titan (Commodity)
   sell_price: 10
   average_sell_price: 10
+  confirmed: true
 
 commodity_titan_yela:
   shop: admin_yela
   commodity_item: titan (Commodity)
   buy_price: 20
   average_buy_price: 20
+  confirmed: true
 
 commodity_titan_olisar:
   shop: admin_olisar
   commodity_item: titan (Commodity)
   buy_price: 17
   average_buy_price: 17
+  confirmed: true
