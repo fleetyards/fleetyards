@@ -9,7 +9,10 @@
       </div>
       <div class="col-12 col-md-4">
         <div class="page-actions page-actions-right">
-          <PriceModalBtn v-if="station" :station-slug="station.slug" />
+          <PriceModalBtn
+            v-if="station && station.shops.length"
+            :station-slug="station.slug"
+          />
         </div>
       </div>
     </div>
