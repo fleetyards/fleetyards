@@ -164,6 +164,10 @@ export default {
       destroy:
         "Are you sure you want to destroy your Account? This Action can't be reverted.",
     },
+    commodityPrice: {
+      destroy:
+        "Are you sure you want to destroy this Price? This Action can't be reverted.",
+    },
     shopCommodity: {
       destroy:
         "Are you sure you want to destroy this Commodity? This Action can't be reverted.",

@@ -483,4 +483,9 @@ export default {
   'table': {
     selected: '%{count} Selected',
   },
+  'commodityPrice': {
+    item: 'ShopCommodity',
+    price: 'Price',
+    type: 'Type',
+  },
 }

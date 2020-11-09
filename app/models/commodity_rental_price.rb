@@ -37,6 +37,8 @@ class CommodityRentalPrice < CommodityPrice
   end
 
   def update_shop_commodity
+    return if shop_commodity.blank?
+
     shop_commodity.update_1_day_prices if time_range == '1-day'
     shop_commodity.update_3_days_prices if time_range == '3-days'
     shop_commodity.update_7_days_prices if time_range == '7-days'

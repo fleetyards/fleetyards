@@ -43,12 +43,22 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :commodity_prices, path: 'commodity-prices', only: [:destroy] do
+  resources :shop_commodities, path: 'shop-commodities', only: %i[index destroy] do
+    member do
+      put :confirm
+    end
+  end
+
+  resources :commodity_prices, path: 'commodity-prices', only: [:index, :destroy] do
     collection do
       post 'create-sell-price' => 'commodity_prices#create_sell_price'
       post 'create-buy-price' => 'commodity_prices#create_buy_price'
       post 'create-rental-price' => 'commodity_prices#create_rental_price'
       get 'time-ranges' => 'commodity_prices#time_ranges'
+    end
+
+    member do
+      put :confirm
     end
   end
 end

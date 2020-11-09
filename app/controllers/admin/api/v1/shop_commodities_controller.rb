@@ -11,7 +11,13 @@ module Admin
 
           shop_commodities_query_params['sorts'] = 'created_at desc'
 
-          @q = shop.shop_commodities
+          scope = ShopCommodity
+
+          if shop.present?
+            scope = scipe.where(shop_id: shop.id)
+          end
+
+          @q = scope
             .includes([:commodity_item])
             .ransack(shop_commodities_query_params)
 
@@ -48,6 +54,14 @@ module Admin
           render json: ValidationError.new('shop_commodity.create', shop_commodity.errors), status: :bad_request
         end
 
+        def confirm
+          authorize! :update, shop_commodity
+
+          return if shop_commodity.update(confirmed: true)
+
+          render json: ValidationError.new('shop_commodity.update', shop_commodity.errors), status: :bad_request
+        end
+
         def destroy
           authorize! :destroy, shop_commodity
 
@@ -65,12 +79,12 @@ module Admin
         end
 
         private def shop
-          @shop ||= Shop.find(params[:shop_id])
+          @shop ||= Shop.find_by(id: params[:shop_id])
         end
 
         private def shop_commodities_query_params
           @shop_commodities_query_params ||= query_params(
-            :commodity_item_id
+            :commodity_item_id, :confirmed_eq
           )
         end
 

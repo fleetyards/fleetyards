@@ -20,6 +20,23 @@ body {
   padding-top: 70px;
 }
 
+.nav-item a {
+  position: relative;
+
+  .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: $primary;
+    border-radius: 10px;
+  }
+}
+
 .app-wrapper {
   .app-body {
     padding-top: 20px;

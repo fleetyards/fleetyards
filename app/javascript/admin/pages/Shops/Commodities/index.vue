@@ -237,7 +237,7 @@ export default class AdminStationImages extends Vue {
     if (
       await this.collection.destroy(this.routeParams.shopId, shopCommodity.id)
     ) {
-      this.$comlink.$emit('close-modal')
+      this.fetch()
     }
 
     this.deleting = false

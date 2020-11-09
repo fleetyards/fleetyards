@@ -40,6 +40,10 @@ en:
         images: Imageupload for %{station}
         index: Stations
         new: New Station
+      shop_commodity:
+        confirmation: Confirm submitted Shop Commodities
+      commodity_price:
+        confirmation: Confirm submitted Prices
       shop:
         edit: Shop %{shop}
         index: Shops

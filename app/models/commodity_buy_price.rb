@@ -23,6 +23,8 @@ class CommodityBuyPrice < CommodityPrice
   after_save :update_shop_commodity
 
   def update_shop_commodity
+    return if shop_commodity.blank?
+
     shop_commodity.update_buy_prices
   end
 end

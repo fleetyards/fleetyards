@@ -24,6 +24,22 @@ export const routes = [
       ),
   },
   {
+    path: '/shop-commodities/confirmation',
+    name: 'shop-commodity-confirmations',
+    component: () =>
+      import(
+        /* webpackChunkName: "page.admin.shop-commodities" */ 'admin/pages/ShopCommodities/Confirmation/index.vue'
+      ),
+  },
+  {
+    path: '/commodity-prices/confirmation',
+    name: 'commodity-price-confirmations',
+    component: () =>
+      import(
+        /* webpackChunkName: "page.admin.commodity-prices" */ 'admin/pages/CommodityPrices/Confirmation/index.vue'
+      ),
+  },
+  {
     path: '/images',
     name: 'images',
     component: () =>

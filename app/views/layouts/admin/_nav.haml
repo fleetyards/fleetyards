@@ -1,5 +1,7 @@
 %ul.navbar-nav.mr-auto
   - if admin_user_signed_in?
+    - unconfirmed_shop_commodities = ShopCommodity.where(confirmed: false).count
+    - unconfirmed_commodity_prices = CommodityPrice.where(confirmed: false).count
     %li.nav-item{class: active_nav?('admin')}
       = link_to I18n.t(:"nav.home"), admin_root_path, class: 'nav-link'
     %li.nav-item.dropdown{class: active_nav?(%w(admin-models admin-manufacturers admin-components admin-model_modules admin-model_upgrades))}
@@ -16,10 +18,12 @@
         .dropdown-divider
         = link_to Component.name.humanize.pluralize, admin_components_path, class: "dropdown-item #{active_nav?('admin-components')}"
 
-    %li.nav-item.dropdown{class: active_nav?(%w(admin-stations admin-shops admin-trade-hubs admin-commodities admin-planets admin-starsystems))}
+    %li.nav-item.dropdown{class: active_nav?(%w(admin-stations admin-shops admin-trade-hubs admin-commodities admin-planets admin-starsystems admin-shop_commodities-confirmation admin-commodity_prices-confirmation))}
       %a.nav-link.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         = Station.name.humanize.pluralize
         %b.caret
+        %span.badge
+          = unconfirmed_commodity_prices + unconfirmed_shop_commodities
       .dropdown-menu
         = link_to Station.name.humanize.pluralize, admin_stations_path, class: "dropdown-item #{active_nav?('admin-stations')}"
         = link_to I18n.t(:"nav.celestial_objects"), admin_celestial_objects_path, class: "dropdown-item #{active_nav?('admin-celestial_objects')}"
@@ -28,6 +32,19 @@
         = link_to Shop.name.humanize.pluralize, admin_shops_path, class: "dropdown-item #{active_nav?('admin-shops')}"
         = link_to I18n.t(:"nav.commodities"), admin_commodities_path, class: "dropdown-item #{active_nav?('admin-commodities')}"
         = link_to I18n.t(:"nav.equipment"), admin_equipment_index_path, class: "dropdown-item #{active_nav?('admin-equipment')}"
+        .dropdown-divider
+
+        %a.dropdown-item{href: confirmation_admin_shop_commodities_path, class: active_nav?('admin-shop_commodities-confirmation')}
+          = I18n.t(:"nav.shop_commodities.confirmation")
+          - unless unconfirmed_shop_commodities.zero?
+            %span.badge
+              = unconfirmed_shop_commodities
+        %a.dropdown-item{href: confirmation_admin_commodity_prices_path, class: active_nav?('admin-commodity_prices-confirmation')}
+          = I18n.t(:"nav.commodity_prices.confirmation")
+          - unless unconfirmed_commodity_prices.zero?
+            %span.badge
+              = unconfirmed_commodity_prices
+
     %li.nav-item{class: active_nav?('admin-images')}
       = link_to I18n.t(:"nav.images"), admin_images_path, 'data-turbolinks': "false", class: 'nav-link'
     %li.nav-item{class: active_nav?('admin-users')}

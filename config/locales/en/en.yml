@@ -79,6 +79,10 @@ en:
     celestial_objects: Celestial Objects
     starsystems: Starsystems
     admin_users: Admins
+    shop_commodities:
+      confirmation: Confirm Shop Commodities
+    commodity_prices:
+      confirmation: Confirm Price Submissions
   title:
     frontend:
       home: Home
@@ -160,6 +164,10 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    shop_commodity:
+      confirmation: Confirm submitted Shop Commodities
+    commodity_price:
+      confirmation: Confirm submitted Prices
     equipment:
       edit: Edit Equipment
       index: Equipment
