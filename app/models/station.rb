@@ -5,12 +5,14 @@
 # Table name: stations
 #
 #  id                  :uuid             not null, primary key
+#  cargo_hub           :boolean
 #  description         :text
 #  hidden              :boolean          default(TRUE)
 #  images_count        :integer          default(0)
 #  location            :string
 #  map                 :string
 #  name                :string
+#  refinary            :boolean
 #  slug                :string
 #  station_type        :integer
 #  status              :integer
@@ -29,7 +31,7 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[name station_type celestial_object starsystem],
+  searchkick searchable: %i[name station_type celestial_object starsystem refinary cargo_hub],
              word_start: %i[name],
              filterable: []
 
@@ -38,7 +40,9 @@ class Station < ApplicationRecord
       name: name,
       station_type: station_type,
       celestial_object: celestial_object.name,
-      starsystem: celestial_object.starsystem&.name
+      starsystem: celestial_object.starsystem&.name,
+      cargo_hub: cargo_hub? ? 'Cargo Hub' : '',
+      refinary: refinary? ? 'Refinary' : ''
     }
   end
 

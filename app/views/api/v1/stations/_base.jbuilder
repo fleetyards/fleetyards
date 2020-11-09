@@ -13,6 +13,8 @@ json.description station.description
 json.background_image station.random_image&.name&.url
 json.has_images station.images_count.positive?
 json.shop_list_label station.shop_list_label
+json.refinary station.refinary
+json.cargo_hub station.cargo_hub
 json.habitation_counts do
   json.array! station.habitation_counts, partial: 'api/v1/stations/habitation_count', as: :habitation_count
 end

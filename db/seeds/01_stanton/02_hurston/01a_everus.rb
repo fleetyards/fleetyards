@@ -10,7 +10,9 @@ everus.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
-  hidden: hidden
+  hidden: hidden,
+  refinary: true,
+  cargo_hub: true
 )
 
 everus.docks.destroy_all

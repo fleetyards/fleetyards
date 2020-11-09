@@ -10,7 +10,9 @@ baijini.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
-  hidden: false
+  hidden: false,
+  refinary: true,
+  cargo_hub: true
 )
 
 baijini.docks.destroy_all
@@ -78,5 +80,13 @@ casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/casaba.jpg').open,
   selling: true,
+  hidden: hidden
+)
+
+traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: baijini)
+traveler_rentals.update!(
+  shop_type: :rental,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
+  rental: true,
   hidden: hidden
 )

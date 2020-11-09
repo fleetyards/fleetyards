@@ -187,6 +187,8 @@ en:
           default: 'in the %{starsystem} System'
       station:
         hidden: hidden?
+        refinary: Has Refinary Station?
+        cargo_hub: Has Cargo Hub?
         location_prefix:
           default: 'on'
           asteriod: 'on asteroid near'

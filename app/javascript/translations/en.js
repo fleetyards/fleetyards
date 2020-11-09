@@ -37,6 +37,8 @@ export default {
   station: {
     type: 'Type',
     location: 'Location',
+    refinary: 'Refinary Station',
+    cargoHub: 'Cargo Hub',
   },
   model: {
     focus: 'Focus',

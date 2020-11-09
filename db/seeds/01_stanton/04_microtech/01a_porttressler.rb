@@ -10,7 +10,9 @@ porttressler.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
-  hidden: false
+  hidden: false,
+  refinary: true,
+  cargo_hub: true
 )
 
 porttressler.docks.destroy_all
