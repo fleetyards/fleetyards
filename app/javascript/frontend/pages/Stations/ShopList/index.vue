@@ -8,6 +8,7 @@
       </div>
     </div>
     <FilteredList
+      key="shops"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"

@@ -9,6 +9,7 @@
       </div>
     </div>
     <FilteredList
+      key="models-fleetcharts"
       :collection="collection"
       collection-method="findAllFleetchart"
       :name="$route.name"

@@ -9,6 +9,7 @@
     </div>
 
     <FilteredList
+      key="models"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"

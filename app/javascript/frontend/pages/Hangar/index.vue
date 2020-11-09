@@ -99,6 +99,7 @@
     </div>
 
     <FilteredList
+      key="hangar"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"

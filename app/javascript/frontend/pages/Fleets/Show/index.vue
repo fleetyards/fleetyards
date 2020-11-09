@@ -163,6 +163,7 @@
 
     <FilteredList
       v-if="fleet && fleet.myFleet"
+      key="fleet"
       :collection="vehiclesCollection"
       :name="$route.name"
       :route-query="$route.query"

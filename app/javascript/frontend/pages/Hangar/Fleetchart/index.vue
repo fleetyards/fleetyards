@@ -35,6 +35,7 @@
     </div>
 
     <FilteredList
+      key="hangar-fleetchart"
       :collection="collection"
       collection-method="findAllFleetchart"
       :name="$route.name"

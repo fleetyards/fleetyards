@@ -27,6 +27,7 @@
     </div>
 
     <FilteredList
+      key="fleet-members"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"

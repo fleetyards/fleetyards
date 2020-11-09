@@ -44,6 +44,7 @@
 
       <FilteredList
         v-else
+        key="search"
         :collection="collection"
         :name="$route.name"
         :route-query="$route.query"

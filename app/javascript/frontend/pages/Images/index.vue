@@ -13,6 +13,7 @@
     </div>
 
     <FilteredList
+      key="images"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
