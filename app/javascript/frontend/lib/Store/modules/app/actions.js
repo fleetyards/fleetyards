@@ -17,4 +17,8 @@ export default {
   hideOverlay({ commit }) {
     commit('setOverlayVisible', false)
   },
+
+  toggleNav({ state, commit }) {
+    commit('setNavCollapsed', !state.navCollapsed)
+  },
 }

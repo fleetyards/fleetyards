@@ -7,40 +7,6 @@
     }"
     role="navigation"
   >
-    <button
-      v-if="mobile"
-      :class="{
-        collapsed: navCollapsed,
-      }"
-      class="nav-toggle"
-      type="button"
-      aria-label="Toggle Navigation"
-      @click.stop.prevent="toggle"
-    >
-      <span class="sr-only">
-        {{ $t('labels.toggleNavigation') }}
-      </span>
-      <span class="icon-bar top-bar" />
-      <span class="icon-bar middle-bar" />
-      <span class="icon-bar bottom-bar" />
-    </button>
-    <div
-      v-if="nodeEnv && !mobile"
-      :class="{
-        'spacing-right': this.$route.name === 'home',
-      }"
-      class="environment-label"
-    >
-      <span :class="environmentLabelClasses">
-        <i class="far fa-info-circle" />
-        {{ nodeEnv }}
-      </span>
-      <span class="git-revision" :class="environmentLabelClasses">
-        <i class="far fa-fingerprint" />
-        {{ gitRevision }}
-      </span>
-    </div>
-    <QuickSearch v-if="$route.meta.quickSearch" />
     <div
       :class="{
         'nav-container-slim': slim,
@@ -112,7 +78,6 @@
 
 <script lang="ts">
 import { mapGetters } from 'vuex'
-import QuickSearch from 'frontend/core/components/Navigation/QuickSearch'
 import NavItem from 'frontend/core/components/Navigation/NavItem'
 import UserNav from 'frontend/core/components/Navigation/UserNav'
 import FleetNav from 'frontend/core/components/Navigation/FleetNav'
@@ -127,7 +92,6 @@ export default {
   name: 'Navigation',
 
   components: {
-    QuickSearch,
     NavItem,
     UserNav,
     FleetNav,
@@ -149,7 +113,7 @@ export default {
   computed: {
     ...mapGetters(['filters']),
 
-    ...mapGetters('app', ['navCollapsed', 'isUpdateAvailable', 'gitRevision']),
+    ...mapGetters('app', ['navCollapsed', 'isUpdateAvailable']),
 
     ...mapGetters('hangar', {
       hangarPreview: 'preview',
@@ -164,26 +128,6 @@ export default {
         'fleet-settings-fleet',
         'fleet-settings-membership',
       ].includes(this.$route.name)
-    },
-
-    environmentLabelClasses() {
-      const cssClasses = ['pill']
-
-      if (window.NODE_ENV === 'staging') {
-        cssClasses.push('pill-warning')
-      } else if (window.NODE_ENV === 'production') {
-        cssClasses.push('pill-danger')
-      }
-
-      return cssClasses
-    },
-
-    nodeEnv() {
-      if (window.NODE_ENV === 'production') {
-        return null
-      }
-
-      return (window.NODE_ENV || '').toUpperCase()
     },
   },
 
@@ -225,10 +169,6 @@ export default {
       if (element !== target && !element.contains(target)) {
         this.close()
       }
-    },
-
-    toggle() {
-      this.$store.commit('app/toggleNav')
     },
 
     open() {

@@ -15,6 +15,7 @@
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
+          <NavigationHeader />
           <transition name="fade" mode="out-in" appear>
             <router-view :key="$route.path" class="main" />
           </transition>
@@ -35,6 +36,7 @@ import Updates from 'frontend/mixins/Updates'
 import userCollection from 'frontend/api/collections/User'
 import versionCollection from 'frontend/api/collections/Version'
 import Navigation from 'frontend/core/components/Navigation'
+import NavigationHeader from 'frontend/core/components/Navigation/Header'
 import AppFooter from 'frontend/core/components/AppFooter'
 import AppModal from 'frontend/core/components/AppModal'
 import BackgroundImage from 'frontend/core/components/BackgroundImage'
@@ -46,6 +48,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
   components: {
     BackgroundImage,
     Navigation,
+    NavigationHeader,
     AppFooter,
     AppModal,
   },

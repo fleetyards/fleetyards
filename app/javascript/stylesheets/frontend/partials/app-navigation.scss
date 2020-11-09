@@ -1,0 +1,241 @@
+.navigation-header {
+  position: relative;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 15px;
+  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
+
+  .environment-label {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    &.spacing-right {
+      right: 230px;
+    }
+
+    .git-revision {
+      cursor: pointer;
+    }
+  }
+
+  .quick-search-bar {
+    width: 600px;
+    transition: left ease .5s, right ease .5s;
+
+    .form-input {
+      margin-bottom: 0;
+    }
+  }
+
+  .nav-toggle {
+    display: block;
+    height: 43px;
+    margin-right: 10px;
+    padding: 0 11px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-color: transparent;
+    border-radius: 3px;
+    transition: left ease $transition-base-speed;
+
+    .icon-bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: #c8c8c8;
+      border-radius: 1px;
+      transition: all ease .2s;
+    }
+
+    .top-bar {
+      transform: rotate(45deg);
+      transform-origin: 10% 10%;
+    }
+
+    .middle-bar {
+      margin-top: 4px;
+      opacity: 0;
+    }
+
+    .bottom-bar {
+      margin-top: 4px;
+      transform: rotate(-45deg);
+      transform-origin: 10% 90%;
+    }
+
+    .update-icon {
+      position: absolute;
+      top: 12px;
+      right: 8px;
+      width: 10px;
+      height: 10px;
+      background-color: $warning;
+      border-radius: 50%;
+      transition: all ease .5s;
+    }
+
+    &.collapsed {
+      .top-bar,
+      .bottom-bar {
+        transform: rotate(0);
+      }
+
+      .middle-bar {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+nav {
+  position: relative;
+  z-index: 1000;
+  width: 300px;
+  height: 100%;
+  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
+
+  .nav-container {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: rgba($gray-darker, .5);
+    border-right: 1px solid rgba(30, 34, 38, .5);
+    transition: left ease $transition-base-speed, width ease $transition-base-speed;
+
+    .nav-container-inner {
+      position: relative;
+      min-height: 100%;
+      padding-bottom: 150px;
+
+      > :first-child {
+        padding-top: 20px;
+      }
+
+      > :last-child {
+        padding-bottom: 20px;
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .logo-menu {
+      min-height: 60px;
+
+      .logo-menu-image {
+        position: absolute;
+        top: 10px;
+        left: 30px;
+        width: 40px;
+        transition: left ease $transition-base-speed;
+      }
+
+      .logo-menu-label {
+        display: block;
+        padding-top: 6px;
+        padding-right: 20px;
+        padding-left: 50px;
+        font-family: 'Orbitron', sans-serif;
+      }
+    }
+
+    .nav-bottom {
+      position: absolute;
+      bottom: 0;
+    }
+
+    &.nav-container-slim {
+      width: 80px;
+
+      .logo-menu {
+        > :first-child {
+          min-height: 60px;
+        }
+
+        .logo-menu-image {
+          top: auto;
+          left: 20px;
+        }
+      }
+    }
+  }
+
+  &.nav-slim {
+    width: 80px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    margin-top: env(safe-area-inset-top);
+
+    .nav-container {
+      position: fixed;
+      top: 0;
+      right: auto;
+      bottom: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      max-height: 100vh;
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+
+      .nav-container-inner {
+        > :first-child {
+          padding-top: 5px;
+        }
+
+        > :last-child {
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .nav-visible {
+    right: -300px;
+    left: 300px;
+
+    .navigation-header {
+      left: 300px;
+
+      .environment-label {
+        right: -280px;
+      }
+    }
+
+    nav {
+      .nav-container {
+        left: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  nav {
+    .nav-container {
+      left: -250px;
+      width: 250px;
+    }
+  }
+
+  .nav-visible {
+    right: -250px;
+    left: 250px;
+  }
+}
