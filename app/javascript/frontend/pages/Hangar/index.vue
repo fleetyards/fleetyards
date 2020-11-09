@@ -18,7 +18,6 @@
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="groupsCollection.records.length"
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
