@@ -34,7 +34,6 @@ body {
     flex-direction: column;
     justify-content: space-between;
     max-width: 100%;
-    // padding-top: 20px;
   }
 
   .main-inner {
@@ -114,7 +113,7 @@ hr {
 @media (max-width: $desktop-breakpoint) {
   .app-body {
     .main-wrapper {
-      margin-top: env(safe-area-inset-top);
+      padding-top: env(safe-area-inset-top);
       padding-right: env(safe-area-inset-right);
       padding-left: env(safe-area-inset-left);
     }
