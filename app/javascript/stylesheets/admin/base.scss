@@ -24,14 +24,13 @@ body {
   position: relative;
 
   .badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 20px;
     height: 20px;
+    margin-left: 5px;
+    color: white;
     background-color: $primary;
     border-radius: 10px;
   }
