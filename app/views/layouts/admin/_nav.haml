@@ -22,8 +22,9 @@
       %a.nav-link.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         = Station.name.humanize.pluralize
         %b.caret
-        %span.badge
-          = unconfirmed_commodity_prices + unconfirmed_shop_commodities
+        - unless (unconfirmed_commodity_prices + unconfirmed_shop_commodities).zero?
+          %span.badge
+            = unconfirmed_commodity_prices + unconfirmed_shop_commodities
       .dropdown-menu
         = link_to Station.name.humanize.pluralize, admin_stations_path, class: "dropdown-item #{active_nav?('admin-stations')}"
         = link_to I18n.t(:"nav.celestial_objects"), admin_celestial_objects_path, class: "dropdown-item #{active_nav?('admin-celestial_objects')}"
