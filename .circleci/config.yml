@@ -49,9 +49,6 @@ redisImage: &redisImage
 
 esImage: &esImage
   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-  auth:
-    username: $DOCKERHUB_USER
-    password: $DOCKERHUB_PASSWORD
   environment:
     cluster.name: fleetyards-test-cluster
     xpack.security.enabled: false
