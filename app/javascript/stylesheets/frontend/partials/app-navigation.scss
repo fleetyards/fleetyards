@@ -3,6 +3,7 @@
   left: 0;
   display: flex;
   justify-content: space-between;
+  height: 83px;
   padding: 20px 15px;
   transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
