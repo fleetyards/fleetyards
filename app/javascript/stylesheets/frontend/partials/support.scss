@@ -1,16 +1,10 @@
 .support-button {
   position: absolute;
-  top: -20px;
-  right: 20px;
+  top: -64px;
+  right: 15px;
   margin: 0;
 }
 
 .support-body {
   text-align: center;
-}
-
-@media (max-width: $desktop-breakpoint) {
-  .support-button {
-    top: -60px;
-  }
 }
