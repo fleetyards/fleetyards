@@ -10,7 +10,9 @@ baijini.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
-  hidden: false
+  hidden: false,
+  refinary: true,
+  cargo_hub: true
 )
 
 baijini.docks.destroy_all
@@ -52,6 +54,8 @@ admin = Shop.find_or_initialize_by(name: 'Admin Office', station: baijini)
 admin.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -59,6 +63,7 @@ bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: baiji
 bulwark_armor.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/armor.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -66,6 +71,7 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: baijini
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/platinum_bay.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -73,5 +79,14 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: baijini)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/casaba.jpg').open,
+  selling: true,
+  hidden: hidden
+)
+
+traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: baijini)
+traveler_rentals.update!(
+  shop_type: :rental,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
+  rental: true,
   hidden: hidden
 )

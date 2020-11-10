@@ -17,8 +17,8 @@ en:
     transmission_start: "--- incomming transmission ---"
     admin:
       weekly:
-        headline: FleetYards.net Weekly
-        subject: FleetYards.net Weekly
+        headline: FleetYards.net Command - Weekly
+        subject: FleetYards.net Command Weekly
         registrations: "New Registrations"
         ships: "New Ships"
         vehicles: "New Vehicles"
@@ -27,9 +27,13 @@ en:
         headline: FleetYards.net Missing Loaners
         subject: FleetYards.net Missing Loaners
       notify_block:
-        headline: FleetYards.net Blocked by RSI
-        subject: FleetYards.net Blocked by RSI
-        text: RSI has blocked automated updates
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connection to RSI blocked
+        text: Automated updates from RSI using "%{url}" has been blocked
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connection to RSI restored
+        text: Automated updates from RSI using "%{url}" has been restored
     vehicle:
       on_sale:
         headline:
@@ -75,6 +79,10 @@ en:
     celestial_objects: Celestial Objects
     starsystems: Starsystems
     admin_users: Admins
+    shop_commodities:
+      confirmation: Confirm Shop Commodities
+    commodity_prices:
+      confirmation: Confirm Price Submissions
   title:
     frontend:
       home: Home
@@ -156,6 +164,10 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    shop_commodity:
+      confirmation: Confirm submitted Shop Commodities
+    commodity_price:
+      confirmation: Confirm submitted Prices
     equipment:
       edit: Edit Equipment
       index: Equipment

@@ -56,7 +56,9 @@ export default {
               text: this.$t('messages.account.destroy.success'),
             })
             await this.$store.dispatch('session/logout')
-            this.$router.push({ name: 'home' })
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            this.$router.push({ name: 'home' }).catch(() => {})
           } else {
             displayAlert({
               text: this.$t('messages.account.destroy.error'),

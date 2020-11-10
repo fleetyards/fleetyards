@@ -30,10 +30,10 @@ if ENV['TEST_SEEDS'].present?
   )
 
   RoadmapItem.create(
-    rsi_id: 1,
+    rsi_id: 500,
     release: '1.0.0',
     release_description: 'lorem ipsum',
-    rsi_release_id: 1,
+    rsi_release_id: 500,
     released: false,
     rsi_category_id: 6,
     name: 'Foo Bar',

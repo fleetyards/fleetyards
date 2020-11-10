@@ -6,7 +6,13 @@ ita.update!(store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/it
 ryder = Station.find_or_initialize_by(name: 'HDMS-Ryder')
 ryder.update!(celestial_object: ita, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ryder.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: ryder)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ryder_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/ryder_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 ryder.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|
@@ -31,7 +37,13 @@ end
 woodruff = Station.find_or_initialize_by(name: 'HDMS-Woodruff')
 woodruff.update!(celestial_object: ita, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/woodruff.jpg').open, hidden: false)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: woodruff)
-admin_office.update!(shop_type: :admin, store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/woodruff_admin.jpg').open, hidden: false)
+admin_office.update!(
+  shop_type: :admin,
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/ita/woodruff_admin.jpg').open,
+  buying: true,
+  selling: true,
+  hidden: false
+)
 
 woodruff.docks.destroy_all
 { small: [1, 2] }.each do |ship_size, pads|

@@ -24,6 +24,7 @@
     </div>
 
     <FilteredList
+      key="fleet-fleetchart"
       :collection="collection"
       collection-method="findAllFleetchart"
       :name="$route.name"

@@ -86,4 +86,19 @@ export default {
   hangarGuideEmpty: 'Not much to see here?',
   hangarGuide: 'Hangar Guide',
   support: 'Support FleetYards.net',
+  vehicle: {
+    bulkGroupEdit: 'Add/Remove Groups',
+  },
+  modals: {
+    shopCommodity: {
+      update: 'Update Commodity %{shopCommodity}',
+      create: 'Add Commodity',
+      sellPrices: '%{shopCommodity} Sell Prices',
+      buyPrices: '%{shopCommodity} Buy Prices',
+      rentalPrices: '%{shopCommodity} Rental Prices',
+    },
+    commodityPrice: {
+      create: 'Submit Price',
+    },
+  },
 }

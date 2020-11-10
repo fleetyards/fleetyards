@@ -145,6 +145,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => explorer.hangar_group_ids,
+            'hangarGroups' => explorer.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => explorer.model_module_ids,
             'modelUpgradeIds' => explorer.model_upgrade_ids,
             'createdAt' => explorer.created_at.utc.iso8601,
@@ -220,6 +227,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => enterprise.hangar_group_ids,
+            'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
             'createdAt' => enterprise.created_at.utc.iso8601,
@@ -308,6 +322,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => enterprise.hangar_group_ids,
+            'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
             'createdAt' => enterprise.created_at.utc.iso8601,

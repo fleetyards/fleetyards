@@ -99,6 +99,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'excon', '>= 0.71.0'
 
 group :development do
+  gem 'annotate'
+
   gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'
   gem 'rails-erd'

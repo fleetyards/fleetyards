@@ -52,6 +52,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l4)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -59,6 +61,8 @@ blackmarket = Shop.find_or_initialize_by(name: 'Blackmarket Terminal', station: 
 blackmarket.update!(
   shop_type: :blackmarket,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/blackmarket.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -67,6 +71,7 @@ bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: cru_l
 bulwark_armor.update!(
   shop_type: :armor,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/live_fire_weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -74,6 +79,7 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: cru_l4)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -81,5 +87,6 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l4)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/platinum.jpg').open,
+  selling: true,
   hidden: hidden
 )

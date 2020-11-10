@@ -1,6 +1,7 @@
 export default {
   'true': 'Yes',
   'false': 'No',
+  'null': '-',
   'hide': 'Hide',
   'show': 'Show',
   'selected': 'Selected',
@@ -15,9 +16,34 @@ export default {
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
   'shop': {
-    rentPrice: 'rental',
-    sellPrice: 'price',
-    buyPrice: 'buying price',
+    rentalPrice: 'rental',
+    sellPrice: 'sells for',
+    buyPrice: 'buys for',
+  },
+  'shopCommodity': {
+    item: 'Item',
+    shop: 'Shop',
+    sellPrices: 'Sell Prices',
+    buyPrices: 'Buy Prices',
+    rentalPrices: 'Rental Prices',
+    confirmed: 'Confirmed?',
+    prices: {
+      label: 'Prices',
+      rentalPrice: 'rental',
+      averageRentalPrice: 'rental (Ø)',
+      sellPrice: 'sells for',
+      averageSellPrice: 'sells for (Ø)',
+      buyPrice: 'buys for',
+      averageBuyPrice: 'buys for (Ø)',
+      rentalPrice1Day: '1 Day for',
+      averageRentalPrice1Day: '1 Day for (Ø)',
+      rentalPrice3Days: '3 Days for',
+      averageRentalPrice3Days: '3 Days for (Ø)',
+      rentalPrice7Days: '7 Days for',
+      averageRentalPrice7Days: '7 Days for (Ø)',
+      rentalPrice30Days: '30 Days for',
+      averageRentalPrice30Days: '30 Days for (Ø)',
+    },
   },
   'stats': {
     quickStats: {
@@ -188,6 +214,7 @@ export default {
   'source': 'Source',
   'model': {
     variants: 'Variants',
+    manufacturer: 'Manufacturer',
     loaners: 'Loaners',
     paints: 'Paints',
     modules: 'Modules',
@@ -224,6 +251,7 @@ export default {
     quantity: 'Per Mount',
     size: 'Size',
     rackSize: 'Rack Size',
+    details: 'Details',
     category: 'Category',
     categoryOrRackSize: 'Category / Rack Size',
     categories: {
@@ -275,11 +303,17 @@ export default {
     purchased: 'Purchased',
     loaner: 'Loaner',
     public: 'Visible on Public Hangar',
+    fullPublic: 'Visible including Name on Public Hangar',
+    publicShort: 'Public',
     nameVisible: 'Name visible on Public Hangar',
     saleNotify: 'I want to receive Sale Notifications',
+    hangarGroups: 'Groups',
     selectGroup: 'Select a Group',
     modelPaintSelect: {
       nullablePrompt: 'Select a Paint',
+    },
+    bulkGroupEdit: {
+      hint: 'Existing Groups will be overridden!',
     },
   },
   'image': {
@@ -320,6 +354,7 @@ export default {
     destroyInfo:
       "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
   },
+
   'filters': {
     shops: {
       name: 'Name',
@@ -332,6 +367,15 @@ export default {
       commodityType: 'Commodity Type',
       starsystem: 'Starsystem',
       station: 'Station',
+    },
+    shopCommodities: {
+      commodityType: 'Commodity Type',
+      station: 'Station',
+      shopId: 'Shop',
+      equipment: 'Equipment',
+      component: 'Component',
+      commodity: 'Commodity',
+      model: 'Ship',
     },
     shopItems: {
       category: 'Category',
@@ -427,6 +471,8 @@ export default {
     sortByPercent: 'Sort by Percent',
     sortByProfit: 'Sort by Profit',
     sortByStation: 'Sort by Station',
+    showAveragePrices: 'Display average Prices',
+    showLatestPrices: 'Display latest Prices',
   },
   'erkul': {
     prefix: 'Tryout Loadouts with',
@@ -441,5 +487,22 @@ export default {
   },
   'addAddon': {
     nullablePrompt: '',
+  },
+  'pagination': {
+    perPage: 'Per Page',
+    pages: '%{page} of %{total}',
+  },
+  'table': {
+    selected: '%{count} Selected',
+  },
+  'commodityPrice': {
+    shopId: 'Shop',
+    station: 'Station',
+    commodityItemType: 'Commodity Type',
+    commodityItemId: 'Commodity Item',
+    item: 'ShopCommodity',
+    price: 'Price',
+    type: 'Type',
+    shop: 'Shop',
   },
 }

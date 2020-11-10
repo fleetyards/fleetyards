@@ -14,6 +14,10 @@ const client = axios.create({
   withCredentials: true,
 })
 
+const { CancelToken } = axios
+
+const cancelations = {}
+
 const extractMetaInfo = function extractMetaInfo(headers, params) {
   const links = linkHeaderParser(headers.link)
   let meta = null
@@ -72,6 +76,16 @@ export async function get(path, params = {}, silent = false) {
     return handleResponse(
       await client.get(path, {
         params,
+        cancelToken: new CancelToken(c => {
+          const cancelId = [path, params?.cacheId]
+            .filter(item => item)
+            .join('-')
+
+          if (cancelations[cancelId]) {
+            cancelations[cancelId]('cancel')
+          }
+          cancelations[cancelId] = c
+        }),
       }),
       params,
       silent,
@@ -107,6 +121,7 @@ export async function destroy(path, data = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
+
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {

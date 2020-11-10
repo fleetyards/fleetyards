@@ -2,7 +2,9 @@
   <div ref="wrapper" class="panel-btn-dropdown">
     <Btn
       :size="size"
+      :variant="variant"
       :active="visible"
+      :inline="inline"
       :mobile-block="mobileBlock"
       @click.native="toggle"
     >
@@ -11,6 +13,7 @@
       </slot>
     </Btn>
     <div
+      ref="btnList"
       class="panel-btn-dropdown-list"
       :class="{ visible, 'expand-left': expandLeft, 'expand-top': expandTop }"
     >
@@ -24,7 +27,7 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn/index.vue'
 
-@Component({
+@Component<BtnDropdown>({
   components: {
     Btn,
   },
@@ -44,7 +47,21 @@ export default class BtnDropdown extends Vue {
   })
   size!: string
 
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
+    },
+  })
+  variant!: string
+
   @Prop({ default: false }) mobileBlock!: boolean
+
+  @Prop({ default: false }) inline!: boolean
 
   created() {
     document.addEventListener('click', this.documentClick)
@@ -68,11 +85,14 @@ export default class BtnDropdown extends Vue {
   documentClick(event: MouseEvent) {
     if (!this.visible) return
 
-    const { wrapper } = this.$refs
+    const { wrapper, btnList } = this.$refs
     const { target } = event
 
     // @ts-ignore
-    if (target !== wrapper && !wrapper.contains(target)) {
+    if (
+      target !== wrapper &&
+      (!wrapper.contains(target) || btnList.contains(target))
+    ) {
       this.visible = false
     }
   }

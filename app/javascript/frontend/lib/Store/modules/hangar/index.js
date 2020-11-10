@@ -52,6 +52,14 @@ export default () => ({
     starterGuideVisible(state) {
       return state.starterGuideVisible
     },
+
+    perPage(state) {
+      return state.perPage
+    },
+
+    gridView(state) {
+      return state.gridView
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -106,6 +114,14 @@ export default () => ({
 
     setStarterGuideVisible(state, payload) {
       state.starterGuideVisible = payload
+    },
+
+    setPerPage(state, payload) {
+      state.perPage = payload
+    },
+
+    setGridView(state, payload) {
+      state.gridView = payload
     },
   },
   /* eslint-enable no-param-reassign */

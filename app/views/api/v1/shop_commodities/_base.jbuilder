@@ -11,12 +11,19 @@ json.sub_category_label shop_commodity.sub_category_label
 json.description shop_commodity.commodity_item.description
 json.price_per_unit shop_commodity.price_per_unit
 json.sell_price shop_commodity.sell_price
+json.average_sell_price shop_commodity.average_sell_price
 json.buy_price shop_commodity.buy_price
-json.rent_price_1_day shop_commodity.rent_price_1_day
-json.rent_price_3_days shop_commodity.rent_price_3_days
-json.rent_price_7_days shop_commodity.rent_price_7_days
-json.rent_price_30_days shop_commodity.rent_price_30_days
+json.average_buy_price shop_commodity.average_buy_price
+json.rental_price_1_day shop_commodity.rental_price_1_day
+json.average_rental_price_1_day shop_commodity.average_rental_price_1_day
+json.rental_price_3_days shop_commodity.rental_price_3_days
+json.average_rental_price_3_days shop_commodity.average_rental_price_3_days
+json.rental_price_7_days shop_commodity.rental_price_7_days
+json.average_rental_price_7_days shop_commodity.average_rental_price_7_days
+json.rental_price_30_days shop_commodity.rental_price_30_days
+json.average_rental_price_30_days shop_commodity.average_rental_price_30_days
 json.location_label shop_commodity.location_label
+json.confirmed shop_commodity.confirmed
 json.shop do
   json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
 end

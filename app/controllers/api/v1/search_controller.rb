@@ -14,7 +14,7 @@ module Api
           models: [Model, ShopCommodity, Shop, Station, CelestialObject, Starsystem],
           fields: [
             { 'name^5': :word_start }, { 'manufacturer_name': :word_start }, 'manufacturer_code', 'station', 'shop',
-            'celestial_object', 'starsystem', 'shop_type', 'station_type'
+            'celestial_object', 'starsystem', 'shop_type', 'station_type', 'refinary', 'cargo_hub'
           ],
           indices_boost: {
             Model => 10,

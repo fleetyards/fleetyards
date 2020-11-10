@@ -38,6 +38,7 @@ class Ability
     can %i[index], :api_search
     can %i[index], :api_trade_routes
     can %i[read], :api_fleet
+    can %i[read], :api_commodity_prices
 
     can %i[read_public], :api_user
   end
@@ -59,7 +60,7 @@ class Ability
       .pluck(:id)
 
     can %i[check invites], :api_fleet
-    can %i[index destroy_all], :api_hangar
+    can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
     can %i[show accept update destroy], FleetMembership, user_id: user.id
     can %i[create], FleetMembership, fleet_id: officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
@@ -70,5 +71,6 @@ class Ability
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id
     can %i[read update destroy], User, id: user.id
+    can %i[create], CommodityPrice, submitted_by: user.id
   end
 end

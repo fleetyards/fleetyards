@@ -1,4 +1,34 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# == Schema Information
+#
+# Table name: model_paints
+#
+#  id                      :uuid             not null, primary key
+#  active                  :boolean          default(TRUE)
+#  description             :string
+#  fleetchart_image        :string
+#  hidden                  :boolean          default(TRUE)
+#  last_pledge_price       :decimal(15, 2)
+#  last_updated_at         :datetime
+#  name                    :string
+#  on_sale                 :boolean          default(FALSE)
+#  pledge_price            :decimal(15, 2)
+#  production_note         :string
+#  production_status       :string
+#  rsi_description         :string
+#  rsi_name                :string
+#  rsi_slug                :string
+#  rsi_store_image         :string
+#  rsi_store_url           :string
+#  slug                    :string
+#  starship42_slug         :string
+#  store_image             :string
+#  store_images_updated_at :datetime
+#  store_url               :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  model_id                :uuid
+#  rsi_id                  :integer
+#
 
 one:
   name: MyString

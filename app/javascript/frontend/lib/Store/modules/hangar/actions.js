@@ -50,4 +50,12 @@ export default {
   enableStarterGuide({ commit }) {
     commit('setStarterGuideVisible', true)
   },
+
+  updatePerPage({ commit }, payload) {
+    commit('setPerPage', payload)
+  },
+
+  toggleGridView({ commit, state }) {
+    commit('setGridView', !state.gridView)
+  },
 }

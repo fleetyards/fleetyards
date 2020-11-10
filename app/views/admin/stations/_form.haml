@@ -55,6 +55,16 @@
         = form.check_box :hidden, placeholder: I18n.t(:"helpers.placeholder.station.hidden"), class: 'checkbox'
         = form.label :hidden do
           = I18n.t(:"activerecord.attributes.station.hidden")
+    .col-12.col-sm-6.col-md-4
+      .form-group
+        = form.check_box :refinary, placeholder: I18n.t(:"helpers.placeholder.station.refinary"), class: 'checkbox'
+        = form.label :refinary do
+          = I18n.t(:"activerecord.attributes.station.refinary")
+    .col-12.col-sm-6.col-md-4
+      .form-group
+        = form.check_box :cargo_hub, placeholder: I18n.t(:"helpers.placeholder.station.cargo_hub"), class: 'checkbox'
+        = form.label :cargo_hub do
+          = I18n.t(:"activerecord.attributes.station.cargo_hub")
 
   %fieldset
     %legend

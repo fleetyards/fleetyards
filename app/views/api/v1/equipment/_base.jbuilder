@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id equipment.id
 json.name equipment.name
 json.slug equipment.slug
 json.description equipment.description

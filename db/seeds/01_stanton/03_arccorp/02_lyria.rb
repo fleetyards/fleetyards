@@ -16,6 +16,8 @@ admin_office_humboldt_mines = Shop.find_or_initialize_by(name: 'Admin Office', s
 admin_office_humboldt_mines.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/humboldt_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -54,6 +56,8 @@ admin_office_shubin_sal_5 = Shop.find_or_initialize_by(name: 'Admin Office', sta
 admin_office_shubin_sal_5.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_5_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -90,6 +94,8 @@ admin_office_shubin_sal_2 = Shop.find_or_initialize_by(name: 'Admin Office', sta
 admin_office_shubin_sal_2.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -106,6 +112,8 @@ admin_office_loveridge = Shop.find_or_initialize_by(name: 'Admin Office', statio
 admin_office_loveridge.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/loveridge_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -121,6 +129,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: paradis
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/paradise_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )
 
@@ -136,5 +146,7 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: orphana
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/orphanage_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )

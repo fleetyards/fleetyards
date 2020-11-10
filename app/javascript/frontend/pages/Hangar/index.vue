@@ -18,7 +18,6 @@
               filter-key="classificationIn"
             />
             <GroupLabels
-              v-if="groupsCollection.records.length"
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
@@ -100,6 +99,7 @@
     </div>
 
     <FilteredList
+      key="hangar"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -132,6 +132,18 @@
           </template>
 
           <Btn
+            :aria-label="toggleGridView"
+            size="small"
+            variant="link"
+            @click.native="toggleGridView"
+          >
+            <i v-if="gridView" class="fad fa-list" />
+            <i v-else class="fas fa-th" />
+            {{ toggleGridViewTooltip }}
+          </Btn>
+
+          <Btn
+            v-if="gridView"
             :aria-label="toggleDetailsTooltip"
             size="small"
             variant="link"
@@ -189,13 +201,28 @@
 
       <HangarGuideBox v-if="isGuideVisible" />
 
-      <template #record="{ record }">
-        <ModelPanel
-          :model="record.model"
-          :vehicle="record"
-          :details="detailsVisible"
-          :is-my-ship="true"
-          :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+      <template #default="{ records, filterVisible, primaryKey }">
+        <FilteredGrid
+          v-if="gridView"
+          :records="records"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ModelPanel
+              :model="record.model"
+              :vehicle="record"
+              :details="detailsVisible"
+              :editable="true"
+              :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+            />
+          </template>
+        </FilteredGrid>
+        <VehiclesTable
+          v-else
+          :vehicles="records"
+          :primary-key="primaryKey"
+          :editable="true"
         />
       </template>
     </FilteredList>
@@ -207,8 +234,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
+import VehiclesTable from 'frontend/components/Vehicles/Table'
 import Btn from 'frontend/core/components/Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
@@ -229,6 +258,8 @@ import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 @Component<Hangar>({
   components: {
     FilteredList,
+    FilteredGrid,
+    VehiclesTable,
     Btn,
     PrimaryAction,
     BtnDropdown,
@@ -261,9 +292,19 @@ export default class Hangar extends Vue {
 
   @Getter('detailsVisible', { namespace: 'hangar' }) detailsVisible
 
+  @Getter('gridView', { namespace: 'hangar' }) gridView
+
+  @Getter('perPage', { namespace: 'hangar' }) perPage
+
   @Getter('money', { namespace: 'hangar' }) money
 
   @Getter('starterGuideVisible', { namespace: 'hangar' }) starterGuideVisible
+
+  @Action('toggleDetails', { namespace: 'hangar' }) toggleDetails: any
+
+  @Action('toggleMoney', { namespace: 'hangar' }) toggleMoney: any
+
+  @Action('toggleGridView', { namespace: 'hangar' }) toggleGridView: any
 
   get hangarGroupCounts(): HangarGroupMetrics[] {
     if (!this.hangarStats) {
@@ -282,6 +323,13 @@ export default class Hangar extends Vue {
       return this.$t('actions.hideDetails')
     }
     return this.$t('actions.showDetails')
+  }
+
+  get toggleGridViewTooltip() {
+    if (this.gridView) {
+      return this.$t('actions.showTableView')
+    }
+    return this.$t('actions.showGridView')
   }
 
   get toggleGuideTooltip() {
@@ -314,6 +362,11 @@ export default class Hangar extends Vue {
     this.fetch()
   }
 
+  @Watch('perPage')
+  onPerPageChange() {
+    this.fetch()
+  }
+
   mounted() {
     this.fetch()
     this.setupUpdates()
@@ -339,14 +392,6 @@ export default class Hangar extends Vue {
     this.$comlink.$emit('open-modal', {
       component: () => import('frontend/components/Vehicles/NewVehiclesModal'),
     })
-  }
-
-  toggleDetails() {
-    this.$store.dispatch('hangar/toggleDetails')
-  }
-
-  toggleMoney() {
-    this.$store.dispatch('hangar/toggleMoney')
   }
 
   highlightGroup(group) {
@@ -415,6 +460,8 @@ export default class Hangar extends Vue {
       text: this.$t('messages.confirm.hangar.destroyAll'),
       onConfirm: async () => {
         await this.collection.destroyAll()
+
+        this.$comlink.$emit('vehicles-delete-all')
 
         this.deleting = false
       },

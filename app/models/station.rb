@@ -1,9 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: stations
+#
+#  id                  :uuid             not null, primary key
+#  cargo_hub           :boolean
+#  description         :text
+#  hidden              :boolean          default(TRUE)
+#  images_count        :integer          default(0)
+#  location            :string
+#  map                 :string
+#  name                :string
+#  refinary            :boolean
+#  slug                :string
+#  station_type        :integer
+#  status              :integer
+#  store_image         :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  celestial_object_id :uuid
+#  planet_id           :uuid
+#
+# Indexes
+#
+#  index_stations_on_celestial_object_id  (celestial_object_id)
+#  index_stations_on_name                 (name) UNIQUE
+#  index_stations_on_planet_id            (planet_id)
+#
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[name station_type celestial_object starsystem],
+  searchkick searchable: %i[name station_type celestial_object starsystem refinary cargo_hub],
              word_start: %i[name],
              filterable: []
 
@@ -12,7 +40,9 @@ class Station < ApplicationRecord
       name: name,
       station_type: station_type,
       celestial_object: celestial_object.name,
-      starsystem: celestial_object.starsystem&.name
+      starsystem: celestial_object.starsystem&.name,
+      cargo_hub: cargo_hub? ? 'Cargo Hub' : '',
+      refinary: refinary? ? 'Refinary' : ''
     }
   end
 
@@ -37,7 +67,12 @@ class Station < ApplicationRecord
 
   belongs_to :celestial_object
 
-  enum station_type: { spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5, "mining-hub": 13, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9, "salvage-outpost": 14, aid_shelter: 10, gate: 11, drug_lab: 12 }
+  enum station_type: {
+    spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4, "mining-station": 5,
+    "mining-hub": 13, "asteroid-station": 6, refinery: 7, district: 8, outpost: 9,
+    "salvage-outpost": 14, aid_shelter: 10, gate: 11, drug_lab: 12, poi: 15, town: 16, city: 17
+  }
+
   ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
     parent.table[:station_type]
   end

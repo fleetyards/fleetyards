@@ -4,8 +4,8 @@
       id="model-name"
       v-model="form.modelNameCont"
       translation-key="filters.models.name"
-      no-label
-      clearable
+      :no-label="true"
+      :clearable="true"
     />
 
     <FilterGroup
@@ -84,7 +84,7 @@
           v-model="form.lengthGteq"
           type="number"
           translation-key="filters.vehicles.lengthGt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
       <div class="col-6">
@@ -105,7 +105,7 @@
           v-model="form.pledgePriceGteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceGt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
 
@@ -115,7 +115,7 @@
           v-model="form.pledgePriceLteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceLt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
     </div>

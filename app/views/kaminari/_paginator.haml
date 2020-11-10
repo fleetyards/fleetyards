@@ -2,48 +2,21 @@
   - total = @options[:total_pages]
   - url = @options[:url]
   - page = @options[:current_page].number
-  %ul.pagination.pagination-centered
-    %li{class: ('disabled' if page - 1 < 1)}
-      - if page - 1 >= 1
-        %a{href: plumb(page: page - 1)}
-          = raw(t 'views.pagination.previous')
-      - else
-        %a=raw(t 'views.pagination.previous')
-    - if total > 3 && page + 1 >= total
-      %li
-        %a{href: plumb(page: 1)}
-          = 1
-    - if total > 4 && page > 2
-      %li.disabled
-        %a='..'
-    - if page > 3 && page == total
-      %li
-        %a{href: plumb(page: page - 2)}
-          = page - 2
-    - if page > 1
-      %li
-        %a{href: plumb(page: page - 1)}
-          = page - 1
-    %li.active
-      %a=page
-    - if page < total
-      %li
-        %a{href: plumb(page: page + 1)}
-          = page + 1
-    - if page < total - 2 && page === 1
-      %li
-        %a{href: plumb(page: page + 2)}
-          = page + 2
-    - if total > 4 && page + 1 < total
-      %li.disabled
-        %a{data: {tooltip: total}}='..'
-    - if total > 3 && page - 1 <= 1
-      %li
-        %a{href: plumb(page: total)}
-          = total
-    %li{class: ('disabled' if page + 1 > total)}
-      - if page + 1 <= total
-        %a{href: plumb(page: page + 1)}
-          = raw(t 'views.pagination.next')
-      - else
-        %a=raw(t 'views.pagination.next')
+  .pagination
+    .panel-btn-group
+      %a.panel-btn.panel-btn-small.panel-btn-dropdown-link{ class: ('disabled' if page - 1 < 1), href: plumb(page: 1) }
+        .panel-btn-inner
+          %i.fa.fa-chevron-double-left
+      %a.panel-btn.panel-btn-small.panel-btn-dropdown-link{ class: ('disabled' if page - 1 < 1), href: plumb(page: page - 1) }
+        .panel-btn-inner
+          %i.fa.fa-chevron-left
+      %span.pagination-pages
+        = page
+        of
+        = total
+      %a.panel-btn.panel-btn-small.panel-btn-dropdown-link{ class: ('disabled' if page + 1 > total), href: plumb(page: page + 1) }
+        .panel-btn-inner
+          %i.fa.fa-chevron-right
+      %a.panel-btn.panel-btn-small.panel-btn-dropdown-link{ class: ('disabled' if page + 1 > total), href: plumb(page: total) }
+        .panel-btn-inner
+          %i.fa.fa-chevron-double-right

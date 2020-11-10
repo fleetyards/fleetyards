@@ -6,8 +6,9 @@ module RansackHelper
   end
 
   def per_page(model)
-    per_page_param = params[:perPage].to_i if params[:perPage].present?
-    [(per_page_param || model.default_per_page), model.default_per_page * 4].min
+    return params[:perPage].to_i if params[:perPage].present?
+
+    model.default_per_page
   end
 
   def sort_by_name(fallback = 'name asc', minimum = 'name asc')

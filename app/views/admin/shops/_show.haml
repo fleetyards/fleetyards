@@ -14,5 +14,7 @@
     .btn-group
       = link_to edit_admin_shop_path(shop), 'data-turbolinks': "false", title: I18n.t(:"actions.edit"), class: "btn btn-dark" do
         %i.fa.fa-edit
+      = link_to admin_shop_shop_commodities_path(shop), 'data-turbolinks': "false", title: I18n.t(:"actions.commodities"), class: "btn btn-dark" do
+        %i.fa.fa-list
       = confirm_link_to admin_shop_path(shop), data: { notyConfirm: I18n.t(:"messages.confirm.delete") }, title: I18n.t(:"actions.delete"), method: :delete, class: "btn btn-danger" do
         %i.fa.fa-trash

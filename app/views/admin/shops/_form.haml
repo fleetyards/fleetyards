@@ -42,6 +42,12 @@
       %small
         = form_errors shop, :shop_type
 
+    .col-12.col-sm-3
+      .form-group
+        = form.check_box :refinary_terminal, placeholder: I18n.t(:"helpers.placeholder.shop.refinary_terminal"), class: 'checkbox'
+        = form.label :refinary_terminal do
+          = I18n.t(:"activerecord.attributes.shop.refinary_terminal")
+
     .col-12.col-md-6.form-group{class: form_error?(shop, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
@@ -54,31 +60,5 @@
         Remove Image
       %small
         = form_errors shop, :store_image
-
-  %fieldset
-    %legend
-      Commodities:
-    #commodities
-      - if shop_commodities.any?
-        = form.fields_for :shop_commodities, shop_commodities do |builder|
-          = render 'shops/shop_commodity_fields', fields: builder
-
-
-    .d-flex.justify-content-end
-      .btn-group-responsive
-        = link_to_add_fields form, :shop_commodities, name: I18n.t(:"actions.add"), class: "btn btn-dark", target: "#commodities" do
-          %i.fa.fa-plus
-          = I18n.t("actions.add_commodity")
-        &nbsp
-        &nbsp
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: attachments_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_attachments")
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: utilities_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_utilities")
-        %a.btn.btn-dark{onclick: "App.Shops.prefill($(this)); return false;", data: { apiUrl: weapons_admin_api_v1_equipment_url }}
-          %i.fa.fa-plus
-          = I18n.t("actions.prefill_weapons")
 
   = render "shared/submit", path: admin_shops_path

@@ -31,12 +31,13 @@ module Api
           'released' => false,
           'tasks' => 1,
           'completed' => 1,
+          'active' => true,
           'model' => nil,
+          'createdAt' => second_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => second_roadmap_item.updated_at.utc.iso8601,
           'lastVersionChangedAt' => second_roadmap_item.last_version_changed_at.iso8601,
           'lastVersionChangedAtLabel' => I18n.l(second_roadmap_item.last_version_changed_at.utc, format: :label),
-          'lastVersion' => nil,
-          'createdAt' => second_roadmap_item.created_at.utc.iso8601,
-          'updatedAt' => second_roadmap_item.updated_at.utc.iso8601
+          'lastVersion' => nil
         }, {
           'id' => first_roadmap_item.id,
           'name' => 'MyString',
@@ -53,12 +54,13 @@ module Api
           'released' => false,
           'tasks' => 1,
           'completed' => 1,
+          'active' => true,
           'model' => nil,
+          'createdAt' => first_roadmap_item.created_at.utc.iso8601,
+          'updatedAt' => first_roadmap_item.updated_at.utc.iso8601,
           'lastVersionChangedAt' => first_roadmap_item.last_version_changed_at.iso8601,
           'lastVersionChangedAtLabel' => I18n.l(first_roadmap_item.last_version_changed_at.utc, format: :label),
-          'lastVersion' => nil,
-          'createdAt' => first_roadmap_item.created_at.utc.iso8601,
-          'updatedAt' => first_roadmap_item.updated_at.utc.iso8601
+          'lastVersion' => nil
         }]
       end
 

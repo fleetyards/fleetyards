@@ -16,3 +16,8 @@ interface Window {
   ON_SUBDOMAIN: boolean
   FRONTEND_ENDPOINT: string
 }
+
+type FilterGroupItem = {
+  value: any
+  name: string
+}

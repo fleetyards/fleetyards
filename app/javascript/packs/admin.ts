@@ -9,10 +9,12 @@ import router from 'admin/lib/Router'
 import Comlink from 'frontend/plugins/Comlink'
 import I18nPlugin from 'frontend/lib/I18n'
 import VTooltip from 'v-tooltip'
+import Validations from 'frontend/plugins/Validations'
 
 Vue.use(ApiClient)
 Vue.use(Comlink)
 Vue.use(I18nPlugin)
+Vue.use(Validations)
 
 Vue.filter('formatSize', size => {
   if (size > 1024 * 1024 * 1024 * 1024) {

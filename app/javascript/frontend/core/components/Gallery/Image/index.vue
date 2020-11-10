@@ -3,7 +3,7 @@
     :key="src"
     :src="src"
     :alt="alt"
-    :title="alt"
+    :title="title || alt"
     :href="href"
     class="image gallery-image"
     @click.native.ctrl.prevent="openInNewTab(href)"
@@ -11,36 +11,28 @@
   />
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 import LazyImage from 'frontend/core/components/LazyImage'
 
-export default {
-  name: 'GalleryImage',
-
+@Component<GalleryImage>({
   components: {
     LazyImage,
   },
+})
+export default class GalleryImage extends Vue {
+  @Prop({ required: true }) src!: string
 
-  props: {
-    src: {
-      type: String,
-      required: true,
-    },
-    alt: {
-      type: String,
-      default: 'image',
-    },
-    href: {
-      type: String,
-      default: null,
-    },
-  },
+  @Prop({ default: 'image' }) alt!: string
 
-  methods: {
-    openInNewTab(url) {
-      window.open(url, '_blank')
-    },
-  },
+  @Prop({ default: null }) title!: string
+
+  @Prop({ default: null }) href!: string
+
+  openInNewTab(url) {
+    window.open(url, '_blank')
+  }
 }
 </script>
 

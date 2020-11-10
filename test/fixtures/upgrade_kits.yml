@@ -1,4 +1,13 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# == Schema Information
+#
+# Table name: upgrade_kits
+#
+#  id               :uuid             not null, primary key
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  model_id         :uuid
+#  model_upgrade_id :uuid
+#
 
 one:
   model_id: 

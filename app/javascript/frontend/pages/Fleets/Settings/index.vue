@@ -96,7 +96,8 @@ export default class FleetSettingsIndex extends Vue {
             text: this.$t('messages.fleet.leave.success'),
           })
 
-          this.$router.push({ name: 'home' })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          this.$router.push({ name: 'home' }).catch(() => {})
         } else {
           const { error } = response
           if (error.response && error.response.data) {

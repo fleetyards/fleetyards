@@ -1,9 +1,31 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: shops
+#
+#  id                :uuid             not null, primary key
+#  buying            :boolean          default(FALSE)
+#  hidden            :boolean          default(TRUE)
+#  name              :string
+#  refinary_terminal :boolean
+#  rental            :boolean          default(FALSE)
+#  selling           :boolean          default(FALSE)
+#  shop_type         :integer
+#  slug              :string
+#  store_image       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  station_id        :uuid
+#
+# Indexes
+#
+#  index_shops_on_station_id  (station_id)
+#
 class Shop < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name shop_type station celestial_object starsystem],
+  searchkick searchable: %i[name shop_type station celestial_object starsystem refinary],
              word_start: %i[name],
              filterable: []
 
@@ -13,7 +35,8 @@ class Shop < ApplicationRecord
       shop_type: shop_type,
       station: station.name,
       celestial_object: station.celestial_object.name,
-      starsystem: station.celestial_object.starsystem&.name
+      starsystem: station.celestial_object.starsystem&.name,
+      refinary: refinary_terminal? ? 'Refinary' : ''
     }
   end
 
@@ -30,7 +53,11 @@ class Shop < ApplicationRecord
 
   accepts_nested_attributes_for :shop_commodities, allow_destroy: true
 
-  enum shop_type: { clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5, ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12, computers: 13, blackmarket: 14 }
+  enum shop_type: {
+    clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5,
+    ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12,
+    computers: 13, blackmarket: 14, mining_equipment: 15, equipment: 16, courier: 17
+  }
   ransacker :shop_type, formatter: proc { |v| Shop.shop_types[v] } do |parent|
     parent.table[:shop_type]
   end

@@ -52,6 +52,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l2)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -59,6 +61,7 @@ live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station
 live_fire_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -66,6 +69,7 @@ congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station:
 congreve_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/ship_weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -76,5 +80,6 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l2)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l2/platinum.jpg').open,
+  selling: true,
   hidden: hidden
 )

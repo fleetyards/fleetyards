@@ -36,6 +36,8 @@ admin_office_area_061 = Shop.find_or_initialize_by(name: 'Admin Office', station
 admin_office_area_061.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_061_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -52,6 +54,8 @@ admin_office_area_048 = Shop.find_or_initialize_by(name: 'Admin Office', station
 admin_office_area_048.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_048_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -88,6 +92,8 @@ admin_office_area_045 = Shop.find_or_initialize_by(name: 'Admin Office', station
 admin_office_area_045.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_045_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -124,6 +130,8 @@ admin_office_area_056 = Shop.find_or_initialize_by(name: 'Admin Office', station
 admin_office_area_056.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_056_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -159,5 +167,7 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: samson)
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )

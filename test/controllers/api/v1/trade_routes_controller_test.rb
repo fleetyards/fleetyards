@@ -48,9 +48,13 @@ module Api
             'type' => nil
           },
           'buyPrice' => '10.0',
+          'averageBuyPrice' => '10.0',
           'sellPrice' => '20.0',
+          'averageSellPrice' => '20.0',
           'profitPerUnit' => '10.0',
+          'averageProfitPerUnit' => '10.0',
           'profitPerUnitPercent' => '50.0',
+          'averageProfitPerUnitPercent' => '50.0',
           'createdAt' => titan_daymar_yela.created_at.utc.iso8601,
           'updatedAt' => titan_daymar_yela.updated_at.utc.iso8601
         }, {
@@ -85,9 +89,13 @@ module Api
             'type' => nil
           },
           'buyPrice' => '10.0',
+          'averageBuyPrice' => '10.0',
           'sellPrice' => '17.0',
+          'averageSellPrice' => '17.0',
           'profitPerUnit' => '7.0',
+          'averageProfitPerUnit' => '7.0',
           'profitPerUnitPercent' => '70.0',
+          'averageProfitPerUnitPercent' => '70.0',
           'createdAt' => titan_daymar_olisar.created_at.utc.iso8601,
           'updatedAt' => titan_daymar_olisar.updated_at.utc.iso8601
         }, {
@@ -122,9 +130,13 @@ module Api
             'type' => nil
           },
           'buyPrice' => '5.0',
+          'averageBuyPrice' => '5.0',
           'sellPrice' => '10.0',
+          'averageSellPrice' => '10.0',
           'profitPerUnit' => '5.0',
+          'averageProfitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
+          'averageProfitPerUnitPercent' => '50.0',
           'createdAt' => gold_yela_daymar.created_at.utc.iso8601,
           'updatedAt' => gold_yela_daymar.updated_at.utc.iso8601
         }]
@@ -162,9 +174,13 @@ module Api
             'type' => nil
           },
           'buyPrice' => '5.0',
+          'averageBuyPrice' => '5.0',
           'sellPrice' => '10.0',
+          'averageSellPrice' => '10.0',
           'profitPerUnit' => '5.0',
+          'averageProfitPerUnit' => '5.0',
           'profitPerUnitPercent' => '50.0',
+          'averageProfitPerUnitPercent' => '50.0',
           'createdAt' => gold_yela_daymar.created_at.utc.iso8601,
           'updatedAt' => gold_yela_daymar.updated_at.utc.iso8601
         }]

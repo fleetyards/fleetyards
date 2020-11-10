@@ -1,0 +1,21 @@
+<% content_for :title do %>
+  <%= I18n.t(:"title.shop_commodities.index") %>
+<% end %>
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <h2>
+          <%= I18n.t(:"headlines.admin.shop_commodities.index", shop: "#{shop.name} #{shop.location_label}") %>
+        </h2>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="d-flex justify-content-end">
+          <div class="btn-group">
+            <%= link_to I18n.t(:"actions.back"), admin_shops_path(params: index_back_params, anchor: shop.id), class: "btn btn-dark" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -165,6 +165,7 @@ en:
         rental: Does offer Rentals?
         buying: Does buy Items?
         selling: Does sell Items?
+        refinary_terminal: Has a Refinary Terminal?
         shop_types:
           clothing: Clothing Store
           armor: Armor Store
@@ -187,6 +188,8 @@ en:
           default: 'in the %{starsystem} System'
       station:
         hidden: hidden?
+        refinary: Has Refinary Station?
+        cargo_hub: Has Cargo Hub?
         location_prefix:
           default: 'on'
           asteriod: 'on asteroid near'
@@ -220,10 +223,24 @@ en:
           waste: Waste
           scrap: Scrap
           vice: Vice
+          harvestable: Harvestable
       shop_commodity:
         location_prefix:
           default: 'sold at'
         price_per_unit: Price per Unit?
+        commodity_item_types:
+          Model: 'Ships'
+          ModelModule: 'Ship Modules'
+          ModelPaint: 'Ship Paints'
+          Component: 'Components'
+          Commodity: 'Commodities'
+          Equipment: 'Equipment'
+      commodity_rental_price:
+        time_ranges:
+          1-day: 1 Day
+          3-days: 3 Days
+          7-days: 7 Days
+          30-days: 30 Days
     errors:
       messages:
         blank: Please fill out the Field

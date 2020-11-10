@@ -2,10 +2,15 @@
   "baseUrl": "http://fleetyards.test",
   "projectId": "vngu15",
   "fixturesFolder": "test/javascript/e2e/fixtures",
+  "pluginsFolder": "test/javascript/e2e/plugins",
   "integrationFolder": "test/javascript/e2e/specs",
   "screenshotsFolder": "test/javascript/e2e/screenshots",
   "supportFile": "test/javascript/e2e/support",
   "videosFolder": "test/javascript/e2e/videos",
   "viewportWidth": 2560,
-  "viewportHeight": 1440
+  "viewportHeight": 1440,
+  "reporter": "cypress-mochawesome-reporter",
+  "reporterOptions": {
+    "reportDir": "test/reports/e2e"
+  }
 }

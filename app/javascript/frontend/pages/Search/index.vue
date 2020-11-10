@@ -41,8 +41,10 @@
     </div>
     <transition name="fade">
       <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
+
       <FilteredList
         v-else
+        key="search"
         :collection="collection"
         :name="$route.name"
         :route-query="$route.query"

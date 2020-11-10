@@ -25,9 +25,8 @@ export class PublicVehiclesCollection extends BaseCollection {
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }

@@ -70,8 +70,14 @@ export default {
     urlInvalid: 'URL is invalid',
     emailTaken: 'E-Mail is already taken.',
     fleetTaken: 'Fleet is already taken.',
-    accountRequired:
-      'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
+    hangar: {
+      accountRequired:
+        'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to add Ships to your Hangar.<br>Get more Information <a href="/hangar/preview/">here</a>',
+    },
+    commodityPrice: {
+      accountRequired:
+        'You need to <a href="/sign-up/">Sign up</a> or <a href="/login/">Login</a> to submit Prices.',
+    },
     default:
       '<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?',
   },
@@ -80,6 +86,11 @@ export default {
       success:
         "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
       failure: 'We could not destroy your Account! Please try again later.',
+    },
+  },
+  commodityPrice: {
+    create: {
+      success: 'Thank you for your price submission.',
     },
   },
   fleet: {
@@ -141,6 +152,8 @@ export default {
     hangar: {
       import:
         'Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export, Starship42 or HangarXplor.<br><br>Do you want to continue?',
+      destroySelected:
+        "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
       destroyAll:
         "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted.",
     },
@@ -150,6 +163,14 @@ export default {
     account: {
       destroy:
         "Are you sure you want to destroy your Account? This Action can't be reverted.",
+    },
+    commodityPrice: {
+      destroy:
+        "Are you sure you want to destroy this Price? This Action can't be reverted.",
+    },
+    shopCommodity: {
+      destroy:
+        "Are you sure you want to destroy this Commodity? This Action can't be reverted.",
     },
     fleet: {
       leave:

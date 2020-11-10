@@ -37,6 +37,8 @@ export default {
   station: {
     type: 'Type',
     location: 'Location',
+    refinary: 'Refinary Station',
+    cargoHub: 'Cargo Hub',
   },
   model: {
     focus: 'Focus',
@@ -102,11 +104,8 @@ export default {
     type: 'Type',
     celestialObject: 'Location',
     station: 'Station',
-    rentalPrice1Day: '1 day for',
-    rentalPrice3Days: '3 days for',
-    rentalPrice7Days: '7 days for',
-    rentalPrice30Days: '30 days for',
     location: '%{name} at %{location}',
+    refinaryTerminal: 'Refinary Terminal',
   },
   commodityItem: {
     grade: 'Grade',
@@ -123,6 +122,7 @@ export default {
     slot: 'Slot',
     storage: 'Storage',
     shop: 'Shop',
+    unconfirmed: 'Item is unconfirmed',
   },
   resources: {
     models: 'Ships',

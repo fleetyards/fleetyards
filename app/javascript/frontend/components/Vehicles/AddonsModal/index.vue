@@ -19,7 +19,7 @@
               :addons="modelModulesCollection.records"
               :label="$t('actions.addModule')"
               :initial-addons="vehicle.modelModuleIds"
-              :modifiable="modifiable"
+              :editable="editable"
             />
           </fieldset>
           <Loader :loading="modelModulesCollection.loading" />
@@ -36,14 +36,14 @@
               :addons="modelUpgradesCollection.records"
               :label="$t('actions.addUpgrade')"
               :initial-addons="vehicle.modelModuleIds"
-              :modifiable="modifiable"
+              :editable="editable"
             />
           </fieldset>
         </div>
         <Loader :loading="modelUpgradesCollection.loading" />
       </div>
     </form>
-    <template v-if="modifiable" #footer>
+    <template v-if="editable" #footer>
       <div class="float-sm-right">
         <Btn
           :form="`vehicle-addons-${vehicle.id}`"
@@ -85,7 +85,7 @@ type AddonsForm = {
 export default class AddonsModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle
 
-  @Prop({ default: false }) modifiable: boolean
+  @Prop({ default: false }) editable: boolean
 
   modelModulesCollection: ModelModulesCollection = modelModulesCollection
 
@@ -118,7 +118,7 @@ export default class AddonsModal extends Vue {
   }
 
   changeUpgrade(upgrade) {
-    if (!this.modifiable) {
+    if (!this.editable) {
       return
     }
 
@@ -135,7 +135,7 @@ export default class AddonsModal extends Vue {
   }
 
   async save() {
-    if (!this.modifiable) {
+    if (!this.editable) {
       return
     }
 

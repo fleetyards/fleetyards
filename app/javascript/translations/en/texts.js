@@ -96,4 +96,12 @@ export default {
     blocked:
       'You have been blocked from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net',
   },
+  roadmap: {
+    inactive:
+      'This Item was removed from the Roadmap. This is its last location',
+  },
+  commodityPrice: {
+    info:
+      'Please report missing Stations, Shops and Commodity Items via Email to <a href="mailto:info@fleetyards.net">info@fleetyards.net</a>',
+  },
 }

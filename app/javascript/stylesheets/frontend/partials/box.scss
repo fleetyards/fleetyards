@@ -16,6 +16,11 @@
       color: lighten($primary, 10%);
     }
   }
+
+  .empty-box-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 @media (min-width: $tablet-breakpoint) {

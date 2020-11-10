@@ -10,7 +10,9 @@ porttressler.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
-  hidden: false
+  hidden: false,
+  refinary: true,
+  cargo_hub: true
 )
 
 porttressler.docks.destroy_all
@@ -52,6 +54,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: porttre
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -59,6 +63,7 @@ bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: portt
 bulwark_armor.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/armor.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -66,6 +71,7 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: porttre
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/platinum_bay.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -73,5 +79,6 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: porttressler
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )

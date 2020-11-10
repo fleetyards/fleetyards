@@ -10,7 +10,8 @@ portolisar.update!(
   station_type: :hub,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/portolisar.jpg').open,
-  hidden: false
+  hidden: false,
+  refinary: true
 )
 
 portolisar.docks.destroy_all
@@ -46,6 +47,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: portoli
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -53,6 +56,7 @@ dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: port
 dumpers_depot.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/dumpers_depot.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -60,6 +64,7 @@ live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', statio
 live_fire_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/live_fire_weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -67,6 +72,7 @@ garrity_defense = Shop.find_or_initialize_by(name: 'Garrity Defense', station: p
 garrity_defense.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/garrity_defense.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -74,5 +80,6 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: portolisar)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )
