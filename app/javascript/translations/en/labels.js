@@ -22,6 +22,7 @@ export default {
   },
   'shopCommodity': {
     item: 'Item',
+    shop: 'Shop',
     sellPrices: 'Sell Prices',
     buyPrices: 'Buy Prices',
     rentalPrices: 'Rental Prices',
@@ -502,5 +503,6 @@ export default {
     item: 'ShopCommodity',
     price: 'Price',
     type: 'Type',
+    shop: 'Shop',
   },
 }

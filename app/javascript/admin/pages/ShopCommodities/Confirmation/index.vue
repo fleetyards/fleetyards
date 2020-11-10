@@ -20,6 +20,11 @@
             {{ record.item.itemTypeLabel }}
           </small>
         </template>
+        <template #col-shop="{ record }">
+          {{ record.shop.name }}
+          <br />
+          <small>{{ record.shop.locationLabel }}</small>
+        </template>
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">
             <Btn
@@ -72,6 +77,7 @@ export default class AdminStationImages extends Vue {
 
   tableColumns = [
     { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '30%' },
+    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '30%' },
     { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
   ]
 

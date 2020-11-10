@@ -22,6 +22,11 @@
             </small>
           </template>
         </template>
+        <template #col-shop="{ record }">
+          {{ record.shopCommodity.shop.name }}
+          <br />
+          <small>{{ record.shopCommodity.shop.locationLabel }}</small>
+        </template>
         <template #col-price="{ record }">
           {{ $toUEC(record.price) }}
         </template>
@@ -81,10 +86,11 @@ export default class AdminStationImages extends Vue {
       label: this.$t('labels.commodityPrice.item'),
       width: '30%',
     },
+    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '20%' },
     {
       name: 'type',
       label: this.$t('labels.commodityPrice.type'),
-      width: '20%',
+      width: '15%',
     },
     {
       name: 'price',

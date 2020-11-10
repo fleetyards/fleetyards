@@ -16,6 +16,9 @@ json.average_rental_price_7_days shop_commodity.average_rental_price_7_days
 json.rental_price_30_days shop_commodity.rental_price_30_days
 json.average_rental_price_30_days shop_commodity.average_rental_price_30_days
 json.confirmed shop_commodity.confirmed
+json.shop do
+  json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
+end
 json.item do
   json.partial! "admin/api/v1/#{shop_commodity.category.pluralize}/minimal", shop_commodity.category.to_sym => shop_commodity.commodity_item
 end
