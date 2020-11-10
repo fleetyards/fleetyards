@@ -2,6 +2,9 @@ version: 2.1
 
 ciImage: &ciImage
   image: fleetyards/ci:2.7.2
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     RAILS_ENV: test
     BUNDLE_PATH: ~/app/vendor/bundle
@@ -13,6 +16,9 @@ ciImage: &ciImage
 
 e2eImage: &e2eImage
   image: fleetyards/e2e:2.7.2
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
     TEST_SEEDS: 1
@@ -28,15 +34,24 @@ e2eImage: &e2eImage
 
 dbImage: &dbImage
   image: circleci/postgres:9.5.16-alpine
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     POSTGRES_USER: root
     POSTGRES_DB: fleetyards_test
 
 redisImage: &redisImage
   image: circleci/redis:5.0.3-alpine
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
 
 esImage: &esImage
   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     cluster.name: fleetyards-test-cluster
     xpack.security.enabled: false
