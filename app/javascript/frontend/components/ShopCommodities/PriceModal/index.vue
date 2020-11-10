@@ -7,7 +7,7 @@
       >
         <p v-html="$t('texts.commodityPrice.info')"></p>
         <div class="row">
-          <div v-if="!stationSlug" class="col">
+          <div class="col">
             <ValidationProvider
               v-slot="{ errors }"
               vid="stationSlug"
@@ -27,7 +27,7 @@
               />
             </ValidationProvider>
           </div>
-          <div v-if="!shopId" class="col">
+          <div class="col">
             <ValidationProvider
               v-slot="{ errors }"
               vid="shopId"
@@ -49,7 +49,7 @@
             </ValidationProvider>
           </div>
         </div>
-        <hr v-if="!shopId && !stationSlug" class="slim-spacer space-bottom" />
+        <hr class="slim-spacer space-bottom" />
         <div class="row">
           <div v-if="!commodityItemType" class="col">
             <ValidationProvider
