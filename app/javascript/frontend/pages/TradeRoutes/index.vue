@@ -274,6 +274,8 @@ export default class TradeRoutes extends Vue {
 
   averagePrices: boolean = false
 
+  cargoShip: Model | null = null
+
   @Getter('mobile') mobile
 
   get title(): string {
@@ -285,10 +287,6 @@ export default class TradeRoutes extends Vue {
     }
 
     return this.$t('headlines.tradeRoutes.index')
-  }
-
-  get cargoShip(): Model | null {
-    return this.modelsCollection.record
   }
 
   get avaiableCargo(): number {
@@ -381,10 +379,11 @@ export default class TradeRoutes extends Vue {
     const query = this.$route.query.q || {}
 
     if (!query.cargoShip) {
+      this.cargoShip = null
       return
     }
 
-    await modelsCollection.findBySlug(query.cargoShip)
+    this.cargoShip = await modelsCollection.findBySlug(query.cargoShip)
   }
 }
 </script>
