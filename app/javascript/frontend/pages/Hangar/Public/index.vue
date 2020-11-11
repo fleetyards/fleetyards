@@ -95,37 +95,29 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <Paginator
-              v-if="collection.records.length"
-              :page="currentPage"
-              :total="totalPages"
-            />
-          </div>
-        </div>
-
-        <transition-group name="fade-list" class="row" tag="div" appear>
-          <div
-            v-for="vehicle in collection.records"
-            :key="vehicle.id"
-            class="col-12 col-md-6 col-xl-4 col-xxlg-2-4 fade-list-item"
-          >
-            <ModelPanel :model="vehicle.model" :vehicle="vehicle" />
-          </div>
-        </transition-group>
-        <Loader :loading="loading" fixed />
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="collection.records.length"
-          :page="currentPage"
-          :total="totalPages"
-        />
-      </div>
-    </div>
+    <FilteredList
+      key="hangar"
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :params="$route.params"
+      :hash="$route.hash"
+      :paginated="true"
+    >
+      <template #default="{ records, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ModelPanel :model="record.model" :vehicle="record" />
+          </template>
+        </FilteredGrid>
+      </template>
+    </FilteredList>
   </section>
 </template>
 
@@ -134,28 +126,27 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
-import Loader from 'frontend/core/components/Loader'
-import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
 import ModelPanel from 'frontend/components/Models/Panel'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Pagination from 'frontend/mixins/Pagination'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import Avatar from 'frontend/core/components/Avatar'
 import publicVehiclesCollection from 'frontend/api/collections/PublicVehicles'
 import publicUserCollection from 'frontend/api/collections/PublicUser'
+import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 
 @Component<PublicHangar>({
   components: {
     Btn,
     AddonsModal,
-    Loader,
-    DownloadScreenshotBtn,
+    FilteredList,
+    FilteredGrid,
     ModelPanel,
     ModelClassLabels,
     Avatar,
   },
-  mixins: [MetaInfo, Pagination],
+  mixins: [MetaInfo],
 })
 export default class PublicHangar extends Vue {
   loading: boolean = false
@@ -175,7 +166,7 @@ export default class PublicHangar extends Vue {
   }
 
   get username() {
-    return this.$route.params.user
+    return this.$route.params.username
   }
 
   get usernamePlural() {
@@ -196,6 +187,7 @@ export default class PublicHangar extends Vue {
 
   get filters() {
     return {
+      username: this.username,
       page: this.$route.query.page,
     }
   }
@@ -211,7 +203,7 @@ export default class PublicHangar extends Vue {
 
   async fetch() {
     await this.userCollection.findByUsername(this.username)
-    await this.collection.findAllByUsername(this.username, this.filters)
+    await this.collection.findAll(this.filters)
     await this.collection.findStatsByUsername(this.username)
   }
 }

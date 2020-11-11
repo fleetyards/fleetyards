@@ -27,6 +27,11 @@ interface VehicleParams extends CollectionParams {
   filters: VehiclesFilter
 }
 
+interface PublicVehicleParams extends CollectionParams {
+  username: string
+  filters: VehiclesFilter
+}
+
 type VehicleMetrics = {
   totalMoney: number
   totalMinCrew: number

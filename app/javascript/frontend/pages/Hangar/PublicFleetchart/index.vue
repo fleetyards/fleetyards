@@ -100,22 +100,46 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="page-actions page-actions-right">
-              <DownloadScreenshotBtn
-                element="#fleetchart"
-                size="small"
-                :filename="`${username}-hangar-fleetchart`"
-              />
-            </div>
-          </div>
-        </div>
+      </div>
+    </div>
+    <FilteredList
+      key="public-hangar-fleetchart"
+      :collection="collection"
+      collection-method="findAllFleetchart"
+      :name="$route.name"
+      :route-query="$route.query"
+      :params="$route.params"
+      :hash="$route.hash"
+    >
+      <template #actions="{ records }">
+        <BtnDropdown size="small">
+          <template v-if="mobile">
+            <Starship42Btn
+              :vehicles="records"
+              size="small"
+              variant="link"
+              :with-icon="true"
+            />
+
+            <hr />
+          </template>
+
+          <DownloadScreenshotBtn
+            element="#fleetchart"
+            filename="my-hangar-fleetchart"
+            size="small"
+            variant="link"
+          />
+
+          <hr />
+
+          <FleetChartStatusBtn size="small" variant="link" />
+        </BtnDropdown>
+      </template>
+
+      <template #default="{ records }">
         <transition name="fade" appear>
-          <div
-            v-if="collection.records.length"
-            class="row justify-content-lg-center"
-          >
+          <div v-if="records.length" class="row justify-content-lg-center">
             <div class="col-12 col-lg-4">
               <FleetchartSlider
                 :initial-scale="publicFleetchartScale"
@@ -125,14 +149,9 @@
           </div>
         </transition>
 
-        <FleetchartList
-          :items="collection.records"
-          :scale="publicFleetchartScale"
-        />
-
-        <Loader :loading="loading" fixed />
-      </div>
-    </div>
+        <FleetchartList :items="records" :scale="publicFleetchartScale" />
+      </template>
+    </FilteredList>
   </section>
 </template>
 
@@ -142,9 +161,10 @@ import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Starship42Btn from 'frontend/components/Starship42Btn'
-import Loader from 'frontend/core/components/Loader'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -153,14 +173,17 @@ import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import Avatar from 'frontend/core/components/Avatar'
 import publicVehiclesCollection from 'frontend/api/collections/PublicVehicles'
 import publicUserCollection from 'frontend/api/collections/PublicUser'
+import FilteredList from 'frontend/core/components/FilteredList'
 
 @Component<PublicHangar>({
   components: {
     Btn,
     Starship42Btn,
+    BtnDropdown,
     BreadCrumbs,
     AddonsModal,
-    Loader,
+    FilteredList,
+    FleetChartStatusBtn,
     DownloadScreenshotBtn,
     FleetchartList,
     ModelClassLabels,
@@ -186,11 +209,18 @@ export default class PublicHangar extends Vue {
   }
 
   get username() {
-    return this.$route.params.user
+    return this.$route.params.username
   }
 
   get user() {
     return this.userCollection.record
+  }
+
+  get filters() {
+    return {
+      username: this.username,
+      page: this.$route.query.page,
+    }
   }
 
   get usernamePlural() {
@@ -228,10 +258,7 @@ export default class PublicHangar extends Vue {
 
   async fetch() {
     await this.userCollection.findByUsername(this.username)
-    await this.collection.findAllFleetchartByUsername(
-      this.username,
-      this.filters,
-    )
+    await this.collection.findAllFleetchart(this.filters)
     await this.collection.findStatsByUsername(this.username)
   }
 }

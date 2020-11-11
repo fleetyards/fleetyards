@@ -102,7 +102,7 @@ export const routes = [
     },
   },
   {
-    path: '/hangar/:user/',
+    path: '/hangar/:username/',
     name: 'hangar-public',
     component: () =>
       import(
@@ -113,7 +113,7 @@ export const routes = [
     },
   },
   {
-    path: '/hangar/:user/fleetchart',
+    path: '/hangar/:username/fleetchart',
     name: 'hangar-public-fleetchart',
     component: () =>
       import(
