@@ -25,6 +25,6 @@ class CommodityBuyPrice < CommodityPrice
   def update_shop_commodity
     return if shop_commodity.blank?
 
-    # shop_commodity.update_buy_prices
+    shop_commodity.update_buy_prices
   end
 end
