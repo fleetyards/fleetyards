@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/fleetyards/fleetyards/compare/v3.82.12...v4.0.0) (2020-11-11)
+
+
+### Features
+
+* add admin view for confirmations ([1baeb1b](https://github.com/fleetyards/fleetyards/commit/1baeb1bc15b599b54fcf23a04aa32f321bbaba17))
+* add per page selector for hangar ([374f5cf](https://github.com/fleetyards/fleetyards/commit/374f5cf75da3c9c34e018d450ed6f6608d2316bd))
+* add refinary flag to shops ([647edb1](https://github.com/fleetyards/fleetyards/commit/647edb186c0051a222632f5172f9a1cd6c802840))
+* add refinary info to stations ([9705ed7](https://github.com/fleetyards/fleetyards/commit/9705ed702737f1b470d571e91ba7368e19dc9b73))
+* add submit prices modal and show average prices on trade routes ([d9e8c70](https://github.com/fleetyards/fleetyards/commit/d9e8c704cbe5272dba94775d26729c00fc139ac9))
+* hangar list add bulk actions ([2ab0269](https://github.com/fleetyards/fleetyards/commit/2ab02698390a532b261b3f80c55c1157afa91547))
+* hangar list add bulk actions ([718814e](https://github.com/fleetyards/fleetyards/commit/718814ebfe422a498e7bb48835753c424786154a))
+* update microtech seeds ([23d16b2](https://github.com/fleetyards/fleetyards/commit/23d16b2d732ff6e9292b8cddbf96bb437f03a948))
+
+
+### Bug Fixes
+
+* admin styles ([02d8f91](https://github.com/fleetyards/fleetyards/commit/02d8f913461d55ddaa552217dd5675691e8e166a))
+* ci config for es image ([138d893](https://github.com/fleetyards/fleetyards/commit/138d893d5547df322f9ecc3586871f9bee88c465))
+* compare floating headlines ([1b8981a](https://github.com/fleetyards/fleetyards/commit/1b8981a2c08b7cf84ea90825208757fb9f98a065))
+* devise settings ([697c541](https://github.com/fleetyards/fleetyards/commit/697c541ea85826f110aab02cf9668c28a6377c28))
+* e2e specs ([ed3f340](https://github.com/fleetyards/fleetyards/commit/ed3f340d337e8fd852de713e173672414d4a8c0e))
+* hangargroups visibility ([2954e1b](https://github.com/fleetyards/fleetyards/commit/2954e1b776fd93e9c36a16ffecc228585bcf4eb6)), closes [#1275](https://github.com/fleetyards/fleetyards/issues/1275)
+* hide details button in hangar on list view ([73ea488](https://github.com/fleetyards/fleetyards/commit/73ea4882c17072570b30a5c2c8e441fd4cb54d63))
+* hide price if a station has no shops ([a6fe668](https://github.com/fleetyards/fleetyards/commit/a6fe668120edcda7e48f3b55d2beab90e1b20a42))
+* model loader and add hartpoint details to model detail ([7d80d27](https://github.com/fleetyards/fleetyards/commit/7d80d2739a3b820c02e7b4e22a20cc504db27b82))
+* navigation ([7d64286](https://github.com/fleetyards/fleetyards/commit/7d64286580898ec5a8c07e7359c7afbffa9b7682))
+* navigation ([e7ebb7e](https://github.com/fleetyards/fleetyards/commit/e7ebb7eccaf6618e692cc0d7d5c4950b1c80f732))
+* pagination on public hangar ([805d9cb](https://github.com/fleetyards/fleetyards/commit/805d9cbf99dbfee6383e5324bdf78f0f105cf77d))
+* photoswipe color ([dd4bebf](https://github.com/fleetyards/fleetyards/commit/dd4bebfa51d5c2704040b1b8a459943caaeded25))
+* roadmap and update shop_commodities on new prices ([ee07b0b](https://github.com/fleetyards/fleetyards/commit/ee07b0badccabfefdcfcd9e1b356a4b852b2f5da))
+* roadmaps ([8f33d66](https://github.com/fleetyards/fleetyards/commit/8f33d669bdcc092a9a1d2c95d7b404dcece1fe2e))
+* seeds ([a3a76db](https://github.com/fleetyards/fleetyards/commit/a3a76db050e06e30fe14d2fc3626b3fe09157805))
+* seeds ([cf9f111](https://github.com/fleetyards/fleetyards/commit/cf9f11133f0fc7d41c85af89db4394c854f17111))
+* spec seeds ([2ec0494](https://github.com/fleetyards/fleetyards/commit/2ec0494e9ed4fd6df1fa58486c7e99a50cb66f29))
+* specs and linting ([f9d3d8e](https://github.com/fleetyards/fleetyards/commit/f9d3d8e8c7214b82ae9bb9a94498cc256214145c))
+* support button ([d3ed74d](https://github.com/fleetyards/fleetyards/commit/d3ed74d3300df2d854f6d7ea0cd3d5b60012fe9a))
+* tradeRoutes ([5ef4a3f](https://github.com/fleetyards/fleetyards/commit/5ef4a3fab786311ef6d7706a975631c6878b3dc9))
+
 ### [3.82.12](https://github.com/fleetyards/fleetyards/compare/v3.82.11...v3.82.12) (2020-10-23)
 
 
