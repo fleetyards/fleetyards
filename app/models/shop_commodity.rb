@@ -142,14 +142,15 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_prices
-    update_buy_prices
-    update_sell_prices
-    update_rental_prices
+    # update_buy_prices
+    # update_sell_prices
+    # update_rental_prices
   end
 
   def update_buy_prices
     buy_prices = commodity_buy_prices
-      .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
+      # .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
+      .where(created_at: (Time.zone.today - 1.month)..)
       .order(created_at: :desc).pluck(:price)
 
     if buy_prices.present?
@@ -167,7 +168,8 @@ class ShopCommodity < ApplicationRecord
 
   def update_sell_prices
     sell_prices = commodity_sell_prices
-      .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
+      # .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
+      .where(created_at: (Time.zone.today - 1.month)..)
       .order(created_at: :desc).pluck(:price)
 
     if sell_prices.present?
@@ -192,10 +194,14 @@ class ShopCommodity < ApplicationRecord
 
   def update_1_day_prices
     rental_prices_1_day = commodity_rental_prices
+      # .where(
+      #   created_at: (Time.zone.today - 1.month)..,
+      #   time_range: '1-day',
+      #   confirmed: true
+      # )
       .where(
         created_at: (Time.zone.today - 1.month)..,
-        time_range: '1-day',
-        confirmed: true
+        time_range: '1-day'
       )
       .order(created_at: :desc)
       .pluck(:price)
@@ -215,10 +221,14 @@ class ShopCommodity < ApplicationRecord
 
   def update_3_days_prices
     rental_prices_3_days = commodity_rental_prices
+      # .where(
+      #   created_at: (Time.zone.today - 1.month)..,
+      #   time_range: '3-days',
+      #   confirmed: true
+      # )
       .where(
         created_at: (Time.zone.today - 1.month)..,
-        time_range: '3-days',
-        confirmed: true
+        time_range: '3-days'
       )
       .order(created_at: :desc)
       .pluck(:price)
@@ -238,10 +248,14 @@ class ShopCommodity < ApplicationRecord
 
   def update_7_days_prices
     rental_prices_7_days = commodity_rental_prices
+      # .where(
+      #   created_at: (Time.zone.today - 1.month)..,
+      #   time_range: '7-days',
+      #   confirmed: true
+      # )
       .where(
         created_at: (Time.zone.today - 1.month)..,
-        time_range: '7-days',
-        confirmed: true
+        time_range: '7-days'
       )
       .order(created_at: :desc)
       .pluck(:price)
@@ -261,10 +275,14 @@ class ShopCommodity < ApplicationRecord
 
   def update_30_days_prices
     rental_prices_30_days = commodity_rental_prices
+      # .where(
+      #   created_at: (Time.zone.today - 1.month)..,
+      #   time_range: '30-days',
+      #   confirmed: true
+      # )
       .where(
         created_at: (Time.zone.today - 1.month)..,
-        time_range: '30-days',
-        confirmed: true
+        time_range: '30-days'
       )
       .order(created_at: :desc)
       .pluck(:price)
@@ -285,7 +303,8 @@ class ShopCommodity < ApplicationRecord
   def update_model_price
     return if model.blank?
 
-    model.update(price: CommoditySellPrice.where(shop_commodity_id: model.shop_commodity_ids, confirmed: true).order(price: :asc).first&.price)
+    # model.update(price: CommoditySellPrice.where(shop_commodity_id: model.shop_commodity_ids, confirmed: true).order(price: :asc).first&.price)
+    model.update(price: CommoditySellPrice.where(shop_commodity_id: model.shop_commodity_ids).order(price: :asc).first&.price)
   end
 
   def category
