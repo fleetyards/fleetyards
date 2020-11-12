@@ -201,6 +201,7 @@ export default class RoadmapReleases extends Vue {
 
   tasks(items) {
     return items
+      .filter(item => item.active)
       .map(item => Math.max(0, item.tasks))
       .reduce((ac, count) => ac + count, 0)
   }
