@@ -82,3 +82,12 @@ casaba.update!(
   selling: true,
   hidden: hidden
 )
+
+traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: everus)
+traveler_rentals.update!(
+  shop_type: :rental,
+  # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
+  rental: true,
+  hidden: hidden
+)
+
