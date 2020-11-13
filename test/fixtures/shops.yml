@@ -4,6 +4,7 @@
 #
 #  id                :uuid             not null, primary key
 #  buying            :boolean          default(FALSE)
+#  description       :text
 #  hidden            :boolean          default(TRUE)
 #  name              :string
 #  refinary_terminal :boolean

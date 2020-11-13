@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_201913) do
+ActiveRecord::Schema.define(version: 2020_11_13_213429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -461,6 +461,8 @@ ActiveRecord::Schema.define(version: 2020_11_09_201913) do
     t.integer "videos_count", default: 0
     t.integer "upgrade_kits_count", default: 0
     t.integer "module_hardpoints_count", default: 0
+    t.decimal "max_speed", precision: 15, scale: 2
+    t.decimal "speed", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
@@ -538,6 +540,7 @@ ActiveRecord::Schema.define(version: 2020_11_09_201913) do
     t.boolean "buying", default: false
     t.boolean "selling", default: false
     t.boolean "refinary_terminal"
+    t.text "description"
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
