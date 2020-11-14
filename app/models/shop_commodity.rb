@@ -92,7 +92,11 @@ class ShopCommodity < ApplicationRecord
              inverse_of: :shop_commodities,
              required: false
 
-  belongs_to :submitter, class_name: 'User', foreign_key: 'submitted_by', inverse_of: false
+  belongs_to :submitter,
+             class_name: 'User',
+             foreign_key: 'submitted_by',
+             inverse_of: false,
+             required: false
 
   has_many :commodity_sell_prices, dependent: :destroy
   has_many :commodity_buy_prices, dependent: :destroy

@@ -210,6 +210,9 @@ en:
           gate: Gate
           drug_lab: Drug lab
           salvage-outpost: Salvage Outpost
+          poi: Point of Interest
+          city: City
+          town: Town
       commodity:
         commodity_types:
           gas: Gas

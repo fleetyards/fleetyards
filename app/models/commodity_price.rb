@@ -21,7 +21,11 @@
 class CommodityPrice < ApplicationRecord
   belongs_to :shop_commodity, touch: true
 
-  belongs_to :submitter, class_name: 'User', foreign_key: 'submitted_by', inverse_of: false
+  belongs_to :submitter,
+             class_name: 'User',
+             foreign_key: 'submitted_by',
+             inverse_of: false,
+             required: false
 
   validates :price, presence: true
   validates :type, presence: true
