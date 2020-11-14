@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.5](https://github.com/fleetyards/fleetyards/compare/v4.0.4...v4.0.5) (2020-11-14)
+
+
+### Bug Fixes
+
+* station types and confirmables ([6fe5cf3](https://github.com/fleetyards/fleetyards/commit/6fe5cf3bd6bfbee2996aeead046d056e339c6cf0))
+
 ### [4.0.4](https://github.com/fleetyards/fleetyards/compare/v4.0.3...v4.0.4) (2020-11-14)
 
 ### [4.0.3](https://github.com/fleetyards/fleetyards/compare/v4.0.2...v4.0.3) (2020-11-13)
