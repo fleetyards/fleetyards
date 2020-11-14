@@ -77,6 +77,17 @@
 
 @media (max-width: $desktop-breakpoint) {
   .station-panel {
+    > .panel {
+      .panel-heading {
+        padding: 10px 0;
+
+        .panel-title {
+          overflow: auto;
+          white-space: normal;
+        }
+      }
+    }
+
     .items {
       position: relative;
     }

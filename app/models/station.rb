@@ -68,8 +68,8 @@ class Station < ApplicationRecord
   belongs_to :celestial_object
 
   enum station_type: {
-    spaceport: 0, hub: 1, city: 2, poi: 3, rest_stop: 4, station: 5, "cargo-station": 6,
-    "mining-station": 7, "asteroid-station": 8, refinery: 9, district: 10, town: 11, gate: 12,
+    spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4,
+    "mining-station": 5, "asteroid-station": 6, refinery: 7, city: 8, poi: 9, district: 10, town: 11, gate: 12,
     "mining-hub": 13, outpost: 14, "salvage-outpost": 15, aid_shelter: 16, drug_lab: 17
   }
 
