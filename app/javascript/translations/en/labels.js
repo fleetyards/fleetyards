@@ -27,6 +27,7 @@ export default {
     buyPrices: 'Buy Prices',
     rentalPrices: 'Rental Prices',
     confirmed: 'Confirmed?',
+    submittedBy: 'Submitted By',
     prices: {
       label: 'Prices',
       rentalPrice: 'rental',
@@ -504,5 +505,6 @@ export default {
     price: 'Price',
     type: 'Type',
     shop: 'Shop',
+    submittedBy: 'Submitted By',
   },
 }

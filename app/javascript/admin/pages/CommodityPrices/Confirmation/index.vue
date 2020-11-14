@@ -27,6 +27,9 @@
           <br />
           <small>{{ record.shopCommodity.shop.locationLabel }}</small>
         </template>
+        <template #col-submitter="{ record }">
+          {{ record.submitter.username }}
+        </template>
         <template #col-price="{ record }">
           {{ $toUEC(record.price) }}
         </template>
@@ -91,6 +94,11 @@ export default class AdminStationImages extends Vue {
       name: 'type',
       label: this.$t('labels.commodityPrice.type'),
       width: '15%',
+    },
+    {
+      name: 'submitter',
+      label: this.$t('labels.commodityPrice.submittedBy'),
+      width: '20%',
     },
     {
       name: 'price',

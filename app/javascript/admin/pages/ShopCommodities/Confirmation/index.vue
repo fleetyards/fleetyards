@@ -25,6 +25,9 @@
           <br />
           <small>{{ record.shop.locationLabel }}</small>
         </template>
+        <template #col-submitter="{ record }">
+          {{ record.submitter.username }}
+        </template>
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">
             <Btn
@@ -76,8 +79,13 @@ export default class AdminStationImages extends Vue {
   deleting: boolean = false
 
   tableColumns = [
-    { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '30%' },
-    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '30%' },
+    { name: 'item', label: this.$t('labels.shopCommodity.item'), width: '20%' },
+    { name: 'shop', label: this.$t('labels.shopCommodity.shop'), width: '20%' },
+    {
+      name: 'submitter',
+      label: this.$t('labels.shopCommodity.submittedBy'),
+      width: '20%',
+    },
     { name: 'actions', label: this.$t('labels.actions'), width: '12%' },
   ]
 

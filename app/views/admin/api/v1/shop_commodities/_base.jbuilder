@@ -16,6 +16,10 @@ json.average_rental_price_7_days shop_commodity.average_rental_price_7_days
 json.rental_price_30_days shop_commodity.rental_price_30_days
 json.average_rental_price_30_days shop_commodity.average_rental_price_30_days
 json.confirmed shop_commodity.confirmed
+json.submitter do
+  json.id shop_commodity.submitted_by
+  json.username shop_commodity.submitter&.username
+end
 json.shop do
   json.partial! 'api/v1/shops/base', shop: shop_commodity.shop
 end
