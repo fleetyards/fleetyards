@@ -25,7 +25,7 @@ class CommodityPrice < ApplicationRecord
              class_name: 'User',
              foreign_key: 'submitted_by',
              inverse_of: false,
-             required: false
+             optional: true
 
   validates :price, presence: true
   validates :type, presence: true
