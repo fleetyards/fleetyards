@@ -60,37 +60,37 @@ class ShopCommodity < ApplicationRecord
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :component,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Component' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :commodity,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Commodity' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :equipment,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Equipment' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :model_module,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelModule' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :model_paint,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'ModelPaint' }) },
              foreign_key: 'commodity_item_id',
              inverse_of: :shop_commodities,
-             required: false
+             optional: true
 
   belongs_to :submitter,
              class_name: 'User',
