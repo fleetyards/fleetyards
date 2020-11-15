@@ -13,7 +13,7 @@ module Admin
 
           scope = ShopCommodity
 
-          scope = scipe.where(shop_id: shop.id) if shop.present?
+          scope = scope.where(shop_id: shop.id) if shop.present?
 
           @q = scope
             .includes([:commodity_item])
