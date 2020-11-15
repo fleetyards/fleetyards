@@ -103,4 +103,8 @@ export default {
   },
   'unselect': 'Unselect all Selected',
   'openPriceModal': 'Submit Price',
+  'shoppingCart': {
+    add: 'Add to Cart',
+    clear: 'Clear Cart',
+  },
 }

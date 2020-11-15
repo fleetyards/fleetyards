@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id shop_commodity.id
 json.name shop_commodity.commodity_item.name
 json.slug shop_commodity.commodity_item.slug
 json.store_image shop_commodity.commodity_item.store_image.url

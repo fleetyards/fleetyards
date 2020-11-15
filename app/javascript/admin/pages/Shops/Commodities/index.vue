@@ -33,7 +33,7 @@
             >
               <div v-if="record[price]" class="d-flex justify-content-between">
                 {{ $t(`labels.shopCommodity.prices.${price}`) }}:
-                <span>{{ $toUEC(record[price]) }}</span>
+                <span v-html="$toUEC(record[price])" />
               </div>
             </div>
           </div>

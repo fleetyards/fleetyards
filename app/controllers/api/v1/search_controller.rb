@@ -16,7 +16,7 @@ module Api
             { 'name^5': :word_start }, { 'manufacturer_name': :word_start }, {'item_type': :word_start },
             { 'equipment_type': :word_start }, { 'commodity_type': :word_start },
             'manufacturer_code', 'station', 'shop', 'celestial_object', 'starsystem', 'shop_type',
-            'station_type', 'refinary', 'cargo_hub', 'item_class'
+            'station_type', 'refinary', 'cargo_hub', 'item_class', 'slot'
           ],
           indices_boost: {
             Model => 10,

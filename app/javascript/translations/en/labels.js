@@ -4,6 +4,7 @@ export default {
   'null': '-',
   'hide': 'Hide',
   'show': 'Show',
+  'unavailable': 'unavailable',
   'selected': 'Selected',
   'actions': 'Actions',
   'collapse': 'Collapse',
@@ -288,6 +289,7 @@ export default {
     avionics: 'No Avionics present',
     fleetInvites: 'No Invites present',
     shopCommodities: 'No Commodites available',
+    shoppingCart: 'Shopping Cart empty',
     userShips:
       'Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:',
   },
@@ -506,5 +508,12 @@ export default {
     type: 'Type',
     shop: 'Shop',
     submittedBy: 'Submitted By',
+  },
+  'shoppingCart': {
+    total: 'Total',
+    items: {
+      one: '<b>%{count}</b> Item for <b>%{price}</b>',
+      other: '<b>%{count}</b> Items for <b>%{price}</b>',
+    },
   },
 }

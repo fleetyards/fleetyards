@@ -101,4 +101,5 @@ export default {
       create: 'Submit Price',
     },
   },
+  shoppingCart: 'Shopping Cart',
 }

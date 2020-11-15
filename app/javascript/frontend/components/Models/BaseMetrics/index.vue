@@ -60,9 +60,11 @@
           <div class="row">
             <div v-if="model.price" class="col-6">
               <div class="metrics-label">{{ $t('model.price') }}:</div>
-              <div v-tooltip="$toUEC(model.price)" class="metrics-value">
-                {{ $toUEC(model.price) }}
-              </div>
+              <div
+                v-tooltip="$toUEC(model.price)"
+                class="metrics-value"
+                v-html="$toUEC(model.price)"
+              />
             </div>
             <div v-if="model.lastPledgePrice" class="col-6">
               <div class="metrics-label">{{ $t('model.pledgePrice') }}:</div>

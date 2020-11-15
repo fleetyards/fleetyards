@@ -16,13 +16,17 @@
       <div class="main-wrapper">
         <div class="main-inner">
           <NavigationHeader />
+
           <transition name="fade" mode="out-in" appear>
             <router-view :key="$route.path" class="main" />
           </transition>
         </div>
+
         <AppFooter />
       </div>
     </div>
+
+    <AppShoppingCart />
 
     <AppModal />
   </div>
@@ -39,6 +43,7 @@ import Navigation from 'frontend/core/components/Navigation'
 import NavigationHeader from 'frontend/core/components/Navigation/Header'
 import AppFooter from 'frontend/core/components/AppFooter'
 import AppModal from 'frontend/core/components/AppModal'
+import AppShoppingCart from 'frontend/core/components/AppShoppingCart'
 import BackgroundImage from 'frontend/core/components/BackgroundImage'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -51,6 +56,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
     NavigationHeader,
     AppFooter,
     AppModal,
+    AppShoppingCart,
   },
   mixins: [Updates],
 })

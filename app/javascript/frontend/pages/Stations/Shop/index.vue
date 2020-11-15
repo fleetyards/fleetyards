@@ -103,6 +103,7 @@
                 <div v-if="shop.rental" class="rent-price">
                   {{ $t('labels.shop.rentalPrice') }}
                 </div>
+                <div class="actions actions-1x" />
               </div>
             </div>
             <div

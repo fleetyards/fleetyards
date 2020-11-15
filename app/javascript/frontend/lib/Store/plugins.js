@@ -28,6 +28,7 @@ export default function getStorePlugins() {
         'fleet.grouped',
         'fleet.money',
         'fleet.preview',
+        'shoppingCart.items',
       ],
     }),
   ]

@@ -156,18 +156,22 @@
                       </small>
                     </h3>
                     <template v-if="averagePrices">
-                      {{
-                        $t('labels.tradeRoutes.buy', {
-                          uec: profit(route.averageBuyPrice),
-                        })
-                      }}
+                      <span
+                        v-html="
+                          $t('labels.tradeRoutes.buy', {
+                            uec: profit(route.averageBuyPrice),
+                          })
+                        "
+                      />
                     </template>
                     <template v-else>
-                      {{
-                        $t('labels.tradeRoutes.buy', {
-                          uec: profit(route.buyPrice),
-                        })
-                      }}
+                      <span
+                        v-html="
+                          $t('labels.tradeRoutes.buy', {
+                            uec: profit(route.buyPrice),
+                          })
+                        "
+                      />
                     </template>
                   </div>
                 </Panel>
@@ -212,18 +216,22 @@
                       </small>
                     </h3>
                     <template v-if="averagePrices">
-                      {{
-                        $t('labels.tradeRoutes.sell', {
-                          uec: profit(route.averageSellPrice),
-                        })
-                      }}
+                      <span
+                        v-html="
+                          $t('labels.tradeRoutes.sell', {
+                            uec: profit(route.averageSellPrice),
+                          })
+                        "
+                      />
                     </template>
                     <template v-else>
-                      {{
-                        $t('labels.tradeRoutes.sell', {
-                          uec: profit(route.sellPrice),
-                        })
-                      }}
+                      <span
+                        v-html="
+                          $t('labels.tradeRoutes.sell', {
+                            uec: profit(route.sellPrice),
+                          })
+                        "
+                      />
                     </template>
                   </div>
                 </Panel>

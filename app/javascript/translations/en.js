@@ -123,6 +123,7 @@ export default {
     storage: 'Storage',
     shop: 'Shop',
     unconfirmed: 'Item is unconfirmed',
+    manufacturer: 'Manufacturer',
   },
   shopCommodity: {
     soldAt: 'Sold at',

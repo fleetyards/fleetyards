@@ -11,9 +11,7 @@
           <router-link :to="shopRoute(location.shop)">
             {{ location.shop.name }} {{ location.shop.locationLabel }}
           </router-link>
-          <b>
-            {{ $toUEC(location.sellPrice) }}
-          </b>
+          <b v-html="$toUEC(location.sellPrice)" />
         </li>
       </ul>
     </div>
@@ -28,9 +26,7 @@
           <router-link :to="shopRoute(location.shop)">
             {{ location.shop.name }} {{ location.shop.locationLabel }}
           </router-link>
-          <b>
-            {{ $toUEC(location.buyPrice) }}
-          </b>
+          <b v-html="$toUEC(location.buyPrice)" />
         </li>
       </ul>
     </div>

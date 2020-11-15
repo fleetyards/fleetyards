@@ -87,13 +87,13 @@
       <span class="price-label">
         {{ $t('labels.shopCommodity.prices.sellPrice') }}:&nbsp;
       </span>
-      <b>{{ $toUEC(commodity.sellPrice) }}</b>
+      <b v-html="$toUEC(commodity.sellPrice)" />
     </div>
     <div v-if="buying" class="price">
       <span class="price-label">
         {{ $t('labels.shopCommodity.prices.buyPrice') }}:&nbsp;
       </span>
-      <b>{{ $toUEC(commodity.buyPrice) }}</b>
+      <b v-html="$toUEC(commodity.buyPrice)" />
     </div>
     <div v-if="rental" class="rent-price">
       <span class="price-label">
@@ -102,27 +102,35 @@
       <ul class="list-unstyled">
         <li v-if="commodity.rentalPrice1Day">
           {{ $t('labels.shopCommodity.prices.rentalPrice1Day') }}
-          <b>{{ $toUEC(commodity.rentalPrice1Day) }}</b>
+          <b v-html="$toUEC(commodity.rentalPrice1Day)" />
         </li>
         <li v-if="commodity.rentalPrice3Days">
           {{ $t('labels.shopCommodity.prices.rentalPrice3Days') }}
-          <b>{{ $toUEC(commodity.rentalPrice3Days) }}</b>
+          <b v-html="$toUEC(commodity.rentalPrice3Days)" />
         </li>
         <li v-if="commodity.rentalPrice7Days">
           {{ $t('labels.shopCommodity.prices.rentalPrice7Days') }}
-          <b>{{ $toUEC(commodity.rentalPrice7Days) }}</b>
+          <b v-html="$toUEC(commodity.rentalPrice7Days)" />
         </li>
         <li v-if="commodity.rentalPrice30Days">
           {{ $t('labels.shopCommodity.prices.rentalPrice30Days') }}
-          <b>{{ $toUEC(commodity.rentalPrice30Days) }}</b>
+          <b v-html="$toUEC(commodity.rentalPrice30Days)" />
         </li>
       </ul>
+    </div>
+    <div class="actions actions-1x">
+      <AddToCartBtn :item="commodity.item" />
     </div>
   </div>
 </template>
 
 <script>
+import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
+
 export default {
+  components: {
+    AddToCartBtn,
+  },
   props: {
     commodity: {
       type: Object,

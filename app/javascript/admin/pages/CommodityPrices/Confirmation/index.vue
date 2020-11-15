@@ -31,7 +31,7 @@
           {{ record.submitter.username }}
         </template>
         <template #col-price="{ record }">
-          {{ $toUEC(record.price) }}
+          <span v-html="$toUEC(record.price)" />
         </template>
         <template #col-actions="{ record }">
           <BtnGroup :inline="true">

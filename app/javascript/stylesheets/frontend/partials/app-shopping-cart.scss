@@ -1,0 +1,30 @@
+.app-shopping-cart {
+  position: fixed !important;
+  bottom: 0;
+  left: 50%;
+  margin-left: 150px;
+  transform: translateX(-50%);
+
+  &.panel-btn .panel-btn-inner {
+    text-align: left;
+  }
+
+  &.nav-slim {
+    margin-left: 40px;
+  }
+
+  .items-label,
+  .price-label {
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .app-shopping-cart {
+    margin-left: 0;
+
+    &.nav-slim {
+      margin-left: 0;
+    }
+  }
+}

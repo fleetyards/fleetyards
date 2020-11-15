@@ -30,3 +30,7 @@ end
 json.bought_at do
   json.array! equipment.bought_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
 end
+json.manufacturer do
+  json.null! if equipment.manufacturer.blank?
+  json.partial! 'api/v1/manufacturers/base', manufacturer: equipment.manufacturer if equipment.manufacturer.present?
+end

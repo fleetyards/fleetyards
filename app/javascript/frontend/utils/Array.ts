@@ -2,4 +2,8 @@ export const uniq = (value, index, self) => {
   return self.indexOf(value) === index
 }
 
-export default uniq
+export const sum = list => {
+  return list.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  }, 0)
+}

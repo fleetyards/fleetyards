@@ -10,7 +10,7 @@ export const groupBy = function groupBy(list, key) {
 }
 
 export const sortBy = function sortBy(list, key, decending = false) {
-  return list.sort((a, b) => {
+  return JSON.parse(JSON.stringify(list)).sort((a, b) => {
     if (decending) {
       if (a[key] < b[key]) {
         return 1

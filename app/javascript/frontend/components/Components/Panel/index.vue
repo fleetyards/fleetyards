@@ -1,6 +1,6 @@
 <template>
   <Panel>
-    <div class="teaser-panel">
+    <div class="teaser-panel item-panel">
       <LazyImage :src="image" class="teaser-panel-image" />
       <div class="teaser-panel-body">
         <h2 v-tooltip="component.name">
@@ -10,6 +10,7 @@
             {{ component.manufacturer.name }}
           </small>
         </h2>
+        <AddToCartBtn :item="component" class="add-to-cart" />
         <div v-if="showMetrics" class="metrics-list">
           <div v-if="component.size" class="metrics-item">
             <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>
@@ -62,12 +63,16 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import Panel from 'frontend/core/components/Panel'
 import LazyImage from 'frontend/core/components/LazyImage'
+import Btn from 'frontend/core/components/Btn'
+import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
 import ShopCommodityLocations from 'frontend/components/ShopCommodities/Locations'
 
 @Component<ComponentPanel>({
   components: {
     Panel,
     LazyImage,
+    Btn,
+    AddToCartBtn,
     ShopCommodityLocations,
   },
 })
@@ -87,7 +92,3 @@ export default class ComponentPanel extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

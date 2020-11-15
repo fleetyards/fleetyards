@@ -227,9 +227,7 @@
           :key="`${model.slug}-cargo`"
           class="col-6 text-center compare-row-item"
         >
-          <span class="metrics-value">
-            {{ $toUEC(model.price) }}
-          </span>
+          <span class="metrics-value" v-html="$toUEC(model.price)" />
         </div>
       </div>
       <div class="row compare-row">

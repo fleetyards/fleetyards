@@ -1,7 +1,7 @@
 <template>
   <Panel>
-    <div class="teaser-panel">
-      <LazyImage :src="equipment.storeImageMedium" class="teaser-panel-image" />
+    <div class="teaser-panel item-panel">
+      <LazyImage :src="image" class="teaser-panel-image" />
       <div class="teaser-panel-body">
         <h2 v-tooltip="equipment.name">
           {{ equipment.name }}
@@ -9,11 +9,20 @@
             <br />
             {{ equipment.itemTypeLabel }}
             <template v-if="equipment.slot">
-              ({{ equipment.slotLabel }})
+              {{ equipment.slotLabel }}
             </template>
           </small>
         </h2>
+        <AddToCartBtn :item="equipment" />
         <div class="metrics-list">
+          <div v-if="equipment.manufacturer" class="metrics-item">
+            <div class="metrics-label">
+              {{ $t('commodityItem.manufacturer') }}:
+            </div>
+            <div class="metrics-value">
+              {{ equipment.manufacturer.name }}
+            </div>
+          </div>
           <div v-if="equipment.size" class="metrics-item">
             <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>
             <div class="metrics-value">
@@ -62,7 +71,7 @@
               {{ equipment.storage }}
             </div>
           </div>
-          <div class="metrics-item">
+          <div v-if="equipment.extras" class="metrics-item">
             <div class="metrics-label">{{ $t('commodityItem.extras') }}:</div>
             <div class="metrics-value">
               {{ equipment.extras }}
@@ -82,11 +91,13 @@ import { Component, Prop } from 'vue-property-decorator'
 import Panel from 'frontend/core/components/Panel'
 import LazyImage from 'frontend/core/components/LazyImage'
 import ShopCommodityLocations from 'frontend/components/ShopCommodities/Locations'
+import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
 
 @Component<ComponentPanel>({
   components: {
     Panel,
     LazyImage,
+    AddToCartBtn,
     ShopCommodityLocations,
   },
 })
@@ -94,9 +105,15 @@ export default class ComponentPanel extends Vue {
   @Prop({ required: true }) equipment!: Equipment
 
   @Prop({ default: true }) showStats!: boolean
+
+  get image() {
+    if (this.equipment.storeImageIsFallback) {
+      return (
+        this.equipment.manufacturer?.logo || this.equipment.storeImageMedium
+      )
+    }
+
+    return this.equipment.storeImageMedium
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-@import 'index';
-</style>

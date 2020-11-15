@@ -32,7 +32,7 @@
 class Equipment < ApplicationRecord
   paginates_per 50
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type],
+  searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type slot],
              word_start: %i[name manufacturer_name equipment_type item_type],
              filterable: []
 
@@ -42,7 +42,8 @@ class Equipment < ApplicationRecord
       item_type: item_type,
       equipment_type: equipment_type,
       manufacturer_name: manufacturer&.name,
-      manufacturer_code: manufacturer&.code
+      manufacturer_code: manufacturer&.code,
+      slot: slot
     }
   end
 
