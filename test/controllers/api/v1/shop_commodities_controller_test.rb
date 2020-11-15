@@ -17,6 +17,7 @@ module Api
       let(:andromeda) { shop_commodities :commodity_four }
       let(:index_result) do
         [{
+          'id' => explorer.id,
           'name' => '600i',
           'slug' => '600i',
           'storeImage' => explorer.commodity_item.store_image.url,
@@ -47,6 +48,7 @@ module Api
             'slug' => 'new-deal',
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
+            'stationLabel' => andromeda.shop.station_label,
             'locationLabel' => andromeda.shop.location_label,
             'rental' => false,
             'buying' => false,
@@ -122,6 +124,7 @@ module Api
           'createdAt' => explorer.created_at.utc.iso8601,
           'updatedAt' => explorer.updated_at.utc.iso8601
         }, {
+          'id' => andromeda.id,
           'name' => 'Andromeda',
           'slug' => 'andromeda',
           'storeImage' => andromeda.commodity_item.store_image.url,
@@ -152,6 +155,7 @@ module Api
             'slug' => 'new-deal',
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
+            'stationLabel' => andromeda.shop.station_label,
             'locationLabel' => andromeda.shop.location_label,
             'rental' => false,
             'buying' => false,
