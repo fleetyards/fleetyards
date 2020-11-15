@@ -1,0 +1,12 @@
+
+.prices-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+
+  b {
+    min-width: 120px;
+    text-align: right;
+  }
+}

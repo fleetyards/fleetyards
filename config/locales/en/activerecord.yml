@@ -75,7 +75,7 @@ en:
           suite: Suite
       component:
         item_types:
-          weapons: Weapons
+          weapons: Ship Weapons
           turrets: Turrets
           missiles: Missiles
           shield_generators: Shield Generators

@@ -57,7 +57,7 @@ admin_office.update!(
   hidden: hidden
 )
 
-Shop.find_by(name: 'Livefire Weapons', station: hur_l1)&.destroy
+Shop.find_by(name: 'Live Fire Weapons', station: hur_l1)&.destroy
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: hur_l1)
 bulwark_armor.update!(
   shop_type: :armor,

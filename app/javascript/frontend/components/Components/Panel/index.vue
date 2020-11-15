@@ -1,0 +1,93 @@
+<template>
+  <Panel>
+    <div class="teaser-panel">
+      <LazyImage :src="image" class="teaser-panel-image" />
+      <div class="teaser-panel-body">
+        <h2 v-tooltip="component.name">
+          {{ component.name }}
+          <small v-if="component.manufacturer">
+            <br />
+            {{ component.manufacturer.name }}
+          </small>
+        </h2>
+        <div v-if="showMetrics" class="metrics-list">
+          <div v-if="component.size" class="metrics-item">
+            <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>
+            <div class="metrics-value">
+              {{ component.size }}
+            </div>
+          </div>
+          <div v-if="component.grade" class="metrics-item">
+            <div class="metrics-label">{{ $t('commodityItem.grade') }}:</div>
+            <div class="metrics-value">
+              {{ component.grade }}
+            </div>
+          </div>
+          <div v-if="component.typeLabel" class="metrics-item">
+            <div class="metrics-label">{{ $t('commodityItem.type') }}:</div>
+            <div class="metrics-value">
+              {{ component.typeLabel }}
+            </div>
+          </div>
+          <div v-if="component.itemTypeLabel" class="metrics-item">
+            <div class="metrics-label">{{ $t('commodityItem.itemType') }}:</div>
+            <div class="metrics-value">
+              {{ component.itemTypeLabel }}
+            </div>
+          </div>
+          <div v-if="component.itemClassLabel" class="metrics-item">
+            <div class="metrics-label">
+              {{ $t('commodityItem.itemClass') }}:
+            </div>
+            <div class="metrics-value">
+              {{ component.itemClassLabel }}
+            </div>
+          </div>
+          <div v-if="component.extras" class="metrics-item">
+            <div class="metrics-label">{{ $t('commodityItem.extras') }}:</div>
+            <div class="metrics-value">
+              {{ component.extras }}
+            </div>
+          </div>
+        </div>
+        <hr class="slim" />
+        <ShopCommodityLocations :item="component" />
+      </div>
+    </div>
+  </Panel>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import Panel from 'frontend/core/components/Panel'
+import LazyImage from 'frontend/core/components/LazyImage'
+import ShopCommodityLocations from 'frontend/components/ShopCommodities/Locations'
+
+@Component<ComponentPanel>({
+  components: {
+    Panel,
+    LazyImage,
+    ShopCommodityLocations,
+  },
+})
+export default class ComponentPanel extends Vue {
+  @Prop({ required: true }) component!: Component
+
+  @Prop({ default: true }) showMetrics!: boolean
+
+  get image() {
+    if (this.component.storeImageIsFallback) {
+      return (
+        this.component.manufacturer?.logo || this.component.storeImageMedium
+      )
+    }
+
+    return this.component.storeImageMedium
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import 'index';
+</style>

@@ -117,12 +117,16 @@ export default {
     range: 'Range',
     damageReduction: 'Damage Reduction',
     rateOfFire: 'Rate of Fire',
-    extras: '',
+    extras: 'Additional Info',
     location: 'Location',
     slot: 'Slot',
     storage: 'Storage',
     shop: 'Shop',
     unconfirmed: 'Item is unconfirmed',
+  },
+  shopCommodity: {
+    soldAt: 'Sold at',
+    boughtAt: 'Bought at',
   },
   resources: {
     models: 'Ships',

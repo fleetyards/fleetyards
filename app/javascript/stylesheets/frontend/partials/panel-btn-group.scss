@@ -52,7 +52,7 @@
     padding: 0;
 
     .panel-btn-inner {
-      border-radius: 0;
+      border-radius: $border-radius-base - 1px;
     }
 
     &:first-child {

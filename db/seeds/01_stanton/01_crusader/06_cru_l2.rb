@@ -57,7 +57,7 @@ admin_office.update!(
   hidden: hidden
 )
 
-live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station: cru_l2)
+live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: cru_l2)
 live_fire_weapons.update!(
   shop_type: :weapons,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l2/weapons.jpg').open,

@@ -20,6 +20,17 @@
 class Commodity < ApplicationRecord
   paginates_per 50
 
+  searchkick searchable: %i[name commodity_type],
+             word_start: %i[name commodity_type],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      commodity_type: commodity_type
+    }
+  end
+
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
   enum commodity_type: { gas: 0, metal: 1, mineral: 2, non_metals: 3, agricultural_supply: 4, food: 5, medical_supply: 6, processed_goods: 7, waste: 8, scrap: 9, vice: 10, harvestable: 11 }
@@ -49,6 +60,14 @@ class Commodity < ApplicationRecord
 
   def self.ordered_by_name
     order(name: :asc)
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   def commodity_type_label

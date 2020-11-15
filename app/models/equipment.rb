@@ -32,6 +32,24 @@
 class Equipment < ApplicationRecord
   paginates_per 50
 
+  searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type],
+             word_start: %i[name manufacturer_name equipment_type item_type],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      item_type: item_type,
+      equipment_type: equipment_type,
+      manufacturer_name: manufacturer&.name,
+      manufacturer_code: manufacturer&.code
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
+
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
@@ -80,6 +98,14 @@ class Equipment < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   def equipment_type_label

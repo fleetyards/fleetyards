@@ -94,6 +94,13 @@ class Shop < ApplicationRecord
     Shop.human_enum_name(:shop_type, shop_type)
   end
 
+  def station_label
+    [
+      I18n.t('activerecord.attributes.shop.location_prefix.default'),
+      station.name,
+    ].join(' ')
+  end
+
   def location_label
     [
       I18n.t('activerecord.attributes.shop.location_prefix.default'),
