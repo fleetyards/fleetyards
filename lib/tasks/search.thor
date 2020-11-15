@@ -35,6 +35,7 @@ class Search < Thor
     run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   desc 'index', 'Create index/reindex for all Relevant Models'
   def index
     require './config/environment'
@@ -61,6 +62,7 @@ class Search < Thor
 
     run("curl -XPUT -H \"Content-Type: application/json\" http://localhost:9200/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'", verbose: false)
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   # rubocop:disable Metrics/CyclomaticComplexity
   desc 'delete_index', 'Delete index for all Relevant Models'
