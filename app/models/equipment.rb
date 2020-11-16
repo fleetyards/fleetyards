@@ -101,6 +101,16 @@ class Equipment < ApplicationRecord
     end
   end
 
+  def self.item_type_filters
+    Equipment.item_types.map do |(item, _index)|
+      Filter.new(
+        category: 'item_type',
+        name: Equipment.human_enum_name(:item_type, item),
+        value: item
+      )
+    end
+  end
+
   def sold_at
     shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
   end

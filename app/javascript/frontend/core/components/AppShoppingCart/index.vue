@@ -26,7 +26,6 @@ import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
 import { sum } from 'frontend/utils/Array'
-import { sortBy } from 'frontend/lib/Helpers'
 
 @Component<ShoppingCart>({
   components: {
@@ -42,7 +41,7 @@ export default class ShoppingCart extends Vue {
 
   get sellPrices() {
     return this.items
-      .map(item => sortBy(item.soldAt, 'sellPrice')[0])
+      .map(item => item.bestSoldAt)
       .map(item => parseFloat(item?.sellPrice))
       .filter(item => item)
   }

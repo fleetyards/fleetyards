@@ -13,6 +13,10 @@
     justify-content: space-between;
     transition: width ease $transition-base-speed;
 
+    .actions {
+      min-width: 150px;
+    }
+
     .store-image {
       width: 178px;
       max-width: 100%;

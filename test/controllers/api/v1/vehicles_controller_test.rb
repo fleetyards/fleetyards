@@ -133,6 +133,8 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => explorer.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(explorer.model.last_updated_at&.utc, format: :label) if explorer.model.last_updated_at.present?),
+              'soldAt' => [],
+              'boughtAt' => [],
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
@@ -176,7 +178,7 @@ module Api
               'beam' => 10.2,
               'height' => 10.2,
               'mass' => 1000.02,
-              'cargo' => 90,
+              'cargo' => 90.0,
               'cargoLabel' => 'Andromeda (90 SCU)',
               'minCrew' => 3,
               'maxCrew' => 5,
@@ -215,6 +217,8 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
+              "soldAt"=>[],
+              "boughtAt"=>[],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -310,6 +314,8 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
+              'soldAt' => [],
+              'boughtAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',

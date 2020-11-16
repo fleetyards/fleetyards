@@ -1,3 +1,4 @@
+import { sortBy } from 'frontend/lib/Helpers'
 import actions from './actions'
 import getDefaultState from './state'
 
@@ -25,7 +26,14 @@ export default () => ({
     },
 
     add(state, payload) {
-      state.items.push(payload)
+      const soldAt = sortBy(payload.soldAt || [], 'sellPrice')
+      state.items.push({
+        id: payload.id,
+        type: payload.type,
+        name: payload.name,
+        bestSoldAt: soldAt[0],
+        soldAt,
+      })
     },
 
     remove(state, payload) {

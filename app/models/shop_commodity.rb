@@ -55,7 +55,7 @@ class ShopCommodity < ApplicationRecord
     commodity_item.is_a?(Equipment) || commodity_item.is_a?(Component)
   end
 
-  belongs_to :commodity_item, polymorphic: true, optional: true
+  belongs_to :commodity_item, polymorphic: true, optional: true, touch: true
   belongs_to :model,
              -> { includes(:shop_commodities).where(shop_commodities: { commodity_item_type: 'Model' }) },
              foreign_key: 'commodity_item_id',

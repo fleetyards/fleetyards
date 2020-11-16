@@ -14,7 +14,7 @@
           :key="id"
           class="item-list-item"
         >
-          <div class="item-name">{{ items[0].name }}</div>
+          <div class="item-name">{{ items[0].name }} {{ items[0].type }}</div>
           <div class="item-amount noselect">
             <i
               :key="`remove-item-${id}`"
@@ -36,10 +36,7 @@
           </div>
           <div class="item-sold-at">
             <ul class="list-unstyled">
-              <li
-                v-for="item in shopsByBestPrice(items[0])"
-                :key="`${id}-${item.id}`"
-              >
+              <li v-for="item in soldAt(items)" :key="`${id}-${item.id}`">
                 <div>
                   {{ item.shop.station.name }}
                   <span class="text-darken">{{ item.shop.name }}</span>
@@ -48,7 +45,7 @@
               </li>
             </ul>
           </div>
-          <template v-if="items[0].soldAt.length">
+          <template v-if="soldAt(items).length">
             <div class="item-price" v-html="$toUEC(sum(items))" />
           </template>
           <div v-else class="item-price unavailable">
@@ -117,12 +114,9 @@ export default class ShoppingCart extends Vue {
     return groupBy(sortBy(this.cartItems, 'name'), 'id')
   }
 
-  get bestSellPrices() {
-    return this.cartItems.map(item => this.shopsByBestPrice(item)[0])
-  }
-
   get sellPrices() {
-    return this.bestSellPrices
+    return this.cartItems
+      .map(item => item.bestSoldAt)
       .map(item => parseFloat(item?.sellPrice))
       .filter(item => item)
   }
@@ -131,14 +125,14 @@ export default class ShoppingCart extends Vue {
     return sum(this.sellPrices)
   }
 
-  shopsByBestPrice(item) {
-    return sortBy(item.soldAt, 'sellPrice')
+  soldAt(items) {
+    return items[0].soldAt || []
   }
 
   sum(items) {
     return sum(
       items
-        .map(item => this.shopsByBestPrice(item)[0])
+        .map(item => item.bestSoldAt)
         .map(item => parseFloat(item?.sellPrice))
         .filter(item => item),
     )

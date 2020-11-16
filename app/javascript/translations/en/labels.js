@@ -377,8 +377,11 @@ export default {
       shopId: 'Shop',
       equipment: 'Equipment',
       component: 'Component',
+      componentItemTypeFilter: 'Component Item Types',
+      equipmentItemTypeFilter: 'Equipment Item Types',
       commodity: 'Commodity',
       model: 'Ship',
+      name: 'Name',
     },
     shopItems: {
       category: 'Category',

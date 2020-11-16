@@ -108,7 +108,10 @@ v1_api_routes = lambda do
     end
   end
   resources :equipment, only: [:index]
-  resources :components, only: [:index]
+  resources :components, only: [:index] do
+    get :class_filters, on: :collection
+    get :item_type_filters, on: :collection
+  end
 
   resources :starsystems, param: :slug, only: %i[index show]
   resources :celestial_objects, path: 'celestial-objects', param: :slug, only: %i[index show]

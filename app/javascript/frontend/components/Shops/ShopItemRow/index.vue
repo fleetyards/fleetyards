@@ -119,7 +119,10 @@
       </ul>
     </div>
     <div class="actions actions-1x">
-      <AddToCartBtn :item="commodity.item" />
+      <AddToCartBtn
+        :item="commodity.item"
+        :type="commodity.commodityItemType"
+      />
     </div>
   </div>
 </template>

@@ -90,6 +90,16 @@ class Component < ApplicationRecord
     ]
   end
 
+  def self.item_type_filters
+    Component.item_types.map do |item|
+      Filter.new(
+        category: 'item_type',
+        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        value: item
+      )
+    end
+  end
+
   def self.class_filters
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(

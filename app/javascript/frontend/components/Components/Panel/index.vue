@@ -10,7 +10,7 @@
             {{ component.manufacturer.name }}
           </small>
         </h2>
-        <AddToCartBtn :item="component" class="add-to-cart" />
+        <AddToCartBtn :item="component" type="Component" class="add-to-cart" />
         <div v-if="showMetrics" class="metrics-list">
           <div v-if="component.size" class="metrics-item">
             <div class="metrics-label">{{ $t('commodityItem.size') }}:</div>

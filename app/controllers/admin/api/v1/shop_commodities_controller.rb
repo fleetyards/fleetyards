@@ -9,7 +9,15 @@ module Admin
         def index
           authorize! :index, :admin_api_shop_commodities
 
-          shop_commodities_query_params['sorts'] = 'created_at desc'
+          sorts = [
+            'model_name asc',
+            'component_name asc',
+            'commodity_name asc',
+            'equipment_name asc',
+            'model_module_name asc',
+            'model_paint_name asc'
+          ]
+          shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
 
           scope = ShopCommodity
 
@@ -82,7 +90,7 @@ module Admin
 
         private def shop_commodities_query_params
           @shop_commodities_query_params ||= query_params(
-            :commodity_item_id, :confirmed_eq
+            :commodity_item_id, :confirmed_eq, :name_cont, component_item_type_in: [], equipment_item_type_in: []
           )
         end
 

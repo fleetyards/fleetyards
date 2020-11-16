@@ -14,6 +14,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
     this.params = params
 
     const response = await get(`shops/${params!.shopId}/commodities`, {
+      q: params?.filters,
       page: params?.page,
     })
 

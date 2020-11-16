@@ -4,7 +4,7 @@
     v-tooltip="$t('actions.shoppingCart.add')"
     class="add-to-cart"
     variant="link"
-    @click.native="addToCart(item)"
+    @click.native="addToCart(item, type)"
   >
     <i class="fal fa-cart-plus" />
   </Btn>
@@ -23,6 +23,8 @@ import Btn from 'frontend/core/components/Btn'
 })
 export default class AddToCartBtn extends Vue {
   @Prop({ required: true }) item!: any
+
+  @Prop({ required: true }) type!: any
 
   @Getter('mobile') mobile: boolean
 

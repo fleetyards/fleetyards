@@ -258,6 +258,12 @@ export default class FilterGroup extends Vue {
     }
   }
 
+  @Watch('collectionFilter')
+  onCollectionFilterChange() {
+    this.fetchedOptions = []
+    this.fetchOptions()
+  }
+
   @Watch('disabled')
   onDisabled() {
     this.fetchOptions()

@@ -6,10 +6,28 @@
     :hash="$route.hash"
     :params="routeParams"
     :paginated="true"
+    :always-filter-visible="true"
   >
+    <FilterForm slot="filter" />
+
     <template #actions>
-      <Btn @click.native="openAddModal">
-        {{ $t('actions.add') }}
+      <Btn @click.native="openAddModal('Commodity')">
+        {{ $t('actions.add') }} Commodity
+      </Btn>
+      <Btn @click.native="openAddModal('Component')">
+        {{ $t('actions.add') }} Component
+      </Btn>
+      <Btn @click.native="openAddModal('Equipment')">
+        {{ $t('actions.add') }} Equipment
+      </Btn>
+      <Btn @click.native="openAddModal('Model')">
+        {{ $t('actions.add') }} Model
+      </Btn>
+      <Btn @click.native="openAddModal('ModelPaint')">
+        {{ $t('actions.add') }} ModelPaint
+      </Btn>
+      <Btn @click.native="openAddModal('ModelModule')">
+        {{ $t('actions.add') }} ModelModule
       </Btn>
     </template>
     <template #default="{ records, primaryKey }">
@@ -100,6 +118,7 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredTable from 'frontend/core/components/FilteredTable'
+import FilterForm from 'admin/components/ShopCommodities/FilterForm'
 import BtnGroup from 'frontend/core/components/BtnGroup'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Btn from 'frontend/core/components/Btn'
@@ -110,6 +129,7 @@ import { displayConfirm } from 'frontend/lib/Noty'
   components: {
     FilteredList,
     FilteredTable,
+    FilterForm,
     BtnGroup,
     BtnDropdown,
     Btn,
@@ -132,7 +152,12 @@ export default class AdminStationImages extends Vue {
       label: this.$t('labels.shopCommodity.confirmed'),
       width: '10%',
     },
-    { name: 'actions', label: this.$t('labels.actions'), width: '10%' },
+    {
+      name: 'actions',
+      label: this.$t('labels.actions'),
+      width: '10%',
+      class: 'actions',
+    },
   ]
 
   prices = [
@@ -211,11 +236,12 @@ export default class AdminStationImages extends Vue {
     })
   }
 
-  openAddModal() {
+  openAddModal(commodityItemType) {
     this.$comlink.$emit('open-modal', {
       component: () => import('admin/components/ShopCommodities/Modal'),
       props: {
         shopId: this.routeParams.shopId,
+        commodityItemType,
       },
     })
   }

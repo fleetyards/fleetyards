@@ -33,6 +33,15 @@ module Admin
 
           @equipment = Equipment.where(equipment_type: :medical).all
         end
+
+        def item_type_filters
+          authorize! :index, :admin_api_equipment
+
+          @filters = Equipment.item_type_filters
+
+          render 'api/shared/filters'
+        end
+
         private def equipment_query_params
           @equipment_query_params ||= query_params(
             :name_in, :id_eq, :name_cont, :name_eq

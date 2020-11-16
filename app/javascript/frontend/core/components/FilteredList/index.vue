@@ -113,6 +113,8 @@ export default class FilteredList extends Vue {
 
   @Prop({ default: false }) paginated: boolean
 
+  @Prop({ default: false }) alwaysFilterVisible: boolean
+
   @Getter('filtersVisible') filtersVisible
 
   @Getter('mobile') mobile
@@ -179,6 +181,10 @@ export default class FilteredList extends Vue {
     if (this.mobile) {
       this.setFiltersVisible({
         [this.name]: false,
+      })
+    } else if (this.alwaysFilterVisible) {
+      this.setFiltersVisible({
+        [this.name]: true,
       })
     }
 

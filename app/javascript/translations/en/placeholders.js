@@ -64,5 +64,8 @@ export default {
         username: 'Username',
       },
     },
+    shopCommodities: {
+      name: 'Name',
+    },
   },
 }

@@ -70,6 +70,8 @@ module Api
           'hasPaints' => false,
           'lastUpdatedAt' => origin.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.first.last_updated_at&.utc, format: :label) if origin.last_updated_at.present?),
+          'soldAt' => [],
+          'boughtAt' => [],
           'manufacturer' => {
             'name' => 'Origin',
             'slug' => 'origin',
@@ -128,6 +130,8 @@ module Api
           'hasPaints' => false,
           'lastUpdatedAt' => Model.last.last_updated_at&.utc&.iso8601,
           'lastUpdatedAtLabel' => (I18n.l(Model.last.last_updated_at&.utc, format: :label) if Model.last.last_updated_at.present?),
+          'soldAt' => [],
+          'boughtAt' => [],
           'manufacturer' => {
             'name' => 'RSI',
             'slug' => 'rsi',

@@ -24,6 +24,22 @@
           </div>
           <div class="col-12 col-md-6">
             <div class="form-group">
+              <CollectionFilterGroup
+                v-if="form.commodityItemType === 'Component'"
+                key="component-item-type-filters-filter-group"
+                v-model="componentItemTypeFilter"
+                :label="
+                  $t('labels.filters.shopCommodities.componentItemTypeFilter')
+                "
+                :collection="componentItemTypeFiltersCollection"
+                name="component-item-type-filter"
+                :searchable="true"
+                :no-label="true"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
               <ValidationProvider
                 v-slot="{ errors }"
                 vid="commodityItemId"
@@ -50,6 +66,9 @@
                   v-model="form.commodityItemId"
                   :label="$t('labels.filters.shopCommodities.component')"
                   :collection="componentsCollection"
+                  :collection-filter="{
+                    itemTypeEq: componentItemTypeFilter,
+                  }"
                   name="components-commodityItemId"
                   value-attr="id"
                   :error="errors[0]"
@@ -148,6 +167,7 @@ import componentsCollection from 'admin/api/collections/Components'
 import equipmentCollection from 'admin/api/collections/Equipment'
 import modelModulesCollection from 'admin/api/collections/ModelModules'
 import modelPaintsCollection from 'admin/api/collections/ModelPaints'
+import componentItemTypeFiltersCollection from 'admin/api/collections/ComponentItemTypeFilters'
 
 @Component<VehicleModal>({
   components: {
@@ -159,6 +179,8 @@ import modelPaintsCollection from 'admin/api/collections/ModelPaints'
 })
 export default class VehicleModal extends Vue {
   @Prop({ required: true }) shopId: string
+
+  @Prop({ default: null }) commodityItemType: string
 
   @Prop({ default: null }) shopCommodity: ShopCommodity
 
@@ -174,7 +196,11 @@ export default class VehicleModal extends Vue {
 
   modelPaintsCollection: ModelPaintsCollection = modelPaintsCollection
 
+  componentItemTypeFiltersCollection: ComponentItemTypeFiltersCollection = componentItemTypeFiltersCollection
+
   submitting: boolean = false
+
+  componentItemTypeFilter: string | null = null
 
   form: Object | null = null
 
@@ -232,10 +258,15 @@ export default class VehicleModal extends Vue {
     this.setupForm()
   }
 
+  fetchSubCategories() {
+    return this.$api.get('filters/shop-commodities/sub-categories')
+  }
+
   setupForm() {
     this.form = {
       commodityItemId: this.shopCommodity?.commodityItemId,
-      commodityItemType: this.shopCommodity?.commodityItemType,
+      commodityItemType:
+        this.shopCommodity?.commodityItemType || this.commodityItemType,
     }
   }
 

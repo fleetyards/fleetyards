@@ -13,7 +13,7 @@
             </template>
           </small>
         </h2>
-        <AddToCartBtn :item="equipment" />
+        <AddToCartBtn :item="equipment" type="Equipment" />
         <div class="metrics-list">
           <div v-if="equipment.manufacturer" class="metrics-item">
             <div class="metrics-label">
