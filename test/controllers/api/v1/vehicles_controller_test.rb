@@ -217,8 +217,8 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
-              "soldAt"=>[],
-              "boughtAt"=>[],
+              'soldAt' => [],
+              'boughtAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
