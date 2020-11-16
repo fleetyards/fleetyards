@@ -4,7 +4,7 @@
     v-tooltip="$t('actions.shoppingCart.add')"
     class="add-to-cart"
     variant="link"
-    @click.native="addToCart(item, type)"
+    @click.native="addToCart({ item, type })"
   >
     <i class="fal fa-cart-plus" />
   </Btn>

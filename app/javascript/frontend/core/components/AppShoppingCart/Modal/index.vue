@@ -14,7 +14,7 @@
           :key="id"
           class="item-list-item"
         >
-          <div class="item-name">{{ items[0].name }} {{ items[0].type }}</div>
+          <div class="item-name">{{ items[0].name }}</div>
           <div class="item-amount noselect">
             <i
               :key="`remove-item-${id}`"
