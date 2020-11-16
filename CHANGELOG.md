@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.3](https://github.com/fleetyards/fleetyards/compare/v4.1.2...v4.1.3) (2020-11-16)
+
+
+### Bug Fixes
+
+* shopping cart ([0ca6109](https://github.com/fleetyards/fleetyards/commit/0ca610976a21aea60c866131558e545d075fd79d))
+
 ### [4.1.2](https://github.com/fleetyards/fleetyards/compare/v4.1.1...v4.1.2) (2020-11-16)
 
 
