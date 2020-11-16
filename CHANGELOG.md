@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1](https://github.com/fleetyards/fleetyards/compare/v4.1.0...v4.1.1) (2020-11-16)
+
+
+### Bug Fixes
+
+* admin api ([e3d7b71](https://github.com/fleetyards/fleetyards/commit/e3d7b712902be125750f36568d624afdb4a06b42))
+
 ## [4.1.0](https://github.com/fleetyards/fleetyards/compare/v4.0.6...v4.1.0) (2020-11-16)
 
 
