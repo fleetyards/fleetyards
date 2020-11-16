@@ -17,6 +17,27 @@ export default {
     })
   },
 
+  update({ commit, state }, { item: newItem, type }) {
+    const soldAt = sortBy(newItem.soldAt || [], 'sellPrice')
+
+    commit(
+      'setItems',
+      state.items.map(item => {
+        if (item.id !== newItem.id) {
+          return item
+        }
+
+        return {
+          id: newItem.id,
+          type,
+          name: newItem.name,
+          bestSoldAt: soldAt[0],
+          soldAt,
+        }
+      }),
+    )
+  },
+
   remove({ commit }, payload) {
     commit('remove', payload)
   },

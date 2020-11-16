@@ -19,7 +19,7 @@ module Api
       end
 
       private def equipment_query_params
-        @equipment_query_params ||= query_params(:name_cont, name_in: [])
+        @equipment_query_params ||= query_params(:name_cont, id_in: [], name_in: [])
       end
     end
   end

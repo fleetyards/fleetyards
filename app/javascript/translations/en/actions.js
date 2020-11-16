@@ -105,6 +105,7 @@ export default {
   'openPriceModal': 'Submit Price',
   'shoppingCart': {
     add: 'Add to Cart',
+    refresh: 'Refresh Cart',
     clear: 'Clear Cart',
   },
 }

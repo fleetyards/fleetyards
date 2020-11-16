@@ -71,6 +71,14 @@
       <div class="float-sm-right">
         <Btn
           :inline="true"
+          :disabled="!cartItems.length || loading"
+          :loading="loading"
+          @click.native="refresh"
+        >
+          {{ $t('actions.shoppingCart.refresh') }}
+        </Btn>
+        <Btn
+          :inline="true"
           :disabled="!cartItems.length"
           @click.native="clearCart"
         >
@@ -92,6 +100,12 @@ import Modal from 'frontend/core/components/AppModal/Modal'
 import Btn from 'frontend/core/components/Btn'
 import { sum } from 'frontend/utils/Array'
 import { groupBy, sortBy } from 'frontend/lib/Helpers'
+import ComponentsCollection from 'frontend/api/collections/Components'
+import CommoditiesCollection from 'frontend/api/collections/Commodities'
+import EquipmentCollection from 'frontend/api/collections/Equipment'
+import ModelsCollection from 'frontend/api/collections/Models'
+// import ModelPaintsCollection from 'frontend/api/collections/ModelPaints'
+// import ModelModulesCollection from 'frontend/api/collections/ModelModules'
 
 @Component<ShoppingCart>({
   components: {
@@ -108,7 +122,11 @@ export default class ShoppingCart extends Vue {
 
   @Action('add', { namespace: 'shoppingCart' }) addToCart: any
 
+  @Action('update', { namespace: 'shoppingCart' }) updateInCart: any
+
   @Action('remove', { namespace: 'shoppingCart' }) removeFromCart: any
+
+  loading: boolean = false
 
   get groupedItems() {
     return groupBy(sortBy(this.cartItems, 'name'), 'id')
@@ -149,7 +167,7 @@ export default class ShoppingCart extends Vue {
       return
     }
 
-    this.addToCart(items[0])
+    this.addToCart({ item: items[0], type: items[0].type })
   }
 
   removeItem(items) {
@@ -162,6 +180,29 @@ export default class ShoppingCart extends Vue {
 
   closeModal() {
     this.$comlink.$emit('close-modal')
+  }
+
+  async refreshForType(collection, type) {
+    const items = await collection.findAll({
+      filters: {
+        idIn: this.cartItems
+          .filter(item => item.type === type)
+          .map(item => item.id),
+      },
+    })
+
+    items.forEach(item => this.updateInCart({ item, type }))
+  }
+
+  async refresh() {
+    this.loading = true
+    await this.refreshForType(ComponentsCollection, 'Component')
+    await this.refreshForType(CommoditiesCollection, 'Commodity')
+    await this.refreshForType(EquipmentCollection, 'Equipment')
+    await this.refreshForType(ModelsCollection, 'Model')
+    // await this.refreshForType(ModelPaintsCollection, 'ModelPaint')
+    // await this.refreshForType(ModelModulesCollection, 'ModelModule')
+    this.loading = false
   }
 }
 </script>
