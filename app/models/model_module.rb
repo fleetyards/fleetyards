@@ -49,6 +49,14 @@ class ModelModule < ApplicationRecord
     where(active: true)
   end
 
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
+  end
+
   private def touch_shop_commodities
     # rubocop:disable Rails/SkipsModelValidations
     shop_commodities.update_all(updated_at: Time.zone.now)

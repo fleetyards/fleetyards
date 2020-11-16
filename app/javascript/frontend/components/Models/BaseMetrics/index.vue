@@ -96,17 +96,20 @@
               <div class="metrics-label">{{ $t('model.soldAt') }}:</div>
               <div class="metrics-value">
                 <ul class="list-unstyled">
-                  <li v-for="shop in model.soldAt" :key="shop.slug">
+                  <li
+                    v-for="shopCommodity in model.soldAt"
+                    :key="shopCommodity.id"
+                  >
                     <router-link
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shop.stationSlug,
-                          slug: shop.slug,
+                          station: shopCommodity.shop.station.slug,
+                          slug: shopCommodity.shop.slug,
                         },
                       }"
                     >
-                      {{ shop.name }}
+                      {{ shopCommodity.shop.name }}
                     </router-link>
                   </li>
                 </ul>
@@ -119,17 +122,20 @@
               <div class="metrics-label">{{ $t('model.rentalAt') }}:</div>
               <div class="metrics-value">
                 <ul class="list-unstyled">
-                  <li v-for="shop in model.rentalAt" :key="shop.slug">
+                  <li
+                    v-for="shopCommodity in model.rentalAt"
+                    :key="shopCommodity.id"
+                  >
                     <router-link
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shop.stationSlug,
-                          slug: shop.slug,
+                          station: shopCommodity.shop.station.slug,
+                          slug: shopCommodity.shop.slug,
                         },
                       }"
                     >
-                      {{ shop.name }}
+                      {{ shopCommodity.shop.name }}
                     </router-link>
                   </li>
                 </ul>

@@ -55,6 +55,9 @@ end
 json.bought_at do
   json.array! model.bought_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
 end
+json.rental_at do
+  json.array! model.rental_at, partial: 'api/v1/shop_commodities/base', as: :shop_commodity
+end
 json.manufacturer do
   json.null! if model.manufacturer.blank?
   json.partial! 'api/v1/manufacturers/base', manufacturer: model.manufacturer if model.manufacturer.present?
