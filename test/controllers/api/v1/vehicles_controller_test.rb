@@ -135,6 +135,7 @@ module Api
               'lastUpdatedAtLabel' => (I18n.l(explorer.model.last_updated_at&.utc, format: :label) if explorer.model.last_updated_at.present?),
               'soldAt' => [],
               'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
@@ -219,6 +220,7 @@ module Api
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
               'soldAt' => [],
               'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -316,6 +318,7 @@ module Api
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
               'soldAt' => [],
               'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',

@@ -116,6 +116,7 @@ module Api
             'lastUpdatedAtLabel' => (I18n.l(explorer.commodity_item.last_updated_at&.utc, format: :label) if explorer.commodity_item.last_updated_at.present?),
             'soldAt' => [],
             'boughtAt' => [],
+            'rentalAt' => [],
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
@@ -227,6 +228,7 @@ module Api
             'lastUpdatedAtLabel' => (I18n.l(andromeda.commodity_item.last_updated_at&.utc, format: :label) if andromeda.commodity_item.last_updated_at.present?),
             'soldAt' => [],
             'boughtAt' => [],
+            'rentalAt' => [],
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',
