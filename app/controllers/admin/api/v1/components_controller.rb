@@ -18,7 +18,7 @@ module Admin
 
         private def component_query_params
           @component_query_params ||= query_params(
-            :name_in, :id_eq
+            :name_in, :id_eq, :name_cont, :name_eq
           )
         end
       end
