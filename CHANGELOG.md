@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/fleetyards/fleetyards/compare/v4.0.6...v4.1.0) (2020-11-16)
+
+
+### Features
+
+* add shopping t0 ([9ca5586](https://github.com/fleetyards/fleetyards/commit/9ca5586edc3f548de91b8f8c1f747f9bd3eb1139))
+
+
+### Bug Fixes
+
+* admin shop_commodities ([cf3fc1a](https://github.com/fleetyards/fleetyards/commit/cf3fc1a319e278e677a44d9ea4ee4ccd06889f32))
+* search_field in admin ([aa8af58](https://github.com/fleetyards/fleetyards/commit/aa8af581811c5b65fe66d530f688a5b7b7510800))
+* specs ([e6ef5d7](https://github.com/fleetyards/fleetyards/commit/e6ef5d7553262f51c5ccdcbd9bcf6f8c5d451c1a))
+
 ### [4.0.6](https://github.com/fleetyards/fleetyards/compare/v4.0.5...v4.0.6) (2020-11-14)
 
 
