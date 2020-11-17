@@ -1,6 +1,6 @@
 <template>
   <Btn
-    v-if="cartItems.length && !mobile"
+    v-if="cartItems.length"
     class="app-shopping-cart"
     :class="{
       'nav-slim': navSlim,

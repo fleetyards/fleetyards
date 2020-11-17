@@ -1,6 +1,5 @@
 <template>
   <Btn
-    v-if="!mobile"
     v-tooltip="$t('actions.shoppingCart.add')"
     class="add-to-cart"
     variant="link"

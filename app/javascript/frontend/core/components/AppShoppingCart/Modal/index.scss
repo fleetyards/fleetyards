@@ -17,6 +17,10 @@
       padding: 5px 5px;
     }
 
+    .price-label {
+      white-space: nowrap;
+    }
+
     .item-name {
       width: 15%;
     }
@@ -83,5 +87,43 @@
     font-weight: bold;
     font-size: 120%;
     border-top: 1px solid $gray-dark;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .shopping-cart {
+    .item-list-item {
+      flex-direction: column;
+
+      .item-name,
+      .item-actions,
+      .item-sold-at,
+      .item-price {
+        width: 100%;
+      }
+
+      .item-name {
+        font-size: 120%;
+      }
+
+      .item-amount {
+        width: auto;
+      }
+
+      .item-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .item-list-header {
+      display: none;
+    }
+
+    .item-list-total {
+      flex-direction: row;
+      padding-right: 0;
+    }
   }
 }

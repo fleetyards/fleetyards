@@ -15,7 +15,7 @@
           class="item-list-item"
         >
           <div class="item-name">{{ cartItem.name }}</div>
-          <div class="item-amount noselect">
+          <div v-if="!mobile" class="item-amount noselect">
             <i
               class="fal fa-minus"
               :class="{
@@ -41,17 +41,35 @@
                   {{ soldAt.stationName }}
                   <span class="text-darken">{{ soldAt.shopName }}</span>
                 </div>
-                <span v-html="$toUEC(soldAt.price)" />
+                <span class="price-label" v-html="$toUEC(soldAt.price)" />
               </li>
             </ul>
           </div>
-          <template v-if="cartItem.soldAt.length">
-            <div class="item-price" v-html="$toUEC(sum(cartItem))" />
-          </template>
+          <div
+            v-if="cartItem.soldAt.length"
+            class="item-price price-label"
+            v-html="$toUEC(sum(cartItem))"
+          />
           <div v-else class="item-price unavailable">
             {{ $t('labels.unavailable') }}
           </div>
           <div class="item-actions">
+            <div v-if="mobile" class="item-amount noselect">
+              <i
+                class="fal fa-minus"
+                :class="{
+                  disabled: cartItem.amount <= 0,
+                }"
+                @click="
+                  cartItem.amount <= 0 ? () => {} : reduceAmount(cartItem.id)
+                "
+              />
+              <span>
+                {{ cartItem.amount }}
+                <i class="fal fa-times" />
+              </span>
+              <i class="fal fa-plus" @click="increaseAmount(cartItem.id)" />
+            </div>
             <Btn
               :inline="true"
               size="small"
@@ -63,7 +81,7 @@
         </div>
         <div key="total" class="item-list-item item-list-total">
           <div class="text-darken">{{ $t('labels.shoppingCart.total') }}</div>
-          <div v-html="$toUEC(total)" />
+          <div class="price-label" v-html="$toUEC(total)" />
         </div>
       </div>
       <div v-else class="item-list-empty">
@@ -118,7 +136,7 @@ import ModelsCollection from 'frontend/api/collections/Models'
   },
 })
 export default class ShoppingCart extends Vue {
-  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
+  @Getter('mobile') mobile: boolean
 
   @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
 
