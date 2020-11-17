@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/fleetyards/fleetyards/compare/v4.1.3...v4.2.0) (2020-11-17)
+
+
+### Features
+
+* add refresh to shopping cart ([508ab58](https://github.com/fleetyards/fleetyards/commit/508ab58aba045b2152c3fe538992ce80446cbc13))
+
+
+### Bug Fixes
+
+* shops for models ([a8cb584](https://github.com/fleetyards/fleetyards/commit/a8cb584d6994d1c623094533799ad9a7c3f4b1d2))
+* specs ([f31159f](https://github.com/fleetyards/fleetyards/commit/f31159fe92c9a6f20bf67e807e848ea0d6927f69))
+
 ### [4.1.3](https://github.com/fleetyards/fleetyards/compare/v4.1.2...v4.1.3) (2020-11-16)
 
 
