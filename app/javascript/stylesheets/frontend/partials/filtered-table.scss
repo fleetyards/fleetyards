@@ -6,7 +6,9 @@
 
   .filtered-table-item > .filtered-table-row,
   .filtered-table-heading > .filtered-table-row,
-  .filtered-table-selected > .filtered-table-row {
+  .filtered-table-selected > .filtered-table-row,
+  .filtered-table-empty > .filtered-table-row,
+  .filtered-table-loader > .filtered-table-row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -116,6 +118,18 @@
     justify-content: space-between;
     color: $primary;
     font-size: 120%;
+  }
+
+  .filtered-table-empty > .filtered-table-row {
+    justify-content: center;
+    padding: 20px;
+    color: darken($text-color, 30%);
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .filtered-table-loader > .filtered-table-row {
+    justify-content: center;
+    min-height: 80px;
   }
 }
 

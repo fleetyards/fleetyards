@@ -12,6 +12,10 @@
   &.fixed {
     top: 40vh;
   }
+
+  &.inline {
+    top: 0;
+  }
 }
 
 .loader .cube {

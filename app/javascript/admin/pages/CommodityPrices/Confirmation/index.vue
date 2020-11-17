@@ -6,12 +6,16 @@
     :hash="$route.hash"
     :params="$route.params"
     :paginated="true"
+    :hide-empty-box="true"
+    :hide-loading="true"
   >
-    <template #default="{ records, primaryKey }">
+    <template #default="{ records, loading, emptyBoxVisible, primaryKey }">
       <FilteredTable
         :records="records"
         :primary-key="primaryKey"
         :columns="tableColumns"
+        :loading="loading"
+        :empty-box-visible="emptyBoxVisible"
       >
         <template #col-item="{ record }">
           <template v-if="record.shopCommodity">

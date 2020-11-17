@@ -47,11 +47,12 @@
             :filter-visible="filterVisible"
             :loading="loading"
             :primary-key="collection.primaryKey"
+            :empty-box-visible="emptyBoxVisible"
           />
 
-          <EmptyBox :visible="emptyBoxVisible" />
+          <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
 
-          <Loader :loading="loading" :fixed="true" />
+          <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
         </div>
       </div>
       <div class="row">
@@ -115,6 +116,10 @@ export default class FilteredList extends Vue {
 
   @Prop({ default: false }) alwaysFilterVisible: boolean
 
+  @Prop({ default: false }) hideEmptyBox: boolean
+
+  @Prop({ default: false }) hideLoading: boolean
+
   @Getter('filtersVisible') filtersVisible
 
   @Getter('mobile') mobile
@@ -176,6 +181,10 @@ export default class FilteredList extends Vue {
   }
 
   mounted() {
+    if (this.collection.records.length) {
+      this.collection.records = []
+    }
+
     this.fetch()
 
     if (this.mobile) {

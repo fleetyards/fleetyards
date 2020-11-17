@@ -38,6 +38,8 @@
       :params="$route.params"
       :hash="$route.hash"
       :paginated="true"
+      :hide-empty-box="true"
+      :hide-loading="true"
     >
       <FilterForm slot="filter" />
 
@@ -55,11 +57,13 @@
         </Btn>
       </template>
 
-      <template #default="{ records, primaryKey }">
+      <template #default="{ records, loading, emptyBoxVisible, primaryKey }">
         <FilteredTable
           :records="records"
           :primary-key="primaryKey"
           :columns="tableColumns"
+          :loading="loading"
+          :empty-box-visible="emptyBoxVisible"
         >
           <template #col-store_image="{ record }">
             <router-link

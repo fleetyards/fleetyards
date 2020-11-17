@@ -7,6 +7,8 @@
     :params="routeParams"
     :paginated="true"
     :always-filter-visible="true"
+    :hide-empty-box="true"
+    :hide-loading="true"
   >
     <FilterForm slot="filter" />
 
@@ -30,11 +32,13 @@
         {{ $t('actions.add') }} ModelModule
       </Btn>
     </template>
-    <template #default="{ records, primaryKey }">
+    <template #default="{ records, loading, emptyBoxVisible, primaryKey }">
       <FilteredTable
         :records="records"
         :primary-key="primaryKey"
         :columns="tableColumns"
+        :loading="loading"
+        :empty-box-visible="emptyBoxVisible"
       >
         <template #col-item="{ record }">
           {{ record.item.name }}

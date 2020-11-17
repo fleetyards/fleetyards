@@ -50,35 +50,57 @@
           </div>
         </div>
       </div>
-      <div
-        v-for="(record, index) in records"
-        :key="record[primaryKey]"
-        class="fade-list-item col-12 filtered-table-item"
-      >
-        <slot :record="record" :index="index">
-          <div class="filtered-table-row">
-            <div v-if="selectable && !mobile">
-              <Checkbox
-                v-model="internalSelected"
-                :checkbox-value="record.id"
-              />
-            </div>
-            <template v-for="(column, colIndex) in columns">
-              <div
-                :key="`filtered-table-item-${uuid}-${colIndex}-${column.name}`"
-                :class="column.class"
-                :style="{
-                  'flex-grow': column.flexGrow,
-                  'width': column.width,
-                }"
-              >
-                <slot :record="record" :name="`col-${column.name}`">
-                  {{ record[column.field || column.name] }}
-                </slot>
+      <template v-if="records.length">
+        <div
+          v-for="(record, index) in records"
+          :key="record[primaryKey]"
+          class="fade-list-item col-12 filtered-table-item"
+        >
+          <slot :record="record" :index="index">
+            <div class="filtered-table-row">
+              <div v-if="selectable && !mobile">
+                <Checkbox
+                  v-model="internalSelected"
+                  :checkbox-value="record.id"
+                />
               </div>
-            </template>
-          </div>
-        </slot>
+              <template v-for="(column, colIndex) in columns">
+                <div
+                  :key="
+                    `filtered-table-item-${uuid}-${colIndex}-${column.name}`
+                  "
+                  :class="column.class"
+                  :style="{
+                    'flex-grow': column.flexGrow,
+                    'width': column.width,
+                  }"
+                >
+                  <slot :record="record" :name="`col-${column.name}`">
+                    {{ record[column.field || column.name] }}
+                  </slot>
+                </div>
+              </template>
+            </div>
+          </slot>
+        </div>
+      </template>
+      <div
+        v-if="loading"
+        key="loading-row"
+        class="fade-list-item col-12 filtered-table-loader"
+      >
+        <div class="filtered-table-row">
+          <Loader :loading="loading" :inline="true" />
+        </div>
+      </div>
+      <div
+        v-else-if="emptyBoxVisible"
+        key="empty-row"
+        class="fade-list-item col-12 filtered-table-empty"
+      >
+        <div class="filtered-table-row">
+          {{ $t('texts.empty.info') }}
+        </div>
       </div>
     </transition-group>
   </Panel>
@@ -90,6 +112,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Panel from 'frontend/core/components/Panel'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
+import Loader from 'frontend/core/components/Loader'
 import Btn from 'frontend/core/components/Btn'
 import { uniq as uniqArray } from 'frontend/utils/Array'
 
@@ -102,6 +125,7 @@ export type FilteredTableColumn = {
 @Component<FilteredTable>({
   components: {
     Panel,
+    Loader,
     Checkbox,
     Btn,
   },
@@ -112,6 +136,10 @@ export default class FilteredTable extends Vue {
   @Prop({ required: true }) columns!: FilteredTableColumn[]
 
   @Prop({ required: true }) primaryKey!: string
+
+  @Prop({ default: false }) loading!: boolean
+
+  @Prop({ default: false }) emptyBoxVisible!: boolean
 
   @Prop({ default: false }) selectable!: boolean
 
