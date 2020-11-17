@@ -98,7 +98,7 @@
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shop.stationSlug,
+                          stationSlug: shop.stationSlug,
                           slug: shop.slug,
                         },
                       }"
@@ -121,7 +121,7 @@
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shop.stationSlug,
+                          stationSlug: shop.stationSlug,
                           slug: shop.slug,
                         },
                       }"

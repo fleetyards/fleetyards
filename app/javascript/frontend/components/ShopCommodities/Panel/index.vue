@@ -104,7 +104,7 @@ export default {
       return {
         name: 'shop',
         params: {
-          station: this.item.shop.station.slug,
+          stationSlug: this.item.shop.station.slug,
           slug: this.item.shop.slug,
         },
       }

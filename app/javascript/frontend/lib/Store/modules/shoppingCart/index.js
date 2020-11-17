@@ -27,11 +27,6 @@ export default () => ({
     add(state, payload) {
       state.items.push(payload)
     },
-
-    remove(state, payload) {
-      const index = state.items.findIndex(item => item.id === payload.id)
-      state.items.splice(index, 1)
-    },
   },
   /* eslint-enable no-param-reassign */
 })

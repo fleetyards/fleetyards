@@ -45,7 +45,7 @@ export default class ShopCommodityLocations extends Vue {
     return {
       name: 'shop',
       params: {
-        station: shop.station.slug,
+        stationSlug: shop.station.slug,
         slug: shop.slug,
       },
     }

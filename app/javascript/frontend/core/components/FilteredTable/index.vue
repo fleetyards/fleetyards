@@ -1,5 +1,5 @@
 <template>
-  <Panel v-if="records.length">
+  <Panel>
     <transition-group
       name="fade"
       class="filtered-table"

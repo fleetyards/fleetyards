@@ -104,7 +104,7 @@
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shopCommodity.shop.station.slug,
+                          stationSlug: shopCommodity.shop.station.slug,
                           slug: shopCommodity.shop.slug,
                         },
                       }"
@@ -130,7 +130,7 @@
                       :to="{
                         name: 'shop',
                         params: {
-                          station: shopCommodity.shop.station.slug,
+                          stationSlug: shopCommodity.shop.station.slug,
                           slug: shopCommodity.shop.slug,
                         },
                       }"

@@ -1,6 +1,6 @@
 <template>
   <Btn
-    v-if="items.length && !mobile"
+    v-if="cartItems.length && !mobile"
     class="app-shopping-cart"
     :class="{
       'nav-slim': navSlim,
@@ -12,8 +12,8 @@
       class="items-label"
       v-html="
         $t('labels.shoppingCart.items', {
-          count: items.length,
-          price: $toUEC(price),
+          count: cartItemCount,
+          price: $toUEC(total),
         })
       "
     />
@@ -25,7 +25,7 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Btn from 'frontend/core/components/Btn'
-import { sum } from 'frontend/utils/Array'
+import { sum as sumArray } from 'frontend/utils/Array'
 
 @Component<ShoppingCart>({
   components: {
@@ -35,19 +35,22 @@ import { sum } from 'frontend/utils/Array'
 export default class ShoppingCart extends Vue {
   @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
 
-  @Getter('items', { namespace: 'shoppingCart' }) items: any[]
+  @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
 
   @Getter('mobile') mobile: boolean
 
-  get sellPrices() {
-    return this.items
-      .map(item => item.bestSoldAt)
-      .map(item => parseFloat(item?.sellPrice))
-      .filter(item => item)
+  get total() {
+    return sumArray(
+      this.cartItems.map(item => this.sum(item)).filter(item => item),
+    )
   }
 
-  get price() {
-    return sum(this.sellPrices)
+  get cartItemCount() {
+    return sumArray(this.cartItems.map(item => item.amount))
+  }
+
+  sum(cartItem) {
+    return parseFloat((cartItem.bestSoldAt?.price || 0) * cartItem.amount)
   }
 
   openModal() {

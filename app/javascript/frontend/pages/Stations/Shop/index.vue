@@ -29,175 +29,247 @@
         </Panel>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 col-lg-8">
-        <div class="page-actions page-actions-left">
-          <Btn
-            v-tooltip="toggleFiltersTooltip"
-            :active="filterVisible"
-            :aria-label="toggleFiltersTooltip"
-            size="small"
-            @click.native="toggleFilter"
-          >
-            <span v-show="isFilterSelected">
-              <i class="fas fa-filter" />
-            </span>
-            <span v-show="!isFilterSelected">
-              <i class="far fa-filter" />
-            </span>
-          </Btn>
-          <template v-if="!mobile">
-            <Btn
-              v-for="item in subCategories"
-              :key="item.value"
-              size="small"
-              :class="{
-                active: (subCategory || []).includes(item.value),
-              }"
-              @click.native="toggleSubcategory(item.value)"
-            >
-              {{ item.name }}
-            </Btn>
-          </template>
-        </div>
-      </div>
-      <div class="col-12 col-lg-4">
-        <Paginator
-          v-if="commodities.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
 
-    <div class="row">
-      <transition
-        name="slide"
-        appear
-        @before-enter="toggleFullscreen"
-        @after-leave="toggleFullscreen"
-      >
-        <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
-          <FilterForm />
-        </div>
-      </transition>
-      <div
-        :class="{
-          'col-lg-9 col-xxl-10': !fullscreen,
-        }"
-        class="col-12 col-animated"
-      >
-        <Panel v-if="shop">
-          <transition-group name="fade" class="flex-list" tag="div" appear>
-            <div key="heading" class="fade-list-item col-12 flex-list-heading">
-              <div class="flex-list-row">
-                <div class="store-image" />
-                <div class="description" />
-                <div v-if="shop.selling" class="price">
-                  {{ $t('labels.shop.sellPrice') }}
-                </div>
-                <div v-if="shop.buying" class="price">
-                  {{ $t('labels.shop.buyPrice') }}
-                </div>
-                <div v-if="shop.rental" class="rent-price">
-                  {{ $t('labels.shop.rentalPrice') }}
-                </div>
-                <div class="actions actions-1x" />
-              </div>
-            </div>
-            <div
-              v-if="!loading && !commodities.length"
-              key="empty"
-              class="fade-list-item col-12 flex-list-item"
+    <FilteredList
+      key="shop"
+      :collection="collection"
+      :name="$route.name"
+      :route-query="$route.query"
+      :params="$route.params"
+      :hash="$route.hash"
+      :paginated="true"
+    >
+      <FilterForm slot="filter" />
+
+      <template v-if="!mobile" slot="actions">
+        <Btn
+          v-for="item in subCategories"
+          :key="item.value"
+          size="small"
+          :class="{
+            active: (subCategory || []).includes(item.value),
+          }"
+          @click.native="toggleSubcategory(item.value)"
+        >
+          {{ item.name }}
+        </Btn>
+      </template>
+
+      <template #default="{ records, primaryKey }">
+        <FilteredTable
+          :records="records"
+          :primary-key="primaryKey"
+          :columns="tableColumns"
+        >
+          <template #col-store_image="{ record }">
+            <router-link
+              v-if="record.category === 'model'"
+              :to="{
+                name: 'model',
+                params: {
+                  slug: record.slug,
+                },
+              }"
             >
-              <div class="flex-list-row">
-                <div class="empty">
-                  {{ $t('labels.blank.shopCommodities') }}
-                </div>
-              </div>
-            </div>
-            <div
-              v-for="(commodity, index) in commodities"
-              :key="`commodities-${index}`"
-              class="fade-list-item col-12 flex-list-item"
-            >
-              <ShopItemRow
-                :commodity="commodity"
-                :selling="shop.selling"
-                :rental="shop.rental"
-                :buying="shop.buying"
+              <div
+                :key="record.storeImageSmall"
+                v-lazy:background-image="record.storeImageSmall"
+                class="image lazy"
+                alt="storeImage"
               />
+            </router-link>
+            <div
+              v-else
+              :key="record.storeImageSmall"
+              v-lazy:background-image="record.storeImageSmall"
+              class="image lazy"
+              alt="storeImage"
+            />
+          </template>
+          <template #col-description="{ record }">
+            <h2>
+              <router-link v-if="link(record)" :to="link(record)">
+                <span v-html="name(record)" />
+              </router-link>
+              <span v-else v-html="name(record)" />
+              <small class="text-muted">{{ record.subCategoryLabel }}</small>
+            </h2>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <ul class="list-unstyled">
+                  <li v-if="record.item.grade">
+                    <b>{{ $t('commodityItem.grade') }}:</b>
+                    {{ record.item.grade }}
+                  </li>
+                  <li v-if="record.item.size">
+                    <b>{{ $t('commodityItem.size') }}:</b>
+                    {{ record.item.size }}
+                  </li>
+                  <li v-if="record.item.typeLabel">
+                    <b>{{ $t('commodityItem.type') }}:</b>
+                    {{ record.item.typeLabel }}
+                  </li>
+                  <li v-if="record.item.itemTypeLabel">
+                    <b>{{ $t('commodityItem.itemType') }}:</b>
+                    {{ record.item.itemTypeLabel }}
+                  </li>
+                  <li v-if="record.item.weaponClassLabel">
+                    <b>{{ $t('commodityItem.weaponClass') }}:</b>
+                    {{ record.item.weaponClassLabel }}
+                  </li>
+                  <li v-if="record.item.itemClassLabel">
+                    <b>{{ $t('commodityItem.itemClass') }}:</b>
+                    {{ record.item.itemClassLabel }}
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-6">
+                <ul class="list-unstyled">
+                  <li v-if="record.item.range">
+                    <b>{{ $t('commodityItem.range') }}:</b>
+                    {{ $toNumber(record.item.range, 'distance') }}
+                  </li>
+                  <li v-if="record.item.damageReduction">
+                    <b>{{ $t('commodityItem.damageReduction') }}:</b>
+                    {{ $toNumber(record.item.damageReduction, 'percent') }}
+                  </li>
+                  <li v-if="record.item.rateOfFire">
+                    <b>{{ $t('commodityItem.rateOfFire') }}:</b>
+                    {{ $toNumber(record.item.rateOfFire, 'rateOfFire') }}
+                  </li>
+                  <li v-if="record.item.extras">
+                    {{ record.item.extras }}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </transition-group>
-        </Panel>
-        <Loader :loading="loading" fixed />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <Paginator
-          v-if="commodities.length"
-          :page="currentPage"
-          :total="totalPages"
-          right
-        />
-      </div>
-    </div>
+            {{ record.description }}
+          </template>
+          <template #col-buy_price="{ record }">
+            <span v-if="mobile" class="price-label">
+              {{ $t('labels.shopCommodity.prices.buyPrice') }}:&nbsp;
+            </span>
+            <b v-html="$toUEC(record.buyPrice)" />
+          </template>
+          <template #col-sell_price="{ record }">
+            <span v-if="mobile" class="price-label">
+              {{ $t('labels.shopCommodity.prices.sellPrice') }}:&nbsp;
+            </span>
+            <b v-html="$toUEC(record.sellPrice)" />
+          </template>
+          <template #col-rental_price="{ record }">
+            <span v-if="mobile" class="price-label">
+              {{ $t('labels.shopCommodity.prices.rentalPrice') }}:&nbsp;
+            </span>
+            <ul class="list-unstyled">
+              <li v-if="record.rentalPrice1Day">
+                {{ $t('labels.shopCommodity.prices.rentalPrice1Day') }}
+                <b v-html="$toUEC(record.rentalPrice1Day)" />
+              </li>
+              <li v-if="record.rentalPrice3Days">
+                {{ $t('labels.shopCommodity.prices.rentalPrice3Days') }}
+                <b v-html="$toUEC(record.rentalPrice3Days)" />
+              </li>
+              <li v-if="record.rentalPrice7Days">
+                {{ $t('labels.shopCommodity.prices.rentalPrice7Days') }}
+                <b v-html="$toUEC(record.rentalPrice7Days)" />
+              </li>
+              <li v-if="record.rentalPrice30Days">
+                {{ $t('labels.shopCommodity.prices.rentalPrice30Days') }}
+                <b v-html="$toUEC(record.rentalPrice30Days)" />
+              </li>
+            </ul>
+          </template>
+          <template #col-actions="{ record }">
+            <AddToCartBtn
+              :item="record.item"
+              :type="record.commodityItemType"
+            />
+          </template>
+        </FilteredTable>
+      </template>
+    </FilteredList>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
-import Loader from 'frontend/core/components/Loader'
 import Panel from 'frontend/core/components/Panel'
 import ShopBaseMetrics from 'frontend/components/Shops/BaseMetrics'
-import ShopItemRow from 'frontend/components/Shops/ShopItemRow'
 import PriceModalBtn from 'frontend/components/ShopCommodities/PriceModalBtn'
 import FilterForm from 'frontend/components/Shops/ShopItemFilterForm'
-import Pagination from 'frontend/mixins/Pagination'
-import Filters from 'frontend/mixins/Filters'
 import Btn from 'frontend/core/components/Btn'
+import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredTable from 'frontend/core/components/FilteredTable'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import { scrollToAnchor } from 'frontend/utils/scrolling'
 import { Getter } from 'vuex-class'
+import shopCommoditiesCollection from 'frontend/api/collections/ShopCommodities'
+import shopsCollection from 'frontend/api/collections/Shops'
+import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
+import { shopRouteGuard } from 'frontend/utils/RouteGuards'
 
 @Component<Shop>({
+  beforeRouteEnter: shopRouteGuard,
   components: {
-    Loader,
-    Panel,
     ShopBaseMetrics,
-    ShopItemRow,
     FilterForm,
     Btn,
+    Panel,
     PriceModalBtn,
     BreadCrumbs,
+    FilteredList,
+    FilteredTable,
+    AddToCartBtn,
   },
 
-  mixins: [MetaInfo, Filters, Pagination],
+  mixins: [MetaInfo],
 })
 export default class Shop extends Vue {
-  loading: boolean = false
-
-  shop: Shop = null
-
-  commodities = []
+  collection: ShopCommoditiesCollection = shopCommoditiesCollection
 
   subCategories = []
 
-  fullscreen: boolean = false
-
   @Getter('mobile') mobile
 
-  @Getter('filterVisible', { namespace: 'shop' }) filterVisible
+  get shop() {
+    return shopsCollection.record
+  }
 
-  get toggleFiltersTooltip() {
-    if (this.filterVisible) {
-      return this.$t('actions.hideFilter')
+  get tableColumns() {
+    const columns = [
+      { name: 'store_image', class: 'store-image' },
+      { name: 'description', class: 'description' },
+    ]
+
+    if (this.shop.buying) {
+      columns.push({
+        name: 'buy_price',
+        label: this.$t('labels.shop.buyPrice'),
+        class: 'price',
+      })
     }
-    return this.$t('actions.showFilter')
+
+    if (this.shop.selling) {
+      columns.push({
+        name: 'sell_price',
+        label: this.$t('labels.shop.sellPrice'),
+        class: 'price',
+      })
+    }
+
+    if (this.shop.rental) {
+      columns.push({
+        name: 'rental_price',
+        label: this.$t('labels.shop.rentalPrice'),
+        class: 'rent-price',
+      })
+    }
+
+    columns.push({ name: 'actions', class: 'actions actions-1x' })
+
+    return columns
   }
 
   get title() {
@@ -289,27 +361,42 @@ export default class Shop extends Vue {
     return crumbs
   }
 
-  @Watch('$route')
-  onRouteChange() {
-    this.fetchCommodities()
+  mounted() {
+    if (this.shop) {
+      this.fetchSubCategories()
+    }
   }
 
-  async mounted() {
-    if (this.mobile) {
-      this.$store.commit('shop/setFilterVisible', false)
+  manufacturer(record) {
+    if (!record.item || !record.item.manufacturer) {
+      return null
     }
 
-    await this.fetch()
-
-    this.toggleFullscreen()
+    return record.item.manufacturer
   }
 
-  toggleFullscreen() {
-    this.fullscreen = !this.filterVisible
+  name(record) {
+    if (this.manufacturer(record)) {
+      if (this.manufacturer(record).code) {
+        return `${this.manufacturer(record).code} ${record.name}`
+      }
+      return `${this.manufacturer(record).name} ${record.name}`
+    }
+
+    return record.name
   }
 
-  toggleFilter() {
-    this.$store.dispatch('shop/toggleFilter')
+  link(record) {
+    if (record.category !== 'model') {
+      return null
+    }
+
+    return {
+      name: 'model',
+      params: {
+        slug: record.slug,
+      },
+    }
   }
 
   toggleSubcategory(value) {
@@ -362,41 +449,7 @@ export default class Shop extends Vue {
 
     if (!response.error) {
       this.subCategories = response.data
-      await this.fetchCommodities()
     }
-  }
-
-  async fetch() {
-    const response = await this.$api.get(
-      `stations/${this.$route.params.station}/shops/${this.$route.params.slug}`,
-    )
-    if (!response.error) {
-      this.shop = response.data
-      await this.fetchSubCategories()
-    }
-  }
-
-  async fetchCommodities() {
-    this.loading = true
-    const response = await this.$api.get(
-      `stations/${this.$route.params.station}/shops/${this.$route.params.slug}/commodities`,
-      {
-        q: {
-          ...this.$route.query.q,
-          subCategoryIn: this.subCategory,
-        },
-        page: this.$route.query.page,
-      },
-    )
-    this.loading = false
-    if (!response.error) {
-      this.commodities = response.data
-
-      this.$nextTick(() => {
-        scrollToAnchor(this.$route.hash)
-      })
-    }
-    this.setPages(response.meta)
   }
 }
 </script>

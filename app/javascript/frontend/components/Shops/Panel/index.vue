@@ -13,7 +13,7 @@
               :to="{
                 name: 'shop',
                 params: {
-                  station: shop.station.slug,
+                  stationSlug: shop.station.slug,
                   slug: shop.slug,
                 },
               }"

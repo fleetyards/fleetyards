@@ -179,7 +179,7 @@ export default class Search extends Vue {
         return {
           name: 'shop',
           params: {
-            station: result.station.slug,
+            stationSlug: result.station.slug,
             slug: result.slug,
           },
         }

@@ -48,7 +48,10 @@ export default {
         case 'shop':
           return {
             name: 'shop',
-            params: { station: this.item.station.slug, slug: this.item.slug },
+            params: {
+              stationSlug: this.item.station.slug,
+              slug: this.item.slug,
+            },
           }
         case 'station':
           return { name: 'station', params: { slug: this.item.slug } }

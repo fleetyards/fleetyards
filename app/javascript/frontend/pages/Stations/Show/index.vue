@@ -56,7 +56,7 @@
                 :route="{
                   name: 'shop',
                   params: {
-                    station: station.slug,
+                    stationSlug: station.slug,
                     slug: shop.slug,
                   },
                 }"

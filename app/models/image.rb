@@ -24,7 +24,6 @@
 class Image < ApplicationRecord
   paginates_per 30
 
-  include Rails.application.routes.url_helpers
   belongs_to :gallery, polymorphic: true, touch: true, counter_cache: true
 
   mount_uploader :name, ImageUploader

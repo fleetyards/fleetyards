@@ -68,7 +68,7 @@ export const routes = [
     },
   },
   {
-    path: ':station/shops/:slug/',
+    path: ':stationSlug/shops/:slug/',
     name: 'shop',
     component: () =>
       import(
