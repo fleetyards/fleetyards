@@ -514,6 +514,8 @@ export default {
   },
   'shoppingCart': {
     total: 'Total',
+    itemTotal: 'Item Total',
+    perItem: 'per Item',
     items: {
       one: '<b>%{count}</b> Item for <b>%{price}</b>',
       other: '<b>%{count}</b> Items for <b>%{price}</b>',

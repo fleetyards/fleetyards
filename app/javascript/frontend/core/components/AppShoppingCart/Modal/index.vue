@@ -5,8 +5,12 @@
         <div class="item-list-item item-list-header">
           <div class="item-name"></div>
           <div class="item-amount"></div>
-          <div class="item-sold-at">per Item</div>
-          <div class="item-price">Item Total</div>
+          <div class="item-sold-at">
+            {{ $t('labels.shoppingCart.perItem') }}
+          </div>
+          <div class="item-price">
+            {{ $t('labels.shoppingCart.itemTotal') }}
+          </div>
           <div class="item-actions"></div>
         </div>
         <div
@@ -15,22 +19,7 @@
           class="item-list-item"
         >
           <div class="item-name">{{ cartItem.name }}</div>
-          <div v-if="!mobile" class="item-amount noselect">
-            <i
-              class="fal fa-minus"
-              :class="{
-                disabled: cartItem.amount <= 0,
-              }"
-              @click="
-                cartItem.amount <= 0 ? () => {} : reduceAmount(cartItem.id)
-              "
-            />
-            <span>
-              {{ cartItem.amount }}
-              <i class="fal fa-times" />
-            </span>
-            <i class="fal fa-plus" @click="increaseAmount(cartItem.id)" />
-          </div>
+          <ItemAmount v-if="!mobile" :cart-item="cartItem" />
           <div class="item-sold-at">
             <ul class="list-unstyled">
               <li
@@ -54,25 +43,11 @@
             {{ $t('labels.unavailable') }}
           </div>
           <div class="item-actions">
-            <div v-if="mobile" class="item-amount noselect">
-              <i
-                class="fal fa-minus"
-                :class="{
-                  disabled: cartItem.amount <= 0,
-                }"
-                @click="
-                  cartItem.amount <= 0 ? () => {} : reduceAmount(cartItem.id)
-                "
-              />
-              <span>
-                {{ cartItem.amount }}
-                <i class="fal fa-times" />
-              </span>
-              <i class="fal fa-plus" @click="increaseAmount(cartItem.id)" />
-            </div>
+            <ItemAmount v-if="mobile" :cart-item="cartItem" />
             <Btn
               :inline="true"
               size="small"
+              variant="link"
               @click.native="removeFromCart(cartItem.id)"
             >
               <i class="fal fa-trash" />
@@ -122,6 +97,7 @@ import Modal from 'frontend/core/components/AppModal/Modal'
 import Btn from 'frontend/core/components/Btn'
 import { sum as sumArray } from 'frontend/utils/Array'
 import { sortBy } from 'frontend/lib/Helpers'
+import ItemAmount from 'frontend/core/components/AppShoppingCart/ItemAmount'
 import ComponentsCollection from 'frontend/api/collections/Components'
 import CommoditiesCollection from 'frontend/api/collections/Commodities'
 import EquipmentCollection from 'frontend/api/collections/Equipment'
@@ -133,6 +109,7 @@ import ModelsCollection from 'frontend/api/collections/Models'
   components: {
     Modal,
     Btn,
+    ItemAmount,
   },
 })
 export default class ShoppingCart extends Vue {
@@ -141,10 +118,6 @@ export default class ShoppingCart extends Vue {
   @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
 
   @Action('clear', { namespace: 'shoppingCart' }) clearCart: any
-
-  @Action('reduceAmount', { namespace: 'shoppingCart' }) reduceAmount: any
-
-  @Action('increaseAmount', { namespace: 'shoppingCart' }) increaseAmount: any
 
   @Action('update', { namespace: 'shoppingCart' }) updateInCart: any
 
