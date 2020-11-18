@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/fleetyards/fleetyards/compare/v4.3.1...v4.4.0) (2020-11-18)
+
+
+### Features
+
+* add fuel capacities to models ([99cc5ff](https://github.com/fleetyards/fleetyards/commit/99cc5ff2a24c60eddc31ac2fb1ee025e3a579ceb))
+* update hangar bulk actions ([462e258](https://github.com/fleetyards/fleetyards/commit/462e2586603adbd62a99cd05291c8ce246f98b77))
+
+
+### Bug Fixes
+
+* trade routes ([24edbe1](https://github.com/fleetyards/fleetyards/commit/24edbe1863ee93f9f696592cc71de3bfc9a3dce4))
+
 ### [4.3.1](https://github.com/fleetyards/fleetyards/compare/v4.3.0...v4.3.1) (2020-11-18)
 
 
