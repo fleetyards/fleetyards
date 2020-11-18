@@ -63,6 +63,8 @@ export default {
     xaxisAcceleration: 'X-Axis',
     yaxisAcceleration: 'Y-Axis',
     zaxisAcceleration: 'Z-Axis',
+    quantumFuelTankSize: 'Quantum Fuel',
+    hydrogenFuelTankSize: 'Fuel',
     height: 'Height',
     length: 'Length',
     mass: 'Mass',
@@ -158,6 +160,7 @@ export default {
     rateOfFire: '%{count} shots/min',
     rotation: '%{count} deg/s',
     cargo: '%{count} SCU',
+    fuel: '%{count}',
     ships: {
       one: '%{count} ship',
       other: '%{count} ships',

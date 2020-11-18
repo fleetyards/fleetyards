@@ -12,6 +12,8 @@ json.height model.height.to_f
 json.mass model.mass.to_f
 json.cargo model.cargo.to_f
 json.cargo_label model.cargo_label
+json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size
+json.quantum_fuel_tank_size model.quantum_fuel_tank_size
 json.min_crew model.min_crew
 json.max_crew model.max_crew
 json.scm_speed model.scm_speed

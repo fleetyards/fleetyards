@@ -114,6 +114,18 @@
         = form_errors model, :cargo
 
   .row
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :hydrogen_fuel_tank_size)}
+      = form.label :hydrogen_fuel_tank_size
+      = form.number_field :hydrogen_fuel_tank_size, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :hydrogen_fuel_tank_size
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :quantum_fuel_tank_size)}
+      = form.label :quantum_fuel_tank_size
+      = form.number_field :quantum_fuel_tank_size, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :quantum_fuel_tank_size
+
+  .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :scm_speed)}
       = form.label :scm_speed
       = form.number_field :scm_speed, step: 'any', class: 'form-control'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_13_213429) do
+ActiveRecord::Schema.define(version: 2020_11_18_202508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -463,6 +463,8 @@ ActiveRecord::Schema.define(version: 2020_11_13_213429) do
     t.integer "module_hardpoints_count", default: 0
     t.decimal "max_speed", precision: 15, scale: 2
     t.decimal "speed", precision: 15, scale: 2
+    t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
+    t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 

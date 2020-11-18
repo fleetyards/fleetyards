@@ -81,6 +81,33 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div v-if="model.hydrogenFuelTankSize" class="col-6">
+              <div class="metrics-label">
+                {{ $t('model.hydrogenFuelTankSize') }}:
+              </div>
+              <div class="metrics-value">
+                {{ $toNumber(model.hydrogenFuelTankSize, 'fuel') }}
+              </div>
+            </div>
+            <div v-if="model.quantumFuelTankSize" class="col-6">
+              <div class="metrics-label">
+                {{ $t('model.quantumFuelTankSize') }}:
+              </div>
+              <div class="metrics-value">
+                {{ $toNumber(model.quantumFuelTankSize, 'fuel') }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="seperator" />
+        </div>
+      </div>
+      <div class="row">
         <div v-if="model.lastUpdatedAt" class="col-lg-12">
           <div class="metrics-label">{{ $t('model.lastUpdatedAt') }}:</div>
           <div class="metrics-value">

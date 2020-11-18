@@ -22,6 +22,7 @@
 #  ground_speed             :decimal(15, 2)
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
+#  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  images_count             :integer          default(0)
 #  last_pledge_price        :decimal(15, 2)
 #  last_updated_at          :datetime
@@ -40,6 +41,7 @@
 #  price                    :decimal(15, 2)
 #  production_note          :string(255)
 #  production_status        :string(255)
+#  quantum_fuel_tank_size   :decimal(15, 2)
 #  roll_max                 :decimal(15, 2)
 #  rsi_afterburner_speed    :decimal(15, 2)
 #  rsi_beam                 :decimal(15, 2)   default(0.0), not null
