@@ -183,13 +183,13 @@
                 <i class="fa fa-angle-double-right" />
                 <div class="profit">
                   <template v-if="averagePrices">
-                    {{ profit(route.averageProfitPerUnit) }}
+                    <span v-html="profit(route.averageProfitPerUnit)" />
                     <small class="profit-percent">
                       ({{ route.averageProfitPerUnitPercent }} %)
                     </small>
                   </template>
                   <template v-else>
-                    {{ profit(route.profitPerUnit) }}
+                    <span v-html="profit(route.profitPerUnit)" />
                     <small class="profit-percent">
                       ({{ route.profitPerUnitPercent }} %)
                     </small>
