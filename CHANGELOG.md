@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/fleetyards/fleetyards/compare/v4.2.0...v4.3.0) (2020-11-18)
+
+
+### Features
+
+* show shopping cart on mobile ([d7978e8](https://github.com/fleetyards/fleetyards/commit/d7978e8dc76d280dd1991b43677856a56a8d7886))
+
+
+### Bug Fixes
+
+* e2e specs ([92598e7](https://github.com/fleetyards/fleetyards/commit/92598e7297073b7c803e9db301a222af705f48ed))
+
 ## [4.2.0](https://github.com/fleetyards/fleetyards/compare/v4.1.3...v4.2.0) (2020-11-17)
 
 
