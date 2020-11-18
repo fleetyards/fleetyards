@@ -36,7 +36,9 @@ Cypress.Commands.add('addToHangar', (ship, purchased = false) => {
 })
 
 Cypress.Commands.add('openContextMenu', ship => {
-  cy.get(`.fleetchart-item.fleetchart-item-${ship}`).click()
+  cy.get(`.fleetchart-item.fleetchart-item-${ship}`)
+    .first()
+    .click()
 })
 
 Cypress.Commands.add('openShipModalFromContext', () => {
@@ -44,7 +46,9 @@ Cypress.Commands.add('openShipModalFromContext', () => {
 })
 
 Cypress.Commands.add('openShipModal', ship => {
-  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-edit"]`).click()
+  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-edit"]`)
+    .first()
+    .click()
 })
 
 Cypress.Commands.add('deleteShip', () => {

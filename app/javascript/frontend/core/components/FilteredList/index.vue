@@ -180,11 +180,13 @@ export default class FilteredList extends Vue {
     this.fetch()
   }
 
-  mounted() {
+  created() {
     if (this.collection.records.length) {
       this.collection.records = []
     }
+  }
 
+  mounted() {
     this.fetch()
 
     if (this.mobile) {
