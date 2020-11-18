@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.1](https://github.com/fleetyards/fleetyards/compare/v4.3.0...v4.3.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* prices on trade routes page ([11f4647](https://github.com/fleetyards/fleetyards/commit/11f464760ea2fb528a7bc904ea5d1eb917b9ca28))
+
 ## [4.3.0](https://github.com/fleetyards/fleetyards/compare/v4.2.0...v4.3.0) (2020-11-18)
 
 
