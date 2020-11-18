@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_18_202508) do
+ActiveRecord::Schema.define(version: 2020_11_18_220722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -708,7 +708,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_202508) do
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
-    t.boolean "public", default: true
+    t.boolean "public", default: false
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
     t.boolean "hidden", default: false

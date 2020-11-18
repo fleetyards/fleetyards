@@ -126,6 +126,36 @@ export class VehiclesCollection extends BaseCollection {
     return false
   }
 
+  async hideFromPublicHangar(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      public: false,
+      ids,
+    })
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
+
+  async showOnPublicHangar(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      public: true,
+      ids,
+    })
+
+    if (!response.error) {
+      this.findAll(this.params)
+
+      return true
+    }
+
+    return false
+  }
+
   async updateHangarGroupsBulk(
     ids: string,
     hangarGroupIds: string[],

@@ -8,25 +8,47 @@
     @selected-change="onSelectedChange"
   >
     <template #selected-actions>
-      <div>
-        <Btn
-          size="small"
-          :inline="true"
-          :disabled="deleting"
-          @click.native="destroyBulk"
-        >
-          {{ $t('actions.deleteSelected') }}
-        </Btn>
+      <div class="d-flex">
+        <BtnGroup :inline="true">
+          <span>{{ $t('labels.public') }}</span>
+          <Btn
+            v-tooltip="$t('actions.hangar.showOnPublicHangar')"
+            size="small"
+            variant="dropdown"
+            :disabled="updating"
+            @click.native="showOnPublicHangar"
+          >
+            <i class="fad fa-eye" />
+          </Btn>
+          <Btn
+            v-tooltip="$t('actions.hangar.hideFromPublicHangar')"
+            size="small"
+            variant="dropdown"
+            :disabled="updating"
+            @click.native="hideFromPublicHangar"
+          >
+            <i class="fad fa-eye-slash" />
+          </Btn>
+        </BtnGroup>
         <Btn
           size="small"
           :inline="true"
           :disabled="updating"
           @click.native="markAsPurchasedBulk"
         >
-          {{ $t('actions.markAsPurchasedSelected') }}
+          {{ $t('actions.hangar.markAsPurchasedSelected') }}
         </Btn>
         <Btn size="small" :inline="true" @click.native="openBulkGroupEditModal">
-          {{ $t('actions.editGroupsSelected') }}
+          {{ $t('actions.hangar.editGroupsSelected') }}
+        </Btn>
+        <Btn
+          v-tooltip="$t('actions.deleteSelected')"
+          size="small"
+          :inline="true"
+          :disabled="deleting"
+          @click.native="destroyBulk"
+        >
+          <i class="fal fa-trash" />
         </Btn>
       </div>
     </template>
@@ -155,6 +177,7 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import FilteredTable from 'frontend/core/components/FilteredTable'
 import Btn from 'frontend/core/components/Btn'
+import BtnGroup from 'frontend/core/components/BtnGroup'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import { displayConfirm } from 'frontend/lib/Noty'
@@ -163,6 +186,7 @@ import { displayConfirm } from 'frontend/lib/Noty'
   components: {
     FilteredTable,
     Btn,
+    BtnGroup,
     BtnDropdown,
   },
 })
@@ -252,6 +276,22 @@ export default class FilteredGrid extends Vue {
     this.updating = true
 
     await vehiclesCollection.markAsPurchasedBulk(this.selected)
+
+    this.updating = false
+  }
+
+  async hideFromPublicHangar() {
+    this.updating = true
+
+    await vehiclesCollection.hideFromPublicHangar(this.selected)
+
+    this.updating = false
+  }
+
+  async showOnPublicHangar() {
+    this.updating = true
+
+    await vehiclesCollection.showOnPublicHangar(this.selected)
 
     this.updating = false
   }

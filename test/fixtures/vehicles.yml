@@ -9,7 +9,7 @@
 #  name           :string(255)
 #  name_visible   :boolean          default(FALSE)
 #  notify         :boolean          default(TRUE)
-#  public         :boolean          default(TRUE)
+#  public         :boolean          default(FALSE)
 #  purchased      :boolean          default(FALSE)
 #  sale_notify    :boolean          default(FALSE)
 #  created_at     :datetime
@@ -29,15 +29,18 @@ enterprise:
   model: andromeda
   user: data
   purchased: true
+  public: true
 
 raven:
   name: ''
   model: explorer
   user: data
   purchased: true
+  public: true
 
 ptv_loaner:
   model: ptv
   loaner: true
   user: data
   purchased: true
+  public: true

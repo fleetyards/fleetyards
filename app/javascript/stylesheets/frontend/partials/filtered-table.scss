@@ -116,8 +116,11 @@
 
   .filtered-table-selected > .filtered-table-row {
     justify-content: space-between;
-    color: $primary;
-    font-size: 120%;
+
+    .selected-count {
+      color: $primary;
+      font-size: 120%;
+    }
   }
 
   .filtered-table-empty > .filtered-table-row {

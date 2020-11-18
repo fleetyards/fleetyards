@@ -145,6 +145,7 @@ export default {
   'filter': 'Filter',
   'taxExcluded': 'excl. VAT',
   'hangar': 'Hangar',
+  'public': 'Public',
   'hangarStats': 'Stats',
   'fleetchart': 'Fleetchart',
   'fleetStats': 'Stats',

@@ -53,14 +53,14 @@
             :label="$t('labels.vehicle.saleNotify')"
           />
         </div>
-        <div v-else class="col-12 col-md-6">
+        <div class="col-12 col-md-6">
           <Checkbox
             id="public"
             v-model="form.public"
             :label="$t('labels.vehicle.public')"
           />
         </div>
-        <div v-if="form.public && form.purchased" class="col-12 col-md-6">
+        <div v-if="form.public" class="col-12 col-md-6">
           <Checkbox
             id="nameVisible"
             v-model="form.nameVisible"

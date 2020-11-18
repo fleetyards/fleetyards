@@ -11,7 +11,6 @@
   background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
-  cursor: pointer;
   opacity: 1;
 
   &::before {
@@ -43,7 +42,7 @@
   }
 
   > span {
-    padding: 6px 10px;
+    padding: 5px 10px;
   }
 
   > * {

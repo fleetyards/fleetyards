@@ -12,7 +12,7 @@
         class="fade-list-item col-12 filtered-table-selected"
       >
         <div class="filtered-table-row">
-          <div>
+          <div class="selected-count">
             {{
               $t('labels.table.selected', { count: internalSelected.length })
             }}

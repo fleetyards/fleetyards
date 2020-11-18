@@ -366,7 +366,7 @@ module Api
         @vehicle_bulk_params ||= begin
           params.transform_keys(&:underscore)
             .permit(
-              :purchased, hangar_group_ids: []
+              :purchased, :public, hangar_group_ids: []
             ).merge(user_id: current_user.id)
         end
       end

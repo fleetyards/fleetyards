@@ -11,7 +11,7 @@
 #  name           :string(255)
 #  name_visible   :boolean          default(FALSE)
 #  notify         :boolean          default(TRUE)
-#  public         :boolean          default(TRUE)
+#  public         :boolean          default(FALSE)
 #  purchased      :boolean          default(FALSE)
 #  sale_notify    :boolean          default(FALSE)
 #  created_at     :datetime
@@ -124,7 +124,7 @@ class Vehicle < ApplicationRecord
   end
 
   def self.public
-    where(purchased: true, public: true)
+    where(public: true)
   end
 
   def export_name

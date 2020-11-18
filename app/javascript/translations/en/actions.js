@@ -45,8 +45,6 @@ export default {
   'signUp': 'Sign Up',
   'reset-password': 'Forgot password?',
   'edit': 'Edit',
-  'editGroupsSelected': 'Add/Remove from Groups',
-  'markAsPurchasedSelected': 'Mark as Purchased',
   'change': 'Change',
   'upload': 'Upload',
   'editCommodities': 'Edit commodities',
@@ -77,6 +75,10 @@ export default {
   },
   'hangar': {
     destroyAll: 'Remove all Ships',
+    showOnPublicHangar: 'Make Public',
+    hideFromPublicHangar: 'Hide from Public',
+    editGroupsSelected: 'Add/Remove from Groups',
+    markAsPurchasedSelected: 'Mark as Purchased',
   },
   'empty': {
     reset: 'Reset Filters/Pages',
