@@ -155,24 +155,11 @@
                         {{ route.origin.locationLabel }}
                       </small>
                     </h3>
-                    <template v-if="averagePrices">
-                      <span
-                        v-html="
-                          $t('labels.tradeRoutes.buy', {
-                            uec: profit(route.averageBuyPrice),
-                          })
-                        "
-                      />
-                    </template>
-                    <template v-else>
-                      <span
-                        v-html="
-                          $t('labels.tradeRoutes.buy', {
-                            uec: profit(route.buyPrice),
-                          })
-                        "
-                      />
-                    </template>
+                    <TradeRoutePrice
+                      :trade-route="route"
+                      :average="averagePrices"
+                      :available-cargo="availableCargo"
+                    />
                   </div>
                 </Panel>
               </div>
@@ -181,20 +168,11 @@
                   {{ route.commodity.name }}
                 </h2>
                 <i class="fa fa-angle-double-right" />
-                <div class="profit">
-                  <template v-if="averagePrices">
-                    <span v-html="profit(route.averageProfitPerUnit)" />
-                    <small class="profit-percent">
-                      ({{ route.averageProfitPerUnitPercent }} %)
-                    </small>
-                  </template>
-                  <template v-else>
-                    <span v-html="profit(route.profitPerUnit)" />
-                    <small class="profit-percent">
-                      ({{ route.profitPerUnitPercent }} %)
-                    </small>
-                  </template>
-                </div>
+                <TradeRouteProfit
+                  :trade-route="route"
+                  :average="averagePrices"
+                  :available-cargo="availableCargo"
+                />
               </div>
               <div class="col-12 col-md-4">
                 <Panel :outer-spacing="false">
@@ -215,24 +193,12 @@
                         {{ route.destination.locationLabel }}
                       </small>
                     </h3>
-                    <template v-if="averagePrices">
-                      <span
-                        v-html="
-                          $t('labels.tradeRoutes.sell', {
-                            uec: profit(route.averageSellPrice),
-                          })
-                        "
-                      />
-                    </template>
-                    <template v-else>
-                      <span
-                        v-html="
-                          $t('labels.tradeRoutes.sell', {
-                            uec: profit(route.sellPrice),
-                          })
-                        "
-                      />
-                    </template>
+                    <TradeRoutePrice
+                      price-type="sell"
+                      :trade-route="route"
+                      :average="averagePrices"
+                      :available-cargo="availableCargo"
+                    />
                   </div>
                 </Panel>
               </div>
@@ -257,6 +223,8 @@ import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Panel from 'frontend/core/components/Panel'
 import FilterForm from 'frontend/components/TradeRoutes/FilterForm'
 import QuickFilter from 'frontend/components/TradeRoutes/QuickFilter'
+import TradeRoutePrice from 'frontend/components/TradeRoutes/Price'
+import TradeRouteProfit from 'frontend/components/TradeRoutes/Profit'
 import { sortBy } from 'frontend/utils/Sorting'
 import tradeRoutesCollection from 'frontend/api/collections/TradeRoutes'
 import modelsCollection from 'frontend/api/collections/Models'
@@ -271,6 +239,8 @@ import modelsCollection from 'frontend/api/collections/Models'
     Panel,
     FilterForm,
     QuickFilter,
+    TradeRoutePrice,
+    TradeRouteProfit,
   },
 
   mixins: [MetaInfo],
@@ -297,8 +267,8 @@ export default class TradeRoutes extends Vue {
     return this.$t('headlines.tradeRoutes.index')
   }
 
-  get avaiableCargo(): number {
-    return this.cargoShip ? this.cargoShip.cargo * 100 : 1
+  get availableCargo(): number {
+    return this.cargoShip ? this.cargoShip.cargo * 100 : null
   }
 
   get sorts(): string[] {
@@ -373,14 +343,6 @@ export default class TradeRoutes extends Vue {
     } else if (this.sortByPercent || this.sortByAveragePercent) {
       this.$router.push(this.sortBy('average_profit_per_unit_percent', 'desc'))
     }
-  }
-
-  profit(value: number): string {
-    if (this.cargoShip) {
-      return this.$toUEC(value * (this.cargoShip.cargo * 100))
-    }
-
-    return this.$toUEC(value, this.$t('labels.uecPerUnit'))
   }
 
   async fetchCargoShip() {

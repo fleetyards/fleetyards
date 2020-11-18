@@ -159,6 +159,7 @@ export default class TradeRoutesFilterForm extends Vue {
       destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
       originStarsystemIn: query.originStarsystemIn || [],
       destinationStarsystemIn: query.destinationStarsystemIn || [],
+      sorts: query.sorts || [],
     }
   }
 
@@ -176,6 +177,7 @@ export default class TradeRoutesFilterForm extends Vue {
       destinationCelestialObjectIn: query.destinationCelestialObjectIn || [],
       originStarsystemIn: query.originStarsystemIn || [],
       destinationStarsystemIn: query.destinationStarsystemIn || [],
+      sorts: query.sorts || [],
     }
 
     const storedFilters = JSON.parse(JSON.stringify(this.form))
