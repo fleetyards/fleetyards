@@ -86,11 +86,16 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async create(form: VehicleForm): Promise<Vehicle | null> {
+  async create(
+    form: VehicleForm,
+    refresh: boolean = false,
+  ): Promise<Vehicle | null> {
     const response = await post('vehicles', form)
 
     if (!response.error) {
-      this.refresh()
+      if (refresh) {
+        this.refresh()
+      }
 
       return response.data
     }
