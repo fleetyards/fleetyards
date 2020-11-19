@@ -11,6 +11,8 @@ export class VehiclesCollection extends BaseCollection {
 
   params: VehicleParams | null = null
 
+  lastUsedMethod: string = 'findAll'
+
   get perPage(): number {
     return Store.getters['hangar/perPage']
   }
@@ -24,6 +26,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
+    this.lastUsedMethod = 'findAll'
     this.params = params
 
     const response = await get('vehicles', {
@@ -41,6 +44,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async findAllFleetchart(params: VehicleParams | null): Promise<Vehicle[]> {
+    this.lastUsedMethod = 'findAllFleetchart'
     this.params = params
 
     const response = await get('vehicles/fleetchart', {
@@ -55,7 +59,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async refresh(): Promise<void> {
-    await this.findAll(this.params)
+    await this[this.lastUsedMethod](this.params)
   }
 
   async findStats(params: VehicleParams): Promise<VehicleStats | null> {
@@ -82,16 +86,11 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async create(
-    form: VehicleForm,
-    refetch: boolean = false,
-  ): Promise<Vehicle | null> {
+  async create(form: VehicleForm): Promise<Vehicle | null> {
     const response = await post('vehicles', form)
 
     if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params)
-      }
+      this.refresh()
 
       return response.data
     }
@@ -103,7 +102,7 @@ export class VehiclesCollection extends BaseCollection {
     const response = await put(`vehicles/${id}`, form)
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -118,7 +117,7 @@ export class VehiclesCollection extends BaseCollection {
     })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -133,7 +132,7 @@ export class VehiclesCollection extends BaseCollection {
     })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -148,7 +147,7 @@ export class VehiclesCollection extends BaseCollection {
     })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -166,7 +165,7 @@ export class VehiclesCollection extends BaseCollection {
     })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -178,7 +177,7 @@ export class VehiclesCollection extends BaseCollection {
     const response = await destroy(`vehicles/${id}`)
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -192,7 +191,7 @@ export class VehiclesCollection extends BaseCollection {
     })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
@@ -204,7 +203,7 @@ export class VehiclesCollection extends BaseCollection {
     const response = await destroy('vehicles/destroy-all')
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }
