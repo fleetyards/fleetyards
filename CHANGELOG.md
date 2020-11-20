@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.1](https://github.com/fleetyards/fleetyards/compare/v4.4.0...v4.4.1) (2020-11-20)
+
+
+### Bug Fixes
+
+* hangar fleetchart reload ([fbed950](https://github.com/fleetyards/fleetyards/commit/fbed9506b581dd6bcb64425b6e1093c0bc474647))
+
 ## [4.4.0](https://github.com/fleetyards/fleetyards/compare/v4.3.1...v4.4.0) (2020-11-18)
 
 
