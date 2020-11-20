@@ -39,6 +39,8 @@ gem 'devise'
 gem 'devise-async'
 gem 'useragent'
 
+gem 'redis-session-store'
+
 gem 'ransack'
 
 gem 'jbuilder'
