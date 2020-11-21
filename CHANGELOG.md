@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.3](https://github.com/fleetyards/fleetyards/compare/v4.4.2...v4.4.3) (2020-11-21)
+
+
+### Bug Fixes
+
+* models loader ([24213cc](https://github.com/fleetyards/fleetyards/commit/24213ccce4ae4edc981d0d1578950253d89432d1))
+
 ### [4.4.2](https://github.com/fleetyards/fleetyards/compare/v4.4.1...v4.4.2) (2020-11-20)
 
 
