@@ -13,6 +13,6 @@ json.item_class_label component.item_class_label
 json.tracking_signal component.tracking_signal
 json.tracking_signal_label component.tracking_signal_label
 json.store_image component.store_image.url
-json.store_image_store component.store_image.store.url
+json.store_image_large component.store_image.large.url
 json.store_image_medium component.store_image.medium.url
 json.store_image_small component.store_image.small.url

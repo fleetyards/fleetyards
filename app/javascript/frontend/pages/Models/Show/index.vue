@@ -358,12 +358,11 @@ export default class ModelDetail extends Vue {
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
 
   get storeImage() {
-    return this.model.storeImageMedium
-    // if (this.mobile) {
-    //   return this.model.storeImageMedium
-    // }
+    if (this.mobile) {
+      return this.model.storeImageMedium
+    }
 
-    // return this.model.storeImageStore
+    return this.model.storeImageLarge
   }
 
   get model(): Model | null {

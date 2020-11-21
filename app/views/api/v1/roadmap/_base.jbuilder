@@ -10,7 +10,7 @@ json.body item.body
 json.rsi_category_id item.rsi_category_id
 json.image item.image
 json.store_image item.store_image.url
-json.store_image_store item.store_image.store.url
+json.store_image_large item.store_image.large.url
 json.store_image_medium item.store_image.medium.url
 json.store_image_small item.store_image.small.url
 json.released item.released

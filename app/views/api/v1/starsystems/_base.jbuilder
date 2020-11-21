@@ -3,7 +3,7 @@
 json.name starsystem.name
 json.slug starsystem.slug
 json.store_image starsystem.store_image.url
-json.store_image_store starsystem.store_image.store.url
+json.store_image_large starsystem.store_image.large.url
 json.store_image_medium starsystem.store_image.medium.url
 json.store_image_small starsystem.store_image.small.url
 json.map_x starsystem.map_x

@@ -7,7 +7,7 @@ json.location_label station.location_label
 json.type station.station_type
 json.type_label station.station_type_label
 json.store_image station.store_image.url
-json.store_image_store station.store_image.store.url
+json.store_image_large station.store_image.large.url
 json.store_image_medium station.store_image.medium.url
 json.store_image_small station.store_image.small.url
 json.description station.description
