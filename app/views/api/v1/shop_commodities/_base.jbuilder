@@ -4,6 +4,7 @@ json.id shop_commodity.id
 json.name shop_commodity.commodity_item.name
 json.slug shop_commodity.commodity_item.slug
 json.store_image shop_commodity.commodity_item.store_image.url
+json.store_image_store shop_commodity.commodity_item.store_image.store.url
 json.store_image_medium shop_commodity.commodity_item.store_image.medium.url
 json.store_image_small shop_commodity.commodity_item.store_image.small.url
 json.category shop_commodity.category

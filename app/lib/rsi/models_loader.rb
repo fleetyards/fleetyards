@@ -188,7 +188,7 @@ module Rsi
 
       if !Rails.env.test? && (model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at)
         model.store_images_updated_at = data['media'][0]['time_modified']
-        store_image_url = data['media'][0]['images']['store_hub_large']
+        store_image_url = data['media'][0]['images']['source']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
           model.remote_rsi_store_image_url = store_image_url
@@ -235,7 +235,7 @@ module Rsi
 
       if !Rails.env.test? && (paint.rsi_store_image.blank? || paint.store_images_updated_at != store_images_updated_at)
         paint.store_images_updated_at = data['media'][0]['time_modified']
-        store_image_url = data['media'][0]['images']['store_hub_large']
+        store_image_url = data['media'][0]['images']['source']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
           paint.remote_rsi_store_image_url = store_image_url

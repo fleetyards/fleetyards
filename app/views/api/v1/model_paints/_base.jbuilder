@@ -9,6 +9,7 @@ json.rsi_slug model_paint.rsi_slug
 json.rsi_id model_paint.rsi_id
 json.description model_paint.description
 json.store_image model_paint.store_image.url
+json.store_image_store model_paint.store_image.store.url
 json.store_image_medium model_paint.store_image.medium.url
 json.store_image_small model_paint.store_image.small.url
 json.fleetchart_image model_paint.fleetchart_image.url

@@ -29,6 +29,7 @@ json.zaxis_acceleration model.zaxis_acceleration
 json.size model.size
 json.size_label model.size&.humanize
 json.store_image model.store_image.url
+json.store_image_store model.store_image.store.url
 json.store_image_medium model.store_image.medium.url
 json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url

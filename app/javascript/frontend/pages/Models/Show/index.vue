@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-8">
+          <div class="col-12 col-lg-8 ship-detail-left-col">
             <div
               :class="{
                 'image-wrapper-holoviewer': holoviewerVisible,
@@ -53,14 +53,7 @@
                 :src="starship42IframeUrl"
                 frameborder="0"
               />
-              <img
-                v-lazy="model.storeImage"
-                class="image"
-                :class="{
-                  'image-hidden': holoviewerVisible,
-                }"
-                alt="model image"
-              />
+              <LazyImage v-else :src="storeImage" class="image" />
             </div>
             <div class="row production-status">
               <div class="col-6">
@@ -288,6 +281,7 @@ import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
+import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Panel from 'frontend/core/components/Panel'
@@ -306,6 +300,7 @@ import modelsCollection from 'frontend/api/collections/Models'
 @Component<ModelDetail>({
   components: {
     Loader,
+    LazyImage,
     AddToHangar,
     Panel,
     TeaserPanel,
@@ -361,6 +356,15 @@ export default class ModelDetail extends Vue {
   @Getter('overlayVisible', { namespace: 'app' }) overlayVisible
 
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
+
+  get storeImage() {
+    return this.model.storeImageMedium
+    // if (this.mobile) {
+    //   return this.model.storeImageMedium
+    // }
+
+    // return this.model.storeImageStore
+  }
 
   get model(): Model | null {
     return modelsCollection.record
