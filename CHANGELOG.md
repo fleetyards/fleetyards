@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.5](https://github.com/fleetyards/fleetyards/compare/v4.4.4...v4.4.5) (2020-11-22)
+
+
+### Bug Fixes
+
+* basic metrics on model detail ([65b8ca4](https://github.com/fleetyards/fleetyards/commit/65b8ca49cf953702144d30ddaf54e7a5f16f9485))
+* preconnect endpoint ([e913e8c](https://github.com/fleetyards/fleetyards/commit/e913e8cf7475da04dab92c90938b5bb35a402eb8))
+
 ### [4.4.4](https://github.com/fleetyards/fleetyards/compare/v4.4.3...v4.4.4) (2020-11-22)
 
 
