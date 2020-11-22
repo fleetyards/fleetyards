@@ -329,9 +329,13 @@ export default class TradeRoutes extends Vue {
     this.averagePrices = false
 
     if (this.sortByProfit || this.sortByAverageProfit) {
-      this.$router.push(this.sortBy('profit_per_unit', 'desc'))
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this.$router.push(this.sortBy('profit_per_unit', 'desc')).catch(() => {})
     } else if (this.sortByPercent || this.sortByAveragePercent) {
-      this.$router.push(this.sortBy('profit_per_unit_percent', 'desc'))
+      this.$router
+        .push(this.sortBy('profit_per_unit_percent', 'desc'))
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch(() => {})
     }
   }
 
@@ -339,9 +343,15 @@ export default class TradeRoutes extends Vue {
     this.averagePrices = true
 
     if (this.sortByProfit || this.sortByAverageProfit) {
-      this.$router.push(this.sortBy('average_profit_per_unit', 'desc'))
+      this.$router
+        .push(this.sortBy('average_profit_per_unit', 'desc'))
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch(() => {})
     } else if (this.sortByPercent || this.sortByAveragePercent) {
-      this.$router.push(this.sortBy('average_profit_per_unit_percent', 'desc'))
+      this.$router
+        .push(this.sortBy('average_profit_per_unit_percent', 'desc'))
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch(() => {})
     }
   }
 
