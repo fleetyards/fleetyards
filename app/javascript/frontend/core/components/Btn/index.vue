@@ -86,6 +86,7 @@ export default class Btn extends Vue {
       return {
         to: this.to,
         exact: this.exact,
+        event: this.disabled ? '' : 'click',
         activeClass: this.routeActiveClass,
       }
     }
