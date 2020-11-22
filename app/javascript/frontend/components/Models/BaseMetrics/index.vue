@@ -128,7 +128,7 @@
                     :key="shopCommodity.id"
                   >
                     <router-link :to="shopRoute(shopCommodity)">
-                      {{ shopCommodity.shop.name }}
+                      {{ shopName(shopCommodity) }}
                     </router-link>
                   </li>
                 </ul>
@@ -146,7 +146,7 @@
                     :key="shopCommodity.id"
                   >
                     <router-link :to="shopRoute(shopCommodity)">
-                      {{ shopCommodity.shop.name }}
+                      {{ shopName(shopCommodity) }}
                     </router-link>
                   </li>
                 </ul>
@@ -175,6 +175,10 @@ export default class BaseMetrics extends Vue {
         slug: shopCommodity.shop?.slug,
       },
     }
+  }
+
+  shopName(shopCommodity) {
+    return shopCommodity.shop?.name
   }
 }
 </script>
