@@ -49,12 +49,6 @@ class TradeRoute < ApplicationRecord
 
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type
-  ransack_alias :origin_station, :origin_station_slug
-  ransack_alias :destination_station, :destination_station_slug
-  ransack_alias :origin_celestial_object, :origin_celestial_object_slug
-  ransack_alias :destination_celestial_object, :destination_celestial_object_slug
-  ransack_alias :origin_starsystem, :origin_starsystem_slug
-  ransack_alias :destination_starsystem, :destination_starsystem_slug
 
   before_save :calculate_profit
   before_save :set_location
