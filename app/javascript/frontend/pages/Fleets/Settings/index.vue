@@ -77,7 +77,7 @@ export default class FleetSettingsIndex extends Vue {
   }
 
   async leave() {
-    if (this.myFleet.role === 'admin' || this.leaving) return
+    if ((this.myFleet && this.myFleet.role === 'admin') || this.leaving) return
 
     this.leaving = true
     displayConfirm({

@@ -192,9 +192,9 @@ export default class FleetMembershipSettings extends Vue {
 
   setupForm() {
     this.form = {
-      primary: this.membership.primary,
-      shipsFilter: this.membership.shipsFilter,
-      hangarGroupId: this.membership.hangarGroupId,
+      primary: this.membership?.primary,
+      shipsFilter: this.membership?.shipsFilter,
+      hangarGroupId: this.membership?.hangarGroupId,
     }
   }
 
