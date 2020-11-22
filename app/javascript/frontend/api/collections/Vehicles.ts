@@ -59,7 +59,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async refresh(): Promise<void> {
-    await this[this.lastUsedMethod](this.params)
+    await this[this.lastUsedMethod || 'findAll'](this.params)
   }
 
   async findStats(params: VehicleParams): Promise<VehicleStats | null> {

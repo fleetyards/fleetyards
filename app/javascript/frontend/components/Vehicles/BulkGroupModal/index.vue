@@ -78,7 +78,7 @@ export default class VehicleModal extends Vue {
 
   changeGroup(group) {
     if (this.hangarGroupIds.includes(group.id)) {
-      const index = this.form.hangarGroupIds.findIndex(
+      const index = this.hangarGroupIds.findIndex(
         groupId => groupId === group.id,
       )
       if (index > -1) {

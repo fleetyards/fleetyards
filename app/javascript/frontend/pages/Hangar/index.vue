@@ -254,6 +254,7 @@ import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
 import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import debounce from 'lodash.debounce'
 
 @Component<Hangar>({
   components: {
@@ -419,7 +420,7 @@ export default class Hangar extends Vue {
         channel: 'HangarChannel',
       },
       {
-        received: this.fetch,
+        received: debounce(this.fetch, 500),
       },
     )
   }
