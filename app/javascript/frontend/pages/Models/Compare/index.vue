@@ -206,6 +206,7 @@ export default class ModelsCompare extends Vue {
           models: this.form.models,
         },
       })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .catch(() => {})
   }
 
