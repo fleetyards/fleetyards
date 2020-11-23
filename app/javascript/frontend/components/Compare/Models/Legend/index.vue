@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div class="col-12 compare-row-label">
+      <div class="col-12 compare-row-label sticky-left">
         <div
           :class="{
             active: visible,
@@ -21,7 +21,9 @@
     </div>
     <BCollapse id="legend" :visible="visible">
       <div class="row compare-row">
-        <div class="col-12 compare-row-label text-right metrics-label" />
+        <div
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
+        />
         <div
           v-for="(model, index) in models"
           :key="`${model.slug}-legend`"
@@ -113,46 +115,47 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/core/components/Panel'
 import HardpointIcon from 'frontend/components/Models/Hardpoints/Icon'
 
-export default {
+@Component<ModelsCompareLegend>({
   components: {
     BCollapse,
     HardpointIcon,
     Panel,
   },
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      visible: this.models.length > 0,
-      testHardpoint: {
-        size: 'S',
-        quantity: 6,
-      },
-      testHardpointEmpty: {
-        size: 'S',
-        quantity: 6,
-        defaultEmpty: true,
-      },
-    }
-  },
-  watch: {
-    models() {
-      this.visible = this.models.length > 0
-    },
-  },
-  methods: {
-    toggle() {
-      this.visible = !this.visible
-    },
-  },
+})
+export default class ModelsCompareLegend extends Vue {
+  @Prop({ required: true }) models!: Model[]
+
+  visible: boolean = false
+
+  testHardpoint = {
+    size: 'S',
+    quantity: 6,
+  }
+
+  testHardpointEmpty = {
+    size: 'S',
+    quantity: 6,
+    defaultEmpty: true,
+  }
+
+  mounted() {
+    this.visible = this.models.length > 0
+  }
+
+  @Watch('models')
+  onModelsChange() {
+    this.visible = this.models.length > 0
+  }
+
+  toggle() {
+    this.visible = !this.visible
+  }
 }
 </script>

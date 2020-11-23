@@ -1,8 +1,7 @@
 <template>
   <section
     :class="{
-      'scrolled-top': scrolledTop,
-      'scrolled-left': scrolledLeft,
+      'nav-slim': navSlim,
     }"
     class="container compare-models"
   >
@@ -61,12 +60,16 @@
                     <i class="fal fa-times" />
                   </div>
                 </div>
-                <div
-                  :style="{
-                    top: `${scrolledTopOffset - 81}px`,
-                  }"
-                  class="text-center compare-title"
-                >
+              </div>
+            </div>
+            <div class="row compare-row compare-row-headline sticky">
+              <div class="col-12 compare-row-label" />
+              <div
+                v-for="model in sortedModels"
+                :key="`${model.slug}-title`"
+                class="col-12 compare-row-item"
+              >
+                <div class="text-center compare-title">
                   <strong>{{ model.name }}</strong>
                 </div>
               </div>
@@ -81,26 +84,10 @@
               </div>
             </div>
             <div class="compare-wrapper">
-              <BaseRows
-                :models="sortedModels"
-                :scroll-left="scrolledLeftOffset"
-              />
-
-              <CrewRows
-                :models="sortedModels"
-                :scroll-left="scrolledLeftOffset"
-              />
-
-              <SpeedRows
-                :models="sortedModels"
-                :scroll-left="scrolledLeftOffset"
-              />
-
-              <CategoryRows
-                :models="sortedModels"
-                :scroll-left="scrolledLeftOffset"
-              />
-
+              <BaseRows :models="sortedModels" />
+              <CrewRows :models="sortedModels" />
+              <SpeedRows :models="sortedModels" />
+              <CategoryRows :models="sortedModels" />
               <Legend :models="sortedModels" />
             </div>
           </div>
@@ -113,6 +100,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import Box from 'frontend/core/components/Box'
@@ -123,7 +111,6 @@ import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
 import CategoryRows from 'frontend/components/Compare/Models/Categories'
 import Legend from 'frontend/components/Compare/Models/Legend'
-import debounce from 'lodash.debounce'
 
 @Component<ModelsCompare>({
   components: {
@@ -140,13 +127,7 @@ import debounce from 'lodash.debounce'
   mixins: [MetaInfo],
 })
 export default class ModelsCompare extends Vue {
-  scrolledTop: boolean = false
-
-  scrolledLeft: boolean = false
-
-  scrolledTopOffset: number = 0
-
-  scrolledLeftOffset: number = 0
+  @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
 
   newModel: Model | null = null
 
@@ -202,14 +183,6 @@ export default class ModelsCompare extends Vue {
     this.update()
   }
 
-  created() {
-    window.addEventListener('scroll', this.handleScroll)
-  }
-
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
-
   mounted() {
     this.setupForm()
     this.form.models.forEach(async slug => {
@@ -225,22 +198,15 @@ export default class ModelsCompare extends Vue {
     }
   }
 
-  handleScroll() {
-    this.scrolledTop = document.documentElement.scrollTop > 261
-    this.scrolledLeft = document.documentElement.scrollLeft > 200
-    this.scrolledTopOffset = document.documentElement.scrollTop
-    this.scrolledLeftOffset = this.scrolledLeft
-      ? document.documentElement.scrollLeft
-      : 0
-  }
-
   update() {
-    this.$router.replace({
-      name: this.$route.name,
-      query: {
-        models: this.form.models,
-      },
-    })
+    this.$router
+      .replace({
+        name: this.$route.name,
+        query: {
+          models: this.form.models,
+        },
+      })
+      .catch(() => {})
   }
 
   async add() {

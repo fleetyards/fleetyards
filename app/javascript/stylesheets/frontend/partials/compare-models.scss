@@ -1,47 +1,6 @@
 @import '~stylesheets/variables';
 
 .compare-models {
-  &.scrolled-top {
-    .compare-row-headline {
-      .compare-row-item .compare-title {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 1000;
-        margin: 0 15px;
-        margin-top: -72px;
-        transition: top .1s linear;
-      }
-    }
-
-    .compare-wrapper {
-      margin-top: 70px;
-    }
-  }
-
-  &.scrolled-left {
-    .compare-wrapper {
-      .compare-row-label {
-        z-index: 999;
-        background: linear-gradient(to right, transparent, $gray-darker, $gray-darker);
-        transition: left .1s linear;
-      }
-
-      .compare-row:last-child {
-        .compare-row-label {
-          border-bottom-right-radius: $border-radius-base;
-        }
-      }
-    }
-
-    .compare-section {
-      .compare-row-label {
-        border-top-right-radius: $border-radius-base;
-      }
-    }
-  }
-
   .compare-image {
     position: relative;
     height: 180px;
@@ -98,6 +57,7 @@
 
   .compare-row {
     display: flex;
+    flex-wrap: nowrap;
 
     .compare-row-item {
       flex: 1;
@@ -107,16 +67,33 @@
     }
 
     .compare-row-label {
+      left: 220px;
       flex: 1;
+      width: 300px;
       min-width: 300px;
       max-width: 20%;
       margin-top: 0;
-      padding-top: 6px;
+      padding-bottom: 10px;
+
+      &.sticky-left {
+        background: linear-gradient(to right, transparent, $gray-darker);
+      }
+    }
+
+    &:last-child {
+      .compare-row-label {
+        border-bottom-right-radius: $border-radius-base;
+      }
     }
   }
 
   .compare-section {
     margin-top: 30px;
+
+    .compare-row-label {
+      padding-top: 10px;
+      border-top-right-radius: $border-radius-base;
+    }
 
     .metrics-title {
       position: relative;
@@ -135,6 +112,20 @@
           transform: rotate(90deg);
         }
       }
+    }
+  }
+
+  .compare-row-headline {
+    .compare-row-label {
+      left: 0;
+    }
+  }
+}
+
+.nav-slim {
+  .compare-row {
+    .compare-row-label {
+      left: 0;
     }
   }
 }
