@@ -110,7 +110,9 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import Box from 'frontend/core/components/Box'
@@ -121,10 +123,9 @@ import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
 import CategoryRows from 'frontend/components/Compare/Models/Categories'
 import Legend from 'frontend/components/Compare/Models/Legend'
+import debounce from 'lodash.debounce'
 
-export default {
-  name: 'ModelsCompare',
-
+@Component<ModelsCompare>({
   components: {
     FilterGroup,
     Box,
@@ -136,159 +137,157 @@ export default {
     CategoryRows,
     Legend,
   },
-
   mixins: [MetaInfo],
+})
+export default class ModelsCompare extends Vue {
+  scrolledTop: boolean = false
 
-  data() {
-    const query = JSON.parse(JSON.stringify(this.$route.query || {}))
+  scrolledLeft: boolean = false
 
-    return {
-      scrolledTop: false,
-      scrolledLeft: false,
-      scrolledTopOffset: 0,
-      scrolledLeftOffset: 0,
-      newModel: null,
-      form: {
-        models: query.models || [],
-      },
-      models: [],
-    }
-  },
+  scrolledTopOffset: number = 0
 
-  computed: {
-    erkulUrl() {
-      return 'https://www.erkul.games/calculator'
-    },
+  scrolledLeftOffset: number = 0
 
-    sortedModels() {
-      const models = JSON.parse(JSON.stringify(this.models))
+  newModel: Model | null = null
 
-      return models.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1
-        }
+  models: Model[] = []
 
-        if (a.name > b.name) {
-          return 1
-        }
+  form = {}
 
-        return 0
-      })
-    },
+  get erkulUrl() {
+    return 'https://www.erkul.games/calculator'
+  }
 
-    selectDisabled() {
-      return this.models.length > 7
-    },
+  get sortedModels() {
+    const models = JSON.parse(JSON.stringify(this.models))
 
-    disabledTooltip() {
-      if (this.selectDisabled) {
-        return this.$t('labels.compare.enough')
+    return models.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1
       }
 
-      return null
-    },
+      if (a.name > b.name) {
+        return 1
+      }
 
-    crumbs() {
-      return [
-        {
-          to: {
-            name: 'models',
-          },
-          label: this.$t('nav.models.index'),
+      return 0
+    })
+  }
+
+  get selectDisabled() {
+    return this.models.length > 7
+  }
+
+  get disabledTooltip() {
+    if (this.selectDisabled) {
+      return this.$t('labels.compare.enough')
+    }
+
+    return null
+  }
+
+  get crumbs() {
+    return [
+      {
+        to: {
+          name: 'models',
         },
-      ]
-    },
-  },
-
-  watch: {
-    form: {
-      handler() {
-        this.update()
+        label: this.$t('nav.models.index'),
       },
-      deep: true,
-    },
-  },
+    ]
+  }
+
+  @Watch('form', { deep: true })
+  onFormChange() {
+    this.update()
+  }
 
   created() {
     window.addEventListener('scroll', this.handleScroll)
-  },
+  }
 
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
-  },
+  }
 
   mounted() {
+    this.setupForm()
     this.form.models.forEach(async slug => {
       const model = await this.fetchModel(slug)
       this.models.push(model)
     })
-  },
+  }
 
-  methods: {
-    handleScroll() {
-      this.scrolledTop = document.documentElement.scrollTop > 261
-      this.scrolledLeft = document.documentElement.scrollLeft > 200
-      this.scrolledTopOffset = document.documentElement.scrollTop
-      this.scrolledLeftOffset = this.scrolledLeft
-        ? document.documentElement.scrollLeft
-        : 0
-    },
+  setupForm() {
+    const query = JSON.parse(JSON.stringify(this.$route.query || {}))
+    this.form = {
+      models: query.models || [],
+    }
+  }
 
-    update() {
-      this.$router.replace({
-        name: this.$route.name,
-        query: {
-          models: this.form.models,
-        },
-      })
-    },
+  handleScroll() {
+    this.scrolledTop = document.documentElement.scrollTop > 261
+    this.scrolledLeft = document.documentElement.scrollLeft > 200
+    this.scrolledTopOffset = document.documentElement.scrollTop
+    this.scrolledLeftOffset = this.scrolledLeft
+      ? document.documentElement.scrollLeft
+      : 0
+  }
 
-    async add() {
-      if (this.newModel && !this.form.models.includes(this.newModel)) {
-        const model = await this.fetchModel(this.newModel)
-        this.models.push(model)
-        this.form.models.push(this.newModel)
-      }
-      this.newModel = null
-    },
+  update() {
+    this.$router.replace({
+      name: this.$route.name,
+      query: {
+        models: this.form.models,
+      },
+    })
+  }
 
-    remove(model) {
-      if (this.form.models.includes(model.slug)) {
-        const index = this.form.models.indexOf(model.slug)
-        this.form.models.splice(index, 1)
-      }
+  async add() {
+    if (this.newModel && !this.form.models.includes(this.newModel)) {
+      const model = await this.fetchModel(this.newModel)
+      this.models.push(model)
+      this.form.models.push(this.newModel)
+    }
+    this.newModel = null
+  }
 
-      if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
-        const index = this.models.findIndex(item => item.slug === model.slug)
-        this.models.splice(index, 1)
-      }
-    },
+  remove(model) {
+    if (this.form.models.includes(model.slug)) {
+      const index = this.form.models.indexOf(model.slug)
+      this.form.models.splice(index, 1)
+    }
 
-    fetchModels({ page, search, missingValue }) {
-      const query = {
-        q: {},
-      }
+    if (this.models.findIndex(item => item.slug === model.slug) >= 0) {
+      const index = this.models.findIndex(item => item.slug === model.slug)
+      this.models.splice(index, 1)
+    }
+  }
 
-      if (search) {
-        query.q.nameCont = search
-      } else if (missingValue) {
-        query.q.nameCont = missingValue
-      } else if (page) {
-        query.page = page
-      }
+  fetchModels({ page, search, missingValue }) {
+    const query = {
+      q: {},
+    }
 
-      return this.$api.get('models', query)
-    },
+    if (search) {
+      query.q.nameCont = search
+    } else if (missingValue) {
+      query.q.nameCont = missingValue
+    } else if (page) {
+      query.page = page
+    }
 
-    async fetchModel(slug) {
-      const response = await this.$api.get(`models/${slug}`)
+    return this.$api.get('models', query)
+  }
 
-      if (!response.error) {
-        return response.data
-      }
+  async fetchModel(slug) {
+    const response = await this.$api.get(`models/${slug}`)
 
-      return null
-    },
-  },
+    if (!response.error) {
+      return response.data
+    }
+
+    return null
+  }
 }
 </script>
