@@ -9,29 +9,7 @@
 
             <h2>{{ $t('sublines.impressum.general') }}</h2>
 
-            <address>
-              <dl class="dl-horizontal">
-                <dd class="name">
-                  FleetYards.net
-                </dd>
-                <dt>
-                  <strong>Adresse:</strong>
-                </dt>
-                <dd>
-                  Marten Klitzke
-                  <br />
-                  Lindenstraße 8b
-                  <br />
-                  22880 Wedel
-                </dd>
-                <dt>
-                  <strong>E-Mail:</strong>
-                </dt>
-                <dd>
-                  info ( at ) fleetyards.net
-                </dd>
-              </dl>
-            </address>
+            <AppContact />
             <br />
 
             <h2>{{ $t('sublines.impressum.thirdpartycontent') }}</h2>
@@ -85,10 +63,12 @@ import Vue from 'vue'
 
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/core/components/Panel'
+import AppContact from 'frontend/core/components/AppContact'
 
 @Component({
   components: {
     Panel,
+    AppContact,
   },
   mixins: [MetaInfo],
 })

@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @stats = stats
 
     mail(
-      to: Rails.application.secrets[:mailer_admin_mail],
+      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
@@ -16,7 +16,7 @@ class AdminMailer < ApplicationMailer
     @loaners = loaners
 
     mail(
-      to: Rails.application.secrets[:mailer_admin_mail],
+      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.missing_loaners.subject")
     )
   end
@@ -25,7 +25,7 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      to: Rails.application.secrets[:mailer_admin_mail],
+      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end
@@ -34,7 +34,7 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      to: Rails.application.secrets[:mailer_admin_mail],
+      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end

@@ -14,7 +14,7 @@
             </Btn>
             <p>
               Below you can read about what Information we are using to provide
-              you the services on Fleetyards.net. For most parts this only
+              you the services on {{ appName }}. For most parts this only
               concerns registered Users but please read further to get a full
               overview.
             </p>
@@ -23,15 +23,12 @@
             <h2>What Information do we use?</h2>
             <p>
               Depending on if you are a registered User or only using
-              Fleetyards.net as a Guest we use more or less Information from
-              you.
+              {{ appName }} as a Guest we use more or less Information from you.
             </p>
             <br />
 
             <h3>As a Guest</h3>
-            <p>
-              As a Guest on Fleetyards.net we collect the following data:
-            </p>
+            <p>As a Guest on {{ appName }} we collect the following data:</p>
             <ul>
               <li>Anonymised IP address</li>
               <li>Referrer URL</li>
@@ -42,7 +39,7 @@
             </ul>
             <p>
               This Information helps us to optimise the user experience on
-              Fleetyards.net. Additionally, but only when an error occurs, the
+              {{ appName }}. Additionally, but only when an error occurs, the
               Browser and Device information is shared with the following third
               party service
               <a href="https://sentry.io/" target="_blank" rel="noopener">
@@ -54,9 +51,9 @@
 
             <h3>As a registered User</h3>
             <p>
-              As a registered User on Fleetyards.net we only collect, besides
-              the Information a Guest provides to us in the case of an Error,
-              the Information you provide to us via the
+              As a registered User on {{ appName }} we only collect, besides the
+              Information a Guest provides to us in the case of an Error, the
+              Information you provide to us via the
               <router-link :to="{ name: 'signup' }">
                 Signup form
               </router-link>
@@ -203,29 +200,7 @@
             <br />
 
             <h2>Contact</h2>
-            <address>
-              <dl class="dl-horizontal">
-                <dd class="name">
-                  FleetYards.net
-                </dd>
-                <dt>
-                  <strong>Adresse:</strong>
-                </dt>
-                <dd>
-                  Marten Klitzke
-                  <br />
-                  Lindenstraße 8b
-                  <br />
-                  22880 Wedel
-                </dd>
-                <dt>
-                  <strong>E-Mail:</strong>
-                </dt>
-                <dd>
-                  info ( at ) fleetyards.net
-                </dd>
-              </dl>
-            </address>
+            <AppContact />
             <br />
           </div>
         </Panel>
@@ -234,24 +209,26 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
+import AppContact from 'frontend/core/components/AppContact'
 
-export default {
+@Component<PrivacyPolicy>({
   components: {
     Panel,
     Btn,
+    AppContact,
   },
-
   mixins: [MetaInfo],
-
-  methods: {
-    openPrivacySettings() {
-      this.$comlink.$emit('open-privacy-settings', true)
-    },
-  },
+})
+export default class PrivacyPolicy extends Vue {
+  openPrivacySettings() {
+    this.$comlink.$emit('open-privacy-settings', true)
+  }
 }
 </script>
 
