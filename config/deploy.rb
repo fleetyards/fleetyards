@@ -105,54 +105,6 @@ task :logs do
   end
 end
 
-namespace :uploads do
-  task :recreate_images do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info 'Recreate Images'
-          execute(:bundle, :exec, :thor, 'images:recreate')
-        end
-      end
-    end
-  end
-
-  task :sync_to_local do
-    invoke :'uploads:backup'
-    invoke :'uploads:download'
-    invoke :'uploads:local_import'
-  end
-
-  task :backup do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info 'Creating Uploads Backup...'
-          execute(:tar, '-zcvf', 'dumps/uploads.tar.gz', "#{fetch(:deploy_to)}/shared/public/uploads")
-          info 'Uploads Backup finished'
-        end
-      end
-    end
-  end
-
-  task :download do
-    run_locally do
-      info 'Downloading latest Uploads backup...'
-      execute(:mkdir, '-p', 'dumps')
-      server = roles(:app).first
-      execute(:scp, "#{server.user}@#{server.hostname}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz", 'dumps/')
-      info 'Download finished'
-    end
-  end
-
-  task :local_import do
-    run_locally do
-      execute(:mkdir, '-p', 'public/uploads')
-      execute(:tar, '--strip-components=5', '-xvzf', 'dumps/uploads.tar.gz', '-C', 'public/uploads/', "#{fetch(:deploy_to)}/shared/public/uploads")
-    end
-  end
-end
-
 namespace :es do
   task :index do
     on roles(:app) do
@@ -257,7 +209,7 @@ namespace :db do
 
   task :local_import do
     run_locally do
-      execute(:pg_restore, '--verbose', '--clean', '--no-acl', '--no-owner', '-h', 'localhost', '-d', 'fleetyards_dev', 'dumps/latest.dump')
+      execute('./scripts/restore-db-backup.sh')
     end
   end
 end

@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:13.1
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres-local:/var/lib/postgresql/data
+      - ./dumps:/backups
+  redis:
+    image: redis:6.0.9
+    ports:
+      - 6379:6379
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    ports:
+      - 9200:9200
+    environment:
+      CLUSTER.NAME: fleetyards-development-cluster
+      XPACK.SECURITY.ENABLED: 'false'
+      TRANSPORT.HOST: localhost
+      NETWORK.HOST: 127.0.0.1
+      HTTP.PORT: 9200
+      DISCOVERY.TYPE: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
