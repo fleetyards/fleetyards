@@ -15,6 +15,8 @@ ciImage: &ciImage
     NODE_OPTIONS: --max-old-space-size=1024
     API_ENDPOINT: http://localhost:8270
     CABLE_ENDPOINT: http://localhost:8270/cable
+    FRONTEND_ENDPOINT: http://localhost:8270
+    ADMIN_ENDPOINT: http://localhost:8270
 
 e2eImage: &e2eImage
   image: fleetyards/e2e:2.7.2
