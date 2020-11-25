@@ -226,6 +226,10 @@ import AppContact from 'frontend/core/components/AppContact'
   mixins: [MetaInfo],
 })
 export default class PrivacyPolicy extends Vue {
+  get appName() {
+    return window.APP_NAME
+  }
+
   openPrivacySettings() {
     this.$comlink.$emit('open-privacy-settings', true)
   }
