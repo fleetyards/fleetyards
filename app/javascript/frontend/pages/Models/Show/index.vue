@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div v-if="model" class="col-12">
+      <div v-if="!loading && model" class="col-12">
         <div class="row">
           <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
@@ -341,6 +341,8 @@ export default class ModelDetail extends Vue {
 
   upgrades: ModelUpgrade[] = []
 
+  model: Model | null = null
+
   attributes: string[] = [
     'length',
     'beam',
@@ -363,10 +365,6 @@ export default class ModelDetail extends Vue {
     }
 
     return this.model.storeImageLarge
-  }
-
-  get model(): Model | null {
-    return modelsCollection.record
   }
 
   get starship42Url(): string {
@@ -490,7 +488,7 @@ export default class ModelDetail extends Vue {
 
   async fetch() {
     this.loading = true
-    await modelsCollection.findBySlug(this.$route.params.slug)
+    this.model = await modelsCollection.findBySlug(this.$route.params.slug)
     this.loading = false
   }
 }
