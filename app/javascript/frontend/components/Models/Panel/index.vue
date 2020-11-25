@@ -126,6 +126,25 @@
             {{ username }}
           </Btn>
         </div>
+        <div v-if="usernames.length" class="owner">
+          {{ $t('labels.vehicle.owner') }}
+
+          <Btn
+            :href="`/hangar/${firstOwner}`"
+            variant="link"
+            :text-inline="true"
+          >
+            {{ firstOwner }}
+          </Btn>
+          <Btn
+            v-if="usernames.length > 1"
+            variant="link"
+            :text-inline="true"
+            @click.native="openOwnersModal"
+          >
+            {{ $t('actions.fleet.showOwners') }}
+          </Btn>
+        </div>
       </div>
       <BCollapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
@@ -183,6 +202,21 @@ export default class ModelPanel extends Vue {
   @Prop({ default: false }) highlight: boolean
 
   @Prop({ default: null }) username: string
+
+  @Prop({
+    default() {
+      return []
+    },
+  })
+  usernames: string[]
+
+  get firstOwner() {
+    if (this.usernames.length > 0) {
+      return this.usernames[0]
+    }
+
+    return null
+  }
 
   get uuid() {
     return this._uid
@@ -271,6 +305,15 @@ export default class ModelPanel extends Vue {
       props: {
         vehicle: this.vehicle,
         editable: this.editable,
+      },
+    })
+  }
+
+  openOwnersModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Models/OwnersModal'),
+      props: {
+        usernames: this.usernames,
       },
     })
   }
