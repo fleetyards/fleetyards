@@ -13,6 +13,8 @@ ciImage: &ciImage
     DATABASE_USER: root
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
+    API_ENDPOINT: http://localhost:8270
+    CABLE_ENDPOINT: http://localhost:8270/cable
 
 e2eImage: &e2eImage
   image: fleetyards/e2e:2.7.2
