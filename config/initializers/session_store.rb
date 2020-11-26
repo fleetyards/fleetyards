@@ -3,17 +3,12 @@
 expire_after = 120.minutes
 
 session_store_options = {
+  servers: "#{ENV['REDIS_URL']}/#{ENV['REDIS_DB'] || 0}/fleetyards-#{Rails.env}-session",
   key: Rails.env.production? ? 'FLTYRD' : "FLTYRD_#{Rails.env.upcase}",
   domain: Rails.application.secrets[:cookie_domain] || :all,
-  serializer: :json,
   secure: Rails.env.production? || Rails.env.staging?,
   expire_after: expire_after,
   same_site: :lax,
-  redis: {
-    expire_after: expire_after,
-    ttl: expire_after,
-    key_prefix: "fleetyards-#{Rails.env}"
-  }
 }
 
-Fleetyards::Application.config.session_store :redis_session_store, **session_store_options
+Fleetyards::Application.config.session_store :redis_store, **session_store_options

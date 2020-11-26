@@ -39,7 +39,7 @@ gem 'devise'
 gem 'devise-async'
 gem 'useragent'
 
-gem 'redis-session-store'
+gem 'redis-actionpack'
 
 gem 'ransack'
 
