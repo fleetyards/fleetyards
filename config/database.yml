@@ -8,12 +8,12 @@ development:
   database: fleetyards_dev
   adapter: postgresql
   host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
-  user: <%= ENV["DATABASE_USER"] %>
+  user: <%= ENV["DATABASE_USER"] || 'root' %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
 
 test:
   database: fleetyards_test
   adapter: postgresql
   host: <%= ENV["DATABASE_HOST"] || 'localhost' %>
-  user: <%= ENV["DATABASE_USER"] %>
+  user: <%= ENV["DATABASE_USER"] || 'root' %>
   password: <%= ENV["DATABASE_PASSWORD"] %>

@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div
-        :style="{
-          left: `${scrollLeft}px`,
-        }"
-        class="col-12 compare-row-label"
-      >
+      <div class="col-12 compare-row-label sticky-left">
         <div
           :class="{
             active: visible,
@@ -27,10 +22,7 @@
     <BCollapse id="base" :visible="visible">
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.manufacturer') }}
         </div>
@@ -44,10 +36,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.productionStatus') }}
         </div>
@@ -63,10 +52,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.focus') }}
         </div>
@@ -82,10 +68,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.classification') }}
         </div>
@@ -101,10 +84,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.size') }}
         </div>
@@ -120,10 +100,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.length') }}
         </div>
@@ -139,10 +116,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.beam') }}
         </div>
@@ -158,10 +132,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.height') }}
         </div>
@@ -177,10 +148,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.mass') }}
         </div>
@@ -196,10 +164,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.cargo') }}
         </div>
@@ -215,10 +180,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.price') }}
         </div>
@@ -232,10 +194,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.pledgePrice') }}
         </div>
@@ -253,42 +212,32 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 
-export default {
+@Component<ModelsCompareBase>({
   components: {
     BCollapse,
   },
+})
+export default class ModelsCompareBase extends Vue {
+  @Prop({ required: true }) models!: Model[]
 
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
+  visible: boolean = false
 
-    scrollLeft: {
-      type: Number,
-      required: true,
-    },
-  },
+  mounted() {
+    this.visible = this.models.length > 0
+  }
 
-  data() {
-    return {
-      visible: this.models.length > 0,
-    }
-  },
+  @Watch('models')
+  onModelsChange() {
+    this.visible = this.models.length > 0
+  }
 
-  watch: {
-    models() {
-      this.visible = this.models.length > 0
-    },
-  },
-
-  methods: {
-    toggle() {
-      this.visible = !this.visible
-    },
-  },
+  toggle() {
+    this.visible = !this.visible
+  }
 }
 </script>

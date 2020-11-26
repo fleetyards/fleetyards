@@ -127,16 +127,8 @@
                     v-for="shopCommodity in model.soldAt"
                     :key="shopCommodity.id"
                   >
-                    <router-link
-                      :to="{
-                        name: 'shop',
-                        params: {
-                          stationSlug: shopCommodity.shop.station.slug,
-                          slug: shopCommodity.shop.slug,
-                        },
-                      }"
-                    >
-                      {{ shopCommodity.shop.name }}
+                    <router-link :to="shopRoute(shopCommodity)">
+                      {{ shopName(shopCommodity) }}
                     </router-link>
                   </li>
                 </ul>
@@ -153,16 +145,8 @@
                     v-for="shopCommodity in model.rentalAt"
                     :key="shopCommodity.id"
                   >
-                    <router-link
-                      :to="{
-                        name: 'shop',
-                        params: {
-                          stationSlug: shopCommodity.shop.station.slug,
-                          slug: shopCommodity.shop.slug,
-                        },
-                      }"
-                    >
-                      {{ shopCommodity.shop.name }}
+                    <router-link :to="shopRoute(shopCommodity)">
+                      {{ shopName(shopCommodity) }}
                     </router-link>
                   </li>
                 </ul>
@@ -182,5 +166,19 @@ import { Component, Prop } from 'vue-property-decorator'
 @Component<BaseMetrics>({})
 export default class BaseMetrics extends Vue {
   @Prop({ required: true }) model: Model
+
+  shopRoute(shopCommodity) {
+    return {
+      name: 'shop',
+      params: {
+        stationSlug: shopCommodity.shop?.station?.slug,
+        slug: shopCommodity.shop?.slug,
+      },
+    }
+  }
+
+  shopName(shopCommodity) {
+    return shopCommodity.shop?.name
+  }
 }
 </script>

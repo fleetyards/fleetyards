@@ -11,11 +11,28 @@ module Api
 
         trade_routes_query_params['sorts'] = sort_by_name(['profit_per_unit desc', 'created_at desc'])
 
-        @q = TradeRoute.with_profit.ransack(trade_routes_query_params)
+        scope = TradeRoute.with_profit
+
+        scope = filter_scope(scope, Station, :destination_station)
+        scope = filter_scope(scope, CelestialObject, :destination_celestial_object)
+        scope = filter_scope(scope, Starsystem, :destination_starsystem)
+        scope = filter_scope(scope, Station, :origin_station)
+        scope = filter_scope(scope, CelestialObject, :origin_celestial_object)
+        scope = filter_scope(scope, Starsystem, :origin_starsystem)
+
+        @q = scope.ransack(trade_routes_query_params)
 
         @trade_routes = @q.result
           .page(params[:page])
           .per(per_page(TradeRoute))
+      end
+
+      private def filter_scope(scope, klass, field)
+        return scope if trade_routes_query_params["#{field}_in"].blank?
+
+        ids = klass.where(slug: trade_routes_query_params["#{field}_in"]).pluck(:id)
+        trade_routes_query_params.delete("#{field}_in")
+        scope.where("#{field}_id": ids)
       end
 
       private def trade_routes_query_params

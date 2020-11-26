@@ -81,13 +81,15 @@ export default {
   },
 
   created() {
-    if (this.currentUser) {
-      this.setupForm()
-    }
+    this.setupForm()
   },
 
   methods: {
     setupForm() {
+      if (!this.currentUser) {
+        return
+      }
+
       this.form.saleNotify = !!this.currentUser.saleNotify
       this.form.publicHangar = !!this.currentUser.publicHangar
     },

@@ -94,7 +94,8 @@ nav {
   position: relative;
   z-index: 1000;
   width: 300px;
-  height: 100%;
+  min-width: 300px;
+  height: 100vh;
   transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .nav-container {
@@ -171,6 +172,7 @@ nav {
 
   &.nav-slim {
     width: 80px;
+    min-width: 80px;
   }
 }
 

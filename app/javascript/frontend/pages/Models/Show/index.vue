@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div v-if="model" class="col-12">
+      <div v-if="!loading && model" class="col-12">
         <div class="row">
           <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-8">
+          <div class="col-12 col-lg-8 ship-detail-left-col">
             <div
               :class="{
                 'image-wrapper-holoviewer': holoviewerVisible,
@@ -53,14 +53,7 @@
                 :src="starship42IframeUrl"
                 frameborder="0"
               />
-              <img
-                v-lazy="model.storeImage"
-                class="image"
-                :class="{
-                  'image-hidden': holoviewerVisible,
-                }"
-                alt="model image"
-              />
+              <LazyImage v-else :src="storeImage" class="image" />
             </div>
             <div class="row production-status">
               <div class="col-6">
@@ -288,6 +281,7 @@ import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
+import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Panel from 'frontend/core/components/Panel'
@@ -306,6 +300,7 @@ import modelsCollection from 'frontend/api/collections/Models'
 @Component<ModelDetail>({
   components: {
     Loader,
+    LazyImage,
     AddToHangar,
     Panel,
     TeaserPanel,
@@ -346,6 +341,8 @@ export default class ModelDetail extends Vue {
 
   upgrades: ModelUpgrade[] = []
 
+  model: Model | null = null
+
   attributes: string[] = [
     'length',
     'beam',
@@ -362,8 +359,12 @@ export default class ModelDetail extends Vue {
 
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
 
-  get model(): Model | null {
-    return modelsCollection.record
+  get storeImage() {
+    if (this.mobile) {
+      return this.model.storeImageMedium
+    }
+
+    return this.model.storeImageLarge
   }
 
   get starship42Url(): string {
@@ -487,7 +488,7 @@ export default class ModelDetail extends Vue {
 
   async fetch() {
     this.loading = true
-    await modelsCollection.findBySlug(this.$route.params.slug)
+    this.model = await modelsCollection.findBySlug(this.$route.params.slug)
     this.loading = false
   }
 }

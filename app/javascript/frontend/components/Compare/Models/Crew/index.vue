@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="row compare-row compare-section">
-      <div
-        :style="{
-          left: `${scrollLeft}px`,
-        }"
-        class="col-12 compare-row-label"
-      >
+      <div class="col-12 compare-row-label sticky-left">
         <div
           :class="{
             active: visible,
@@ -27,10 +22,7 @@
     <BCollapse id="crew" :visible="visible">
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.minCrew') }}
         </div>
@@ -46,10 +38,7 @@
       </div>
       <div class="row compare-row">
         <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label text-right metrics-label"
+          class="col-12 compare-row-label text-right metrics-label sticky-left"
         >
           {{ $t('model.maxCrew') }}
         </div>
@@ -67,42 +56,32 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 
-export default {
+@Component<ModelsCompareCrew>({
   components: {
     BCollapse,
   },
+})
+export default class ModelsCompareCrew extends Vue {
+  @Prop({ required: true }) models!: Model[]
 
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
+  visible: boolean = false
 
-    scrollLeft: {
-      type: Number,
-      required: true,
-    },
-  },
+  mounted() {
+    this.visible = this.models.length > 0
+  }
 
-  data() {
-    return {
-      visible: this.models.length > 0,
-    }
-  },
+  @Watch('models')
+  onModelsChange() {
+    this.visible = this.models.length > 0
+  }
 
-  watch: {
-    models() {
-      this.visible = this.models.length > 0
-    },
-  },
-
-  methods: {
-    toggle() {
-      this.visible = !this.visible
-    },
-  },
+  toggle() {
+    this.visible = !this.visible
+  }
 }
 </script>

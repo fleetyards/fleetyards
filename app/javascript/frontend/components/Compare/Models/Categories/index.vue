@@ -2,12 +2,7 @@
   <div>
     <div v-for="category in categories" :key="category">
       <div class="row compare-row compare-section">
-        <div
-          :style="{
-            left: `${scrollLeft}px`,
-          }"
-          class="col-12 compare-row-label"
-        >
+        <div class="col-12 compare-row-label sticky-left">
           <div
             :class="{
               active: isVisible(category.toLowerCase()),
@@ -28,10 +23,7 @@
       <BCollapse :id="category" :visible="isVisible(category.toLowerCase())">
         <div class="row compare-row">
           <div
-            :style="{
-              left: `${scrollLeft}px`,
-            }"
-            class="col-12 compare-row-label text-right metrics-label"
+            class="col-12 compare-row-label text-right metrics-label sticky-left"
           />
           <div
             v-for="model in models"
@@ -55,79 +47,78 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import HardpointCategory from 'frontend/components/Models/Hardpoints/Category'
 
-export default {
+@Component<ModelsCompareCategories>({
   components: {
     BCollapse,
     HardpointCategory,
   },
+})
+export default class ModelsCompareCategories extends Vue {
+  @Prop({ required: true }) models!: Model[]
 
-  props: {
-    models: {
-      type: Array,
-      required: true,
-    },
+  categories = [
+    'RSIAvionic',
+    'RSIModular',
+    'RSIPropulsion',
+    'RSIThruster',
+    'RSIWeapon',
+  ]
 
-    scrollLeft: {
-      type: Number,
-      required: true,
-    },
-  },
+  rsiavionicVisible: boolean = false
 
-  data() {
-    return {
-      rsiavionicVisible: this.models.length > 0,
-      rsimodularVisible: this.models.length > 0,
-      rsipropulsionVisible: this.models.length > 0,
-      rsithrusterVisible: this.models.length > 0,
-      rsiweaponVisible: this.models.length > 0,
-      categories: [
-        'RSIAvionic',
-        'RSIModular',
-        'RSIPropulsion',
-        'RSIThruster',
-        'RSIWeapon',
-      ],
-    }
-  },
+  rsimodularVisible: boolean = false
 
-  watch: {
-    models() {
-      this.rsiavionicVisible = this.models.length > 0
-      this.rsimodularVisible = this.models.length > 0
-      this.rsipropulsionVisible = this.models.length > 0
-      this.rsithrusterVisible = this.models.length > 0
-      this.rsiweaponVisible = this.models.length > 0
-    },
-  },
+  rsipropulsionVisible: boolean = false
 
-  methods: {
-    isVisible(category) {
-      return this[`${category}Visible`]
-    },
+  rsithrusterVisible: boolean = false
 
-    toggle(category) {
-      this[`${category}Visible`] = !this[`${category}Visible`]
-    },
+  rsiweaponVisible: boolean = false
 
-    modularHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'modular')
-    },
+  @Watch('models')
+  onModelsChange() {
+    this.setupVisibles()
+  }
 
-    ordnanceHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'ordnance')
-    },
+  mounted() {
+    this.setupVisibles()
+  }
 
-    propulsionHardpoints(model) {
-      return model.hardpoints.filter(item => item.categorySlug === 'propulsion')
-    },
+  setupVisibles() {
+    this.rsiavionicVisible = this.models.length > 0
+    this.rsimodularVisible = this.models.length > 0
+    this.rsipropulsionVisible = this.models.length > 0
+    this.rsithrusterVisible = this.models.length > 0
+    this.rsiweaponVisible = this.models.length > 0
+  }
 
-    hardpointsForCategory(category, hardpoints) {
-      return hardpoints.filter(hardpoint => hardpoint.class === category)
-    },
-  },
+  isVisible(category) {
+    return this[`${category}Visible`]
+  }
+
+  toggle(category) {
+    this[`${category}Visible`] = !this[`${category}Visible`]
+  }
+
+  modularHardpoints(model) {
+    return model.hardpoints.filter(item => item.categorySlug === 'modular')
+  }
+
+  ordnanceHardpoints(model) {
+    return model.hardpoints.filter(item => item.categorySlug === 'ordnance')
+  }
+
+  propulsionHardpoints(model) {
+    return model.hardpoints.filter(item => item.categorySlug === 'propulsion')
+  }
+
+  hardpointsForCategory(category, hardpoints) {
+    return hardpoints.filter(hardpoint => hardpoint.class === category)
+  }
 }
 </script>

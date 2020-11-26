@@ -191,8 +191,9 @@ module Rsi
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          model.remote_rsi_store_image_url = store_image_url
-          model.remote_store_image_url = store_image_url if model.store_image.blank?
+          image_url = store_image_url.gsub('store_hub_large', 'source')
+          model.remote_rsi_store_image_url = image_url
+          model.remote_store_image_url = image_url if model.store_image.blank?
           model.save
         end
       end
@@ -238,8 +239,9 @@ module Rsi
         store_image_url = data['media'][0]['images']['store_hub_large']
         store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
         if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          paint.remote_rsi_store_image_url = store_image_url
-          paint.remote_store_image_url = store_image_url if paint.store_image.blank?
+          image_url = store_image_url.gsub('store_hub_large', 'source')
+          paint.remote_rsi_store_image_url = image_url
+          paint.remote_store_image_url = image_url if paint.store_image.blank?
           paint.save
         end
       end

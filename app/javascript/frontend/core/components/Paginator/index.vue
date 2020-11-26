@@ -76,11 +76,11 @@ export default class Paginator extends Vue {
 
   @Prop({ default: 1 }) page: number
 
-  @Prop({ default: null }) total: number
+  @Prop({ default: 1 }) total: number
 
   get innerTotal() {
     if (this.collection) {
-      return this.collection.totalPages
+      return this.collection.totalPages || 1
     }
 
     return this.total

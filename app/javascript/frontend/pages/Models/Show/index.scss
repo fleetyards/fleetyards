@@ -2,6 +2,7 @@
 
 .image {
   width: 100%;
+  min-height: 200px;
   max-height: 100%;
   margin-bottom: 10px;
   background-color: black;
@@ -15,6 +16,12 @@
   }
 }
 
+.ship-detail-left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .holoviewer {
   position: absolute;
   top: -50%;
@@ -25,12 +32,8 @@
 
 .image-wrapper {
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  &.image-wrapper-holoviewer {
-    min-height: 400px;
-  }
+  flex-grow: 1;
+  min-height: 200px;
 }
 
 .description {

@@ -62,7 +62,7 @@ export default class FleetchartList extends Vue {
 
   openContextMenu(event, item) {
     // @ts-ignore
-    this.$refs.contextMenu.open(item, this.myShip, event)
+    this.$refs.contextMenu?.open(item, this.myShip, event)
   }
 
   mounted() {
