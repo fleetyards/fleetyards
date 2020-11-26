@@ -42,9 +42,9 @@ Rails.application.config.content_security_policy do |policy|
   img_src = [
     :self, :data, :blob, Rails.application.secrets[:frontend_endpoint],
     Rails.application.secrets.rsi_endpoint, 'https://img.youtube.com',
-    "https://#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com",
+    ("https://#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com" if Rails.application.secrets.aws_s3_bucket.present?),
     'https://cdn.s3.fleetyards.net'
-  ]
+  ].compact
 
   font_src = [
     :self, 'https://fonts.gstatic.com', 'https://pro.fontawesome.com',
