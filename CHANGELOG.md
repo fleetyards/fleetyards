@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.7](https://github.com/fleetyards/fleetyards/compare/v4.4.6...v4.4.7) (2020-11-26)
+
+
+### Bug Fixes
+
+* privacy policy ([c11d14a](https://github.com/fleetyards/fleetyards/commit/c11d14a685084b3403590f947e0537fd5c9e00f6))
+* window width on mobile ([9851a17](https://github.com/fleetyards/fleetyards/commit/9851a177adc4a57269a9202d73a4e512ccb7907a))
+
 ### [4.4.6](https://github.com/fleetyards/fleetyards/compare/v4.4.5...v4.4.6) (2020-11-25)
 
 
