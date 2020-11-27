@@ -45,7 +45,7 @@ class Shop < ApplicationRecord
     !hidden
   end
 
-  belongs_to :station
+  belongs_to :station, touch: true
   has_many :shop_commodities, dependent: :destroy
 
   validates :name, :station, :shop_type, presence: true

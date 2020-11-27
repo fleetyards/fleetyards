@@ -30,7 +30,6 @@ aspire.update!(
   celestial_object: microtech,
   station_type: :poi,
   location: 'New Babbage',
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/new-babbage-a.jpg').open,
   hidden: false
 )
 
@@ -52,7 +51,6 @@ end
 brentworth = Shop.find_or_initialize_by(name: 'BRENTWORTH - CARE CENTER', station: aspire)
 brentworth.update!(
   shop_type: :hospital,
-  store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/maria_pure_of_heart.jpg').open,
   hidden: false
 )
 
@@ -61,14 +59,13 @@ commons.update!(
   celestial_object: microtech,
   station_type: :district,
   location: 'New Babbage',
-    store_image: Rails.root.join('db/seeds/images/stanton/microtech/new-babbage-a.jpg').open,
+  store_image: Rails.root.join('db/seeds/images/stanton/microtech/new-babbage-a.jpg').open,
   hidden: false
 )
 
 planetary_services = Shop.find_or_initialize_by(name: 'Planetary Services', station: commons)
 planetary_services.update!(
   shop_type: :admin,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/admin.jpg').open,
   buying: true,
   selling: true,
   hidden: false
@@ -77,7 +74,6 @@ planetary_services.update!(
 tdd = Shop.find_or_initialize_by(name: 'Trade & Development Devision', station: commons)
 tdd.update!(
   shop_type: :resources,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/tdd.png').open,
   buying: true,
   selling: true,
   hidden: false
@@ -86,7 +82,6 @@ tdd.update!(
 center_mass = Shop.find_or_initialize_by(name: 'CenterMass', station: commons)
 center_mass.update!(
   shop_type: :weapons,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/center_mass.png').open,
   selling: true,
   hidden: false
 )
@@ -94,7 +89,6 @@ center_mass.update!(
 omega = Shop.find_or_initialize_by(name: 'Omega Pro', station: commons)
 omega.update!(
   shop_type: :components,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/center_mass.png').open,
   selling: true,
   hidden: false
 )
@@ -102,7 +96,6 @@ omega.update!(
 factory_line = Shop.find_or_initialize_by(name: 'Factory Line', station: commons)
 factory_line.update!(
   shop_type: :computers,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/factory_line.png').open,
   selling: true,
   hidden: false
 )
@@ -110,7 +103,6 @@ factory_line.update!(
 shubin_interstellar = Shop.find_or_initialize_by(name: 'Shubin Interstellar', station: commons)
 shubin_interstellar.update!(
   shop_type: :mining_equipment,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/factory_line.png').open,
   selling: true,
   hidden: false
 )
@@ -118,7 +110,6 @@ shubin_interstellar.update!(
 ftl = Shop.find_or_initialize_by(name: 'FTL Courier', station: commons)
 ftl.update!(
   shop_type: :courier,
-  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/factory_line.png').open,
   hidden: false
 )
 

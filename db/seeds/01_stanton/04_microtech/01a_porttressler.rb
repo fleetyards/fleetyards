@@ -9,7 +9,7 @@ porttressler.update!(
   celestial_object: microtech,
   station_type: :hub,
   location: nil,
-  store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
+  # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
   hidden: false,
   refinary: true,
   cargo_hub: true
