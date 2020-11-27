@@ -182,6 +182,10 @@ en:
           rental: Rental
           computers: Computer Store
           blackmarket: Blackmarket
+          mining_equipment: Mining Equipment
+          equipment: Equipment
+          courier: Courier
+          refinary: Refinary
       celestial_object:
         hidden: hidden?
         location_prefix:
