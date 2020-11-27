@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-expire_after = 120.minutes
+expire_after = 2.hours
 
 session_store_options = {
   servers: "#{ENV['REDIS_URL']}/#{ENV['REDIS_DB'] || 0}/fleetyards-#{Rails.env}-session",
