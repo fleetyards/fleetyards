@@ -47,8 +47,7 @@
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :async, :recoverable, :trackable, :validatable,
-         :confirmable, :rememberable, authentication_keys: [:login]
-  #:timeoutable,
+         :confirmable, :rememberable, :timeoutable, authentication_keys: [:login]
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
