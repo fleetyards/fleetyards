@@ -60,6 +60,7 @@ module Rsi
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?
@@ -98,6 +99,7 @@ module Rsi
 
       model.save!
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def get_buying_options(store_url)
       return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
