@@ -88,7 +88,6 @@
               <CrewRows :models="sortedModels" />
               <SpeedRows :models="sortedModels" />
               <CategoryRows :models="sortedModels" />
-              <Legend :models="sortedModels" />
             </div>
           </div>
         </div>
@@ -110,7 +109,6 @@ import BaseRows from 'frontend/components/Compare/Models/Base'
 import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
 import CategoryRows from 'frontend/components/Compare/Models/Categories'
-import Legend from 'frontend/components/Compare/Models/Legend'
 
 @Component<ModelsCompare>({
   components: {
@@ -122,7 +120,6 @@ import Legend from 'frontend/components/Compare/Models/Legend'
     CrewRows,
     SpeedRows,
     CategoryRows,
-    Legend,
   },
   mixins: [MetaInfo],
 })
