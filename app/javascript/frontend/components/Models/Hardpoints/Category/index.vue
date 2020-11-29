@@ -36,7 +36,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { groupBy } from 'frontend/lib/Helpers'
+import { groupBy, sortBy } from 'frontend/lib/Helpers'
 import Panel from 'frontend/core/components/Panel'
 import HardpointItem from '../Item'
 
@@ -75,7 +75,7 @@ export default class HardpointCategory extends Vue {
   }
 
   groupByType(hardpoints) {
-    return groupBy(hardpoints, 'type')
+    return groupBy(sortBy(hardpoints, 'type'), 'type')
   }
 
   openComponentModal(hardpoint) {
