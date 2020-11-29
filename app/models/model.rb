@@ -13,9 +13,9 @@
 #  cargo                    :decimal(15, 2)
 #  classification           :string(255)
 #  cruise_speed             :decimal(15, 2)
+#  data_slug                :string
 #  description              :text
 #  dock_size                :integer
-#  erkuls_slug              :string
 #  fleetchart_image         :string
 #  focus                    :string(255)
 #  ground                   :boolean          default(FALSE)
@@ -70,7 +70,6 @@
 #  size                     :string
 #  slug                     :string(255)
 #  speed                    :decimal(15, 2)
-#  starship42_slug          :string
 #  store_image              :string(255)
 #  store_images_updated_at  :datetime
 #  store_url                :string(255)

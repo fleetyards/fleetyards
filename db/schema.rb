@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_18_220722) do
+ActiveRecord::Schema.define(version: 2020_11_29_085516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -355,7 +355,6 @@ ActiveRecord::Schema.define(version: 2020_11_18_220722) do
     t.boolean "hidden", default: true
     t.datetime "store_images_updated_at"
     t.string "store_url"
-    t.string "starship42_slug"
     t.integer "rsi_id"
     t.string "rsi_name"
     t.string "rsi_slug"
@@ -453,8 +452,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_220722) do
     t.string "rsi_classification"
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.string "erkuls_slug"
-    t.string "starship42_slug"
+    t.string "data_slug"
     t.string "rsi_store_image"
     t.integer "model_paints_count", default: 0
     t.integer "images_count", default: 0

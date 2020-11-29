@@ -22,7 +22,6 @@
 #  rsi_store_image         :string
 #  rsi_store_url           :string
 #  slug                    :string
-#  starship42_slug         :string
 #  store_image             :string
 #  store_images_updated_at :datetime
 #  store_url               :string

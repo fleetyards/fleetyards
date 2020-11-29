@@ -39,16 +39,11 @@
           = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
           %small
             = form_errors model, :base_model_id
-        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :erkuls_slug)}
-          = form.label :erkuls_slug
-          = form.text_field :erkuls_slug, class: 'form-control'
+        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :data_slug)}
+          = form.label :data_slug
+          = form.text_field :data_slug, class: 'form-control'
           %small
-            = form_errors model, :erkuls_slug
-        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :starship42_slug)}
-          = form.label :starship42_slug
-          = form.text_field :starship42_slug, class: 'form-control'
-          %small
-            = form_errors model, :starship42_slug
+            = form_errors model, :data_slug
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
