@@ -11,6 +11,8 @@
             - if can? :reload, :models
               %button.reload-models.btn.btn-dark.ladda-button{data: {style: "expand-right", action: reload_admin_models_path, workerPath: admin_check_worker_state_path('ModelsWorker')}, class: ('loading' if @worker_running), onclick: "App.Models.reload($(this)); return false;"}
                 = I18n.t(:"actions.model.reload")
+              %button.reload-models.btn.btn-dark.ladda-button{data: {style: "expand-right", action: reload_data_admin_models_path, workerPath: admin_check_worker_state_path('ScDataShipsWorker')}, class: ('loading' if @worker_running), onclick: "App.Models.reload($(this)); return false;"}
+                = I18n.t(:"actions.model.reload_data")
     .row
       .col-12.col-lg-2
         = render 'quick_stats'

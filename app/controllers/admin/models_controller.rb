@@ -83,11 +83,28 @@ module Admin
       end
     end
 
+    def reload_data
+      authorize! :reload, :admin_models
+      respond_to do |format|
+        format.js do
+          ScDataShipsWorker.perform_async
+          render json: true
+        end
+        format.html do
+          redirect_to root_path
+        end
+      end
+    end
+
     def reload_one
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          ModelWorker.perform_async(model.rsi_id)
+          if model.data_slug.present?
+            ScDataShipWorker.perform_async(model.id)
+          else
+            ModelWorker.perform_async(model.rsi_id)
+          end
           render json: true
         end
         format.html do

@@ -9,6 +9,7 @@
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)
+#  cargo_holds              :string
 #  classification           :string(255)
 #  cruise_speed             :decimal(15, 2)
 #  data_slug                :string
@@ -21,6 +22,7 @@
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
+#  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
 #  last_pledge_price        :decimal(15, 2)
 #  last_updated_at          :datetime
@@ -40,6 +42,7 @@
 #  production_note          :string(255)
 #  production_status        :string(255)
 #  quantum_fuel_tank_size   :decimal(15, 2)
+#  quantum_fuel_tanks       :string
 #  roll_max                 :decimal(15, 2)
 #  rsi_afterburner_speed    :decimal(15, 2)
 #  rsi_beam                 :decimal(15, 2)   default(0.0), not null

@@ -6,6 +6,7 @@
 #
 #  id              :uuid             not null, primary key
 #  component_class :string
+#  data_slug       :string
 #  description     :text
 #  grade           :string
 #  item_class      :integer

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_085516) do
+ActiveRecord::Schema.define(version: 2020_11_29_115822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2020_11_29_085516) do
     t.string "grade"
     t.integer "item_class"
     t.integer "tracking_signal"
+    t.string "data_slug"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -463,6 +464,9 @@ ActiveRecord::Schema.define(version: 2020_11_29_085516) do
     t.decimal "speed", precision: 15, scale: 2
     t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
     t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
+    t.string "cargo_holds"
+    t.string "hydrogen_fuel_tanks"
+    t.string "quantum_fuel_tanks"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
