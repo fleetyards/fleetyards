@@ -1,3 +1,72 @@
+.hardpoint-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  margin-bottom: 5px;
+
+  .hardpoint-item-quantity {
+    min-width: 40px;
+    padding-right: 10px;
+    text-align: right;
+  }
+
+  .hardpoint-item-size {
+    padding-right: 10px;
+    color: $gray-light;
+    white-space: nowrap;
+  }
+
+  .hardpoint-item-component-manufacturer {
+    color: $gray-light;
+    font-size: 80%;
+  }
+
+  .hardpoint-item-inner {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: $panel-border-width solid $panel-inner-border;
+    border-radius: 10px;
+
+    &::before {
+      position: absolute;
+      top: -$panel-border-width;
+      right: 14px;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: '';
+    }
+
+    &::after {
+      position: absolute;
+      right: 14px;
+      bottom: -$panel-border-width;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: '';
+    }
+
+    &.has-component {
+      cursor: pointer;
+      // transition: border .5s ease;
+
+      // &:hover {
+      //   border: 1px solid $gray-lighter;
+      // }
+    }
+  }
+
+  .hardpoint-item-component {
+    flex-grow: 1;
+  }
+}
+
 .hardpoint-icon {
   position: relative;
   display: inline-block;

@@ -34,4 +34,10 @@ class Hardpoint < ApplicationRecord
   def self.undeleted
     where(deleted_at: nil)
   end
+
+  def category_label
+    return if category.blank?
+
+    I18n.t("activerecord.attributes.hardpoint.category.#{category}")
+  end
 end

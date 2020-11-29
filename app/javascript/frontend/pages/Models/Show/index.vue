@@ -380,7 +380,7 @@ export default class ModelDetail extends Vue {
       return null
     }
 
-    return `https://www.erkul.games/calculator;ship=${this.model.erkulsSlug}`
+    return `https://www.erkul.games/ship/${this.model.erkulsSlug}`
   }
 
   get metaTitle() {

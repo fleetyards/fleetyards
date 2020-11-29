@@ -19,11 +19,10 @@
               />
               {{ $t(`labels.hardpoint.types.${type}`) }}
             </div>
-            <HardpointIcon
+            <HardpointItem
               v-for="hardpoint in items"
               :key="hardpoint.id"
               :hardpoint="hardpoint"
-              @click.native="openComponentModal(hardpoint)"
             />
           </div>
         </div>
@@ -37,11 +36,11 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { groupBy } from 'frontend/lib/Helpers'
 import Panel from 'frontend/core/components/Panel'
-import HardpointIcon from '../Icon'
+import HardpointItem from '../Item'
 
 @Component<HardpointCategory>({
   components: {
-    HardpointIcon,
+    HardpointItem,
     Panel,
   },
 })
@@ -94,5 +93,5 @@ export default class HardpointCategory extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import './styles/index';
+@import './index';
 </style>

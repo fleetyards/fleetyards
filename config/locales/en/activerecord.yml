@@ -20,6 +20,13 @@ en:
         hidden: hidden?
         active: active?
         ground: Ground Vehicle?
+      hardpoint:
+        category:
+          R: Retro Thruster
+          M: Main Thruster
+          V: VTOL Thruster
+          F: Fixed Maneuvering Thruster
+          G: Gimbal Maneuvering Thruster
       setting:
         base:
           registration: Registration active?

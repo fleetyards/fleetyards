@@ -8,6 +8,7 @@ json.quantity hardpoint.quantity
 json.mounts hardpoint.mounts
 json.details hardpoint.details
 json.category hardpoint.category
+json.category_label hardpoint.category_label
 json.default_empty hardpoint.default_empty
 json.component do
   json.partial! 'api/v1/components/minimal', component: hardpoint.component if hardpoint.component.present?
