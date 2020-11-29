@@ -19,11 +19,13 @@
               />
               {{ $t(`labels.hardpoint.types.${type}`) }}
             </div>
-            <HardpointItem
-              v-for="hardpoint in items"
-              :key="hardpoint.id"
-              :hardpoint="hardpoint"
-            />
+            <div class="hardpoint-items">
+              <HardpointItem
+                v-for="hardpoint in items"
+                :key="hardpoint.id"
+                :hardpoint="hardpoint"
+              />
+            </div>
           </div>
         </div>
       </Panel>
@@ -91,7 +93,3 @@ export default class HardpointCategory extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import './index';
-</style>

@@ -28,7 +28,7 @@
           <div
             v-for="model in models"
             :key="`${model.slug}-${category}`"
-            class="col-6 text-center compare-row-item"
+            class="col-6 compare-row-item"
           >
             <div class="well">
               <HardpointCategory

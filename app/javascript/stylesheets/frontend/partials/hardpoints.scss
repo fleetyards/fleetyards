@@ -8,66 +8,105 @@ h2.hardpoint-category-label {
   padding: 20px 20px 10px;
 }
 
-.hardpoint-legend {
-  h3 {
+.hardpoint-type {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba($gray-darker, .7);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .hardpoint-type-label {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    padding-right: 20px;
     color: darken($text-color, 20%);
-    font-family: 'Orbitron', tahoma, sans-serif;
-  }
 
-  .hardpoint-labels {
-    color: darken($text-color, 20%);
-  }
-
-  .hardpoint-quantity {
-    margin-top: 4px;
-  }
-
-  .hardpoint-size {
-    margin-top: 8px;
-  }
-
-  .hardpoint-legend-additions {
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    .hardpoint-legend-addition {
-      position: relative;
-      display: inline-block;
-
-      .hardpoint-labels {
-        padding-left: 25px;
-      }
-
-      .hardpoint-icon {
-        position: absolute;
-        top: 2px;
-        left: 0;
-
-        &.hardpoint-icon-legend-mounts {
-          left: -30px;
-        }
-      }
-
-      &:not(:first-child) {
-        margin-left: 10px;
-      }
+    .hardpoint-type-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
     }
+  }
+
+  .hardpoint-items {
+    flex-grow: 1;
+    min-width: 300px;
   }
 }
 
-@media (max-width: $desktop-breakpoint) {
-  .hardpoint-legend {
-    .test-hardpoint-empty {
-      margin-top: 10px;
+.hardpoint-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  margin-bottom: 5px;
+
+  .hardpoint-item-quantity {
+    min-width: 45px;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .hardpoint-item-size {
+    padding-right: 10px;
+    color: $gray-light;
+    white-space: nowrap;
+  }
+
+  .hardpoint-item-component-manufacturer {
+    color: $gray-light;
+    font-size: 80%;
+  }
+
+  .hardpoint-item-inner {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: $panel-border-width solid $panel-inner-border;
+    border-radius: 10px;
+
+    &::before {
+      position: absolute;
+      top: -$panel-border-width;
+      right: 14px;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: '';
     }
 
-    .hardpoint-legend-additions {
-      .hardpoint-legend-addition {
-        &:not(:first-child) {
-          margin-top: 5px;
-          margin-left: 0;
-        }
-      }
+    &::after {
+      position: absolute;
+      right: 14px;
+      bottom: -$panel-border-width;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: '';
     }
+
+    &.has-component {
+      cursor: pointer;
+      // transition: border .5s ease;
+
+      // &:hover {
+      //   border: 1px solid $gray-lighter;
+      // }
+    }
+  }
+
+  .hardpoint-item-component {
+    flex-grow: 1;
   }
 }
