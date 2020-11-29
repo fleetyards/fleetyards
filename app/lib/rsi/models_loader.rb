@@ -74,9 +74,9 @@ module Rsi
         model.on_sale = buying_options.on_sale
       end
 
-      unless paint?(data)
-        model.manufacturer = create_or_update_manufacturer(data['manufacturer'])
+      model.manufacturer = create_or_update_manufacturer(data['manufacturer']) unless paint?(data)
 
+      if !paint?(data) && (model.data_slug.blank? || model.hardpoints.blank?)
         model.hardpoints.where(rsi_key: nil).destroy_all
 
         hardpoint_ids = []
