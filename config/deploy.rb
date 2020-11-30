@@ -149,7 +149,6 @@ namespace :db do
   task :sync_to_local do
     invoke :'db:backup'
     invoke :'db:download'
-    invoke :'db:local_import'
   end
 
   task :migration_status do
