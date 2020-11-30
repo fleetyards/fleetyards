@@ -87,7 +87,13 @@ pad = 1
 end
 
 hadley = Station.find_or_initialize_by(name: 'HDMS-Hadley')
-hadley.update!(celestial_object: hurston, station_type: :outpost, location: 'Hurston', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hadley.jpg').open, hidden: false)
+hadley.update!(
+  celestial_object: hurston,
+  station_type: :outpost,
+  location: 'Hurston',
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hadley.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hadley)
 admin_office.update!(
   shop_type: :admin,
@@ -122,7 +128,13 @@ pad = 1
 end
 
 oparei = Station.find_or_initialize_by(name: 'HDMS-Oparei')
-oparei.update!(celestial_object: hurston, station_type: :outpost, location: 'Hurston', store_image: Rails.root.join('db/seeds/images/stanton/hurston/oparei.jpg').open, hidden: false)
+oparei.update!(
+  celestial_object: hurston,
+  station_type: :outpost,
+  location: 'Hurston',
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/oparei.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: oparei)
 admin_office.update!(
   shop_type: :admin,
@@ -157,7 +169,13 @@ pad = 1
 end
 
 pinewood = Station.find_or_initialize_by(name: 'HDMS-Pinewood')
-pinewood.update!(celestial_object: hurston, station_type: :outpost, location: 'Hurston', store_image: Rails.root.join('db/seeds/images/stanton/hurston/pinewood.jpg').open, hidden: false)
+pinewood.update!(
+  celestial_object: hurston,
+  station_type: :outpost,
+  location: 'Hurston',
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/pinewood.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: pinewood)
 admin_office.update!(
   shop_type: :admin,
@@ -192,7 +210,13 @@ pad = 1
 end
 
 thedus = Station.find_or_initialize_by(name: 'HDMS-Thedus')
-thedus.update!(celestial_object: hurston, station_type: :outpost, location: 'Hurston', store_image: Rails.root.join('db/seeds/images/stanton/hurston/thedus.jpg').open, hidden: false)
+thedus.update!(
+  celestial_object: hurston,
+  station_type: :outpost,
+  location: 'Hurston',
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/thedus.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: thedus)
 admin_office.update!(
   shop_type: :admin,
@@ -229,7 +253,8 @@ end
 reclamation = Station.find_or_initialize_by(name: 'Reclamation and Disposal Orinth')
 reclamation.update!(
   celestial_object: hurston,
-  station_type: 'salvage-outpost',
+  station_type: :outpost,
+  classification: :salvaging,
   location: 'Hurston',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/reclamation.jpg').open,
   hidden: false

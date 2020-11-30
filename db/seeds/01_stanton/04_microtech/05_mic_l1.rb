@@ -7,7 +7,8 @@ hidden = false
 mic_l1 = Station.find_or_initialize_by(name: 'MIC-L1 Shallow Frontier Station')
 mic_l1.update!(
   celestial_object: microtech,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'MIC-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/mic-l1.jpg').open,
   hidden: hidden

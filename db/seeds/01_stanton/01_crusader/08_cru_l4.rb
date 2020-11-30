@@ -7,7 +7,8 @@ hidden = false
 cru_l4 = Station.find_or_initialize_by(name: 'CRU-L4 Shallow Fields Stations')
 cru_l4.update!(
   celestial_object: crusader,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'CRU-L4',
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l4/cru-l4-a.jpg').open,
   hidden: hidden

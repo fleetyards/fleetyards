@@ -54,6 +54,7 @@ export default {
   // },
   station: {
     type: 'Typ',
+    classification: 'Klassifizierung',
     location: 'Ort',
   },
   model: {

@@ -41,6 +41,14 @@ module Api
         render 'api/v1/shared/filters'
       end
 
+      def classifications
+        authorize! :show, :api_stations
+
+        @filters = Station.classification_filters
+
+        render 'api/v1/shared/filters'
+      end
+
       def images
         authorize! :show, :api_models
         station = Station.visible.find_by!(slug: params[:slug])

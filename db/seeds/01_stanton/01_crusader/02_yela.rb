@@ -6,7 +6,8 @@ yela.update!(store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela
 grimhex = Station.find_or_initialize_by(name: 'GrimHEX')
 grimhex.update!(
   celestial_object: yela,
-  station_type: 'asteroid-station',
+  station_type: :asteroid_station,
+  classification: :trading,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/grimhex.jpg').open,
   hidden: false
@@ -82,7 +83,14 @@ old_38.update!(
 )
 
 deakins_research_outpost = Station.find_or_initialize_by(name: 'Deakins Research Outpost')
-deakins_research_outpost.update!(celestial_object: yela, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/deakins_research_outpost.jpg').open, hidden: false)
+deakins_research_outpost.update!(
+  celestial_object: yela,
+  station_type: :outpost,
+  classification: :science,
+  location: nil,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/deakins_research_outpost.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: deakins_research_outpost)
 admin_office.update!(
   shop_type: :admin,
@@ -113,7 +121,14 @@ end
 end
 
 benson_mining_outpost = Station.find_or_initialize_by(name: 'Benson Mining Outpost')
-benson_mining_outpost.update!(celestial_object: yela, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/benson_mining.jpg').open, hidden: false)
+benson_mining_outpost.update!(
+  celestial_object: yela,
+  station_type: :outpost,
+  classification: :mining,
+  location: nil,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/benson_mining.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: benson_mining_outpost)
 admin_office.update!(
   shop_type: :admin,
@@ -124,7 +139,14 @@ admin_office.update!(
 )
 
 arc_corp_mining_area_157 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 157')
-arc_corp_mining_area_157.update!(celestial_object: yela, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/arccorp.jpg').open, hidden: false)
+arc_corp_mining_area_157.update!(
+  celestial_object: yela,
+  station_type: :outpost,
+  classification: :mining,
+  location: nil,
+  store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/arccorp.jpg').open,
+  hidden: false
+)
 admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: arc_corp_mining_area_157)
 admin_office.update!(
   shop_type: :admin,
@@ -155,7 +177,7 @@ end
 end
 
 nakamura_valley_aid_shelter = Station.find_or_initialize_by(name: 'Nakamura Valley Aid Shelter')
-nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :outpost, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nakamura_valley.jpg').open, hidden: false)
+nakamura_valley_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nakamura_valley.jpg').open, hidden: false)
 
 kosso_basin_aid_shelter = Station.find_or_initialize_by(name: 'Kosso Basin Aid Shelter')
 kosso_basin_aid_shelter.update!(celestial_object: yela, station_type: :aid_shelter, location: nil, store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/kosso_basin.jpg').open, hidden: false)
@@ -169,7 +191,8 @@ talarine_divide_aid_shelter.update!(celestial_object: yela, station_type: :aid_s
 jump_town = Station.find_or_initialize_by(name: 'Jump Town')
 jump_town.update!(
   celestial_object: yela,
-  station_type: :drug_lab,
+  station_type: :aid_shelter,
+  classification: :drug_lab,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/jump_town.jpg').open,
   hidden: true
@@ -185,7 +208,8 @@ admin_office.update!(
 nt_999 = Station.find_or_initialize_by(name: 'NT-999-XX')
 nt_999.update!(
   celestial_object: yela,
-  station_type: :drug_lab,
+  station_type: :aid_shelter,
+  classification: :drug_lab,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/yela/nt_999.jpg').open,
   hidden: true

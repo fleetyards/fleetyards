@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_115822) do
+ActiveRecord::Schema.define(version: 2020_11_30_111132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -545,6 +545,7 @@ ActiveRecord::Schema.define(version: 2020_11_29_115822) do
     t.boolean "selling", default: false
     t.boolean "refinary_terminal"
     t.text "description"
+    t.string "location"
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
@@ -600,6 +601,8 @@ ActiveRecord::Schema.define(version: 2020_11_29_115822) do
     t.integer "images_count", default: 0
     t.boolean "cargo_hub"
     t.boolean "refinary"
+    t.integer "classification"
+    t.boolean "habitable", default: true
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"

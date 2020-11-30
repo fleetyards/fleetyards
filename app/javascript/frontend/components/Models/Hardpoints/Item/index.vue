@@ -9,7 +9,7 @@
       >
         <div class="hardpoint-item-quantity">
           {{ hardpoint.quantity }}
-          <span class="text-darken">x</span>
+          <span class="text-muted">x</span>
         </div>
         <div
           class="hardpoint-item-inner"
@@ -30,7 +30,7 @@
     <div v-else v-tooltip.left="hardpoint.details" class="hardpoint-item">
       <div class="hardpoint-item-quantity">
         {{ hardpoint.mounts }}
-        <span class="text-darken">x</span>
+        <span class="text-muted">x</span>
       </div>
       <div
         class="hardpoint-item-inner"

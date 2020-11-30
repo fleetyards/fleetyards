@@ -206,24 +206,25 @@ en:
           asteriod: 'on asteroid near'
           orbit: 'in orbit around'
         station_types:
-          spaceport: Spaceport
-          station: Station
-          hub: Hub
-          rest_stop: Rest Stop
-          cargo-station: Cargo Station
-          mining-station: Mining Station
-          mining-hub: Mining Hub
-          asteroid-station: Asteriod Station
-          refinery: Refinery
+          landing_zone: Landing Zone
+          station: station
+          asteroid_station: Asteriod Station
           district: District
           outpost: Outpost
           aid_shelter: Aid Shelter
-          gate: Gate
+        classifications:
+          rest_stop: Rest Stop
+          mining: Mining
+          trading: Trading
+          salvaging: Salvaging
+          farming: Farming
+          science: Science
+          security: Security
           drug_lab: Drug lab
-          salvage-outpost: Salvage Outpost
           poi: Point of Interest
           city: City
           town: Town
+          settlement: Settlement
       commodity:
         commodity_types:
           gas: Gas

@@ -29,9 +29,32 @@ module ScData
         mass: ((ship_data.dig('Vehicle', 'Parts') || []).first || {})['mass']&.to_f,
         cargo_holds: extract_cargo_holds(components_data),
         hydrogen_fuel_tanks: extract_hydrogen_fuel_tanks(components_data),
-        quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data)
+        quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data),
+        weapons: extract_weapons(components_data),
+        turrets: extract_turrets(components_data),
+        missiles: extract_missiles(components_data),
       }
     end
+
+    # turrets hardpoint_(.*)_turret
+    # missiles hardpoint_missilerack
+    # fuel_intakes hardpoint_fuel_intake
+    # fuel_tanks hardpoint_fuel_tank
+    # quantum_fuel_tanks hardpoint_quantum_fuel_tank
+    # quantum_drive hardpoint_quantum_drive
+    # jump_modules
+    # computers
+    # radar hardpoint_radar_scanning
+    # main_thrusters hardpoint_thruster_main
+    # retro_thruster hardpoint_thruster_retro
+    # vtol_thruster hardpoint_thruster_vtol
+    # mav_thruster hardpoint_thruster_mav
+    # coolers hardpoint_cooler
+    # power_plants hardpoint_power_plant
+    # shields hardpoint_shield_generator
+    # countermeasures hardpoint_countermeasures
+    # armor hardpoint_armor
+
 
     private def extract_cargo_holds(components)
       components.select do |component_ref|
@@ -43,7 +66,8 @@ module ScData
 
         {
           name: component_ref['itemPortName'],
-          scu: (cargo_dimensions.values.reject(&:zero?).inject(:*) / CUBIC_METER_TO_SCU_FACTOR).round
+          scu: (cargo_dimensions.values.reject(&:zero?).inject(:*) / CUBIC_METER_TO_SCU_FACTOR).round,
+          dimensions: cargo_dimensions
         }
       end
     end
@@ -57,6 +81,7 @@ module ScData
         {
           name: component_ref['itemPortName'],
           capacity: item_data.dig('Raw', 'Entity', 'Components', 'SCItemFuelTankParams', 'capacity')
+          size:
         }
       end
     end
@@ -70,6 +95,7 @@ module ScData
         {
           name: component_ref['itemPortName'],
           capacity: item_data.dig('Raw', 'Entity', 'Components', 'SCItemFuelTankParams', 'capacity')
+          size:
         }
       end
     end

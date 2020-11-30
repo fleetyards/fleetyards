@@ -7,7 +7,8 @@ hidden = false
 porttressler = Station.find_or_initialize_by(name: 'Port Tressler')
 porttressler.update!(
   celestial_object: microtech,
-  station_type: :hub,
+  station_type: :station,
+  classification: :trading,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
   hidden: false,
