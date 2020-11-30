@@ -77,7 +77,7 @@ admin.update!(
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/l19/admin.jpg').open,
   buying: true,
   selling: true,
-  hidden: true
+  hidden: false
 )
 
 tammany_and_sons = Shop.find_or_initialize_by(name: 'Tammany and Sons', station: lorville)
