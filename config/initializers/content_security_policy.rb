@@ -11,7 +11,6 @@ require 'uri'
 Rails.application.config.content_security_policy do |policy|
   api_endpoint = "https://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
   cable_endpoint = "wss://#{URI.parse(Rails.application.secrets.cable_endpoint).host}"
-  aws_s3_endpoint = "https://#{Rails.application.secrets.aws_s3_bucket}.s3.#{Rails.application.secrets.aws_s3_region}.amazonaws.com" if Rails.application.secrets.aws_s3_bucket.present?
 
   if Rails.env.development?
     api_endpoint = "http://#{URI.parse(Rails.application.secrets.api_endpoint).host}"
@@ -42,8 +41,8 @@ Rails.application.config.content_security_policy do |policy|
 
   img_src = [
     :self, :data, :blob, Rails.application.secrets.frontend_endpoint,
-    Rails.application.secrets.aws_cdn_endpoint, Rails.application.secrets.rsi_endpoint,
-    aws_s3_endpoint, 'https://img.youtube.com',
+    Rails.application.secrets.carrierwave_cloud_cdn_endpoint, Rails.application.secrets.rsi_endpoint,
+    'https://img.youtube.com',
   ].compact
 
   font_src = [
