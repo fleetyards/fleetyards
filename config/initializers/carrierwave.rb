@@ -68,6 +68,6 @@ CarrierWave.configure do |config|
     config.fog_directory = Rails.application.secrets.carrierwave_cloud_space
     config.fog_public = true
 
-    config.asset_host = Rails.application.secrets.frontend_endpoint
+    config.asset_host = (Rails.application.secrets.carrierwave_cloud_cdn_endpoint || Rails.application.secrets.frontend_endpoint)
   end
 end
