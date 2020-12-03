@@ -74,7 +74,7 @@ module Api
           'destination' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar',
-            'type' => 'hub',
+            'type' => 'station',
             'locationLabel' => 'in orbit around Crusader',
             'shop' => 'Admin Office',
             'shopSlug' => 'admin-office',

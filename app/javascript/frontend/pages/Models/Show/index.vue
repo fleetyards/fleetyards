@@ -376,11 +376,15 @@ export default class ModelDetail extends Vue {
   }
 
   get erkulUrl(): string | null {
-    if (!this.model || this.model.productionStatus !== 'flight-ready') {
+    if (
+      !this.model ||
+      this.model.productionStatus !== 'flight-ready' ||
+      !this.model.scIdentifier
+    ) {
       return null
     }
 
-    return `https://www.erkul.games/ship/${this.model.dataSlug}`
+    return `https://www.erkul.games/ship/${this.model.scIdentifier}`
   }
 
   get metaTitle() {

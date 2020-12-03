@@ -132,10 +132,9 @@ class Station < ApplicationRecord
   end
 
   def location_prefix
-    case station_type
-    when :asteroid_station
+    if asteroid_station?
       I18n.t('activerecord.attributes.station.location_prefix.asteriod')
-    when :station
+    elsif station?
       I18n.t('activerecord.attributes.station.location_prefix.orbit')
     else
       I18n.t('activerecord.attributes.station.location_prefix.default')

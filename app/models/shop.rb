@@ -108,7 +108,7 @@ class Shop < ApplicationRecord
       station.name,
       location,
       station.location_label
-    ].join(' ')
+    ].compact.join(' ')
   end
 
   private def update_shop_commodities

@@ -8,8 +8,8 @@ module ScData
       self.base_url = "#{base_url}/items"
     end
 
-    def load(data_slug)
-      item_response = fetch_remote("#{data_slug.downcase}.json")
+    def load(sc_identifier)
+      item_response = fetch_remote("#{sc_identifier.downcase}.json")
 
       return unless item_response.success?
 

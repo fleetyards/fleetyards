@@ -12,7 +12,6 @@
 #  cargo_holds              :string
 #  classification           :string(255)
 #  cruise_speed             :decimal(15, 2)
-#  data_slug                :string
 #  description              :text
 #  dock_size                :integer
 #  fleetchart_image         :string
@@ -67,6 +66,7 @@
 #  rsi_yaw_max              :decimal(15, 2)
 #  rsi_yaxis_acceleration   :decimal(15, 2)
 #  rsi_zaxis_acceleration   :decimal(15, 2)
+#  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  size                     :string
 #  slug                     :string(255)

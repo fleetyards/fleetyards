@@ -7,10 +7,6 @@ class ScDataShipWorker
   def perform(model_id)
     loader = ::ScData::ShipsLoader.new
 
-    model = Model.find(model_id)
-
-    sc_data = loader.load(model.data_slug)
-
-    model.update(sc_data)
+    loader.load(Model.find(model_id))
   end
 end

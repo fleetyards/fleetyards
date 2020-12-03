@@ -31,7 +31,7 @@ module Frontend
     end
 
     def model
-      @model = model_record.includes(hardpoints: [:component]).first
+      @model = model_record.includes(model_hardpoints: [:component]).first
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description

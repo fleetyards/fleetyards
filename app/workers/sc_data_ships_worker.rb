@@ -9,9 +9,8 @@ class ScDataShipsWorker
   def perform
     loader = ::ScData::ShipsLoader.new
 
-    Model.where.not(data_slug: nil).find_each do |model|
-      sc_data = loader.load(model.data_slug)
-      model.update(sc_data)
+    Model.where.not(sc_identifier: nil).find_each do |model|
+      loader.load(model)
     end
   end
 end

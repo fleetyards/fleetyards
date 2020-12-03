@@ -14,7 +14,6 @@
 #  cargo_holds              :string
 #  classification           :string(255)
 #  cruise_speed             :decimal(15, 2)
-#  data_slug                :string
 #  description              :text
 #  dock_size                :integer
 #  fleetchart_image         :string
@@ -69,6 +68,7 @@
 #  rsi_yaw_max              :decimal(15, 2)
 #  rsi_yaxis_acceleration   :decimal(15, 2)
 #  rsi_zaxis_acceleration   :decimal(15, 2)
+#  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  size                     :string
 #  slug                     :string(255)
@@ -127,7 +127,7 @@ class Model < ApplicationRecord
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
-  has_many :hardpoints,
+  has_many :model_hardpoints,
            dependent: :destroy,
            autosave: true
   has_many :vehicles, dependent: :destroy
@@ -182,7 +182,6 @@ class Model < ApplicationRecord
   mount_uploader :brochure, BrochureUploader
 
   before_save :update_slugs
-  before_save :update_sc_data
 
   before_create :set_last_updated_at
 
@@ -259,12 +258,12 @@ class Model < ApplicationRecord
     includes(:docks).where.not(docks: { model_id: nil })
   end
 
-  def update_sc_data
-    self.cargo = cargo_holds.sum { |item| item[:scu] } if cargo_holds.present? && cargo_holds_change_to_be_saved
+  def update_from_hardpoints
+    # self.cargo = cargo_holds.sum { |item| item[:scu] } if cargo_holds.present? && cargo_holds_change_to_be_saved
 
-    self.quantum_fuel_tank_size = quantum_fuel_tanks.sum { |item| item[:capacity] } if quantum_fuel_tanks.present? && quantum_fuel_tanks_change_to_be_saved
+    # self.quantum_fuel_tank_size = quantum_fuel_tanks.sum { |item| item[:capacity] } if quantum_fuel_tanks.present? && quantum_fuel_tanks_change_to_be_saved
 
-    self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum { |item| item[:capacity] } if hydrogen_fuel_tanks.present? && hydrogen_fuel_tanks_change_to_be_saved
+    # self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum { |item| item[:capacity] } if hydrogen_fuel_tanks.present? && hydrogen_fuel_tanks_change_to_be_saved
   end
 
   def rsi_store_url

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_111132) do
+ActiveRecord::Schema.define(version: 2020_12_01_222528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_111132) do
     t.string "grade"
     t.integer "item_class"
     t.integer "tracking_signal"
-    t.string "data_slug"
+    t.string "sc_identifier"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_111132) do
     t.boolean "default_empty", default: false
     t.string "rsi_key"
     t.datetime "deleted_at"
+    t.string "key"
     t.index ["component_id"], name: "index_hardpoints_on_component_id"
     t.index ["model_id"], name: "index_hardpoints_on_model_id"
   end
@@ -320,6 +321,24 @@ ActiveRecord::Schema.define(version: 2020_11_30_111132) do
     t.integer "max_crew"
     t.decimal "price", precision: 15, scale: 2
     t.index ["model_id"], name: "index_model_additions_on_model_id"
+  end
+
+  create_table "model_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "size"
+    t.integer "source"
+    t.integer "quantity"
+    t.string "key"
+    t.integer "hardpoint_type"
+    t.integer "category"
+    t.integer "group"
+    t.uuid "model_id"
+    t.uuid "component_id"
+    t.datetime "deleted_at"
+    t.string "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["component_id"], name: "index_model_hardpoints_on_component_id"
+    t.index ["model_id"], name: "index_model_hardpoints_on_model_id"
   end
 
   create_table "model_loaners", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -453,7 +472,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_111132) do
     t.string "rsi_classification"
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.string "data_slug"
+    t.string "sc_identifier"
     t.string "rsi_store_image"
     t.integer "model_paints_count", default: 0
     t.integer "images_count", default: 0

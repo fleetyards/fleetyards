@@ -1,35 +1,52 @@
 <template>
-  <div v-if="hardpoints.length" class="row">
-    <div class="col-12">
-      <h2 v-if="!withoutTitle" class="hardpoint-category-label">
-        {{ $t(`labels.hardpoint.categories.${category.toLowerCase()}`) }}
-      </h2>
-      <Panel>
-        <div class="hardpoint-category">
-          <div
-            v-for="(items, type) in groupByType(hardpoints)"
-            :key="type"
-            class="hardpoint-type"
-          >
-            <div class="hardpoint-type-label">
-              <img
-                :src="icons[type]"
-                class="hardpoint-type-icon"
-                :alt="`icon-${type}`"
-              />
-              {{ $t(`labels.hardpoint.types.${type}`) }}
-            </div>
-            <div class="hardpoint-items">
-              <HardpointItem
-                v-for="hardpoint in items"
-                :key="hardpoint.id"
-                :hardpoint="hardpoint"
-              />
+  <div v-if="hardpoints.length" class="hardpoint-group">
+    <h2 v-if="!withoutTitle" class="hardpoint-group-label">
+      {{ $t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
+    </h2>
+    <Panel>
+      <div class="hardpoint-group-inner">
+        <div
+          v-for="(items, type) in groupByType(hardpoints)"
+          :key="type"
+          class="hardpoint-type"
+        >
+          <div class="hardpoint-type-label">
+            <img
+              :src="icons[type]"
+              class="hardpoint-type-icon"
+              :alt="`icon-${type}`"
+            />
+            {{ $t(`labels.hardpoint.types.${type}`) }}
+          </div>
+          <div class="hardpoint-items">
+            <div
+              v-for="(groupedItems, group) in groupBySize(items)"
+              :key="`${type}-${group}`"
+              class="hardpoint-item"
+            >
+              <div class="hardpoint-item-quantity">
+                {{ groupedItems.length }}
+                <span class="text-muted">x</span>
+              </div>
+              <div class="hardpoint-item-slots">
+                <template v-if="expanded(type)">
+                  <HardpointItem
+                    v-for="hardpoint in sortByCategory(groupedItems)"
+                    :key="hardpoint.id"
+                    :hardpoint="hardpoint"
+                  />
+                </template>
+                <HardpointItem
+                  v-else
+                  :key="groupedItems[0].id"
+                  :hardpoint="groupedItems[0]"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </Panel>
-    </div>
+      </div>
+    </Panel>
   </div>
 </template>
 
@@ -40,14 +57,14 @@ import { groupBy, sortBy } from 'frontend/lib/Helpers'
 import Panel from 'frontend/core/components/Panel'
 import HardpointItem from '../Item'
 
-@Component<HardpointCategory>({
+@Component<HardpointGroup>({
   components: {
     HardpointItem,
     Panel,
   },
 })
-export default class HardpointCategory extends Vue {
-  @Prop({ required: true }) category: HardpointCategory
+export default class HardpointGroup extends Vue {
+  @Prop({ required: true }) group: HardpointGroup
 
   @Prop({ required: true }) hardpoints: Hardpoint[]
 
@@ -74,8 +91,20 @@ export default class HardpointCategory extends Vue {
     /* eslint-enable global-require */
   }
 
+  expanded(type) {
+    return ['main_thrusters', 'weapons', 'turrets', 'missiles'].includes(type)
+  }
+
   groupByType(hardpoints) {
     return groupBy(sortBy(hardpoints, 'type'), 'type')
+  }
+
+  groupBySize(hardpoints) {
+    return groupBy(sortBy(hardpoints, 'size'), 'size')
+  }
+
+  sortByCategory(hardponts) {
+    return sortBy(hardponts, 'category')
   }
 
   openComponentModal(hardpoint) {

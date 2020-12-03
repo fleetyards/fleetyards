@@ -20,13 +20,13 @@ en:
         hidden: hidden?
         active: active?
         ground: Ground Vehicle?
-      hardpoint:
-        category:
-          R: Retro Thruster
-          M: Main Thruster
-          V: VTOL Thruster
-          F: Fixed Maneuvering Thruster
-          G: Gimbal Maneuvering Thruster
+      model_hardpoint:
+        categories:
+          main: Main Thruster
+          retro: Retro Thruster
+          vtol: VTOL Thruster
+          fixed: Fixed Maneuvering Thruster
+          gimbal: Gimbal Maneuvering Thruster
       setting:
         base:
           registration: Registration active?
@@ -207,7 +207,7 @@ en:
           orbit: 'in orbit around'
         station_types:
           landing_zone: Landing Zone
-          station: station
+          station: Station
           asteroid_station: Asteriod Station
           district: District
           outpost: Outpost

@@ -36,7 +36,8 @@ module TradingData
       {
         new_prices_created: CommodityPrice.count - price_count_before,
         new_shop_commodities_created: ShopCommodity.count - shop_commodity_count_before,
-        items: data.size }
+        items: data.size
+      }
     end
 
     private def load_data

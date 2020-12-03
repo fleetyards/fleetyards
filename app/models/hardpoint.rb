@@ -11,6 +11,7 @@
 #  deleted_at      :datetime
 #  details         :string
 #  hardpoint_type  :string
+#  key             :string
 #  mounts          :integer
 #  quantity        :integer
 #  rsi_key         :string
@@ -33,6 +34,10 @@ class Hardpoint < ApplicationRecord
 
   def self.undeleted
     where(deleted_at: nil)
+  end
+
+  def self.deleted
+    where.not(deleted_at: nil)
   end
 
   def category_label

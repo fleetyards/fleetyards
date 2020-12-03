@@ -6,12 +6,12 @@
 #
 #  id              :uuid             not null, primary key
 #  component_class :string
-#  data_slug       :string
 #  description     :text
 #  grade           :string
 #  item_class      :integer
 #  item_type       :string
 #  name            :string(255)
+#  sc_identifier   :string
 #  size            :string(255)
 #  slug            :string
 #  store_image     :string
