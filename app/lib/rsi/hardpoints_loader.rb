@@ -100,29 +100,31 @@ module Rsi
     end
 
     private def size_mapping(size)
-      return size.to_i if numeric?(size)
-
-      undefined_size = 'undefined'
-
       mapping = {
-        'TBD' => undefined_size,
-        '-' => undefined_size,
-        'V' => 0,
-        'S' => 1,
-        'M' => 2,
-        'L' => 3,
-        'C' => 4
+        'TBD' => :tbd,
+        '-' => :tbd,
+        'V' => :vehicle,
+        'S' => :small,
+        'M' => :medium,
+        'L' => :large,
+        'C' => :capital,
+        '1' => :one,
+        '2' => :two,
+        '3' => :three,
+        '4' => :four,
+        '5' => :five,
+        '6' => :six,
+        '7' => :seven,
+        '8' => :eight,
+        '9' => :nine,
+        '10' => :ten,
+        '11' => :eleven,
+        '12' => :twelve,
       }
 
       raise "Size missing in Mapping \"#{size}\"" if mapping[size.strip].blank?
 
-      return nil if mapping[size.strip] == undefined_size
-
       mapping[size.strip]
-    end
-
-    private def numeric?(value)
-      value.to_s == value.to_i.to_s
     end
   end
 end

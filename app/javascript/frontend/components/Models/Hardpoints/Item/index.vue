@@ -4,7 +4,9 @@
     class="hardpoint-item-inner"
     :class="{ 'has-component': hardpoint.component }"
   >
-    <div class="hardpoint-item-size">Size {{ size }}</div>
+    <div class="hardpoint-item-size">
+      {{ $t('labels.hardpoint.size') }} {{ hardpoint.sizeLabel }}
+    </div>
     <div v-if="hardpoint.component" class="hardpoint-item-component">
       <span v-if="hardpoint.quantity > 1" class="hardpoint-item-quantity">
         {{ hardpoint.quantity }}x
@@ -32,14 +34,6 @@ export default class HardpointItem extends Vue {
 
   get uuid() {
     return this._uid
-  }
-
-  get size() {
-    if (this.hardpoint.size) {
-      return this.hardpoint.size
-    }
-
-    return 'TBD'
   }
 }
 </script>

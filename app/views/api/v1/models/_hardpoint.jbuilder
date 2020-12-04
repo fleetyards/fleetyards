@@ -3,6 +3,7 @@
 json.id hardpoint.id
 json.type hardpoint.hardpoint_type
 json.size hardpoint.size
+json.size_label hardpoint.size_label
 json.quantity hardpoint.quantity
 json.details hardpoint.details
 json.category hardpoint.category

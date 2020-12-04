@@ -119,6 +119,20 @@ namespace :es do
   end
 end
 
+namespace :trading_data do
+  task :import do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Import of Trading Data started...'
+          execute(:bundle, :exec, :thor, 'trading_data:import')
+          info 'Import finished'
+        end
+      end
+    end
+  end
+end
+
 namespace :sidekiq do
   task :clear do
     within release_path do
@@ -149,6 +163,7 @@ namespace :db do
   task :sync_to_local do
     invoke :'db:backup'
     invoke :'db:download'
+    invoke :'db:local_import'
   end
 
   task :migration_status do

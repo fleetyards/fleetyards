@@ -51,6 +51,11 @@ class ModelHardpoint < ApplicationRecord
 
   enum category: { main: 0, retro: 1, vtol: 2, fixed: 3, gimbal: 4 }
 
+  enum size: {
+    vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
+    ten: 10, eleven: 11, twelve: 12, small: 101, medium: 102, large: 103, capital: 104, tbd: 999
+  }
+
   def self.types_by_group
     types_by_group = {}
 
@@ -82,5 +87,9 @@ class ModelHardpoint < ApplicationRecord
 
   def category_label
     ModelHardpoint.human_enum_name(:category, category)
+  end
+
+  def size_label
+    ModelHardpoint.human_enum_name(:size, size)
   end
 end

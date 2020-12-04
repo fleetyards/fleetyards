@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-12 col-xl-6">
+        <div class="col-12 col-md-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="currentPassword"
