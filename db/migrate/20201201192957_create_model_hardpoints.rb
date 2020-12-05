@@ -3,7 +3,6 @@ class CreateModelHardpoints < ActiveRecord::Migration[6.0]
     create_table :model_hardpoints, id: :uuid do |t|
       t.integer :size
       t.integer :source
-      t.integer :quantity
       t.string :key
       t.integer :hardpoint_type
       t.integer :category
@@ -12,6 +11,8 @@ class CreateModelHardpoints < ActiveRecord::Migration[6.0]
       t.uuid :component_id
       t.datetime :deleted_at
       t.string :details
+      t.integer :mount
+      t.integer :item_slots
 
       t.timestamps
 

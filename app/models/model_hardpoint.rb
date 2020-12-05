@@ -10,8 +10,9 @@
 #  details        :string
 #  group          :integer
 #  hardpoint_type :integer
+#  item_slots     :integer
 #  key            :string
-#  quantity       :integer
+#  mount          :integer
 #  size           :integer
 #  source         :integer
 #  created_at     :datetime         not null

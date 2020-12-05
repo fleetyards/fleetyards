@@ -188,6 +188,8 @@ module Rsi
       updates[:rsi_name] = data['name'].strip
       updates[:name] = strip_name(data['name']) if (model_updated(paint, data) && data['name'] != paint.rsi_name) || paint.name.blank?
 
+      paint.update(updates)
+
       load_store_image(paint, data['media'][0])
 
       paint

@@ -8,12 +8,18 @@
       {{ $t('labels.hardpoint.size') }} {{ hardpoint.sizeLabel }}
     </div>
     <div v-if="hardpoint.component" class="hardpoint-item-component">
-      <span v-if="hardpoint.quantity > 1" class="hardpoint-item-quantity">
-        {{ hardpoint.quantity }}x
+      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
+        {{ hardpoint.itemSlots }}x
       </span>
       {{ hardpoint.component.name }}
+      <template v-if="hardpoint.type === 'missiles'">
+        ({{ $t('labels.hardpoint.size') }} {{ hardpoint.component.size }})
+      </template>
     </div>
     <div v-if="hardpoint.categoryLabel" class="hardpoint-item-component">
+      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
+        {{ hardpoint.itemSlots }}x
+      </span>
       {{ hardpoint.categoryLabel }}
     </div>
     <div

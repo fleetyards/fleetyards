@@ -23,7 +23,7 @@ module Rsi
 
       hardpoints_data(data, model.sc_identifier).each do |hardpoint_data|
         (1..hardpoint_data[:mounts].to_i).each do |mount|
-          hardpoint_ids << create_or_update(hardpoint_data, model.id, "#{hardpoint_data[:index]}-#{mount}").id
+          hardpoint_ids << create_or_update(hardpoint_data, model.id, mount).id
         end
       end
 
@@ -47,20 +47,23 @@ module Rsi
       end
     end
 
-    private def create_or_update(hardpoint_data, model_id, key)
+    private def create_or_update(hardpoint_data, model_id, mount)
+      size = extract_size(hardpoint_data)
+
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :ship_matrix,
         model_id: model_id,
         hardpoint_type: hardpoint_data[:type],
         group: component_class_to_group(hardpoint_data[:component_class]),
-        key: key,
-        size: size_mapping(hardpoint_data[:size])
+        key: "#{hardpoint_data[:type]}-#{hardpoint_data[:index]}",
+        mount: mount,
+        size: size
       )
 
       hardpoint.update!(
         details: hardpoint_data[:details],
+        item_slots: hardpoint_data[:quantity],
         category: category_mapping(hardpoint_data[:category]),
-        quantity: hardpoint_data[:quantity],
         deleted_at: nil
       )
 
@@ -97,6 +100,16 @@ module Rsi
       raise "Component Class missing in Group Mapping \"#{component_class}\"" if mapping[component_class].blank?
 
       mapping[component_class]
+    end
+
+    private def extract_size(hardpoint_data)
+      if hardpoint_data[:type] == 'missiles'
+        size_from_name = hardpoint_data[:name].scan(/MSD-(\d{1})\d{2}/).last&.first
+
+        return size_mapping(size_from_name || hardpoint_data[:size])
+      end
+
+      size_mapping(hardpoint_data[:size])
     end
 
     private def size_mapping(size)

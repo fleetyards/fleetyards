@@ -326,7 +326,6 @@ ActiveRecord::Schema.define(version: 2020_12_01_222528) do
   create_table "model_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "size"
     t.integer "source"
-    t.integer "quantity"
     t.string "key"
     t.integer "hardpoint_type"
     t.integer "category"
@@ -335,6 +334,8 @@ ActiveRecord::Schema.define(version: 2020_12_01_222528) do
     t.uuid "component_id"
     t.datetime "deleted_at"
     t.string "details"
+    t.integer "mount"
+    t.integer "item_slots"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["component_id"], name: "index_model_hardpoints_on_component_id"

@@ -20,25 +20,22 @@
           </div>
           <div class="hardpoint-items">
             <div
-              v-for="(groupedItems, group) in groupBySize(items)"
-              :key="`${type}-${group}`"
+              v-for="(groupedItemsByCategory, category) in groupByCategory(
+                items,
+              )"
+              :key="`${type}-${category}`"
               class="hardpoint-item"
             >
               <div class="hardpoint-item-quantity">
-                {{ groupedItems.length }}
+                {{ groupedItemsByCategory.length }}
                 <span class="text-muted">x</span>
               </div>
               <div class="hardpoint-item-slots">
-                <template v-if="expanded(type)">
-                  <HardpointItem
-                    v-for="hardpoint in sortByCategory(groupedItems)"
-                    :key="hardpoint.id"
-                    :hardpoint="hardpoint"
-                  />
-                </template>
                 <HardpointItem
-                  v-else
-                  :key="groupedItems[0].id"
+                  v-for="(groupedItems, key) in groupByKey(
+                    groupedItemsByCategory,
+                  )"
+                  :key="`${type}-${category}-${key}`"
                   :hardpoint="groupedItems[0]"
                 />
               </div>
@@ -97,6 +94,15 @@ export default class HardpointGroup extends Vue {
 
   groupByType(hardpoints) {
     return groupBy(sortBy(hardpoints, 'type'), 'type')
+  }
+
+  groupByKey(hardpoints) {
+    return groupBy(hardpoints, 'key')
+  }
+
+  groupByCategory(hardpoints) {
+    console.log(groupBy(sortBy(hardpoints, 'category'), 'category'))
+    return groupBy(sortBy(hardpoints, 'category'), 'category')
   }
 
   groupBySize(hardpoints) {
