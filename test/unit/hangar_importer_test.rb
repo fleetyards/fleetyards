@@ -206,8 +206,7 @@ class HangarImporterTest < ActiveSupport::TestCase
     it 'imports all data' do
       assert_equal(
         {
-          missing: [
-          ],
+          missing: [],
           imported: imported_ships,
           success: true
         },

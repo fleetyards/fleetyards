@@ -101,16 +101,7 @@ export default class HardpointGroup extends Vue {
   }
 
   groupByCategory(hardpoints) {
-    console.log(groupBy(sortBy(hardpoints, 'category'), 'category'))
     return groupBy(sortBy(hardpoints, 'category'), 'category')
-  }
-
-  groupBySize(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'size'), 'size')
-  }
-
-  sortByCategory(hardponts) {
-    return sortBy(hardponts, 'category')
   }
 
   openComponentModal(hardpoint) {
