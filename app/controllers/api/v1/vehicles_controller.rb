@@ -327,7 +327,10 @@ module Api
 
         models_by_manufacturer = transform_for_pie_chart(
           current_user.manufacturers.uniq
-              .map { |m| { m.name => m.models.where(id: current_user.models.pluck(:id)).count } }
+              .map do |manufacturer|
+                model_ids = manufacturer.model_ids
+                { manufacturer.name => current_user.vehicles.where(model_id: model_ids).count }
+              end
               .reduce(:merge) || []
         )
 
