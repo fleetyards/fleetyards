@@ -9,13 +9,14 @@ module ScData
       main_thrusters coolers shield_generators weapons turrets missiles
     ].freeze
 
-    attr_accessor :components_loader
+    attr_accessor :components_loader, :hardpoints_loader
 
     def initialize
       super
 
       self.base_url = "#{base_url}/ships"
       self.components_loader = ::ScData::ComponentsLoader.new
+      self.hardpoints_loader = ::ScData::HardpointsLoader.new(components_loader: components_loader)
     end
 
     def load(model)
@@ -32,7 +33,7 @@ module ScData
         'SItemPortLoadoutManualParams', 'entries'
       )
 
-      add_hardpoints(model, components_data)
+      hardpoints_loader.load(model, components_data)
 
       model.update({
                      mass: ((ship_data.dig('Vehicle', 'Parts') || []).first || {})['mass']&.to_f,
@@ -42,92 +43,52 @@ module ScData
                    })
     end
 
-    def add_hardpoints(model, components_data); end
-
-    # scunpacked
-
-    # weapons hardpoint_weapon
-    # turrets hardpoint_(.*)_turret
-    # missiles hardpoint_missilerack
-
-    # fuel_intakes hardpoint_fuel_intake
-
-    # quantum_drive hardpoint_quantum_drive
-
-    # main_thrusters hardpoint_thruster_main
-    # retro_thruster hardpoint_thruster_retro
-    # vtol_thruster hardpoint_thruster_vtol
-    # mav_thruster hardpoint_thruster_mav
-
-    # coolers hardpoint_cooler
-
-    # power_plants hardpoint_power_plant
-
-    # shields hardpoint_shield_generator
-
-    # countermeasures hardpoint_countermeasures
-
-    # armor hardpoint_armor
-
-    private def extract_base_component_data(component_data)
-      base_data = component_data.dig('SAttachableComponentParams', 'AttachDef')
-
-      {
-        size: base_data['size'],
-        grade: base_data['grade']
-      }
-    end
-
     private def extract_cargo_holds(components)
       components.select do |component_ref|
-        component_ref['itemPortName'].include?('cargo')
+        component_ref['itemPortName'].downcase.include?('cargo')
       end.map do |component_ref|
-        item_data = components_loader.load(component_ref['entityClassName'])
+        component_data = components_loader.load(component_ref['entityClassName'])
 
-        component_data = item_data.dig('Raw', 'Entity', 'Components')
+        cargo_dimensions = component_data.dig(:component, 'SCItemCargoGridParams', 'dimensions') || {}
 
-        cargo_dimensions = component_data.dig('SCItemCargoGridParams', 'dimensions') || {}
+        next if cargo_dimensions.blank?
 
         {
           name: component_ref['itemPortName'],
           scu: (cargo_dimensions.values.reject(&:zero?).inject(:*) / CUBIC_METER_TO_SCU_FACTOR).round,
           dimensions: cargo_dimensions,
-        }.merge(extract_base_component_data(component_data))
-      end
+        }.merge(component_data[:base])
+      end.compact
     end
 
     private def extract_hydrogen_fuel_tanks(components)
       components.select do |component_ref|
         component_ref['itemPortName'].include?('hardpoint_fuel_tank')
       end.map do |component_ref|
-        item_data = components_loader.load(component_ref['entityClassName'])
-
-        component_data = item_data.dig('Raw', 'Entity', 'Components')
+        component_data = components_loader.load(component_ref['entityClassName'])
 
         {
           name: component_ref['itemPortName'],
         }.merge(extract_fuel_data(component_data))
-          .merge(extract_base_component_data(component_data))
+          .merge(component_data[:base])
       end
     end
 
     private def extract_quantum_fuel_tanks(components)
       components.select do |component_ref|
-        component_ref['itemPortName'].include?('quantum_fuel_tank')
+        component_ref['itemPortName'].include?('quantum_fuel')
       end.map do |component_ref|
-        item_data = components_loader.load(component_ref['entityClassName'])
-
-        component_data = item_data.dig('Raw', 'Entity', 'Components')
+        component_data = components_loader.load(component_ref['entityClassName'])
 
         {
           name: component_ref['itemPortName'],
         }.merge(extract_fuel_data(component_data))
-          .merge(extract_base_component_data(component_data))
+          .merge(component_data[:base])
       end
     end
 
     private def extract_fuel_data(component_data)
-      fuel_data = component_data['SCItemFuelTankParams']
+      fuel_data = component_data.dig(:component, 'SCItemFuelTankParams')
 
       {
         capacity: fuel_data['capacity'],

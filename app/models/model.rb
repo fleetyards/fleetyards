@@ -189,6 +189,7 @@ class Model < ApplicationRecord
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
+  before_save :update_from_hardpoints
 
   ransack_alias :name, :name_or_slug_or_manufacturer_slug
   ransack_alias :manufacturer, :manufacturer_slug
@@ -259,11 +260,33 @@ class Model < ApplicationRecord
   end
 
   def update_from_hardpoints
-    # self.cargo = cargo_holds.sum { |item| item[:scu] } if cargo_holds.present? && cargo_holds_change_to_be_saved
+    set_cargo_from_hardpoints
+    set_quantum_fuel_from_hardpoints
+    set_hydrogen_fuel_from_hardpoints
+  end
 
-    # self.quantum_fuel_tank_size = quantum_fuel_tanks.sum { |item| item[:capacity] } if quantum_fuel_tanks.present? && quantum_fuel_tanks_change_to_be_saved
+  def set_cargo_from_hardpoints
+    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
 
-    # self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum { |item| item[:capacity] } if hydrogen_fuel_tanks.present? && hydrogen_fuel_tanks_change_to_be_saved
+    self.cargo = cargo_holds.sum do |item|
+      item[:scu]
+    end
+  end
+
+  def set_quantum_fuel_from_hardpoints
+    return if quantum_fuel_tanks.blank? || (quantum_fuel_tank_size.present? && !quantum_fuel_tanks_change_to_be_saved)
+
+    self.quantum_fuel_tank_size = quantum_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
+  end
+
+  def set_hydrogen_fuel_from_hardpoints
+    return if hydrogen_fuel_tanks.blank? || (hydrogen_fuel_tank_size.present? && !hydrogen_fuel_tanks_change_to_be_saved)
+
+    self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
   end
 
   def rsi_store_url

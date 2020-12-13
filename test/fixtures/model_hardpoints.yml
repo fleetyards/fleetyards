@@ -10,7 +10,7 @@
 #  hardpoint_type :integer
 #  item_slots     :integer
 #  key            :string
-#  mount          :integer
+#  mount          :string
 #  size           :integer
 #  source         :integer
 #  created_at     :datetime         not null

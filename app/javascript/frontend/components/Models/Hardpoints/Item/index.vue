@@ -1,6 +1,6 @@
 <template>
   <div
-    v-tooltip.left="hardpoint.details"
+    v-tooltip.left="tooltip"
     class="hardpoint-item-inner"
     :class="{ 'has-component': hardpoint.component }"
   >
@@ -12,18 +12,21 @@
         {{ hardpoint.itemSlots }}x
       </span>
       {{ hardpoint.component.name }}
-      <template v-if="hardpoint.type === 'missiles'">
+      <!-- <template v-if="hardpoint.type === 'missiles'">
         ({{ $t('labels.hardpoint.size') }} {{ hardpoint.component.size }})
-      </template>
+      </template> -->
     </div>
-    <div v-if="hardpoint.categoryLabel" class="hardpoint-item-component">
+    <div
+      v-if="hardpoint.categoryLabel && showCategory"
+      class="hardpoint-item-component"
+    >
       <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
         {{ hardpoint.itemSlots }}x
       </span>
       {{ hardpoint.categoryLabel }}
     </div>
     <div
-      v-if="hardpoint.component"
+      v-if="hardpoint.component && hardpoint.component.manufacturer"
       class="hardpoint-item-component-manufacturer"
       v-html="hardpoint.component.manufacturer.name"
     />
@@ -40,6 +43,18 @@ export default class HardpointItem extends Vue {
 
   get uuid() {
     return this._uid
+  }
+
+  get tooltip() {
+    if (!this.showCategory) {
+      return this.hardpoint.categoryLabel
+    }
+
+    return this.hardpoint.details
+  }
+
+  get showCategory() {
+    return this.hardpoint.type !== 'turrets'
   }
 }
 </script>

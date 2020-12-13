@@ -12,7 +12,7 @@
 #  hardpoint_type :integer
 #  item_slots     :integer
 #  key            :string
-#  mount          :integer
+#  mount          :string
 #  size           :integer
 #  source         :integer
 #  created_at     :datetime         not null
@@ -37,20 +37,25 @@ class ModelHardpoint < ApplicationRecord
 
   GAME_FILE_HARDPOINT_TYPES = {
     power_plants: 10, coolers: 11, shield_generators: 12,
-    fuel_intakes: 20, fuel_tanks: 21, quantum_drives: 22, quantum_fuel_tanks: 24,
+    quantum_drives: 22,
     main_thrusters: 30, maneuvering_thrusters: 31,
     weapons: 40, turrets: 41, missiles: 42,
   }.freeze
 
   SHIP_MATRIX_HARDPOINT_TYPES = {
-    radar: 0, computers: 1, jump_modules: 23, utility_items: 43
+    radar: 0, computers: 1,
+    fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24,
+    utility_items: 43
   }.freeze
 
   enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES)
 
   enum group: { avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4 }
 
-  enum category: { main: 0, retro: 1, vtol: 2, fixed: 3, gimbal: 4 }
+  enum category: {
+    main: 0, retro: 1, vtol: 2, fixed: 3, gimbal: 4, joint: 5,
+    manned_turret: 20, remote_turret: 21, missile_rack: 30
+  }
 
   enum size: {
     vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,

@@ -27,6 +27,9 @@ en:
           vtol: VTOL Thruster
           fixed: Fixed Maneuvering Thruster
           gimbal: Gimbal Maneuvering Thruster
+          joint: Joint Maneuvering Thruster
+          manned_turret: Manned Turret
+          remote_turret: Remote Turret
         sizes:
           tbd: TBD
           one: 1

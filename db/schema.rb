@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_222528) do
     t.uuid "component_id"
     t.datetime "deleted_at"
     t.string "details"
-    t.integer "mount"
+    t.string "mount"
     t.integer "item_slots"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

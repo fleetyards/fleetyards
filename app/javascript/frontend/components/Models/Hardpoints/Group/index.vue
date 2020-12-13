@@ -19,27 +19,11 @@
             {{ $t(`labels.hardpoint.types.${type}`) }}
           </div>
           <div class="hardpoint-items">
-            <div
-              v-for="(groupedItemsByCategory, category) in groupByCategory(
-                items,
-              )"
-              :key="`${type}-${category}`"
-              class="hardpoint-item"
-            >
-              <div class="hardpoint-item-quantity">
-                {{ groupedItemsByCategory.length }}
-                <span class="text-muted">x</span>
-              </div>
-              <div class="hardpoint-item-slots">
-                <HardpointItem
-                  v-for="(groupedItems, key) in groupByKey(
-                    groupedItemsByCategory,
-                  )"
-                  :key="`${type}-${category}-${key}`"
-                  :hardpoint="groupedItems[0]"
-                />
-              </div>
-            </div>
+            <HardpointItems
+              v-for="(groupedItems, key) in groupByKey(items)"
+              :key="`${type}-${key}`"
+              :hardpoints="groupedItems"
+            />
           </div>
         </div>
       </div>
@@ -52,11 +36,11 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { groupBy, sortBy } from 'frontend/lib/Helpers'
 import Panel from 'frontend/core/components/Panel'
-import HardpointItem from '../Item'
+import HardpointItems from '../Items'
 
 @Component<HardpointGroup>({
   components: {
-    HardpointItem,
+    HardpointItems,
     Panel,
   },
 })
@@ -88,8 +72,8 @@ export default class HardpointGroup extends Vue {
     /* eslint-enable global-require */
   }
 
-  expanded(type) {
-    return ['main_thrusters', 'weapons', 'turrets', 'missiles'].includes(type)
+  grouped(type) {
+    return ['main_thrusters', 'maneuvering_thrusters'].includes(type)
   }
 
   groupByType(hardpoints) {
@@ -97,12 +81,12 @@ export default class HardpointGroup extends Vue {
   }
 
   groupByKey(hardpoints) {
-    return groupBy(hardpoints, 'key')
+    return groupBy(sortBy(hardpoints, 'category'), 'key')
   }
 
-  groupByCategory(hardpoints) {
-    return groupBy(sortBy(hardpoints, 'category'), 'category')
-  }
+  // groupByCategory(hardpoints) {
+  //   return groupBy(sortBy(hardpoints, 'category'), 'category')
+  // }
 
   openComponentModal(hardpoint) {
     if (!hardpoint.component) {
