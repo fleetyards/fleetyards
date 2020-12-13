@@ -183,13 +183,13 @@ class Model < ApplicationRecord
 
   before_save :update_slugs
 
+  before_save :update_from_hardpoints
   before_create :set_last_updated_at
 
   after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
-  before_save :update_from_hardpoints
 
   ransack_alias :name, :name_or_slug_or_manufacturer_slug
   ransack_alias :manufacturer, :manufacturer_slug

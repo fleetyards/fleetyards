@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class RsiModelsLoaderTest < ActiveSupport::TestCase
+class ScDataLoaderTest < ActiveSupport::TestCase
   let(:loader) { ::ScData::ShipsLoader.new }
 
   before do
@@ -19,7 +19,9 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
     let(:model) { Model.find_by(rsi_id: constellation_rsi_id) }
 
     before do
-      ::Rsi::ModelsLoader.new.one(constellation_rsi_id)
+      VCR.use_cassette('rsi_models_loader_all') do
+        ::Rsi::ModelsLoader.new.one(constellation_rsi_id)
+      end
 
       model.update(sc_identifier: constellation_sc_data_id)
     end
@@ -28,10 +30,10 @@ class RsiModelsLoaderTest < ActiveSupport::TestCase
       VCR.use_cassette('sc_data_loader_one', allow_playback_repeats: true) do
         loader.load(model)
 
-        assert_equal(68, ModelHardpoint.where(model_id: model.id).count)
+        assert_equal(96, ModelHardpoint.where(model_id: model.id).count)
         assert_equal(13, Component.count)
         assert_equal(0, ModelHardpoint.where(model_id: model.id, source: :game_files).deleted.count)
-        assert_equal(15, ModelHardpoint.where(model_id: model.id, source: :ship_matrix).deleted.count)
+        assert_equal(39, ModelHardpoint.where(model_id: model.id, source: :ship_matrix).deleted.count)
       end
     end
   end
