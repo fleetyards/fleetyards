@@ -50,42 +50,6 @@ module ScData
       hardpoint_ids.compact
     end
 
-    # private def extract_fuel_tanks(hardpoint_type, model_id, components)
-    #   hardpoint_ids = []
-
-    #   components.select do |component_ref|
-    #     component_ref['itemPortName'].downcase =~ /^hardpoint_fuel_tank.*/
-    #   end.map do |component_ref|
-    #     hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, component_ref)&.id
-    #   end
-
-    #   hardpoint_ids.compact
-    # end
-
-    # private def extract_quantum_fuel_tanks(hardpoint_type, model_id, components)
-    #   hardpoint_ids = []
-
-    #   components.select do |component_ref|
-    #     component_ref['itemPortName'].downcase =~ /^hardpoint_quantum_fuel.*/
-    #   end.map do |component_ref|
-    #     hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, component_ref)&.id
-    #   end
-
-    #   hardpoint_ids.compact
-    # end
-
-    # private def extract_fuel_intakes(hardpoint_type, model_id, components)
-    #   hardpoint_ids = []
-
-    #   components.select do |component_ref|
-    #     component_ref['itemPortName'].downcase =~ /^hardpoint_fuel_intake.*/
-    #   end.map do |component_ref|
-    #     hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, component_ref)&.id
-    #   end
-
-    #   hardpoint_ids.compact
-    # end
-
     private def extract_quantum_drives(hardpoint_type, model_id, components)
       hardpoint_ids = []
 
@@ -242,7 +206,20 @@ module ScData
 
       return loadout_size if [:turrets].include?(hardpoint_type) && loadout_size.present?
 
-      [component_size, loadout_size].max
+      size_mapping([component_size, loadout_size].max, hardpoint_type)
+    end
+
+    private def size_mapping(size, hardpoint_type)
+      mapping = {
+        '1' => :small,
+        '2' => :medium,
+        '3' => :large,
+        '4' => :capital
+      }
+
+      return mapping[size.to_s] if %i[power_plants coolers shield_generators quantum_drives].include?(hardpoint_type) && mapping[size.to_s].present?
+
+      size
     end
 
     private def details_mapping(details)
