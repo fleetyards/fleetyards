@@ -24,9 +24,10 @@ module Admin
 
     def worker_running?
       model_queue = Sidekiq::Queue.new(ENV['MODEL_LOADER_QUEUE'] || 'fleetyards_model_loader')
+      sc_data_queue = Sidekiq::Queue.new(ENV['SC_DATA_SHIP_QUEUE'] || 'fleetyards_sc_data_ship_loader')
       process = Sidekiq::ProcessSet.new
       running_processes = process.sum { |ps| ps['busy'] }
-      if model_queue.size.zero? && running_processes.zero?
+      if sc_data_queue.size.zero? && model_queue.size.zero? && running_processes.zero?
         false
       else
         true

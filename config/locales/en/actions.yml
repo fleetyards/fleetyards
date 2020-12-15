@@ -47,6 +47,7 @@ en:
     model:
       images: Images
       reload: Reload Models
+      reload_data: Reload Models Data
       use_rsi_image: Use RSI Image
     station:
       images: Images

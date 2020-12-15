@@ -11,9 +11,9 @@
 #  beam                     :decimal(15, 2)   default(0.0), not null
 #  brochure                 :string
 #  cargo                    :decimal(15, 2)
+#  cargo_holds              :string
 #  classification           :string(255)
 #  cruise_speed             :decimal(15, 2)
-#  data_slug                :string
 #  description              :text
 #  dock_size                :integer
 #  fleetchart_image         :string
@@ -23,6 +23,7 @@
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
+#  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
 #  last_pledge_price        :decimal(15, 2)
 #  last_updated_at          :datetime
@@ -42,6 +43,7 @@
 #  production_note          :string(255)
 #  production_status        :string(255)
 #  quantum_fuel_tank_size   :decimal(15, 2)
+#  quantum_fuel_tanks       :string
 #  roll_max                 :decimal(15, 2)
 #  rsi_afterburner_speed    :decimal(15, 2)
 #  rsi_beam                 :decimal(15, 2)   default(0.0), not null
@@ -66,6 +68,7 @@
 #  rsi_yaw_max              :decimal(15, 2)
 #  rsi_yaxis_acceleration   :decimal(15, 2)
 #  rsi_zaxis_acceleration   :decimal(15, 2)
+#  sc_identifier            :string
 #  scm_speed                :decimal(15, 2)
 #  size                     :string
 #  slug                     :string(255)
@@ -124,7 +127,7 @@ class Model < ApplicationRecord
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
-  has_many :hardpoints,
+  has_many :model_hardpoints,
            dependent: :destroy,
            autosave: true
   has_many :vehicles, dependent: :destroy
@@ -166,6 +169,10 @@ class Model < ApplicationRecord
 
   enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
 
+  serialize :cargo_holds
+  serialize :quantum_fuel_tanks
+  serialize :hydrogen_fuel_tanks
+
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
@@ -175,6 +182,8 @@ class Model < ApplicationRecord
   mount_uploader :brochure, BrochureUploader
 
   before_save :update_slugs
+
+  before_save :update_from_hardpoints
   before_create :set_last_updated_at
 
   after_save :touch_shop_commodities
@@ -248,6 +257,36 @@ class Model < ApplicationRecord
 
   def self.with_dock
     includes(:docks).where.not(docks: { model_id: nil })
+  end
+
+  def update_from_hardpoints
+    set_cargo_from_hardpoints
+    set_quantum_fuel_from_hardpoints
+    set_hydrogen_fuel_from_hardpoints
+  end
+
+  def set_cargo_from_hardpoints
+    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+
+    self.cargo = cargo_holds.sum do |item|
+      item[:scu]
+    end
+  end
+
+  def set_quantum_fuel_from_hardpoints
+    return if quantum_fuel_tanks.blank? || (quantum_fuel_tank_size.present? && !quantum_fuel_tanks_change_to_be_saved)
+
+    self.quantum_fuel_tank_size = quantum_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
+  end
+
+  def set_hydrogen_fuel_from_hardpoints
+    return if hydrogen_fuel_tanks.blank? || (hydrogen_fuel_tank_size.present? && !hydrogen_fuel_tanks_change_to_be_saved)
+
+    self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
   end
 
   def rsi_store_url

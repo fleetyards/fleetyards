@@ -13,3 +13,7 @@
   - fleetyards_youtube_loader
   - fleetyards_rsi_news_loader
   - fleetyards_price_calculator
+  - fleetyards_sc_data_ship_loader
+  - fleetyards_sc_data_ships_loader
+  - fleetyards_sc_data_component_loader
+  - fleetyards_sc_data_components_loader

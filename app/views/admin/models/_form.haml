@@ -39,11 +39,11 @@
           = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
           %small
             = form_errors model, :base_model_id
-        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :data_slug)}
-          = form.label :data_slug
-          = form.text_field :data_slug, class: 'form-control'
+        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :sc_identifier)}
+          = form.label :sc_identifier
+          = form.text_field :sc_identifier, class: 'form-control'
           %small
-            = form_errors model, :data_slug
+            = form_errors model, :sc_identifier
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}

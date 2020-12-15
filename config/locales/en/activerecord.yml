@@ -20,13 +20,35 @@ en:
         hidden: hidden?
         active: active?
         ground: Ground Vehicle?
-      hardpoint:
-        category:
-          R: Retro Thruster
-          M: Main Thruster
-          V: VTOL Thruster
-          F: Fixed Maneuvering Thruster
-          G: Gimbal Maneuvering Thruster
+      model_hardpoint:
+        categories:
+          main: Main Thruster
+          retro: Retro Thruster
+          vtol: VTOL Thruster
+          fixed: Fixed Maneuvering Thruster
+          gimbal: Gimbal Maneuvering Thruster
+          joint: Joint Maneuvering Thruster
+          manned_turret: Manned Turret
+          remote_turret: Remote Turret
+        sizes:
+          tbd: TBD
+          one: 1
+          two: 2
+          three: 3
+          four: 4
+          five: 5
+          six: 6
+          seven: 7
+          eight: 8
+          nine: 9
+          ten: 10
+          eleven: 11
+          twelve: 12
+          vehicle: V (0)
+          small: S (1)
+          medium: M (2)
+          large: L (3)
+          capital: C (4)
       setting:
         base:
           registration: Registration active?
@@ -206,24 +228,25 @@ en:
           asteriod: 'on asteroid near'
           orbit: 'in orbit around'
         station_types:
-          spaceport: Spaceport
+          landing_zone: Landing Zone
           station: Station
-          hub: Hub
-          rest_stop: Rest Stop
-          cargo-station: Cargo Station
-          mining-station: Mining Station
-          mining-hub: Mining Hub
-          asteroid-station: Asteriod Station
-          refinery: Refinery
+          asteroid_station: Asteriod Station
           district: District
           outpost: Outpost
           aid_shelter: Aid Shelter
-          gate: Gate
+        classifications:
+          rest_stop: Rest Stop
+          mining: Mining
+          trading: Trading
+          salvaging: Salvaging
+          farming: Farming
+          science: Science
+          security: Security
           drug_lab: Drug lab
-          salvage-outpost: Salvage Outpost
           poi: Point of Interest
           city: City
           town: Town
+          settlement: Settlement
       commodity:
         commodity_types:
           gas: Gas

@@ -7,6 +7,7 @@ rayari_mc_grath = Station.find_or_initialize_by(name: 'Rayari McGrath Research O
 rayari_mc_grath.update!(
   celestial_object: clio,
   station_type: :outpost,
+  classification: :science,
   location: 'Clio',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
@@ -49,6 +50,7 @@ rayari_cantwell = Station.find_or_initialize_by(name: 'Rayari Cantwell Research 
 rayari_cantwell.update!(
   celestial_object: clio,
   station_type: :outpost,
+  classification: :science,
   location: 'Clio',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false

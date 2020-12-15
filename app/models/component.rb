@@ -11,6 +11,7 @@
 #  item_class      :integer
 #  item_type       :string
 #  name            :string(255)
+#  sc_identifier   :string
 #  size            :string(255)
 #  slug            :string
 #  store_image     :string

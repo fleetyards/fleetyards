@@ -1,11 +1,13 @@
-h2.hardpoint-category-label {
-  font-size: 20px;
-  font-family: 'Orbitron', tahoma, sans-serif;
-  text-transform: uppercase;
-}
+.hardpoint-group {
+  h2.hardpoint-group-label {
+    font-size: 20px;
+    font-family: 'Orbitron', tahoma, sans-serif;
+    text-transform: uppercase;
+  }
 
-.hardpoint-category {
-  padding: 20px 20px 10px;
+  .hardpoint-group-inner {
+    padding: 20px 20px 10px;
+  }
 }
 
 .hardpoint-type {
@@ -13,7 +15,7 @@ h2.hardpoint-category-label {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   border-bottom: 1px solid rgba($gray-darker, .7);
 
   &:last-child {
@@ -23,7 +25,9 @@ h2.hardpoint-category-label {
   .hardpoint-type-label {
     display: flex;
     align-items: center;
-    width: 200px;
+    width: 240px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding-right: 20px;
     color: darken($text-color, 20%);
 
@@ -44,14 +48,25 @@ h2.hardpoint-category-label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 50px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   .hardpoint-item-quantity {
     min-width: 45px;
     padding-right: 10px;
     white-space: nowrap;
     text-align: right;
+  }
+
+  .hardpoint-item-slots {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .hardpoint-item-size {
@@ -68,13 +83,18 @@ h2.hardpoint-category-label {
   .hardpoint-item-inner {
     position: relative;
     display: flex;
-    flex-grow: 1;
     flex-wrap: wrap-reverse;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
     padding: 6px 10px;
     border: $panel-border-width solid $panel-inner-border;
     border-radius: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     &::before {
       position: absolute;

@@ -7,7 +7,8 @@ hidden = false
 hur_l5 = Station.find_or_initialize_by(name: 'HUR-L5 High Course Station')
 hur_l5.update!(
   celestial_object: hurston,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'HUR-L5',
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l5/hur-l5-a.jpg').open,
   hidden: hidden

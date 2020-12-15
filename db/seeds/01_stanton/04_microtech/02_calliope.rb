@@ -7,6 +7,7 @@ rayari_anvik = Station.find_or_initialize_by(name: 'Rayari Anvik Research Outpos
 rayari_anvik.update!(
   celestial_object: calliope,
   station_type: :outpost,
+  classification: :science,
   location: 'Calliope',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
@@ -49,6 +50,7 @@ rayari_kaltag = Station.find_or_initialize_by(name: 'Rayari Kaltag Research Outp
 rayari_kaltag.update!(
   celestial_object: calliope,
   station_type: :outpost,
+  classification: :science,
   location: 'Calliope',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
@@ -91,6 +93,7 @@ shubin_smca_6 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMCa
 shubin_smca_6.update!(
   celestial_object: calliope,
   station_type: :outpost,
+  classification: :mining,
   location: 'Calliope',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
@@ -133,6 +136,7 @@ shubin_smca_8 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMCa
 shubin_smca_8.update!(
   celestial_object: calliope,
   station_type: :outpost,
+  classification: :mining,
   location: 'Calliope',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
@@ -170,3 +174,18 @@ pad = 1
     pad += 1
   end
 end
+
+ravens = Station.find_or_initialize_by(name: "Raven's Roost")
+ravens.update!(
+  celestial_object: calliope,
+  station_type: :outpost,
+  classification: :drug_lab,
+  location: nil,
+  hidden: false
+)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: ravens)
+admin_office.update!(
+  shop_type: :admin,
+  selling: true,
+  hidden: false
+)

@@ -7,13 +7,15 @@ require 'rsi/base_loader'
 
 module Rsi
   class ModelsLoader < ::Rsi::BaseLoader
-    attr_accessor :json_file_path, :vat_percent
+    attr_accessor :json_file_path, :vat_percent, :hardpoints_loader, :manufacturers_loader
 
     def initialize(options = {})
       super
 
-      @json_file_path = 'public/models.json'
-      @vat_percent = options[:vat_percent] || 19
+      self.json_file_path = 'public/models.json'
+      self.vat_percent = options[:vat_percent] || 19
+      self.manufacturers_loader = ::Rsi::ManufacturersLoader.new
+      self.hardpoints_loader = ::Rsi::HardpointsLoader.new
     end
 
     def all
@@ -60,7 +62,6 @@ module Rsi
       end
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?
@@ -69,44 +70,24 @@ module Rsi
                 create_or_update_model(data)
               end
 
-      buying_options = get_buying_options(model.store_url) unless Rails.env.test?
-      if buying_options.present?
-        model.pledge_price = buying_options.price if buying_options.price.present?
-        model.on_sale = buying_options.on_sale
-      end
+      load_buying_options(model) unless Rails.env.test?
 
-      model.manufacturer = create_or_update_manufacturer(data['manufacturer']) unless paint?(data)
-
-      if !paint?(data) && (model.data_slug.blank? || model.hardpoints.blank?)
-        model.hardpoints.where(rsi_key: nil).destroy_all
-
-        hardpoint_ids = []
-        components = data['compiled']
-        components.each_key do |component_class|
-          types = components[component_class]
-          types.each_key do |type|
-            types[type].each_with_index do |hardpoint_data, index|
-              hardpoint = create_or_update_hardpoint(hardpoint_data, model.id, index)
-              hardpoint_ids << hardpoint.id
-            end
-          end
-        end
-
-        model.hardpoints.where.not(id: hardpoint_ids).update(deleted_at: Time.zone.now)
+      unless paint?(data)
+        manufacturers_loader.run(data['manufacturer'], model)
+        hardpoints_loader.run(data['compiled'], model)
       end
 
       model.hidden = false
 
       model.save!
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
 
-    def get_buying_options(store_url)
+    def load_buying_options(model)
       return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
 
       sleep 5
 
-      response = fetch_remote("#{base_url}#{store_url}?#{Time.zone.now.to_i}")
+      response = fetch_remote("#{base_url}#{model.store_url}?#{Time.zone.now.to_i}")
 
       return unless response.success?
 
@@ -119,11 +100,8 @@ module Rsi
 
       prices.compact.sort!
 
-      OpenStruct.new(
-        price: prices.first,
-        on_sale: prices.present?,
-        prices: prices
-      )
+      model.pledge_price = prices.first if prices.present?
+      model.on_sale = prices.present?
     end
 
     private def extract_price(element)
@@ -133,7 +111,6 @@ module Rsi
       price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
     end
 
-    # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_model(data)
       model = Model.find_or_create_by!(rsi_id: data['id'])
@@ -181,27 +158,11 @@ module Rsi
       updates[:name] = strip_name(data['name']) if (model_updated(model, data) && data['name'] != model.rsi_name) || model.name.blank?
 
       model.update(updates)
-      store_images_updated_at = begin
-        Time.zone.parse(data['media'][0]['time_modified'])
-      rescue StandardError
-        nil
-      end
 
-      if !Rails.env.test? && (model.rsi_store_image.blank? || model.store_images_updated_at != store_images_updated_at)
-        model.store_images_updated_at = data['media'][0]['time_modified']
-        store_image_url = data['media'][0]['images']['store_hub_large']
-        store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
-        if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          image_url = store_image_url.gsub('store_hub_large', 'source')
-          model.remote_rsi_store_image_url = image_url
-          model.remote_store_image_url = image_url if model.store_image.blank?
-          model.save
-        end
-      end
+      load_store_image(model, data['media'][0])
 
       model
     end
-    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
 
     # rubocop:disable Metrics/CyclomaticComplexity
@@ -228,104 +189,56 @@ module Rsi
       updates[:name] = strip_name(data['name']) if (model_updated(paint, data) && data['name'] != paint.rsi_name) || paint.name.blank?
 
       paint.update(updates)
-      store_images_updated_at = begin
-        Time.zone.parse(data['media'][0]['time_modified'])
-      rescue StandardError
-        nil
-      end
 
-      if !Rails.env.test? && (paint.rsi_store_image.blank? || paint.store_images_updated_at != store_images_updated_at)
-        paint.store_images_updated_at = data['media'][0]['time_modified']
-        store_image_url = data['media'][0]['images']['store_hub_large']
-        store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
-        if store_image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
-          image_url = store_image_url.gsub('store_hub_large', 'source')
-          paint.remote_rsi_store_image_url = image_url
-          paint.remote_store_image_url = image_url if paint.store_image.blank?
-          paint.save
-        end
-      end
+      load_store_image(paint, data['media'][0])
 
       paint
     end
     # rubocop:enable Metrics/CyclomaticComplexity
 
-    def create_or_update_manufacturer(manufacturer_data)
-      manufacturer = Manufacturer.find_or_create_by!(rsi_id: manufacturer_data['id'])
+    private def load_store_image(model, media_data)
+      return if Rails.env.test? || (model.rsi_store_image.present? && model.store_images_updated_at >= store_images_updated_at(media_data))
 
-      manufacturer.update(
-        name: manufacturer_data['name'],
-        code: manufacturer_data['code'].presence,
-        known_for: manufacturer_data['known_for'].presence,
-        description: manufacturer_data['description'].presence,
-        remote_logo_url: ("#{base_url}#{manufacturer_data['media'][0]['source_url']}" if !Rails.env.test? && manufacturer.logo.blank? && manufacturer_data['media'].present?)
-      )
+      model.store_images_updated_at = media_data['time_modified']
 
-      manufacturer
+      store_image_url = media_data['images']['store_hub_large']
+      store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
+
+      return if store_image_url.blank? || Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+
+      image_url = store_image_url.gsub('store_hub_large', 'source')
+
+      model.remote_rsi_store_image_url = image_url
+      model.remote_store_image_url = image_url if model.store_image.blank?
+      model.save
     end
 
-    def create_or_update_hardpoint(hardpoint_data, model_id, index)
-      key = [
-        model_id,
-        hardpoint_data['component_class'],
-        hardpoint_data['type'],
-        hardpoint_data['category'],
-        hardpoint_data['size'],
-        hardpoint_data['quantity'].to_i,
-        hardpoint_data['mounts'].to_i,
-        index
-      ].join('-')
+    private def find_model_for_paint(data)
+      mapping = paint_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
 
-      hardpoint = Hardpoint.find_or_create_by(rsi_key: key) do |new_hardpoint|
-        new_hardpoint.model_id = model_id
-        new_hardpoint.hardpoint_type = hardpoint_data['type']
-        new_hardpoint.size = hardpoint_data['size']
-        new_hardpoint.quantity = hardpoint_data['quantity'].to_i
-        new_hardpoint.mounts = hardpoint_data['mounts'].to_i
-        new_hardpoint.category = hardpoint_data['category']
-      end
+      return if mapping.blank?
 
-      hardpoint.update(
-        details: hardpoint_data['details'],
-        component_class: hardpoint_data['component_class'],
-        default_empty: hardpoint_data['name'].blank?,
-        deleted_at: nil
-      )
+      model_rsi_id = mapping[:model_rsi_id]
 
-      if hardpoint_data['name'].present? && hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
-        hardpoint.component = create_or_update_component(hardpoint_data)
-        hardpoint.save
-      end
+      return if model_rsi_id.blank?
 
-      hardpoint
+      Model.find_by(rsi_id: model_rsi_id)
     end
 
-    def create_or_update_component(hardpoint_data)
-      component = Component.find_or_create_by!(
-        name: hardpoint_data['name'],
-        size: hardpoint_data['component_size']
-      )
-
-      item_type = hardpoint_data['type']
-      item_type = 'weapons' if item_type == 'turrets'
-
-      component.update(
-        component_class: hardpoint_data['component_class'],
-        item_type: item_type
-      )
-
-      if hardpoint_data['manufacturer'].present? && hardpoint_data['manufacturer'] != 'TBD'
-        component.manufacturer = Manufacturer.find_or_create_by!(name: hardpoint_data['manufacturer'].strip)
-        component.save
-      end
-
-      component
+    private def store_images_updated_at(media_data)
+      Time.zone.parse(media_data['time_modified'])
+    rescue StandardError
+      nil
     end
 
     private def new_time_modified(data)
       Time.zone.parse(data['time_modified.unfiltered'])
     rescue ArgumentError
       nil
+    end
+
+    private def model_updated(model, data)
+      model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
     end
 
     private def paint?(data)
@@ -420,24 +333,12 @@ module Rsi
       blocklist.find { |item| item[:rsi_id] == rsi_id.to_i }
     end
 
-    private def find_model_for_paint(data)
-      mapping = paint_mapping.find { |item| item[:rsi_id] == data['id'].to_i }
-
-      return if mapping.blank?
-
-      model_rsi_id = mapping[:model_rsi_id]
-
-      return if model_rsi_id.blank?
-
-      Model.find_by(rsi_id: model_rsi_id)
+    private def cleanup_variants
+      cleanup_paints
+      cleanup_blocked
     end
 
-    private def model_updated(model, data)
-      model.last_updated_at.blank? || model.last_updated_at < new_time_modified(data)
-    end
-
-    # rubocop:disable Metrics/CyclomaticComplexity
-    def cleanup_variants
+    private def cleanup_paints
       ModelPaint.where.not(rsi_id: nil).find_each do |paint|
         model = Model.find_by(rsi_id: paint.rsi_id)
         next if model.blank?
@@ -448,7 +349,9 @@ module Rsi
 
         model.destroy
       end
+    end
 
+    private def cleanup_blocked
       blocklist.each do |item|
         model = Model.find_by(rsi_id: item[:rsi_id])
         next if model.blank?
@@ -474,6 +377,5 @@ module Rsi
         model.destroy
       end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end

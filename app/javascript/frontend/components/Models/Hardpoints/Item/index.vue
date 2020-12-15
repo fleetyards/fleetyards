@@ -1,55 +1,35 @@
 <template>
-  <div>
-    <template v-if="isWeapon">
-      <div
-        v-for="index of hardpoint.mounts"
-        :key="`${uuid}-${index}`"
-        v-tooltip.left="hardpoint.details"
-        class="hardpoint-item"
-      >
-        <div class="hardpoint-item-quantity">
-          {{ hardpoint.quantity }}
-          <span class="text-darken">x</span>
-        </div>
-        <div
-          class="hardpoint-item-inner"
-          :class="{ 'has-component': hardpoint.component }"
-        >
-          <div class="hardpoint-item-size">Size {{ rackSize || size }}</div>
-          <div v-if="hardpoint.component" class="hardpoint-item-component">
-            {{ hardpoint.component.name }}
-          </div>
-          <div
-            v-if="hardpoint.component"
-            class="hardpoint-item-component-manufacturer"
-            v-html="hardpoint.component.manufacturer.name"
-          />
-        </div>
-      </div>
-    </template>
-    <div v-else v-tooltip.left="hardpoint.details" class="hardpoint-item">
-      <div class="hardpoint-item-quantity">
-        {{ hardpoint.mounts }}
-        <span class="text-darken">x</span>
-      </div>
-      <div
-        class="hardpoint-item-inner"
-        :class="{ 'has-component': hardpoint.component }"
-      >
-        <div class="hardpoint-item-size">Size {{ size }}</div>
-        <div v-if="hardpoint.component" class="hardpoint-item-component">
-          {{ hardpoint.component.name }}
-        </div>
-        <div v-if="hardpoint.categoryLabel" class="hardpoint-item-component">
-          {{ hardpoint.categoryLabel }}
-        </div>
-        <div
-          v-if="hardpoint.component"
-          class="hardpoint-item-component-manufacturer"
-          v-html="hardpoint.component.manufacturer.name"
-        />
-      </div>
+  <div
+    v-tooltip.left="tooltip"
+    class="hardpoint-item-inner"
+    :class="{ 'has-component': hardpoint.component }"
+  >
+    <div class="hardpoint-item-size">
+      {{ $t('labels.hardpoint.size') }} {{ hardpoint.sizeLabel }}
     </div>
+    <div v-if="hardpoint.component" class="hardpoint-item-component">
+      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
+        {{ hardpoint.itemSlots }}x
+      </span>
+      {{ hardpoint.component.name }}
+      <!-- <template v-if="hardpoint.type === 'missiles'">
+        ({{ $t('labels.hardpoint.size') }} {{ hardpoint.component.size }})
+      </template> -->
+    </div>
+    <div
+      v-if="hardpoint.categoryLabel && showCategory"
+      class="hardpoint-item-component"
+    >
+      <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
+        {{ hardpoint.itemSlots }}x
+      </span>
+      {{ hardpoint.categoryLabel }}
+    </div>
+    <div
+      v-if="hardpoint.component && hardpoint.component.manufacturer"
+      class="hardpoint-item-component-manufacturer"
+      v-html="hardpoint.component.manufacturer.name"
+    />
   </div>
 </template>
 
@@ -61,36 +41,20 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class HardpointItem extends Vue {
   @Prop({ required: true }) hardpoint: Hardpoint
 
-  get isWeapon() {
-    return this.hardpoint.class === 'RSIWeapon'
-  }
-
   get uuid() {
     return this._uid
   }
 
-  get rackSize() {
-    if (
-      this.hardpoint.type === 'missiles' &&
-      this.hardpoint.size !== '' &&
-      this.hardpoint.size !== '-'
-    ) {
-      return this.hardpoint.size
+  get tooltip() {
+    if (!this.showCategory) {
+      return this.hardpoint.categoryLabel
     }
-    return null
+
+    return this.hardpoint.details
   }
 
-  get size() {
-    if (this.hardpoint.size === '' || this.hardpoint.size === '-') {
-      return 'TBD'
-    }
-    if (this.hardpoint.type === 'missiles') {
-      if (this.hardpoint.component) {
-        return this.hardpoint.component.size
-      }
-      return null
-    }
-    return this.hardpoint.size
+  get showCategory() {
+    return this.hardpoint.type !== 'turrets'
   }
 }
 </script>

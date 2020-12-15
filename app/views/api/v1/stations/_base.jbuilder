@@ -6,6 +6,9 @@ json.location station.location
 json.location_label station.location_label
 json.type station.station_type
 json.type_label station.station_type_label
+json.classification station.classification
+json.classification_label station.classification_label
+json.habitable station.habitable
 json.store_image station.store_image.url
 json.store_image_large station.store_image.large.url
 json.store_image_medium station.store_image.medium.url

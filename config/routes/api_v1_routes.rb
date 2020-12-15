@@ -119,6 +119,7 @@ v1_api_routes = lambda do
     collection do
       get 'ship-sizes' => 'stations#ship_sizes'
       get 'station-types' => 'stations#station_types'
+      get 'classifications' => 'stations#classifications'
     end
     member do
       get :images

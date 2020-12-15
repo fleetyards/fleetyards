@@ -105,6 +105,16 @@ task :logs do
   end
 end
 
+namespace :bundler do
+  task :reinstall do
+    on roles(:app) do
+      within release_path do
+        execute(:bundle, :install, '--redownload')
+      end
+    end
+  end
+end
+
 namespace :es do
   task :index do
     on roles(:app) do
@@ -113,6 +123,20 @@ namespace :es do
           info 'Reindexing Elasticsearch...'
           execute(:bundle, :exec, :thor, 'search:index')
           info 'Reindexing finished'
+        end
+      end
+    end
+  end
+end
+
+namespace :trading_data do
+  task :import do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Import of Trading Data started...'
+          execute(:bundle, :exec, :thor, 'trading_data:import')
+          info 'Import finished'
         end
       end
     end

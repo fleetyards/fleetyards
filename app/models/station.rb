@@ -6,7 +6,9 @@
 #
 #  id                  :uuid             not null, primary key
 #  cargo_hub           :boolean
+#  classification      :integer
 #  description         :text
+#  habitable           :boolean          default(TRUE)
 #  hidden              :boolean          default(TRUE)
 #  images_count        :integer          default(0)
 #  location            :string
@@ -31,7 +33,7 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[name station_type celestial_object starsystem refinary cargo_hub],
+  searchkick searchable: %i[name station_type classification celestial_object starsystem refinary cargo_hub],
              word_start: %i[name],
              filterable: []
 
@@ -39,6 +41,7 @@ class Station < ApplicationRecord
     {
       name: name,
       station_type: station_type,
+      classification: classification,
       celestial_object: celestial_object.name,
       starsystem: celestial_object.starsystem&.name,
       cargo_hub: cargo_hub? ? 'Cargo Hub' : '',
@@ -68,13 +71,19 @@ class Station < ApplicationRecord
   belongs_to :celestial_object
 
   enum station_type: {
-    spaceport: 0, hub: 1, rest_stop: 2, station: 3, "cargo-station": 4,
-    "mining-station": 5, "asteroid-station": 6, refinery: 7, city: 8, poi: 9, district: 10, town: 11, gate: 12,
-    "mining-hub": 13, outpost: 14, "salvage-outpost": 15, aid_shelter: 16, drug_lab: 17
+    landing_zone: 0, station: 1, asteroid_station: 2, district: 3, outpost: 4, aid_shelter: 5
+  }
+
+  enum classification: {
+    city: 0, trading: 1, mining: 2, salvaging: 3, farming: 4, science: 5, security: 6,
+    rest_stop: 7, settlement: 8, town: 9, drug_lab: 10
   }
 
   ransacker :station_type, formatter: proc { |v| Station.station_types[v] } do |parent|
     parent.table[:station_type]
+  end
+  ransacker :classification, formatter: proc { |v| Station.classifications[v] } do |parent|
+    parent.table[:classification]
   end
   ransack_alias :habs, :habitations_station_id
   ransack_alias :starsystem, :celestial_object_starsystem_slug
@@ -108,15 +117,24 @@ class Station < ApplicationRecord
     end
   end
 
+  def self.classification_filters
+    Station.classifications.map do |(item, _index)|
+      Filter.new(
+        category: 'classification',
+        name: Station.human_enum_name(:classification, item),
+        value: item
+      )
+    end
+  end
+
   def location_label
     "#{location_prefix} #{celestial_object.name}"
   end
 
   def location_prefix
-    case station_type
-    when 'asteroid-station'
+    if asteroid_station?
       I18n.t('activerecord.attributes.station.location_prefix.asteriod')
-    when 'hub', 'rest_stop', 'station', 'cargo-station', 'mining-station'
+    elsif station?
       I18n.t('activerecord.attributes.station.location_prefix.orbit')
     else
       I18n.t('activerecord.attributes.station.location_prefix.default')
@@ -151,6 +169,10 @@ class Station < ApplicationRecord
 
   def station_type_label
     Station.human_enum_name(:station_type, station_type)
+  end
+
+  def classification_label
+    Station.human_enum_name(:classification, classification)
   end
 
   private def update_slugs

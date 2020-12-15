@@ -65,8 +65,8 @@ h1,
   }
 }
 
-.text-darken {
-  color: darken($text-color, 30%);
+.text-muted {
+  color: darken($text-color, 30%) !important;
 }
 
 .noselect {

@@ -8,6 +8,7 @@
 #  buying            :boolean          default(FALSE)
 #  description       :text
 #  hidden            :boolean          default(TRUE)
+#  location          :string
 #  name              :string
 #  refinary_terminal :boolean
 #  rental            :boolean          default(FALSE)

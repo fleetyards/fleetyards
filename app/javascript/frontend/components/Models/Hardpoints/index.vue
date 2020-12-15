@@ -8,34 +8,28 @@
       </Btn>
     </div>
     <div class="row">
-      <div
-        v-for="category in ['RSIAvionic', 'RSIModular']"
-        :key="category"
-        class="col-12 col-lg-6 col-xl-4"
-      >
-        <HardpointCategory
-          :category="category"
-          :hardpoints="hardpointsForCategory(category)"
+      <div class="col-12 col-md-6 col-lg-4">
+        <HardpointGroup
+          v-for="group in ['avionic', 'system']"
+          :key="group"
+          :group="group"
+          :hardpoints="hardpointsForGroup(group)"
         />
       </div>
-      <div
-        v-for="category in ['RSIPropulsion', 'RSIThruster']"
-        :key="category"
-        class="col-12 col-lg-6 col-xl-4"
-      >
-        <HardpointCategory
-          :category="category"
-          :hardpoints="hardpointsForCategory(category)"
+      <div class="col-12 col-md-6 col-lg-4">
+        <HardpointGroup
+          v-for="group in ['propulsion', 'thruster']"
+          :key="group"
+          :group="group"
+          :hardpoints="hardpointsForGroup(group)"
         />
       </div>
-      <div
-        v-for="category in ['RSIWeapon']"
-        :key="category"
-        class="col-12 col-lg-6 col-xl-4"
-      >
-        <HardpointCategory
-          :category="category"
-          :hardpoints="hardpointsForCategory(category)"
+      <div class="col-12 col-md-6 col-lg-4">
+        <HardpointGroup
+          v-for="group in ['weapon']"
+          :key="group"
+          :group="group"
+          :hardpoints="hardpointsForGroup(group)"
         />
       </div>
     </div>
@@ -46,11 +40,11 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn'
-import HardpointCategory from './Category'
+import HardpointGroup from './Group'
 
 @Component<Hardpoints>({
   components: {
-    HardpointCategory,
+    HardpointGroup,
     Btn,
   },
 })
@@ -59,8 +53,8 @@ export default class Hardpoints extends Vue {
 
   @Prop({ default: null }) erkulUrl!: string
 
-  hardpointsForCategory(category) {
-    return this.hardpoints.filter(hardpoint => hardpoint.class === category)
+  hardpointsForGroup(group) {
+    return this.hardpoints.filter(hardpoint => hardpoint.group === group)
   }
 }
 </script>

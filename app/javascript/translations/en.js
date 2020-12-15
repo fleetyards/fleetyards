@@ -37,6 +37,8 @@ export default {
   station: {
     type: 'Type',
     location: 'Location',
+    classification: 'Classification',
+    habitable: 'Habitable?',
     refinary: 'Refinary Station',
     cargoHub: 'Cargo Hub',
   },

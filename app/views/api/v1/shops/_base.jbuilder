@@ -6,6 +6,7 @@ json.slug shop.slug
 json.type shop.shop_type
 json.type_label shop.shop_type_label
 json.station_label shop.station_label
+json.location shop.location
 json.location_label shop.location_label
 json.rental shop.rental
 json.buying shop.buying

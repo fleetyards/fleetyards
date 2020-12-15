@@ -83,11 +83,25 @@ module Admin
       end
     end
 
+    def reload_data
+      authorize! :reload, :admin_models
+      respond_to do |format|
+        format.js do
+          ScDataShipsWorker.perform_async
+          render json: true
+        end
+        format.html do
+          redirect_to root_path
+        end
+      end
+    end
+
     def reload_one
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
           ModelWorker.perform_async(model.rsi_id)
+          ScDataShipWorker.perform_async(model.id) if model.sc_identifier.present?
           render json: true
         end
         format.html do
@@ -106,7 +120,7 @@ module Admin
         :classification, :description, :production_status, :production_note, :size,
         :scm_speed, :afterburner_speed, :cruise_speed, :ground_speed, :afterburner_ground_speed,
         :pitch_max, :yaw_max, :roll_max, :max_crew, :min_crew, :price, :last_pledge_price,
-        :rsi_id, :dock_size, :data_slug,
+        :rsi_id, :dock_size, :sc_identifier,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
