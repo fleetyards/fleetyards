@@ -49,6 +49,8 @@ module ScData
       end.map do |component_ref|
         component_data = components_loader.load(component_ref['entityClassName'])
 
+        next if component_data.blank?
+
         cargo_dimensions = component_data.dig(:component, 'SCItemCargoGridParams', 'dimensions') || {}
 
         next if cargo_dimensions.blank?
