@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.10](https://github.com/fleetyards/fleetyards/compare/v4.4.9...v4.4.10) (2020-12-20)
+
+
+### Bug Fixes
+
+* fleet and hangar stats for ships by manufacturer ([6b35a66](https://github.com/fleetyards/fleetyards/commit/6b35a667ebd9d5c54dd94f3db606718243dbd19f))
+* trade route worker ([c7c22af](https://github.com/fleetyards/fleetyards/commit/c7c22af6a32c29f279bf0f249c3aa9d0cab437df))
+
 ### [4.4.9](https://github.com/fleetyards/fleetyards/compare/v4.4.8...v4.4.9) (2020-12-03)
 
 
