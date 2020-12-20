@@ -137,7 +137,11 @@ module ScData
     end
 
     private def extract_hardpoint(hardpoint_type, model_id, component_ref)
+      sleep 2
+
       component_data = components_loader.extract_from_ref(component_ref)
+
+      return if component_data.blank?
 
       hardpoint = ModelHardpoint.find_or_create_by!(
         source: :game_files,

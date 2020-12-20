@@ -16,6 +16,8 @@ module ScData
 
       component_data = load(sc_identifier)
 
+      return if component_data.blank?
+
       loadouts = extract_loadouts(component_ref)
       loadout_identifier = loadouts.first['entityClassName'] if loadouts.present?
 
