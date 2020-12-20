@@ -7,8 +7,8 @@ class TradeRoutesWorker
   def perform
     ids = []
 
-    ShopCommodity.visible.commodity.where.not(sell_price: nil).find_each do |origin|
-      ShopCommodity.visible.commodity.where(commodity_item_id: origin.commodity_item_id).where.not(buy_price: nil).find_each do |destination|
+    ShopCommodity.visible.where.not(sell_price: nil).find_each do |origin|
+      ShopCommodity.visible.where(commodity_item_id: origin.commodity_item_id).where.not(buy_price: nil).find_each do |destination|
         next unless (destination.buy_price - origin.sell_price).positive?
 
         trade_route = TradeRoute.find_or_create_by(
