@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.11](https://github.com/fleetyards/fleetyards/compare/v4.4.10...v4.4.11) (2020-12-20)
+
+
+### Bug Fixes
+
+* sc data loader ([eb7846c](https://github.com/fleetyards/fleetyards/commit/eb7846ca78b8faab443a3aa7a8783e1d3885d2dc))
+* trader routes prices ([3033926](https://github.com/fleetyards/fleetyards/commit/303392694119689bbadb07408e6165b7ae8fd9b1))
+
 ### [4.4.10](https://github.com/fleetyards/fleetyards/compare/v4.4.9...v4.4.10) (2020-12-20)
 
 
