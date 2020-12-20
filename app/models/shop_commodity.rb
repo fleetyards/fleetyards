@@ -154,14 +154,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_buy_prices
-    buy_prices = commodity_buy_prices
-      .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
-      .order(created_at: :desc).pluck(:price)
+    scope = commodity_buy_prices
+      .where(confirmed: true)
+      .order(created_at: :desc)
+
+    buy_prices = scope.pluck(:price)
+    average_buy_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
 
     if buy_prices.present?
+      average_buy_prices = if average_buy_prices.present?
+                             average_buy_prices.sum / average_buy_prices.size
+                           else
+                             buy_prices.sum / buy_prices.size
+                           end
+
       update(
         buy_price: buy_prices.first,
-        average_buy_price: buy_prices.sum / buy_prices.size
+        average_buy_price: average_buy_prices
       )
     else
       update(
@@ -172,14 +181,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_sell_prices
-    sell_prices = commodity_sell_prices
-      .where(created_at: (Time.zone.today - 1.month).., confirmed: true)
-      .order(created_at: :desc).pluck(:price)
+    scope = commodity_sell_prices
+      .where(confirmed: true)
+      .order(created_at: :desc)
+
+    sell_prices = scope.pluck(:price)
+    average_sell_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
 
     if sell_prices.present?
+      average_sell_price = if average_sell_prices.present?
+                             average_sell_prices.sum / average_sell_prices.size
+                           else
+                             sell_prices.sum / sell_prices.size
+                           end
+
       update(
         sell_price: sell_prices.first,
-        average_sell_price: sell_prices.sum / sell_prices.size
+        average_sell_price: average_sell_price
       )
     else
       update(
@@ -197,19 +215,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_1_day_prices
-    rental_prices_1_day = commodity_rental_prices
-      .where(
-        created_at: (Time.zone.today - 1.month)..,
-        time_range: '1-day',
-        confirmed: true
-      )
+    scope = commodity_rental_prices
+      .where(time_range: '1-day', confirmed: true)
       .order(created_at: :desc)
-      .pluck(:price)
 
-    if rental_prices_1_day.present?
+    rental_prices = scope.pluck(:price)
+    average_rental_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
+
+    if rental_prices.present?
+      average_rental_price = if average_rental_prices.present?
+                               average_rental_prices.sum / average_rental_prices.size
+                             else
+                               rental_prices.sum / rental_prices.size
+                             end
+
       update(
-        rental_price_1_day: rental_prices_1_day.first,
-        average_rental_price_1_day: (rental_prices_1_day.sum / rental_prices_1_day.size)
+        rental_price_1_day: rental_prices.first,
+        average_rental_price_1_day: average_rental_price
       )
     else
       update(
@@ -220,19 +242,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_3_days_prices
-    rental_prices_3_days = commodity_rental_prices
-      .where(
-        created_at: (Time.zone.today - 1.month)..,
-        time_range: '3-days',
-        confirmed: true
-      )
+    scope = commodity_rental_prices
+      .where(time_range: '3-days', confirmed: true)
       .order(created_at: :desc)
-      .pluck(:price)
 
-    if rental_prices_3_days.present?
+    rental_prices = scope.pluck(:price)
+    average_rental_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
+
+    if rental_prices.present?
+      average_rental_price = if average_rental_prices.present?
+                               average_rental_prices.sum / average_rental_prices.size
+                             else
+                               rental_prices.sum / rental_prices.size
+                             end
+
       update(
-        rental_price_3_days: rental_prices_3_days.first,
-        average_rental_price_3_days: (rental_prices_3_days.sum / rental_prices_3_days.size)
+        rental_price_3_days: rental_prices.first,
+        average_rental_price_3_days: average_rental_price
       )
     else
       update(
@@ -243,19 +269,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_7_days_prices
-    rental_prices_7_days = commodity_rental_prices
-      .where(
-        created_at: (Time.zone.today - 1.month)..,
-        time_range: '7-days',
-        confirmed: true
-      )
+    scope = commodity_rental_prices
+      .where(time_range: '7-days', confirmed: true)
       .order(created_at: :desc)
-      .pluck(:price)
 
-    if rental_prices_7_days.present?
+    rental_prices = scope.pluck(:price)
+    average_rental_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
+
+    if rental_prices.present?
+      average_rental_price = if average_rental_prices.present?
+                               average_rental_prices.sum / average_rental_prices.size
+                             else
+                               rental_prices.sum / rental_prices.size
+                             end
+
       update(
-        rental_price_7_days: rental_prices_7_days.first,
-        average_rental_price_7_days: (rental_prices_7_days.sum / rental_prices_7_days.size)
+        rental_price_7_days: rental_prices.first,
+        average_rental_price_7_days: average_rental_price
       )
     else
       update(
@@ -266,19 +296,23 @@ class ShopCommodity < ApplicationRecord
   end
 
   def update_30_days_prices
-    rental_prices_30_days = commodity_rental_prices
-      .where(
-        created_at: (Time.zone.today - 1.month)..,
-        time_range: '30-days',
-        confirmed: true
-      )
+    scope = commodity_rental_prices
+      .where(time_range: '30-days', confirmed: true)
       .order(created_at: :desc)
-      .pluck(:price)
 
-    if rental_prices_30_days.present?
+    rental_prices = scope.pluck(:price)
+    average_rental_prices = scope.where(created_at: (Time.zone.today - 1.month)..).pluck(:price)
+
+    if rental_prices.present?
+      average_rental_price = if average_rental_prices.present?
+                               average_rental_prices.sum / average_rental_prices.size
+                             else
+                               rental_prices.sum / rental_prices.size
+                             end
+
       update(
-        rental_price_30_days: rental_prices_30_days.first,
-        average_rental_price_30_days: (rental_prices_30_days.sum / rental_prices_30_days.size)
+        rental_price_30_days: rental_prices.first,
+        average_rental_price_30_days: average_rental_price
       )
     else
       update(
