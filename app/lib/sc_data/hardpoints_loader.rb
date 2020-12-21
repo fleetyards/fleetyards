@@ -102,7 +102,7 @@ module ScData
       hardpoint_ids = []
 
       components.select do |component_ref|
-        component_ref['itemPortName'].downcase =~ /.*missile.*/
+        component_ref['itemPortName'].downcase =~ /.*(missile|missilerack).*/ && component_ref['itemPortName'].downcase !~ /.*turret.*/
       end.map do |component_ref|
         hardpoint_ids << extract_hardpoint(hardpoint_type, model_id, component_ref)&.id
       end

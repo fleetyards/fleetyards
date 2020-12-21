@@ -21,7 +21,7 @@ module Rsi
     def run(data, model)
       hardpoint_ids = []
 
-      cleanup_game_file_hardpoints(model.id)
+      cleanup_game_file_hardpoints(model.id, model.sc_identifier)
 
       hardpoints_data(data, model.sc_identifier).each do |hardpoint_data|
         (1..hardpoint_data[:mounts].to_i).each do |mount|
