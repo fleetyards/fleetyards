@@ -38,13 +38,13 @@ class ModelHardpoint < ApplicationRecord
   GAME_FILE_HARDPOINT_TYPES = {
     power_plants: 10, coolers: 11, shield_generators: 12,
     quantum_drives: 22,
-    main_thrusters: 30, maneuvering_thrusters: 31,
     weapons: 40, turrets: 41, missiles: 42,
   }.freeze
 
   SHIP_MATRIX_HARDPOINT_TYPES = {
     radar: 0, computers: 1,
     fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24,
+    main_thrusters: 30, maneuvering_thrusters: 31,
     utility_items: 43
   }.freeze
 

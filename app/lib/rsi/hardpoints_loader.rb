@@ -21,16 +21,30 @@ module Rsi
     def run(data, model)
       hardpoint_ids = []
 
+      cleanup_game_file_hardpoints(model.id)
+
       hardpoints_data(data, model.sc_identifier).each do |hardpoint_data|
         (1..hardpoint_data[:mounts].to_i).each do |mount|
           hardpoint_ids << create_or_update(hardpoint_data, model.id, mount).id
         end
       end
 
+      cleanup_old_hardpoints(model.id, model.sc_identifier, hardpoint_ids)
+    end
+
+    private def cleanup_game_file_hardpoints(model_id, model_sc_identifier)
+      ModelHardpoint.where(
+        source: :game_files,
+        model_id: model_id,
+        hardpoint_type: hardpoint_types(model_sc_identifier)
+      ).update(deleted_at: Time.zone.now)
+    end
+
+    private def cleanup_old_hardpoints(model_id, model_sc_identifier, hardpoint_ids)
       ModelHardpoint.where(
         source: :ship_matrix,
-        model_id: model.id,
-        hardpoint_type: hardpoint_types(model.sc_identifier)
+        model_id: model_id,
+        hardpoint_type: hardpoint_types(model_sc_identifier)
       ).where.not(id: hardpoint_ids)
         .update(deleted_at: Time.zone.now)
     end
