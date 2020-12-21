@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.13](https://github.com/fleetyards/fleetyards/compare/v4.4.12...v4.4.13) (2020-12-21)
+
+
+### Bug Fixes
+
+* hardpoint loader ([92b5936](https://github.com/fleetyards/fleetyards/commit/92b5936f8b89de56b2201ba1f0ab7ff0c6f140ba))
+* specs ([494e3e1](https://github.com/fleetyards/fleetyards/commit/494e3e1d1fd28c82a639306d2deca9be5e89cd67))
+
 ### [4.4.12](https://github.com/fleetyards/fleetyards/compare/v4.4.11...v4.4.12) (2020-12-20)
 
 ### [4.4.11](https://github.com/fleetyards/fleetyards/compare/v4.4.10...v4.4.11) (2020-12-20)
