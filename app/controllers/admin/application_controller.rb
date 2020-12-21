@@ -22,17 +22,12 @@ module Admin
       render 'errors/error', status: :unprocessable_entity
     end
 
-    def worker_running?
-      model_queue = Sidekiq::Queue.new(ENV['MODEL_LOADER_QUEUE'] || 'fleetyards_model_loader')
-      sc_data_queue = Sidekiq::Queue.new(ENV['SC_DATA_SHIP_QUEUE'] || 'fleetyards_sc_data_ship_loader')
-      process = Sidekiq::ProcessSet.new
-      running_processes = process.sum { |ps| ps['busy'] }
-      if sc_data_queue.size.zero? && model_queue.size.zero? && running_processes.zero?
-        false
-      else
-        true
+    def worker_running?(name)
+      Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
+        work['queue'] == name
       end
     end
+    helper_method :worker_running?
 
     private def unauthorized_controllers
       devise_controller?

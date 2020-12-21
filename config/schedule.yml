@@ -7,15 +7,15 @@ production: &production
   rsi_news_worker_job:
     cron: '*/15 * * * *' # Every 15 Minutes
     class: 'RsiNewsWorker'
-  models_worker_job:
-    cron: '*/20 * * * *' # Every 20 Minutes
-    class: 'ModelsWorker'
   roadmap_worker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'RoadmapWorker'
   trade_route_calculator_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'
+  models_worker_job:
+    cron: '0 20 */1 * *' # Daily at 20:00
+    class: 'ModelsWorker'
   prices_worker_job:
     cron: '0 21 */1 * *' # Daily at 21:00
     class: 'PricesWorker'

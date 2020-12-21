@@ -30,8 +30,7 @@ window.App.Models.reload = ($element) ->
       displayAlert I18n.t("messages.reload.startet", resource: I18n.t("resources.models"))
       App.Models.loadInterval = setInterval ->
         App.Models.checkWorkerState(laddaButton, $element)
-      , 3000
-
+      , 10000
 
 window.addEventListener 'load', ->
   if $('#admin, #models').length
@@ -44,4 +43,4 @@ window.addEventListener 'load', ->
         App.Models.workerPath = $('.reload-models').data('workerpath')
         App.Models.loadInterval = setInterval ->
           App.Models.checkWorkerState(laddaButton, $(element))
-        , 3000
+        , 10000
