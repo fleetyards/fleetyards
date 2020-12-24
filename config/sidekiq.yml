@@ -15,5 +15,4 @@
   - fleetyards_price_calculator
   - fleetyards_sc_data_ship_loader
   - fleetyards_sc_data_ships_loader
-  - fleetyards_sc_data_component_loader
-  - fleetyards_sc_data_components_loader
+  - fleetyards_progress_tracker_loader

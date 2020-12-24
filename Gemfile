@@ -17,6 +17,8 @@ gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
 
+gem 'graphql-client'
+
 gem 'searchkick'
 
 gem 'discordrb-webhooks'

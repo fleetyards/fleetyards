@@ -6,6 +6,9 @@ en:
     roadmap_update:
       title: New changes on the Roadmap
       message: There have been %{changes} changes to the Roadmap
+    progress_tracker_update:
+      title: New changes on the Progress Tracker
+      message: There have been %{changes} changes on the Progress Tracker
     ship_on_sale:
       title: The %{model} is now on Sale!
       message: Starting at %{price} excl. VAT
