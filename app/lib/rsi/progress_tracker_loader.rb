@@ -77,7 +77,7 @@ module Rsi
 
       result.data.roadmap.each do |team|
         team.deliverables.each do |deliverable|
-          key = [team.title, deliverable.title, deliverable.start_date].join('-')
+          key = [team.title, deliverable.title, deliverable.start_date, deliverable.end_date].join('-')
           item = ProgressTrackerItem.find_or_create_by(key: key)
 
           item.update(
