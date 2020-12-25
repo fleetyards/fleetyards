@@ -10,6 +10,9 @@ production: &production
   roadmap_worker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'RoadmapWorker'
+  progress_tracker_worker_job:
+    cron: '*/20 * * * *' # Every 20 Minutes
+    class: 'ProgressTrackerWorker'
   trade_route_calculator_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesWorker'

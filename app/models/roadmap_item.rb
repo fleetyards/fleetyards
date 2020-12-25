@@ -35,7 +35,7 @@ class RoadmapItem < ApplicationRecord
 
   ransack_alias :last_updated_at, :versions_created_at
 
-  def self.activen
+  def self.active
     where(active: true)
   end
 

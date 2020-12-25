@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_222528) do
+ActiveRecord::Schema.define(version: 2020_12_24_203609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -495,6 +495,22 @@ ActiveRecord::Schema.define(version: 2020_12_01_222528) do
     t.uuid "model_module_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "progress_tracker_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key"
+    t.string "team"
+    t.string "title"
+    t.string "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "projects"
+    t.integer "discipline_counts"
+    t.string "time_allocations"
+    t.uuid "model_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_progress_tracker_items_on_key", unique: true
   end
 
   create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

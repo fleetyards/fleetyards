@@ -46,6 +46,11 @@ en:
         headline: New changes on the Roadmap
         subject: New changes on the Roadmap
         body: There have been %{changes} changes to the Roadmap
+    progress_tracker:
+      admin:
+        headline: New changes on the Progress Tracker
+        subject: New changes on the Progress Tracker
+        body: There have been %{changes} changes on the Progress Tracker
     fleet_membership:
       new_invite:
         subject: New Fleet Invite
