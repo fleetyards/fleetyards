@@ -1,0 +1,6 @@
+<h4>
+  <%= I18n.t("mailer.progress_tracker.admin.headline") %>
+</h4>
+<p>
+  <%= I18n.t("mailer.progress_tracker.admin.body", changes: @changes) %>
+</p>
