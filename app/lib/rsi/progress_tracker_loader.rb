@@ -4,7 +4,7 @@ require 'graphql/client'
 require 'graphql/client/http'
 
 module Rsi
-  class ProgressTrackerLoader
+  class ProgressTrackerLoader < ::Rsi::BaseLoader
     HTTP = GraphQL::Client::HTTP.new('https://robertsspaceindustries.com/graphql')
 
     Schema = GraphQL::Client.load_schema('public/rsi_roadmap_schema.json')
@@ -77,9 +77,12 @@ module Rsi
 
       result.data.roadmap.each do |team|
         team.deliverables.each do |deliverable|
-          item = ProgressTrackerItem.find_or_create_by(title: deliverable.title, team: team.title)
+          key = [team.title, deliverable.title, deliverable.start_date].join('-')
+          item = ProgressTrackerItem.find_or_create_by(key: key)
 
           item.update(
+            team: team.title,
+            title: deliverable.title,
             description: deliverable.description,
             start_date: deliverable.start_date,
             end_date: deliverable.end_date,
@@ -89,6 +92,7 @@ module Rsi
                 logo: project.logo
               }
             end,
+            discipline_counts: deliverable.time_allocations.count,
             time_allocations: deliverable.time_allocations.map do |time_allocation|
               {
                 start_date: time_allocation.start_date,
@@ -97,7 +101,8 @@ module Rsi
                 color: time_allocation.discipline.color,
                 members: time_allocation.discipline.count_members,
               }
-            end
+            end,
+            model: find_model_for_deliverable(deliverable.title)
           )
 
           item_ids << item.id
@@ -105,6 +110,31 @@ module Rsi
       end
 
       ProgressTrackerItem.where.not(id: item_ids).pluck(:id)
+    end
+
+    private def find_model_for_deliverable(name)
+      Model.where('name ILIKE ?', strip_tracker_name(name)).first
+    end
+
+    private def strip_tracker_name(name)
+      name_mapping(strip_name(name).gsub(/(?:Gold Standard)/, '').strip)
+    end
+
+    private def name_mapping(name)
+      mapping = {
+        'Hercules Starlifter C2' => 'C2 Hercules',
+        'Hercules Starlifter M2' => 'M2 Hercules',
+        'Hercules Starlifter A2' => 'A2 Hercules',
+        'Ares Starfighter Ion' => 'Ares Ion',
+        'Ares Starfighter Inferno' => 'Ares Inferno',
+        'Nova Tonk' => 'Nova',
+        'Retaliator' => 'Retaliator Base',
+        'MPUV' => 'MPUV Cargo'
+      }
+
+      return mapping[name] if mapping[name].present?
+
+      name
     end
   end
 end
