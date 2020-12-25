@@ -77,8 +77,7 @@ module Rsi
 
       result.data.roadmap.each do |team|
         team.deliverables.each do |deliverable|
-          key = Digest::MD5.hexdigest([team.title, deliverable.title, deliverable.start_date, deliverable.end_date].join('-'))
-          item = ProgressTrackerItem.find_or_create_by(key: key)
+          item = ProgressTrackerItem.find_or_create_by(key: generate_key(team.title, deliverable))
 
           item.update(
             team: team.title,
@@ -109,7 +108,25 @@ module Rsi
         end
       end
 
-      ProgressTrackerItem.where.not(id: item_ids).pluck(:id)
+      cleanup_items(item_ids)
+    end
+
+    private def generate_key(team, deliverable)
+      Digest::MD5.hexdigest(
+        [
+          team,
+          deliverable.title,
+          deliverable.description,
+          deliverable.start_date,
+          deliverable.end_date
+        ].join
+      )
+    end
+
+    private def cleanup_items(item_ids)
+      ProgressTrackerItem.where.not(id: item_ids).find_each do |progress_tracker_item|
+        progress_tracker_item.update(deleted_at: Time.current)
+      end
     end
 
     private def find_model_for_deliverable(name)

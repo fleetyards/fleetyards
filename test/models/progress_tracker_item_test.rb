@@ -5,6 +5,7 @@
 # Table name: progress_tracker_items
 #
 #  id                :uuid             not null, primary key
+#  deleted_at        :datetime
 #  description       :string
 #  discipline_counts :integer
 #  end_date          :date
