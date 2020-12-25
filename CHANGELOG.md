@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.16](https://github.com/fleetyards/fleetyards/compare/v4.4.15...v4.4.16) (2020-12-25)
+
+
+### Bug Fixes
+
+* add missing mailer template ([f216c29](https://github.com/fleetyards/fleetyards/commit/f216c295dc3f2383b12ed12bed29a25afb26714b))
+* saveguard refs access ([765bd82](https://github.com/fleetyards/fleetyards/commit/765bd8253e3ddd463a2107a2f255d43e88da7f85))
+* trade route key ([f2125d1](https://github.com/fleetyards/fleetyards/commit/f2125d1dc80dd25f0fd40262c2e0ff35473b04e5))
+* try to create a unique key for progress tracker items ([6c6811b](https://github.com/fleetyards/fleetyards/commit/6c6811b93d6cc6fc1cde55aff5e7c4037e24d6c5))
+
 ### [4.4.15](https://github.com/fleetyards/fleetyards/compare/v4.4.14...v4.4.15) (2020-12-25)
 
 ### [4.4.14](https://github.com/fleetyards/fleetyards/compare/v4.4.13...v4.4.14) (2020-12-21)
