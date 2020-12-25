@@ -122,9 +122,7 @@ export default class FilterGroup extends Vue {
   @Prop({ default: null }) error!: string
 
   @Prop({
-    default: () => {
-      return []
-    },
+    default: () => [],
   })
   options!: any[]
 
@@ -455,7 +453,11 @@ export default class FilterGroup extends Vue {
 
   focusSearch() {
     if (this.searchable && this.visible) {
-      this.$nextTick(() => this.$refs.searchInput.setFocus())
+      this.$nextTick(() => {
+        if (this.$refs.searchInput) {
+          this.$refs.searchInput.setFocus()
+        }
+      })
     }
   }
 }

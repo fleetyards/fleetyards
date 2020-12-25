@@ -138,9 +138,7 @@ export default class FilterGroup extends Vue {
   @Prop({ default: 'findAll' }) collectionMethod: string
 
   @Prop({
-    default: () => {
-      return {}
-    },
+    default: () => ({}),
   })
   collectionFilter!: Object
 
@@ -468,7 +466,11 @@ export default class FilterGroup extends Vue {
 
   focusSearch() {
     if (this.searchable && this.visible) {
-      this.$nextTick(() => this.$refs.searchInput.setFocus())
+      this.$nextTick(() => {
+        if (this.$refs.searchInput) {
+          this.$refs.searchInput.setFocus()
+        }
+      })
     }
   }
 }
