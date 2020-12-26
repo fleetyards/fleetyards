@@ -77,7 +77,7 @@ module Rsi
 
       result.data.roadmap.each do |team|
         team.deliverables.each do |deliverable|
-          item = ProgressTrackerItem.find_or_create_by(key: generate_key(team.title, deliverable))
+          item = ProgressTrackerItem.find_or_initialize_by(key: generate_key(team.title, deliverable))
 
           item.update(
             team: team.title,
