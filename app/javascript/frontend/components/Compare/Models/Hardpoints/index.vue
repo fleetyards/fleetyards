@@ -10,7 +10,7 @@
             class="text-right metrics-title"
             @click="toggle(group.toLowerCase())"
           >
-            {{ $t(`labels.hardpoint.categories.${group.toLowerCase()}`) }}
+            {{ $t(`labels.hardpoint.groups.${group.toLowerCase()}`) }}
             <i class="fa fa-chevron-right" />
           </div>
         </div>
