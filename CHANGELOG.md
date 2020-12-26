@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.18](https://github.com/fleetyards/fleetyards/compare/v4.4.17...v4.4.18) (2020-12-26)
+
+
+### Bug Fixes
+
+* compare models labels ([d417531](https://github.com/fleetyards/fleetyards/commit/d41753148d7b9643dfa370896e179d32800a1d3c))
+
 ### [4.4.17](https://github.com/fleetyards/fleetyards/compare/v4.4.16...v4.4.17) (2020-12-25)
 
 ### [4.4.16](https://github.com/fleetyards/fleetyards/compare/v4.4.15...v4.4.16) (2020-12-25)
