@@ -75,6 +75,8 @@ module Rsi
 
       item_ids = []
 
+      return if result.data.blank?
+
       result.data.roadmap.each do |team|
         team.deliverables.each do |deliverable|
           item = ProgressTrackerItem.find_or_initialize_by(key: generate_key(team.title, deliverable))
@@ -146,7 +148,8 @@ module Rsi
         'Ares Starfighter Inferno' => 'Ares Inferno',
         'Nova Tonk' => 'Nova',
         'Retaliator' => 'Retaliator Base',
-        'MPUV' => 'MPUV Cargo'
+        'MPUV' => 'MPUV Cargo',
+        'Idris' => 'Idris-M'
       }
 
       return mapping[name] if mapping[name].present?

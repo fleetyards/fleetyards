@@ -2,6 +2,7 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'
+import Qs from 'qs'
 
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
@@ -11,6 +12,11 @@ const client = axios.create({
       'Content-Type': 'application/json',
     },
   },
+  paramsSerializer: params =>
+    Qs.stringify(params, {
+      arrayFormat: 'brackets',
+      encode: false,
+    }),
   withCredentials: true,
 })
 
@@ -74,6 +80,7 @@ export async function get(path, params = {}, silent = false) {
     })
     return handleResponse(response, params, silent)
   } catch (error) {
+    console.log(error)
     return handleError(error, silent)
   }
 }

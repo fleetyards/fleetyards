@@ -37,6 +37,7 @@ en:
       long: ! '%A, %B %e, %Y'
       short: ! '%b. %d'
       month: ! '%B'
+      label: ! '%e. %B %Y'
       month_short: ! '%b.'
       month_year_short: ! '%b. %y'
       month_year: ! '%B %Y'

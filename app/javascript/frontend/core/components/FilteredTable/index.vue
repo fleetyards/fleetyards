@@ -144,9 +144,7 @@ export default class FilteredTable extends Vue {
   @Prop({ default: false }) selectable!: boolean
 
   @Prop({
-    default: () => {
-      return []
-    },
+    default: () => [],
   })
   selected!: string[]
 
@@ -165,9 +163,7 @@ export default class FilteredTable extends Vue {
 
     return this.records
       .map(record => record.id)
-      .every(recordId => {
-        return this.internalSelected.includes(recordId)
-      })
+      .every(recordId => this.internalSelected.includes(recordId))
   }
 
   get scopedSlots() {
@@ -194,9 +190,9 @@ export default class FilteredTable extends Vue {
         ...this.records.map(record => record.id),
       ].filter(uniqArray)
     } else {
-      this.internalSelected = [...this.internalSelected].filter(selected => {
-        return !this.records.map(record => record.id).includes(selected)
-      })
+      this.internalSelected = [...this.internalSelected].filter(
+        selected => !this.records.map(record => record.id).includes(selected),
+      )
     }
   }
 

@@ -27,6 +27,7 @@ class Search < Thor
     puts Station.search_index.clean_indices && '--> Stations Reindexed'
     puts CelestialObject.search_index.clean_indices && '--> CelestialObjects Reindexed'
     puts Starsystem.search_index.clean_indices && '--> Starsystems Reindexed'
+    puts ProgressTrackerItem.search_index.clean_indices && '--> ProgressTrackerItems Reindexed'
 
     puts
     puts 'Finished'
@@ -47,7 +48,6 @@ class Search < Thor
     puts
 
     puts Model.reindex && '--> Models Reindexed'
-    ShopCommodity.search_index.delete && '--> deleted ShopCommodity Index' if ShopCommodity.search_index.exists?
     puts Component.reindex && '--> Components Reindexed'
     puts Equipment.reindex && '--> Equipment Reindexed'
     puts Commodity.reindex && '--> Commodities Reindexed'
@@ -55,6 +55,7 @@ class Search < Thor
     puts Station.reindex && '--> Stations Reindexed'
     puts CelestialObject.reindex && '--> CelestialObjects Reindexed'
     puts Starsystem.reindex && '--> Starsystems Reindexed'
+    puts ProgressTrackerItem.reindex && '--> ProgressTrackerItems Reindexed'
 
     puts
     puts 'Finished'
@@ -69,15 +70,24 @@ class Search < Thor
   def delete_index
     require './config/environment'
 
-    Model.search_index.delete && '--> deleted Model Index' if Model.search_index.exists?
-    ShopCommodity.search_index.delete && '--> deleted ShopCommodity Index' if ShopCommodity.search_index.exists?
-    Component.search_index.delete && '--> deleted Component Index' if Component.search_index.exists?
-    Equipment.search_index.delete && '--> deleted Equipment Index' if Equipment.search_index.exists?
-    Commodity.search_index.delete && '--> deleted Commodity Index' if Commodity.search_index.exists?
-    Shop.search_index.delete && '--> deleted Shop Index' if Shop.search_index.exists?
-    Station.search_index.delete && '--> deleted Station Index' if Station.search_index.exists?
-    CelestialObject.search_index.delete && '--> deleted CelestialObject Index' if CelestialObject.search_index.exists?
-    Starsystem.search_index.delete && '--> deleted Starsystem Index' if Starsystem.search_index.exists?
+    puts
+    puts 'Starting Deletion...'
+    puts
+
+    puts Model.search_index.delete && '--> deleted Model Index' if Model.search_index.exists?
+    puts ShopCommodity.search_index.delete && '--> deleted ShopCommodity Index' if ShopCommodity.search_index.exists?
+    puts Component.search_index.delete && '--> deleted Component Index' if Component.search_index.exists?
+    puts Equipment.search_index.delete && '--> deleted Equipment Index' if Equipment.search_index.exists?
+    puts Commodity.search_index.delete && '--> deleted Commodity Index' if Commodity.search_index.exists?
+    puts Shop.search_index.delete && '--> deleted Shop Index' if Shop.search_index.exists?
+    puts Station.search_index.delete && '--> deleted Station Index' if Station.search_index.exists?
+    puts CelestialObject.search_index.delete && '--> deleted CelestialObject Index' if CelestialObject.search_index.exists?
+    puts Starsystem.search_index.delete && '--> deleted Starsystem Index' if Starsystem.search_index.exists?
+    puts ProgressTrackerItem.search_index.delete && '--> deleted ProgressTrackerItems Index' if ProgressTrackerItem.search_index.exists?
+
+    puts
+    puts 'Finished'
+    puts
   end
   # rubocop:enable Metrics/CyclomaticComplexity
 end

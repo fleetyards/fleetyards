@@ -1,5 +1,4 @@
 export default {
-  search: 'Search the Verse...',
   name: 'Name',
   login: 'Username or E-Mail',
   username: 'Username',
@@ -18,6 +17,10 @@ export default {
     'models-fleetchart': 'Avenger, Carrack, Cutlass...',
     'hangar': 'Enterprise, Andromeda...',
     'stations': 'Search for Stations...',
+  },
+  search: {
+    'default': 'Search the Verse...',
+    'roadmap-progress-tracker': 'Search',
   },
   home: {
     search: 'Search for Ships...',

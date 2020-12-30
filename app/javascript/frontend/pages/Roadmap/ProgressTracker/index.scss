@@ -1,0 +1,12 @@
+.progress-tracker {
+  .panel-heading .panel-title {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 0;
+  }
+
+  .progress-tracker-item-team {
+    display: flex;
+    justify-content: space-between;
+  }
+}
