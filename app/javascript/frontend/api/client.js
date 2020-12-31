@@ -80,7 +80,6 @@ export async function get(path, params = {}, silent = false) {
     })
     return handleResponse(response, params, silent)
   } catch (error) {
-    console.log(error)
     return handleError(error, silent)
   }
 }
