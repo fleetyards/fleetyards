@@ -25,6 +25,7 @@
                           v-model="searchQuery"
                           size="large"
                           :autofocus="!mobile"
+                          translation-key="search.default"
                           :no-label="true"
                           :clearable="true"
                         />

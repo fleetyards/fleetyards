@@ -46,6 +46,7 @@ gem 'redis-actionpack'
 gem 'ransack'
 
 gem 'jbuilder'
+gem 'oj'
 
 gem 'rails-i18n'
 

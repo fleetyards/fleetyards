@@ -47,6 +47,8 @@ v1_api_routes = lambda do
     get :weeks, on: :collection
   end
 
+  resources :progress_tracker_items, path: 'progress-tracker-items', only: %i[index]
+
   resources :search, only: %i[index]
 
   resources :users, only: [] do

@@ -278,6 +278,11 @@ en:
           3-days: 3 Days
           7-days: 7 Days
           30-days: 30 Days
+      progress_tracker_item:
+        statuses:
+          planned: Planned
+          in_progress: In Progress
+          done: Done
     errors:
       messages:
         blank: Please fill out the Field
