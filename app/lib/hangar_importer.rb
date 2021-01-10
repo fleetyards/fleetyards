@@ -35,6 +35,7 @@ class HangarImporter
       name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
       normalized_name = normalize(name)
       slug = item[:slug].downcase if item[:slug].present?
+      slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
       query = [
         MODEL_FIND_QUERY.join(' OR '),
