@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 set :rails_env, 'production'
-set :deploy_to, '/home/fleetyards'
 set :branch, -> { ENV['CIRCLE_TAG'] || 'main' }
 set :branch_spec, ->(rev) { available_tags.include?(rev) }
 set :branch_spec_type, 'a git tag'

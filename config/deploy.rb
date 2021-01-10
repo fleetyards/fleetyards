@@ -3,6 +3,7 @@
 lock '~> 3.11'
 
 set :application, 'fleetyards'
+set :deploy_to, '/home/fleetyards'
 set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
 set :keep_releases, 10
@@ -28,7 +29,6 @@ set :linked_dirs, [
 ]
 
 set :linked_files, [
-  'config/database.yml',
   '.rbenv-vars',
   'blocklist.json',
   'reserved_usernames.json'
