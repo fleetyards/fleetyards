@@ -43,6 +43,26 @@ class ProgressTrackerItem < ApplicationRecord
 
   scope :search_import, -> { where(deleted_at: nil) }
 
+  def self.team_filters
+    ProgressTrackerItem.all.map(&:team).reject(&:blank?).compact.uniq.sort.map do |item|
+      Filter.new(
+        category: 'team',
+        name: item.humanize,
+        value: item
+      )
+    end
+  end
+
+  def self.status_filters
+    %w[planned in_progress done].map do |item|
+      Filter.new(
+        category: 'status',
+        name: item.humanize,
+        value: item
+      )
+    end
+  end
+
   def search_data
     {
       title: title,

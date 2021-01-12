@@ -19,6 +19,16 @@ module Api
         )
       end
 
+      def team_filters
+        authorize! :index, :api_roadmap
+        @filters = ProgressTrackerItem.team_filters
+      end
+
+      def status_filters
+        authorize! :index, :api_roadmap
+        @filters = ProgressTrackerItem.status_filters
+      end
+
       private def search_params
         @search_params ||= params.permit(:search)[:search] || '*'
       end
