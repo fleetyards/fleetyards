@@ -1,6 +1,6 @@
-<h4>
+<h2>
   <%= I18n.t('mailer.fleet_membership.new_invite.headline', fleet: @fleet.name) %>
-</h4>
+</h2>
 <p>
   <%= I18n.t('mailer.fleet_membership.new_invite.body') %>
 </p>

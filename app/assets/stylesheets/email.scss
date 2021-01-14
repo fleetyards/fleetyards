@@ -3,6 +3,7 @@ $primary-color: #428bca;
 $global-font-color: #c8c8c8;
 $body-background: #272b30;
 $container-background: #272b30;
+$global-width: 640px;
 $body-font-family: 'Open Sans', sans-serif;
 
 @import 'partials/email-fonts';
@@ -11,7 +12,6 @@ $body-font-family: 'Open Sans', sans-serif;
 body,
 html,
 .body {
-  font-size: 1em;
   background: $body-background !important;
 }
 
@@ -20,14 +20,10 @@ html,
   border-radius: 2px;
 }
 
-h4 {
-  padding-top: 10px;
-  font-size: 1.2em;
-}
-
 h1 {
+  margin: 0;
   color: $global-font-color;
-  font-size: 1.7em;
+  font-weight: bold;
   font-family: 'Orbitron', sans-serif;
 
   small {

@@ -2,17 +2,21 @@
 en:
   app: FleetYards.net
   admin_app: FleetYards.net Command
+  copyright:  Copyright
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
     server_error: The Page is currently not available. Please try again later.
     unprocessable_entity: Your Request could not be processed.
   mailer:
-    hello: Hello %{username}!
+    hello: Hello %{username}
+    privacy: Privacy policy
+    settings: Notification Settings
+    unsubscribe: Unsubscribe
     model:
       new:
-        subject: New Ship/Vehicle added
-        headline: New Ship/Vehicle added
-        body: "Allow me to introduce: The %{manufacturer}"
+        subject: New Ship/Vehicle
+        headline_part_1: "Allow me to introduce:"
+        headline_part_2: "The %{manufacturer}"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
     admin:

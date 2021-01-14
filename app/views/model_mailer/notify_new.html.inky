@@ -1,7 +1,11 @@
-<h4>
-  <%= I18n.t("mailer.model.new.headline") %>
-</h4>
-<p>
-  <%= I18n.t("mailer.model.new.body", manufacturer: @model.manufacturer.name) %>
+<h2>
+  <small>
+    <%= I18n.t("mailer.model.new.headline_part_1") %>
+  </small>
+  <br>
+  <%= I18n.t("mailer.model.new.headline_part_2", manufacturer: @model.manufacturer.name) %>
   <a href="<%= frontend_url(slug: @model.slug) %>" target="_blank"><%= @model.name %></a>!
+</h2>
+<p>
+  <img src="<%= @model.store_image.medium.url %>" alt="<%= @model.name %>">
 </p>

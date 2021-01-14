@@ -1,14 +1,19 @@
-<h4>
+<h2>
   <%= I18n.t('mailer.hello', username: @vehicle.user.username) %>
-</h4>
+</h2>
 <p>
-  <%= I18n.t('mailer.vehicle.on_sale.headline.part_one') %>
-  <a href="<%= frontend_url(slug: @vehicle.model.slug) %>" target="_blank">
-    <%= @vehicle.model.name %>
-  </a>
-  <%= I18n.t('mailer.vehicle.on_sale.headline.part_two') %>
+  <img src="<%= @vehicle.model.store_image.medium.url %>" alt="<%= @vehicle.model.name %>">
+  <h4>
+    <small>
+      <%= I18n.t('mailer.vehicle.on_sale.headline.part_one') %>
+    </small>
+    <a href="<%= frontend_url(slug: @vehicle.model.slug) %>" target="_blank">
+      <%= @vehicle.model.name %>
+    </a>
+    <%= I18n.t('mailer.vehicle.on_sale.headline.part_two') %>
+  </h4>
 </p>
-<p>
+<p class="text-right">
   <%= I18n.t('mailer.vehicle.on_sale.price', price: number_to_currency(@vehicle.model.pledge_price)) %>
   <%= I18n.t('labels.tax_excluded') %>
 </p>
