@@ -12,7 +12,7 @@ portolisar.update!(
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/portolisar.jpg').open,
   hidden: false,
-  refinary: true
+  refinery: true
 )
 
 portolisar.docks.destroy_all

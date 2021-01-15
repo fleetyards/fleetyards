@@ -12,7 +12,7 @@ baijini.update!(
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
   hidden: false,
-  refinary: true,
+  refinery: true,
   cargo_hub: true
 )
 

@@ -12,7 +12,7 @@ porttressler.update!(
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
   hidden: false,
-  refinary: true,
+  refinery: true,
   cargo_hub: true
 )
 

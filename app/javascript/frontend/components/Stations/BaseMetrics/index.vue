@@ -31,9 +31,9 @@
       </div>
       <div class="row">
         <div class="col-6">
-          <div class="metrics-label">{{ $t('station.refinary') }}:</div>
+          <div class="metrics-label">{{ $t('station.refinery') }}:</div>
           <div class="metrics-value">
-            {{ $t(`labels.${station.refinary}`) }}
+            {{ $t(`labels.${station.refinery}`) }}
           </div>
         </div>
         <div class="col-6">

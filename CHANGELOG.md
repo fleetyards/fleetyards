@@ -233,8 +233,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 * add admin view for confirmations ([1baeb1b](https://github.com/fleetyards/fleetyards/commit/1baeb1bc15b599b54fcf23a04aa32f321bbaba17))
 * add per page selector for hangar ([374f5cf](https://github.com/fleetyards/fleetyards/commit/374f5cf75da3c9c34e018d450ed6f6608d2316bd))
-* add refinary flag to shops ([647edb1](https://github.com/fleetyards/fleetyards/commit/647edb186c0051a222632f5172f9a1cd6c802840))
-* add refinary info to stations ([9705ed7](https://github.com/fleetyards/fleetyards/commit/9705ed702737f1b470d571e91ba7368e19dc9b73))
+* add refinery flag to shops ([647edb1](https://github.com/fleetyards/fleetyards/commit/647edb186c0051a222632f5172f9a1cd6c802840))
+* add refinery info to stations ([9705ed7](https://github.com/fleetyards/fleetyards/commit/9705ed702737f1b470d571e91ba7368e19dc9b73))
 * add submit prices modal and show average prices on trade routes ([d9e8c70](https://github.com/fleetyards/fleetyards/commit/d9e8c704cbe5272dba94775d26729c00fc139ac9))
 * hangar list add bulk actions ([2ab0269](https://github.com/fleetyards/fleetyards/commit/2ab02698390a532b261b3f80c55c1157afa91547))
 * hangar list add bulk actions ([718814e](https://github.com/fleetyards/fleetyards/commit/718814ebfe422a498e7bb48835753c424786154a))

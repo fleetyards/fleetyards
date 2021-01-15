@@ -194,7 +194,7 @@ en:
         rental: Does offer Rentals?
         buying: Does buy Items?
         selling: Does sell Items?
-        refinary_terminal: Has a Refinary Terminal?
+        refinery_terminal: Has a Refinery Terminal?
         shop_types:
           clothing: Clothing Store
           armor: Armor Store
@@ -214,14 +214,14 @@ en:
           mining_equipment: Mining Equipment
           equipment: Equipment
           courier: Courier
-          refinary: Refinary
+          refinery: Refinery
       celestial_object:
         hidden: hidden?
         location_prefix:
           default: 'in the %{starsystem} System'
       station:
         hidden: hidden?
-        refinary: Has Refinary Station?
+        refinery: Has Refinery Station?
         cargo_hub: Has Cargo Hub?
         location_prefix:
           default: 'on'

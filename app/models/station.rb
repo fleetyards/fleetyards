@@ -33,7 +33,7 @@
 class Station < ApplicationRecord
   paginates_per 10
 
-  searchkick searchable: %i[name station_type classification celestial_object starsystem refinary cargo_hub],
+  searchkick searchable: %i[name station_type classification celestial_object starsystem refinery cargo_hub],
              word_start: %i[name],
              filterable: []
 
@@ -45,7 +45,7 @@ class Station < ApplicationRecord
       celestial_object: celestial_object.name,
       starsystem: celestial_object.starsystem&.name,
       cargo_hub: cargo_hub? ? 'Cargo Hub' : '',
-      refinary: refinary? ? 'Refinary' : ''
+      refinery: refinery? ? 'Refinery' : ''
     }
   end
 

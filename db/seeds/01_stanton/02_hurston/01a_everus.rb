@@ -12,7 +12,7 @@ everus.update!(
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
   hidden: hidden,
-  refinary: true,
+  refinery: true,
   cargo_hub: true
 )
 

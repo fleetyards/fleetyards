@@ -39,7 +39,7 @@ export default {
     location: 'Location',
     classification: 'Classification',
     habitable: 'Habitable?',
-    refinary: 'Refinary Station',
+    refinery: 'Refinery Station',
     cargoHub: 'Cargo Hub',
   },
   model: {
@@ -109,7 +109,7 @@ export default {
     celestialObject: 'Location',
     station: 'Station',
     location: '%{name} at %{location}',
-    refinaryTerminal: 'Refinary Terminal',
+    refineryTerminal: 'Refinery Terminal',
   },
   commodityItem: {
     grade: 'Grade',

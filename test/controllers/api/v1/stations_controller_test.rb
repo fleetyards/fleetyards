@@ -41,7 +41,7 @@ module Api
           'backgroundImage' => nil,
           'hasImages' => false,
           'shopListLabel' => arccorp_daymar.shop_list_label,
-          'refinary' => nil,
+          'refinery' => nil,
           'cargoHub' => nil,
           'habitationCounts' => [],
           'dockCounts' => [],
@@ -139,7 +139,7 @@ module Api
           'backgroundImage' => nil,
           'hasImages' => false,
           'shopListLabel' => arccorp_yela.shop_list_label,
-          'refinary' => nil,
+          'refinery' => nil,
           'cargoHub' => nil,
           'habitationCounts' => [],
           'dockCounts' => [],
@@ -237,7 +237,7 @@ module Api
           'backgroundImage' => nil,
           'hasImages' => false,
           'shopListLabel' => corvolex.shop_list_label,
-          'refinary' => nil,
+          'refinery' => nil,
           'cargoHub' => nil,
           'habitationCounts' => [],
           'dockCounts' => [{
@@ -340,7 +340,7 @@ module Api
           'backgroundImage' => nil,
           'hasImages' => false,
           'shopListLabel' => portolisar.shop_list_label,
-          'refinary' => nil,
+          'refinery' => nil,
           'cargoHub' => nil,
           'habitationCounts' => [{
             'count' => 1,
@@ -418,7 +418,7 @@ module Api
           'backgroundImage' => nil,
           'hasImages' => false,
           'shopListLabel' => portolisar.shop_list_label,
-          'refinary' => nil,
+          'refinery' => nil,
           'cargoHub' => nil,
           'habitationCounts' => [{
             'count' => 1,
@@ -507,7 +507,7 @@ module Api
             'storeImageLarge' => portolisar_admin.store_image.large.url,
             'storeImageMedium' => portolisar_admin.store_image.medium.url,
             'storeImageSmall' => portolisar_admin.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,
@@ -528,7 +528,7 @@ module Api
             'storeImageLarge' => portolisar_dumpers.store_image.large.url,
             'storeImageMedium' => portolisar_dumpers.store_image.medium.url,
             'storeImageSmall' => portolisar_dumpers.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,
@@ -549,7 +549,7 @@ module Api
             'storeImageLarge' => portolisar_new_deal.store_image.large.url,
             'storeImageMedium' => portolisar_new_deal.store_image.medium.url,
             'storeImageSmall' => portolisar_new_deal.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => portolisar.name,
               'slug' => portolisar.slug,

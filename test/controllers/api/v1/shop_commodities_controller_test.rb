@@ -61,7 +61,7 @@ module Api
             'storeImageLarge' => explorer.shop.store_image.large.url,
             'storeImageMedium' => explorer.shop.store_image.medium.url,
             'storeImageSmall' => explorer.shop.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => explorer.shop.station.name,
               'slug' => explorer.shop.station.slug,
@@ -179,7 +179,7 @@ module Api
             'storeImageLarge' => andromeda.shop.store_image.large.url,
             'storeImageMedium' => andromeda.shop.store_image.medium.url,
             'storeImageSmall' => andromeda.shop.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => andromeda.shop.station.name,
               'slug' => andromeda.shop.station.slug,
