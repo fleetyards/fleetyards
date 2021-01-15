@@ -14,7 +14,7 @@
 #  location            :string
 #  map                 :string
 #  name                :string
-#  refinary            :boolean
+#  refinery            :boolean
 #  slug                :string
 #  station_type        :integer
 #  status              :integer
