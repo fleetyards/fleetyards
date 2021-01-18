@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/fleetyards/fleetyards/compare/v4.4.18...v4.5.0) (2021-01-18)
+
+
+### Features
+
+* progress tracker ([91a0662](https://github.com/fleetyards/fleetyards/commit/91a066248d25da3bacc5c592c5fd96c56e6eae1d))
+* update email templates ([a36f06e](https://github.com/fleetyards/fleetyards/commit/a36f06eb53b37f6f7d17c43d50536528734430b7))
+
+
+### Bug Fixes
+
+* typo migration ([2571e52](https://github.com/fleetyards/fleetyards/commit/2571e52aca7193bf7ad4c1515696018c40f57241))
+
 ### [4.4.18](https://github.com/fleetyards/fleetyards/compare/v4.4.17...v4.4.18) (2020-12-26)
 
 
