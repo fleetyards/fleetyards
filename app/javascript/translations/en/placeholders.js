@@ -16,6 +16,7 @@ export default {
     'models': 'Avenger, Carrack, Cutlass...',
     'models-fleetchart': 'Avenger, Carrack, Cutlass...',
     'hangar': 'Enterprise, Andromeda...',
+    'hangar-fleetchart': 'Enterprise, Andromeda...',
     'stations': 'Search for Stations...',
   },
   search: {
