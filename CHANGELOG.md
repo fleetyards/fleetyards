@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.6.0](https://github.com/fleetyards/fleetyards/compare/v4.5.0...v4.6.0) (2021-01-24)
+
+
+### Features
+
+* update hangar header ([7d576a3](https://github.com/fleetyards/fleetyards/commit/7d576a3d68afcd522e428912535bd790e33d655b))
+
+
+### Bug Fixes
+
+* mail asset urls ([d5dbaa0](https://github.com/fleetyards/fleetyards/commit/d5dbaa0f5d50455b414d8c32463b0558fc3de01b))
+* update hangar groups ([cc5251a](https://github.com/fleetyards/fleetyards/commit/cc5251ada86183c3a1768473171c816703bbb0e5))
+
 ## [4.5.0](https://github.com/fleetyards/fleetyards/compare/v4.4.18...v4.5.0) (2021-01-18)
 
 
