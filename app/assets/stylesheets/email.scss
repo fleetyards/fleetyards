@@ -9,11 +9,12 @@ $body-font-family: 'Open Sans', sans-serif;
 @import 'partials/email-fonts';
 @import 'foundation-emails';
 
-body,
-html {
-  background-color: black;
+:root {
+  color-scheme: light dark;
 }
 
+body,
+html,
 .body {
   background: $body-background !important;
 }
@@ -42,4 +43,12 @@ p {
   color: darken($global-font-color, 20%);
   font-size: .9em;
   font-family: 'Orbitron', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  body,
+  html,
+  .body {
+    background: $body-background !important;
+  }
 }
