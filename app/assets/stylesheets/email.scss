@@ -10,7 +10,10 @@ $body-font-family: 'Open Sans', sans-serif;
 @import 'foundation-emails';
 
 body,
-html,
+html {
+  background-color: black;
+}
+
 .body {
   background: $body-background !important;
 }
