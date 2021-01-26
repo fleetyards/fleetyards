@@ -126,6 +126,8 @@ module Rsi
     end
 
     private def cleanup_items(item_ids)
+      return if item_ids.blank?
+
       ProgressTrackerItem.where.not(id: item_ids).find_each do |progress_tracker_item|
         progress_tracker_item.update(deleted_at: Time.current)
       end

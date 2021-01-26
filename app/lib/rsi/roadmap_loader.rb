@@ -105,9 +105,7 @@ module Rsi
         end
       end
 
-      RoadmapItem.where.not(id: roadmap_item_ids).find_each do |roadmap_item|
-        roadmap_item.update(active: false)
-      end
+      cleanup_items(roadmap_item_ids)
 
       roadmap_item_ids
     end
@@ -129,6 +127,14 @@ module Rsi
       return old_release_name if new_release_name == old_release_name
 
       new_release_name
+    end
+
+    private def cleanup_items(item_ids)
+      return if item_ids.blank?
+
+      RoadmapItem.where.not(id: item_ids).find_each do |roadmap_item|
+        roadmap_item.update(active: false)
+      end
     end
 
     private def cleanup_changes
