@@ -89,9 +89,9 @@ module Rsi
           roadmap_item_ids << item.id
 
           if item.store_image.blank?
-            image_url = card['thumbnail']['urls']['source']
-            image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
+            image_url = card.dig('thumbnail', 'urls', 'source')
             if image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
+              image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
               item.remote_store_image_url = image_url
               item.save
             end
