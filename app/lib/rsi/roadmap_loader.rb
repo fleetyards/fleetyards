@@ -113,7 +113,21 @@ module Rsi
     # rubocop:enable Metrics/CyclomaticComplexity
 
     private def strip_roadmap_name(name)
-      strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
+      name_mapping(strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip)
+    end
+
+    private def name_mapping(name)
+      mapping = {
+        'C2 Hercules Starlifter' => 'C2 Hercules',
+        'M2 Hercules Starlifter' => 'M2 Hercules',
+        'A2 Hercules Starlifter' => 'A2 Hercules',
+        'Ares Starfighter Ion' => 'Ares Ion',
+        'Ares Starfighter Inferno' => 'Ares Inferno'
+      }
+
+      return mapping[name] if mapping[name].present?
+
+      name
     end
 
     private def release_name(item, release)
