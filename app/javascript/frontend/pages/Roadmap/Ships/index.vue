@@ -39,7 +39,7 @@
               @click="toggle(release)"
             >
               <span class="title">{{ release }}</span>
-              <span class="released-label">
+              <span v-if="items[0].releaseDescription" class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">
@@ -169,10 +169,13 @@ export default class ShipsRoadmap extends Vue {
   }
 
   get filteredItems() {
+    const items = this.roadmapItems.filter(item => item.model)
+
     if (this.onlyReleased) {
-      return this.roadmapItems.filter(item => !item.released)
+      return items.filter(item => !item.released)
     }
-    return this.roadmapItems
+
+    return items
   }
 
   get groupedByRelease() {
