@@ -121,13 +121,6 @@ $footerOuterBorderWidth: 2px;
   }
 }
 
-.nav-visible {
-  .app-footer {
-    right: 300px;
-    left: -300px;
-  }
-}
-
 @media (max-width: $desktop-breakpoint) {
   .app-footer {
     right: 0;
@@ -147,13 +140,18 @@ $footerOuterBorderWidth: 2px;
       padding-left: env(safe-area-inset-left);
     }
   }
+
+  .nav-visible {
+    .app-footer {
+      right: 300px;
+    }
+  }
 }
 
 @media (max-width: 370px) {
   .nav-visible {
-    .app-footer-inner {
+    .app-footer {
       right: 250px;
-      left: -250px;
     }
   }
 }

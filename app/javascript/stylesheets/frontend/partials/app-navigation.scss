@@ -24,7 +24,6 @@
 
   .quick-search-bar {
     width: 600px;
-    transition: left ease .5s, right ease .5s;
 
     .form-input {
       margin-bottom: 0;
@@ -40,7 +39,6 @@
     border: 1px solid transparent;
     border-color: transparent;
     border-radius: 3px;
-    transition: left ease $transition-base-speed, right ease $transition-base-speed;
 
     .icon-bar {
       display: block;
@@ -97,7 +95,6 @@ nav {
   width: 300px;
   min-width: 300px;
   height: 100vh;
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .nav-container {
     position: fixed;
@@ -138,7 +135,7 @@ nav {
         top: 10px;
         left: 30px;
         width: 40px;
-        transition: left ease $transition-base-speed;
+        // transition: left ease $transition-base-speed;
       }
 
       .logo-menu-label {
@@ -222,9 +219,6 @@ nav {
   }
 
   .nav-visible {
-    right: 300px;
-    left: -300px;
-
     .navigation-header {
       right: 300px;
 
@@ -250,7 +244,12 @@ nav {
   }
 
   .nav-visible {
-    right: 250px;
-    left: -250px;
+    .navigation-header {
+      right: 250px;
+
+      .environment-label {
+        left: -230px;
+      }
+    }
   }
 }

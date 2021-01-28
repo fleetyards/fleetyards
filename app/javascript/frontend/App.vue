@@ -2,7 +2,6 @@
   <div
     id="app"
     :class="{
-      'nav-visible': !navCollapsed,
       [`page-${$route.name}`]: true,
     }"
     class="app-body"

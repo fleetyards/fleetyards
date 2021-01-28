@@ -12,9 +12,9 @@
     bottom: 0 !important;
     left: 0 !important;
 
-    .main-wrapper {
-      position: fixed;
-    }
+    // .main-wrapper {
+    //   position: fixed;
+    // }
   }
 }
 
@@ -67,14 +67,6 @@ body {
     width: 100%;
     max-width: 100%;
     margin-bottom: 50px;
-    transition: left ease .5s, right ease .5s;
-  }
-
-  &.nav-visible {
-    .main {
-      right: 300px;
-      left: -300px;
-    }
   }
 }
 
@@ -133,10 +125,16 @@ hr {
 
 @media (max-width: $desktop-breakpoint) {
   .app-body {
+    transition: ease $transition-base-speed;
+
     .main-wrapper {
       padding-top: env(safe-area-inset-top);
       padding-right: env(safe-area-inset-right);
       padding-left: env(safe-area-inset-left);
+    }
+
+    .main {
+      transition: left ease .5s, right ease .5s;
     }
   }
 
@@ -145,6 +143,15 @@ hr {
       width: 200px;
       margin-right: 0;
       margin-bottom: 20px;
+    }
+  }
+
+  .nav-visible {
+    .app-body {
+      .main {
+        right: 300px;
+        left: -300px;
+      }
     }
   }
 }
@@ -156,8 +163,10 @@ hr {
     .main-wrapper {
       padding-top: 0;
     }
+  }
 
-    &.nav-visible {
+  .nav-visible {
+    .app-body {
       .main {
         right: 250px;
         left: -250px;
