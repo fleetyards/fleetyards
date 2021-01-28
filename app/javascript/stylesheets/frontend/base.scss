@@ -6,15 +6,11 @@
   overflow: hidden !important;
 
   &.nav-visible {
-    position: absolute !important;
+    position: fixed !important;
     top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
-
-    .main-wrapper {
-      position: fixed;
-    }
   }
 }
 
@@ -68,13 +64,6 @@ body {
     max-width: 100%;
     margin-bottom: 50px;
     transition: left ease .5s, right ease .5s;
-  }
-
-  &.nav-visible {
-    .main {
-      right: -300px;
-      left: 300px;
-    }
   }
 }
 
@@ -147,6 +136,17 @@ hr {
       margin-bottom: 20px;
     }
   }
+
+  .app-content {
+    flex-direction: row-reverse;
+    transition: .5s ease;
+  }
+
+  .nav-visible {
+    .app-content {
+      transform: translateX(-300px);
+    }
+  }
 }
 
 @media (max-width: 370px) {
@@ -156,12 +156,11 @@ hr {
     .main-wrapper {
       padding-top: 0;
     }
+  }
 
-    &.nav-visible {
-      .main {
-        right: -250px;
-        left: 250px;
-      }
+  .nav-visible {
+    .app-content {
+      transform: translateX(-250px);
     }
   }
 }

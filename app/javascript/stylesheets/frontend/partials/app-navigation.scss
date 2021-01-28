@@ -5,7 +5,6 @@
   justify-content: space-between;
   height: 83px;
   padding: 20px 15px;
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .environment-label {
     position: fixed;
@@ -34,13 +33,12 @@
   .nav-toggle {
     display: block;
     height: 43px;
-    margin-right: 10px;
+    margin-left: 10px;
     padding: 0 11px;
     background-color: transparent;
     border: 1px solid transparent;
     border-color: transparent;
     border-radius: 3px;
-    transition: left ease $transition-base-speed;
 
     .icon-bar {
       display: block;
@@ -95,20 +93,19 @@ nav {
   position: relative;
   z-index: 1000;
   width: 300px;
-  min-width: 300px;
   height: 100vh;
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
+  transition: width ease $transition-base-speed;
 
   .nav-container {
     position: fixed;
     width: 300px;
-    height: 100%;
+    height: 100vh;
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: rgba($gray-darker, .5);
     border-right: 1px solid rgba(30, 34, 38, .5);
-    transition: left ease $transition-base-speed, width ease $transition-base-speed;
+    transition: width ease $transition-base-speed;
 
     .nav-container-inner {
       position: relative;
@@ -173,59 +170,25 @@ nav {
 
   &.nav-slim {
     width: 80px;
-    min-width: 80px;
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .navigation-header {
+    flex-direction: row-reverse;
+  }
+
   nav {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
     margin-top: env(safe-area-inset-top);
 
     .nav-container {
-      position: fixed;
-      top: 0;
-      right: auto;
-      bottom: 0;
-      left: -300px;
-      width: 300px;
-      height: 100vh;
-      max-height: 100vh;
-      padding-top: env(safe-area-inset-top);
-      padding-left: env(safe-area-inset-left);
-
-      .nav-container-inner {
-        > :first-child {
-          padding-top: 5px;
-        }
-
-        > :last-child {
-          padding-bottom: 10px;
-        }
-      }
-    }
-  }
-
-  .nav-visible {
-    right: -300px;
-    left: 300px;
-
-    .navigation-header {
-      left: 300px;
-
-      .environment-label {
-        right: -280px;
-      }
-    }
-
-    nav {
-      .nav-container {
-        left: 0;
-      }
+      border-right: none;
+      border-left: 1px solid rgba(30, 34, 38, .5);
     }
   }
 }
@@ -233,13 +196,7 @@ nav {
 @media (max-width: 370px) {
   nav {
     .nav-container {
-      left: -250px;
       width: 250px;
     }
-  }
-
-  .nav-visible {
-    right: -250px;
-    left: 250px;
   }
 }
