@@ -37,12 +37,12 @@ li.nav-item {
     &::after {
       position: absolute;
       top: 10%;
-      right: 0;
+      left: 0;
       width: 3px;
       height: 80%;
       background: $primary;
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
       box-shadow: 2px 0 10px rgba(darken($primary, 20%), .9);
       content: '';
     }
@@ -110,21 +110,6 @@ li.nav-item {
       ul > li > a {
         padding-left: 25px;
         font-size: 20px;
-      }
-    }
-  }
-}
-
-@media (max-width: $desktop-breakpoint) {
-  li.nav-item {
-    &.active > a {
-      &::after {
-        right: auto;
-        left: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        border-bottom-left-radius: 0;
       }
     }
   }
