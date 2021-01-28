@@ -41,3 +41,10 @@
     animation-duration: .5s;
   }
 }
+
+@media (max-width: $desktop-breakpoint) {
+  .primary-action {
+    right: auto;
+    left: 1rem;
+  }
+}
