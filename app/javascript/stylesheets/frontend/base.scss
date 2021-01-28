@@ -4,17 +4,18 @@
 
 .no-scroll {
   overflow: hidden !important;
+}
 
-  &.nav-visible {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
+.nav-visible {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  overflow: hidden !important;
 
-    // .main-wrapper {
-    //   position: fixed;
-    // }
+  .main-wrapper {
+    position: fixed;
   }
 }
 
