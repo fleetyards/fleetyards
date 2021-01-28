@@ -123,13 +123,16 @@ $footerOuterBorderWidth: 2px;
 
 .nav-visible {
   .app-footer {
-    right: -300px;
-    left: 300px;
+    right: 300px;
+    left: -300px;
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
   .app-footer {
+    right: 0;
+    left: auto;
+
     .app-community-logo {
       position: relative;
       top: auto;
@@ -149,8 +152,8 @@ $footerOuterBorderWidth: 2px;
 @media (max-width: 370px) {
   .nav-visible {
     .app-footer-inner {
-      right: -250px;
-      left: 250px;
+      right: 250px;
+      left: -250px;
     }
   }
 }

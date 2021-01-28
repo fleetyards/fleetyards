@@ -72,8 +72,8 @@ body {
 
   &.nav-visible {
     .main {
-      right: -300px;
-      left: 300px;
+      right: 300px;
+      left: -300px;
     }
   }
 }
@@ -159,8 +159,8 @@ hr {
 
     &.nav-visible {
       .main {
-        right: -250px;
-        left: 250px;
+        right: 250px;
+        left: -250px;
       }
     }
   }
