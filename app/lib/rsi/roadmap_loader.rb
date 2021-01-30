@@ -76,8 +76,8 @@ module Rsi
             release: release_name(item, release),
             release_description: release['description'],
             rsi_release_id: release['id'],
-            released: release['status'] == 'Released'
-            committed: release['status'] == 'Committed'
+            released: (release['status'] == 'Released'),
+            committed: (release['status'] == 'Committed'),
             rsi_category_id: card['category_id'],
             name: card['name'],
             description: card['description'],
