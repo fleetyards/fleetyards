@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_15_090551) do
+ActiveRecord::Schema.define(version: 2021_01_30_224853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -533,6 +533,7 @@ ActiveRecord::Schema.define(version: 2021_01_15_090551) do
     t.datetime "updated_at", null: false
     t.string "store_image"
     t.boolean "active"
+    t.boolean "committed", default: false
   end
 
   create_table "rsi_request_logs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
