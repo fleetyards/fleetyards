@@ -1,8 +1,8 @@
 @import '~stylesheets/variables';
 
 .image {
-  width: 100%;
-  min-height: 200px;
+  // width: 100%;
+  height: auto;
   max-height: 100%;
   margin-bottom: 10px;
   background-color: black;
@@ -32,7 +32,9 @@
 
 .image-wrapper {
   position: relative;
+  display: flex;
   flex-grow: 1;
+  align-items: stretch;
   min-height: 200px;
 }
 
