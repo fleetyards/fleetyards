@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.5](https://github.com/fleetyards/fleetyards/compare/v4.6.4...v4.6.5) (2021-01-31)
+
+
+### Bug Fixes
+
+* model detail image ([24cf230](https://github.com/fleetyards/fleetyards/commit/24cf230f76156f209a5a37c9a3fe206926954c7d))
+* roadmap loader ([fafad58](https://github.com/fleetyards/fleetyards/commit/fafad584ffa80491b9cc24c57cc425e14135e491))
+
 ### [4.6.4](https://github.com/fleetyards/fleetyards/compare/v4.6.3...v4.6.4) (2021-01-30)
 
 
