@@ -11,7 +11,7 @@ module Api
 
         @items = ProgressTrackerItem.search(
           search_params,
-          fields: [{ "title": :word_start }],
+          fields: [{ title: :word_start }],
           where: query_params,
           order: order_params,
           page: params[:page],
