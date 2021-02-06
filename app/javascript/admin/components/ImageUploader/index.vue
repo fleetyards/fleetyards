@@ -5,7 +5,6 @@
         <VueUploadComponent
           ref="upload"
           v-model="newImages"
-          :thread="3"
           :post-action="postAction"
           drop="body"
           :headers="headers"
