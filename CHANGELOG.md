@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.6](https://github.com/fleetyards/fleetyards/compare/v4.6.5...v4.6.6) (2021-02-06)
+
+
+### Bug Fixes
+
+* admin station image upload ([9455083](https://github.com/fleetyards/fleetyards/commit/94550830360ca73858be5abe670197d2782402c4))
+
 ### [4.6.5](https://github.com/fleetyards/fleetyards/compare/v4.6.4...v4.6.5) (2021-01-31)
 
 
