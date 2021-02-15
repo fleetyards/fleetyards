@@ -1,0 +1,29 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:9200/fleetyards-test_shop_commodities_test/_search
+    body:
+      encoding: UTF-8
+      string: '{"query":{"bool":{"must":{"match_all":{}},"filter":[{"term":{"shop_id":{"value":"df2c9942-135d-5cbc-81d6-e1c14b6298bd"}}}]}},"sort":{"name":"asc","created_at":"asc"},"timeout":"11s","_source":false,"size":30}'
+    headers:
+      User-Agent:
+      - 'elasticsearch-ruby/7.10.1 (RUBY_VERSION: 3.0.0; darwin x86_64; Faraday v1.3.0)'
+      Content-Type:
+      - application/json
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '546'
+    body:
+      encoding: UTF-8
+      string: '{"took":4,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":null,"hits":[{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"46f72ce4-81f1-50d5-8428-5587ef23c320","_score":null,"sort":["600i","2021-02-14T00:38:03.009+01:00"]},{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"c38015d3-a8f7-5419-9aed-03e80ec3169a","_score":null,"sort":["Andromeda","2021-02-14T00:38:03.009+01:00"]}]}}'
+  recorded_at: Sat, 13 Feb 2021 23:42:39 GMT
+recorded_with: VCR 6.0.0

@@ -32,20 +32,18 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
-
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
-
-  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
-
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.deliver_later_queue_name = 'mailers'
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
+  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
   config.action_mailer.smtp_settings = {
-    address: 'localhost',
-    port: 1025
+    address: '127.0.0.1',
+    port: 1025,
+    enable_starttls_auto: true,
+    domain: Rails.application.secrets[:domain]
   }
 
   # Print deprecation notices to the Rails logger.

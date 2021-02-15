@@ -81,11 +81,12 @@ export default {
 
   data() {
     const query = this.$route.query.q || {}
+
     return {
       loading: false,
       form: {
         nameCont: query.nameCont,
-        categoryIn: query.categoryeIn || [],
+        categoryIn: query.categoryIn || [],
         subCategoryIn: query.subCategoryIn || [],
         manufacturerIn: query.manufacturerIn || [],
         priceGteq: query.priceGteq,

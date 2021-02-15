@@ -54,6 +54,15 @@ class ActionController::TestCase
   fixtures :all
 
   make_my_diffs_pretty!
+
+  parallelize_setup do |worker|
+    Searchkick.index_suffix = worker
+
+    ShopCommodity.reindex
+
+    # and disable callbacks
+    Searchkick.disable_callbacks
+  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 

@@ -32,8 +32,7 @@ class Starsystem < ApplicationRecord
   paginates_per 15
 
   searchkick searchable: %i[name],
-             word_start: %i[name],
-             filterable: []
+             word_start: %i[name]
 
   def search_data
     {

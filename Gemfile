@@ -38,7 +38,6 @@ gem 'premailer-rails'
 
 gem 'cancancan'
 gem 'devise'
-gem 'devise-async'
 gem 'useragent'
 
 gem 'redis-actionpack'

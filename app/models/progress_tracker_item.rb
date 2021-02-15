@@ -38,8 +38,7 @@ class ProgressTrackerItem < ApplicationRecord
   after_save :update_model_production_status
 
   searchkick searchable: %i[title],
-             word_start: %i[title],
-             filterable: %i[title start_date end_date team in_progress done planned model_id with_model]
+             word_start: %i[title]
 
   scope :search_import, -> { where(deleted_at: nil) }
 

@@ -255,14 +255,24 @@ module Api
         }]
       end
 
+      def setup
+        Searchkick.enable_callbacks
+      end
+
+      def teardown
+        Searchkick.disable_callbacks
+      end
+
       describe 'without session' do
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
 
@@ -274,12 +284,14 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
     end
