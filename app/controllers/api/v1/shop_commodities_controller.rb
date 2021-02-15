@@ -66,7 +66,7 @@ module Api
       end
 
       private def deprecated_search_params
-        @search_params ||= params.permit(q: [:name_cont]).dig(:q, :name_cont)
+        @deprecated_search_params ||= params.permit(q: [:name_cont]).dig(:q, :name_cont)
       end
 
       private def order_params
@@ -96,8 +96,9 @@ module Api
         end
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       private def price_params
-        deprecated_price_params = params.permit(q: [:priceGteq, :priceLteq])
+        deprecated_price_params = params.permit(q: %i[priceGteq priceLteq])
 
         sell_price_range = {}
         buy_price_range = {}
@@ -108,7 +109,7 @@ module Api
         buy_price_range[:gte] = deprecated_price_params.dig(:q, :priceGteq).to_f if deprecated_price_params.dig(:q, :priceGteq).present?
         buy_price_range[:lte] = deprecated_price_params.dig(:q, :priceLteq).to_f if deprecated_price_params.dig(:q, :priceLteq).present?
 
-        price_params = params.permit(query: [:price_gteq, :price_lteq])
+        price_params = params.permit(query: %i[price_gteq price_lteq])
 
         sell_price_range[:gte] = deprecated_price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
         sell_price_range[:lte] = deprecated_price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
@@ -124,6 +125,7 @@ module Api
 
         price_params
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       private def query_params
         @query_params ||= begin
