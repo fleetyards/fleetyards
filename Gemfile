@@ -61,7 +61,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker', '~> 5.x'
+gem 'webpacker', '>= 6.0.0.pre.2'
 
 gem 'bootstrap-sass'
 
