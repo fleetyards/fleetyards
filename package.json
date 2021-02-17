@@ -110,6 +110,7 @@
   "devDependencies": {
     "@commitlint/cli": "12.1.1",
     "@commitlint/config-conventional": "12.1.1",
+    "@cypress/webpack-preprocessor": "5.7.0",
     "@storybook/addon-actions": "6.2.7",
     "@storybook/addon-backgrounds": "6.2.7",
     "@storybook/addon-centered": "5.3.21",
@@ -177,7 +178,9 @@
     "prismjs": ">=1.23.0",
     "pug-code-gen": ">=2.0.3 <3.0.0||>=3.0.2",
     "pug": ">=3.0.1",
-    "y18n": ">=5.0.5||>=4.0.1 <5.0.0||>=3.2.2 <4.0.0"
+    "y18n": ">=5.0.5||>=4.0.1 <5.0.0||>=3.2.2 <4.0.0",
+    "schema-utils": ">=3.0.0",
+    "webpack-sources": ">=2.2.0"
   },
   "config": {
     "storybook": {
