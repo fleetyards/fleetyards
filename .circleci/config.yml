@@ -108,15 +108,15 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      # - restore_cache:
+      #     keys:
+      #       - v3-bundle-{{ checksum "Gemfile.lock" }}
+      #       - v3-bundle-
       - run: bundle install
-      - save_cache:
-          key: v3-bundle-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      # - save_cache:
+      #     key: v3-bundle-{{ checksum "Gemfile.lock" }}
+      #     paths:
+      #       - vendor/bundle
       - persist_to_workspace:
           root: /root
           paths:
