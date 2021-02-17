@@ -51,6 +51,7 @@
   </li>
   <router-link
     v-else-if="to"
+    v-slot="{ navigate }"
     :to="to"
     :class="{
       'active': active,
@@ -58,19 +59,21 @@
     }"
     :data-test="`nav-${navKey}`"
     class="nav-item"
-    tag="li"
     :exact="exact"
+    :custom="true"
   >
-    <a v-tooltip="tooltip">
-      <slot v-if="hasDefaultSlot" />
-      <NavItemInner
-        v-else
-        :label="label"
-        :icon="icon"
-        :image="image"
-        :slim="slim"
-      />
-    </a>
+    <li role="link" @click="navigate" @keypress.enter="navigate">
+      <a v-tooltip="tooltip">
+        <slot v-if="hasDefaultSlot" />
+        <NavItemInner
+          v-else
+          :label="label"
+          :icon="icon"
+          :image="image"
+          :slim="slim"
+        />
+      </a>
+    </li>
   </router-link>
   <li
     v-else-if="href"
