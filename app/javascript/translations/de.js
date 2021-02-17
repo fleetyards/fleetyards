@@ -1,4 +1,4 @@
-// import { messages as validationMessages } from 'vee-validate/dist/locale/de.json'
+// import validationMessages from 'vee-validate/dist/locale/de.json'
 // import actions from './en/actions'
 // import headlines from './en/headlines'
 // import labels from './en/labels'
@@ -10,8 +10,8 @@
 // import title from './en/title'
 
 // const validations = {}
-// Object.keys(validationMessages).forEach((key) => {
-//   validations[key] = validationMessages[key].replace(/\{/g, '%{')
+// Object.keys(validationMessages.messages).forEach((key) => {
+//   validations[key] = validationMessages.messages[key].replace(/\{/g, '%{')
 // })
 
 export default {

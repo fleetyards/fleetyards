@@ -1,4 +1,3 @@
-import 'stylesheets/embed-v2'
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import FleetyardsView from 'embed/FleetyardsView'

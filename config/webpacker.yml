@@ -16,41 +16,41 @@ default: &default
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
 
-  # # Extract and emit a css file
-  # extract_css: true
+  # Extract and emit a css file
+  extract_css: true
 
-  # static_assets_extensions:
-  #   - .jpg
-  #   - .jpeg
-  #   - .png
-  #   - .webp
-  #   - .gif
-  #   - .tiff
-  #   - .ico
-  #   - .svg
-  #   - .eot
-  #   - .otf
-  #   - .ttf
-  #   - .woff
-  #   - .woff2
+  static_assets_extensions:
+    - .jpg
+    - .jpeg
+    - .png
+    - .webp
+    - .gif
+    - .tiff
+    - .ico
+    - .svg
+    - .eot
+    - .otf
+    - .ttf
+    - .woff
+    - .woff2
 
-  # extensions:
-  #   - .tsx
-  #   - .ts
-  #   - .vue
-  #   - .mjs
-  #   - .js
-  #   - .sass
-  #   - .scss
-  #   - .css
-  #   - .module.sass
-  #   - .module.scss
-  #   - .module.css
-  #   - .png
-  #   - .svg
-  #   - .gif
-  #   - .jpeg
-  #   - .jpg
+  extensions:
+    - .tsx
+    - .ts
+    - .vue
+    - .mjs
+    - .js
+    - .sass
+    - .scss
+    - .css
+    - .module.sass
+    - .module.scss
+    - .module.css
+    - .png
+    - .svg
+    - .gif
+    - .jpeg
+    - .jpg
 
 development:
   <<: *default
@@ -96,8 +96,8 @@ ci:
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
 
-  # # Extract and emit a css file
-  # extract_css: true
+  # Extract and emit a css file
+  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true
@@ -108,8 +108,8 @@ staging:
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
 
-  # # Extract and emit a css file
-  # extract_css: true
+  # Extract and emit a css file
+  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true
@@ -120,8 +120,8 @@ production:
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
 
-  # # Extract and emit a css file
-  # extract_css: true
+  # Extract and emit a css file
+  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true

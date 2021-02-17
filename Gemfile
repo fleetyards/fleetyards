@@ -61,7 +61,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker', '>= 6.0.0.pre.2'
+gem 'webpacker', git: 'https://github.com/rails/webpacker.git'
 
 gem 'bootstrap-sass'
 
