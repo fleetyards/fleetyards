@@ -74,7 +74,7 @@ export default class Btn extends Vue {
   @Prop({ default: null }) routeActiveClass!: boolean
 
   get btnType() {
-    if (this.to) return 'router-link'
+    if (this.to && !this.disabled) return 'router-link'
 
     if (this.href) return 'a'
 
@@ -86,7 +86,7 @@ export default class Btn extends Vue {
       return {
         to: this.to,
         exact: this.exact,
-        event: this.disabled ? '' : 'click',
+        // event: this.disabled ? '' : 'click',
         activeClass: this.routeActiveClass,
       }
     }
