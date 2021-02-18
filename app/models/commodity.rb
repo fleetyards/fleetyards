@@ -21,8 +21,7 @@ class Commodity < ApplicationRecord
   paginates_per 50
 
   searchkick searchable: %i[name commodity_type],
-             word_start: %i[name commodity_type],
-             filterable: []
+             word_start: %i[name commodity_type]
 
   def search_data
     {

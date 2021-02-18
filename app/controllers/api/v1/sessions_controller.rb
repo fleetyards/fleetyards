@@ -14,6 +14,8 @@ module Api
           return
         else
           unless resource.active_for_authentication?
+            resource.resend_confirmation
+
             render json: { code: 'session.create.unconfirmed', message: I18n.t('devise.failure.unconfirmed') }, status: :bad_request
             return
           end

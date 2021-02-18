@@ -35,24 +35,26 @@
 class ShopCommodity < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code shop station celestial_object starsystem],
-             word_start: %i[name manufacturer_name],
-             filterable: []
+  searchkick word_start: %i[name manufacturer_name],
+             searchable: %i[name manufacturer_name created_at]
 
   def search_data
     {
       name: commodity_item.name,
-      manufacturer_name: commodity_item.manufacturer&.name,
-      manufacturer_code: commodity_item.manufacturer&.code,
+      manufacturer_name: manufacturer&.name,
+      manufacturer_slug: manufacturer&.slug,
+      manufacturer_code: manufacturer&.code,
       shop: shop.name,
+      shop_id: shop.id,
       station: shop.station.name,
       celestial_object: shop.station.celestial_object.name,
-      starsystem: shop.station.celestial_object.starsystem&.name
+      starsystem: shop.station.celestial_object.starsystem&.name,
+      sell_price: sell_price,
+      buy_price: buy_price,
+      category: commodity_item_type,
+      sub_category: sub_category,
+      created_at: created_at
     }
-  end
-
-  def should_index?
-    commodity_item.is_a?(Equipment) || commodity_item.is_a?(Component)
   end
 
   belongs_to :commodity_item, polymorphic: true, optional: true, touch: true
@@ -123,11 +125,11 @@ class ShopCommodity < ApplicationRecord
 
   attr_accessor :commodity_item_selected
 
-  ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
-  ransack_alias :category, :commodity_item_type
-  ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
-  ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
-  ransack_alias :price, :sell_price_or_buy_price_or_rent_price
+  # ransack_alias :name, :model_name_or_component_name_or_commodity_name_or_equipment_name_or_model_module_name
+  # ransack_alias :category, :commodity_item_type
+  # ransack_alias :sub_category, :model_classification_or_component_component_class_or_equipment_equipment_type
+  # ransack_alias :manufacturer, :model_manufacturer_slug_or_component_manufacturer_slug_or_equipment_manufacturer_slug_or_model_module_manufacturer_slug
+  # ransack_alias :price, :sell_price_or_buy_price_or_rent_price
 
   def self.commodity_item_types
     %w[Model Equipment Commodity Component ModelModule ModelPaint]
@@ -326,6 +328,12 @@ class ShopCommodity < ApplicationRecord
     return if model.blank?
 
     model.update(price: CommoditySellPrice.where(shop_commodity_id: model.shop_commodity_ids, confirmed: true).order(price: :asc).first&.price)
+  end
+
+  def manufacturer
+    return if commodity_item.is_a?(Commodity)
+
+    commodity_item.manufacturer
   end
 
   def category

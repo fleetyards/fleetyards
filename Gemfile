@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.0.3.5'
+gem 'rails', '6.1.2.1'
 
 gem 'pg', '~> 1.0'
 
@@ -38,7 +38,6 @@ gem 'premailer-rails'
 
 gem 'cancancan'
 gem 'devise'
-gem 'devise-async'
 gem 'useragent'
 
 gem 'redis-actionpack'

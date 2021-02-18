@@ -99,8 +99,7 @@ class Model < ApplicationRecord
   paginates_per 30
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
-             word_start: %i[name manufacturer_name],
-             filterable: []
+             word_start: %i[name manufacturer_name]
 
   def search_data
     {

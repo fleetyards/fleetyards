@@ -33,8 +33,7 @@ class Equipment < ApplicationRecord
   paginates_per 50
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type slot],
-             word_start: %i[name manufacturer_name equipment_type item_type],
-             filterable: []
+             word_start: %i[name manufacturer_name equipment_type item_type]
 
   def search_data
     {

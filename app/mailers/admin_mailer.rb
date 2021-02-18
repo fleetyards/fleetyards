@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class AdminMailer < ApplicationMailer
-  default from: Rails.application.secrets[:mailer_default_from].to_s
-
   def weekly(stats)
     @stats = stats
 
