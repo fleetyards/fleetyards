@@ -60,15 +60,12 @@ module Rsi
             new_item.release = release_name(new_item, release)
             new_item.release_description = release['description']
             new_item.rsi_release_id = release['id']
-            new_item.released = release['status'] == 'Released'
-            new_item.committed = release['status'] == 'Committed'
+            new_item.released = release['status'].strip == 'Released'
+            new_item.committed = release['status'].strip == 'Committed'
             new_item.rsi_category_id = card['category_id']
             new_item.name = card['name']
             new_item.description = card['description']
             new_item.body = card['body']
-            new_item.tasks = card['tasks']
-            new_item.inprogress = card['inprogress']
-            new_item.completed = card['completed']
             new_item.active = true
           end
 
@@ -82,9 +79,6 @@ module Rsi
             name: card['name'],
             description: card['description'],
             body: card['body'],
-            tasks: card['tasks'],
-            inprogress: card['inprogress'],
-            completed: card['completed'],
             active: true
           )
 

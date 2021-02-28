@@ -14,6 +14,5 @@ json.store_image_large item.store_image.large.url
 json.store_image_medium item.store_image.medium.url
 json.store_image_small item.store_image.small.url
 json.released item.released
-json.tasks item.tasks
-json.completed item.completed
+json.committed item.committed
 json.active item.active
