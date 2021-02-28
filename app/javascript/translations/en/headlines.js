@@ -36,6 +36,7 @@ export default {
   filterCargoRoutes: 'Filter Cargo routes',
   filterCommodities: 'Filter Commodities',
   fleets: {
+    owners: 'Owners',
     add: 'Create a new Fleet',
     invites: 'Fleet Invites',
     members: 'Members',
