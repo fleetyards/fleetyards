@@ -62,27 +62,19 @@ export default {
   },
   'roadmap': {
     selectWeek: 'Select Week',
-    changes: 'Changes',
     shipRoadmap: 'Ship-Roadmap',
     releases: 'Releases',
     unscheduled: 'Unscheduled',
     lastUpdate: 'Last Update',
-    inPolish: 'Polishing',
     released: 'Released',
     recentlyUpdated: 'Recently Updated',
+    committed: 'Committed',
     lastVersion: {
-      completed: {
-        decreased: 'Decreased Completed Tasks by %{value}',
-        increased: 'Increased Completed Tasks by %{value}',
-      },
-      tasks: {
-        decreased: 'Decreased Tasks by %{value}',
-        increased: 'Increased Tasks by %{value}',
-      },
       active: {
         decreased: 'Item was removed from the Roadmap',
         increased: 'Item was readded to the Roadmap',
       },
+      committed: 'Item was marked as committed',
       released: 'Item was released to PU',
       release: 'Item moved from release %{old} to %{new}',
       addedToRelease: 'Item new in release %{release}',

@@ -24,9 +24,15 @@
         <span v-else v-tooltip="item.name">
           {{ item.name }}
         </span>
-        <small v-tooltip="$t('labels.roadmap.lastUpdate')" class="text-muted">
-          <span>{{ item.lastVersionChangedAtLabel }}</span>
-          <i v-tooltip="item.lastVersionChangedAtLabel" class="far fa-clock" />
+        <small>
+          <div v-tooltip="$t('labels.roadmap.lastUpdate')" class="text-muted">
+            <span>{{ item.lastVersionChangedAtLabel }}</span>
+            <i v-tooltip="item.lastVersionChangedAtLabel" class="far fa-clock" />
+          </div>
+          <div v-tooltip="$t('labels.roadmap.committed')">
+            <span class="text-muted">{{ $t('labels.roadmap.committed') }}</span>
+            <i class="far fa-check" v-if="!item.committed" />
+          </div>
         </small>
       </h3>
       <p v-if="!compact">{{ description }}</p>
@@ -43,7 +49,7 @@
             {{ $t(`labels.roadmap.lastVersion.released`) }}
           </template>
           <template v-else-if="update.key === 'commited'">
-            {{ $t(`labels.roadmap.lastVersion.released`) }}
+            {{ $t(`labels.roadmap.lastVersion.committed`) }}
           </template>
           <template v-else-if="update.key === 'active'">
             {{ $t(`labels.roadmap.lastVersion.active.${update.change}`) }}
