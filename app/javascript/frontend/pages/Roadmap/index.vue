@@ -58,19 +58,6 @@
               <i class="fa fa-chevron-right" />
             </h2>
 
-            <BProgress :max="tasks(items)" class="release-progress">
-              <div class="progress-label">
-                {{ progressLabel(items) }} | {{ completedPercent(items) }} %
-              </div>
-              <BProgressBar
-                v-if="completed(items) !== 0"
-                :value="completed(items)"
-                :class="{
-                  completed: completed(items) === tasks(items),
-                }"
-              />
-            </BProgress>
-
             <BCollapse
               :id="`${release}-cards`"
               :visible="visible.includes(release)"
@@ -97,7 +84,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { BCollapse, BProgress, BProgressBar } from 'bootstrap-vue'
+import { BCollapse } from 'bootstrap-vue'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
 import RoadmapItem from 'frontend/components/Roadmap/RoadmapItem'
@@ -106,8 +93,6 @@ import EmptyBox from 'frontend/core/components/EmptyBox'
 
 @Component<RoadmapReleases>({
   components: {
-    BProgress,
-    BProgressBar,
     BCollapse,
     Loader,
     EmptyBox,
@@ -275,7 +260,7 @@ export default class RoadmapReleases extends Vue {
 
     const response = await this.$api.get('roadmap?overview=1', {
       q: {
-        rsiReleaseIdGteq: this.onlyReleased ? 39 : 1,
+        rsiReleaseIdGteq: this.onlyReleased ? 41 : 1,
       },
     })
 
