@@ -136,14 +136,17 @@
           >
             {{ firstOwner }}
           </Btn>
-          <Btn
-            v-if="usernames.length > 1"
-            variant="link"
-            :text-inline="true"
-            @click.native="openOwnersModal"
-          >
-            {{ $t('actions.fleet.showOwners') }}
-          </Btn>
+          <template v-if="usernames.length > 1">
+            {{ $t('labels.and') }}
+            <Btn
+              variant="link"
+              :text-inline="true"
+              class="owner-more-action"
+              @click.native="openOwnersModal"
+            >
+              {{ $t('actions.fleet.showOwners') }}
+            </Btn>
+          </template>
         </div>
       </div>
       <BCollapse
@@ -208,7 +211,7 @@ export default class ModelPanel extends Vue {
       return []
     },
   })
-  usernames: string[]
+  users: User[]
 
   get firstOwner() {
     if (this.usernames.length > 0) {
@@ -216,6 +219,10 @@ export default class ModelPanel extends Vue {
     }
 
     return null
+  }
+
+  get usernames() {
+    return this.users.map(user => user.username)
   }
 
   get uuid() {
@@ -313,7 +320,7 @@ export default class ModelPanel extends Vue {
     this.$comlink.$emit('open-modal', {
       component: () => import('frontend/components/Models/OwnersModal'),
       props: {
-        usernames: this.usernames,
+        users: this.users,
       },
     })
   }

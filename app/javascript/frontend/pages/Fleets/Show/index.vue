@@ -227,7 +227,7 @@
               :model="record"
               :details="detailsVisible"
               :count="record.count"
-              :usernames="record.usernames"
+              :users="record.users"
             />
           </template>
         </FilteredGrid>

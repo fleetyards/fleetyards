@@ -2,6 +2,7 @@ export default {
   'true': 'Yes',
   'false': 'No',
   'null': '-',
+  'and': 'and',
   'hide': 'Hide',
   'show': 'Show',
   'unavailable': 'unavailable',

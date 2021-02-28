@@ -119,8 +119,8 @@ class Fleet < ApplicationRecord
     vehicles.where(model_id: model_id, loaner: false).size
   end
 
-  def model_usernames(model_id)
-    vehicles.where(model_id: model_id, loaner: false).map { |vehicle| vehicle.user.username }
+  def model_users(model_id)
+    users.includes(:vehicles).where(vehicles: { model_id: model_id }).order(username: :asc)
   end
 
   private def update_slugs
