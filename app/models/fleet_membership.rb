@@ -51,7 +51,7 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 
-  def visible_vehicle_ids(filters)
+  def visible_vehicle_ids(filters = nil)
     return [] if visibile_vehicles.blank?
 
     scope = visibile_vehicles
@@ -59,7 +59,7 @@ class FleetMembership < ApplicationRecord
     scope.pluck(:id)
   end
 
-  def visible_model_ids(filters)
+  def visible_model_ids(filters = nil)
     return [] if visibile_vehicles.blank?
 
     scope = visibile_vehicles

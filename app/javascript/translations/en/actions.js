@@ -91,6 +91,7 @@ export default {
     declineInvite: 'Decline Invitation',
     acceptRequest: 'accept Request',
     declineRequest: 'Decline Request',
+    showOwners: 'More',
     members: {
       invite: 'Invite',
       promote: 'Promote',

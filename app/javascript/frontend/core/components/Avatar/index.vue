@@ -37,6 +37,8 @@ import { Component, Prop } from 'vue-property-decorator'
 
 @Component<Avatar>()
 export default class Avatar extends Vue {
+  @Prop({ default: null }) avatar!: string
+
   @Prop({
     default: 'default',
     validator(value) {
@@ -44,8 +46,6 @@ export default class Avatar extends Vue {
     },
   })
   size!: string
-
-  @Prop({ default: null }) avatar!: string
 
   @Prop({ default: false }) editable!: boolean
 
