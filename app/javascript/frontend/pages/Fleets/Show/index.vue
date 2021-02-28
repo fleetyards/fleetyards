@@ -162,9 +162,8 @@
     </div>
 
     <FilteredList
-      v-if="fleet && fleet.myFleet"
       key="fleet"
-      :collection="vehiclesCollection"
+      :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
       :params="routeParams"
@@ -255,6 +254,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
+import publicFleetVehiclesCollection from 'frontend/api/collections/PublicFleetVehicles'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetDetail>({
@@ -276,6 +276,8 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 export default class FleetDetail extends Vue {
   vehiclesCollection: FleetVehiclesCollection = fleetVehiclesCollection
 
+  publicVehiclesCollection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection
+
   @Getter('grouped', { namespace: 'fleet' }) grouped
 
   @Getter('money', { namespace: 'fleet' }) money
@@ -286,6 +288,14 @@ export default class FleetDetail extends Vue {
 
   get fleet() {
     return fleetsCollection.record
+  }
+
+  get collection() {
+    if (!this.fleet || !this.fleet.myFleet) {
+      return this.publicVehiclesCollection
+    }
+
+    return this.vehiclesCollection
   }
 
   get metaTitle() {
