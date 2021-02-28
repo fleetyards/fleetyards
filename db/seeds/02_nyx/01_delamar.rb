@@ -8,7 +8,8 @@ delamar.update!(store_image: Rails.root.join('db/seeds/images/nyx/delamar/delama
 levski = Station.find_or_initialize_by(name: 'Levski')
 levski.update!(
   celestial_object: delamar,
-  station_type: 'mining-hub',
+  station_type: :landing_zone,
+  classification: :settlement,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open,
   hidden: false

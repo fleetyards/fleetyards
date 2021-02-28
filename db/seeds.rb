@@ -19,7 +19,7 @@ if ENV['TEST_SEEDS'].present?
   crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
   crusader.update!(starsystem: stanton, hidden: false)
   portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
-  portolisar.update!(celestial_object: crusader, station_type: :hub, location: 'Orbit', hidden: false)
+  portolisar.update!(celestial_object: crusader, station_type: :station, location: 'Orbit', hidden: false)
 
   test_user = User.find_or_initialize_by(username: 'TestUser')
   test_user.skip_confirmation!

@@ -61,7 +61,7 @@ module Admin
     private def station_params
       @station_params ||= params.require(:station).permit(
         :name, :station_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
-        :celestial_object_id, :location, :map, :map_cache, :remove_map, :cargo_hub, :refinary,
+        :celestial_object_id, :location, :map, :map_cache, :remove_map, :cargo_hub, :refinery,
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
     end

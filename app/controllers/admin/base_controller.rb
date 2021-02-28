@@ -11,7 +11,6 @@ module Admin
       @latest_models = Model.order(updated_at: :desc, name: :asc).limit(8)
       @latest_manufacturers = Manufacturer.unscoped.order(updated_at: :desc).limit(8)
       @latest_components = Component.unscoped.order(updated_at: :desc).limit(8)
-      @worker_running = worker_running?
     end
 
     private def online_count

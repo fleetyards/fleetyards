@@ -6,13 +6,15 @@
 #
 #  id                  :uuid             not null, primary key
 #  cargo_hub           :boolean
+#  classification      :integer
 #  description         :text
+#  habitable           :boolean          default(TRUE)
 #  hidden              :boolean          default(TRUE)
 #  images_count        :integer          default(0)
 #  location            :string
 #  map                 :string
 #  name                :string
-#  refinary            :boolean
+#  refinery            :boolean
 #  slug                :string
 #  station_type        :integer
 #  status              :integer

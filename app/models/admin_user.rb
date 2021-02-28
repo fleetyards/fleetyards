@@ -27,7 +27,7 @@
 #  index_admin_users_on_username              (username) UNIQUE
 #
 class AdminUser < ApplicationRecord
-  devise :database_authenticatable, :async, :recoverable, :trackable, :validatable,
+  devise :database_authenticatable, :recoverable, :trackable, :validatable,
          :timeoutable, :rememberable,
          authentication_keys: [:username]
 end

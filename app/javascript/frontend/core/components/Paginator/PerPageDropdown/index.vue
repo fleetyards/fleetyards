@@ -33,9 +33,7 @@ export default class PerPageDropdown extends Vue {
   @Prop({ required: true }) perPage!: number
 
   @Prop({
-    default: () => {
-      return [10, 20, 50, 100]
-    },
+    default: () => [10, 20, 50, 100],
   })
   steps!: number[]
 

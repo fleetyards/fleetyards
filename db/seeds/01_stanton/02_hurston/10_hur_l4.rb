@@ -5,7 +5,14 @@ hurston = CelestialObject.find_or_create_by!(name: 'Hurston')
 hidden = false
 
 hur_l4 = Station.find_or_initialize_by(name: 'HUR-L4 Melodic Fields Station')
-hur_l4.update!(celestial_object: hurston, station_type: :rest_stop, location: 'HUR-L4', store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l4/hur-l4-a.jpg').open, hidden: hidden)
+hur_l4.update!(
+  celestial_object: hurston,
+  station_type: :station,
+  classification: :rest_stop,
+  location: 'HUR-L4',
+  store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l4/hur-l4-a.jpg').open,
+  hidden: hidden
+)
 
 hur_l4.docks.destroy_all
 { small: [1, 3], medium: [2, 4, 5, 6] }.each do |ship_size, pads|

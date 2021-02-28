@@ -46,9 +46,8 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  devise :database_authenticatable, :async, :recoverable, :trackable, :validatable,
-         :confirmable, :timeoutable, :rememberable,
-         authentication_keys: [:login]
+  devise :database_authenticatable, :recoverable, :trackable, :validatable,
+         :confirmable, :rememberable, :timeoutable, authentication_keys: [:login]
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
@@ -95,6 +94,18 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
+  end
+
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def resend_confirmation
+    return if confirmed?
+
+    return if confirmation_sent_at.present? && confirmation_sent_at > (Time.zone.now - 10.minutes)
+
+    send_confirmation_instructions
   end
 
   def clean_username

@@ -8,8 +8,9 @@
 #  buying            :boolean          default(FALSE)
 #  description       :text
 #  hidden            :boolean          default(TRUE)
+#  location          :string
 #  name              :string
-#  refinary_terminal :boolean
+#  refinery_terminal :boolean
 #  rental            :boolean          default(FALSE)
 #  selling           :boolean          default(FALSE)
 #  shop_type         :integer
@@ -26,9 +27,8 @@
 class Shop < ApplicationRecord
   paginates_per 30
 
-  searchkick searchable: %i[name shop_type station celestial_object starsystem refinary],
-             word_start: %i[name],
-             filterable: []
+  searchkick searchable: %i[name shop_type station celestial_object starsystem refinery],
+             word_start: %i[name]
 
   def search_data
     {
@@ -37,7 +37,7 @@ class Shop < ApplicationRecord
       station: station.name,
       celestial_object: station.celestial_object.name,
       starsystem: station.celestial_object.starsystem&.name,
-      refinary: refinary_terminal? ? 'Refinary' : ''
+      refinery: refinery_terminal? ? 'Refinery' : ''
     }
   end
 
@@ -45,7 +45,7 @@ class Shop < ApplicationRecord
     !hidden
   end
 
-  belongs_to :station
+  belongs_to :station, touch: true
   has_many :shop_commodities, dependent: :destroy
 
   validates :name, :station, :shop_type, presence: true
@@ -57,7 +57,7 @@ class Shop < ApplicationRecord
   enum shop_type: {
     clothing: 0, armor: 1, weapons: 2, components: 3, armor_and_weapons: 4, superstore: 5,
     ships: 6, admin: 7, bar: 8, hospital: 9, salvage: 10, resources: 11, rental: 12,
-    computers: 13, blackmarket: 14, mining_equipment: 15, equipment: 16, courier: 17, refinary: 18
+    computers: 13, blackmarket: 14, mining_equipment: 15, equipment: 16, courier: 17, refinery: 18
   }
   ransacker :shop_type, formatter: proc { |v| Shop.shop_types[v] } do |parent|
     parent.table[:shop_type]
@@ -105,8 +105,9 @@ class Shop < ApplicationRecord
     [
       I18n.t('activerecord.attributes.shop.location_prefix.default'),
       station.name,
+      location,
       station.location_label
-    ].join(' ')
+    ].compact.join(' ')
   end
 
   private def update_shop_commodities

@@ -1,9 +1,4 @@
-export const uniq = (value, index, self) => {
-  return self.indexOf(value) === index
-}
+export const uniq = (value, index, self) => self.indexOf(value) === index
 
-export const sum = list => {
-  return list.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue
-  }, 0)
-}
+export const sum = list =>
+  list.reduce((accumulator, currentValue) => accumulator + currentValue, 0)

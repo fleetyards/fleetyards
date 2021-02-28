@@ -61,7 +61,7 @@ Cypress.Commands.add('saveShip', () => {
 
 Cypress.Commands.add('acceptCookies', () => {
   cy.select('accept-cookies').click()
-  cy.select('accept-cookies').should('not.be.visible')
+  cy.select('accept-cookies').should('not.exist')
 })
 
 Cypress.Commands.add('login', () => {

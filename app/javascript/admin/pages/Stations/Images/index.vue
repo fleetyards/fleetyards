@@ -14,7 +14,7 @@
         :loading="loading"
         :images="records"
         :gallery-id="galleryId"
-        gallery-type="Model"
+        gallery-type="Station"
         @image-deleted="fetch"
         @image-uploaded="fetch"
       />

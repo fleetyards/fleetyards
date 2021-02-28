@@ -138,7 +138,6 @@ Devise.setup do |config|
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
   config.rememberable_options = {
-    key: Rails.env.production? ? 'FLTYRD_STORED' : "FLTYRD_STORED_#{Rails.env.upcase}",
     domain: ".#{Rails.application.secrets[:domain]}",
     secure: Rails.env.production? || Rails.env.staging?,
     same_site: :lax
@@ -156,7 +155,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = 1.hour
+  config.timeout_in = 2.hours
 
   # If true, expires auth token on session timeout.
   # config.expire_auth_token_on_timeout = false

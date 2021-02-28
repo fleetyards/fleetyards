@@ -34,6 +34,7 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resources :models, except: [:show] do
     put 'reload', on: :collection
+    put 'reload_data', on: :collection
     member do
       get 'images'
       put 'reload_one'

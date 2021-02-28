@@ -11,6 +11,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 1000;
 
     &.spacing-right {
       right: 230px;
@@ -23,7 +24,6 @@
 
   .quick-search-bar {
     width: 600px;
-    transition: left ease .5s, right ease .5s;
 
     .form-input {
       margin-bottom: 0;
@@ -39,7 +39,6 @@
     border: 1px solid transparent;
     border-color: transparent;
     border-radius: 3px;
-    transition: left ease $transition-base-speed;
 
     .icon-bar {
       display: block;
@@ -96,7 +95,6 @@ nav {
   width: 300px;
   min-width: 300px;
   height: 100vh;
-  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   .nav-container {
     position: fixed;
@@ -107,7 +105,7 @@ nav {
     overflow-y: auto;
     background-color: rgba($gray-darker, .5);
     border-right: 1px solid rgba(30, 34, 38, .5);
-    transition: left ease $transition-base-speed, width ease $transition-base-speed;
+    transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
     .nav-container-inner {
       position: relative;
@@ -137,7 +135,7 @@ nav {
         top: 10px;
         left: 30px;
         width: 40px;
-        transition: left ease $transition-base-speed;
+        // transition: left ease $transition-base-speed;
       }
 
       .logo-menu-label {
@@ -177,10 +175,21 @@ nav {
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .navigation-header {
+    right: 0;
+    left: auto;
+    flex-direction: row-reverse;
+
+    .nav-toggle {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+
   nav {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
     height: auto;
     margin-top: env(safe-area-inset-top);
@@ -188,9 +197,9 @@ nav {
     .nav-container {
       position: fixed;
       top: 0;
-      right: auto;
+      right: -300px;
       bottom: 0;
-      left: -300px;
+      left: auto;
       width: 300px;
       height: 100vh;
       max-height: 100vh;
@@ -210,20 +219,17 @@ nav {
   }
 
   .nav-visible {
-    right: -300px;
-    left: 300px;
-
     .navigation-header {
-      left: 300px;
+      right: 300px;
 
       .environment-label {
-        right: -280px;
+        left: -280px;
       }
     }
 
     nav {
       .nav-container {
-        left: 0;
+        right: 0;
       }
     }
   }
@@ -232,13 +238,18 @@ nav {
 @media (max-width: 370px) {
   nav {
     .nav-container {
-      left: -250px;
+      right: -250px;
       width: 250px;
     }
   }
 
   .nav-visible {
-    right: -250px;
-    left: 250px;
+    .navigation-header {
+      right: 250px;
+
+      .environment-label {
+        left: -230px;
+      }
+    }
   }
 }

@@ -7,6 +7,7 @@
 #  id                  :uuid             not null, primary key
 #  active              :boolean
 #  body                :text
+#  committed           :boolean          default(FALSE)
 #  completed           :integer
 #  description         :text
 #  image               :string

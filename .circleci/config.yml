@@ -1,7 +1,7 @@
 version: 2.1
 
 ciImage: &ciImage
-  image: fleetyards/ci:2.7.2
+  image: fleetyards/ci:3.0.0
   auth:
     username: $DOCKERHUB_USER
     password: $DOCKERHUB_PASSWORD
@@ -19,7 +19,7 @@ ciImage: &ciImage
     ADMIN_ENDPOINT: http://localhost:8270
 
 e2eImage: &e2eImage
-  image: fleetyards/e2e:2.7.2
+  image: fleetyards/e2e:3.0.0
   auth:
     username: $DOCKERHUB_USER
     password: $DOCKERHUB_PASSWORD
@@ -339,8 +339,8 @@ jobs:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erebor (HACK)
-          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Stage Server (HACK)
+          command: ssh-keyscan -H fleetyards-stage.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -361,8 +361,8 @@ jobs:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erebor (HACK)
-          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Live Server (HACK)
+          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts

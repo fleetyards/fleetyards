@@ -1,6 +1,7 @@
 import { get, post } from 'frontend/api/client'
+import BaseCollection from './Base'
 
-export class FleetMembersCollection {
+export class FleetMembersCollection extends BaseCollection {
   primaryKey: string = 'id'
 
   records: FleetMember[] = []
@@ -21,6 +22,7 @@ export class FleetMembersCollection {
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
 
     return this.records

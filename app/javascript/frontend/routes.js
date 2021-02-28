@@ -84,7 +84,9 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
+      quickSearch: 'nameCont',
       title: 'hangar.fleetchart',
+      primaryAction: true,
       backgroundImage: 'bg-5',
     },
   },

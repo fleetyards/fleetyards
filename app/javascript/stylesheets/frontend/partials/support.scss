@@ -8,3 +8,10 @@
 .support-body {
   text-align: center;
 }
+
+@media (max-width: $desktop-breakpoint) {
+  .support-button {
+    right: auto;
+    left: 15px;
+  }
+}

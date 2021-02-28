@@ -20,7 +20,7 @@
               :aria-label="shop.name"
             >
               <small class="text-muted">
-                {{ shop.station.name }}
+                {{ shop.station.name }} {{ shop.location }}
               </small>
               <br />
               {{ shop.name }}

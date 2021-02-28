@@ -60,7 +60,8 @@ module Rsi
             new_item.release = release_name(new_item, release)
             new_item.release_description = release['description']
             new_item.rsi_release_id = release['id']
-            new_item.released = release['released'].zero? ? false : true
+            new_item.released = release['status'] == 'Released'
+            new_item.committed = release['status'] == 'Committed'
             new_item.rsi_category_id = card['category_id']
             new_item.name = card['name']
             new_item.description = card['description']
@@ -75,7 +76,8 @@ module Rsi
             release: release_name(item, release),
             release_description: release['description'],
             rsi_release_id: release['id'],
-            released: release['released'].zero? ? false : true,
+            released: (release['status'] == 'Released'),
+            committed: (release['status'] == 'Committed'),
             rsi_category_id: card['category_id'],
             name: card['name'],
             description: card['description'],
@@ -89,9 +91,9 @@ module Rsi
           roadmap_item_ids << item.id
 
           if item.store_image.blank?
-            image_url = card['thumbnail']['urls']['source']
-            image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
+            image_url = card.dig('thumbnail', 'urls', 'source')
             if image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
+              image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
               item.remote_store_image_url = image_url
               item.save
             end
@@ -105,9 +107,7 @@ module Rsi
         end
       end
 
-      RoadmapItem.where.not(id: roadmap_item_ids).find_each do |roadmap_item|
-        roadmap_item.update(active: false)
-      end
+      cleanup_items(roadmap_item_ids)
 
       roadmap_item_ids
     end
@@ -115,7 +115,21 @@ module Rsi
     # rubocop:enable Metrics/CyclomaticComplexity
 
     private def strip_roadmap_name(name)
-      strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip
+      name_mapping(strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip)
+    end
+
+    private def name_mapping(name)
+      mapping = {
+        'C2 Hercules Starlifter' => 'C2 Hercules',
+        'M2 Hercules Starlifter' => 'M2 Hercules',
+        'A2 Hercules Starlifter' => 'A2 Hercules',
+        'Ares Starfighter Ion' => 'Ares Ion',
+        'Ares Starfighter Inferno' => 'Ares Inferno'
+      }
+
+      return mapping[name] if mapping[name].present?
+
+      name
     end
 
     private def release_name(item, release)
@@ -129,6 +143,14 @@ module Rsi
       return old_release_name if new_release_name == old_release_name
 
       new_release_name
+    end
+
+    private def cleanup_items(item_ids)
+      return if item_ids.blank?
+
+      RoadmapItem.where.not(id: item_ids).find_each do |roadmap_item|
+        roadmap_item.update(active: false)
+      end
     end
 
     private def cleanup_changes

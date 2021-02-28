@@ -1,5 +1,10 @@
 production:
   url: <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DATABASE_POOL_SIZE"] %>
+
+staging:
+  url: <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DATABASE_POOL_SIZE"] %>
 
 ci:
   url: <%= ENV["DATABASE_URL"] %>

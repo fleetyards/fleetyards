@@ -7,7 +7,8 @@ hidden = true # currently not present 2019-07-28
 arc_l3 = Station.find_or_initialize_by(name: 'Rest & Relax (ARC-L3)')
 arc_l3.update!(
   celestial_object: arccorp,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'ARC-L3',
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l3/arc-l3.jpg').open,
   hidden: hidden

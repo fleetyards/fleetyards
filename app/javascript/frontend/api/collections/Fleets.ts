@@ -13,6 +13,7 @@ export class FleetsCollection extends BaseCollection {
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
 
     return this.records

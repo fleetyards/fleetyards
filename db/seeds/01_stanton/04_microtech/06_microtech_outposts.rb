@@ -1,15 +1,16 @@
 microtech = CelestialObject.find_or_create_by!(name: 'microTech')
 
-shubin_smo_13 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-13')
-shubin_smo_13.update!(
+shubin_sm0_13 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-13')
+shubin_sm0_13.update!(
   celestial_object: microtech,
   station_type: :outpost,
+  classification: :mining,
   location: 'Microtech',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smo_13)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_13)
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
@@ -18,11 +19,11 @@ admin_office.update!(
   hidden: false
 )
 
-shubin_smo_13.docks.destroy_all
+shubin_sm0_13.docks.destroy_all
 pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
-    shubin_smo_13.docks << Dock.new(
+    shubin_sm0_13.docks << Dock.new(
       name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
       ship_size: ship_size
@@ -33,7 +34,7 @@ end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |_index|
-    shubin_smo_13.docks << Dock.new(
+    shubin_sm0_13.docks << Dock.new(
       name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
       ship_size: ship_size
@@ -42,16 +43,17 @@ pad = 1
   end
 end
 
-shubin_smo_10 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-10')
-shubin_smo_10.update!(
+shubin_sm0_10 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-10')
+shubin_sm0_10.update!(
   celestial_object: microtech,
   station_type: :outpost,
+  classification: :mining,
   location: 'Microtech',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smo_10)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_10)
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
@@ -60,11 +62,11 @@ admin_office.update!(
   hidden: false
 )
 
-shubin_smo_10.docks.destroy_all
+shubin_sm0_10.docks.destroy_all
 pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
-    shubin_smo_10.docks << Dock.new(
+    shubin_sm0_10.docks << Dock.new(
       name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
       ship_size: ship_size
@@ -75,7 +77,7 @@ end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |_index|
-    shubin_smo_10.docks << Dock.new(
+    shubin_sm0_10.docks << Dock.new(
       name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
       ship_size: ship_size
@@ -84,16 +86,17 @@ pad = 1
   end
 end
 
-shubin_smo_18 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-18')
-shubin_smo_18.update!(
+shubin_sm0_18 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-18')
+shubin_sm0_18.update!(
   celestial_object: microtech,
   station_type: :outpost,
+  classification: :mining,
   location: 'Microtech',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smo_18)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_18)
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
@@ -102,11 +105,11 @@ admin_office.update!(
   hidden: false
 )
 
-shubin_smo_18.docks.destroy_all
+shubin_sm0_18.docks.destroy_all
 pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
-    shubin_smo_18.docks << Dock.new(
+    shubin_sm0_18.docks << Dock.new(
       name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
       ship_size: ship_size
@@ -117,7 +120,7 @@ end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |_index|
-    shubin_smo_18.docks << Dock.new(
+    shubin_sm0_18.docks << Dock.new(
       name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
       ship_size: ship_size
@@ -127,16 +130,17 @@ pad = 1
 end
 
 
-shubin_smo_22 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SMO-22')
-shubin_smo_22.update!(
+shubin_sm0_22 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SM0-22')
+shubin_sm0_22.update!(
   celestial_object: microtech,
   station_type: :outpost,
+  classification: :mining,
   location: 'Microtech',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false
 )
 
-admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_smo_22)
+admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: shubin_sm0_22)
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope_admin.jpg').open,
@@ -145,11 +149,11 @@ admin_office.update!(
   hidden: false
 )
 
-shubin_smo_22.docks.destroy_all
+shubin_sm0_22.docks.destroy_all
 pad = 1
 { small: 2 }.each do |ship_size, count|
   count.times do
-    shubin_smo_22.docks << Dock.new(
+    shubin_sm0_22.docks << Dock.new(
       name: "Vehiclepad #{'%02d' % pad}",
       dock_type: :vehiclepad,
       ship_size: ship_size
@@ -160,7 +164,7 @@ end
 pad = 1
 { medium: 1, large: 1 }.each do |ship_size, count|
   count.times do |_index|
-    shubin_smo_22.docks << Dock.new(
+    shubin_sm0_22.docks << Dock.new(
       name: "Ladingpad #{'%02d' % pad}",
       dock_type: :landingpad,
       ship_size: ship_size
@@ -173,6 +177,7 @@ rayari_deltana = Station.find_or_initialize_by(name: 'Rayari Deltana Research Ou
 rayari_deltana.update!(
   celestial_object: microtech,
   station_type: :outpost,
+  classification: :science,
   location: 'Microtech',
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/stanhope.jpg').open,
   hidden: false

@@ -5,6 +5,7 @@
         <BreadCrumbs :crumbs="crumbs" />
         <h1 v-if="shop">
           {{ shop.name }}
+          <small class="text-muted">{{ shop.location }}</small>
         </h1>
       </div>
       <div class="col-12 col-md-4">

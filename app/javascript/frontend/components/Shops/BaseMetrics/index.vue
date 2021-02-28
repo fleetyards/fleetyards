@@ -55,9 +55,9 @@
       </div>
       <div class="row">
         <div class="col-6">
-          <div class="metrics-label">{{ $t('shop.refinaryTerminal') }}:</div>
+          <div class="metrics-label">{{ $t('shop.refineryTerminal') }}:</div>
           <div class="metrics-value">
-            {{ $t(`labels.${shop.refinaryTerminal}`) }}
+            {{ $t(`labels.${shop.refineryTerminal}`) }}
           </div>
         </div>
       </div>

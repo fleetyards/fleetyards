@@ -175,7 +175,9 @@ export default class FormInput extends Vue {
   }
 
   setFocus() {
-    this.$refs.input.focus()
+    if (this.$refs.input) {
+      this.$refs.input.focus()
+    }
   }
 
   update() {

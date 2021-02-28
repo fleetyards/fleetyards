@@ -6,7 +6,7 @@ module Admin
       authorize! :check, :worker
       respond_to do |format|
         format.js do
-          render json: worker_running?, status: :ok
+          render json: worker_running?(params[:name]), status: :ok
         end
         format.html do
           redirect_to root_path

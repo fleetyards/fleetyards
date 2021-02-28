@@ -7,6 +7,7 @@ area_061 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 061')
 area_061.update!(
   celestial_object: wala,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_061.jpg').open,
   hidden: false
@@ -45,6 +46,7 @@ area_048 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 048')
 area_048.update!(
   celestial_object: wala,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_048.jpg').open,
   hidden: false
@@ -83,6 +85,7 @@ area_045 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 045')
 area_045.update!(
   celestial_object: wala,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_045.jpg').open,
   hidden: false
@@ -121,6 +124,7 @@ area_056 = Station.find_or_initialize_by(name: 'ArcCorp Mining Area 056')
 area_056.update!(
   celestial_object: wala,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/area_056.jpg').open,
   hidden: false
@@ -158,7 +162,8 @@ end
 samson = Station.find_or_initialize_by(name: "Samson & Son's Salvage Center")
 samson.update!(
   celestial_object: wala,
-  station_type: 'salvage-outpost',
+  station_type: :outpost,
+  classification: :salvaging,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/wala/samson.jpg').open,
   hidden: false

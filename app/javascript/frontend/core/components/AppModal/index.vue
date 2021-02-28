@@ -74,7 +74,11 @@ export default class AppModal extends Vue {
       setTimeout(() => {
         // make sure initial animations have enough time
         this.isOpen = true
-        this.$refs.modal.focus()
+
+        if (this.$refs.modal) {
+          this.$refs.modal.focus()
+        }
+
         this.$emit('modal-opened')
       }, 100)
     })

@@ -130,9 +130,7 @@
           <QuickFilter v-if="!mobile" key="quickfilter" />
           <div
             v-for="route in records"
-            :key="
-              `${route.origin.slug}-${route.destination.slug}-${route.commodity.slug}`
-            "
+            :key="route.id"
             class="col-12 fade-list-item cargo-route"
           >
             <div class="row">

@@ -52,6 +52,7 @@ module Api
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
             'stationLabel' => explorer.shop.station_label,
+            'location' => nil,
             'locationLabel' => explorer.shop.location_label,
             'rental' => false,
             'buying' => false,
@@ -60,7 +61,7 @@ module Api
             'storeImageLarge' => explorer.shop.store_image.large.url,
             'storeImageMedium' => explorer.shop.store_image.medium.url,
             'storeImageSmall' => explorer.shop.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => explorer.shop.station.name,
               'slug' => explorer.shop.station.slug,
@@ -169,6 +170,7 @@ module Api
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
             'stationLabel' => andromeda.shop.station_label,
+            'location' => nil,
             'locationLabel' => andromeda.shop.location_label,
             'rental' => false,
             'buying' => false,
@@ -177,7 +179,7 @@ module Api
             'storeImageLarge' => andromeda.shop.store_image.large.url,
             'storeImageMedium' => andromeda.shop.store_image.medium.url,
             'storeImageSmall' => andromeda.shop.store_image.small.url,
-            'refinaryTerminal' => nil,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => andromeda.shop.station.name,
               'slug' => andromeda.shop.station.slug,
@@ -253,14 +255,24 @@ module Api
         }]
       end
 
+      def setup
+        Searchkick.enable_callbacks
+      end
+
+      def teardown
+        Searchkick.disable_callbacks
+      end
+
       describe 'without session' do
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
 
@@ -272,12 +284,14 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
     end

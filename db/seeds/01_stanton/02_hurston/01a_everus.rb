@@ -7,11 +7,12 @@ hidden = false
 everus = Station.find_or_initialize_by(name: 'Everus Harbor')
 everus.update!(
   celestial_object: hurston,
-  station_type: :hub,
+  station_type: :station,
+  classification: :trading,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/everus/everus.jpg').open,
   hidden: hidden,
-  refinary: true,
+  refinery: true,
   cargo_hub: true
 )
 

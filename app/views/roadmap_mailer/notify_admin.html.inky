@@ -1,6 +1,6 @@
-<h4>
+<h2>
   <%= I18n.t("mailer.roadmap.admin.headline") %>
-</h4>
+</h2>
 <p>
   <%= I18n.t("mailer.roadmap.admin.body", changes: @changes) %>
 </p>

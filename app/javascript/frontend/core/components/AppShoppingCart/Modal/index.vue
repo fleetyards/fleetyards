@@ -28,7 +28,7 @@
               >
                 <div>
                   {{ soldAt.stationName }}
-                  <span class="text-darken">{{ soldAt.shopName }}</span>
+                  <span class="text-muted">{{ soldAt.shopName }}</span>
                 </div>
                 <span class="price-label" v-html="$toUEC(soldAt.price)" />
               </li>
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div key="total" class="item-list-item item-list-total">
-          <div class="text-darken">{{ $t('labels.shoppingCart.total') }}</div>
+          <div class="text-muted">{{ $t('labels.shoppingCart.total') }}</div>
           <div class="price-label" v-html="$toUEC(total)" />
         </div>
       </div>

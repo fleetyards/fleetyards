@@ -60,7 +60,6 @@ import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetMembers>({
-  name: 'FleetMembers',
   components: {
     Btn,
     BreadCrumbs,

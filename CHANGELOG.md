@@ -2,6 +2,135 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.8](https://github.com/fleetyards/fleetyards/compare/v4.6.6...v4.6.8) (2021-02-11)
+
+### [4.6.7](https://github.com/fleetyards/fleetyards/compare/v4.6.6...v4.6.7) (2021-02-11)
+
+### [4.6.6](https://github.com/fleetyards/fleetyards/compare/v4.6.5...v4.6.6) (2021-02-06)
+
+
+### Bug Fixes
+
+* admin station image upload ([9455083](https://github.com/fleetyards/fleetyards/commit/94550830360ca73858be5abe670197d2782402c4))
+
+### [4.6.5](https://github.com/fleetyards/fleetyards/compare/v4.6.4...v4.6.5) (2021-01-31)
+
+
+### Bug Fixes
+
+* model detail image ([24cf230](https://github.com/fleetyards/fleetyards/commit/24cf230f76156f209a5a37c9a3fe206926954c7d))
+* roadmap loader ([fafad58](https://github.com/fleetyards/fleetyards/commit/fafad584ffa80491b9cc24c57cc425e14135e491))
+
+### [4.6.4](https://github.com/fleetyards/fleetyards/compare/v4.6.3...v4.6.4) (2021-01-30)
+
+
+### Bug Fixes
+
+* roadmap release description ([f4991cd](https://github.com/fleetyards/fleetyards/commit/f4991cd4eca34a45945759051a000ba787dd4762))
+
+### [4.6.3](https://github.com/fleetyards/fleetyards/compare/v4.6.2...v4.6.3) (2021-01-27)
+
+
+### Bug Fixes
+
+* roadmap loader ([7b0c42b](https://github.com/fleetyards/fleetyards/commit/7b0c42b0a82718233cd4a8e559789f21e52b2ce5))
+
+### [4.6.2](https://github.com/fleetyards/fleetyards/compare/v4.6.1...v4.6.2) (2021-01-27)
+
+### [4.6.1](https://github.com/fleetyards/fleetyards/compare/v4.6.0...v4.6.1) (2021-01-24)
+
+## [4.6.0](https://github.com/fleetyards/fleetyards/compare/v4.5.0...v4.6.0) (2021-01-24)
+
+
+### Features
+
+* update hangar header ([7d576a3](https://github.com/fleetyards/fleetyards/commit/7d576a3d68afcd522e428912535bd790e33d655b))
+
+
+### Bug Fixes
+
+* mail asset urls ([d5dbaa0](https://github.com/fleetyards/fleetyards/commit/d5dbaa0f5d50455b414d8c32463b0558fc3de01b))
+* update hangar groups ([cc5251a](https://github.com/fleetyards/fleetyards/commit/cc5251ada86183c3a1768473171c816703bbb0e5))
+
+## [4.5.0](https://github.com/fleetyards/fleetyards/compare/v4.4.18...v4.5.0) (2021-01-18)
+
+
+### Features
+
+* progress tracker ([91a0662](https://github.com/fleetyards/fleetyards/commit/91a066248d25da3bacc5c592c5fd96c56e6eae1d))
+* update email templates ([a36f06e](https://github.com/fleetyards/fleetyards/commit/a36f06eb53b37f6f7d17c43d50536528734430b7))
+
+
+### Bug Fixes
+
+* typo migration ([2571e52](https://github.com/fleetyards/fleetyards/commit/2571e52aca7193bf7ad4c1515696018c40f57241))
+
+### [4.4.18](https://github.com/fleetyards/fleetyards/compare/v4.4.17...v4.4.18) (2020-12-26)
+
+
+### Bug Fixes
+
+* compare models labels ([d417531](https://github.com/fleetyards/fleetyards/commit/d41753148d7b9643dfa370896e179d32800a1d3c))
+
+### [4.4.17](https://github.com/fleetyards/fleetyards/compare/v4.4.16...v4.4.17) (2020-12-25)
+
+### [4.4.16](https://github.com/fleetyards/fleetyards/compare/v4.4.15...v4.4.16) (2020-12-25)
+
+
+### Bug Fixes
+
+* add missing mailer template ([f216c29](https://github.com/fleetyards/fleetyards/commit/f216c295dc3f2383b12ed12bed29a25afb26714b))
+* saveguard refs access ([765bd82](https://github.com/fleetyards/fleetyards/commit/765bd8253e3ddd463a2107a2f255d43e88da7f85))
+* trade route key ([f2125d1](https://github.com/fleetyards/fleetyards/commit/f2125d1dc80dd25f0fd40262c2e0ff35473b04e5))
+* try to create a unique key for progress tracker items ([6c6811b](https://github.com/fleetyards/fleetyards/commit/6c6811b93d6cc6fc1cde55aff5e7c4037e24d6c5))
+
+### [4.4.15](https://github.com/fleetyards/fleetyards/compare/v4.4.14...v4.4.15) (2020-12-25)
+
+### [4.4.14](https://github.com/fleetyards/fleetyards/compare/v4.4.13...v4.4.14) (2020-12-21)
+
+### [4.4.13](https://github.com/fleetyards/fleetyards/compare/v4.4.12...v4.4.13) (2020-12-21)
+
+
+### Bug Fixes
+
+* hardpoint loader ([92b5936](https://github.com/fleetyards/fleetyards/commit/92b5936f8b89de56b2201ba1f0ab7ff0c6f140ba))
+* specs ([494e3e1](https://github.com/fleetyards/fleetyards/commit/494e3e1d1fd28c82a639306d2deca9be5e89cd67))
+
+### [4.4.12](https://github.com/fleetyards/fleetyards/compare/v4.4.11...v4.4.12) (2020-12-20)
+
+### [4.4.11](https://github.com/fleetyards/fleetyards/compare/v4.4.10...v4.4.11) (2020-12-20)
+
+
+### Bug Fixes
+
+* sc data loader ([eb7846c](https://github.com/fleetyards/fleetyards/commit/eb7846ca78b8faab443a3aa7a8783e1d3885d2dc))
+* trader routes prices ([3033926](https://github.com/fleetyards/fleetyards/commit/303392694119689bbadb07408e6165b7ae8fd9b1))
+
+### [4.4.10](https://github.com/fleetyards/fleetyards/compare/v4.4.9...v4.4.10) (2020-12-20)
+
+
+### Bug Fixes
+
+* fleet and hangar stats for ships by manufacturer ([6b35a66](https://github.com/fleetyards/fleetyards/commit/6b35a667ebd9d5c54dd94f3db606718243dbd19f))
+* trade route worker ([c7c22af](https://github.com/fleetyards/fleetyards/commit/c7c22af6a32c29f279bf0f249c3aa9d0cab437df))
+
+### [4.4.9](https://github.com/fleetyards/fleetyards/compare/v4.4.8...v4.4.9) (2020-12-03)
+
+
+### Bug Fixes
+
+* pagination on fleets ([ba17547](https://github.com/fleetyards/fleetyards/commit/ba17547025495585d6815bb19693cd0b2d1ddfef))
+
+### [4.4.8](https://github.com/fleetyards/fleetyards/compare/v4.4.7...v4.4.8) (2020-11-27)
+
+### [4.4.7](https://github.com/fleetyards/fleetyards/compare/v4.4.6...v4.4.7) (2020-11-26)
+
+
+### Bug Fixes
+
+* privacy policy ([c11d14a](https://github.com/fleetyards/fleetyards/commit/c11d14a685084b3403590f947e0537fd5c9e00f6))
+* window width on mobile ([9851a17](https://github.com/fleetyards/fleetyards/commit/9851a177adc4a57269a9202d73a4e512ccb7907a))
+
 ### [4.4.6](https://github.com/fleetyards/fleetyards/compare/v4.4.5...v4.4.6) (2020-11-25)
 
 
@@ -167,8 +296,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 * add admin view for confirmations ([1baeb1b](https://github.com/fleetyards/fleetyards/commit/1baeb1bc15b599b54fcf23a04aa32f321bbaba17))
 * add per page selector for hangar ([374f5cf](https://github.com/fleetyards/fleetyards/commit/374f5cf75da3c9c34e018d450ed6f6608d2316bd))
-* add refinary flag to shops ([647edb1](https://github.com/fleetyards/fleetyards/commit/647edb186c0051a222632f5172f9a1cd6c802840))
-* add refinary info to stations ([9705ed7](https://github.com/fleetyards/fleetyards/commit/9705ed702737f1b470d571e91ba7368e19dc9b73))
+* add refinery flag to shops ([647edb1](https://github.com/fleetyards/fleetyards/commit/647edb186c0051a222632f5172f9a1cd6c802840))
+* add refinery info to stations ([9705ed7](https://github.com/fleetyards/fleetyards/commit/9705ed702737f1b470d571e91ba7368e19dc9b73))
 * add submit prices modal and show average prices on trade routes ([d9e8c70](https://github.com/fleetyards/fleetyards/commit/d9e8c704cbe5272dba94775d26729c00fc139ac9))
 * hangar list add bulk actions ([2ab0269](https://github.com/fleetyards/fleetyards/commit/2ab02698390a532b261b3f80c55c1157afa91547))
 * hangar list add bulk actions ([718814e](https://github.com/fleetyards/fleetyards/commit/718814ebfe422a498e7bb48835753c424786154a))

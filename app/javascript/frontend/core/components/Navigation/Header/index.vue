@@ -34,6 +34,7 @@
       </span>
     </div>
     <QuickSearch v-if="$route.meta.quickSearch" />
+    <Search v-if="$route.meta.search" />
   </header>
 </template>
 
@@ -42,10 +43,12 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import QuickSearch from 'frontend/core/components/Navigation/QuickSearch'
+import Search from 'frontend/core/components/Navigation/Search'
 
 @Component<NavigationHeader>({
   components: {
     QuickSearch,
+    Search,
   },
 })
 export default class NavigationHeader extends Vue {

@@ -1,0 +1,35 @@
+type Query {
+  roadmap(startDate: String!, endDate: String!): [Team]!
+}
+
+type Team {
+  title: String!
+  description: String!
+  deliverables: [Deliverable]!
+}
+
+type Deliverable {
+  title: String!
+  description: String!
+  startDate: String!
+  endDate: String!
+  projects: [Project]!
+  timeAllocations: [TimeAllocation]!
+}
+
+type Project {
+  title: String!
+  logo: String!
+}
+
+type TimeAllocation {
+  startDate: String!
+  endDate: String!
+  discipline: Discipline!
+}
+
+type Discipline {
+  title: String!
+  color: String!
+  countMembers: Int!
+}

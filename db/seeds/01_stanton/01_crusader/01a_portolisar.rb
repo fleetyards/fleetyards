@@ -7,11 +7,12 @@ hidden = false
 portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
 portolisar.update!(
   celestial_object: crusader,
-  station_type: :hub,
+  station_type: :station,
+  classification: :trading,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/portolisar/portolisar.jpg').open,
   hidden: false,
-  refinary: true
+  refinery: true
 )
 
 portolisar.docks.destroy_all

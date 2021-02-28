@@ -8,8 +8,9 @@
 #  buying            :boolean          default(FALSE)
 #  description       :text
 #  hidden            :boolean          default(TRUE)
+#  location          :string
 #  name              :string
-#  refinary_terminal :boolean
+#  refinery_terminal :boolean
 #  rental            :boolean          default(FALSE)
 #  selling           :boolean          default(FALSE)
 #  shop_type         :integer

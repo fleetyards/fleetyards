@@ -5,13 +5,23 @@
         <ul class="tabs">
           <router-link
             v-if="canEdit"
+            v-slot="{ navigate }"
             :to="{ name: 'fleet-settings-fleet' }"
-            tag="li"
+            :custom="true"
           >
-            <a>{{ $t('nav.fleets.settings.fleet') }}</a>
+            <li role="link" @click="navigate" @keypress.enter="navigate">
+              <a>{{ $t('nav.fleets.settings.fleet') }}</a>
+            </li>
           </router-link>
-          <router-link :to="{ name: 'fleet-settings-membership' }" tag="li">
-            <a>{{ $t('nav.fleets.settings.membership') }}</a>
+
+          <router-link
+            v-slot="{ navigate }"
+            :to="{ name: 'fleet-settings-membership' }"
+            :custom="true"
+          >
+            <li role="link" @click="navigate" @keypress.enter="navigate">
+              <a>{{ $t('nav.fleets.settings.membership') }}</a>
+            </li>
           </router-link>
           <li
             v-if="fleet"

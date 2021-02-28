@@ -28,6 +28,7 @@ module Api
           'type' => 'ships',
           'typeLabel' => 'Ship Store',
           'stationLabel' => new_deal.station_label,
+          'location' => new_deal.location,
           'locationLabel' => new_deal.location_label,
           'rental' => false,
           'buying' => false,
@@ -36,7 +37,7 @@ module Api
           'storeImageLarge' => new_deal.store_image.large.url,
           'storeImageMedium' => new_deal.store_image.medium.url,
           'storeImageSmall' => new_deal.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -90,6 +91,7 @@ module Api
           'type' => 'admin',
           'typeLabel' => 'Admin Office',
           'stationLabel' => admin_daymar.station_label,
+          'location' => admin_daymar.location,
           'locationLabel' => admin_daymar.location_label,
           'rental' => false,
           'buying' => false,
@@ -98,7 +100,7 @@ module Api
           'storeImageLarge' => admin_daymar.store_image.large.url,
           'storeImageMedium' => admin_daymar.store_image.medium.url,
           'storeImageSmall' => admin_daymar.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 001',
             'slug' => 'arccorp'
@@ -186,6 +188,7 @@ module Api
           'type' => 'admin',
           'typeLabel' => 'Admin Office',
           'stationLabel' => admin_yela.station_label,
+          'location' => admin_yela.location,
           'locationLabel' => admin_yela.location_label,
           'rental' => false,
           'buying' => false,
@@ -194,7 +197,7 @@ module Api
           'storeImageLarge' => admin_yela.store_image.large.url,
           'storeImageMedium' => admin_yela.store_image.medium.url,
           'storeImageSmall' => admin_yela.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'ArcCorp 002',
             'slug' => 'arccorp'
@@ -282,6 +285,7 @@ module Api
           'type' => 'admin',
           'typeLabel' => 'Admin Office',
           'stationLabel' => admin_olisar.station_label,
+          'location' => admin_olisar.location,
           'locationLabel' => admin_olisar.location_label,
           'rental' => false,
           'buying' => false,
@@ -290,7 +294,7 @@ module Api
           'storeImageLarge' => admin_olisar.store_image.large.url,
           'storeImageMedium' => admin_olisar.store_image.medium.url,
           'storeImageSmall' => admin_olisar.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -341,6 +345,7 @@ module Api
           'type' => 'components',
           'typeLabel' => 'Components Store',
           'stationLabel' => dumpers.station_label,
+          'location' => dumpers.location,
           'locationLabel' => dumpers.location_label,
           'rental' => false,
           'buying' => false,
@@ -349,7 +354,7 @@ module Api
           'storeImageLarge' => dumpers.store_image.large.url,
           'storeImageMedium' => dumpers.store_image.medium.url,
           'storeImageSmall' => dumpers.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'
@@ -400,6 +405,7 @@ module Api
           'type' => 'ships',
           'typeLabel' => 'Ship Store',
           'stationLabel' => new_deal.station_label,
+          'location' => new_deal.location,
           'locationLabel' => new_deal.location_label,
           'rental' => false,
           'buying' => false,
@@ -408,7 +414,7 @@ module Api
           'storeImageLarge' => new_deal.store_image.large.url,
           'storeImageMedium' => new_deal.store_image.medium.url,
           'storeImageSmall' => new_deal.store_image.small.url,
-          'refinaryTerminal' => nil,
+          'refineryTerminal' => nil,
           'station' => {
             'name' => 'Port Olisar',
             'slug' => 'port-olisar'

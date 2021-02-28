@@ -2,16 +2,14 @@ import { sortBy } from 'frontend/lib/Helpers'
 
 const createShoppingCartItem = (newItem, type) => {
   const soldAt = sortBy(
-    (newItem.soldAt || []).map(item => {
-      return {
-        id: item.id,
-        price: item.sellPrice,
-        shopName: item.shop.name,
-        shopSlug: item.shop.slug,
-        stationName: item.shop.station.name,
-        stationSlug: item.shop.station.slug,
-      }
-    }),
+    (newItem.soldAt || []).map(item => ({
+      id: item.id,
+      price: item.sellPrice,
+      shopName: item.shop.name,
+      shopSlug: item.shop.slug,
+      stationName: item.shop.station.name,
+      stationSlug: item.shop.station.slug,
+    })),
     'price',
   )
 

@@ -24,6 +24,12 @@
         :label="$t('nav.roadmap.ships')"
         icon="fad fa-rocket-launch"
       />
+      <NavItem divider />
+      <NavItem
+        :to="{ name: 'roadmap-progress-tracker' }"
+        :label="$t('nav.roadmap.progressTracker')"
+        icon="fad fa-clipboard-list-check"
+      />
     </template>
   </NavItem>
 </template>
@@ -42,9 +48,12 @@ import NavigationMixin from 'frontend/mixins/Navigation'
 })
 export default class RoadmapNav extends Vue {
   get active() {
-    return ['roadmap', 'roadmap-changes', 'roadmap-ships'].includes(
-      this.$route.name,
-    )
+    return [
+      'roadmap',
+      'roadmap-changes',
+      'roadmap-ships',
+      'roadmap-progress-tracker',
+    ].includes(this.$route.name)
   }
 }
 </script>

@@ -79,7 +79,7 @@ const methods = {
     return I18n.toCurrency(value, {
       precision: 2,
       unit,
-      format: '%n <span class="text-darken">%u</span>',
+      format: '%n <span class="text-muted">%u</span>',
     })
   },
 }

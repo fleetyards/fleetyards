@@ -10,6 +10,7 @@
   }
 
   .teaser-panel-body {
+    max-width: 100%;
     padding: 15px;
   }
 
@@ -33,6 +34,7 @@
   p {
     position: relative;
     z-index: 20;
+    overflow-x: hidden;
   }
 
   > :first-child {

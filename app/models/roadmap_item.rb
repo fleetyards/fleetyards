@@ -7,6 +7,7 @@
 #  id                  :uuid             not null, primary key
 #  active              :boolean
 #  body                :text
+#  committed           :boolean          default(FALSE)
 #  completed           :integer
 #  description         :text
 #  image               :string
@@ -35,7 +36,7 @@ class RoadmapItem < ApplicationRecord
 
   ransack_alias :last_updated_at, :versions_created_at
 
-  def self.activen
+  def self.active
     where(active: true)
   end
 

@@ -49,7 +49,7 @@
               @click="toggle(release)"
             >
               <span class="title">{{ release }}</span>
-              <span class="released-label">
+              <span v-if="items[0].releaseDescription" class="released-label">
                 ({{ items[0].releaseDescription }})
               </span>
               <small class="text-muted">

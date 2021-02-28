@@ -87,8 +87,7 @@
               <BaseRows :models="sortedModels" />
               <CrewRows :models="sortedModels" />
               <SpeedRows :models="sortedModels" />
-              <CategoryRows :models="sortedModels" />
-              <Legend :models="sortedModels" />
+              <HardpointRows :models="sortedModels" />
             </div>
           </div>
         </div>
@@ -109,8 +108,7 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import BaseRows from 'frontend/components/Compare/Models/Base'
 import CrewRows from 'frontend/components/Compare/Models/Crew'
 import SpeedRows from 'frontend/components/Compare/Models/Speed'
-import CategoryRows from 'frontend/components/Compare/Models/Categories'
-import Legend from 'frontend/components/Compare/Models/Legend'
+import HardpointRows from 'frontend/components/Compare/Models/Hardpoints'
 
 @Component<ModelsCompare>({
   components: {
@@ -121,8 +119,7 @@ import Legend from 'frontend/components/Compare/Models/Legend'
     BaseRows,
     CrewRows,
     SpeedRows,
-    CategoryRows,
-    Legend,
+    HardpointRows,
   },
   mixins: [MetaInfo],
 })
