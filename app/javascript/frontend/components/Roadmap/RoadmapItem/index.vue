@@ -27,11 +27,14 @@
         <small>
           <div v-tooltip="$t('labels.roadmap.lastUpdate')" class="text-muted">
             <span>{{ item.lastVersionChangedAtLabel }}</span>
-            <i v-tooltip="item.lastVersionChangedAtLabel" class="far fa-clock" />
+            <i
+              v-tooltip="item.lastVersionChangedAtLabel"
+              class="far fa-clock"
+            />
           </div>
           <div v-tooltip="$t('labels.roadmap.committed')">
             <span class="text-muted">{{ $t('labels.roadmap.committed') }}</span>
-            <i class="far fa-check" v-if="!item.committed" />
+            <i v-if="!item.committed" class="far fa-check" />
           </div>
         </small>
       </h3>

@@ -1,7 +1,7 @@
 <template>
   <Modal :title="$t('headlines.fleets.owners')">
     <div class="row">
-      <div class="col-12 col-md-6" v-for="user in users" :key="user.username">
+      <div v-for="user in users" :key="user.username" class="col-12 col-md-6">
         <Btn :href="`/hangar/${user.username}`" :block="true">
           <div class="user-item">
             <Avatar :avatar="user.avatar" size="small" />
