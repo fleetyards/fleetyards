@@ -127,6 +127,11 @@
       }
     }
 
+    .roadmap-item-committed {
+      color: $success;
+      box-shadow: 0 0 3px $gray-darker;
+    }
+
     p {
       position: relative;
       z-index: 20;

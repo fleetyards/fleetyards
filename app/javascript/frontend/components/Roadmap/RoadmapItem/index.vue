@@ -32,9 +32,13 @@
               class="far fa-clock"
             />
           </div>
-          <div v-tooltip="$t('labels.roadmap.committed')">
+          <div
+            v-if="item.committed"
+            v-tooltip="$t('labels.roadmap.committed')"
+            class="roadmap-item-committed"
+          >
             <span class="text-muted">{{ $t('labels.roadmap.committed') }}</span>
-            <i v-if="!item.committed" class="far fa-check" />
+            <i class="far fa-check" />
           </div>
         </small>
       </h3>
