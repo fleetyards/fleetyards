@@ -126,22 +126,11 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-yarn-{{ checksum "yarn.lock" }}
-            - v4-yarn-
       - run: yarn install
-      - save_cache:
-          key: v4-yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-            - ~/app/node_modules
-            - /root/.cache/Cypress
       - persist_to_workspace:
           root: /root
           paths:
             - app/node_modules
-            - .cache/Cypress
 
   bundle-audit:
     <<: *defaults
