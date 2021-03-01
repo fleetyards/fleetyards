@@ -14,9 +14,6 @@ module.exports = {
     'plugin:vue/recommended',
     'plugin:vue-types/strongly-recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/babel',
-    'prettier/vue',
     '@vue/typescript',
   ],
 
