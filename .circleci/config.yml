@@ -131,6 +131,7 @@ jobs:
           root: /root
           paths:
             - app/node_modules
+            - .cache/Cypress
 
   bundle-audit:
     <<: *defaults
