@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.7.2](https://github.com/fleetyards/fleetyards/compare/v4.7.1...v4.7.2) (2021-03-01)
+
+
+### Bug Fixes
+
+* commited flag ([5e20ca3](https://github.com/fleetyards/fleetyards/commit/5e20ca37c954c48564a511d6b45eb42f04455c5e))
+
 ### [4.7.1](https://github.com/fleetyards/fleetyards/compare/v4.7.0...v4.7.1) (2021-03-01)
 
 
