@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/fleetyards/fleetyards/compare/v4.6.8...v4.7.0) (2021-03-01)
+
+
+### Features
+
+* add owners for grouped fleet view ([#1287](https://github.com/fleetyards/fleetyards/issues/1287)) ([c4051a9](https://github.com/fleetyards/fleetyards/commit/c4051a9b35eb346b91254fc911ba67feaeb233d4))
+
+
+### Bug Fixes
+
+* specs ([dbd9838](https://github.com/fleetyards/fleetyards/commit/dbd9838b1360ad668e8d813cc691aa08d65138d2))
+* vue-router deprecations ([a12a794](https://github.com/fleetyards/fleetyards/commit/a12a794d54e52bdb02e1a262a90216cbe2b920c0))
+
 ### [4.6.8](https://github.com/fleetyards/fleetyards/compare/v4.6.6...v4.6.8) (2021-02-11)
 
 ### [4.6.7](https://github.com/fleetyards/fleetyards/compare/v4.6.6...v4.6.7) (2021-02-11)
