@@ -61,8 +61,8 @@ module Rsi
             new_item.release = release_name(new_item, release)
             new_item.release_description = release['description']
             new_item.rsi_release_id = release['id']
-            new_item.released = card_status == 'Released'
-            new_item.committed = card_status == 'Committed'
+            new_item.released = (card_status == 'Released')
+            new_item.committed = (card_status == 'Committed')
             new_item.rsi_category_id = card['category_id']
             new_item.name = card['name']
             new_item.description = card['description']
@@ -74,8 +74,8 @@ module Rsi
             release: release_name(item, release),
             release_description: release['description'],
             rsi_release_id: release['id'],
-            released: (release['status'] == 'Released'),
-            committed: (release['status'] == 'Committed'),
+            released: (card_status == 'Released'),
+            committed: (card_status == 'Committed'),
             rsi_category_id: card['category_id'],
             name: card['name'],
             description: card['description'],
