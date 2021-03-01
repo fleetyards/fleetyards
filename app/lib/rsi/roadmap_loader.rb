@@ -55,13 +55,15 @@ module Rsi
     private def parse_roadmap(data)
       roadmap_item_ids = []
       data.each do |release|
+
         release['cards'].each do |card|
+          card_status = (card['status'] || '').strip
           item = RoadmapItem.find_or_create_by(rsi_id: card['id']) do |new_item|
             new_item.release = release_name(new_item, release)
             new_item.release_description = release['description']
             new_item.rsi_release_id = release['id']
-            new_item.released = release['status'].strip == 'Released'
-            new_item.committed = release['status'].strip == 'Committed'
+            new_item.released = card_status == 'Released'
+            new_item.committed = card_status == 'Committed'
             new_item.rsi_category_id = card['category_id']
             new_item.name = card['name']
             new_item.description = card['description']
