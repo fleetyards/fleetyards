@@ -119,10 +119,6 @@ class Fleet < ApplicationRecord
     vehicles.where(model_id: model_id, loaner: false).size
   end
 
-  def model_users(model_id)
-    users.includes(:vehicles).where(vehicles: { model_id: model_id }).order(username: :asc)
-  end
-
   private def update_slugs
     self.slug = SlugHelper.generate_slug(fid)
   end

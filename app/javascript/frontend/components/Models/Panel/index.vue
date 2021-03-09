@@ -63,7 +63,7 @@
           </Btn>
 
           <AddToHangar
-            v-else-if="!editable && !username"
+            v-else-if="!editable"
             :model="model"
             class="panel-add-to-hangar-button"
             variant="panel"
@@ -120,34 +120,11 @@
             <i class="far fa-plus-octagon" />
           </span>
         </div>
-        <div v-if="username" class="owner">
-          {{ $t('labels.vehicle.owner') }}
-          <Btn :href="`/hangar/${username}`" variant="link" :text-inline="true">
-            {{ username }}
-          </Btn>
-        </div>
-        <div v-if="usernames.length" class="owner">
-          {{ $t('labels.vehicle.owner') }}
-
-          <Btn
-            :href="`/hangar/${firstOwner}`"
-            variant="link"
-            :text-inline="true"
-          >
-            {{ firstOwner }}
-          </Btn>
-          <template v-if="usernames.length > 1">
-            {{ $t('labels.and') }}
-            <Btn
-              variant="link"
-              :text-inline="true"
-              class="owner-more-action"
-              @click.native="openOwnersModal"
-            >
-              {{ $t('actions.fleet.showOwners') }}
-            </Btn>
-          </template>
-        </div>
+        <VehicleOwner
+          v-if="(vehicle || vehicles.length) && showOwner"
+          :vehicle="vehicle"
+          :vehicles="vehicles"
+        />
       </div>
       <BCollapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
@@ -179,6 +156,7 @@ import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
 import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
+import VehicleOwner from 'frontend/components/Vehicles/OwnerLabel'
 import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
 
 @Component<ModelPanel>({
@@ -188,6 +166,7 @@ import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
     Btn,
     LazyImage,
     AddToHangar,
+    VehicleOwner,
     ModelPanelMetrics,
   },
 })
@@ -198,32 +177,18 @@ export default class ModelPanel extends Vue {
 
   @Prop({ default: false }) details: boolean
 
-  @Prop({ default: null }) count: number
-
   @Prop({ default: false }) editable: boolean
 
   @Prop({ default: false }) highlight: boolean
 
-  @Prop({ default: null }) username: string
+  @Prop({ default: false }) showOwner: boolean
 
   @Prop({
     default() {
       return []
     },
   })
-  users: User[]
-
-  get firstOwner() {
-    if (this.usernames.length > 0) {
-      return this.usernames[0]
-    }
-
-    return null
-  }
-
-  get usernames() {
-    return this.users.map(user => user.username)
-  }
+  vehicles: Vehicle[]
 
   get uuid() {
     return this._uid
@@ -262,10 +227,10 @@ export default class ModelPanel extends Vue {
   }
 
   get countLabel() {
-    if (!this.count) {
+    if (!this.vehicles.length) {
       return ''
     }
-    return `${this.count}x `
+    return `${this.vehicles.length}x `
   }
 
   get flagshipTooltip() {
@@ -312,15 +277,6 @@ export default class ModelPanel extends Vue {
       props: {
         vehicle: this.vehicle,
         editable: this.editable,
-      },
-    })
-  }
-
-  openOwnersModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Models/OwnersModal'),
-      props: {
-        users: this.users,
       },
     })
   }

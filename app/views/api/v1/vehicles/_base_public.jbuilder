@@ -13,4 +13,5 @@ json.paint nil if vehicle.model_paint.blank?
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.username vehicle.user.username
+json.user_avatar vehicle.user.avatar.small.url
 json.partial! 'api/shared/dates', record: vehicle

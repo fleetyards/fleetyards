@@ -1,0 +1,33 @@
+@import '~stylesheets/variables';
+
+.user-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .user-item-username {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 50px;
+    margin-left: 10px;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .user-item-ship {
+    display: block;
+    color: darken($text-color, 20%);
+    font-size: 90%;
+    transition: color $transition-base-speed ease;
+  }
+}
+
+.panel-btn {
+  &:hover:not([disabled]),
+  &.active {
+    .user-item-ship {
+      color: lighten(invert($text-color), 10%);
+    }
+  }
+}

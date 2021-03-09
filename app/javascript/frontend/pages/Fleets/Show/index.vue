@@ -206,7 +206,7 @@
         </BtnDropdown>
       </template>
 
-      <FleetVehiclesFilterForm slot="filter" />
+      <FleetVehiclesFilterForm v-if="fleet && fleet.myFleet" slot="filter" />
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -220,14 +220,15 @@
               v-if="record.model"
               :model="record.model"
               :details="detailsVisible"
-              :username="record.username"
+              :vehicle="record"
+              :show-owner="true"
             />
             <ModelPanel
               v-else
               :model="record"
               :details="detailsVisible"
-              :count="record.count"
-              :users="record.users"
+              :vehicles="record.vehicles"
+              :show-owner="true"
             />
           </template>
         </FilteredGrid>
