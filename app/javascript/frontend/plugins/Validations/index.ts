@@ -20,6 +20,7 @@ import {
 import { I18n } from 'frontend/lib/I18n'
 import {
   emailTaken,
+  serialTaken,
   fidTaken,
   user,
   usernameTaken,
@@ -49,6 +50,7 @@ export default {
     extend('between', between)
     extend('email', email)
     extend('emailTaken', emailTaken)
+    extend('serialTaken', serialTaken)
     extend('usernameTaken', usernameTaken)
     extend('user', user)
     extend('fidTaken', fidTaken)

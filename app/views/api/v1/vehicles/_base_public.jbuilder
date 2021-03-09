@@ -2,6 +2,7 @@
 
 json.id vehicle.id
 json.name vehicle.name_visible? ? vehicle.name : nil
+json.serial vehicle.name_visible? ? vehicle.serial : nil
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end

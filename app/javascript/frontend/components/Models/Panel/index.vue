@@ -17,12 +17,17 @@
               },
             }"
           >
-            <span v-if="customName">
-              {{ customName }}
-            </span>
-
+            <span v-if="customName">{{ customName }}</span>
             <span v-else>{{ countLabel }}{{ modelName }}</span>
           </router-link>
+
+          <transition name="fade" appear>
+            <small v-if="vehicle && vehicle.serial">
+              <span v-if="vehicle.serial" class="serial">
+                {{ vehicle.serial }}
+              </span>
+            </small>
+          </transition>
 
           <transition name="fade" appear>
             <small

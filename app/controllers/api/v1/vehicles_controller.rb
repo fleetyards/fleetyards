@@ -350,6 +350,11 @@ module Api
         render json: models_by_classification.to_json
       end
 
+      def check_serial
+        authorize! :check_serial, :api_vehicles
+        render json: { serialTaken: Vehicle.exists?(serial: vehicle_params[:serial].upcase) }
+      end
+
       private def vehicle
         @vehicle ||= Vehicle.find(params[:id])
       end
@@ -359,7 +364,7 @@ module Api
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
             .permit(
-              :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
+              :name, :serial, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
               hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
             ).merge(user_id: current_user.id)
         end

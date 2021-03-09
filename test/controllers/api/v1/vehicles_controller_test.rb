@@ -77,6 +77,7 @@ module Api
           expected = [{
             'id' => explorer.id,
             'name' => '',
+            'serial' => nil,
             'purchased' => true,
             'public' => true,
             'loaner' => false,
@@ -165,6 +166,7 @@ module Api
           }, {
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
             'public' => true,
             'loaner' => false,
@@ -266,6 +268,7 @@ module Api
           expected = [{
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
             'loaner' => false,
             'flagship' => false,

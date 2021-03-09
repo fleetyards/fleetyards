@@ -292,6 +292,7 @@ export default {
   },
   'vehicle': {
     name: 'Name',
+    serial: 'Serial',
     owner: 'commanded by',
     flagship: 'Flagship',
     purchased: 'Purchased',

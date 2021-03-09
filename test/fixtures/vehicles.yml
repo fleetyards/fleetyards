@@ -12,6 +12,7 @@
 #  public         :boolean          default(FALSE)
 #  purchased      :boolean          default(FALSE)
 #  sale_notify    :boolean          default(FALSE)
+#  serial         :string
 #  created_at     :datetime
 #  updated_at     :datetime
 #  model_id       :uuid
@@ -22,6 +23,7 @@
 # Indexes
 #
 #  index_vehicles_on_model_id  (model_id)
+#  index_vehicles_on_serial    (serial) UNIQUE
 #  index_vehicles_on_user_id   (user_id)
 #
 enterprise:

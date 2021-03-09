@@ -3,88 +3,113 @@
     v-if="vehicle && form"
     :title="$t('headlines.myVehicle', { vehicle: vehicle.model.name })"
   >
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="save">
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <FormInput
-              id="vehicle-name"
-              v-model="form.name"
-              :placeholder="vehicle.model.name"
-              translation-key="name"
-              :no-label="true"
-            />
-          </div>
-        </div>
-        <div v-if="vehicle && vehicle.model.hasPaints" class="col-12 col-md-6">
-          <div class="form-group">
-            <FilterGroup
-              :key="`paints-${vehicle.model.id}`"
-              v-model="form.modelPaintId"
-              translation-key="vehicle.modelPaintSelect"
-              :fetch-path="`models/${vehicle.model.slug}/paints`"
-              name="modelPaintId"
-              value-attr="id"
-              icon-attr="storeImageSmall"
-              :big-icon="true"
-              :nullable="true"
-              :no-label="true"
-            />
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <Checkbox
-            id="flagship"
-            v-model="form.flagship"
-            :label="$t('labels.vehicle.flagship')"
-          />
-        </div>
-        <div class="col-12 col-md-6">
-          <Checkbox
-            id="purchased"
-            v-model="form.purchased"
-            :label="$t('labels.vehicle.purchased')"
-          />
-        </div>
-        <div v-if="!form.purchased" class="col-12 col-md-6">
-          <Checkbox
-            id="saleNotify"
-            v-model="form.saleNotify"
-            :label="$t('labels.vehicle.saleNotify')"
-          />
-        </div>
-        <div class="col-12 col-md-6">
-          <Checkbox
-            id="public"
-            v-model="form.public"
-            :label="$t('labels.vehicle.public')"
-          />
-        </div>
-        <div v-if="form.public" class="col-12 col-md-6">
-          <Checkbox
-            id="nameVisible"
-            v-model="form.nameVisible"
-            :label="$t('labels.vehicle.nameVisible')"
-          />
-        </div>
-        <div v-if="hangarGroups.length" class="col-12">
-          <h3>Groups:</h3>
-          <div class="row">
-            <div
-              v-for="group in hangarGroups"
-              :key="group.id"
-              class="col-12 col-md-6"
-            >
-              <Checkbox
-                :label="group.name"
-                :value="selected(group.id)"
-                @input="changeGroup(group)"
+    <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+      <form :id="`vehicle-${vehicle.id}`" @submit.prevent="handleSubmit(save)">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <FormInput
+                id="vehicle-name"
+                v-model="form.name"
+                :placeholder="vehicle.model.name"
+                translation-key="name"
+                :no-label="true"
               />
             </div>
           </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <ValidationProvider
+                v-slot="{ errors }"
+                vid="serial"
+                rules="serialTaken"
+                :name="$t('labels.vehicle.serial')"
+                :slim="true"
+              >
+                <FormInput
+                  id="vehicle-serial"
+                  v-model="form.serial"
+                  :placeholder="vehicle.model.serial"
+                  translation-key="vehicle.serial"
+                  :error="errors[0]"
+                  :no-label="true"
+                />
+              </ValidationProvider>
+            </div>
+          </div>
+          <div
+            v-if="vehicle && vehicle.model.hasPaints"
+            class="col-12 col-md-6"
+          >
+            <div class="form-group">
+              <FilterGroup
+                :key="`paints-${vehicle.model.id}`"
+                v-model="form.modelPaintId"
+                translation-key="vehicle.modelPaintSelect"
+                :fetch-path="`models/${vehicle.model.slug}/paints`"
+                name="modelPaintId"
+                value-attr="id"
+                icon-attr="storeImageSmall"
+                :big-icon="true"
+                :nullable="true"
+                :no-label="true"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <Checkbox
+              id="flagship"
+              v-model="form.flagship"
+              :label="$t('labels.vehicle.flagship')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <Checkbox
+              id="purchased"
+              v-model="form.purchased"
+              :label="$t('labels.vehicle.purchased')"
+            />
+          </div>
+          <div v-if="!form.purchased" class="col-12 col-md-6">
+            <Checkbox
+              id="saleNotify"
+              v-model="form.saleNotify"
+              :label="$t('labels.vehicle.saleNotify')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <Checkbox
+              id="public"
+              v-model="form.public"
+              :label="$t('labels.vehicle.public')"
+            />
+          </div>
+          <div v-if="form.public" class="col-12 col-md-6">
+            <Checkbox
+              id="nameVisible"
+              v-model="form.nameVisible"
+              :label="$t('labels.vehicle.nameVisible')"
+            />
+          </div>
+          <div v-if="hangarGroups.length" class="col-12">
+            <h3>Groups:</h3>
+            <div class="row">
+              <div
+                v-for="group in hangarGroups"
+                :key="group.id"
+                class="col-12 col-md-6"
+              >
+                <Checkbox
+                  :label="group.name"
+                  :value="selected(group.id)"
+                  @input="changeGroup(group)"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </ValidationObserver>
 
     <template #footer>
       <div class="float-sm-right">
@@ -158,6 +183,7 @@ export default class VehicleModal extends Vue {
   setupForm() {
     this.form = {
       name: this.vehicle.name,
+      serial: this.vehicle.serial,
       purchased: this.vehicle.purchased,
       flagship: this.vehicle.flagship,
       public: this.vehicle.public,

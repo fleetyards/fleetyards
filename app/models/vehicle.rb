@@ -14,6 +14,7 @@
 #  public         :boolean          default(FALSE)
 #  purchased      :boolean          default(FALSE)
 #  sale_notify    :boolean          default(FALSE)
+#  serial         :string
 #  created_at     :datetime
 #  updated_at     :datetime
 #  model_id       :uuid
@@ -24,6 +25,7 @@
 # Indexes
 #
 #  index_vehicles_on_model_id  (model_id)
+#  index_vehicles_on_serial    (serial) UNIQUE
 #  index_vehicles_on_user_id   (user_id)
 #
 require 'csv'
@@ -48,9 +50,13 @@ class Vehicle < ApplicationRecord
   has_many :model_upgrades, through: :vehicle_upgrades
 
   validates :model_id, presence: true
+  validates :serial, uniqueness: true, allow_nil: true
 
-  NULL_ATTRS = %w[name].freeze
+  NULL_ATTRS = %w[name serial].freeze
+
   before_save :nil_if_blank
+  before_validation :normalize_serial
+
   after_create :add_loaners, :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
   after_save :set_flagship
@@ -149,6 +155,12 @@ class Vehicle < ApplicationRecord
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  protected def normalize_serial
+    return if serial.blank?
+
+    self.serial = serial.upcase
   end
 
   protected def nil_if_blank
