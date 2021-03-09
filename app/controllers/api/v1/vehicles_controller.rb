@@ -352,7 +352,8 @@ module Api
 
       def check_serial
         authorize! :check_serial, :api_vehicles
-        render json: { serialTaken: Vehicle.exists?(serial: vehicle_params[:serial].upcase) }
+
+        render json: { serialTaken: current_user.vehicles.exists?(serial: vehicle_params[:serial].upcase) }
       end
 
       private def vehicle

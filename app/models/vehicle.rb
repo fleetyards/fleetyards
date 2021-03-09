@@ -24,9 +24,9 @@
 #
 # Indexes
 #
-#  index_vehicles_on_model_id  (model_id)
-#  index_vehicles_on_serial    (serial) UNIQUE
-#  index_vehicles_on_user_id   (user_id)
+#  index_vehicles_on_model_id            (model_id)
+#  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
+#  index_vehicles_on_user_id             (user_id)
 #
 require 'csv'
 
@@ -50,7 +50,7 @@ class Vehicle < ApplicationRecord
   has_many :model_upgrades, through: :vehicle_upgrades
 
   validates :model_id, presence: true
-  validates :serial, uniqueness: true, allow_nil: true
+  validates :serial, uniqueness: { scope: :user_id }, allow_nil: true
 
   NULL_ATTRS = %w[name serial].freeze
 
