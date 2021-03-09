@@ -74,8 +74,6 @@ module Api
 
       def public_vehicles
         authorize! :public, fleet
-
-
       end
 
       def members
