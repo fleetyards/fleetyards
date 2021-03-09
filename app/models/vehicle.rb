@@ -54,8 +54,8 @@ class Vehicle < ApplicationRecord
 
   NULL_ATTRS = %w[name serial].freeze
 
-  before_save :nil_if_blank
   before_validation :normalize_serial
+  before_save :nil_if_blank
 
   after_create :add_loaners, :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
