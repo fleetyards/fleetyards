@@ -294,11 +294,6 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0225)
     mimemagic (0.3.5)
-    mina (1.2.3)
-      open4 (~> 1.3.4)
-      rake
-    mina-multistage (1.0.3)
-      mina (~> 1.0)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
@@ -321,7 +316,6 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oj (3.11.2)
-    open4 (1.3.4)
     orm_adapter (0.5.0)
     paper_trail (11.1.0)
       activerecord (>= 5.2)
@@ -542,7 +536,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
-    uniform_notifier (1.14.1)
+    uniform_notifier (1.14.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.10)
@@ -616,8 +610,6 @@ DEPENDENCIES
   listen
   lograge
   metadown
-  mina
-  mina-multistage
   mini_magick
   minitest-ci
   minitest-rails
@@ -665,6 +657,7 @@ DEPENDENCIES
   timecop
   typhoeus
   uglifier
+  uniform_notifier (= 1.14.0)
   url_plumber
   useragent
   vcr
