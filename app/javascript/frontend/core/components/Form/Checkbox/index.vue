@@ -1,5 +1,10 @@
 <template>
-  <div class="form-group form-group-checkbox">
+  <div
+    class="form-group form-group-checkbox"
+    :class="{
+      'form-group-checkbox-expanded': !slim,
+    }"
+  >
     <input
       :id="checkboxID"
       v-model="internalValue"
@@ -43,6 +48,11 @@ export default {
     checkboxValue: {
       type: [String, Number],
       default: null,
+    },
+
+    slim: {
+      type: Boolean,
+      default: true,
     },
   },
 

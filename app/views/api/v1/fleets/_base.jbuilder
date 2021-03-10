@@ -11,5 +11,6 @@ json.guilded fleet.guilded
 json.homepage fleet.homepage
 json.name fleet.name
 json.slug fleet.slug
+json.public_fleet fleet.public_fleet
 json.logo((fleet.logo.small.url if fleet.logo.present?))
 json.background_image((fleet.background_image.url if fleet.background_image.present?))

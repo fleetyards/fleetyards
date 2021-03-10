@@ -247,7 +247,7 @@ module Api
       private def fleet_params
         @fleet_params ||= params.transform_keys(&:underscore)
           .permit(
-            :fid, :name, :logo, :background_image, :public, :remove_logo,
+            :fid, :name, :logo, :background_image, :public_fleet, :remove_logo,
             :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
             :twitch, :guilded
           )

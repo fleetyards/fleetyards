@@ -171,6 +171,7 @@ export default {
     name: 'Name',
     logo: 'Logo',
     rsiSid: 'SID',
+    public: 'Public Fleetview',
     ts: 'Teamspeak Server',
     members: {
       primary: 'Primary Fleet?',
