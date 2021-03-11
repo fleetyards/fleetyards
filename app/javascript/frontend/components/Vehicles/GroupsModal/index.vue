@@ -1,52 +1,21 @@
 <template>
   <Modal
     v-if="vehicle && form"
-    :title="$t('headlines.editMyVehicle', { vehicle: vehicle.model.name })"
+    :title="$t('headlines.editGroups', { vehicle: vehicle.model.name })"
   >
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
       <form :id="`vehicle-${vehicle.id}`" @submit.prevent="handleSubmit(save)">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <Checkbox
-              id="flagship"
-              v-model="form.flagship"
-              :label="$t('labels.vehicle.flagship')"
-            />
-            <Checkbox
-              id="purchased"
-              v-model="form.purchased"
-              :label="$t('labels.vehicle.purchased')"
-            />
-            <Checkbox
-              id="saleNotify"
-              v-model="form.saleNotify"
-              :disabled="form.purchased"
-              :label="$t('labels.vehicle.saleNotify')"
-            />
-            <Checkbox
-              id="public"
-              v-model="form.public"
-              :label="$t('labels.vehicle.public')"
-            />
-          </div>
+        <div v-if="hangarGroups.length" class="row">
           <div
-            v-if="vehicle && vehicle.model.hasPaints"
+            v-for="group in hangarGroups"
+            :key="group.id"
             class="col-12 col-md-6"
           >
-            <div class="form-group">
-              <FilterGroup
-                :key="`paints-${vehicle.model.id}`"
-                v-model="form.modelPaintId"
-                translation-key="vehicle.modelPaintSelect"
-                :fetch-path="`models/${vehicle.model.slug}/paints`"
-                name="modelPaintId"
-                value-attr="id"
-                icon-attr="storeImageSmall"
-                :big-icon="true"
-                :nullable="true"
-                :no-label="true"
-              />
-            </div>
+            <Checkbox
+              :label="group.name"
+              :value="selected(group.id)"
+              @input="changeGroup(group)"
+            />
           </div>
         </div>
       </form>
@@ -78,6 +47,7 @@ import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Btn from 'frontend/core/components/Btn'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
 
 @Component<VehicleModal>({
   components: {
@@ -95,6 +65,10 @@ export default class VehicleModal extends Vue {
 
   form: Object | null = null
 
+  get hangarGroups() {
+    return hangarGroupsCollection.records
+  }
+
   mounted() {
     this.setupForm()
   }
@@ -106,11 +80,24 @@ export default class VehicleModal extends Vue {
 
   setupForm() {
     this.form = {
-      purchased: this.vehicle.purchased,
-      flagship: this.vehicle.flagship,
-      public: this.vehicle.public,
-      saleNotify: this.vehicle.saleNotify,
-      modelPaintId: this.vehicle.paint?.id || null,
+      hangarGroupIds: this.vehicle.hangarGroupIds,
+    }
+  }
+
+  selected(groupId) {
+    return (this.form.hangarGroupIds || []).includes(groupId)
+  }
+
+  changeGroup(group) {
+    if (this.form.hangarGroupIds.includes(group.id)) {
+      const index = this.form.hangarGroupIds.findIndex(
+        groupId => groupId === group.id,
+      )
+      if (index > -1) {
+        this.form.hangarGroupIds.splice(index, 1)
+      }
+    } else {
+      this.form.hangarGroupIds.push(group.id)
     }
   }
 

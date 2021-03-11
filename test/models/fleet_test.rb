@@ -13,6 +13,7 @@
 #  homepage         :string
 #  logo             :string
 #  name             :string
+#  public_fleet     :boolean          default(FALSE)
 #  rsi_sid          :string
 #  sid              :string
 #  slug             :string

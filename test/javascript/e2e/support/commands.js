@@ -46,13 +46,13 @@ Cypress.Commands.add('openShipModalFromContext', () => {
 })
 
 Cypress.Commands.add('openShipModal', ship => {
-  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-edit"]`)
+  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-menu"]`)
     .first()
     .click()
 })
 
-Cypress.Commands.add('deleteShip', () => {
-  cy.select('vehicle-delete').click()
+Cypress.Commands.add('removeShip', () => {
+  cy.select('vehicle-remove').click()
 })
 
 Cypress.Commands.add('saveShip', () => {

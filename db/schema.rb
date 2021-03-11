@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_220031) do
+ActiveRecord::Schema.define(version: 2021_03_11_220529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_220031) do
     t.string "ts"
     t.string "homepage"
     t.string "guilded"
+    t.boolean "public_fleet", default: false
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
@@ -758,6 +759,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_220031) do
     t.uuid "model_paint_id"
     t.boolean "notify", default: true
     t.string "serial"
+    t.string "alternative_names"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"

@@ -366,7 +366,7 @@ module Api
           params.transform_keys(&:underscore)
             .permit(
               :name, :serial, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
-              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
+              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
             ).merge(user_id: current_user.id)
         end
       end

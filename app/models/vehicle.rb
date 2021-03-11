@@ -4,23 +4,24 @@
 #
 # Table name: vehicles
 #
-#  id             :uuid             not null, primary key
-#  flagship       :boolean          default(FALSE)
-#  hidden         :boolean          default(FALSE)
-#  loaner         :boolean          default(FALSE)
-#  name           :string(255)
-#  name_visible   :boolean          default(FALSE)
-#  notify         :boolean          default(TRUE)
-#  public         :boolean          default(FALSE)
-#  purchased      :boolean          default(FALSE)
-#  sale_notify    :boolean          default(FALSE)
-#  serial         :string
-#  created_at     :datetime
-#  updated_at     :datetime
-#  model_id       :uuid
-#  model_paint_id :uuid
-#  user_id        :uuid
-#  vehicle_id     :uuid
+#  id                :uuid             not null, primary key
+#  alternative_names :string
+#  flagship          :boolean          default(FALSE)
+#  hidden            :boolean          default(FALSE)
+#  loaner            :boolean          default(FALSE)
+#  name              :string(255)
+#  name_visible      :boolean          default(FALSE)
+#  notify            :boolean          default(TRUE)
+#  public            :boolean          default(FALSE)
+#  purchased         :boolean          default(FALSE)
+#  sale_notify       :boolean          default(FALSE)
+#  serial            :string
+#  created_at        :datetime
+#  updated_at        :datetime
+#  model_id          :uuid
+#  model_paint_id    :uuid
+#  user_id           :uuid
+#  vehicle_id        :uuid
 #
 # Indexes
 #
@@ -74,6 +75,8 @@ class Vehicle < ApplicationRecord
   ransack_alias :size, :model_size
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
+
+  serialize :alternative_names
 
   def add_loaners
     return if loaner?

@@ -37,6 +37,7 @@
     overflow: hidden;
     color: $text-color;
     font-size: 110%;
+    font-family: 'Open Sans', sans-serif;
     white-space: nowrap;
     text-align: center;
     text-overflow: ellipsis;
@@ -45,6 +46,42 @@
 
     &:focus {
       outline: none;
+    }
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: .5;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover:not([disabled]),
+  &.active {
+    .panel-btn-inner {
+      color: invert($text-color);
+      background-color: $panel-inner-border;
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    .panel-btn-inner {
+      outline: none;
+    }
+  }
+
+  &:active:not([disabled]) {
+    animation-name: flash;
+    animation-duration: .5s;
+  }
+
+  &.panel-btn-danger {
+    .panel-btn-inner {
+      color: $danger;
     }
   }
 
@@ -67,7 +104,8 @@
   }
 
   &.panel-btn-link {
-    &:hover {
+    &:hover:not([disabled]),
+    &.active {
       background: transparent;
       border: none;
 
@@ -127,42 +165,6 @@
 
   &.panel-btn-block {
     width: 100%;
-  }
-
-  &[disabled] {
-    cursor: default;
-    opacity: .5;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  &:hover:not([disabled]),
-  &.active {
-    .panel-btn-inner {
-      color: invert($text-color);
-      background-color: $panel-inner-border;
-    }
-  }
-
-  &:focus {
-    outline: none;
-
-    .panel-btn-inner {
-      outline: none;
-    }
-  }
-
-  &:active:not([disabled]) {
-    animation-name: flash;
-    animation-duration: .5s;
-  }
-
-  &.panel-btn-danger {
-    .panel-btn-inner {
-      color: $danger;
-    }
   }
 }
 

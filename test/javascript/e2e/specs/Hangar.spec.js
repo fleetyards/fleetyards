@@ -67,7 +67,7 @@ describe('Hangar', () => {
 
     cy.openShipModalFromContext()
 
-    cy.deleteShip()
+    cy.removeShip()
 
     cy.acceptConfirm()
 

@@ -186,5 +186,8 @@ export default {
           "Are you sure you want to decline this Invite? This Action can't be reverted.",
       },
     },
+    modal: {
+      dirty: 'You have unsaved changes that will be lost.',
+    },
   },
 }
