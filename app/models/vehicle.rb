@@ -76,7 +76,7 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
-  serialize :alternative_names
+  serialize :alternative_names, Array
 
   def add_loaners
     return if loaner?
