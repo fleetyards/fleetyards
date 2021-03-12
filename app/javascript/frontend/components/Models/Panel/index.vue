@@ -57,6 +57,7 @@
         <VehicleContextMenu
           v-if="vehicle && editable && !vehicle.loaner"
           :vehicle="vehicle"
+          :editable="editable"
         />
 
         <AddToHangar

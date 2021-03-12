@@ -21,7 +21,7 @@
     </Btn>
 
     <template v-if="vehicle && !vehicle.loaner">
-      <VehicleContextMenu v-if="myShip" :vehicle="vehicle" />
+      <VehicleContextMenu v-if="myShip" :vehicle="vehicle" :editable="myShip" />
 
       <Btn
         v-if="upgradable"
