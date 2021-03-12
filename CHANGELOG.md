@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.9.0](https://github.com/fleetyards/fleetyards/compare/v4.8.1...v4.9.0) (2021-03-12)
+
+
+### Features
+
+* vehicle context menu for list view ([6c4c0d8](https://github.com/fleetyards/fleetyards/commit/6c4c0d86b025d4476709fa0a5098f4871d6db8ea))
+
+
+### Bug Fixes
+
+* context menu ([29e8131](https://github.com/fleetyards/fleetyards/commit/29e81315ad8e26abfb8a8a1b924d7e46b1445d46))
+* mail templates ([9ab67d6](https://github.com/fleetyards/fleetyards/commit/9ab67d64f04ad6254450e01dd1995a0c22e30bbf))
+* model variants ([6b0dd68](https://github.com/fleetyards/fleetyards/commit/6b0dd6802f328f27083b229a65e996ecffaed2cc))
+
 ### [4.8.1](https://github.com/fleetyards/fleetyards/compare/v4.8.0...v4.8.1) (2021-03-12)
 
 
