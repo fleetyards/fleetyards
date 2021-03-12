@@ -60,7 +60,9 @@
           <div class="col-12">
             <hr />
             <h3>
-              {{ $t('headlines.hangar.alternativeNames') }}
+              <span>
+                {{ $t('headlines.hangar.alternativeNames') }}
+              </span>
               <Btn
                 data-test="vehicle-add-name"
                 :inline="true"
