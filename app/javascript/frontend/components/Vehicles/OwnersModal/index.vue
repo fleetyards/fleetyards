@@ -29,6 +29,7 @@ import Btn from 'frontend/core/components/Btn'
 import Modal from 'frontend/core/components/AppModal/Modal'
 import Avatar from 'frontend/core/components/Avatar'
 import { sortBy } from 'frontend/lib/Helpers'
+import { uniqByField as uniqByFieldArray } from 'frontend/utils/Array'
 
 @Component<OwnersModal>({
   components: {
@@ -41,7 +42,9 @@ export default class OwnersModal extends Vue {
   @Prop({ required: true }) vehicles: Vehicle[]
 
   get sortedVehicles() {
-    return sortBy(this.vehicles, 'username')
+    return sortBy(this.vehicles, 'username').filter(
+      uniqByFieldArray('username'),
+    )
   }
 }
 </script>
