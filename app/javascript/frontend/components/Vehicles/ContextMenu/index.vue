@@ -1,13 +1,27 @@
 <template>
   <BtnDropdown
-    size="small"
-    variant="link"
+    :size="size"
+    :variant="variant"
     class="panel-edit-menu"
     data-test="vehicle-menu"
     :expand-left="true"
     :inline="true"
   >
     <Btn
+      :to="{
+        name: 'model',
+        params: {
+          slug: vehicle.model.slug,
+        },
+      }"
+      variant="link"
+      size="small"
+    >
+      <i class="fad fa-starship" />
+      {{ $t('actions.showDetailPage') }}
+    </Btn>
+    <Btn
+      v-if="editable"
       :aria-label="$t('actions.edit')"
       variant="link"
       size="small"
@@ -18,6 +32,7 @@
       {{ $t('actions.edit') }}
     </Btn>
     <Btn
+      v-if="editable"
       :aria-label="$t('actions.hangar.editName')"
       variant="link"
       size="small"
@@ -28,7 +43,8 @@
       {{ $t('actions.hangar.editName') }}
     </Btn>
     <Btn
-      :aria-label="$t('actions.edit')"
+      v-if="editable"
+      :aria-label="$t('actions.hangar.editGroups')"
       variant="link"
       size="small"
       data-test="vehicle-edit-groups"
@@ -38,6 +54,7 @@
       {{ $t('actions.hangar.editGroups') }}
     </Btn>
     <Btn
+      v-if="editable"
       :aria-label="$t('actions.remove')"
       variant="link"
       size="small"
@@ -47,6 +64,16 @@
     >
       <i class="fal fa-trash" />
       {{ $t('actions.remove') }}
+    </Btn>
+    <Btn
+      v-if="upgradable"
+      :aria-label="$t('labels.model.addons')"
+      variant="link"
+      size="small"
+      @click.native="openAddonsModal"
+    >
+      <i class="fa fa-plus-octagon" />
+      {{ $t('labels.model.addons') }}
     </Btn>
   </BtnDropdown>
 </template>
@@ -69,6 +96,41 @@ export default class ContextMenu extends Vue {
   deleting: boolean = false
 
   @Prop({ default: null }) vehicle: Vehicle | null
+
+  @Prop({ default: false }) editable!: boolean
+
+  @Prop({
+    default: 'link',
+    validator(value) {
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
+    },
+  })
+  variant!: string
+
+  @Prop({
+    default: 'small',
+    validator(value) {
+      return ['default', 'small', 'large'].indexOf(value) !== -1
+    },
+  })
+  size!: string
+
+  get hasAddons() {
+    return (
+      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
+    )
+  }
+
+  get upgradable() {
+    return (
+      (this.editable || this.hasAddons) &&
+      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
+    )
+  }
 
   remove() {
     this.deleting = true
