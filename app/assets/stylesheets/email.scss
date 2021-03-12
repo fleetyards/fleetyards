@@ -5,6 +5,8 @@ $body-background: #272b30;
 $container-background: #272b30;
 $global-width: 640px;
 $body-font-family: 'Open Sans', sans-serif;
+$h1-font-size: 30px;
+$h2-font-size: 24px;
 
 @import 'partials/email-fonts';
 @import 'foundation-emails';
@@ -32,6 +34,12 @@ h1 {
 
   small {
     font-family: 'Open Sans', sans-serif;
+  }
+}
+
+h2 {
+  small {
+    color: darken($global-font-color, 15%);
   }
 }
 

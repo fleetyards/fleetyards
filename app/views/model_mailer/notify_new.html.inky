@@ -6,6 +6,7 @@
   <%= I18n.t("mailer.model.new.headline_part_2", manufacturer: @model.manufacturer.name) %>
   <a href="<%= frontend_url(slug: @model.slug) %>" target="_blank"><%= @model.name %></a>!
 </h2>
+<br>
 <p>
   <img src="<%= @model.store_image.medium.url %>" alt="<%= @model.name %>">
 </p>
