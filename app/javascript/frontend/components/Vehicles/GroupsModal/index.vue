@@ -58,7 +58,7 @@ import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
     Btn,
   },
 })
-export default class VehicleModal extends Vue {
+export default class VehicleGroupsModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle
 
   submitting: boolean = false

@@ -151,7 +151,7 @@ import vehiclesCollection from 'frontend/api/collections/Vehicles'
     Btn,
   },
 })
-export default class VehicleModal extends Vue {
+export default class VehicleNamingModal extends Vue {
   @Prop({ required: true }) vehicle: Vehicle
 
   submitting: boolean = false
