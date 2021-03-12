@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.8.0](https://github.com/fleetyards/fleetyards/compare/v4.7.3...v4.8.0) (2021-03-12)
+
+
+### Features
+
+* add new context menu for vehicles ([6daa224](https://github.com/fleetyards/fleetyards/commit/6daa22419c15eb0840f5bdcf4bcb3ff472ce52de))
+* add serial to vehicles ([ffc4c4f](https://github.com/fleetyards/fleetyards/commit/ffc4c4f0d6888056f805298b663b190f47a8c37d))
+
+
+### Bug Fixes
+
+* audit issue ([e13a7cb](https://github.com/fleetyards/fleetyards/commit/e13a7cbd41088b8a6b3fd78b5f187bbda9499511))
+* e2e tests ([1910eb2](https://github.com/fleetyards/fleetyards/commit/1910eb26d76d0ac2ee854c0856f8dec70f2c007b))
+* email template header ([62c9566](https://github.com/fleetyards/fleetyards/commit/62c95667e00c4650fa5a790047a69291d44e6e49))
+* fleet ship owners ([a550ef8](https://github.com/fleetyards/fleetyards/commit/a550ef80c2c75325ecf5a4649f98da08e8319e16))
+
 ### [4.7.3](https://github.com/fleetyards/fleetyards/compare/v4.7.2...v4.7.3) (2021-03-01)
 
 
