@@ -337,6 +337,32 @@ jobs:
       - run:
           name: Deploy
           command: bundle exec cap stage deploy
+      - run: |
+          curl -X POST $DISCORD_WEBHOOK_STAGE \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Stage Release:**\" }"
+
+  create-release:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v3-bundle-{{ checksum "Gemfile.lock" }}
+            - v3-bundle-
+      - run: bundle install
+      - add_ssh_keys:
+          fingerprints:
+            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+      - run:
+          name: Keyscan Live Server (HACK)
+          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy
+          command: bundle exec thor release:new --push
 
   deploy-to-live:
     <<: *defaults
@@ -359,18 +385,6 @@ jobs:
       - run:
           name: Deploy
           command: bundle exec cap live deploy
-
-  notify-discord-stage:
-    <<: *defaults
-    steps:
-      - run: |
-          curl -X POST $DISCORD_WEBHOOK_STAGE \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Stage Release:**\" }"
-
-  notify-discord-live:
-    <<: *defaults
-    steps:
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
@@ -454,9 +468,13 @@ workflows:
           filters:
             branches:
               only: main
-      - notify-discord-stage:
+      - request-release:
+          type: approval
           requires:
             - deploy-to-stage
+      - create-release:
+          requires:
+            - request-release
       - deploy-to-live:
           requires:
             - smoke-test
@@ -465,9 +483,3 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - notify-discord-live:
-          requires:
-            - deploy-to-live
-          filters:
-            tags:
-              only: /^v.*/
