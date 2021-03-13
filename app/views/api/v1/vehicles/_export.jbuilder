@@ -3,7 +3,8 @@
 json.name vehicle.export_name
 json.slug vehicle.model.slug
 json.paint_slug vehicle.model_paint&.slug
-json.custom_name vehicle.name
+json.ship_name vehicle.name
+json.ship_serial vehicle.serial
 json.purchased vehicle.purchased
 json.flagship vehicle.flagship
 json.public vehicle.public
