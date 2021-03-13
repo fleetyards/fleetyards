@@ -301,10 +301,8 @@ jobs:
     <<: *smokeTest
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-yarn-{{ checksum "yarn.lock" }}
-            - v4-yarn-
+      - attach_workspace:
+          at: /root
       - run: yarn install
       - run:
           name: Run E2E Tests
@@ -320,10 +318,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: /root
       - run: bundle install
       - add_ssh_keys:
           fingerprints:
@@ -346,10 +342,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: /root
       - run: bundle install
       - run: yarn install
       - add_ssh_keys:
@@ -362,6 +356,9 @@ jobs:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
+          name: Setup Git
+          command: git config --global user.email $GIT_EMAIL && git config --global user.name $GIT_USER
+      - run:
           name: Create Release
           command: bundle exec thor release:new --push
 
@@ -369,10 +366,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: /root
       - run: bundle install
       - add_ssh_keys:
           fingerprints:
@@ -450,6 +445,9 @@ workflows:
           requires:
             - assets
       - smoke-test:
+          requires:
+            - bundle
+            - yarn
           filters:
             tags:
               only: /^v.*/
