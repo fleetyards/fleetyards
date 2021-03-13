@@ -415,6 +415,38 @@ workflows:
     jobs:
       - health-check
 
+  release:
+    jobs:
+      - bundle:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - yarn:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - smoke-test:
+          requires:
+            - bundle
+            - yarn
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy-to-live:
+          requires:
+            - smoke-test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
   main:
     jobs:
       - bundle
@@ -444,15 +476,6 @@ workflows:
       - e2e-test:
           requires:
             - assets
-      - smoke-test:
-          requires:
-            - bundle
-            - yarn
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
       - deploy-to-stage:
           requires:
             - seeds
@@ -472,11 +495,3 @@ workflows:
       - create-release:
           requires:
             - request-release
-      - deploy-to-live:
-          requires:
-            - smoke-test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
