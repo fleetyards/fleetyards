@@ -447,8 +447,6 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - bundle
-            - yarn
             - assets
       - smoke-test:
           filters:
