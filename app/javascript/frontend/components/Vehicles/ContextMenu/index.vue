@@ -14,66 +14,66 @@
           slug: vehicle.model.slug,
         },
       }"
-      variant="link"
       size="small"
+      variant="dropdown"
     >
       <i class="fad fa-starship" />
-      {{ $t('actions.showDetailPage') }}
+      <span>{{ $t('actions.showDetailPage') }}</span>
     </Btn>
     <Btn
       v-if="editable"
       :aria-label="$t('actions.edit')"
-      variant="link"
       size="small"
+      variant="dropdown"
       data-test="vehicle-edit"
       @click.native="openEditModal"
     >
       <i class="fa fa-pencil" />
-      {{ $t('actions.edit') }}
+      <span>{{ $t('actions.edit') }}</span>
     </Btn>
     <Btn
       v-if="editable"
       :aria-label="$t('actions.hangar.editName')"
-      variant="link"
       size="small"
+      variant="dropdown"
       data-test="vehicle-edit-name"
       @click.native="openNamingModal"
     >
       <i class="fa fa-signature" />
-      {{ $t('actions.hangar.editName') }}
+      <span>{{ $t('actions.hangar.editName') }}</span>
     </Btn>
     <Btn
       v-if="editable"
       :aria-label="$t('actions.hangar.editGroups')"
-      variant="link"
       size="small"
+      variant="dropdown"
       data-test="vehicle-edit-groups"
       @click.native="openEditGroupsModal"
     >
       <i class="fad fa-object-group" />
-      {{ $t('actions.hangar.editGroups') }}
+      <span>{{ $t('actions.hangar.editGroups') }}</span>
     </Btn>
     <Btn
       v-if="editable"
       :aria-label="$t('actions.remove')"
-      variant="link"
       size="small"
+      variant="dropdown"
       :disabled="deleting"
       data-test="vehicle-remove"
       @click.native="remove"
     >
       <i class="fal fa-trash" />
-      {{ $t('actions.remove') }}
+      <span>{{ $t('actions.remove') }}</span>
     </Btn>
     <Btn
       v-if="upgradable"
       :aria-label="$t('labels.model.addons')"
-      variant="link"
       size="small"
+      variant="dropdown"
       @click.native="openAddonsModal"
     >
       <i class="fa fa-plus-octagon" />
-      {{ $t('labels.model.addons') }}
+      <span>{{ $t('labels.model.addons') }}</span>
     </Btn>
   </BtnDropdown>
 </template>

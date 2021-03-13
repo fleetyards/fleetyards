@@ -119,7 +119,7 @@
                   variant="dropdown"
                 >
                   <i class="fa fa-images" />
-                  {{ $t('nav.images') }}
+                  <span>{{ $t('nav.images') }}</span>
                 </Btn>
                 <Btn
                   v-if="model.hasVideos"
@@ -127,7 +127,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-video" />
-                  {{ $t('nav.videos') }}
+                  <span>{{ $t('nav.videos') }}</span>
                 </Btn>
                 <Btn
                   v-if="model.brochure"
@@ -135,7 +135,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-download" />
-                  {{ $t('labels.model.brochure') }}
+                  <span>{{ $t('labels.model.brochure') }}</span>
                 </Btn>
                 <Btn
                   :to="{
@@ -146,7 +146,7 @@
                   variant="dropdown"
                 >
                   <i class="fal fa-exchange" />
-                  {{ $t('actions.compare.models') }}
+                  <span>{{ $t('actions.compare.models') }}</span>
                 </Btn>
               </BtnDropdown>
             </div>

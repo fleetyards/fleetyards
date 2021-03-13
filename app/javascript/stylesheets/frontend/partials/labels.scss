@@ -98,8 +98,10 @@ $innerBorderWidth: 2px;
     text-align: right;
   }
 
-  .label-text {
-    flex: 1;
+  .label-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .labels-dropdown-item {

@@ -9,16 +9,9 @@
     @click.native="download"
   >
     <SmallLoader :loading="downloading" />
-    <span
-      :class="{
-        active: downloading,
-      }"
-      class="text"
-    >
-      <i class="fad fa-image" />
-      <template v-if="withLabel">
-        {{ $t('actions.saveScreenshot') }}
-      </template>
+    <i class="fad fa-image" />
+    <span v-if="withLabel">
+      {{ $t('actions.saveScreenshot') }}
     </span>
   </Btn>
 </template>

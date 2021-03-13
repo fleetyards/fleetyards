@@ -14,14 +14,14 @@
         'fa-star': showStatus,
       }"
     />
-    <template v-if="withLabel">
+    <span v-if="withLabel">
       <template v-if="showStatus">
         {{ $t('actions.hideStatusColor') }}
       </template>
       <template v-else>
         {{ $t('actions.showStatusColor') }}
       </template>
-    </template>
+    </span>
   </Btn>
 </template>
 

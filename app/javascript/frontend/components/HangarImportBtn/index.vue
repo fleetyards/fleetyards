@@ -7,16 +7,18 @@
     @click.native="selectFile"
   >
     <i class="fal fa-upload" />
-    {{ $t('actions.import') }}
-    <VueUploadComponent
-      ref="upload"
-      name="uploadAvatar"
-      :extensions="fileExtensions"
-      :accept="acceptedMimeTypes"
-      class="hangar-importer"
-      @input="importJson"
-      @input-filter="inputFilter"
-    />
+    <span>
+      {{ $t('actions.import') }}
+      <VueUploadComponent
+        ref="upload"
+        name="uploadAvatar"
+        :extensions="fileExtensions"
+        :accept="acceptedMimeTypes"
+        class="hangar-importer"
+        @input="importJson"
+        @input-filter="inputFilter"
+      />
+    </span>
   </Btn>
 </template>
 
@@ -48,7 +50,11 @@ export default class HangarImportBtn extends Vue {
   @Prop({
     default: 'default',
     validator(value) {
-      return ['default', 'transparent', 'link', 'danger'].indexOf(value) !== -1
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
     },
   })
   variant!: string

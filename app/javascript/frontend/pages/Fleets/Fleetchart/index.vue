@@ -39,7 +39,7 @@
             <Starship42Btn
               :vehicles="records"
               size="small"
-              variant="link"
+              variant="dropdown"
               :with-icon="true"
             />
 
@@ -51,13 +51,13 @@
             element="#fleetchart"
             :filename="`${fleet.slug}-fleetchart`"
             size="small"
-            variant="link"
+            variant="dropdown"
             :show-tooltip="false"
           />
 
           <hr />
 
-          <FleetChartStatusBtn size="small" variant="link" />
+          <FleetChartStatusBtn size="small" variant="dropdown" />
         </BtnDropdown>
       </template>
 

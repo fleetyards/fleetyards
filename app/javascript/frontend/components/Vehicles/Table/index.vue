@@ -131,23 +131,20 @@
       </div>
     </template>
     <template #col-actions="{ record }">
-      <div class="page-actions page-actions-block">
+      <BtnGroup :inline="true">
         <Btn
           v-if="record && editable && !record.loaner"
           :aria-label="$t('actions.edit')"
           size="small"
           data-test="vehicle-edit"
           :inline="true"
+          variant="link"
           @click.native="openEditModal(record)"
         >
           {{ $t('actions.edit') }}
         </Btn>
-        <VehicleContextMenu
-          :vehicle="record"
-          :editable="editable"
-          variant="default"
-        />
-      </div>
+        <VehicleContextMenu :vehicle="record" :editable="editable" />
+      </BtnGroup>
     </template>
   </FilteredTable>
 </template>

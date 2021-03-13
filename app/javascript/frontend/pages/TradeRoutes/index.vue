@@ -86,7 +86,7 @@
           <Btn
             :active="sortByProfit || sortByAverageProfit"
             size="small"
-            variant="link"
+            variant="dropdown"
             :to="
               averagePrices
                 ? sortBy('average_profit_per_unit', 'desc')
@@ -95,12 +95,12 @@
             :exact="true"
           >
             <i class="far fa-dollar-sign" />
-            {{ $t('labels.tradeRoutes.sortByProfit') }}
+            <span>{{ $t('labels.tradeRoutes.sortByProfit') }}</span>
           </Btn>
           <Btn
             :active="sortByPercent || sortByAveragePercent"
             size="small"
-            variant="link"
+            variant="dropdown"
             :to="
               averagePrices
                 ? sortBy('average_profit_per_unit_percent', 'desc')
@@ -109,16 +109,17 @@
             :exact="true"
           >
             <i class="far fa-percent" />
-            {{ $t('labels.tradeRoutes.sortByPercent') }}
+            <span>{{ $t('labels.tradeRoutes.sortByPercent') }}</span>
           </Btn>
           <Btn
             :active="sortByStation"
             size="small"
-            variant="link"
+            variant="dropdown"
             :to="sortBy('origin_shop_station_name', 'asc')"
             :exact="true"
           >
-            {{ $t('labels.tradeRoutes.sortByStation') }}
+            <i class="fad fa-map-marker-alt" />
+            <span>{{ $t('labels.tradeRoutes.sortByStation') }}</span>
           </Btn>
         </BtnDropdown>
       </template>
