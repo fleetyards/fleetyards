@@ -4,27 +4,30 @@
 #
 # Table name: vehicles
 #
-#  id             :uuid             not null, primary key
-#  flagship       :boolean          default(FALSE)
-#  hidden         :boolean          default(FALSE)
-#  loaner         :boolean          default(FALSE)
-#  name           :string(255)
-#  name_visible   :boolean          default(FALSE)
-#  notify         :boolean          default(TRUE)
-#  public         :boolean          default(FALSE)
-#  purchased      :boolean          default(FALSE)
-#  sale_notify    :boolean          default(FALSE)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  model_id       :uuid
-#  model_paint_id :uuid
-#  user_id        :uuid
-#  vehicle_id     :uuid
+#  id                :uuid             not null, primary key
+#  alternative_names :string
+#  flagship          :boolean          default(FALSE)
+#  hidden            :boolean          default(FALSE)
+#  loaner            :boolean          default(FALSE)
+#  name              :string(255)
+#  name_visible      :boolean          default(FALSE)
+#  notify            :boolean          default(TRUE)
+#  public            :boolean          default(FALSE)
+#  purchased         :boolean          default(FALSE)
+#  sale_notify       :boolean          default(FALSE)
+#  serial            :string
+#  created_at        :datetime
+#  updated_at        :datetime
+#  model_id          :uuid
+#  model_paint_id    :uuid
+#  user_id           :uuid
+#  vehicle_id        :uuid
 #
 # Indexes
 #
-#  index_vehicles_on_model_id  (model_id)
-#  index_vehicles_on_user_id   (user_id)
+#  index_vehicles_on_model_id            (model_id)
+#  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
+#  index_vehicles_on_user_id             (user_id)
 #
 require 'csv'
 
@@ -48,9 +51,13 @@ class Vehicle < ApplicationRecord
   has_many :model_upgrades, through: :vehicle_upgrades
 
   validates :model_id, presence: true
+  validates :serial, uniqueness: { scope: :user_id }, allow_nil: true
 
-  NULL_ATTRS = %w[name].freeze
+  NULL_ATTRS = %w[name serial].freeze
+
+  before_validation :normalize_serial
   before_save :nil_if_blank
+
   after_create :add_loaners, :broadcast_create
   after_destroy :remove_loaners, :broadcast_destroy
   after_save :set_flagship
@@ -68,6 +75,8 @@ class Vehicle < ApplicationRecord
   ransack_alias :size, :model_size
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
+
+  serialize :alternative_names, Array
 
   def add_loaners
     return if loaner?
@@ -149,6 +158,12 @@ class Vehicle < ApplicationRecord
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  protected def normalize_serial
+    return if serial.blank?
+
+    self.serial = serial.upcase
   end
 
   protected def nil_if_blank

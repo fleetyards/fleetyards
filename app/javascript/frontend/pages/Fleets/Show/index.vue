@@ -174,9 +174,9 @@
       <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
+            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="dropdown">
               <i class="fad fa-chart-bar" />
-              {{ $t('labels.fleetStats') }}
+              <span>{{ $t('labels.fleetStats') }}</span>
             </Btn>
 
             <hr />
@@ -186,27 +186,27 @@
             :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
-            variant="link"
+            variant="dropdown"
             @click.native="toggleDetails"
           >
             <i class="fad fa-info-square" />
-            {{ toggleDetailsTooltip }}
+            <span>{{ toggleDetailsTooltip }}</span>
           </Btn>
 
-          <Btn size="small" variant="link" @click.native="toggleGrouped">
+          <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
             <template v-if="grouped">
               <i class="fas fa-square" />
-              {{ $t('actions.ungrouped') }}
+              <span>{{ $t('actions.ungrouped') }}</span>
             </template>
             <template v-else>
               <i class="fas fa-th-large" />
-              {{ $t('actions.groupedByModel') }}
+              <span>{{ $t('actions.groupedByModel') }}</span>
             </template>
           </Btn>
         </BtnDropdown>
       </template>
 
-      <FleetVehiclesFilterForm slot="filter" />
+      <FleetVehiclesFilterForm v-if="fleet && fleet.myFleet" slot="filter" />
 
       <template #default="{ records, loading, filterVisible, primaryKey }">
         <FilteredGrid
@@ -220,14 +220,15 @@
               v-if="record.model"
               :model="record.model"
               :details="detailsVisible"
-              :username="record.username"
+              :vehicle="record"
+              :show-owner="true"
             />
             <ModelPanel
               v-else
               :model="record"
               :details="detailsVisible"
-              :count="record.count"
-              :users="record.users"
+              :vehicles="record.vehicles"
+              :show-owner="true"
             />
           </template>
         </FilteredGrid>

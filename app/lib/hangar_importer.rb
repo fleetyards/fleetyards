@@ -50,7 +50,8 @@ class HangarImporter
       params = {
         notify: false,
         user_id: user_id,
-        name: item[:custom_name],
+        name: item[:ship_name] || item[:custom_name],
+        serial: item[:ship_serial],
         flagship: item[:flagship] || false,
         purchased: item[:purchased] || false,
         public: item[:public] || false,

@@ -17,12 +17,17 @@
               },
             }"
           >
-            <span v-if="customName">
-              {{ customName }}
-            </span>
-
+            <span v-if="customName">{{ customName }}</span>
             <span v-else>{{ countLabel }}{{ modelName }}</span>
           </router-link>
+
+          <transition name="fade" appear>
+            <small v-if="vehicle && vehicle.serial">
+              <span v-if="vehicle.serial" class="serial">
+                {{ vehicle.serial }}
+              </span>
+            </small>
+          </transition>
 
           <transition name="fade" appear>
             <small
@@ -48,27 +53,19 @@
               {{ modelName }}
             </template>
           </small>
-
-          <Btn
-            v-if="vehicle && editable && !vehicle.loaner"
-            :title="$t('actions.edit')"
-            :aria-label="$t('actions.edit')"
-            class="panel-edit-button"
-            variant="link"
-            size="small"
-            data-test="vehicle-edit"
-            @click.native="openEditModal"
-          >
-            <i class="fa fa-pencil" />
-          </Btn>
-
-          <AddToHangar
-            v-else-if="!editable && !username"
-            :model="model"
-            class="panel-add-to-hangar-button"
-            variant="panel"
-          />
         </h2>
+        <VehicleContextMenu
+          v-if="vehicle && editable && !vehicle.loaner"
+          :vehicle="vehicle"
+          :editable="editable"
+        />
+
+        <AddToHangar
+          v-else-if="!editable"
+          :model="model"
+          class="panel-add-to-hangar-button"
+          variant="panel"
+        />
       </div>
       <div
         :class="{
@@ -85,13 +82,10 @@
         >
           <div
             v-if="editable"
-            v-show="vehicle.purchased || vehicle.loaner"
-            v-tooltip="
-              vehicle.loaner
-                ? $t('labels.vehicle.loaner')
-                : $t('labels.vehicle.purchased')
-            "
-            class="purchased"
+            v-tooltip="purchasedLabel"
+            class="purchased-label"
+            :class="{ purchased: vehicle.purchased, loaner: vehicle.loaner }"
+            @click.prevent="togglePurchased"
           >
             <i v-if="vehicle.loaner" class="fal fa-exchange" />
             <i v-else class="fal fa-check" />
@@ -120,34 +114,11 @@
             <i class="far fa-plus-octagon" />
           </span>
         </div>
-        <div v-if="username" class="owner">
-          {{ $t('labels.vehicle.owner') }}
-          <Btn :href="`/hangar/${username}`" variant="link" :text-inline="true">
-            {{ username }}
-          </Btn>
-        </div>
-        <div v-if="usernames.length" class="owner">
-          {{ $t('labels.vehicle.owner') }}
-
-          <Btn
-            :href="`/hangar/${firstOwner}`"
-            variant="link"
-            :text-inline="true"
-          >
-            {{ firstOwner }}
-          </Btn>
-          <template v-if="usernames.length > 1">
-            {{ $t('labels.and') }}
-            <Btn
-              variant="link"
-              :text-inline="true"
-              class="owner-more-action"
-              @click.native="openOwnersModal"
-            >
-              {{ $t('actions.fleet.showOwners') }}
-            </Btn>
-          </template>
-        </div>
+        <VehicleOwner
+          v-if="(vehicle || vehicles.length) && showOwner"
+          :vehicle="vehicle"
+          :vehicles="vehicles"
+        />
       </div>
       <BCollapse
         :id="`details-${model.slug}-${uuid}-wrapper`"
@@ -176,18 +147,21 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import Panel from 'frontend/core/components/Panel'
-import Btn from 'frontend/core/components/Btn'
 import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
+import VehicleOwner from 'frontend/components/Vehicles/OwnerLabel'
 import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
+import vehiclesCollection from 'frontend/api/collections/Vehicles'
+import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
 
 @Component<ModelPanel>({
   components: {
     BCollapse,
     Panel,
-    Btn,
+    VehicleContextMenu,
     LazyImage,
     AddToHangar,
+    VehicleOwner,
     ModelPanelMetrics,
   },
 })
@@ -198,32 +172,18 @@ export default class ModelPanel extends Vue {
 
   @Prop({ default: false }) details: boolean
 
-  @Prop({ default: null }) count: number
-
   @Prop({ default: false }) editable: boolean
 
   @Prop({ default: false }) highlight: boolean
 
-  @Prop({ default: null }) username: string
+  @Prop({ default: false }) showOwner: boolean
 
   @Prop({
     default() {
       return []
     },
   })
-  users: User[]
-
-  get firstOwner() {
-    if (this.usernames.length > 0) {
-      return this.usernames[0]
-    }
-
-    return null
-  }
-
-  get usernames() {
-    return this.users.map(user => user.username)
-  }
+  vehicles: Vehicle[]
 
   get uuid() {
     return this._uid
@@ -262,10 +222,10 @@ export default class ModelPanel extends Vue {
   }
 
   get countLabel() {
-    if (!this.count) {
+    if (!this.vehicles.length) {
       return ''
     }
-    return `${this.count}x `
+    return `${this.vehicles.length}x `
   }
 
   get flagshipTooltip() {
@@ -293,16 +253,25 @@ export default class ModelPanel extends Vue {
     )
   }
 
+  get purchasedLabel() {
+    if (this.vehicle.loaner) {
+      return this.$t('labels.vehicle.loaner')
+    }
+
+    if (this.vehicle.purchased) {
+      return this.$t('labels.vehicle.purchased')
+    }
+
+    return this.$t('actions.markAsPurchased')
+  }
+
   filterManufacturerQuery(manufacturer) {
     return { manufacturerIn: [manufacturer] }
   }
 
-  openEditModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/Modal'),
-      props: {
-        vehicle: this.vehicle,
-      },
+  async togglePurchased() {
+    await vehiclesCollection.update(this.vehicle.id, {
+      purchased: !this.vehicle.purchased,
     })
   }
 
@@ -312,15 +281,6 @@ export default class ModelPanel extends Vue {
       props: {
         vehicle: this.vehicle,
         editable: this.editable,
-      },
-    })
-  }
-
-  openOwnersModal() {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Models/OwnersModal'),
-      props: {
-        users: this.users,
       },
     })
   }

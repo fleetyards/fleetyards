@@ -41,18 +41,28 @@ Cypress.Commands.add('openContextMenu', ship => {
     .click()
 })
 
-Cypress.Commands.add('openShipModalFromContext', () => {
-  cy.get('[data-test="context-menu"] [data-test="vehicle-edit"]').click()
+Cypress.Commands.add('openShipMenuFromContext', (entry = null) => {
+  cy.get('[data-test="context-menu"] [data-test="vehicle-menu"]').click()
+
+  if (entry) {
+    cy.get(`[data-test="context-menu"] [data-test="vehicle-${entry}"]`).click()
+  }
 })
 
-Cypress.Commands.add('openShipModal', ship => {
-  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-edit"]`)
+Cypress.Commands.add('openShipMenu', (ship, entry = null) => {
+  cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-menu"]`)
     .first()
     .click()
+
+  if (entry) {
+    cy.get(`.model-panel.model-panel-${ship} [data-test="vehicle-${entry}"]`)
+      .first()
+      .click()
+  }
 })
 
-Cypress.Commands.add('deleteShip', () => {
-  cy.select('vehicle-delete').click()
+Cypress.Commands.add('removeShip', () => {
+  cy.select('vehicle-remove').click()
 })
 
 Cypress.Commands.add('saveShip', () => {

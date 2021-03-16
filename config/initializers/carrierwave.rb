@@ -50,10 +50,7 @@ CarrierWave.configure do |config|
   if Rails.env.test?
     config.storage = :file
     config.enable_processing = false
-  elsif Rails.env.development? || ENV['CI'].present?
-    config.storage :file
-    config.asset_host = Rails.application.secrets.frontend_endpoint
-  else
+  elsif Rails.application.secrets.carrierwave_cloud_key.present?
     config.fog_provider = 'fog/aws'
     config.fog_credentials = {
       provider: 'AWS',
@@ -69,6 +66,9 @@ CarrierWave.configure do |config|
     config.fog_public = true
 
     # config.asset_host = (Rails.application.secrets.carrierwave_cloud_cdn_endpoint || Rails.application.secrets.frontend_endpoint)
+    config.asset_host = Rails.application.secrets.frontend_endpoint
+  else
+    config.storage :file
     config.asset_host = Rails.application.secrets.frontend_endpoint
   end
 end

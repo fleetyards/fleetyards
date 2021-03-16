@@ -77,12 +77,14 @@ module Api
           expected = [{
             'id' => explorer.id,
             'name' => '',
+            'serial' => nil,
             'purchased' => true,
-            'public' => true,
             'loaner' => false,
             'flagship' => false,
+            'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => explorer.model_id,
               'name' => '600i',
@@ -165,12 +167,14 @@ module Api
           }, {
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
-            'public' => true,
             'loaner' => false,
             'flagship' => false,
+            'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => enterprise.model.id,
               'name' => 'Andromeda',
@@ -266,12 +270,14 @@ module Api
           expected = [{
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
             'loaner' => false,
             'flagship' => false,
             'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => enterprise.model.id,
               'name' => 'Andromeda',

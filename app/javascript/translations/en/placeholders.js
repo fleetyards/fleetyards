@@ -34,6 +34,9 @@ export default {
   user: {
     rsiHandle: 'RSI Handle',
   },
+  vehicle: {
+    serial: 'Serial',
+  },
   commodityPrice: {
     price: '100.00',
   },

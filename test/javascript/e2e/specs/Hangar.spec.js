@@ -46,7 +46,7 @@ describe('Hangar', () => {
       .contains('300i')
       .should('exist')
 
-    cy.openShipModal('300i')
+    cy.openShipMenu('300i', 'edit-name')
 
     cy.select('input-vehicle-name')
       .clear()
@@ -65,9 +65,9 @@ describe('Hangar', () => {
 
     cy.openContextMenu('300i')
 
-    cy.openShipModalFromContext()
+    cy.openShipMenuFromContext()
 
-    cy.deleteShip()
+    cy.removeShip()
 
     cy.acceptConfirm()
 

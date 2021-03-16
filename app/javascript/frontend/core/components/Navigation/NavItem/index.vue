@@ -51,7 +51,7 @@
   </li>
   <router-link
     v-else-if="to"
-    v-slot="{ navigate }"
+    v-slot="{ href: linkHref, navigate }"
     :to="to"
     :class="{
       'active': active,
@@ -63,7 +63,7 @@
     :custom="true"
   >
     <li role="link" @click="navigate" @keypress.enter="navigate">
-      <a v-tooltip="tooltip">
+      <a v-tooltip="tooltip" :href="linkHref">
         <slot v-if="hasDefaultSlot" />
         <NavItemInner
           v-else

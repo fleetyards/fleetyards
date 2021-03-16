@@ -131,43 +131,20 @@
       </div>
     </template>
     <template #col-actions="{ record }">
-      <div class="page-actions page-actions-block">
+      <BtnGroup :inline="true">
         <Btn
           v-if="record && editable && !record.loaner"
           :aria-label="$t('actions.edit')"
           size="small"
           data-test="vehicle-edit"
           :inline="true"
+          variant="link"
           @click.native="openEditModal(record)"
         >
           {{ $t('actions.edit') }}
         </Btn>
-        <BtnDropdown :inline="true" size="small">
-          <Btn
-            :to="{
-              name: 'model',
-              params: {
-                slug: record.model.slug,
-              },
-            }"
-            size="small"
-            variant="dropdown"
-          >
-            <i class="fad fa-starship" />
-            {{ $t('actions.showDetailPage') }}
-          </Btn>
-          <Btn
-            v-if="upgradable(record)"
-            :aria-label="$t('labels.model.addons')"
-            size="small"
-            variant="dropdown"
-            @click.native="openAddonsModal(record)"
-          >
-            <i class="fa fa-plus-octagon" />
-            {{ $t('labels.model.addons') }}
-          </Btn>
-        </BtnDropdown>
-      </div>
+        <VehicleContextMenu :vehicle="record" :editable="editable" />
+      </BtnGroup>
     </template>
   </FilteredTable>
 </template>
@@ -178,16 +155,16 @@ import { Component, Prop } from 'vue-property-decorator'
 import FilteredTable from 'frontend/core/components/FilteredTable'
 import Btn from 'frontend/core/components/Btn'
 import BtnGroup from 'frontend/core/components/BtnGroup'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import { displayConfirm } from 'frontend/lib/Noty'
+import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
 
 @Component<FilteredGrid>({
   components: {
     FilteredTable,
+    VehicleContextMenu,
     Btn,
     BtnGroup,
-    BtnDropdown,
   },
 })
 export default class FilteredGrid extends Vue {
@@ -258,16 +235,6 @@ export default class FilteredGrid extends Vue {
       component: () => import('frontend/components/Vehicles/Modal'),
       props: {
         vehicle,
-      },
-    })
-  }
-
-  openAddonsModal(vehicle) {
-    this.$comlink.$emit('open-modal', {
-      component: () => import('frontend/components/Vehicles/AddonsModal'),
-      props: {
-        vehicle,
-        editable: this.editable,
       },
     })
   }

@@ -81,7 +81,7 @@
                 @click.native="openSellPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                {{ $t('labels.shopCommodity.sellPrices') }}
+                <span>{{ $t('labels.shopCommodity.sellPrices') }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -89,7 +89,7 @@
                 @click.native="openBuyPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                {{ $t('labels.shopCommodity.buyPrices') }}
+                <span>{{ $t('labels.shopCommodity.buyPrices') }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -97,7 +97,7 @@
                 @click.native="openRentalPricesModal(record)"
               >
                 <i class="fal fa-list" />
-                {{ $t('labels.shopCommodity.rentalPrices') }}
+                <span>{{ $t('labels.shopCommodity.rentalPrices') }}</span>
               </Btn>
               <Btn
                 size="small"
@@ -107,7 +107,7 @@
                 @click.native="remove(record)"
               >
                 <i class="fal fa-trash" />
-                {{ $t('actions.remove') }}
+                <span>{{ $t('actions.remove') }}</span>
               </Btn>
             </BtnDropdown>
           </BtnGroup>

@@ -1,5 +1,6 @@
 import { get, post, put, destroy, download } from 'frontend/api/client'
 import Store from 'frontend/lib/Store'
+import { AxiosResponse } from 'axios'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
@@ -103,16 +104,14 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async update(id: string, form: VehicleForm): Promise<boolean> {
+  async update(id: string, form: VehicleForm): Promise<AxiosResponse> {
     const response = await put(`vehicles/${id}`, form)
 
     if (!response.error) {
       this.refresh()
-
-      return true
     }
 
-    return false
+    return response
   }
 
   async markAsPurchasedBulk(ids: string): Promise<boolean> {

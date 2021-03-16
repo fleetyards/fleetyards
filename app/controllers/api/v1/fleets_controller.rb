@@ -337,6 +337,7 @@ module Api
 
         [false, true]
       end
+      helper_method :loaner_included?
     end
   end
 end

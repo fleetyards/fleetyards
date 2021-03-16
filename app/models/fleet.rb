@@ -13,6 +13,7 @@
 #  homepage         :string
 #  logo             :string
 #  name             :string
+#  public_fleet     :boolean          default(FALSE)
 #  rsi_sid          :string
 #  sid              :string
 #  slug             :string
@@ -117,10 +118,6 @@ class Fleet < ApplicationRecord
 
   def model_count(model_id)
     vehicles.where(model_id: model_id, loaner: false).size
-  end
-
-  def model_users(model_id)
-    users.includes(:vehicles).where(vehicles: { model_id: model_id }).order(username: :asc)
   end
 
   private def update_slugs

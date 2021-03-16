@@ -17,15 +17,13 @@
               <spacer size="32"></spacer>
               <row>
                 <columns small="12" large="3">
-                  <img src="<%= image_url('logo-small.png') %>" alt="logo" class="show-for-large">
-                  <center class="hide-for-large">
+                  <center>
                     <img src="<%= image_url('logo-small.png') %>" alt="logo">
                   </center>
                 </columns>
                 <columns small="12" large="9">
                   <h1 style="margin-bottom: 0; margin-top: 20px;">
-                    <span class="show-for-large"><%= I18n.t('title.default') %></span>
-                    <center class="hide-for-large">
+                    <center>
                       <%= I18n.t('title.default') %>
                     </center>
                   </h1>

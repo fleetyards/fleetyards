@@ -38,9 +38,9 @@
         class="filter-group-item fade-list-item"
         @click="select(option[valueAttr])"
       >
-        <span v-if="option[iconAttr]" class="filter-group-item-icon">
+        <div v-if="option[iconAttr]" class="filter-group-item-icon">
           <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
-        </span>
+        </div>
         <span v-html="option[labelAttr]" />
         <span v-if="multiple">
           <i class="fal fa-plus" />
@@ -76,9 +76,9 @@
           class="filter-group-item fade-list-item"
           @click="select(returnObject ? option : option[valueAttr])"
         >
-          <span v-if="option[iconAttr]" class="filter-group-item-icon">
+          <div v-if="option[iconAttr]" class="filter-group-item-icon">
             <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
-          </span>
+          </div>
           <span v-html="option[labelAttr]" />
           <span v-if="multiple">
             <i class="fal fa-plus" />

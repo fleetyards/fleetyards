@@ -63,7 +63,7 @@ const handleResponse = function handleResponse(response, params, silent) {
   const meta = extractMetaInfo(response.headers, params)
 
   return {
-    data: response.data,
+    ...response,
     error: null,
     meta,
     params,

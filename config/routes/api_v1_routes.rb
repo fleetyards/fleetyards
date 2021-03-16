@@ -94,6 +94,7 @@ v1_api_routes = lambda do
       get 'stats/models-by-production-status' => 'vehicles#models_by_production_status'
       get 'stats/models-by-manufacturer' => 'vehicles#models_by_manufacturer'
       get 'stats/models-by-classification' => 'vehicles#models_by_classification'
+      post 'check-serial'
     end
   end
 

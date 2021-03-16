@@ -29,7 +29,9 @@
   .modal-content {
     padding: 15px;
     background-color: transparent;
+    border: none;
     border-radius: $border-radius-base;
+    box-shadow: none;
   }
 
   .modal-body {

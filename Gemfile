@@ -149,11 +149,10 @@ end
 
 group :development, :test do
   gem 'bullet'
+  gem 'uniform_notifier', '1.14.0'
+
   gem 'bundler-audit'
+
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
-
-  # deployment
-  gem 'mina', require: false
-  gem 'mina-multistage', require: false
 end

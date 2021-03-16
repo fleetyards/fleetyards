@@ -11,7 +11,7 @@
     class="app-modal fade"
     @click.self="close"
   >
-    <Component :is="component" v-bind="props" />
+    <Component :is="component" ref="modelComponent" v-bind="props" />
   </div>
 </template>
 
@@ -19,6 +19,7 @@
 import Vue from 'vue'
 import { Component, Ref } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
+import { displayConfirm } from 'frontend/lib/Noty'
 
 type AppModalOptions = {
   component: Promise<VueComponent>
@@ -64,6 +65,7 @@ export default class AppModal extends Vue {
     this.props = options.props
     this.wide = !!options.wide
     this.fixed = !!options.fixed
+    this.dirty = !!options.dirty
     this.component = options.component
 
     this.isShow = true
@@ -89,6 +91,19 @@ export default class AppModal extends Vue {
       return
     }
 
+    if (this.$refs.modelComponent.dirty) {
+      displayConfirm({
+        text: this.$t('messages.confirm.modal.dirty'),
+        onConfirm: () => {
+          this.internalClose()
+        },
+      })
+    } else {
+      this.internalClose()
+    }
+  }
+
+  internalClose() {
     this.isOpen = false
     this.hideOverlay()
 

@@ -63,6 +63,7 @@ export default {
   'changePassword': 'Change Password',
   'add': 'Add',
   'addAsPurchased': 'Add as Purchased',
+  'markAsPurchased': 'Mark as Purchased',
   'addAnother': 'Add another',
   'addVehicle': 'Add Ships',
   'addGroup': 'Add Group',
@@ -74,6 +75,9 @@ export default {
     models: 'Compare',
   },
   'hangar': {
+    editGroups: 'Add or remove Groups',
+    editName: 'Name your Ship',
+    useName: 'Use Name',
     destroyAll: 'Remove all Ships',
     showOnPublicHangar: 'Make Public',
     hideFromPublicHangar: 'Hide from Public',

@@ -2,12 +2,14 @@
 
 json.id vehicle.id
 json.name vehicle.name
+json.serial vehicle.serial
 json.purchased vehicle.purchased
 json.loaner vehicle.loaner
 json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible
 json.sale_notify vehicle.sale_notify
+json.alternative_names vehicle.alternative_names
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end

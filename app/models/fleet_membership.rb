@@ -52,25 +52,25 @@ class FleetMembership < ApplicationRecord
   end
 
   def visible_vehicle_ids(filters = nil)
-    return [] if visibile_vehicles.blank?
+    return [] if visible_vehicles.blank?
 
-    scope = visibile_vehicles
+    scope = visible_vehicles
     scope = scope.where(filters) if filters.present?
     scope.pluck(:id)
   end
 
   def visible_model_ids(filters = nil)
-    return [] if visibile_vehicles.blank?
+    return [] if visible_vehicles.blank?
 
-    scope = visibile_vehicles
+    scope = visible_vehicles
     scope = scope.where(filters) if filters.present?
     scope.pluck(:model_id)
   end
 
-  def visibile_vehicles
+  def visible_vehicles
     return if ships_filter_hide?
 
-    scope = user.vehicles
+    scope = user.vehicles.where(hidden: false)
     scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
     scope = scope.purchased if ships_filter_purchased?
     scope
