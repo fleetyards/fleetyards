@@ -112,20 +112,20 @@
             <Btn
               :to="{ name: 'hangar-fleetchart' }"
               size="small"
-              variant="link"
+              variant="dropdown"
             >
               <i class="fad fa-starship" />
-              {{ $t('labels.fleetchart') }}
+              <span>{{ $t('labels.fleetchart') }}</span>
             </Btn>
 
-            <Btn :to="{ name: 'hangar-stats' }" size="small" variant="link">
+            <Btn :to="{ name: 'hangar-stats' }" size="small" variant="dropdown">
               <i class="fad fa-chart-bar" />
-              {{ $t('labels.hangarStats') }}
+              <span>{{ $t('labels.hangarStats') }}</span>
             </Btn>
 
-            <Btn :href="publicUrl" size="small" variant="link">
+            <Btn :href="publicUrl" size="small" variant="dropdown">
               <i class="fad fa-share-square" />
-              {{ $t('labels.publicUrl') }}
+              <span>{{ $t('labels.publicUrl') }}</span>
             </Btn>
 
             <hr />
@@ -134,23 +134,23 @@
           <Btn
             :aria-label="toggleGridView"
             size="small"
-            variant="link"
+            variant="dropdown"
             @click.native="toggleGridView"
           >
             <i v-if="gridView" class="fad fa-list" />
             <i v-else class="fas fa-th" />
-            {{ toggleGridViewTooltip }}
+            <span>{{ toggleGridViewTooltip }}</span>
           </Btn>
 
           <Btn
             v-if="gridView"
             :aria-label="toggleDetailsTooltip"
             size="small"
-            variant="link"
+            variant="dropdown"
             @click.native="toggleDetails"
           >
             <i class="fad fa-info-square" />
-            {{ toggleDetailsTooltip }}
+            <span>{{ toggleDetailsTooltip }}</span>
           </Btn>
 
           <Btn
@@ -158,38 +158,38 @@
             :active="guideVisible"
             :aria-label="toggleGuideTooltip"
             size="small"
-            variant="link"
+            variant="dropdown"
             @click.native="toggleGuide"
           >
             <i class="fad fa-question" />
-            {{ toggleGuideTooltip }}
+            <span>{{ toggleGuideTooltip }}</span>
           </Btn>
 
           <hr />
 
           <Btn
             size="small"
-            variant="link"
+            variant="dropdown"
             :aria-label="$t('actions.export')"
             @click.native="exportJson"
           >
             <i class="fal fa-download" />
-            {{ $t('actions.export') }}
+            <span>{{ $t('actions.export') }}</span>
           </Btn>
 
-          <HangarImportBtn size="small" variant="link" @uploaded="fetch" />
+          <HangarImportBtn size="small" variant="dropdown" @uploaded="fetch" />
 
           <hr />
 
           <Btn
             size="small"
-            variant="link"
+            variant="dropdown"
             :disabled="deleting"
             :aria-label="$t('actions.hangar.destroyAll')"
             @click.native="destroyAll"
           >
             <i class="fal fa-trash" />
-            {{ $t('actions.hangar.destroyAll') }}
+            <span>{{ $t('actions.hangar.destroyAll') }}</span>
           </Btn>
         </BtnDropdown>
       </template>

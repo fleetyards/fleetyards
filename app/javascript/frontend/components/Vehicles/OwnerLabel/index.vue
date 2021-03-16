@@ -31,6 +31,7 @@
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn'
+import { uniq as uniqArray } from 'frontend/utils/Array'
 
 @Component<ModelPanel>({
   components: {
@@ -60,7 +61,10 @@ export default class ModelPanel extends Vue {
   }
 
   get usernames() {
-    return this.vehicles.map(vehicle => vehicle.username).sort()
+    return this.vehicles
+      .map(vehicle => vehicle.username)
+      .sort()
+      .filter(uniqArray)
   }
 
   openOwnersModal() {

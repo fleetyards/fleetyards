@@ -12,7 +12,7 @@
       <Btn
         v-for="classification in countData"
         :key="`dropdown-${classification.name}`"
-        variant="link"
+        variant="dropdown"
         class="labels-dropdown-item"
         :class="{
           active: isActive(classification.name),

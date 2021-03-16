@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.9.3](https://github.com/fleetyards/fleetyards/compare/v4.9.2...v4.9.3) (2021-03-13)
+
+### [4.9.2](https://github.com/fleetyards/fleetyards/compare/v4.9.1...v4.9.2) (2021-03-13)
+
+### [4.9.1](https://github.com/fleetyards/fleetyards/compare/v4.9.0...v4.9.1) (2021-03-13)
+
+
+### Bug Fixes
+
+* dropdown menues ([877e606](https://github.com/fleetyards/fleetyards/commit/877e60650f5a8fdd6e1f1c7d135cd1ef409dc37e))
+* naming modal ([6196bbd](https://github.com/fleetyards/fleetyards/commit/6196bbdc9ab294c84aaee0597182919be7abcf69))
+
+## [4.9.0](https://github.com/fleetyards/fleetyards/compare/v4.8.1...v4.9.0) (2021-03-12)
+
+
+### Features
+
+* vehicle context menu for list view ([6c4c0d8](https://github.com/fleetyards/fleetyards/commit/6c4c0d86b025d4476709fa0a5098f4871d6db8ea))
+
+
+### Bug Fixes
+
+* context menu ([29e8131](https://github.com/fleetyards/fleetyards/commit/29e81315ad8e26abfb8a8a1b924d7e46b1445d46))
+* mail templates ([9ab67d6](https://github.com/fleetyards/fleetyards/commit/9ab67d64f04ad6254450e01dd1995a0c22e30bbf))
+* model variants ([6b0dd68](https://github.com/fleetyards/fleetyards/commit/6b0dd6802f328f27083b229a65e996ecffaed2cc))
+
+### [4.8.1](https://github.com/fleetyards/fleetyards/compare/v4.8.0...v4.8.1) (2021-03-12)
+
+
+### Bug Fixes
+
+* owners on fleet page ([310323b](https://github.com/fleetyards/fleetyards/commit/310323bf40092e60d9042a13c220d309bede2bcb))
+
+## [4.8.0](https://github.com/fleetyards/fleetyards/compare/v4.7.3...v4.8.0) (2021-03-12)
+
+
+### Features
+
+* add new context menu for vehicles ([6daa224](https://github.com/fleetyards/fleetyards/commit/6daa22419c15eb0840f5bdcf4bcb3ff472ce52de))
+* add serial to vehicles ([ffc4c4f](https://github.com/fleetyards/fleetyards/commit/ffc4c4f0d6888056f805298b663b190f47a8c37d))
+
+
+### Bug Fixes
+
+* audit issue ([e13a7cb](https://github.com/fleetyards/fleetyards/commit/e13a7cbd41088b8a6b3fd78b5f187bbda9499511))
+* e2e tests ([1910eb2](https://github.com/fleetyards/fleetyards/commit/1910eb26d76d0ac2ee854c0856f8dec70f2c007b))
+* email template header ([62c9566](https://github.com/fleetyards/fleetyards/commit/62c95667e00c4650fa5a790047a69291d44e6e49))
+* fleet ship owners ([a550ef8](https://github.com/fleetyards/fleetyards/commit/a550ef80c2c75325ecf5a4649f98da08e8319e16))
+
 ### [4.7.3](https://github.com/fleetyards/fleetyards/compare/v4.7.2...v4.7.3) (2021-03-01)
 
 

@@ -1,52 +1,79 @@
 <template>
   <BtnDropdown
-    size="small"
-    variant="link"
+    :size="size"
+    :variant="variant"
     class="panel-edit-menu"
     data-test="vehicle-menu"
     :expand-left="true"
     :inline="true"
   >
     <Btn
-      :aria-label="$t('actions.edit')"
-      variant="link"
+      :to="{
+        name: 'model',
+        params: {
+          slug: vehicle.model.slug,
+        },
+      }"
       size="small"
+      variant="dropdown"
+    >
+      <i class="fad fa-starship" />
+      <span>{{ $t('actions.showDetailPage') }}</span>
+    </Btn>
+    <Btn
+      v-if="editable"
+      :aria-label="$t('actions.edit')"
+      size="small"
+      variant="dropdown"
       data-test="vehicle-edit"
       @click.native="openEditModal"
     >
       <i class="fa fa-pencil" />
-      {{ $t('actions.edit') }}
+      <span>{{ $t('actions.edit') }}</span>
     </Btn>
     <Btn
+      v-if="editable"
       :aria-label="$t('actions.hangar.editName')"
-      variant="link"
       size="small"
+      variant="dropdown"
       data-test="vehicle-edit-name"
       @click.native="openNamingModal"
     >
       <i class="fa fa-signature" />
-      {{ $t('actions.hangar.editName') }}
+      <span>{{ $t('actions.hangar.editName') }}</span>
     </Btn>
     <Btn
-      :aria-label="$t('actions.edit')"
-      variant="link"
+      v-if="editable"
+      :aria-label="$t('actions.hangar.editGroups')"
       size="small"
+      variant="dropdown"
       data-test="vehicle-edit-groups"
       @click.native="openEditGroupsModal"
     >
       <i class="fad fa-object-group" />
-      {{ $t('actions.hangar.editGroups') }}
+      <span>{{ $t('actions.hangar.editGroups') }}</span>
     </Btn>
     <Btn
+      v-if="editable"
       :aria-label="$t('actions.remove')"
-      variant="link"
       size="small"
+      variant="dropdown"
       :disabled="deleting"
       data-test="vehicle-remove"
       @click.native="remove"
     >
       <i class="fal fa-trash" />
-      {{ $t('actions.remove') }}
+      <span>{{ $t('actions.remove') }}</span>
+    </Btn>
+    <Btn
+      v-if="upgradable"
+      :aria-label="$t('labels.model.addons')"
+      size="small"
+      variant="dropdown"
+      @click.native="openAddonsModal"
+    >
+      <i class="fa fa-plus-octagon" />
+      <span>{{ $t('labels.model.addons') }}</span>
     </Btn>
   </BtnDropdown>
 </template>
@@ -69,6 +96,41 @@ export default class ContextMenu extends Vue {
   deleting: boolean = false
 
   @Prop({ default: null }) vehicle: Vehicle | null
+
+  @Prop({ default: false }) editable!: boolean
+
+  @Prop({
+    default: 'link',
+    validator(value) {
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
+    },
+  })
+  variant!: string
+
+  @Prop({
+    default: 'small',
+    validator(value) {
+      return ['default', 'small', 'large'].indexOf(value) !== -1
+    },
+  })
+  size!: string
+
+  get hasAddons() {
+    return (
+      this.vehicle.modelModuleIds.length || this.vehicle.modelUpgradeIds.length
+    )
+  }
+
+  get upgradable() {
+    return (
+      (this.editable || this.hasAddons) &&
+      (this.vehicle.model.hasModules || this.vehicle.model.hasUpgrades)
+    )
+  }
 
   remove() {
     this.deleting = true

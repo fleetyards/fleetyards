@@ -75,7 +75,18 @@
     }
 
     > * .panel-btn-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       text-align: left;
+
+      > :first-child {
+        margin-right: 6px;
+      }
+
+      > :not(:first-child) {
+        flex: 1 1;
+      }
     }
   }
 }
