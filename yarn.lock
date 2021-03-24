@@ -20190,10 +20190,10 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-swatches@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-2.1.0.tgz#65221b4589ebb1ecd04a93bf82bfc569220e2724"
-  integrity sha512-JbSomg1penZvgHL24blA3PDgji7LPVGGSFlMo7F+jYVcxooemadI3gkMwFJVIPMikG5g160Mq+Lbph/lqFjzzw==
+vue-swatches@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-2.1.1.tgz#26c467fb7648ff4ee0887aea36d1e03b15032b83"
+  integrity sha512-YugkNbByxMz1dnx1nZyHSL3VSf/TnBH3/NQD+t8JKxPSqUmX87sVGBxjEaqH5IMraOLfVmU0pHCHl2BfXNypQg==
 
 vue-template-compiler@2.6.12, vue-template-compiler@^2.0.0, vue-template-compiler@^2.5.16, vue-template-compiler@^2.6.10, vue-template-compiler@^2.6.11:
   version "2.6.12"
