@@ -2,9 +2,7 @@
 
 module Git
   module_function def revision
-    @revision ||= begin
-      File.read(Rails.root.join('REVISION')).chomp if File.exist?(Rails.root.join('REVISION'))
-    end
+    @revision ||= File.read(Rails.root.join('REVISION')).chomp if File.exist?(Rails.root.join('REVISION'))
   end
 
   module_function def revision_short

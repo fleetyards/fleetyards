@@ -362,59 +362,51 @@ module Api
       helper_method :vehicle
 
       private def vehicle_params
-        @vehicle_params ||= begin
-          params.transform_keys(&:underscore)
-            .permit(
-              :name, :serial, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
-              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
-            ).merge(user_id: current_user.id)
-        end
+        @vehicle_params ||= params.transform_keys(&:underscore)
+          .permit(
+            :name, :serial, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
+            hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
+          ).merge(user_id: current_user.id)
       end
 
       private def vehicle_bulk_params
-        @vehicle_bulk_params ||= begin
-          params.transform_keys(&:underscore)
-            .permit(
-              :purchased, :public, hangar_group_ids: []
-            ).merge(user_id: current_user.id)
-        end
+        @vehicle_bulk_params ||= params.transform_keys(&:underscore)
+          .permit(
+            :purchased, :public, hangar_group_ids: []
+          ).merge(user_id: current_user.id)
       end
 
       private def price_range
-        @price_range ||= begin
-          price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
-            gt_price = if gt_price.blank?
-                         0
-                       else
-                         gt_price.to_i
-                       end
-            lt_price = if lt_price.blank?
-                         Float::INFINITY
-                       else
-                         lt_price.to_i
-                       end
-            (gt_price...lt_price)
-          end
+        @price_range ||= price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
         end
       end
 
       private def pledge_price_range
-        @pledge_price_range ||= begin
-          pledge_price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
-            gt_price = if gt_price.blank?
-                         0
-                       else
-                         gt_price.to_i
-                       end
-            lt_price = if lt_price.blank?
-                         Float::INFINITY
-                       else
-                         lt_price.to_i
-                       end
-            (gt_price...lt_price)
-          end
+        @pledge_price_range ||= pledge_price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
         end
       end
 
