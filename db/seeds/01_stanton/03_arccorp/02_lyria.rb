@@ -7,6 +7,7 @@ humboldt_mines = Station.find_or_initialize_by(name: 'Humboldt Mines')
 humboldt_mines.update!(
   celestial_object: lyria,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/humboldt.jpg').open,
   hidden: false
@@ -16,6 +17,8 @@ admin_office_humboldt_mines = Shop.find_or_initialize_by(name: 'Admin Office', s
 admin_office_humboldt_mines.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/humboldt_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -25,6 +28,7 @@ shubin_sal_5 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SAL-5
 shubin_sal_5.update!(
   celestial_object: lyria,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_5.jpg').open,
   hidden: false
@@ -54,6 +58,8 @@ admin_office_shubin_sal_5 = Shop.find_or_initialize_by(name: 'Admin Office', sta
 admin_office_shubin_sal_5.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_5_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -61,6 +67,7 @@ shubin_sal_2 = Station.find_or_initialize_by(name: 'Shubin Mining Facility SAL-2
 shubin_sal_2.update!(
   celestial_object: lyria,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2.jpg').open,
   hidden: false
@@ -90,6 +97,8 @@ admin_office_shubin_sal_2 = Shop.find_or_initialize_by(name: 'Admin Office', sta
 admin_office_shubin_sal_2.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/shubin_sal_2_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -97,6 +106,7 @@ loveridge = Station.find_or_initialize_by(name: 'Loveridge Mineral Reserve')
 loveridge.update!(
   celestial_object: lyria,
   station_type: :outpost,
+  classification: :mining,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/loveridge.jpg').open,
   hidden: false
@@ -106,13 +116,16 @@ admin_office_loveridge = Shop.find_or_initialize_by(name: 'Admin Office', statio
 admin_office_loveridge.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/loveridge_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
 paradise = Station.find_or_initialize_by(name: 'Paradise Cove')
 paradise.update!(
   celestial_object: lyria,
-  station_type: :drug_lab,
+  station_type: :aid_shelter,
+  classification: :drug_lab,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/paradise.jpg').open,
   hidden: true
@@ -121,13 +134,16 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: paradis
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/paradise_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )
 
 orphanage = Station.find_or_initialize_by(name: 'The Orphanage')
 orphanage.update!(
   celestial_object: lyria,
-  station_type: :drug_lab,
+  station_type: :aid_shelter,
+  classification: :drug_lab,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/orphanage.jpg').open,
   hidden: true
@@ -136,5 +152,7 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: orphana
 admin_office.update!(
   shop_type: :admin,
   # store_image: Rails.root.join('db/seeds/images/stanton/arccorp/lyria/orphanage_admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: true
 )

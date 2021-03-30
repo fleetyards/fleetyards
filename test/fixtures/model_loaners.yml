@@ -1,4 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# == Schema Information
+#
+# Table name: model_loaners
+#
+#  id              :uuid             not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  loaner_model_id :uuid
+#  model_id        :uuid
+#
 
 ptv_for_600i:
   model: explorer

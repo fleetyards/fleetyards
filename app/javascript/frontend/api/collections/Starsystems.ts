@@ -25,9 +25,8 @@ export class StarsystemCollection extends BaseCollection {
     if (!response.error) {
       this.records = response.data
       this.loaded = true
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }

@@ -43,12 +43,12 @@ module Admin
         private def index_scope
           model_query_params['sorts'] = sort_by_name
 
-          Model.ransack(model_query_params)
+          Model.includes([:manufacturer]).ransack(model_query_params)
         end
 
         private def model_query_params
           @model_query_params ||= query_params(
-            :name_cont, :sorts, name_in: [], sorts: [], id_not_in: []
+            :name_cont, :sorts, :id_eq, name_in: [], sorts: [], id_not_in: []
           )
         end
       end

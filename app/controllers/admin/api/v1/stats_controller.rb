@@ -21,7 +21,7 @@ module Admin
         def most_viewed_pages
           authorize! :stats, :admin
 
-          most_viewed_pages = Ahoy::Event.where(name: '$view').to_a.group_by do |event|
+          most_viewed_pages = Ahoy::Event.one_month.where(name: '$view').to_a.group_by do |event|
             event.properties['page']
           end.map do |page, views|
             {

@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-12 col-xl-6">
+        <div class="col-12 col-md-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="currentPassword"
@@ -111,7 +111,8 @@ export default {
           text: this.$t('messages.changePassword.success'),
         })
 
-        this.$router.push('/')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this.$router.push('/').catch(() => {})
       } else {
         displayAlert({
           text: this.$t('messages.changePassword.failure'),

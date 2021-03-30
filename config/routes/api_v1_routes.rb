@@ -47,6 +47,8 @@ v1_api_routes = lambda do
     get :weeks, on: :collection
   end
 
+  resources :progress_tracker_items, path: 'progress-tracker-items', only: %i[index]
+
   resources :search, only: %i[index]
 
   resources :users, only: [] do
@@ -79,6 +81,8 @@ v1_api_routes = lambda do
       get :fleetchart
       get :export
       put :import
+      put 'bulk' => 'vehicles#update_bulk'
+      put 'destroy-bulk' => 'vehicles#destroy_bulk'
       delete 'destroy-all' => 'vehicles#destroy_all'
       get :embed
       get 'hangar-items' => 'vehicles#hangar_items'
@@ -90,6 +94,7 @@ v1_api_routes = lambda do
       get 'stats/models-by-production-status' => 'vehicles#models_by_production_status'
       get 'stats/models-by-manufacturer' => 'vehicles#models_by_manufacturer'
       get 'stats/models-by-classification' => 'vehicles#models_by_classification'
+      post 'check-serial'
     end
   end
 
@@ -106,7 +111,10 @@ v1_api_routes = lambda do
     end
   end
   resources :equipment, only: [:index]
-  resources :components, only: [:index]
+  resources :components, only: [:index] do
+    get :class_filters, on: :collection
+    get :item_type_filters, on: :collection
+  end
 
   resources :starsystems, param: :slug, only: %i[index show]
   resources :celestial_objects, path: 'celestial-objects', param: :slug, only: %i[index show]
@@ -114,15 +122,23 @@ v1_api_routes = lambda do
     collection do
       get 'ship-sizes' => 'stations#ship_sizes'
       get 'station-types' => 'stations#station_types'
+      get 'classifications' => 'stations#classifications'
     end
     member do
       get :images
     end
     resources :shops, param: :slug, only: %i[show] do
-      resources :shop_commodities, path: 'shop-commodities', only: %i[index]
+      resources :shop_commodities, path: 'commodities', only: %i[index]
     end
   end
 
+  resources :commodity_prices, path: 'commodity-prices', only: [:create] do
+    collection do
+      get 'time-ranges' => 'commodity_prices#time_ranges'
+    end
+  end
+
+  get 'shop-commodities/commodity-type-options' => 'shop_commodities#commodity_item_types'
   get 'filters/shop-commodities/sub-categories' => 'shop_commodities#sub_categories'
 
   resources :shops, param: :slug, only: %i[index] do

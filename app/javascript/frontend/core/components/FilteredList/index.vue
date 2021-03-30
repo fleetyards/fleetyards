@@ -2,8 +2,8 @@
   <div class="row">
     <div class="col-12">
       <div class="row">
-        <div class="col-12 filtered-list-header">
-          <div class="filtered-list-header-left">
+        <div class="col-12 filtered-header">
+          <div class="filtered-header-left">
             <Btn
               v-if="hasFilterSlot"
               v-tooltip="filterTooltip"
@@ -20,17 +20,7 @@
               </span>
             </Btn>
           </div>
-          <div class="pagination-wrapper">
-            <slot name="pagination-top">
-              <Paginator
-                v-if="paginated && collection.records.length"
-                :page="collection.currentPage"
-                :total="collection.totalPages"
-                :center="true"
-              />
-            </slot>
-          </div>
-          <div class="filtered-list-header-right">
+          <div class="filtered-header-right">
             <slot name="actions" :records="collection && collection.records" />
           </div>
         </div>
@@ -56,35 +46,13 @@
             :records="collection && collection.records"
             :filter-visible="filterVisible"
             :loading="loading"
+            :primary-key="collection.primaryKey"
+            :empty-box-visible="emptyBoxVisible"
           />
 
-          <transition-group
-            name="fade-list"
-            class="row"
-            tag="div"
-            :appear="true"
-          >
-            <div
-              v-for="(record, index) in collection.records"
-              :key="record[collection.primaryKey]"
-              :class="{
-                'col-xxl-3 col-3xl-2dot4': filterVisible,
-                'col-xl-3 col-xxl-2dot4 col-3xl-2': !filterVisible,
-              }"
-              class="col-12 col-md-6 col-lg-4 fade-list-item"
-            >
-              <slot
-                name="record"
-                :record="record"
-                :index="index"
-                :loading="loading"
-              />
-            </div>
-          </transition-group>
+          <EmptyBox v-if="!hideEmptyBox" :visible="emptyBoxVisible" />
 
-          <EmptyBox :visible="emptyBoxVisible" />
-
-          <Loader :loading="loading" :fixed="true" />
+          <Loader v-if="!hideLoading" :loading="loading" :fixed="true" />
         </div>
       </div>
       <div class="row">
@@ -92,9 +60,8 @@
           <slot name="pagination-bottom">
             <Paginator
               v-if="paginated && collection.records.length"
-              :page="collection.currentPage"
-              :total="collection.totalPages"
-              :center="true"
+              :collection="collection"
+              :page="page"
             />
           </slot>
         </div>
@@ -147,6 +114,12 @@ export default class FilteredList extends Vue {
 
   @Prop({ default: false }) paginated: boolean
 
+  @Prop({ default: false }) alwaysFilterVisible: boolean
+
+  @Prop({ default: false }) hideEmptyBox: boolean
+
+  @Prop({ default: false }) hideLoading: boolean
+
   @Getter('filtersVisible') filtersVisible
 
   @Getter('mobile') mobile
@@ -166,7 +139,7 @@ export default class FilteredList extends Vue {
   }
 
   get page() {
-    return this.routeQuery.page
+    return parseInt(this.routeQuery.page, 10) || 1
   }
 
   get filterVisible() {
@@ -207,12 +180,22 @@ export default class FilteredList extends Vue {
     this.fetch()
   }
 
+  created() {
+    if (this.collection.records.length) {
+      this.collection.records = []
+    }
+  }
+
   mounted() {
     this.fetch()
 
     if (this.mobile) {
       this.setFiltersVisible({
         [this.name]: false,
+      })
+    } else if (this.alwaysFilterVisible) {
+      this.setFiltersVisible({
+        [this.name]: true,
       })
     }
 
@@ -273,7 +256,9 @@ export default class FilteredList extends Vue {
       scrollToAnchor(this.hash)
     })
 
-    this.loading = false
+    setTimeout(() => {
+      this.loading = false
+    }, 300)
   }
 }
 </script>

@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.0.3.4'
+gem 'rails', '6.1.2.1'
 
 gem 'pg', '~> 1.0'
 
@@ -16,6 +16,8 @@ gem 'paper_trail'
 gem 'haml'
 gem 'haml-rails'
 gem 'slim-rails'
+
+gem 'graphql-client'
 
 gem 'searchkick'
 
@@ -37,19 +39,20 @@ gem 'premailer-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-async'
 gem 'devise-two-factor'
 
 gem 'redis-session-store'
 
-gem 'jwt'
 gem 'rqrcode-rails3'
 
 gem 'useragent'
 
+gem 'redis-actionpack'
+
 gem 'ransack'
 
 gem 'jbuilder'
+gem 'oj'
 
 gem 'rails-i18n'
 
@@ -65,7 +68,7 @@ gem 'state_machine'
 gem 'bourbon'
 gem 'coffee-rails'
 gem 'sass-rails'
-gem 'webpacker', '>= 5.x'
+gem 'webpacker', '~> 5.x'
 
 gem 'bootstrap-sass'
 
@@ -107,6 +110,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'excon', '>= 0.71.0'
 
 group :development do
+  gem 'annotate'
+
   gem 'i18n-tasks', '~> 0.9.18'
   gem 'listen'
   gem 'rails-erd'
@@ -114,8 +119,11 @@ group :development do
   gem 'dotenv'
 
   gem 'rubocop', require: false
-  gem 'rubocop-performance'
-  gem 'rubocop-rails'
+  gem 'rubocop-ast', require: false
+  gem 'rubocop-minitest', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rake', require: false
 
   gem 'spring'
   gem 'spring-watcher-listen'
@@ -148,11 +156,10 @@ end
 
 group :development, :test do
   gem 'bullet'
+  gem 'uniform_notifier', '1.14.0'
+
   gem 'bundler-audit'
+
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
-
-  # deployment
-  gem 'mina', require: false
-  gem 'mina-multistage', require: false
 end

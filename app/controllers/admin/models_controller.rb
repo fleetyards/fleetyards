@@ -54,8 +54,19 @@ module Admin
       end
     end
 
+    def use_rsi_image
+      authorize! :update, model
+
+      model.update(remote_store_image_url: model.rsi_store_image_url)
+
+      redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
+    end
+
     def images
       authorize! :images, :admin_models
+
+      redirect_to admin_models_path(params: index_back_params, anchor: model&.id) if model.blank?
+
       @app_enabled = true
     end
 
@@ -72,11 +83,25 @@ module Admin
       end
     end
 
+    def reload_data
+      authorize! :reload, :admin_models
+      respond_to do |format|
+        format.js do
+          ScDataShipsWorker.perform_async
+          render json: true
+        end
+        format.html do
+          redirect_to root_path
+        end
+      end
+    end
+
     def reload_one
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
           ModelWorker.perform_async(model.rsi_id)
+          ScDataShipWorker.perform_async(model.id) if model.sc_identifier.present?
           render json: true
         end
         format.html do
@@ -88,21 +113,23 @@ module Admin
     private def model_params
       @model_params ||= params.require(:model).permit(
         :name, :hidden, :active, :ground, :store_image, :store_image_cache, :remove_store_image,
-        :rsi_store_image, :remove_rsi_store_image,
+        :rsi_store_image, :remove_rsi_store_image, :quantum_fuel_tank_size, :hydrogen_fuel_tank_size,
         :fleetchart_image, :fleetchart_image_cache, :remove_fleetchart_image,
         :brochure, :brochure_cache, :remove_brochure, :store_url, :base_model_id,
         :beam, :length, :height, :mass, :cargo, :pledge_price, :on_sale, :manufacturer_id, :focus,
         :classification, :description, :production_status, :production_note, :size,
         :scm_speed, :afterburner_speed, :cruise_speed, :ground_speed, :afterburner_ground_speed,
         :pitch_max, :yaw_max, :roll_max, :max_crew, :min_crew, :price, :last_pledge_price,
-        :rsi_id, :dock_size, :erkuls_slug, :starship42_slug,
+        :rsi_id, :dock_size, :sc_identifier,
         videos_attributes: %i[id url video_type _destroy],
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
     end
 
     private def save_filters
-      session[:models_filters] = params[:q]
+      session[:models_filters] = query_params(
+        :manufacturer_id_eq, :name_or_slug_cont
+      ).to_h
       session[:models_page] = params[:page]
     end
 

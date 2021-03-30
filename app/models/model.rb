@@ -1,13 +1,105 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: models
+#
+#  id                       :uuid             not null, primary key
+#  active                   :boolean          default(TRUE)
+#  afterburner_ground_speed :decimal(15, 2)
+#  afterburner_speed        :decimal(15, 2)
+#  beam                     :decimal(15, 2)   default(0.0), not null
+#  brochure                 :string
+#  cargo                    :decimal(15, 2)
+#  cargo_holds              :string
+#  classification           :string(255)
+#  cruise_speed             :decimal(15, 2)
+#  description              :text
+#  dock_size                :integer
+#  fleetchart_image         :string
+#  focus                    :string(255)
+#  ground                   :boolean          default(FALSE)
+#  ground_speed             :decimal(15, 2)
+#  height                   :decimal(15, 2)   default(0.0), not null
+#  hidden                   :boolean          default(TRUE)
+#  hydrogen_fuel_tank_size  :decimal(15, 2)
+#  hydrogen_fuel_tanks      :string
+#  images_count             :integer          default(0)
+#  last_pledge_price        :decimal(15, 2)
+#  last_updated_at          :datetime
+#  length                   :decimal(15, 2)   default(0.0), not null
+#  mass                     :decimal(15, 2)   default(0.0), not null
+#  max_crew                 :integer
+#  max_speed                :decimal(15, 2)
+#  min_crew                 :integer
+#  model_paints_count       :integer          default(0)
+#  module_hardpoints_count  :integer          default(0)
+#  name                     :string(255)
+#  notified                 :boolean          default(FALSE)
+#  on_sale                  :boolean          default(FALSE)
+#  pitch_max                :decimal(15, 2)
+#  pledge_price             :decimal(15, 2)
+#  price                    :decimal(15, 2)
+#  production_note          :string(255)
+#  production_status        :string(255)
+#  quantum_fuel_tank_size   :decimal(15, 2)
+#  quantum_fuel_tanks       :string
+#  roll_max                 :decimal(15, 2)
+#  rsi_afterburner_speed    :decimal(15, 2)
+#  rsi_beam                 :decimal(15, 2)   default(0.0), not null
+#  rsi_cargo                :decimal(15, 2)
+#  rsi_classification       :string
+#  rsi_description          :text
+#  rsi_focus                :string
+#  rsi_height               :decimal(15, 2)   default(0.0), not null
+#  rsi_length               :decimal(15, 2)   default(0.0), not null
+#  rsi_mass                 :decimal(15, 2)   default(0.0), not null
+#  rsi_max_crew             :integer
+#  rsi_min_crew             :integer
+#  rsi_name                 :string
+#  rsi_pitch_max            :decimal(15, 2)
+#  rsi_roll_max             :decimal(15, 2)
+#  rsi_scm_speed            :decimal(15, 2)
+#  rsi_size                 :string
+#  rsi_slug                 :string
+#  rsi_store_image          :string
+#  rsi_store_url            :string
+#  rsi_xaxis_acceleration   :decimal(15, 2)
+#  rsi_yaw_max              :decimal(15, 2)
+#  rsi_yaxis_acceleration   :decimal(15, 2)
+#  rsi_zaxis_acceleration   :decimal(15, 2)
+#  sc_identifier            :string
+#  scm_speed                :decimal(15, 2)
+#  size                     :string
+#  slug                     :string(255)
+#  speed                    :decimal(15, 2)
+#  store_image              :string(255)
+#  store_images_updated_at  :datetime
+#  store_url                :string(255)
+#  upgrade_kits_count       :integer          default(0)
+#  videos_count             :integer          default(0)
+#  xaxis_acceleration       :decimal(15, 2)
+#  yaw_max                  :decimal(15, 2)
+#  yaxis_acceleration       :decimal(15, 2)
+#  zaxis_acceleration       :decimal(15, 2)
+#  created_at               :datetime
+#  updated_at               :datetime
+#  base_model_id            :uuid
+#  manufacturer_id          :uuid
+#  rsi_chassis_id           :integer
+#  rsi_id                   :integer
+#
+# Indexes
+#
+#  index_models_on_base_model_id  (base_model_id)
+#
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   paginates_per 30
 
   searchkick searchable: %i[name manufacturer_name manufacturer_code],
-             word_start: %i[name manufacturer_name],
-             filterable: []
+             word_start: %i[name manufacturer_name]
 
   def search_data
     {
@@ -34,7 +126,7 @@ class Model < ApplicationRecord
 
   accepts_nested_attributes_for :addition, allow_destroy: true
 
-  has_many :hardpoints,
+  has_many :model_hardpoints,
            dependent: :destroy,
            autosave: true
   has_many :vehicles, dependent: :destroy
@@ -76,6 +168,10 @@ class Model < ApplicationRecord
 
   enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
 
+  serialize :cargo_holds
+  serialize :quantum_fuel_tanks
+  serialize :hydrogen_fuel_tanks
+
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
@@ -85,6 +181,8 @@ class Model < ApplicationRecord
   mount_uploader :brochure, BrochureUploader
 
   before_save :update_slugs
+
+  before_save :update_from_hardpoints
   before_create :set_last_updated_at
 
   after_save :touch_shop_commodities
@@ -160,6 +258,36 @@ class Model < ApplicationRecord
     includes(:docks).where.not(docks: { model_id: nil })
   end
 
+  def update_from_hardpoints
+    set_cargo_from_hardpoints
+    set_quantum_fuel_from_hardpoints
+    set_hydrogen_fuel_from_hardpoints
+  end
+
+  def set_cargo_from_hardpoints
+    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+
+    self.cargo = cargo_holds.sum do |item|
+      item[:scu]
+    end
+  end
+
+  def set_quantum_fuel_from_hardpoints
+    return if quantum_fuel_tanks.blank? || (quantum_fuel_tank_size.present? && !quantum_fuel_tanks_change_to_be_saved)
+
+    self.quantum_fuel_tank_size = quantum_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
+  end
+
+  def set_hydrogen_fuel_from_hardpoints
+    return if hydrogen_fuel_tanks.blank? || (hydrogen_fuel_tank_size.present? && !hydrogen_fuel_tanks_change_to_be_saved)
+
+    self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
+      item[:capacity]
+    end
+  end
+
   def rsi_store_url
     "#{Rails.application.secrets[:rsi_endpoint]}#{store_url}"
   end
@@ -173,7 +301,7 @@ class Model < ApplicationRecord
   end
 
   def rental_at
-    shop_commodities.where.not(rent_price_1_day: nil).uniq { |item| item.shop.slug }
+    shop_commodities.where.not(rental_price_1_day: nil).uniq { |item| item.shop.slug }
   end
 
   def dock_counts
@@ -185,7 +313,7 @@ class Model < ApplicationRecord
   end
 
   def variants
-    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id, rsi_chassis_id: nil)
+    Model.where(rsi_chassis_id: rsi_chassis_id).where.not(id: id)
   end
 
   def snub_crafts

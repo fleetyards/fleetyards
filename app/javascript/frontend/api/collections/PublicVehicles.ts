@@ -8,32 +8,39 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   stats: PublicVehicleStats | null = null
 
-  params: VehicleParams | null = null
+  params: PublicVehicleParams | null = null
 
   username: string | null = null
 
-  async findAllByUsername(
-    username: string,
-    params: VehicleParams | null,
-  ): Promise<Vehicle[]> {
-    this.params = params
-    this.username = username
+  async findAll(params: PublicVehicleParams | null): Promise<Vehicle[]> {
+    if (!params?.username) {
+      return []
+    }
 
-    const response = await get(`vehicles/${username}`, {
+    this.params = params
+
+    const response = await get(`vehicles/${params?.username}`, {
       page: params?.page,
     })
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }
 
-  async findAllFleetchartByUsername(username: string): Promise<Vehicle[]> {
-    const response = await get(`vehicles/${username}/fleetchart`)
+  async findAllFleetchart(
+    params: PublicVehicleParams | null,
+  ): Promise<Vehicle[]> {
+    if (!params?.username) {
+      return []
+    }
+
+    this.params = params
+
+    const response = await get(`vehicles/${params?.username}/fleetchart`)
 
     if (!response.error) {
       this.records = response.data
@@ -43,11 +50,7 @@ export class PublicVehiclesCollection extends BaseCollection {
   }
 
   async refresh(): Promise<void> {
-    if (!this.username) {
-      return
-    }
-
-    await this.findAllByUsername(this.username, this.params)
+    await this.findAll(this.params)
   }
 
   async findStatsByUsername(

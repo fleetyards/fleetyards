@@ -4,6 +4,7 @@
       <div
         :class="{
           fixed: fixed,
+          inline: inline,
         }"
         class="loader"
       >
@@ -25,6 +26,11 @@ export default {
     },
 
     fixed: {
+      type: Boolean,
+      default: false,
+    },
+
+    inline: {
       type: Boolean,
       default: false,
     },

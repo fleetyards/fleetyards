@@ -77,12 +77,14 @@ module Api
           expected = [{
             'id' => explorer.id,
             'name' => '',
+            'serial' => nil,
             'purchased' => true,
-            'public' => true,
             'loaner' => false,
             'flagship' => false,
+            'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => explorer.model_id,
               'name' => '600i',
@@ -96,6 +98,8 @@ module Api
               'mass' => 0.0,
               'cargo' => 40.0,
               'cargoLabel' => '600i (40 SCU)',
+              'hydrogenFuelTankSize' => nil,
+              'quantumFuelTankSize' => nil,
               'minCrew' => 2,
               'maxCrew' => 5,
               'scmSpeed' => nil,
@@ -111,6 +115,7 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => explorer.model.store_image.url,
+              'storeImageLarge' => explorer.model.store_image.large.url,
               'storeImageMedium' => explorer.model.store_image.medium.url,
               'storeImageSmall' => explorer.model.store_image.small.url,
               'fleetchartImage' => nil,
@@ -133,6 +138,9 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => explorer.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(explorer.model.last_updated_at&.utc, format: :label) if explorer.model.last_updated_at.present?),
+              'soldAt' => [],
+              'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'Origin',
                 'slug' => 'origin',
@@ -145,6 +153,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => explorer.hangar_group_ids,
+            'hangarGroups' => explorer.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => explorer.model_module_ids,
             'modelUpgradeIds' => explorer.model_upgrade_ids,
             'createdAt' => explorer.created_at.utc.iso8601,
@@ -152,12 +167,14 @@ module Api
           }, {
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
-            'public' => true,
             'loaner' => false,
             'flagship' => false,
+            'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => enterprise.model.id,
               'name' => 'Andromeda',
@@ -169,8 +186,10 @@ module Api
               'beam' => 10.2,
               'height' => 10.2,
               'mass' => 1000.02,
-              'cargo' => 90,
+              'cargo' => 90.0,
               'cargoLabel' => 'Andromeda (90 SCU)',
+              'hydrogenFuelTankSize' => nil,
+              'quantumFuelTankSize' => nil,
               'minCrew' => 3,
               'maxCrew' => 5,
               'scmSpeed' => nil,
@@ -186,6 +205,7 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => enterprise.model.store_image.url,
+              'storeImageLarge' => enterprise.model.store_image.large.url,
               'storeImageMedium' => enterprise.model.store_image.medium.url,
               'storeImageSmall' => enterprise.model.store_image.small.url,
               'fleetchartImage' => nil,
@@ -208,6 +228,9 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
+              'soldAt' => [],
+              'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -220,6 +243,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => enterprise.hangar_group_ids,
+            'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
             'createdAt' => enterprise.created_at.utc.iso8601,
@@ -240,12 +270,14 @@ module Api
           expected = [{
             'id' => enterprise.id,
             'name' => 'Enterprise',
+            'serial' => nil,
             'purchased' => true,
             'loaner' => false,
             'flagship' => false,
             'public' => true,
             'nameVisible' => false,
             'saleNotify' => false,
+            'alternativeNames' => [],
             'model' => {
               'id' => enterprise.model.id,
               'name' => 'Andromeda',
@@ -259,6 +291,8 @@ module Api
               'mass' => 1000.02,
               'cargo' => 90.0,
               'cargoLabel' => 'Andromeda (90 SCU)',
+              'hydrogenFuelTankSize' => nil,
+              'quantumFuelTankSize' => nil,
               'minCrew' => 3,
               'maxCrew' => 5,
               'scmSpeed' => nil,
@@ -274,6 +308,7 @@ module Api
               'size' => nil,
               'sizeLabel' => nil,
               'storeImage' => enterprise.model.store_image.url,
+              'storeImageLarge' => enterprise.model.store_image.large.url,
               'storeImageMedium' => enterprise.model.store_image.medium.url,
               'storeImageSmall' => enterprise.model.store_image.small.url,
               'fleetchartImage' => nil,
@@ -296,6 +331,9 @@ module Api
               'hasPaints' => false,
               'lastUpdatedAt' => enterprise.model.last_updated_at&.utc&.iso8601,
               'lastUpdatedAtLabel' => (I18n.l(enterprise.model.last_updated_at&.utc, format: :label) if enterprise.model.last_updated_at.present?),
+              'soldAt' => [],
+              'boughtAt' => [],
+              'rentalAt' => [],
               'manufacturer' => {
                 'name' => 'RSI',
                 'slug' => 'rsi',
@@ -308,6 +346,13 @@ module Api
             'paint' => nil,
             'upgrade' => nil,
             'hangarGroupIds' => enterprise.hangar_group_ids,
+            'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
+              {
+                'id' => hangar_group.id,
+                'name' => hangar_group.name,
+                'color' => hangar_group.color
+              }
+            end,
             'modelModuleIds' => enterprise.model_module_ids,
             'modelUpgradeIds' => enterprise.model_upgrade_ids,
             'createdAt' => enterprise.created_at.utc.iso8601,

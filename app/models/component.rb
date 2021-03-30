@@ -1,7 +1,45 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: components
+#
+#  id              :uuid             not null, primary key
+#  component_class :string
+#  description     :text
+#  grade           :string
+#  item_class      :integer
+#  item_type       :string
+#  name            :string(255)
+#  sc_identifier   :string
+#  size            :string(255)
+#  slug            :string
+#  store_image     :string
+#  tracking_signal :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  manufacturer_id :uuid
+#
+# Indexes
+#
+#  index_components_on_manufacturer_id  (manufacturer_id)
+#
 class Component < ApplicationRecord
   paginates_per 50
+
+  searchkick searchable: %i[name manufacturer_name manufacturer_code item_type item_class],
+             word_start: %i[name manufacturer_name item_type],
+             filterable: []
+
+  def search_data
+    {
+      name: name,
+      item_type: (item_type || '').tr('_', ' '),
+      item_class: item_class,
+      manufacturer_name: manufacturer&.name,
+      manufacturer_code: manufacturer&.code
+    }
+  end
 
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
@@ -53,6 +91,16 @@ class Component < ApplicationRecord
     ]
   end
 
+  def self.item_type_filters
+    Component.item_types.map do |item|
+      Filter.new(
+        category: 'item_type',
+        name: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        value: item
+      )
+    end
+  end
+
   def self.class_filters
     Component.all.map(&:component_class).uniq.compact.map do |item|
       Filter.new(
@@ -61,6 +109,14 @@ class Component < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   def item_class_label

@@ -8,6 +8,7 @@ import stations from 'frontend/lib/Store/modules/stations'
 import shops from 'frontend/lib/Store/modules/shops'
 import shop from 'frontend/lib/Store/modules/shop'
 import search from 'frontend/lib/Store/modules/search'
+import shoppingCart from 'frontend/lib/Store/modules/shoppingCart'
 
 export default () => ({
   app: app(),
@@ -20,4 +21,5 @@ export default () => ({
   shops: shops(),
   shop: shop(),
   search: search(),
+  shoppingCart: shoppingCart(),
 })

@@ -6,7 +6,14 @@ delamar = CelestialObject.find_or_create_by!(name: 'Delamar')
 delamar.update!(store_image: Rails.root.join('db/seeds/images/nyx/delamar/delamar.jpg').open, hidden: false)
 
 levski = Station.find_or_initialize_by(name: 'Levski')
-levski.update!(celestial_object: delamar, station_type: 'mining-hub', location: nil, store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open, hidden: false)
+levski.update!(
+  celestial_object: delamar,
+  station_type: :landing_zone,
+  classification: :settlement,
+  location: nil,
+  store_image: Rails.root.join('db/seeds/images/nyx/delamar/levski.jpg').open,
+  hidden: false
+)
 
 levski.docks.destroy_all
 pad = 1
@@ -40,6 +47,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: levski)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/admin_levski.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -47,6 +56,7 @@ dumpers_depot = Shop.find_or_initialize_by(name: "Dumper's Depot", station: levs
 dumpers_depot.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/dumpers_depot_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -54,6 +64,7 @@ conscientious_objects = Shop.find_or_initialize_by(name: 'Conscientious Objects'
 conscientious_objects.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/conscientious_objects_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -61,6 +72,7 @@ cordrys = Shop.find_or_initialize_by(name: "Cordry's", station: levski, shop_typ
 cordrys.update!(
   shop_type: :armor,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/cordrys_levski.jpg').open,
+  selling: true,
   hidden: false
 )
 
@@ -89,6 +101,6 @@ teachs = Shop.find_or_initialize_by(name: "Teach's Ship Shop", station: levski)
 teachs.update!(
   shop_type: :ships,
   store_image: Rails.root.join('db/seeds/images/nyx/delamar/teachs.jpg').open,
-  hidden: false,
-  selling: true
+  selling: true,
+  hidden: false
 )

@@ -1,7 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: commodities
+#
+#  id             :uuid             not null, primary key
+#  commodity_type :integer
+#  description    :text
+#  name           :string
+#  slug           :string
+#  store_image    :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_commodities_on_name  (name) UNIQUE
+#
 class Commodity < ApplicationRecord
   paginates_per 50
+
+  searchkick searchable: %i[name commodity_type],
+             word_start: %i[name commodity_type]
+
+  def search_data
+    {
+      name: name,
+      commodity_type: commodity_type
+    }
+  end
 
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
 
@@ -32,6 +59,14 @@ class Commodity < ApplicationRecord
 
   def self.ordered_by_name
     order(name: :asc)
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   def commodity_type_label

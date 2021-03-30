@@ -3,16 +3,17 @@
 lock '~> 3.11'
 
 set :application, 'fleetyards'
+set :deploy_to, '/home/fleetyards'
 set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
 set :keep_releases, 10
-set :keep_assets, 20
+# set :keep_assets, 10
 
 set :conditionally_migrate, true
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
-set :bundler_version, '2.0.2'
+set :bundler_version, '2.2.3'
 
 set :initial_deploy, false
 
@@ -20,7 +21,6 @@ set :linked_dirs, [
   'public/compare',
   'public/assets',
   'public/packs',
-  'public/uploads',
   'log',
   'tmp/cache',
   'tmp/pids',
@@ -29,7 +29,6 @@ set :linked_dirs, [
 ]
 
 set :linked_files, [
-  'config/database.yml',
   '.rbenv-vars',
   'blocklist.json',
   'reserved_usernames.json'
@@ -106,50 +105,12 @@ task :logs do
   end
 end
 
-namespace :uploads do
-  task :recreate_images do
+namespace :bundler do
+  task :reinstall do
     on roles(:app) do
       within release_path do
-        with rails_env: fetch(:rails_env) do
-          info 'Recreate Images'
-          execute(:bundle, :exec, :thor, 'images:recreate')
-        end
+        execute(:bundle, :install, '--redownload')
       end
-    end
-  end
-
-  task :sync_to_local do
-    invoke :'uploads:backup'
-    invoke :'uploads:download'
-    invoke :'uploads:local_import'
-  end
-
-  task :backup do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          info 'Creating Uploads Backup...'
-          execute(:tar, '-zcvf', 'dumps/uploads.tar.gz', "#{fetch(:deploy_to)}/shared/public/uploads")
-          info 'Uploads Backup finished'
-        end
-      end
-    end
-  end
-
-  task :download do
-    run_locally do
-      info 'Downloading latest Uploads backup...'
-      execute(:mkdir, '-p', 'dumps')
-      server = roles(:app).first
-      execute(:scp, "#{server.user}@#{server.hostname}:#{fetch(:deploy_to)}/shared/dumps/uploads.tar.gz", 'dumps/')
-      info 'Download finished'
-    end
-  end
-
-  task :local_import do
-    run_locally do
-      execute(:mkdir, '-p', 'public/uploads')
-      execute(:tar, '--strip-components=5', '-xvzf', 'dumps/uploads.tar.gz', '-C', 'public/uploads/', "#{fetch(:deploy_to)}/shared/public/uploads")
     end
   end
 end
@@ -162,6 +123,20 @@ namespace :es do
           info 'Reindexing Elasticsearch...'
           execute(:bundle, :exec, :thor, 'search:index')
           info 'Reindexing finished'
+        end
+      end
+    end
+  end
+end
+
+namespace :trading_data do
+  task :import do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          info 'Import of Trading Data started...'
+          execute(:bundle, :exec, :thor, 'trading_data:import')
+          info 'Import finished'
         end
       end
     end
@@ -258,7 +233,7 @@ namespace :db do
 
   task :local_import do
     run_locally do
-      execute(:pg_restore, '--verbose', '--clean', '--no-acl', '--no-owner', '-h', 'localhost', '-d', 'fleetyards_dev', 'dumps/latest.dump')
+      execute('./scripts/restore-db-backup.sh')
     end
   end
 end

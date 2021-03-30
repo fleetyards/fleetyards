@@ -10,8 +10,11 @@ module ApplicationHelper
 
   def confirm_link_to(path, options = {}, &block)
     elements = []
-    elements << capture(&block) if block_given?
+    elements << capture(&block) if block
+
+    # rubocop:disable Lint/EmptyBlock
     elements << form_for(path, url: path, method: options[:method]) { |form| } if options[:method]
+    # rubocop:enable Lint/EmptyBlock
 
     tag.a(
       href: (options[:method].blank? ? path : '#'),

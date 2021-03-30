@@ -66,7 +66,9 @@ module Admin
     end
 
     private def save_filters
-      session[:users_filters] = params[:q]
+      session[:users_filters] = query_params(
+        :email_cont, :username_cont
+      ).to_h
       session[:users_page] = params[:page]
     end
 

@@ -61,13 +61,15 @@ module Admin
     private def station_params
       @station_params ||= params.require(:station).permit(
         :name, :station_type, :hidden, :store_image, :store_image_cache, :remove_store_image,
-        :celestial_object_id, :location, :map, :map_cache, :remove_map,
+        :celestial_object_id, :location, :map, :map_cache, :remove_map, :cargo_hub, :refinery,
         docks_attributes: %i[id dock_type name ship_size length beam height _destroy]
       )
     end
 
     private def save_filters
-      session[:stations_filters] = params[:q]
+      session[:stations_filters] = query_params(
+        :name_or_slug_cont, :station_type_eq, :celestial_object_id_eq
+      ).to_h
       session[:stations_page] = params[:page]
     end
 

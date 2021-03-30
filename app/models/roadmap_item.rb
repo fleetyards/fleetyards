@@ -1,9 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: roadmap_items
+#
+#  id                  :uuid             not null, primary key
+#  active              :boolean
+#  body                :text
+#  committed           :boolean          default(FALSE)
+#  completed           :integer
+#  description         :text
+#  image               :string
+#  inprogress          :integer
+#  name                :string
+#  release             :string
+#  release_description :text
+#  released            :boolean
+#  store_image         :string
+#  tasks               :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  model_id            :uuid
+#  rsi_category_id     :integer
+#  rsi_id              :integer
+#  rsi_release_id      :integer
+#
 class RoadmapItem < ApplicationRecord
   MODELS_CATEGORY = 6
 
-  has_paper_trail on: %i[create update], only: %i[release tasks completed active]
+  has_paper_trail on: %i[create update], only: %i[release committed active]
 
   belongs_to :model, optional: true
 
@@ -11,7 +36,7 @@ class RoadmapItem < ApplicationRecord
 
   ransack_alias :last_updated_at, :versions_created_at
 
-  def self.activen
+  def self.active
     where(active: true)
   end
 

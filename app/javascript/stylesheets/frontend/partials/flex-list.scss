@@ -31,14 +31,7 @@
   }
 
   .username {
-    display: flex;
     flex-grow: 1;
-    align-items: center;
-    font-size: 120%;
-
-    .avatar {
-      margin-right: 15px;
-    }
   }
 
   .links {
@@ -139,14 +132,20 @@
   }
 
   .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     min-width: 20%;
     max-width: 100%;
     padding-left: 20px;
-    text-align: right;
-    vertical-align: middle;
 
     &.actions-3x {
       min-width: 192px;
+    }
+
+    &.actions-1x {
+      width: 100px;
+      min-width: 100px;
     }
   }
 
@@ -156,7 +155,6 @@
 
   .rsi-handle {
     min-width: 15%;
-    font-size: 120%;
   }
 
   .joined {
@@ -188,6 +186,21 @@
 .flex-list > .flex-list-item > .flex-list-row {
   .name {
     min-height: 100px;
+  }
+
+  .username {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    font-size: 120%;
+
+    .avatar {
+      margin-right: 15px;
+    }
+  }
+
+  .rsi-handle {
+    font-size: 120%;
   }
 }
 

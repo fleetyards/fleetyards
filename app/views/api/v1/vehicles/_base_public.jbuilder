@@ -2,6 +2,7 @@
 
 json.id vehicle.id
 json.name vehicle.name_visible? ? vehicle.name : nil
+json.serial vehicle.name_visible? ? vehicle.serial : nil
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end
@@ -13,4 +14,5 @@ json.paint nil if vehicle.model_paint.blank?
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.username vehicle.user.username
+json.user_avatar vehicle.user.avatar.small.url
 json.partial! 'api/shared/dates', record: vehicle

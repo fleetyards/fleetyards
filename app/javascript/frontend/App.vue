@@ -2,7 +2,6 @@
   <div
     id="app"
     :class="{
-      'nav-visible': !navCollapsed,
       [`page-${$route.name}`]: true,
     }"
     class="app-body"
@@ -15,13 +14,18 @@
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
+          <NavigationHeader />
+
           <transition name="fade" mode="out-in" appear>
             <router-view :key="$route.path" class="main" />
           </transition>
         </div>
+
         <AppFooter />
       </div>
     </div>
+
+    <AppShoppingCart />
 
     <AppModal />
   </div>
@@ -35,8 +39,10 @@ import Updates from 'frontend/mixins/Updates'
 import userCollection from 'frontend/api/collections/User'
 import versionCollection from 'frontend/api/collections/Version'
 import Navigation from 'frontend/core/components/Navigation'
+import NavigationHeader from 'frontend/core/components/Navigation/Header'
 import AppFooter from 'frontend/core/components/AppFooter'
 import AppModal from 'frontend/core/components/AppModal'
+import AppShoppingCart from 'frontend/core/components/AppShoppingCart'
 import BackgroundImage from 'frontend/core/components/BackgroundImage'
 import { requestPermission } from 'frontend/lib/Noty'
 
@@ -46,8 +52,10 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
   components: {
     BackgroundImage,
     Navigation,
+    NavigationHeader,
     AppFooter,
     AppModal,
+    AppShoppingCart,
   },
   mixins: [Updates],
 })
@@ -92,7 +100,8 @@ export default class FrontendApp extends Vue {
       }
 
       if (this.$route.meta.needsAuthentication) {
-        this.$router.push({ name: 'login' })
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this.$router.push({ name: 'login' }).catch(() => {})
       }
     }
   }

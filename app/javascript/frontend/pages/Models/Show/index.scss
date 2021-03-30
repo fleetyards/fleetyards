@@ -1,7 +1,7 @@
 @import '~stylesheets/variables';
 
 .image {
-  width: 100%;
+  height: auto;
   max-height: 100%;
   margin-bottom: 10px;
   background-color: black;
@@ -15,6 +15,12 @@
   }
 }
 
+.ship-detail-left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .holoviewer {
   position: absolute;
   top: -50%;
@@ -25,12 +31,10 @@
 
 .image-wrapper {
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  &.image-wrapper-holoviewer {
-    min-height: 400px;
-  }
+  display: flex;
+  flex-grow: 1;
+  align-items: stretch;
+  min-height: 200px;
 }
 
 .description {
@@ -59,7 +63,9 @@
   padding-right: 74px;
   color: $text-color;
   color: darken($text-color, 15%);
+  font-family: 'Orbitron', sans-serif;
   line-height: 1.4;
+  text-transform: uppercase;
 
   .manufacturer-prefix {
     margin-right: 5px;

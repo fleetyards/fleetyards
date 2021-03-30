@@ -7,7 +7,7 @@
       </div>
     </div>
     <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
-      <form v-if="fleet" @submit.prevent="handleSubmit(submit)">
+      <form v-if="fleet && form" @submit.prevent="handleSubmit(submit)">
         <div class="row">
           <div class="col-lg-12 col-xl-6">
             <Checkbox
@@ -192,9 +192,9 @@ export default class FleetMembershipSettings extends Vue {
 
   setupForm() {
     this.form = {
-      primary: this.membership.primary,
-      shipsFilter: this.membership.shipsFilter,
-      hangarGroupId: this.membership.hangarGroupId,
+      primary: this.membership?.primary,
+      shipsFilter: this.membership?.shipsFilter,
+      hangarGroupId: this.membership?.hangarGroupId,
     }
   }
 

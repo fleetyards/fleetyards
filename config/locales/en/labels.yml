@@ -56,6 +56,8 @@ en:
         equipment: No Equipment could be found.
         model_module: No Module could be found.
         model_upgrade: No Upgrade could be found.
+        user: No User could be found.
+        admin_user: No Admin could be found.
       component:
         category: Category
       model:

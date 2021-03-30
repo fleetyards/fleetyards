@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Fleetyards
-  CODENAME = 'ArcCorp'
-  VERSION = 'v3.81.3'
+  CODENAME = 'Mercury'
+  VERSION = 'v4.9.3'
 end

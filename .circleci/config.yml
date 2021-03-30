@@ -1,7 +1,10 @@
 version: 2.1
 
 ciImage: &ciImage
-  image: fleetyards/ci:2.7.2
+  image: fleetyards/ci:3.0.0
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     RAILS_ENV: test
     BUNDLE_PATH: ~/app/vendor/bundle
@@ -10,12 +13,16 @@ ciImage: &ciImage
     DATABASE_USER: root
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
-
-baseImage: &baseImage
-  image: fleetyards/base:2.7.2
+    API_ENDPOINT: http://localhost:8270
+    CABLE_ENDPOINT: http://localhost:8270/cable
+    FRONTEND_ENDPOINT: http://localhost:8270
+    ADMIN_ENDPOINT: http://localhost:8270
 
 e2eImage: &e2eImage
-  image: fleetyards/e2e:2.7.2
+  image: fleetyards/e2e:3.0.0
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards
     TEST_SEEDS: 1
@@ -31,12 +38,18 @@ e2eImage: &e2eImage
 
 dbImage: &dbImage
   image: circleci/postgres:9.5.16-alpine
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
   environment:
     POSTGRES_USER: root
     POSTGRES_DB: fleetyards_test
 
 redisImage: &redisImage
   image: circleci/redis:5.0.3-alpine
+  auth:
+    username: $DOCKERHUB_USER
+    password: $DOCKERHUB_PASSWORD
 
 esImage: &esImage
   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
@@ -53,10 +66,6 @@ defaults: &defaults
   working_directory: ~/app
   docker:
     - *ciImage
-
-notifierDefaults: &notifierDefaults
-  docker:
-    - *baseImage
 
 ruby-defaults: &ruby-defaults
   working_directory: ~/app
@@ -117,17 +126,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-yarn-{{ checksum "yarn.lock" }}
-            - v4-yarn-
       - run: yarn install
-      - save_cache:
-          key: v4-yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-            - ~/app/node_modules
-            - /root/.cache/Cypress
       - persist_to_workspace:
           root: /root
           paths:
@@ -302,10 +301,8 @@ jobs:
     <<: *smokeTest
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-yarn-{{ checksum "yarn.lock" }}
-            - v4-yarn-
+      - attach_workspace:
+          at: /root
       - run: yarn install
       - run:
           name: Run E2E Tests
@@ -321,57 +318,69 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: /root
       - run: bundle install
       - add_ssh_keys:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erebor (HACK)
-          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Stage Server (HACK)
+          command: ssh-keyscan -H fleetyards-stage.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy
           command: bundle exec cap stage deploy
+      - run: |
+          curl -X POST $DISCORD_WEBHOOK_STAGE \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**New Stage Release:**\" }"
+
+  create-release:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /root
+      - run: bundle install
+      - run: yarn install
+      - add_ssh_keys:
+          fingerprints:
+            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
+      - run:
+          name: Keyscan Live Server (HACK)
+          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Setup Git
+          command: git config --global user.email $GIT_EMAIL && git config --global user.name $GIT_USER
+      - run:
+          name: Create Release
+          command: bundle exec thor release:new --push
 
   deploy-to-live:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-bundle-{{ checksum "Gemfile.lock" }}
-            - v3-bundle-
+      - attach_workspace:
+          at: /root
       - run: bundle install
       - add_ssh_keys:
           fingerprints:
             - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
       - run:
-          name: Keyscan Erebor (HACK)
-          command: ssh-keyscan -H erebor.mortik.xyz >> ~/.ssh/known_hosts
+          name: Keyscan Live Server (HACK)
+          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
       - run:
           name: Keyscan Github (HACK)
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy
           command: bundle exec cap live deploy
-
-  notify-discord-stage:
-    <<: *notifierDefaults
-    steps:
-      - run: |
-          curl -X POST $DISCORD_WEBHOOK_STAGE \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Stage Release:**\" }"
-
-  notify-discord-live:
-    <<: *notifierDefaults
-    steps:
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
@@ -406,6 +415,38 @@ workflows:
     jobs:
       - health-check
 
+  release:
+    jobs:
+      - bundle:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - yarn:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - smoke-test:
+          requires:
+            - bundle
+            - yarn
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy-to-live:
+          requires:
+            - smoke-test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
   main:
     jobs:
       - bundle
@@ -434,15 +475,7 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - bundle
-            - yarn
             - assets
-      - smoke-test:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
       - deploy-to-stage:
           requires:
             - seeds
@@ -455,20 +488,10 @@ workflows:
           filters:
             branches:
               only: main
-      - notify-discord-stage:
+      - request-release:
+          type: approval
           requires:
             - deploy-to-stage
-      - deploy-to-live:
+      - create-release:
           requires:
-            - smoke-test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - notify-discord-live:
-          requires:
-            - deploy-to-live
-          filters:
-            tags:
-              only: /^v.*/
+            - request-release

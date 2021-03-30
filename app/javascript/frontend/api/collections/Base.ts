@@ -1,7 +1,7 @@
 export default class BaseCollection {
   primaryKey: string = 'slug'
 
-  currentPage: number | null = null
+  currentPage: number | null = 1
 
   totalPages: number | null = null
 
@@ -9,7 +9,7 @@ export default class BaseCollection {
 
   setPages(meta: Pagination | null) {
     if (!meta) {
-      this.currentPage = null
+      this.currentPage = 1
       this.totalPages = null
     } else {
       this.currentPage = meta.currentPage

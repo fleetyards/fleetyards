@@ -1,12 +1,12 @@
 <template>
   <section>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-12">
         <h1>{{ $t('headlines.settings.account') }}</h1>
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-12">
         <p>
           {{ $t('labels.account.destroyInfo') }}
         </p>
@@ -56,7 +56,9 @@ export default {
               text: this.$t('messages.account.destroy.success'),
             })
             await this.$store.dispatch('session/logout')
-            this.$router.push({ name: 'home' })
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            this.$router.push({ name: 'home' }).catch(() => {})
           } else {
             displayAlert({
               text: this.$t('messages.account.destroy.error'),

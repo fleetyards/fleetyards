@@ -73,7 +73,9 @@ module Admin
     end
 
     private def save_filters
-      session[:components_filters] = params[:q]
+      session[:components_filters] = query_params(
+        :name_cont, :size_eq, :component_class_eq
+      ).to_h
       session[:components_page] = params[:page]
     end
 

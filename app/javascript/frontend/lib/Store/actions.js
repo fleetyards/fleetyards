@@ -5,14 +5,17 @@ export default {
 
     if (hard) {
       dispatch('session/reset')
+      dispatch('cookies/reset')
     }
 
+    dispatch('fleet/reset')
     dispatch('hangar/reset')
     dispatch('models/reset')
-    dispatch('stations/reset')
-    dispatch('shops/reset')
+    dispatch('search/reset')
     dispatch('shop/reset')
-    dispatch('compare/reset')
+    dispatch('shoppingCart/reset')
+    dispatch('shops/reset')
+    dispatch('stations/reset')
   },
 
   saveFilters({ commit }, key, filters) {

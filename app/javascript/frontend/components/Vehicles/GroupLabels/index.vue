@@ -11,7 +11,7 @@
     <Btn
       v-for="group in groups"
       :key="group.id"
-      variant="link"
+      variant="dropdown"
       class="labels-dropdown-item"
       :class="{
         active: isActive(group.slug),
@@ -25,10 +25,12 @@
         }"
         class="label-color"
       />
-      <span class="label-text">
-        {{ group.name }}
+      <span class="label-text-wrapper">
+        <span class="label-text">
+          {{ group.name }}
+        </span>
+        <span class="label-count">{{ groupCount(group).count }}</span>
       </span>
-      <span class="label-count">{{ groupCount(group).count }}</span>
     </Btn>
   </BtnDropdown>
   <div v-else class="labels">

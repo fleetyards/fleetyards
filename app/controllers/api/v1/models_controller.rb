@@ -380,7 +380,7 @@ module Api
           :pledge_price_lteq, :will_it_fit, :search_cont,
           name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
           production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
-          id_not_in: []
+          id_not_in: [], id_in: []
         )
       end
     end

@@ -7,7 +7,7 @@ puts ''
 if ENV['TEST_SEEDS'].present?
   require 'rsi/models_loader'
 
-  ::RSI::ModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]).all
+  ::Rsi::ModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]).all
 
   model = Model.first
   20.times do |index|
@@ -19,7 +19,7 @@ if ENV['TEST_SEEDS'].present?
   crusader = CelestialObject.find_or_create_by!(name: 'Crusader')
   crusader.update!(starsystem: stanton, hidden: false)
   portolisar = Station.find_or_initialize_by(name: 'Port Olisar')
-  portolisar.update!(celestial_object: crusader, station_type: :hub, location: 'Orbit', hidden: false)
+  portolisar.update!(celestial_object: crusader, station_type: :station, location: 'Orbit', hidden: false)
 
   test_user = User.find_or_initialize_by(username: 'TestUser')
   test_user.skip_confirmation!
@@ -30,10 +30,10 @@ if ENV['TEST_SEEDS'].present?
   )
 
   RoadmapItem.create(
-    rsi_id: 1,
+    rsi_id: 500,
     release: '1.0.0',
     release_description: 'lorem ipsum',
-    rsi_release_id: 1,
+    rsi_release_id: 500,
     released: false,
     rsi_category_id: 6,
     name: 'Foo Bar',

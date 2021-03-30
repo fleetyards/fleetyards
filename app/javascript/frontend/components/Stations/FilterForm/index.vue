@@ -4,8 +4,8 @@
       id="station-name"
       v-model="form.nameCont"
       translation-key="filters.stations.name"
-      clearable
-      no-label
+      :no-label="true"
+      :clearable="true"
     />
     <FilterGroup
       v-model="form.celestialObjectIn"

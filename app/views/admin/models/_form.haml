@@ -39,16 +39,11 @@
           = form.select :base_model_id, options_from_collection_for_select(Model.order(name: :asc).all, :id, :name, model.base_model_id), { include_blank: true }, {class: 'form-control'}
           %small
             = form_errors model, :base_model_id
-        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :erkuls_slug)}
-          = form.label :erkuls_slug
-          = form.text_field :erkuls_slug, class: 'form-control'
+        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :sc_identifier)}
+          = form.label :sc_identifier
+          = form.text_field :sc_identifier, class: 'form-control'
           %small
-            = form_errors model, :erkuls_slug
-        .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :starship42_slug)}
-          = form.label :starship42_slug
-          = form.text_field :starship42_slug, class: 'form-control'
-          %small
-            = form_errors model, :starship42_slug
+            = form_errors model, :sc_identifier
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :focus)}
@@ -112,6 +107,18 @@
       = form.number_field :cargo, step: 'any', class: 'form-control'
       %small
         = form_errors model, :cargo
+
+  .row
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :hydrogen_fuel_tank_size)}
+      = form.label :hydrogen_fuel_tank_size
+      = form.number_field :hydrogen_fuel_tank_size, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :hydrogen_fuel_tank_size
+    .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :quantum_fuel_tank_size)}
+      = form.label :quantum_fuel_tank_size
+      = form.number_field :quantum_fuel_tank_size, step: 'any', class: 'form-control'
+      %small
+        = form_errors model, :quantum_fuel_tank_size
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :scm_speed)}
@@ -180,7 +187,7 @@
         = form.hidden_field :store_image_cache
       %br
       - if model.store_image?
-        = image_tag(model.store_image.url)
+        = image_tag(model.store_image.small.url)
         = form.check_box :remove_store_image
         Remove Image
       %small
@@ -193,7 +200,7 @@
         = form.hidden_field :rsi_store_image_cache
       %br
       - if model.rsi_store_image?
-        = image_tag(model.rsi_store_image.url)
+        = image_tag(model.rsi_store_image.small.url)
         = form.check_box :remove_rsi_store_image
         Remove RSI Image
       %small

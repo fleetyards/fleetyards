@@ -26,6 +26,12 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
     end
   end
 
+  resources :admin_users, except: [:show] do
+    member do
+      put 'resend-confirmation' => 'admin_users#resend_confirmation', as: :resend_confirmation
+    end
+  end
+
   resources :vehicles, only: [:index]
 
   resources :settings, except: %i[index show]
@@ -36,9 +42,11 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
 
   resources :models, except: [:show] do
     put 'reload', on: :collection
+    put 'reload_data', on: :collection
     member do
       get 'images'
       put 'reload_one'
+      put 'use_rsi_image'
     end
   end
 
@@ -59,7 +67,21 @@ namespace :admin, path: (ENV['ON_SUBDOMAIN'] ? 'admin' : ''), constraints: ->(re
   resources :stations, except: [:show] do
     get 'images', on: :member
   end
-  resources :shops, except: [:show]
+  resources :shops, except: [:show] do
+    resources :shop_commodities, path: 'commodities', only: %i[index]
+  end
+
+  resources :shop_commodities, path: 'shop-commodities', only: %i[] do
+    collection do
+      get :confirmation
+    end
+  end
+
+  resources :commodity_prices, path: 'commodity-prices', only: %i[] do
+    collection do
+      get :confirmation
+    end
+  end
 
   get 'worker/:name/check' => 'worker#check_state', as: :check_worker_state
 

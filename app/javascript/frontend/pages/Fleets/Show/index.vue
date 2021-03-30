@@ -163,6 +163,7 @@
 
     <FilteredList
       v-if="fleet && fleet.myFleet"
+      key="fleet"
       :collection="vehiclesCollection"
       :name="$route.name"
       :route-query="$route.query"
@@ -173,9 +174,9 @@
       <template slot="actions">
         <BtnDropdown size="small">
           <template v-if="mobile">
-            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="link">
+            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="dropdown">
               <i class="fad fa-chart-bar" />
-              {{ $t('labels.fleetStats') }}
+              <span>{{ $t('labels.fleetStats') }}</span>
             </Btn>
 
             <hr />
@@ -185,41 +186,52 @@
             :active="detailsVisible"
             :aria-label="toggleDetailsTooltip"
             size="small"
-            variant="link"
+            variant="dropdown"
             @click.native="toggleDetails"
           >
             <i class="fad fa-info-square" />
-            {{ toggleDetailsTooltip }}
+            <span>{{ toggleDetailsTooltip }}</span>
           </Btn>
 
-          <Btn size="small" variant="link" @click.native="toggleGrouped">
+          <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
             <template v-if="grouped">
               <i class="fas fa-square" />
-              {{ $t('actions.ungrouped') }}
+              <span>{{ $t('actions.ungrouped') }}</span>
             </template>
             <template v-else>
               <i class="fas fa-th-large" />
-              {{ $t('actions.groupedByModel') }}
+              <span>{{ $t('actions.groupedByModel') }}</span>
             </template>
           </Btn>
         </BtnDropdown>
       </template>
 
-      <FleetVehiclesFilterForm slot="filter" />
+      <FleetVehiclesFilterForm v-if="fleet && fleet.myFleet" slot="filter" />
 
-      <template #record="{ record }">
-        <ModelPanel
-          v-if="record.model"
-          :model="record.model"
-          :details="detailsVisible"
-          :username="record.username"
-        />
-        <ModelPanel
-          v-else
-          :model="record"
-          :details="detailsVisible"
-          :count="record.count"
-        />
+      <template #default="{ records, loading, filterVisible, primaryKey }">
+        <FilteredGrid
+          :records="records"
+          :loading="loading"
+          :filter-visible="filterVisible"
+          :primary-key="primaryKey"
+        >
+          <template #default="{ record }">
+            <ModelPanel
+              v-if="record.model"
+              :model="record.model"
+              :details="detailsVisible"
+              :vehicle="record"
+              :show-owner="true"
+            />
+            <ModelPanel
+              v-else
+              :model="record"
+              :details="detailsVisible"
+              :vehicles="record.vehicles"
+              :show-owner="true"
+            />
+          </template>
+        </FilteredGrid>
       </template>
     </FilteredList>
   </section>
@@ -230,6 +242,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
+import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import ModelPanel from 'frontend/components/Models/Panel'
@@ -250,6 +263,7 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     Btn,
     BtnDropdown,
     FilteredList,
+    FilteredGrid,
     ModelPanel,
     ModelClassLabels,
     AddonsModal,

@@ -7,7 +7,8 @@ hidden = false
 cru_l5 = Station.find_or_initialize_by(name: 'CRU-L5 Beautiful Glen Station')
 cru_l5.update!(
   celestial_object: crusader,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'CRU-L5',
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/cru-l5-a.jpg').open,
   hidden: hidden
@@ -52,6 +53,8 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: cru_l5)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
@@ -59,13 +62,16 @@ blackmarket = Shop.find_or_initialize_by(name: 'Blackmarket Terminal', station: 
 blackmarket.update!(
   shop_type: :blackmarket,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/blackmarket.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
-live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station: cru_l5)
+live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: cru_l5)
 live_fire_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -73,6 +79,7 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: cru_l5)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -80,6 +87,7 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: cru_l5)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/cru-l5/platinum.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -87,5 +95,6 @@ congreve_weapons = Shop.find_or_initialize_by(name: 'Congreve Weapons', station:
 congreve_weapons.update!(
   shop_type: :weapons,
   # store_image: Rails.root.join('db/seeds/images/stanton/hurston/cur-l5/ship_weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )

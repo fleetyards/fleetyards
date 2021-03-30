@@ -1,27 +1,11 @@
 <template>
-  <div
-    class="row"
-    :class="{
-      'metrics-padding': padding,
-    }"
-  >
-    <div
-      v-if="title"
-      :class="{
-        'col-lg-3': title,
-      }"
-      class="col-12"
-    >
+  <div class="row metrics-padding">
+    <div class="col-12 col-lg-3">
       <div class="metrics-title">
         {{ $t('labels.metrics.crew') }}
       </div>
     </div>
-    <div
-      :class="{
-        'col-lg-9': title,
-      }"
-      class="col-12 metrics-block"
-    >
+    <div class="col-12 col-lg-9 metrics-block">
       <div class="row">
         <div class="col-6 col-md-6">
           <div class="metrics-label">{{ $t('model.minCrew') }}:</div>
@@ -40,23 +24,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    model: {
-      type: Object,
-      required: true,
-    },
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
-    title: {
-      type: Boolean,
-      default: false,
-    },
-
-    padding: {
-      type: Boolean,
-      default: false,
-    },
-  },
+@Component<CrewMetrics>({})
+export default class CrewMetrics extends Vue {
+  @Prop({ required: true }) model: Model
 }
 </script>

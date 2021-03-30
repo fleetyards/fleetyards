@@ -8,11 +8,6 @@
       = time_ago_in_words(user.current_sign_in_at)
       = "(#{l(user.current_sign_in_at, format: :short)})"
   %td
-    - if user.admin?
-      %i.fa.fa-check
-    - else
-      %i.fa.fa-square
-  %td
     = time_ago_in_words(user.created_at)
     = "(#{l(user.created_at, format: :short)})"
   %td

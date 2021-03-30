@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fleet_memberships
+#
+#  id              :uuid             not null, primary key
+#  accepted_at     :datetime
+#  declined_at     :datetime
+#  hide_ships      :boolean          default(FALSE)
+#  primary         :boolean          default(FALSE)
+#  role            :integer
+#  ships_filter    :integer          default("purchased")
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  fleet_id        :uuid
+#  hangar_group_id :uuid
+#  user_id         :uuid
+#
 class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :user, touch: true
@@ -34,26 +51,26 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 
-  def visible_vehicle_ids(filters)
-    return [] if visibile_vehicles.blank?
+  def visible_vehicle_ids(filters = nil)
+    return [] if visible_vehicles.blank?
 
-    scope = visibile_vehicles
+    scope = visible_vehicles
     scope = scope.where(filters) if filters.present?
     scope.pluck(:id)
   end
 
-  def visible_model_ids(filters)
-    return [] if visibile_vehicles.blank?
+  def visible_model_ids(filters = nil)
+    return [] if visible_vehicles.blank?
 
-    scope = visibile_vehicles
+    scope = visible_vehicles
     scope = scope.where(filters) if filters.present?
     scope.pluck(:model_id)
   end
 
-  def visibile_vehicles
+  def visible_vehicles
     return if ships_filter_hide?
 
-    scope = user.vehicles
+    scope = user.vehicles.where(hidden: false)
     scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
     scope = scope.purchased if ships_filter_purchased?
     scope

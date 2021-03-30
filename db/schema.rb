@@ -2,22 +2,22 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_133359) do
+ActiveRecord::Schema.define(version: 2021_03_11_220529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "admin_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "admin_users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "username", limit: 255, default: "", null: false
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["username"], name: "index_admin_users_on_username", unique: true
   end
 
-  create_table "affiliations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "affiliations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "affiliationable_type"
     t.uuid "affiliationable_id"
     t.uuid "faction_id"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
   end
 
-  create_table "albums", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "albums", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.boolean "enabled", default: false, null: false
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "updated_at"
   end
 
-  create_table "celestial_objects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "celestial_objects", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.uuid "starsystem_id"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["starsystem_id"], name: "index_celestial_objects_on_starsystem_id"
   end
 
-  create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "commodities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.datetime "created_at", null: false
@@ -122,7 +122,19 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["name"], name: "index_commodities_on_name", unique: true
   end
 
-  create_table "components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "commodity_prices", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.uuid "shop_commodity_id"
+    t.decimal "price", precision: 15, scale: 2
+    t.integer "time_range"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "confirmed", default: false
+    t.uuid "submitted_by"
+    t.index ["shop_commodity_id"], name: "index_commodity_prices_on_shop_commodity_id"
+  end
+
+  create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "size", limit: 255
     t.datetime "created_at"
@@ -136,10 +148,11 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "grade"
     t.integer "item_class"
     t.integer "tracking_signal"
+    t.string "sc_identifier"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
-  create_table "docks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "docks", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "dock_type"
     t.uuid "station_id"
     t.string "name"
@@ -156,7 +169,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["station_id"], name: "index_docks_on_station_id"
   end
 
-  create_table "equipment", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "equipment", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "store_image"
@@ -179,7 +192,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
   end
 
-  create_table "factions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "factions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.string "name"
     t.string "slug"
@@ -189,7 +202,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "fleet_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "fleet_memberships", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_id"
     t.uuid "user_id"
     t.integer "role"
@@ -203,7 +216,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.uuid "hangar_group_id"
   end
 
-  create_table "fleets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "fid"
     t.string "slug"
     t.string "sid"
@@ -220,10 +233,11 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "ts"
     t.string "homepage"
     t.string "guilded"
+    t.boolean "public_fleet", default: false
     t.index ["fid"], name: "index_fleets_on_fid", unique: true
   end
 
-  create_table "habitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "habitations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.integer "habitation_type"
     t.uuid "station_id"
@@ -233,7 +247,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["station_id"], name: "index_habitations_on_station_id"
   end
 
-  create_table "hangar_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "hangar_groups", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "color"
@@ -244,7 +258,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 
-  create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "quantity"
     t.uuid "model_id"
     t.uuid "component_id"
@@ -259,11 +273,12 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.boolean "default_empty", default: false
     t.string "rsi_key"
     t.datetime "deleted_at"
+    t.string "key"
     t.index ["component_id"], name: "index_hardpoints_on_component_id"
     t.index ["model_id"], name: "index_hardpoints_on_model_id"
   end
 
-  create_table "images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.uuid "gallery_id"
     t.string "gallery_type", limit: 255
@@ -274,10 +289,11 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.integer "width"
     t.integer "height"
     t.boolean "global", default: true
+    t.string "caption"
     t.index ["gallery_id"], name: "index_images_on_gallery_id"
   end
 
-  create_table "manufacturers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "manufacturers", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.string "known_for", limit: 255
@@ -289,7 +305,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "code"
   end
 
-  create_table "model_additions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_additions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -308,14 +324,33 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
-  create_table "model_loaners", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "size"
+    t.integer "source"
+    t.string "key"
+    t.integer "hardpoint_type"
+    t.integer "category"
+    t.integer "group"
+    t.uuid "model_id"
+    t.uuid "component_id"
+    t.datetime "deleted_at"
+    t.string "details"
+    t.string "mount"
+    t.integer "item_slots"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["component_id"], name: "index_model_hardpoints_on_component_id"
+    t.index ["model_id"], name: "index_model_hardpoints_on_model_id"
+  end
+
+  create_table "model_loaners", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "loaner_model_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "model_modules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.text "description"
@@ -330,7 +365,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.decimal "pledge_price", precision: 15, scale: 2
   end
 
-  create_table "model_paints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "model_id"
     t.string "slug"
@@ -342,7 +377,6 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.boolean "hidden", default: true
     t.datetime "store_images_updated_at"
     t.string "store_url"
-    t.string "starship42_slug"
     t.integer "rsi_id"
     t.string "rsi_name"
     t.string "rsi_slug"
@@ -358,7 +392,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "fleetchart_image"
   end
 
-  create_table "model_upgrades", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.text "description"
@@ -370,7 +404,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "models", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "models", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.text "description"
@@ -440,25 +474,48 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "rsi_classification"
     t.string "rsi_store_url"
     t.decimal "rsi_mass", precision: 15, scale: 2, default: "0.0", null: false
-    t.string "erkuls_slug"
-    t.string "starship42_slug"
+    t.string "sc_identifier"
     t.string "rsi_store_image"
     t.integer "model_paints_count", default: 0
     t.integer "images_count", default: 0
     t.integer "videos_count", default: 0
     t.integer "upgrade_kits_count", default: 0
     t.integer "module_hardpoints_count", default: 0
+    t.decimal "max_speed", precision: 15, scale: 2
+    t.decimal "speed", precision: 15, scale: 2
+    t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
+    t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
+    t.string "cargo_holds"
+    t.string "hydrogen_fuel_tanks"
+    t.string "quantum_fuel_tanks"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
   end
 
-  create_table "module_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "module_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "model_module_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "roadmap_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "progress_tracker_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key"
+    t.string "team"
+    t.string "title"
+    t.string "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "projects"
+    t.integer "discipline_counts"
+    t.string "time_allocations"
+    t.uuid "model_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.index ["key"], name: "index_progress_tracker_items_on_key", unique: true
+  end
+
+  create_table "roadmap_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "rsi_id"
     t.integer "rsi_category_id"
     t.integer "rsi_release_id"
@@ -477,9 +534,17 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "updated_at", null: false
     t.string "store_image"
     t.boolean "active"
+    t.boolean "committed", default: false
   end
 
-  create_table "shop_commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "rsi_request_logs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "url"
+    t.boolean "resolved"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "shop_commodities", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "shop_id"
     t.decimal "buy_price", precision: 15, scale: 2
     t.decimal "sell_price", precision: 15, scale: 2
@@ -488,16 +553,24 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "price_per_unit", default: false
-    t.decimal "rent_price_1_day", precision: 15, scale: 2
-    t.decimal "rent_price_7_days", precision: 15, scale: 2
-    t.decimal "rent_price_30_days", precision: 15, scale: 2
-    t.decimal "rent_price_3_days", precision: 15, scale: 2
+    t.decimal "rental_price_1_day", precision: 15, scale: 2
+    t.decimal "rental_price_7_days", precision: 15, scale: 2
+    t.decimal "rental_price_30_days", precision: 15, scale: 2
+    t.decimal "rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_buy_price", precision: 15, scale: 2
+    t.decimal "average_sell_price", precision: 15, scale: 2
+    t.decimal "average_rental_price_1_day", precision: 15, scale: 2
+    t.decimal "average_rental_price_3_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_7_days", precision: 15, scale: 2
+    t.decimal "average_rental_price_30_days", precision: 15, scale: 2
+    t.boolean "confirmed", default: false
+    t.uuid "submitted_by"
     t.index ["commodity_item_id"], name: "index_shop_commodities_on_commodity_item_id"
     t.index ["commodity_item_type", "commodity_item_id"], name: "index_shop_commodities_on_item_type_and_item_id"
     t.index ["shop_id"], name: "index_shop_commodities_on_shop_id"
   end
 
-  create_table "shops", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "shops", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.datetime "created_at", null: false
@@ -509,10 +582,13 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.boolean "rental", default: false
     t.boolean "buying", default: false
     t.boolean "selling", default: false
+    t.boolean "refinery_terminal"
+    t.text "description"
+    t.string "location"
     t.index ["station_id"], name: "index_shops_on_station_id"
   end
 
-  create_table "star_citizen_updates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "star_citizen_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "url"
     t.string "title"
     t.string "news_type"
@@ -522,7 +598,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "starsystems", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "starsystems", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.datetime "created_at", null: false
@@ -547,7 +623,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.string "map_x"
   end
 
-  create_table "stations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "stations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.uuid "planet_id"
@@ -562,12 +638,16 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.uuid "celestial_object_id"
     t.integer "status"
     t.integer "images_count", default: 0
+    t.boolean "cargo_hub"
+    t.boolean "refinery"
+    t.integer "classification"
+    t.boolean "habitable", default: true
     t.index ["celestial_object_id"], name: "index_stations_on_celestial_object_id"
     t.index ["name"], name: "index_stations_on_name", unique: true
     t.index ["planet_id"], name: "index_stations_on_planet_id"
   end
 
-  create_table "task_forces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hangar_group_id"
     t.uuid "vehicle_id"
     t.datetime "created_at", null: false
@@ -576,7 +656,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
 
-  create_table "trade_routes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "trade_routes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "origin_id"
     t.uuid "origin_station_id"
     t.uuid "origin_celestial_object_id"
@@ -589,6 +669,8 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.decimal "profit_per_unit_percent", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_profit_per_unit", precision: 15, scale: 2
+    t.decimal "average_profit_per_unit_percent", precision: 15, scale: 2
     t.index ["destination_celestial_object_id"], name: "index_trade_routes_on_destination_celestial_object_id"
     t.index ["destination_id"], name: "index_trade_routes_on_destination_id"
     t.index ["destination_starsystem_id"], name: "index_trade_routes_on_destination_starsystem_id"
@@ -600,14 +682,14 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["origin_station_id"], name: "index_trade_routes_on_origin_station_id"
   end
 
-  create_table "upgrade_kits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "upgrade_kits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "model_upgrade_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "locale", limit: 255
     t.string "username", limit: 255, default: "", null: false
     t.string "email", limit: 255, default: "", null: false
@@ -652,21 +734,21 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "vehicle_modules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "vehicle_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_module_id"
     t.uuid "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "vehicle_upgrades", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "vehicle_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_upgrade_id"
     t.uuid "vehicle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "vehicles", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.uuid "model_id"
     t.string "name", limit: 255
@@ -676,17 +758,20 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.boolean "sale_notify", default: false
     t.boolean "flagship", default: false
     t.boolean "name_visible", default: false
-    t.boolean "public", default: true
+    t.boolean "public", default: false
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
     t.boolean "hidden", default: false
     t.uuid "model_paint_id"
     t.boolean "notify", default: true
+    t.string "serial"
+    t.string "alternative_names"
     t.index ["model_id"], name: "index_vehicles_on_model_id"
+    t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
 
-  create_table "versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "versions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "item_type", null: false
     t.uuid "item_id", null: false
     t.string "event", null: false
@@ -697,7 +782,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "videos", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "url"
     t.integer "video_type"
     t.datetime "created_at", null: false
@@ -706,7 +791,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_133359) do
     t.index ["model_id"], name: "index_videos_on_model_id"
   end
 
-  create_table "youtube_updates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "youtube_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "video_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

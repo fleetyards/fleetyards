@@ -41,17 +41,21 @@ describe('Hangar', () => {
 
     cy.clickNav('hangar')
 
-    cy.get('.model-panel .panel-title a')
+    cy.get('.model-panel-300i .panel-title a')
+      .first()
       .contains('300i')
       .should('exist')
 
-    cy.openShipModal('300i')
+    cy.openShipMenu('300i', 'edit-name')
 
-    cy.select('input-vehicle-name').type('Enterprise')
+    cy.select('input-vehicle-name')
+      .clear()
+      .type('Enterprise')
 
     cy.saveShip()
 
-    cy.get('.model-panel .panel-title a')
+    cy.get('.model-panel-300i .panel-title a')
+      .first()
       .contains('Enterprise')
       .should('exist')
 
@@ -61,9 +65,9 @@ describe('Hangar', () => {
 
     cy.openContextMenu('300i')
 
-    cy.openShipModalFromContext()
+    cy.openShipMenuFromContext()
 
-    cy.deleteShip()
+    cy.removeShip()
 
     cy.acceptConfirm()
 

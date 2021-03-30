@@ -8,7 +8,6 @@ module Admin
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_admin_user!, :set_default_nav
-    before_action :set_csrf_cookie
 
     protect_from_forgery with: :exception
 
@@ -23,16 +22,12 @@ module Admin
       render 'errors/error', status: :unprocessable_entity
     end
 
-    def worker_running?
-      model_queue = Sidekiq::Queue.new(ENV['MODEL_LOADER_QUEUE'] || 'fleetyards_model_loader')
-      process = Sidekiq::ProcessSet.new
-      running_processes = process.sum { |ps| ps['busy'] }
-      if !(model_queue.size.zero? && running_processes.zero?)
-        true
-      else
-        false
+    def worker_running?(name)
+      Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
+        work['queue'] == name
       end
     end
+    helper_method :worker_running?
 
     private def unauthorized_controllers
       devise_controller?
@@ -69,10 +64,6 @@ module Admin
       devise_parameter_sanitizer.permit :sign_in, keys: %i[login password remember_me otp_attempt]
       devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
       devise_parameter_sanitizer.permit :account_update, keys: added_attrs
-    end
-
-    private def set_csrf_cookie
-      cookies['COMMAND-CSRF-TOKEN'] = { value: form_authenticity_token, domain: Rails.application.secrets[:cookie_domain] || :all, same_site: :none, secure: Rails.env.production? || Rails.env.staging? }
     end
   end
 end

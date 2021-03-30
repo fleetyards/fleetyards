@@ -14,6 +14,8 @@ module Api
           return
         else
           unless resource.active_for_authentication?
+            resource.resend_confirmation
+
             render json: { code: 'session.create.unconfirmed', message: I18n.t('devise.failure.unconfirmed') }, status: :bad_request
             return
           end
@@ -32,7 +34,7 @@ module Api
       end
 
       def destroy
-        sign_out(:api_user)
+        sign_out(:user)
 
         render json: { code: 'sessions.destroy', message: I18n.t('devise.sessions.signed_out') }
       end

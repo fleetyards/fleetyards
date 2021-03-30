@@ -56,8 +56,8 @@ export default () => ({
       state.codename = payload
     },
 
-    toggleNav(state) {
-      state.navCollapsed = !state.navCollapsed
+    setNavCollapsed(state, payload) {
+      state.navCollapsed = payload
     },
 
     toggleSlimNav(state) {

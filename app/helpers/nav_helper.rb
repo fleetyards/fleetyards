@@ -3,7 +3,7 @@
 module NavHelper
   def active_nav?(navs = 'home')
     navs = Array(navs)
-    return unless navs.any? { |nav| nav == @active_nav }
+    return unless navs.any?(@active_nav)
 
     'active'
   end

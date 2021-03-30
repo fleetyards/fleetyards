@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: trade_routes
+#
+#  id                              :uuid             not null, primary key
+#  average_profit_per_unit         :decimal(15, 2)
+#  average_profit_per_unit_percent :decimal(15, 2)
+#  profit_per_unit                 :decimal(15, 2)
+#  profit_per_unit_percent         :decimal(15, 2)
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  destination_celestial_object_id :uuid
+#  destination_id                  :uuid
+#  destination_starsystem_id       :uuid
+#  destination_station_id          :uuid
+#  origin_celestial_object_id      :uuid
+#  origin_id                       :uuid
+#  origin_starsystem_id            :uuid
+#  origin_station_id               :uuid
+#
+# Indexes
+#
+#  index_trade_routes_on_destination_celestial_object_id  (destination_celestial_object_id)
+#  index_trade_routes_on_destination_id                   (destination_id)
+#  index_trade_routes_on_destination_starsystem_id        (destination_starsystem_id)
+#  index_trade_routes_on_destination_station_id           (destination_station_id)
+#  index_trade_routes_on_origin_celestial_object_id       (origin_celestial_object_id)
+#  index_trade_routes_on_origin_id                        (origin_id)
+#  index_trade_routes_on_origin_id_and_destination_id     (origin_id,destination_id) UNIQUE
+#  index_trade_routes_on_origin_starsystem_id             (origin_starsystem_id)
+#  index_trade_routes_on_origin_station_id                (origin_station_id)
+#
 class TradeRoute < ApplicationRecord
   paginates_per 50
 
@@ -17,12 +49,6 @@ class TradeRoute < ApplicationRecord
 
   ransack_alias :commodity, :origin_commodity_item_of_Commodity_type_slug
   ransack_alias :commodity_type, :origin_commodity_item_of_Commodity_type_commodity_type
-  ransack_alias :origin_station, :origin_station_slug
-  ransack_alias :destination_station, :destination_station_slug
-  ransack_alias :origin_celestial_object, :origin_celestial_object_slug
-  ransack_alias :destination_celestial_object, :destination_celestial_object_slug
-  ransack_alias :origin_starsystem, :origin_starsystem_slug
-  ransack_alias :destination_starsystem, :destination_starsystem_slug
 
   before_save :calculate_profit
   before_save :set_location
@@ -34,6 +60,8 @@ class TradeRoute < ApplicationRecord
   def calculate_profit
     self.profit_per_unit = destination.buy_price - origin.sell_price
     self.profit_per_unit_percent = ((100 * (destination.buy_price - origin.sell_price)) / origin.sell_price).round(2)
+    self.average_profit_per_unit = destination.average_buy_price - origin.average_sell_price
+    self.average_profit_per_unit_percent = ((100 * (destination.average_buy_price - origin.average_sell_price)) / origin.average_sell_price).round(2)
   end
 
   def set_location

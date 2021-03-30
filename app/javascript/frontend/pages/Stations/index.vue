@@ -10,6 +10,7 @@
     </div>
 
     <FilteredList
+      key="stations"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"

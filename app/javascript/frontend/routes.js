@@ -84,7 +84,9 @@ export const routes = [
       ),
     meta: {
       needsAuthentication: true,
+      quickSearch: 'nameCont',
       title: 'hangar.fleetchart',
+      primaryAction: true,
       backgroundImage: 'bg-5',
     },
   },
@@ -102,7 +104,7 @@ export const routes = [
     },
   },
   {
-    path: '/hangar/:user/',
+    path: '/hangar/:username/',
     name: 'hangar-public',
     component: () =>
       import(
@@ -113,7 +115,7 @@ export const routes = [
     },
   },
   {
-    path: '/hangar/:user/fleetchart',
+    path: '/hangar/:username/fleetchart',
     name: 'hangar-public-fleetchart',
     component: () =>
       import(

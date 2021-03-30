@@ -57,3 +57,10 @@
     text-overflow: ellipsis;
   }
 }
+
+.metrics-list {
+  .metrics-item {
+    display: flex;
+    justify-content: space-between;
+  }
+}

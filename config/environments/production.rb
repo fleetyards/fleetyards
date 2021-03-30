@@ -59,6 +59,14 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
+  # Use a different cache store in production.
+  if ENV['MEMCACHED_URL']
+    config.cache_store = :mem_cache_store,
+                         ENV['MEMCACHED_URL'].split(','),
+                         {
+                           namespace: "fleetyards-#{Rails.env}",
+                         }
+  end
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
@@ -91,7 +99,11 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.deliver_later_queue_name = 'mailers'
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain] }
+
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
+
+  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
+
   config.action_mailer.smtp_settings = {
     address: Rails.application.secrets[:mailer_host],
     port: Rails.application.secrets[:mailer_port],

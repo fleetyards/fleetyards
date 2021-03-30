@@ -1,21 +1,24 @@
 <template>
-  <div ref="filterGroup" class="filter-list">
+  <div ref="filterGroup" class="filter-group" :class="cssClasses">
     <transition name="fade">
       <label v-show="labelVisible" v-if="innerLabel && !noLabel" :for="id">
         {{ innerLabel }}
       </label>
     </transition>
     <div
+      v-tooltip.right="error"
       :class="{
         active: visible,
         disabled,
         selected: selectedOptions.length > 0,
         hasLabel: labelVisible,
       }"
-      class="filter-list-title"
+      class="filter-group-title"
       @click="toggle"
     >
-      {{ prompt }}
+      <span class="filter-group-title-prompt">
+        {{ prompt }}
+      </span>
       <SmallLoader :loading="loading" />
       <i class="fa fa-chevron-right" />
     </div>
@@ -23,7 +26,7 @@
       v-if="multiple"
       :id="`${groupID}-${selectedId}`"
       :visible="selectedOptions.length > 0 && !visible"
-      class="filter-list-items"
+      class="filter-group-items"
     >
       <a
         v-for="(option, index) in selectedOptions"
@@ -32,10 +35,10 @@
           active: selected(option[valueAttr]),
           bigIcon,
         }"
-        class="filter-list-item fade-list-item"
+        class="filter-group-item fade-list-item"
         @click="select(option[valueAttr])"
       >
-        <span v-if="option[iconAttr]" class="filter-list-item-icon">
+        <span v-if="option[iconAttr]" class="filter-group-item-icon">
           <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
         </span>
         <span v-html="option[labelAttr]" />
@@ -47,7 +50,7 @@
     <BCollapse
       :id="`${groupID}-${id}`"
       :visible="visible"
-      class="filter-list-items-wrapper"
+      class="filter-group-items-wrapper"
     >
       <FormInput
         v-if="searchable"
@@ -56,13 +59,13 @@
         v-model="search"
         :placeholder="searchLabel || $t('actions.find')"
         :label="$t('actions.find')"
-        class="filter-list-search"
+        class="filter-group-search"
         variant="clean"
-        no-label
-        clearable
+        :no-label="true"
+        :clearable="true"
         @input="onSearch"
       />
-      <div class="filter-list-items">
+      <div class="filter-group-items">
         <a
           v-for="(option, index) in filteredOptions"
           :key="`${groupID}-${id}-${option[valueAttr]}-${index}`"
@@ -70,10 +73,10 @@
             active: selected(option[valueAttr]),
             bigIcon,
           }"
-          class="filter-list-item fade-list-item"
+          class="filter-group-item fade-list-item"
           @click="select(returnObject ? option : option[valueAttr])"
         >
-          <span v-if="option[iconAttr]" class="filter-list-item-icon">
+          <span v-if="option[iconAttr]" class="filter-group-item-icon">
             <img :src="option[iconAttr]" :alt="`icon-${iconAttr}`" />
           </span>
           <span v-html="option[labelAttr]" />
@@ -98,7 +101,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import SmallLoader from 'frontend/core/components/SmallLoader'
 import FormInput from 'frontend/core/components/Form/FormInput'
@@ -134,6 +137,11 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: 'findAll' }) collectionMethod: string
 
+  @Prop({
+    default: () => ({}),
+  })
+  collectionFilter!: Object
+
   @Prop({ required: true }) name!: string
 
   @Prop({
@@ -158,11 +166,11 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: false }) searchable!: boolean
 
-  @Prop({ default: false }) searchable!: boolean
-
   @Prop({ default: false }) returnObject!: boolean
 
   @Prop({ default: true }) nullable!: boolean
+
+  @Prop({ default: null }) error!: string
 
   @Prop({ default: false }) paginated!: boolean
 
@@ -242,14 +250,33 @@ export default class FilterGroup extends Vue {
     return this.availableOptions
   }
 
+  get cssClasses() {
+    return {
+      'has-error has-feedback': this.error,
+    }
+  }
+
+  @Watch('collectionFilter')
+  onCollectionFilterChange() {
+    this.fetchedOptions = []
+    this.fetchOptions()
+  }
+
+  @Watch('disabled')
+  onDisabled() {
+    this.fetchOptions()
+  }
+
   queryParams(args) {
     const query = {
-      filters: {},
+      filters: {
+        ...this.collectionFilter,
+      },
     }
     if (args.search && this.searchable) {
       query.filters.nameCont = args.search
     } else if (args.missingValue && this.paginated) {
-      query.filters.nameIn = args.missingValue
+      query.filters[`${this.valueAttr}Eq`] = args.missingValue
     } else if (args.page && this.paginated) {
       query.page = args.page
     }
@@ -289,14 +316,20 @@ export default class FilterGroup extends Vue {
   }
 
   async fetchOptions() {
+    if (this.disabled) {
+      this.fetchMissingOption()
+      return
+    }
+
     this.loading = true
 
-    await this.collection[this.collectionMethod](
-      this.queryParams({
+    const options = await this.collection[this.collectionMethod]({
+      ...this.queryParams({
         page: this.page,
         search: this.search,
       }),
-    )
+      cacheId: this.groupID,
+    })
 
     this.loading = false
 
@@ -304,8 +337,8 @@ export default class FilterGroup extends Vue {
       this.$refs.infiniteLoading.$emit('infinite-loading-reset')
     }
 
-    if (this.collection.records.length) {
-      this.addOptions(this.collection.records)
+    if (options) {
+      this.addOptions(options)
       this.fetchMissingOption()
     }
   }
@@ -321,11 +354,12 @@ export default class FilterGroup extends Vue {
 
     this.loading = true
 
-    const options = await this.collection[this.collectionMethod](
-      this.queryParams({
+    const options = await this.collection[this.collectionMethod]({
+      ...this.queryParams({
         missingValue: this.value,
       }),
-    )
+      cacheId: `${this.groupID}-missing`,
+    })
 
     this.loading = false
     if (options.length) {
@@ -432,7 +466,11 @@ export default class FilterGroup extends Vue {
 
   focusSearch() {
     if (this.searchable && this.visible) {
-      this.$nextTick(() => this.$refs.searchInput.setFocus())
+      this.$nextTick(() => {
+        if (this.$refs.searchInput) {
+          this.$refs.searchInput.setFocus()
+        }
+      })
     }
   }
 }

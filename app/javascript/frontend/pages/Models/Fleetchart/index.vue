@@ -9,6 +9,7 @@
       </div>
     </div>
     <FilteredList
+      key="models-fleetcharts"
       :collection="collection"
       collection-method="findAllFleetchart"
       :name="$route.name"
@@ -16,12 +17,18 @@
       :hash="$route.hash"
     >
       <template slot="actions">
-        <DownloadScreenshotBtn
-          element="#fleetchart"
-          filename="ships-fleetchart"
-          size="small"
-          :with-label="false"
-        />
+        <BtnDropdown size="small">
+          <DownloadScreenshotBtn
+            element="#fleetchart"
+            filename="ships-fleetchart"
+            size="small"
+            variant="link"
+          />
+
+          <hr />
+
+          <FleetChartStatusBtn size="small" variant="link" />
+        </BtnDropdown>
       </template>
 
       <ModelsFilterForm slot="filter" />
@@ -29,7 +36,7 @@
       <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
-            <div class="col-12 col-lg-4 fleetchart-slider">
+            <div class="col-12 col-lg-4">
               <FleetchartSlider
                 :initial-scale="fleetchartScale"
                 @change="updateScale"
@@ -49,7 +56,9 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Mutation, Getter } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import ModelsFilterForm from 'frontend/components/Models/FilterForm'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
@@ -61,7 +70,9 @@ import ModelsCollection from 'frontend/api/collections/Models'
 @Component<ModelsFleetchart>({
   components: {
     FilteredList,
+    BtnDropdown,
     DownloadScreenshotBtn,
+    FleetChartStatusBtn,
     ModelsFilterForm,
     FleetchartList,
     FleetchartSlider,

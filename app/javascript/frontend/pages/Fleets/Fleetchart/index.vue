@@ -24,6 +24,7 @@
     </div>
 
     <FilteredList
+      key="fleet-fleetchart"
       :collection="collection"
       collection-method="findAllFleetchart"
       :name="$route.name"
@@ -38,7 +39,7 @@
             <Starship42Btn
               :vehicles="records"
               size="small"
-              variant="link"
+              variant="dropdown"
               :with-icon="true"
             />
 
@@ -50,9 +51,13 @@
             element="#fleetchart"
             :filename="`${fleet.slug}-fleetchart`"
             size="small"
-            variant="link"
+            variant="dropdown"
             :show-tooltip="false"
           />
+
+          <hr />
+
+          <FleetChartStatusBtn size="small" variant="dropdown" />
         </BtnDropdown>
       </template>
 
@@ -61,7 +66,7 @@
       <template #default="{ records }">
         <transition name="fade" appear>
           <div v-if="records.length" class="row justify-content-lg-center">
-            <div class="col-12 col-lg-4 fleetchart-slider">
+            <div class="col-12 col-lg-4">
               <FleetchartSlider
                 :initial-scale="fleetchartScale"
                 @change="updateScale"
@@ -85,6 +90,7 @@ import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Starship42Btn from 'frontend/components/Starship42Btn'
 import DownloadScreenshotBtn from 'frontend/components/DownloadScreenshotBtn'
+import FleetChartStatusBtn from 'frontend/components/FleetChartStatusBtn'
 import FleetchartList from 'frontend/components/Fleetchart/List'
 import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -105,6 +111,7 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     Starship42Btn,
     FilteredList,
     DownloadScreenshotBtn,
+    FleetChartStatusBtn,
     FleetchartList,
     ModelClassLabels,
     AddonsModal,

@@ -7,23 +7,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-12 col-xl-6">
+        <div class="col-12 col-md-6">
           <ValidationProvider
             v-slot="{ errors }"
             vid="saleNotify"
             :name="$t('labels.user.saleNotify')"
             :slim="true"
           >
-            <div
+            <Checkbox
+              id="saleNotify"
+              v-model="form.saleNotify"
+              :label="$t('labels.user.saleNotify')"
               :class="{ 'has-error has-feedback': errors[0] }"
-              class="form-group"
-            >
-              <Checkbox
-                id="saleNotify"
-                v-model="form.saleNotify"
-                :label="$t('labels.user.saleNotify')"
-              />
-            </div>
+            />
           </ValidationProvider>
 
           <ValidationProvider
@@ -32,16 +28,12 @@
             :name="$t('labels.user.publicHangar')"
             :slim="true"
           >
-            <div
+            <Checkbox
+              id="publicHangar"
+              v-model="form.publicHangar"
+              :label="$t('labels.user.publicHangar')"
               :class="{ 'has-error has-feedback': errors[0] }"
-              class="form-group"
-            >
-              <Checkbox
-                id="publicHangar"
-                v-model="form.publicHangar"
-                :label="$t('labels.user.publicHangar')"
-              />
-            </div>
+            />
           </ValidationProvider>
         </div>
       </div>
@@ -89,13 +81,15 @@ export default {
   },
 
   created() {
-    if (this.currentUser) {
-      this.setupForm()
-    }
+    this.setupForm()
   },
 
   methods: {
     setupForm() {
+      if (!this.currentUser) {
+        return
+      }
+
       this.form.saleNotify = !!this.currentUser.saleNotify
       this.form.publicHangar = !!this.currentUser.publicHangar
     },

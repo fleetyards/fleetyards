@@ -25,6 +25,7 @@
                           v-model="searchQuery"
                           size="large"
                           :autofocus="!mobile"
+                          translation-key="search.default"
                           :no-label="true"
                           :clearable="true"
                         />
@@ -199,14 +200,17 @@ export default class Home extends Vue {
       return
     }
 
-    this.$router.push({
-      name: 'search',
-      query: {
-        q: {
-          search: this.searchQuery,
+    this.$router
+      .push({
+        name: 'search',
+        query: {
+          q: {
+            search: this.searchQuery,
+          },
         },
-      },
-    })
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {})
   }
 
   async fetchModels() {

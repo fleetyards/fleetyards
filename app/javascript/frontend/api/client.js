@@ -2,6 +2,7 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 import Store from 'frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'
+import Qs from 'qs'
 
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
@@ -11,9 +12,12 @@ const client = axios.create({
       'Content-Type': 'application/json',
     },
   },
+  paramsSerializer: params =>
+    Qs.stringify(params, {
+      arrayFormat: 'brackets',
+      encode: false,
+    }),
   withCredentials: true,
-  xsrfCookieName: 'CSRF-TOKEN',
-  xsrfHeaderName: 'X-CSRF-Token',
 })
 
 const extractMetaInfo = function extractMetaInfo(headers, params) {
@@ -59,7 +63,7 @@ const handleResponse = function handleResponse(response, params, silent) {
   const meta = extractMetaInfo(response.headers, params)
 
   return {
-    data: response.data,
+    ...response,
     error: null,
     meta,
     params,
@@ -71,13 +75,10 @@ export async function get(path, params = {}, silent = false) {
     nprogress.start()
   }
   try {
-    return handleResponse(
-      await client.get(path, {
-        params,
-      }),
+    const response = await client.get(path, {
       params,
-      silent,
-    )
+    })
+    return handleResponse(response, params, silent)
   } catch (error) {
     return handleError(error, silent)
   }
@@ -109,6 +110,7 @@ export async function destroy(path, data = {}, silent = false) {
   if (!silent) {
     nprogress.start()
   }
+
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {

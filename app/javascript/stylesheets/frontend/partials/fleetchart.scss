@@ -15,6 +15,7 @@
     margin: 30px 20px;
     text-align: center;
     cursor: pointer;
+    filter: drop-shadow(2px 4px 6px black);
 
     a {
       display: block;
@@ -24,10 +25,18 @@
       transform: rotate(180deg);
     }
   }
+
+  .status-in-concept {
+    filter: opacity(.5) drop-shadow(0 0 0 black);
+  }
+
+  .status-in-production {
+    filter: opacity(.5) drop-shadow(0 0 0 #06f);
+  }
 }
 
 .fleetchart-slider {
-  margin-bottom: 20px;
+  margin: 20px;
 }
 
 .fleetchart-download-image {
@@ -54,5 +63,9 @@
 @media (max-width: $desktop-breakpoint) {
   .fleetchart {
     justify-content: center;
+  }
+
+  .fleetchart-slider {
+    margin: 40px 30px;
   }
 }

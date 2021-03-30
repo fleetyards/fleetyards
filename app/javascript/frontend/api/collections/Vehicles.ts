@@ -1,4 +1,6 @@
 import { get, post, put, destroy, download } from 'frontend/api/client'
+import Store from 'frontend/lib/Store'
+import { AxiosResponse } from 'axios'
 import BaseCollection from './Base'
 
 export class VehiclesCollection extends BaseCollection {
@@ -10,24 +12,40 @@ export class VehiclesCollection extends BaseCollection {
 
   params: VehicleParams | null = null
 
+  lastUsedMethod: string = 'findAll'
+
+  get perPage(): number {
+    return Store.getters['hangar/perPage']
+  }
+
+  get perPageSteps(): number[] {
+    return [15, 30, 60, 120, 240]
+  }
+
+  updatePerPage(perPage) {
+    Store.dispatch('hangar/updatePerPage', perPage)
+  }
+
   async findAll(params: VehicleParams | null): Promise<Vehicle[]> {
+    this.lastUsedMethod = 'findAll'
     this.params = params
 
     const response = await get('vehicles', {
       q: params?.filters,
       page: params?.page,
+      perPage: this.perPage,
     })
 
     if (!response.error) {
       this.records = response.data
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }
 
   async findAllFleetchart(params: VehicleParams | null): Promise<Vehicle[]> {
+    this.lastUsedMethod = 'findAllFleetchart'
     this.params = params
 
     const response = await get('vehicles/fleetchart', {
@@ -42,7 +60,7 @@ export class VehiclesCollection extends BaseCollection {
   }
 
   async refresh(): Promise<void> {
-    await this.findAll(this.params)
+    await this[this.lastUsedMethod || 'findAll'](this.params)
   }
 
   async findStats(params: VehicleParams): Promise<VehicleStats | null> {
@@ -71,13 +89,13 @@ export class VehiclesCollection extends BaseCollection {
 
   async create(
     form: VehicleForm,
-    refetch: boolean = false,
+    refresh: boolean = false,
   ): Promise<Vehicle | null> {
     const response = await post('vehicles', form)
 
     if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params)
+      if (refresh) {
+        this.refresh()
       }
 
       return response.data
@@ -86,10 +104,24 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async update(vehicleId: string, form: VehicleForm): Promise<boolean> {
-    const response = await put(`vehicles/${vehicleId}`, form)
+  async update(id: string, form: VehicleForm): Promise<AxiosResponse> {
+    const response = await put(`vehicles/${id}`, form)
+
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
+    }
+
+    return response
+  }
+
+  async markAsPurchasedBulk(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      purchased: true,
+      ids,
+    })
+
+    if (!response.error) {
+      this.refresh()
 
       return true
     }
@@ -97,11 +129,73 @@ export class VehiclesCollection extends BaseCollection {
     return false
   }
 
-  async destroy(vehicleId: string): Promise<boolean> {
-    const response = await destroy(`vehicles/${vehicleId}`)
+  async hideFromPublicHangar(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      public: false,
+      ids,
+    })
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
+
+      return true
+    }
+
+    return false
+  }
+
+  async showOnPublicHangar(ids: string): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      public: true,
+      ids,
+    })
+
+    if (!response.error) {
+      this.refresh()
+
+      return true
+    }
+
+    return false
+  }
+
+  async updateHangarGroupsBulk(
+    ids: string,
+    hangarGroupIds: string[],
+  ): Promise<boolean> {
+    const response = await put(`vehicles/bulk`, {
+      hangarGroupIds,
+      ids,
+    })
+
+    if (!response.error) {
+      this.refresh()
+
+      return true
+    }
+
+    return false
+  }
+
+  async destroy(id: string): Promise<boolean> {
+    const response = await destroy(`vehicles/${id}`)
+
+    if (!response.error) {
+      this.refresh()
+
+      return true
+    }
+
+    return false
+  }
+
+  async destroyBulk(ids: string[]): Promise<boolean> {
+    const response = await put('vehicles/destroy-bulk', {
+      ids,
+    })
+
+    if (!response.error) {
+      this.refresh()
 
       return true
     }
@@ -113,7 +207,7 @@ export class VehiclesCollection extends BaseCollection {
     const response = await destroy('vehicles/destroy-all')
 
     if (!response.error) {
-      this.findAll(this.params)
+      this.refresh()
 
       return true
     }

@@ -4,8 +4,8 @@
       id="vehicle-name"
       v-model="form.nameCont"
       translation-key="filters.vehicles.name"
-      no-label
-      clearable
+      :no-label="true"
+      :clearable="true"
     />
 
     <FilterGroup
@@ -101,7 +101,7 @@
           v-model="form.lengthGteq"
           type="number"
           translation-key="filters.vehicles.lengthGt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
       <div class="col-6">
@@ -110,7 +110,7 @@
           v-model="form.lengthLteq"
           type="number"
           translation-key="filters.vehicles.lengthLt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
     </div>
@@ -122,7 +122,7 @@
           v-model="form.pledgePriceGteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceGt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
 
@@ -132,7 +132,7 @@
           v-model="form.pledgePriceLteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceLt"
-          no-placeholder
+          :no-placeholder="true"
         />
       </div>
     </div>
@@ -142,7 +142,7 @@
       v-model="form.priceGteq"
       type="number"
       translation-key="filters.vehicles.priceGt"
-      no-placeholder
+      :no-placeholder="true"
     />
 
     <FormInput
@@ -150,7 +150,7 @@
       v-model="form.priceLteq"
       type="number"
       translation-key="filters.vehicles.priceLt"
-      no-placeholder
+      :no-placeholder="true"
     />
 
     <RadioList

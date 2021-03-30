@@ -1,5 +1,12 @@
 <template>
-  <div :id="commodity.slug" class="flex-list-row">
+  <div
+    :id="commodity.slug"
+    v-tooltip="!commodity.confirmed ? $t('commodityItem.unconfirmed') : null"
+    class="flex-list-row"
+    :class="{
+      'shop-item-row-unconfirmed': !commodity.confirmed,
+    }"
+  >
     <div class="store-image">
       <router-link v-if="link" :to="link">
         <div
@@ -77,39 +84,56 @@
       {{ commodity.description }}
     </div>
     <div v-if="selling" class="price">
-      <span class="price-label">{{ $t('labels.shop.sellPrice') }}:&nbsp;</span>
-      <b>{{ $toUEC(commodity.sellPrice) }}</b>
+      <span class="price-label">
+        {{ $t('labels.shopCommodity.prices.sellPrice') }}:&nbsp;
+      </span>
+      <b v-html="$toUEC(commodity.sellPrice)" />
     </div>
     <div v-if="buying" class="price">
-      <span class="price-label">{{ $t('labels.shop.buyPrice') }}:&nbsp;</span>
-      <b>{{ $toUEC(commodity.buyPrice) }}</b>
+      <span class="price-label">
+        {{ $t('labels.shopCommodity.prices.buyPrice') }}:&nbsp;
+      </span>
+      <b v-html="$toUEC(commodity.buyPrice)" />
     </div>
     <div v-if="rental" class="rent-price">
-      <span class="price-label">{{ $t('labels.shop.rentPrice') }}:&nbsp;</span>
+      <span class="price-label">
+        {{ $t('labels.shopCommodity.prices.rentalPrice') }}:&nbsp;
+      </span>
       <ul class="list-unstyled">
-        <li v-if="commodity.rentPrice1Day">
-          {{ $t('shop.rentalPrice1Day') }}
-          <b>{{ $toUEC(commodity.rentPrice1Day) }}</b>
+        <li v-if="commodity.rentalPrice1Day">
+          {{ $t('labels.shopCommodity.prices.rentalPrice1Day') }}
+          <b v-html="$toUEC(commodity.rentalPrice1Day)" />
         </li>
-        <li v-if="commodity.rentPrice3Days">
-          {{ $t('shop.rentalPrice3Days') }}
-          <b>{{ $toUEC(commodity.rentPrice3Days) }}</b>
+        <li v-if="commodity.rentalPrice3Days">
+          {{ $t('labels.shopCommodity.prices.rentalPrice3Days') }}
+          <b v-html="$toUEC(commodity.rentalPrice3Days)" />
         </li>
-        <li v-if="commodity.rentPrice7Days">
-          {{ $t('shop.rentalPrice7Days') }}
-          <b>{{ $toUEC(commodity.rentPrice7Days) }}</b>
+        <li v-if="commodity.rentalPrice7Days">
+          {{ $t('labels.shopCommodity.prices.rentalPrice7Days') }}
+          <b v-html="$toUEC(commodity.rentalPrice7Days)" />
         </li>
-        <li v-if="commodity.rentPrice30Days">
-          {{ $t('shop.rentalPrice30Days') }}
-          <b>{{ $toUEC(commodity.rentPrice30Days) }}</b>
+        <li v-if="commodity.rentalPrice30Days">
+          {{ $t('labels.shopCommodity.prices.rentalPrice30Days') }}
+          <b v-html="$toUEC(commodity.rentalPrice30Days)" />
         </li>
       </ul>
+    </div>
+    <div class="actions actions-1x">
+      <AddToCartBtn
+        :item="commodity.item"
+        :type="commodity.commodityItemType"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
+
 export default {
+  components: {
+    AddToCartBtn,
+  },
   props: {
     commodity: {
       type: Object,
@@ -161,3 +185,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.shop-item-row-unconfirmed {
+  opacity: .5;
+}
+</style>

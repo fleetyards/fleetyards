@@ -13,15 +13,16 @@
               :to="{
                 name: 'shop',
                 params: {
-                  station: shop.station.slug,
+                  stationSlug: shop.station.slug,
                   slug: shop.slug,
                 },
               }"
               :aria-label="shop.name"
             >
               <small class="text-muted">
-                {{ shop.station.name }}
+                {{ shop.station.name }} {{ shop.location }}
               </small>
+              <br />
               {{ shop.name }}
             </router-link>
           </h2>

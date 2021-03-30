@@ -1,5 +1,4 @@
 export default {
-  search: 'Search the Verse...',
   name: 'Name',
   login: 'Username or E-Mail',
   username: 'Username',
@@ -17,7 +16,12 @@ export default {
     'models': 'Avenger, Carrack, Cutlass...',
     'models-fleetchart': 'Avenger, Carrack, Cutlass...',
     'hangar': 'Enterprise, Andromeda...',
+    'hangar-fleetchart': 'Enterprise, Andromeda...',
     'stations': 'Search for Stations...',
+  },
+  search: {
+    'default': 'Search the Verse...',
+    'roadmap-progress-tracker': 'Search',
   },
   home: {
     search: 'Search for Ships...',
@@ -29,6 +33,12 @@ export default {
   },
   user: {
     rsiHandle: 'RSI Handle',
+  },
+  vehicle: {
+    serial: 'Serial',
+  },
+  commodityPrice: {
+    price: '100.00',
   },
   filters: {
     shops: {
@@ -60,6 +70,9 @@ export default {
       members: {
         username: 'Username',
       },
+    },
+    shopCommodities: {
+      name: 'Name',
     },
   },
 }

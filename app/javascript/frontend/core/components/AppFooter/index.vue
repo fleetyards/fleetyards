@@ -86,7 +86,7 @@
       <div class="app-footer-item">
         <p>
           <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
-          Torlek Maru
+          {{ copyrightOwner }}
         </p>
         <p class="rsi-disclaimer">
           This is an unofficial Star Citizen fansite, not affiliated with the
@@ -124,14 +124,23 @@
   </footer>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
-export default {
-  computed: {
-    ...mapGetters(['online']),
+@Component<AppFooter>({})
+export default class AppFooter extends Vue {
+  @Getter('online') online: boolean
 
-    ...mapGetters('app', ['version', 'codename', 'gitRevision']),
-  },
+  @Getter('version', { namespace: 'app' }) version: string
+
+  @Getter('codename', { namespace: 'app' }) codename: string
+
+  @Getter('gitRevision', { namespace: 'app' }) gitRevision: string
+
+  get copyrightOwner() {
+    return window.COPYRIGHT_OWNER
+  }
 }
 </script>

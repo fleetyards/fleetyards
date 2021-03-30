@@ -9,7 +9,10 @@ import {
   required,
   email,
   alpha_dash,
+  numeric,
+  between,
   min,
+  min_value,
   confirmed,
   regex,
 } from 'vee-validate/dist/rules'
@@ -17,6 +20,7 @@ import {
 import { I18n } from 'frontend/lib/I18n'
 import {
   emailTaken,
+  serialTaken,
   fidTaken,
   user,
   usernameTaken,
@@ -41,8 +45,12 @@ export default {
     extend('confirmed', confirmed)
     extend('regex', regex)
     extend('min', min)
+    extend('min_value', min_value)
+    extend('numeric', numeric)
+    extend('between', between)
     extend('email', email)
     extend('emailTaken', emailTaken)
+    extend('serialTaken', serialTaken)
     extend('usernameTaken', usernameTaken)
     extend('user', user)
     extend('fidTaken', fidTaken)

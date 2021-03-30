@@ -41,8 +41,10 @@
     </div>
     <transition name="fade">
       <SearchHistory v-if="historyVisible" @restore="restoreSearch" />
+
       <FilteredList
         v-else
+        key="search"
         :collection="collection"
         :name="$route.name"
         :route-query="$route.query"
@@ -71,6 +73,18 @@
                 v-else-if="result.resultType === 'shop_commodity'"
                 :item="result"
               />
+              <ComponentPanel
+                v-else-if="result.resultType === 'component'"
+                :component="result"
+              />
+              <CommodityPanel
+                v-else-if="result.resultType === 'commodity'"
+                :commodity="result"
+              />
+              <EquipmentPanel
+                v-else-if="result.resultType === 'equipment'"
+                :equipment="result"
+              />
               <SearchPanel v-else :item="result" />
             </div>
           </transition-group>
@@ -93,6 +107,9 @@ import SearchPanel from 'frontend/components/Search/Panel'
 import FilteredList from 'frontend/core/components/FilteredList'
 import CelestialObjectsPanel from 'frontend/components/CelestialObjects/Panel'
 import ShopCommodityPanel from 'frontend/components/ShopCommodities/Panel'
+import ComponentPanel from 'frontend/components/Components/Panel'
+import CommodityPanel from 'frontend/components/Commodities/Panel'
+import EquipmentPanel from 'frontend/components/Equipment/Panel'
 import SearchHistory from 'frontend/components/Search/History'
 import searchCollection from 'frontend/api/collections/Search'
 
@@ -104,6 +121,9 @@ import searchCollection from 'frontend/api/collections/Search'
     FilteredList,
     CelestialObjectsPanel,
     ShopCommodityPanel,
+    ComponentPanel,
+    CommodityPanel,
+    EquipmentPanel,
     FormInput,
     SearchHistory,
   },
@@ -122,8 +142,8 @@ export default class Search extends Vue {
 
   get filters() {
     return {
-      q: this.$route.query.q,
-      page: this.$route.query.page,
+      filters: this.$route.query.q,
+      page: this.$route.query.page || 1,
     }
   }
 
@@ -140,7 +160,7 @@ export default class Search extends Vue {
     this.fetch()
   }
 
-  mounted() {
+  created() {
     this.form.search = this.$route.query?.q?.search
     this.fetch()
   }
@@ -159,7 +179,7 @@ export default class Search extends Vue {
         return {
           name: 'shop',
           params: {
-            station: result.station.slug,
+            stationSlug: result.station.slug,
             slug: result.slug,
           },
         }

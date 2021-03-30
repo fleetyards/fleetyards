@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: model_modules
+#
+#  id                :uuid             not null, primary key
+#  active            :boolean          default(TRUE)
+#  description       :text
+#  hidden            :boolean          default(TRUE)
+#  name              :string
+#  pledge_price      :decimal(15, 2)
+#  production_status :string
+#  slug              :string
+#  store_image       :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  manufacturer_id   :uuid
+#  model_id          :uuid
+#
 class ModelModule < ApplicationRecord
   paginates_per 30
 
@@ -29,6 +47,14 @@ class ModelModule < ApplicationRecord
 
   def self.active
     where(active: true)
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   private def touch_shop_commodities

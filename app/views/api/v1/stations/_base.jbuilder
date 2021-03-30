@@ -6,13 +6,19 @@ json.location station.location
 json.location_label station.location_label
 json.type station.station_type
 json.type_label station.station_type_label
+json.classification station.classification
+json.classification_label station.classification_label
+json.habitable station.habitable
 json.store_image station.store_image.url
+json.store_image_large station.store_image.large.url
 json.store_image_medium station.store_image.medium.url
 json.store_image_small station.store_image.small.url
 json.description station.description
 json.background_image station.random_image&.name&.url
 json.has_images station.images_count.positive?
 json.shop_list_label station.shop_list_label
+json.refinery station.refinery
+json.cargo_hub station.cargo_hub
 json.habitation_counts do
   json.array! station.habitation_counts, partial: 'api/v1/stations/habitation_count', as: :habitation_count
 end

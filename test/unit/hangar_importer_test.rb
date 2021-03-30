@@ -5,7 +5,7 @@ require 'hangar_importer'
 require 'rsi/models_loader'
 
 class HangarImporterTest < ActiveSupport::TestCase
-  let(:loader) { ::RSI::ModelsLoader.new }
+  let(:loader) { ::Rsi::ModelsLoader.new }
   let(:importer) { ::HangarImporter.new }
   let(:user) { users :data }
   let(:subject) { ::HangarImporter.new(data).run(user.id) }
@@ -221,7 +221,9 @@ class HangarImporterTest < ActiveSupport::TestCase
     it 'imports all data' do
       assert_equal(
         {
-          missing: ['Rover'],
+          missing: [
+            'Rover',
+          ],
           imported: imported_ships,
           success: true
         },

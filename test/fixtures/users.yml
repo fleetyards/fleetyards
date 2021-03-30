@@ -1,3 +1,48 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :uuid             not null, primary key
+#  avatar                 :string
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :string(255)
+#  discord                :string
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  failed_attempts        :integer          default(0), not null
+#  guilded                :string
+#  homepage               :string
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :string(255)
+#  locale                 :string(255)
+#  locked_at              :datetime
+#  public_hangar          :boolean          default(TRUE)
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string(255)
+#  rsi_handle             :string
+#  sale_notify            :boolean          default(FALSE)
+#  sign_in_count          :integer          default(0), not null
+#  tracking               :boolean          default(TRUE)
+#  twitch                 :string
+#  unconfirmed_email      :string(255)
+#  unlock_token           :string(255)
+#  username               :string(255)      default(""), not null
+#  youtube                :string
+#  created_at             :datetime
+#  updated_at             :datetime
+#
+# Indexes
+#
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_username              (username) UNIQUE
+#
 DEFAULTS: &DEFAULTS
   encrypted_password: <%= User.new.send(:password_digest, "enterprise") %>
   confirmed_at: <%= Time.now %>

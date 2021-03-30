@@ -11,7 +11,6 @@
   background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;
-  cursor: pointer;
   opacity: 1;
 
   &::before {
@@ -34,9 +33,16 @@
     content: '';
   }
 
+  &:last-child {
+    margin-right: 0;
+  }
+
   > :first-child {
     flex-grow: 1;
-    min-width: 120px;
+  }
+
+  > span {
+    padding: 5px 10px;
   }
 
   > * {
@@ -45,7 +51,33 @@
     border-radius: 0 !important;
   }
 
+  > .panel-btn {
+    padding: 0;
+
+    .panel-btn-inner {
+      border-radius: $border-radius-base - 1px;
+    }
+
+    &:first-child {
+      .panel-btn-inner {
+        border-top-left-radius: $panel-content-border-radius;
+        border-bottom-left-radius: $panel-content-border-radius;
+      }
+    }
+
+    &:last-child {
+      .panel-btn-inner {
+        border-top-right-radius: $panel-content-border-radius;
+        border-bottom-right-radius: $panel-content-border-radius;
+      }
+    }
+  }
+
   > :last-child {
     border-right: none !important;
+  }
+
+  &.panel-btn-group-inline {
+    margin-bottom: 0;
   }
 }

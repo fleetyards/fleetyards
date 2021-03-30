@@ -1,7 +1,54 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: equipment
+#
+#  id               :uuid             not null, primary key
+#  damage_reduction :decimal(15, 2)
+#  description      :text
+#  equipment_type   :integer
+#  extras           :string
+#  grade            :string
+#  hidden           :boolean          default(TRUE)
+#  item_type        :integer
+#  name             :string
+#  range            :decimal(15, 2)
+#  rate_of_fire     :decimal(15, 2)
+#  size             :string
+#  slot             :integer
+#  slug             :string
+#  storage          :decimal(15, 2)
+#  store_image      :string
+#  weapon_class     :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  manufacturer_id  :uuid
+#
+# Indexes
+#
+#  index_equipment_on_manufacturer_id  (manufacturer_id)
+#
 class Equipment < ApplicationRecord
   paginates_per 50
+
+  searchkick searchable: %i[name manufacturer_name manufacturer_code equipment_type item_type slot],
+             word_start: %i[name manufacturer_name equipment_type item_type]
+
+  def search_data
+    {
+      name: name,
+      item_type: item_type,
+      equipment_type: equipment_type,
+      manufacturer_name: manufacturer&.name,
+      manufacturer_code: manufacturer&.code,
+      slot: slot
+    }
+  end
+
+  def should_index?
+    !hidden
+  end
 
   belongs_to :manufacturer, optional: true
   has_many :shop_commodities, as: :commodity_item, dependent: :destroy
@@ -51,6 +98,24 @@ class Equipment < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def self.item_type_filters
+    Equipment.item_types.map do |(item, _index)|
+      Filter.new(
+        category: 'item_type',
+        name: Equipment.human_enum_name(:item_type, item),
+        value: item
+      )
+    end
+  end
+
+  def sold_at
+    shop_commodities.where.not(sell_price: nil).uniq { |item| item.shop.slug }
+  end
+
+  def bought_at
+    shop_commodities.where.not(buy_price: nil).uniq { |item| item.shop.slug }
   end
 
   def equipment_type_label

@@ -9,13 +9,23 @@ arccorp.update!(
 area18 = Station.find_or_initialize_by(name: 'Area 18')
 area18.update!(
   celestial_object: arccorp,
-  station_type: :district,
-  location: 'ArcCorp',
+  station_type: :landing_zone,
+  location: nil,
+  classification: :city,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18-1.jpg').open,
   hidden: false
 )
 
 area18.docks.destroy_all
+{ small: [1, 2, 3], medium: [4, 5, 6], large: [7, 8], capital: [9, 10, 11, 12] }.each do |ship_size, hangars|
+  hangars.each do |hangar|
+    area18.docks << Dock.new(
+      name: ("%02d" % hangar),
+      dock_type: :hangar,
+      ship_size: ship_size,
+    )
+  end
+end
 
 area18.habitations.destroy_all
 %w[1 2 3 4 5 6].each do |level|
@@ -75,6 +85,8 @@ tdd = Shop.find_or_initialize_by(name: 'Trade & Development Division', station: 
 tdd.update!(
   shop_type: :resources,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/jobwell.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -82,6 +94,8 @@ arccorp_tower = Shop.find_or_initialize_by(name: 'ArcCorp Tower', station: area1
 arccorp_tower.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: false
 )
 
@@ -89,32 +103,14 @@ centermass = Shop.find_or_initialize_by(name: 'CenterMass', station: area18)
 centermass.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/area18/centermass.jpg').open,
+  selling: true,
   hidden: false
 )
 
-rikerMemorial = Station.find_or_initialize_by(name: 'Riker Memorial Spaceport')
-rikerMemorial.update!(
-  celestial_object: arccorp,
-  station_type: :spaceport,
-  location: 'Area 18',
-  store_image: Rails.root.join('db/seeds/images/stanton/arccorp/riker-memorial.jpg').open,
-  hidden: false
-)
-
-rikerMemorial.docks.destroy_all
-{ small: [1, 2, 3], medium: [4, 5, 6], large: [7, 8], capital: [9, 10, 11, 12] }.each do |ship_size, hangars|
-  hangars.each do |hangar|
-    rikerMemorial.docks << Dock.new(
-      name: ("%02d" % hangar),
-      dock_type: :hangar,
-      ship_size: ship_size,
-    )
-  end
-end
-
-traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: rikerMemorial)
+traveler_rentals = Shop.find_or_initialize_by(name: 'Traveler Rentals', station: area18)
 traveler_rentals.update!(
   shop_type: :rental,
+  location: 'Riker Memorial Spaceport',
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/traveler-rentals.jpg').open,
   rental: true,
   hidden: false

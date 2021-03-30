@@ -17,7 +17,11 @@ import { Component, Prop } from 'vue-property-decorator'
 import BtnInner from 'frontend/core/components/Btn/Inner/index.vue'
 import { RouteConfig } from 'vue-router'
 
-@Component({ components: { BtnInner } })
+@Component<Btn>({
+  components: {
+    BtnInner,
+  },
+})
 export default class Btn extends Vue {
   @Prop({ default: false }) loading!: boolean
 
@@ -36,7 +40,11 @@ export default class Btn extends Vue {
   @Prop({
     default: 'default',
     validator(value) {
-      return ['default', 'transparent', 'link', 'danger'].indexOf(value) !== -1
+      return (
+        ['default', 'transparent', 'link', 'danger', 'dropdown'].indexOf(
+          value,
+        ) !== -1
+      )
     },
   })
   variant!: string
@@ -63,8 +71,10 @@ export default class Btn extends Vue {
 
   @Prop({ default: false }) disabled!: boolean
 
+  @Prop({ default: null }) routeActiveClass!: boolean
+
   get btnType() {
-    if (this.to) return 'router-link'
+    if (this.to && !this.disabled) return 'router-link'
 
     if (this.href) return 'a'
 
@@ -76,6 +86,8 @@ export default class Btn extends Vue {
       return {
         to: this.to,
         exact: this.exact,
+        // event: this.disabled ? '' : 'click',
+        activeClass: this.routeActiveClass,
       }
     }
 
@@ -103,9 +115,11 @@ export default class Btn extends Vue {
       'panel-btn-large': this.size === 'large',
       'panel-btn-block': this.block,
       'panel-btn-inline': this.inline,
+      'panel-btn-dropdown-link': this.variant === 'dropdown',
       'panel-btn-text-inline': this.textInline,
       'panel-btn-mobile-block': this.mobileBlock,
       'active': this.active,
+      'disabled': this.disabled,
     }
   }
 }

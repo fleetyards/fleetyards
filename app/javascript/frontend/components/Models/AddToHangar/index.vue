@@ -67,7 +67,7 @@ export default class AddToHangar extends Vue {
   async add() {
     if (!this.isAuthenticated) {
       displayWarning({
-        text: this.$t('messages.error.accountRequired'),
+        text: this.$t('messages.error.hangar.accountRequired'),
       })
       return
     }

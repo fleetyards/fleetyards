@@ -10,10 +10,10 @@
           >
             <Panel>
               <div
-                v-tooltip="modifiable && selectTooltip(addon.id)"
+                v-tooltip="editable && selectTooltip(addon.id)"
                 class="model-panel"
                 :class="{
-                  modifiable,
+                  editable,
                 }"
                 @click.capture="changeAddon(addon.id)"
               >
@@ -28,7 +28,7 @@
                 </div>
                 <div
                   v-if="selectedAddon(addon.id)"
-                  v-tooltip="modifiable && $t('labels.selected')"
+                  v-tooltip="editable && $t('labels.selected')"
                   class="model-panel-selected"
                 >
                   <i class="fa fa-check" />
@@ -39,7 +39,7 @@
         </template>
       </div>
     </div>
-    <div v-if="modifiable" class="col-12 col-md-6 add-addons">
+    <div v-if="editable" class="col-12 col-md-6 add-addons">
       <FilterGroup
         v-model="addonToAdd"
         :label="label"
@@ -84,7 +84,7 @@ export default {
       required: true,
     },
 
-    modifiable: {
+    editable: {
       type: Boolean,
       default: false,
     },
@@ -132,7 +132,7 @@ export default {
     },
 
     changeAddon(addonId) {
-      if (!this.modifiable) {
+      if (!this.editable) {
         return
       }
 

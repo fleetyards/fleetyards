@@ -2,23 +2,27 @@
 en:
   app: FleetYards.net
   admin_app: FleetYards.net Command
+  copyright:  Copyright
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
     server_error: The Page is currently not available. Please try again later.
     unprocessable_entity: Your Request could not be processed.
   mailer:
-    hello: Hello %{username}!
+    hello: Hello %{username}
+    privacy: Privacy policy
+    settings: Notification Settings
+    unsubscribe: Unsubscribe
     model:
       new:
-        subject: New Ship/Vehicle added
-        headline: New Ship/Vehicle added
-        body: "Allow me to introduce: The %{manufacturer}"
+        subject: New Ship/Vehicle
+        headline_part_1: "Allow me to introduce:"
+        headline_part_2: "The %{manufacturer}"
     transmission_end: "--- incomming transmission ---"
     transmission_start: "--- incomming transmission ---"
     admin:
       weekly:
-        headline: FleetYards.net Weekly
-        subject: FleetYards.net Weekly
+        headline: FleetYards.net Command - Weekly
+        subject: FleetYards.net Command Weekly
         registrations: "New Registrations"
         ships: "New Ships"
         vehicles: "New Vehicles"
@@ -27,9 +31,13 @@ en:
         headline: FleetYards.net Missing Loaners
         subject: FleetYards.net Missing Loaners
       notify_block:
-        headline: FleetYards.net Blocked by RSI
-        subject: FleetYards.net Blocked by RSI
-        text: RSI has blocked automated updates
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connection to RSI blocked
+        text: Automated updates from RSI using "%{url}" has been blocked
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connection to RSI restored
+        text: Automated updates from RSI using "%{url}" has been restored
     vehicle:
       on_sale:
         headline:
@@ -42,6 +50,11 @@ en:
         headline: New changes on the Roadmap
         subject: New changes on the Roadmap
         body: There have been %{changes} changes to the Roadmap
+    progress_tracker:
+      admin:
+        headline: New changes on the Progress Tracker
+        subject: New changes on the Progress Tracker
+        body: There have been %{changes} changes on the Progress Tracker
     fleet_membership:
       new_invite:
         subject: New Fleet Invite
@@ -74,6 +87,11 @@ en:
     commodities: Commodities
     celestial_objects: Celestial Objects
     starsystems: Starsystems
+    admin_users: Admins
+    shop_commodities:
+      confirmation: Confirm Shop Commodities
+    commodity_prices:
+      confirmation: Confirm Price Submissions
   title:
     frontend:
       home: Home
@@ -109,6 +127,7 @@ en:
       roadmap: Roadmap
       roadmap_changes: Roadmap Changes
       roadmap_ships: Ship-Roadmap
+      roadmap_progress-tracker: Progress Tracker
       hangar: My Hangar
       hangar_preview: My Hangar Preview
       hangar_import: Import
@@ -158,6 +177,10 @@ en:
       edit: Edit Commodity
       index: Commodities
       new: New Commodity
+    shop_commodity:
+      confirmation: Confirm submitted Shop Commodities
+    commodity_price:
+      confirmation: Confirm submitted Prices
     equipment:
       edit: Edit Equipment
       index: Equipment
@@ -194,3 +217,7 @@ en:
       edit: Edit User
       index: Users
       new: New User
+    admin_user:
+      edit: Edit Admin User
+      index: Admin Users
+      new: New Admin User

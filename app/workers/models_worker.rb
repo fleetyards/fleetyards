@@ -7,7 +7,7 @@ class ModelsWorker
   sidekiq_options retry: false, queue: (ENV['MODEL_LOADER_QUEUE'] || 'fleetyards_model_loader').to_sym
 
   def perform
-    ::RSI::ModelsLoader
+    ::Rsi::ModelsLoader
       .new(vat_percent: Rails.application.secrets[:rsi_vat_percent])
       .all
   end

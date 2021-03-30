@@ -21,18 +21,7 @@
     </Btn>
 
     <template v-if="vehicle && !vehicle.loaner">
-      <Btn
-        v-if="myShip"
-        :title="$t('actions.edit')"
-        :aria-label="$t('actions.edit')"
-        variant="link"
-        size="small"
-        data-test="vehicle-edit"
-        :inline="true"
-        @click.native="openEditModal"
-      >
-        <i class="fa fa-pencil" />
-      </Btn>
+      <VehicleContextMenu v-if="myShip" :vehicle="vehicle" :editable="myShip" />
 
       <Btn
         v-if="upgradable"
@@ -61,12 +50,14 @@ import { Component } from 'vue-property-decorator'
 import BtnGroup from 'frontend/core/components/BtnGroup/index.vue'
 import Btn from 'frontend/core/components/Btn/index.vue'
 import AddToHangar from 'frontend/components/Models/AddToHangar/index.vue'
+import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
 
 @Component({
   components: {
     BtnGroup,
     Btn,
     AddToHangar,
+    VehicleContextMenu,
   },
 })
 export default class FleetchartItemContextMenu extends Vue {
@@ -182,7 +173,7 @@ export default class FleetchartItemContextMenu extends Vue {
       component: () => import('frontend/components/Vehicles/AddonsModal'),
       props: {
         vehicle: this.vehicle,
-        modifiable: this.isMyShip,
+        editable: this.editable,
       },
     })
   }

@@ -7,8 +7,13 @@ class StoreImageUploader < BaseUploader
     ActionController::Base.helpers.asset_url('fallback/store_image.jpg', host: Rails.application.secrets[:frontend_endpoint])
   end
 
+  version :large do
+    process resize_to_limit: [2400, 2400]
+    process quality: 90
+  end
+
   version :medium do
-    process resize_to_limit: [800, 800]
+    process resize_to_fill: [800, 280]
     process quality: 90
   end
 

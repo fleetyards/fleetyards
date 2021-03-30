@@ -1,8 +1,53 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :uuid             not null, primary key
+#  avatar                 :string
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :string(255)
+#  discord                :string
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  failed_attempts        :integer          default(0), not null
+#  guilded                :string
+#  homepage               :string
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :string(255)
+#  locale                 :string(255)
+#  locked_at              :datetime
+#  public_hangar          :boolean          default(TRUE)
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string(255)
+#  rsi_handle             :string
+#  sale_notify            :boolean          default(FALSE)
+#  sign_in_count          :integer          default(0), not null
+#  tracking               :boolean          default(TRUE)
+#  twitch                 :string
+#  unconfirmed_email      :string(255)
+#  unlock_token           :string(255)
+#  username               :string(255)      default(""), not null
+#  youtube                :string
+#  created_at             :datetime
+#  updated_at             :datetime
+#
+# Indexes
+#
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_username              (username) UNIQUE
+#
 class User < ApplicationRecord
-  devise :two_factor_authenticatable, :two_factor_backupable, :async, :recoverable,
-         :rememberable, :trackable, :validatable, :confirmable, :timeoutable,
+  devise :two_factor_authenticatable, :two_factor_backupable, :async, :recoverable, 
+         :rememberable, :trackable, :validatable, :confirmable, :timeoutable, 
          otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
          otp_backup_code_length: 32, otp_number_of_backup_codes: 10,
          authentication_keys: [:login]
@@ -57,6 +102,18 @@ class User < ApplicationRecord
 
   def setup_otp_secret
     self.otp_secret = User.generate_otp_secret
+  end
+  
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def resend_confirmation
+    return if confirmed?
+
+    return if confirmation_sent_at.present? && confirmation_sent_at > (Time.zone.now - 10.minutes)
+
+    send_confirmation_instructions
   end
 
   def clean_username

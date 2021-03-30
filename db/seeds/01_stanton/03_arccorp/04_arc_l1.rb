@@ -7,7 +7,8 @@ hidden = false
 arc_l1 = Station.find_or_initialize_by(name: 'ARC-L1 Wide Forest Station')
 arc_l1.update!(
   celestial_object: arccorp,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'ARC-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/arc-l1.jpg').open,
   hidden: hidden
@@ -52,13 +53,16 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: arc_l1)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
-live_fire_weapons = Shop.find_or_initialize_by(name: 'Livefire Weapons', station: arc_l1)
+live_fire_weapons = Shop.find_or_initialize_by(name: 'Live Fire Weapons', station: arc_l1)
 live_fire_weapons.update!(
   shop_type: :weapons,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -66,6 +70,7 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: arc_l1)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -73,5 +78,6 @@ platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: arc_l1)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/platinum.jpg').open,
+  selling: true,
   hidden: hidden
 )

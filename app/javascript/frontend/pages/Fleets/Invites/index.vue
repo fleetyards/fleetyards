@@ -123,10 +123,13 @@ export default {
           text: this.$t('messages.fleet.invites.accept.success'),
         })
 
-        this.$router.push({
-          name: 'fleet',
-          params: { slug: invite.fleet.slug },
-        })
+        this.$router
+          .push({
+            name: 'fleet',
+            params: { slug: invite.fleet.slug },
+          })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          .catch(() => {})
       } else {
         displayAlert({
           text: this.$t('messages.fleet.invites.accept.failure'),

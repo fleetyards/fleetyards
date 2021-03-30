@@ -7,5 +7,7 @@ type ShopsFilter = {
 }
 
 interface ShopParams extends CollectionParams {
-  filters: ShopsFilter
+  filters?: ShopsFilter
+  stationSlug?: string
+  slug?: string
 }

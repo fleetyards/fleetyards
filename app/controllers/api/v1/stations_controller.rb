@@ -41,6 +41,14 @@ module Api
         render 'api/v1/shared/filters'
       end
 
+      def classifications
+        authorize! :show, :api_stations
+
+        @filters = Station.classification_filters
+
+        render 'api/v1/shared/filters'
+      end
+
       def images
         authorize! :show, :api_models
         station = Station.visible.find_by!(slug: params[:slug])
@@ -53,7 +61,7 @@ module Api
 
       private def station_query_params
         @station_query_params ||= query_params(
-          :celestial_object_eq, :name_cont, :habs_not_null, :search_cont,
+          :celestial_object_eq, :name_cont, :slug_eq, :habs_not_null, :search_cont,
           name_in: [], celestial_object_in: [], starsystem_in: [], station_type_in: [],
           shops_shop_type_in: [], docks_ship_size_in: [], sorts: []
         )

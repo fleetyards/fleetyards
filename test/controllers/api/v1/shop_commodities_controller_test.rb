@@ -17,9 +17,11 @@ module Api
       let(:andromeda) { shop_commodities :commodity_four }
       let(:index_result) do
         [{
+          'id' => explorer.id,
           'name' => '600i',
           'slug' => '600i',
           'storeImage' => explorer.commodity_item.store_image.url,
+          'storeImageLarge' => explorer.commodity_item.store_image.large.url,
           'storeImageMedium' => explorer.commodity_item.store_image.medium.url,
           'storeImageSmall' => explorer.commodity_item.store_image.small.url,
           'category' => 'model',
@@ -28,28 +30,41 @@ module Api
           'description' => nil,
           'pricePerUnit' => false,
           'sellPrice' => nil,
+          'averageSellPrice' => nil,
           'buyPrice' => nil,
-          'rentPrice1Day' => nil,
-          'rentPrice3Days' => nil,
-          'rentPrice7Days' => nil,
-          'rentPrice30Days' => nil,
-          'locationLabel' => andromeda.location_label,
+          'averageBuyPrice' => nil,
+          'rentalPrice1Day' => nil,
+          'averageRentalPrice1Day' => nil,
+          'rentalPrice3Days' => nil,
+          'averageRentalPrice3Days' => nil,
+          'rentalPrice7Days' => nil,
+          'averageRentalPrice7Days' => nil,
+          'rentalPrice30Days' => nil,
+          'averageRentalPrice30Days' => nil,
+          'locationLabel' => explorer.location_label,
+          'confirmed' => true,
+          'commodityItemType' => explorer.commodity_item_type,
+          'commodityItemId' => explorer.commodity_item_id,
           'shop' => {
-            'id' => andromeda.shop.id,
+            'id' => explorer.shop.id,
             'name' => 'New Deal',
             'slug' => 'new-deal',
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
-            'locationLabel' => andromeda.shop.location_label,
+            'stationLabel' => explorer.shop.station_label,
+            'location' => nil,
+            'locationLabel' => explorer.shop.location_label,
             'rental' => false,
             'buying' => false,
             'selling' => false,
-            'storeImage' => andromeda.shop.store_image.url,
-            'storeImageMedium' => andromeda.shop.store_image.medium.url,
-            'storeImageSmall' => andromeda.shop.store_image.small.url,
+            'storeImage' => explorer.shop.store_image.url,
+            'storeImageLarge' => explorer.shop.store_image.large.url,
+            'storeImageMedium' => explorer.shop.store_image.medium.url,
+            'storeImageSmall' => explorer.shop.store_image.small.url,
+            'refineryTerminal' => nil,
             'station' => {
-              'name' => andromeda.shop.station.name,
-              'slug' => andromeda.shop.station.slug,
+              'name' => explorer.shop.station.name,
+              'slug' => explorer.shop.station.slug,
             },
           },
           'item' => {
@@ -65,6 +80,8 @@ module Api
             'mass' => 0.0,
             'cargo' => 40.0,
             'cargoLabel' => '600i (40 SCU)',
+            'hydrogenFuelTankSize' => nil,
+            'quantumFuelTankSize' => nil,
             'minCrew' => 2,
             'maxCrew' => 5,
             'scmSpeed' => nil,
@@ -80,6 +97,7 @@ module Api
             'size' => nil,
             'sizeLabel' => nil,
             'storeImage' => explorer.commodity_item.store_image.url,
+            'storeImageLarge' => explorer.commodity_item.store_image.large.url,
             'storeImageMedium' => explorer.commodity_item.store_image.medium.url,
             'storeImageSmall' => explorer.commodity_item.store_image.small.url,
             'fleetchartImage' => nil,
@@ -102,6 +120,9 @@ module Api
             'hasPaints' => false,
             'lastUpdatedAt' => explorer.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(explorer.commodity_item.last_updated_at&.utc, format: :label) if explorer.commodity_item.last_updated_at.present?),
+            'soldAt' => [],
+            'boughtAt' => [],
+            'rentalAt' => [],
             'manufacturer' => {
               'name' => 'Origin',
               'slug' => 'origin',
@@ -114,9 +135,11 @@ module Api
           'createdAt' => explorer.created_at.utc.iso8601,
           'updatedAt' => explorer.updated_at.utc.iso8601
         }, {
+          'id' => andromeda.id,
           'name' => 'Andromeda',
           'slug' => 'andromeda',
           'storeImage' => andromeda.commodity_item.store_image.url,
+          'storeImageLarge' => andromeda.commodity_item.store_image.large.url,
           'storeImageMedium' => andromeda.commodity_item.store_image.medium.url,
           'storeImageSmall' => andromeda.commodity_item.store_image.small.url,
           'category' => 'model',
@@ -125,25 +148,38 @@ module Api
           'description' => nil,
           'pricePerUnit' => false,
           'sellPrice' => nil,
+          'averageSellPrice' => nil,
           'buyPrice' => nil,
-          'rentPrice1Day' => nil,
-          'rentPrice3Days' => nil,
-          'rentPrice7Days' => nil,
-          'rentPrice30Days' => nil,
+          'averageBuyPrice' => nil,
+          'rentalPrice1Day' => nil,
+          'averageRentalPrice1Day' => nil,
+          'rentalPrice3Days' => nil,
+          'averageRentalPrice3Days' => nil,
+          'rentalPrice7Days' => nil,
+          'averageRentalPrice7Days' => nil,
+          'rentalPrice30Days' => nil,
+          'averageRentalPrice30Days' => nil,
           'locationLabel' => andromeda.location_label,
+          'confirmed' => true,
+          'commodityItemType' => andromeda.commodity_item_type,
+          'commodityItemId' => andromeda.commodity_item_id,
           'shop' => {
             'id' => andromeda.shop.id,
             'name' => 'New Deal',
             'slug' => 'new-deal',
             'type' => 'ships',
             'typeLabel' => 'Ship Store',
+            'stationLabel' => andromeda.shop.station_label,
+            'location' => nil,
             'locationLabel' => andromeda.shop.location_label,
             'rental' => false,
             'buying' => false,
             'selling' => false,
             'storeImage' => andromeda.shop.store_image.url,
+            'storeImageLarge' => andromeda.shop.store_image.large.url,
             'storeImageMedium' => andromeda.shop.store_image.medium.url,
             'storeImageSmall' => andromeda.shop.store_image.small.url,
+            'refineryTerminal' => nil,
             'station' => {
               'name' => andromeda.shop.station.name,
               'slug' => andromeda.shop.station.slug,
@@ -162,6 +198,8 @@ module Api
             'mass' => 1000.02,
             'cargo' => 90.0,
             'cargoLabel' => 'Andromeda (90 SCU)',
+            'hydrogenFuelTankSize' => nil,
+            'quantumFuelTankSize' => nil,
             'minCrew' => 3,
             'maxCrew' => 5,
             'scmSpeed' => nil,
@@ -177,6 +215,7 @@ module Api
             'size' => nil,
             'sizeLabel' => nil,
             'storeImage' => andromeda.commodity_item.store_image.url,
+            'storeImageLarge' => andromeda.commodity_item.store_image.large.url,
             'storeImageMedium' => andromeda.commodity_item.store_image.medium.url,
             'storeImageSmall' => andromeda.commodity_item.store_image.small.url,
             'fleetchartImage' => nil,
@@ -199,6 +238,9 @@ module Api
             'hasPaints' => false,
             'lastUpdatedAt' => andromeda.commodity_item.last_updated_at&.utc&.iso8601,
             'lastUpdatedAtLabel' => (I18n.l(andromeda.commodity_item.last_updated_at&.utc, format: :label) if andromeda.commodity_item.last_updated_at.present?),
+            'soldAt' => [],
+            'boughtAt' => [],
+            'rentalAt' => [],
             'manufacturer' => {
               'name' => 'RSI',
               'slug' => 'rsi',
@@ -213,14 +255,24 @@ module Api
         }]
       end
 
+      def setup
+        Searchkick.enable_callbacks
+      end
+
+      def teardown
+        Searchkick.disable_callbacks
+      end
+
       describe 'without session' do
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
 
@@ -232,12 +284,14 @@ module Api
         end
 
         it 'should return list for index' do
-          get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
+          VCR.use_cassette('shop_commodities_index') do
+            get :index, params: { station_slug: new_deal.station.slug, shop_slug: new_deal.slug }
 
-          assert_response :ok
-          json = JSON.parse response.body
+            assert_response :ok
+            json = JSON.parse response.body
 
-          assert_equal index_result, json
+            assert_equal index_result, json
+          end
         end
       end
     end

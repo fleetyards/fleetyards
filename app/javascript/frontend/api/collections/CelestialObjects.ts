@@ -20,14 +20,14 @@ export class CelestialObjectCollection extends BaseCollection {
     const response = await get('celestial-objects', {
       q: params.filters,
       page: params.page,
+      cacheId: params.cacheId,
     })
 
     if (!response.error) {
       this.records = response.data
       this.loaded = true
+      this.setPages(response.meta)
     }
-
-    this.setPages(response.meta)
 
     return this.records
   }

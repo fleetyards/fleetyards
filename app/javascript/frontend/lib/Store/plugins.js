@@ -17,6 +17,8 @@ export default function getStorePlugins() {
         'hangar.preview',
         'hangar.money',
         'hangar.starterGuideVisible',
+        'hangar.perPage',
+        'hangar.gridView',
         'models.detailsVisible',
         'models.fleetchartScale',
         'models.holoviewerVisible',
@@ -26,6 +28,7 @@ export default function getStorePlugins() {
         'fleet.grouped',
         'fleet.money',
         'fleet.preview',
+        'shoppingCart.items',
       ],
     }),
   ]

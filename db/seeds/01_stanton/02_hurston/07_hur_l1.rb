@@ -7,7 +7,8 @@ hidden = false
 hur_l1 = Station.find_or_initialize_by(name: 'HUR-L1 Green Glade Station')
 hur_l1.update!(
   celestial_object: hurston,
-  station_type: :rest_stop,
+  station_type: :station,
+  classification: :rest_stop,
   location: 'HUR-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg').open,
   hidden: hidden
@@ -52,14 +53,17 @@ admin_office = Shop.find_or_initialize_by(name: 'Admin Office', station: hur_l1)
 admin_office.update!(
   shop_type: :admin,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/admin.jpg').open,
+  buying: true,
+  selling: true,
   hidden: hidden
 )
 
-Shop.find_by(name: 'Livefire Weapons', station: hur_l1)&.destroy
+Shop.find_by(name: 'Live Fire Weapons', station: hur_l1)&.destroy
 bulwark_armor = Shop.find_or_initialize_by(name: 'Bulwark Armor', station: hur_l1)
 bulwark_armor.update!(
   shop_type: :armor,
   # store_image: Rails.root.join('db/seeds/images/stanton/crusader/hur-l1/live_fire_weapons.jpg').open,
+  selling: true,
   hidden: hidden
 )
 
@@ -67,11 +71,13 @@ casaba = Shop.find_or_initialize_by(name: 'Casaba Outlet', station: hur_l1)
 casaba.update!(
   shop_type: :clothing,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/casaba.jpg').open,
+  selling: true,
   hidden: hidden
 )
 platinum_bay = Shop.find_or_initialize_by(name: 'Platinum Bay', station: hur_l1)
 platinum_bay.update!(
   shop_type: :components,
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/platinum.jpg').open,
+  selling: true,
   hidden: hidden
 )

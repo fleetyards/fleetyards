@@ -9,11 +9,11 @@
   >
     <template v-if="withIcon">
       <i class="fad fa-cube" />
-      {{ $t('labels.exportStarship42') }}
+      <span>{{ $t('labels.exportStarship42') }}</span>
     </template>
-    <template v-else>
+    <span v-else>
       {{ $t('labels.3dView') }}
-    </template>
+    </span>
   </Btn>
 </template>
 

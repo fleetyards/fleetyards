@@ -1,13 +1,15 @@
 <template>
-  <div class="form-group">
+  <div class="form-group form-group-checkbox">
     <input
       :id="checkboxID"
+      v-model="internalValue"
       :checked="value ? 'checked' : null"
       :disabled="disabled ? 'disabled' : null"
       class="checkbox"
       type="checkbox"
+      :value="checkboxValue"
       :data-test="`checkbox-${id}`"
-      @change="change"
+      @change="update"
     />
     <label :for="checkboxID">
       {{ label }}
@@ -25,18 +27,29 @@ export default {
 
     label: {
       type: String,
-      required: true,
+      default: null,
     },
 
     value: {
-      type: Boolean,
-      required: true,
+      type: [Boolean, Array],
+      default: null,
     },
 
     disabled: {
       type: Boolean,
       default: false,
     },
+
+    checkboxValue: {
+      type: [String, Number],
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      internalValue: null,
+    }
   },
 
   computed: {
@@ -46,9 +59,19 @@ export default {
     },
   },
 
+  watch: {
+    value() {
+      this.internalValue = this.value
+    },
+  },
+
+  mounted() {
+    this.internalValue = this.value
+  },
+
   methods: {
-    change(event) {
-      this.$emit('input', event.target.checked)
+    update() {
+      this.$emit('input', this.internalValue)
     },
   },
 }

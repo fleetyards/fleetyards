@@ -20,11 +20,14 @@ address {
 
 blockquote {
   padding-left: 15px;
-  border-right: 5px solid $gray-light;
+  border-left: 5px solid $gray-light;
 
   &.text-right {
     padding-right: 15px;
     padding-left: 0;
+    text-align: right;
+    border-right: 5px solid $gray-light;
+    border-left: none;
   }
 
   footer {
@@ -59,5 +62,27 @@ h1,
   small {
     font-size: 15px;
     font-family: 'Open Sans', sans-serif;
+  }
+}
+
+.text-muted {
+  color: darken($text-color, 30%) !important;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+
+  * {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
   }
 }

@@ -32,7 +32,7 @@ module Api
         @q = scope.ransack(vehicle_query_params)
 
         @vehicles = @q.result(distinct: true)
-          .includes(model: [:manufacturer])
+          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
           .page(params[:page])
           .per(per_page(Vehicle))
@@ -60,22 +60,6 @@ module Api
         @response = ::HangarImporter.new(JSON.parse(params[:import].read)).run(current_user.id)
       rescue JSON::ParserError => e
         render json: ValidationError.new('vehicle.import', e), status: :bad_request
-      end
-
-      def destroy_all
-        authorize! :destroy_all, :api_hangar
-
-        Vehicle.transaction do
-          # rubocop:disable Rails/SkipsModelValidations
-          current_user.vehicles.update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
-
-          vehicle_ids = current_user.vehicle_ids
-
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
-        end
       end
 
       def fleetchart
@@ -248,12 +232,68 @@ module Api
         render json: ValidationError.new('vehicle.update', @vehicle.errors), status: :bad_request
       end
 
+      def update_bulk
+        authorize! :update_bulk, :api_hangar
+
+        errors = []
+
+        Vehicle.transaction do
+          scope = current_user.vehicles.where(id: params[:ids])
+
+          scope.find_each do |vehicle|
+            vehicle.task_forces.destroy_all if vehicle_params[:hangar_group_ids].blank?
+
+            next if vehicle.update(vehicle_bulk_params)
+
+            errors << vehicle.errors
+          end
+        end
+
+        return if errors.blank?
+
+        render json: ValidationError.new('vehicle.bulk_update', errors), status: :bad_request
+      end
+
       def destroy
         authorize! :destroy, vehicle
 
         return if vehicle.destroy
 
         render json: ValidationError.new('vehicle.destroy', @vehicle.errors), status: :bad_request
+      end
+
+      def destroy_bulk
+        authorize! :destroy_bulk, :api_hangar
+
+        Vehicle.transaction do
+          scope = current_user.vehicles.where(id: params[:ids])
+
+          # rubocop:disable Rails/SkipsModelValidations
+          scope.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
+
+          vehicle_ids = scope.pluck(:id)
+
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
+      end
+
+      def destroy_all
+        authorize! :destroy_all, :api_hangar
+
+        Vehicle.transaction do
+          # rubocop:disable Rails/SkipsModelValidations
+          current_user.vehicles.update_all(notify: false)
+          # rubocop:enable Rails/SkipsModelValidations
+
+          vehicle_ids = current_user.vehicle_ids
+
+          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+          Vehicle.where(id: vehicle_ids).delete_all
+        end
       end
 
       def models_by_size
@@ -287,7 +327,10 @@ module Api
 
         models_by_manufacturer = transform_for_pie_chart(
           current_user.manufacturers.uniq
-              .map { |m| { m.name => m.models.where(id: current_user.models.pluck(:id)).count } }
+              .map do |manufacturer|
+                model_ids = manufacturer.model_ids
+                { manufacturer.name => current_user.vehicles.where(model_id: model_ids).count }
+              end
               .reduce(:merge) || []
         )
 
@@ -307,6 +350,12 @@ module Api
         render json: models_by_classification.to_json
       end
 
+      def check_serial
+        authorize! :check_serial, :api_vehicles
+
+        render json: { serialTaken: current_user.vehicles.exists?(serial: vehicle_params[:serial].upcase) }
+      end
+
       private def vehicle
         @vehicle ||= Vehicle.find(params[:id])
       end
@@ -316,8 +365,17 @@ module Api
         @vehicle_params ||= begin
           params.transform_keys(&:underscore)
             .permit(
-              :name, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
-              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: []
+              :name, :serial, :model_id, :purchased, :name_visible, :public, :sale_notify, :flagship, :model_paint_id,
+              hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
+            ).merge(user_id: current_user.id)
+        end
+      end
+
+      private def vehicle_bulk_params
+        @vehicle_bulk_params ||= begin
+          params.transform_keys(&:underscore)
+            .permit(
+              :purchased, :public, hangar_group_ids: []
             ).merge(user_id: current_user.id)
         end
       end

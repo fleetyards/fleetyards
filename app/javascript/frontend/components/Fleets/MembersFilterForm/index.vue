@@ -4,8 +4,8 @@
       id="username"
       v-model="form.usernameCont"
       translation-key="filters.fleets.members.username"
-      no-label
-      clearable
+      :no-label="true"
+      :clearable="true"
     />
 
     <FilterGroup

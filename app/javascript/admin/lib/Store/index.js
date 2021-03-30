@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import actions from './actions'
 import getDefaultState from './state'
+import getStoreModules from './modules'
 
 Vue.use(Vuex)
 
@@ -9,6 +10,8 @@ const store = new Vuex.Store({
   // strict: true,
 
   state: getDefaultState(),
+
+  modules: getStoreModules(),
 
   getters: {
     mobile(state) {

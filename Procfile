@@ -1,3 +1,3 @@
-web: bundle exec puma
-worker: bundle exec sidekiq
+web: ./bin/rails s
+worker: ./bin/sidekiq
 webpack: ./bin/webpack-dev-server

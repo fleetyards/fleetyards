@@ -4,8 +4,8 @@
       id="shop-name"
       v-model="form.nameCont"
       translation-key="filters.shopItems.name"
-      no-label
-      clearable
+      :no-label="true"
+      :clearable="true"
     />
 
     <FilterGroup
@@ -81,11 +81,12 @@ export default {
 
   data() {
     const query = this.$route.query.q || {}
+
     return {
       loading: false,
       form: {
         nameCont: query.nameCont,
-        categoryIn: query.categoryeIn || [],
+        categoryIn: query.categoryIn || [],
         subCategoryIn: query.subCategoryIn || [],
         manufacturerIn: query.manufacturerIn || [],
         priceGteq: query.priceGteq,

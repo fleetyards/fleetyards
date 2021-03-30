@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div class="row">
-      <div v-if="model" class="col-12">
+      <div v-if="!loading && model" class="col-12">
         <div class="row">
           <div class="col-12">
             <BreadCrumbs :crumbs="crumbs" />
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-8">
+          <div class="col-12 col-lg-8 ship-detail-left-col">
             <div
               :class="{
                 'image-wrapper-holoviewer': holoviewerVisible,
@@ -53,14 +53,7 @@
                 :src="starship42IframeUrl"
                 frameborder="0"
               />
-              <img
-                v-lazy="model.storeImage"
-                class="image"
-                :class="{
-                  'image-hidden': holoviewerVisible,
-                }"
-                alt="model image"
-              />
+              <LazyImage v-else :src="storeImage" class="image" />
             </div>
             <div class="row production-status">
               <div class="col-6">
@@ -90,51 +83,19 @@
           </div>
           <div class="col-12 col-lg-4">
             <Panel>
-              <ModelBaseMetrics :model="model" title detailed padding />
+              <ModelBaseMetrics :model="model" />
             </Panel>
             <Panel>
-              <ModelCrewMetrics :model="model" title padding />
+              <ModelCrewMetrics :model="model" />
             </Panel>
             <Panel>
-              <ModelSpeedMetrics :model="model" title padding />
+              <ModelSpeedMetrics :model="model" />
             </Panel>
-            <div class="text-right">
-              <div class="page-actions page-actions-right">
-                <Btn
-                  v-if="model.hasImages"
-                  :to="{ name: 'model-images', params: { slug: model.slug } }"
-                >
-                  <i class="fa fa-images" />
-                </Btn>
-                <Btn
-                  v-if="model.hasVideos"
-                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
-                >
-                  <i class="fal fa-video" />
-                </Btn>
-                <Btn v-if="model.brochure" :href="model.brochure">
-                  {{ $t('labels.model.brochure') }}
-                  <i class="fal fa-download" />
-                </Btn>
-                <Btn
-                  :to="{
-                    name: 'models-compare',
-                    query: { models: [model.slug] },
-                  }"
-                  data-test="compare"
-                >
-                  {{ $t('actions.compare.models') }}
-                </Btn>
-                <AddToHangar :model="model" />
-              </div>
-            </div>
-            <br />
-            <div class="text-center">
+            <div class="page-actions page-actions-block">
               <Btn
                 v-if="model.onSale"
                 :href="`${model.storeUrl}#buying-options`"
-                class="sale-button"
-                size="large"
+                style="flex-grow: 3;"
               >
                 {{
                   $t('actions.model.onSale', {
@@ -145,19 +106,53 @@
                   {{ $t('labels.taxExcluded') }}
                 </small>
               </Btn>
-
-              <Btn
-                v-else
-                class="sale-button"
-                :href="model.storeUrl"
-                size="large"
-              >
+              <Btn v-else :href="model.storeUrl" style="flex-grow: 3;">
                 {{ $t('actions.model.store') }}
               </Btn>
+
+              <AddToHangar :model="model" />
+
+              <BtnDropdown data-test="model-dropdown">
+                <Btn
+                  v-if="model.hasImages"
+                  :to="{ name: 'model-images', params: { slug: model.slug } }"
+                  variant="dropdown"
+                >
+                  <i class="fa fa-images" />
+                  <span>{{ $t('nav.images') }}</span>
+                </Btn>
+                <Btn
+                  v-if="model.hasVideos"
+                  :to="{ name: 'model-videos', params: { slug: model.slug } }"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-video" />
+                  <span>{{ $t('nav.videos') }}</span>
+                </Btn>
+                <Btn
+                  v-if="model.brochure"
+                  :href="model.brochure"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-download" />
+                  <span>{{ $t('labels.model.brochure') }}</span>
+                </Btn>
+                <Btn
+                  :to="{
+                    name: 'models-compare',
+                    query: { models: [model.slug] },
+                  }"
+                  data-test="compare"
+                  variant="dropdown"
+                >
+                  <i class="fal fa-exchange" />
+                  <span>{{ $t('actions.compare.models') }}</span>
+                </Btn>
+              </BtnDropdown>
             </div>
-            <br />
           </div>
         </div>
+        <hr />
         <div class="row components">
           <div class="col-12">
             <ModelHardpoints
@@ -169,6 +164,7 @@
       </div>
       <Loader :loading="loading" />
     </div>
+    <hr v-if="paints.length" />
     <div class="row">
       <div class="col-12 paints">
         <h2 v-if="paints.length" class="text-uppercase">
@@ -192,6 +188,7 @@
         <Loader :loading="loadingPaints" :fixed="true" />
       </div>
     </div>
+    <hr v-if="modules.length" />
     <div class="row">
       <div class="col-12 modules">
         <h2 v-if="modules.length" class="text-uppercase">
@@ -209,6 +206,7 @@
         <Loader :loading="loadingModules" :fixed="true" />
       </div>
     </div>
+    <hr v-if="upgrades.length" />
     <div class="row">
       <div class="col-12 upgrades">
         <h2 v-if="upgrades.length" class="text-uppercase">
@@ -226,6 +224,7 @@
         <Loader :loading="loadingUpgrades" :fixed="true" />
       </div>
     </div>
+    <hr v-if="variants.length" />
     <div class="row">
       <div class="col-12 variants">
         <h2 v-if="variants.length" class="text-uppercase">
@@ -249,6 +248,7 @@
         <Loader :loading="loadingVariants" :fixed="true" />
       </div>
     </div>
+    <hr v-if="loaners.length" />
     <div class="row">
       <div class="col-12 loaners">
         <h2 v-if="loaners.length" class="text-uppercase">
@@ -281,10 +281,12 @@ import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Loader from 'frontend/core/components/Loader'
+import LazyImage from 'frontend/core/components/LazyImage'
 import AddToHangar from 'frontend/components/Models/AddToHangar'
 import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import ModelHardpoints from 'frontend/components/Models/Hardpoints'
 import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/components/Models/CrewMetrics'
@@ -298,10 +300,12 @@ import modelsCollection from 'frontend/api/collections/Models'
 @Component<ModelDetail>({
   components: {
     Loader,
+    LazyImage,
     AddToHangar,
     Panel,
     TeaserPanel,
     Btn,
+    BtnDropdown,
     ModelHardpoints,
     ModelBaseMetrics,
     ModelCrewMetrics,
@@ -337,6 +341,8 @@ export default class ModelDetail extends Vue {
 
   upgrades: ModelUpgrade[] = []
 
+  model: Model | null = null
+
   attributes: string[] = [
     'length',
     'beam',
@@ -353,8 +359,12 @@ export default class ModelDetail extends Vue {
 
   @Getter('holoviewerVisible', { namespace: 'models' }) holoviewerVisible
 
-  get model(): Model | null {
-    return modelsCollection.record
+  get storeImage() {
+    if (this.mobile) {
+      return this.model.storeImageMedium
+    }
+
+    return this.model.storeImageLarge
   }
 
   get starship42Url(): string {
@@ -366,11 +376,15 @@ export default class ModelDetail extends Vue {
   }
 
   get erkulUrl(): string | null {
-    if (!this.model || this.model.productionStatus !== 'flight-ready') {
+    if (
+      !this.model ||
+      this.model.productionStatus !== 'flight-ready' ||
+      !this.model.scIdentifier
+    ) {
       return null
     }
 
-    return `https://www.erkul.games/calculator;ship=${this.model.erkulsSlug}`
+    return `https://www.erkul.games/ship/${this.model.scIdentifier}`
   }
 
   get metaTitle() {
@@ -478,7 +492,7 @@ export default class ModelDetail extends Vue {
 
   async fetch() {
     this.loading = true
-    await modelsCollection.findBySlug(this.$route.params.slug)
+    this.model = await modelsCollection.findBySlug(this.$route.params.slug)
     this.loading = false
   }
 }

@@ -12,13 +12,13 @@
               vid="username"
               rules="required|alpha_dash|user"
               :name="$t('labels.username')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="username"
                 v-model="form.username"
                 :error="errors[0]"
-                autofocus
+                :autofocus="true"
               />
             </ValidationProvider>
           </div>

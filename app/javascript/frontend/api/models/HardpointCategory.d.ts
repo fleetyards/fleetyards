@@ -1,3 +1,0 @@
-type HardpointCategory = {
-  name: string
-}

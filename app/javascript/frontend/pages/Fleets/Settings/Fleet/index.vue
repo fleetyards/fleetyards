@@ -463,7 +463,8 @@ export default class FleetSettings extends Vue {
         )
 
         if (!response.error) {
-          this.$router.push({ name: 'home' })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          this.$router.push({ name: 'home' }).catch(() => {})
 
           this.$comlink.$emit('fleet-update')
 

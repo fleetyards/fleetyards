@@ -9,6 +9,7 @@ export default {
   },
   manufacturers: 'Manufacturers',
   images: 'Images',
+  videos: 'Videos',
   hangar: 'My Hangar',
   login: 'Login',
   logout: 'Logout',
@@ -39,6 +40,7 @@ export default {
     overview: 'Overview',
     changes: 'Changes',
     ships: 'Ship-Roadmap',
+    progressTracker: 'Progress Tracker',
   },
   rsiVerification: 'RSI Verification',
   settings: {

@@ -19,8 +19,34 @@
           </div>
         </div>
         <div class="col-6">
+          <div class="metrics-label">{{ $t('station.classification') }}:</div>
+          <div class="metrics-value">
+            {{ station.classificationLabel }}
+          </div>
+        </div>
+        <div class="col-6">
           <div class="metrics-label">{{ $t('station.location') }}:</div>
           <LocationLabel class="metrics-value" :station="station" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="metrics-label">{{ $t('station.refinery') }}:</div>
+          <div class="metrics-value">
+            {{ $t(`labels.${station.refinery}`) }}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="metrics-label">{{ $t('station.cargoHub') }}:</div>
+          <div class="metrics-value">
+            {{ $t(`labels.${station.cargoHub}`) }}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="metrics-label">{{ $t('station.habitable') }}:</div>
+          <div v-tooltip="station.habitable" class="metrics-value">
+            {{ $t(`labels.${!!station.habitable}`) }}
+          </div>
         </div>
       </div>
     </div>

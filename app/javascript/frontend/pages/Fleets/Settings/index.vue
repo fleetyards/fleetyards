@@ -5,13 +5,23 @@
         <ul class="tabs">
           <router-link
             v-if="canEdit"
+            v-slot="{ href: linkHref, navigate }"
             :to="{ name: 'fleet-settings-fleet' }"
-            tag="li"
+            :custom="true"
           >
-            <a>{{ $t('nav.fleets.settings.fleet') }}</a>
+            <li role="link" @click="navigate" @keypress.enter="navigate">
+              <a :href="linkHref">{{ $t('nav.fleets.settings.fleet') }}</a>
+            </li>
           </router-link>
-          <router-link :to="{ name: 'fleet-settings-membership' }" tag="li">
-            <a>{{ $t('nav.fleets.settings.membership') }}</a>
+
+          <router-link
+            v-slot="{ href: linkHref, navigate }"
+            :to="{ name: 'fleet-settings-membership' }"
+            :custom="true"
+          >
+            <li role="link" @click="navigate" @keypress.enter="navigate">
+              <a :href="linkHref">{{ $t('nav.fleets.settings.membership') }}</a>
+            </li>
           </router-link>
           <li
             v-if="fleet"
@@ -77,7 +87,7 @@ export default class FleetSettingsIndex extends Vue {
   }
 
   async leave() {
-    if (this.myFleet.role === 'admin' || this.leaving) return
+    if ((this.myFleet && this.myFleet.role === 'admin') || this.leaving) return
 
     this.leaving = true
     displayConfirm({
@@ -96,7 +106,8 @@ export default class FleetSettingsIndex extends Vue {
             text: this.$t('messages.fleet.leave.success'),
           })
 
-          this.$router.push({ name: 'home' })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          this.$router.push({ name: 'home' }).catch(() => {})
         } else {
           const { error } = response
           if (error.response && error.response.data) {

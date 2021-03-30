@@ -14,6 +14,7 @@ describe('Ship', () => {
       expect($h1).to.contain('100i')
     })
 
+    cy.select('model-dropdown').click()
     cy.select('compare').click()
 
     cy.url().should('include', '/compare/?models%5B%5D=100i')

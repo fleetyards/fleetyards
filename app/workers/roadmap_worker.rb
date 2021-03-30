@@ -10,7 +10,7 @@ class RoadmapWorker
   def perform
     count_before = PaperTrail::Version.where(item_type: 'RoadmapItem').count
 
-    ::RSI::RoadmapLoader.new.fetch
+    ::Rsi::RoadmapLoader.new.fetch
 
     changes = PaperTrail::Version.where(item_type: 'RoadmapItem').count - count_before
 

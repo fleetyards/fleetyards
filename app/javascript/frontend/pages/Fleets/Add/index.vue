@@ -112,10 +112,13 @@ export default {
           text: this.$t('messages.fleet.create.success'),
         })
 
-        this.$router.push({
-          name: 'fleet',
-          params: { slug: fleet.slug },
-        })
+        this.$router
+          .push({
+            name: 'fleet',
+            params: { slug: fleet.slug },
+          })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          .catch(() => {})
       } else {
         displayAlert({
           text: this.$t('messages.fleet.create.failure'),

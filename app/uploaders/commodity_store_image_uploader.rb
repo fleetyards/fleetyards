@@ -7,6 +7,11 @@ class CommodityStoreImageUploader < BaseUploader
     ActionController::Base.helpers.asset_url('fallback/commodity.png', host: Rails.application.secrets[:frontend_endpoint])
   end
 
+  version :large do
+    process resize_to_limit: [2400, 2400]
+    process quality: 90
+  end
+
   version :medium do
     process resize_to_limit: [800, 800]
     process quality: 90

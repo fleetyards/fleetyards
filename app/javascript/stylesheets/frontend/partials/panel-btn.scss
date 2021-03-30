@@ -37,17 +37,59 @@
     overflow: hidden;
     color: $text-color;
     font-size: 110%;
+    font-family: 'Open Sans', sans-serif;
     white-space: nowrap;
     text-align: center;
     text-overflow: ellipsis;
     border-radius: $panel-content-border-radius;
     transition: all $transition-base-speed ease;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: .5;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover:not([disabled]),
+  &.active {
+    .panel-btn-inner {
+      color: invert($text-color);
+      background-color: $panel-inner-border;
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    .panel-btn-inner {
+      outline: none;
+    }
+  }
+
+  &:active:not([disabled]) {
+    animation-name: flash;
+    animation-duration: .5s;
+  }
+
+  &.panel-btn-danger {
+    .panel-btn-inner {
+      color: $danger;
+    }
   }
 
   &.panel-btn-transparent {
     background: transparent;
   }
 
+  &.panel-btn-dropdown-link,
   &.panel-btn-link {
     background: transparent;
     border: none;
@@ -59,8 +101,11 @@
     &::after {
       display: none;
     }
+  }
 
-    &:hover {
+  &.panel-btn-link {
+    &:hover:not([disabled]),
+    &.active {
       background: transparent;
       border: none;
 
@@ -72,7 +117,7 @@
   }
 
   &.panel-btn-small {
-    min-width: 40px;
+    min-width: 45px;
 
     .panel-btn-inner {
       padding: 5px 10px;
@@ -93,6 +138,7 @@
     min-width: 140px;
   }
 
+  &.panel-btn-dropdown-link,
   &.panel-btn-inline {
     margin-bottom: 0;
   }
@@ -112,7 +158,6 @@
       padding: 0;
       overflow: inherit;
       color: $text-color !important;
-      font-size: 100%;
       background-color: transparent !important;
       border-radius: 0;
     }
@@ -120,33 +165,6 @@
 
   &.panel-btn-block {
     width: 100%;
-  }
-
-  &[disabled] {
-    opacity: .5;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  &:hover:not([disabled]),
-  &.active {
-    .panel-btn-inner {
-      color: invert($text-color);
-      background-color: $panel-inner-border;
-    }
-  }
-
-  &:active:not([disabled]) {
-    animation-name: flash;
-    animation-duration: .5s;
-  }
-
-  &.panel-btn-danger {
-    .panel-btn-inner {
-      color: $danger;
-    }
   }
 }
 

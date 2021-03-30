@@ -3,6 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark">
 
     <%= stylesheet_link_tag "email" %>
   </head>
@@ -12,11 +13,20 @@
       <tr>
         <td class="center" align="center" valign="top">
           <center>
-            <spacer size="16"></spacer>
             <container class="header">
+              <spacer size="32"></spacer>
               <row>
-                <columns>
-                  <h1><%= I18n.t('title.default') %></h1>
+                <columns small="12" large="3">
+                  <center>
+                    <img src="<%= image_url('logo-small.png') %>" alt="logo">
+                  </center>
+                </columns>
+                <columns small="12" large="9">
+                  <h1 style="margin-bottom: 0; margin-top: 20px;">
+                    <center>
+                      <%= I18n.t('title.default') %>
+                    </center>
+                  </h1>
                 </columns>
               </row>
             </container>
@@ -34,6 +44,7 @@
             <container class="content">
               <row>
                 <columns small="12" large="6">
+                  <spacer size="16"></spacer>
                   <%= yield %>
                 </columns>
               </row>
@@ -48,7 +59,17 @@
                 </columns>
               </row>
             </container>
+
             <spacer size="16"></spacer>
+
+            <center>
+              <%= I18n.t('copyright') %> &copy; <%= Time.current.year %>
+              <%= Rails.application.secrets.copyright_owner %>
+              <menu>
+                <item href="<%= frontend_privacy_policy_url %>"><%= I18n.t('mailer.privacy') %></item>
+                <item href="<%= frontend_settings_hangar_url %>"><%= I18n.t('mailer.settings') %></item>
+              </menu>
+            </center>
           </center>
         </td>
       </tr>

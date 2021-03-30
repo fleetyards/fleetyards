@@ -27,6 +27,7 @@
     </div>
 
     <FilteredList
+      key="fleet-members"
       :collection="collection"
       :name="$route.name"
       :route-query="$route.query"
@@ -59,7 +60,6 @@ import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetMembers>({
-  name: 'FleetMembers',
   components: {
     Btn,
     BreadCrumbs,

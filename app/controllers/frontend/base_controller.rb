@@ -31,7 +31,7 @@ module Frontend
     end
 
     def model
-      @model = model_record.includes(hardpoints: [:component]).first
+      @model = model_record.includes(model_hardpoints: [:component]).first
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
@@ -74,7 +74,8 @@ module Frontend
           'meta.compare_ships.description.vs',
           models: @models.map(&:name).join(' vs. ')
         )
-        @og_image = compare_image(@models)
+        @og_image = @models.first.store_image.url
+        # compare_image(@models) TODO: needs to be updated for AWS images
       end
       render 'frontend/index'
     end

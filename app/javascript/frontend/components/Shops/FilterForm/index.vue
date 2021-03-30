@@ -4,8 +4,8 @@
       id="shop-name"
       v-model="form.nameCont"
       translation-key="filters.shops.name"
-      no-label
-      clearable
+      :no-label="true"
+      :clearable="true"
     />
 
     <FilterGroup

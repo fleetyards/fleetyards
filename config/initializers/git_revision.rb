@@ -3,9 +3,7 @@
 module Git
   module_function def revision
     @revision ||= begin
-      return unless File.exist?(Rails.root.join('REVISION'))
-
-      File.read(Rails.root.join('REVISION')).chomp
+      File.read(Rails.root.join('REVISION')).chomp if File.exist?(Rails.root.join('REVISION'))
     end
   end
 
