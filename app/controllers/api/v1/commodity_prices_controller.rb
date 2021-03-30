@@ -37,16 +37,14 @@ module Api
       end
 
       private def price_type
-        @price_type ||= begin
-          case params[:path]
-          when 'buy'
-            'CommodityBuyPrice'
-          when 'rental'
-            'CommodityRentalPrice'
-          else # fallback to sell prices
-            'CommoditySellPrice'
-          end
-        end
+        @price_type ||= case params[:path]
+                        when 'buy'
+                          'CommodityBuyPrice'
+                        when 'rental'
+                          'CommodityRentalPrice'
+                        else # fallback to sell prices
+                          'CommoditySellPrice'
+                        end
       end
 
       private def shop_commodity
