@@ -7,7 +7,7 @@ module Frontend
     def index
       respond_to do |format|
         format.js do
-          render 'frontend/service_worker', layout: false
+          redirect_to ActionController::Base.helpers.asset_pack_url('service_worker.js')
         end
         format.all do
           redirect_to '/404'
