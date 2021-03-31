@@ -21,6 +21,10 @@
     font-size: 90%;
     transition: color $transition-base-speed ease;
   }
+
+  .user-item-ship-serial {
+    white-space: nowrap;
+  }
 }
 
 .panel-btn {

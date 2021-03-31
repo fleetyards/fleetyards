@@ -13,6 +13,9 @@
               {{ vehicle.username }}
               <span v-if="vehicle.name" class="user-item-ship">
                 {{ vehicle.name }}
+                <span v-if="vehicle.serial" class="user-item-ship-serial">
+                  ({{ vehicle.serial }})
+                </span>
               </span>
             </span>
           </div>
