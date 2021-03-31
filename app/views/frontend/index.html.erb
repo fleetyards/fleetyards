@@ -18,5 +18,6 @@
   window.MAINTAINER_ADDRESS_CITY = '<%= Rails.application.secrets.maintainer_address_city %>'
   window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.application.secrets.maintainer_address_country %>'
   window.COPYRIGHT_OWNER = '<%= Rails.application.secrets.copyright_owner %>'
+  window.SERVICE_WORKER_URL = '<%= asset_pack_path 'service_worker.js' %>'
 </script>
-<%= javascript_packs_with_chunks_tag 'frontend' %>
+<%= javascript_pack_tag 'frontend' %>
