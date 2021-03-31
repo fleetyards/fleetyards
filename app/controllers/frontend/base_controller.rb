@@ -6,6 +6,8 @@ module Frontend
   class BaseController < ApplicationController
     include PrefetchHelper
 
+    after_action :set_service_worker_header
+
     def index
       route = request.fullpath.split('?').first.sub(%r{^/}, '').tr('/', '_')
       route = 'home' if route.blank?
@@ -202,6 +204,10 @@ module Frontend
 
     private def model_record(slug = params[:slug])
       Model.where(['lower(slug) = :value', { value: (slug || '').downcase }])
+    end
+
+    private def set_service_worker_header
+      headers['Service-Worker-Allowed'] = '/'
     end
   end
 end
