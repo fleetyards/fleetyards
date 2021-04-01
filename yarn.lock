@@ -9077,10 +9077,10 @@ eslint-plugin-prettier@3.3.1:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-sort-class-members@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.10.0.tgz#f4228bddfba6c8c9d624d95caf8dbbaa5cd3dbd2"
-  integrity sha512-gyjVdF7emUnIjWBhKBqb8tae/ktdPf9oOcFjIwkTVWMIV+MYvDtDrmiaEx7jcpYTcSl1bHG9cV8oTTj8L3WGMg==
+eslint-plugin-sort-class-members@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.11.0.tgz#4290c57eba8991521fbca3430e002da8ab860729"
+  integrity sha512-kobZtUOyzyYVotc/GDnlmQ6sSaxYuVElwEowD5RQ6Kajq4Lfb3CPE1THaXbDl97HLNthThRZWtdNx1GrFhCm7Q==
 
 eslint-plugin-vue-types@2.0.0:
   version "2.0.0"
