@@ -42,7 +42,7 @@
               target="_blank"
               rel="noopener"
             >
-              <i class="icon icon-guilded" />
+              <i class="fab fa-guilded" />
             </a>
             <a
               v-if="user.discord"
@@ -74,14 +74,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-lg-9">
-            <ModelClassLabels
-              v-if="collection.stats"
-              :label="$t('labels.hangar')"
-              :count-data="collection.stats.classifications"
-            />
-          </div>
-          <div class="col-12 col-lg-3">
+          <div class="col-12">
             <div v-if="!mobile" class="page-actions page-actions-right">
               <Btn
                 :to="{

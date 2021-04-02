@@ -84,6 +84,22 @@
               />
             </ValidationProvider>
           </div>
+          <div class="col-12">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="description"
+              rules="text"
+              :name="$t('labels.description')"
+              :slim="true"
+            >
+              <FormTextarea
+                id="description"
+                v-model="form.description"
+                translation-key="description"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
           <div class="col-12 col-md-6">
             <FormInput
               id="rsiSid"
@@ -209,7 +225,7 @@
               <FormInput
                 id="guilded"
                 v-model="form.guilded"
-                icon="icon icon-guilded icon-label"
+                icon="fab fa-guilded"
                 translation-key="guilded"
                 :error="errors[0]"
               />
@@ -247,6 +263,7 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/core/components/Btn'
 import FormInput from 'frontend/core/components/Form/FormInput'
+import FormTextarea from 'frontend/core/components/Form/FormTextarea'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
@@ -260,6 +277,7 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     BreadCrumbs,
     Btn,
     FormInput,
+    FormTextarea,
     Checkbox,
     Avatar,
   },
@@ -281,6 +299,7 @@ export default class FleetSettings extends Vue {
   form: FleetForm = {
     fid: null,
     name: null,
+    description: null,
     rsiSid: null,
     discord: null,
     ts: null,
@@ -388,6 +407,7 @@ export default class FleetSettings extends Vue {
       fid: this.fleet.fid,
       rsiSid: this.fleet.rsiSid,
       name: this.fleet.name,
+      description: this.fleet.description,
       discord: this.fleet.discord,
       ts: this.fleet.ts,
       homepage: this.fleet.homepage,
@@ -425,7 +445,7 @@ export default class FleetSettings extends Vue {
         })
       }
     } else {
-      this.handlerUpdateError(response.error)
+      this.handleUpdateError(response.error)
     }
   }
 

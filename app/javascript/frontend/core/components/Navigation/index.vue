@@ -122,8 +122,10 @@ export default {
     isFleetRoute() {
       return [
         'fleet',
+        'fleet-ships',
         'fleet-members',
         'fleet-stats',
+        'fleet-fleetchart',
         'fleet-settings',
         'fleet-settings-fleet',
         'fleet-settings-membership',

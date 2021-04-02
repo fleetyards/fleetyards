@@ -10,6 +10,7 @@ json.twitch fleet.twitch
 json.guilded fleet.guilded
 json.homepage fleet.homepage
 json.name fleet.name
+json.description fleet.description
 json.slug fleet.slug
 json.public_fleet fleet.public_fleet
 json.logo((fleet.logo.small.url if fleet.logo.present?))

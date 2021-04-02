@@ -5,6 +5,7 @@ export default {
   'and': 'and',
   'hide': 'Hide',
   'show': 'Show',
+  'description': 'Description',
   'unavailable': 'unavailable',
   'selected': 'Selected',
   'actions': 'Actions',

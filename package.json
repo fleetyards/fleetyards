@@ -83,6 +83,7 @@
     "vue-slider-component": "3.2.11",
     "vue-swatches": "^2.1.1",
     "vue-template-compiler": "2.6.12",
+    "vue-trix": "^1.2.0",
     "vue-upload-component": "2.8.22",
     "vuedraggable": "2.24.3",
     "vuepress": "1.8.2",
