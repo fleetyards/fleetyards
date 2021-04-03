@@ -3,12 +3,7 @@
 module Api
   module V1
     class FleetsController < ::Api::BaseController
-      include ChartHelper
-
       before_action :authenticate_user!, except: %i[show]
-
-      after_action -> { pagination_header(%i[vehicles models]) }, only: %i[vehicles]
-      after_action -> { pagination_header(:members) }, only: %i[members]
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t('messages.record_not_found.fleet', slug: params[:slug]))
@@ -29,79 +24,6 @@ module Api
       def show
         authorize! :read, :api_fleet
         @fleet = Fleet.where(slug: params[:slug]).first!
-      end
-
-      def vehicles
-        authorize! :show, fleet
-
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
-
-        if price_range.present?
-          vehicle_query_params['sorts'] = 'model_price asc'
-          scope = scope.includes(:model).where(models: { price: price_range })
-        end
-
-        if pledge_price_range.present?
-          vehicle_query_params['sorts'] = 'model_last_pledge_price asc'
-          scope = scope.includes(:model).where(models: { last_pledge_price: pledge_price_range })
-        end
-
-        vehicle_query_params['sorts'] = sort_by_name(['model_name asc'], 'model_name asc')
-
-        @q = scope.ransack(vehicle_query_params)
-
-        if ActiveModel::Type::Boolean.new.cast(params['grouped'])
-          model_ids = @q.result
-            .includes(:model)
-            .joins(:model)
-            .pluck(:model_id)
-
-          @models = fleet.models(loaner: loaner_included?)
-            .where(id: model_ids)
-            .order(name: :asc)
-            .page(params[:page])
-            .per(per_page(Model))
-
-          render 'api/v1/fleets/models'
-        else
-          @vehicles = @q.result(distinct: true)
-            .includes(:model)
-            .joins(:model)
-            .page(params[:page])
-            .per(per_page(Vehicle))
-        end
-      end
-
-      def members
-        authorize! :show, fleet
-
-        scope = fleet.fleet_memberships
-
-        member_query_params['sorts'] = sort_by_name(['created_at desc', 'accepted_at desc'], 'user_username asc')
-
-        @q = scope.ransack(member_query_params)
-
-        @members = @q.result(distinct: true)
-          .includes(:user)
-          .joins(:user)
-          .page(params[:page])
-          .per(per_page(FleetMembership))
-      end
-
-      def member_quick_stats
-        authorize! :show, fleet
-        @q = fleet.fleet_memberships.ransack(member_query_params)
-
-        members = @q.result
-
-        @quick_stats = OpenStruct.new(
-          total: members.size,
-          metrics: {
-            total_admins: members.where(role: :admin).size,
-            total_officers: members.where(role: :officer).size,
-            total_members: members.where(role: :member).size
-          }
-        )
       end
 
       def create
@@ -129,108 +51,6 @@ module Api
         render json: ValidationError.new('fleet.destroy', fleet.errors), status: :bad_request
       end
 
-      def fleetchart
-        authorize! :show, fleet
-
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
-
-        @q = scope.ransack(vehicle_query_params)
-
-        @vehicles = @q.result(distinct: true)
-          .includes(:model)
-          .joins(:model)
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-      end
-
-      # rubocop:disable Metrics/CyclomaticComplexity
-      def quick_stats
-        authorize! :show, fleet
-
-        scope = fleet.vehicles(loaner: loaner_included?).includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
-
-        @q = scope.ransack(vehicle_query_params)
-
-        @q.sorts = ['model_classification asc']
-
-        vehicles = @q.result
-        models = vehicles.map(&:model)
-        upgrades = vehicles.map(&:model_upgrades).flatten
-        modules = vehicles.map(&:model_modules).flatten
-
-        @quick_stats = OpenStruct.new(
-          total: vehicles.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
-            OpenStruct.new(
-              count: models.count { |model| model.classification == classification },
-
-              name: classification,
-              label: classification.humanize
-            )
-          end,
-          metrics: {
-            total_money: models.map(&:last_pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
-            total_min_crew: models.map(&:min_crew).sum(&:to_i),
-            total_max_crew: models.map(&:max_crew).sum(&:to_i),
-            total_cargo: models.map(&:cargo).sum(&:to_i)
-          }
-        )
-      end
-      # rubocop:enable Metrics/CyclomaticComplexity
-
-      def models_by_size
-        authorize! :show, fleet
-
-        models_by_size = transform_for_pie_chart(
-          fleet.models
-               .group(:size).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_size.to_json
-      end
-
-      def models_by_production_status
-        authorize! :show, fleet
-
-        models_by_production_status = transform_for_pie_chart(
-          fleet.models
-               .group(:production_status).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_production_status.to_json
-      end
-
-      def models_by_manufacturer
-        authorize! :show, fleet
-
-        models_by_manufacturer = transform_for_pie_chart(
-          fleet.manufacturers.uniq
-              .map do |manufacturer|
-                model_ids = manufacturer.model_ids
-                { manufacturer.name => fleet.vehicles.where(model_id: model_ids).count }
-              end
-              .reduce(:merge) || []
-        )
-
-        render json: models_by_manufacturer.to_json
-      end
-
-      def models_by_classification
-        authorize! :show, fleet
-
-        models_by_classification = transform_for_pie_chart(
-          fleet.models
-               .group(:classification).count
-               .map { |label, count| { (label.present? ? label.humanize : I18n.t('labels.unknown')) => count } }
-               .reduce(:merge) || []
-        )
-
-        render json: models_by_classification.to_json
-      end
-
       def check
         authorize! :check, :api_fleet
         render json: { taken: Fleet.exists?(['lower(name) = :value', { value: (fleet_params[:name] || '').downcase }]) }
@@ -243,97 +63,11 @@ module Api
       private def fleet_params
         @fleet_params ||= params.transform_keys(&:underscore)
           .permit(
-            :fid, :name, :logo, :background_image, :public, :remove_logo,
+            :fid, :name, :description, :logo, :background_image, :public_fleet, :remove_logo,
             :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
             :twitch, :guilded
           )
       end
-
-      private def price_range
-        @price_range ||= price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
-          gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
-          lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
-          (gt_price...lt_price)
-        end
-      end
-
-      private def pledge_price_range
-        @pledge_price_range ||= pledge_price_in.map do |prices|
-          gt_price, lt_price = prices.split('-')
-          gt_price = if gt_price.blank?
-                       0
-                     else
-                       gt_price.to_i
-                     end
-          lt_price = if lt_price.blank?
-                       Float::INFINITY
-                     else
-                       lt_price.to_i
-                     end
-          (gt_price...lt_price)
-        end
-      end
-
-      private def pledge_price_in
-        pledge_price_in = vehicle_query_params.delete('pledge_price_in')
-        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
-        pledge_price_in
-      end
-
-      private def price_in
-        price_in = vehicle_query_params.delete('price_in')
-        price_in = price_in.to_s.split unless price_in.is_a?(Array)
-        price_in
-      end
-
-      private def member_query_params
-        @member_query_params ||= query_params(
-          :username_cont, sorts: [], role_in: []
-        )
-      end
-
-      private def vehicle_query_params
-        @vehicle_query_params ||= query_params(
-          :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq, :length_gteq, :length_lteq,
-          :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq,
-          manufacturer_in: [], classification_in: [], focus_in: [],
-          size_in: [], price_in: [], pledge_price_in: [],
-          production_status_in: [], sorts: []
-        )
-      end
-
-      private def model_query_params
-        @model_query_params ||= query_params(
-          :name_cont, :description_cont, :name_or_description_cont, :on_sale_eq, :sorts,
-          :length_gteq, :length_lteq, :price_gteq, :price_lteq, :pledge_price_gteq,
-          :pledge_price_lteq, :will_it_fit, :search_cont, :loaner_eq,
-          name_in: [], manufacturer_in: [], classification_in: [], focus_in: [],
-          production_status_in: [], price_in: [], pledge_price_in: [], size_in: [], sorts: [],
-          id_not_in: []
-        )
-      end
-
-      private def loaner_param
-        @loaner_param ||= vehicle_query_params.delete('loaner_eq') || model_query_params.delete('loaner_eq')
-      end
-
-      private def loaner_included?
-        return false if loaner_param.blank?
-
-        return true if loaner_param == 'only'
-
-        [false, true]
-      end
-      helper_method :loaner_included?
     end
   end
 end

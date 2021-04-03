@@ -45,6 +45,7 @@ export default {
   'signUp': 'Sign Up',
   'reset-password': 'Forgot password?',
   'edit': 'Edit',
+  'copyPublicUrl': 'Copy Public URL',
   'change': 'Change',
   'upload': 'Upload',
   'editCommodities': 'Edit commodities',

@@ -1,5 +1,6 @@
 export default {
   name: 'Name',
+  description: 'Description',
   login: 'Username or E-Mail',
   username: 'Username',
   email: 'E-Mail',

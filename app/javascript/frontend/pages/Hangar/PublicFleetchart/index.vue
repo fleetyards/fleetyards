@@ -55,7 +55,7 @@
               target="_blank"
               rel="noopener"
             >
-              <i class="icon icon-guilded" />
+              <i class="fab fa-guilded" />
             </a>
             <a
               v-if="user.discord"

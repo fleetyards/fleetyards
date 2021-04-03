@@ -155,16 +155,19 @@ v1_api_routes = lambda do
     end
 
     member do
-      get :vehicles
-      get :models
-      get :members
-      get 'quick-stats' => 'fleets#quick_stats'
-      get 'member-quick-stats' => 'fleets#member_quick_stats'
-      get :fleetchart
-      get 'stats/models-by-size' => 'fleets#models_by_size'
-      get 'stats/models-by-production-status' => 'fleets#models_by_production_status'
-      get 'stats/models-by-manufacturer' => 'fleets#models_by_manufacturer'
-      get 'stats/models-by-classification' => 'fleets#models_by_classification'
+      get 'vehicles' => 'fleet_vehicles#index'
+      get 'quick-stats' => 'fleet_vehicles#quick_stats'
+      get 'fleetchart' => 'fleet_vehicles#fleetchart'
+      get 'public-vehicles' => 'fleet_vehicles#public'
+      get 'public-fleetchart' => 'fleet_vehicles#public_fleetchart'
+
+      get 'members' => 'fleet_members#index'
+      get 'member-quick-stats' => 'fleet_members#quick_stats'
+
+      get 'stats/models-by-size' => 'fleet_stats#models_by_size'
+      get 'stats/models-by-production-status' => 'fleet_stats#models_by_production_status'
+      get 'stats/models-by-manufacturer' => 'fleet_stats#models_by_manufacturer'
+      get 'stats/models-by-classification' => 'fleet_stats#models_by_classification'
     end
 
     resources :fleet_memberships, path: 'members', param: :username, only: %i[create destroy] do

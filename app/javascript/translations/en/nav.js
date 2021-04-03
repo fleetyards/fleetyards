@@ -22,7 +22,9 @@ export default {
     index: 'Fleets',
     add: 'Create a new Fleet',
     invites: 'Invites',
+    ships: 'Ships',
     members: 'Members',
+    stats: 'Stats',
     settings: {
       index: 'Settings',
       fleet: 'Fleet Settings',

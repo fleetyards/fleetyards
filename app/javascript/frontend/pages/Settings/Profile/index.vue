@@ -164,7 +164,7 @@
             <FormInput
               id="guilded"
               v-model="form.guilded"
-              icon="icon icon-guilded icon-label"
+              icon="fab fa-guilded"
               translation-key="guilded"
               :error="errors[0]"
             />

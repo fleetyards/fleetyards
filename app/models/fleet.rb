@@ -7,6 +7,7 @@
 #  id               :uuid             not null, primary key
 #  background_image :string
 #  created_by       :uuid
+#  description      :text
 #  discord          :string
 #  fid              :string
 #  guilded          :string
@@ -46,6 +47,12 @@ class Fleet < ApplicationRecord
             length: { minimum: 3 },
             presence: true,
             format: { with: /\A[a-zA-Z0-9\-_. ]{3,}\Z/ }
+
+  validates :description,
+            format: {
+              with: %r{^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚ\-_'".,?!:;/\s]*$},
+              multiline: true
+            }
 
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader

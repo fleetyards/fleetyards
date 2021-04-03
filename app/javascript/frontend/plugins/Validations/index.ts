@@ -26,6 +26,7 @@ import {
   usernameTaken,
   url,
   hexColor,
+  text,
 } from './rules'
 
 configure({
@@ -55,5 +56,6 @@ export default {
     extend('user', user)
     extend('fidTaken', fidTaken)
     extend('hexColor', hexColor)
+    extend('text', text)
   },
 }

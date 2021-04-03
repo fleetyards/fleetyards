@@ -15,6 +15,10 @@ export default {
     success: 'Video URL Copied!',
     failure: 'Could not copy Video URL',
   },
+  copyPublicUrl: {
+    success: 'Public URL "%{publicUrl}" Copied!',
+    failure: 'Could not copy Public URL',
+  },
   signup: {
     success:
       '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.',
