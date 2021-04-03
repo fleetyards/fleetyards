@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
+namespace :frontend, path: '', host: Rails.application.secrets[:domain], constraints: ->(req) { req.subdomain.blank? || %w[admin api].exclude?(req.subdomain) } do
   get 'ships/mercury', to: redirect('/ships/mercury-star-runner')
   get 'compare/ships', to: redirect('/ships/compare')
 
@@ -43,6 +43,7 @@ namespace :frontend, path: '', constraints: ->(req) { req.subdomain.blank? || %w
   get 'fleets/:slug/ships' => 'fleets#show'
   get 'fleets/:slug/fleetchart' => 'fleets#show'
   get 'fleets/:slug/members' => 'fleets#members'
+  get 'fleets/:slug/invite/:token' => 'fleets#show', as: :fleet_invite
   get 'fleets/:slug/stats' => 'fleets#stats'
   get 'fleets/:slug/settings' => 'fleets#settings'
   get 'fleets/:slug/settings/fleet' => 'fleets#settings'

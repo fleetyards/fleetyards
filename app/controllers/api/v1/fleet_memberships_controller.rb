@@ -16,7 +16,7 @@ module Api
       def create
         user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
 
-        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member)
+        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: current_user.id)
 
         authorize! :create, member
 

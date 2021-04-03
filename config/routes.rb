@@ -2,6 +2,8 @@
 
 require 'sidekiq/web'
 
+Rails.application.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
+
 Rails.application.routes.draw do
   draw :api_routes
   draw :admin_routes

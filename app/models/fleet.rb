@@ -31,6 +31,8 @@
 class Fleet < ApplicationRecord
   has_many :fleet_memberships,
            dependent: :destroy
+  has_many :fleet_invite_urls,
+           dependent: :destroy
   has_many :visible_memberships,
            -> { where.not(accepted_at: nil).where.not(ships_filter: :hide) },
            class_name: 'FleetMembership',

@@ -4,18 +4,20 @@
 #
 # Table name: fleet_memberships
 #
-#  id              :uuid             not null, primary key
-#  accepted_at     :datetime
-#  declined_at     :datetime
-#  hide_ships      :boolean          default(FALSE)
-#  primary         :boolean          default(FALSE)
-#  role            :integer
-#  ships_filter    :integer          default("purchased")
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  fleet_id        :uuid
-#  hangar_group_id :uuid
-#  user_id         :uuid
+#  id                  :uuid             not null, primary key
+#  accepted_at         :datetime
+#  declined_at         :datetime
+#  hide_ships          :boolean          default(FALSE)
+#  invited_by          :uuid
+#  primary             :boolean          default(FALSE)
+#  role                :integer
+#  ships_filter        :integer          default("purchased")
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  fleet_id            :uuid
+#  fleet_invite_url_id :uuid
+#  hangar_group_id     :uuid
+#  user_id             :uuid
 #
 require 'test_helper'
 

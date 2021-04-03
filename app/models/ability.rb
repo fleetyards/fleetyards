@@ -65,6 +65,7 @@ class Ability
     can %i[show accept update destroy], FleetMembership, user_id: user.id
     can %i[create], FleetMembership, fleet_id: officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
+    can %i[show create destroy], FleetInviteUrl, fleet_id: officer_fleet_ids
     can :create, Fleet
     can :show, Fleet, fleet_memberships: { user_id: user.id }
     cannot :show, Fleet, fleet_memberships: { user_id: user.id, accepted_at: nil }

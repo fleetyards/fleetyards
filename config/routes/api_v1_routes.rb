@@ -178,12 +178,15 @@ v1_api_routes = lambda do
         put 'accept-invite' => 'fleet_memberships#accept_invite'
         put 'decline-invite' => 'fleet_memberships#decline_invite'
         delete :leave
+        post :create_from_token
       end
       member do
         put :demote
         put :promote
       end
     end
+
+    resources :fleet_invite_urls, path: 'invite-urls', param: :token, only: %i[index show create destroy]
   end
 
   resource :stats, only: [] do
