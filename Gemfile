@@ -41,8 +41,6 @@ gem 'cancancan'
 gem 'devise'
 gem 'devise-two-factor'
 
-gem 'redis-session-store'
-
 gem 'rqrcode-rails3'
 
 gem 'useragent'
