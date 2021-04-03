@@ -45,11 +45,11 @@ module Api
           assert_response :ok
         end
 
-        # test 'should render 200 for public-fleetchart' do
-        #   get :public_fleetchart, params: { slug: starfleet.slug }
+        test 'should render 200 for public-fleetchart' do
+          get :public_fleetchart, params: { slug: starfleet.slug }
 
-        #   assert_response :ok
-        # end
+          assert_response :ok
+        end
       end
 
       describe 'with session' do
