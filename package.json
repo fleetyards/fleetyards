@@ -96,8 +96,8 @@
     "workbox-strategies": "^6.1.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "12.0.1",
-    "@commitlint/config-conventional": "12.0.1",
+    "@commitlint/cli": "12.1.1",
+    "@commitlint/config-conventional": "12.1.1",
     "@storybook/addon-actions": "6.2.1",
     "@storybook/addon-backgrounds": "6.2.1",
     "@storybook/addon-centered": "5.3.21",
