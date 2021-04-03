@@ -10,8 +10,16 @@
         />
       </div>
       <div class="col-12 col-lg-4">
-        <div class="page-actions page-actions-right">
+        <div v-if="!mobile" class="page-actions page-actions-right">
           <Starship42Btn v-if="!mobile" :vehicles="collection.records" />
+
+          <Btn
+            v-if="fleet.publicFleet"
+            v-tooltip="$t('actions.copyPublicUrl')"
+            @click.native="copyPublicUrl"
+          >
+            <i class="fad fa-share-square" />
+          </Btn>
         </div>
       </div>
     </div>
@@ -35,6 +43,16 @@
               variant="dropdown"
               :with-icon="true"
             />
+
+            <Btn
+              v-if="fleet.publicFleet"
+              size="small"
+              variant="dropdown"
+              @click.native="copyPublicUrl"
+            >
+              <i class="fad fa-share-square" />
+              <span>{{ $t('actions.copyPublicUrl') }}</span>
+            </Btn>
 
             <hr />
           </template>
@@ -79,6 +97,7 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
+import copyText from 'frontend/utils/CopyText'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import Starship42Btn from 'frontend/components/Starship42Btn'
@@ -90,6 +109,7 @@ import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import FleetchartSlider from 'frontend/components/Fleetchart/Slider'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
+import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
 
 @Component<FleetFleetchart>({
   components: {
@@ -126,6 +146,15 @@ export default class FleetFleetchart extends Vue {
     }
   }
 
+  get publicUrl() {
+    if (!this.fleet) {
+      return ''
+    }
+    const host = `${window.location.protocol}//${window.location.host}`
+
+    return `${host}/fleets/${this.fleet.slug}/fleetchart`
+  }
+
   mounted() {
     this.fetch()
   }
@@ -136,6 +165,23 @@ export default class FleetFleetchart extends Vue {
 
   async fetch() {
     await this.collection.findStats(this.filters)
+  }
+
+  copyPublicUrl(_event) {
+    copyText(this.publicUrl).then(
+      () => {
+        displaySuccess({
+          text: this.$t('messages.copyPublicUrl.success', {
+            publicUrl: this.publicUrl,
+          }),
+        })
+      },
+      () => {
+        displayAlert({
+          text: this.$t('messages.copyPublicUrl.failure'),
+        })
+      },
+    )
   }
 }
 </script>

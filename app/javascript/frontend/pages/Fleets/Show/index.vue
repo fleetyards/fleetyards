@@ -23,7 +23,7 @@
           target="_blank"
           rel="noopener"
         >
-          <i class="fad fa-home" />
+          <i class="fal fa-globe globe-rotate" />
         </a>
         <a
           v-if="fleet.rsiSid"

@@ -38,8 +38,11 @@
               {{ $t('labels.hangarStats') }}
             </Btn>
 
-            <Btn :href="publicUrl">
-              {{ $t('labels.publicUrl') }}
+            <Btn
+              v-tooltip="$t('actions.copyPublicUrl')"
+              @click.native="copyPublicUrl"
+            >
+              <i class="fad fa-share-square" />
             </Btn>
           </div>
         </div>
@@ -123,9 +126,9 @@
               <span>{{ $t('labels.hangarStats') }}</span>
             </Btn>
 
-            <Btn :href="publicUrl" size="small" variant="dropdown">
+            <Btn size="small" variant="dropdown" @click.native="copyPublicUrl">
               <i class="fad fa-share-square" />
-              <span>{{ $t('labels.publicUrl') }}</span>
+              <span>{{ $t('actions.copyPublicUrl') }}</span>
             </Btn>
 
             <hr />
@@ -237,6 +240,7 @@ import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
+import copyText from 'frontend/utils/CopyText'
 import VehiclesTable from 'frontend/components/Vehicles/Table'
 import Btn from 'frontend/core/components/Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
@@ -253,7 +257,7 @@ import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { format } from 'date-fns'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
-import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import { displayAlert, displayConfirm, displaySuccess } from 'frontend/lib/Noty'
 import debounce from 'lodash.debounce'
 
 @Component<Hangar>({
@@ -344,7 +348,9 @@ export default class Hangar extends Vue {
     if (!this.currentUser) {
       return ''
     }
-    return `/hangar/${this.currentUser.username}`
+    const host = `${window.location.protocol}//${window.location.host}`
+
+    return `${host}/hangar/${this.currentUser.username}`
   }
 
   get isGuideVisible() {
@@ -452,6 +458,23 @@ export default class Hangar extends Vue {
     link.click()
 
     document.body.removeChild(link)
+  }
+
+  copyPublicUrl(_event) {
+    copyText(this.publicUrl).then(
+      () => {
+        displaySuccess({
+          text: this.$t('messages.copyPublicUrl.success', {
+            publicUrl: this.publicUrl,
+          }),
+        })
+      },
+      () => {
+        displayAlert({
+          text: this.$t('messages.copyPublicUrl.failure'),
+        })
+      },
+    )
   }
 
   async destroyAll() {

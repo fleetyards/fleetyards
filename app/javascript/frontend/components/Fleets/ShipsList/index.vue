@@ -80,6 +80,16 @@
               <span>{{ $t('labels.fleetchart') }}</span>
             </Btn>
 
+            <Btn
+              v-if="fleet.publicFleet"
+              size="small"
+              variant="dropdown"
+              @click.native="copyPublicUrl"
+            >
+              <i class="fad fa-share-square" />
+              <span>{{ $t('actions.copyPublicUrl') }}</span>
+            </Btn>
+
             <hr />
           </template>
           <Btn
@@ -169,6 +179,8 @@ export default class FleetShipsList extends Vue {
   collection: FleetVehiclesCollection = fleetVehiclesCollection
 
   @Prop({ required: true }) fleet: Fleet
+
+  @Prop({ required: true }) copyPublicUrl: Function
 
   @Getter('grouped', { namespace: 'fleet' }) grouped
 

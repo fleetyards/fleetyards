@@ -33,3 +33,9 @@
     }
   }
 }
+
+.fa-globe {
+  &.globe-rotate {
+    transform: rotate(23.4deg);
+  }
+}

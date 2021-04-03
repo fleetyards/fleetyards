@@ -26,6 +26,15 @@
             <i class="fad fa-starship" />
             {{ $t('labels.fleetchart') }}
           </Btn>
+
+          <Btn
+            v-if="fleet.publicFleet"
+            v-tooltip="$t('actions.copyPublicUrl')"
+            :inline="true"
+            @click.native="copyPublicUrl"
+          >
+            <i class="fad fa-share-square" />
+          </Btn>
         </div>
       </div>
     </div>
@@ -33,7 +42,11 @@
     <br />
 
     <template v-if="fleet">
-      <ShipsList v-if="fleet.myFleet" :fleet="fleet" />
+      <ShipsList
+        v-if="fleet.myFleet"
+        :fleet="fleet"
+        :copy-public-url="copyPublicUrl"
+      />
       <PublicShipsList v-else :fleet="fleet" />
     </template>
   </section>
@@ -44,6 +57,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import Avatar from 'frontend/core/components/Avatar'
+import copyText from 'frontend/utils/CopyText'
 import Btn from 'frontend/core/components/Btn'
 import ShipsList from 'frontend/components/Fleets/ShipsList'
 import PublicShipsList from 'frontend/components/Fleets/PublicShipsList'
@@ -51,6 +65,7 @@ import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetShipsRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
+import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
 
 @Component<FleetShips>({
   beforeRouteEnter: publicFleetShipsRouteGuard,
@@ -77,6 +92,15 @@ export default class FleetShips extends Vue {
     return this.fleet.name
   }
 
+  get publicUrl() {
+    if (!this.fleet) {
+      return ''
+    }
+    const host = `${window.location.protocol}//${window.location.host}`
+
+    return `${host}/fleets/${this.fleet.slug}/ships`
+  }
+
   @Watch('$route')
   onRouteChange() {
     this.fetch()
@@ -88,6 +112,23 @@ export default class FleetShips extends Vue {
 
   async fetch() {
     await fleetsCollection.findBySlug(this.$route.params.slug)
+  }
+
+  copyPublicUrl(_event) {
+    copyText(this.publicUrl).then(
+      () => {
+        displaySuccess({
+          text: this.$t('messages.copyPublicUrl.success', {
+            publicUrl: this.publicUrl,
+          }),
+        })
+      },
+      () => {
+        displayAlert({
+          text: this.$t('messages.copyPublicUrl.failure'),
+        })
+      },
+    )
   }
 }
 </script>
