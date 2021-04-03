@@ -15,6 +15,7 @@ interface Window {
   DATA_PREFILL: KeyValuePair
   ON_SUBDOMAIN: boolean
   FRONTEND_ENDPOINT: string
+  SERVICE_WORKER_URL: string
 }
 
 type FilterGroupItem = {

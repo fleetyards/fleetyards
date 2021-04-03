@@ -250,40 +250,36 @@ module Api
       end
 
       private def price_range
-        @price_range ||= begin
-          price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
-            gt_price = if gt_price.blank?
-                         0
-                       else
-                         gt_price.to_i
-                       end
-            lt_price = if lt_price.blank?
-                         Float::INFINITY
-                       else
-                         lt_price.to_i
-                       end
-            (gt_price...lt_price)
-          end
+        @price_range ||= price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
         end
       end
 
       private def pledge_price_range
-        @pledge_price_range ||= begin
-          pledge_price_in.map do |prices|
-            gt_price, lt_price = prices.split('-')
-            gt_price = if gt_price.blank?
-                         0
-                       else
-                         gt_price.to_i
-                       end
-            lt_price = if lt_price.blank?
-                         Float::INFINITY
-                       else
-                         lt_price.to_i
-                       end
-            (gt_price...lt_price)
-          end
+        @pledge_price_range ||= pledge_price_in.map do |prices|
+          gt_price, lt_price = prices.split('-')
+          gt_price = if gt_price.blank?
+                       0
+                     else
+                       gt_price.to_i
+                     end
+          lt_price = if lt_price.blank?
+                       Float::INFINITY
+                     else
+                       lt_price.to_i
+                     end
+          (gt_price...lt_price)
         end
       end
 

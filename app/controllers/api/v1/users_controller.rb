@@ -75,14 +75,12 @@ module Api
       end
 
       private def user_params
-        @user_params ||= begin
-          params.transform_keys(&:underscore)
-            .permit(
-              :username, :avatar, :remove_avatar, :email, :password, :password_confirmation,
-              :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage, :youtube, :twitch,
-              :guilded
-            )
-        end
+        @user_params ||= params.transform_keys(&:underscore)
+          .permit(
+            :username, :avatar, :remove_avatar, :email, :password, :password_confirmation,
+            :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage, :youtube, :twitch,
+            :guilded
+          )
       end
 
       private def blocked(email)

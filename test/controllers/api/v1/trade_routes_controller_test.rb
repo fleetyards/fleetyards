@@ -228,7 +228,7 @@ module Api
           assert_response :ok
           json = JSON.parse response.body
 
-          assert_equal [], json
+          assert_empty json
         end
 
         it 'should return an filtered list for planet' do
