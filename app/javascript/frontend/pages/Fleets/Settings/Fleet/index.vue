@@ -10,7 +10,7 @@
     <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
       <form v-if="canEdit && fleet" @submit.prevent="handleSubmit(submit)">
         <div class="row">
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="logo"
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="fid"
@@ -64,7 +64,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="name"
@@ -84,7 +84,23 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="description"
+              rules="text"
+              :name="$t('labels.description')"
+              :slim="true"
+            >
+              <FormTextarea
+                id="description"
+                v-model="form.description"
+                translation-key="description"
+                :error="errors[0]"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-12 col-md-6">
             <FormInput
               id="rsiSid"
               v-model="form.rsiSid"
@@ -92,10 +108,26 @@
               translation-key="fleet.rsiSid"
             />
           </div>
+          <div class="col-12 col-md-6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              vid="publicFleet"
+              :name="$t('labels.fleet.public')"
+              :slim="true"
+            >
+              <Checkbox
+                id="publicFleet"
+                v-model="form.publicFleet"
+                :label="$t('labels.fleet.public')"
+                :class="{ 'has-error has-feedback': errors[0] }"
+                :slim="false"
+              />
+            </ValidationProvider>
+          </div>
         </div>
         <hr />
         <div class="row">
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="homepage"
@@ -111,7 +143,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="discord"
@@ -128,7 +160,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="ts"
@@ -148,7 +180,7 @@
         </div>
         <hr />
         <div class="row">
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="youtube"
@@ -165,7 +197,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="twitch"
@@ -182,7 +214,7 @@
               />
             </ValidationProvider>
           </div>
-          <div class="col-lg-12 col-xl-6">
+          <div class="col-12 col-md-6">
             <ValidationProvider
               v-slot="{ errors }"
               vid="guilded"
@@ -193,7 +225,7 @@
               <FormInput
                 id="guilded"
                 v-model="form.guilded"
-                icon="icon icon-guilded icon-label"
+                icon="fab fa-guilded"
                 translation-key="guilded"
                 :error="errors[0]"
               />
@@ -231,6 +263,8 @@ import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import Btn from 'frontend/core/components/Btn'
 import FormInput from 'frontend/core/components/Form/FormInput'
+import FormTextarea from 'frontend/core/components/Form/FormTextarea'
+import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
@@ -243,6 +277,8 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
     BreadCrumbs,
     Btn,
     FormInput,
+    FormTextarea,
+    Checkbox,
     Avatar,
   },
   mixins: [MetaInfo],
@@ -263,6 +299,7 @@ export default class FleetSettings extends Vue {
   form: FleetForm = {
     fid: null,
     name: null,
+    description: null,
     rsiSid: null,
     discord: null,
     ts: null,
@@ -270,6 +307,7 @@ export default class FleetSettings extends Vue {
     twitch: null,
     youtube: null,
     guilded: null,
+    publicFleet: false,
     removeLogo: false,
   }
 
@@ -369,12 +407,14 @@ export default class FleetSettings extends Vue {
       fid: this.fleet.fid,
       rsiSid: this.fleet.rsiSid,
       name: this.fleet.name,
+      description: this.fleet.description,
       discord: this.fleet.discord,
       ts: this.fleet.ts,
       homepage: this.fleet.homepage,
       twitch: this.fleet.twitch,
       youtube: this.fleet.youtube,
       guilded: this.fleet.guilded,
+      publicFleet: this.fleet.publicFleet,
       removeLogo: false,
     }
   }
@@ -405,7 +445,7 @@ export default class FleetSettings extends Vue {
         })
       }
     } else {
-      this.handlerUpdateError(response.error)
+      this.handleUpdateError(response.error)
     }
   }
 

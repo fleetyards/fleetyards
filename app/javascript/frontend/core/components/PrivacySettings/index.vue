@@ -49,7 +49,7 @@
                 <Checkbox
                   :value="true"
                   :label="$t('privacySettings.fontawesome')"
-                  disabled
+                  :disabled="true"
                 />
                 <i
                   class="info-link fal fa-info-circle"
@@ -60,7 +60,7 @@
                 <Checkbox
                   :value="true"
                   :label="$t('privacySettings.googleFonts')"
-                  disabled
+                  :disabled="true"
                 />
                 <i
                   class="info-link fal fa-info-circle"

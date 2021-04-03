@@ -7,6 +7,7 @@
 #  id               :uuid             not null, primary key
 #  background_image :string
 #  created_by       :uuid
+#  description      :text
 #  discord          :string
 #  fid              :string
 #  guilded          :string

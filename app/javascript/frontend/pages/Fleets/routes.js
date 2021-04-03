@@ -55,6 +55,18 @@ export const routes = [
     },
   },
   {
+    path: ':slug/ships/',
+    name: 'fleet-ships',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.ships" */
+        'frontend/pages/Fleets/Ships'
+      ),
+    meta: {
+      backgroundImage: 'bg-8',
+    },
+  },
+  {
     path: ':slug/fleetchart/',
     name: 'fleet-fleetchart',
     component: () =>

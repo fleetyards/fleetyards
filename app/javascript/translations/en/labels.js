@@ -5,6 +5,7 @@ export default {
   'and': 'and',
   'hide': 'Hide',
   'show': 'Show',
+  'description': 'Description',
   'unavailable': 'unavailable',
   'selected': 'Selected',
   'actions': 'Actions',
@@ -171,6 +172,7 @@ export default {
     name: 'Name',
     logo: 'Logo',
     rsiSid: 'SID',
+    public: 'Public Fleetview',
     ts: 'Teamspeak Server',
     members: {
       primary: 'Primary Fleet?',

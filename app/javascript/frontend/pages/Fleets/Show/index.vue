@@ -1,18 +1,21 @@
 <template>
-  <section class="container fleet-detail">
-    <div v-if="fleet" class="row">
-      <div class="col-12 col-lg-8">
-        <h1>
+  <section v-if="fleet" class="container fleet-detail">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="large heading">
           <Avatar
             v-if="fleet.logo"
             :avatar="fleet.logo"
             :transparent="!!fleet.logo"
+            size="large"
             icon="fad fa-image"
           />
-          {{ fleet.name }} ({{ fleet.fid }})
+          <span class="title">{{ fleet.name }} ({{ fleet.fid }})</span>
         </h1>
       </div>
-      <div class="col-12 col-lg-4 fleet-links">
+    </div>
+    <div class="row">
+      <div class="col-12 links">
         <a
           v-if="fleet.homepage"
           v-tooltip="$t('labels.homepage')"
@@ -29,7 +32,7 @@
           target="_blank"
           rel="noopener"
         >
-          <i class="icon icon-rsi" />
+          <i class="icon icon-rsi icon-large" />
         </a>
         <a
           v-if="fleet.guilded"
@@ -38,7 +41,7 @@
           target="_blank"
           rel="noopener"
         >
-          <i class="icon icon-guilded" />
+          <i class="fab fa-guilded" />
         </a>
         <a
           v-if="fleet.discord"
@@ -78,214 +81,41 @@
         </a>
       </div>
     </div>
-    <div v-if="fleet && fleet.myFleet" class="row">
-      <div class="col-12 col-lg-8">
-        <ModelClassLabels
-          v-if="fleetStats"
-          :label="$t('labels.fleet.classes')"
-          :count-data="fleetStats.classifications"
-          filter-key="classificationIn"
-        />
-      </div>
-      <div class="col-12 col-lg-4">
-        <div class="page-actions page-actions-right">
-          <Btn
-            :to="{
-              name: 'fleet-fleetchart',
-              params: { slug: $route.params.slug },
-            }"
-          >
-            <i class="fad fa-starship" />
-            {{ $t('labels.fleetchart') }}
-          </Btn>
-          <Btn
-            v-tooltip="$t('labels.hangarStats')"
-            :to="{
-              name: 'fleet-stats',
-              params: { slug: $route.params.slug },
-            }"
-          >
-            <i class="fal fa-chart-bar" />
-          </Btn>
-        </div>
+    <div v-if="description" class="row justify-content-md-center">
+      <div class="col-12 col-sm-8">
+        <p class="description" v-html="description" />
       </div>
     </div>
-
-    <div
-      v-if="
-        fleetStats && fleetStats.metrics && !mobile && fleet && fleet.myFleet
-      "
-      class="row"
-    >
-      <div class="col-12 fleet-metrics metrics-block" @click="toggleMoney">
-        <div v-if="money" class="metrics-item">
-          <div class="metrics-label">
-            {{ $t('labels.hangarMetrics.totalMoney') }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toDollar(fleetStats.metrics.totalMoney) }}
-          </div>
-        </div>
-        <div class="metrics-item">
-          <div class="metrics-label">
-            {{ $t('labels.hangarMetrics.total') }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toNumber(fleetStats.total, 'ships') }}
-          </div>
-        </div>
-        <div class="metrics-item">
-          <div class="metrics-label">
-            {{ $t('labels.hangarMetrics.totalMinCrew') }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toNumber(fleetStats.metrics.totalMinCrew, 'people') }}
-          </div>
-        </div>
-        <div class="metrics-item">
-          <div class="metrics-label">
-            {{ $t('labels.hangarMetrics.totalMaxCrew') }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toNumber(fleetStats.metrics.totalMaxCrew, 'people') }}
-          </div>
-        </div>
-        <div class="metrics-item">
-          <div class="metrics-label">
-            {{ $t('labels.hangarMetrics.totalCargo') }}:
-          </div>
-          <div class="metrics-value">
-            {{ $toNumber(fleetStats.metrics.totalCargo, 'cargo') }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <FilteredList
-      v-if="fleet && fleet.myFleet"
-      key="fleet"
-      :collection="vehiclesCollection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :params="routeParams"
-      :hash="$route.hash"
-      :paginated="true"
-    >
-      <template slot="actions">
-        <BtnDropdown size="small">
-          <template v-if="mobile">
-            <Btn :to="{ name: 'fleet-stats' }" size="small" variant="dropdown">
-              <i class="fad fa-chart-bar" />
-              <span>{{ $t('labels.fleetStats') }}</span>
-            </Btn>
-
-            <hr />
-          </template>
-
-          <Btn
-            :active="detailsVisible"
-            :aria-label="toggleDetailsTooltip"
-            size="small"
-            variant="dropdown"
-            @click.native="toggleDetails"
-          >
-            <i class="fad fa-info-square" />
-            <span>{{ toggleDetailsTooltip }}</span>
-          </Btn>
-
-          <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
-            <template v-if="grouped">
-              <i class="fas fa-square" />
-              <span>{{ $t('actions.ungrouped') }}</span>
-            </template>
-            <template v-else>
-              <i class="fas fa-th-large" />
-              <span>{{ $t('actions.groupedByModel') }}</span>
-            </template>
-          </Btn>
-        </BtnDropdown>
-      </template>
-
-      <FleetVehiclesFilterForm v-if="fleet && fleet.myFleet" slot="filter" />
-
-      <template #default="{ records, loading, filterVisible, primaryKey }">
-        <FilteredGrid
-          :records="records"
-          :loading="loading"
-          :filter-visible="filterVisible"
-          :primary-key="primaryKey"
-        >
-          <template #default="{ record }">
-            <ModelPanel
-              v-if="record.model"
-              :model="record.model"
-              :details="detailsVisible"
-              :vehicle="record"
-              :show-owner="true"
-            />
-            <ModelPanel
-              v-else
-              :model="record"
-              :details="detailsVisible"
-              :vehicles="record.vehicles"
-              :show-owner="true"
-            />
-          </template>
-        </FilteredGrid>
-      </template>
-    </FilteredList>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
-import FilteredList from 'frontend/core/components/FilteredList'
-import FilteredGrid from 'frontend/core/components/FilteredGrid'
-import Btn from 'frontend/core/components/Btn'
-import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import ModelPanel from 'frontend/components/Models/Panel'
-import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
-import FleetModelsFilterForm from 'frontend/components/Models/FilterForm'
-import ModelClassLabels from 'frontend/components/Models/ClassLabels'
-import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import Avatar from 'frontend/core/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
-import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetDetail>({
   beforeRouteEnter: publicFleetRouteGuard,
   components: {
-    Btn,
-    BtnDropdown,
-    FilteredList,
-    FilteredGrid,
-    ModelPanel,
-    ModelClassLabels,
-    AddonsModal,
-    FleetVehiclesFilterForm,
-    FleetModelsFilterForm,
     Avatar,
   },
   mixins: [MetaInfo, HangarItemsMixin],
 })
 export default class FleetDetail extends Vue {
-  vehiclesCollection: FleetVehiclesCollection = fleetVehiclesCollection
-
-  @Getter('grouped', { namespace: 'fleet' }) grouped
-
-  @Getter('money', { namespace: 'fleet' }) money
-
-  @Getter('detailsVisible', { namespace: 'fleet' }) detailsVisible
-
-  @Getter('mobile') mobile
-
   get fleet() {
     return fleetsCollection.record
+  }
+
+  get description(): string | null {
+    if (!this.fleet || !this.fleet.description) {
+      return null
+    }
+
+    return this.fleet.description.replaceAll('\n', '<br>')
   }
 
   get metaTitle() {
@@ -296,77 +126,83 @@ export default class FleetDetail extends Vue {
     return this.fleet.name
   }
 
-  get fleetStats() {
-    return this.vehiclesCollection.stats
-  }
-
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t('actions.hideDetails')
-    }
-    return this.$t('actions.showDetails')
-  }
-
-  get routeParams() {
-    return {
-      ...this.$route.params,
-      grouped: this.grouped,
-    }
-  }
-
-  get filters() {
-    return {
-      slug: this.$route.params.slug,
-      filters: this.$route.query.q,
-      grouped: this.grouped,
-      page: this.$route.query.page,
-    }
-  }
-
-  @Watch('grouped')
-  onGroupedChange() {
-    this.vehiclesCollection.findAll(this.filters)
-    this.fetch()
-  }
-
   @Watch('$route')
   onRouteChange() {
-    this.fetchFleet()
-    this.fetch()
-  }
-
-  @Watch('fleet')
-  onFleetChange() {
     this.fetch()
   }
 
   mounted() {
-    this.fetchFleet()
     this.fetch()
   }
 
-  toggleDetails() {
-    this.$store.dispatch('fleet/toggleDetails')
-  }
-
-  toggleGrouped() {
-    this.$store.dispatch('fleet/toggleGrouped')
-  }
-
-  toggleMoney() {
-    this.$store.dispatch('fleet/toggleMoney')
-  }
-
   async fetch() {
-    if (!this.fleet || !this.fleet.myFleet) {
-      return
-    }
-
-    await this.vehiclesCollection.findStats(this.filters)
-  }
-
-  async fetchFleet() {
     await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~stylesheets/variables';
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .avatar {
+    margin-right: 20px;
+  }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > a {
+    margin-right: 20px;
+    font-size: 3rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .icon-rsi {
+      width: 76px;
+      height: 40px;
+    }
+  }
+}
+
+.description {
+  margin-top: 15px;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .heading {
+    flex-wrap: wrap;
+
+    .avatar {
+      margin-right: 0;
+    }
+
+    .title {
+      margin-top: 15px;
+      text-align: center;
+    }
+  }
+
+  .links {
+    flex-wrap: wrap;
+
+    > a {
+      font-size: 2rem;
+
+      .icon-rsi {
+        width: 46px;
+        height: 24px;
+      }
+    }
+  }
+}
+</style>

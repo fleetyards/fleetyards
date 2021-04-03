@@ -1,7 +1,9 @@
 type Fleet = {
   id: string
   name: string
+  description: string
   myFleet: boolean
+  publicFleet: boolean
 }
 
 type FleetForm = {

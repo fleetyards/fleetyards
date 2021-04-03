@@ -33,6 +33,20 @@ export const publicFleetRouteGuard = async function publicFleetRouteGuard(
   }
 }
 
+export const publicFleetShipsRouteGuard = async function publicFleetShipsRouteGuard(
+  to: Route,
+  _from: Route,
+  next: NavigationGuardNext,
+) {
+  const fleet = await fleetsCollection.findBySlug(to.params.slug)
+
+  if (!fleet || (!fleet.publicFleet && !fleet.myFleet)) {
+    next({ name: '404' })
+  } else {
+    next()
+  }
+}
+
 export const modelRouteGuard = async function modelRouteGuard(
   to: Route,
   _from: Route,
