@@ -46,8 +46,8 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  devise :two_factor_authenticatable, :two_factor_backupable, :async, :recoverable, 
-         :rememberable, :trackable, :validatable, :confirmable, :timeoutable, 
+  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable,
+         :rememberable, :trackable, :validatable, :confirmable, :timeoutable,
          otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
          otp_backup_code_length: 32, otp_number_of_backup_codes: 10,
          authentication_keys: [:login]
@@ -103,7 +103,7 @@ class User < ApplicationRecord
   def setup_otp_secret
     self.otp_secret = User.generate_otp_secret
   end
-  
+
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
   end
