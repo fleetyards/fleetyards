@@ -111,7 +111,7 @@ export default class FleetDetail extends Vue {
   }
 
   get description(): string | null {
-    if (!this.fleet) {
+    if (!this.fleet || !this.fleet.description) {
       return null
     }
 
