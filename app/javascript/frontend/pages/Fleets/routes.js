@@ -121,6 +121,19 @@ export const routes = [
       backgroundImage: 'bg-8',
     },
   },
+  {
+    path: ':slug/invite/:token/',
+    name: 'fleet-invite',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.fleets" */
+        'frontend/pages/Fleets/Invite'
+      ),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: 'bg-8',
+    },
+  },
 ]
 
 export default routes

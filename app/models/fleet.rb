@@ -31,8 +31,10 @@
 class Fleet < ApplicationRecord
   has_many :fleet_memberships,
            dependent: :destroy
+  has_many :fleet_invite_urls,
+           dependent: :destroy
   has_many :visible_memberships,
-           -> { where.not(accepted_at: nil).where.not(ships_filter: :hide) },
+           -> { where(aasm_state: :accepted).where.not(ships_filter: :hide) },
            class_name: 'FleetMembership',
            inverse_of: false
   has_many :users,
@@ -62,9 +64,9 @@ class Fleet < ApplicationRecord
   before_save :update_slugs
   after_create :setup_admin_user
 
-  def self.not_declined
+  def self.accepted
     includes(:fleet_memberships).joins(:fleet_memberships)
-      .where(fleet_memberships: { declined_at: nil })
+      .where(fleet_memberships: { aasm_state: :accepted })
   end
 
   def vehicles(filters = nil)
@@ -86,13 +88,13 @@ class Fleet < ApplicationRecord
   end
 
   def setup_admin_user
-    fleet_memberships.create(user_id: created_by, role: :admin, accepted_at: Time.zone.now)
+    fleet_memberships.create(user_id: created_by, role: :admin, aasm_state: :accepted, accepted_at: Time.zone.now)
   end
 
   def role(user_id)
     membership = fleet_memberships.find_by(user_id: user_id)
 
-    return if membership.blank? || membership.invitation || membership.declined_at.present?
+    return if membership.blank? || !membership.accepted?
 
     membership.role
   end
@@ -100,11 +102,15 @@ class Fleet < ApplicationRecord
   def my_fleet?(user_id)
     membership = fleet_memberships.find_by(user_id: user_id)
 
-    membership.present? && !membership.invitation && membership.declined_at.blank?
+    membership.present? && membership.accepted?
   end
 
   def invitation(user_id)
-    fleet_memberships.find_by(user_id: user_id)&.invitation
+    fleet_memberships.find_by(user_id: user_id)&.invited?
+  end
+
+  def requested(user_id)
+    fleet_memberships.find_by(user_id: user_id)&.requested?
   end
 
   def primary(user_id)

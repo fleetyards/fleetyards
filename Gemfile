@@ -81,6 +81,9 @@ gem 'bower-rails'
 gem 'highline'
 gem 'thor'
 
+gem 'aasm'
+gem 'after_commit_everywhere'
+
 gem 'carrierwave'
 gem 'fog-aws'
 gem 'image_processing', '~> 1.0'

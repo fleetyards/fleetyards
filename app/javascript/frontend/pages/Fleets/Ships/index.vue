@@ -28,7 +28,7 @@
           </Btn>
 
           <Btn
-            v-if="fleet.publicFleet"
+            v-if="fleet.myFleet && fleet.publicFleet"
             v-tooltip="$t('actions.copyPublicUrl')"
             :inline="true"
             @click.native="copyPublicUrl"
@@ -47,7 +47,7 @@
         :fleet="fleet"
         :copy-public-url="copyPublicUrl"
       />
-      <PublicShipsList v-else :fleet="fleet" />
+      <PublicShipsList v-else-if="fleet.publicFleet" :fleet="fleet" />
     </template>
   </section>
 </template>

@@ -2,24 +2,34 @@
 #
 # Table name: fleet_memberships
 #
-#  id              :uuid             not null, primary key
-#  accepted_at     :datetime
-#  declined_at     :datetime
-#  hide_ships      :boolean          default(FALSE)
-#  primary         :boolean          default(FALSE)
-#  role            :integer
-#  ships_filter    :integer          default("purchased")
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  fleet_id        :uuid
-#  hangar_group_id :uuid
-#  user_id         :uuid
+#  id                  :uuid             not null, primary key
+#  aasm_state          :string
+#  accepted_at         :datetime
+#  declined_at         :datetime
+#  hide_ships          :boolean          default(FALSE)
+#  invited_at          :datetime
+#  invited_by          :uuid
+#  primary             :boolean          default(FALSE)
+#  requested_at        :datetime
+#  role                :integer
+#  ships_filter        :integer          default("purchased")
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  fleet_id            :uuid
+#  fleet_invite_url_id :uuid
+#  hangar_group_id     :uuid
+#  user_id             :uuid
+#
+# Indexes
+#
+#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
 #
 
 starfleet_picard:
   fleet: starfleet
   user: jeanluc
   role: :admin
+  aasm_state: :accepted
   accepted_at: <%= Time.now %>
 
 starfleet_data:
@@ -27,14 +37,17 @@ starfleet_data:
   user: data
   role: :member
   ships_filter: :purchased
+  aasm_state: :accepted
   accepted_at: <%= Time.now %>
 
 starfleet_riker:
   fleet: starfleet
   user: will
   role: :member
+  aasm_state: :invited
   accepted_at: nil
 
 klingon_empire_worf:
   fleet: klingon_empire
   user: worf
+  aasm_state: :accepted

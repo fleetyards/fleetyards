@@ -7,6 +7,11 @@ type FleetMemberForm = {
   username: string
 }
 
+type FleetMemberInviteForm = {
+  token: string
+  username: string
+}
+
 type FleetMembersFilter = {
   usernameCont: string
   roleIn: string[]

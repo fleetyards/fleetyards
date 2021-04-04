@@ -9,6 +9,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.hosts << ".#{Rails.application.secrets[:domain]}"
+  config.hosts << Rails.application.secrets[:invite_domain]
 
   config.cache_classes = false
 
@@ -38,6 +39,7 @@ Rails.application.configure do
   # config.active_storage.service = :test
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
