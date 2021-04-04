@@ -25,6 +25,20 @@ module Api
         render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
       end
 
+      def create_by_invite
+        @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+        invite_url = fleet.fleet_invite_urls.find_by!(token: params[:token])
+        user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
+
+        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, fleet_invite_url_id: invite_url.id, accepted_at: Time.zone.now, approved: false)
+
+        authorize! :create_by_invite, member
+
+        return if member.save
+
+        render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
+      end
+
       def update
         authorize! :update, my_membership
 

@@ -17,10 +17,19 @@ module Api
           .per(per_page(FleetInviteUrl))
       end
 
+      def exists
+        authorize! :exists, :api_fleet_invite_url
+
+        fleet = Fleet.where(slug: params[:fleet_slug]).first!
+        fleet.fleet_invite_urls
+          .where(token: params[:token])
+          .first!
+
+        render json: true, status: :ok
+      end
+
       def show
         authorize! :show, fleet_invite_url
-
-        @fleet_invite_url = fleet.fleet_invite_urls.find_by!(token: params[:token])
       end
 
       def create
@@ -34,6 +43,8 @@ module Api
       end
 
       def destroy
+        @fleet_invite_url = fleet.fleet_invite_urls.find_by!(token: params[:token])
+
         authorize! :destroy, fleet_invite_url
 
         if fleet_invite_url.destroy

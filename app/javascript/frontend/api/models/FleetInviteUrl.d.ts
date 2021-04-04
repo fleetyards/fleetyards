@@ -1,0 +1,3 @@
+type FleetInviteUrl = {
+  token: StringConstructor
+}

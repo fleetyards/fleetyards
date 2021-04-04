@@ -1,7 +1,7 @@
 import { get } from 'frontend/api/client'
 import BaseCollection from './Base'
 
-export class FleetInvitessCollection extends BaseCollection {
+export class FleetInvitesCollection extends BaseCollection {
   primaryKey: string = 'id'
 
   records: FleetInvite[] = []
@@ -21,4 +21,4 @@ export class FleetInvitessCollection extends BaseCollection {
   }
 }
 
-export default new FleetInvitessCollection()
+export default new FleetInvitesCollection()

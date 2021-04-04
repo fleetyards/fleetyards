@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_161211) do
+ActiveRecord::Schema.define(version: 2021_04_04_092000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -225,6 +225,10 @@ ActiveRecord::Schema.define(version: 2021_04_03_161211) do
     t.uuid "hangar_group_id"
     t.uuid "fleet_invite_url_id"
     t.uuid "invited_by"
+    t.string "aasm_state"
+    t.datetime "invited_at"
+    t.datetime "requested_at"
+    t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
 
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -336,7 +340,7 @@ ActiveRecord::Schema.define(version: 2021_04_03_161211) do
     t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
-  create_table "model_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "model_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "size"
     t.integer "source"
     t.string "key"
@@ -510,7 +514,7 @@ ActiveRecord::Schema.define(version: 2021_04_03_161211) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "progress_tracker_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "progress_tracker_items", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "key"
     t.string "team"
     t.string "title"

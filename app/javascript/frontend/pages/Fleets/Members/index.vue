@@ -18,9 +18,17 @@
       </div>
       <div class="col-4">
         <div class="page-main-actions">
+          <Btn
+            v-if="canInvite"
+            :inline="true"
+            @click.native="openInviteUrlModal"
+          >
+            <i class="fal fa-plus" />
+            {{ $t('actions.fleet.createInviteUrl') }}
+          </Btn>
           <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
             <i class="fal fa-plus" />
-            {{ $t('actions.add') }}
+            {{ $t('actions.fleet.inviteMember') }}
           </Btn>
         </div>
       </div>
@@ -132,6 +140,15 @@ export default class FleetMemmbers extends Vue {
   async fetch() {
     await this.collection.findAll(this.filters)
     await this.collection.findStats(this.filters)
+  }
+
+  openInviteUrlModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Fleets/InviteUrlModal'),
+      props: {
+        fleet: this.fleet,
+      },
+    })
   }
 
   openInviteModal() {

@@ -18,7 +18,7 @@ module Api
       def current
         authorize! :read, :api_fleet
 
-        @fleets = current_user.fleets.not_declined.all
+        @fleets = current_user.fleets.accepted.all
       end
 
       def show

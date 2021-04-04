@@ -5,11 +5,14 @@
 # Table name: fleet_memberships
 #
 #  id                  :uuid             not null, primary key
+#  aasm_state          :string
 #  accepted_at         :datetime
 #  declined_at         :datetime
 #  hide_ships          :boolean          default(FALSE)
+#  invited_at          :datetime
 #  invited_by          :uuid
 #  primary             :boolean          default(FALSE)
+#  requested_at        :datetime
 #  role                :integer
 #  ships_filter        :integer          default("purchased")
 #  created_at          :datetime         not null
@@ -19,7 +22,13 @@
 #  hangar_group_id     :uuid
 #  user_id             :uuid
 #
+# Indexes
+#
+#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#
 class FleetMembership < ApplicationRecord
+  include AASM
+
   belongs_to :fleet, touch: true
   belongs_to :user, touch: true
 
@@ -32,10 +41,39 @@ class FleetMembership < ApplicationRecord
     parent.table[:role]
   end
 
+  validates :user_id, uniqueness: { scope: :fleet_id }
+
   ransack_alias :username, :user_username
 
-  after_create :notify_user
   after_save :set_primary
+
+  aasm do
+    state :created, initial: true
+    state :invited
+    state :requested
+    state :accepted
+    state :declined
+
+    event :invite do
+      transitions from: :created, to: :invited, after_commit: :notify_invited_user
+    end
+
+    event :request do
+      transitions from: :created, to: :requested, after_commit: :notify_fleet_admin
+    end
+
+    event :accept_invitation do
+      transitions from: :invited, to: :accepted, after_commit: :notify_fleet_admin
+    end
+
+    event :accept_request do
+      transitions from: :requested, to: :accepted, after_commit: :notify_new_member
+    end
+
+    event :decline do
+      transitions from: %i[invited requested], to: :declined
+    end
+  end
 
   def set_primary
     return unless primary?
@@ -47,10 +85,28 @@ class FleetMembership < ApplicationRecord
     # rubocop:enable Rails/SkipsModelValidations
   end
 
-  def notify_user
-    return unless invitation
+  def notify_invited_user
+    return unless invited?
 
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
+  end
+
+  def notify_fleet_admin
+    return unless requested? || accepted?
+
+    fleet.fleet_memberships.where(role: :admin).find_each do |admin|
+      if requested?
+        FleetMembershipMailer.member_requested(admin.user.email, fleet).deliver_later
+      elsif accepted?
+        FleetMembershipMailer.member_accepted(admin.user.email, fleet).deliver_later
+      end
+    end
+  end
+
+  def notify_new_member
+    return unless accepted?
+
+    FleetMembershipMailer.fleet_accepted(user.email, fleet).deliver_later
   end
 
   def visible_vehicle_ids(filters = nil)
@@ -76,10 +132,6 @@ class FleetMembership < ApplicationRecord
     scope = scope.includes(:task_forces).where(task_forces: { hangar_group_id: hangar_group_id }) if ships_filter_hangar_group? && hangar_group_id.present?
     scope = scope.purchased if ships_filter_purchased?
     scope
-  end
-
-  def invitation
-    accepted_at.blank? && declined_at.blank?
   end
 
   def promote

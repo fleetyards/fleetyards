@@ -24,6 +24,14 @@ module Api
           assert_equal 'unauthorized', json['code']
         end
 
+        test 'should render 401 for exists' do
+          get :exists, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+
+          assert_response :unauthorized
+          json = JSON.parse response.body
+          assert_equal 'unauthorized', json['code']
+        end
+
         test 'should render 401 for show' do
           get :show, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
 
@@ -69,7 +77,7 @@ module Api
             ]
           end
 
-          it 'should return list for index' do
+          test 'should return list for index' do
             get :index, params: { fleet_slug: starfleet.slug }
 
             assert_response :ok
@@ -80,8 +88,14 @@ module Api
           end
         end
 
+        test 'should render ok for exists' do
+          get :exists, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+
+          assert_response :ok
+        end
+
         test 'should render 403 for show' do
-          get :show, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+          post :create, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
 
           assert_response :forbidden
           json = JSON.parse response.body
@@ -125,7 +139,7 @@ module Api
             ]
           end
 
-          it 'should return list for index' do
+          test 'should return list for index' do
             get :index, params: { fleet_slug: starfleet.slug }
 
             assert_response :ok
@@ -134,6 +148,12 @@ module Api
 
             assert_equal expected, json
           end
+        end
+
+        test 'should render ok for exists' do
+          get :exists, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
+
+          assert_response :ok
         end
 
         describe '#show' do
@@ -147,7 +167,7 @@ module Api
             }
           end
 
-          it 'should return list for index' do
+          test 'should return list for index' do
             get :show, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
 
             assert_response :ok
@@ -159,7 +179,7 @@ module Api
         end
 
         describe '#create' do
-          it 'should return list for index' do
+          test 'should return list for index' do
             post :create, params: { fleet_slug: starfleet.slug }
 
             assert_response :ok
@@ -171,7 +191,7 @@ module Api
         end
 
         describe '#destroy' do
-          it 'should return list for index' do
+          test 'should return list for index' do
             delete :destroy, params: { fleet_slug: starfleet.slug, token: fleet_invite_url.token }
 
             assert_response :ok
