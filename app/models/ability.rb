@@ -62,8 +62,8 @@ class Ability
     can %i[check invites], :api_fleet
     can %i[check_serial], :api_vehicles
     can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
-    can %i[show accept create_by_invite update destroy], FleetMembership, user_id: user.id
-    can %i[create], FleetMembership, fleet_id: officer_fleet_ids
+    can %i[show accept_invitation decline_invitation create_by_invite update destroy], FleetMembership, user_id: user.id
+    can %i[create accept_request decline_request], FleetMembership, fleet_id: officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
     can %i[exists], :api_fleet_invite_url
     can %i[show create destroy], FleetInviteUrl, fleet_id: officer_fleet_ids

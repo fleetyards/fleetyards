@@ -1,6 +1,9 @@
 <template>
   <Modal v-if="fleet" :title="$t('headlines.fleets.inviteUrls')">
-    {{ inviteUrls }}
+    <div v-for="inviteUrl in inviteUrls" :key="inviteUrl.token">
+      {{ inviteUrl.url }} {{ inviteUrl.inviteCount }}
+    </div>
+    <Btn @click.native="createInviteUrl">Create</Btn>
   </Modal>
 </template>
 
@@ -18,10 +21,12 @@ import inviteUrlCollection from 'frontend/api/collections/FleetInviteUrls'
   },
 })
 export default class MemberModal extends Vue {
+  collection: FleetInviteUrlCollection = inviteUrlCollection
+
   @Prop({ required: true }) fleet: Fleet
 
   get inviteUrls() {
-    return inviteUrlCollection.records
+    return this.collection.records
   }
 
   mounted() {
@@ -29,7 +34,13 @@ export default class MemberModal extends Vue {
   }
 
   async fetch() {
-    await inviteUrlCollection.findAll(this.fleet.slug)
+    await this.collection.findAll({
+      fleetSlug: this.fleet.slug,
+    })
+  }
+
+  async createInviteUrl() {
+    await this.collection.create(this.fleet.slug, true)
   }
 }
 </script>

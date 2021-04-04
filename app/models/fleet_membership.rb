@@ -54,20 +54,20 @@ class FleetMembership < ApplicationRecord
     state :accepted
     state :declined
 
-    event :invite do
-      transitions from: :created, to: :invited, after_commit: :notify_invited_user
+    event :invite, after_commit: :notify_invited_user do
+      transitions from: :created, to: :invited
     end
 
-    event :request do
-      transitions from: :created, to: :requested, after_commit: :notify_fleet_admin
+    event :request, after_commit: :notify_fleet_admins do
+      transitions from: :created, to: :requested
     end
 
-    event :accept_invitation do
-      transitions from: :invited, to: :accepted, after_commit: :notify_fleet_admin
+    event :accept_invitation, after_commit: :notify_fleet_admins do
+      transitions from: :invited, to: :accepted
     end
 
-    event :accept_request do
-      transitions from: :requested, to: :accepted, after_commit: :notify_new_member
+    event :accept_request, after_commit: :notify_new_member do
+      transitions from: :requested, to: :accepted
     end
 
     event :decline do
@@ -91,15 +91,15 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 
-  def notify_fleet_admin
+  def notify_fleet_admins
     return unless requested? || accepted?
 
-    fleet.fleet_memberships.where(role: :admin).find_each do |admin|
-      if requested?
-        FleetMembershipMailer.member_requested(admin.user.email, fleet).deliver_later
-      elsif accepted?
-        FleetMembershipMailer.member_accepted(admin.user.email, fleet).deliver_later
-      end
+    emails = fleet.fleet_memberships.where(role: :admin).map { |admin| admin.user.email }
+
+    if requested?
+      FleetMembershipMailer.member_requested(emails, user.username, fleet).deliver_later
+    elsif accepted?
+      FleetMembershipMailer.member_accepted(emails, user.username, fleet).deliver_later
     end
   end
 

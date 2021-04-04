@@ -1,6 +1,7 @@
 ---
 en:
   labels:
+    success: Success
     actions: Actions
     unknown: Unknown
     charts:

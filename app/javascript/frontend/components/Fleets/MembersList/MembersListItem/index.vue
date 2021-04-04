@@ -119,7 +119,7 @@
           size="small"
           :disabled="!editableMember || updating"
           :inline="true"
-          @click.native="acceptPreliminaryMember(member)"
+          @click.native="acceptRequest(member)"
         >
           <i class="fal fa-check" />
         </Btn>
@@ -129,7 +129,7 @@
           size="small"
           :disabled="!editableMember || updating"
           :inline="true"
-          @click.native="declinePreliminaryMember(member)"
+          @click.native="declineRequest(member)"
         >
           <i class="fal fa-times" />
         </Btn>
@@ -172,6 +172,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Avatar from 'frontend/core/components/Avatar'
 import Btn from 'frontend/core/components/Btn'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 
 @Component<MembersListItem>({
   components: {
@@ -180,6 +181,8 @@ import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class MembersListItem extends Vue {
+  collection: FleetMembersCollection = fleetMembersCollection
+
   deleting: boolean = false
 
   updating: boolean = false
@@ -259,16 +262,17 @@ export default class MembersListItem extends Vue {
     }
   }
 
-  async acceptPreliminaryMember(member) {
+  async acceptRequest(member) {
     this.updating = true
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/accept`,
+    const success = await this.collection.acceptRequest(
+      this.$route.params.slug,
+      member.username,
     )
 
     this.updating = false
 
-    if (!response.error) {
+    if (success) {
       this.$comlink.$emit('fleet-member-update')
       displaySuccess({
         text: this.$t('messages.fleet.members.accept.success'),
@@ -280,16 +284,17 @@ export default class MembersListItem extends Vue {
     }
   }
 
-  async declinePreliminaryMember(member) {
+  async declineRequest(member) {
     this.updating = true
 
-    const response = await this.$api.put(
-      `fleets/${this.$route.params.slug}/members/${member.username}/decline`,
+    const success = await this.collection.declineRequest(
+      this.$route.params.slug,
+      member.username,
     )
 
     this.updating = false
 
-    if (!response.error) {
+    if (success) {
       this.$comlink.$emit('fleet-member-update')
       displaySuccess({
         text: this.$t('messages.fleet.members.decline.success'),

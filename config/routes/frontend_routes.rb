@@ -39,10 +39,10 @@ namespace :frontend, path: '', host: Rails.application.secrets[:domain], constra
   get 'fleets' => 'base#index'
   get 'fleets/add' => 'base#index'
   get 'fleets/invites' => 'base#index'
-  get 'fleets/:slug' => 'fleets#show'
+  get 'fleets/:slug' => 'fleets#show', as: :fleet
   get 'fleets/:slug/ships' => 'fleets#show'
   get 'fleets/:slug/fleetchart' => 'fleets#show'
-  get 'fleets/:slug/members' => 'fleets#members'
+  get 'fleets/:slug/members' => 'fleets#members', as: :fleet_members
   get 'fleets/:slug/invite/:token' => 'fleets#show', as: :fleet_invite
   get 'fleets/:slug/stats' => 'fleets#stats'
   get 'fleets/:slug/settings' => 'fleets#settings'

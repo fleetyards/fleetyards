@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
@@ -22,8 +22,22 @@ export default class FleetInvite extends Vue {
     return fleetsCollection.record
   }
 
-  async mounted() {
+  @Watch('currentUser')
+  onCurrentUserChange() {
+    this.useInvite()
+  }
+
+  created() {
+    this.useInvite()
+  }
+
+  async useInvite() {
+    if (!this.currentUser) {
+      return
+    }
+
     await this.fetchFleet()
+
     const invite = await this.checkInvite()
 
     if (!invite) {

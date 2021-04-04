@@ -183,6 +183,8 @@ v1_api_routes = lambda do
       member do
         put :demote
         put :promote
+        put 'accept-request' => 'fleet_memberships#accept_request'
+        put 'decline-request' => 'fleet_memberships#decline_request'
       end
     end
 
