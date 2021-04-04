@@ -18,10 +18,8 @@ class Db < Thor
   desc 'dump', 'Create new Database dump'
   def dump
     require './config/environment'
-    require 'yaml'
 
-    config = YAML.safe_load(IO.read('config/database.yml'))
-    database_url = config[Rails.env]['url']
+    database_url = ENV['DATABASE_URL']
 
     run %(pg_dump -Fc --no-acl --no-owner #{database_url} -f dumps/latest.dump)
   end

@@ -194,9 +194,9 @@ export default {
       },
       total: 'Total: %{count}',
       joined: 'Joined at',
-      invited: 'Invitation sent at',
-      invitation: 'Invitation',
-      declined: 'Invitation declined',
+      invited: 'Invited',
+      requested: 'Membership Requested',
+      declined: 'Declined',
       roles: {
         admin: 'Admin',
         officer: 'Officer',

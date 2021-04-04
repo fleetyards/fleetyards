@@ -16,13 +16,31 @@ module Api
       def create
         user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
 
-        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member)
+        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: current_user.id)
 
         authorize! :create, member
 
-        return if member.save
+        if member.save
+          member.invite!
+        else
+          render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
+        end
+      end
 
-        render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
+      def create_by_invite
+        @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+        invite_url = fleet.fleet_invite_urls.find_by!(token: params[:token])
+        user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
+
+        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, fleet_invite_url_id: invite_url.id)
+
+        authorize! :create_by_invite, member
+
+        if member.save
+          member.request!
+        else
+          render json: ValidationError.new('fleet_memberships.create', member.errors), status: :bad_request
+        end
       end
 
       def update
@@ -34,19 +52,35 @@ module Api
       end
 
       def accept_invite
-        authorize! :accept, my_membership
+        authorize! :accept_invitation, my_membership
 
-        return if my_membership.update(accepted_at: Time.zone.now)
+        return if my_membership.accept_invitation!
 
         render json: ValidationError.new('fleet_memberships.accept', my_membership.errors), status: :bad_request
       end
 
       def decline_invite
-        authorize! :accept, my_membership
+        authorize! :decline_invitation, my_membership
 
-        return if my_membership.update(declined_at: Time.zone.now)
+        return if my_membership.decline!
 
-        render json: ValidationError.new('fleet_memberships.accept', my_membership.errors), status: :bad_request
+        render json: ValidationError.new('fleet_memberships.decline', my_membership.errors), status: :bad_request
+      end
+
+      def accept_request
+        authorize! :accept_request, member
+
+        return if member.accept_request!
+
+        render json: ValidationError.new('fleet_memberships.accept', member.errors), status: :bad_request
+      end
+
+      def decline_request
+        authorize! :accept_request, member
+
+        return if member.decline!
+
+        render json: ValidationError.new('fleet_memberships.decline', member.errors), status: :bad_request
       end
 
       def promote
@@ -99,7 +133,7 @@ module Api
         @member ||= fleet.fleet_memberships
           .includes(:user)
           .joins(:user)
-          .where(users: { username: params[:username] })
+          .where(['lower(users.username) = :value', { value: params[:username].downcase }])
           .first!
       end
 

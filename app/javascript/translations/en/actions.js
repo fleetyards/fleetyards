@@ -92,6 +92,8 @@ export default {
   'fleet': {
     join: 'Join %{fleet}!',
     leave: 'Leave %{fleet}',
+    createInviteUrl: 'Create Invite Urls',
+    inviteMember: 'Invite new Member',
     acceptInvite: 'Accept Invitation',
     declineInvite: 'Decline Invitation',
     acceptRequest: 'accept Request',
@@ -101,6 +103,8 @@ export default {
       invite: 'Invite',
       promote: 'Promote',
       demote: 'Demote',
+      accept: 'Accept',
+      decline: 'Decline',
       remove: 'Remove',
     },
   },

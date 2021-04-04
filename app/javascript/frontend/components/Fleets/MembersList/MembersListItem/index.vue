@@ -19,10 +19,13 @@
         </a>
       </div>
       <div class="role">
-        <template v-if="member.invitation">
-          {{ $t('labels.fleet.members.invitation') }}
+        <template v-if="member.status === 'invited'">
+          {{ $t('labels.fleet.members.invited') }}
         </template>
-        <span v-else-if="member.declinedAt" class="text-danger">
+        <template v-else-if="member.status === 'requested'">
+          {{ $t('labels.fleet.members.requested') }}
+        </template>
+        <span v-else-if="member.status === 'declined'" class="text-danger">
           {{ $t('labels.fleet.members.declined') }}
         </span>
         <template v-else>
@@ -30,8 +33,14 @@
         </template>
       </div>
       <div class="joined">
-        <template v-if="member.invitation || member.declinedAt">
-          {{ member.inviteSentAtLabel }}
+        <template v-if="member.status === 'invited'">
+          {{ member.invitedAtLabel }}
+        </template>
+        <template v-else-if="member.status === 'declined'">
+          {{ member.declinedAtLabel }}
+        </template>
+        <template v-else-if="member.status === 'requested'">
+          {{ member.requestedAtLabel }}
         </template>
         <template v-else>
           {{ member.acceptedAtLabel }}
@@ -53,7 +62,18 @@
           target="_blank"
           rel="noopener"
         >
-          <i class="fad fa-home" />
+          <i class="fal fa-globe globe-rotate" />
+        </a>
+        <a
+          v-if="member.rsiHandle"
+          v-tooltip="$t('nav.rsiProfile')"
+          :href="
+            `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
+          "
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="icon icon-rsi icon-small" />
         </a>
         <a
           v-if="member.youtube"
@@ -80,7 +100,7 @@
           target="_blank"
           rel="noopener"
         >
-          <i class="icon icon-rsi icon-small" />
+          <i class="fab fa-guilded" />
         </a>
         <a
           v-if="member.discord"
@@ -94,9 +114,28 @@
       </div>
       <div v-if="editable" class="actions actions-3x">
         <Btn
-          v-if="
-            member.role !== 'admin' && !member.invitation && !member.declinedAt
-          "
+          v-if="member.status === 'requested'"
+          v-tooltip="$t('actions.fleet.members.accept')"
+          size="small"
+          :disabled="!editableMember || updating"
+          :inline="true"
+          @click.native="acceptRequest(member)"
+        >
+          <i class="fal fa-check" />
+        </Btn>
+        <Btn
+          v-if="member.status === 'requested'"
+          v-tooltip="$t('actions.fleet.members.decline')"
+          size="small"
+          :disabled="!editableMember || updating"
+          :inline="true"
+          @click.native="declineRequest(member)"
+        >
+          <i class="fal fa-times" />
+        </Btn>
+        <Btn
+          v-if="member.role !== 'admin' && member.status === 'accepted'"
+          v-tooltip="$t('actions.fleet.members.promote')"
           size="small"
           :disabled="!editableMember || updating"
           :inline="true"
@@ -105,9 +144,8 @@
           <i class="fal fa-chevron-up" />
         </Btn>
         <Btn
-          v-if="
-            member.role !== 'member' && !member.invitation && !member.declinedAt
-          "
+          v-if="member.role !== 'member' && member.status === 'accepted'"
+          v-tooltip="$t('actions.fleet.members.demote')"
           size="small"
           :disabled="!editableMember || updating"
           :inline="true"
@@ -134,6 +172,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Avatar from 'frontend/core/components/Avatar'
 import Btn from 'frontend/core/components/Btn'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
+import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 
 @Component<MembersListItem>({
   components: {
@@ -142,6 +181,8 @@ import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
   },
 })
 export default class MembersListItem extends Vue {
+  collection: FleetMembersCollection = fleetMembersCollection
+
   deleting: boolean = false
 
   updating: boolean = false
@@ -217,6 +258,50 @@ export default class MembersListItem extends Vue {
     } else {
       displayAlert({
         text: this.$t('messages.fleet.members.promote.failure'),
+      })
+    }
+  }
+
+  async acceptRequest(member) {
+    this.updating = true
+
+    const success = await this.collection.acceptRequest(
+      this.$route.params.slug,
+      member.username,
+    )
+
+    this.updating = false
+
+    if (success) {
+      this.$comlink.$emit('fleet-member-update')
+      displaySuccess({
+        text: this.$t('messages.fleet.members.accept.success'),
+      })
+    } else {
+      displayAlert({
+        text: this.$t('messages.fleet.members.accept.failure'),
+      })
+    }
+  }
+
+  async declineRequest(member) {
+    this.updating = true
+
+    const success = await this.collection.declineRequest(
+      this.$route.params.slug,
+      member.username,
+    )
+
+    this.updating = false
+
+    if (success) {
+      this.$comlink.$emit('fleet-member-update')
+      displaySuccess({
+        text: this.$t('messages.fleet.members.decline.success'),
+      })
+    } else {
+      displayAlert({
+        text: this.$t('messages.fleet.members.decline.failure'),
       })
     }
   }

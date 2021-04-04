@@ -18,6 +18,7 @@
                 id="username"
                 v-model="form.username"
                 :error="errors[0]"
+                :no-label="true"
                 :autofocus="true"
               />
             </ValidationProvider>

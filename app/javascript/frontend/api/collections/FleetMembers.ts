@@ -1,4 +1,4 @@
-import { get, post } from 'frontend/api/client'
+import { get, post, put } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetMembersCollection extends BaseCollection {
@@ -54,6 +54,64 @@ export class FleetMembersCollection extends BaseCollection {
 
   async create(slug: string, form: FleetMemberForm, refetch: boolean = false) {
     const response = await post(`fleets/${slug}/members`, form)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async createByInvite(
+    slug: string,
+    form: FleetMemberInviteForm,
+    refetch: boolean = false,
+  ) {
+    const response = await post(`fleets/${slug}/members/create-by-invite`, form)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async acceptRequest(
+    slug: string,
+    username: string,
+    refetch: boolean = false,
+  ) {
+    const response = await put(
+      `fleets/${slug}/members/${username}/accept-request`,
+    )
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async declineRequest(
+    slug: string,
+    username: string,
+    refetch: boolean = false,
+  ) {
+    const response = await put(
+      `fleets/${slug}/members/${username}/decline-request`,
+    )
 
     if (!response.error) {
       if (refetch) {

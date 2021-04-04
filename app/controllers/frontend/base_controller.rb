@@ -4,6 +4,8 @@ require 'image_processing/mini_magick'
 
 module Frontend
   class BaseController < ApplicationController
+    before_action :check_invite_domain
+
     include PrefetchHelper
 
     def index
@@ -202,6 +204,12 @@ module Frontend
 
     private def model_record(slug = params[:slug])
       Model.where(['lower(slug) = :value', { value: (slug || '').downcase }])
+    end
+
+    private def check_invite_domain
+      return if Rails.application.secrets[:invite_domain].blank? || request.host != Rails.application.secrets[:invite_domain]
+
+      redirect_to frontend_root_url
     end
   end
 end

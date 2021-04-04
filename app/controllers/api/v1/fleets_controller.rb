@@ -12,13 +12,13 @@ module Api
       def invites
         authorize! :invites, :api_fleet
 
-        @invites = current_user.fleet_memberships.where(accepted_at: nil, declined_at: nil).all
+        @invites = current_user.fleet_memberships.invited.all
       end
 
       def current
         authorize! :read, :api_fleet
 
-        @fleets = current_user.fleets.not_declined.all
+        @fleets = current_user.fleets.accepted.all
       end
 
       def show

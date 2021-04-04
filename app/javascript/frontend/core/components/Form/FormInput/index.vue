@@ -17,9 +17,11 @@
         'from-input-wrapper-with-suffix': !!suffix,
       }"
     >
-      <div v-if="prefix" class="form-input-prefix">
-        {{ prefix }}
-      </div>
+      <slot name="prefix">
+        <div v-if="prefix" class="form-input-prefix">
+          {{ prefix }}
+        </div>
+      </slot>
       <input
         :id="innerId"
         ref="input"
@@ -38,9 +40,11 @@
         @input="update"
         @blur="update"
       />
-      <div v-if="suffix" class="form-input-suffix">
-        {{ suffix }}
-      </div>
+      <slot name="suffix">
+        <div v-if="suffix" class="form-input-suffix">
+          {{ suffix }}
+        </div>
+      </slot>
       <i
         v-if="inputValue && clearable"
         class="fal fa-times clear"
