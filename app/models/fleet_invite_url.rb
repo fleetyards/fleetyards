@@ -31,6 +31,8 @@ class FleetInviteUrl < ApplicationRecord
   before_validation :generate_token
 
   def url
+    return invite_fleet_url(fleet_slug: fleet.slug, token: token) if Rails.application.secrets[:invite_domain].present?
+
     frontend_fleet_invite_url(slug: fleet.slug, token: token)
   end
 
@@ -42,7 +44,8 @@ class FleetInviteUrl < ApplicationRecord
     return if token.present?
 
     self.token = loop do
-      random_token = SecureRandom.urlsafe_base64(nil, false)
+      random_token = SecureRandom.urlsafe_base64(7, false)
+
       break random_token unless self.class.exists?(fleet_id: fleet_id, token: random_token)
     end
   end

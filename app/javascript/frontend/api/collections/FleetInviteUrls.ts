@@ -1,4 +1,4 @@
-import { get, post } from 'frontend/api/client'
+import { get, post, destroy } from 'frontend/api/client'
 import BaseCollection from './Base'
 
 export class FleetInviteUrlsCollection extends BaseCollection {
@@ -8,8 +8,10 @@ export class FleetInviteUrlsCollection extends BaseCollection {
 
   params: FleetInviteUrlParams | null = null
 
-  async findAll(params: FleetInviteUrlParams): Promise<FleetInviteUrl[]> {
-    const response = await get(`fleets/${params.fleetSlug}/invite-urls/`)
+  async findAll(
+    params: FleetInviteUrlParams | null,
+  ): Promise<FleetInviteUrl[]> {
+    const response = await get(`fleets/${params?.fleetSlug}/invite-urls/`)
 
     this.params = params
 
@@ -47,6 +49,20 @@ export class FleetInviteUrlsCollection extends BaseCollection {
 
   async create(fleetSlug: string, refetch: boolean = false) {
     const response = await post(`fleets/${fleetSlug}/invite-urls`)
+
+    if (!response.error) {
+      if (refetch) {
+        this.findAll(this.params)
+      }
+
+      return response.data
+    }
+
+    return null
+  }
+
+  async destroy(fleetSlug: string, token: string, refetch: boolean = false) {
+    const response = await destroy(`fleets/${fleetSlug}/invite-urls/${token}`)
 
     if (!response.error) {
       if (refetch) {

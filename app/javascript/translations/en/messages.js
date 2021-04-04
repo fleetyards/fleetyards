@@ -19,6 +19,10 @@ export default {
     success: 'Public URL "%{publicUrl}" Copied!',
     failure: 'Could not copy Public URL',
   },
+  copyInviteUrl: {
+    success: 'Invite URL "%{url}" Copied!',
+    failure: 'Could not copy Invite URL',
+  },
   signup: {
     success:
       '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation E-Mail to activate your account.',

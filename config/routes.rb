@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   draw :api_routes
   draw :admin_routes
   draw :frontend_routes
+  draw :invite_routes
 
   match '404' => 'errors#not_found', via: :all
   match '405' => 'errors#server_error', via: :all
