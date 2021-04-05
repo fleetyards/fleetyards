@@ -152,6 +152,7 @@ v1_api_routes = lambda do
       post :check
       get :invites
       get :current
+      post 'use-invite' => 'fleet_memberships#create_by_invite'
     end
 
     member do
@@ -188,11 +189,7 @@ v1_api_routes = lambda do
       end
     end
 
-    resources :fleet_invite_urls, path: 'invite-urls', param: :token, only: %i[index show create destroy] do
-      member do
-        get :exists
-      end
-    end
+    resources :fleet_invite_urls, path: 'invite-urls', param: :token, only: %i[index create destroy]
   end
 
   resource :stats, only: [] do

@@ -13,7 +13,7 @@ export default {
   twitch: 'Twitch Channel',
   guilded: 'Guilded Server',
   color: 'Color',
-  fleetInvite: 'Fleet Invite',
+  fleetInviteToken: 'Fleet Invite',
   quicksearch: {
     'models': 'Avenger, Carrack, Cutlass...',
     'models-fleetchart': 'Avenger, Carrack, Cutlass...',

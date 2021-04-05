@@ -6,5 +6,5 @@ export default () => ({
   grouped: true,
   money: true,
   preview: true,
-  invite: null,
+  inviteToken: null,
 })

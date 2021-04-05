@@ -109,10 +109,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.name === 'fleet-invite') {
-    Store.dispatch('fleet/saveInvite', {
-      slug: to.params.slug,
-      token: to.params.token,
-    })
+    Store.dispatch('fleet/saveInviteToken', to.params.token)
   }
 
   // check if update is available

@@ -85,6 +85,7 @@ import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 import FleetMembersList from 'frontend/components/Fleets/MembersList'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
+import debounce from 'lodash.debounce'
 
 @Component<FleetMembers>({
   components: {
@@ -102,6 +103,8 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 })
 export default class FleetMemmbers extends Vue {
   collection: FleetMembersCollection = fleetMembersCollection
+
+  fleetMembersChannel = null
 
   @Getter('mobile') mobile
 
@@ -150,6 +153,8 @@ export default class FleetMemmbers extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
+    this.setupUpdates()
+
     this.$comlink.$on('fleet-member-invited', this.fetch)
     this.$comlink.$on('fleet-member-update', this.fetch)
   }
@@ -180,6 +185,21 @@ export default class FleetMemmbers extends Vue {
         fleet: this.fleet,
       },
     })
+  }
+
+  setupUpdates() {
+    if (this.fleetMembersChannel) {
+      this.fleetMembersChannel.unsubscribe()
+    }
+
+    this.fleetMembersChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'FleetMembersChannel',
+      },
+      {
+        received: debounce(this.fetch, 500),
+      },
+    )
   }
 
   async fetchFleet() {

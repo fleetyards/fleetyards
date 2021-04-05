@@ -66,24 +66,6 @@ export class FleetMembersCollection extends BaseCollection {
     return null
   }
 
-  async createByInvite(
-    slug: string,
-    form: FleetMemberInviteForm,
-    refetch: boolean = false,
-  ) {
-    const response = await post(`fleets/${slug}/members/create-by-invite`, form)
-
-    if (!response.error) {
-      if (refetch) {
-        this.findAll(this.params)
-      }
-
-      return response.data
-    }
-
-    return null
-  }
-
   async acceptRequest(
     slug: string,
     username: string,

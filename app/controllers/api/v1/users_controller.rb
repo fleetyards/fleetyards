@@ -36,14 +36,14 @@ module Api
           return
         end
 
-        fleet_invite = user_params.delete('fleet_invite')
+        fleet_invite_token = user_params.delete('fleet_invite_token')
 
         @user = User.new(user_params)
 
         @user.skip_confirmation! if @user.username == 'NewTestUser'
 
         if @user.save
-          handle_fleet_invite(@user, fleet_invite) if fleet_invite.present?
+          handle_fleet_invite(@user.id, fleet_invite_token) if fleet_invite_token.present?
           return
         end
 
@@ -104,18 +104,12 @@ module Api
         reserved_usernames.include?(username.downcase.strip)
       end
 
-      private def handle_fleet_invite(user, invite)
-        fleet_slug, token = invite.split('/')
-
-        fleet = Fleet.find_by(slug: fleet_slug)
-
-        return if fleet.blank?
-
-        invite_url = fleet.fleet_invite_urls.not_expired.find_by(token: token)
+      private def handle_fleet_invite(user_id, fleet_invite_token)
+        invite_url = FleetInviteUrl.active.find_by(token: fleet_invite_token)
 
         return if invite_url.blank?
 
-        member = fleet.fleet_memberships.create(user_id: user.id, role: :member, invited_by: invite_url.user_id)
+        member = invite_url.fleet.fleet_memberships.create(user_id: user_id, role: :member, invited_by: invite_url.user_id)
 
         return if member.blank?
 

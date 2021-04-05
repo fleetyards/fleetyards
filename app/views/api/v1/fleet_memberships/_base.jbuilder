@@ -21,3 +21,5 @@ json.youtube member.user.youtube
 json.twitch member.user.twitch
 json.ships_filter member.ships_filter
 json.hangar_group_id member.hangar_group_id
+json.fleet_slug member.fleet.slug
+json.fleet_name member.fleet.name

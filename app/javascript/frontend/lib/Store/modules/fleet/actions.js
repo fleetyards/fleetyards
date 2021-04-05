@@ -27,10 +27,11 @@ export default {
     commit('setPreview', false)
   },
 
-  saveInvite({ commit }, payload) {
-    commit('setInvite', payload)
+  saveInviteToken({ commit }, payload) {
+    commit('setInviteToken', payload)
   },
-  resetInvite({ commit }) {
-    commit('setInvite', null)
+
+  resetInviteToken({ commit }) {
+    commit('setInviteToken', null)
   },
 }

@@ -18,7 +18,7 @@ export default {
   'deselect': 'Click to deselect',
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
-  'fleetInvite': 'Fleet Invite',
+  'fleetInviteToken': 'Fleet Invite',
   'shop': {
     rentalPrice: 'rental',
     sellPrice: 'sells for',

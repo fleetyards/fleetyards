@@ -44,7 +44,10 @@ class FleetMembership < ApplicationRecord
 
   ransack_alias :username, :user_username
 
+  after_create :broadcast_create
+  after_destroy :broadcast_destroy
   after_save :set_primary
+  after_commit :broadcast_update
 
   aasm do
     state :created, initial: true
@@ -61,11 +64,11 @@ class FleetMembership < ApplicationRecord
       transitions from: :created, to: :requested
     end
 
-    event :accept_invitation, after_commit: :notify_fleet_admins do
+    event :accept_invitation, after_commit: :on_accept_invitation do
       transitions from: :invited, to: :accepted
     end
 
-    event :accept_request, after_commit: :notify_new_member do
+    event :accept_request, after_commit: :on_accept_request do
       transitions from: :requested, to: :accepted
     end
 
@@ -90,6 +93,14 @@ class FleetMembership < ApplicationRecord
     FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
   end
 
+  def on_accept_invitation
+    notify_fleet_admins
+
+    fleet.fleet_memberships.find_each do |member|
+      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+    end
+  end
+
   def notify_fleet_admins
     return unless requested? || accepted?
 
@@ -99,6 +110,14 @@ class FleetMembership < ApplicationRecord
       FleetMembershipMailer.member_requested(emails, user.username, fleet).deliver_later
     elsif accepted?
       FleetMembershipMailer.member_accepted(emails, user.username, fleet).deliver_later
+    end
+  end
+
+  def on_accept_request
+    notify_new_member
+
+    fleet.fleet_memberships.find_each do |member|
+      FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
   end
 
@@ -114,6 +133,29 @@ class FleetMembership < ApplicationRecord
     scope = visible_vehicles
     scope = scope.where(filters) if filters.present?
     scope.pluck(:id)
+  end
+
+  def broadcast_update
+    fleet.fleet_memberships.find_each do |member|
+      FleetMembersChannel.broadcast_to(member.user, to_json)
+
+      next unless ships_filter_changed?
+
+      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+    end
+  end
+
+  def broadcast_create
+    fleet.fleet_memberships.find_each do |member|
+      FleetMembersChannel.broadcast_to(member.user, to_json)
+    end
+  end
+
+  def broadcast_destroy
+    fleet.fleet_memberships.find_each do |member|
+      FleetMembersChannel.broadcast_to(member.user, to_json)
+      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+    end
   end
 
   def visible_model_ids(filters = nil)
@@ -151,5 +193,9 @@ class FleetMembership < ApplicationRecord
     else
       update(role: :member)
     end
+  end
+
+  def to_json(*_args)
+    to_jbuilder_json
   end
 end

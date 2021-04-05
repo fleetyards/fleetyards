@@ -70,13 +70,13 @@
             </ValidationProvider>
 
             <FormInput
-              v-if="fleetInvite"
-              id="fleetInvite"
-              v-model="form.fleetInvite"
+              v-if="fleetInviteToken"
+              id="fleetInviteToken"
+              v-model="form.fleetInviteToken"
               :disabled="true"
               :hide-label-on-empty="true"
               :clearable="true"
-              @clear="resetFleetInvite"
+              @clear="resetFleetInviteToken"
             />
 
             <Checkbox
@@ -137,9 +137,9 @@ import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
   mixins: [MetaInfo],
 })
 export default class Signup extends Vue {
-  @Getter('invite', { namespace: 'fleet' }) fleetInvite
+  @Getter('inviteToken', { namespace: 'fleet' }) fleetInviteToken
 
-  @Action('resetInvite', { namespace: 'fleet' }) resetFleetInvite: any
+  @Action('resetInviteToken', { namespace: 'fleet' }) resetFleetInviteToken: any
 
   form: SignupForm | null = null
 
@@ -156,10 +156,7 @@ export default class Signup extends Vue {
       saleNotify: false,
       password: null,
       passwordConfirmation: null,
-    }
-
-    if (this.fleetInvite) {
-      this.form.fleetInvite = `${this.fleetInvite.slug}/${this.fleetInvite.token}`
+      fleetInviteToken: this.fleetInviteToken,
     }
   }
 
@@ -175,7 +172,7 @@ export default class Signup extends Vue {
         text: this.$t('messages.signup.success'),
       })
 
-      this.resetFleetInvite()
+      this.resetFleetInviteToken()
 
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       this.$router.push('/').catch(() => {})

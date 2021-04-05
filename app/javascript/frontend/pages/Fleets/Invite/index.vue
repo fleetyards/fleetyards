@@ -6,51 +6,26 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
-import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
-import fleetInviteUrlCollection from 'frontend/api/collections/FleetInviteUrls'
 import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
-import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 
-@Component<FleetInvite>({
-  beforeRouteEnter: publicFleetRouteGuard,
-})
+@Component<FleetInvite>()
 export default class FleetInvite extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser: User
 
-  @Action('resetInvite', { namespace: 'fleet' }) resetFleetInvite: any
-
-  get fleet() {
-    return fleetsCollection.record
-  }
+  @Action('resetInviteToken', { namespace: 'fleet' }) resetFleetInviteToken: any
 
   @Watch('currentUser')
   onCurrentUserChange() {
     this.useInvite()
   }
 
-  created() {
+  mounted() {
     this.useInvite()
   }
 
   async useInvite() {
     if (!this.currentUser) {
-      return
-    }
-
-    await this.fetchFleet()
-
-    const invite = await this.checkInvite()
-
-    if (!invite) {
-      displayAlert({
-        text: this.$t('messages.fleetInvite.notFound'),
-      })
-
-      this.$router.push({
-        name: 'fleet',
-        params: { slug: this.$route.params.slug },
-      })
       return
     }
 
@@ -62,41 +37,29 @@ export default class FleetInvite extends Vue {
       })
 
       this.$router.push({
-        name: 'fleet',
-        params: { slug: this.$route.params.slug },
+        name: 'home',
       })
 
       return
     }
 
-    this.resetFleetInvite()
+    this.resetFleetInviteToken()
 
     displaySuccess({
-      text: this.$t('messages.fleetInvite.used', { fleet: this.fleet.name }),
+      text: this.$t('messages.fleetInvite.used', { fleet: member.fleetName }),
     })
 
     this.$router.push({
       name: 'fleet',
-      params: { slug: this.$route.params.slug },
+      params: { slug: member.fleetSlug },
     })
-  }
-
-  checkInvite(): Promise<boolean> {
-    return fleetInviteUrlCollection.checkToken(
-      this.$route.params.slug,
-      this.$route.params.token,
-    )
   }
 
   createMember(): Promise<FleetMember | null> {
-    return fleetMembersCollection.createByInvite(this.$route.params.slug, {
+    return fleetsCollection.useInvite({
       token: this.$route.params.token,
       username: this.currentUser.username,
     })
-  }
-
-  async fetchFleet() {
-    await fleetsCollection.findBySlug(this.$route.params.slug)
   }
 }
 </script>

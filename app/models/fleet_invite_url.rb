@@ -19,6 +19,7 @@
 #
 class FleetInviteUrl < ApplicationRecord
   include Rails.application.routes.url_helpers
+  include ActionView::Helpers::DateHelper
 
   paginates_per 30
 
@@ -31,7 +32,7 @@ class FleetInviteUrl < ApplicationRecord
 
   before_validation :generate_token
 
-  def self.not_expired
+  def self.active
     where(
       %{
         (fleet_invite_urls.expires_after >= :time_now OR fleet_invite_urls.expires_after IS NULL)
@@ -45,6 +46,12 @@ class FleetInviteUrl < ApplicationRecord
     return false if expires_after.nil?
 
     expires_after < Time.zone.now
+  end
+
+  def expires_after_label
+    return nil if expires_after.blank?
+
+    distance_of_time_in_words(Time.zone.now.utc, expires_after.utc)
   end
 
   def limit_reached?

@@ -28,11 +28,10 @@ module Api
       end
 
       def create_by_invite
-        @fleet = Fleet.find_by!(slug: params[:fleet_slug])
-        invite_url = fleet.fleet_invite_urls.not_expired.find_by!(token: params[:token])
+        invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
         user = User.where(['lower(username) = :value', { value: params[:username].downcase }]).first!
 
-        @member = fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id)
+        @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id)
 
         authorize! :create_by_invite, member
 

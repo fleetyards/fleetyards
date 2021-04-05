@@ -37,8 +37,8 @@ export default () => ({
       return state.preview
     },
 
-    invite(state) {
-      return state.invite
+    inviteToken(state) {
+      return state.inviteToken
     },
   },
 
@@ -76,8 +76,8 @@ export default () => ({
       state.preview = !!payload
     },
 
-    setInvite(state, payload) {
-      state.invite = payload
+    setInviteToken(state, payload) {
+      state.inviteToken = payload
     },
   },
   /* eslint-enable no-param-reassign */

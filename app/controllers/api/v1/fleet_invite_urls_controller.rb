@@ -17,21 +17,6 @@ module Api
           .per(per_page(FleetInviteUrl))
       end
 
-      def exists
-        authorize! :exists, :api_fleet_invite_url
-
-        fleet = Fleet.where(slug: params[:fleet_slug]).first!
-        fleet.fleet_invite_urls
-          .where(token: params[:token])
-          .first!
-
-        render json: true, status: :ok
-      end
-
-      def show
-        authorize! :show, fleet_invite_url
-      end
-
       def create
         @fleet_invite_url = fleet.fleet_invite_urls.new(
           expires_after: expires_after_minutes,
