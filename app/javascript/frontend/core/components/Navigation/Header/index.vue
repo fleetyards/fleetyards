@@ -20,7 +20,7 @@
     <div
       v-if="nodeEnv && !mobile"
       :class="{
-        'spacing-right': this.$route.name === 'home',
+        'spacing-right': $route.name === 'home',
       }"
       class="environment-label"
     >

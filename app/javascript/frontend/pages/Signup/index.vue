@@ -120,7 +120,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/core/components/Form/FormInput'
