@@ -4,12 +4,14 @@
 #
 # Table name: fleet_invite_urls
 #
-#  id         :uuid             not null, primary key
-#  token      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  fleet_id   :uuid
-#  user_id    :uuid
+#  id            :uuid             not null, primary key
+#  expires_after :datetime
+#  limit         :integer
+#  token         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  fleet_id      :uuid
+#  user_id       :uuid
 #
 # Indexes
 #
@@ -22,7 +24,6 @@ class FleetInviteUrl < ApplicationRecord
 
   belongs_to :fleet
   belongs_to :user
-  has_many :fleet_memberships, dependent: :nullify
 
   validates :token,
             uniqueness: { scope: :fleet_id },
@@ -30,14 +31,38 @@ class FleetInviteUrl < ApplicationRecord
 
   before_validation :generate_token
 
+  def self.not_expired
+    where(
+      %{
+        (fleet_invite_urls.expires_after >= :time_now OR fleet_invite_urls.expires_after IS NULL)
+        AND (fleet_invite_urls.limit > 0 OR fleet_invite_urls.limit IS NULL)
+      },
+      time_now: Time.zone.now
+    )
+  end
+
+  def expired?
+    return false if expires_after.nil?
+
+    expires_after < Time.zone.now
+  end
+
+  def limit_reached?
+    return false if limit.nil?
+
+    limit <= 0
+  end
+
+  def reduce_limit
+    return if limit.blank? || limit_reached?
+
+    update(limit: limit - 1)
+  end
+
   def url
     return invite_fleet_url(fleet_slug: fleet.slug, token: token) if Rails.application.secrets[:invite_domain].present?
 
     frontend_fleet_invite_url(slug: fleet.slug, token: token)
-  end
-
-  def invite_count
-    fleet_memberships.size
   end
 
   private def generate_token

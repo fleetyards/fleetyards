@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, Action } from 'vuex-class'
 import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 import fleetInviteUrlCollection from 'frontend/api/collections/FleetInviteUrls'
@@ -17,6 +17,8 @@ import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 })
 export default class FleetInvite extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser: User
+
+  @Action('resetInvite', { namespace: 'fleet' }) resetFleetInvite: any
 
   get fleet() {
     return fleetsCollection.record
@@ -66,6 +68,8 @@ export default class FleetInvite extends Vue {
 
       return
     }
+
+    this.resetFleetInvite()
 
     displaySuccess({
       text: this.$t('messages.fleetInvite.used', { fleet: this.fleet.name }),

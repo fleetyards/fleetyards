@@ -31,3 +31,6 @@ production: &production
   loaner_worker_job:
     cron: '0 21 * * 0' # Weekly on Sunday 21:00
     class: 'LoanerWorker'
+  fleet_invite_url_cleanup_job:
+    cron: '0 22 * * 0' # Weekly on Sunday 22:00
+    class: 'FleetInviteUrlCleanupWorker'

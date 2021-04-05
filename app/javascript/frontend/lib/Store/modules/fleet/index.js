@@ -36,6 +36,10 @@ export default () => ({
     preview(state) {
       return state.preview
     },
+
+    invite(state) {
+      return state.invite
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -70,6 +74,10 @@ export default () => ({
 
     setPreview(state, payload) {
       state.preview = !!payload
+    },
+
+    setInvite(state, payload) {
+      state.invite = payload
     },
   },
   /* eslint-enable no-param-reassign */

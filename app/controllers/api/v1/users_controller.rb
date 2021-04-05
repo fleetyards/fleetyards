@@ -36,11 +36,16 @@ module Api
           return
         end
 
+        fleet_invite = user_params.delete('fleet_invite')
+
         @user = User.new(user_params)
 
         @user.skip_confirmation! if @user.username == 'NewTestUser'
 
-        return if @user.save
+        if @user.save
+          handle_fleet_invite(@user, fleet_invite) if fleet_invite.present?
+          return
+        end
 
         render json: ValidationError.new('signup', @user.errors.messages), status: :bad_request
       end
@@ -79,7 +84,7 @@ module Api
           .permit(
             :username, :avatar, :remove_avatar, :email, :password, :password_confirmation,
             :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage, :youtube, :twitch,
-            :guilded
+            :guilded, :fleet_invite
           )
       end
 
@@ -97,6 +102,24 @@ module Api
         reserved_usernames = JSON.parse(File.read(Rails.root.join('reserved_usernames.json')))
 
         reserved_usernames.include?(username.downcase.strip)
+      end
+
+      private def handle_fleet_invite(user, invite)
+        fleet_slug, token = invite.split('/')
+
+        fleet = Fleet.find_by(slug: fleet_slug)
+
+        return if fleet.blank?
+
+        invite_url = fleet.fleet_invite_urls.not_expired.find_by(token: token)
+
+        return if invite_url.blank?
+
+        member = fleet.fleet_memberships.create(user_id: user.id, role: :member, invited_by: invite_url.user_id)
+
+        return if member.blank?
+
+        member.request!
       end
     end
   end

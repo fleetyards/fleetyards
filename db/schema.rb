@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_092000) do
+ActiveRecord::Schema.define(version: 2021_04_05_163359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -208,6 +208,8 @@ ActiveRecord::Schema.define(version: 2021_04_04_092000) do
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "expires_after"
+    t.integer "limit"
     t.index ["token", "fleet_id"], name: "index_fleet_invite_urls_on_token_and_fleet_id", unique: true
   end
 
@@ -223,7 +225,6 @@ ActiveRecord::Schema.define(version: 2021_04_04_092000) do
     t.boolean "hide_ships", default: false
     t.integer "ships_filter", default: 0
     t.uuid "hangar_group_id"
-    t.uuid "fleet_invite_url_id"
     t.uuid "invited_by"
     t.string "aasm_state"
     t.datetime "invited_at"

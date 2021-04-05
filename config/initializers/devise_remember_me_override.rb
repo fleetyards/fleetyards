@@ -9,9 +9,9 @@ require 'devise/controllers/rememberable'
 
   def remember_key(resource, scope)
     fallback_key = if Rails.env.production?
-                     "FLTYRD_#{scope.upcase}_STORED"
+                     "#{Rails.application.secrets[:cookie_prefix]}_#{scope.upcase}_STORED"
                    else
-                     "FLTYRD_#{scope.upcase}_STORED_#{Rails.env.upcase}"
+                     "#{Rails.application.secrets[:cookie_prefix]}_#{scope.upcase}_STORED_#{Rails.env.upcase}"
                    end
 
     resource.rememberable_options.fetch(:key, fallback_key)
@@ -26,9 +26,9 @@ require 'devise/strategies/rememberable'
 
   def remember_key
     fallback_key = if Rails.env.production?
-                     "FLTYRD_#{scope.upcase}_STORED"
+                     "#{Rails.application.secrets[:cookie_prefix]}_#{scope.upcase}_STORED"
                    else
-                     "FLTYRD_#{scope.upcase}_STORED_#{Rails.env.upcase}"
+                     "#{Rails.application.secrets[:cookie_prefix]}_#{scope.upcase}_STORED_#{Rails.env.upcase}"
                    end
 
     mapping.to.rememberable_options.fetch(:key, fallback_key)

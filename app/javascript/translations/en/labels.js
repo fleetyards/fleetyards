@@ -18,6 +18,7 @@ export default {
   'deselect': 'Click to deselect',
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
+  'fleetInvite': 'Fleet Invite',
   'shop': {
     rentalPrice: 'rental',
     sellPrice: 'sells for',
@@ -201,6 +202,31 @@ export default {
         admin: 'Admin',
         officer: 'Officer',
         member: 'Member',
+      },
+    },
+    inviteUrls: {
+      noLimit: 'No limit',
+      noExpiration: 'Never expires',
+      usesLeft: '%{count} uses left',
+      expiresIn: 'Expires in %{time}',
+      expired: 'Expired',
+      expiresAfterOptions: {
+        'infinite': 'Never',
+        '30_minutes': '30 minutes',
+        '1_hour': '1 hour',
+        '6_hours': '6 hours',
+        '12_hours': '12 hours',
+        '1_day': '1 day',
+        '7_days': '7 days',
+      },
+      limitOptions: {
+        'infinite': 'No limit',
+        '1': '1 use',
+        '5': '5 uses',
+        '10': '10 uses',
+        '25': '25 uses',
+        '50': '50 uses',
+        '100': '100 uses',
       },
     },
   },
@@ -447,6 +473,10 @@ export default {
     fleets: {
       members: {
         role: 'Role',
+      },
+      inviteUrls: {
+        expiresAfter: 'Expire after',
+        limit: 'Max number of uses',
       },
     },
   },

@@ -47,8 +47,8 @@ export class FleetInviteUrlsCollection extends BaseCollection {
     return null
   }
 
-  async create(fleetSlug: string, refetch: boolean = false) {
-    const response = await post(`fleets/${fleetSlug}/invite-urls`)
+  async create(form: InviteUrlForm, refetch: boolean = false) {
+    const response = await post(`fleets/${form.fleetSlug}/invite-urls`, form)
 
     if (!response.error) {
       if (refetch) {

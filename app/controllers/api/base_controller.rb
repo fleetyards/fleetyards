@@ -2,6 +2,7 @@
 
 module Api
   class BaseController < ActionController::API
+    include ActionController::Cookies
     include ActionController::MimeResponds
     include ActionController::Caching
     include RansackHelper
@@ -36,7 +37,7 @@ module Api
           redirect_to api_v1_root_path
         end
         format.json do
-          render json: { message: 'FleetYards.net API root' }
+          render json: { message: "#{Rails.application.secrets[:app_name]} API root" }
         end
       end
     end

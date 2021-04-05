@@ -105,6 +105,8 @@ export default class FormInput extends Vue {
 
   @Prop({ default: false }) disabled!: boolean
 
+  @Prop({ default: false }) inline!: boolean
+
   @Prop({ default: null }) prefix!: string
 
   @Prop({ default: null }) suffix!: string
@@ -165,6 +167,7 @@ export default class FormInput extends Vue {
       'form-input-large': this.size === 'large',
       'form-input-clean': this.variant === 'clean',
       'form-input-clearable': this.clearable,
+      'form-input-inline': this.inline,
       [`form-input-${this.type}`]: true,
     }
   }
@@ -189,7 +192,8 @@ export default class FormInput extends Vue {
   }
 
   clear() {
-    this.$emit('input', null)
+    this.inputValue = null
+    this.update()
     this.$emit('clear')
   }
 }

@@ -107,6 +107,9 @@ export default {
       decline: 'Decline',
       remove: 'Remove',
     },
+    inviteUrls: {
+      create: 'Create new Invite Url',
+    },
   },
   'model': {
     gallery: 'Gallery',

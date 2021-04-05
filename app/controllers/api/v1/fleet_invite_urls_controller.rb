@@ -33,7 +33,11 @@ module Api
       end
 
       def create
-        @fleet_invite_url = fleet.fleet_invite_urls.new(user_id: current_user.id)
+        @fleet_invite_url = fleet.fleet_invite_urls.new(
+          expires_after: expires_after_minutes,
+          limit: fleet_invite_url_params[:limit],
+          user_id: current_user.id
+        )
 
         authorize! :create, fleet_invite_url
 
@@ -62,6 +66,17 @@ module Api
 
       private def fleet
         @fleet ||= current_user.fleets.where(slug: params[:fleet_slug]).first!
+      end
+
+      private def expires_after_minutes
+        return if fleet_invite_url_params[:expires_after_minutes].blank?
+
+        Time.zone.now + fleet_invite_url_params[:expires_after_minutes].to_i.minutes
+      end
+
+      private def fleet_invite_url_params
+        @fleet_invite_url_params ||= params.transform_keys(&:underscore)
+          .permit(:fleet_slug, :limit, :expires_after_minutes)
       end
     end
   end

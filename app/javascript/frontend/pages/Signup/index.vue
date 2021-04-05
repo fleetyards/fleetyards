@@ -1,11 +1,11 @@
 <template>
   <section class="container signup">
     <div class="row">
-      <div class="col-12">
-        <ValidationObserver ref="form" v-slot="{ handleSubmit }" small>
+      <div v-if="form" class="col-12">
+        <ValidationObserver ref="form" v-slot="{ handleSubmit }" :slim="true">
           <form @submit.prevent="handleSubmit(signup)">
             <h1>
-              <router-link to="/" exact>
+              <router-link to="/" :exact="true">
                 {{ $t('app') }}
               </router-link>
             </h1>
@@ -14,7 +14,7 @@
               vid="username"
               rules="required|alpha_dash|usernameTaken"
               :name="$t('labels.username')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="username"
@@ -29,14 +29,13 @@
               vid="email"
               rules="required|email"
               :name="$t('labels.email')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="email"
                 v-model="form.email"
                 :error="errors[0]"
                 :hide-label-on-empty="true"
-                :autofocus="true"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -44,7 +43,7 @@
               vid="password"
               rules="required|min:8"
               :name="$t('labels.password')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="password"
@@ -52,7 +51,6 @@
                 :error="errors[0]"
                 type="password"
                 :hide-label-on-empty="true"
-                :autofocus="true"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -60,7 +58,7 @@
               vid="passwordConfirmation"
               rules="required|confirmed:password"
               :name="$t('labels.passwordConfirmation')"
-              slim
+              :slim="true"
             >
               <FormInput
                 id="passwordConfirmation"
@@ -68,9 +66,18 @@
                 :error="errors[0]"
                 type="password"
                 :hide-label-on-empty="true"
-                :autofocus="true"
               />
             </ValidationProvider>
+
+            <FormInput
+              v-if="fleetInvite"
+              id="fleetInvite"
+              v-model="form.fleetInvite"
+              :disabled="true"
+              :hide-label-on-empty="true"
+              :clearable="true"
+              @clear="resetFleetInvite"
+            />
 
             <Checkbox
               id="saleNotify"
@@ -111,78 +118,92 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter, Action } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 
-export default {
-  name: 'Signup',
-
+@Component<Signup>({
   components: {
     FormInput,
     Btn,
     Checkbox,
   },
-
   mixins: [MetaInfo],
+})
+export default class Signup extends Vue {
+  @Getter('invite', { namespace: 'fleet' }) fleetInvite
 
-  data() {
-    return {
-      submitting: false,
-      form: {
-        username: null,
-        email: null,
-        saleNotify: false,
-        password: null,
-        passwordConfirmation: null,
-      },
+  @Action('resetInvite', { namespace: 'fleet' }) resetFleetInvite: any
+
+  form: SignupForm | null = null
+
+  submitting: boolean = false
+
+  mounted() {
+    this.setupForm()
+  }
+
+  setupForm() {
+    this.form = {
+      username: null,
+      email: null,
+      saleNotify: false,
+      password: null,
+      passwordConfirmation: null,
     }
-  },
 
-  methods: {
-    async signup() {
-      this.submitting = true
+    if (this.fleetInvite) {
+      this.form.fleetInvite = `${this.fleetInvite.slug}/${this.fleetInvite.token}`
+    }
+  }
 
-      const response = await this.$api.post('users/signup', this.form)
+  async signup() {
+    this.submitting = true
 
-      this.submitting = false
+    const response = await this.$api.post('users/signup', this.form)
 
-      if (!response.error) {
-        displaySuccess({
-          text: this.$t('messages.signup.success'),
-        })
+    this.submitting = false
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.$router.push('/').catch(() => {})
-      } else if (
-        response.error.response &&
-        response.error.response.data &&
-        response.error.response.data.code === 'blocked'
-      ) {
+    if (!response.error) {
+      displaySuccess({
+        text: this.$t('messages.signup.success'),
+      })
+
+      this.resetFleetInvite()
+
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this.$router.push('/').catch(() => {})
+    } else if (
+      response.error.response &&
+      response.error.response.data &&
+      response.error.response.data.code === 'blocked'
+    ) {
+      displayAlert({
+        text: this.$t('texts.signup.blocked'),
+      })
+    } else {
+      const { error } = response
+      if (error.response && error.response.data) {
+        const { data: errorData } = error.response
+
+        this.$refs.form.setErrors(errorData.errors)
+
         displayAlert({
-          text: this.$t('texts.signup.blocked'),
+          text: errorData.message,
         })
       } else {
-        const { error } = response
-        if (error.response && error.response.data) {
-          const { data: errorData } = error.response
-
-          this.$refs.form.setErrors(errorData.errors)
-
-          displayAlert({
-            text: errorData.message,
-          })
-        } else {
-          displayAlert({
-            text: this.$t('messages.signup.failure'),
-          })
-        }
+        displayAlert({
+          text: this.$t('messages.signup.failure'),
+        })
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
