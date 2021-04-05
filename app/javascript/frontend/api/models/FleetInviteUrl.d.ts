@@ -1,5 +1,11 @@
 type FleetInviteUrl = {
-  token: StringConstructor
+  token: string
+  url: string
+  expired: boolean
+  expiresAfter: string | null
+  expiresAfterLabel: string | null
+  limit: number | null
+  limitReached: boolean
 }
 
 type InviteUrlForm = {
