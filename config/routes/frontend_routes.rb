@@ -15,7 +15,7 @@ namespace :frontend, path: '', host: Rails.application.secrets[:domain], constra
   get 'hangar/preview' => 'base#index'
   get 'hangar/import' => 'base#index'
   get 'hangar/stats' => 'base#index'
-  get 'hangar/:username' => 'hangar#index'
+  get 'hangar/:username' => 'hangar#index', as: :public_hangar
   get 'hangar/:username/fleetchart' => 'hangar#index'
 
   get 'compare/ships' => 'base#compare_models'
@@ -39,11 +39,11 @@ namespace :frontend, path: '', host: Rails.application.secrets[:domain], constra
   get 'fleets' => 'base#index'
   get 'fleets/add' => 'base#index'
   get 'fleets/invites' => 'base#index'
+  get 'fleets/invites/:token' => 'base#index', as: :fleet_invite
   get 'fleets/:slug' => 'fleets#show', as: :fleet
   get 'fleets/:slug/ships' => 'fleets#show'
   get 'fleets/:slug/fleetchart' => 'fleets#show'
   get 'fleets/:slug/members' => 'fleets#members', as: :fleet_members
-  get 'fleets/:slug/invite/:token' => 'fleets#show', as: :fleet_invite
   get 'fleets/:slug/stats' => 'fleets#stats'
   get 'fleets/:slug/settings' => 'fleets#settings'
   get 'fleets/:slug/settings/fleet' => 'fleets#settings'

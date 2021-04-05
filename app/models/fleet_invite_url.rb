@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_fleet_invite_urls_on_token_and_fleet_id  (token,fleet_id) UNIQUE
+#  index_fleet_invite_urls_on_token  (token) UNIQUE
 #
 class FleetInviteUrl < ApplicationRecord
   include Rails.application.routes.url_helpers
@@ -26,7 +26,7 @@ class FleetInviteUrl < ApplicationRecord
   belongs_to :user
 
   validates :token,
-            uniqueness: { scope: :fleet_id },
+            uniqueness: true,
             presence: true
 
   before_validation :generate_token
@@ -60,9 +60,9 @@ class FleetInviteUrl < ApplicationRecord
   end
 
   def url
-    return invite_fleet_url(fleet_slug: fleet.slug, token: token) if Rails.application.secrets[:invite_domain].present?
+    return short_fleet_invite_url(token: token) if Rails.application.secrets[:short_domain].present?
 
-    frontend_fleet_invite_url(slug: fleet.slug, token: token)
+    frontend_fleet_invite_url(token: token)
   end
 
   private def generate_token
@@ -71,7 +71,7 @@ class FleetInviteUrl < ApplicationRecord
     self.token = loop do
       random_token = SecureRandom.urlsafe_base64(7, false)
 
-      break random_token unless self.class.exists?(fleet_id: fleet_id, token: random_token)
+      break random_token unless self.class.exists?(token: random_token)
     end
   end
 end

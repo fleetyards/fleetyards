@@ -9,7 +9,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.hosts << ".#{Rails.application.secrets[:domain]}"
-  config.hosts << Rails.application.secrets[:invite_domain]
+  config.hosts << Rails.application.secrets[:short_domain]
 
   config.cache_classes = false
 

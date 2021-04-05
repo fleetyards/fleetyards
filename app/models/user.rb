@@ -46,6 +46,8 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   devise :database_authenticatable, :recoverable, :trackable, :validatable,
          :confirmable, :rememberable, :timeoutable, authentication_keys: [:login]
 
@@ -98,6 +100,12 @@ class User < ApplicationRecord
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def public_hangar_url
+    return short_public_hangar_url(username: username) if Rails.application.secrets[:short_domain].present?
+
+    frontend_public_hangar_url(username: username)
   end
 
   def resend_confirmation

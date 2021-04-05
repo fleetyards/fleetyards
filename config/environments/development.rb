@@ -4,7 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.hosts << ".#{Rails.application.secrets[:domain]}"
-  config.hosts << Rails.application.secrets[:invite_domain]
+  config.hosts << Rails.application.secrets[:short_domain]
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
