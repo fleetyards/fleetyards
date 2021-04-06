@@ -42,6 +42,7 @@ export default {
     owners: 'Owners',
     add: 'Create a new Fleet',
     invites: 'Fleet Invites',
+    inviteUrls: 'Invite Urls',
     members: 'Members',
     stats: 'Stats',
     preview: {

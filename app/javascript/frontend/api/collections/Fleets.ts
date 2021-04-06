@@ -85,6 +85,16 @@ export class FleetsCollection extends BaseCollection {
 
     return []
   }
+
+  async useInvite(form: FleetMemberInviteForm) {
+    const response = await post(`fleets/use-invite`, form)
+
+    if (!response.error) {
+      return response.data
+    }
+
+    return null
+  }
 }
 
 export default new FleetsCollection()

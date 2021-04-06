@@ -108,6 +108,10 @@ router.beforeEach((to, from, next) => {
     Store.commit('setLocale', newLocale)
   }
 
+  if (to.name === 'fleet-invite') {
+    Store.dispatch('fleet/saveInviteToken', to.params.token)
+  }
+
   // check if update is available
   if (
     Store.getters['app/isUpdateAvailable'] &&

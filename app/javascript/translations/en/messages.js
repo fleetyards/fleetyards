@@ -19,9 +19,13 @@ export default {
     success: 'Public URL "%{publicUrl}" Copied!',
     failure: 'Could not copy Public URL',
   },
+  copyInviteUrl: {
+    success: 'Invite URL "%{url}" Copied!',
+    failure: 'Could not copy Invite URL',
+  },
   signup: {
     success:
-      '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.',
+      '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation E-Mail to activate your account.',
     invalid: 'Please resolve the errors before your account can be created.',
     failure: 'We could not create your account. Please try again later.',
   },
@@ -31,7 +35,7 @@ export default {
   },
   requestPasswordChange: {
     success:
-      'If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.',
+      'If your E-Mail address exists in our database, you will receive a password recovery link at your E-Mail address in a few minutes.',
   },
   changePassword: {
     success: 'Your password was changed successfully.',
@@ -145,7 +149,21 @@ export default {
         success: 'Member promoted.',
         failure: 'Member could not be promoted.',
       },
+      accept: {
+        success: 'Member accepted.',
+        failure: 'Member could not be accepted.',
+      },
+      decline: {
+        success: 'Member declined.',
+        failure: 'Member could not be declined.',
+      },
     },
+  },
+  fleetInvite: {
+    used:
+      '<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via E-Mail',
+    failure: 'Invite could not be used.',
+    notFound: 'Invite not found.',
   },
   confirm: {
     vehicle: {

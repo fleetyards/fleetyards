@@ -2,8 +2,23 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 import modelsCollection from 'frontend/api/collections/Models'
 import stationsCollection from 'frontend/api/collections/Stations'
 import shopsCollection from 'frontend/api/collections/Shops'
+import publicUserCollection from 'frontend/api/collections/PublicUser'
 
 import { Route, NavigationGuardNext } from 'vue-router'
+
+export const publicHangarRouteGuard = async function publicHangarRouteGuard(
+  to: Route,
+  _from: Route,
+  next: NavigationGuardNext,
+) {
+  const user = await publicUserCollection.findByUsername(to.params.username)
+
+  if (!user) {
+    next({ name: '404' })
+  } else {
+    next()
+  }
+}
 
 export const fleetRouteGuard = async function fleetRouteGuard(
   to: Route,

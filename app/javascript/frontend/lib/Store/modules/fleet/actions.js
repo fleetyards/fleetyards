@@ -26,4 +26,12 @@ export default {
   hidePreview({ commit }) {
     commit('setPreview', false)
   },
+
+  saveInviteToken({ commit }, payload) {
+    commit('setInviteToken', payload)
+  },
+
+  resetInviteToken({ commit }) {
+    commit('setInviteToken', null)
+  },
 }

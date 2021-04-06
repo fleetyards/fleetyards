@@ -43,6 +43,19 @@ export const routes = [
     },
   },
   {
+    path: 'invites/:token/',
+    name: 'fleet-invite',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.fleets-invites" */
+        'frontend/pages/Fleets/Invite'
+      ),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: 'bg-8',
+    },
+  },
+  {
     path: ':slug/',
     name: 'fleet',
     component: () =>

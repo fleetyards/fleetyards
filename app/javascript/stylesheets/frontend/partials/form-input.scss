@@ -66,6 +66,7 @@
 
     .clear {
       position: absolute;
+      top: 2px;
       right: 5px;
       bottom: 2px;
       width: 40px;
@@ -123,6 +124,10 @@
       border: none;
       border-radius: 0;
     }
+  }
+
+  &.form-input-inline {
+    margin-bottom: 0;
   }
 
   &.has-error {

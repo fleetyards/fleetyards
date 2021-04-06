@@ -46,11 +46,12 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable,
-         :rememberable, :trackable, :validatable, :confirmable, :timeoutable,
+  include Rails.application.routes.url_helpers
+
+  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable, 
+         :validatable, :confirmable, :rememberable, :timeoutable, authentication_keys: [:login],
          otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
          otp_backup_code_length: 32, otp_number_of_backup_codes: 10,
-         authentication_keys: [:login]
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
@@ -106,6 +107,12 @@ class User < ApplicationRecord
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def public_hangar_url
+    return short_public_hangar_url(username: username) if Rails.application.secrets[:short_domain].present?
+
+    frontend_public_hangar_url(username: username)
   end
 
   def resend_confirmation

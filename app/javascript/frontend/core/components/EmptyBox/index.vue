@@ -9,7 +9,7 @@
             <Btn v-if="isPagePresent" @click.native="resetPage">
               {{ $t('actions.empty.resetPage') }}
             </Btn>
-            <Btn :to="{ name: this.$route.name }" :exact="true">
+            <Btn :to="{ name: $route.name }" :exact="true">
               {{ $t('actions.empty.reset') }}
             </Btn>
           </div>

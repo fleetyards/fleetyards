@@ -7,60 +7,6 @@ en:
     not_found: You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.
     server_error: The Page is currently not available. Please try again later.
     unprocessable_entity: Your Request could not be processed.
-  mailer:
-    hello: Hello %{username}
-    privacy: Privacy policy
-    settings: Notification Settings
-    unsubscribe: Unsubscribe
-    model:
-      new:
-        subject: New Ship/Vehicle
-        headline_part_1: "Allow me to introduce:"
-        headline_part_2: "The %{manufacturer}"
-    transmission_end: "--- incomming transmission ---"
-    transmission_start: "--- incomming transmission ---"
-    admin:
-      weekly:
-        headline: FleetYards.net Command - Weekly
-        subject: FleetYards.net Command Weekly
-        registrations: "New Registrations"
-        ships: "New Ships"
-        vehicles: "New Vehicles"
-        fleets: "New Fleets"
-      missing_loaners:
-        headline: FleetYards.net Missing Loaners
-        subject: FleetYards.net Missing Loaners
-      notify_block:
-        headline: FleetYards.net Command - Connection to RSI blocked
-        subject: Connection to RSI blocked
-        text: Automated updates from RSI using "%{url}" has been blocked
-      notify_unblock:
-        headline: FleetYards.net Command - Connection to RSI restored
-        subject: Connection to RSI restored
-        text: Automated updates from RSI using "%{url}" has been restored
-    vehicle:
-      on_sale:
-        headline:
-          part_one: The
-          part_two: is now on Sale!
-        price: Starting at %{price}
-        subject: "%{model} now on Sale!"
-    roadmap:
-      admin:
-        headline: New changes on the Roadmap
-        subject: New changes on the Roadmap
-        body: There have been %{changes} changes to the Roadmap
-    progress_tracker:
-      admin:
-        headline: New changes on the Progress Tracker
-        subject: New changes on the Progress Tracker
-        body: There have been %{changes} changes on the Progress Tracker
-    fleet_membership:
-      new_invite:
-        subject: New Fleet Invite
-        headline: You have been invited to Join %{fleet}
-        body: 'To accept the invite please click on the following link:'
-        action: Join %{fleet}
   meta:
     description: FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.
     admin_description: FleetYards.net Command App.

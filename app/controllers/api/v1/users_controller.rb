@@ -13,7 +13,7 @@ module Api
 
       def public
         authorize! :read_public, :api_user
-        @user = User.find_by!(['lower(username) = :value', { value: params[:username].downcase }])
+        @user = User.where(public_hangar: true).find_by!(['lower(username) = :value', { value: params[:username].downcase }])
       end
 
       def update
@@ -36,11 +36,16 @@ module Api
           return
         end
 
+        fleet_invite_token = user_params.delete('fleet_invite_token')
+
         @user = User.new(user_params)
 
         @user.skip_confirmation! if @user.username == 'NewTestUser'
 
-        return if @user.save
+        if @user.save
+          handle_fleet_invite(@user.id, fleet_invite_token) if fleet_invite_token.present?
+          return
+        end
 
         render json: ValidationError.new('signup', @user.errors.messages), status: :bad_request
       end
@@ -79,7 +84,7 @@ module Api
           .permit(
             :username, :avatar, :remove_avatar, :email, :password, :password_confirmation,
             :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage, :youtube, :twitch,
-            :guilded
+            :guilded, :fleet_invite
           )
       end
 
@@ -97,6 +102,18 @@ module Api
         reserved_usernames = JSON.parse(File.read(Rails.root.join('reserved_usernames.json')))
 
         reserved_usernames.include?(username.downcase.strip)
+      end
+
+      private def handle_fleet_invite(user_id, fleet_invite_token)
+        invite_url = FleetInviteUrl.active.find_by(token: fleet_invite_token)
+
+        return if invite_url.blank?
+
+        member = invite_url.fleet.fleet_memberships.create(user_id: user_id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+
+        return if member.blank?
+
+        member.request!
       end
     end
   end

@@ -39,6 +39,7 @@
             </Btn>
 
             <Btn
+              v-if="currentUser.publicHangar"
               v-tooltip="$t('actions.copyPublicUrl')"
               @click.native="copyPublicUrl"
             >
@@ -126,7 +127,12 @@
               <span>{{ $t('labels.hangarStats') }}</span>
             </Btn>
 
-            <Btn size="small" variant="dropdown" @click.native="copyPublicUrl">
+            <Btn
+              v-if="currentUser.publicHangar"
+              size="small"
+              variant="dropdown"
+              @click.native="copyPublicUrl"
+            >
               <i class="fad fa-share-square" />
               <span>{{ $t('actions.copyPublicUrl') }}</span>
             </Btn>
@@ -346,11 +352,10 @@ export default class Hangar extends Vue {
 
   get publicUrl() {
     if (!this.currentUser) {
-      return ''
+      return null
     }
-    const host = `${window.location.protocol}//${window.location.host}`
 
-    return `${host}/hangar/${this.currentUser.username}`
+    return this.currentUser.publicHangarUrl
   }
 
   get isGuideVisible() {
@@ -461,6 +466,12 @@ export default class Hangar extends Vue {
   }
 
   copyPublicUrl(_event) {
+    if (!this.publicUrl) {
+      displayAlert({
+        text: this.$t('messages.copyPublicUrl.failure'),
+      })
+    }
+
     copyText(this.publicUrl).then(
       () => {
         displaySuccess({

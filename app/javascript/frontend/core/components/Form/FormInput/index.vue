@@ -17,9 +17,11 @@
         'from-input-wrapper-with-suffix': !!suffix,
       }"
     >
-      <div v-if="prefix" class="form-input-prefix">
-        {{ prefix }}
-      </div>
+      <slot name="prefix">
+        <div v-if="prefix" class="form-input-prefix">
+          {{ prefix }}
+        </div>
+      </slot>
       <input
         :id="innerId"
         ref="input"
@@ -38,9 +40,11 @@
         @input="update"
         @blur="update"
       />
-      <div v-if="suffix" class="form-input-suffix">
-        {{ suffix }}
-      </div>
+      <slot name="suffix">
+        <div v-if="suffix" class="form-input-suffix">
+          {{ suffix }}
+        </div>
+      </slot>
       <i
         v-if="inputValue && clearable"
         class="fal fa-times clear"
@@ -100,6 +104,8 @@ export default class FormInput extends Vue {
   @Prop({ default: false }) clearable!: boolean
 
   @Prop({ default: false }) disabled!: boolean
+
+  @Prop({ default: false }) inline!: boolean
 
   @Prop({ default: null }) prefix!: string
 
@@ -161,6 +167,7 @@ export default class FormInput extends Vue {
       'form-input-large': this.size === 'large',
       'form-input-clean': this.variant === 'clean',
       'form-input-clearable': this.clearable,
+      'form-input-inline': this.inline,
       [`form-input-${this.type}`]: true,
     }
   }
@@ -185,7 +192,8 @@ export default class FormInput extends Vue {
   }
 
   clear() {
-    this.$emit('input', null)
+    this.inputValue = null
+    this.update()
     this.$emit('clear')
   }
 }

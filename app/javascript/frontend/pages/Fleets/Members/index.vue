@@ -17,10 +17,18 @@
         </h1>
       </div>
       <div class="col-4">
-        <div class="page-main-actions">
-          <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
+        <div v-if="!mobile" class="page-main-actions">
+          <Btn
+            v-if="canInvite"
+            :inline="true"
+            @click.native="openInviteUrlModal"
+          >
             <i class="fal fa-plus" />
-            {{ $t('actions.add') }}
+            {{ $t('actions.fleet.createInviteUrl') }}
+          </Btn>
+          <Btn v-if="canInvite" :inline="true" @click.native="openInviteModal">
+            <i class="fad fa-user-plus" />
+            {{ $t('actions.fleet.inviteMember') }}
           </Btn>
         </div>
       </div>
@@ -35,6 +43,23 @@
       :hash="$route.hash"
       :paginated="true"
     >
+      <template v-if="mobile && canInvite" slot="actions">
+        <BtnDropdown size="small">
+          <Btn
+            size="small"
+            variant="dropdown"
+            @click.native="openInviteUrlModal"
+          >
+            <i class="fal fa-plus" />
+            <span>{{ $t('actions.fleet.createInviteUrl') }}</span>
+          </Btn>
+          <Btn size="small" variant="dropdown" @click.native="openInviteModal">
+            <i class="fad fa-user-plus" />
+            <span>{{ $t('actions.fleet.inviteMember') }}</span>
+          </Btn>
+        </BtnDropdown>
+      </template>
+
       <FleetMembersFilterForm slot="filter" />
 
       <template #default="{ records }">
@@ -47,10 +72,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import Panel from 'frontend/core/components/Panel'
 import FilteredList from 'frontend/core/components/FilteredList'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import Btn from 'frontend/core/components/Btn'
+import BtnDropdown from 'frontend/core/components/BtnDropdown'
 import FleetMembersFilterForm from 'frontend/components/Fleets/MembersFilterForm'
 import Avatar from 'frontend/core/components/Avatar'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
@@ -58,10 +85,12 @@ import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 import FleetMembersList from 'frontend/components/Fleets/MembersList'
 import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
 import fleetsCollection from 'frontend/api/collections/Fleets'
+import debounce from 'lodash.debounce'
 
 @Component<FleetMembers>({
   components: {
     Btn,
+    BtnDropdown,
     BreadCrumbs,
     Panel,
     FilteredList,
@@ -74,6 +103,10 @@ import fleetsCollection from 'frontend/api/collections/Fleets'
 })
 export default class FleetMemmbers extends Vue {
   collection: FleetMembersCollection = fleetMembersCollection
+
+  fleetMembersChannel = null
+
+  @Getter('mobile') mobile
 
   get fleet() {
     return fleetsCollection.record
@@ -120,6 +153,8 @@ export default class FleetMemmbers extends Vue {
   mounted() {
     this.fetchFleet()
     this.fetch()
+    this.setupUpdates()
+
     this.$comlink.$on('fleet-member-invited', this.fetch)
     this.$comlink.$on('fleet-member-update', this.fetch)
   }
@@ -134,6 +169,15 @@ export default class FleetMemmbers extends Vue {
     await this.collection.findStats(this.filters)
   }
 
+  openInviteUrlModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Fleets/InviteUrlModal'),
+      props: {
+        fleet: this.fleet,
+      },
+    })
+  }
+
   openInviteModal() {
     this.$comlink.$emit('open-modal', {
       component: () => import('frontend/components/Fleets/MemberModal'),
@@ -141,6 +185,21 @@ export default class FleetMemmbers extends Vue {
         fleet: this.fleet,
       },
     })
+  }
+
+  setupUpdates() {
+    if (this.fleetMembersChannel) {
+      this.fleetMembersChannel.unsubscribe()
+    }
+
+    this.fleetMembersChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'FleetMembersChannel',
+      },
+      {
+        received: debounce(this.fetch, 500),
+      },
+    )
   }
 
   async fetchFleet() {

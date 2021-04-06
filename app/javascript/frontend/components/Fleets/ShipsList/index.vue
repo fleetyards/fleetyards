@@ -161,6 +161,7 @@ import FleetModelsFilterForm from 'frontend/components/Models/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
 import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
+import debounce from 'lodash.debounce'
 
 @Component<FleetShipsList>({
   components: {
@@ -177,6 +178,8 @@ import fleetVehiclesCollection from 'frontend/api/collections/FleetVehicles'
 })
 export default class FleetShipsList extends Vue {
   collection: FleetVehiclesCollection = fleetVehiclesCollection
+
+  fleetVehiclesChannel = null
 
   @Prop({ required: true }) fleet: Fleet
 
@@ -219,8 +222,7 @@ export default class FleetShipsList extends Vue {
 
   @Watch('grouped')
   onGroupedChange() {
-    this.collection.findAll(this.filters)
-    this.fetchStats()
+    this.fetch()
   }
 
   @Watch('$route')
@@ -235,6 +237,7 @@ export default class FleetShipsList extends Vue {
 
   mounted() {
     this.fetchStats()
+    this.setupUpdates()
   }
 
   toggleDetails() {
@@ -247,6 +250,26 @@ export default class FleetShipsList extends Vue {
 
   toggleMoney() {
     this.$store.dispatch('fleet/toggleMoney')
+  }
+
+  setupUpdates() {
+    if (this.fleetVehiclesChannel) {
+      this.fleetVehiclesChannel.unsubscribe()
+    }
+
+    this.fleetVehiclesChannel = this.$cable.consumer.subscriptions.create(
+      {
+        channel: 'FleetVehiclesChannel',
+      },
+      {
+        received: debounce(this.fetch, 500),
+      },
+    )
+  }
+
+  async fetch() {
+    await this.collection.findAll(this.filters)
+    await this.fetchStats()
   }
 
   async fetchStats() {
