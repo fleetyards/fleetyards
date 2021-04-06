@@ -48,10 +48,10 @@
 class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
-  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable, 
-         :validatable, :confirmable, :rememberable, :timeoutable, authentication_keys: [:login],
-         otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
-         otp_backup_code_length: 32, otp_number_of_backup_codes: 10,
+  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
+         :validatable, :confirmable, :rememberable, :timeoutable,
+         authentication_keys: [:login], otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
+         otp_backup_code_length: 32, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
