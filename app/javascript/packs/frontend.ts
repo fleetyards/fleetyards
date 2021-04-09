@@ -28,6 +28,19 @@ Vue.use(Meta, {
   tagIDKeyName: 'vmid',
 })
 
+declare global {
+  interface Window {
+    APP_VERSION: string
+    STORE_VERSION: string
+    APP_CODENAME: string
+    API_ENDPOINT: string
+    DATA_PREFILL: KeyValuePair
+    ON_SUBDOMAIN: boolean
+    FRONTEND_ENDPOINT: string
+    SERVICE_WORKER_URL: string
+  }
+}
+
 if (process.env.NODE_ENV !== 'production') {
   Vue.config.devtools = true
 } else {

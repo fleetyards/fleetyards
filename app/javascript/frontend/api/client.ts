@@ -4,6 +4,25 @@ import Store from 'frontend/lib/Store'
 import linkHeaderParser from 'parse-link-header'
 import Qs from 'qs'
 
+type ApiResponseMeta = {
+  currentPage: number
+  totalPages: number
+}
+
+type ApiResponse = {
+  data: any
+  params: any
+  meta: ApiResponseMeta | null
+  error: null
+}
+
+type ApiErrorResponse = {
+  data: null
+  params: any
+  meta: null
+  error: AxiosError
+}
+
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {
@@ -45,7 +64,7 @@ const handleError = async function handleError(
   error: AxiosError,
   params: any,
   silent: boolean,
-): ApiErrorResponse {
+): Promise<ApiErrorResponse> {
   if (!silent) {
     nprogress.done()
   }
