@@ -112,7 +112,7 @@ export default class Navigation extends Vue {
 
   @Getter('isUpdateAvailable', { namespace: 'app' }) isUpdateAvailable
 
-  @Getter('hangarPreview', { namespace: 'hangar' }) preview
+  @Getter('preview', { namespace: 'hangar' }) hangarPreview
 
   get isFleetRoute() {
     return [
