@@ -3,6 +3,7 @@ export default {
   description: 'Description',
   login: 'Username or E-Mail',
   username: 'Username',
+  twoFactorCode: 'Two-factor code',
   email: 'E-Mail',
   currentPassword: 'Current Password',
   password: 'Password',

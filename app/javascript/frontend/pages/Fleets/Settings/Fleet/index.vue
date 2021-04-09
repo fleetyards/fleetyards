@@ -267,7 +267,7 @@ import FormTextarea from 'frontend/core/components/Form/FormTextarea'
 import Checkbox from 'frontend/core/components/Form/Checkbox'
 import Avatar from 'frontend/core/components/Avatar'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
-import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetSettings>({

@@ -5,6 +5,49 @@
         <h1>{{ $t('headlines.settings.account') }}</h1>
       </div>
     </div>
+
+    <!-- <div class="row">
+      <div class="col-12">
+        <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
+          <form @submit.prevent="handleSubmit(submit)">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  vid="username"
+                  rules="required|alpha_dash"
+                  :name="$t('labels.username')"
+                  :slim="true"
+                >
+                  <FormInput
+                    id="username"
+                    v-model="form.username"
+                    :error="errors[0]"
+                  />
+                </ValidationProvider>
+              </div>
+              <div class="col-12 col-md-6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  vid="email"
+                  rules="required|email"
+                  :name="$t('labels.email')"
+                  :slim="true"
+                >
+                  <FormInput
+                    id="email"
+                    v-model="form.email"
+                    :error="errors[0]"
+                    type="email"
+                  />
+                </ValidationProvider>
+              </div>
+            </div>
+          </form>
+        </ValidationObserver>
+      </div>
+    </div> -->
+
     <div class="row">
       <div class="col-12">
         <p>

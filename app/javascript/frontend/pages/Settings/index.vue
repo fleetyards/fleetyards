@@ -4,39 +4,59 @@
       <div class="col-12 col-md-3 order-md-12">
         <ul class="tabs">
           <router-link
-            v-slot="{ href: linkHref, navigate }"
+            v-slot="{ href: linkHref, navigate, isActive }"
             :to="{ name: 'settings-profile' }"
             :custom="true"
           >
-            <li role="link" @click="navigate" @keypress.enter="navigate">
+            <li
+              role="link"
+              :class="{ active: isActive }"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
               <a :href="linkHref">{{ $t('nav.settings.profile') }}</a>
             </li>
           </router-link>
           <router-link
-            v-slot="{ href: linkHref, navigate }"
+            v-slot="{ href: linkHref, navigate, isActive }"
             :to="{ name: 'settings-account' }"
             :custom="true"
           >
-            <li role="link" @click="navigate" @keypress.enter="navigate">
+            <li
+              role="link"
+              :class="{ active: isActive }"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
               <a :href="linkHref">{{ $t('nav.settings.account') }}</a>
             </li>
           </router-link>
           <router-link
-            v-slot="{ href: linkHref, navigate }"
-            :to="{ name: 'settings-hangar' }"
+            v-slot="{ href: linkHref, navigate, isActive }"
+            :to="{ name: 'settings-security' }"
             :custom="true"
           >
-            <li role="link" @click="navigate" @keypress.enter="navigate">
-              <a :href="linkHref">{{ $t('nav.settings.hangar') }}</a>
+            <li
+              role="link"
+              :class="{ active: isActive }"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
+              <a :href="linkHref">{{ $t('nav.settings.security') }}</a>
             </li>
           </router-link>
           <router-link
-            v-slot="{ href: linkHref, navigate }"
-            :to="{ name: 'settings-change-password' }"
+            v-slot="{ href: linkHref, navigate, isActive }"
+            :to="{ name: 'settings-hangar' }"
             :custom="true"
           >
-            <li role="link" @click="navigate" @keypress.enter="navigate">
-              <a :href="linkHref">{{ $t('actions.changePassword') }}</a>
+            <li
+              role="link"
+              :class="{ active: isActive }"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
+              <a :href="linkHref">{{ $t('nav.settings.hangar') }}</a>
             </li>
           </router-link>
         </ul>
@@ -48,8 +68,10 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'Settings',
-}
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+
+@Component<Settings>()
+export default class Settings extends Vue {}
 </script>

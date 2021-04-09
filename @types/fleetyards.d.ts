@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios'
+
 interface KeyValuePair {
   [key: string]: string | null
 }
@@ -5,6 +7,20 @@ interface KeyValuePair {
 type ApiResponseMeta = {
   currentPage: number
   totalPages: number
+}
+
+type ApiResponse = {
+  data: any
+  params: any
+  meta: ApiResponseMeta
+  error: null
+}
+
+type ApiErrorResponse = {
+  data: null
+  params: any
+  meta: null
+  error: AxiosError
 }
 
 interface Window {

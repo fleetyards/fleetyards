@@ -8,15 +8,18 @@ module Admin
       authorize! :update, current_user
       return if current_user.reload.otp_required_for_login?
 
-      current_user.otp_secret = User.generate_otp_secret
+      current_user.otp_secret = AdminUser.generate_otp_secret
       current_user.save
     end
 
     def otp_qrcode
       authorize! :update, current_user
+
       uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.application.secrets[:devise_otp_issuer])
-      qr = RQRCode.render_qrcode(uri, :png, level: :l, unit: 6)
-      send_data qr, type: 'image/png', disposition: 'inline'
+
+      qr = RQRCode::QRCode.new(uri)
+
+      send_data qr.as_svg(color: 'ccc'), type: 'image/svg+xml', disposition: 'inline'
     end
 
     def otp_backup_codes
@@ -47,7 +50,7 @@ module Admin
     def disable_otp
       authorize! :update, current_user
       if current_user.validate_and_consume_otp!(otp_attempt)
-        current_user.otp_secret = User.generate_otp_secret
+        current_user.otp_secret = AdminUser.generate_otp_secret
         current_user.otp_required_for_login = false
         current_user.save!
         redirect_to otp_admin_me_path, flash: { success: I18n.t(:"messages.disable.success", scope: 'devise.otp') }
@@ -58,7 +61,7 @@ module Admin
     end
 
     private def otp_attempt
-      params.fetch(:user, {}).fetch(:otp_attempt, nil)
+      params.permit(admin_user: :otp_attempt).dig(:admin_user, :otp_attempt)
     end
 
     private def set_active_nav

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 v1_api_routes = lambda do
-  resource :sessions, only: %i[create destroy]
+  resource :sessions, only: %i[create destroy] do
+    collection do
+      post 'confirm-access' => 'sessions#confirm_access'
+    end
+  end
 
   resources :models, param: :slug, only: %i[index show] do
     collection do
@@ -53,15 +57,25 @@ v1_api_routes = lambda do
 
   resources :users, only: [] do
     collection do
+      get :current
       post :signup
       post :confirm
-      get :current
+      post 'check-email'
+      post 'check-username'
       put 'current' => 'users#update'
       patch 'current' => 'users#update'
       delete 'current' => 'users#destroy'
+
       get ':username' => 'users#public'
-      post 'check-email'
-      post 'check-username'
+
+      resource :two_factor, path: 'two-factor', only: [] do
+        collection do
+          get :qrcode
+          post :enable
+          post :disable
+          post 'generate-backup-codes' => 'two_factors#generate_backup_codes'
+        end
+      end
     end
   end
 

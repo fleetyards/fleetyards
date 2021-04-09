@@ -4,8 +4,23 @@
       <div class="username">
         <Avatar :avatar="member.avatar" size="small" />
         {{ member.username }}
+        <template v-if="mobile">
+          (
+          <a
+            v-if="member.rsiHandle"
+            v-tooltip="$t('nav.rsiProfile')"
+            :href="
+              `https://robertsspaceindustries.com/citizens/${member.rsiHandle}`
+            "
+            target="_blank"
+            rel="noopener"
+          >
+            {{ member.rsiHandle }}
+          </a>
+          )
+        </template>
       </div>
-      <div class="rsi-handle">
+      <div v-if="!mobile" class="rsi-handle">
         <a
           v-if="member.rsiHandle"
           v-tooltip="$t('nav.rsiProfile')"
@@ -169,6 +184,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import Avatar from 'frontend/core/components/Avatar'
 import Btn from 'frontend/core/components/Btn'
 import { displaySuccess, displayAlert, displayConfirm } from 'frontend/lib/Noty'
@@ -186,6 +202,8 @@ export default class MembersListItem extends Vue {
   deleting: boolean = false
 
   updating: boolean = false
+
+  @Getter('mobile') mobile
 
   @Prop({ required: true }) member: Member
 
@@ -307,3 +325,14 @@ export default class MembersListItem extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~stylesheets/variables';
+
+@media (max-width: $desktop-breakpoint) {
+  .flex-list-row {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+  }
+}
+</style>

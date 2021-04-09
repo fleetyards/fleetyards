@@ -34,6 +34,7 @@ export default {
   cookie: 'Cookie policy',
   requestPassword: 'Request Password',
   changePassword: 'Change Password',
+  confirmAccess: 'Confirm access',
   filterModels: 'Filter Ships',
   filterVehicles: 'Filter Hangar',
   filterCargoRoutes: 'Filter Cargo routes',
@@ -70,6 +71,15 @@ export default {
     profile: 'Profile Settings',
     hangar: 'Hangar Settings',
     verify: 'Verify your RSI Account',
+    security: {
+      index: 'Account Security',
+      twoFactor: 'Two-factor Authentiation',
+    },
+    twoFactor: {
+      enable: 'Enable Two-factor Authentiation',
+      disable: 'Disable Two-factor Authentiation',
+      backupCodes: 'Generate Two-Factor Backup Codes',
+    },
   },
   roadmap: 'Ship-Roadmap',
   tradeRoutes: {

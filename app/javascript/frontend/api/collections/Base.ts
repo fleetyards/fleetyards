@@ -16,4 +16,8 @@ export default class BaseCollection {
       this.totalPages = meta.totalPages
     }
   }
+
+  extractErrorCode(error): string | null {
+    return error.response?.data?.code || null
+  }
 }

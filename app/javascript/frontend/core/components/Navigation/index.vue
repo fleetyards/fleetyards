@@ -27,7 +27,7 @@
             :to="{ name: 'home' }"
             :label="$t('nav.home')"
             :icon="isFleetRoute ? 'fal fa-chevron-left' : 'fad fa-home-alt'"
-            exact
+            :exact="true"
           />
           <FleetNav v-if="isFleetRoute" />
           <template v-else>
@@ -77,7 +77,9 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex'
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import NavItem from 'frontend/core/components/Navigation/NavItem'
 import UserNav from 'frontend/core/components/Navigation/UserNav'
 import FleetNav from 'frontend/core/components/Navigation/FleetNav'
@@ -88,9 +90,7 @@ import RoadmapNav from 'frontend/core/components/Navigation/RoadmapNav'
 import NavFooter from 'frontend/core/components/Navigation/NavFooter'
 import NavigationMixin from 'frontend/mixins/Navigation'
 
-export default {
-  name: 'Navigation',
-
+@Component<Navigation>({
   components: {
     NavItem,
     UserNav,
@@ -101,91 +101,82 @@ export default {
     RoadmapNav,
     NavFooter,
   },
-
   mixins: [NavigationMixin],
+})
+export default class Navigation extends Vue {
+  searchQuery = null
 
-  data() {
-    return {
-      searchQuery: null,
-    }
-  },
+  @Getter('filters') filters
 
-  computed: {
-    ...mapGetters(['filters']),
+  @Getter('navCollapsed', { namespace: 'app' }) navCollapsed
 
-    ...mapGetters('app', ['navCollapsed', 'isUpdateAvailable']),
+  @Getter('isUpdateAvailable', { namespace: 'app' }) isUpdateAvailable
 
-    ...mapGetters('hangar', {
-      hangarPreview: 'preview',
-    }),
+  @Getter('hangarPreview', { namespace: 'hangar' }) preview
 
-    isFleetRoute() {
-      return [
-        'fleet',
-        'fleet-ships',
-        'fleet-members',
-        'fleet-stats',
-        'fleet-fleetchart',
-        'fleet-settings',
-        'fleet-settings-fleet',
-        'fleet-settings-membership',
-      ].includes(this.$route.name)
-    },
-  },
+  get isFleetRoute() {
+    return [
+      'fleet',
+      'fleet-ships',
+      'fleet-members',
+      'fleet-stats',
+      'fleet-fleetchart',
+      'fleet-settings',
+      'fleet-settings-fleet',
+      'fleet-settings-membership',
+    ].includes(this.$route.name)
+  }
 
-  watch: {
-    $route() {
-      this.close()
-    },
-  },
+  @Watch('$route')
+  onRouteChange() {
+    this.close()
+  }
 
   created() {
     document.addEventListener('click', this.documentClick)
-  },
+  }
 
   destroyed() {
     document.removeEventListener('click', this.documentClick)
-  },
+  }
 
   beforeDestroy() {
     this.close()
-  },
+  }
 
-  methods: {
-    filterFor(route) {
-      // // TODO: disabled until vue-router supports navigation to same route
-      // return null
-      if (!this.filters[route]) {
-        return null
-      }
+  filterFor(route) {
+    // // TODO: disabled until vue-router supports navigation to same route
+    // return null
+    if (!this.filters[route]) {
+      return null
+    }
 
-      return {
-        q: this.filters[route],
-      }
-    },
+    return {
+      q: this.filters[route],
+    }
+  }
 
-    documentClick(event) {
-      const element = this.$refs.navigation
-      const { target } = event
+  documentClick(event) {
+    const element = this.$refs.navigation
+    const { target } = event
 
-      if (element !== target && !element.contains(target)) {
-        this.close()
-      }
-    },
-
-    open() {
-      this.$store.commit('app/openNav')
-    },
-
-    close() {
-      this.$store.commit('app/closeNav')
-    },
-
-    reload() {
+    if (element !== target && !element.contains(target)) {
       this.close()
+    }
+  }
 
-      window.location.reload(true)
-    },
-  },
+  open() {
+    this.$store.commit('app/openNav')
+  }
+
+  close() {
+    this.$store.commit('app/closeNav')
+  }
+
+  reload() {
+    this.close()
+
+    window.location.reload(true)
+  }
 }
 </script>

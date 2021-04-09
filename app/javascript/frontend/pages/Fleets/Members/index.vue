@@ -83,7 +83,7 @@ import Avatar from 'frontend/core/components/Avatar'
 import MetaInfoMixin from 'frontend/mixins/MetaInfo'
 import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
 import FleetMembersList from 'frontend/components/Fleets/MembersList'
-import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 import debounce from 'lodash.debounce'
 

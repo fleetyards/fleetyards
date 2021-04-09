@@ -88,7 +88,7 @@ import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 import fleetMembersCollection from 'frontend/api/collections/FleetMembers'
-import { fleetRouteGuard } from 'frontend/utils/RouteGuards'
+import { fleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetMembershipSettings>({

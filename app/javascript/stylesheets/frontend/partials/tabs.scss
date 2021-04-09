@@ -65,12 +65,8 @@ $nav-transition-speed: .3s;
     }
 
     &.active {
-      background-color: $gray-dark;
-
       > a {
         color: $text-color;
-        background-color: $gray-dark;
-        border: 1px solid $gray-darker;
 
         i {
           color: $text-color;

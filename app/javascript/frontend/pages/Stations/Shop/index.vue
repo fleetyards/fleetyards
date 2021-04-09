@@ -213,7 +213,7 @@ import { Getter } from 'vuex-class'
 import shopCommoditiesCollection from 'frontend/api/collections/ShopCommodities'
 import shopsCollection from 'frontend/api/collections/Shops'
 import AddToCartBtn from 'frontend/core/components/AppShoppingCart/AddToCartBtn'
-import { shopRouteGuard } from 'frontend/utils/RouteGuards'
+import { shopRouteGuard } from 'frontend/utils/RouteGuards/Shops'
 
 @Component<Shop>({
   beforeRouteEnter: shopRouteGuard,

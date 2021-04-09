@@ -1,3 +1,4 @@
+import { parseISO, differenceInMinutes } from 'date-fns'
 import actions from './actions'
 import getDefaultState from './state'
 
@@ -16,6 +17,19 @@ export default () => ({
     currentUser(state) {
       return state.currentUser
     },
+
+    accessConfirmed(state) {
+      if (!state.accessConfirmed) {
+        return false
+      }
+
+      const diff = differenceInMinutes(
+        new Date(),
+        parseISO(state.accessConfirmed),
+      )
+
+      return diff < 10
+    },
   },
 
   /* eslint-disable no-param-reassign */
@@ -30,6 +44,10 @@ export default () => ({
 
     setCurrentUser(state, payload) {
       state.currentUser = payload
+    },
+
+    setAccessConfirmed(state, payload) {
+      state.accessConfirmed = payload
     },
   },
   /* eslint-enable no-param-reassign */

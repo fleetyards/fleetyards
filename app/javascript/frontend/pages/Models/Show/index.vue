@@ -294,7 +294,7 @@ import ModelSpeedMetrics from 'frontend/components/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
-import { modelRouteGuard } from 'frontend/utils/RouteGuards'
+import { modelRouteGuard } from 'frontend/utils/RouteGuards/Models'
 import modelsCollection from 'frontend/api/collections/Models'
 
 @Component<ModelDetail>({

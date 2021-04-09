@@ -95,7 +95,7 @@ import { Component, Watch } from 'vue-property-decorator'
 import Avatar from 'frontend/core/components/Avatar'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
-import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards'
+import { publicFleetRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 
 @Component<FleetDetail>({

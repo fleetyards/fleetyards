@@ -1,3 +1,5 @@
+import { formatISO } from 'date-fns'
+
 export default {
   reset({ commit }) {
     commit('reset')
@@ -19,5 +21,13 @@ export default {
 
   updateCookies({ commit }, payload) {
     commit('setCookies', payload)
+  },
+
+  confirmAccess({ commit }) {
+    commit('setAccessConfirmed', formatISO(new Date()))
+  },
+
+  resetConfirmAccess({ commit }) {
+    commit('setAccessConfirmed', null)
   },
 }

@@ -15,6 +15,7 @@
     <template slot="submenu">
       <NavItem
         :to="{ name: 'settings' }"
+        :active="active"
         :label="$t('nav.settings.index')"
         icon="fad fa-cog"
       />
@@ -59,6 +60,12 @@ export default {
         'settings-profile',
         'settings-account',
         'settings-hangar',
+        'settings-security-status',
+        'settings-two-factor',
+        'settings-two-factor-status',
+        'settings-two-factor-enable',
+        'settings-two-factor-disable',
+        'settings-two-factor-backup-codes',
         'settings-change-password',
       ].includes(this.$route.name)
     },

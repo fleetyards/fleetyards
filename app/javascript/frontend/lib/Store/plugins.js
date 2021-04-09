@@ -8,6 +8,7 @@ export default function getStorePlugins() {
         'storeVersion',
         'app.navSlim',
         'session.authenticated',
+        'session.accessConfirmed',
         'cookies.infoVisible',
         'cookies.cookies',
         'hangar.ships',

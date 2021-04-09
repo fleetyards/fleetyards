@@ -31,7 +31,7 @@
               {{ $t('actions.requestPassword') }}
             </Btn>
 
-            <footer>
+            <footer v-if="!isAuthenticated">
               <p class="text-center">
                 {{ $t('labels.alreadyRegistered') }}
               </p>
@@ -47,45 +47,53 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 import { displaySuccess } from 'frontend/lib/Noty'
 
-export default {
+@Component<RequestPassword>({
   components: {
     FormInput,
     Btn,
   },
-
   mixins: [MetaInfo],
+})
+export default class RequestPassword extends Vue {
+  @Getter('isAuthenticated', { namespace: 'session' }) isAuthenticated: boolean
 
-  data() {
-    return {
-      submitting: false,
-      form: {
-        email: null,
-      },
+  submitting: boolean = false
+
+  form: RequestPasswordForm | null = null
+
+  mounted() {
+    this.setupForm()
+  }
+
+  setupForm() {
+    this.form = {
+      email: null,
     }
-  },
+  }
 
-  methods: {
-    async requestPassword() {
-      this.submitting = true
+  async requestPassword() {
+    this.submitting = true
 
-      await this.$api.post('password/request', this.form)
+    await this.$api.post('password/request', this.form)
 
-      this.submitting = false
+    this.submitting = false
 
-      displaySuccess({
-        text: this.$t('messages.requestPasswordChange.success'),
-      })
+    displaySuccess({
+      text: this.$t('messages.requestPasswordChange.success'),
+    })
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      this.$router.push('/').catch(() => {})
-    },
-  },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    this.$router.push('/').catch(() => {})
+  }
 }
 </script>
 

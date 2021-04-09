@@ -1,3 +1,5 @@
+import SecurityRoutes from './Security/routes'
+
 export const routes = [
   {
     path: 'profile/',
@@ -46,6 +48,21 @@ export const routes = [
       title: 'changePassword',
       needsAuthentication: true,
     },
+  },
+  {
+    path: 'security/',
+    name: 'settings-security',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.settings.security" */ 'frontend/pages/Settings/Security'
+      ),
+    meta: {
+      needsAuthentication: true,
+    },
+    redirect: {
+      name: 'settings-security-status',
+    },
+    children: SecurityRoutes,
   },
 ]
 

@@ -39,9 +39,8 @@ gem 'premailer-rails'
 gem 'cancancan'
 
 gem 'devise'
-gem 'devise-two-factor'
-
-gem 'rqrcode-rails3'
+gem 'devise-two-factor', github: 'tinfoil/devise-two-factor'
+gem 'rqrcode'
 
 gem 'useragent'
 
@@ -94,7 +93,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'nokogiri', '>= 1.7.1'
+gem 'nokogiri'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
@@ -118,6 +117,7 @@ group :development do
   gem 'rails-erd'
 
   gem 'dotenv'
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
 
   gem 'rubocop', require: false
   gem 'rubocop-ast', require: false

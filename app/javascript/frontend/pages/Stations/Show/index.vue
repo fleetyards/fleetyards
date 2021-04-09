@@ -83,7 +83,7 @@ import StationBaseMetrics from 'frontend/components/Stations/BaseMetrics'
 import StationDocks from 'frontend/components/Stations/Docks'
 import StationHabitations from 'frontend/components/Stations/Habitations'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
-import { stationRouteGuard } from 'frontend/utils/RouteGuards'
+import { stationRouteGuard } from 'frontend/utils/RouteGuards/Stations'
 import stationsCollection from 'frontend/api/collections/Stations'
 
 @Component<StationDetail>({

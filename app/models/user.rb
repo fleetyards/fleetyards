@@ -54,10 +54,10 @@
 class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
-  devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
-         :validatable, :confirmable, :rememberable, :timeoutable,
+  devise :two_factor_authenticatable, :two_factor_backupable, :database_authenticatable,
+         :recoverable, :trackable, :validatable, :confirmable, :rememberable, :timeoutable,
          authentication_keys: [:login], otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
-         otp_backup_code_length: 32, otp_number_of_backup_codes: 10
+         otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
@@ -133,6 +133,10 @@ class User < ApplicationRecord
     return if username.blank?
 
     self.username = username.strip
+  end
+
+  def confirm_access_token
+    Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.secrets[:confirm_access_secret]) + Digest::MD5.hexdigest(id))
   end
 
   private def touch_fleet_memberships

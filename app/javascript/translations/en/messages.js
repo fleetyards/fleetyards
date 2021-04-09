@@ -23,6 +23,10 @@ export default {
     success: 'Invite URL "%{url}" Copied!',
     failure: 'Could not copy Invite URL',
   },
+  copyBackupCodes: {
+    success: 'Backup Codes Copied!',
+    failure: 'Could not copy Backup Codes',
+  },
   signup: {
     success:
       '<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation E-Mail to activate your account.',
@@ -71,6 +75,19 @@ export default {
   },
   notification: {
     granted: 'Welcome to FleetYards.net Notifications!',
+  },
+  twoFactor: {
+    enable: {
+      success: 'Two-factor Authentication enabled!',
+      failure: 'Could not enable Two-factor Authentication.',
+    },
+    disable: {
+      success: 'Two-factor Authentication disabled!',
+      failure: 'Could not diable Two-factor Authentication.',
+    },
+    backupCodes: {
+      failure: 'Backup Codes could not be generated.',
+    },
   },
   error: {
     usernameTaken: 'Username is already taken.',
@@ -210,6 +227,10 @@ export default {
     },
     modal: {
       dirty: 'You have unsaved changes that will be lost.',
+    },
+    twoFactor: {
+      generateBackupCodes:
+        'Are you sure you want to regenerate your Two-factor Backup Codes?',
     },
   },
 }

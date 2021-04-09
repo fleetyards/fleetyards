@@ -63,7 +63,7 @@ import ShipsList from 'frontend/components/Fleets/ShipsList'
 import PublicShipsList from 'frontend/components/Fleets/PublicShipsList'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
-import { publicFleetShipsRouteGuard } from 'frontend/utils/RouteGuards'
+import { publicFleetShipsRouteGuard } from 'frontend/utils/RouteGuards/Fleets'
 import fleetsCollection from 'frontend/api/collections/Fleets'
 import { displayAlert, displaySuccess } from 'frontend/lib/Noty'
 

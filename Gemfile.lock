@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/tinfoil/devise-two-factor.git
+  revision: 267c14d25b03c112f7f1853e4fa0732ed905314b
+  specs:
+    devise-two-factor (4.0.0)
+      activesupport (< 6.2)
+      attr_encrypted (>= 1.3, < 4, != 2)
+      devise (~> 4.0)
+      railties (< 6.2)
+      rotp (~> 6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -151,18 +162,15 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-two-factor (3.0.0)
-      activesupport
-      attr_encrypted (>= 1.3, < 4, != 2)
-      devise (~> 4.0)
-      railties
-      rotp (~> 2.0)
     discordrb-webhooks (3.4.2)
       rest-client (>= 2.1.0)
     docile (1.3.5)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     dynamic_fields_for_rails (1.0.1)
       rails (>= 3.0.0, < 7.0.0)
     ed25519 (1.2.4)
@@ -328,7 +336,7 @@ GEM
     net-ssh (6.1.0)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.2)
+    nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oj (3.11.3)
@@ -436,12 +444,10 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.4)
-    rotp (2.1.2)
+    rotp (6.2.0)
     rqrcode (1.2.0)
       chunky_png (~> 1.0)
       rqrcode_core (~> 0.2)
-    rqrcode-rails3 (0.1.7)
-      rqrcode (>= 0.4.2)
     rqrcode_core (0.2.0)
     rubocop (1.12.0)
       parallel (~> 1.10)
@@ -610,9 +616,10 @@ DEPENDENCIES
   coffee-rails
   dalli
   devise
-  devise-two-factor
+  devise-two-factor!
   discordrb-webhooks
   dotenv
+  dotenv-rails
   dynamic_fields_for_rails
   ed25519
   excon (>= 0.71.0)
@@ -640,7 +647,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
-  nokogiri (>= 1.7.1)
+  nokogiri
   oj
   paper_trail
   pg (~> 1.0)
@@ -657,7 +664,7 @@ DEPENDENCIES
   ransack
   redcarpet
   redis-actionpack
-  rqrcode-rails3
+  rqrcode
   rubocop
   rubocop-ast
   rubocop-minitest

@@ -69,3 +69,8 @@ en:
         headline: "%{username} accepted his Fleet Invitation"
         body: 'To look at the new members information please click on the following link:'
         action: "%{fleet} Memberlist"
+    two_factor:
+      login:
+        subject: Two-factor Authentication Code
+        headline: Two-factor Authentication Code
+        body: Please enter the following Code on the Login page to verify your identity

@@ -118,7 +118,7 @@
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards'
+import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards/Hangar'
 import Btn from 'frontend/core/components/Btn'
 import ModelPanel from 'frontend/components/Models/Panel'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'

@@ -104,4 +104,11 @@ export default {
     info:
       'Please report missing Stations, Shops and Commodity Items via Email to <a href="mailto:info@fleetyards.net">info@fleetyards.net</a>',
   },
+  twoFactor: {
+    backupCodes:
+      'Save a copy of your Backup-Codes. They will only be visible this one time.',
+    disable: 'To disable 2-Factor-Auth just enter a valid Token.',
+    enable:
+      ' To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy.',
+  },
 }

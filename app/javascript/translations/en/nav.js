@@ -49,6 +49,7 @@ export default {
     index: 'Settings',
     profile: 'Profile',
     account: 'Account',
+    security: 'Security',
     hangar: 'Hangar',
     verify: 'RSI Account Verification',
   },

@@ -179,6 +179,10 @@ export default class FormInput extends Vue {
 
   mounted() {
     this.inputValue = this.value
+
+    if (this.autofocus) {
+      this.setFocus()
+    }
   }
 
   setFocus() {
