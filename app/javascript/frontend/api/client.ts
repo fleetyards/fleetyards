@@ -9,14 +9,14 @@ type ApiResponseMeta = {
   totalPages: number
 }
 
-type ApiResponse = {
+export type ApiResponse = {
   data: any
   params: any
   meta: ApiResponseMeta | null
   error: null
 }
 
-type ApiErrorResponse = {
+export type ApiErrorResponse = {
   data: null
   params: any
   meta: null
