@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_05_171046) do
+ActiveRecord::Schema.define(version: 2021_04_06_082739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2021_04_05_171046) do
     t.string "aasm_state"
     t.datetime "invited_at"
     t.datetime "requested_at"
+    t.string "used_invite_token"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
 
