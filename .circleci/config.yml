@@ -1,7 +1,7 @@
 version: 2.1
 
 ciImage: &ciImage
-  image: fleetyards/ci:3.0.0
+  image: fleetyards/ci:3.0.1
   auth:
     username: $DOCKERHUB_USER
     password: $DOCKERHUB_PASSWORD
@@ -19,7 +19,7 @@ ciImage: &ciImage
     ADMIN_ENDPOINT: http://localhost:8270
 
 e2eImage: &e2eImage
-  image: fleetyards/e2e:3.0.0
+  image: fleetyards/e2e:3.0.1
   auth:
     username: $DOCKERHUB_USER
     password: $DOCKERHUB_PASSWORD
@@ -55,7 +55,7 @@ esImage: &esImage
   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
   environment:
     cluster.name: fleetyards-test-cluster
-    xpack.security.enabled: false
+    xpack.security.enabled: 'false'
     transport.host: localhost
     network.host: 127.0.0.1
     http.port: 9200
