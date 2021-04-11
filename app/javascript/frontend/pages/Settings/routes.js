@@ -38,18 +38,6 @@ export const routes = [
     },
   },
   {
-    path: 'change-password/',
-    name: 'settings-change-password',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/ChangePassword'
-      ),
-    meta: {
-      title: 'changePassword',
-      needsAuthentication: true,
-    },
-  },
-  {
     path: 'security/',
     name: 'settings-security',
     component: () =>

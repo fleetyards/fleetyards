@@ -14,6 +14,6 @@ type CollectionResponse<T> = {
 }
 
 type RecordResponse<T> = {
-  data: T | null
-  error: string | null
+  data?: T | null
+  error?: string | null
 }

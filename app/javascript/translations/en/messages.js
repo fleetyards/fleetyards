@@ -48,6 +48,9 @@ export default {
   updateProfile: {
     success: 'Profile updated.',
   },
+  updateAccount: {
+    success: 'Account updated.',
+  },
   avatarUpload: {
     success: 'Avatar uploaded',
     invalidExtension:

@@ -42,37 +42,6 @@
       </div>
       <div class="row">
         <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="username"
-            rules="required|alpha_dash"
-            :name="$t('labels.username')"
-            :slim="true"
-          >
-            <FormInput
-              id="username"
-              v-model="form.username"
-              :error="errors[0]"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
-          <ValidationProvider
-            v-slot="{ errors }"
-            vid="email"
-            rules="required|email"
-            :name="$t('labels.email')"
-            :slim="true"
-          >
-            <FormInput
-              id="email"
-              v-model="form.email"
-              :error="errors[0]"
-              type="email"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-12 col-md-6">
           <FormInput
             id="rsiHandle"
             v-model="form.rsiHandle"
@@ -170,174 +139,163 @@
             />
           </ValidationProvider>
         </div>
+
+        <div class="col-12">
+          <br />
+          <Btn :loading="submitting" type="submit" size="large">
+            {{ $t('actions.save') }}
+          </Btn>
+        </div>
       </div>
-      <br />
-      <Btn :loading="submitting" type="submit" size="large">
-        {{ $t('actions.save') }}
-      </Btn>
     </form>
   </ValidationObserver>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import VueUploadComponent from 'vue-upload-component'
-import MetaInfo from 'frontend/mixins/MetaInfo'
-import FormInput from 'frontend/core/components/Form/FormInput'
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
 import Btn from 'frontend/core/components/Btn'
 import Avatar from 'frontend/core/components/Avatar'
-import { displaySuccess, displayAlert } from 'frontend/lib/Noty'
+import FormInput from 'frontend/core/components/Form/FormInput'
+import VueUploadComponent from 'vue-upload-component'
+import MetaInfo from 'frontend/mixins/MetaInfo'
+import userCollection from 'frontend/api/collections/User'
 
-export default {
-  name: 'Profile',
-
+@Component<SettingsAccount>({
   components: {
     VueUploadComponent,
     FormInput,
     Btn,
     Avatar,
   },
-
   mixins: [MetaInfo],
+})
+export default class SettingsAccount extends Vue {
+  @Getter('currentUser', { namespace: 'session' }) currentUser
 
-  data() {
-    return {
-      form: {
-        username: null,
-        email: null,
-        rsiHandle: null,
-        homepage: null,
-        discord: null,
-        youtube: null,
-        twitch: null,
-        guilded: null,
-        removeAvatar: false,
-      },
-      files: [],
-      fileExtensions: 'jpg,jpeg,png,webp',
-      acceptedMimeTypes: 'image/png,image/jpeg,image/webp',
-      submitting: false,
-    }
-  },
+  form: UserForm | null = null
 
-  computed: {
-    ...mapGetters('session', ['currentUser']),
+  files = []
 
-    avatarUrl() {
-      return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)
-    },
+  fileExtensions: string = 'jpg,jpeg,png,webp'
 
-    newAvatar() {
-      return (this.files && this.files[0]) || {}
-    },
+  acceptedMimeTypes: string = 'image/png,image/jpeg,image/webp'
 
-    fileExtensionsList() {
-      return this.fileExtensions.split(',')
-    },
-  },
+  submitting: boolean = false
 
-  watch: {
-    currentUser: 'setupForm',
-  },
+  get avatarUrl() {
+    return this.newAvatar.url || (this.currentUser && this.currentUser.avatar)
+  }
+
+  get newAvatar() {
+    return (this.files && this.files[0]) || {}
+  }
+
+  get fileExtensionsList() {
+    return this.fileExtensions.split(',')
+  }
+
+  @Watch('currentUser')
+  onCurrentUserChange() {
+    this.setupForm()
+  }
 
   created() {
     if (this.currentUser) {
       this.setupForm()
     }
-  },
+  }
 
-  methods: {
-    selectAvatar() {
-      this.form.removeAvatar = false
-      this.$refs.upload.$el.querySelector('input').click()
-    },
+  selectAvatar() {
+    this.form.removeAvatar = false
+    this.$refs.upload.$el.querySelector('input').click()
+  }
 
-    removeAvatar() {
-      this.files = []
-      this.currentUser.avatar = null
-      this.form.removeAvatar = true
-    },
+  removeAvatar() {
+    this.files = []
+    this.currentUser.avatar = null
+    this.form.removeAvatar = true
+  }
 
-    setupForm() {
-      this.form = {
-        username: this.currentUser.username,
-        email: this.currentUser.email,
-        rsiHandle: this.currentUser.rsiHandle,
-        homepage: this.currentUser.homepage,
-        discord: this.currentUser.discord,
-        youtube: this.currentUser.youtube,
-        twitch: this.currentUser.twitch,
-        guilded: this.currentUser.guilded,
-        removeAvatar: false,
-      }
-    },
+  setupForm() {
+    this.form = {
+      rsiHandle: this.currentUser.rsiHandle,
+      homepage: this.currentUser.homepage,
+      discord: this.currentUser.discord,
+      youtube: this.currentUser.youtube,
+      twitch: this.currentUser.twitch,
+      guilded: this.currentUser.guilded,
+      removeAvatar: false,
+    }
+  }
 
-    async submit() {
-      this.submitting = true
+  async submit() {
+    this.submitting = true
 
-      const uploadResponse = await this.uploadAvatar()
+    const uploadResponse = await this.uploadAvatar()
 
-      const response = await this.$api.put('users/current', this.form)
+    const response = await userCollection.updateProfile(this.form)
 
-      this.submitting = false
+    this.submitting = false
 
-      if (!uploadResponse.error && !response.error) {
-        this.$comlink.$emit('user-update')
+    if (!uploadResponse.error && !response.error) {
+      this.$comlink.$emit('user-update')
 
-        setTimeout(() => {
-          this.files = []
-        }, 1000)
+      setTimeout(() => {
+        this.files = []
+      }, 1000)
 
-        displaySuccess({
-          text: this.$t('messages.updateProfile.success'),
+      displaySuccess({
+        text: this.$t('messages.updateProfile.success'),
+      })
+    }
+  }
+
+  async uploadAvatar() {
+    let uploadResponse = { error: null }
+
+    if (this.newAvatar && this.newAvatar.file) {
+      const uploadData = new FormData()
+      uploadData.append('avatar', this.newAvatar.file)
+
+      uploadResponse = await this.$api.upload('users/current', uploadData)
+    }
+
+    return uploadResponse
+  }
+
+  updatedValue(value) {
+    this.files = value
+  }
+
+  inputFilter(newFile, oldFile, prevent) {
+    if (newFile && !oldFile) {
+      if (
+        !this.fileExtensionsList.some(extension =>
+          newFile.name.endsWith(extension),
+        )
+      ) {
+        displayAlert({
+          text: this.$t('messages.avatarUpload.invalidExtension', {
+            extensions: this.fileExtensions,
+          }),
         })
+        return prevent()
       }
-    },
-
-    async uploadAvatar() {
-      let uploadResponse = { error: null }
-
-      if (this.newAvatar && this.newAvatar.file) {
-        const uploadData = new FormData()
-        uploadData.append('avatar', this.newAvatar.file)
-
-        uploadResponse = await this.$api.upload('users/current', uploadData)
-      }
-
-      return uploadResponse
-    },
-
-    updatedValue(value) {
-      this.files = value
-    },
-
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        if (
-          !this.fileExtensionsList.some(extension =>
-            newFile.name.endsWith(extension),
-          )
-        ) {
-          displayAlert({
-            text: this.$t('messages.avatarUpload.invalidExtension', {
-              extensions: this.fileExtensions,
-            }),
-          })
-          return prevent()
-        }
-      }
-      if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+    }
+    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
+      // eslint-disable-next-line no-param-reassign
+      newFile.url = ''
+      const URL = window.URL || window.webkitURL
+      if (URL && URL.createObjectURL) {
         // eslint-disable-next-line no-param-reassign
-        newFile.url = ''
-        const URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-          // eslint-disable-next-line no-param-reassign
-          newFile.url = URL.createObjectURL(newFile.file)
-        }
+        newFile.url = URL.createObjectURL(newFile.file)
       }
+    }
 
-      return null
-    },
-  },
+    return null
+  }
 }
 </script>

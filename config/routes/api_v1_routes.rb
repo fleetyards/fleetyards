@@ -64,6 +64,8 @@ v1_api_routes = lambda do
       post 'check-username'
       put 'current' => 'users#update'
       patch 'current' => 'users#update'
+      put 'current-account' => 'users#update_account'
+      patch 'current-account' => 'users#update_account'
       delete 'current' => 'users#destroy'
 
       get ':username' => 'users#public'

@@ -43,7 +43,7 @@ export default () => ({
     },
 
     setCurrentUser(state, payload) {
-      state.currentUser = payload
+      state.currentUser = payload.data
     },
 
     setAccessConfirmed(state, payload) {
