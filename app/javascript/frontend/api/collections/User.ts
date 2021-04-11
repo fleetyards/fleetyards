@@ -13,7 +13,7 @@ export class UserCollection extends BaseCollection {
 
     return {
       data: this.record,
-      error: this.extractErrorCode(response.error)
+      error: this.extractErrorCode(response.error),
     }
   }
 
@@ -27,7 +27,7 @@ export class UserCollection extends BaseCollection {
     }
 
     return {
-      error: this.extractErrorCode(response.error)
+      error: this.extractErrorCode(response.error),
     }
   }
 
@@ -41,7 +41,7 @@ export class UserCollection extends BaseCollection {
     }
 
     return {
-      error: this.extractErrorCode(response.error)
+      error: this.extractErrorCode(response.error),
     }
   }
 
@@ -55,7 +55,7 @@ export class UserCollection extends BaseCollection {
     }
 
     return {
-      error: this.extractErrorCode(response.error)
+      error: this.extractErrorCode(response.error),
     }
   }
 }

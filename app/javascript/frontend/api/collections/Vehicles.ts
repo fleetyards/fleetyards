@@ -1,4 +1,12 @@
-import { get, post, put, destroy, download, ApiResponse, ApiErrorResponse } from 'frontend/api/client'
+import {
+  get,
+  post,
+  put,
+  destroy,
+  download,
+  ApiResponse,
+  ApiErrorResponse,
+} from 'frontend/api/client'
 import Store from 'frontend/lib/Store'
 import BaseCollection from './Base'
 
@@ -103,7 +111,10 @@ export class VehiclesCollection extends BaseCollection {
     return null
   }
 
-  async update(id: string, form: VehicleForm): Promise<ApiResponse | ApiErrorResponse> {
+  async update(
+    id: string,
+    form: VehicleForm,
+  ): Promise<ApiResponse | ApiErrorResponse> {
     const response = await put(`vehicles/${id}`, form)
 
     if (!response.error) {
