@@ -19,4 +19,4 @@
   window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.application.secrets.maintainer_address_country %>'
   window.COPYRIGHT_OWNER = '<%= Rails.application.secrets.copyright_owner %>'
 </script>
-<%= javascript_pack_tag 'frontend' %>
+<%= javascript_packs_with_chunks_tag 'frontend' %>
