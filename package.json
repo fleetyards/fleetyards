@@ -118,7 +118,7 @@
     "babel-preset-vue": "2.0.2",
     "cypress": "7.0.1",
     "cypress-mochawesome-reporter": "^2.0.1",
-    "eslint": "7.23.0",
+    "eslint": "7.24.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "8.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
