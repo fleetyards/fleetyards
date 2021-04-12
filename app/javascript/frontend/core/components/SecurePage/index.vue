@@ -2,7 +2,11 @@
   <div>
     <transition name="fade" mode="out-in" appear>
       <slot v-if="confirmed" />
-      <section v-else class="container confirm-access">
+      <section
+        v-else
+        class="container confirm-access"
+        data-test="confirm-access"
+      >
         <div class="row">
           <div class="col-12">
             <ValidationObserver

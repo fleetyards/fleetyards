@@ -75,12 +75,12 @@ module Api
 
       def check_email
         authorize! :check, :api_users
-        render json: { emailTaken: User.exists?(['lower(email) = :value', { value: (user_params[:email] || '').downcase }]) }
+        render json: { emailTaken: User.exists?(['lower(email) = :value', { value: (user_create_params[:email] || '').downcase }]) }
       end
 
       def check_username
         authorize! :check, :api_users
-        render json: { usernameTaken: User.exists?(['lower(username) = :value', { value: (user_params[:username] || '').downcase }]) }
+        render json: { usernameTaken: User.exists?(['lower(username) = :value', { value: (user_create_params[:username] || '').downcase }]) }
       end
 
       def destroy
