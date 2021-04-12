@@ -1,0 +1,3 @@
+type HardpointGroup = {
+  name: string
+}

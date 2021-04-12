@@ -1,0 +1,33 @@
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0;
+  list-style: none;
+  background-color: transparent;
+  border-radius: 0;
+
+  .breadcrumb-item {
+    padding: 4px 8px;
+    color: $gray-light;
+    font-size: 110%;
+
+    > a {
+      color: $gray-lighter;
+
+      &:hover {
+        color: $text-color;
+      }
+    }
+
+    &:first-child {
+      padding-right: 4px;
+      padding-left: 0;
+    }
+
+    &:not(:first-child) > a {
+      padding-left: 5px;
+    }
+  }
+}

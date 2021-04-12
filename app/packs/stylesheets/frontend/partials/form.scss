@@ -1,0 +1,55 @@
+.form-control {
+  height: 43px;
+}
+
+.input-lg,
+.input-group-lg > .form-control {
+  height: 51px;
+}
+
+.label {
+  display: inline-block;
+}
+
+.form-group {
+  position: relative;
+}
+
+input.disabled-clean[disabled='disabled'] {
+  cursor: copy;
+}
+
+.form-horizontal {
+  label {
+    padding-top: 7px;
+  }
+}
+
+.navbar-form {
+  flex-grow: 1;
+
+  .form-group {
+    display: block;
+  }
+
+  .form-control {
+    display: block;
+    width: 100%;
+  }
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: $gray-dark;
+  opacity: 1;
+}
+
+input,
+input.form-control {
+  font-size: 16px;
+}
+
+.page-options {
+  margin-bottom: 15px;
+}

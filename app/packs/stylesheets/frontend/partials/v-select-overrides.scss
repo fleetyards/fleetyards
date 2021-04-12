@@ -1,0 +1,34 @@
+.v-select {
+  margin-bottom: 10px;
+  color: $input-color;
+  background-color: $input-bg;
+  border: 1px solid $input-border;
+  border-radius: $border-radius-base;
+
+  .selected-tag {
+    color: $input-color !important;
+  }
+
+  .clear {
+    bottom: 7px !important;
+    color: $input-color !important;
+  }
+
+  .open-indicator {
+    bottom: 4px !important;
+
+    &::before {
+      border-color: $input-color !important;
+    }
+  }
+
+  .dropdown-menu {
+    background: rgba($input-bg, .9) !important;
+  }
+
+  &.open {
+    .open-indicator {
+      bottom: 1px !important;
+    }
+  }
+}

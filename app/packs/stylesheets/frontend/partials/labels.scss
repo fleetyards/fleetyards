@@ -1,0 +1,133 @@
+$innerBorderWidth: 2px;
+
+.labels {
+  margin-bottom: 20px;
+
+  .label-title {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .label {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 2px;
+    color: $text-color;
+    font-weight: normal;
+    line-height: 1;
+    background-color: $panel-bg;
+    border: $innerBorderWidth solid $panel-inner-border;
+    border-radius: 6px;
+    cursor: default;
+    user-select: none;
+
+    &::before {
+      position: absolute;
+      top: -$innerBorderWidth;
+      right: 10px;
+      left: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
+    }
+
+    &::after {
+      position: absolute;
+      right: 10px;
+      bottom: -$innerBorderWidth;
+      left: 10px;
+      height: $innerBorderWidth;
+      background-color: #444;
+      content: '';
+    }
+
+    .label-inner {
+      display: block;
+      padding: 3px 6px;
+      border-radius: $border-radius-base;
+    }
+
+    .label-color {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      vertical-align: top;
+      border-radius: 50%;
+    }
+
+    &.label-link {
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        .label-inner {
+          color: invert($text-color);
+          background-color: $panel-inner-border;
+        }
+      }
+
+      &.inverted {
+        .label-inner {
+          background-color: darkred;
+        }
+
+        &:hover {
+          .label-inner {
+            color: $text-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.labels-dropdown {
+  .label-color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+
+  .label-count {
+    width: 20px;
+    margin-left: 10px;
+    text-align: right;
+  }
+
+  .label-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .labels-dropdown-item {
+    > :first-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &.active {
+      > :first-child {
+        color: invert($text-color) !important;
+        background-color: $panel-inner-border !important;
+      }
+    }
+
+    &.inverted {
+      > :first-child {
+        background-color: darkred !important;
+      }
+
+      &:hover {
+        > :first-child {
+          color: $text-color !important;
+        }
+      }
+    }
+  }
+}

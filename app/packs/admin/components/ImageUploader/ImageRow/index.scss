@@ -1,0 +1,16 @@
+.flex-list > .flex-list-item > .flex-list-row {
+  .actions {
+    min-width: 305px;
+
+    .icon-disabled {
+      opacity: .8;
+    }
+  }
+
+  .description {
+    h2 a {
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  }
+}

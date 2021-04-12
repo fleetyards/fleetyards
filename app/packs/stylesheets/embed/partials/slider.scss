@@ -1,0 +1,31 @@
+@import '~vue-slider-component/theme/default';
+
+.slider-tooltip {
+  white-space: nowrap;
+}
+
+.vue-slider {
+  box-sizing: content-box;
+
+  .vue-slider-mark-label,
+  .vue-slider-dot-tooltip {
+    visibility: visible;
+    opacity: 0;
+    transition: opacity $transition-base-speed ease;
+  }
+
+  .vue-slider-rail {
+    cursor: pointer;
+  }
+
+  &:hover {
+    .vue-slider-mark-label,
+    .vue-slider-dot-tooltip {
+      opacity: 1;
+    }
+
+    .vue-slider-dot-tooltip {
+      visibility: visible;
+    }
+  }
+}

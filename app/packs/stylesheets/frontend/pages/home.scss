@@ -1,0 +1,78 @@
+.home-ships,
+.home-images .images {
+  min-height: 300px;
+}
+
+.home-images .images {
+  margin-bottom: 0;
+
+  .home-image {
+    height: 230px !important;
+    padding: 15px 0;
+  }
+}
+
+.home-screen-intro {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  height: 100vh;
+  min-height: 300px;
+
+  .logo {
+    width: 150px;
+    margin-right: -10px;
+    margin-bottom: 20px;
+  }
+
+  .search-form {
+    padding: 100px 15px;
+  }
+
+  blockquote {
+    margin-bottom: 100px;
+  }
+}
+
+.home-scroll-to-more {
+  position: absolute;
+  top: 85vh;
+  left: 50%;
+  width: 60px;
+  margin-left: -30px;
+  font-size: 3em;
+  text-align: center;
+  cursor: pointer;
+  transition: all .5s ease-in-out;
+
+  &:hover {
+    color: lighten($text-color, 20%);
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .home-scroll-to-more {
+    display: none;
+  }
+
+  .home-screen-intro {
+    display: block;
+    height: auto;
+
+    .search-form {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 20px 15px;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    blockquote {
+      margin-bottom: 20px;
+    }
+  }
+}
