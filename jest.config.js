@@ -1,10 +1,10 @@
 module.exports = {
   testURL: 'http://localhost:3000',
-  roots: ['app/javascript'],
+  roots: ['app/packs'],
   collectCoverage: false,
   collectCoverageFrom: [
-    'app/javascript/**/*.{js,vue,ts}',
-    'app/javascript/translations/**',
+    'app/packs/**/*.{js,vue,ts}',
+    'app/packs/translations/**',
   ],
   preset: 'ts-jest',
   globals: {
@@ -30,7 +30,7 @@ module.exports = {
   },
   moduleDirectories: [
     '<rootDir>/node_modules',
-    '<rootDir>/app/javascript',
+    '<rootDir>/app/packs',
     '<rootDir>/test/javascript/unit',
   ],
 }
