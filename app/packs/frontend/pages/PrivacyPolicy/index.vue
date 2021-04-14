@@ -66,7 +66,7 @@
 
             <dl class="dl-horizontal">
               <dt>
-                <strong>E-mail:</strong>
+                <strong>Email:</strong>
               </dt>
               <dd>
                 To maintain your Account, notify you and to control access to
@@ -119,11 +119,11 @@
               </a>
             </h3>
             <p>
-              We use Mailgun.com to send E-mails to you. This includes all
-              System Notification like E-mail Confirmation, Request Passwort
-              Reset Link and Ship Sale Notifications. Mailgun.com only receives
-              your E-mail address and only stores this Information for a very
-              limited time and only to send the E-mail to you.
+              We use Mailgun.com to send emails to you. This includes all System
+              Notification like email Confirmation, Request Passwort Reset Link
+              and Ship Sale Notifications. Mailgun.com only receives your email
+              address and only stores this Information for a very limited time
+              and only to send the email to you.
             </p>
             <br />
 

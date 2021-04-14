@@ -3,6 +3,7 @@
 json.cache! ['v1', user] do
   json.id user.id
   json.email user.email
+  json.unconfirmed_email user.unconfirmed_email
   json.username user.username
   json.avatar user.avatar.small.url
   json.rsi_handle user.rsi_handle

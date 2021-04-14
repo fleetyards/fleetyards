@@ -2,6 +2,7 @@
 
 class VehicleMailer < ApplicationMailer
   def on_sale(vehicle)
+    @username = vehicle.user.username
     @vehicle = vehicle
 
     mail(

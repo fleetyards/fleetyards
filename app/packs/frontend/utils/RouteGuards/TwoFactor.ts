@@ -6,10 +6,10 @@ export const enabledRouteGuard = async function fleetRouteGuard(
   _from: Route,
   next: NavigationGuardNext,
 ) {
-  const currentUser = await userCollection.current()
+  const response = await userCollection.current()
 
-  if (!currentUser?.twoFactorRequired) {
-    next({ name: 'settings-two-factor' })
+  if (!response.data?.twoFactorRequired) {
+    next({ name: 'settings-security-status' })
   } else {
     next()
   }
@@ -20,10 +20,10 @@ export const disabledRouteGuard = async function publicFleetRouteGuard(
   _from: Route,
   next: NavigationGuardNext,
 ) {
-  const currentUser = await userCollection.current()
+  const response = await userCollection.current()
 
-  if (currentUser?.twoFactorRequired) {
-    next({ name: 'settings-two-factor' })
+  if (response.data?.twoFactorRequired) {
+    next({ name: 'settings-security-status' })
   } else {
     next()
   }

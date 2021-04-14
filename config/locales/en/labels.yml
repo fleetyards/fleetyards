@@ -69,7 +69,7 @@ en:
         path: Path
         count: Count
       user:
-        email: E-Mail
+        email: Email
         created_at: Created at
         last_sign_in_at: Last sign in
         username: Username

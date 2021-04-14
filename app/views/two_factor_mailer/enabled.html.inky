@@ -1,8 +1,8 @@
 <h2>
-  <%= I18n.t('mailer.hello', username: @resource.username) %>
+  <%= I18n.t('mailer.hello', username: @username) %>
 </h2>
 <p>
-  <%= I18n.t('devise.mailer.password_change.content.text') %>
+  <%= I18n.t('mailer.two_factor.enabled.body') %>
 </p>
 <p>
   <%= I18n.t('mailer.security.info') %>

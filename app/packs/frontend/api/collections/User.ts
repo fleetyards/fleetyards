@@ -32,7 +32,7 @@ export class UserCollection extends BaseCollection {
   }
 
   async updateAccount(form: UserAccountForm): Promise<RecordResponse<User>> {
-    const response = await put('users/current', form)
+    const response = await put('users/current-account', form)
 
     if (!response.error) {
       return {

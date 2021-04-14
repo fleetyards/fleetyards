@@ -44,6 +44,16 @@
                       type="email"
                     />
                   </ValidationProvider>
+
+                  <FormInput
+                    v-if="currentUser.unconfirmedEmail"
+                    id="unconfirmedEmail"
+                    v-model="currentUser.unconfirmedEmail"
+                    type="email"
+                    :disabled="true"
+                    :label="$t('labels.user.unconfirmedEmail')"
+                    :no-placeholder="true"
+                  />
                   <Btn :loading="submitting" type="submit" size="large">
                     {{ $t('actions.save') }}
                   </Btn>

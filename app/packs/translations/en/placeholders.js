@@ -1,10 +1,10 @@
 export default {
   name: 'Name',
   description: 'Description',
-  login: 'Username or E-Mail',
+  login: 'Username or email',
   username: 'Username',
   twoFactorCode: 'Two-factor code',
-  email: 'E-Mail',
+  email: 'Email',
   currentPassword: 'Current Password',
   password: 'Password',
   passwordConfirmation: 'Password Confirmation',

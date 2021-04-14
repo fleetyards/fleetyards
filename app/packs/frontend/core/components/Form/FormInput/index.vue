@@ -36,7 +36,7 @@
         :name="id"
         :min="min"
         :max="max"
-        :step="step"
+        :step="innerStep"
         @input="update"
         @blur="update"
       />
@@ -133,6 +133,14 @@ export default class FormInput extends Vue {
     return `${this.id}-${this._uid}`
   }
 
+  get innerStep() {
+    if (this.type === 'number') {
+      return this.step
+    }
+
+    return null
+  }
+
   get innerLabel() {
     if (this.label) {
       return this.label
@@ -167,6 +175,7 @@ export default class FormInput extends Vue {
       'form-input-large': this.size === 'large',
       'form-input-clean': this.variant === 'clean',
       'form-input-clearable': this.clearable,
+      'form-input-disabled': this.disabled,
       'form-input-inline': this.inline,
       [`form-input-${this.type}`]: true,
     }

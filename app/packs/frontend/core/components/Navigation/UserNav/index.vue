@@ -61,8 +61,6 @@ export default {
         'settings-account',
         'settings-hangar',
         'settings-security-status',
-        'settings-two-factor',
-        'settings-two-factor-status',
         'settings-two-factor-enable',
         'settings-two-factor-disable',
         'settings-two-factor-backup-codes',

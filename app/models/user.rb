@@ -93,6 +93,7 @@ class User < ApplicationRecord
 
   before_create :setup_otp_secret
   after_save :touch_fleet_memberships
+  after_update :notify_user
 
   mount_uploader :avatar, AvatarUploader
 
@@ -143,6 +144,20 @@ class User < ApplicationRecord
     # rubocop:disable Rails/SkipsModelValidations
     fleet_memberships.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations
+  end
+
+  private def notify_user
+    notify_two_factor_change if saved_change_to_otp_required_for_login?
+
+    UserMailer.username_changed(email, username).deliver_later if saved_change_to_username?
+  end
+
+  private def notify_two_factor_change
+    if otp_required_for_login?
+      TwoFactorMailer.enabled(email, username).deliver_later
+    else
+      TwoFactorMailer.disabled(email, username).deliver_later
+    end
   end
 
   # TODO: Remove once run on production

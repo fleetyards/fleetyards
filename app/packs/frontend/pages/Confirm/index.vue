@@ -17,6 +17,8 @@ export default {
       })
 
       if (!response.error) {
+        this.$comlink.$emit('user-update')
+
         displaySuccess({
           text: this.$t('messages.accountConfirm.success'),
         })

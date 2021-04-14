@@ -17,7 +17,7 @@
         {{ maintainerAddressCountry }}
       </dd>
       <dt>
-        <strong>E-Mail:</strong>
+        <strong>Email:</strong>
       </dt>
       <dd>
         {{ maintainerMail }}

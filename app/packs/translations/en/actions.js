@@ -62,7 +62,7 @@ export default {
   'addToHangar': 'Add to your Hangar',
   'resetFilter': 'Reset Filter',
   'resetPrices': 'Reset Prices',
-  'requestPassword': 'Request Password E-Mail',
+  'requestPassword': 'Request Password email',
   'changePassword': 'Change Password',
   'updatePassword': 'Update Password',
   'copyBackupCodes': 'Copy Backup Codes',

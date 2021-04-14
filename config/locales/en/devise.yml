@@ -39,8 +39,10 @@ en:
       confirmation_instructions:
         content:
           confirm_link: Activate Account
+          confirm_email_link: Confirm email
           confirm_text: 'To activate your Account please click on the following link:'
-          welcome: Welcome
+          confirm_email_text: 'To confirm your new email please click on the following link:'
+          welcome: Welcome %{username}
         subject: Confirmation instructions
       reset_password_instructions:
         content:
@@ -52,9 +54,12 @@ en:
         subject: Reset password instructions
       unlock_instructions:
         subject: Unlock Instructions
+      email_changed:
+        content:
+          text_unconfirmed: We're contacting you to notify you that your email is being changed to %{email}.
+          text_confirmed: We're contacting you to notify you that your email has been changed to %{email}.
       password_change:
         content:
-          hello: Hello
           text: We're contacting you to notify you that your password has been changed.
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
