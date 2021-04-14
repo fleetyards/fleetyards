@@ -6,13 +6,13 @@ import backgrounds from './addons/background'
 import VTooltip from 'v-tooltip'
 import 'frontend/plugins/LazyLoad'
 
-import '../app/javascript/stylesheets/main.scss'
+import '../app/packs/stylesheets/main.scss'
 
 Vue.use(BootstrapVue)
 Vue.use(VTooltip)
 
 function loadStories() {
-  const req = require.context('../app/javascript/frontend/components', true, /__story__\/index.js$/)
+  const req = require.context('../app/packs/frontend/components', true, /__story__\/index.js$/)
 
   req.keys().forEach(filename => req(filename))
 }

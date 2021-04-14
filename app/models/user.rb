@@ -4,38 +4,44 @@
 #
 # Table name: users
 #
-#  id                     :uuid             not null, primary key
-#  avatar                 :string
-#  confirmation_sent_at   :datetime
-#  confirmation_token     :string(255)
-#  confirmed_at           :datetime
-#  current_sign_in_at     :datetime
-#  current_sign_in_ip     :string(255)
-#  discord                :string
-#  email                  :string(255)      default(""), not null
-#  encrypted_password     :string(255)      default(""), not null
-#  failed_attempts        :integer          default(0), not null
-#  guilded                :string
-#  homepage               :string
-#  last_sign_in_at        :datetime
-#  last_sign_in_ip        :string(255)
-#  locale                 :string(255)
-#  locked_at              :datetime
-#  public_hangar          :boolean          default(TRUE)
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string(255)
-#  rsi_handle             :string
-#  sale_notify            :boolean          default(FALSE)
-#  sign_in_count          :integer          default(0), not null
-#  tracking               :boolean          default(TRUE)
-#  twitch                 :string
-#  unconfirmed_email      :string(255)
-#  unlock_token           :string(255)
-#  username               :string(255)      default(""), not null
-#  youtube                :string
-#  created_at             :datetime
-#  updated_at             :datetime
+#  id                        :uuid             not null, primary key
+#  avatar                    :string
+#  confirmation_sent_at      :datetime
+#  confirmation_token        :string(255)
+#  confirmed_at              :datetime
+#  consumed_timestep         :integer
+#  current_sign_in_at        :datetime
+#  current_sign_in_ip        :string(255)
+#  discord                   :string
+#  email                     :string(255)      default(""), not null
+#  encrypted_otp_secret      :string
+#  encrypted_otp_secret_iv   :string
+#  encrypted_otp_secret_salt :string
+#  encrypted_password        :string(255)      default(""), not null
+#  failed_attempts           :integer          default(0), not null
+#  guilded                   :string
+#  homepage                  :string
+#  last_sign_in_at           :datetime
+#  last_sign_in_ip           :string(255)
+#  locale                    :string(255)
+#  locked_at                 :datetime
+#  otp_backup_codes          :string           is an Array
+#  otp_required_for_login    :boolean
+#  public_hangar             :boolean          default(TRUE)
+#  remember_created_at       :datetime
+#  reset_password_sent_at    :datetime
+#  reset_password_token      :string(255)
+#  rsi_handle                :string
+#  sale_notify               :boolean          default(FALSE)
+#  sign_in_count             :integer          default(0), not null
+#  tracking                  :boolean          default(TRUE)
+#  twitch                    :string
+#  unconfirmed_email         :string(255)
+#  unlock_token              :string(255)
+#  username                  :string(255)      default(""), not null
+#  youtube                   :string
+#  created_at                :datetime
+#  updated_at                :datetime
 #
 # Indexes
 #
@@ -48,8 +54,10 @@
 class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
-  devise :database_authenticatable, :recoverable, :trackable, :validatable,
-         :confirmable, :rememberable, :timeoutable, authentication_keys: [:login]
+  devise :two_factor_authenticatable, :two_factor_backupable, :database_authenticatable,
+         :recoverable, :trackable, :validatable, :confirmable, :rememberable, :timeoutable,
+         authentication_keys: [:login], otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
+         otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
   has_many :models,
@@ -83,6 +91,8 @@ class User < ApplicationRecord
 
   before_validation :clean_username
 
+  before_create :setup_otp_secret
+  after_update :notify_user
   after_save :touch_fleet_memberships
 
   mount_uploader :avatar, AvatarUploader
@@ -96,6 +106,10 @@ class User < ApplicationRecord
     elsif conditions.key?(:username) || conditions.key?(:email)
       find_by(conditions.to_h)
     end
+  end
+
+  def setup_otp_secret
+    self.otp_secret = User.generate_otp_secret
   end
 
   def send_devise_notification(notification, *args)
@@ -122,10 +136,28 @@ class User < ApplicationRecord
     self.username = username.strip
   end
 
+  def confirm_access_token
+    Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.secrets[:confirm_access_secret]) + Digest::MD5.hexdigest(id))
+  end
+
   private def touch_fleet_memberships
     # rubocop:disable Rails/SkipsModelValidations
     fleet_memberships.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations
+  end
+
+  private def notify_user
+    notify_two_factor_change if saved_change_to_otp_required_for_login?
+
+    UserMailer.username_changed(email, username).deliver_later if saved_change_to_username?
+  end
+
+  private def notify_two_factor_change
+    if otp_required_for_login?
+      TwoFactorMailer.enabled(email, username).deliver_later
+    else
+      TwoFactorMailer.disabled(email, username).deliver_later
+    end
   end
 
   # TODO: Remove once run on production

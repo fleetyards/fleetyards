@@ -1,0 +1,15 @@
+<h2>
+  <%= I18n.t('mailer.hello', username: @username) %>
+</h2>
+<p>
+  <%= I18n.t('mailer.user.username_changed.body') %>
+</p>
+<p>
+  <%= I18n.t('mailer.security.info') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="<%= frontend_settings_account_url %>">
+    <%= I18n.t('mailer.account.action') %>
+  </button>
+</center>

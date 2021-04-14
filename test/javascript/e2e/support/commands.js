@@ -1,6 +1,14 @@
 Cypress.Commands.add('select', id => cy.get(`[data-test="${id}"]`))
 Cypress.Commands.add('selectInput', id => cy.get(`[data-test="input-${id}"]`))
 
+Cypress.Commands.add('confirmAccess', password => {
+  cy.selectInput('password').type(password)
+
+  cy.select('submit-confirm-access').click()
+
+  cy.select('confirm-access').should('not.exist')
+})
+
 Cypress.Commands.add('clickNav', name => {
   cy.select(`nav-${name}`).click()
 })

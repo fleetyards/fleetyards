@@ -1,13 +1,24 @@
 <h2>
-  <%= I18n.t(:"devise.mailer.confirmation_instructions.content.welcome") %>
-  <%= @resource.username %>!
+<% if @resource.try(:unconfirmed_email?) %>
+  <%= I18n.t('mailer.hello', username: @resource.username) %>
+<% else %>
+  <%= I18n.t(:"devise.mailer.confirmation_instructions.content.welcome", username: @resource.username) %>
+<% end %>
 </h2>
 <p>
+<% if @resource.try(:unconfirmed_email?) %>
+  <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_email_text") %>
+<% else %>
   <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_text") %>
+<% end %>
 </p>
 <spacer size="16"></spacer>
 <center>
   <button href="<%= frontend_confirm_url(token: @token) %>">
+  <% if @resource.try(:unconfirmed_email?) %>
+    <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_email_link") %>
+  <% else %>
     <%= I18n.t(:"devise.mailer.confirmation_instructions.content.confirm_link") %>
+  <% end %>
   </button>
 </center>

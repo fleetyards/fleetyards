@@ -2,7 +2,7 @@
 
 class FleetMembershipMailerPreview < ActionMailer::Preview
   def new_invite
-    FleetMembershipMailer.new_invite('foo@bar.de', Fleet.first)
+    FleetMembershipMailer.new_invite('foo@bar.de', User.first.username, Fleet.first)
   end
 
   def member_requested
@@ -10,7 +10,7 @@ class FleetMembershipMailerPreview < ActionMailer::Preview
   end
 
   def fleet_accepted
-    FleetMembershipMailer.fleet_accepted('foo@bar.de', Fleet.first)
+    FleetMembershipMailer.fleet_accepted('foo@bar.de', User.first.username, Fleet.first)
   end
 
   def member_accepted

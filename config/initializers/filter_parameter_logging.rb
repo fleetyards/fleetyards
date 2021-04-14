@@ -3,4 +3,4 @@
 # Be sure to restart your server when you modify this file.
 
 # Configure sensitive parameters which will be filtered from the log file.
-Rails.application.config.filter_parameters += %i[email password token]
+Rails.application.config.filter_parameters += %i[email password token otp_attempt two_factor_code]

@@ -1,0 +1,10 @@
+<h2>
+  <%= I18n.t('mailer.two_factor.login.headline') %>
+</h2>
+<p>
+  <%= I18n.t('mailer.two_factor.login.body') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <%= @two_factor_code %>
+</center>

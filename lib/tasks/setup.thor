@@ -17,7 +17,7 @@ class Setup < Thor
     email = if options.include?('email')
               options[:email]
             else
-              HighLine.ask('E-Mail: ')
+              HighLine.ask('Email: ')
             end
 
     username = if options.include?('username')
@@ -27,7 +27,7 @@ class Setup < Thor
                end
 
     if email.blank?
-      puts "E-Mail can't be blank!"
+      puts "Email can't be blank!"
       exit
     end
 

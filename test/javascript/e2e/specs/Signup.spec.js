@@ -35,14 +35,16 @@ describe('Signup', () => {
 
       cy.url().should('include', '/settings')
 
-      cy.selectInput('username').should('have.value', userData.new.username)
-      cy.selectInput('email').should('have.value', userData.new.email)
-
       cy.get('.tabs a')
         .contains('Account')
         .click()
 
       cy.url().should('include', '/settings/account')
+
+      cy.confirmAccess(userData.new.password)
+
+      cy.selectInput('username').should('have.value', userData.new.username)
+      cy.selectInput('email').should('have.value', userData.new.email)
 
       cy.select('destroy-account').click()
 

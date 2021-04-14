@@ -11,13 +11,14 @@ en:
         sell: Sale?
         buy: Buy?
       admin_user:
-        email: E-Mail
+        email: Email
         username: Username
         password: Password
         password_confirmation: Password Confirmation
       user:
-        email: E-Mail
-        login: Username or E-Mail
+        email: Email
+        login: Username or email
+        otp_token: 2FA-Token
         password: Password
         password_confirmation: Password Confirmation
         username: Username

@@ -1,0 +1,19 @@
+<h2>
+  <%= I18n.t('mailer.hello', username: @resource.username) %>
+</h2>
+<p>
+  <% if @resource.try(:unconfirmed_email?) %>
+    <%= I18n.t("devise.mailer.email_changed.content.text_unconfirmed", email: @resource.unconfirmed_email) %>
+  <% else %>
+    <%= I18n.t("devise.mailer.email_changed.content.text_confirmed", email: @resource.email) %>
+  <% end %>
+</p>
+<p>
+  <%= I18n.t('mailer.security.info') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="<%= frontend_settings_account_url %>">
+    <%= I18n.t('mailer.account.action') %>
+  </button>
+</center>

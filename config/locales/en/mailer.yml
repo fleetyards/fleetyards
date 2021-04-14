@@ -2,9 +2,15 @@
 en:
   mailer:
     hello: Hello %{username}
+    plain_hello: Hello
     privacy: Privacy policy
     settings: Notification Settings
     unsubscribe: Unsubscribe
+    account:
+      action: Manage Account Settings
+    security:
+      action: Manage Security Settings
+      info: If you did not initiate the change please contact us at info@fleetyards.net.
     model:
       new:
         subject: New Ship/Vehicle
@@ -69,3 +75,18 @@ en:
         headline: "%{username} accepted his Fleet Invitation"
         body: 'To look at the new members information please click on the following link:'
         action: "%{fleet} Memberlist"
+    two_factor:
+      enabled:
+        subject: Two-factor enabled
+        body: Great, you activated Two-factor Authentication for your Fleetyards.net Account.
+      disabled:
+        subject: Two-factor disabled
+        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+      login:
+        subject: Two-factor Authentication Code
+        headline: Two-factor Authentication Code
+        body: Please enter the following Code on the Login page to verify your identity.
+    user:
+      username_changed:
+        subject: Username changed
+        body: You changed your Fleetyards.net Account Username.
