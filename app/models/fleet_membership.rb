@@ -91,7 +91,7 @@ class FleetMembership < ApplicationRecord
   def notify_invited_user
     return unless invited?
 
-    FleetMembershipMailer.new_invite(user.email, fleet).deliver_later
+    FleetMembershipMailer.new_invite(user.email, user.username, fleet).deliver_later
   end
 
   def on_accept_invitation
@@ -125,7 +125,7 @@ class FleetMembership < ApplicationRecord
   def notify_new_member
     return unless accepted?
 
-    FleetMembershipMailer.fleet_accepted(user.email, fleet).deliver_later
+    FleetMembershipMailer.fleet_accepted(user.email, user.username, fleet).deliver_later
   end
 
   def visible_vehicle_ids(filters = nil)

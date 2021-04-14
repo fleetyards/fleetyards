@@ -18,7 +18,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/javascript/*"]
+      "*": ["node_modules/*", "app/packs/*"]
     },
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
@@ -28,9 +28,9 @@
   },
   "include": [
     "@types/*",
-    "app/javascript/**/*.ts",
-    "app/javascript/**/*.tsx",
-    "app/javascript/**/*.vue"
+    "app/packs/**/*.ts",
+    "app/packs/**/*.tsx",
+    "app/packs/**/*.vue"
   ],
   "exclude": [
     "node_modules",

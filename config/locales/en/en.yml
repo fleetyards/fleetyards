@@ -38,6 +38,7 @@ en:
       confirmation: Confirm Shop Commodities
     commodity_prices:
       confirmation: Confirm Price Submissions
+    otp: Two Factor Auth
   title:
     frontend:
       home: Home
@@ -70,6 +71,10 @@ en:
       settings_profile: Profile Settings
       settings_hangar: Hangar Settings
       settings_change-password: Change Password
+      settings_security: Account Security
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
       roadmap: Roadmap
       roadmap_changes: Roadmap Changes
       roadmap_ships: Ship-Roadmap
@@ -89,6 +94,9 @@ en:
       password_change: Change Password
     admin: FleetYards.net Command
     admin_short: FltYrd Command
+    otp: 2-Factor-Auth
+    devise:
+      otp: 2-Factor-Authentication
     component:
       edit: Edit Component
       index: Components

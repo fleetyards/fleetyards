@@ -38,3 +38,7 @@ en:
       failure: "Account could not be verified."
     signup:
       reserved_username: "The Username is reserved/forbidden on FleetYards.net. Please choose something else!"
+    user:
+      requires_access_confirmation: 'Access confirmation pending'
+      two_factor_setup:
+        active: Two-factor Authentication already active

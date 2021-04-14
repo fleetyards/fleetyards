@@ -1,6 +1,7 @@
 <h2>
-  <%= I18n.t('mailer.hello', username: @vehicle.user.username) %>
+  <%= I18n.t('mailer.hello', username: @username) %>
 </h2>
+<br>
 <p>
   <img src="<%= @vehicle.model.store_image.medium.url %>" alt="<%= @vehicle.model.name %>">
   <h4>

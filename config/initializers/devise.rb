@@ -4,6 +4,10 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   config.warden do |manager|
+    manager.default_strategies(scope: :admin_user).unshift :two_factor_authenticatable
+    manager.default_strategies(scope: :admin_user).unshift :two_factor_backupable
+    manager.default_strategies(scope: :user).unshift :two_factor_authenticatable
+    manager.default_strategies(scope: :user).unshift :two_factor_backupable
     manager.failure_app = JSONFailureApp
   end
 
@@ -124,7 +128,7 @@ Devise.setup do |config|
   # db field (see migrations). Until confirmed new email is stored in
   # unconfirmed email column, and copied to email column on successful confirmation.
   config.reconfirmable = true
-
+  config.send_email_changed_notification = true
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [ :email ]
 

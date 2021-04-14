@@ -40,7 +40,7 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   img_src = [
-    :self, :data, :blob, Rails.application.secrets.frontend_endpoint,
+    :self, :data, :blob, Rails.application.secrets.frontend_endpoint, api_endpoint,
     Rails.application.secrets.carrierwave_cloud_cdn_endpoint, Rails.application.secrets.rsi_endpoint,
     'https://img.youtube.com',
   ].compact

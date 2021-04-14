@@ -1,6 +1,9 @@
 <h2>
-  <%= I18n.t('mailer.fleet_membership.member_requested.headline', username: @username, fleet: @fleet.name) %>
+  <%= I18n.t('mailer.plain_hello') %>
 </h2>
+<p>
+  <%= I18n.t('mailer.fleet_membership.member_requested.headline', username: @member_username, fleet: @fleet.name) %>
+</p>
 <p>
   <%= I18n.t('mailer.fleet_membership.member_requested.body') %>
 </p>

@@ -31,6 +31,12 @@ module Api
       @current_ability ||= Ability.new(current_user)
     end
 
+    def access_cookie_valid?
+      access_cookie = cookies.encrypted["#{Rails.application.secrets[:cookie_prefix]}_ACCESS_CONFIRMED"]
+
+      access_cookie.present? && access_cookie == current_user.confirm_access_token
+    end
+
     def root
       respond_to do |format|
         format.html do

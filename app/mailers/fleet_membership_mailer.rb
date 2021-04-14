@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class FleetMembershipMailer < ApplicationMailer
-  def new_invite(to, fleet)
+  def new_invite(to, username, fleet)
+    @username = username
     @fleet = fleet
 
     mail(
@@ -10,8 +11,8 @@ class FleetMembershipMailer < ApplicationMailer
     )
   end
 
-  def member_requested(to, username, fleet)
-    @username = username
+  def member_requested(to, member_username, fleet)
+    @member_username = member_username
     @fleet = fleet
 
     mail(
@@ -20,8 +21,8 @@ class FleetMembershipMailer < ApplicationMailer
     )
   end
 
-  def member_accepted(to, username, fleet)
-    @username = username
+  def member_accepted(to, member_username, fleet)
+    @member_username = member_username
     @fleet = fleet
 
     mail(
@@ -30,7 +31,8 @@ class FleetMembershipMailer < ApplicationMailer
     )
   end
 
-  def fleet_accepted(to, fleet)
+  def fleet_accepted(to, username, fleet)
+    @username = username
     @fleet = fleet
 
     mail(

@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/tinfoil/devise-two-factor.git
+  revision: 267c14d25b03c112f7f1853e4fa0732ed905314b
+  specs:
+    devise-two-factor (4.0.0)
+      activesupport (< 6.2)
+      attr_encrypted (>= 1.3, < 4, != 2)
+      devise (~> 4.0)
+      railties (< 6.2)
+      rotp (~> 6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -78,6 +89,8 @@ GEM
       rake (>= 10.4, < 14.0)
     ansi (1.5.0)
     ast (2.4.2)
+    attr_encrypted (3.1.0)
+      encryptor (~> 3.0.0)
     autoprefixer-rails (10.2.4.0)
       execjs
     bcrypt (3.1.16)
@@ -125,6 +138,7 @@ GEM
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
     choice (0.2.0)
+    chunky_png (1.4.0)
     coderay (1.1.3)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
@@ -149,11 +163,14 @@ GEM
       responders
       warden (~> 1.2.3)
     discordrb-webhooks (3.4.2)
-      rest-client (>= 2.0.0)
+      rest-client (>= 2.1.0)
     docile (1.3.5)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     dynamic_fields_for_rails (1.0.1)
       rails (>= 3.0.0, < 7.0.0)
     ed25519 (1.2.4)
@@ -165,6 +182,7 @@ GEM
     elasticsearch-transport (7.12.0)
       faraday (~> 1)
       multi_json
+    encryptor (3.0.0)
     errbase (0.2.1)
     erubi (1.10.0)
     erubis (2.7.0)
@@ -426,6 +444,11 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
+    rotp (6.2.0)
+    rqrcode (1.2.0)
+      chunky_png (~> 1.0)
+      rqrcode_core (~> 0.2)
+    rqrcode_core (0.2.0)
     rubocop (1.12.1)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -593,8 +616,10 @@ DEPENDENCIES
   coffee-rails
   dalli
   devise
+  devise-two-factor!
   discordrb-webhooks
   dotenv
+  dotenv-rails
   dynamic_fields_for_rails
   ed25519
   excon (>= 0.71.0)
@@ -622,7 +647,7 @@ DEPENDENCIES
   minitest-ci
   minitest-rails
   mocha
-  nokogiri (>= 1.7.1)
+  nokogiri
   oj
   paper_trail
   pg (~> 1.0)
@@ -639,6 +664,7 @@ DEPENDENCIES
   ransack
   redcarpet
   redis-actionpack
+  rqrcode
   rubocop
   rubocop-ast
   rubocop-minitest

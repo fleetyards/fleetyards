@@ -1,13 +1,14 @@
 %ul.navbar-nav.mr-3
   - if admin_user_signed_in?
-    %li.dropdown{class: active_nav?('users')}
+    %li.dropdown{class: active_nav?(%w(admin-users admin-otp))}
       %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
         %span.user-login
           = current_user.username
         %b.caret
       .dropdown-menu.dropdown-menu-right
-        -# = link_to I18n.t(:"nav.settings"), edit_user_registration_path, class: "dropdown-item #{active_nav?('users')}"
-        -# .dropdown-divider
+        = link_to I18n.t(:"nav.otp"), otp_admin_me_path, class: "dropdown-item #{active_nav?('admin-otp')}"
+        -# = link_to I18n.t(:"nav.settings"), edit_user_registration_path, class: "dropdown-item #{active_nav?('admin-users')}"
+        .dropdown-divider
         = link_to I18n.t(:"actions.sign_out"), destroy_admin_user_session_path, method: :delete, class: "dropdown-item"
   - else
     %li{class: active_nav?(%w(sessions users))}

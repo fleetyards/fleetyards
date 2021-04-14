@@ -62,10 +62,10 @@ en:
       user:
         admin: Admin?
         confirmation_token: Token
-        email: E-Mail
+        email: Email
         enabled: Active?
-        gravatar: Gravatar E-Mail Address
-        login: Username or E-Mail
+        gravatar: Gravatar email Address
+        login: Username or email
         username: Username
         current_password: Password
       weapon:
