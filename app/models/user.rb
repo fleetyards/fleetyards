@@ -92,8 +92,8 @@ class User < ApplicationRecord
   before_validation :clean_username
 
   before_create :setup_otp_secret
-  after_save :touch_fleet_memberships
   after_update :notify_user
+  after_save :touch_fleet_memberships
 
   mount_uploader :avatar, AvatarUploader
 
