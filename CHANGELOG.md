@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.10.0](https://github.com/fleetyards/fleetyards/compare/v4.9.3...v4.10.0) (2021-04-15)
+
+
+### Features
+
+* **2fa:** for frontend and admin users ([#163](https://github.com/fleetyards/fleetyards/issues/163)) ([3cb24c1](https://github.com/fleetyards/fleetyards/commit/3cb24c1a8a3f5644fe4bfe1cf84dc1f869785714))
+* fleet invites ([#1400](https://github.com/fleetyards/fleetyards/issues/1400)) ([270865b](https://github.com/fleetyards/fleetyards/commit/270865b3ef8eae8019a742d218135177df49cc2a))
+* public urls refactor ([e8f226e](https://github.com/fleetyards/fleetyards/commit/e8f226e2bc057c70a64f22365789de3d11543721))
+* update invite url modal ([34d07a3](https://github.com/fleetyards/fleetyards/commit/34d07a32b1da977b7569a9037d58763800e3ccaf))
+* update invite url modal ([82b3853](https://github.com/fleetyards/fleetyards/commit/82b3853dc7078d3617d855c0936c58199f723edc))
+
+
+### Bug Fixes
+
+* audit issue ([3a5805f](https://github.com/fleetyards/fleetyards/commit/3a5805fe897a0e648a63b6662180d223c90adb30))
+* e2e specs ([1d937af](https://github.com/fleetyards/fleetyards/commit/1d937afc793d74f95070968032fe262149b1a05a))
+* fid validation ([8e5922c](https://github.com/fleetyards/fleetyards/commit/8e5922c7efc0a28aea2f423e9d72f8d4982b5fc1))
+* fleet check ([f5042a6](https://github.com/fleetyards/fleetyards/commit/f5042a61a4376638ed57348bb65c13ec50d3c58b))
+* yarn audit issue ([5ab589e](https://github.com/fleetyards/fleetyards/commit/5ab589e200a3042b76477b5b3b45a0eeb601e125))
+
 ### [4.9.3](https://github.com/fleetyards/fleetyards/compare/v4.9.2...v4.9.3) (2021-03-13)
 
 ### [4.9.2](https://github.com/fleetyards/fleetyards/compare/v4.9.1...v4.9.2) (2021-03-13)
