@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/tinfoil/devise-two-factor.git
-  revision: 267c14d25b03c112f7f1853e4fa0732ed905314b
+  revision: c597da043482aedc215f3b71665411b3269892a0
   specs:
     devise-two-factor (4.0.0)
       activesupport (< 6.2)
@@ -148,7 +148,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.8)
-    connection_pool (2.2.3)
+    connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -163,7 +163,7 @@ GEM
       responders
       warden (~> 1.2.3)
     discordrb-webhooks (3.4.2)
-      rest-client (>= 2.1.0)
+      rest-client (>= 2.0.0)
     docile (1.3.5)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -188,9 +188,9 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.4)
       tzinfo
-    ethon (0.12.0)
-      ffi (>= 1.3.0)
-    excon (0.79.0)
+    ethon (0.13.0)
+      ffi (>= 1.15.0)
+    excon (0.80.0)
     execjs (2.7.0)
     faker (2.17.0)
       i18n (>= 1.6, < 2)
@@ -224,7 +224,7 @@ GEM
     geocoder (1.6.6)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    graphql (1.12.7)
+    graphql (1.12.8)
     graphql-client (0.16.0)
       activesupport (>= 3.0)
       graphql (~> 1.8)
@@ -339,7 +339,7 @@ GEM
     nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    oj (3.11.3)
+    oj (3.11.4)
     orm_adapter (0.5.0)
     paper_trail (12.0.0)
       activerecord (>= 5.2)
