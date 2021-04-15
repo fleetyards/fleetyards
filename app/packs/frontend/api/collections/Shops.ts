@@ -38,7 +38,7 @@ export class ShopsCollection extends BaseCollection {
       `stations/${params?.stationSlug}/shops/${params?.slug}`,
     )
 
-    if (!response.errors) {
+    if (!response.error) {
       this.record = response.data
     }
 

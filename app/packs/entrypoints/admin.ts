@@ -1,4 +1,3 @@
-import 'stylesheets/admin'
 import Vue from 'vue'
 import App from 'admin/App.vue'
 import ApiClient from 'admin/api/client'

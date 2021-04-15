@@ -3,6 +3,11 @@ import nprogress from 'nprogress'
 import linkHeaderParser from 'parse-link-header'
 import axiosDefaults from 'axios/lib/defaults'
 
+type ApiResponseMeta = {
+  currentPage: number
+  totalPages: number
+}
+
 const client = axios.create({
   baseURL: window.API_ENDPOINT,
   headers: {

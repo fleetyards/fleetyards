@@ -51,7 +51,7 @@ export class ModelsCollection extends BaseCollection {
 
     const response = await get(`models/${slug}`)
 
-    if (!response.errors) {
+    if (!response.error) {
       this.record = response.data
     }
 

@@ -37,7 +37,7 @@ export class StationsCollection extends BaseCollection {
 
     const response = await get(`stations/${slug}`)
 
-    if (!response.errors) {
+    if (!response.error) {
       this.record = response.data
     }
 
