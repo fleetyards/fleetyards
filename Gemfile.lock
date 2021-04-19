@@ -569,7 +569,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
-    uniform_notifier (1.14.0)
+    uniform_notifier (1.14.2)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.10)
@@ -695,7 +695,7 @@ DEPENDENCIES
   timecop
   typhoeus
   uglifier
-  uniform_notifier (= 1.14.0)
+  uniform_notifier (= 1.14.2)
   url_plumber
   useragent
   vcr
