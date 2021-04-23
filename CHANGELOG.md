@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.10.1](https://github.com/fleetyards/fleetyards/compare/v4.10.0...v4.10.1) (2021-04-23)
+
+
+### Bug Fixes
+
+* img metrics on home ([5912957](https://github.com/fleetyards/fleetyards/commit/5912957bdef31592fb8a27b2e6c2ff448d243f0f))
+* urls for users and fleets ([216b18a](https://github.com/fleetyards/fleetyards/commit/216b18a06dffbff5fe3c97ffc71bbbd9d6dcd9ac)), closes [#1433](https://github.com/fleetyards/fleetyards/issues/1433)
+
 ## [4.10.0](https://github.com/fleetyards/fleetyards/compare/v4.9.3...v4.10.0) (2021-04-15)
 
 
