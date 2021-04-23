@@ -4,8 +4,7 @@ en:
     hello: Hello %{username}
     plain_hello: Hello
     privacy: Privacy policy
-    settings: Notification Settings
-    unsubscribe: Unsubscribe
+    notification_settings: Unsubscribe Notifications
     account:
       action: Manage Account Settings
     security:

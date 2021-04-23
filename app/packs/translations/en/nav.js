@@ -50,6 +50,7 @@ export default {
     profile: 'Profile',
     account: 'Account',
     security: 'Security',
+    notifications: 'Notifications',
     hangar: 'Hangar',
     verify: 'RSI Account Verification',
   },
