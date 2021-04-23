@@ -5,11 +5,11 @@ module Pagination
     scope = name
     scope = scope.find { |item| instance_variable_get("@#{item}") } if scope.is_a?(Array)
 
-    headers['Link'] = pagination_links(instance_variable_get("@#{scope}")).map do |k, v|
+    headers['Link'] = pagination_links(instance_variable_get("@#{scope}")).filter_map do |k, v|
       next if v.blank?
 
       "<#{v}>; rel=\"#{k}\""
-    end.compact.join(', ')
+    end.join(', ')
   end
 
   private def pagination_links(scope)

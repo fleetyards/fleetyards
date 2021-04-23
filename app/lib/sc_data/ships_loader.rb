@@ -46,7 +46,7 @@ module ScData
     private def extract_cargo_holds(components)
       components.select do |component_ref|
         component_ref['itemPortName'].downcase.include?('cargo')
-      end.map do |component_ref|
+      end.filter_map do |component_ref|
         component_data = components_loader.load(component_ref['entityClassName'])
 
         next if component_data.blank?
@@ -60,7 +60,7 @@ module ScData
           scu: (cargo_dimensions.values.reject(&:zero?).inject(:*) / CUBIC_METER_TO_SCU_FACTOR).round,
           dimensions: cargo_dimensions,
         }.merge(component_data[:base])
-      end.compact
+      end
     end
 
     private def extract_hydrogen_fuel_tanks(components)
