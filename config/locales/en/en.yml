@@ -70,6 +70,7 @@ en:
       settings_account: Account
       settings_profile: Profile Settings
       settings_hangar: Hangar Settings
+      settings_notifications: Notification Settings
       settings_change-password: Change Password
       settings_security: Account Security
       settings_security_two-factor_enable: Enable Two-factor Authentication

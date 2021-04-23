@@ -49,6 +49,7 @@ export default {
     index: 'Profile Settings',
     account: 'Account',
     hangar: 'Hangar Settings',
+    notifications: 'Notification Settings',
     security: 'Account Security',
     twoFactor: {
       enable: 'Enable Two-factor Authentiation',
