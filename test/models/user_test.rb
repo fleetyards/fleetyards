@@ -59,7 +59,7 @@ class UserTest < ActiveSupport::TestCase
   let(:url_slash) { '//foo.bar' }
   let(:url_http) { 'http://foo.bar' }
   let(:url_https) { 'https://foo.bar' }
-  let(:expected_url) { '//foo.bar' }
+  let(:expected_url) { 'foo.bar' }
   let(:expected_ts_url) { 'ts3server://foo.bar' }
 
   test 'ensure valid urls are saved' do

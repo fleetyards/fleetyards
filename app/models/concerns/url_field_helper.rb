@@ -4,12 +4,12 @@ module UrlFieldHelper
   extend ActiveSupport::Concern
 
   def ensure_valid_url(model, field_name, force: false)
-    field = normalize_url(model.send(field_name))
+    field = model.send(field_name)
 
     return if field.blank?
     return field unless force || model.attribute_changed?(field_name)
 
-    "//#{field}"
+    normalize_url(field)
   end
 
   def ensure_valid_ts_url(model, field_name, force: false)
