@@ -9,14 +9,14 @@
     <BackgroundImage />
 
     <div class="app-content">
-      <transition name="fade" mode="out-in" appear>
+      <transition name="fade" mode="out-in">
         <Navigation />
       </transition>
       <div class="main-wrapper">
         <div class="main-inner">
           <NavigationHeader />
 
-          <transition name="fade" mode="out-in" appear>
+          <transition name="fade" mode="out-in">
             <router-view :key="$route.path" class="main" />
           </transition>
         </div>
