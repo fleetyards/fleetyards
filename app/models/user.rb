@@ -108,6 +108,14 @@ class User < ApplicationRecord
     end
   end
 
+  def self.confirmed
+    where.not(confirmed_at: nil)
+  end
+
+  def self.unconfirmed
+    where(confirmed_at: nil)
+  end
+
   def setup_otp_secret
     self.otp_secret = User.generate_otp_secret
   end

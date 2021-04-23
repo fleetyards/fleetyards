@@ -48,6 +48,12 @@ export default {
   updateProfile: {
     success: 'Profile updated.',
   },
+  updateHangar: {
+    success: 'Hangar Settings updated.',
+  },
+  updateNotifications: {
+    success: 'Notification Settings updated.',
+  },
   updateAccount: {
     success: 'Account updated.',
   },

@@ -3,21 +3,21 @@
     <form @submit.prevent="handleSubmit(submit)">
       <div class="row">
         <div class="col-lg-12">
-          <h1>{{ $t('headlines.settings.hangar') }}</h1>
+          <h1>{{ $t('headlines.settings.notifications') }}</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-12 col-md-6">
           <ValidationProvider
             v-slot="{ errors }"
-            vid="publicHangar"
-            :name="$t('labels.user.publicHangar')"
+            vid="saleNotify"
+            :name="$t('labels.user.saleNotify')"
             :slim="true"
           >
             <Checkbox
-              id="publicHangar"
-              v-model="form.publicHangar"
-              :label="$t('labels.user.publicHangar')"
+              id="saleNotify"
+              v-model="form.saleNotify"
+              :label="$t('labels.user.saleNotify')"
               :class="{ 'has-error has-feedback': errors[0] }"
             />
           </ValidationProvider>
@@ -41,14 +41,14 @@ import Checkbox from 'frontend/core/components/Form/Checkbox'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import userCollection from 'frontend/api/collections/User'
 
-@Component<SettingsHangar>({
+@Component<SettingsNotifications>({
   components: {
     Btn,
     Checkbox,
   },
   mixins: [MetaInfo],
 })
-export default class SettingsHangar extends Vue {
+export default class SettingsNotifications extends Vue {
   @Getter('currentUser', { namespace: 'session' }) currentUser
 
   form: NotificationSettingsForm = null
@@ -68,7 +68,7 @@ export default class SettingsHangar extends Vue {
 
   setupForm() {
     this.form = {
-      publicHangar: this.currentUser.publicHangar,
+      saleNotify: this.currentUser.saleNotify,
     }
   }
 
@@ -83,7 +83,7 @@ export default class SettingsHangar extends Vue {
       this.$comlink.$emit('user-update')
 
       displaySuccess({
-        text: this.$t('messages.updateHangar.success'),
+        text: this.$t('messages.updateNotifications.success'),
       })
     }
   }

@@ -47,6 +47,20 @@
           </router-link>
           <router-link
             v-slot="{ href: linkHref, navigate, isActive }"
+            :to="{ name: 'settings-notifications' }"
+            :custom="true"
+          >
+            <li
+              role="link"
+              :class="{ active: isActive }"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
+              <a :href="linkHref">{{ $t('nav.settings.notifications') }}</a>
+            </li>
+          </router-link>
+          <router-link
+            v-slot="{ href: linkHref, navigate, isActive }"
             :to="{ name: 'settings-hangar' }"
             :custom="true"
           >

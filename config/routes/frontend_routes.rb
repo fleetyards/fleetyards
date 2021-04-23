@@ -67,6 +67,7 @@ namespace :frontend, path: '', host: Rails.application.secrets[:domain], constra
   get 'settings/account' => 'base#index'
   get 'settings/change-password' => 'base#index'
   get 'settings/hangar' => 'base#index'
+  get 'settings/notifications' => 'base#index'
   get 'settings/security' => 'base#index'
   get 'settings/security/two-factor/enable' => 'base#index'
   get 'settings/security/two-factor/disable' => 'base#index'

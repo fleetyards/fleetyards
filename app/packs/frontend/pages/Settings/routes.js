@@ -26,6 +26,18 @@ export const routes = [
     },
   },
   {
+    path: 'notifications/',
+    name: 'settings-notifications',
+    component: () =>
+      import(
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Notifications'
+      ),
+    meta: {
+      title: 'settings.notifications',
+      needsAuthentication: true,
+    },
+  },
+  {
     path: 'hangar/',
     name: 'settings-hangar',
     component: () =>
