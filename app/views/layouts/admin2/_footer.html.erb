@@ -1,0 +1,40 @@
+<footer class="app-footer">
+  <div class="app-footer-border app-footer-border-top">
+    <div class="app-footer-border-left"></div>
+    <div class="app-footer-border-right"></div>
+  </div>
+  <div class="app-footer-inner">
+    <div class="app-footer-inner-border app-footer-inner-border-top">
+      <div class="app-footer-inner-border-bg"></div>
+    </div>
+    <div class="app-footer-item">
+      <p>
+        <span>Copyright &copy; <%= Time.zone.now.year %></span>
+        Torlek Maru
+      </p>
+      <p class="rsi-disclaimer">
+        This is an unofficial Star Citizen fansite, not affiliated with the
+        Cloud Imperium group of companies.
+        <br />
+        All content on this site not authored by its host or users are
+        property of their respective owners.
+        <br />
+        Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
+        Imperium® are
+        <br />
+        registered trademarks of Cloud Imperium Rights LLC. All rights
+        reserved.
+      </p>
+    </div>
+    <div class="app-community-logo">
+      <%= image_tag('community-logo.png') %>
+    </div>
+    <div class="app-version">
+      <%= Fleetyards::CODENAME %> (<%= Fleetyards::VERSION %>)
+      <span class="git-revision">
+        <span class="hidden"><%= Git.revision_short %></span>
+        <i class="far fa-fingerprint"></i>
+      </span>
+    </div>
+  </div>
+</footer>

@@ -7,6 +7,7 @@ Rails.application.default_url_options = { host: Rails.application.secrets[:domai
 Rails.application.routes.draw do
   draw :api_routes
   draw :admin_routes
+  draw :admin2_routes
   draw :frontend_routes
   draw :short_routes if Rails.application.secrets[:short_domain].present?
 

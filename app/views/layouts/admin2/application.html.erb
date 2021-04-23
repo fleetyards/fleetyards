@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
+    <title><%= title %></title>
+
+    <title><%= content_for?(:title) ? "#{yield(:title)} | #{I18n.t(:"title.admin")}" : I18n.t(:"title.admin") %></title>
+
+    <link rel="shortcut icon" type="image/png" href="<%= asset_path('admin/favicon.png') %>">
+
+    <meta name="theme-color" content="#333333"/>
+    <meta name="application-name" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-title" content="<%= I18n.t(:"title.admin") %>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FleetYards.net">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="<%= asset_path('admin/manifest.json') %>" />
+
+    <%= favicon_link_tag 'admin/icon-iphone.png', rel: "apple-touch-icon", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad.png', rel: "apple-touch-icon", sizes: "76x76", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-iphone-retina.png', rel: "apple-touch-icon", sizes: "120x120", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-icon", sizes: "152x152", type: 'image/png' %>
+    <%= favicon_link_tag 'admin/icon-ipad-retina.png', rel: "apple-touch-startup-image", type: 'image/png' %>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://storage.googleapis.com">
+    <link rel="preconnect" href="https://kit-pro.fontawesome.com">
+
+    <script src="https://kit.fontawesome.com/497179c6ff.js" crossorigin="anonymous"></script>
+
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
+    <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Orbitron:400,500,700,900&display=swap" crossorigin>
+
+    <%= stylesheet_pack_tag 'admin2.css', rel: 'preload', as: 'style' %>
+    <%= stylesheet_pack_tag "admin2.css" %>
+
+    <%= javascript_pack_tag 'admin2.js' %>
+
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body class="page-admin">
+    <div class="admin-app-body">
+      <div class="background-image"></div>
+      <%= render "layouts/admin2/header" %>
+
+      <div class="container-fluid app-body">
+        <%= yield %>
+      </div>
+    </div>
+
+    <%= render "layouts/admin2/footer" %>
+  </body>
+</html>
