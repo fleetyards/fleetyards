@@ -70,6 +70,7 @@ export default {
     account: 'Account',
     profile: 'Profile Settings',
     hangar: 'Hangar Settings',
+    notifications: 'Notification Settings',
     verify: 'Verify your RSI Account',
     security: {
       index: 'Account Security',
