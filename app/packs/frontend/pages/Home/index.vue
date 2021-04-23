@@ -11,6 +11,8 @@
                 <img
                   :src="require(`images/logo-home.png`)"
                   class="logo"
+                  width="150px"
+                  height="101px"
                   alt="logo"
                 />
                 {{ $t('app') }}

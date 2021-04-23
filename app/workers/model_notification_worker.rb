@@ -8,7 +8,7 @@ class ModelNotificationWorker
 
   def perform(model_id)
     model = Model.find(model_id)
-    User.where(sale_notify: true).find_each do |user|
+    User.confirmed.where(sale_notify: true).find_each do |user|
       ModelMailer.notify_new(user.email, model).deliver_later
     end
 

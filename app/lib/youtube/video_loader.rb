@@ -17,9 +17,9 @@ module Youtube
 
       return if activities.blank?
 
-      activities['items'].map do |item|
+      activities['items'].filter_map do |item|
         item['contentDetails']['upload']
-      end.compact.reverse_each do |item|
+      end.reverse_each do |item|
         YoutubeUpdate.find_or_create_by(video_id: item['videoId'])
       end
     end
