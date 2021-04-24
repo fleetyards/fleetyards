@@ -222,7 +222,7 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (0.2.5)
     foundation_emails (2.2.1.0)
-    fugit (1.4.4)
+    fugit (1.4.5)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
     geocoder (1.6.7)
@@ -667,7 +667,7 @@ DEPENDENCIES
   rqrcode
   rubocop
   rubocop-ast
-  rubocop-minitest
+  rubocop-minitest (= 0.11.1)
   rubocop-performance
   rubocop-rails
   rubocop-rake
