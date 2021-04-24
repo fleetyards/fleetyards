@@ -1,19 +1,7 @@
 ---
 :queues:
-  - fleetyards_model_loader
-  - fleetyards_roadmap_loader
-  - fleetyards_vehicles_loader
-  - fleetyards_location_loader
-  - fleetyards_loaner_loader
+  - fleetyards_default
   - fleetyards_mailers
-  - fleetyards_model_notification
-  - fleetyards_app_version_notifications
-  - fleetyards_admin_notifier
-  - fleetyards_trade_route_calculator
-  - fleetyards_youtube_loader
-  - fleetyards_rsi_news_loader
-  - fleetyards_price_calculator
-  - fleetyards_sc_data_ship_loader
-  - fleetyards_sc_data_ships_loader
-  - fleetyards_progress_tracker_loader
-  - fleetyards_fleet_invite_url_cleanup
+  - fleetyards_notifications
+  - fleetyards_loaders
+  - fleetyards_cleanup

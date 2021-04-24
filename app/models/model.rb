@@ -357,13 +357,16 @@ class Model < ApplicationRecord
   private def send_new_model_notification
     return if notified? || hidden?
 
-    ModelNotificationWorker.perform_async(id)
+    Notifications::NewModelJob.perform_later(id)
+
+    ActionCable.server.broadcast('new_model', to_json)
   end
 
   private def send_on_sale_notification
     return unless on_sale?
 
-    VehiclesWorker.perform_async(id)
+    Notifications::ModelOnSaleJob.perform_later(id)
+
     ActionCable.server.broadcast('on_sale', to_json)
   end
 

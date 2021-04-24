@@ -157,7 +157,7 @@ end
 
 group :development, :test do
   gem 'bullet'
-  gem 'uniform_notifier', '1.14.2'
+  gem 'uniform_notifier', '1.14.0'
 
   gem 'bundler-audit'
 
