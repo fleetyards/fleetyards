@@ -318,7 +318,7 @@ export default {
     rsiHandle: 'Handle',
     avatar: 'Avatar',
     unconfirmedEmail: 'Unconfirmed email',
-    saleNotify: 'I want to receive Sale Notifications',
+    notifications: 'I want to receive Sale Notifications',
     publicHangar: 'Public Hangar enabled',
   },
   'vehicle': {

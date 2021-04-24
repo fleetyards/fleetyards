@@ -80,9 +80,9 @@
             />
 
             <Checkbox
-              id="saleNotify"
-              v-model="form.saleNotify"
-              :label="$t('labels.user.saleNotify')"
+              id="notifications"
+              v-model="form.notifications"
+              :label="$t('labels.user.notifications')"
             />
 
             <Btn
@@ -153,7 +153,7 @@ export default class Signup extends Vue {
     this.form = {
       username: null,
       email: null,
-      saleNotify: false,
+      notifications: false,
       password: null,
       passwordConfirmation: null,
       fleetInviteToken: this.fleetInviteToken,

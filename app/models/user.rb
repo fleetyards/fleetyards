@@ -80,6 +80,7 @@ class User < ApplicationRecord
            inverse_of: false
   has_many :fleets,
            through: :fleet_memberships
+  has_many :notification_channels, dependent: :destroy
 
   validates :username,
             uniqueness: { case_sensitive: false },
