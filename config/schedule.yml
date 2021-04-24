@@ -1,36 +1,45 @@
 # see https://crontab.guru for help/explanation of cron lines
 
 production: &production
-  youtube_worker_job:
+  loaders_youtube_job:
     cron: '*/10 * * * *' # Every 5 Minutes
-    class: 'YoutubeWorker'
-  rsi_news_worker_job:
+    class: 'Loaders::YoutubeJob'
+    queue: 'loaders'
+  loaders_rsi_news_job:
     cron: '*/15 * * * *' # Every 15 Minutes
-    class: 'RsiNewsWorker'
-  roadmap_worker_job:
+    class: 'Loaders::RsiNewsJob'
+    queue: 'loaders'
+  loaders_roadmap_job:
     cron: '*/20 * * * *' # Every 20 Minutes
-    class: 'RoadmapWorker'
-  progress_tracker_worker_job:
+    class: 'Loaders::RoadmapJob'
+    queue: 'loaders'
+  loaders_progress_tracker_job:
     cron: '*/20 * * * *' # Every 20 Minutes
-    class: 'ProgressTrackerWorker'
-  trade_route_calculator_job:
+    class: 'Loaders::ProgressTrackerJob'
+    queue: 'loaders'
+  trade_routes_job:
     cron: '0 */2 * * *' # Every 2 Hours
-    class: 'TradeRoutesWorker'
-  models_worker_job:
+    class: 'TradeRoutesJob'
+  loaders_models_job:
     cron: '0 20 */1 * *' # Daily at 20:00
-    class: 'ModelsWorker'
-  prices_worker_job:
+    class: 'Loaders::ModelsJob'
+    queue: 'loaders'
+  prices_job:
     cron: '0 21 */1 * *' # Daily at 21:00
-    class: 'PricesWorker'
-  locations_worker_job:
+    class: 'PricesJob'
+  loaders_locations_job:
     cron: '0 3 * * 0' # Weekly on Sunday 3:00
-    class: 'LocationsWorker'
-  admin_notifier_worker_job:
+    class: 'Loaders::LocationsJob'
+    queue: 'loaders'
+  admin_notifier_job:
     cron: '0 20 * * 0' # Weekly on Sunday 20:00
-    class: 'AdminNotifierWorker'
-  loaner_worker_job:
+    class: 'Notifications::AdminJob'
+    queue: 'notifications'
+  loaders_loaner_job:
     cron: '0 21 * * 0' # Weekly on Sunday 21:00
-    class: 'LoanerWorker'
-  fleet_invite_url_cleanup_job:
+    class: 'Loaders::LoanerJob'
+    queue: 'loaders'
+  cleanup_fleet_invite_url_job:
     cron: '0 22 * * 0' # Weekly on Sunday 22:00
-    class: 'FleetInviteUrlCleanupWorker'
+    class: 'Cleanup::FleetInviteUrlJob'
+    queue: 'cleanup'

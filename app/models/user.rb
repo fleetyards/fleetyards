@@ -52,6 +52,7 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
+  include UrlFieldHelper
   include Rails.application.routes.url_helpers
 
   devise :two_factor_authenticatable, :two_factor_backupable, :database_authenticatable,
@@ -91,6 +92,7 @@ class User < ApplicationRecord
 
   before_validation :clean_username
 
+  before_validation :update_urls
   before_create :setup_otp_secret
   after_update :notify_user
   after_save :touch_fleet_memberships
@@ -114,6 +116,12 @@ class User < ApplicationRecord
 
   def self.unconfirmed
     where(confirmed_at: nil)
+  end
+
+  def update_urls(force: false)
+    %i[discord twitch youtube homepage guilded].each do |field|
+      send("#{field}=", ensure_valid_url(self, field, force: force))
+    end
   end
 
   def setup_otp_secret

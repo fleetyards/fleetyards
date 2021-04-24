@@ -19,7 +19,7 @@
         <a
           v-if="fleet.homepage"
           v-tooltip="$t('labels.homepage')"
-          :href="fleet.homepage"
+          :href="`//${fleet.homepage}`"
           target="_blank"
           rel="noopener"
         >
@@ -37,7 +37,7 @@
         <a
           v-if="fleet.guilded"
           v-tooltip="$t('labels.guilded')"
-          :href="fleet.guilded"
+          :href="`//${fleet.guilded}`"
           target="_blank"
           rel="noopener"
         >
@@ -46,7 +46,7 @@
         <a
           v-if="fleet.discord"
           v-tooltip="$t('labels.discord')"
-          :href="fleet.discord"
+          :href="`//${fleet.discord}`"
           target="_blank"
           rel="noopener"
         >
@@ -64,7 +64,7 @@
         <a
           v-if="fleet.youtube"
           v-tooltip="$t('labels.youtube')"
-          :href="fleet.youtube"
+          :href="`//${fleet.youtube}`"
           target="_blank"
           rel="noopener"
         >
@@ -73,7 +73,7 @@
         <a
           v-if="fleet.twitch"
           v-tooltip="$t('labels.twitch')"
-          :href="fleet.twitch"
+          :href="`//${fleet.twitch}`"
           target="_blank"
           rel="noopener"
         >

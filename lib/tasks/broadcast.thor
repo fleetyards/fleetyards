@@ -5,6 +5,6 @@ class Broadcast < Thor
   desc 'version', 'Broadcast Version'
   def version
     require './config/environment'
-    AppVersionNotificationWorker.perform_in(1.minute)
+    Notifications::AppVersionJob.set(wait: 1.minute).perform_later
   end
 end

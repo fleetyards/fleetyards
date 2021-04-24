@@ -29,6 +29,8 @@
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
+  include UrlFieldHelper
+
   has_many :fleet_memberships,
            dependent: :destroy
   has_many :fleet_invite_urls,
@@ -61,12 +63,21 @@ class Fleet < ApplicationRecord
 
   accepts_nested_attributes_for :fleet_memberships
 
+  before_validation :update_urls
   before_save :update_slugs
   after_create :setup_admin_user
 
   def self.accepted
     includes(:fleet_memberships).joins(:fleet_memberships)
       .where(fleet_memberships: { aasm_state: :accepted })
+  end
+
+  def update_urls(force: false)
+    %i[discord twitch youtube homepage guilded].each do |field|
+      send("#{field}=", ensure_valid_url(self, field, force: force))
+    end
+
+    self.ts = ensure_valid_ts_url(self, :ts, force: force)
   end
 
   def vehicles(filters = nil)
