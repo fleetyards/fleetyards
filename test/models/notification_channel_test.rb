@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notification_channels
@@ -14,7 +16,7 @@
 #
 #  index_notification_channels_on_user_id_and_channel  (user_id,channel) UNIQUE
 #
-require "test_helper"
+require 'test_helper'
 
 class NotificationChannelTest < ActiveSupport::TestCase
   # test "the truth" do
