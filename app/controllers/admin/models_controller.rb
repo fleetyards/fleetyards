@@ -74,7 +74,7 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          ModelsWorker.perform_async
+          Loaders::ModelsJob.perform_later
           render json: true
         end
         format.html do
@@ -87,7 +87,7 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          ScDataShipsWorker.perform_async
+          Loaders::ScDataShipsJob.perform_later
           render json: true
         end
         format.html do
@@ -100,8 +100,8 @@ module Admin
       authorize! :reload, :admin_models
       respond_to do |format|
         format.js do
-          ModelWorker.perform_async(model.rsi_id)
-          ScDataShipWorker.perform_async(model.id) if model.sc_identifier.present?
+          Loaders::ModelJob.perform_later(model.rsi_id)
+          Loaders::ScDataShipJob.perform_later(model.id) if model.sc_identifier.present?
           render json: true
         end
         format.html do
