@@ -3,6 +3,5 @@
 module Loaders
   class BaseJob < ::ApplicationJob
     queue_as :loaders
-    sidekiq_options retry: false
   end
 end
