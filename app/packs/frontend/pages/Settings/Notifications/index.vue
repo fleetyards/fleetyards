@@ -11,13 +11,13 @@
           <ValidationProvider
             v-slot="{ errors }"
             vid="saleNotify"
-            :name="$t('labels.user.saleNotify')"
+            :name="$t('labels.user.notifications')"
             :slim="true"
           >
             <Checkbox
               id="saleNotify"
               v-model="form.saleNotify"
-              :label="$t('labels.user.saleNotify')"
+              :label="$t('labels.user.notifications')"
               :class="{ 'has-error has-feedback': errors[0] }"
             />
           </ValidationProvider>

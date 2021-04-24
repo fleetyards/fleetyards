@@ -51,12 +51,14 @@ module Api
         end
 
         fleet_invite_token = user_create_params.delete('fleet_invite_token')
+        notifications_enabled = user_create_params.delete('notifications')
 
         @user = User.new(user_create_params)
 
         @user.skip_confirmation! if @user.username == 'NewTestUser'
 
         if @user.save
+          NotificationChannel.create(user_id: user.id, channel: :email) if notifications_enabled.present?
           handle_fleet_invite(@user.id, fleet_invite_token) if fleet_invite_token.present?
           return
         end
@@ -67,6 +69,7 @@ module Api
       def confirm
         user = User.confirm_by_token(params[:token])
         if user.present? && user.errors.blank?
+          user.notification_channels.find_by(channel: :email)&.confirm
           render json: { code: 'confirmation', message: I18n.t('devise.confirmations.confirmed') }
         else
           render json: ValidationError.new('confirmation', user.errors), status: :bad_request
@@ -95,13 +98,13 @@ module Api
 
       private def user_create_params
         @user_create_params ||= params.transform_keys(&:underscore)
-          .permit(:username, :email, :password, :password_confirmation, :fleet_invite_token, :sale_notify)
+          .permit(:username, :email, :password, :password_confirmation, :fleet_invite_token, :notifications)
       end
 
       private def user_params
         @user_params ||= params.transform_keys(&:underscore)
           .permit(
-            :avatar, :remove_avatar, :sale_notify, :public_hangar, :rsi_handle, :discord, :homepage,
+            :avatar, :remove_avatar, :public_hangar, :rsi_handle, :discord, :homepage,
             :youtube, :twitch, :guilded
           )
       end

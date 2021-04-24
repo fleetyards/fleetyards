@@ -12,7 +12,6 @@ json.cache! ['v1', user] do
   json.twitch user.twitch
   json.guilded user.guilded
   json.homepage user.homepage
-  json.sale_notify user.sale_notify
   json.public_hangar user.public_hangar
   json.public_hangar_url user.public_hangar_url
   json.two_factor_required user.otp_required_for_login?

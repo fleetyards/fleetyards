@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: notification_channels
+#
+#  id                :uuid             not null, primary key
+#  channel           :string
+#  confirmed         :boolean          default(FALSE)
+#  unsubscribe_token :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  user_id           :uuid
+#
+# Indexes
+#
+#  index_notification_channels_on_user_id_and_channel  (user_id,channel) UNIQUE
+#
+
+one:
+  user_id: 
+  channel: MyString
+  unsubscribe_token: MyString
+
+two:
+  user_id: 
+  channel: MyString
+  unsubscribe_token: MyString
