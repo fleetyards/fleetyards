@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class TradeRoutesWorker
-  include Sidekiq::Worker
-  sidekiq_options retry: false, queue: (ENV['TRADE_ROUTES_QUEUE'] || 'fleetyards_trade_route_calculator').to_sym
+class TradeRoutesJob < ApplicationJob
+  queue_as :default
+  sidekiq_options retry: false
 
   def perform
     ids = []
