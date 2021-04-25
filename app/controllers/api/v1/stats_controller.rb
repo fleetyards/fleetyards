@@ -82,11 +82,7 @@ module Api
       def models_per_month
         authorize! :read, :api_stats
 
-        models_per_month = Model.visible.active
-          .where('created_at > ?', Time.zone.now - 1.year)
-          .group_by_month(:created_at)
-          .count
-          .map do |created_at, count|
+        models_per_month = Rollup.where('time > ?', 1.year.ago).series('Models', interval: :month).map do |created_at, count|
           {
             label: I18n.l(created_at.to_date, format: :month_year_short),
             count: count,

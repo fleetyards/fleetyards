@@ -87,6 +87,8 @@ module Api
         authorize! :destroy, current_user
 
         if current_user.destroy
+          Cleanup::UserVisitsJob.perform_later(current_user.id)
+
           render json: { code: 'current_user.destroyed', message: I18n.t('messages.destroy.success', resource: I18n.t('resources.user')) }
         else
           render json: ValidationError.new('current_user.destroy', @current_user.errors), status: :bad_request
