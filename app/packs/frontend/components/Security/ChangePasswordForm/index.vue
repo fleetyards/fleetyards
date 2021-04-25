@@ -1,19 +1,18 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" slim>
+  <ValidationObserver v-slot="{ handleSubmit }" :slim="true">
     <form v-if="form" @submit.prevent="handleSubmit(changePassword)">
       <ValidationProvider
         v-slot="{ errors }"
         vid="currentPassword"
         rules="required"
         :name="$t('labels.currentPassword')"
-        slim
+        :slim="true"
       >
         <FormInput
           id="currentPassword"
           v-model="form.currentPassword"
           :error="errors[0]"
           type="password"
-          :clearable="true"
         />
       </ValidationProvider>
 
@@ -22,14 +21,13 @@
         vid="password"
         rules="required|min:8"
         :name="$t('labels.password')"
-        slim
+        :slim="true"
       >
         <FormInput
           id="password"
           v-model="form.password"
           :error="errors[0]"
           type="password"
-          :clearable="true"
         />
       </ValidationProvider>
 
@@ -38,14 +36,13 @@
         vid="passwordConfirmation"
         rules="required|confirmed:password"
         :name="$t('labels.passwordConfirmation')"
-        slim
+        :slim="true"
       >
         <FormInput
           id="passwordConfirmation"
           v-model="form.passwordConfirmation"
           :error="errors[0]"
           type="password"
-          :clearable="true"
         />
       </ValidationProvider>
       <div class="d-flex">

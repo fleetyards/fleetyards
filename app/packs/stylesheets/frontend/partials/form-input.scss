@@ -37,6 +37,10 @@
       &:focus {
         outline: none;
       }
+
+      &.clearable {
+        padding-right: 50px;
+      }
     }
 
     textarea {
@@ -67,14 +71,15 @@
 
     .clear {
       position: absolute;
-      top: 2px;
-      right: 5px;
-      bottom: 2px;
-      width: 40px;
-      height: 40px;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 100%;
       margin: 0;
-      line-height: 40px;
-      text-align: center;
       cursor: pointer;
     }
 
@@ -119,10 +124,6 @@
       font-size: 19px;
       line-height: 1.33333;
       border-radius: 6px;
-    }
-
-    .clear {
-      bottom: 6px;
     }
   }
 

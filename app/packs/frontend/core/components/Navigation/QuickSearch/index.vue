@@ -6,7 +6,6 @@
         v-model="form[$route.meta.quickSearch]"
         :translation-key="`quicksearch.${$route.name}`"
         :no-label="true"
-        :clearable="true"
         :autofocus="true"
       />
     </form>

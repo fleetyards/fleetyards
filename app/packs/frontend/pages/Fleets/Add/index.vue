@@ -3,13 +3,13 @@
     <ValidationObserver v-slot="{ handleSubmit }" small>
       <form @submit.prevent="handleSubmit(submit)">
         <div class="row justify-content-lg-center">
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-6 col-lg-4">
             <h1>{{ $t('headlines.fleets.add') }}</h1>
           </div>
         </div>
 
         <div class="row justify-content-lg-center">
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-6 col-lg-4">
             <ValidationProvider
               v-slot="{ errors }"
               vid="fid"
@@ -27,7 +27,6 @@
                 v-model="form.fid"
                 translation-key="fleet.fid"
                 :error="errors[0]"
-                size="large"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -46,13 +45,12 @@
                 v-model="form.name"
                 translation-key="name"
                 :error="errors[0]"
-                size="large"
               />
             </ValidationProvider>
           </div>
         </div>
         <div class="row justify-content-lg-center">
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-md-6 col-lg-4">
             <br />
             <Btn
               :loading="submitting"

@@ -37,6 +37,9 @@
         :min="min"
         :max="max"
         :step="innerStep"
+        :class="{
+          clearable,
+        }"
         @input="update"
         @blur="update"
       />
@@ -45,14 +48,15 @@
           {{ suffix }}
         </div>
       </slot>
-      <i
-        v-if="inputValue && clearable"
-        class="fal fa-times clear"
-        :class="{
-          'with-label': !!innerLabel && !noLabel,
-        }"
-        @click="clear"
-      />
+      <div v-if="inputValue && clearable" class="clear">
+        <i
+          class="fal fa-times"
+          :class="{
+            'with-label': !!innerLabel && !noLabel,
+          }"
+          @click="clear"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -30,7 +30,6 @@
                     :error="errors[0]"
                     type="password"
                     :autofocus="true"
-                    :clearable="true"
                   />
                 </ValidationProvider>
 
