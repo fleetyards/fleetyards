@@ -53,9 +53,7 @@ module Admin
         def visits_per_month
           authorize! :stats, :admin
 
-          visits_per_month = Ahoy::Visit.without_users(tracking_blocklist).one_year
-            .group_by_month(:started_at).count
-            .map do |started_at, count|
+          visits_per_month = Rollup.where('time > ?', 1.year.ago).series('Visits', interval: :month).map do |started_at, count|
             {
               label: I18n.l(started_at.to_date, format: :month_year_short),
               count: count,
@@ -69,10 +67,7 @@ module Admin
         def registrations_per_month
           authorize! :stats, :admin
 
-          registrations_per_month = User.where('created_at > ?', Time.zone.now - 1.year)
-            .group_by_month(:created_at)
-            .count
-            .map do |created_at, count|
+          registrations_per_month = Rollup.where('time > ?', 1.year.ago).series('Registrations', interval: :month).map do |created_at, count|
             {
               label: I18n.l(created_at.to_date, format: :month_year_short),
               count: count,

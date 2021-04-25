@@ -27,6 +27,7 @@ gem 'selectize-rails'
 
 gem 'ahoy_matey'
 gem 'groupdate'
+gem 'rollups'
 
 gem 'i18n-js'
 gem 'js_cookie_rails'
