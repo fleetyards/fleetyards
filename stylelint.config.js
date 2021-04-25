@@ -7,6 +7,7 @@ module.exports = {
     'declaration-block-semicolon-newline-after': 'always',
     'number-leading-zero': 'never',
     'no-descending-specificity': null,
+    'no-invalid-position-at-import-rule': null,
     'string-quotes': 'single',
     'order/properties-order': [],
     'plugin/rational-order': [
