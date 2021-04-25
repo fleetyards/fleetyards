@@ -27,6 +27,9 @@ production: &production
   prices_job:
     cron: '0 21 */1 * *' # Daily at 21:00
     class: 'PricesJob'
+  metrics_job:
+    cron: '0 1 */1 * *' # Daily at 1:00
+    class: 'MetricsJob'
   loaders_locations_job:
     cron: '0 3 * * 0' # Weekly on Sunday 3:00
     class: 'Loaders::LocationsJob'
@@ -46,8 +49,4 @@ production: &production
   cleanup_visits_job:
     cron: '0 0 1 * *' # Monthly on the first day at 0:00
     class: 'Cleanup::VisitsJob'
-    queue: 'cleanup'
-  metrics_job:
-    cron: '0 1 1 * *' # Monthly on the first day at 1:00
-    class: 'MetricsJob'
     queue: 'cleanup'
