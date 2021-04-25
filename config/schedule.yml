@@ -43,3 +43,11 @@ production: &production
     cron: '0 22 * * 0' # Weekly on Sunday 22:00
     class: 'Cleanup::FleetInviteUrlJob'
     queue: 'cleanup'
+  cleanup_visits_job:
+    cron: '0 0 1 * *' # Monthly on the first day at 0:00
+    class: 'Cleanup::VisitsJob'
+    queue: 'cleanup'
+  metrics_job:
+    cron: '0 1 1 * *' # Monthly on the first day at 1:00
+    class: 'MetricsJob'
+    queue: 'cleanup'
