@@ -134,6 +134,7 @@
               id="guilded"
               v-model="form.guilded"
               icon="fab fa-guilded"
+              :clearable="true"
               translation-key="guilded"
               :error="errors[0]"
             />

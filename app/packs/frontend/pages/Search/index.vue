@@ -20,6 +20,7 @@
                     size="large"
                     :autofocus="true"
                     :clearable="true"
+                    translation-key="search.default"
                     :no-label="true"
                     @clear="filter"
                   />
