@@ -188,7 +188,7 @@ GEM
     erubis (2.7.0)
     et-orbi (1.2.4)
       tzinfo
-    ethon (0.13.0)
+    ethon (0.14.0)
       ffi (>= 1.15.0)
     excon (0.80.1)
     execjs (2.7.0)
