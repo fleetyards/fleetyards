@@ -88,6 +88,8 @@ GEM
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
     ansi (1.5.0)
+    appsignal (3.0.3)
+      rack
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
@@ -602,6 +604,7 @@ DEPENDENCIES
   after_commit_everywhere
   ahoy_matey
   annotate
+  appsignal
   bcrypt_pbkdf
   bootsnap (>= 1.1.0)
   bootstrap-sass
