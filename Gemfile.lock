@@ -158,7 +158,7 @@ GEM
       addressable
     dalli (2.7.11)
     device_detector (1.0.5)
-    devise (4.7.3)
+    devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -192,7 +192,7 @@ GEM
       tzinfo
     ethon (0.14.0)
       ffi (>= 1.15.0)
-    excon (0.80.1)
+    excon (0.81.0)
     execjs (2.7.0)
     faker (2.17.0)
       i18n (>= 1.6, < 2)
@@ -211,7 +211,7 @@ GEM
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-core (2.2.3)
+    fog-core (2.2.4)
       builder
       excon (~> 0.71)
       formatador (~> 0.2)
@@ -322,7 +322,7 @@ GEM
     mime-types-data (3.2021.0225)
     mini_magick (4.11.0)
     mini_mime (1.0.3)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.4)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
