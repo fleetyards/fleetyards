@@ -382,6 +382,10 @@ jobs:
           name: Deploy
           command: bundle exec cap live deploy
       - run: |
+          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
+      - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Release:** $CIRCLE_TAG\nhttps://github.com/fleetyards/fleetyards/releases/tag/$CIRCLE_TAG\" }"
