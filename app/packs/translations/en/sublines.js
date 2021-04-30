@@ -12,6 +12,7 @@ export default {
     disclaimer: 'Disclaimer',
     copyright: 'Copyright',
     thirdpartycontent: 'Credits',
+    sponsors: 'Sponsors',
     liabilityInternal: 'Limitation of liability for internal content',
     liabilityExternal: 'Limitation of liability for external links',
   },
