@@ -22,6 +22,18 @@
               </a>
             </p>
             <br />
+            <h2>{{ $t('sublines.impressum.sponsors') }}</h2>
+            <h3>AppSignal</h3>
+            <p>
+              {{ $t('texts.impressum.appSignal') }}
+            </p>
+            <p>
+              {{ $t('texts.impressum.visit') }}
+              <a href="https://appsignal.com/" target="_blank" rel="noopener">
+                appsignal.com
+              </a>
+            </p>
+            <br />
 
             <h2>{{ $t('sublines.impressum.disclaimer') }}</h2>
             <br />

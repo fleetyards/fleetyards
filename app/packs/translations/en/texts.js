@@ -77,8 +77,11 @@ export default {
     },
   },
   impressum: {
+    visit: 'Visit',
     ytShipImages:
       'The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href="https://twitter.com/WhyTeeZero" target="_blank" rel="noopener">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.',
+    appSignal:
+      'AppSignal provided a sponsored Open Source Account which helps to improve Fleetyards.net even further. Thanks :)',
     copyright:
       'The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.',
     liabilityInternal: {

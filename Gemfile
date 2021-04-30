@@ -110,6 +110,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Audit Issues
 gem 'excon', '>= 0.71.0'
 
+gem 'appsignal'
+
 group :development do
   gem 'annotate'
 
