@@ -1,6 +1,9 @@
 default: &defaults
   push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
   name: "Fleetyards"
+  ignore_errors:
+      - ActiveRecord::RecordNotFound
+      - ActionController::RoutingError
 
 development:
   <<: *defaults
