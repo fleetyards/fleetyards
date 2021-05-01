@@ -4,6 +4,7 @@ default: &defaults
   ignore_errors:
       - ActiveRecord::RecordNotFound
       - ActionController::RoutingError
+      - ActionController::InvalidAuthenticityToken
 
 development:
   <<: *defaults
