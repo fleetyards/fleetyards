@@ -71,7 +71,7 @@ namespace :server do
   task :restart_app do
     on roles(:all) do
       info 'Restart App'
-      execute(:sudo, :service, "#{fetch(:application)}-app", :restart)
+      execute(:sudo, :service, "#{fetch(:application)}-app", :reload)
       execute(:sudo, :systemctl, 'is-active', '--quiet', "#{fetch(:application)}-app.service")
       info 'App Restarted'
     end
