@@ -6,8 +6,8 @@ set :application, 'fleetyards'
 set :deploy_to, '/home/fleetyards'
 set :repo_url, 'https://github.com/fleetyards/fleetyards.git'
 
-set :keep_releases, 10
-# set :keep_assets, 10
+set :keep_releases, 5
+set :keep_assets, 5
 
 set :conditionally_migrate, true
 
@@ -21,6 +21,7 @@ set :linked_dirs, [
   'public/compare',
   'public/assets',
   'public/packs',
+  '.bundle',
   'log',
   'tmp/cache',
   'tmp/pids',
@@ -36,6 +37,7 @@ set :linked_files, [
 
 before :'rbenv:validate', :'ruby:prepare'
 before :'deploy:migrate', :'db:load_schema'
+after :'deploy:published', :'bundler:clean'
 
 namespace :deploy do
   after :finished, :restart
