@@ -6,7 +6,7 @@ max_threads_count = ENV.fetch('MAX_THREADS') { 16 }
 min_threads_count = ENV.fetch('MIN_THREADS') { rails_environment == 'production' ? max_threads_count : 1 }
 threads min_threads_count, max_threads_count
 
-workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+workers Integer(ENV['WORKER_COUNT'] || 2)
 
 port        ENV['PORT'] || 3000
 
