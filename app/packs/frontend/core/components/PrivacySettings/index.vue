@@ -6,13 +6,13 @@
       </p>
       <dl>
         <dt>
-          Why?
+          {{ $t('privacySettings.info.why') }}
         </dt>
         <dd>
           {{ $t(`privacySettings.info.${info}.why`) }}
         </dd>
         <dt>
-          Data Collected
+          {{ $t('privacySettings.info.dataCollected') }}
         </dt>
         <dd>
           <ul>
@@ -25,13 +25,13 @@
           </ul>
         </dd>
         <dt>
-          Company
+          {{ $t('privacySettings.info.company') }}
         </dt>
         <dd>
           {{ $t(`privacySettings.info.${info}.company`) }}
         </dd>
         <dt>
-          Location
+          {{ $t('privacySettings.info.location') }}
         </dt>
         <dd>
           {{ $t(`privacySettings.info.${info}.location`) }}

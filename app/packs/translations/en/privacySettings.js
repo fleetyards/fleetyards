@@ -17,6 +17,10 @@ export default {
   text:
     'This site uses services and tools to improve the overall user experience. You can update your preferences below to enable or disable those services and tools.',
   info: {
+    why: 'Why?',
+    dataCollected: 'Data Collected',
+    company: 'Company',
+    location: 'Location',
     fontawesome: {
       title: 'Fontawesome',
       text: 'This is a font and icon toolkit service.',

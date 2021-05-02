@@ -24,9 +24,7 @@
             <br />
             <h2>{{ $t('sublines.impressum.sponsors') }}</h2>
             <h3>AppSignal</h3>
-            <p>
-              {{ $t('texts.impressum.appSignal') }}
-            </p>
+            <p>{{ $t('texts.impressum.appSignal') }}</p>
             <p>
               {{ $t('texts.impressum.visit') }}
               <a href="https://appsignal.com/" target="_blank" rel="noopener">
@@ -36,31 +34,21 @@
             <br />
 
             <h2>{{ $t('sublines.impressum.disclaimer') }}</h2>
-            <br />
-            <p>
-              This is an unofficial Star Citizen fansite, not affiliated with
-              the Cloud Imperium group of companies.
-              <br />
-              All content on this site not authored by its host or users are
-              property of their respective owners.
-              <br />
-              Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
-              Imperium® are registered trademarks of Cloud Imperium Rights LLC.
-              All rights reserved.
-            </p>
+            <p>{{ $t('texts.impressum.disclaimer.p1') }}</p>
+            <p>{{ $t('texts.impressum.disclaimer.p2') }}</p>
+            <p>{{ $t('texts.impressum.disclaimer.p3') }}</p>
             <br />
 
             <h3>{{ $t('sublines.impressum.copyright') }}:</h3>
-            <p v-html="$t('texts.impressum.copyright')" />
+            <p>{{ $t('texts.impressum.copyright') }}</p>
             <br />
 
             <h3>{{ $t('sublines.impressum.liabilityInternal') }}:</h3>
-            <p v-html="$t('texts.impressum.liabilityInternal.paragraphOne')" />
-            <p v-html="$t('texts.impressum.liabilityInternal.paragraphTwo')" />
-            <br />
+            <p>{{ $t('texts.impressum.liabilityInternal.p1') }}</p>
+            <p>{{ $t('texts.impressum.liabilityInternal.p2') }}</p>
 
             <h3>{{ $t('sublines.impressum.liabilityExternal') }}:</h3>
-            <p v-html="$t('texts.impressum.liabilityExternal')" />
+            <p>{{ $t('texts.impressum.liabilityExternal') }}</p>
             <br />
           </div>
         </Panel>

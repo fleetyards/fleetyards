@@ -84,10 +84,18 @@ export default {
       'AppSignal provided a sponsored Open Source Account which helps to improve Fleetyards.net even further. Thanks :)',
     copyright:
       'The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.',
+    disclaimer: {
+      p1:
+        'This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies.',
+      p2:
+        'All content on this site not authored by its host or users are property of their respective owners.',
+      p3:
+        'Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud Imperium® are registered trademarks of Cloud Imperium Rights LLC. All rights reserved.',
+    },
     liabilityInternal: {
-      paragraphOne:
+      p1:
         'The content of out site has been compiled with meticulous care and to the best of our knowledge. However, We cannot assume any liability for the up-to-dateness, completeness or accuracy of any of the pages.',
-      paragraphTwo:
+      p2:
         'Pursuant to section 7, para. 1 of the TMG (Telemediengesetz), We are liable for our own content on these pages in accordance with general laws. However, pursuant to sections 8 to 10 of the TMG, We are not under obligation to monitor external information provided or stored on our site. Once We have become aware of a specific infringement of the law, We will immediately remove the content in question. Any liability concerning this matter can only be assumed from the point in time at which the infringement becomes known to us.',
     },
     liabilityExternal:
