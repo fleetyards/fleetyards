@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.10.6](https://github.com/fleetyards/fleetyards/compare/v4.10.5...v4.10.6) (2021-05-02)
+
+
+### Bug Fixes
+
+* appsignal deploy hook ([336c2f0](https://github.com/fleetyards/fleetyards/commit/336c2f0fdea1b78393a14b509ec5452d7a393e41))
+
 ### [4.10.5](https://github.com/fleetyards/fleetyards/compare/v4.10.4...v4.10.5) (2021-05-02)
 
 ### [4.10.4](https://github.com/fleetyards/fleetyards/compare/v4.10.3...v4.10.4) (2021-05-01)
