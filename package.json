@@ -136,7 +136,7 @@
     "jest-serializer-vue": "2.0.2",
     "standard-version": "9.2.0",
     "storybook-vue-router": "1.0.7",
-    "stylelint": "13.13.0",
+    "stylelint": "13.13.1",
     "stylelint-config-prettier": "8.0.2",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "22.0.0",
