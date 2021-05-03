@@ -1,4 +1,4 @@
-import { get, put, destroy } from 'admin/api/client'
+import { get, put, destroy } from 'frontend/api/client'
 import BaseCollection from 'frontend/api/collections/Base'
 
 export class AdminShopCommodityConfirmationsCollection extends BaseCollection {

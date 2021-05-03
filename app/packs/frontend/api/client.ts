@@ -104,7 +104,11 @@ const handleResponse = function handleResponse(
   }
 }
 
-export async function get(path: string, params = {}, silent: boolean = false) {
+export async function get(
+  path: string,
+  params: any = {},
+  silent: boolean = false,
+) {
   if (!silent) {
     nprogress.start()
   }

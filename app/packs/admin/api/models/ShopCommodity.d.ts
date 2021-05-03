@@ -13,6 +13,6 @@ type AdminShopCommodityFilter = {
 }
 
 interface AdminShopCommodityParams extends CollectionParams {
-  filters: AdminShopCommodityFilter
+  filters?: AdminShopCommodityFilter
   shopId: string
 }

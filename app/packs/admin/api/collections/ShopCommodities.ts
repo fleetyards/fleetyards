@@ -1,4 +1,4 @@
-import { get, post, put, destroy } from 'admin/api/client'
+import { get, post, put, destroy } from 'frontend/api/client'
 import BaseCollection from 'frontend/api/collections/Base'
 
 export class AdminShopCommoditiesCollection extends BaseCollection {
@@ -13,10 +13,7 @@ export class AdminShopCommoditiesCollection extends BaseCollection {
   ): Promise<AdminShopCommodity[]> {
     this.params = params
 
-    const response = await get(`shops/${params!.shopId}/commodities`, {
-      q: params?.filters,
-      page: params?.page,
-    })
+    const response = await get(`shops/${params!.shopId}/commodities`, params)
 
     if (!response.error) {
       this.records = response.data

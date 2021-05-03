@@ -39,7 +39,7 @@
             </Btn>
 
             <Btn
-              v-if="currentUser.publicHangar"
+              v-if="currentUser && currentUser.publicHangar"
               v-tooltip="$t('actions.copyPublicUrl')"
               @click.native="copyPublicUrl"
             >
@@ -128,7 +128,7 @@
             </Btn>
 
             <Btn
-              v-if="currentUser.publicHangar"
+              v-if="currentUser && currentUser.publicHangar"
               size="small"
               variant="dropdown"
               @click.native="copyPublicUrl"

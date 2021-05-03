@@ -111,11 +111,11 @@ module Api
 
         price_params = params.permit(query: %i[price_gteq price_lteq])
 
-        sell_price_range[:gte] = deprecated_price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
-        sell_price_range[:lte] = deprecated_price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
+        sell_price_range[:gte] = price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
+        sell_price_range[:lte] = price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
 
-        buy_price_range[:gte] = deprecated_price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
-        buy_price_range[:lte] = deprecated_price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
+        buy_price_range[:gte] = price_params.dig(:query, :price_gteq).to_f if price_params.dig(:query, :price_gteq).present?
+        buy_price_range[:lte] = price_params.dig(:query, :price_lteq).to_f if price_params.dig(:query, :price_lteq).present?
 
         price_params = {}
 

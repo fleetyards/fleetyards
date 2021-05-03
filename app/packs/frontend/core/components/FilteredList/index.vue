@@ -79,6 +79,7 @@ import Paginator from 'frontend/core/components/Paginator'
 import Loader from 'frontend/core/components/Loader'
 import EmptyBox from 'frontend/core/components/EmptyBox'
 import { scrollToAnchor } from 'frontend/utils/scrolling'
+import { isFilterSelected } from 'frontend/utils/Filters'
 
 @Component<FilteredList>({
   components: {
@@ -120,6 +121,8 @@ export default class FilteredList extends Vue {
 
   @Prop({ default: false }) hideLoading: boolean
 
+  @Prop({ default: 'q' }) routeFilterName: string
+
   @Getter('filtersVisible') filtersVisible
 
   @Getter('mobile') mobile
@@ -131,7 +134,11 @@ export default class FilteredList extends Vue {
   @Mutation('setFilters') setFilters
 
   get filters() {
-    return this.routeQuery.q
+    return this.routeQuery[this.routeFilterName]
+  }
+
+  get search() {
+    return this.routeQuery.search
   }
 
   get hasFilterSlot() {
@@ -155,11 +162,7 @@ export default class FilteredList extends Vue {
   }
 
   get isFilterSelected() {
-    const query = JSON.parse(JSON.stringify(this.filters || {}))
-    Object.keys(query)
-      .filter(key => !query[key] || query[key].length === 0)
-      .forEach(key => delete query[key])
-    return Object.keys(query).length > 0
+    return isFilterSelected(this.filters)
   }
 
   get emptyBoxVisible() {
@@ -235,6 +238,7 @@ export default class FilteredList extends Vue {
     this.loading = true
 
     let params = {
+      search: this.search,
       filters: this.filters,
     }
 

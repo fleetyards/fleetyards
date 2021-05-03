@@ -53,6 +53,8 @@ class ShopCommodity < ApplicationRecord
       buy_price: buy_price,
       category: commodity_item_type,
       sub_category: sub_category,
+      component_item_type: (commodity_item.item_type if commodity_item_type == 'Component'),
+      equipment_item_type: (commodity_item.item_type if commodity_item_type == 'Equipment'),
       created_at: created_at
     }
   end

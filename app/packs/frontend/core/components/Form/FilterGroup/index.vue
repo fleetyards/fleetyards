@@ -172,6 +172,8 @@ export default class FilterGroup extends Vue {
 
   @Prop({ default: null }) searchLabel!: string
 
+  @Prop({ default: false }) newSearchQuery!: boolean
+
   visible: boolean = false
 
   search = null
@@ -306,6 +308,15 @@ export default class FilterGroup extends Vue {
       return this.fetch(args)
     }
 
+    let query = this.buildQuery(args)
+    if (this.newSearchQuery) {
+      query = this.buildNewQuery(args)
+    }
+
+    return this.$api.get(this.fetchPath, query)
+  }
+
+  buildQuery(args) {
     const query = {
       q: {},
     }
@@ -316,7 +327,19 @@ export default class FilterGroup extends Vue {
     } else if (args.page && this.paginated) {
       query.page = args.page
     }
-    return this.$api.get(this.fetchPath, query)
+  }
+
+  buildNewQuery(args) {
+    const query = {
+      filters: {},
+    }
+    if (args.search && this.searchable) {
+      query.search = args.search
+    } else if (args.missingValue && this.paginated) {
+      query.filters.name = args.missingValue
+    } else if (args.page && this.paginated) {
+      query.page = args.page
+    }
   }
 
   async fetchOptions() {

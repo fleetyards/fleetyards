@@ -180,7 +180,7 @@ import {
   booleanOptions,
   priceOptions,
   pledgePriceOptions,
-} from 'frontend/utils/Filters'
+} from 'frontend/utils/FilterOptions'
 
 export default {
   name: 'FleetFilterForm',

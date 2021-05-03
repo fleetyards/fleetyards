@@ -82,7 +82,7 @@ import FilterGroup from 'frontend/core/components/Form/FilterGroup'
 import RadioList from 'frontend/core/components/Form/RadioList'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
-import { booleanOptions } from 'frontend/utils/Filters'
+import { booleanOptions } from 'frontend/utils/FilterOptions'
 
 export default {
   components: {

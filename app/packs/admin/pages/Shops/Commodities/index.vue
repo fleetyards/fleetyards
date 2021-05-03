@@ -3,6 +3,7 @@
     :collection="collection"
     :name="$route.name"
     :route-query="$route.query"
+    route-filter-name="filters"
     :hash="$route.hash"
     :params="routeParams"
     :paginated="true"

@@ -1,7 +1,7 @@
 import 'stylesheets/admin'
 import Vue from 'vue'
 import App from 'admin/App.vue'
-import ApiClient from 'admin/api/client'
+import ApiClient from 'frontend/api/client'
 import store from 'admin/lib/Store'
 import 'frontend/plugins/LazyLoad'
 import 'frontend/lib/Sentry'

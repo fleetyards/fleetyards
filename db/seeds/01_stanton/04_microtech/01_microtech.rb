@@ -39,6 +39,14 @@ new_babbage.habitations.destroy_all
   end
 end
 
+regal = Shop.find_or_initialize_by(name: 'Regal Luxury Rentals', station: new_babbage)
+regal.update!(
+  shop_type: :rental,
+  location: 'New Babbage Interstellar Spaceport',
+  rental: true,
+  hidden: false
+)
+
 brentworth = Shop.find_or_initialize_by(name: 'BRENTWORTH - CARE CENTER', station: new_babbage)
 brentworth.update!(
   shop_type: :hospital,

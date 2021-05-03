@@ -9,27 +9,17 @@ module Admin
         def index
           authorize! :index, :admin_api_shop_commodities
 
-          sorts = [
-            'model_name asc',
-            'component_name asc',
-            'commodity_name asc',
-            'equipment_name asc',
-            'model_module_name asc',
-            'model_paint_name asc'
-          ]
-          shop_commodities_query_params['sorts'] = sort_by_name(sorts, sorts)
-
-          scope = ShopCommodity
-
-          scope = scope.where(shop_id: shop.id) if shop.present?
-
-          @q = scope
-            .includes([:commodity_item])
-            .ransack(shop_commodities_query_params)
-
-          @shop_commodities = @q.result
-            .page(params.fetch(:page, nil))
-            .per(40)
+          Rails.logger.debug query_params.to_yaml
+          @shop_commodities = ShopCommodity.search(
+            search_params || '*',
+            fields: [{ name: :word_start }],
+            where: query_params.merge(price_params)
+                               .merge(shop.present? ? { shop_id: shop.id } : {}),
+            order: order_params,
+            page: params[:page],
+            per_page: per_page(ShopCommodity),
+            includes: %i[shop commodity_item]
+          )
         end
 
         def buy_prices
@@ -103,6 +93,58 @@ module Admin
           @shop_commodity ||= ShopCommodity.find(params[:id])
         end
         helper_method :shop_commodity
+
+        private def search_params
+          @search_params ||= params.permit(:search)[:search]
+        end
+
+        private def order_params
+          @order_params ||= begin
+            permitted_params = params.permit(
+              order: [
+                :name
+              ]
+            )
+
+            permitted_params[:order] || { 'name' => 'asc', 'created_at' => 'asc' }
+          end
+        end
+
+        private def price_params
+          sell_price_range = {}
+          buy_price_range = {}
+
+          price_params = params.permit(query: %i[price_gteq price_lteq])
+
+          sell_price_range[:gte] = price_params.dig(:filters, :price_gteq).to_f if price_params.dig(:filters, :price_gteq).present?
+          sell_price_range[:lte] = price_params.dig(:filters, :price_lteq).to_f if price_params.dig(:filters, :price_lteq).present?
+
+          buy_price_range[:gte] = price_params.dig(:filters, :price_gteq).to_f if price_params.dig(:filters, :price_gteq).present?
+          buy_price_range[:lte] = price_params.dig(:filters, :price_lteq).to_f if price_params.dig(:filters, :price_lteq).present?
+
+          price_params = {}
+
+          price_params[:_or] = [] if sell_price_range.present? || buy_price_range.present?
+          price_params[:_or].push({ sell_price: sell_price_range }) if sell_price_range.present?
+          price_params[:_or].push({ buy_price: buy_price_range }) if buy_price_range.present?
+
+          price_params
+        end
+
+        private def query_params
+          @query_params ||= begin
+            permitted_params = params.permit(
+              filters: [
+                {
+                  name: [], manufacturer_slug: [], category: [], sub_category: [],
+                  component_item_type: [], equipment_item_type: []
+                }
+              ]
+            )
+
+            permitted_params[:filters] || {}
+          end
+        end
       end
     end
   end
