@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.10.7](https://github.com/fleetyards/fleetyards/compare/v4.10.6...v4.10.7) (2021-05-04)
+
+
+### Bug Fixes
+
+* admin shop commodities ([b2f4bff](https://github.com/fleetyards/fleetyards/commit/b2f4bff564c41ab39048f3873fac4fe9fa9a0977))
+* admin views and shop commodities listing ([46071b6](https://github.com/fleetyards/fleetyards/commit/46071b6a4cac09132fa1aee2a8cf7b4338bb9593))
+
 ### [4.10.6](https://github.com/fleetyards/fleetyards/compare/v4.10.5...v4.10.6) (2021-05-02)
 
 
