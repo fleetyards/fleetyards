@@ -128,7 +128,7 @@ class Component < ApplicationRecord
   end
 
   def component_class_label
-    I18n.t("filter.component.class.items.#{component_class.downcase}")
+    I18n.t("filter.component.class.items.#{component_class.downcase}") if component_class.present?
   end
 
   def tracking_signal_label

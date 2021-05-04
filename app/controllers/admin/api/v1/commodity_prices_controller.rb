@@ -4,6 +4,8 @@ module Admin
   module Api
     module V1
       class CommodityPricesController < ::Admin::Api::BaseController
+        after_action -> { pagination_header(:commodity_prices) }, only: [:index]
+
         def index
           authorize! :index, :admin_api_commodity_prices
 

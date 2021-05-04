@@ -135,6 +135,7 @@ module Admin
           @query_params ||= begin
             permitted_params = params.permit(
               filters: [
+                :confirmed,
                 {
                   name: [], manufacturer_slug: [], category: [], sub_category: [],
                   component_item_type: [], equipment_item_type: []

@@ -55,6 +55,7 @@ class ShopCommodity < ApplicationRecord
       sub_category: sub_category,
       component_item_type: (commodity_item.item_type if commodity_item_type == 'Component'),
       equipment_item_type: (commodity_item.item_type if commodity_item_type == 'Equipment'),
+      confirmed: confirmed,
       created_at: created_at
     }
   end

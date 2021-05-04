@@ -15,8 +15,8 @@ export class AdminShopCommodityConfirmationsCollection extends BaseCollection {
 
     const response = await get('shop-commodities', {
       page: params?.page,
-      q: {
-        confirmedEq: false,
+      filters: {
+        confirmed: false,
       },
     })
 
