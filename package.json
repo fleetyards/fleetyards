@@ -43,7 +43,7 @@
     "babel-preset-typescript-vue": "^1.1.1",
     "bootstrap": "4.6.0",
     "bootstrap-vue": "2.21.2",
-    "core-js": "3.11.1",
+    "core-js": "3.11.2",
     "css-loader": "5.2.4",
     "date-fns": "2.21.1",
     "date-fns-tz": "1.1.4",
