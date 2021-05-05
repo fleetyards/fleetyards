@@ -1,23 +1,24 @@
 # frozen_string_literal: true
 
-rails_environment = ENV.fetch('RAILS_ENV') { 'production' }
+rails_environment = ENV['RAILS_ENV'] || 'development'
+app_dir = ENV['APP_DIR'] || '.'
 
-max_threads_count = ENV.fetch('MAX_THREADS') { 16 }
-min_threads_count = ENV.fetch('MIN_THREADS') { rails_environment == 'production' ? max_threads_count : 1 }
+max_threads_count = Integer(ENV['MAX_THREADS'] || 2)
+min_threads_count = Integer(ENV['MIN_THREADS'] || max_threads_count || 1)
 threads min_threads_count, max_threads_count
 
 workers Integer(ENV['WORKER_COUNT'] || 2)
 
-port        ENV['PORT'] || 3000
+port ENV['PORT'] || 3000
 
 environment rails_environment
 
 # Set up socket location
-bind "unix://#{ENV['APP_DIR']}/tmp/pids/puma.sock"
+bind "unix://#{app_dir}/tmp/pids/puma.sock"
 
 # Set PID and state locations
-pidfile "#{ENV['APP_DIR']}/tmp/pids/puma.pid"
-state_path "#{ENV['APP_DIR']}/tmp/pids/puma.state"
+pidfile "#{app_dir}/tmp/pids/puma.pid"
+state_path "#{app_dir}/tmp/pids/puma.state"
 
 activate_control_app
 
@@ -33,5 +34,5 @@ on_worker_boot do
 
   require 'erb'
 
-  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{ENV['APP_DIR']}/config/database.yml")).result)[rails_environment])
+  ActiveRecord::Base.establish_connection(YAML.safe_load(ERB.new(File.read("#{app_dir}/config/database.yml")).result)[rails_environment])
 end

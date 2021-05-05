@@ -1,0 +1,15 @@
+production: &default
+  url: <%= ENV["REDIS_URL"] || 'redis://localhost:6379' %>
+  db: <%= ENV["REDIS_DB"] || 0 %>
+
+staging:
+  <<: *default
+
+ci:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

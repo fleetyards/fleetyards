@@ -5,8 +5,8 @@ require 'uglifier'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.hosts << ".#{Rails.application.secrets[:domain]}"
-  config.hosts << Rails.application.secrets[:short_domain]
+  config.hosts << ".#{Rails.configuration.x.app.domain}"
+  config.hosts << Rails.configuration.x.app.short_domain
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -101,9 +101,9 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.deliver_later_queue_name = 'mailers'
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
+  config.action_mailer.default_url_options = { host: Rails.configuration.x.app.domain, trailing_slash: true }
 
-  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
+  config.action_mailer.asset_host = Rails.configuration.x.app.frontend_endpoint
 
   config.action_mailer.smtp_settings = {
     address: Rails.application.secrets[:mailer_host],
@@ -112,7 +112,7 @@ Rails.application.configure do
     user_name: Rails.application.secrets[:mailer_user],
     password: Rails.application.secrets[:mailer_password],
     authentication: 'login',
-    domain: Rails.application.secrets[:domain]
+    domain: Rails.configuration.x.app.domain
   }
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -124,8 +124,8 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.action_cable.url = Rails.application.secrets[:cable_endpoint]
-  config.action_cable.allowed_request_origins = ['https://fleetyards.net', 'https://www.fleetyards.net', 'https://stage.fleetyards.net']
+  config.action_cable.url = Rails.configuration.x.app.cable_endpoint
+  config.action_cable.allowed_request_origins = Rails.configuration.x.app.cable_allowed_origins
 
   ActionCable.server.config.logger = Logger.new(nil)
 

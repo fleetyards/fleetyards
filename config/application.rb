@@ -60,6 +60,13 @@ module Fleetyards
     config.exceptions_app = routes
 
     config.middleware.use Rack::Attack
+
+    config.cookie_prefix = Rails.env.production? ? Rails.configuration.x.app.cookie_prefix : "#{Rails.configuration.x.app.cookie_prefix}_#{Rails.env.upcase}"
+    config.session_store_namespace = "fleetyards-#{Rails.env}-session"
+
+    config.x.app = config_for(:app)
+    config.x.rsi = config_for(:rsi)
+    config.x.redis = config_for(:redis)
   end
 end
 

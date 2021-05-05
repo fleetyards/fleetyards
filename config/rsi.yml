@@ -1,0 +1,15 @@
+production: &default
+  endpoint: <%= ENV["RSI_ENDPOINT"] || 'https://robertsspaceindustries.com' %>
+  vat_percent: <%= ENV["RSI_VAT_PERCENT"] || 0 %>
+
+staging:
+  <<: *default
+
+ci:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

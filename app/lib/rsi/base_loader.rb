@@ -5,7 +5,7 @@ module Rsi
     attr_accessor :base_url
 
     def initialize(options = {})
-      @base_url = options[:base_url] || Rails.application.secrets[:rsi_endpoint]
+      @base_url = options[:base_url] || Rails.configuration.x.rsi.endpoint
     end
 
     private def fetch_remote(url)
