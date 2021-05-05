@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.3.1'
+gem 'rails', '6.1.3.2'
 
 gem 'pg', '~> 1.0'
 
