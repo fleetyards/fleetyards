@@ -37,5 +37,9 @@ module Rsi
 
       value.to_i
     end
+
+    private def prevent_extra_server_requests?
+      Rails.env.test? || Rails.configuration.x.app.ci || Rails.configuration.x.rsi.load_from_file
+    end
   end
 end

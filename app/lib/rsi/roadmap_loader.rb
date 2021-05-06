@@ -2,8 +2,6 @@
 
 require 'rsi/base_loader'
 
-# loader = ::Rsi::RoadmapLoader.new; ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.fetch
-
 module Rsi
   class RoadmapLoader < ::Rsi::BaseLoader
     attr_accessor :json_file_path
@@ -23,7 +21,7 @@ module Rsi
     end
 
     def load_roadmap_data
-      return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file) && File.exist?(json_file_path)
+      return JSON.parse(File.read(json_file_path))['data']['releases'] if prevent_extra_server_requests? && File.exist?(json_file_path)
 
       response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1?#{Time.zone.now.to_i}")
 
@@ -43,7 +41,7 @@ module Rsi
     end
 
     private def roadmap_maintenance_on?
-      return false if Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
+      return false if prevent_extra_server_requests?
 
       response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen?#{Time.zone.now.to_i}")
 
@@ -51,7 +49,6 @@ module Rsi
     end
 
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def parse_roadmap(data)
       roadmap_item_ids = []
       data.each do |release|
@@ -87,7 +84,7 @@ module Rsi
 
           if item.store_image.blank?
             image_url = card.dig('thumbnail', 'urls', 'source')
-            if image_url.present? && !Rails.env.test? && !Rails.application.secrets.ci && !Rails.application.secrets.rsi_load_from_file
+            if image_url.present? && !prevent_extra_server_requests?
               image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
               item.remote_store_image_url = image_url
               item.save
@@ -107,7 +104,6 @@ module Rsi
       roadmap_item_ids
     end
     # rubocop:enable Metrics/MethodLength
-    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def strip_roadmap_name(name)
       name_mapping(strip_name(name).gsub(/(?:Improvements|Update|Rework|Revision)/, '').strip)

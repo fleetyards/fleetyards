@@ -1,0 +1,15 @@
+production: &default
+  user: <%= ENV["HTTP_BASIC_USER"] %>
+  password: <%= ENV["HTTP_BASIC_PASSWORD"] %>
+
+staging:
+  <<: *default
+
+ci:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

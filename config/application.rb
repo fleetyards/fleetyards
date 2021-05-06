@@ -67,6 +67,7 @@ module Fleetyards
     config.x.app = config_for(:app)
     config.x.rsi = config_for(:rsi)
     config.x.redis = config_for(:redis)
+    config.x.basic_auth = config_for(:basic_auth)
   end
 end
 
