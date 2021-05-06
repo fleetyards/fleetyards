@@ -23,7 +23,7 @@ module Rsi
     end
 
     def load_roadmap_data
-      return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
+      return JSON.parse(File.read(json_file_path))['data']['releases'] if (Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file) && File.exist?(json_file_path)
 
       response = fetch_remote("#{base_url}/api/roadmap/v1/boards/1?#{Time.zone.now.to_i}")
 
@@ -43,7 +43,7 @@ module Rsi
     end
 
     private def roadmap_maintenance_on?
-      return false if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+      return false if Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
 
       response = fetch_remote("#{base_url}/roadmap/board/1-Star-Citizen?#{Time.zone.now.to_i}")
 
@@ -87,7 +87,7 @@ module Rsi
 
           if item.store_image.blank?
             image_url = card.dig('thumbnail', 'urls', 'source')
-            if image_url.present? && !Rails.env.test? && !ENV['CI'] && !ENV['RSI_LOAD_FROM_FILE']
+            if image_url.present? && !Rails.env.test? && !Rails.application.secrets.ci && !Rails.application.secrets.rsi_load_from_file
               image_url = "#{base_url}#{image_url}" unless image_url.starts_with?('https')
               item.remote_store_image_url = image_url
               item.save

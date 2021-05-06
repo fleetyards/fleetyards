@@ -43,7 +43,7 @@ module Rsi
     end
 
     def load_models
-      return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']) && File.exist?(json_file_path)
+      return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file) && File.exist?(json_file_path)
 
       response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
@@ -83,7 +83,7 @@ module Rsi
     end
 
     def load_buying_options(model)
-      return if Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+      return if Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
 
       sleep 5
 
@@ -204,7 +204,7 @@ module Rsi
       store_image_url = media_data['images']['store_hub_large']
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
 
-      return if store_image_url.blank? || Rails.env.test? || ENV['CI'] || ENV['RSI_LOAD_FROM_FILE']
+      return if store_image_url.blank? || Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
 
       image_url = store_image_url.gsub('store_hub_large', 'source')
 
