@@ -52,7 +52,7 @@
     "downloadjs": "1.4.7",
     "file-loader": "6.2.0",
     "handlebars": ">=4.7.7",
-    "highcharts": "^9.0.1",
+    "highcharts": "^9.1.0",
     "html2canvas": "1.0.0-rc.5",
     "i18n-js": "3.8.0",
     "jest-transform-stub": "2.0.0",
