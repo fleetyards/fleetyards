@@ -48,12 +48,7 @@ module.exports = function(api) {
           "legacy": true
         }
       ],
-      [
-        require('@babel/plugin-proposal-class-properties').default,
-        {
-          loose: true
-        }
-      ],
+      require('@babel/plugin-proposal-class-properties').default,
       [
         require('@babel/plugin-proposal-object-rest-spread').default,
         {

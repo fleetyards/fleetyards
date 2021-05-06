@@ -11,12 +11,12 @@
   window.RSI_ENDPOINT = '<%= Rails.configuration.x.rsi.endpoint %>'
   window.SENTRY_DSN = '<%= Rails.application.secrets.sentry_frontend_dsn %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
-  window.MAINTAINER_NAME = '<%= Rails.application.secrets.maintainer_name %>'
-  window.MAINTAINER_MAIL = '<%= Rails.application.secrets.maintainer_mail %>'
-  window.MAINTAINER_ADDRESS_STREET = '<%= Rails.application.secrets.maintainer_address_street %>'
-  window.MAINTAINER_ADDRESS_POSTALCODE = '<%= Rails.application.secrets.maintainer_address_postalcode %>'
-  window.MAINTAINER_ADDRESS_CITY = '<%= Rails.application.secrets.maintainer_address_city %>'
-  window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.application.secrets.maintainer_address_country %>'
-  window.COPYRIGHT_OWNER = '<%= Rails.application.secrets.copyright_owner %>'
+  window.MAINTAINER_NAME = '<%= Rails.configuration.x.maintainer.name %>'
+  window.MAINTAINER_MAIL = '<%= Rails.configuration.x.maintainer.mail %>'
+  window.MAINTAINER_ADDRESS_STREET = '<%= Rails.configuration.x.maintainer.address[:street] %>'
+  window.MAINTAINER_ADDRESS_POSTALCODE = '<%= Rails.configuration.x.maintainer.address[:postalcode] %>'
+  window.MAINTAINER_ADDRESS_CITY = '<%= Rails.configuration.x.maintainer.address[:city] %>'
+  window.MAINTAINER_ADDRESS_COUNTRY = '<%= Rails.configuration.x.maintainer.address[:country] %>'
+  window.COPYRIGHT_OWNER = '<%= Rails.configuration.x.app.copyright_owner %>'
 </script>
 <%= javascript_packs_with_chunks_tag 'frontend' %>
