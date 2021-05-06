@@ -9,6 +9,8 @@ data/*
 pids/*
 
 # config files
+config/credentials/*.key
+config/*.key
 .env
 .wti
 
@@ -49,9 +51,3 @@ reserved_usernames.json
 REVISION
 
 .idea
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity

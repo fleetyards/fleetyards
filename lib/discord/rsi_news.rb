@@ -18,7 +18,7 @@ module Discord
     end
 
     private def get_webhook_endpoint
-      Rails.application.secrets[:discord_sc_updates_endpoint]
+      Rails.application.credentials.discord_sc_updates_endpoint
     end
   end
 end

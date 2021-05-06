@@ -64,9 +64,9 @@ module Fleetyards
     config.cookie_prefix = Rails.env.production? ? Rails.configuration.x.app.cookie_prefix : "#{Rails.configuration.x.app.cookie_prefix}_#{Rails.env.upcase}"
     config.session_store_namespace = "fleetyards-#{Rails.env}-session"
 
-    config.x.app = config_for(:app)
-    config.x.maintainer = config_for(:maintainer)
-    config.x.rsi = config_for(:rsi)
+    config.x.app = config_for('app/main')
+    config.x.maintainer = config_for('app/maintainer')
+    config.x.rsi = config_for('app/rsi')
     config.x.redis = config_for(:redis)
     config.x.basic_auth = config_for(:basic_auth)
   end

@@ -41,7 +41,7 @@ Rails.application.config.content_security_policy do |policy|
 
   img_src = [
     :self, :data, :blob, Rails.configuration.x.app.frontend_endpoint, api_endpoint,
-    Rails.application.secrets.carrierwave_cloud_cdn_endpoint, Rails.configuration.x.rsi.endpoint,
+    Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.x.rsi.endpoint,
     'https://img.youtube.com',
   ].compact
 
@@ -73,5 +73,5 @@ Rails.application.config.content_security_policy do |policy|
   policy.worker_src :self
   policy.object_src :self
   policy.frame_ancestors :none
-  # policy.report_uri ENV['SENTRY_CSP_URI'] if ENV['SENTRY_CSP_URI'].present?
+  # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
 end

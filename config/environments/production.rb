@@ -106,11 +106,11 @@ Rails.application.configure do
   config.action_mailer.asset_host = Rails.configuration.x.app.frontend_endpoint
 
   config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets[:mailer_host],
-    port: Rails.application.secrets[:mailer_port],
+    address: Rails.application.credentials.mailer_host,
+    port: Rails.application.credentials.mailer_port,
     enable_starttls_auto: true,
-    user_name: Rails.application.secrets[:mailer_user],
-    password: Rails.application.secrets[:mailer_password],
+    user_name: Rails.application.credentials.mailer_user,
+    password: Rails.application.credentials.mailer_password,
     authentication: 'login',
     domain: Rails.configuration.x.app.domain
   }
@@ -152,4 +152,6 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  config.require_master_key = true
 end
