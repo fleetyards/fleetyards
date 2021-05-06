@@ -1,4 +1,4 @@
-production: &default
+production: &defaults
   name: <%= ENV["APP_NAME"] || 'Fleetyards.net' %>
   store_version: <%= ENV["APP_STORE_VERSION"] || 10.3 %>
   embed_store_version: <%= ENV["APP_EMBED_STORE_VERSION"] || 2.0 %>
@@ -19,13 +19,13 @@ production: &default
   cable_channel_prefix: <%= ENV["CABLE_CHANNEL_PREFIX"] %>
 
 staging:
-  <<: *default
+  <<: *defaults
 
 ci:
-  <<: *default
+  <<: *defaults
 
 development:
-  <<: *default
+  <<: *defaults
 
 test:
-  <<: *default
+  <<: *defaults

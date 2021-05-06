@@ -1,16 +1,16 @@
-production: &default
+production: &defaults
   endpoint: <%= ENV["RSI_ENDPOINT"] || 'https://robertsspaceindustries.com' %>
   vat_percent: <%= ENV["RSI_VAT_PERCENT"] || 0 %>
   load_from_file: <%= ENV["RSI_LOAD_FROM_FILE"] %>
 
 staging:
-  <<: *default
+  <<: *defaults
 
 ci:
-  <<: *default
+  <<: *defaults
 
 development:
-  <<: *default
+  <<: *defaults
 
 test:
-  <<: *default
+  <<: *defaults
