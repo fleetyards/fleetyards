@@ -64,7 +64,7 @@
 
             <center>
               <%= I18n.t('copyright') %> &copy; <%= Time.current.year %>
-              <%= Rails.application.secrets.copyright_owner %>
+              <%= Rails.configuration.fltyrd.copyright_owner %>
               <menu>
                 <item href="<%= frontend_privacy_policy_url %>"><%= I18n.t('mailer.privacy') %></item>
                 <item href="<%= frontend_settings_notifications_url %>"><%= I18n.t('mailer.notification_settings') %></item>

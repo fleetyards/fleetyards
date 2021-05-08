@@ -15,7 +15,7 @@ module Admin
     def otp_qrcode
       authorize! :update, current_user
 
-      uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.application.secrets[:devise_otp_issuer])
+      uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.fltyrd.name)
 
       qr = RQRCode::QRCode.new(uri)
 

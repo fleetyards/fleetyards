@@ -207,7 +207,7 @@ module Frontend
     end
 
     private def check_short_domain
-      return if Rails.application.secrets[:short_domain].blank? || request.host != Rails.application.secrets[:short_domain]
+      return if Rails.configuration.fltyrd.short_domain.blank? || request.host != Rails.configuration.fltyrd.short_domain
 
       redirect_to frontend_root_url
     end

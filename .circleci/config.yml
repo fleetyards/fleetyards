@@ -13,10 +13,6 @@ ciImage: &ciImage
     DATABASE_USER: root
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
-    API_ENDPOINT: http://localhost:8270
-    CABLE_ENDPOINT: http://localhost:8270/cable
-    FRONTEND_ENDPOINT: http://localhost:8270
-    ADMIN_ENDPOINT: http://localhost:8270
 
 e2eImage: &e2eImage
   image: fleetyards/e2e:3.0.1
@@ -32,7 +28,6 @@ e2eImage: &e2eImage
     RAILS_SERVE_STATIC_FILES: 1
     DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
     JOBS: 1
-    APP_DIR: .
     PORT: 8270
     CYPRESS_BASE_URL: http://localhost:8270
 
@@ -243,7 +238,7 @@ jobs:
             - v1-assets-
       - run:
           name: Webpacker & Assets Compile
-          command: NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
+          command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - save_cache:
           key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
           paths:

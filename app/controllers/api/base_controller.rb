@@ -32,7 +32,7 @@ module Api
     end
 
     def access_cookie_valid?
-      access_cookie = cookies.encrypted["#{Rails.application.secrets[:cookie_prefix]}_ACCESS_CONFIRMED"]
+      access_cookie = cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"]
 
       access_cookie.present? && access_cookie == current_user.confirm_access_token
     end
@@ -43,7 +43,7 @@ module Api
           redirect_to api_v1_root_path
         end
         format.json do
-          render json: { message: "#{Rails.application.secrets[:app_name]} API root" }
+          render json: { message: "#{Rails.configuration.fltyrd.name} API root" }
         end
       end
     end

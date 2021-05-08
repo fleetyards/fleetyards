@@ -1,0 +1,21 @@
+production: &defaults
+  name: <%= ENV["MAINTAINER_NAME"] %>
+  mail: <%= ENV["MAINTAINER_MAIL"] %>
+
+  address:
+    street: <%= ENV["MAINTAINER_ADDRESS_STREET"] %>
+    postalcode: <%= ENV["MAINTAINER_ADDRESS_POSTALCODE"] %>
+    city: <%= ENV["MAINTAINER_ADDRESS_CITY"] %>
+    country: <%= ENV["MAINTAINER_ADDRESS_COUNTRY"] %>
+
+staging:
+  <<: *defaults
+
+ci:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults

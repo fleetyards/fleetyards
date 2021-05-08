@@ -289,7 +289,7 @@ class Model < ApplicationRecord
   end
 
   def rsi_store_url
-    "#{Rails.application.secrets[:rsi_endpoint]}#{store_url}"
+    "#{Rails.configuration.rsi.endpoint}#{store_url}"
   end
 
   def sold_at

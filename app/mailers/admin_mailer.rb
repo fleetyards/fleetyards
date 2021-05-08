@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class AdminMailer < ApplicationMailer
+  default to: Rails.configuration.fltyrd.mailer_default_admin_to.to_s
+
   def weekly(stats)
     @stats = stats
 
     mail(
-      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
@@ -14,7 +15,6 @@ class AdminMailer < ApplicationMailer
     @loaners = loaners
 
     mail(
-      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.missing_loaners.subject")
     )
   end
@@ -23,7 +23,6 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end
@@ -32,7 +31,6 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
-      to: Rails.application.secrets[:admin_mail],
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end

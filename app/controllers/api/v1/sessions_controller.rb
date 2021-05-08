@@ -57,9 +57,9 @@ module Api
           return
         end
 
-        cookies.encrypted["#{Rails.application.secrets[:cookie_prefix]}_ACCESS_CONFIRMED"] = {
+        cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
           value: current_user.confirm_access_token,
-          domain: Rails.application.secrets[:cookie_domain] || :all,
+          domain: Rails.configuration.fltyrd.cookie_domain,
           secure: Rails.env.production? || Rails.env.staging?,
           expires: 15.minutes,
           httponly: true,

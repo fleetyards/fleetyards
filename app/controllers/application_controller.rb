@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  http_basic_authenticate_with name: Rails.application.secrets.basic_auth_user,
-                               password: Rails.application.secrets.basic_auth_password,
-                               if: -> { Rails.application.secrets.basic_auth_password.present? }
+  http_basic_authenticate_with name: Rails.configuration.basic_auth.user,
+                               password: Rails.configuration.basic_auth.password,
+                               if: -> { Rails.configuration.basic_auth.password.present? }
 end

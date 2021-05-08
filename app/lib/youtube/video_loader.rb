@@ -7,7 +7,7 @@ module Youtube
     def initialize
       @base_url = 'https://www.googleapis.com/youtube/v3/activities'
       @channel_id = 'UCTeLqJq1mXUX5WWoNXLmOIA'
-      @api_key = Rails.application.secrets[:google_youtube_api_key]
+      @api_key = Rails.application.credentials.google_youtube_api_key
     end
 
     def update

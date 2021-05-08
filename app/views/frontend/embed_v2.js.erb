@@ -1,11 +1,11 @@
-window.FRONTEND_ENDPOINT = '<%= Rails.application.secrets[:frontend_endpoint] %>'
-window.API_ENDPOINT = '<%= Rails.application.secrets[:api_endpoint] %>'
-window.STORE_VERSION = '<%= Rails.application.secrets[:embed_store_version] %>'
+window.FRONTEND_ENDPOINT = '<%= Rails.configuration.fltyrd.frontend_endpoint %>'
+window.API_ENDPOINT = '<%= Rails.configuration.fltyrd.api_endpoint %>'
+window.STORE_VERSION = '<%= Rails.configuration.fltyrd.embed_store_version %>'
 
 const d = document
 const styles = d.createElement('link')
 
-styles.href = '<%= Rails.application.secrets[:frontend_endpoint] %><%= ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed_v2.css')) %>'
+styles.href = '<%= Rails.configuration.fltyrd.frontend_endpoint %><%= ActionController::Base.helpers.asset_url(Webpacker.manifest.lookup!('embed_v2.css')) %>'
 styles.rel = 'stylesheet'
 styles.type = 'text/css';
 (d.head || d.body).appendChild(styles)
@@ -20,7 +20,7 @@ const chunks = <%= Webpacker.manifest.lookup_pack_with_chunks!('embed_v2', type:
 
 chunks.forEach((chunkUrl) => {
   const chunk = d.createElement('script')
-  chunk.src = '<%= Rails.application.secrets[:frontend_endpoint] %>' + chunkUrl
+  chunk.src = '<%= Rails.configuration.fltyrd.frontend_endpoint %>' + chunkUrl
   chunk.type = 'application/javascript'
   const parent = d.head || d.body
   parent.appendChild(chunk)

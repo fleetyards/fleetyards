@@ -51,7 +51,7 @@
                   .row
                     .col-12.col-md-6
                       pre
-                        = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.application.secrets[:devise_otp_issuer])
+                        = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.fltyrd.name)
                       pre
                         center
                           = image_tag otp_qrcode_admin_me_url, class: "otp-qrcode"

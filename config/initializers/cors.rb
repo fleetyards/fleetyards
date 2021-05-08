@@ -9,7 +9,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, logger: -> { Rails.logger } do
   allow do
-    origins Rails.application.secrets[:cors_origins]
+    origins [Rails.configuration.fltyrd.frontend_endpoint, Rails.configuration.fltyrd.admin_endpoint]
     resource '*', headers: :any,
                   methods: %i[get post delete put patch delete options head],
                   expose: %w[Link X-RateLimit-Limit X-RateLimit-Remaining X-RateLimit-Reset],

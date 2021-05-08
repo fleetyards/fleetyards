@@ -40,7 +40,7 @@ ENV Variables:
 
 #### Mail Adress to receive Admin Mails
 
-- ADMIN_MAIL
+- MAILER_DEFAULT_ADMIN_TO
 
 #### Maintainer Information
 
@@ -69,6 +69,10 @@ ENV Variables:
 #### Endpoint for the Fleetyards API used by the frontend and third parties for example https://api.fleetyards.net/v1
 
 - API_ENDPOINT
+
+#### Endpoint for the Admin UI - for example: https://admin.fleetyards.net
+
+- ADMIN_ENDPOINT
 
 #### Endpoint for the Admin API - for example: https://admin.fleetyards.net/api/v1
 

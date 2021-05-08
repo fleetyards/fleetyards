@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# [...document.querySelectorAll('picture.c-slide__media img')].map(item => item.getAttribute('src')).forEach((item) => window.open(item, '_blank'))
-# loader = ::Rsi::ModelsLoader.new(vat_percent: Rails.application.secrets[:rsi_vat_percent]); ENV['RSI_LOAD_FROM_FILE'] = 'true'; loader.all
-
 require 'rsi/base_loader'
 
 module Rsi
@@ -43,7 +40,7 @@ module Rsi
     end
 
     def load_models
-      return JSON.parse(File.read(json_file_path))['data'] if (Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file) && File.exist?(json_file_path)
+      return JSON.parse(File.read(json_file_path))['data'] if prevent_extra_server_requests? && File.exist?(json_file_path)
 
       response = fetch_remote("#{base_url}/ship-matrix/index?#{Time.zone.now.to_i}")
 
@@ -83,7 +80,7 @@ module Rsi
     end
 
     def load_buying_options(model)
-      return if Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
+      return if prevent_extra_server_requests?
 
       sleep 5
 
@@ -204,7 +201,7 @@ module Rsi
       store_image_url = media_data['images']['store_hub_large']
       store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?('https')
 
-      return if store_image_url.blank? || Rails.env.test? || Rails.application.secrets.ci || Rails.application.secrets.rsi_load_from_file
+      return if store_image_url.blank? || prevent_extra_server_requests?
 
       image_url = store_image_url.gsub('store_hub_large', 'source')
 

@@ -57,7 +57,7 @@ class User < ApplicationRecord
 
   devise :two_factor_authenticatable, :two_factor_backupable, :database_authenticatable,
          :recoverable, :trackable, :validatable, :confirmable, :rememberable, :timeoutable,
-         authentication_keys: [:login], otp_secret_encryption_key: Rails.application.secrets[:devise_otp],
+         authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
          otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   has_many :vehicles, dependent: :destroy
@@ -133,7 +133,7 @@ class User < ApplicationRecord
   end
 
   def public_hangar_url
-    return short_public_hangar_url(username: username) if Rails.application.secrets[:short_domain].present?
+    return short_public_hangar_url(username: username) if Rails.configuration.fltyrd.short_domain.present?
 
     frontend_public_hangar_url(username: username)
   end
@@ -153,7 +153,7 @@ class User < ApplicationRecord
   end
 
   def confirm_access_token
-    Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.secrets[:confirm_access_secret]) + Digest::MD5.hexdigest(id))
+    Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.credentials.confirm_access_secret!) + Digest::MD5.hexdigest(id))
   end
 
   private def touch_fleet_memberships

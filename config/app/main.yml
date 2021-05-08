@@ -1,0 +1,36 @@
+production: &defaults
+  name: <%= ENV["APP_NAME"] || 'Fleetyards.net' %>
+  copyright_owner: <%= ENV["COPYRIGHT_OWNER"] || 'Torlek Maru' %>
+
+  store_version: <%= ENV["APP_STORE_VERSION"] || 10.3 %>
+  embed_store_version: <%= ENV["APP_EMBED_STORE_VERSION"] || 2.0 %>
+
+  domain: <%= ENV["DOMAIN"] || "localhost:#{ENV["PORT"] || 3000}" %>
+  short_domain: <%= ENV["SHORT_DOMAIN"] %>
+  cookie_domain: <%= ENV["COOKIE_DOMAIN"] || :all %>
+  cookie_prefix: <%= ENV["COOKIE_PREFIX"] || 'FLTYRD' %>
+
+  frontend_endpoint: <%= ENV["FRONTEND_ENDPOINT"] || "http://localhost:#{ENV["PORT"] || 3000}" %>
+  api_endpoint: <%= ENV["API_ENDPOINT"] || "http://localhost:#{ENV["PORT"] || 3000}/api/v1" %>
+  admin_endpoint: <%= ENV["ADMIN_ENDPOINT"] || "http://localhost:#{ENV["PORT"] || 3000}/admin" %>
+  admin_api_endpoint: <%= ENV["ADMIN_API_ENDPOINT"] || "http://localhost:#{ENV["PORT"] || 3000}/admin/api/v1" %>
+
+  subdomain: <%= ENV['ON_SUBDOMAIN'] %>
+
+  cable_endpoint: <%= ENV["CABLE_ENDPOINT"] || "ws://localhost:#{ENV["PORT"]}/cable" %>
+  cable_channel_prefix: <%= ENV["CABLE_CHANNEL_PREFIX"] %>
+
+  mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
+  mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
+
+staging:
+  <<: *defaults
+
+ci:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults

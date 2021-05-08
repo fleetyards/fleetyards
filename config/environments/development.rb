@@ -3,8 +3,8 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.hosts << ".#{Rails.application.secrets[:domain]}"
-  config.hosts << Rails.application.secrets[:short_domain]
+  config.hosts << ".#{Rails.configuration.fltyrd.domain}"
+  config.hosts << Rails.configuration.fltyrd.short_domain
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -22,7 +22,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'], db: ENV['REDIS_DB'] || 0 }
+    config.cache_store = :redis_cache_store, { url: Rails.configuration.redis.url, db: Rails.configuration.redis.db }
 
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
@@ -38,13 +38,13 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.deliver_later_queue_name = 'mailers'
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
-  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
+  config.action_mailer.default_url_options = { host: Rails.configuration.fltyrd.domain, trailing_slash: true }
+  config.action_mailer.asset_host = Rails.configuration.fltyrd.frontend_endpoint
   config.action_mailer.smtp_settings = {
     address: '127.0.0.1',
     port: 1025,
     enable_starttls_auto: true,
-    domain: Rails.application.secrets[:domain]
+    domain: Rails.configuration.fltyrd.domain
   }
 
   # Print deprecation notices to the Rails logger.
@@ -67,8 +67,11 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_cable.url = Rails.application.secrets[:cable_endpoint]
-  config.action_cable.allowed_request_origins = ['http://www.fleetyards.test', 'http://fleetyards.test', 'http://localhost:8270', 'http://0.0.0.0:8270']
+  config.action_cable.url = Rails.configuration.fltyrd.cable_endpoint
+  config.action_cable.allowed_request_origins = [
+    Rails.configuration.fltyrd.frontend_endpoint,
+    Rails.configuration.fltyrd.admin_endpoint
+  ]
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

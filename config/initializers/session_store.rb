@@ -3,9 +3,9 @@
 expire_after = 2.hours
 
 session_store_options = {
-  servers: "#{ENV['REDIS_URL']}/#{ENV['REDIS_DB'] || 0}/fleetyards-#{Rails.env}-session",
-  key: Rails.env.production? ? Rails.application.secrets[:cookie_prefix] : "#{Rails.application.secrets[:cookie_prefix]}_#{Rails.env.upcase}",
-  domain: Rails.application.secrets[:cookie_domain] || :all,
+  servers: "#{Rails.configuration.redis.url}/#{Rails.configuration.redis.db}/fleetyards-#{Rails.env}-session",
+  key: Rails.configuration.cookie_prefix,
+  domain: Rails.configuration.fltyrd.cookie_domain,
   secure: Rails.env.production? || Rails.env.staging?,
   expire_after: expire_after,
   same_site: :lax,

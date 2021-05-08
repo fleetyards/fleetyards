@@ -14,13 +14,13 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = Rails.application.secrets[:devise]
+  config.secret_key = Rails.application.credentials.devise_secret!
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Rails.application.secrets[:mailer_default_from]
+  config.mailer_sender = Rails.configuration.fltyrd.mailer_default_from
   config.parent_mailer = 'ApplicationMailer'
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -142,7 +142,7 @@ Devise.setup do |config|
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
   config.rememberable_options = {
-    domain: ".#{Rails.application.secrets[:domain]}",
+    domain: ".#{Rails.configuration.fltyrd.domain}",
     secure: Rails.env.production? || Rails.env.staging?,
     same_site: :lax
   }
@@ -245,10 +245,10 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  # config.omniauth :github, Rails.application.secrets[:github_id], Rails.application.secrets[:github_secret], scope: 'user'
-  # config.omniauth :facebook, Rails.application.secrets[:facebook_id], Rails.application.secrets[:facebook_secret]
-  # config.omniauth :twitter, Rails.application.secrets[:twitter_id], Rails.application.secrets[:twitter_secret]
-  # config.omniauth :google_oauth2, Rails.application.secrets[:google_id], Rails.application.secrets[:google_secret]
+  # config.omniauth :github, Rails.application.credentials.github_id, Rails.application.credentials.github_secret, scope: 'user'
+  # config.omniauth :facebook, Rails.application.credentials.facebook_id, Rails.application.credentials.facebook_secret
+  # config.omniauth :twitter, Rails.application.credentials.twitter_id, Rails.application.credentials.twitter_secret
+  # config.omniauth :google_oauth2, Rails.application.credentials.google_id, Rails.application.credentials.google_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

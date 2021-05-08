@@ -5,8 +5,8 @@ require 'uglifier'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.hosts << ".#{Rails.application.secrets[:domain]}"
-  config.hosts << Rails.application.secrets[:short_domain]
+  config.hosts << ".#{Rails.configuration.fltyrd.domain}"
+  config.hosts << Rails.configuration.fltyrd.short_domain
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -101,18 +101,18 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.deliver_later_queue_name = 'mailers'
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:domain], trailing_slash: true }
+  config.action_mailer.default_url_options = { host: Rails.configuration.fltyrd.domain, trailing_slash: true }
 
-  config.action_mailer.asset_host = Rails.application.secrets[:frontend_endpoint]
+  config.action_mailer.asset_host = Rails.configuration.fltyrd.frontend_endpoint
 
   config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets[:mailer_host],
-    port: Rails.application.secrets[:mailer_port],
+    address: Rails.application.credentials.mailer_host,
+    port: Rails.application.credentials.mailer_port,
     enable_starttls_auto: true,
-    user_name: Rails.application.secrets[:mailer_user],
-    password: Rails.application.secrets[:mailer_password],
+    user_name: Rails.application.credentials.mailer_user,
+    password: Rails.application.credentials.mailer_password,
     authentication: 'login',
-    domain: Rails.application.secrets[:domain]
+    domain: Rails.configuration.fltyrd.domain
   }
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -124,8 +124,8 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.action_cable.url = Rails.application.secrets[:cable_endpoint]
-  config.action_cable.allowed_request_origins = ['https://fleetyards.net', 'https://www.fleetyards.net', 'https://stage.fleetyards.net']
+  config.action_cable.url = Rails.configuration.fltyrd.cable_endpoint
+  config.action_cable.allowed_request_origins = Rails.configuration.fltyrd.cable_allowed_origins
 
   ActionCable.server.config.logger = Logger.new(nil)
 
@@ -152,4 +152,6 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  config.require_master_key = true
 end

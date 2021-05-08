@@ -50,25 +50,25 @@ CarrierWave.configure do |config|
   if Rails.env.test?
     config.storage = :file
     config.enable_processing = false
-  elsif Rails.application.secrets.carrierwave_cloud_key.present?
+  elsif Rails.application.credentials.carrierwave_cloud_key.present?
     config.fog_provider = 'fog/aws'
     config.fog_credentials = {
       provider: 'AWS',
-      aws_access_key_id: Rails.application.secrets.carrierwave_cloud_key,
-      aws_secret_access_key: Rails.application.secrets.carrierwave_cloud_secret,
-      region: Rails.application.secrets.carrierwave_cloud_region,
-      endpoint: Rails.application.secrets.carrierwave_cloud_endpoint
+      aws_access_key_id: Rails.application.credentials.carrierwave_cloud_key,
+      aws_secret_access_key: Rails.application.credentials.carrierwave_cloud_secret,
+      region: Rails.application.credentials.carrierwave_cloud_region,
+      endpoint: Rails.application.credentials.carrierwave_cloud_endpoint
     }
 
     config.storage :fog
 
-    config.fog_directory = Rails.application.secrets.carrierwave_cloud_space
+    config.fog_directory = Rails.application.credentials.carrierwave_cloud_space
     config.fog_public = true
 
-    # config.asset_host = (Rails.application.secrets.carrierwave_cloud_cdn_endpoint || Rails.application.secrets.frontend_endpoint)
-    config.asset_host = Rails.application.secrets.frontend_endpoint
+    # config.asset_host = (Rails.application.credentials.carrierwave_cloud_cdn_endpoint || Rails.configuration.fltyrd.frontend_endpoint)
+    config.asset_host = Rails.configuration.fltyrd.frontend_endpoint
   else
     config.storage :file
-    config.asset_host = Rails.application.secrets.frontend_endpoint
+    config.asset_host = Rails.configuration.fltyrd.frontend_endpoint
   end
 end

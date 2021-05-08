@@ -67,7 +67,7 @@ class FleetInviteUrl < ApplicationRecord
   end
 
   def url
-    return short_fleet_invite_url(token: token) if Rails.application.secrets[:short_domain].present?
+    return short_fleet_invite_url(token: token) if Rails.configuration.fltyrd.short_domain.present?
 
     frontend_fleet_invite_url(token: token)
   end

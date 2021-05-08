@@ -59,7 +59,7 @@ module ApplicationHelper
   end
 
   def api_url(path)
-    uri = URI.parse(Rails.application.secrets.api_endpoint)
+    uri = URI.parse(Rails.configuration.fltyrd.api_endpoint)
 
     "#{uri.scheme}://#{uri.host}#{path}"
   end

@@ -1,15 +1,13 @@
-production:
+production: &default
   adapter: redis
-  url: <%=ENV['REDIS_URL']%>
-  channel_prefix: fleetyards_production
+  url: <%= Rails.configuration.redis.url %>
+  channel_prefix: <%= Rails.configuration.fltyrd.cable_channel_prefix %>
 
 docker:
-  adapter: redis
-  url: <%=ENV['REDIS_URL']%>
+  <<: *default
 
 development:
-  adapter: redis
-  url: <%=ENV['REDIS_URL']%>
+  <<: *default
 
 test:
   adapter: test
