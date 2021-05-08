@@ -7,7 +7,7 @@ puts ''
 if ENV['TEST_SEEDS'].present?
   require 'rsi/models_loader'
 
-  ::Rsi::ModelsLoader.new(vat_percent: Rails.configuration.rsi.vat_percent).all
+  ::Rsi::ModelsLoader.new(vat_percent: Rails.configuration.x.rsi.vat_percent).all
 
   model = Model.first
   20.times do |index|

@@ -82,8 +82,8 @@
     <%= render "layouts/admin/footer" %>
 
     <script>
-      window.API_ENDPOINT = '<%= Rails.configuration.fltyrd.admin_api_endpoint %>'
-      window.ON_SUBDOMAIN = '<%= Rails.configuration.fltyrd.subdomain %>'
+      window.API_ENDPOINT = '<%= Rails.configuration.x.app.admin_api_endpoint %>'
+      window.ON_SUBDOMAIN = '<%= Rails.configuration.x.app.subdomain %>'
     </script>
 
     <%= javascript_packs_with_chunks_tag 'admin' %>

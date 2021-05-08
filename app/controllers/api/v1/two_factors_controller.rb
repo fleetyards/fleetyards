@@ -8,7 +8,7 @@ module Api
 
         current_user.update(otp_secret: User.generate_otp_secret) if current_user.otp_required_for_login?
 
-        uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.fltyrd.name)
+        uri = current_user.otp_provisioning_uri(current_user.email, issuer: Rails.configuration.x.app.name)
 
         qr = RQRCode::QRCode.new(uri, level: :l)
 

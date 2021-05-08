@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminMailer < ApplicationMailer
-  default to: Rails.configuration.fltyrd.mailer_default_admin_to.to_s
+  default to: Rails.configuration.x.app.mailer_default_admin_to.to_s
 
   def weekly(stats)
     @stats = stats

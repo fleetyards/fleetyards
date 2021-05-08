@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :admin, path: (Rails.configuration.fltyrd.subdomain ? 'admin' : ''), constraints: ->(req) { Rails.configuration.fltyrd.subdomain || req.subdomain == 'admin' } do
+namespace :admin, path: (Rails.configuration.x.app.subdomain ? 'admin' : ''), constraints: ->(req) { Rails.configuration.x.app.subdomain || req.subdomain == 'admin' } do
   draw :admin_api_routes
 
   devise_for :admin_users,

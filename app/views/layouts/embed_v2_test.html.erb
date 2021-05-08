@@ -26,7 +26,7 @@
         };
         (function() {
             var d = document, s = d.createElement('script');
-            s.src = '<%=Rails.configuration.fltyrd.frontend_endpoint %>/embed-v2.js#' + new Date().getTime();
+            s.src = '<%=Rails.configuration.x.app.frontend_endpoint %>/embed-v2.js#' + new Date().getTime();
             (d.head || d.body).appendChild(s);
         })();
     </script>

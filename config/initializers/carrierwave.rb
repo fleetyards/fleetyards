@@ -65,10 +65,10 @@ CarrierWave.configure do |config|
     config.fog_directory = Rails.application.credentials.carrierwave_cloud_space
     config.fog_public = true
 
-    # config.asset_host = (Rails.application.credentials.carrierwave_cloud_cdn_endpoint || Rails.configuration.fltyrd.frontend_endpoint)
-    config.asset_host = Rails.configuration.fltyrd.frontend_endpoint
+    # config.asset_host = (Rails.application.credentials.carrierwave_cloud_cdn_endpoint || Rails.configuration.x.app.frontend_endpoint)
+    config.asset_host = Rails.configuration.x.app.frontend_endpoint
   else
     config.storage :file
-    config.asset_host = Rails.configuration.fltyrd.frontend_endpoint
+    config.asset_host = Rails.configuration.x.app.frontend_endpoint
   end
 end

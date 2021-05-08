@@ -8,8 +8,8 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.hosts << ".#{Rails.configuration.fltyrd.domain}"
-  config.hosts << Rails.configuration.fltyrd.short_domain
+  config.hosts << ".#{Rails.configuration.x.app.domain}"
+  config.hosts << Rails.configuration.x.app.short_domain
 
   config.cache_classes = false
 
@@ -39,7 +39,7 @@ Rails.application.configure do
   # config.active_storage.service = :test
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: Rails.configuration.fltyrd.domain, trailing_slash: true }
+  config.action_mailer.default_url_options = { host: Rails.configuration.x.app.domain, trailing_slash: true }
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the

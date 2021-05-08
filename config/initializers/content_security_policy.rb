@@ -9,18 +9,18 @@
 require 'uri'
 
 Rails.application.config.content_security_policy do |policy|
-  api_endpoint = "https://#{URI.parse(Rails.configuration.fltyrd.api_endpoint).host}"
-  cable_endpoint = "wss://#{URI.parse(Rails.configuration.fltyrd.cable_endpoint).host}"
+  api_endpoint = "https://#{URI.parse(Rails.configuration.x.app.api_endpoint).host}"
+  cable_endpoint = "wss://#{URI.parse(Rails.configuration.x.app.cable_endpoint).host}"
 
   if Rails.env.development?
-    api_endpoint = "http://#{URI.parse(Rails.configuration.fltyrd.api_endpoint).host}"
-    cable_endpoint = "ws://#{URI.parse(Rails.configuration.fltyrd.cable_endpoint).host}"
+    api_endpoint = "http://#{URI.parse(Rails.configuration.x.app.api_endpoint).host}"
+    cable_endpoint = "ws://#{URI.parse(Rails.configuration.x.app.cable_endpoint).host}"
   end
 
   connect_src = [
     :self, :data, cable_endpoint, api_endpoint, 'https://img.youtube.com',
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
-    'https://pro.fontawesome.com', Rails.configuration.rsi.endpoint,
+    'https://pro.fontawesome.com', Rails.configuration.x.rsi.endpoint,
     'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com',
     'https://ka-p.fontawesome.com'
   ]
@@ -40,8 +40,8 @@ Rails.application.config.content_security_policy do |policy|
   ]
 
   img_src = [
-    :self, :data, :blob, Rails.configuration.fltyrd.frontend_endpoint, api_endpoint,
-    Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.rsi.endpoint,
+    :self, :data, :blob, Rails.configuration.x.app.frontend_endpoint, api_endpoint,
+    Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.x.rsi.endpoint,
     'https://img.youtube.com',
   ].compact
 

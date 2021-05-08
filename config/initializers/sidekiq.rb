@@ -3,7 +3,7 @@
 require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
-sidekiq_config = { url: Rails.configuration.redis.url, db: Rails.configuration.redis.db }
+sidekiq_config = { url: Rails.configuration.x.redis.url, db: Rails.configuration.x.redis.db }
 
 Sidekiq.configure_server do |config|
   config.redis = sidekiq_config

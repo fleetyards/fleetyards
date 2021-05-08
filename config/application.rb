@@ -61,14 +61,13 @@ module Fleetyards
 
     config.middleware.use Rack::Attack
 
-    config.app = config_for('app/main')
-    config.fltyrd = config_for('app/main')
-    config.maintainer = config_for('app/maintainer')
-    config.rsi = config_for('app/rsi')
-    config.redis = config_for(:redis)
-    config.basic_auth = config_for(:basic_auth)
+    config.x.app = config_for('app/main')
+    config.x.maintainer = config_for('app/maintainer')
+    config.x.rsi = config_for('app/rsi')
+    config.x.redis = config_for(:redis)
+    config.x.basic_auth = config_for(:basic_auth)
 
-    config.cookie_prefix = Rails.env.production? ? Rails.configuration.app.cookie_prefix : "#{Rails.configuration.app.cookie_prefix}_#{Rails.env.upcase}"
+    config.cookie_prefix = Rails.env.production? ? Rails.configuration.x.app.cookie_prefix : "#{Rails.configuration.x.app.cookie_prefix}_#{Rails.env.upcase}"
   end
 end
 

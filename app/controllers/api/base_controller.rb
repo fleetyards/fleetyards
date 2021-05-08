@@ -43,7 +43,7 @@ module Api
           redirect_to api_v1_root_path
         end
         format.json do
-          render json: { message: "#{Rails.configuration.fltyrd.name} API root" }
+          render json: { message: "#{Rails.configuration.x.app.name} API root" }
         end
       end
     end

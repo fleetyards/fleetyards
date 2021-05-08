@@ -5,7 +5,7 @@ module Rsi
     attr_accessor :base_url
 
     def initialize(options = {})
-      @base_url = options[:base_url] || Rails.configuration.rsi.endpoint
+      @base_url = options[:base_url] || Rails.configuration.x.rsi.endpoint
     end
 
     private def fetch_remote(url)
@@ -40,7 +40,7 @@ module Rsi
 
     private def prevent_extra_server_requests?
       # rubocop:disable Rails/EnvironmentVariableAccess
-      Rails.env.test? || ENV['CI'] || Rails.configuration.rsi.load_from_file
+      Rails.env.test? || ENV['CI'] || Rails.configuration.x.rsi.load_from_file
       # rubocop:enable Rails/EnvironmentVariableAccess
     end
   end

@@ -207,7 +207,7 @@ module Frontend
     end
 
     private def check_short_domain
-      return if Rails.configuration.fltyrd.short_domain.blank? || request.host != Rails.configuration.fltyrd.short_domain
+      return if Rails.configuration.x.app.short_domain.blank? || request.host != Rails.configuration.x.app.short_domain
 
       redirect_to frontend_root_url
     end
