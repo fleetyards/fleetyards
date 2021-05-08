@@ -59,7 +59,7 @@ module Api
 
         cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
           value: current_user.confirm_access_token,
-          domain: Rails.configuration.x.app.cookie_domain,
+          domain: Rails.configuration.app.cookie_domain,
           secure: Rails.env.production? || Rails.env.staging?,
           expires: 15.minutes,
           httponly: true,

@@ -133,7 +133,7 @@ class User < ApplicationRecord
   end
 
   def public_hangar_url
-    return short_public_hangar_url(username: username) if Rails.configuration.x.app.short_domain.present?
+    return short_public_hangar_url(username: username) if Rails.configuration.app.short_domain.present?
 
     frontend_public_hangar_url(username: username)
   end

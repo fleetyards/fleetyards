@@ -20,7 +20,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Rails.configuration.x.app.mailer_default_from
+  config.mailer_sender = Rails.configuration.app.mailer_default_from
   config.parent_mailer = 'ApplicationMailer'
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -142,7 +142,7 @@ Devise.setup do |config|
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
   config.rememberable_options = {
-    domain: ".#{Rails.configuration.x.app.domain}",
+    domain: ".#{Rails.configuration.app.domain}",
     secure: Rails.env.production? || Rails.env.staging?,
     same_site: :lax
   }

@@ -46,7 +46,7 @@ module Discord
     end
 
     private def frontend_url(path)
-      "#{Rails.configuration.x.app.frontend_endpoint}/#{path}"
+      "#{Rails.configuration.app.frontend_endpoint}/#{path}"
     end
 
     private def client

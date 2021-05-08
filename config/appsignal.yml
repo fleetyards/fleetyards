@@ -1,5 +1,5 @@
 default: &defaults
-  push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
+  push_api_key: "<%= Rails.application.credentials.appsignal_push_api_key %>"
   name: "Fleetyards"
   ignore_errors:
       - ActiveRecord::RecordNotFound

@@ -1,7 +1,7 @@
 production: &default
   adapter: redis
-  url: <%= Rails.configuration.x.redis.url %>
-  channel_prefix: <%= Rails.configuration.x.app.cable_channel_prefix %>
+  url: <%= Rails.configuration.redis.url %>
+  channel_prefix: <%= Rails.configuration.app.cable_channel_prefix %>
 
 docker:
   <<: *default

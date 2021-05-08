@@ -5,8 +5,8 @@ require 'uglifier'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.hosts << ".#{Rails.configuration.x.app.domain}"
-  config.hosts << Rails.configuration.x.app.short_domain
+  config.hosts << ".#{Rails.configuration.app.domain}"
+  config.hosts << Rails.configuration.app.short_domain
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -101,9 +101,9 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.deliver_later_queue_name = 'mailers'
 
-  config.action_mailer.default_url_options = { host: Rails.configuration.x.app.domain, trailing_slash: true }
+  config.action_mailer.default_url_options = { host: Rails.configuration.app.domain, trailing_slash: true }
 
-  config.action_mailer.asset_host = Rails.configuration.x.app.frontend_endpoint
+  config.action_mailer.asset_host = Rails.configuration.app.frontend_endpoint
 
   config.action_mailer.smtp_settings = {
     address: Rails.application.credentials.mailer_host,
@@ -112,7 +112,7 @@ Rails.application.configure do
     user_name: Rails.application.credentials.mailer_user,
     password: Rails.application.credentials.mailer_password,
     authentication: 'login',
-    domain: Rails.configuration.x.app.domain
+    domain: Rails.configuration.app.domain
   }
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
@@ -124,8 +124,8 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.action_cable.url = Rails.configuration.x.app.cable_endpoint
-  config.action_cable.allowed_request_origins = Rails.configuration.x.app.cable_allowed_origins
+  config.action_cable.url = Rails.configuration.app.cable_endpoint
+  config.action_cable.allowed_request_origins = Rails.configuration.app.cable_allowed_origins
 
   ActionCable.server.config.logger = Logger.new(nil)
 
