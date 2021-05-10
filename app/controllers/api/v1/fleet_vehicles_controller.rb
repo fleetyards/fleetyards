@@ -51,7 +51,7 @@ module Api
       def public
         authorize! :read, :api_fleet
 
-        @fleet = Fleet.find_by(slug: params[:slug])
+        @fleet = Fleet.find_by!(slug: params[:slug])
 
         unless fleet.public_fleet?
           @vehicles = Kaminari.paginate_array([]).page(params[:page]).per(per_page(Vehicle))
@@ -102,7 +102,7 @@ module Api
       def public_fleetchart
         authorize! :read, :api_fleet
 
-        @fleet = Fleet.find_by(slug: params[:slug])
+        @fleet = Fleet.find_by!(slug: params[:slug])
 
         unless fleet.public_fleet?
           @vehicles = Kaminari.paginate_array([]).page(params[:page]).per(per_page(Vehicle))
