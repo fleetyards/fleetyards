@@ -88,7 +88,7 @@ GEM
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
     ansi (1.5.0)
-    appsignal (3.0.3)
+    appsignal (3.0.4)
       rack
     ast (2.4.2)
     attr_encrypted (3.1.0)
@@ -555,8 +555,8 @@ GEM
     ssrf_filter (1.0.7)
     state_machine (1.2.0)
     temple (0.8.2)
-    terminal-table (3.0.0)
-      unicode-display_width (~> 1.1, >= 1.1.1)
+    terminal-table (3.0.1)
+      unicode-display_width (>= 1.1.1, < 3)
     thor (1.1.0)
     tilt (2.0.10)
     timecop (0.9.4)
@@ -569,7 +569,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    unicode-display_width (1.7.0)
+    unicode-display_width (2.0.0)
     uniform_notifier (1.14.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
