@@ -22,6 +22,7 @@
 #  ground_speed             :decimal(15, 2)
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
+#  holo                     :string
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
@@ -179,6 +180,7 @@ class Model < ApplicationRecord
   mount_uploader :rsi_store_image, StoreImageUploader
   mount_uploader :fleetchart_image, FleetchartImageUploader
   mount_uploader :brochure, BrochureUploader
+  mount_uploader :holo, HoloUploader
 
   before_save :update_slugs
 

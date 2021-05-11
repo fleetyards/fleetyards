@@ -20,6 +20,7 @@
 #  ground_speed             :decimal(15, 2)
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
+#  holo                     :string
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)

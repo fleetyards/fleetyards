@@ -180,7 +180,7 @@
       %small
         = form_errors model, :dock_size
   .row
-    .col-12.col-md-3.form-group{class: form_error?(model, :store_image)}
+    .col-12.col-md-4.form-group{class: form_error?(model, :store_image)}
       = form.label :store_image
       = form.file_field :store_image, class: 'form-control'
       - if model.store_image_cache
@@ -193,7 +193,7 @@
       %small
         = form_errors model, :store_image
 
-    .col-12.col-md-3.form-group{class: form_error?(model, :rsi_store_image)}
+    .col-12.col-md-4.form-group{class: form_error?(model, :rsi_store_image)}
       = form.label :rsi_store_image
       = form.file_field :rsi_store_image, class: 'form-control'
       - if model.rsi_store_image_cache
@@ -206,7 +206,7 @@
       %small
         = form_errors model, :rsi_store_image
 
-    .col-12.col-md-3.form-group{class: form_error?(model, :brochure)}
+    .col-12.col-md-4.form-group{class: form_error?(model, :brochure)}
       = form.label :brochure
       = form.file_field :brochure, class: 'form-control'
       - if model.brochure_cache
@@ -214,13 +214,13 @@
       %br
       - if model.brochure?
         %a{href: model.brochure.url}
-          = model.brochure
+          = File.basename(model.brochure.url)
         = form.check_box :remove_brochure
         Remove Brochure
       %small
         = form_errors model, :brochure
 
-    .col-12.col-md-3.form-group{class: form_error?(model, :fleetchart_image)}
+    .col-12.col-md-4.form-group{class: form_error?(model, :fleetchart_image)}
       = form.label :fleetchart_image
       = form.file_field :fleetchart_image, class: 'form-control'
       - if model.fleetchart_image_cache
@@ -232,6 +232,20 @@
         Remove Image
       %small
         = form_errors model, :fleetchart_image
+
+    .col-12.col-md-4.form-group{class: form_error?(model, :holo)}
+      = form.label :holo
+      = form.file_field :holo, class: 'form-control'
+      - if model.holo_cache
+        = form.hidden_field :holo_cache
+      %br
+      - if model.holo?
+        %a{href: model.holo.url}
+          = File.basename(model.holo.url)
+        = form.check_box :remove_holo
+        Remove Holo
+      %small
+        = form_errors model, :holo
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :rsi_id)}

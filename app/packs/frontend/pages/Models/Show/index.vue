@@ -47,8 +47,13 @@
               >
                 {{ $t('labels.poweredByStarship42') }}
               </a>
+
+              <HoloViewer
+                v-if="holoviewerVisible && model.holo"
+                :holo="model.holo"
+              />
               <iframe
-                v-if="holoviewerVisible"
+                v-else-if="holoviewerVisible"
                 class="holoviewer"
                 :src="starship42IframeUrl"
                 frameborder="0"
@@ -293,6 +298,7 @@ import ModelCrewMetrics from 'frontend/components/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/components/Models/SpeedMetrics'
 import ModelPanel from 'frontend/components/Models/Panel'
 import BreadCrumbs from 'frontend/core/components/BreadCrumbs'
+import HoloViewer from 'frontend/core/components/HoloViewer'
 import HangarItemsMixin from 'frontend/mixins/HangarItems'
 import { modelRouteGuard } from 'frontend/utils/RouteGuards/Models'
 import modelsCollection from 'frontend/api/collections/Models'
@@ -312,6 +318,7 @@ import modelsCollection from 'frontend/api/collections/Models'
     ModelSpeedMetrics,
     ModelPanel,
     BreadCrumbs,
+    HoloViewer,
   },
   mixins: [MetaInfo, HangarItemsMixin],
   beforeRouteEnter: modelRouteGuard,
