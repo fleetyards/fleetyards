@@ -120,7 +120,7 @@ module Api
               'storeImageSmall' => explorer.model.store_image.small.url,
               'fleetchartImage' => nil,
               'brochure' => nil,
-          'holo' => nil,
+              'holo' => nil,
               'storeUrl' => 'https://robertsspaceindustries.com',
               'price' => nil,
               'pledgePrice' => nil,
