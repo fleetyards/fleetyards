@@ -22,17 +22,19 @@ Rails.application.config.content_security_policy do |policy|
     'https://sentry.io', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com',
     'https://pro.fontawesome.com', Rails.configuration.rsi.endpoint,
     'https://kit-pro.fontawesome.com', 'https://kit-free.fontawesome.com',
-    'https://ka-p.fontawesome.com'
+    'https://ka-p.fontawesome.com', 'https://starship42.com', 'https://www.gstatic.com'
   ]
 
   connect_src.concat ['ws://localhost:3035', 'http://localhost:3035'] if Rails.env.development?
 
   script_src = [
-    :self, :unsafe_inline, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
+    :self, :unsafe_inline, :unsafe_eval, 'https://www.youtube.com/iframe_api', 'https://s.ytimg.com',
     'https://kit.fontawesome.com', 'https://kit-pro.fontawesome.com',
     'https://kit-free.fontawesome.com', 'https://code.jquery.com', 'https://cdn.jsdelivr.net',
-    'https://stackpath.bootstrapcdn.com'
+    'https://stackpath.bootstrapcdn.com', 'https://starship42.com', 'https://www.gstatic.com'
   ]
+
+  worker_src = [:self, :blob, Rails.configuration.app.frontend_endpoint]
 
   style_src = [
     :self, :unsafe_inline, 'https://fonts.googleapis.com', 'https://pro.fontawesome.com',
@@ -70,7 +72,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.font_src(*font_src)
   policy.frame_src(*frame_src)
   policy.prefetch_src(*img_src)
-  policy.worker_src :self
+  policy.worker_src(*worker_src)
   policy.object_src :self
   policy.frame_ancestors :none
   # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
