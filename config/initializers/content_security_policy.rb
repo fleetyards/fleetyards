@@ -71,9 +71,9 @@ Rails.application.config.content_security_policy do |policy|
   policy.img_src(*img_src)
   policy.font_src(*font_src)
   policy.frame_src(*frame_src)
-  policy.prefetch_src(*img_src)
-  policy.worker_src(*worker_src)
   policy.child_src(*worker_src)
+  policy.worker_src(*worker_src)
+  policy.prefetch_src(*img_src)
   policy.object_src :self
   policy.frame_ancestors :none
   # policy.report_uri Rails.application.credentials.sentry_csp_uri if Rails.application.credentials.sentry_csp_uri.present?
