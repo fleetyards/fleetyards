@@ -75,7 +75,7 @@ end
 
 namespace :server do
   desc 'Reload App'
-  task :restart_app do
+  task :reload_app do
     on roles(:all) do
       info 'Reload App'
       execute(:sudo, :service, "#{fetch(:application)}-app", :reload)
