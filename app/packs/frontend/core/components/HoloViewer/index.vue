@@ -153,7 +153,7 @@ export default class HoloViewer extends Vue {
     })
 
     this.model.traverse(node => {
-      if (!node.isMesh) return
+      if (!node.isMesh || node.name.includes('custom_painted')) return
 
       node.material = material
     })
@@ -163,7 +163,7 @@ export default class HoloViewer extends Vue {
     const loader = new GLTFLoader()
 
     const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
+    dracoLoader.setDecoderPath('/vendor/js/draco/')
     loader.setDRACOLoader(dracoLoader)
 
     loader.load(

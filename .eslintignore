@@ -1,6 +1,7 @@
 /app/assets
 /node_modules
 /vendor
+/public/vendor/js
 service_worker.js.erb
 babel.config.js
 postcss.config.js
