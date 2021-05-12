@@ -22,6 +22,7 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Getter } from 'vuex-class'
 
 @Component<HoloViewer>({
   components: {
@@ -32,8 +33,6 @@ export default class HoloViewer extends Vue {
   loading: boolean = false
 
   debug: boolean = false
-
-  canvasPadding: number = 40
 
   scene = null
 
@@ -52,6 +51,8 @@ export default class HoloViewer extends Vue {
   @Prop({ required: true }) holo: string
 
   @Prop({ default: true }) autoRotate: boolean
+
+  @Getter('mobile') mobile
 
   get element() {
     return this.$refs.modelViewer
@@ -114,7 +115,11 @@ export default class HoloViewer extends Vue {
       1000,
     )
 
-    camera.position.set(-45, 20, -45)
+    if (this.mobile) {
+      camera.position.set(0, 40, 80)
+    } else {
+      camera.position.set(0, 40, 70)
+    }
 
     return camera
   }
@@ -148,10 +153,7 @@ export default class HoloViewer extends Vue {
     renderer.outputEncoding = sRGBEncoding
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.toneMappingExposure = 1
-    renderer.setSize(
-      this.elementWidth - this.canvasPadding,
-      this.elementHeight - this.canvasPadding,
-    )
+    renderer.setSize(this.elementWidth, this.elementHeight)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = PCFSoftShadowMap
 
