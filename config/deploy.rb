@@ -40,11 +40,18 @@ before :'deploy:migrate', :'db:load_schema'
 after :'deploy:published', :'bundler:clean'
 
 namespace :deploy do
-  after :finished, :restart
+  after :finished, :reload
 
   desc 'Restart'
   task :restart do
     invoke :'server:restart_app'
+    invoke :'server:restart_worker'
+    invoke :'server:broadcast_version'
+  end
+
+  desc 'Reload'
+  task :reload do
+    invoke :'server:reload_app'
     invoke :'server:restart_worker'
     invoke :'server:broadcast_version'
   end
@@ -67,11 +74,21 @@ namespace :ruby do
 end
 
 namespace :server do
+  desc 'Reload App'
+  task :restart_app do
+    on roles(:all) do
+      info 'Reload App'
+      execute(:sudo, :service, "#{fetch(:application)}-app", :reload)
+      execute(:sudo, :systemctl, 'is-active', '--quiet', "#{fetch(:application)}-app.service")
+      info 'App Reloaded'
+    end
+  end
+
   desc 'Restart App'
   task :restart_app do
     on roles(:all) do
       info 'Restart App'
-      execute(:sudo, :service, "#{fetch(:application)}-app", :reload)
+      execute(:sudo, :service, "#{fetch(:application)}-app", :restart)
       execute(:sudo, :systemctl, 'is-active', '--quiet', "#{fetch(:application)}-app.service")
       info 'App Restarted'
     end
