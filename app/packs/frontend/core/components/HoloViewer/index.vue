@@ -47,7 +47,11 @@ export default class HoloViewer extends Vue {
 
   modelColor: number = 0x428bca
 
+  zoom: boolean = false
+
   @Prop({ required: true }) holo: string
+
+  @Prop({ default: true }) autoRotate: boolean
 
   get element() {
     return this.$refs.modelViewer
@@ -66,11 +70,23 @@ export default class HoloViewer extends Vue {
     this.updateModelMaterial()
   }
 
+  @Watch('zoom')
+  onZoomChange() {
+    this.controls.enableZoom = this.zoom
+    this.controls.update()
+  }
+
+  @Watch('autoRotate')
+  onAutoRotateChange() {
+    this.controls.autoRotate = this.autoRotate
+    this.controls.update()
+  }
+
   async mounted() {
     this.loading = true
 
     this.scene = this.setupScene()
-    this.camera = this.setupCamera(this.scene)
+    this.camera = this.setupCamera()
     this.scene.add(this.camera)
     this.renderer = this.setupRenderer()
     this.controls = this.setupControls(this.camera, this.renderer.domElement)
@@ -90,15 +106,15 @@ export default class HoloViewer extends Vue {
     return new Scene()
   }
 
-  setupCamera(scene) {
+  setupCamera() {
     const camera = new PerspectiveCamera(
       35,
       this.elementWidth / this.elementHeight,
       1,
-      1e5,
+      1000,
     )
-    camera.position.z = 70
-    camera.lookAt(scene.position)
+
+    camera.position.set(-45, 20, -45)
 
     return camera
   }
@@ -108,8 +124,15 @@ export default class HoloViewer extends Vue {
 
     controls.enableDamping = true
     controls.dampingFactor = 0.25
-    controls.enableZoom = false
-    controls.autoRotate = true
+
+    controls.enablePan = false
+
+    controls.enableZoom = this.zoom
+    controls.minDistance = 0
+    controls.maxDistance = 200
+
+    controls.autoRotate = this.autoRotate
+
     controls.update()
 
     return controls
@@ -172,8 +195,6 @@ export default class HoloViewer extends Vue {
         this.loading = false
         this.model = geometry.scene
 
-        this.model.rotation.x -= 0.2
-
         this.updateModelMaterial()
 
         this.scene.add(this.model)
@@ -187,6 +208,10 @@ export default class HoloViewer extends Vue {
         console.error(error)
       },
     )
+  }
+
+  toggleZoom() {
+    this.zoom = !this.zoom
   }
 }
 </script>
