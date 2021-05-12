@@ -7,7 +7,12 @@ module Frontend
     def index
       respond_to do |format|
         format.js do
-          render "#{Rails.root}/public#{ActionController::Base.helpers.asset_pack_path('service_worker.js')}", layout: false
+          service_worker_file = Rails.root.join("public#{ActionController::Base.helpers.asset_pack_path('service_worker.js')}")
+          if File.exists?(service_worker_file)
+            render body: service_worker_file.read
+          else
+            redirect_to ActionController::Base.helpers.asset_pack_url('service_worker.js')
+          end
         end
         format.all do
           redirect_to '/404'
