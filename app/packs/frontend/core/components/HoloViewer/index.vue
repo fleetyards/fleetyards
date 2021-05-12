@@ -22,6 +22,7 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Getter } from 'vuex-class'
 
 @Component<HoloViewer>({
   components: {
@@ -32,8 +33,6 @@ export default class HoloViewer extends Vue {
   loading: boolean = false
 
   debug: boolean = false
-
-  canvasPadding: number = 40
 
   scene = null
 
@@ -47,7 +46,13 @@ export default class HoloViewer extends Vue {
 
   modelColor: number = 0x428bca
 
+  zoom: boolean = false
+
   @Prop({ required: true }) holo: string
+
+  @Prop({ default: true }) autoRotate: boolean
+
+  @Getter('mobile') mobile
 
   get element() {
     return this.$refs.modelViewer
@@ -66,11 +71,23 @@ export default class HoloViewer extends Vue {
     this.updateModelMaterial()
   }
 
+  @Watch('zoom')
+  onZoomChange() {
+    this.controls.enableZoom = this.zoom
+    this.controls.update()
+  }
+
+  @Watch('autoRotate')
+  onAutoRotateChange() {
+    this.controls.autoRotate = this.autoRotate
+    this.controls.update()
+  }
+
   async mounted() {
     this.loading = true
 
     this.scene = this.setupScene()
-    this.camera = this.setupCamera(this.scene)
+    this.camera = this.setupCamera()
     this.scene.add(this.camera)
     this.renderer = this.setupRenderer()
     this.controls = this.setupControls(this.camera, this.renderer.domElement)
@@ -90,15 +107,19 @@ export default class HoloViewer extends Vue {
     return new Scene()
   }
 
-  setupCamera(scene) {
+  setupCamera() {
     const camera = new PerspectiveCamera(
       35,
       this.elementWidth / this.elementHeight,
       1,
-      1e5,
+      1000,
     )
-    camera.position.z = 70
-    camera.lookAt(scene.position)
+
+    if (this.mobile) {
+      camera.position.set(0, 40, 80)
+    } else {
+      camera.position.set(0, 40, 70)
+    }
 
     return camera
   }
@@ -108,8 +129,15 @@ export default class HoloViewer extends Vue {
 
     controls.enableDamping = true
     controls.dampingFactor = 0.25
-    controls.enableZoom = false
-    controls.autoRotate = true
+
+    controls.enablePan = false
+
+    controls.enableZoom = this.zoom
+    controls.minDistance = 0
+    controls.maxDistance = 200
+
+    controls.autoRotate = this.autoRotate
+
     controls.update()
 
     return controls
@@ -125,10 +153,7 @@ export default class HoloViewer extends Vue {
     renderer.outputEncoding = sRGBEncoding
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.toneMappingExposure = 1
-    renderer.setSize(
-      this.elementWidth - this.canvasPadding,
-      this.elementHeight - this.canvasPadding,
-    )
+    renderer.setSize(this.elementWidth, this.elementHeight)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = PCFSoftShadowMap
 
@@ -172,8 +197,6 @@ export default class HoloViewer extends Vue {
         this.loading = false
         this.model = geometry.scene
 
-        this.model.rotation.x -= 0.2
-
         this.updateModelMaterial()
 
         this.scene.add(this.model)
@@ -187,6 +210,10 @@ export default class HoloViewer extends Vue {
         console.error(error)
       },
     )
+  }
+
+  toggleZoom() {
+    this.zoom = !this.zoom
   }
 }
 </script>
