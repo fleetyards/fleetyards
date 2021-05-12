@@ -107,7 +107,7 @@
     "@storybook/addon-notes": "5.3.21",
     "@storybook/addon-viewport": "6.2.9",
     "@storybook/vue": "6.2.9",
-    "@types/i18n-js": "3.8.0",
+    "@types/i18n-js": "3.8.1",
     "@types/jest": "26.0.23",
     "@typescript-eslint/eslint-plugin": "4.23.0",
     "@typescript-eslint/parser": "4.23.0",
