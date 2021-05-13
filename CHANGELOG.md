@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.11.0](https://github.com/fleetyards/fleetyards/compare/v4.10.8...v4.11.0) (2021-05-13)
+
+
+### Features
+
+* add threejs holoviewer as a replacement for the starship42 iframe ([#1500](https://github.com/fleetyards/fleetyards/issues/1500)) ([81c536b](https://github.com/fleetyards/fleetyards/commit/81c536b91682bce548a25e2a95ddb2bea0c64b8c))
+* update holoViewer controls ([b8c0885](https://github.com/fleetyards/fleetyards/commit/b8c08853904b07e5ea2e30e7aaaded895430609f))
+
+
+### Bug Fixes
+
+* audit issue ([150492d](https://github.com/fleetyards/fleetyards/commit/150492df50f72942e09ab0696a6d4b162848f1fe))
+* csp header for worker src ([4a98e85](https://github.com/fleetyards/fleetyards/commit/4a98e850bc58c41faed8998620980c580088ef06))
+* deploy ([90488f7](https://github.com/fleetyards/fleetyards/commit/90488f73e410a574041275efe094a949a30b89e1))
+* make fleet invite requests visible and add validation errors to invite form ([0bceb22](https://github.com/fleetyards/fleetyards/commit/0bceb22bb0582dab55361a8294214e4353e83e41))
+* public fleet api endpoints ([bafd5ae](https://github.com/fleetyards/fleetyards/commit/bafd5ae2347bda50b23392cf2ab8737ec66e0280))
+* service worker ([1eee382](https://github.com/fleetyards/fleetyards/commit/1eee382ca9ff5b944f0342d2fa5a6e62d08d946a))
+
 ### [4.10.8](https://github.com/fleetyards/fleetyards/compare/v4.10.7...v4.10.8) (2021-05-08)
 
 
