@@ -84,7 +84,7 @@ export default class HoloViewer extends Vue {
 
   modelColor: number = 0x428bca
 
-  windowColor: number = 0x2f6290
+  windowColor: number = 0x1d3d59
 
   autoRotate: boolean = true
 
