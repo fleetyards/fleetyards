@@ -178,9 +178,15 @@ export default class HoloViewer extends Vue {
     })
 
     this.model.traverse(node => {
-      if (!node.isMesh || node.name.includes('custom_painted')) return
+      if (!node.isMesh) return
 
-      node.material = material
+      if (node.name.includes('custom_painted')) {
+        // don't replace custom painted nodes
+      } else if (node.name.includes('window')) {
+        // don't replace window nodes
+      } else {
+        node.material = material
+      }
     })
   }
 
