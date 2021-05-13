@@ -16,6 +16,7 @@
 #  purchased         :boolean          default(FALSE)
 #  sale_notify       :boolean          default(FALSE)
 #  serial            :string
+#  sort_index        :integer          default(0)
 #  created_at        :datetime
 #  updated_at        :datetime
 #  model_id          :uuid

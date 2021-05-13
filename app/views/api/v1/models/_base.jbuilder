@@ -35,6 +35,7 @@ json.store_image_small model.store_image.small.url
 json.fleetchart_image model.fleetchart_image.url
 json.brochure model.brochure.url
 json.holo model.holo.url
+json.holo_colored model.holo_colored
 json.store_url model.rsi_store_url
 json.price((model.price.to_f if model.price.present?))
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))

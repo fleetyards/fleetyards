@@ -36,7 +36,7 @@
           <BtnGroup :inline="true">
             <Btn
               size="small"
-              variant="link"
+              variant="dropdown"
               :inline="true"
               @click.native="confirm(record)"
             >

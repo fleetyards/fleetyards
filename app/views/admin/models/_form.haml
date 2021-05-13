@@ -233,6 +233,7 @@
       %small
         = form_errors model, :fleetchart_image
 
+  .row
     .col-12.col-md-4.form-group{class: form_error?(model, :holo)}
       = form.label :holo
       = form.file_field :holo, class: 'form-control'
@@ -246,6 +247,12 @@
         Remove Holo
       %small
         = form_errors model, :holo
+
+    .col-12.col-sm-6.col-md-4
+      .form-group
+        = form.check_box :holo_colored, placeholder: I18n.t(:"helpers.placeholder.model.holo_colored"), class: 'checkbox'
+        = form.label :holo_colored do
+          = I18n.t(:"activerecord.attributes.model.holo_colored")
 
   .row
     .col-12.col-sm-6.col-md-4.form-group{class: form_error?(model, :rsi_id)}

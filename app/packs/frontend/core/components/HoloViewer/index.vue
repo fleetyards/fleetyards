@@ -1,5 +1,39 @@
 <template>
   <div ref="modelViewer" class="holo-viewer">
+    <BtnGroup :inline="true" class="actions">
+      <Btn
+        v-tooltip="autoRotateTooltip"
+        size="small"
+        variant="dropdown"
+        :inline="true"
+        :active="autoRotate"
+        @click.native="toggleAutoRotate"
+      >
+        <i class="fal fa-planet-ringed" />
+      </Btn>
+      <Btn
+        v-tooltip="zoomTooltip"
+        size="small"
+        variant="dropdown"
+        :inline="true"
+        :active="zoom"
+        @click.native="toggleZoom"
+      >
+        <i class="fal fa-search-plus" />
+      </Btn>
+      <Btn
+        v-if="colored"
+        v-tooltip="colorTooltip"
+        size="small"
+        variant="dropdown"
+        :inline="true"
+        :active="color"
+        @click.native="toggleColor"
+      >
+        <i class="fad fa-fill-drip" />
+      </Btn>
+    </BtnGroup>
+
     <Loader v-if="loading" :loading="loading" />
     <input v-if="debug" v-model="modelColor" type="color" />
   </div>
@@ -9,6 +43,8 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Loader from 'frontend/core/components/Loader'
+import BtnGroup from 'frontend/core/components/BtnGroup'
+import Btn from 'frontend/core/components/Btn'
 import {
   WebGLRenderer,
   Scene,
@@ -27,6 +63,8 @@ import { Getter } from 'vuex-class'
 @Component<HoloViewer>({
   components: {
     Loader,
+    BtnGroup,
+    Btn,
   },
 })
 export default class HoloViewer extends Vue {
@@ -46,11 +84,17 @@ export default class HoloViewer extends Vue {
 
   modelColor: number = 0x428bca
 
+  windowColor: number = 0x2f6290
+
+  autoRotate: boolean = true
+
   zoom: boolean = false
+
+  color: boolean = false
 
   @Prop({ required: true }) holo: string
 
-  @Prop({ default: true }) autoRotate: boolean
+  @Prop({ default: false }) colored: boolean
 
   @Getter('mobile') mobile
 
@@ -66,6 +110,30 @@ export default class HoloViewer extends Vue {
     return this.element.clientHeight
   }
 
+  get autoRotateTooltip() {
+    if (this.autoRotate) {
+      return this.$t('actions.holoViewer.autoRotate.disable')
+    }
+
+    return this.$t('actions.holoViewer.autoRotate.enable')
+  }
+
+  get zoomTooltip() {
+    if (this.zoom) {
+      return this.$t('actions.holoViewer.zoom.disable')
+    }
+
+    return this.$t('actions.holoViewer.zoom.enable')
+  }
+
+  get colorTooltip() {
+    if (this.color) {
+      return this.$t('actions.holoViewer.color.disable')
+    }
+
+    return this.$t('actions.holoViewer.color.enable')
+  }
+
   @Watch('modelColor')
   onModelColorChange() {
     this.updateModelMaterial()
@@ -77,6 +145,13 @@ export default class HoloViewer extends Vue {
     this.controls.update()
   }
 
+  @Watch('color')
+  onColorChange() {
+    if (this.model) {
+      this.updateModelMaterial()
+    }
+  }
+
   @Watch('autoRotate')
   onAutoRotateChange() {
     this.controls.autoRotate = this.autoRotate
@@ -84,6 +159,8 @@ export default class HoloViewer extends Vue {
   }
 
   async mounted() {
+    this.color = this.colored
+
     this.loading = true
 
     this.scene = this.setupScene()
@@ -137,6 +214,7 @@ export default class HoloViewer extends Vue {
     controls.maxDistance = 200
 
     controls.autoRotate = this.autoRotate
+    controls.autoRotateSpeed = 0.5
 
     controls.update()
 
@@ -177,14 +255,23 @@ export default class HoloViewer extends Vue {
       side: DoubleSide,
     })
 
+    const windowMaterial = new MeshPhongMaterial({
+      color: this.windowColor,
+      side: DoubleSide,
+    })
+
     this.model.traverse(node => {
       if (!node.isMesh) return
 
-      if (node.name.includes('custom_painted')) {
-        // don't replace custom painted nodes
+      if (this.color) {
+        if (node.backupMaterial) {
+          node.material = node.backupMaterial
+        }
       } else if (node.name.includes('window')) {
-        // don't replace window nodes
+        node.backupMaterial = node.material
+        node.material = windowMaterial
       } else {
+        node.backupMaterial = node.material
         node.material = material
       }
     })
@@ -221,17 +308,17 @@ export default class HoloViewer extends Vue {
   toggleZoom() {
     this.zoom = !this.zoom
   }
+
+  toggleColor() {
+    this.color = !this.color
+  }
+
+  toggleAutoRotate() {
+    this.autoRotate = !this.autoRotate
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.holo-viewer {
-  position: absolute;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
+@import 'index.scss';
 </style>

@@ -121,7 +121,10 @@ export default class FrontendApp extends Vue {
   @Watch('ahoyAccepted')
   onAhoyAcceptedChange() {
     if (this.ahoyAccepted) {
-      this.$ahoy.trackAll()
+      this.$ahoy.trackView()
+      // this.$ahoy.trackClicks()
+      this.$ahoy.trackSubmits()
+      this.$ahoy.trackChanges()
     } else {
       window.location.reload(true)
     }
@@ -137,7 +140,10 @@ export default class FrontendApp extends Vue {
     }
 
     if (this.ahoyAccepted) {
-      this.$ahoy.trackAll()
+      this.$ahoy.trackView()
+      // this.$ahoy.trackClicks()
+      this.$ahoy.trackSubmits()
+      this.$ahoy.trackChanges()
     }
 
     this.checkVersion()

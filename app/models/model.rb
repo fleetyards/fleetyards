@@ -23,6 +23,7 @@
 #  height                   :decimal(15, 2)   default(0.0), not null
 #  hidden                   :boolean          default(TRUE)
 #  holo                     :string
+#  holo_colored             :boolean          default(FALSE)
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)

@@ -31,15 +31,6 @@
               class="image-wrapper"
             >
               <Btn
-                v-if="holoviewerVisible && model.holo"
-                class="autorotate-button"
-                size="small"
-                :active="autoRotate"
-                @click.native="toggleAutoRotate"
-              >
-                <i class="fal fa-planet-ringed" />
-              </Btn>
-              <Btn
                 :active="holoviewerVisible"
                 class="toggle-3d"
                 size="small"
@@ -60,7 +51,7 @@
               <HoloViewer
                 v-if="holoviewerVisible && model.holo"
                 :holo="model.holo"
-                :auto-rotate="autoRotate"
+                :colored="model.holoColored"
               />
               <iframe
                 v-else-if="holoviewerVisible"
@@ -360,8 +351,6 @@ export default class ModelDetail extends Vue {
 
   model: Model | null = null
 
-  autoRotate: boolean = true
-
   attributes: string[] = [
     'length',
     'beam',
@@ -513,10 +502,6 @@ export default class ModelDetail extends Vue {
     this.loading = true
     this.model = await modelsCollection.findBySlug(this.$route.params.slug)
     this.loading = false
-  }
-
-  toggleAutoRotate() {
-    this.autoRotate = !this.autoRotate
   }
 }
 </script>

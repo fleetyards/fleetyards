@@ -20,6 +20,7 @@ en:
         hidden: hidden?
         active: active?
         ground: Ground Vehicle?
+        holo_colored: 3D File has colored Materials?
       model_hardpoint:
         categories:
           main: Main Thruster

@@ -132,4 +132,18 @@ export default {
     disable: 'Disable Two-factor',
     generateBackupCodes: 'Generate Backup Codes',
   },
+  'holoViewer': {
+    autoRotate: {
+      enable: 'Enable auto rotate',
+      disable: 'Disable auto rotate',
+    },
+    zoom: {
+      enable: 'Enable zoom',
+      disable: 'Disable zoom',
+    },
+    color: {
+      enable: 'Enable colors',
+      disable: 'Disable colors',
+    },
+  },
 }

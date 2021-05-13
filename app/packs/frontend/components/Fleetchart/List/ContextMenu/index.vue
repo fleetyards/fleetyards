@@ -7,7 +7,7 @@
   >
     <Btn
       v-if="model"
-      variant="link"
+      variant="dropdown"
       :to="{
         name: 'model',
         params: {
@@ -27,7 +27,7 @@
         v-if="upgradable"
         :title="$t('labels.model.addons')"
         :aria-label="$t('labels.model.addons')"
-        variant="link"
+        variant="dropdown"
         size="small"
         data-test="vehicle-addons"
         :inline="true"
