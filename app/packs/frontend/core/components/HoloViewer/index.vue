@@ -88,6 +88,8 @@ export default class HoloViewer extends Vue {
 
   autoRotate: boolean = true
 
+  autoRotateSpeed: number = 1.5
+
   zoom: boolean = false
 
   color: boolean = false
@@ -214,7 +216,7 @@ export default class HoloViewer extends Vue {
     controls.maxDistance = 200
 
     controls.autoRotate = this.autoRotate
-    controls.autoRotateSpeed = 0.5
+    controls.autoRotateSpeed = this.autoRotateSpeed
 
     controls.update()
 
