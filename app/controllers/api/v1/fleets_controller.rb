@@ -12,7 +12,7 @@ module Api
       def invites
         authorize! :invites, :api_fleet
 
-        @invites = current_user.fleet_memberships.invited.all
+        @invites = current_user.fleet_memberships.where(aasm_state: %w[requested invited]).all
       end
 
       def current

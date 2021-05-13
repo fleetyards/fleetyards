@@ -52,7 +52,11 @@ export class FleetMembersCollection extends BaseCollection {
     return this.record
   }
 
-  async create(slug: string, form: FleetMemberForm, refetch: boolean = false) {
+  async create(
+    slug: string,
+    form: FleetMemberForm,
+    refetch: boolean = false,
+  ): Promise<RecordResponse<FleetMember>> {
     const response = await post(`fleets/${slug}/members`, form)
 
     if (!response.error) {
@@ -60,10 +64,16 @@ export class FleetMembersCollection extends BaseCollection {
         this.findAll(this.params)
       }
 
-      return response.data
+      return {
+        data: response.data,
+        error: null,
+      }
     }
 
-    return null
+    return {
+      data: null,
+      error: this.extractErrorCode(response.error),
+    }
   }
 
   async acceptRequest(

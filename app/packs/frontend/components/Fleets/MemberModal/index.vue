@@ -49,6 +49,7 @@ import Modal from 'frontend/core/components/AppModal/Modal'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import Btn from 'frontend/core/components/Btn'
 import memberCollection from 'frontend/api/collections/FleetMembers'
+import { displayAlert } from 'frontend/lib/Noty'
 
 @Component<MemberModal>({
   components: {
@@ -77,13 +78,17 @@ export default class MemberModal extends Vue {
   async save() {
     this.submitting = true
 
-    const newMember = await memberCollection.create(this.fleet.slug, this.form)
+    const response = await memberCollection.create(this.fleet.slug, this.form)
 
     this.submitting = false
 
-    if (newMember) {
+    if (!response.error) {
       this.$comlink.$emit('fleet-member-invited', newMember)
       this.$comlink.$emit('close-modal')
+    } else {
+      displayAlert({
+        text: this.$t(response.error),
+      })
     }
   }
 }

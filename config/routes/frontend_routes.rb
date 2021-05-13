@@ -39,7 +39,7 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'fleets' => 'base#index'
   get 'fleets/add' => 'base#index'
   get 'fleets/invites' => 'base#index'
-  get 'fleets/invites/:token' => 'base#index', as: :fleet_invite
+  get 'fleets/invites/:token' => 'fleets#invite', as: :fleet_invite
   get 'fleets/:slug' => 'fleets#show', as: :fleet
   get 'fleets/:slug/ships' => 'fleets#show'
   get 'fleets/:slug/fleetchart' => 'fleets#show'

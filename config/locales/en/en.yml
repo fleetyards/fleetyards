@@ -66,6 +66,7 @@ en:
       fleets_invites: 'Fleet Invites'
       fleet_members: '%{fleet} Members'
       fleet_stats: '%{fleet} Stats'
+      fleet_invite: 'Join %{fleet}'
       fleet_settings: '%{fleet} Settings'
       settings_account: Account
       settings_profile: Profile Settings

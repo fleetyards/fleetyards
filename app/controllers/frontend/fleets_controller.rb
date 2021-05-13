@@ -12,6 +12,16 @@ module Frontend
       render 'frontend/index'
     end
 
+    def invite
+      @fleet = FleetInviteUrl.find_by(token: params[:token])&.fleet
+      if fleet.present?
+        @title = I18n.t('title.frontend.fleet_invite', fleet: fleet.name)
+        @og_image = fleet.logo.url if fleet.logo.present?
+      end
+
+      render 'frontend/index'
+    end
+
     def stats
       if fleet.present?
         @title = I18n.t('title.frontend.fleet_stats', fleet: fleet.name)

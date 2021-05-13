@@ -177,6 +177,7 @@ export default {
     rsiSid: 'SID',
     public: 'Public Fleetview',
     ts: 'Teamspeak Server',
+    awaitingConfirmation: 'Awaiting confirmation by Fleet',
     members: {
       primary: 'Primary Fleet?',
       hideShips: 'Hide your Ships for this Fleet?',

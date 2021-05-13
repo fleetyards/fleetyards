@@ -183,6 +183,7 @@ en:
           grenade_launcher: Grenade Launcher
           knife: Knife
       fleet_membership:
+        user_id: Member
         roles:
           admin: Admin
           officer: Officer
@@ -288,6 +289,10 @@ en:
         blank: Please fill out the Field
         record_invalid: Bad Data
       models:
+        fleet_membership:
+          attributes:
+            user_id:
+              taken: already present or has a pending invite
         user:
           attributes:
             confirmation_token:

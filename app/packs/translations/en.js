@@ -9,6 +9,7 @@ import sublines from './en/sublines'
 import texts from './en/texts'
 import title from './en/title'
 import privacySettings from './en/privacySettings'
+import validationError from './en/validationError'
 
 const validations = {}
 Object.keys(validationMessages).forEach(key => {
@@ -34,6 +35,7 @@ export default {
   texts,
   messages,
   validations,
+  validation_error: validationError,
   station: {
     type: 'Type',
     location: 'Location',
