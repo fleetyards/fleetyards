@@ -12,7 +12,7 @@
           query: filterFor('models'),
         }"
         :label="$t('nav.models.index')"
-        :active="$route.name === 'models' || $route.name === 'model'"
+        :active="$route.name === 'model'"
         icon="fas fa-th"
         :exact="true"
       />
@@ -24,7 +24,7 @@
         :label="$t('nav.models.fleetchart')"
         icon="fad fa-starship"
       />
-      <NavItem divider />
+      <NavItem :divider="true" />
       <NavItem
         :to="{
           name: 'models-compare',

@@ -18,13 +18,13 @@
         :label="$t('nav.roadmap.changes')"
         icon="fad fa-tasks"
       />
-      <NavItem divider />
+      <NavItem :divider="true" />
       <NavItem
         :to="{ name: 'roadmap-ships' }"
         :label="$t('nav.roadmap.ships')"
         icon="fad fa-rocket-launch"
       />
-      <NavItem divider />
+      <NavItem :divider="true" />
       <NavItem
         :to="{ name: 'roadmap-progress-tracker' }"
         :label="$t('nav.roadmap.progressTracker')"

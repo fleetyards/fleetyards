@@ -16,7 +16,7 @@
         :label="$t('nav.stations.starsystems')"
         icon="fad fa-solar-system"
       />
-      <NavItem divider />
+      <NavItem :divider="true" />
       <NavItem
         :to="{ name: 'shops' }"
         :label="$t('nav.stations.shops')"

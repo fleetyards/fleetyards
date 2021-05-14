@@ -33,35 +33,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    label: {
-      type: String,
-      default: '',
-    },
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 
-    icon: {
-      type: String,
-      default: null,
-    },
+@Component<NavItemInner>({})
+export default class NavItemInner extends Vue {
+  @Prop({ default: '' }) label: string
 
-    image: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) icon: string | null
 
-    slim: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  @Prop({ default: null }) image: string | null
 
-  computed: {
-    firstLetter() {
-      return this.label.charAt(0)
-    },
-  },
+  @Prop({ default: false }) slim: boolean
+
+  get firstLetter() {
+    return this.label.charAt(0)
+  }
 }
 </script>
 

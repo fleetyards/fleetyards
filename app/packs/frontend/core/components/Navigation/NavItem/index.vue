@@ -54,7 +54,7 @@
     v-slot="{ href: linkHref, navigate }"
     :to="to"
     :class="{
-      'active': active,
+      'active': active || routeActive,
       'nav-item-slim': slim,
     }"
     :data-test="`nav-${navKey}`"
@@ -114,145 +114,110 @@
   </li>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import { BCollapse } from 'bootstrap-vue'
 import NavItemInner from 'frontend/core/components/Navigation/NavItem/NavItemInner'
 import NavigationMixin from 'frontend/mixins/Navigation'
 
-export default {
-  name: 'NavItem',
-
+@Component<NavItem>({
   components: {
     BCollapse,
     NavItemInner,
   },
 
   mixins: [NavigationMixin],
+})
+export default class NavItem extends Vue {
+  open: boolean = false
 
-  props: {
-    to: {
-      type: Object,
-      default: null,
-    },
+  @Prop({ default: null }) to: Object | null
 
-    action: {
-      type: Function,
-      default: null,
-    },
+  @Prop({ default: null }) action: Function | null
 
-    href: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) href: string | null
 
-    label: {
-      type: String,
-      default: '',
-    },
+  @Prop({ default: '' }) label: string
 
-    icon: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) icon: string | null
 
-    image: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) image: string | null
 
-    menuKey: {
-      type: String,
-      default: null,
-    },
+  @Prop({ default: null }) menuKey: string | null
 
-    exact: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) exact: boolean
 
-    divider: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) divider: boolean
 
-    active: {
-      type: Boolean,
-      default: false,
-    },
+  @Prop({ default: false }) active: boolean
 
-    submenuActive: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  @Prop({ default: false }) submenuActive: boolean
 
-  data() {
-    return {
-      open: false,
+  get routeActive() {
+    if (this.to) {
+      return this.to.name === this.$route.name
     }
-  },
+    return false
+  }
 
-  computed: {
-    tooltip() {
-      if (!this.slim) {
-        return null
-      }
+  get tooltip() {
+    if (!this.slim) {
+      return null
+    }
 
-      return {
-        content: this.label,
-        classes: 'nav-item-tooltip',
-        placement: 'right',
-      }
-    },
+    return {
+      content: this.label,
+      classes: 'nav-item-tooltip',
+      placement: 'right',
+    }
+  }
 
-    hasDefaultSlot() {
-      return !!this.$slots.default
-    },
+  get hasDefaultSlot() {
+    return !!this.$slots.default
+  }
 
-    hasSubmenuSlot() {
-      return !!this.$slots.submenu
-    },
+  get hasSubmenuSlot() {
+    return !!this.$slots.submenu
+  }
 
-    matchedRoutes() {
-      return this.$route.matched.map(route => route.name)
-    },
+  get matchedRoutes() {
+    return this.$route.matched.map(route => route.name)
+  }
 
-    navKey() {
-      if (this.menuKey) {
-        return this.menuKey
-      }
+  get navKey() {
+    if (this.menuKey) {
+      return this.menuKey
+    }
 
-      if (this.to) {
-        return this.to.name
-      }
+    if (this.to) {
+      return this.to.name
+    }
 
-      return 'nav-item'
-    },
-  },
+    return 'nav-item'
+  }
 
-  watch: {
-    $route() {
-      this.checkRoutes()
-    },
+  @Watch('$route')
+  onRouteChange() {
+    this.checkRoutes()
+  }
 
-    submenuActive() {
-      this.checkRoutes()
-    },
-  },
+  @Watch('submenuActive')
+  onSubmenuActiveChange() {
+    this.checkRoutes()
+  }
 
   mounted() {
     this.checkRoutes()
-  },
+  }
 
-  methods: {
-    checkRoutes() {
-      this.open = this.submenuActive
-    },
+  checkRoutes() {
+    this.open = this.submenuActive
+  }
 
-    toggleMenu() {
-      this.open = !this.open
-    },
-  },
+  toggleMenu() {
+    this.open = !this.open
+  }
 }
 </script>
 
