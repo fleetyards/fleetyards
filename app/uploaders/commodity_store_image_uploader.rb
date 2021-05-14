@@ -22,7 +22,7 @@ class CommodityStoreImageUploader < BaseUploader
     process quality: 80
   end
 
-  def extension_white_list
+  def extension_allowlist
     %w[jpg jpeg png]
   end
 end

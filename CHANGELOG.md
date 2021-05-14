@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.1](https://github.com/fleetyards/fleetyards/compare/v4.11.0...v4.11.1) (2021-05-14)
+
+
+### Bug Fixes
+
+* carrierwave allow list ([34cc18b](https://github.com/fleetyards/fleetyards/commit/34cc18bb246db57179c4d0e43cd3ec46e154c8b6))
+* navigation ([850eb3f](https://github.com/fleetyards/fleetyards/commit/850eb3f5dbe541a04d44940e1740666836a97455))
+* navigation ([cebe841](https://github.com/fleetyards/fleetyards/commit/cebe841318bc08e8091d4ae17d8ff33a87985c9d))
+
 ## [4.11.0](https://github.com/fleetyards/fleetyards/compare/v4.10.8...v4.11.0) (2021-05-13)
 
 

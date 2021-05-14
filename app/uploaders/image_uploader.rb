@@ -15,7 +15,7 @@ class ImageUploader < BaseUploader
     process quality: 90
   end
 
-  def extension_white_list
+  def extension_allowlist
     %w[jpg jpeg png]
   end
 
