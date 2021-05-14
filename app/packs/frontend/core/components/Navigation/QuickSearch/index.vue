@@ -7,6 +7,7 @@
         :translation-key="`quicksearch.${$route.name}`"
         :no-label="true"
         :autofocus="true"
+        :clearable="true"
       />
     </form>
   </div>
