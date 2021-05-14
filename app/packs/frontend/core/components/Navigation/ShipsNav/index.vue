@@ -12,7 +12,7 @@
           query: filterFor('models'),
         }"
         :label="$t('nav.models.index')"
-        :active="$route.name === 'models'"
+        :active="$route.name === 'models' || $route.name === 'model'"
         icon="fas fa-th"
         :exact="true"
       />
@@ -53,7 +53,7 @@ export default class ShipsNav extends Vue {
   @Getter('filters') filters
 
   get active() {
-    return ['models', 'models-fleetchart', 'models-compare'].includes(
+    return ['models', 'model', 'models-fleetchart', 'models-compare'].includes(
       this.$route.name,
     )
   }
