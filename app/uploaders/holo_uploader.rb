@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HoloUploader < BaseUploader
-  def extension_white_list
+  def extension_allowlist
     %w[glb gltf]
   end
 end
