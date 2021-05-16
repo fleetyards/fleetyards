@@ -91,10 +91,7 @@
     "vuex": "3.6.2",
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.2.0",
-    "webpack": "4.44.2",
-    "workbox-precaching": "6.1.5",
-    "workbox-routing": "6.1.5",
-    "workbox-strategies": "6.1.5"
+    "webpack": "4.44.2"
   },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
@@ -152,6 +149,7 @@
     "webpack-bundle-analyzer": "4.4.1",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "^3.11.2",
+    "workbox-webpack-plugin": "^6.1.5",
     "yorkie": "2.0.0"
   },
   "resolutions": {
