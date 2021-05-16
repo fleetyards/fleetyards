@@ -125,7 +125,7 @@ Rails.application.configure do
   end
 
   config.action_cable.url = Rails.configuration.app.cable_endpoint
-  config.action_cable.allowed_request_origins = Rails.configuration.app.cable_allowed_origins
+  config.action_cable.allowed_request_origins = [Rails.configuration.app.frontend_endpoint]
 
   ActionCable.server.config.logger = Logger.new(nil)
 
