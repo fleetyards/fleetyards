@@ -5,7 +5,7 @@
       <section class="container">
         <div class="row">
           <div class="col-12">
-            <div class="search-form text-center">
+            <div class="home-search-form">
               <h1 id="home-welcome">
                 <small class="text-muted">{{ $t('headlines.welcome') }}</small>
                 <img
@@ -17,7 +17,7 @@
                 />
                 {{ $t('app') }}
               </h1>
-              <div class="row justify-content-md-center">
+              <div class="row home-search-form-input">
                 <div class="col-12 col-lg-6">
                   <form @submit.prevent="search">
                     <div class="form-group">
@@ -27,13 +27,13 @@
                           v-model="searchQuery"
                           size="large"
                           :autofocus="!mobile"
-                          translation-key="search.default"
+                          translation-key="home.search"
                           :no-label="true"
                           :clearable="true"
                         />
                         <Btn
                           id="search-submit"
-                          :aria-label="$t('labels.search')"
+                          :aria-label="$t('labels.search.default')"
                           size="large"
                           :inline="true"
                           @click.native="search"

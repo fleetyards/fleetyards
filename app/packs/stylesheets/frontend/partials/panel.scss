@@ -237,6 +237,10 @@ $contentBorderRadius: $panelContentBorderRadius;
   .panel-inner {
     border-radius: $contentBorderRadius;
 
+    > * {
+      position: relative;
+    }
+
     &.panel-inner-text {
       padding: 20px;
     }
