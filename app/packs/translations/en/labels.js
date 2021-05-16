@@ -21,6 +21,9 @@ export default {
   'networkStatusOffline': 'Network Status: Offline - Service Unavailable',
   'groups': 'Groups',
   'fleetInviteToken': 'Fleet Invite',
+  'home': {
+    search: 'Search for Ships...',
+  },
   'shop': {
     rentalPrice: 'rental',
     sellPrice: 'sells for',
@@ -125,7 +128,9 @@ export default {
   'rsiRoadmap': 'RSI Roadmap',
   'unknown': 'Unknown',
   'none': '-',
-  'search': 'Search',
+  'search': {
+    default: 'Search',
+  },
   'unknownModel': '%{slug} Unknown',
   'not-available': 'N/A',
   'receiveSaleNotifications': '',
