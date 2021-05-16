@@ -14,6 +14,11 @@ environment.splitChunks(config => ({
   },
 }))
 
-environment.plugins.prepend('Provide', new WorkboxPlugin.GenerateSW())
+environment.plugins.prepend(
+  'Provide',
+  new WorkboxPlugin.GenerateSW({
+    exclude: [/admin/, /embed/, /hangar-guide\/.*\.gif/],
+  }),
+)
 
 module.exports = environment
