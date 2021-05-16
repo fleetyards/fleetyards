@@ -36,6 +36,14 @@
             = f.label :manufacturer_id_eq
             = f.select :manufacturer_id_eq, options_from_collection_for_select(Manufacturer.all.order(:name), :id, :name_clean, @q.manufacturer_id_eq), { include_blank: true }, { class: 'form-control' }
 
+          .form-group
+            = f.label :fleetchart_image_null
+            = f.select :fleetchart_image_null, [true, false], { include_blank: true }, { class: 'form-control' }
+
+          .form-group
+            = f.label :holo_null
+            = f.select :holo_null, [true, false], { include_blank: true }, { class: 'form-control' }
+
           .btn-group
             %button.btn.btn-primary
               Filter
