@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "4.11.2",
+  "version": "4.11.3",
   "scripts": {
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
@@ -91,10 +91,8 @@
     "vuex": "3.6.2",
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.2.0",
-    "webpack": "4.44.2",
-    "workbox-precaching": "6.1.5",
-    "workbox-routing": "6.1.5",
-    "workbox-strategies": "6.1.5"
+    "workbox-webpack-plugin": "^6.1.5",
+    "webpack": "4.44.2"
   },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
@@ -127,7 +125,7 @@
     "eslint-import-resolver-webpack": "^0.13.1",
     "eslint-plugin-compat": "3.9.0",
     "eslint-plugin-cypress": "2.11.3",
-    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-import": "2.23.2",
     "eslint-plugin-jest": "24.3.6",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-sort-class-members": "^1.11.0",

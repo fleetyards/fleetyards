@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.3](https://github.com/fleetyards/fleetyards/compare/v4.11.2...v4.11.3) (2021-05-16)
+
+
+### Bug Fixes
+
+* action cable allowed hosts ([d2bdd15](https://github.com/fleetyards/fleetyards/commit/d2bdd156145c0ab9afc4035a19afa3713b353cde))
+* package json ([0d6c6a4](https://github.com/fleetyards/fleetyards/commit/0d6c6a40823a49a6ee998892e18d038fe6cc2063))
+* search labels ([1ebb5aa](https://github.com/fleetyards/fleetyards/commit/1ebb5aa79571b27f6769b5020e45047d7c721bc9))
+* service-worker ([48b8235](https://github.com/fleetyards/fleetyards/commit/48b8235401197e9b703da6b70fa9698690521aa3))
+
 ### [4.11.2](https://github.com/fleetyards/fleetyards/compare/v4.11.1...v4.11.2) (2021-05-15)
 
 

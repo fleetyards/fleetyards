@@ -1,4 +1,5 @@
 const { environment } = require('@rails/webpacker')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const vue = require('./loaders/vue')
 
@@ -12,5 +13,12 @@ environment.splitChunks(config => ({
     runtimeChunk: true,
   },
 }))
+
+environment.plugins.prepend(
+  'Provide',
+  new WorkboxPlugin.GenerateSW({
+    exclude: [/admin/, /embed/, /hangar-guide\/.*\.gif/],
+  }),
+)
 
 module.exports = environment
