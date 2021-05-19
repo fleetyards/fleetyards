@@ -45,6 +45,7 @@
                 :disabled="!internalStationSlug"
                 :error="errors[0]"
                 name="shopId"
+                @loaded="setDefaultShopId"
               />
             </ValidationProvider>
           </div>
@@ -361,6 +362,14 @@ export default class PricesModal extends Vue {
       this.$comlink.$emit('close-modal')
     } else {
       displayAlert({ text: newCommodityPrice.error.message })
+    }
+  }
+
+  setDefaultShopId(shops) {
+    if (shops.length === 1) {
+      this.form.shopId = shops[0].id
+    } else {
+      this.form.shopId = null
     }
   }
 }

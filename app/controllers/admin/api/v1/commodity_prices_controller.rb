@@ -51,7 +51,7 @@ module Admin
         def confirm
           authorize! :confirm, commodity_price
 
-          return if commodity_price.update(confirmed: true)
+          return if commodity_price.confirm
 
           render json: ValidationError.new('commodity_price.create', commodity_price.errors), status: :bad_request
         end

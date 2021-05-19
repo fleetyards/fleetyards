@@ -69,7 +69,7 @@ import Btn from 'frontend/core/components/Btn'
 import shopCommodityConfirmationsCollection from 'admin/api/collections/ShopCommodityConfirmations'
 import { displayConfirm } from 'frontend/lib/Noty'
 
-@Component<AdminStationImages>({
+@Component<AdminShopCommodities>({
   components: {
     FilteredList,
     FilteredTable,
@@ -77,7 +77,7 @@ import { displayConfirm } from 'frontend/lib/Noty'
     Btn,
   },
 })
-export default class AdminStationImages extends Vue {
+export default class AdminShopCommodities extends Vue {
   collection: ShopCommodityConfirmationsCollection = shopCommodityConfirmationsCollection
 
   deleting: boolean = false

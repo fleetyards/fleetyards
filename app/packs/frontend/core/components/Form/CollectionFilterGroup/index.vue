@@ -331,6 +331,8 @@ export default class FilterGroup extends Vue {
       cacheId: this.groupID,
     })
 
+    this.$emit('loaded', options)
+
     this.loading = false
 
     if (this.$refs.infiniteLoading) {

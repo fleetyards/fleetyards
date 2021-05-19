@@ -7,7 +7,8 @@
 #  id                :uuid             not null, primary key
 #  confirmed         :boolean          default(FALSE)
 #  price             :decimal(15, 2)
-#  submitted_by      :uuid
+#  submission_count  :integer          default(0)
+#  submitters        :string
 #  time_range        :integer
 #  type              :string
 #  created_at        :datetime         not null
@@ -19,15 +20,35 @@
 #  index_commodity_prices_on_shop_commodity_id  (shop_commodity_id)
 #
 class CommodityPrice < ApplicationRecord
-  belongs_to :shop_commodity, touch: true
+  REQUIRED_SUBMISSION_COUNT_FOR_AUTO_CONFIRM = 2
 
-  belongs_to :submitter,
-             class_name: 'User',
-             foreign_key: 'submitted_by',
-             inverse_of: false,
-             optional: true
+  belongs_to :shop_commodity, touch: true
 
   validates :price, presence: true
   validates :type, presence: true
   validates :shop_commodity, presence: true
+
+  serialize :submitters, Array
+
+  before_save :check_submissions_for_auto_confirm
+
+  def users
+    submitters.map do |submitter_id|
+      User.find_by(id: submitter_id)
+    end
+  end
+
+  def check_submissions_for_auto_confirm
+    return if submission_count < REQUIRED_SUBMISSION_COUNT_FOR_AUTO_CONFIRM
+
+    self.confirmed = true
+  end
+
+  def confirm!
+    update!(confirmed: true)
+  end
+
+  def confirm
+    update(confirmed: true)
+  end
 end
