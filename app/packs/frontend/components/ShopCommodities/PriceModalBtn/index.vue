@@ -21,6 +21,8 @@ export default class PriceModalBtn extends Vue {
 
   @Prop({ default: null }) shopId!: string
 
+  @Prop({ default: null }) shopTypes!: string[] | null
+
   @Prop({ default: null }) commodityItemType!: string
 
   @Prop({ default: false }) withoutRental!: boolean
@@ -57,6 +59,7 @@ export default class PriceModalBtn extends Vue {
         stationSlug: this.stationSlug,
         shopId: this.shopId,
         commodityItemType: this.commodityItemType,
+        shopTypes: this.shopTypes,
         pathOptions: this.pathOptions.filter(
           item => item.value !== 'rental' || this.withoutRental,
         ),

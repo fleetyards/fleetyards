@@ -21,6 +21,7 @@
                 :collection="stationsCollection"
                 :error="errors[0]"
                 value-attr="slug"
+                :collection-filter="stationsCollectionFilter"
                 :paginated="true"
                 :searchable="true"
                 name="station"
@@ -267,11 +268,13 @@ import commodityPricesCollction from 'frontend/api/collections/CommodityPrices'
   },
 })
 export default class PricesModal extends Vue {
-  @Prop({ default: null }) shopId!: string
+  @Prop({ default: null }) shopId!: string | null
 
-  @Prop({ default: null }) stationSlug!: string
+  @Prop({ default: null }) stationSlug!: string | null
 
-  @Prop({ default: null }) commodityItemType!: string
+  @Prop({ default: null }) shopTypes!: string[] | null
+
+  @Prop({ default: null }) commodityItemType!: string | null
 
   @Prop({ default: [] }) pathOptions!: FilterGroupItem[]
 
@@ -301,9 +304,17 @@ export default class PricesModal extends Vue {
 
   internalStationSlug: string = null
 
+  get stationsCollectionFilter() {
+    return {
+      withShops: true,
+      commodityItemType: this.commodityItemType,
+    }
+  }
+
   get shopsCollectionFilter() {
     return {
       stationIn: [this.internalStationSlug],
+      commodityItemType: this.commodityItemType,
     }
   }
 

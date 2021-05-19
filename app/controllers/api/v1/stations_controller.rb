@@ -11,9 +11,11 @@ module Api
         authorize! :index, :api_stations
         station_query_params['sorts'] = sort_by_name if station_query_params['sorts'].blank?
 
-        @q = Station.includes(:docks, :habitations, :shops, celestial_object: %i[starsystem parent])
-          .visible
-          .ransack(station_query_params)
+        scope = Station.visible.includes(:docks, :habitations, :shops, celestial_object: %i[starsystem parent])
+
+        scope = scope.with_shops(commodity_item_type: station_query_params.delete(:commodity_item_type)) if station_query_params.delete(:with_shops)
+
+        @q = scope.ransack(station_query_params)
 
         @stations = @q.result(distinct: true)
           .page(params[:page])
@@ -61,7 +63,8 @@ module Api
 
       private def station_query_params
         @station_query_params ||= query_params(
-          :celestial_object_eq, :name_cont, :slug_eq, :habs_not_null, :search_cont,
+          :with_shops, :celestial_object_eq, :name_cont, :slug_eq, :habs_not_null, :search_cont,
+          :commodity_item_type,
           name_in: [], celestial_object_in: [], starsystem_in: [], station_type_in: [],
           shops_shop_type_in: [], docks_ship_size_in: [], sorts: []
         )

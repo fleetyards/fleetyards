@@ -126,6 +126,18 @@ class Station < ApplicationRecord
     end
   end
 
+  def self.with_shops(filters)
+    scope = includes(:shops).where.not(shops: { station_id: nil })
+
+    if filters[:commodity_item_type].present?
+      shop_type = Shop.shop_type_for_commodity_type(filters[:commodity_item_type])
+
+      scope = scope.where(shops: { shop_type: shop_type }) if shop_type.present?
+    end
+
+    scope
+  end
+
   def location_label
     "#{location_prefix} #{celestial_object.name}"
   end

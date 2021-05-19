@@ -90,6 +90,13 @@ class Shop < ApplicationRecord
     end
   end
 
+  def self.shop_type_for_commodity_type(commodity_item_type)
+    case commodity_item_type.to_sym
+    when :commodity
+      %i[admin resources blackmarket]
+    end
+  end
+
   def shop_type_label
     Shop.human_enum_name(:shop_type, shop_type)
   end
