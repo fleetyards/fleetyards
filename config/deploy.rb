@@ -40,7 +40,7 @@ before :'deploy:migrate', :'db:load_schema'
 after :'deploy:published', :'bundler:clean'
 
 namespace :deploy do
-  after :finished, :reload
+  after :finished, :restart
 
   desc 'Restart'
   task :restart do
