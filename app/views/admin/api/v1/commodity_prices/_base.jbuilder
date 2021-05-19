@@ -6,7 +6,6 @@ json.time_range commodity_price.time_range
 json.created_at commodity_price.created_at
 json.confirmed commodity_price.confirmed
 json.type commodity_price.type
-json.submitter do
-  json.id commodity_price.submitted_by
-  json.username commodity_price.submitter&.username
+json.submitters do
+  json.array! commodity_price.users, partial: 'admin/api/v1/commodity_prices/submitter', as: :submitter
 end

@@ -6,15 +6,28 @@ module Api
       before_action :authenticate_user!
 
       def create
-        CommodityPrice.transaction do
-          @commodity_price = CommodityPrice.new(commodity_price_params)
-
-          authorize! :create, @commodity_price
-
-          return if @commodity_price.save
+        @commodity_price = CommodityPrice.find_or_initialize_by(
+          type: commodity_price_params[:type],
+          shop_commodity_id: commodity_price_params[:shop_commodity_id],
+          confirmed: false,
+          price: commodity_price_params[:price],
+          time_range: commodity_price_params[:time_range]
+        ) do |price|
+          price.submitters << current_user.id
         end
 
-        render json: ValidationError.new('create', @commodity_price.errors), status: :bad_request
+        authorize! :create, @commodity_price
+
+        if @commodity_price.new_record?
+          return if @commodity_price.save
+
+          render json: ValidationError.new('create', @commodity_price.errors), status: :bad_request
+        elsif @commodity_price.submitters.exclude?(current_user.id)
+          @commodity_price.update(
+            submitters: @commodity_price.submitters << current_user.id,
+            submission_count: @commodity_price.submission_count + 1
+          )
+        end
       end
 
       def time_ranges
@@ -30,9 +43,8 @@ module Api
           :price, :time_range
         ).merge(
           confirmed: false,
-          submitted_by: current_user.id,
           type: price_type,
-          shop_commodity_id: shop_commodity.id
+          shop_commodity_id: shop_commodity&.id
         )
       end
 
@@ -48,6 +60,8 @@ module Api
       end
 
       private def shop_commodity
+        return if shop_commodity_params.blank?
+
         @shop_commodity ||= ShopCommodity.find_or_create_by(
           shop_commodity_params
         ) do |new_shop_commodity|

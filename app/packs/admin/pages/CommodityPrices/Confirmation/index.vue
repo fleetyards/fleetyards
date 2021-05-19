@@ -31,8 +31,12 @@
           <br />
           <small>{{ record.shopCommodity.shop.locationLabel }}</small>
         </template>
-        <template #col-submitter="{ record }">
-          {{ record.submitter.username }}
+        <template #col-submitters="{ record }">
+          <ul>
+            <li v-for="submitter in record.submitters" :key="submitter.id">
+              {{ submitter.username }}
+            </li>
+          </ul>
         </template>
         <template #col-price="{ record }">
           <span v-html="$toUEC(record.price)" />
@@ -74,7 +78,7 @@ import Btn from 'frontend/core/components/Btn'
 import commodityPriceConfirmationsCollection from 'admin/api/collections/CommodityPriceConfirmations'
 import { displayConfirm } from 'frontend/lib/Noty'
 
-@Component<AdminStationImages>({
+@Component<AdminCommodityPrices>({
   components: {
     FilteredList,
     FilteredTable,
@@ -82,7 +86,7 @@ import { displayConfirm } from 'frontend/lib/Noty'
     Btn,
   },
 })
-export default class AdminStationImages extends Vue {
+export default class AdminCommodityPrices extends Vue {
   collection: CommodityPriceConfirmationsCollection = commodityPriceConfirmationsCollection
 
   deleting: boolean = false
@@ -100,7 +104,7 @@ export default class AdminStationImages extends Vue {
       width: '15%',
     },
     {
-      name: 'submitter',
+      name: 'submitters',
       label: this.$t('labels.commodityPrice.submittedBy'),
       width: '20%',
     },

@@ -7,7 +7,8 @@
 #  id                :uuid             not null, primary key
 #  confirmed         :boolean          default(FALSE)
 #  price             :decimal(15, 2)
-#  submitted_by      :uuid
+#  submission_count  :integer          default(0)
+#  submitters        :string
 #  time_range        :integer
 #  type              :string
 #  created_at        :datetime         not null
