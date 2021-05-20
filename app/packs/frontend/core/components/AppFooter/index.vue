@@ -59,6 +59,16 @@
           <i class="fab fa-discord" />
         </a>
         |
+        <a
+          v-tooltip="'Instagram'"
+          href="https://www.instagram.com/fleetyardsnet/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram" />
+        </a>
+        |
         <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
           {{ $t('nav.api') }}
         </a>
