@@ -263,6 +263,7 @@ en:
           scrap: Scrap
           vice: Vice
           harvestable: Harvestable
+          consumer_goods: Consumer Goods
       shop_commodity:
         location_prefix:
           default: 'sold at'
