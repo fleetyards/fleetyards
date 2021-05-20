@@ -57,8 +57,9 @@
 }
 
 .fleetchart-item-context-menu {
-  position: fixed !important;
-  padding: 0 2px;
+  position: absolute !important;
+  z-index: 1000;
+  padding: 0 2px !important;
 }
 
 @media (max-width: $desktop-breakpoint) {

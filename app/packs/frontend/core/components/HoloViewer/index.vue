@@ -54,6 +54,7 @@ import {
   DirectionalLight,
   DoubleSide,
   MeshPhongMaterial,
+  Color,
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
@@ -183,7 +184,11 @@ export default class HoloViewer extends Vue {
   }
 
   setupScene() {
-    return new Scene()
+    const scene = new Scene()
+
+    scene.background = null
+
+    return scene
   }
 
   setupCamera() {
