@@ -2,6 +2,7 @@ import { routes as StationsRoutes } from 'frontend/pages/Stations/routes'
 import { routes as SettingsRoutes } from 'frontend/pages/Settings/routes'
 import { routes as FleetsRoutes } from 'frontend/pages/Fleets/routes'
 import { routes as RoadmapRoutes } from 'frontend/pages/Roadmap/routes'
+import { routes as ToolsRoutes } from 'frontend/pages/Tools/routes'
 
 export const routes = [
   {
@@ -9,7 +10,7 @@ export const routes = [
     name: 'home',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Home'
+        /* webpackChunkName: "frontend.page.home" */ 'frontend/pages/Home/index.vue'
       ),
     meta: {
       title: 'home',
@@ -20,7 +21,7 @@ export const routes = [
     name: 'search',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.search" */ 'frontend/pages/Search'
+        /* webpackChunkName: "frontend.page.search" */ 'frontend/pages/Search/index.vue'
       ),
     meta: {
       title: 'search',
@@ -31,7 +32,7 @@ export const routes = [
     name: 'impressum',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.impressum" */ 'frontend/pages/Impressum'
+        /* webpackChunkName: "frontend.page.impressum" */ 'frontend/pages/Impressum/index.vue'
       ),
     meta: {
       title: 'impressum',
@@ -42,7 +43,7 @@ export const routes = [
     name: 'privacy-policy',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.privacy" */ 'frontend/pages/PrivacyPolicy'
+        /* webpackChunkName: "frontend.page.privacy" */ 'frontend/pages/PrivacyPolicy/index.vue'
       ),
     meta: {
       title: 'privacyPolicy',
@@ -53,7 +54,7 @@ export const routes = [
     name: 'hangar',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar'
+        /* webpackChunkName: "frontend.page.hangar" */ 'frontend/pages/Hangar/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -68,7 +69,7 @@ export const routes = [
     name: 'hangar-preview',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar-preview" */ 'frontend/pages/Hangar/Preview'
+        /* webpackChunkName: "frontend.page.hangar-preview" */ 'frontend/pages/Hangar/Preview/index.vue'
       ),
     meta: {
       title: 'hangar.preview',
@@ -80,7 +81,7 @@ export const routes = [
     name: 'hangar-fleetchart',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar-fleetchart" */ 'frontend/pages/Hangar/Fleetchart'
+        /* webpackChunkName: "frontend.page.hangar-fleetchart" */ 'frontend/pages/Hangar/Fleetchart/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -95,7 +96,7 @@ export const routes = [
     name: 'hangar-stats',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar-stats" */ 'frontend/pages/Hangar/Stats'
+        /* webpackChunkName: "frontend.page.hangar-stats" */ 'frontend/pages/Hangar/Stats/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -108,7 +109,7 @@ export const routes = [
     name: 'hangar-public',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar-public" */ 'frontend/pages/Hangar/Public'
+        /* webpackChunkName: "frontend.page.hangar-public" */ 'frontend/pages/Hangar/Public/index.vue'
       ),
     meta: {
       backgroundImage: 'bg-5',
@@ -119,7 +120,7 @@ export const routes = [
     name: 'hangar-public-fleetchart',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart'
+        /* webpackChunkName: "frontend.page.hangar-public-fleetchart" */ 'frontend/pages/Hangar/PublicFleetchart/index.vue'
       ),
     meta: {
       backgroundImage: 'bg-5',
@@ -130,7 +131,7 @@ export const routes = [
     name: 'models',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models'
+        /* webpackChunkName: "frontend.page.ships" */ 'frontend/pages/Models/index.vue'
       ),
     meta: {
       title: 'models.index',
@@ -142,7 +143,7 @@ export const routes = [
     name: 'models-fleetchart',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships-fleetchart" */ 'frontend/pages/Models/Fleetchart'
+        /* webpackChunkName: "frontend.page.ships-fleetchart" */ 'frontend/pages/Models/Fleetchart/index.vue'
       ),
     meta: {
       title: 'models.fleetchart',
@@ -154,7 +155,7 @@ export const routes = [
     name: 'models-compare',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships-compare" */ 'frontend/pages/Models/Compare'
+        /* webpackChunkName: "frontend.page.ships-compare" */ 'frontend/pages/Models/Compare/index.vue'
       ),
     meta: {
       title: 'compare.models',
@@ -165,7 +166,7 @@ export const routes = [
     name: 'model',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships-detail" */ 'frontend/pages/Models/Show'
+        /* webpackChunkName: "frontend.page.ships-detail" */ 'frontend/pages/Models/Show/index.vue'
       ),
   },
   {
@@ -173,7 +174,7 @@ export const routes = [
     name: 'model-images',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships-images" */ 'frontend/pages/Models/Show/Images'
+        /* webpackChunkName: "frontend.page.ships-images" */ 'frontend/pages/Models/Show/Images/index.vue'
       ),
   },
   {
@@ -181,7 +182,7 @@ export const routes = [
     name: 'model-videos',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.ships-videos" */ 'frontend/pages/Models/Show/Videos'
+        /* webpackChunkName: "frontend.page.ships-videos" */ 'frontend/pages/Models/Show/Videos/index.vue'
       ),
   },
   {
@@ -189,7 +190,7 @@ export const routes = [
     name: 'stats',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats'
+        /* webpackChunkName: "frontend.page.stats" */ 'frontend/pages/Stats/index.vue'
       ),
     meta: {
       title: 'stats',
@@ -200,9 +201,10 @@ export const routes = [
     name: 'fleets',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets'
+        /* webpackChunkName: "frontend.page.fleets" */ 'frontend/pages/Fleets/index.vue'
       ),
     children: FleetsRoutes,
+    redirect: { name: FleetsRoutes[0].name },
     meta: {
       title: 'fleets',
       backgroundImage: 'bg-8',
@@ -213,7 +215,7 @@ export const routes = [
     name: 'images',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images'
+        /* webpackChunkName: "frontend.page.images" */ 'frontend/pages/Images/index.vue'
       ),
     meta: {
       title: 'images',
@@ -224,7 +226,7 @@ export const routes = [
     name: 'stations',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations'
+        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/Stations/index.vue'
       ),
     children: StationsRoutes,
     meta: {
@@ -234,14 +236,16 @@ export const routes = [
     },
   },
   {
-    path: '/trade-routes/',
-    name: 'trade-routes',
+    path: '/tools/',
+    name: 'tools',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.stations" */ 'frontend/pages/TradeRoutes'
+        /* webpackChunkName: "frontend.page.tools" */ 'frontend/pages/Tools/index.vue'
       ),
+    children: ToolsRoutes,
+    redirect: { name: ToolsRoutes[0].name },
     meta: {
-      title: 'tradeRoutes',
+      title: 'tools',
       backgroundImage: 'bg-7',
     },
   },
@@ -251,7 +255,7 @@ export const routes = [
     children: RoadmapRoutes,
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap'
+        /* webpackChunkName: "frontend.page.roadmap" */ 'frontend/pages/Roadmap/index.vue'
       ),
     meta: {
       title: 'roadmap.index',
@@ -262,7 +266,7 @@ export const routes = [
     name: 'settings',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings'
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -277,7 +281,7 @@ export const routes = [
     name: 'signup',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Signup'
+        /* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Signup/index.vue'
       ),
     meta: {
       title: 'signUp',
@@ -288,7 +292,7 @@ export const routes = [
     name: 'login',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.login" */ 'frontend/pages/Login'
+        /* webpackChunkName: "frontend.page.login" */ 'frontend/pages/Login/index.vue'
       ),
     meta: {
       title: 'login',
@@ -299,7 +303,7 @@ export const routes = [
     name: 'request-password',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.password" */ 'frontend/pages/RequestPassword'
+        /* webpackChunkName: "frontend.page.password" */ 'frontend/pages/RequestPassword/index.vue'
       ),
     meta: {
       title: 'requestPassword',
@@ -310,7 +314,7 @@ export const routes = [
     name: 'change-password',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.password" */ 'frontend/pages/ChangePassword'
+        /* webpackChunkName: "frontend.page.password" */ 'frontend/pages/ChangePassword/index.vue'
       ),
     meta: {
       title: 'changePassword',
@@ -321,7 +325,7 @@ export const routes = [
     name: 'confirm',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Confirm'
+        /* webpackChunkName: "frontend.page.signup" */ 'frontend/pages/Confirm/index.vue'
       ),
   },
   {
@@ -329,7 +333,7 @@ export const routes = [
     name: '404',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'
+        /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound/index.vue'
       ),
     meta: {
       title: 'notFound',
@@ -340,7 +344,7 @@ export const routes = [
     path: '*',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound'
+        /* webpackChunkName: "frontend.page.404" */ 'frontend/pages/NotFound/index.vue'
       ),
     meta: {
       title: 'notFound',

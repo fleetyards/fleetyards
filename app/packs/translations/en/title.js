@@ -61,7 +61,10 @@ export default {
     models: 'Compare Ships',
   },
   notFound: '404',
-  tradeRoutes: 'Trade Routes',
+  tools: {
+    profitCalculator: 'Profit Calculator',
+    tradeRoutes: 'Trade Routes',
+  },
   commodities: 'Commodities',
   impressum: 'Impressum',
   privacyPolicy: 'Privacy policy',

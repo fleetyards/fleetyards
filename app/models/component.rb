@@ -4,21 +4,25 @@
 #
 # Table name: components
 #
-#  id              :uuid             not null, primary key
-#  component_class :string
-#  description     :text
-#  grade           :string
-#  item_class      :integer
-#  item_type       :string
-#  name            :string(255)
-#  sc_identifier   :string
-#  size            :string(255)
-#  slug            :string
-#  store_image     :string
-#  tracking_signal :integer
-#  created_at      :datetime
-#  updated_at      :datetime
-#  manufacturer_id :uuid
+#  id               :uuid             not null, primary key
+#  component_class  :string
+#  description      :text
+#  durability       :string
+#  grade            :string
+#  heat_connection  :string
+#  item_class       :integer
+#  item_type        :string
+#  name             :string(255)
+#  power_connection :string
+#  sc_identifier    :string
+#  size             :string(255)
+#  slug             :string
+#  store_image      :string
+#  tracking_signal  :integer
+#  type_data        :string
+#  created_at       :datetime
+#  updated_at       :datetime
+#  manufacturer_id  :uuid
 #
 # Indexes
 #
@@ -51,6 +55,11 @@ class Component < ApplicationRecord
 
   mount_uploader :store_image, StoreImageUploader
 
+  serialize :type_data
+  serialize :durability
+  serialize :power_connection
+  serialize :heat_connection
+
   def self.ordered_by_name
     order(name: :asc)
   end
@@ -69,15 +78,29 @@ class Component < ApplicationRecord
 
   def self.item_types
     %w[
-      weapons
-      turrets
       shield_generators
-      missiles
       coolers
       power_plants
       quantum_drives
-      mining_lasers
+      weapons
+      turrets
+      manned_turrets
+      remote_turrets
+      missile_turrets
+      missiles
       missile_racks
+      mining_lasers
+      fuel_intakes
+      fuel_tanks
+      quantum_fuel_tanks
+      scanners
+      mid_range_radar
+      thrusters
+      joint_thrusters
+      fixed_thrusters
+      weapon_defensive
+      countermeasure_launcher
+      cargo_grids
     ]
   end
 

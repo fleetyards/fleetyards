@@ -257,13 +257,13 @@ export default class TradeRoutes extends Vue {
 
   get title(): string {
     if (this.cargoShip) {
-      return this.$t('headlines.tradeRoutes.withShip', {
+      return this.$t('headlines.tools.tradeRoutes.withShip', {
         name: `${this.cargoShip.manufacturer.code} ${this.cargoShip.name}`,
         cargo: this.$toNumber(this.cargoShip.cargo, 'cargo'),
       })
     }
 
-    return this.$t('headlines.tradeRoutes.index')
+    return this.$t('headlines.tools.tradeRoutes.index')
   }
 
   get availableCargo(): number {

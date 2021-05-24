@@ -83,9 +83,14 @@ export default {
     },
   },
   roadmap: 'Ship-Roadmap',
-  tradeRoutes: {
-    index: 'Trade Routes',
-    withShip: 'Trade Routes for %{name} (%{cargo})',
+  tools: {
+    profitCalculator: {
+      index: 'Profit Calculator',
+    },
+    tradeRoutes: {
+      index: 'Trade Routes',
+      withShip: 'Trade Routes for %{name} (%{cargo})',
+    },
   },
   starsystems: 'Starsystems',
   starsystem: '%{starsystem} Starsystem',

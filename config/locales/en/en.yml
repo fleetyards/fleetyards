@@ -44,7 +44,8 @@ en:
       home: Home
       search: Search Results
       images: Images
-      trade-routes: Trade Routes
+      tools_trade-routes: Trade Routes
+      tools_profit_calculator: Profit Calculator
       ships: Ships
       shops: Shops
       stations: Stations

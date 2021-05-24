@@ -6,7 +6,7 @@ export const routes = [
     name: 'settings-profile',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Profile'
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Profile/index.vue'
       ),
     meta: {
       title: 'settings.index',
@@ -18,7 +18,7 @@ export const routes = [
     name: 'settings-account',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Account'
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Account/index.vue'
       ),
     meta: {
       title: 'settings.account',
@@ -30,7 +30,7 @@ export const routes = [
     name: 'settings-notifications',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Notifications'
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Notifications/index.vue'
       ),
     meta: {
       title: 'settings.notifications',
@@ -42,7 +42,7 @@ export const routes = [
     name: 'settings-hangar',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Hangar'
+        /* webpackChunkName: "frontend.page.settings" */ 'frontend/pages/Settings/Hangar/index.vue'
       ),
     meta: {
       title: 'settings.hangar',
@@ -54,7 +54,7 @@ export const routes = [
     name: 'settings-security',
     component: () =>
       import(
-        /* webpackChunkName: "frontend.page.settings.security" */ 'frontend/pages/Settings/Security'
+        /* webpackChunkName: "frontend.page.settings.security" */ 'frontend/pages/Settings/Security/index.vue'
       ),
     meta: {
       needsAuthentication: true,

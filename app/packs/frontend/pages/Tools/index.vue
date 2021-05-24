@@ -6,6 +6,6 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 
-@Component<Fleets>({})
-export default class Fleets extends Vue {}
+@Component<Tools>({})
+export default class Tools extends Vue {}
 </script>

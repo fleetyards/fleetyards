@@ -20,7 +20,10 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
 
   get 'compare/ships' => 'base#compare_models'
 
-  get 'trade-routes' => 'base#index'
+  get 'tools' => 'base#index'
+  get 'tools/profit-calculator' => 'base#index'
+  get 'tools/trade-routes' => 'base#index'
+  get 'trade-routes', to: redirect('/tools/trade-routes')
 
   get 'stations' => 'base#index'
   get 'shops' => 'base#index'

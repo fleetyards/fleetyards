@@ -142,6 +142,13 @@ module Api
         @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
+      def hardpoints
+        authorize! :show, :api_models
+
+        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @hardpoints = model.model_hardpoints.includes(:component)
+      end
+
       def images
         authorize! :show, :api_models
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!

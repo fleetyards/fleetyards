@@ -24,6 +24,7 @@ v1_api_routes = lambda do
       get :embed
     end
     member do
+      get :hardpoints
       get :images
       get :videos
       get :variants

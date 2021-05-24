@@ -7,7 +7,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets-add" */
-        'frontend/pages/Fleets/Add'
+        'frontend/pages/Fleets/Add/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -21,7 +21,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets-preview" */
-        'frontend/pages/Fleets/Preview'
+        'frontend/pages/Fleets/Preview/index.vue'
       ),
     meta: {
       title: 'fleets.preview',
@@ -34,7 +34,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets-invites" */
-        'frontend/pages/Fleets/Invites'
+        'frontend/pages/Fleets/Invites/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -48,7 +48,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets-invites" */
-        'frontend/pages/Fleets/Invite'
+        'frontend/pages/Fleets/Invite/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -61,7 +61,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Show'
+        'frontend/pages/Fleets/Show/index.vue'
       ),
     meta: {
       backgroundImage: 'bg-8',
@@ -73,7 +73,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.ships" */
-        'frontend/pages/Fleets/Ships'
+        'frontend/pages/Fleets/Ships/index.vue'
       ),
     meta: {
       backgroundImage: 'bg-8',
@@ -85,7 +85,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Fleetchart'
+        'frontend/pages/Fleets/Fleetchart/index.vue'
       ),
     meta: {
       backgroundImage: 'bg-8',
@@ -97,7 +97,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Members'
+        'frontend/pages/Fleets/Members/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -110,7 +110,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Settings'
+        'frontend/pages/Fleets/Settings/index.vue'
       ),
     meta: {
       needsAuthentication: true,
@@ -127,7 +127,7 @@ export const routes = [
     component: () =>
       import(
         /* webpackChunkName: "frontend.page.fleets" */
-        'frontend/pages/Fleets/Stats'
+        'frontend/pages/Fleets/Stats/index.vue'
       ),
     meta: {
       needsAuthentication: true,

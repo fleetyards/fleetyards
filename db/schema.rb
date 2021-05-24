@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_120532) do
+ActiveRecord::Schema.define(version: 2021_05_22_212518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -156,6 +156,10 @@ ActiveRecord::Schema.define(version: 2021_05_19_120532) do
     t.integer "item_class"
     t.integer "tracking_signal"
     t.string "sc_identifier"
+    t.string "type_data"
+    t.string "durability"
+    t.string "power_connection"
+    t.string "heat_connection"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
