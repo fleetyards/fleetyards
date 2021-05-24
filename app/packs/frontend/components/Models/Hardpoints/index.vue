@@ -33,6 +33,19 @@
         />
       </div>
     </div>
+    <div v-if="scunpackedUrl" class="d-flex justify-content-end">
+      <Btn
+        :href="scunpackedUrl"
+        variant="link"
+        :mobile-block="true"
+        class="scunpacked-link"
+      >
+        <small>{{ $t('labels.scunpacked.prefix') }}</small>
+        <i>
+          {{ $t('labels.scunpacked.link') }}
+        </i>
+      </Btn>
+    </div>
   </div>
 </template>
 
@@ -49,9 +62,31 @@ import HardpointGroup from './Group'
   },
 })
 export default class Hardpoints extends Vue {
-  @Prop({ required: true }) hardpoints!: Hardpoint[]
+  @Prop({ required: true }) model!: Model
 
-  @Prop({ default: null }) erkulUrl!: string
+  get hardpoints() {
+    return this.model.hardpoints
+  }
+
+  get erkulUrl(): string | null {
+    if (
+      !this.model ||
+      this.model.productionStatus !== 'flight-ready' ||
+      !this.model.scIdentifier
+    ) {
+      return null
+    }
+
+    return `https://www.erkul.games/ship/${this.model.scIdentifier}`
+  }
+
+  get scunpackedUrl(): string | null {
+    if (!this.model.scIdentifier) {
+      return null
+    }
+
+    return `https://scunpacked.com/ships/${this.model.scIdentifier}`
+  }
 
   hardpointsForGroup(group) {
     return this.hardpoints.filter(hardpoint => hardpoint.group === group)

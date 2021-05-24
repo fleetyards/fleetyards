@@ -23,6 +23,16 @@ export class ModelPaintsCollection extends BaseCollection {
 
     return this.records
   }
+
+  async findAllByModel(modelSlug: string): Promise<ModelPaint[]> {
+    const response = await get(`models/${modelSlug}/paints`)
+
+    if (!response.error) {
+      this.records = response.data
+    }
+
+    return this.records
+  }
 }
 
 export default new ModelPaintsCollection()

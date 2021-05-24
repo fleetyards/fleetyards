@@ -161,39 +161,14 @@
         <hr />
         <div class="row components">
           <div class="col-12">
-            <ModelHardpoints
-              :hardpoints="model.hardpoints"
-              :erkul-url="erkulUrl"
-            />
+            <Hardpoints :model="model" />
           </div>
         </div>
       </div>
       <Loader :loading="loading" />
     </div>
-    <hr v-if="paints.length" />
-    <div class="row">
-      <div class="col-12 paints">
-        <h2 v-if="paints.length" class="text-uppercase">
-          {{ $t('labels.model.paints') }}
-        </h2>
-        <transition-group
-          v-if="paints.length"
-          name="fade-list"
-          class="row"
-          tag="div"
-          appear
-        >
-          <div
-            v-for="paint in paints"
-            :key="`paint-${paint.slug}`"
-            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-          >
-            <TeaserPanel :item="paint" :fullscreen="true" />
-          </div>
-        </transition-group>
-        <Loader :loading="loadingPaints" :fixed="true" />
-      </div>
-    </div>
+    <Paints :model="model" />
+
     <hr v-if="modules.length" />
     <div class="row">
       <div class="col-12 modules">
@@ -293,7 +268,8 @@ import TeaserPanel from 'frontend/core/components/TeaserPanel'
 import Panel from 'frontend/core/components/Panel'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import ModelHardpoints from 'frontend/components/Models/Hardpoints'
+import Hardpoints from 'frontend/components/Models/Hardpoints'
+import Paints from 'frontend/components/Models/PaintsList'
 import ModelBaseMetrics from 'frontend/components/Models/BaseMetrics'
 import ModelCrewMetrics from 'frontend/components/Models/CrewMetrics'
 import ModelSpeedMetrics from 'frontend/components/Models/SpeedMetrics'
@@ -313,13 +289,14 @@ import modelsCollection from 'frontend/api/collections/Models'
     TeaserPanel,
     Btn,
     BtnDropdown,
-    ModelHardpoints,
+    Hardpoints,
     ModelBaseMetrics,
     ModelCrewMetrics,
     ModelSpeedMetrics,
     ModelPanel,
     BreadCrumbs,
     HoloViewer,
+    Paints,
   },
   mixins: [MetaInfo, HangarItemsMixin],
   beforeRouteEnter: modelRouteGuard,
@@ -331,8 +308,6 @@ export default class ModelDetail extends Vue {
 
   loadingLoaners: boolean = false
 
-  loadingPaints: boolean = false
-
   loadingModules: boolean = false
 
   loadingUpgrades: boolean = false
@@ -340,8 +315,6 @@ export default class ModelDetail extends Vue {
   show3d: boolean = false
 
   variants: Model[] = []
-
-  paints: ModelPaint[] = []
 
   loaners: ModelLoaner[] = []
 
@@ -381,18 +354,6 @@ export default class ModelDetail extends Vue {
 
   get starship42IframeUrl(): string {
     return `https://starship42.com/fleetview/fleetyards/?s=${this.model.rsiName}&type=matrix`
-  }
-
-  get erkulUrl(): string | null {
-    if (
-      !this.model ||
-      this.model.productionStatus !== 'flight-ready' ||
-      !this.model.scIdentifier
-    ) {
-      return null
-    }
-
-    return `https://www.erkul.games/ship/${this.model.scIdentifier}`
   }
 
   get metaTitle() {
@@ -438,7 +399,6 @@ export default class ModelDetail extends Vue {
   fetchExtras() {
     this.fetchModules()
     this.fetchUpgrades()
-    this.fetchPaints()
     this.fetchVariants()
     this.fetchLoaners()
   }
@@ -462,17 +422,6 @@ export default class ModelDetail extends Vue {
     this.loadingUpgrades = false
     if (!response.error) {
       this.upgrades = response.data
-    }
-  }
-
-  async fetchPaints() {
-    this.loadingPaints = true
-    const response = await this.$api.get(
-      `models/${this.$route.params.slug}/paints`,
-    )
-    this.loadingPaints = false
-    if (!response.error) {
-      this.paints = response.data
     }
   }
 
