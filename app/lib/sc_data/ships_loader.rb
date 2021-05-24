@@ -37,7 +37,7 @@ module ScData
         mass: ship_data['Mass']&.to_f,
         cargo_holds: extract_cargo_holds(components_data['CargoGrids']),
         hydrogen_fuel_tanks: extract_hydrogen_fuel_tanks(components_data['HydrogenFuelTanks']),
-        quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data['QuantumFuelTanks']),
+        quantum_fuel_tanks: extract_quantum_fuel_tanks(components_data['QuantumFuelTanks'])
       )
     end
 

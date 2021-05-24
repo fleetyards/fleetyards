@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: model_hardpoint_loadouts
@@ -9,7 +11,7 @@
 #  component_id       :uuid
 #  model_hardpoint_id :uuid
 #
-require "test_helper"
+require 'test_helper'
 
 class ModelHardpointLoadoutTest < ActiveSupport::TestCase
   # test "the truth" do
