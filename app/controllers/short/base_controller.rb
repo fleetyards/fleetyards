@@ -13,5 +13,9 @@ module Short
     def trade_routes
       redirect_to frontend_tools_trade_routes_url(params: request.query_parameters)
     end
+
+    def model_compare
+      redirect_to frontend_compare_ships_url(params: request.query_parameters)
+    end
   end
 end
