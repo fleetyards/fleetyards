@@ -5,6 +5,7 @@
 # Table name: components
 #
 #  id               :uuid             not null, primary key
+#  ammunition       :string
 #  component_class  :string
 #  description      :text
 #  durability       :string
@@ -59,6 +60,7 @@ class Component < ApplicationRecord
   serialize :durability
   serialize :power_connection
   serialize :heat_connection
+  serialize :ammunition
 
   def self.ordered_by_name
     order(name: :asc)

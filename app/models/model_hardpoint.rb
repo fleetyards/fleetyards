@@ -4,21 +4,25 @@
 #
 # Table name: model_hardpoints
 #
-#  id             :uuid             not null, primary key
-#  category       :integer
-#  deleted_at     :datetime
-#  details        :string
-#  group          :integer
-#  hardpoint_type :integer
-#  item_slots     :integer
-#  key            :string
-#  mount          :string
-#  size           :integer
-#  source         :integer
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  component_id   :uuid
-#  model_id       :uuid
+#  id                 :uuid             not null, primary key
+#  category           :integer
+#  deleted_at         :datetime
+#  details            :string
+#  group              :integer
+#  hardpoint_type     :integer
+#  item_slot          :integer
+#  item_slots         :integer
+#  key                :string
+#  loadout_identifier :string
+#  mount              :string
+#  name               :string
+#  size               :integer
+#  source             :integer
+#  sub_category       :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  component_id       :uuid
+#  model_id           :uuid
 #
 # Indexes
 #
@@ -28,6 +32,7 @@
 class ModelHardpoint < ApplicationRecord
   belongs_to :model, touch: true
   belongs_to :component, optional: true
+  has_many :model_hardpoint_loadouts, dependent: :destroy
 
   validates :model_id, :source, :key, :hardpoint_type, :group, presence: true
 
@@ -38,29 +43,36 @@ class ModelHardpoint < ApplicationRecord
   GAME_FILE_HARDPOINT_TYPES = {
     power_plants: 10, coolers: 11, shield_generators: 12,
     quantum_drives: 22,
+    main_thrusters: 30, maneuvering_thrusters: 31,
     weapons: 40, turrets: 41, missiles: 42,
   }.freeze
 
   SHIP_MATRIX_HARDPOINT_TYPES = {
     radar: 0, computers: 1,
     fuel_intakes: 20, fuel_tanks: 21, jump_modules: 23, quantum_fuel_tanks: 24,
-    main_thrusters: 30, maneuvering_thrusters: 31,
     utility_items: 43
   }.freeze
 
-  enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES)
+  enum hardpoint_type: SHIP_MATRIX_HARDPOINT_TYPES.merge(GAME_FILE_HARDPOINT_TYPES), _suffix: true
 
-  enum group: { avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4 }
+  enum group: { avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4 }, _suffix: true
 
   enum category: {
-    main: 0, retro: 1, vtol: 2, fixed: 3, gimbal: 4, joint: 5,
-    manned_turret: 20, remote_turret: 21, missile_rack: 30
+    main: 0, retro: 1, vtol: 2,
+    fixed: 3, gimbal: 4, joint: 5,
+    manned_turret: 20, remote_turret: 21, missile_turret: 22,
+    missile_rack: 30
   }
+
+  enum sub_category: {
+    retro_thrusters: 0, vtol_thrusters: 1,
+    manned_turrets: 10, remote_turrets: 11, missile_turret: 12
+  }, _suffix: true
 
   enum size: {
     vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
     ten: 10, eleven: 11, twelve: 12, small: 101, medium: 102, large: 103, capital: 104, tbd: 999
-  }
+  }, _suffix: true
 
   def self.types_by_group
     types_by_group = {}

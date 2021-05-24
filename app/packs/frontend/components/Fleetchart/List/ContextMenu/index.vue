@@ -149,7 +149,6 @@ export default class FleetchartItemContextMenu extends Vue {
     } else {
       this.leftPosition = ev.clientX
     }
-
     // @ts-ignore
     if (window.innerHeight - ev.clientY < element.$el.offsetHeight) {
       // @ts-ignore

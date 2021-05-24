@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: model_hardpoint_loadouts
+#
+#  id                 :uuid             not null, primary key
+#  name               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  component_id       :uuid
+#  model_hardpoint_id :uuid
+#
+
+one:
+  component_id: 
+  model_hardpoint_id: 
+  name: MyString
+
+two:
+  component_id: 
+  model_hardpoint_id: 
+  name: MyString

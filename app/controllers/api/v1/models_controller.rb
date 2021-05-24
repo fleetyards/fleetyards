@@ -146,7 +146,12 @@ module Api
         authorize! :show, :api_models
 
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
-        @hardpoints = model.model_hardpoints.includes(:component)
+
+        scope = model.model_hardpoints.includes(:component).undeleted
+
+        scope = scope.where(source: params[:source]) if params[:source].present?
+
+        @hardpoints = scope
       end
 
       def images

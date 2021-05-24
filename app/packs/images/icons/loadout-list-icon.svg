@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Slice</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Group" transform="translate(10.000000, 4.500000)" stroke="#7A8288" stroke-width="2">
+            <line x1="0.5" y1="0" x2="0.5" y2="5" id="Line"></line>
+            <line x1="0.5" y1="5" x2="5.5" y2="5" id="Line-2"></line>
+        </g>
+    </g>
+</svg>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_22_212518) do
+ActiveRecord::Schema.define(version: 2021_05_24_131458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 2021_05_22_212518) do
     t.string "durability"
     t.string "power_connection"
     t.string "heat_connection"
+    t.string "ammunition"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
   end
 
@@ -287,26 +288,6 @@ ActiveRecord::Schema.define(version: 2021_05_22_212518) do
     t.index ["user_id"], name: "index_hangar_groups_on_user_id"
   end
 
-  create_table "hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "quantity"
-    t.uuid "model_id"
-    t.uuid "component_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "component_class"
-    t.string "hardpoint_type"
-    t.integer "mounts"
-    t.string "size"
-    t.string "details"
-    t.string "category"
-    t.boolean "default_empty", default: false
-    t.string "rsi_key"
-    t.datetime "deleted_at"
-    t.string "key"
-    t.index ["component_id"], name: "index_hardpoints_on_component_id"
-    t.index ["model_id"], name: "index_hardpoints_on_model_id"
-  end
-
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 255
     t.uuid "gallery_id"
@@ -353,6 +334,14 @@ ActiveRecord::Schema.define(version: 2021_05_22_212518) do
     t.index ["model_id"], name: "index_model_additions_on_model_id"
   end
 
+  create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "component_id"
+    t.uuid "model_hardpoint_id"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "model_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "size"
     t.integer "source"
@@ -368,6 +357,10 @@ ActiveRecord::Schema.define(version: 2021_05_22_212518) do
     t.integer "item_slots"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+    t.string "loadout_identifier"
+    t.integer "item_slot"
+    t.integer "sub_category"
     t.index ["component_id"], name: "index_model_hardpoints_on_component_id"
     t.index ["model_id"], name: "index_model_hardpoints_on_model_id"
   end
@@ -816,7 +809,6 @@ ActiveRecord::Schema.define(version: 2021_05_22_212518) do
     t.boolean "notify", default: true
     t.string "serial"
     t.string "alternative_names"
-    t.integer "sort_index", default: 0
     t.index ["model_id"], name: "index_vehicles_on_model_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"

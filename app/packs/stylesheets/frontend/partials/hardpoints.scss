@@ -44,6 +44,12 @@
   }
 }
 
+.hardpoint-type-icon-small {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+
 .hardpoint-item {
   display: flex;
   align-items: center;
@@ -65,8 +71,14 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    align-items: center;
     justify-content: space-between;
+
+    .hardpoint-item-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
   .hardpoint-item-size {
@@ -78,6 +90,22 @@
   .hardpoint-item-component-manufacturer {
     color: $gray-light;
     font-size: 80%;
+  }
+
+  .hardpoint-item-loadout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .hardpoint-item-loadout-quantity {
+      padding-right: 10px;
+      white-space: nowrap;
+
+      .hardpoint-item-loadout-quantity-icon {
+        width: 20px;
+      }
+    }
   }
 
   .hardpoint-item-inner {
@@ -117,7 +145,7 @@
     }
 
     &.has-component {
-      cursor: pointer;
+      // cursor: pointer;
       // transition: border .5s ease;
 
       // &:hover {

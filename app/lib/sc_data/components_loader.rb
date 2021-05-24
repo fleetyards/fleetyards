@@ -11,111 +11,86 @@ module ScData
       self.translations_loader = ::ScData::TranslationsLoader.new
     end
 
-    def extract_from_ref(component_ref)
-      sc_identifier = component_ref['entityClassName']
+    def load(sc_identifier)
+      sleep 1
 
-      component_data = load(sc_identifier)
+      component_response = fetch_remote("#{sc_identifier.downcase}.json")
 
+      return unless component_response.success?
+
+      component_data = (parse_json_response(component_response) || {})
+
+      extract_component!(component_data)
+    end
+
+    def extract_component!(component_data)
       return if component_data.blank?
 
-      loadouts = extract_loadouts(component_ref)
-      loadout_identifier = loadouts.first['entityClassName'] if loadouts.present?
+      name = component_data['Name']
+      name = translations_loader.translate(name) if needs_translation?(name)
 
-      component_data.merge({
-                             mount: component_ref['itemPortName'],
-                             loadouts: loadouts,
-                             loadout_identifier: loadout_identifier
-                           })
-    end
+      return if name == '<= PLACEHOLDER =>'
 
-    def load(sc_identifier)
-      item_response = fetch_remote("#{sc_identifier.downcase}.json")
+      component = Component.find_or_create_by!(
+        sc_identifier: component_data['ClassName'],
+        name: name
+      )
 
-      return unless item_response.success?
+      manufacturer_name = component_data.dig('Manufacturer', 'Name')
+      manufacturer = Manufacturer.find_or_create_by!(name: manufacturer_name) if manufacturer_name.present?
 
-      item_data = parse_json_response(item_response)
+      description = component_data['Description']
+      description = translations_loader.translate(description) if needs_translation?(description)
 
-      component_data = item_data.dig('Raw', 'Entity', 'Components')
-
-      {
-        component: component_data,
-        identifier: sc_identifier,
-        base: extract_base_component_data(component_data),
-        ports: extract_ports(component_data)
-      }
-    end
-
-    def create_or_update(sc_identifier)
-      item = load(sc_identifier)
-
-      return if item.dig(:base, :name) == '<= PLACEHOLDER =>'
-
-      component = Component.find_or_create_by(name: item.dig(:base, :name))
-
-      manufacturer_name = item.dig(:base, :description).scan(/Manufacturer: ((\w|\s)+)\\n/).last&.first
-
-      if component.present?
-        manufacturer = Manufacturer.find_or_create_by(name: manufacturer_name) if manufacturer_name.present?
-
-        component.update(
-          size: item.dig(:base, :size),
-          grade: item.dig(:base, :grade),
-          description: item.dig(:base, :description),
-          manufacturer: manufacturer || component.manufacturer
-        )
-      end
+      component.update!(
+        size: component_data['Size'],
+        grade: component_data['Grade'],
+        item_class: extract_item_class(description),
+        description: description,
+        manufacturer: manufacturer || component.manufacturer,
+        type_data: extract_type_data(component_data),
+        durability: extract_durability(component_data),
+        power_connection: extract_power_connection(component_data),
+        heat_connection: extract_heat_connection(component_data),
+        ammunition: extract_ammunition(component_data)
+      )
 
       component
     end
 
-    def extract_loadouts(component_ref)
-      component_ref.dig('loadout', 'SItemPortLoadoutManualParams', 'entries') || []
+    private def extract_item_class(description)
+      description&.scan(/Class: ((\w|\s)+)\\n/)&.last&.first
     end
 
-    private def extract_ports(component_data)
-      component_data.dig('SCItem', 'ItemPorts', 0, 'Ports') || []
+    private def extract_type_data(component_data)
+      %w[
+        Shield MissileRack Missile Weapon PowerPlant Cooler QuantumDrive QuantumFuelTank Thruster
+        HydrogenFuelTank HydrogenFuelIntake CargoGrid Radar
+      ].filter_map do |type_data_key|
+        component_data[type_data_key]
+      end.first&.transform_keys(&:underscore)
     end
 
-    private def extract_base_component_data(component_data)
-      base_data = component_data.dig('SAttachableComponentParams', 'AttachDef')
-      localized_data = base_data['Localization']
-
-      {
-        size: base_data['Size'],
-        grade: base_data['Grade'],
-        type: base_data['Type'],
-        sub_type: base_data['SubType'],
-        category: category(base_data),
-        name: translations_loader.translate(localized_data['Name']),
-        description: translations_loader.translate(localized_data['Description'])
-      }
+    private def extract_durability(component_data)
+      component_data['Durability']&.transform_keys(&:underscore)
     end
 
-    private def category(base_data)
-      type_to_category(base_data['Type']) || sub_type_to_category(base_data['SubType'])
+    private def extract_power_connection(component_data)
+      component_data['PowerConnection']&.transform_keys(&:underscore)
     end
 
-    private def type_to_category(value)
-      mapping = {
-        'MainThruster' => :main
-      }
-
-      return if mapping[value].blank?
-
-      mapping[value]
+    private def extract_heat_connection(component_data)
+      component_data['HeatConnection']&.transform_keys(&:underscore)
     end
 
-    private def sub_type_to_category(value)
-      mapping = {
-        'MannedTurret' => :manned_turret,
-        'BallTurret' => :remote_turret,
-        'FixedThruster' => :fixed,
-        'JointThruster' => :joint
-      }
+    private def extract_ammunition(component_data)
+      component_data['Ammunition']&.transform_keys(&:underscore)
+    end
 
-      return if mapping[value].blank?
+    private def needs_translation?(string)
+      return false if string.blank?
 
-      mapping[value]
+      string.start_with?('@')
     end
   end
 end

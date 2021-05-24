@@ -5,7 +5,7 @@ module ScData
     attr_accessor :base_url
 
     def initialize
-      self.base_url = 'https://scunpacked.com/api'
+      self.base_url = 'https://scunpacked.com/api/v2'
     end
 
     private def fetch_remote(path)

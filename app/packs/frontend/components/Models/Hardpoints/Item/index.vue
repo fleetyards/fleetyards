@@ -7,14 +7,19 @@
     <div class="hardpoint-item-size">
       {{ $t('labels.hardpoint.size') }} {{ hardpoint.sizeLabel }}
     </div>
-    <div v-if="hardpoint.component" class="hardpoint-item-component">
+    <div
+      v-if="hardpoint.itemSlots > 1 || showComponent"
+      class="hardpoint-item-component"
+    >
       <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
         {{ hardpoint.itemSlots }}x
       </span>
-      {{ hardpoint.component.name }}
-      <!-- <template v-if="hardpoint.type === 'missiles'">
-        ({{ $t('labels.hardpoint.size') }} {{ hardpoint.component.size }})
-      </template> -->
+      <template v-if="showComponent">
+        {{ hardpoint.component.name }}
+      </template>
+      <template v-else-if="hardpoint.itemSlots > 1">
+        TBD
+      </template>
     </div>
     <div
       v-if="hardpoint.categoryLabel && showCategory"
@@ -23,7 +28,17 @@
       <span v-if="hardpoint.itemSlots > 1" class="hardpoint-item-quantity">
         {{ hardpoint.itemSlots }}x
       </span>
-      {{ hardpoint.categoryLabel }}
+
+      <img
+        v-if="isMissileTurret"
+        v-tooltip="hardpoint.categoryLabel"
+        :src="turretIcon"
+        class="hardpoint-type-icon-small"
+        alt="icon-turrets"
+      />
+      <span v-else>
+        {{ hardpoint.categoryLabel }}
+      </span>
     </div>
     <div
       v-if="hardpoint.component && hardpoint.component.manufacturer"
@@ -41,20 +56,34 @@ import { Component, Prop } from 'vue-property-decorator'
 export default class HardpointItem extends Vue {
   @Prop({ required: true }) hardpoint: Hardpoint
 
-  get uuid() {
-    return this._uid
-  }
+  /* eslint-disable global-require */
+  turretIcon = require('images/hardpoints/turrets-dark.svg')
+  /* eslint-enable global-require */
 
   get tooltip() {
-    if (!this.showCategory) {
+    if (
+      !this.showCategory &&
+      this.hardpoint.categoryLabel !== this.hardpoint?.component?.name
+    ) {
       return this.hardpoint.categoryLabel
     }
 
     return this.hardpoint.details
   }
 
+  get isMissileTurret() {
+    return this.hardpoint.category === 'missile_turret'
+  }
+
   get showCategory() {
     return this.hardpoint.type !== 'turrets'
+  }
+
+  get showComponent() {
+    return (
+      this.hardpoint.component &&
+      !['main_thrusters', 'maneuvering_thrusters'].includes(this.hardpoint.type)
+    )
   }
 }
 </script>

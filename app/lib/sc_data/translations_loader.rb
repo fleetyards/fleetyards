@@ -13,13 +13,13 @@ module ScData
     def translate(key)
       return if key.blank?
 
-      translations[key.delete('@')]
+      translations[key.delete('@')] || key
     end
 
     private def load_translations
       response = fetch_remote('labels.json')
 
-      return unless response.success?
+      return {} unless response.success?
 
       parse_json_response(response)
     end
