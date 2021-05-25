@@ -518,6 +518,10 @@ export default {
     prefix: 'Tryout Loadouts with',
     link: "Erkul's DPS Calculator",
   },
+  'scunpacked': {
+    prefix: 'Loadouts based on Gamefiles powered by',
+    link: 'SCunpacked',
+  },
   'filterGroup': {
     nullablePrompt: 'No Option selected',
     prompt: 'Please select an Option',
