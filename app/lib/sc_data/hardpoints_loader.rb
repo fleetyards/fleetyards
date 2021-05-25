@@ -191,7 +191,7 @@ module ScData
       end
 
       ModelHardpointLoadout.where(
-        hardpoint_id: hardpoint.id
+        model_hardpoint_id: hardpoint.id
       ).where.not(id: loadout_ids.flatten)
         .destroy_all
     end
