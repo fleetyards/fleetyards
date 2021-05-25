@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.7](https://github.com/fleetyards/fleetyards/compare/v4.11.6...v4.11.7) (2021-05-25)
+
+
+### Bug Fixes
+
+* fleetchart context menu ([ad95eec](https://github.com/fleetyards/fleetyards/commit/ad95eec82eab767d8f5bfe3fc72fdfd2251e7443))
+* gamefile ship data ([6b14aa9](https://github.com/fleetyards/fleetyards/commit/6b14aa9b21cb648dfb0f3249b40cfae7cdb49f0c))
+* specs ([0c03cad](https://github.com/fleetyards/fleetyards/commit/0c03cadcd37bf34a9995e87f48554fd629400929))
+* specs ([3f4e790](https://github.com/fleetyards/fleetyards/commit/3f4e79031387a090b96e7f6fa2f94ab05845bd96))
+
 ### [4.11.6](https://github.com/fleetyards/fleetyards/compare/v4.11.5...v4.11.6) (2021-05-20)
 
 ### [4.11.5](https://github.com/fleetyards/fleetyards/compare/v4.11.4...v4.11.5) (2021-05-20)
