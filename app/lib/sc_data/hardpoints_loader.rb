@@ -178,13 +178,22 @@ module ScData
     end
 
     private def extract_loadout(hardpoint, ports_data)
+      loadout_ids = []
+
       ports_data.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
 
         component = components_loader.extract_component!(port_data['InstalledItem'])
 
         loadout.update!(component_id: component&.id)
+
+        loadout_ids << loadout.id
       end
+
+      ModelHardpointLoadout.where(
+        hardpoint_id: hardpoint.id
+      ).where.not(id: loadout_ids.flatten)
+        .destroy_all
     end
 
     private def group_for_hardpoint_type(hardpoint_type)
