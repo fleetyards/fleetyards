@@ -13,7 +13,7 @@
       class="hardpoint-item-inner"
       :class="{ 'has-component': loadout.component }"
     >
-      <div class="hardpoint-item-size">
+      <div v-if="showComponent" class="hardpoint-item-size">
         {{ $t('labels.hardpoint.size') }} {{ loadout.component.size }}
       </div>
       <div class="hardpoint-item-component">

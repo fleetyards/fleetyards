@@ -57,9 +57,12 @@ module Admin
     def use_rsi_image
       authorize! :update, model
 
-      model.update(remote_store_image_url: model.rsi_store_image_url)
-
-      redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
+      if model.update(remote_store_image_url: model.rsi_store_image_url)
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model"))
+      else
+        Rails.logger.info model.errors.to_a.to_yaml
+        redirect_to admin_models_path(params: index_back_params, anchor: model.id), error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model"))
+      end
     end
 
     def images
