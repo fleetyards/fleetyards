@@ -180,7 +180,9 @@ module ScData
     private def extract_loadout(hardpoint, ports_data)
       loadout_ids = []
 
-      ports_data.each do |port_data|
+      ports_data.reject do |port_data|
+        port_data.dig('InstalledItem', 'Type').include?('WeaponAttachment')
+      end.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
 
         component = components_loader.extract_component!(port_data['InstalledItem'])
