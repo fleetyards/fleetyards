@@ -6,8 +6,5 @@ json.cache! ['v1', model] do
   json.docks do
     json.array! model.dock_counts, partial: 'api/v1/models/dock', as: :dock_count
   end
-  json.hardpoints do
-    json.array! model.model_hardpoints.includes(:component).undeleted, partial: 'api/v1/models/hardpoint', as: :hardpoint
-  end
   json.partial! 'api/shared/dates', record: model
 end
