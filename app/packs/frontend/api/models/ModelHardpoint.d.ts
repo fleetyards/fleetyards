@@ -1,0 +1,3 @@
+type ModelHardpoint = {
+  id: string
+}

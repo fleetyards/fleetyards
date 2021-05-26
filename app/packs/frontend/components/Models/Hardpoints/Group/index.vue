@@ -47,7 +47,7 @@ import HardpointItems from '../Items'
 export default class HardpointGroup extends Vue {
   @Prop({ required: true }) group: HardpointGroup
 
-  @Prop({ required: true }) hardpoints: Hardpoint[]
+  @Prop({ required: true }) hardpoints: ModelHardpoint[]
 
   @Prop({ default: false }) withoutTitle: boolean
 

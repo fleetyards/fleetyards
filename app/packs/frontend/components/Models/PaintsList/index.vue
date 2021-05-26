@@ -41,12 +41,12 @@ import modelPaintsCollection from 'frontend/api/collections/ModelPaints'
 export default class ModelPaintList extends Vue {
   @Prop({ required: true }) model!: Model
 
-  paintsCollection: ModelPaintsCollection = modelPaintsCollection
+  collection: ModelPaintsCollection = modelPaintsCollection
 
   loading: boolean = false
 
   get paints() {
-    return this.paintsCollection.records
+    return this.collection.records
   }
 
   @Watch('model')
@@ -65,7 +65,7 @@ export default class ModelPaintList extends Vue {
 
     this.loading = true
 
-    await this.paintsCollection.findAllByModel(this.model.slug)
+    await this.collection.findAllByModel(this.model.slug)
 
     this.loading = false
   }
