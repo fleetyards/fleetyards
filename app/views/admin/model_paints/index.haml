@@ -28,6 +28,16 @@
           = render partial: "admin/model_paints/table", :@model_paints => @model_paints
 
       .col-12.col-md-3
+        = form_for :model_paint, url: import_admin_model_paints_path, method: :put do |f|
+          .form-group
+            .input-group
+              = f.file_field :paints_import, class: 'form-control'
+              .input-group-append
+                %button.btn.btn-primary
+                  Import
+
+        %hr
+
         = search_form_for [:admin, @q] do |f|
           .form-group
             = f.label :name_cont

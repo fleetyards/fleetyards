@@ -52,7 +52,11 @@ namespace :admin, path: (Rails.configuration.app.subdomain ? 'admin' : ''), cons
 
   resources :model_modules, path: 'model-modules', except: [:show]
   resources :model_upgrades, path: 'model-upgrades', except: [:show]
-  resources :model_paints, path: 'model-paints', except: [:show]
+  resources :model_paints, path: 'model-paints', except: [:show] do
+    collection do
+      put :import
+    end
+  end
 
   resources :manufacturers, except: [:show]
 

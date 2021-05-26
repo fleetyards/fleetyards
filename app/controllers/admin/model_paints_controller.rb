@@ -53,6 +53,23 @@ module Admin
       end
     end
 
+    def import
+      authorize! :create, :admin_model_paints
+
+      file_data = import_params[:paints_import]
+      paints_data_raw = if file_data.respond_to?(:read)
+                          file_data.read
+                        elsif file_data.respond_to?(:path)
+                          File.read(file_data.path)
+                        end
+
+      paints_data = JSON.parse(paints_data_raw)
+
+      Loaders::PaintsImportJob.perform_later(paints_data)
+
+      redirect_to admin_model_paints_path(params: index_back_params), notice: I18n.t(:"messages.import.success", resource: I18n.t(:"resources.model_paint"))
+    end
+
     private def model_paint_params
       @model_paint_params ||= params.require(:model_paint).permit(
         :name, :hidden, :active, :store_image, :store_image_cache, :remove_store_image,
@@ -83,6 +100,10 @@ module Admin
 
     private def set_active_nav
       @active_nav = 'admin-model_paints'
+    end
+
+    private def import_params
+      @import_params ||= params.require(:model_paint).permit(:paints_import)
     end
   end
 end

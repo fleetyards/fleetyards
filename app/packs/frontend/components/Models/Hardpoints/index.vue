@@ -46,26 +46,34 @@
         </i>
       </Btn>
     </div>
+    <Loader :loading="loading" :fixed="true" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import Btn from 'frontend/core/components/Btn'
+import Loader from 'frontend/core/components/Loader'
+import modelHardpointsCollection from 'frontend/api/collections/ModelHardpoints'
 import HardpointGroup from './Group'
 
 @Component<Hardpoints>({
   components: {
     HardpointGroup,
+    Loader,
     Btn,
   },
 })
 export default class Hardpoints extends Vue {
   @Prop({ required: true }) model!: Model
 
+  collection: ModelHardpointsCollection = modelHardpointsCollection
+
+  loading: boolean = false
+
   get hardpoints() {
-    return this.model.hardpoints
+    return this.collection.records
   }
 
   get erkulUrl(): string | null {
@@ -90,6 +98,27 @@ export default class Hardpoints extends Vue {
 
   hardpointsForGroup(group) {
     return this.hardpoints.filter(hardpoint => hardpoint.group === group)
+  }
+
+  @Watch('model')
+  onModelChange() {
+    this.fetch()
+  }
+
+  mounted() {
+    this.fetch()
+  }
+
+  async fetch() {
+    if (!this.model) {
+      return
+    }
+
+    this.loading = true
+
+    await this.collection.findAllByModel(this.model.slug)
+
+    this.loading = false
   }
 }
 </script>

@@ -1,3 +1,0 @@
-type Hardpoint = {
-  id: string
-}
