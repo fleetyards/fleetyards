@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.9](https://github.com/fleetyards/fleetyards/compare/v4.11.8...v4.11.9) (2021-05-27)
+
+
+### Bug Fixes
+
+* hardpoint loadout component size ([cb9fe4f](https://github.com/fleetyards/fleetyards/commit/cb9fe4ff30891413e89606f82245fd8ab11ddafc))
+* sc data ships loader ([cc8e7a4](https://github.com/fleetyards/fleetyards/commit/cc8e7a470339c403e9534a17ef5c81593b2dc123))
+
 ### [4.11.8](https://github.com/fleetyards/fleetyards/compare/v4.11.7...v4.11.8) (2021-05-25)
 
 ### [4.11.7](https://github.com/fleetyards/fleetyards/compare/v4.11.6...v4.11.7) (2021-05-25)
