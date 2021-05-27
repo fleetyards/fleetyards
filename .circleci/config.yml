@@ -309,7 +309,7 @@ jobs:
           path: ~/app/cypress/screenshots
           destination: e2e-screenshots
 
-  deploy-to-staging:
+  deploy-to-stage:
     <<: *defaults
     steps:
       - checkout
@@ -327,7 +327,11 @@ jobs:
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy
-          command: bundle exec cap staging deploy
+          command: bundle exec cap stage deploy
+      - run: |
+          curl -X POST $APP_SIGNAL_STAGE_DEPLOY_HOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
       - run: |
           curl -X POST $DISCORD_WEBHOOK_STAGE \
           -H 'Content-Type: application/json' \
@@ -357,7 +361,7 @@ jobs:
           name: Create Release
           command: bundle exec thor release:new --push
 
-  deploy-to-production:
+  deploy-to-live:
     <<: *defaults
     steps:
       - checkout
@@ -375,7 +379,11 @@ jobs:
           command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
       - run:
           name: Deploy
-          command: bundle exec cap production deploy
+          command: bundle exec cap live deploy
+      - run: |
+          curl -X POST $APP_SIGNAL_LIVE_DEPLOY_HOOK \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$CIRCLE_SHA1\", \"user\": \"$CIRCLE_USERNAME\"}"
       - run: |
           curl -X POST $DISCORD_WEBHOOK \
           -H 'Content-Type: application/json' \
@@ -433,7 +441,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - deploy-to-production:
+      - deploy-to-live:
           requires:
             - smoke-test
           filters:
@@ -471,7 +479,7 @@ workflows:
       - e2e-test:
           requires:
             - assets
-      - deploy-to-staging:
+      - deploy-to-stage:
           requires:
             - seeds
             - e2e-test
@@ -486,7 +494,7 @@ workflows:
       - request-release:
           type: approval
           requires:
-            - deploy-to-staging
+            - deploy-to-stage
       - create-release:
           requires:
             - request-release
