@@ -12,6 +12,6 @@
 #  model_hardpoint_id :uuid
 #
 class ModelHardpointLoadout < ApplicationRecord
-  belongs_to :model_hardpoint
+  belongs_to :model_hardpoint, touch: true
   belongs_to :component, optional: true
 end
