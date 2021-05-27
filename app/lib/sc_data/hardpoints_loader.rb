@@ -181,7 +181,8 @@ module ScData
       loadout_ids = []
 
       ports_data.reject do |port_data|
-        port_data.dig('InstalledItem', 'Type').include?('WeaponAttachment')
+        port_data.dig('InstalledItem', 'Type')&.include?('WeaponAttachment') ||
+          (port_data['Types'] || []).any? { |type| type.include?('WeaponAttachment') }
       end.each do |port_data|
         loadout = hardpoint.model_hardpoint_loadouts.find_or_create_by!(name: port_data['PortName'])
 
