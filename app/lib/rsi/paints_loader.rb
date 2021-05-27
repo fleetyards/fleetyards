@@ -9,10 +9,15 @@ module Rsi
 
       paints.each do |paint_item|
         paint_item[:model_ids].each do |model_id|
-          ModelPaint.find_or_create_by(name: paint_item[:name], model_id: model_id) do |new_paint|
+          model_paint = ModelPaint.find_or_create_by!(name: paint_item[:name], model_id: model_id) do |new_paint|
             new_paint.remote_store_image_url = paint_item[:remote_store_image_url]
             new_paint.store_url = paint_item[:store_url]
           end
+
+          model_paint.update!(
+            hidden: false,
+            active: true
+          )
         end
       end
     end
