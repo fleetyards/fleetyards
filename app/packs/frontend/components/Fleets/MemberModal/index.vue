@@ -83,7 +83,7 @@ export default class MemberModal extends Vue {
     this.submitting = false
 
     if (!response.error) {
-      this.$comlink.$emit('fleet-member-invited', newMember)
+      this.$comlink.$emit('fleet-member-invited', response.data)
       this.$comlink.$emit('close-modal')
     } else {
       displayAlert({

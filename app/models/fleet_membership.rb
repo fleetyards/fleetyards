@@ -50,7 +50,7 @@ class FleetMembership < ApplicationRecord
   after_save :set_primary
   after_commit :broadcast_update
 
-  aasm do
+  aasm timestamps: true do
     state :created, initial: true
     state :invited
     state :requested
