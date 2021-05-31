@@ -73,7 +73,7 @@ export default class Hardpoints extends Vue {
   loading: boolean = false
 
   get hardpoints() {
-    return this.collection.records
+    return this.collection.records || []
   }
 
   get erkulUrl(): string | null {
