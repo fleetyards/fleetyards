@@ -46,27 +46,25 @@ class Ability
   private def user_rules(user)
     return if user.id.blank?
 
-    officer_fleet_ids = user.fleets
+    admin_and_officer_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)
       .where(fleet_memberships: { role: %i[officer admin], aasm_state: :accepted })
-      .where.not(fleet_memberships: { accepted_at: nil })
       .pluck(:id)
     admin_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)
       .where(fleet_memberships: { role: :admin, aasm_state: :accepted })
-      .where.not(fleet_memberships: { accepted_at: nil })
       .pluck(:id)
 
     can %i[check invites], :api_fleet
     can %i[check_serial], :api_vehicles
     can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
     can %i[show accept_invitation decline_invitation create_by_invite update destroy], FleetMembership, user_id: user.id
-    can %i[create accept_request decline_request], FleetMembership, fleet_id: officer_fleet_ids
+    can %i[create accept_request decline_request], FleetMembership, fleet_id: admin_and_officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
     can %i[exists], :api_fleet_invite_url
-    can %i[show create destroy], FleetInviteUrl, fleet_id: officer_fleet_ids
+    can %i[show create destroy], FleetInviteUrl, fleet_id: admin_and_officer_fleet_ids
     can :create, Fleet
     can :show, Fleet, fleet_memberships: { user_id: user.id }
     cannot :show, Fleet, fleet_memberships: { user_id: user.id, aasm_state: %i[created invited requested declined] }
