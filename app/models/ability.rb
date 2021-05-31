@@ -9,6 +9,8 @@ class Ability
     guest_rules
 
     user_rules(user)
+
+    fleet_rules(user)
   end
 
   private def guest_rules
@@ -46,6 +48,17 @@ class Ability
   private def user_rules(user)
     return if user.id.blank?
 
+    can %i[check_serial], :api_vehicles
+    can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
+    can %i[create update destroy], Vehicle, user_id: user.id
+    can %i[create update destroy], HangarGroup, user_id: user.id
+    can %i[read confirm_access update destroy], User, id: user.id
+    can %i[create], CommodityPrice
+  end
+
+  private def fleet_rules(user)
+    return if user.id.blank?
+
     admin_and_officer_fleet_ids = user.fleets
       .includes(:fleet_memberships)
       .joins(:fleet_memberships)
@@ -58,20 +71,14 @@ class Ability
       .pluck(:id)
 
     can %i[check invites], :api_fleet
-    can %i[check_serial], :api_vehicles
-    can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
+    can :create, Fleet
+    can %i[exists], :api_fleet_invite_url
+    can %i[show create destroy], FleetInviteUrl, fleet_id: admin_and_officer_fleet_ids
     can %i[show accept_invitation decline_invitation create_by_invite update destroy], FleetMembership, user_id: user.id
     can %i[create accept_request decline_request], FleetMembership, fleet_id: admin_and_officer_fleet_ids
     can %i[update destroy demote promote], FleetMembership, fleet_id: admin_fleet_ids
-    can %i[exists], :api_fleet_invite_url
-    can %i[show create destroy], FleetInviteUrl, fleet_id: admin_and_officer_fleet_ids
-    can :create, Fleet
     can :show, Fleet, fleet_memberships: { user_id: user.id }
     cannot :show, Fleet, fleet_memberships: { user_id: user.id, aasm_state: %i[created invited requested declined] }
     can %i[update destroy], Fleet, fleet_memberships: { user_id: user.id, role: :admin }
-    can %i[create update destroy], Vehicle, user_id: user.id
-    can %i[create update destroy], HangarGroup, user_id: user.id
-    can %i[read confirm_access update destroy], User, id: user.id
-    can %i[create], CommodityPrice
   end
 end
