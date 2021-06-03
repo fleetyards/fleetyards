@@ -25,9 +25,9 @@ module Admin
       authorize! :create, :admin_model_upgrades
       @model_upgrade = ModelUpgrade.new(model_upgrade_params)
       if model_upgrade.save
-        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model_upgrade"))
+        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.model_upgrade'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model_upgrade"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_upgrade'))
       end
     end
 
@@ -38,18 +38,18 @@ module Admin
     def update
       authorize! :update, model_upgrade
       if model_upgrade.update(model_upgrade_params)
-        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model_upgrade"))
+        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model_upgrade'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model_upgrade"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model_upgrade'))
       end
     end
 
     def destroy
       authorize! :destroy, model_upgrade
       if model_upgrade.destroy
-        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model_upgrade"))
+        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.model_upgrade'))
       else
-        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model_upgrade"))
+        redirect_to admin_model_upgrades_path(params: index_back_params, anchor: model_upgrade.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.model_upgrade'))
       end
     end
 

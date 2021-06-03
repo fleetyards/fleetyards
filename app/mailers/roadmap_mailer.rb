@@ -5,7 +5,7 @@ class RoadmapMailer < AdminMailer
     @changes = changes
 
     mail(
-      subject: I18n.t(:"mailer.roadmap.admin.subject")
+      subject: I18n.t(:'mailer.roadmap.admin.subject')
     )
   end
 end

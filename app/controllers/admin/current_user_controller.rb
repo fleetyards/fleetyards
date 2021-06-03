@@ -27,7 +27,7 @@ module Admin
       if current_user.reload.otp_required_for_login?
         @codes = current_user.generate_otp_backup_codes!
         current_user.save!
-        flash.now[:success] = I18n.t(:"messages.backup_codes", scope: 'devise.otp')
+        flash.now[:success] = I18n.t(:'messages.backup_codes', scope: 'devise.otp')
         render 'otp'
       else
         redirect_to otp_admin_me_path
@@ -40,9 +40,9 @@ module Admin
         current_user.otp_required_for_login = true
         @codes = current_user.generate_otp_backup_codes!
         current_user.save!
-        flash.now[:success] = I18n.t(:"messages.enable.success", scope: 'devise.otp')
+        flash.now[:success] = I18n.t(:'messages.enable.success', scope: 'devise.otp')
       else
-        flash.now[:alert] = I18n.t(:"messages.enable.failure", scope: 'devise.otp')
+        flash.now[:alert] = I18n.t(:'messages.enable.failure', scope: 'devise.otp')
       end
       render 'otp'
     end
@@ -53,9 +53,9 @@ module Admin
         current_user.otp_secret = AdminUser.generate_otp_secret
         current_user.otp_required_for_login = false
         current_user.save!
-        redirect_to otp_admin_me_path, flash: { success: I18n.t(:"messages.disable.success", scope: 'devise.otp') }
+        redirect_to otp_admin_me_path, flash: { success: I18n.t(:'messages.disable.success', scope: 'devise.otp') }
       else
-        flash.now[:alert] = I18n.t(:"messages.disable.failure", scope: 'devise.otp')
+        flash.now[:alert] = I18n.t(:'messages.disable.failure', scope: 'devise.otp')
         render 'otp'
       end
     end

@@ -6,7 +6,7 @@ class ModelMailer < ApplicationMailer
 
     mail(
       to: to,
-      subject: I18n.t(:"mailer.model.new.subject")
+      subject: I18n.t(:'mailer.model.new.subject')
     )
   end
 end

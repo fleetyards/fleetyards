@@ -27,15 +27,15 @@ module ApplicationHelper
   end
 
   def title
-    @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
+    @title ? "#{@title} | #{I18n.t(:'title.default')}" : I18n.t(:'title.default')
   end
 
   def description
-    @description || I18n.t(:"meta.description")
+    @description || I18n.t(:'meta.description')
   end
 
   def keywords
-    @keywords || I18n.t(:"meta.keywords")
+    @keywords || I18n.t(:'meta.keywords')
   end
 
   def og_title

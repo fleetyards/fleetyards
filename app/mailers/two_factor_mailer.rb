@@ -6,7 +6,7 @@ class TwoFactorMailer < ApplicationMailer
 
     mail(
       to: to,
-      subject: I18n.t(:"mailer.two_factor.login.subject")
+      subject: I18n.t(:'mailer.two_factor.login.subject')
     )
   end
 
@@ -15,7 +15,7 @@ class TwoFactorMailer < ApplicationMailer
 
     mail(
       to: to,
-      subject: I18n.t(:"mailer.two_factor.enabled.subject")
+      subject: I18n.t(:'mailer.two_factor.enabled.subject')
     )
   end
 
@@ -24,7 +24,7 @@ class TwoFactorMailer < ApplicationMailer
 
     mail(
       to: to,
-      subject: I18n.t(:"mailer.two_factor.disabled.subject")
+      subject: I18n.t(:'mailer.two_factor.disabled.subject')
     )
   end
 end
