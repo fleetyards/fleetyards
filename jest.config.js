@@ -1,6 +1,7 @@
 module.exports = {
   testURL: 'http://localhost:3000',
   roots: ['app/packs'],
+  testEnvironment: 'jsdom',
   collectCoverage: false,
   collectCoverageFrom: [
     'app/packs/**/*.{js,vue,ts}',
