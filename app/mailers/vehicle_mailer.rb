@@ -7,7 +7,7 @@ class VehicleMailer < ApplicationMailer
 
     mail(
       to: vehicle.user.email,
-      subject: I18n.t(:"mailer.vehicle.on_sale.subject", model: vehicle.model.name)
+      subject: I18n.t(:'mailer.vehicle.on_sale.subject', model: vehicle.model.name)
     )
   end
 end
