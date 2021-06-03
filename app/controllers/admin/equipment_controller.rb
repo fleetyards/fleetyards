@@ -29,9 +29,9 @@ module Admin
       authorize! :create, :admin_equipment
       @equipment = Equipment.new(equipment_params)
       if equipment.save
-        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.equipment'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.equipment"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.equipment'))
       end
     end
 
@@ -42,18 +42,18 @@ module Admin
     def update
       authorize! :update, equipment
       if equipment.update(equipment_params)
-        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path(params: index_back_params, anchor: equipment.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.equipment'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.equipment"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.equipment'))
       end
     end
 
     def destroy
       authorize! :destroy, equipment
       if equipment.destroy
-        redirect_to admin_equipment_index_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path, notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.equipment'))
       else
-        redirect_to admin_equipment_index_path, error: I18n.t(:"messages.destroy.failure", resource: I18n.t(:"resources.equipment"))
+        redirect_to admin_equipment_index_path, error: I18n.t(:'messages.destroy.failure', resource: I18n.t(:'resources.equipment'))
       end
     end
 

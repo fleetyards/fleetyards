@@ -25,9 +25,9 @@ module Admin
       authorize! :create, :admin_components
       @component = Component.new(component_params)
       if component.save
-        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.component'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.component"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.component'))
       end
     end
 
@@ -38,18 +38,18 @@ module Admin
     def update
       authorize! :update, component
       if component.update(component_params)
-        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path(params: index_back_params, anchor: component.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.component'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.component"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.component'))
       end
     end
 
     def destroy
       authorize! :destroy, component
       if component.destroy
-        redirect_to admin_components_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.component'))
       else
-        redirect_to admin_components_path, error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.component"))
+        redirect_to admin_components_path, error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.component'))
       end
     end
 
@@ -59,8 +59,8 @@ module Admin
       respond_to do |format|
         format.js do
           if component.update(component_params)
-            message = I18n.t(:"messages.disabled.success", resource: I18n.t(:"resources.component"))
-            message = I18n.t(:"messages.enabled.success", resource: I18n.t(:"resources.component")) if component.enabled?
+            message = I18n.t(:'messages.disabled.success', resource: I18n.t(:'resources.component'))
+            message = I18n.t(:'messages.enabled.success', resource: I18n.t(:'resources.component')) if component.enabled?
             render json: { message: message }
           else
             render json: false, status: :bad_request
