@@ -5,7 +5,7 @@ class ProgressTrackerMailer < AdminMailer
     @changes = changes
 
     mail(
-      subject: I18n.t(:"mailer.progress_tracker.admin.subject")
+      subject: I18n.t(:'mailer.progress_tracker.admin.subject')
     )
   end
 end

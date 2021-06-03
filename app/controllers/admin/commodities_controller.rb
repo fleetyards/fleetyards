@@ -25,9 +25,9 @@ module Admin
       authorize! :create, :admin_commodities
       @commodity = Commodity.new(commodity_params)
       if commodity.save
-        redirect_to admin_commodities_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.commodity"))
+        redirect_to admin_commodities_path, notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.commodity'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.commodity"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.commodity'))
       end
     end
 
@@ -38,18 +38,18 @@ module Admin
     def update
       authorize! :update, commodity
       if commodity.update(commodity_params)
-        redirect_to admin_commodities_path, notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.commodity"))
+        redirect_to admin_commodities_path, notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.commodity'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.commodity"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.commodity'))
       end
     end
 
     def destroy
       authorize! :destroy, commodity
       if commodity.destroy
-        redirect_to admin_commodities_path, notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.commodity"))
+        redirect_to admin_commodities_path, notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.commodity'))
       else
-        redirect_to admin_commodities_path, error: I18n.t(:"messages.destroy.failure", resource: I18n.t(:"resources.commodity"))
+        redirect_to admin_commodities_path, error: I18n.t(:'messages.destroy.failure', resource: I18n.t(:'resources.commodity'))
       end
     end
 

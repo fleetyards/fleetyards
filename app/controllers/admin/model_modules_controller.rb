@@ -25,9 +25,9 @@ module Admin
       authorize! :create, :admin_model_modules
       @model_module = ModelModule.new(model_module_params)
       if model_module.save
-        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.model_module"))
+        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.model_module'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.model_module"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.model_module'))
       end
     end
 
@@ -38,18 +38,18 @@ module Admin
     def update
       authorize! :update, model_module
       if model_module.update(model_module_params)
-        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.model_module"))
+        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.model_module'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.model_module"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.model_module'))
       end
     end
 
     def destroy
       authorize! :destroy, model_module
       if model_module.destroy
-        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.model_module"))
+        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.model_module'))
       else
-        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), error: I18n.t(:"messages..destroy.failure", resource: I18n.t(:"resources.model_module"))
+        redirect_to admin_model_modules_path(params: index_back_params, anchor: model_module.id), error: I18n.t(:'messages..destroy.failure', resource: I18n.t(:'resources.model_module'))
       end
     end
 

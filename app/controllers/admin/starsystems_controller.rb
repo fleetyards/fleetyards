@@ -26,9 +26,9 @@ module Admin
       authorize! :create, :admin_starsystems
       @starsystem = Starsystem.new(starsystem_params)
       if starsystem.save
-        redirect_to admin_starsystems_path(params: index_back_params, anchor: starsystem.id), notice: I18n.t(:"messages.create.success", resource: I18n.t(:"resources.starsystem"))
+        redirect_to admin_starsystems_path(params: index_back_params, anchor: starsystem.id), notice: I18n.t(:'messages.create.success', resource: I18n.t(:'resources.starsystem'))
       else
-        render 'new', error: I18n.t(:"messages.create.failure", resource: I18n.t(:"resources.starsystem"))
+        render 'new', error: I18n.t(:'messages.create.failure', resource: I18n.t(:'resources.starsystem'))
       end
     end
 
@@ -39,18 +39,18 @@ module Admin
     def update
       authorize! :update, starsystem
       if starsystem.update(starsystem_params)
-        redirect_to admin_starsystems_path(params: index_back_params, anchor: starsystem.id), notice: I18n.t(:"messages.update.success", resource: I18n.t(:"resources.starsystem"))
+        redirect_to admin_starsystems_path(params: index_back_params, anchor: starsystem.id), notice: I18n.t(:'messages.update.success', resource: I18n.t(:'resources.starsystem'))
       else
-        render 'edit', error: I18n.t(:"messages.update.failure", resource: I18n.t(:"resources.starsystem"))
+        render 'edit', error: I18n.t(:'messages.update.failure', resource: I18n.t(:'resources.starsystem'))
       end
     end
 
     def destroy
       authorize! :destroy, starsystem
       if starsystem.destroy
-        redirect_to admin_starsystems_path(params: index_back_params), notice: I18n.t(:"messages.destroy.success", resource: I18n.t(:"resources.starsystem"))
+        redirect_to admin_starsystems_path(params: index_back_params), notice: I18n.t(:'messages.destroy.success', resource: I18n.t(:'resources.starsystem'))
       else
-        redirect_to admin_starsystems_path(params: index_back_params), error: I18n.t(:"messages.destroy.failure", resource: I18n.t(:"resources.starsystem"))
+        redirect_to admin_starsystems_path(params: index_back_params), error: I18n.t(:'messages.destroy.failure', resource: I18n.t(:'resources.starsystem'))
       end
     end
 
