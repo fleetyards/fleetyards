@@ -6346,10 +6346,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress-mochawesome-reporter@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-2.0.1.tgz#efc9a73949646410301f6e03e4bad06c9b8cb5cf"
-  integrity sha512-ks98gAe/J/QzMihBagPqm+4aUHUkzgozlsLl9x4vZ/D9S7hho0vZqWfsV1whoT6ec4EW8ilOl11Hv88lqrizFA==
+cypress-mochawesome-reporter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-2.1.0.tgz#c852230f310f0cc343d9495917ab960b7424b89b"
+  integrity sha512-ju8W9nLo8k2w5wQe8gIprSLhL0FZHHi82TC1HaAgv7UrAssHvqnp/wYMfaOf7bIrCNlTHf2gCsJCyr9dLREozA==
   dependencies:
     fs-extra "^9.0.0"
     mochawesome "^6.1.0"
@@ -8940,10 +8940,10 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-highcharts@^9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-9.1.0.tgz#2cdb38e2e03530b4fde022bb05fbce5b34651e39"
-  integrity sha512-K7HUuKhEylZ1pMdzGR35kPgUmpp0MDNpaWhEMkGiC5Jfzg/endtTLHJN2lsFqEO+xoN7AykBK98XaJPEpsrLyA==
+highcharts@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-9.1.1.tgz#919223d7ccc429af8237a591855d8f48bea13872"
+  integrity sha512-dNkUIJUNMh/G2TxQxxlQeILVs9tXiXQRxVkNGU9SLCh2zB2jcjJ7aQdgA0k7PFTEvDVUHphumZ301sHkDS7/pg==
 
 highlight.js@^10.1.1, highlight.js@~10.4.0:
   version "10.4.0"
