@@ -29,7 +29,6 @@ class Search < Thor
     puts Station.search_index.clean_indices && '--> Stations Reindexed'
     puts CelestialObject.search_index.clean_indices && '--> CelestialObjects Reindexed'
     puts Starsystem.search_index.clean_indices && '--> Starsystems Reindexed'
-    puts ProgressTrackerItem.search_index.clean_indices && '--> ProgressTrackerItems Reindexed'
 
     puts
     puts 'Finished'
@@ -59,7 +58,6 @@ class Search < Thor
     puts Station.reindex && '--> Stations Reindexed'
     puts CelestialObject.reindex && '--> CelestialObjects Reindexed'
     puts Starsystem.reindex && '--> Starsystems Reindexed'
-    puts ProgressTrackerItem.reindex && '--> ProgressTrackerItems Reindexed'
 
     puts
     puts 'Finished'
@@ -88,7 +86,6 @@ class Search < Thor
     puts Station.search_index.delete && '--> deleted Station Index' if Station.search_index.exists?
     puts CelestialObject.search_index.delete && '--> deleted CelestialObject Index' if CelestialObject.search_index.exists?
     puts Starsystem.search_index.delete && '--> deleted Starsystem Index' if Starsystem.search_index.exists?
-    puts ProgressTrackerItem.search_index.delete && '--> deleted ProgressTrackerItems Index' if ProgressTrackerItem.search_index.exists?
 
     puts
     puts 'Finished'

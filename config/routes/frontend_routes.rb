@@ -57,7 +57,6 @@ namespace :frontend, path: '', host: Rails.configuration.app.domain, constraints
   get 'roadmap' => 'base#index'
   get 'roadmap/changes' => 'base#index'
   get 'roadmap/ships' => 'base#index'
-  get 'roadmap/progress-tracker' => 'base#index'
 
   get 'impressum' => 'base#index'
   get 'privacy-policy' => 'base#index'

@@ -21,18 +21,6 @@ export const routes = [
       title: 'roadmap.ships',
     },
   },
-  {
-    path: 'progress-tracker/',
-    name: 'roadmap-progress-tracker',
-    component: () =>
-      import(
-        /* webpackChunkName: "frontend.page.roadmap.progress-tracker" */ 'frontend/pages/Roadmap/ProgressTracker'
-      ),
-    meta: {
-      search: 'search',
-      title: 'roadmap.progressTracker',
-    },
-  },
 ]
 
 export default routes
