@@ -42,7 +42,6 @@ export default {
     overview: 'Overview',
     changes: 'Changes',
     ships: 'Ship-Roadmap',
-    progressTracker: 'Progress Tracker',
   },
   rsiVerification: 'RSI Verification',
   settings: {
