@@ -149,7 +149,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crack (0.4.5)
       rexml
@@ -228,7 +228,7 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (0.2.5)
     foundation_emails (2.2.1.0)
-    fugit (1.4.5)
+    fugit (1.5.0)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
     geocoder (1.6.7)
@@ -259,7 +259,7 @@ GEM
       ruby_parser (~> 3.5)
     htmlentities (4.3.4)
     http-accept (1.7.0)
-    http-cookie (1.0.3)
+    http-cookie (1.0.4)
       domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
@@ -312,7 +312,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.9.1)
+    loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -450,7 +450,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
-    rollups (0.1.1)
+    rollups (0.1.2)
       activesupport (>= 5.1)
       groupdate (>= 5.2)
     rotp (6.2.0)
@@ -501,7 +501,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    searchkick (4.4.4)
+    searchkick (4.5.0)
       activemodel (>= 5)
       elasticsearch (>= 6)
       hashie
