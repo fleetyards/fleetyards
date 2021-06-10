@@ -43,7 +43,6 @@ export default {
     index: 'Roadmap',
     ships: 'Ship-Roadmap',
     changes: 'Roadmap Changes',
-    progressTracker: 'Progress Tracker',
   },
   settings: {
     index: 'Profile Settings',

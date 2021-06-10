@@ -13,10 +13,6 @@ production: &production
     cron: '*/20 * * * *' # Every 20 Minutes
     class: 'Loaders::RoadmapJob'
     queue: 'loaders'
-  loaders_progress_tracker_job:
-    cron: '*/20 * * * *' # Every 20 Minutes
-    class: 'Loaders::ProgressTrackerJob'
-    queue: 'loaders'
   trade_routes_job:
     cron: '0 */2 * * *' # Every 2 Hours
     class: 'TradeRoutesJob'
