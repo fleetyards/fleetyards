@@ -232,25 +232,9 @@ jobs:
           at: /root
       - run: bundle install
       - run: yarn install
-      - restore_cache:
-          keys:
-            - v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-            - v1-assets-
       - run:
           name: Webpacker & Assets Compile
           command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
-      - save_cache:
-          key: v1-assets-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/app/public/assets
-            - ~/app/public/packs
-            - ~/app/tmp/cache/webpacker
-      - persist_to_workspace:
-          root: /root
-          paths:
-            - app/public/assets
-            - app/public/packs
-            - app/tmp/cache/webpacker
 
   e2e-test:
     <<: *e2e
@@ -260,6 +244,9 @@ jobs:
           at: /root
       - run: bundle install
       - run: yarn install
+      - run:
+          name: Webpacker & Assets Compile
+          command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
@@ -478,7 +465,8 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - assets
+            - bundle
+            - yarn
       - deploy-to-stage:
           requires:
             - seeds
