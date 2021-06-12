@@ -9,6 +9,6 @@ class LogoUploader < BaseUploader
   end
 
   def extension_allowlist
-    %w[jpg jpeg png]
+    %w[jpg jpeg png svg]
   end
 end

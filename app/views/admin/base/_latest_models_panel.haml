@@ -18,7 +18,7 @@
                 %td
                   = model.name
                 %td
-                  = model.manufacturer.name.html_safe if model.manufacturer.present?
+                  = model.manufacturer.name&.html_safe if model.manufacturer.present?
                 %td
                   = I18n.l(model.updated_at, format: :short)
                 %td
