@@ -62,7 +62,7 @@ class Manufacturer < ApplicationRecord
 
   def name_clean
     # rubocop:disable Rails/OutputSafety
-    name.html_safe
+    name&.html_safe
     # rubocop:enable Rails/OutputSafety
   end
 end

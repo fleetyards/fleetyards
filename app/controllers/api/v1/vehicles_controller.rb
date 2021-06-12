@@ -225,7 +225,7 @@ module Api
 
         vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
         vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
-        vehicle.task_forces.destroy_all if vehicle_params[:hangar_group_ids].blank?
+        vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
         return if vehicle.update(vehicle_params)
 
@@ -241,7 +241,7 @@ module Api
           scope = current_user.vehicles.where(id: params[:ids])
 
           scope.find_each do |vehicle|
-            vehicle.task_forces.destroy_all if vehicle_params[:hangar_group_ids].blank?
+            vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
             next if vehicle.update(vehicle_bulk_params)
 
