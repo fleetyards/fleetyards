@@ -17812,10 +17812,10 @@ vue-server-renderer@2.6.14, vue-server-renderer@^2.6.10:
     serialize-javascript "^3.1.0"
     source-map "0.5.6"
 
-vue-slider-component@3.2.12:
-  version "3.2.12"
-  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.12.tgz#9e9694df178cf7bd482117858a5fe87d82c8f25d"
-  integrity sha512-jEm455fswwXlakBxqwF+nshz/eK6MDA6+BTQ9fRuPd8nLpNhYaORh88svYtiS6WGCKG4zsgEFxoH8/OPL0XNPA==
+vue-slider-component@3.2.13:
+  version "3.2.13"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.13.tgz#1be85e6e822ca0997ecd10067c2351bd8e8d7a15"
+  integrity sha512-8Unr7YgVgf+IjJkbHHCloeWjtOyn4UMotFWX+5S5tUjpwU4OA7ADiaJ94/jFsuJt3JvpJm/vECrRvdSAVZjn9g==
   dependencies:
     core-js "^3.6.5"
     vue-property-decorator "^8.0.0"
