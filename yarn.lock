@@ -17579,10 +17579,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vee-validate@3.4.9:
-  version "3.4.9"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.4.9.tgz#786c9e76a9ab963c4d534b466b35cdbe6c2a35d8"
-  integrity sha512-4hFh0GY4joKCLLzWIYADXyyMr91Pqrz833Wh1cBWEHJ8mofOlRlEjvIfLRsOcXIxNp2Ft5O123bKO5PgmYM2QQ==
+vee-validate@3.4.10:
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.4.10.tgz#3009d97bf7d71d6bae32c40321555b8a05a39fd4"
+  integrity sha512-AcX9+WZZerH1/hfe8K+IbjxV0Ttr4+gWgYM7eE6SEiY3LxA2WZkxGd9E9PMGek0WJuppJDmq47kqZgFqAulu0w==
 
 vendors@^1.0.0:
   version "1.0.4"
