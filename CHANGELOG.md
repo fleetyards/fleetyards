@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.14](https://github.com/fleetyards/fleetyards/compare/v4.11.13...v4.11.14) (2021-06-12)
+
+
+### Bug Fixes
+
+* ship naming form resets hangar groups ([49d231b](https://github.com/fleetyards/fleetyards/commit/49d231b831ae7ba696cab1fbadd366db59732450)), closes [#1580](https://github.com/fleetyards/fleetyards/issues/1580)
+
 ### [4.11.13](https://github.com/fleetyards/fleetyards/compare/v4.11.12...v4.11.13) (2021-06-10)
 
 
