@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.3.2'
+gem 'rails', '6.1.4'
 
 gem 'pg', '~> 1.0'
 
@@ -94,7 +94,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'nokogiri', '1.11.5'
+gem 'nokogiri', '1.11.7'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
