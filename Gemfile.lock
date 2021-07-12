@@ -73,7 +73,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     after_commit_everywhere (1.0.0)
       activerecord (>= 4.2)
@@ -711,7 +711,7 @@ DEPENDENCIES
   webpacker (~> 5.x)
 
 RUBY VERSION
-   ruby 3.0.1
+   ruby 3.0.2
 
 BUNDLED WITH
    2.2.15
