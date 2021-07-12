@@ -711,7 +711,7 @@ DEPENDENCIES
   webpacker (~> 5.x)
 
 RUBY VERSION
-   ruby 3.0.1
+   ruby 3.0.2
 
 BUNDLED WITH
    2.2.15
