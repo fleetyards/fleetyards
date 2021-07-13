@@ -39,9 +39,7 @@ module Rsi
     end
 
     private def prevent_extra_server_requests?
-      # rubocop:disable Rails/EnvironmentVariableAccess
       Rails.env.test? || ENV['CI'] || Rails.configuration.rsi.load_from_file
-      # rubocop:enable Rails/EnvironmentVariableAccess
     end
   end
 end
