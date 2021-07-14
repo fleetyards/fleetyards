@@ -41,7 +41,7 @@
     "axios": "0.21.1",
     "babel-loader": "8.2.2",
     "babel-preset-typescript-vue": "^1.1.1",
-    "bootstrap": "4.6.0",
+    "bootstrap": "5.0.2",
     "bootstrap-vue": "2.21.2",
     "clipboard": "^2.0.8",
     "core-js": "3.15.2",
