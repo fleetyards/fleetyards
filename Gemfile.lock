@@ -192,7 +192,7 @@ GEM
       tzinfo
     ethon (0.14.0)
       ffi (>= 1.15.0)
-    excon (0.84.0)
+    excon (0.85.0)
     execjs (2.8.1)
     faker (2.18.0)
       i18n (>= 1.6, < 2)
@@ -490,7 +490,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.2)
       ffi (~> 1.12)
-    ruby2_keywords (0.0.4)
+    ruby2_keywords (0.0.5)
     ruby_parser (3.16.0)
       sexp_processor (~> 4.15, >= 4.15.1)
     safely_block (0.3.0)
