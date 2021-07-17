@@ -59,6 +59,10 @@
 .fleetchart-item-context-menu {
   position: fixed !important;
   z-index: 1000;
+
+  > .panel-edit-menu > .panel-btn {
+    padding: 0 2px;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {
