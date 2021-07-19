@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.16](https://github.com/fleetyards/fleetyards/compare/v4.11.15...v4.11.16) (2021-07-19)
+
+
+### Bug Fixes
+
+* fleetchart context menu ([6bff900](https://github.com/fleetyards/fleetyards/commit/6bff900f4219a99b0ec07683b7f692eb500852c3))
+* fleetchart context menu ([0d311cc](https://github.com/fleetyards/fleetyards/commit/0d311cc690a9e1513dbeb91b5a96d2e31adff637))
+
 ### [4.11.15](https://github.com/fleetyards/fleetyards/compare/v4.11.14...v4.11.15) (2021-07-14)
 
 ### [4.11.14](https://github.com/fleetyards/fleetyards/compare/v4.11.13...v4.11.14) (2021-06-12)
