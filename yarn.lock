@@ -15781,10 +15781,10 @@ shelljs@^0.8.3:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shvl@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/shvl/-/shvl-2.0.2.tgz#eca7decb9bbd4e8dd93f06ea9ab94036319cd351"
-  integrity sha512-G3KkIXPza3dgkt6Bo8zIl5K/KvAAhbG6o9KfAjhPvrIIzzAhnfc2ztv1i+iPTbNNM43MaBUqIaZwqVjkSgY/rw==
+shvl@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/shvl/-/shvl-2.0.3.tgz#eb4bd37644f5684bba1fc52c3010c96fb5e6afd1"
+  integrity sha512-V7C6S9Hlol6SzOJPnQ7qzOVEWUQImt3BNmmzh40wObhla3XOYMe4gGiYzLrJd5TFa+cI2f9LKIRJTTKZSTbWgw==
 
 side-channel@^1.0.2, side-channel@^1.0.4:
   version "1.0.4"
@@ -18316,13 +18316,13 @@ vuex-class@^0.3.2:
   resolved "https://registry.yarnpkg.com/vuex-class/-/vuex-class-0.3.2.tgz#c7e96a076c1682137d4d23a8dcfdc63f220e17a8"
   integrity sha512-m0w7/FMsNcwJgunJeM+wcNaHzK2KX1K1rw2WUQf7Q16ndXHo7pflRyOV/E8795JO/7fstyjH3EgqBI4h4n4qXQ==
 
-vuex-persistedstate@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/vuex-persistedstate/-/vuex-persistedstate-3.2.0.tgz#41d3ea304404769ac653ec020de80c95ce16243d"
-  integrity sha512-1Q4zV9cNaJtl59jN6rXbndemEtXKywZr0OFZnqgpYdwvdyy+64KNsEltKldQW+i03st5LuDwHsdOEevXIZUgdg==
+vuex-persistedstate@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/vuex-persistedstate/-/vuex-persistedstate-3.2.1.tgz#85b05bdfa73e602b00c65e54698a690345c07cdf"
+  integrity sha512-0OnHKGsCHJcvbEraaGZvuvX4aybM2oQWYRuZmIQB7zUjVM6tP+Hg+oXLrq9r6elT4she9SGtEbGE1L2+XdFgUw==
   dependencies:
     deepmerge "^4.2.2"
-    shvl "^2.0.2"
+    shvl "^2.0.3"
 
 vuex@3.6.2:
   version "3.6.2"
