@@ -7647,10 +7647,10 @@ eslint-plugin-import@2.23.4:
     resolve "^1.20.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-jest@24.3.6:
-  version "24.3.6"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.3.6.tgz#5f0ca019183c3188c5ad3af8e80b41de6c8e9173"
-  integrity sha512-WOVH4TIaBLIeCX576rLcOgjNXqP+jNlCiEmRgFTfQtJ52DpwnIQKAVGlGPAN7CZ33bW6eNfHD6s8ZbEUTQubJg==
+eslint-plugin-jest@24.4.0:
+  version "24.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.4.0.tgz#fa4b614dbd46a98b652d830377971f097bda9262"
+  integrity sha512-8qnt/hgtZ94E9dA6viqfViKBfkJwFHXgJmTWlMGDgunw1XJEGqm3eiPjDsTanM3/u/3Az82nyQM9GX7PM/QGmg==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
@@ -18227,10 +18227,10 @@ vue-server-renderer@2.6.14, vue-server-renderer@^2.6.10:
     serialize-javascript "^3.1.0"
     source-map "0.5.6"
 
-vue-slider-component@3.2.13:
-  version "3.2.13"
-  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.13.tgz#1be85e6e822ca0997ecd10067c2351bd8e8d7a15"
-  integrity sha512-8Unr7YgVgf+IjJkbHHCloeWjtOyn4UMotFWX+5S5tUjpwU4OA7ADiaJ94/jFsuJt3JvpJm/vECrRvdSAVZjn9g==
+vue-slider-component@3.2.14:
+  version "3.2.14"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.14.tgz#21d61de647cf075e977126cf2b2951ee1cc98b27"
+  integrity sha512-h+1UJi4dtib6gt1GU/KUiHVGW9gqCNxCoqJK4iM9YgFeQu4AQu/wWg56RM5sOUhrbUA043+EqtvDfUtYARe+lQ==
   dependencies:
     core-js "^3.6.5"
     vue-property-decorator "^8.0.0"
