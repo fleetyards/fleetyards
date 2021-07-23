@@ -71,7 +71,7 @@ class ModelHardpoint < ApplicationRecord
 
   enum size: {
     vehicle: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
-    ten: 10, eleven: 11, twelve: 12, small: 101, medium: 102, large: 103, capital: 104, tbd: 999
+    ten: 10, eleven: 11, twelve: 12, snub: 100, small: 101, medium: 102, large: 103, capital: 104, tbd: 999
   }, _suffix: true
 
   def self.types_by_group

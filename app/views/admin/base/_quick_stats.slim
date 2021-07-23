@@ -4,13 +4,13 @@ javascript:
     url: '#{quick_stats_admin_api_v1_stats_url}',
   }
 .row
-  .col-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-md-6
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-3
+              .col-3.d-flex.align-items-center
                 i.fad.fa-user.fa-4x
               .col-9.text-right
                 .text-huge#online-count
@@ -18,41 +18,13 @@ javascript:
                 div
                   = I18n.t('labels.panels.online_count')
 
-  .col-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-md-6
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-3
-                i.fad.fa-rocket.fa-4x
-              .col-9.text-right
-                .text-huge#ships-count-year
-                  = Model.year(Time.current.year).count
-                div
-                  = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
-
-  .col-12.col-sm-6.col-md-4.col-lg-12
-    .panel-wrapper.panel-outer-spacing
-      .panel.panel-primary
-        .panel-inner
-          .panel-heading
-            .row
-              .col-3
-                i.fad.fa-rocket-launch.fa-4x
-              .col-9.text-right
-                .text-huge#ships-count-total
-                  = Model.count
-                div
-                  = I18n.t('labels.panels.ships_count_total')
-
-  .col-12.col-sm-6.col-md-4.col-lg-12
-    .panel-wrapper.panel-outer-spacing
-      .panel.panel-primary
-        .panel-inner
-          .panel-heading
-            .row
-              .col-3
+              .col-3.d-flex.align-items-center
                 i.fad.fa-users.fa-4x
               .col-9.text-right
                 .text-huge#users-count-total
@@ -60,19 +32,42 @@ javascript:
                 div
                   = I18n.t('labels.panels.users_count_total')
 
-  .col-12.col-sm-6.col-md-4.col-lg-12
+  .col-12.col-md-6
     .panel-wrapper.panel-outer-spacing
       .panel.panel-primary
         .panel-inner
           .panel-heading
             .row
-              .col-3
-                span.fa-4-icons
-                  i.fad.fa-rocket-launch.fa-2x
-                  i.fad.fa-rocket-launch.fa-2x
-                  br
-                  i.fad.fa-rocket-launch.fa-2x
-                  i.fad.fa-rocket-launch.fa-2x
+              .col-3.d-flex.align-items-center
+                i.fad.fa-starship.fa-4x
+              .col-9.text-right
+                .text-huge#ships-count-year
+                  = Model.year(Time.current.year).count
+                div
+                  = I18n.t('labels.panels.ships_count_year', year: Time.zone.now.year)
+
+  .col-12.col-md-6
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-3.d-flex.align-items-center
+                i.fad.fa-rocket-launch.fa-4x
+              .col-9.text-right
+                .text-huge#ships-count-total
+                  = Model.count
+                div
+                  = I18n.t('labels.panels.ships_count_total')
+
+  .col-12.col-md-6
+    .panel-wrapper.panel-outer-spacing
+      .panel.panel-primary
+        .panel-inner
+          .panel-heading
+            .row
+              .col-3.d-flex.align-items-center
+                i.fad.fa-users-class.fa-4x
               .col-9.text-right
                 .text-huge#fleets-count-total
                   = Fleet.count
