@@ -14,10 +14,69 @@
               %button.reload-models.btn.btn-dark.ladda-button{data: {style: "expand-right", action: reload_data_admin_models_path, workerPath: admin_check_worker_state_path('fleetyards_sc_data_ship_loader')}, class: ('loading' if worker_running?('fleetyards_sc_data_ship_loader')), onclick: "App.Models.reload($(this)); return false;"}
                 = I18n.t(:"actions.model.reload_data")
     .row
-      .col-12.col-lg-2
-        = render 'quick_stats'
-      .col-12.col-lg-10
-        = render 'visits_panel'
+      .col-12
+        .row
+          .col-12.col-md-6.col-lg-4
+            = render 'quick_stats'
+          .col-12.col-md-6.col-lg-8
+            .panel-wrapper.panel-outer-spacing
+              .panel
+                .panel-inner
+                  .panel-heading
+                    %h2.panel-title
+                      = I18n.t(:"labels.panels.visits_per_day")
+                  .panel-body
+                    :javascript
+                      window.App.Dashboard.addChart({
+                        id: 'visits-per-day-chart',
+                        url: '#{visits_per_day_admin_api_v1_stats_url}',
+                        type: 'area',
+                        height: '315px',
+                        tooltip: 'visit',
+                      });
+
+                    #visits-per-day-chart.chart(style="height: 315px;")
+
+          .col-12.col-lg-12
+            .row
+              .col-12.col-md-5
+                .panel-wrapper.panel-outer-spacing
+                  .panel
+                    .panel-inner
+                      .panel-heading
+                        %h2.panel-title
+                          = I18n.t(:"labels.panels.most_viewed_pages")
+                      .panel-body
+                        :javascript
+                          window.App.Dashboard.addChart({
+                            id: 'most-viewed-pages-chart',
+                            url: '#{most_viewed_pages_admin_api_v1_stats_url}',
+                            type: 'bar',
+                            height: '344px',
+                            tooltip: 'view',
+                          });
+
+                        #most-viewed-pages-chart.chart(style="height: 344px;")
+
+              .col-12.col-md-7
+                .panel-wrapper.panel-outer-spacing
+                  .panel
+                    .panel-inner
+                      .panel-heading
+                        %h2.panel-title
+                          = I18n.t(:"labels.panels.visits_per_month")
+                      .panel-body
+                        :javascript
+                          window.App.Dashboard.addChart({
+                            id: 'visits-per-month-chart',
+                            url: '#{visits_per_month_admin_api_v1_stats_url}',
+                            type: 'column',
+                            height: '344px',
+                            tooltip: 'visit',
+                          });
+
+                        #visits-per-month-chart.chart(style="height: 344px;")
+
         = render 'users_panel'
         .row
           .col-12.col-md-6
