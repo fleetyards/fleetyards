@@ -121,7 +121,17 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v4-yarn-{{ checksum "Gemfile.lock" }}
+            - v4-yarn-
       - run: yarn install
+      - save_cache:
+          key: v4-yarn-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ~/app/node_modules
+            - /root/.cache/Cypress
       - persist_to_workspace:
           root: /root
           paths:
@@ -235,6 +245,12 @@ jobs:
       - run:
           name: Webpacker & Assets Compile
           command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - app/public/assets
+            - app/public/packs
+            - app/tmp/cache/webpacker
 
   e2e-test:
     <<: *e2e
@@ -244,9 +260,6 @@ jobs:
           at: /root
       - run: bundle install
       - run: yarn install
-      - run:
-          name: Webpacker & Assets Compile
-          command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
@@ -441,8 +454,7 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - bundle
-            - yarn
+            - assets
       - deploy-to-stage:
           requires:
             - seeds
