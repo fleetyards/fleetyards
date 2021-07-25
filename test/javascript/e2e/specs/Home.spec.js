@@ -16,7 +16,10 @@ describe('Home', () => {
 
     cy.url().should('include', '/search')
 
-    cy.get('.panel .panel-title').should('contain', '600i Explorer')
+    cy.get('.panel .panel-title', { timeout: 10000 }).should(
+      'contain',
+      '600i Explorer',
+    )
   })
 
   it('Shows Search Results via Key', () => {
