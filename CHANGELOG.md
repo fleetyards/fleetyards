@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.17](https://github.com/fleetyards/fleetyards/compare/v4.11.16...v4.11.17) (2021-07-25)
+
+
+### Bug Fixes
+
+* e2e specs ([5639ac1](https://github.com/fleetyards/fleetyards/commit/5639ac16df76a90863cd215193b18fc1bd687780))
+* model loader for snub hardpoints ([f16cd82](https://github.com/fleetyards/fleetyards/commit/f16cd826462de503f1c68ebb2e7ae815163ffe77))
+
 ### [4.11.16](https://github.com/fleetyards/fleetyards/compare/v4.11.15...v4.11.16) (2021-07-19)
 
 
