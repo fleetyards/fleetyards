@@ -121,7 +121,17 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v4-yarn-{{ checksum "Gemfile.lock" }}
+            - v4-yarn-
       - run: yarn install
+      - save_cache:
+          key: v4-yarn-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ~/app/node_modules
+            - /root/.cache/Cypress
       - persist_to_workspace:
           root: /root
           paths:
@@ -235,6 +245,12 @@ jobs:
       - run:
           name: Webpacker & Assets Compile
           command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - app/public/assets
+            - app/public/packs
+            - app/tmp/cache/webpacker
 
   e2e-test:
     <<: *e2e
@@ -244,9 +260,6 @@ jobs:
           at: /root
       - run: bundle install
       - run: yarn install
-      - run:
-          name: Webpacker & Assets Compile
-          command: NODE_ENV=production RAILS_ENV=ci bundle exec rails assets:precompile
       - run: mkdir -p ~/app/log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - run:
           name: Setup DB
@@ -271,7 +284,7 @@ jobs:
       - run: yarn install
       - run:
           name: Run E2E Tests
-          command: yarn run test:e2e --record
+          command: yarn run test:e2e --record --parallel
       - store_artifacts:
           path: ~/app/cypress/snapshots
           destination: e2e-snapshots
@@ -288,7 +301,7 @@ jobs:
       - run: yarn install
       - run:
           name: Run E2E Tests
-          command: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net
+          command: yarn run test:e2e --record --config baseUrl=https://stage.fleetyards.net --parallel
       - store_artifacts:
           path: ~/app/cypress/snapshots
           destination: e2e-snapshots
@@ -323,30 +336,6 @@ jobs:
           curl -X POST $DISCORD_WEBHOOK_STAGE \
           -H 'Content-Type: application/json' \
           -d "{\"content\": \"**New Stage Release:**\" }"
-
-  create-release:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /root
-      - run: bundle install
-      - run: yarn install
-      - add_ssh_keys:
-          fingerprints:
-            - "b9:00:09:c3:96:48:ed:1e:90:c1:03:bc:3c:7d:14:59"
-      - run:
-          name: Keyscan Live Server (HACK)
-          command: ssh-keyscan -H fleetyards.mortik.xyz >> ~/.ssh/known_hosts
-      - run:
-          name: Keyscan Github (HACK)
-          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-      - run:
-          name: Setup Git
-          command: git config --global user.email $GIT_EMAIL && git config --global user.name $GIT_USER
-      - run:
-          name: Create Release
-          command: bundle exec thor release:new --push
 
   deploy-to-live:
     <<: *defaults
@@ -465,8 +454,7 @@ workflows:
             - yarn
       - e2e-test:
           requires:
-            - bundle
-            - yarn
+            - assets
       - deploy-to-stage:
           requires:
             - seeds
@@ -479,10 +467,3 @@ workflows:
           filters:
             branches:
               only: main
-      - request-release:
-          type: approval
-          requires:
-            - deploy-to-stage
-      - create-release:
-          requires:
-            - request-release
