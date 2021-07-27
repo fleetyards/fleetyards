@@ -96,8 +96,8 @@
     "workbox-webpack-plugin": "^6.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "12.1.4",
-    "@commitlint/config-conventional": "12.1.4",
+    "@commitlint/cli": "13.1.0",
+    "@commitlint/config-conventional": "13.1.0",
     "@storybook/addon-actions": "6.3.5",
     "@storybook/addon-backgrounds": "6.3.5",
     "@storybook/addon-centered": "5.3.21",
