@@ -1,22 +1,5 @@
 <template>
   <header class="navigation-header">
-    <button
-      v-if="mobile"
-      :class="{
-        collapsed: navCollapsed,
-      }"
-      class="nav-toggle"
-      type="button"
-      aria-label="Toggle Navigation"
-      @click.stop.prevent="toggle"
-    >
-      <span class="sr-only">
-        {{ $t('labels.toggleNavigation') }}
-      </span>
-      <span class="icon-bar top-bar" />
-      <span class="icon-bar middle-bar" />
-      <span class="icon-bar bottom-bar" />
-    </button>
     <div
       v-if="nodeEnv && !mobile"
       :class="{
