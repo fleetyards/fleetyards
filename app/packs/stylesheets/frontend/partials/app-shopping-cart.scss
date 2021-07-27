@@ -19,9 +19,32 @@
   }
 }
 
+.app-shopping-cart-mobile {
+  position: relative;
+
+  .app-shopping-cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: $gray-dark;
+    font-size: $font-size-base * .85;
+    background-color: $text-color;
+    border-radius: 50%;
+  }
+}
+
 @media (max-width: $desktop-breakpoint) {
   .app-shopping-cart {
+    right: 15px;
+    bottom: $navigation-mobile-height;
+    left: 15px;
     margin-left: 0;
+    transform: none;
 
     &.nav-slim {
       margin-left: 0;

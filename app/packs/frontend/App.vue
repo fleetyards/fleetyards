@@ -10,6 +10,9 @@
 
     <div class="app-content">
       <transition name="fade" mode="out-in">
+        <NavigationMobile v-if="mobile" />
+      </transition>
+      <transition name="fade" mode="out-in">
         <Navigation />
       </transition>
       <div class="main-wrapper">
@@ -40,6 +43,7 @@ import userCollection from 'frontend/api/collections/User'
 import versionCollection from 'frontend/api/collections/Version'
 import Navigation from 'frontend/core/components/Navigation'
 import NavigationHeader from 'frontend/core/components/Navigation/Header'
+import NavigationMobile from 'frontend/core/components/Navigation/Mobile'
 import AppFooter from 'frontend/core/components/AppFooter'
 import AppModal from 'frontend/core/components/AppModal'
 import AppShoppingCart from 'frontend/core/components/AppShoppingCart'
@@ -53,6 +57,7 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
     BackgroundImage,
     Navigation,
     NavigationHeader,
+    NavigationMobile,
     AppFooter,
     AppModal,
     AppShoppingCart,
@@ -61,6 +66,8 @@ const CHECK_VERSION_INTERVAL = 1800 * 1000 // 30 mins
 })
 export default class FrontendApp extends Vue {
   sessionRenewInterval: boolean = null
+
+  @Getter('mobile') mobile
 
   @Getter('navCollapsed', { namespace: 'app' }) navCollapsed: boolean
 

@@ -23,6 +23,7 @@ body {
   position: relative;
   min-width: 320px;
   min-height: 100%;
+  padding-bottom: $navigation-mobile-height;
   font-family: 'Open Sans', sans-serif;
   background-color: $background;
 }
