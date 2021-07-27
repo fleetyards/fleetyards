@@ -70,18 +70,24 @@
           :inline="true"
           :disabled="!cartItems.length || loading"
           :loading="loading"
+          :aria-label="$t('actions.shoppingCart.refresh')"
           @click.native="refresh"
         >
-          {{ $t('actions.shoppingCart.refresh') }}
+          <i class="fad fa-sync" />
         </Btn>
         <Btn
           :inline="true"
           :disabled="!cartItems.length"
+          :aria-label="$t('actions.shoppingCart.clear')"
           @click.native="clearCart"
         >
-          {{ $t('actions.shoppingCart.clear') }}
+          <i class="fad fa-trash" />
         </Btn>
-        <Btn :inline="true" @click.native="closeModal">
+        <Btn
+          :inline="true"
+          :aria-label="$t('actions.close')"
+          @click.native="closeModal"
+        >
           {{ $t('actions.close') }}
         </Btn>
       </div>

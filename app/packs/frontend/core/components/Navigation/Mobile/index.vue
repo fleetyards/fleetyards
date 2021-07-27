@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation-mobile">
+  <div class="navigation-mobile noselect">
     <div class="navigation-items">
       <Btn variant="link" :inline="true" :to="{ name: 'home' }">
         <i class="fad fa-home-alt" />

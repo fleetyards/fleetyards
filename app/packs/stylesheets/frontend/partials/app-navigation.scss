@@ -11,8 +11,8 @@
     align-items: center;
     justify-content: space-between;
     height: $navigation-mobile-height;
-    padding: 0 15px;
-    background-color: rgba($gray-darker, .8);
+    padding: 0 15px 10px;
+    background-color: rgba($gray-darker, .9);
     border-top: 1px solid rgba(30, 34, 38, .5);
 
     > .panel-btn {
