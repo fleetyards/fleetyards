@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.12.0](https://github.com/fleetyards/fleetyards/compare/v4.11.17...v4.12.0) (2021-07-27)
+
+
+### Features
+
+* mobile navigation ([41bc1b7](https://github.com/fleetyards/fleetyards/commit/41bc1b7b1922dd228fb8ffb5df1d481e5f320e2f))
+* update mobile navigation ([a0ee85a](https://github.com/fleetyards/fleetyards/commit/a0ee85ac29d6517727b4d36b730108ea66dca73e))
+
+
+### Bug Fixes
+
+* shopping cart mobile position ([4700de8](https://github.com/fleetyards/fleetyards/commit/4700de85a60ebf3754868b283d04d8ec5a483247))
+
 ### [4.11.17](https://github.com/fleetyards/fleetyards/compare/v4.11.16...v4.11.17) (2021-07-25)
 
 
