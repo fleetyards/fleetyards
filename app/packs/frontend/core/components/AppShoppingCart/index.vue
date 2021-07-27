@@ -1,23 +1,24 @@
 <template>
-  <Btn
-    v-if="cartItems.length"
-    class="app-shopping-cart"
-    :class="{
-      'nav-slim': navSlim,
-    }"
-    @click.native="openModal"
-  >
-    <i class="fad fa-shopping-cart" />
-    <span
-      class="items-label"
-      v-html="
-        $t('labels.shoppingCart.items', {
-          count: cartItemCount,
-          price: $toUEC(total),
-        })
-      "
-    />
-  </Btn>
+  <div class="app-shopping-cart">
+    <Btn
+      v-if="cartItems.length"
+      :class="{
+        'nav-slim': navSlim,
+      }"
+      @click.native="openModal"
+    >
+      <i class="fad fa-shopping-cart" />
+      <span
+        class="items-label"
+        v-html="
+          $t('labels.shoppingCart.items', {
+            count: cartItemCount,
+            price: $toUEC(total),
+          })
+        "
+      />
+    </Btn>
+  </div>
 </template>
 
 <script lang="ts">
@@ -36,8 +37,6 @@ export default class ShoppingCart extends Vue {
   @Getter('navSlim', { namespace: 'app' }) navSlim: boolean
 
   @Getter('items', { namespace: 'shoppingCart' }) cartItems: any[]
-
-  @Getter('mobile') mobile: boolean
 
   get total() {
     return sumArray(
