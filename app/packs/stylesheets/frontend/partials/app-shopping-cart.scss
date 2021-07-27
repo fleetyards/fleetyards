@@ -4,6 +4,7 @@
   left: 50%;
   margin-left: 150px;
   transform: translateX(-50%);
+  transition: left ease $transition-base-speed, right ease $transition-base-speed, width ease $transition-base-speed;
 
   &.panel-btn .panel-btn-inner {
     text-align: left;
@@ -48,6 +49,22 @@
 
     &.nav-slim {
       margin-left: 0;
+    }
+  }
+
+  .nav-visible {
+    .app-shopping-cart {
+      right: 300px;
+      left: -300px;
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  .nav-visible {
+    .app-shopping-cart {
+      right: 250px;
+      left: -250px;
     }
   }
 }
