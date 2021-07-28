@@ -10,6 +10,7 @@ gem 'pg', '~> 1.0'
 
 gem 'sidekiq'
 gem 'sidekiq-cron'
+gem 'sidekiq-statistic', github: 'davydovanton/sidekiq-statistic', branch: 'v1.5.1'
 
 gem 'paper_trail'
 

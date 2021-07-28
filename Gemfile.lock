@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/davydovanton/sidekiq-statistic.git
+  revision: 1905002064f8bf45e1a130787fc67df0e8cbda99
+  branch: v1.5.1
+  specs:
+    sidekiq-statistic (1.5.1)
+      sidekiq (>= 5.0)
+      tilt (~> 2.0)
+
+GIT
   remote: https://github.com/tinfoil/devise-two-factor.git
   revision: c597da043482aedc215f3b71665411b3269892a0
   specs:
@@ -695,6 +704,7 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq
   sidekiq-cron
+  sidekiq-statistic!
   simplecov
   simplecov-console
   simplecov-html
@@ -718,4 +728,4 @@ RUBY VERSION
    ruby 3.0.2
 
 BUNDLED WITH
-   2.2.15
+   2.2.23
