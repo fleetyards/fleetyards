@@ -1,12 +1,11 @@
 <template>
-  <div class="app-shopping-cart">
-    <Btn
-      v-if="cartItems.length"
-      :class="{
-        'nav-slim': navSlim,
-      }"
-      @click.native="openModal"
-    >
+  <div
+    class="app-shopping-cart"
+    :class="{
+      'nav-slim': navSlim,
+    }"
+  >
+    <Btn v-if="cartItems.length" @click.native="openModal">
       <i class="fad fa-shopping-cart" />
       <span
         class="items-label"
