@@ -18,6 +18,12 @@ GIT
       railties (< 6.2)
       rotp (~> 6.0)
 
+PATH
+  remote: rswag_minitest
+  specs:
+    rswag_minitest (0.1.0)
+      rails (~> 6.1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -689,6 +695,7 @@ DEPENDENCIES
   redis-actionpack
   rollups
   rqrcode
+  rswag_minitest!
   rubocop
   rubocop-ast
   rubocop-minitest (= 0.11.1)

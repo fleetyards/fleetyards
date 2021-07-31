@@ -167,4 +167,5 @@ group :development, :test do
 
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
+  gem 'rswag_minitest', path: 'rswag_minitest'
 end

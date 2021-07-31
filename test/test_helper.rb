@@ -18,6 +18,7 @@ require File.expand_path('../config/environment', __dir__)
 
 require 'rails/test_help'
 require 'minitest/rails'
+require 'rswag_minitest'
 require 'minitest/pride'
 
 # https://github.com/rails/rails/issues/31324

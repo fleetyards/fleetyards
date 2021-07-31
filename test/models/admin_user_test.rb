@@ -38,4 +38,6 @@ class AdminUserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+
+  rswag_test 'bar'
 end
