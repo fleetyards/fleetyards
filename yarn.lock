@@ -6656,10 +6656,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress-mochawesome-reporter@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-2.2.0.tgz#a49823278595f7e369b09aa97ba5847c6ee72c07"
-  integrity sha512-VjrUVvYJVVtjD7sdiwI1c7JYGXbl/aUiE2jIGZIDTWX1POeLsNdpc3xGxJhcw+XyiRl6QXeVPo9A6Kn2T0WdDw==
+cypress-mochawesome-reporter@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/cypress-mochawesome-reporter/-/cypress-mochawesome-reporter-2.2.1.tgz#05787ff742be4a73d1dbbb843253314ec51324b3"
+  integrity sha512-ypivk3em3PIfLIre8vOfHO89biZVtitsdQ/EhZ7mMHkdZgKyhCAGmltYdfyugE/sa+mLgD/ywdjgb5H0yXJ8eg==
   dependencies:
     fs-extra "^9.0.0"
     mochawesome "^6.1.0"
