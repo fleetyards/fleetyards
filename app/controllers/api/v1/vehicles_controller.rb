@@ -210,7 +210,9 @@ module Api
       end
 
       def create
-        @vehicle = Vehicle.new(vehicle_params)
+        @vehicle = Vehicle.new(
+          vehicle_params.merge(public: true)
+        )
         authorize! :create, vehicle
 
         if vehicle.save
