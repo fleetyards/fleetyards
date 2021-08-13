@@ -1,16 +1,18 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: http://localhost:9200/fleetyards-test_shop_commodities_test/_search
+    method: get
+    uri: http://localhost:9200/
     body:
-      encoding: UTF-8
-      string: '{"query":{"bool":{"must":{"match_all":{}},"filter":[{"term":{"shop_id":{"value":"df2c9942-135d-5cbc-81d6-e1c14b6298bd"}}}]}},"sort":{"name":"asc","created_at":"asc"},"timeout":"11s","_source":false,"size":30}'
+      encoding: US-ASCII
+      string: ''
     headers:
       User-Agent:
-      - 'elasticsearch-ruby/7.10.1 (RUBY_VERSION: 3.0.0; darwin x86_64; Faraday v1.3.0)'
+      - 'elasticsearch-ruby/7.14.0 (RUBY_VERSION: 3.0.2; darwin x86_64; Faraday v1.7.0)'
       Content-Type:
       - application/json
+      X-Elastic-Client-Meta:
+      - es=7.14.0,rb=3.0.2,t=7.14.0,fd=1.7.0,ty=1.4.0
       Expect:
       - ''
   response:
@@ -18,12 +20,71 @@ http_interactions:
       code: 200
       message: OK
     headers:
+      X-Elastic-Product:
+      - Elasticsearch
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
-      - '546'
+      - '540'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "name" : "corvus",
+          "cluster_name" : "elasticsearch_brew",
+          "cluster_uuid" : "J03eo7rVRsiDQg7LMphO1g",
+          "version" : {
+            "number" : "7.14.0",
+            "build_flavor" : "default",
+            "build_type" : "tar",
+            "build_hash" : "dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1",
+            "build_date" : "2021-07-29T20:49:32.864135063Z",
+            "build_snapshot" : false,
+            "lucene_version" : "8.9.0",
+            "minimum_wire_compatibility_version" : "6.8.0",
+            "minimum_index_compatibility_version" : "6.0.0-beta1"
+          },
+          "tagline" : "You Know, for Search"
+        }
+  recorded_at: Fri, 13 Aug 2021 20:36:42 GMT
+- request:
+    method: post
+    uri: http://localhost:9200/fleetyards-test_shop_commodities_test/_search
     body:
       encoding: UTF-8
-      string: '{"took":4,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":null,"hits":[{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"46f72ce4-81f1-50d5-8428-5587ef23c320","_score":null,"sort":["600i","2021-02-14T00:38:03.009+01:00"]},{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"c38015d3-a8f7-5419-9aed-03e80ec3169a","_score":null,"sort":["Andromeda","2021-02-14T00:38:03.009+01:00"]}]}}'
-  recorded_at: Sat, 13 Feb 2021 23:42:39 GMT
+      string: '{"query":{"bool":{"must":{"match_all":{}},"filter":[{"term":{"shop_id":{"value":"df2c9942-135d-5cbc-81d6-e1c14b6298bd"}}}]}},"sort":{"name":"asc","created_at":"asc"},"timeout":"11s","_source":false,"size":30}'
+    headers:
+      User-Agent:
+      - 'elasticsearch-ruby/7.14.0 (RUBY_VERSION: 3.0.2; darwin x86_64; Faraday v1.7.0)'
+      Content-Type:
+      - application/json
+      X-Elastic-Client-Meta:
+      - es=7.14.0,rb=3.0.2,t=7.14.0,fd=1.7.0,ty=1.4.0
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Elastic-Product:
+      - Elasticsearch
+      Warning:
+      - 299 Elasticsearch-7.14.0-dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1 "Elasticsearch
+        built-in security features are not enabled. Without authentication, your cluster
+        could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.14/security-minimal-setup.html
+        to enable security."
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '547'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"took":35,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":null,"hits":[{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"46f72ce4-81f1-50d5-8428-5587ef23c320","_score":null,"sort":["600i","2021-02-14T00:38:03.009+01:00"]},{"_index":"fleetyards-test_shop_commodities_test_20210214003803156","_type":"_doc","_id":"c38015d3-a8f7-5419-9aed-03e80ec3169a","_score":null,"sort":["Andromeda","2021-02-14T00:38:03.009+01:00"]}]}}'
+  recorded_at: Fri, 13 Aug 2021 20:36:42 GMT
 recorded_with: VCR 6.0.0
