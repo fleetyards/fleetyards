@@ -20,6 +20,7 @@ gem 'slim-rails'
 
 gem 'graphql-client'
 
+gem 'elasticsearch', '< 7.14' # 7.14 causes error with unsupported es server versions https://github.com/elastic/elasticsearch-ruby/issues/1429
 gem 'searchkick'
 
 gem 'discordrb-webhooks'
