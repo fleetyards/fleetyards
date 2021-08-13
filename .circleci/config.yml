@@ -11,6 +11,7 @@ ciImage: &ciImage
     DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
     DATABASE_HOST: 127.0.0.1
     DATABASE_USER: root
+    ELASTICSEARCH_URL: http://localhost:9200
     JOBS: 1
     NODE_OPTIONS: --max-old-space-size=1024
 
@@ -47,7 +48,7 @@ redisImage: &redisImage
     password: $DOCKERHUB_PASSWORD
 
 esImage: &esImage
-  image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+  image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
   environment:
     cluster.name: fleetyards-test-cluster
     xpack.security.enabled: 'false'
