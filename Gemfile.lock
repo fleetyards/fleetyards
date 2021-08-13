@@ -87,7 +87,7 @@ GEM
     after_commit_everywhere (1.1.0)
       activerecord (>= 4.2)
       activesupport
-    ahoy_matey (3.2.0)
+    ahoy_matey (3.3.0)
       activesupport (>= 5)
       device_detector
       geocoder (>= 1.4.5)
