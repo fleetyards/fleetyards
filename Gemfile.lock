@@ -87,10 +87,9 @@ GEM
     after_commit_everywhere (1.1.0)
       activerecord (>= 4.2)
       activesupport
-    ahoy_matey (3.3.0)
-      activesupport (>= 5)
+    ahoy_matey (4.0.0)
+      activesupport (>= 5.2)
       device_detector
-      geocoder (>= 1.4.5)
       safely_block (>= 0.2.1)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
@@ -247,7 +246,6 @@ GEM
     fugit (1.5.0)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
-    geocoder (1.6.7)
     globalid (0.5.2)
       activesupport (>= 5.0)
     graphql (1.12.14)
