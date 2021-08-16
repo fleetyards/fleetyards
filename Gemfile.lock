@@ -116,7 +116,7 @@ GEM
       thor (~> 1.0)
     bower-rails (0.12.0)
     builder (3.2.4)
-    bullet (6.1.4)
+    bullet (6.1.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.8.0)
