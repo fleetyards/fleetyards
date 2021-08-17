@@ -6,50 +6,52 @@
         v-model="form[$route.meta.quickSearch]"
         :translation-key="`quicksearch.${$route.name}`"
         :no-label="true"
-        :autofocus="true"
+        :autofocus="!mobile"
         :clearable="true"
       />
     </form>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import Filters from 'frontend/mixins/Filters'
 import FormInput from 'frontend/core/components/Form/FormInput'
 
-export default {
+@Component<Navigation>({
   components: {
     FormInput,
   },
-
   mixins: [Filters],
+})
+export default class QuickSearch extends Vue {
+  form: Object = {}
 
-  data() {
+  @Getter('mobile') mobile
+
+  mounted() {
     const query = this.queryParams()
 
     query[this.$route.meta.quickSearch] =
       query[this.$route.meta.quickSearch] || null
 
-    return {
-      form: query,
-    }
-  },
+    this.form = query
+  }
 
-  watch: {
-    $route() {
-      const query = this.queryParams()
+  @Watch('$route')
+  onRouteChange() {
+    const query = this.queryParams()
 
-      query[this.$route.meta.quickSearch] =
-        query[this.$route.meta.quickSearch] || null
+    query[this.$route.meta.quickSearch] =
+      query[this.$route.meta.quickSearch] || null
 
-      this.form = query
-    },
-  },
+    this.form = query
+  }
 
-  methods: {
-    queryParams() {
-      return JSON.parse(JSON.stringify(this.$route.query.q || {}))
-    },
-  },
+  queryParams() {
+    return JSON.parse(JSON.stringify(this.$route.query.q || {}))
+  }
 }
 </script>

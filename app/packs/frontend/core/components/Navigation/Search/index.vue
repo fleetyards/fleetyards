@@ -6,7 +6,7 @@
         v-model="form[$route.meta.search]"
         :translation-key="`search.${$route.name}`"
         :no-label="true"
-        :autofocus="true"
+        :autofocus="!mobile"
       />
     </form>
   </div>
@@ -15,6 +15,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import { debounce } from 'ts-debounce'
 
@@ -27,6 +28,8 @@ export default class SearchForm extends Vue {
   form: Object = {}
 
   filter: Function = debounce(this.debouncedFilter, 500)
+
+  @Getter('mobile') mobile
 
   mounted() {
     this.setupSearch()
