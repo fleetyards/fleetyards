@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.2](https://github.com/fleetyards/fleetyards/compare/v4.12.1...v4.12.2) (2021-08-17)
+
+
+### Bug Fixes
+
+* mark vehicles as public by default ([4c9f57f](https://github.com/fleetyards/fleetyards/commit/4c9f57f76124be9eb43c4f266a9a4a2cacc9a01a))
+* shopping cart ([8bd0c05](https://github.com/fleetyards/fleetyards/commit/8bd0c05d617d532585894e0c356f056a6ee4dd7b))
+
 ### [4.12.1](https://github.com/fleetyards/fleetyards/compare/v4.12.0...v4.12.1) (2021-07-28)
 
 ## [4.12.0](https://github.com/fleetyards/fleetyards/compare/v4.11.17...v4.12.0) (2021-07-27)
