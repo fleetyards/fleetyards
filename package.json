@@ -34,7 +34,7 @@
     "@babel/preset-env": "7.15.0",
     "@babel/preset-typescript": "^7.15.0",
     "@rails/actioncable": "^6.1.4",
-    "@rails/webpacker": "5.4.0",
+    "@rails/webpacker": "5.4.2",
     "@sentry/browser": "6.11.0",
     "@sentry/integrations": "6.11.0",
     "ahoy.js": "0.4.0",
