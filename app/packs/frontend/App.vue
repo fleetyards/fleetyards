@@ -130,8 +130,8 @@ export default class FrontendApp extends Vue {
     if (this.ahoyAccepted) {
       this.$ahoy.trackView()
       // this.$ahoy.trackClicks()
-      this.$ahoy.trackSubmits()
-      this.$ahoy.trackChanges()
+      this.$ahoy.trackSubmits('form')
+      this.$ahoy.trackChanges('input, textarea, select')
     } else {
       window.location.reload(true)
     }
@@ -149,8 +149,8 @@ export default class FrontendApp extends Vue {
     if (this.ahoyAccepted) {
       this.$ahoy.trackView()
       // this.$ahoy.trackClicks()
-      this.$ahoy.trackSubmits()
-      this.$ahoy.trackChanges()
+      this.$ahoy.trackSubmits('form')
+      this.$ahoy.trackChanges('input, textarea, select')
     }
 
     this.checkVersion()
