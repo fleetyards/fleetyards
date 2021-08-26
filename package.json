@@ -151,7 +151,7 @@
     "vue-jest": "3.0.7",
     "webpack-bundle-analyzer": "4.4.2",
     "webpack-cli": "3.3.12",
-    "webpack-dev-server": "^4.0.0",
+    "webpack-dev-server": "^3.11.2",
     "yorkie": "2.0.0"
   },
   "resolutions": {
