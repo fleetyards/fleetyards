@@ -30,7 +30,7 @@ Cypress.Commands.add('alert', message => {
 Cypress.Commands.add('success', message => {
   cy.get('.noty_type__success .noty_body', { timeout: 10000 }).then($noty => {
     expect($noty).to.contain(message)
-    $noty.click()
+    cy.get($noty).click()
   })
 })
 

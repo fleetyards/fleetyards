@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').chomp
 
-gem 'rails', '6.1.4'
+gem 'rails', '6.1.4.1'
 
 gem 'pg', '~> 1.0'
 
@@ -51,7 +51,7 @@ gem 'redis-actionpack'
 gem 'ransack'
 
 gem 'jbuilder'
-gem 'oj'
+gem 'oj', '3.13.1'
 
 gem 'rails-i18n'
 
