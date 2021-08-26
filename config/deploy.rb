@@ -14,6 +14,7 @@ set :conditionally_migrate, true
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
 set :bundler_version, '2.2.3'
+set :bundle_check_before_install, false # FIX: created failed deploys because dependencies where missing.
 
 set :initial_deploy, false
 
