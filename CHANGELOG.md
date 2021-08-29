@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.3](https://github.com/fleetyards/fleetyards/compare/v4.12.2...v4.12.3) (2021-08-27)
+
+
+### Bug Fixes
+
+* ahoy js tracking ([f9b5d52](https://github.com/fleetyards/fleetyards/commit/f9b5d52514b05cb1c019b4b15e124ea63118ccf2))
+* downgrade webpack-dev-server ([c923dbd](https://github.com/fleetyards/fleetyards/commit/c923dbda398d70b139fa7d2f937b4433d0304725))
+
 ### [4.12.2](https://github.com/fleetyards/fleetyards/compare/v4.12.1...v4.12.2) (2021-08-17)
 
 

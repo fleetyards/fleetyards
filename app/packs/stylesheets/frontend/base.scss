@@ -23,7 +23,6 @@ body {
   position: relative;
   min-width: 320px;
   min-height: 100%;
-  padding-bottom: $navigation-mobile-height;
   font-family: 'Open Sans', sans-serif;
   background-color: $background;
 }
@@ -126,6 +125,10 @@ hr {
 }
 
 @media (max-width: $desktop-breakpoint) {
+  body {
+    padding-bottom: $navigation-mobile-height;
+  }
+
   .app-body {
     transition: ease $transition-base-speed;
 
