@@ -9,6 +9,7 @@
   "videosFolder": "test/javascript/e2e/videos",
   "viewportWidth": 2560,
   "viewportHeight": 1440,
+  "defaultCommandTimeout": 10000,
   "reporter": "cypress-mochawesome-reporter",
   "reporterOptions": {
     "reportDir": "test/reports/e2e"

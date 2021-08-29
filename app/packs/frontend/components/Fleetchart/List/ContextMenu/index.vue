@@ -41,7 +41,7 @@
         </span>
       </Btn>
     </template>
-    <AddToHangar v-else :model="model" variant="menu" />
+    <AddToHangar v-else-if="model" :model="model" variant="menu" />
   </BtnGroup>
 </template>
 
