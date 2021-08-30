@@ -118,7 +118,7 @@ export async function get(
     })
     return handleResponse(response, params, silent)
   } catch (error) {
-    return handleError(error, params, silent)
+    return handleError(error as AxiosError<any>, params, silent)
   }
 }
 
@@ -129,7 +129,7 @@ export async function post(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.post(path, body), body, silent)
   } catch (error) {
-    return handleError(error, body, silent)
+    return handleError(error as AxiosError<any>, body, silent)
   }
 }
 
@@ -140,7 +140,7 @@ export async function put(path: string, body = {}, silent: boolean = false) {
   try {
     return handleResponse(await client.put(path, body), body, silent)
   } catch (error) {
-    return handleError(error, body, silent)
+    return handleError(error as AxiosError<any>, body, silent)
   }
 }
 
@@ -156,7 +156,7 @@ export async function destroy(
   try {
     return handleResponse(await client.delete(path, { data }), data, silent)
   } catch (error) {
-    return handleError(error, data, silent)
+    return handleError(error as AxiosError<any>, data, silent)
   }
 }
 
@@ -176,7 +176,7 @@ export async function upload(path: string, body = {}, silent: boolean = false) {
       silent,
     )
   } catch (error) {
-    return handleError(error, body, silent)
+    return handleError(error as AxiosError<any>, body, silent)
   }
 }
 
@@ -198,7 +198,7 @@ export async function download(
       silent,
     )
   } catch (error) {
-    return handleError(error, params, silent)
+    return handleError(error as AxiosError<any>, params, silent)
   }
 }
 
