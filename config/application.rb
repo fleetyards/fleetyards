@@ -60,6 +60,7 @@ module Fleetyards
     config.exceptions_app = routes
 
     config.middleware.use Rack::Attack
+    config.middleware.use Rack::Deflater
 
     config.app = config_for('app/main')
     config.maintainer = config_for('app/maintainer')
