@@ -98,7 +98,7 @@ export default class ModelsCompareCategories extends Vue {
   }
 
   hardpointsForGroup(group, hardpoints) {
-    return hardpoints.filter(hardpoint => hardpoint.group === group)
+    return (hardpoints || []).filter(hardpoint => hardpoint.group === group)
   }
 }
 </script>
