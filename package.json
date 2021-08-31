@@ -74,7 +74,7 @@
     "three": "^0.132.2",
     "ts-debounce": "^3.0.0",
     "v-tooltip": "2.1.3",
-    "vee-validate": "3.4.11",
+    "vee-validate": "3.4.12",
     "vue": "2.6.14",
     "vue-infinite-loading": "2.4.5",
     "vue-lazyload": "1.3.3",
