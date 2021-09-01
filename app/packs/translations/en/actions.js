@@ -40,7 +40,6 @@ export default {
   'showFleetchart': 'Fleetchart',
   'hideFleetchart': 'Default view',
   'supportUs': 'Support FleetYards.net',
-  'supportUsPaypal': 'Support FleetYards.net via PayPal',
   'login': 'Login',
   'signUp': 'Sign Up',
   'confirmAccess': 'Confirm password',

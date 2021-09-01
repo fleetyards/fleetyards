@@ -10,6 +10,12 @@
   text-align: center;
 }
 
+.support-buymeacoffee {
+  .panel-btn-inner {
+    padding: 0;
+  }
+}
+
 @media (max-width: $desktop-breakpoint) {
   .support-button {
     right: auto;

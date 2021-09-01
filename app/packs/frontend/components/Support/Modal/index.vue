@@ -19,19 +19,21 @@
       </p>
       <div class="page-actions page-actions-center">
         <Btn
-          href="https://paypal.me/pools/c/83jQLadz60"
-          size="large"
-          :inline="true"
+          href="https://www.buymeacoffee.com/mortik"
+          variant="link"
+          class="support-buymeacoffee"
         >
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
+          />
+        </Btn>
+        &nbsp; &nbsp;
+        <Btn href="https://paypal.me/mortik" size="large">
           <i class="fab fa-paypal" />
           PayPal
         </Btn>
-        {{ $t('labels.or') }}&nbsp;&nbsp;
-        <Btn
-          href="https://www.patreon.com/fleetyards"
-          size="large"
-          :inline="true"
-        >
+        &nbsp; &nbsp;
+        <Btn href="https://www.patreon.com/fleetyards" size="large">
           <i class="fab fa-patreon" />
           Patreon
         </Btn>

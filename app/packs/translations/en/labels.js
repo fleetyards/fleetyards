@@ -382,7 +382,7 @@ export default {
   'rememberMe': 'Remember me',
   'emptyList': 'No %{name} present',
   'all': 'All',
-  'supportUs': 'Support FleetYards.net via',
+  'supportUs': 'Support FleetYards.net',
   'account': {
     destroyInfo:
       "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",

@@ -18,6 +18,7 @@ export default class Support extends Vue {
   open() {
     this.$comlink.$emit('open-modal', {
       component: () => import('frontend/components/Support/Modal'),
+      wide: true,
     })
   }
 }

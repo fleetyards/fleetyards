@@ -74,24 +74,10 @@
         </a>
       </div>
       <div class="app-footer-support">
-        {{ $t('labels.supportUs') }}
-        <a
-          href="https://paypal.me/pools/c/83jQLadz60"
-          target="_blank"
-          rel="noopener"
-        >
-          <i class="fab fa-paypal" />
-          PayPal
-        </a>
-        {{ $t('labels.or') }}
-        <a
-          href="https://www.patreon.com/fleetyards"
-          target="_blank"
-          rel="noopener"
-        >
-          <i class="fab fa-patreon" />
-          Patreon
-        </a>
+        <Btn :inline="true" variant="link" @click.native="openSupportModal">
+          {{ $t('labels.supportUs') }}
+          <i class="fa fa-heart" />
+        </Btn>
       </div>
       <div class="app-footer-item">
         <p>
@@ -138,8 +124,13 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import Btn from 'frontend/core/components/Btn'
 
-@Component<AppFooter>({})
+@Component<AppFooter>({
+  components: {
+    Btn,
+  },
+})
 export default class AppFooter extends Vue {
   @Getter('online') online: boolean
 
@@ -151,6 +142,13 @@ export default class AppFooter extends Vue {
 
   get copyrightOwner() {
     return window.COPYRIGHT_OWNER
+  }
+
+  openSupportModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Support/Modal'),
+      wide: true,
+    })
   }
 }
 </script>

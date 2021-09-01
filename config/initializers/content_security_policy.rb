@@ -44,7 +44,7 @@ Rails.application.config.content_security_policy do |policy|
   img_src = [
     :self, :data, :blob, Rails.configuration.app.frontend_endpoint, api_endpoint,
     Rails.application.credentials.carrierwave_cloud_cdn_endpoint, Rails.configuration.rsi.endpoint,
-    'https://img.youtube.com',
+    'https://img.youtube.com', 'https://img.buymeacoffee.com'
   ].compact
 
   font_src = [
