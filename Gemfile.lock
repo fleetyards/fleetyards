@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/tinfoil/devise-two-factor.git
-  revision: c597da043482aedc215f3b71665411b3269892a0
+  revision: cb72c04baefad5e388388f7ffd3bcb88722615e7
   specs:
     devise-two-factor (4.0.0)
       activesupport (< 6.2)
@@ -119,7 +119,7 @@ GEM
     bullet (6.1.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
-    bundler-audit (0.8.0)
+    bundler-audit (0.9.0.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
     byebug (11.1.3)
@@ -205,7 +205,7 @@ GEM
     execjs (2.8.1)
     faker (2.19.0)
       i18n (>= 1.6, < 2)
-    faraday (1.7.0)
+    faraday (1.7.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -248,7 +248,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    graphql (1.12.15)
+    graphql (1.12.16)
     graphql-client (0.16.0)
       activesupport (>= 3.0)
       graphql (~> 1.8)
@@ -361,7 +361,7 @@ GEM
       racc (~> 1.4)
     oj (3.13.3)
     orm_adapter (0.5.0)
-    paper_trail (12.0.0)
+    paper_trail (12.1.0)
       activerecord (>= 5.2)
       request_store (~> 1.1)
     parallel (1.20.1)
