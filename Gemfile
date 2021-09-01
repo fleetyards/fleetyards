@@ -95,7 +95,7 @@ gem 'fog-aws'
 gem 'image_processing', '~> 1.0'
 gem 'mini_magick'
 
-gem 'nokogiri', '1.12.3'
+gem 'nokogiri', '1.12.4'
 gem 'typhoeus'
 
 gem 'rack-cors', require: 'rack/cors'
