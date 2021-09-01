@@ -107,7 +107,7 @@ GEM
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
-    bootsnap (1.7.7)
+    bootsnap (1.8.1)
       msgpack (~> 1.0)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
