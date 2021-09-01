@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.4](https://github.com/fleetyards/fleetyards/compare/v4.12.3...v4.12.4) (2021-08-31)
+
+
+### Bug Fixes
+
+* add to hangar ([a1547d9](https://github.com/fleetyards/fleetyards/commit/a1547d9a7537c4b1822bf80c48737842cd3aedf5))
+* filter issue in compare hardpoints ([5c86f4a](https://github.com/fleetyards/fleetyards/commit/5c86f4a0299e8ad28a017abf4eb768e5d0c1ef08))
+* middlewares ([5baa16a](https://github.com/fleetyards/fleetyards/commit/5baa16a08397da5190877d76986f5cb18a788121))
+
 ### [4.12.3](https://github.com/fleetyards/fleetyards/compare/v4.12.2...v4.12.3) (2021-08-27)
 
 
