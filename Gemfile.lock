@@ -9,9 +9,9 @@ GIT
 
 GIT
   remote: https://github.com/tinfoil/devise-two-factor.git
-  revision: cb72c04baefad5e388388f7ffd3bcb88722615e7
+  revision: ecd182e97e8e92436bd908af30165c18f17fe67e
   specs:
-    devise-two-factor (4.0.0)
+    devise-two-factor (4.0.1)
       activesupport (< 6.2)
       attr_encrypted (>= 1.3, < 4, != 2)
       devise (~> 4.0)
@@ -102,7 +102,7 @@ GEM
     ast (2.4.2)
     attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
-    autoprefixer-rails (10.3.1.0)
+    autoprefixer-rails (10.3.3.0)
       execjs (~> 2)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
@@ -224,7 +224,7 @@ GEM
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
-    ffi (1.15.3)
+    ffi (1.15.4)
     fog-aws (3.12.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
@@ -337,7 +337,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0704)
+    mime-types-data (3.2021.0901)
     mini_magick (4.11.0)
     mini_mime (1.1.1)
     mini_portile2 (2.6.1)
