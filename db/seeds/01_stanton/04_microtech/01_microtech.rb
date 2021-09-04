@@ -25,7 +25,7 @@ new_babbage.docks.destroy_all
 end
 
 new_babbage.habitations.destroy_all
-%w[1 2 3 4 5 6 7 8 9 10].each do |level|
+10.times do |level|
   pad = 1
   { small_apartment: 5 }.each do |apartment_size, count|
     count.times do
@@ -110,4 +110,19 @@ ftl.update!(
   location: 'The Commons',
   hidden: false
 )
+
+# makau = Shop.find_or_initialize_by(name: 'Makau', station: new_babbage)
+# makau.update!(
+#   shop_type: :clothing,
+#   location: 'The Commons',
+#   selling: true,
+#   hidden: false
+# )
+
+# voyarger = Shop.find_or_initialize_by(name: 'Voyager Bar', station: new_babbage)
+# voyarger.update!(
+#   shop_type: :bar,
+#   location: 'The Commons',
+#   hidden: false
+# )
 

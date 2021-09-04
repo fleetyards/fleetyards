@@ -218,6 +218,11 @@ en:
           equipment: Equipment
           courier: Courier
           refinery: Refinery
+          pharmacy: pharmacy
+          cargo: Cargo Center
+          souvenirs: Souvenirs
+          kiosk: Kiosk
+          ship_customizations: Ship & Vehicle Customizations
       celestial_object:
         hidden: hidden?
         location_prefix:
