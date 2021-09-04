@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.5](https://github.com/fleetyards/fleetyards/compare/v4.12.4...v4.12.5) (2021-09-04)
+
+
+### Bug Fixes
+
+* add some z to the support button ([36e5da2](https://github.com/fleetyards/fleetyards/commit/36e5da2e0fb02a29c19d1c60101b9e59c50fa8fc))
+* specs ([4c6e743](https://github.com/fleetyards/fleetyards/commit/4c6e743c5499db0e7f54ce0788b1f63513f44890))
+
 ### [4.12.4](https://github.com/fleetyards/fleetyards/compare/v4.12.3...v4.12.4) (2021-08-31)
 
 
