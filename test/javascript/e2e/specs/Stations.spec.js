@@ -10,7 +10,7 @@ describe('Stations', () => {
     cy.url().should('include', '/stations')
 
     cy.get('.panel-title a')
-      .contains('Port Olisar')
+      .contains('Area 18')
       .should('exist')
 
     cy.get('.station-panel').should('have.length.of.at.least', 1)
