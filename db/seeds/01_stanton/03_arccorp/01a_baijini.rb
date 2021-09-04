@@ -11,9 +11,8 @@ baijini.update!(
   classification: :trading,
   location: nil,
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/baijini/baijini.jpg').open,
-  hidden: false,
-  refinery: true,
-  cargo_hub: true
+  cargo_hub: true,
+  hidden: hidden
 )
 
 baijini.docks.destroy_all

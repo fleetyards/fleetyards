@@ -11,6 +11,7 @@ hur_l1.update!(
   classification: :rest_stop,
   location: 'HUR-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/hurston/hur-l1/hur-l1-a.jpg').open,
+  refinery: true,
   hidden: hidden
 )
 

@@ -11,6 +11,7 @@ arc_l1.update!(
   classification: :rest_stop,
   location: 'ARC-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/arccorp/arc-l1/arc-l1.jpg').open,
+  refinery: true,
   hidden: hidden
 )
 

@@ -11,9 +11,8 @@ porttressler.update!(
   classification: :trading,
   location: nil,
   # store_image: Rails.root.join('db/seeds/images/stanton/microtech/porttressler/porttressler.jpg').open,
-  hidden: false,
-  refinery: true,
-  cargo_hub: true
+  cargo_hub: true,
+  hidden: hidden
 )
 
 porttressler.docks.destroy_all

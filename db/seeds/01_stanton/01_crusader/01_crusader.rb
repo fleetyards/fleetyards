@@ -10,6 +10,7 @@ orison.update!(
   location: nil,
   classification: :city,
   store_image: Rails.root.join('db/seeds/images/stanton/crusader/orison/main.jpg').open,
+  cargo_hub: true,
   hidden: false
 )
 

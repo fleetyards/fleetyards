@@ -11,6 +11,7 @@ mic_l1.update!(
   classification: :rest_stop,
   location: 'MIC-L1',
   store_image: Rails.root.join('db/seeds/images/stanton/microtech/mic-l1/mic-l1.jpg').open,
+  refinery: true,
   hidden: hidden
 )
 
