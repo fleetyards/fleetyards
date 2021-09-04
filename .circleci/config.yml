@@ -162,7 +162,7 @@ jobs:
       - run: yarn install
       - run:
           name: Check Audit DB
-          command: yarn audit
+          command: yarn audit --groups dependencies
 
   rubocop:
     <<: *defaults
