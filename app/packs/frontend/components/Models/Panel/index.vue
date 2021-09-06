@@ -81,14 +81,21 @@
           class="image"
         >
           <div
-            v-if="editable"
+            v-if="editable && !vehicle.loaner"
             v-tooltip="purchasedLabel"
             class="purchased-label"
-            :class="{ purchased: vehicle.purchased, loaner: vehicle.loaner }"
+            :class="{ purchased: vehicle.purchased }"
             @click.prevent="togglePurchased"
           >
-            <i v-if="vehicle.loaner" class="fal fa-exchange" />
-            <i v-else class="fal fa-check" />
+            <i class="fal fa-check" />
+          </div>
+          <div
+            v-if="editable && vehicle.loaner"
+            v-tooltip="$t('labels.vehicle.loaner')"
+            class="purchased-label"
+            :class="{ loaner: vehicle.loaner }"
+          >
+            <i class="fal fa-exchange" />
           </div>
           <div
             v-show="model.onSale"
@@ -254,10 +261,6 @@ export default class ModelPanel extends Vue {
   }
 
   get purchasedLabel() {
-    if (this.vehicle.loaner) {
-      return this.$t('labels.vehicle.loaner')
-    }
-
     if (this.vehicle.purchased) {
       return this.$t('labels.vehicle.purchased')
     }
