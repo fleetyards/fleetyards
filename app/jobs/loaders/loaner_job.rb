@@ -5,7 +5,7 @@ require 'rsi/loaner_loader'
 module Loaders
   class LoanerJob < ::Loaders::BaseJob
     def perform
-      missing_loaners = ::Rsi::LoanerLoader.new.run
+      missing_loaners, missing_models = ::Rsi::LoanerLoader.new.run
 
       Vehicle.where(loaner: true, notify: true).destroy_all
 
@@ -13,7 +13,7 @@ module Loaders
         Vehicle.where(model_id: model_id, loaner: false, notify: true).find_each(&:add_loaners)
       end
 
-      AdminMailer.missing_loaners(missing_loaners).deliver_later if missing_loaners.present?
+      AdminMailer.missing_loaners(missing_loaners, missing_models).deliver_later if missing_loaners.present? || missing_models.present?
     end
   end
 end
