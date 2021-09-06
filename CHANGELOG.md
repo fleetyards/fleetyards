@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.9](https://github.com/fleetyards/fleetyards/compare/v4.12.8...v4.12.9) (2021-09-06)
+
+
+### Bug Fixes
+
+* loaner icon purchased click ([b31d4a6](https://github.com/fleetyards/fleetyards/commit/b31d4a693b0e6dba0a98d1284851bcdec5dac432))
+
 ### [4.12.8](https://github.com/fleetyards/fleetyards/compare/v4.12.7...v4.12.8) (2021-09-06)
 
 
