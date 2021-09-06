@@ -1,9 +1,34 @@
 <h4>
   <%= I18n.t("mailer.admin.missing_loaners.headline") %>
 </h4>
-<% @loaners.each do |loaner| %>
+
+<br>
+<h5>Missing Loaners</h5>
+<br>
+
+<% @missing_loaners.each do |loaner| %>
 <p>
   <b><%= loaner[:name] %></b><br>
-  <%= [loaner[:model_id], loaner[:loaner], loaner[:loaners]].join('<br>').html_safe %>
+  Loaners: <%= loaner[:loaners] %>
 </p>
+<% if loaner != @missing_loaners.last %>
+<hr>
+<% end %>
+<% end %>
+
+<br>
+<br>
+
+<h5>Missing Models</h5>
+<br>
+
+<% @missing_models.each do |model| %>
+<p>
+  <b><%= model[:loaner] %></b><br>
+  Model ID: <%= model[:model_id] %><br>
+  Model Name: <%= model[:model] %>
+</p>
+<% if model != @missing_models.last %>
+<hr>
+<% end %>
 <% end %>

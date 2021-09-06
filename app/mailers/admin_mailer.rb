@@ -11,8 +11,9 @@ class AdminMailer < ApplicationMailer
     )
   end
 
-  def missing_loaners(loaners)
-    @loaners = loaners
+  def missing_loaners(loaners, models)
+    @missing_loaners = loaners
+    @missing_models = models
 
     mail(
       subject: I18n.t(:'mailer.admin.missing_loaners.subject')
