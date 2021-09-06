@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.8](https://github.com/fleetyards/fleetyards/compare/v4.12.7...v4.12.8) (2021-09-06)
+
+
+### Bug Fixes
+
+* audit issues ([fad1ae2](https://github.com/fleetyards/fleetyards/commit/fad1ae2137fea16608b71ec2798c56a3c324ca10))
+* e2e specs ([0e22586](https://github.com/fleetyards/fleetyards/commit/0e225867cacec697f6a820f790888b008b4dbcc1))
+
 ### [4.12.7](https://github.com/fleetyards/fleetyards/compare/v4.12.6...v4.12.7) (2021-09-04)
 
 
