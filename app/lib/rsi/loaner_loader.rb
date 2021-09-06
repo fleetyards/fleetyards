@@ -17,6 +17,7 @@ module Rsi
 
       page = Nokogiri::HTML(response.body)
 
+      missing_loaners = []
       missing_models = []
       model_loaners = []
 
@@ -26,7 +27,7 @@ module Rsi
 
         found_models = Model.where(name: models_map(name)).all
 
-        missing_models << { name: name, loaners: loaners } if found_models.blank?
+        missing_loaners << { name: name, loaners: loaners } if found_models.blank?
 
         found_models.each do |model|
           loaners.each do |loaner|
@@ -49,12 +50,13 @@ module Rsi
 
       ModelLoaner.where.not(id: model_loaners).destroy_all
 
-      missing_models
+      [missing_loaners, missing_models]
     end
 
     private def models_map(name)
       models_map = {
         'Carrack / Carrack Expedition' => ['Carrack'],
+        'Carrack w/ C8X / Carrack Expedition w/C8X' => ['Carrack'],
         '100 Series' => %w[100i 125a 135c],
         '600i Series' => ['600i Touring', '600i Explorer', '600i Executive-Edition'],
         'Apollo' => ['Apollo Medivac', 'Apollo Triage'],
@@ -71,6 +73,7 @@ module Rsi
         'Mole' => ['Mole'],
         'G12A' => ['G12a'],
         'G12R' => ['G12r'],
+        'ROC (+ ROC DS)' => %w[ROC ROC-DS],
         'Retaliator' => ['Retaliator Bomber', 'Retaliator Base'],
         "San'Tok.yai" => ["San'tok.yāi"],
         'Nox' => ['Nox', 'Nox Kue'],
@@ -89,11 +92,14 @@ module Rsi
         'F7C - Hornet' => 'F7C Hornet',
         'URSA Rover' => 'Ursa Rover',
         'MPUV Passenger' => 'MPUV Personnel',
+        'Hercules C2' => 'C2 Hercules',
+        'Hercules M2' => 'M2 Hercules',
         'Cyclone (Explorer only)' => 'Cyclone',
         'Cyclone TR' => 'Cyclone-TR',
         'Cyclone RC' => 'Cyclone-RC',
         'Cyclone AA' => 'Cyclone-AA',
         "Khartu-al (Xi'an Scout)" => 'Khartu-Al',
+        'Khartu-al' => 'Khartu-Al'
       }
 
       return model_map[name] if model_map[name].present?
