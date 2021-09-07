@@ -18,6 +18,13 @@
           >
             {{ toggleCompactTooltip }}
           </Btn>
+          <Btn
+            :active="showRemoved"
+            :aria-label="toggleRemovedTooltip"
+            @click.native="togglerShowRemoved"
+          >
+            {{ toggleRemovedTooltip }}
+          </Btn>
           <Btn href="https://robertsspaceindustries.com/roadmap">
             {{ $t('labels.rsiRoadmap') }}
           </Btn>
@@ -108,6 +115,8 @@ export default class RoadmapReleases extends Vue {
 
   compact: boolean = true
 
+  showRemoved: boolean = false
+
   roadmapItems: any[] = []
 
   visible: string[] = []
@@ -128,6 +137,14 @@ export default class RoadmapReleases extends Vue {
     }
 
     return this.$t('actions.hideDetails')
+  }
+
+  get toggleRemovedTooltip() {
+    if (this.showRemoved) {
+      return this.$t('actions.roadmap.hideRemoved')
+    }
+
+    return this.$t('actions.roadmap.showRemoved')
   }
 
   get isSubRoute() {
@@ -234,6 +251,11 @@ export default class RoadmapReleases extends Vue {
     this.compact = !this.compact
   }
 
+  togglerShowRemoved() {
+    this.showRemoved = !this.showRemoved
+    this.fetch()
+  }
+
   toggle(release) {
     if (this.visible.includes(release)) {
       const index = this.visible.indexOf(release)
@@ -260,6 +282,7 @@ export default class RoadmapReleases extends Vue {
 
     const response = await this.$api.get('roadmap?overview=1', {
       q: {
+        activeIn: [true, !this.showRemoved],
         rsiReleaseIdGteq: this.onlyReleased ? 41 : 1,
       },
     })

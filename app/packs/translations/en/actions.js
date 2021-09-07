@@ -145,4 +145,8 @@ export default {
       disable: 'Disable colors',
     },
   },
+  'roadmap': {
+    showRemoved: 'Show Removed',
+    hideRemoved: 'Hide Removed',
+  },
 }
