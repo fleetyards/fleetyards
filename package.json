@@ -8,8 +8,6 @@
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "storybook": "start-storybook",
-    "storybook:build": "build-storybook -c .storybook -o .out",
     "test": "jest",
     "test:ci": "jest -w 1",
     "test:coverage": "jest --coverage",
@@ -70,7 +68,6 @@
     "regenerator-runtime": "0.13.9",
     "sass-loader": "10.1.1",
     "serialize-javascript": ">=6.0.0",
-    "storybook-addon-vue-info": "^1.4.2",
     "three": "^0.132.2",
     "ts-debounce": "^3.0.0",
     "v-tooltip": "2.1.3",
@@ -99,14 +96,6 @@
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
     "@commitlint/config-conventional": "13.1.0",
-    "@storybook/addon-actions": "6.3.8",
-    "@storybook/addon-backgrounds": "6.3.8",
-    "@storybook/addon-centered": "5.3.21",
-    "@storybook/addon-knobs": "6.2.9",
-    "@storybook/addon-links": "6.3.8",
-    "@storybook/addon-notes": "5.3.21",
-    "@storybook/addon-viewport": "6.3.8",
-    "@storybook/vue": "6.3.8",
     "@types/i18n-js": "3.8.2",
     "@types/jest": "27.0.1",
     "@typescript-eslint/eslint-plugin": "4.31.0",
@@ -136,7 +125,6 @@
     "jest": "27.1.0",
     "jest-serializer-vue": "2.0.2",
     "standard-version": "9.3.1",
-    "storybook-vue-router": "1.0.7",
     "stylelint": "13.13.1",
     "stylelint-config-prettier": "8.0.2",
     "stylelint-config-rational-order": "^0.1.2",
@@ -176,12 +164,6 @@
     "browserslist": ">=4.16.5",
     "normalize-url": ">=4.5.1 <5.0.0 || >=5.3.1 <6.0.0 || >=6.0.1",
     "shelljs": ">=0.8.4"
-  },
-  "config": {
-    "storybook": {
-      "port": "-p 6006",
-      "config": "-c .storybook"
-    }
   },
   "gitHooks": {
     "commit-msg": "commitlint -E GIT_PARAMS"
