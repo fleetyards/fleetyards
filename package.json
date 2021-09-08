@@ -6,8 +6,6 @@
     "check-for-reinstalling": "./scripts/check-for-reinstalling.sh",
     "docs:old": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib -o public/docs/v1.html",
     "docs:watch": "aglio --theme-variables slate --theme-template triple -i docs/v1/main.apib --server",
-    "docs": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
     "test": "jest",
     "test:ci": "jest -w 1",
     "test:coverage": "jest --coverage",
@@ -86,7 +84,6 @@
     "vue-trix": "^1.2.0",
     "vue-upload-component": "2.8.22",
     "vuedraggable": "2.24.3",
-    "vuepress": "1.8.2",
     "vuex": "3.6.2",
     "vuex-class": "^0.3.2",
     "vuex-persistedstate": "3.2.1",
@@ -143,27 +140,8 @@
     "yorkie": "2.0.0"
   },
   "resolutions": {
-    "node-forge": ">= 0.10.0",
     "serialize-javascript": ">=6.0.0",
-    "yargs-parser": ">=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2",
-    "elliptic": ">=6.5.4",
-    "dot-prop": ">=5.1.1",
-    "node-fetch": ">=2.6.1 <3.0.0-beta.1|| >= 3.0.0-beta.9",
-    "ini": ">1.3.6",
-    "prismjs": ">=1.24.0",
-    "pug-code-gen": ">=2.0.3 <3.0.0||>=3.0.2",
-    "pug": ">=3.0.1",
-    "y18n": ">=5.0.5||>=4.0.1 <5.0.0||>=3.2.2 <4.0.0",
-    "ssri": ">=6.0.2 <7.0.0 || >=8.0.1",
-    "hosted-git-info": ">=2.8.9 <3.0.0 || >=3.0.8",
-    "url-parse": ">=1.5.2",
-    "lodash": ">=4.17.21",
-    "trim": ">=0.0.3",
-    "css-what": ">=5.0.1",
-    "glob-parent": ">=5.1.2",
-    "browserslist": ">=4.16.5",
-    "normalize-url": ">=4.5.1 <5.0.0 || >=5.3.1 <6.0.0 || >=6.0.1",
-    "shelljs": ">=0.8.4"
+    "glob-parent": ">=5.1.2"
   },
   "gitHooks": {
     "commit-msg": "commitlint -E GIT_PARAMS"
