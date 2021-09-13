@@ -48,10 +48,12 @@ class Starsystem < ApplicationRecord
            dependent: :destroy
   has_many :planets,
            -> { CelestialObject.planet },
+           dependent: :destroy,
            inverse_of: :starsystem,
            class_name: 'CelestialObject'
   has_many :moons,
            -> { CelestialObject.moon },
+           dependent: :destroy,
            inverse_of: :starsystem,
            class_name: 'CelestialObject'
 
