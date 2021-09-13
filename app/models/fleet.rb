@@ -37,6 +37,7 @@ class Fleet < ApplicationRecord
            dependent: :destroy
   has_many :visible_memberships,
            -> { where(aasm_state: :accepted).where.not(ships_filter: :hide) },
+           dependent: :destroy,
            class_name: 'FleetMembership',
            inverse_of: false
   has_many :users,

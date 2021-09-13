@@ -67,6 +67,7 @@ class User < ApplicationRecord
            through: :models
   has_many :public_vehicles,
            -> { where(purchased: true, public: true) },
+           dependent: :destroy,
            class_name: 'Vehicle',
            inverse_of: false
   has_many :public_models,
