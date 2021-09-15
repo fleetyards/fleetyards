@@ -104,7 +104,7 @@ module Rsi
     private def extract_price(element)
       raw_price = element.text
       price_match = raw_price.match(/^\$(\d?,?\d+.\d+) USD$/)
-      price_with_local_vat = price_match[1].to_d if price_match.present?
+      price_with_local_vat = price_match[1].gsub(/[$,]/,'').to_d if price_match.present?
       price_with_local_vat * 100 / (100 + vat_percent) if price_with_local_vat.present?
     end
 
