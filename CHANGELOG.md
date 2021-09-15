@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.13](https://github.com/fleetyards/fleetyards/compare/v4.12.12...v4.12.13) (2021-09-15)
+
+
+### Bug Fixes
+
+* parse dollar formated string ([5bae75e](https://github.com/fleetyards/fleetyards/commit/5bae75eecfa7361510240e7a798c7c9cc6a187af))
+
 ### [4.12.12](https://github.com/fleetyards/fleetyards/compare/v4.12.11...v4.12.12) (2021-09-15)
 
 
