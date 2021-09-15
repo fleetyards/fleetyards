@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.13](https://github.com/fleetyards/fleetyards/compare/v4.12.12...v4.12.13) (2021-09-15)
+
+
+### Bug Fixes
+
+* parse dollar formated string ([5bae75e](https://github.com/fleetyards/fleetyards/commit/5bae75eecfa7361510240e7a798c7c9cc6a187af))
+
+### [4.12.12](https://github.com/fleetyards/fleetyards/compare/v4.12.11...v4.12.12) (2021-09-15)
+
+
+### Bug Fixes
+
+* price detection in rsi models loader ([69181e1](https://github.com/fleetyards/fleetyards/commit/69181e195d114343a07e60b9023dfc5db1d56dbe))
+
 ### [4.12.11](https://github.com/fleetyards/fleetyards/compare/v4.12.10...v4.12.11) (2021-09-13)
 
 
