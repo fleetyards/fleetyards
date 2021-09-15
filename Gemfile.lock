@@ -587,7 +587,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
-    unicode-display_width (2.0.0)
+    unicode-display_width (2.1.0)
     uniform_notifier (1.14.0)
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
