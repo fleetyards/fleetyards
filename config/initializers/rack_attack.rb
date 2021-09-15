@@ -26,7 +26,7 @@ Rack::Attack.throttled_response = lambda do |env|
   headers = {
     'X-RateLimit-Limit' => match_data[:limit].to_s,
     'X-RateLimit-Remaining' => '0',
-    'X-RateLimit-Reset' => (now + (match_data[:period] - now.to_i % match_data[:period])).iso8601
+    'X-RateLimit-Reset' => (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
   }
 
   [429, headers, [
