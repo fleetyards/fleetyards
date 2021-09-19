@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.13.0](https://github.com/fleetyards/fleetyards/compare/v4.12.14...v4.13.0) (2021-09-19)
+
+
+### Features
+
+* add detail modal to roadmap items ([e2223d4](https://github.com/fleetyards/fleetyards/commit/e2223d4abd580ee23a2e96de634423c024498451))
+
 ### [4.12.14](https://github.com/fleetyards/fleetyards/compare/v4.12.13...v4.12.14) (2021-09-18)
 
 
