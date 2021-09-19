@@ -121,6 +121,7 @@
       font-weight: 400;
       font-size: 20px;
       font-family: 'Orbitron', tahoma, sans-serif;
+      cursor: pointer;
 
       small {
         display: block;
@@ -153,6 +154,32 @@
 
     &.inactive {
       opacity: .5;
+    }
+  }
+}
+
+.roadmap-modal {
+  .roadmap-modal-subheadline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .roadmap-item-committed {
+    color: $success;
+    box-shadow: 0 0 3px $gray-darker;
+  }
+
+  .roadmap-modal-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    img {
+      max-width: 100%;
+      border-radius: $border-radius-base;
     }
   }
 }
