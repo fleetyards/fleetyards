@@ -23,7 +23,7 @@ To get a custom Ship List on your Website you can just paste the example code on
     };
     (function() {
         var d = document, s = d.createElement('script');
-        s.src = 'https://fleetyards.net/embed.js#' + new Date().getTime();
+        s.src = 'https://fleetyards.net/embed-v2.js#' + new Date().getTime();
         (d.head || d.body).appendChild(s);
     })();
 </script>
