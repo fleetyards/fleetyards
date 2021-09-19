@@ -1,6 +1,10 @@
 <template>
   <Panel v-tooltip="inactiveTooltip" class="roadmap-item" :class="cssClasses">
-    <div v-lazy:background-image="storeImage" class="item-image lazy">
+    <div
+      v-lazy:background-image="storeImage"
+      class="item-image lazy"
+      @click="openImage"
+    >
       <div
         v-if="recentlyUpdated"
         v-tooltip="$t('labels.roadmap.recentlyUpdated')"
@@ -21,7 +25,7 @@
         >
           {{ item.name }}
         </router-link>
-        <span v-else v-tooltip="item.name">
+        <span v-else v-tooltip="item.name" @click="openModal">
           {{ item.name }}
         </span>
         <small>
@@ -173,8 +177,17 @@ export default class RoadmapItem extends Vue {
       )
   }
 
-  removeSign(number) {
-    return number < 0 ? number * -1 : number
+  openImage() {
+    window.open(this.item.storeImage, '_blank').focus()
+  }
+
+  openModal() {
+    this.$comlink.$emit('open-modal', {
+      component: () => import('frontend/components/Roadmap/RoadmapItem/Modal'),
+      props: {
+        item: this.item,
+      },
+    })
   }
 }
 </script>

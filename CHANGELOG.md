@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.14](https://github.com/fleetyards/fleetyards/compare/v4.12.13...v4.12.14) (2021-09-18)
+
+
+### Bug Fixes
+
+* update readme for embed view ([c37dd5c](https://github.com/fleetyards/fleetyards/commit/c37dd5cb8c56792ae021ae7c39f60bacd0aff49d))
+
 ### [4.12.13](https://github.com/fleetyards/fleetyards/compare/v4.12.12...v4.12.13) (2021-09-15)
 
 
