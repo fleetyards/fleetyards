@@ -1,10 +1,11 @@
 <template>
-  <Panel v-tooltip="inactiveTooltip" class="roadmap-item" :class="cssClasses">
-    <div
-      v-lazy:background-image="storeImage"
-      class="item-image lazy"
-      @click="openImage"
-    >
+  <Panel
+    v-tooltip="inactiveTooltip"
+    class="roadmap-item"
+    :class="cssClasses"
+    @click.native="openModal"
+  >
+    <div v-lazy:background-image="storeImage" class="item-image lazy">
       <div
         v-if="recentlyUpdated"
         v-tooltip="$t('labels.roadmap.recentlyUpdated')"
@@ -13,19 +14,7 @@
     </div>
     <div class="item-body">
       <h3>
-        <router-link
-          v-if="item.model"
-          v-tooltip="item.name"
-          :to="{
-            name: 'model',
-            params: {
-              slug: item.model.slug,
-            },
-          }"
-        >
-          {{ item.name }}
-        </router-link>
-        <span v-else v-tooltip="item.name" @click="openModal">
+        <span v-tooltip="item.name">
           {{ item.name }}
         </span>
         <small>
@@ -94,7 +83,7 @@ import { isBefore, addHours } from 'date-fns'
 export default class RoadmapItem extends Vue {
   @Prop({ required: true }) item!: Object
 
-  @Prop({ default: false }) compact!: boolean
+  @Prop({ default: true }) compact!: boolean
 
   @Prop({ default: true }) showProgress!: boolean
 
@@ -175,10 +164,6 @@ export default class RoadmapItem extends Vue {
         update =>
           update.key !== 'active' || (update.key === 'active' && update.old),
       )
-  }
-
-  openImage() {
-    window.open(this.item.storeImage, '_blank').focus()
   }
 
   openModal() {

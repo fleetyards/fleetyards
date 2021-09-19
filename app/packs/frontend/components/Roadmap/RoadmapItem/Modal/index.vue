@@ -14,7 +14,7 @@
       </div>
     </small>
     <div class="roadmap-modal-image" @click="openImage">
-      <img :src="item.storeImageSmall" :alt="item.name" />
+      <img :src="storeImage" :alt="item.name" />
     </div>
     <p>{{ description }}</p>
     <ul v-if="item.lastVersion">
@@ -46,6 +46,14 @@
         </template>
       </li>
     </ul>
+
+    <template #footer>
+      <div class="float-sm-right">
+        <Btn v-if="item.model" :inline="true" @click.native="openDetail">
+          {{ $t('actions.showMore') }}
+        </Btn>
+      </div>
+    </template>
   </Modal>
 </template>
 
@@ -63,6 +71,14 @@ import Btn from 'frontend/core/components/Btn'
 })
 export default class RoadmapItemModal extends Vue {
   @Prop({ required: true }) item
+
+  get storeImage() {
+    if (this.item.storeImage) {
+      return this.item.storeImage
+    }
+
+    return `https://robertsspaceindustries.com${this.item.image}`
+  }
 
   get description() {
     if (this.item.body) {
@@ -113,7 +129,20 @@ export default class RoadmapItemModal extends Vue {
   }
 
   openImage() {
-    window.open(this.item.storeImage, '_blank').focus()
+    window.open(this.storeImage, '_blank').focus()
+  }
+
+  openDetail() {
+    this.$comlink.$emit('close-modal')
+    this.$router
+      .push({
+        name: 'model',
+        params: {
+          slug: this.item.model.slug,
+        },
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch(() => {})
   }
 }
 </script>

@@ -91,7 +91,7 @@ export default class AppModal extends Vue {
       return
     }
 
-    if (this.$refs.modelComponent.dirty) {
+    if (this.$refs.modelComponent?.dirty) {
       displayConfirm({
         text: this.$t('messages.confirm.modal.dirty'),
         onConfirm: () => {

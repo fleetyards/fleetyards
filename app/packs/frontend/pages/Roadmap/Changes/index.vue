@@ -53,7 +53,7 @@
                 :key="item.id"
                 class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
               >
-                <RoadmapItem :item="item" />
+                <RoadmapItem :item="item" :compact="false" />
               </div>
             </div>
           </div>

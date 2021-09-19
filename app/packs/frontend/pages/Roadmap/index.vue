@@ -12,13 +12,6 @@
       <div class="col-12">
         <div class="page-actions page-actions-right">
           <Btn
-            :active="!compact"
-            :aria-label="toggleCompactTooltip"
-            @click.native="toggleCompact"
-          >
-            {{ toggleCompactTooltip }}
-          </Btn>
-          <Btn
             :active="showRemoved"
             :aria-label="toggleRemovedTooltip"
             @click.native="togglerShowRemoved"
@@ -75,7 +68,7 @@
                   :key="item.id"
                   class="col-12 col-lg-6 col-xl-4 col-xxl-2dot4 fade-list-item"
                 >
-                  <RoadmapItem :item="item" :compact="compact" />
+                  <RoadmapItem :item="item" />
                 </div>
               </div>
             </BCollapse>
@@ -113,8 +106,6 @@ export default class RoadmapReleases extends Vue {
 
   onlyReleased: boolean = true
 
-  compact: boolean = true
-
   showRemoved: boolean = false
 
   roadmapItems: any[] = []
@@ -129,14 +120,6 @@ export default class RoadmapReleases extends Vue {
     }
 
     return this.$t('actions.hideReleased')
-  }
-
-  get toggleCompactTooltip() {
-    if (this.compact) {
-      return this.$t('actions.showDetails')
-    }
-
-    return this.$t('actions.hideDetails')
   }
 
   get toggleRemovedTooltip() {
@@ -245,10 +228,6 @@ export default class RoadmapReleases extends Vue {
 
   toggleReleased() {
     this.onlyReleased = !this.onlyReleased
-  }
-
-  toggleCompact() {
-    this.compact = !this.compact
   }
 
   togglerShowRemoved() {
