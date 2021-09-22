@@ -15,14 +15,6 @@ class BaseUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def move_to_cache
-    true
-  end
-
-  def move_to_store
-    true
-  end
-
   private def uuid_path
     model.id.split(/(.{2})(.{2})(.+)/).join('/')
   end
