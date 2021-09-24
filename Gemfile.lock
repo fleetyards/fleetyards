@@ -331,7 +331,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.1)
+    marcel (1.0.2)
     metadown (1.0.1)
       redcarpet
     method_source (1.0.0)
