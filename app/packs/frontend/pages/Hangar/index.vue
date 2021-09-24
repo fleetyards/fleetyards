@@ -21,6 +21,7 @@
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
+              :editable="true"
               @highlight="highlightGroup"
             />
           </div>

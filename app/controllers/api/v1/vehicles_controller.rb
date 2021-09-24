@@ -155,11 +155,16 @@ module Api
       def public_quick_stats
         user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
 
-        vehicles = user.vehicles
+        scope = user.vehicles
+          .includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
           .public
           .where(loaner: false)
-          .includes(:model)
-          .order('models.classification asc')
+
+        @q = scope.ransack(vehicle_query_params)
+
+        @q.sorts = ['model_classification asc']
+
+        vehicles = @q.result
 
         models = vehicles.map(&:model)
 
@@ -171,6 +176,13 @@ module Api
 
               name: classification,
               label: classification.humanize
+            )
+          end,
+          groups: HangarGroup.where(user: current_user, public: true).order([{ sort: :asc, name: :asc }]).map do |group|
+            OpenStruct.new(
+              count: group.vehicles.where(id: vehicles.map(&:id)).size,
+              id: group.id,
+              slug: group.slug
             )
           end
         )

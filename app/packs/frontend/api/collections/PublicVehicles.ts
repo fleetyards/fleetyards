@@ -20,6 +20,7 @@ export class PublicVehiclesCollection extends BaseCollection {
     this.params = params
 
     const response = await get(`vehicles/${params?.username}`, {
+      q: params?.filters,
       page: params?.page,
     })
 
@@ -55,8 +56,11 @@ export class PublicVehiclesCollection extends BaseCollection {
 
   async findStatsByUsername(
     username: string,
+    params: PublicVehicleParams | null,
   ): Promise<PublicVehicleStats | null> {
-    const response = await get(`vehicles/${username}/quick-stats`)
+    const response = await get(`vehicles/${username}/quick-stats`, {
+      q: params?.filters,
+    })
 
     if (!response.error) {
       this.stats = response.data
