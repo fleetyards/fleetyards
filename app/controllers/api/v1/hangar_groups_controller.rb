@@ -58,7 +58,7 @@ module Api
       helper_method :hangar_group
 
       private def hangar_group_params
-        @hangar_group_params ||= params.permit(:name, :color, :sort).merge(user_id: current_user.id)
+        @hangar_group_params ||= params.permit(:name, :color, :sort, :public).merge(user_id: current_user.id)
       end
     end
   end

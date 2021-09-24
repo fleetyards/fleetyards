@@ -39,6 +39,13 @@
               />
             </ValidationProvider>
           </div>
+          <div class="col-12 col-md-6">
+            <Checkbox
+              id="public"
+              v-model="form.public"
+              :label="$t('labels.hangarGroup.public')"
+            />
+          </div>
           <div class="col-12">
             <VSwatches v-model="form.color" :inline="true" />
           </div>
@@ -77,6 +84,7 @@ import Btn from 'frontend/core/components/Btn'
 import FormInput from 'frontend/core/components/Form/FormInput'
 import { displayAlert, displayConfirm } from 'frontend/lib/Noty'
 import hangarGroupsCollection from 'frontend/api/collections/HangarGroups'
+import Checkbox from 'frontend/core/components/Form/Checkbox'
 import VSwatches from 'vue-swatches'
 
 @Component<GroupModal>({
@@ -85,6 +93,7 @@ import VSwatches from 'vue-swatches'
     Btn,
     FormInput,
     VSwatches,
+    Checkbox,
   },
 })
 export default class GroupModal extends Vue {
@@ -126,6 +135,7 @@ export default class GroupModal extends Vue {
     this.form = {
       name: this.hangarGroup?.name,
       color: this.hangarGroup?.color,
+      public: this.hangarGroup?.public,
     }
   }
 

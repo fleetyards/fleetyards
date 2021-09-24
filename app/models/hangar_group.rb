@@ -7,6 +7,7 @@
 #  id         :uuid             not null, primary key
 #  color      :string
 #  name       :string
+#  public     :boolean          default(FALSE)
 #  slug       :string
 #  sort       :integer
 #  created_at :datetime         not null
