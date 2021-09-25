@@ -103,6 +103,7 @@
           >
             <i class="fal fa-dollar-sign" />
           </div>
+          <VehicleGroups :groups="vehicle.hangarGroups" />
         </LazyImage>
         <div
           v-if="upgradable && vehicle"
@@ -153,6 +154,7 @@ import AddToHangar from 'frontend/components/Models/AddToHangar'
 import ModelPanelMetrics from 'frontend/components/Models/PanelMetrics'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
+import VehicleGroups from 'frontend/components/Vehicles/PanelGroups'
 
 @Component<VehiclePanel>({
   components: {
@@ -162,6 +164,7 @@ import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
     LazyImage,
     AddToHangar,
     ModelPanelMetrics,
+    VehicleGroups,
   },
 })
 export default class VehiclePanel extends Vue {

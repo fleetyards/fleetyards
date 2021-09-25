@@ -1,0 +1,21 @@
+@import '~stylesheets/variables';
+
+.panel-groups {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .panel-group {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
