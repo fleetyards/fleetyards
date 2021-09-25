@@ -1,9 +1,5 @@
 @import '~stylesheets/variables';
 
-.flagship-icon {
-  color: $gold;
-}
-
 .panel-image {
   .on-sale {
     position: absolute;
@@ -24,90 +20,18 @@
       color: #fff;
     }
   }
-
-  .purchased-label {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-top: 20px solid $gray;
-    border-right: 20px solid $gray;
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid transparent;
-    cursor: pointer;
-
-    &.loaner {
-      border-top: 20px solid $success;
-      border-right: 20px solid $success;
-      cursor: default;
-    }
-
-    &.purchased {
-      border-top: 20px solid $success;
-      border-right: 20px solid $success;
-    }
-
-    i,
-    svg {
-      position: absolute;
-      top: -15px;
-      right: -15px;
-      color: #fff;
-    }
-  }
-
-  .addons {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-top: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 25px solid $gray;
-    border-left: 25px solid $gray;
-    cursor: pointer;
-
-    &.selected {
-      border-bottom: 25px solid $success;
-      border-left: 25px solid $success;
-    }
-
-    i,
-    svg {
-      position: absolute;
-      bottom: -16px;
-      left: -16px;
-      color: #fff;
-    }
-  }
 }
 
 .panel-heading {
-  .panel-edit-menu,
   .panel-add-to-hangar-button {
     position: absolute;
     top: 0;
     right: 0;
     padding: 12px 6px;
+    font-size: 18px;
 
     > :first-child {
       font-size: 18px;
     }
   }
-
-  .panel-edit-menu {
-    padding: 12px 6px 10px;
-  }
-
-  .panel-add-to-hangar-button {
-    font-size: 18px;
-  }
-}
-
-.roles {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }

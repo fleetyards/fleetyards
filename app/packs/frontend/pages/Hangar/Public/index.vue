@@ -112,8 +112,7 @@
           :primary-key="primaryKey"
         >
           <template #default="{ record }">
-            <ModelPanel
-              :model="record.model"
+            <VehiclePanel
               :vehicle="record"
               :highlight="record.hangarGroupIds.includes(highlightedGroup)"
             />
@@ -130,7 +129,7 @@ import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards/Hangar'
 import Btn from 'frontend/core/components/Btn'
-import ModelPanel from 'frontend/components/Models/Panel'
+import VehiclePanel from 'frontend/components/Vehicles/Panel'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
@@ -149,7 +148,7 @@ import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarG
     AddonsModal,
     FilteredList,
     FilteredGrid,
-    ModelPanel,
+    VehiclePanel,
     ModelClassLabels,
     Avatar,
     GroupLabels,

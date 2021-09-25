@@ -20,8 +20,8 @@
     </template>
     <template v-else>
       {{ $t('labels.vehicle.owner') }}
-      <Btn :href="`/hangar/${username}`" variant="link" :text-inline="true">
-        {{ username }}
+      <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
+        {{ owner }}
       </Btn>
     </template>
   </div>
@@ -39,7 +39,7 @@ import { uniq as uniqArray } from 'frontend/utils/Array'
   },
 })
 export default class ModelPanel extends Vue {
-  @Prop({ default: null }) vehicle: Vehicle | null
+  @Prop({ default: null }) owner: string | null
 
   @Prop({
     default() {
@@ -54,10 +54,6 @@ export default class ModelPanel extends Vue {
     }
 
     return null
-  }
-
-  get username() {
-    return this.vehicle.username
   }
 
   get usernames() {
