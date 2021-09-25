@@ -74,7 +74,7 @@
           </div>
         </LazyImage>
         <VehicleOwner
-          v-if="fleetVehicle.username || vehicles.length"
+          v-if="(fleetVehicle.username || vehicles.length) && showOwner"
           :owner="fleetVehicle.username"
           :vehicles="vehicles"
         />
@@ -125,6 +125,8 @@ export default class FleetVehiclePanel extends Vue {
   @Prop({ required: true }) fleetVehicle: Vehicle | Model | null
 
   @Prop({ default: false }) details: boolean
+
+  @Prop({ default: true }) showOwner: boolean
 
   get uuid() {
     return this._uid

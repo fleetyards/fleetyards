@@ -31,6 +31,12 @@
               v-html="model.manufacturer.name"
             />
           </small>
+
+          <AddToHangar
+            :model="model"
+            class="panel-add-to-hangar-button"
+            variant="panel"
+          />
         </h2>
       </div>
       <div

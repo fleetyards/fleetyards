@@ -18,6 +18,6 @@ json.username vehicle.user.username
 json.user_avatar vehicle.user.avatar.small.url
 json.hangar_group_ids vehicle.hangar_group_ids
 json.hangar_groups do
-  json.array! vehicle.hangar_groups, partial: 'api/v1/vehicles/hangar_group', as: :hangar_group
+  json.array! vehicle.hangar_groups.where(public: true), partial: 'api/v1/vehicles/hangar_group', as: :hangar_group
 end
 json.partial! 'api/shared/dates', record: vehicle
