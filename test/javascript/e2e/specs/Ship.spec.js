@@ -4,6 +4,8 @@ describe('Ship', () => {
 
     cy.acceptCookies()
 
+    cy.waitForPageToLoad()
+
     cy.get('.panel-title a span').contains('100i')
 
     cy.get('.model-panel#100i .panel-title a span').click()
