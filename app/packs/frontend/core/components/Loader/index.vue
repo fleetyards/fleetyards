@@ -6,6 +6,7 @@
           fixed: fixed,
           inline: inline,
         }"
+        data-test="loader"
         class="loader"
       >
         <div class="cube1 cube" />

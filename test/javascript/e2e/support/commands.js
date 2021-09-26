@@ -9,6 +9,10 @@ Cypress.Commands.add('confirmAccess', password => {
   cy.select('confirm-access').should('not.exist')
 })
 
+Cypress.Commands.add('waitForPageToLoad', () => {
+  cy.select(`loader`).should('not.exist')
+})
+
 Cypress.Commands.add('clickNav', name => {
   cy.select(`nav-${name}`).click()
 })
