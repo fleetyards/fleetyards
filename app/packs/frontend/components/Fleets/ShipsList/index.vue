@@ -126,19 +126,9 @@
           :primary-key="primaryKey"
         >
           <template #default="{ record }">
-            <ModelPanel
-              v-if="record.model"
-              :model="record.model"
+            <FleetVehiclePanel
+              :fleet-vehicle="record"
               :details="detailsVisible"
-              :vehicle="record"
-              :show-owner="true"
-            />
-            <ModelPanel
-              v-else
-              :model="record"
-              :details="detailsVisible"
-              :vehicles="record.vehicles"
-              :show-owner="true"
             />
           </template>
         </FilteredGrid>
@@ -155,7 +145,7 @@ import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
 import Btn from 'frontend/core/components/Btn'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import ModelPanel from 'frontend/components/Models/Panel'
+import FleetVehiclePanel from 'frontend/components/Fleets/VehiclePanel'
 import FleetVehiclesFilterForm from 'frontend/components/Fleets/FilterForm'
 import FleetModelsFilterForm from 'frontend/components/Models/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -169,7 +159,7 @@ import debounce from 'lodash.debounce'
     BtnDropdown,
     FilteredList,
     FilteredGrid,
-    ModelPanel,
+    FleetVehiclePanel,
     ModelClassLabels,
     AddonsModal,
     FleetVehiclesFilterForm,

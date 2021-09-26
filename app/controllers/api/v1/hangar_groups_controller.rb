@@ -10,6 +10,13 @@ module Api
           .all
       end
 
+      def public
+        authorize! :index, :api_hangar_groups
+        @groups = HangarGroup.where(user_id: current_user.id, public: true)
+          .order([{ sort: :asc, name: :asc }])
+          .all
+      end
+
       def create
         @hangar_group = HangarGroup.new(hangar_group_params)
         authorize! :create, hangar_group
@@ -58,7 +65,7 @@ module Api
       helper_method :hangar_group
 
       private def hangar_group_params
-        @hangar_group_params ||= params.permit(:name, :color, :sort).merge(user_id: current_user.id)
+        @hangar_group_params ||= params.permit(:name, :color, :sort, :public).merge(user_id: current_user.id)
       end
     end
   end

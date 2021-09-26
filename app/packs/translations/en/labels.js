@@ -242,6 +242,7 @@ export default {
     name: 'Name',
     color: 'Color',
     sort: 'Sort Order',
+    public: 'Show on Public Hangar?',
   },
   'source': 'Source',
   'model': {

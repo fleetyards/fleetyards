@@ -73,19 +73,25 @@
             </a>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div v-if="!mobile" class="page-actions page-actions-right">
-              <Btn
-                :to="{
-                  name: 'hangar-public-fleetchart',
-                  params: { slug: username },
-                }"
-              >
-                <i class="fad fa-starship" />
-                {{ $t('labels.fleetchart') }}
-              </Btn>
-            </div>
+        <div class="hangar-header">
+          <div class="hangar-labels">
+            <GroupLabels
+              :hangar-groups="groupsCollection.records"
+              :hangar-group-counts="hangarGroupCounts"
+              :label="$t('labels.groups')"
+              @highlight="highlightGroup"
+            />
+          </div>
+          <div v-if="!mobile" class="page-actions page-actions-right">
+            <Btn
+              :to="{
+                name: 'hangar-public-fleetchart',
+                params: { slug: username },
+              }"
+            >
+              <i class="fad fa-starship" />
+              {{ $t('labels.fleetchart') }}
+            </Btn>
           </div>
         </div>
       </div>
@@ -106,7 +112,10 @@
           :primary-key="primaryKey"
         >
           <template #default="{ record }">
-            <ModelPanel :model="record.model" :vehicle="record" />
+            <VehiclePanel
+              :vehicle="record"
+              :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+            />
           </template>
         </FilteredGrid>
       </template>
@@ -120,7 +129,7 @@ import { Component, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { publicHangarRouteGuard } from 'frontend/utils/RouteGuards/Hangar'
 import Btn from 'frontend/core/components/Btn'
-import ModelPanel from 'frontend/components/Models/Panel'
+import VehiclePanel from 'frontend/components/Vehicles/Panel'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
 import MetaInfo from 'frontend/mixins/MetaInfo'
 import AddonsModal from 'frontend/components/Vehicles/AddonsModal'
@@ -129,6 +138,8 @@ import publicVehiclesCollection from 'frontend/api/collections/PublicVehicles'
 import publicUserCollection from 'frontend/api/collections/PublicUser'
 import FilteredList from 'frontend/core/components/FilteredList'
 import FilteredGrid from 'frontend/core/components/FilteredGrid'
+import GroupLabels from 'frontend/components/Vehicles/GroupLabels'
+import publicHangarGroupsCollection from 'frontend/api/collections/PublicHangarGroups'
 
 @Component<PublicHangar>({
   beforeRouteEnter: publicHangarRouteGuard,
@@ -137,9 +148,10 @@ import FilteredGrid from 'frontend/core/components/FilteredGrid'
     AddonsModal,
     FilteredList,
     FilteredGrid,
-    ModelPanel,
+    VehiclePanel,
     ModelClassLabels,
     Avatar,
+    GroupLabels,
   },
   mixins: [MetaInfo],
 })
@@ -150,7 +162,23 @@ export default class PublicHangar extends Vue {
 
   userCollection: PublicUserCollection = publicUserCollection
 
+  highlightedGroup: string = null
+
+  groupsCollection: PublicHangarGroupsCollection = publicHangarGroupsCollection
+
   @Getter('mobile') mobile
+
+  get hangarGroupCounts(): HangarGroupMetrics[] {
+    if (!this.hangarStats) {
+      return []
+    }
+
+    return this.hangarStats.groups
+  }
+
+  get hangarStats(): VehicleStats | null {
+    return this.collection.stats
+  }
 
   get metaTitle() {
     return this.$t('title.hangar.public', { user: this.usernamePlural })
@@ -184,6 +212,7 @@ export default class PublicHangar extends Vue {
     return {
       username: this.username,
       page: this.$route.query.page,
+      filters: this.$route.query.q,
     }
   }
 
@@ -196,10 +225,20 @@ export default class PublicHangar extends Vue {
     this.fetch()
   }
 
+  highlightGroup(group) {
+    if (!group) {
+      this.highlightedGroup = null
+      return
+    }
+
+    this.highlightedGroup = group.id
+  }
+
   async fetch() {
     await this.userCollection.findByUsername(this.username)
+    await this.groupsCollection.findAll()
     await this.collection.findAll(this.filters)
-    await this.collection.findStatsByUsername(this.username)
+    await this.collection.findStatsByUsername(this.username, this.filters)
   }
 }
 </script>

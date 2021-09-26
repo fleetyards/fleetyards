@@ -3,6 +3,7 @@
 json.id vehicle.id
 json.name vehicle.name_visible? ? vehicle.name : nil
 json.serial vehicle.name_visible? ? vehicle.serial : nil
+json.loaner vehicle.loaner
 json.model do
   json.partial! 'api/v1/models/minimal', model: vehicle.model if vehicle.model.present?
 end
@@ -15,4 +16,8 @@ json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.username vehicle.user.username
 json.user_avatar vehicle.user.avatar.small.url
+json.hangar_group_ids vehicle.hangar_group_ids
+json.hangar_groups do
+  json.array! vehicle.hangar_groups.where(public: true), partial: 'api/v1/vehicles/hangar_group', as: :hangar_group
+end
 json.partial! 'api/shared/dates', record: vehicle

@@ -1,0 +1,28 @@
+@import '~stylesheets/variables';
+
+.hangar-groups {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 5px;
+
+  .hangar-group {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &.hangar-groups-large {
+    .hangar-group {
+      width: 26px;
+      height: 26px;
+    }
+  }
+}

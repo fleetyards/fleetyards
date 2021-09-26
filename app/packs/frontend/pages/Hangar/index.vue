@@ -21,6 +21,7 @@
               :hangar-groups="groupsCollection.records"
               :hangar-group-counts="hangarGroupCounts"
               :label="$t('labels.groups')"
+              :editable="true"
               @highlight="highlightGroup"
             />
           </div>
@@ -218,8 +219,7 @@
           :primary-key="primaryKey"
         >
           <template #default="{ record }">
-            <ModelPanel
-              :model="record.model"
+            <VehiclePanel
               :vehicle="record"
               :details="detailsVisible"
               :editable="true"
@@ -255,7 +255,7 @@ import VehiclesTable from 'frontend/components/Vehicles/Table'
 import Btn from 'frontend/core/components/Btn'
 import PrimaryAction from 'frontend/core/components/PrimaryAction'
 import BtnDropdown from 'frontend/core/components/BtnDropdown'
-import ModelPanel from 'frontend/components/Models/Panel'
+import VehiclePanel from 'frontend/components/Vehicles/Panel'
 import HangarImportBtn from 'frontend/components/HangarImportBtn'
 import VehiclesFilterForm from 'frontend/components/Vehicles/FilterForm'
 import ModelClassLabels from 'frontend/components/Models/ClassLabels'
@@ -279,7 +279,7 @@ import debounce from 'lodash.debounce'
     PrimaryAction,
     BtnDropdown,
     HangarImportBtn,
-    ModelPanel,
+    VehiclePanel,
     VehiclesFilterForm,
     ModelClassLabels,
     GroupLabels,

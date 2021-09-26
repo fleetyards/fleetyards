@@ -45,7 +45,8 @@ module Api
               'name' => 'multi_role',
               'label' => 'Multi role',
               'count' => 1
-            }]
+            }],
+            'groups' => []
           }
           assert_equal expected, json
         end

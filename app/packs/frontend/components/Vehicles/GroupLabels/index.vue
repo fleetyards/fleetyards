@@ -34,7 +34,9 @@
     </Btn>
   </BtnDropdown>
   <div v-else class="labels">
-    <h3 class="label-title">{{ $t('labels.groups') }}:</h3>
+    <h3 v-if="groups.length || editable" class="label-title">
+      {{ $t('labels.groups') }}:
+    </h3>
     <draggable v-model="groups" @start="drag = true" @end="drag = false">
       <transition-group name="fade-list" appear>
         <a
@@ -63,6 +65,7 @@
       </transition-group>
     </draggable>
     <a
+      v-if="editable"
       v-tooltip="$t('actions.addGroup')"
       class="label label-link"
       @click="openGroupModal()"
@@ -106,6 +109,8 @@ export default class GroupLabels extends Vue {
     },
   })
   hangarGroupCounts: Array
+
+  @Prop({ default: false }) editable!: boolean
 
   @Getter('mobile') mobile
 

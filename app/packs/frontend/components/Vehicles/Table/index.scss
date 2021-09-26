@@ -31,23 +31,6 @@
   }
 }
 
-.hangar-groups {
-  display: flex;
-  flex-wrap: wrap;
-
-  .hangar-group {
-    width: 26px;
-    height: 26px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border-radius: 13px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
 @media (max-width: $desktop-breakpoint) {
   .vehicle-states,
   .hangar-groups {
