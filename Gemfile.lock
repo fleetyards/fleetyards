@@ -185,12 +185,12 @@ GEM
     dynamic_fields_for_rails (1.0.1)
       rails (>= 3.0.0, < 7.0.0)
     ed25519 (1.2.4)
-    elasticsearch (7.14.1)
-      elasticsearch-api (= 7.14.1)
-      elasticsearch-transport (= 7.14.1)
-    elasticsearch-api (7.14.1)
+    elasticsearch (7.15.0)
+      elasticsearch-api (= 7.15.0)
+      elasticsearch-transport (= 7.15.0)
+    elasticsearch-api (7.15.0)
       multi_json
-    elasticsearch-transport (7.14.1)
+    elasticsearch-transport (7.15.0)
       faraday (~> 1)
       multi_json
     encryptor (3.0.0)
@@ -331,7 +331,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.1)
+    marcel (1.0.2)
     metadown (1.0.1)
       redcarpet
     method_source (1.0.0)
