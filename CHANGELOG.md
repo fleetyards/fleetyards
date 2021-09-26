@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.14.0](https://github.com/fleetyards/fleetyards/compare/v4.13.1...v4.14.0) (2021-09-26)
+
+
+### Features
+
+* public hangar groups ([#1804](https://github.com/fleetyards/fleetyards/issues/1804)) ([de6acce](https://github.com/fleetyards/fleetyards/commit/de6acce65de46323b176d44e5752c5ce803ef3bf))
+
+
+### Bug Fixes
+
+* base_uploader issue with local uploads ([8f806e6](https://github.com/fleetyards/fleetyards/commit/8f806e656744eeb61e8d8e8eaeee9f4ef8c342e2))
+
 ### [4.13.1](https://github.com/fleetyards/fleetyards/compare/v4.13.0...v4.13.1) (2021-09-19)
 
 ## [4.13.0](https://github.com/fleetyards/fleetyards/compare/v4.12.14...v4.13.0) (2021-09-19)
