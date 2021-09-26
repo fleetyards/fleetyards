@@ -27,10 +27,19 @@ class HangarGroup < ApplicationRecord
   validates :user_id, :name, :color, presence: true
 
   before_save :update_slugs
+  after_save :touch_vehicles
   after_commit :broadcast_update
   after_touch :clear_association_cache
 
   def broadcast_update
     HangarChannel.broadcast_to(user, {}.to_json)
+  end
+
+  private def touch_vehicles
+    return unless public_changed?
+
+    # rubocop:disable Rails/SkipsModelValidations
+    vehicles.update_all(updated_at: Time.zone.now)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 end

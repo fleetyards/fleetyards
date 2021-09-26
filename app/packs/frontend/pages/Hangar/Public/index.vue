@@ -236,7 +236,7 @@ export default class PublicHangar extends Vue {
 
   async fetch() {
     await this.userCollection.findByUsername(this.username)
-    await this.groupsCollection.findAll()
+    await this.groupsCollection.findAll(this.username)
     await this.collection.findAll(this.filters)
     await this.collection.findStatsByUsername(this.username, this.filters)
   }

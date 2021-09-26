@@ -33,7 +33,7 @@ class Ability
     can %i[index], :api_commodities
     can %i[index], :api_components
     can %i[index], :api_equipment
-    can %i[index sort], :api_hangar_groups
+    can %i[public], :api_hangar_groups
     can %i[show create], :api_commodity_prices
     can %i[show], :api_components
     can %i[index], :api_roadmap
@@ -49,6 +49,7 @@ class Ability
     return if user.id.blank?
 
     can %i[check_serial], :api_vehicles
+    can %i[index sort], :api_hangar_groups
     can %i[index destroy_all update_bulk destroy_bulk], :api_hangar
     can %i[create update destroy], Vehicle, user_id: user.id
     can %i[create update destroy], HangarGroup, user_id: user.id

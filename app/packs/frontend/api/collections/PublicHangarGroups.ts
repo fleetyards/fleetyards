@@ -6,8 +6,8 @@ export class PublicHangarGroupsCollection extends BaseCollection {
 
   records: HangarGroup[] = []
 
-  async findAll(): Promise<HangarGroup[]> {
-    const response = await get('hangar-groups/public')
+  async findAll(username: string): Promise<HangarGroup[]> {
+    const response = await get(`hangar-groups/${username}`)
 
     if (!response.error) {
       this.records = response.data

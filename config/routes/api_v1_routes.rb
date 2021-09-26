@@ -115,7 +115,7 @@ v1_api_routes = lambda do
 
   resources :hangar_groups, path: 'hangar-groups', only: %i[index create update destroy] do
     collection do
-      get :public
+      get ':username' => 'hangar_groups#public', as: :public
       put :sort
     end
   end

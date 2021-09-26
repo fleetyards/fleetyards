@@ -11,8 +11,11 @@ module Api
       end
 
       def public
-        authorize! :index, :api_hangar_groups
-        @groups = HangarGroup.where(user_id: current_user.id, public: true)
+        authorize! :public, :api_hangar_groups
+
+        user = User.find_by!('lower(username) = ?', params.fetch(:username, '').downcase)
+
+        @groups = HangarGroup.where(user_id: user.id, public: true)
           .order([{ sort: :asc, name: :asc }])
           .all
       end
