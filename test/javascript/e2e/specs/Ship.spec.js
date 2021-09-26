@@ -4,9 +4,9 @@ describe('Ship', () => {
 
     cy.acceptCookies()
 
-    cy.get('.panel-title a span')
-      .contains('100i')
-      .click()
+    cy.get('.panel-title a span').contains('100i')
+
+    cy.get('.model-panel#100i .panel-title a span').click()
 
     cy.url().should('include', '/ships/100i')
 
