@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.14.1](https://github.com/fleetyards/fleetyards/compare/v4.14.0...v4.14.1) (2021-09-26)
+
+
+### Bug Fixes
+
+* **PublicHangarGroups:** update public endpoint and fix caching for public ([5c18a9f](https://github.com/fleetyards/fleetyards/commit/5c18a9f0bc9a2c3309ea76bd8ffaa9cc3c402ace))
+
 ## [4.14.0](https://github.com/fleetyards/fleetyards/compare/v4.13.1...v4.14.0) (2021-09-26)
 
 
