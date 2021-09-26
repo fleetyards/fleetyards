@@ -1,10 +1,15 @@
 <template>
-  <div class="panel-groups">
+  <div
+    class="hangar-groups"
+    :class="{
+      'hangar-groups-large': size === 'large',
+    }"
+  >
     <div
-      v-for="(group, index) in groups"
-      :key="index"
+      v-for="group in groups"
+      :key="`hangar-group-${group.id}`"
       v-tooltip="group.name"
-      class="panel-group"
+      class="hangar-group"
       :style="{
         'background-color': group.color,
       }"
@@ -19,6 +24,14 @@ import { Component, Prop } from 'vue-property-decorator'
 @Component<PanelGroups>({})
 export default class PanelGroups extends Vue {
   @Prop({ required: true }) groups: HangarGroup[]
+
+  @Prop({
+    default: 'default',
+    validator(value) {
+      return ['default', 'large'].indexOf(value) !== -1
+    },
+  })
+  size!: string
 }
 </script>
 

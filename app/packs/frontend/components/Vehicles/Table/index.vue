@@ -120,15 +120,7 @@
       </div>
     </template>
     <template #col-groups="{ record }">
-      <div class="hangar-groups">
-        <div
-          v-for="(hangarGroup, index) in record.hangarGroups"
-          :key="`hangar-group-${record.id}-${index}`"
-          v-tooltip="hangarGroup.name"
-          class="hangar-group"
-          :style="`background-color: ${hangarGroup.color};`"
-        />
-      </div>
+      <HangarGroups :groups="record.hangarGroups" size="large" />
     </template>
     <template #col-actions="{ record }">
       <BtnGroup :inline="true">
@@ -158,11 +150,13 @@ import BtnGroup from 'frontend/core/components/BtnGroup'
 import vehiclesCollection from 'frontend/api/collections/Vehicles'
 import { displayConfirm } from 'frontend/lib/Noty'
 import VehicleContextMenu from 'frontend/components/Vehicles/ContextMenu'
+import HangarGroups from 'frontend/components/Vehicles/HangarGroups'
 
 @Component<FilteredGrid>({
   components: {
     FilteredTable,
     VehicleContextMenu,
+    HangarGroups,
     Btn,
     BtnGroup,
   },
