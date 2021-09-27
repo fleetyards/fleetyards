@@ -159,6 +159,7 @@ module Api
             'hangarGroups' => explorer.hangar_groups.map do |hangar_group|
               {
                 'id' => hangar_group.id,
+                'slug' => hangar_group.slug,
                 'name' => hangar_group.name,
                 'color' => hangar_group.color
               }
@@ -251,6 +252,7 @@ module Api
             'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
               {
                 'id' => hangar_group.id,
+                'slug' => hangar_group.slug,
                 'name' => hangar_group.name,
                 'color' => hangar_group.color
               }
@@ -356,6 +358,7 @@ module Api
             'hangarGroups' => enterprise.hangar_groups.map do |hangar_group|
               {
                 'id' => hangar_group.id,
+                'slug' => hangar_group.slug,
                 'name' => hangar_group.name,
                 'color' => hangar_group.color
               }
