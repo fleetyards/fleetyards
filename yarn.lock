@@ -5109,10 +5109,10 @@ eslint-plugin-sort-class-members@^1.11.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.11.0.tgz#4290c57eba8991521fbca3430e002da8ab860729"
   integrity sha512-kobZtUOyzyYVotc/GDnlmQ6sSaxYuVElwEowD5RQ6Kajq4Lfb3CPE1THaXbDl97HLNthThRZWtdNx1GrFhCm7Q==
 
-eslint-plugin-vue-types@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue-types/-/eslint-plugin-vue-types-2.0.0.tgz#943c0e03d27c698a312c541986f1bfd3411ad058"
-  integrity sha512-Yvry2d+FmeyDp6NU1LLUWDDlpOu9jpIJGHFNj/yR5N/iqfCtw/gSoTOnGtFxNYJARw+1h0W0BZznObh8luo5Cg==
+eslint-plugin-vue-types@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue-types/-/eslint-plugin-vue-types-2.1.0.tgz#fa668aa7607d33fea7ac370e932e8bf9079d43db"
+  integrity sha512-8Ny/frfosSq3Vzgt5OXNw8DiQucTFixaPaH2mb1/2f7+emI9xPQnSKGt/6a8533OZBhnhXMfr0Ha8BF5iStQHw==
   dependencies:
     eslint-rule-composer "^0.3.0"
 
