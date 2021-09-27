@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.15.0](https://github.com/fleetyards/fleetyards/compare/v4.14.1...v4.15.0) (2021-09-27)
+
+
+### Features
+
+* **HangarGroups:** allow group bubbles to toggle filter ([f04727a](https://github.com/fleetyards/fleetyards/commit/f04727a628cb48e76fe854982e84656c0a5325ff))
+
+
+### Bug Fixes
+
+* specs ([8e1f797](https://github.com/fleetyards/fleetyards/commit/8e1f797cc6e27c29f79c23dcd7811357cbcc9330))
+* update caching for hangar groups ([8c04e40](https://github.com/fleetyards/fleetyards/commit/8c04e4068120bf030b4fce97f5df5137c2d4ee71))
+
 ### [4.14.1](https://github.com/fleetyards/fleetyards/compare/v4.14.0...v4.14.1) (2021-09-26)
 
 
