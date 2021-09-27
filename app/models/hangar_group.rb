@@ -36,8 +36,6 @@ class HangarGroup < ApplicationRecord
   end
 
   private def touch_vehicles
-    return unless public_changed?
-
     # rubocop:disable Rails/SkipsModelValidations
     vehicles.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations

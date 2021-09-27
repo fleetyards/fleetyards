@@ -3,6 +3,8 @@
 module Api
   module V1
     class HangarGroupsController < ::Api::BaseController
+      before_action :authenticate_user!, except: [:public]
+
       def index
         authorize! :index, :api_hangar_groups
         @groups = HangarGroup.where(user_id: current_user.id)

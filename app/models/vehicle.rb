@@ -43,6 +43,11 @@ class Vehicle < ApplicationRecord
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
+  has_many :public_hangar_groups,
+           -> { where(public: true) },
+           class_name: 'HangarGroup',
+           source: :hangar_group,
+           through: :task_forces
 
   has_many :vehicle_modules, dependent: :destroy
   has_many :model_modules, through: :vehicle_modules
