@@ -13,6 +13,7 @@
       :style="{
         'background-color': group.color,
       }"
+      @click.exact="filter($event, group.slug)"
     />
   </div>
 </template>
@@ -32,6 +33,35 @@ export default class PanelGroups extends Vue {
     },
   })
   size!: string
+
+  filter(event, filter) {
+    event.preventDefault()
+
+    if (!filter) {
+      return
+    }
+
+    const query = JSON.parse(JSON.stringify(this.$route.query.q || {}))
+
+    if ((query.hangarGroupsIn || []).includes(filter)) {
+      const index = query.hangarGroupsIn.findIndex(item => item === filter)
+      if (index > -1) {
+        query.hangarGroupsIn.splice(index, 1)
+      }
+    } else {
+      if (!query.hangarGroupsIn) {
+        query.hangarGroupsIn = []
+      }
+      query.hangarGroupsIn.push(filter)
+    }
+
+    this.$router.replace({
+      name: this.$route.name,
+      query: {
+        q: query,
+      },
+    })
+  }
 }
 </script>
 
