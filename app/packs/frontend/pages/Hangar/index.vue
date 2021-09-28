@@ -41,8 +41,8 @@
 
             <Btn
               v-if="currentUser && currentUser.publicHangar"
-              v-tooltip="$t('actions.copyPublicUrl')"
-              @click.native="copyPublicUrl"
+              v-tooltip="$t('actions.share')"
+              @click.native="share"
             >
               <i class="fad fa-share-square" />
             </Btn>
@@ -132,10 +132,10 @@
               v-if="currentUser && currentUser.publicHangar"
               size="small"
               variant="dropdown"
-              @click.native="copyPublicUrl"
+              @click.native="share"
             >
               <i class="fad fa-share-square" />
-              <span>{{ $t('actions.copyPublicUrl') }}</span>
+              <span>{{ $t('actions.share') }}</span>
             </Btn>
 
             <hr />
@@ -354,7 +354,7 @@ export default class Hangar extends Vue {
     return this.$t('actions.showGuide')
   }
 
-  get publicUrl() {
+  get shareUrl() {
     if (!this.currentUser) {
       return null
     }
@@ -469,24 +469,38 @@ export default class Hangar extends Vue {
     document.body.removeChild(link)
   }
 
-  copyPublicUrl(_event) {
-    if (!this.publicUrl) {
+  share() {
+    if (navigator.canShare && navigator.canShare({ url: this.shareUrl })) {
+      navigator
+        .share({
+          title: this.metaTitle,
+          url: this.shareUrl,
+        })
+        .then(() => console.info('Share was successful.'))
+        .catch(error => console.info('Sharing failed', error))
+    } else {
+      this.copyShareUrl()
+    }
+  }
+
+  copyShareUrl() {
+    if (!this.shareUrl) {
       displayAlert({
-        text: this.$t('messages.copyPublicUrl.failure'),
+        text: this.$t('messages.copyShareUrl.failure'),
       })
     }
 
-    copyText(this.publicUrl).then(
+    copyText(this.shareUrl).then(
       () => {
         displaySuccess({
-          text: this.$t('messages.copyPublicUrl.success', {
-            publicUrl: this.publicUrl,
+          text: this.$t('messages.copyShareUrl.success', {
+            url: this.shareUrl,
           }),
         })
       },
       () => {
         displayAlert({
-          text: this.$t('messages.copyPublicUrl.failure'),
+          text: this.$t('messages.copyShareUrl.failure'),
         })
       },
     )
