@@ -46,7 +46,7 @@ export default {
   'reset-password': 'Forgot password?',
   'edit': 'Edit',
   'done': 'Done',
-  'copyPublicUrl': 'Copy Public URL',
+  'share': 'Share',
   'change': 'Change',
   'upload': 'Upload',
   'editCommodities': 'Edit commodities',
