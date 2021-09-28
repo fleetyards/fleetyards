@@ -15,9 +15,9 @@ export default {
     success: 'Video URL Copied!',
     failure: 'Could not copy Video URL',
   },
-  copyPublicUrl: {
-    success: 'Public URL "%{publicUrl}" Copied!',
-    failure: 'Could not copy Public URL',
+  copyShareUrl: {
+    success: 'URL "%{url}" Copied!',
+    failure: 'Could not copy URL',
   },
   copyInviteUrl: {
     success: 'Invite URL "%{url}" Copied!',
